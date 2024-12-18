@@ -19,6 +19,16 @@ class SurveyCondition
     protected string $language;
     protected const X = 'X';
 
+    public function __construct(
+        LSYii_Application $app,
+        Permission $permission,
+        Survey $survey
+    ) {
+        $this->app = $app;
+        $this->permission = $permission;
+        $this->survey = $survey;
+    }
+
     /**
      * Sets the iSurveyID member of this object
      * @param int $iSurveyID
@@ -68,16 +78,6 @@ class SurveyCondition
     public function getFieldName($sid, $gid, $qid, $title = '')
     {
         return $sid . self::X . $gid . self::X . $qid . $title;
-    }
-
-    public function __construct(
-        LSYii_Application $app,
-        Permission $permission,
-        Survey $survey
-    ) {
-        $this->app = $app;
-        $this->permission = $permission;
-        $this->survey = $survey;
     }
 
     /**
