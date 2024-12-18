@@ -223,8 +223,14 @@ class User extends LSActiveRecord
         );
     }
 
+
     /**
-     * @return string
+     * Get the number of surveys created by this user.
+     *
+     * This function counts the number of surveys in the database
+     * where the owner_id matches the current user's ID.
+     *
+     * @return int The number of surveys created by this user.
      */
     public function getSurveysCreated()
     {
@@ -233,7 +239,38 @@ class User extends LSActiveRecord
     }
 
     /**
-     * @return string
+     * Get the display name for the user based on the application configuration.
+     *
+     * This function returns the user's display name according to the 'nameDisplayType'
+     * configuration setting. It can return the full name, username, or a combination of both.
+     *
+     * @return string The user's display name based on the configuration setting:
+     *                - If 'fullname': returns the user's full name
+     *                - If 'both': returns a formatted string with username and full name
+     *                - If 'username' or any other value: returns the username
+     */
+    public function getDisplayName()
+    {
+        switch (Yii::app()->getConfig('nameDisplayType')) {
+            case 'fullname':
+                return $this->full_name;
+                break;
+            case 'both':
+                return sprintf(gt("%s (%s)"), $this->users_name, $this->full_name);
+                break;
+            case 'username':
+            default:
+                return $this->users_name;
+        }
+    }
+
+    /**
+     * Get the user's preferred date format.
+     *
+     * This function retrieves the user's date format preference from the session
+     * and returns the corresponding PHP date format string.
+     *
+     * @return string The PHP date format string corresponding to the user's preference.
      */
     public function getDateFormat()
     {
@@ -241,16 +278,18 @@ class User extends LSActiveRecord
         return $dateFormat['phpdate'];
     }
 
+
     /**
-     * @todo Not used?
+     * Returns the formatted date of when the user was created.
+     *
+     * @return string The formatted date of creation.
+     *
+     * @todo: Review this. Cast to string added to keep the original behavior (parameter can't be null since PHP 8.1).
+     *        But it returns the current date if the parameter is null (both now with the cast and pre PHP 8.1 without the cast).
      */
     public function getFormattedDateCreated()
     {
         $dateCreated = $this->created;
-        /**
-         * @todo: Review this. Cast to string added to keep the original behavior (parameter can't be null since PHP 8.1).
-         *        But it returns the current date if the parameter is null (both now with the cast and pre PHP 8.1 without the cast).
-         */
         $date = new DateTime((string) $dateCreated);
         return $date->format($this->getDateFormat());
     }
@@ -736,7 +775,7 @@ class User extends LSActiveRecord
     public function getParentUserName()
     {
         if ($this->parentUser) {
-            return $this->parentUser->users_name;
+            return $this->parentUser->displayName;
         }
         // root user, no parent
         return null;
@@ -811,7 +850,7 @@ class User extends LSActiveRecord
             ],
             [
                 "name"   => "parentUserName",
-                "header" => gT("Created by"),
+                "header" => gT("Owner"),
             ],
             [
                 "name"   => "user_status",
@@ -910,7 +949,7 @@ class User extends LSActiveRecord
 
         $cols[] = array(
             "name" => "parentUserName",
-            "header" => gT("Created by"),
+            "header" => gT("Owner"),
         );
 
         $cols[] = array(
@@ -1033,18 +1072,6 @@ class User extends LSActiveRecord
     public function canLogin()
     {
         return $this->isActive() && !$this->isExpired();
-    }
-
-    /**
-     * Get the decription to be used in list
-     * @return string
-     */
-    public function getDisplayName()
-    {
-        if (empty($this->full_name)) {
-            return $this->users_name;
-        }
-        return sprintf(gt("%s (%s)"), $this->users_name, $this->full_name);
     }
 
     /**
