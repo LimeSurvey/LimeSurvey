@@ -89,7 +89,6 @@ class RemoteControl extends SurveyCommonAction
                 $this->renderWrappedTemplate('remotecontrol', array('index_view'), $aData);
             }
         }
-        Yii::app()->session->destroy();
     }
 
     /**
