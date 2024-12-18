@@ -2129,9 +2129,11 @@ class Tokens extends SurveyCommonAction
                     $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
                     $sErrorMessage = ldap_error($ds);
-                    define("LDAP_OPT_DIAGNOSTIC_MESSAGE", 0x0032);
-                    if (ldap_get_option($ds, LDAP_OPT_DIAGNOSTIC_MESSAGE, $extended_error)) {
-                        $sErrorMessage .= ' - ' . $extended_error;
+                    /* Try to get more error @see https://github.com/adldap/adLDAP/pull/142 */
+                    if (defined('LDAP_OPT_DIAGNOSTIC_MESSAGE')) {
+                        if (ldap_get_option($ds, LDAP_OPT_DIAGNOSTIC_MESSAGE, $extended_error)) {
+                            $sErrorMessage .= ' - ' . $extended_error;
+                        }
                     }
                     $aData['sError'] = sprintf(gT("Can't bind to the LDAP directory. Error message: %s"), ldap_error($ds));
                     $this->renderWrappedTemplate('token', array('ldapform'), $aData);
