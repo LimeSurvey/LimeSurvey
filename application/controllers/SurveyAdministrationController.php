@@ -602,9 +602,6 @@ class SurveyAdministrationController extends LSBaseController
             $basedestdir = Yii::app()->getConfig('uploaddir') . "/surveys";
             $destdir = $basedestdir . "/$iSurveyID/";
 
-            Yii::app()->loadLibrary('admin.pclzip');
-            $zip = new PclZip($zipfilename);
-
             if (!is_writeable($basedestdir)) {
                 Yii::app()->user->setFlash('error', sprintf(
                     gT("Incorrect permissions in your %s folder."),
@@ -622,13 +619,16 @@ class SurveyAdministrationController extends LSBaseController
             $aErrorFilesInfo = array();
 
             if (is_file($zipfilename)) {
-                if ($zip->extract($extractdir) <= 0) {
+                $zip = new LimeSurvey\Zip();
+                if ($zip->open($zipfilename) !== true || $zip->extractTo($extractdir) !== true) {
                     Yii::app()->user->setFlash(
                         'error',
-                        gT("This file is not a valid ZIP file archive. Import failed. ") . $zip->errorInfo(true)
+                        gT("This file is not a valid ZIP file archive. Import failed. ") . $zip->getStatusString()
                     );
                     $this->redirect(array('surveyAdministration/rendersidemenulink/', 'surveyid' => $iSurveyID, 'subaction' => 'generalsettings'));
                 }
+                $zip->close();
+
                 // now read tempdir and copy authorized files only
                 $folders = array('flash', 'files', 'images');
 
