@@ -277,9 +277,7 @@ table.ls-answers input[type="radio"] {
 Max width before this PARTICULAR table gets nasty
 For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)
 */
-@media
-only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px) and (device-pixel-ratio: 2) {
+@media only screen and (max-width: 767px) {
     table.ls-answers,table.ls-answers thead,table.ls-answers tbody,table.ls-answers th,table.ls-answers td,table.ls-answers tr {display: block;}
     .dir-ltr table.ls-answers,.dir-ltr table.ls-answers thead,.dir-ltr table.ls-answers tbody,.dir-ltr table.ls-answers th,.dir-ltr table.ls-answers td,table.ls-answers tr {text-align:left;}
     .dir-rtl table.ls-answers,.dir-rtl table.ls-answers thead,.dir-rtl table.ls-answers tbody,.dir-rtl table.ls-answers th,.dir-rtl table.ls-answers td,table.ls-answers tr {text-align:right;}
