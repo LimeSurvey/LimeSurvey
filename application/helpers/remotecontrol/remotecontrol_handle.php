@@ -2802,9 +2802,10 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param string|null $sUsername (optional) username to get list of surveys
+     * @param integer|null $gsid  (optional) the surveys group id to get list of surveys
      * @return array In case of success the list of surveys
      */
-    public function list_surveys($sSessionKey, $sUsername = null)
+    public function list_surveys($sSessionKey, $sUsername = null, $gsid = null)
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             $oSurvey = new Survey();
@@ -2813,14 +2814,22 @@ class remotecontrol_handle
             } elseif ($sUsername != null) {
                 $aUserData = User::model()->findByAttributes(array('users_name' => (string) $sUsername));
                 if (!isset($aUserData)) {
-                                    return array('status' => 'Invalid user');
+                    return array('status' => 'Invalid user');
                 } else {
-                                    $sUid = $aUserData->attributes['uid'];
+                    $sUid = $aUserData->attributes['uid'];
                 }
                 $oSurvey->permission($sUid);
             }
-
-            $aUserSurveys = $oSurvey->with(array('languagesettings' => array('condition' => 'surveyls_language=language'), 'owner'))->findAll();
+            if (!empty($gsid) && intval($gsid)) {
+                $aUserSurveys = $oSurvey->with(
+                    array(
+                        'languagesettings' => array('condition' => 'surveyls_language=language'),
+                        'owner'
+                    )
+                )->findAll("gsid = :gsid", [':gsid' => intval($gsid)]);
+            } else {
+                $aUserSurveys = $oSurvey->with(array('languagesettings' => array('condition' => 'surveyls_language=language'), 'owner'))->findAll();
+            }
             if (count($aUserSurveys) == 0) {
                 return array('status' => 'No surveys found');
             }
