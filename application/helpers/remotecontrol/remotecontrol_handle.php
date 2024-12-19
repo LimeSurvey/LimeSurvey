@@ -298,42 +298,64 @@ class remotecontrol_handle
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
         }
-        $aData['bFailed'] = false; // Put a var for continue
+        if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
+            return array(
+                'status' => 'Copy failed',
+                'error' => "You don't have sufficient permissions."
+            );
+        }
         if (!$iSurveyID) {
-            $aData['sErrorMessage'] = "No survey ID has been provided. Cannot copy survey";
-            $aData['bFailed'] = true;
-        } elseif (!Survey::model()->findByPk($iSurveyID)) {
-            $aData['sErrorMessage'] = "Invalid survey ID";
-            $aData['bFailed'] = true;
-        } elseif (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
-            $aData['sErrorMessage'] = "You don't have sufficient permissions.";
-            $aData['bFailed'] = true;
-        } else {
-            $aExcludes = array();
-            $sNewSurveyName = $sNewname;
-            $aExcludes['dates'] = true;
-            $btranslinksfields = true;
-            Yii::app()->loadHelper('export');
-            $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
-            if ($copysurveydata) {
-                Yii::app()->loadHelper('admin/import');
-                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, $DestSurveyID, $btranslinksfields);
-                if (isset($aExcludes['conditions'])) {
-                    Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $aImportResults['newsid']);
-                    QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $aImportResults['newsid']);
-                }
-                if (!isset($aExcludes['permissions'])) {
-                    Permission::model()->copySurveyPermissions($iSurveyID, $aImportResults['newsid']);
-                }
-            } else {
-                $aData['bFailed'] = true;
-            }
+            return array(
+                'status' => 'Copy failed',
+                'error' => "No survey ID has been provided. Cannot copy survey"
+            );
         }
-        if ($aData['bFailed']) {
-            return array('status' => 'Copy failed', 'error' => $aData['sErrorMessage']);
-        } else {
-            return array('status' => 'OK', 'newsid' => $aImportResults['newsid']);
+        if (!Survey::model()->findByPk($iSurveyID)) {
+            return array(
+                'status' => 'Copy failed',
+                'error' => "Invalid survey ID"
+            );
         }
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
+            return array(
+                'status' => 'Copy failed',
+                'error' => "You don't have sufficient permissions"
+            );
+        }
+        /* All check : try to copy */
+        $aExcludes = array();
+        $sNewSurveyName = $sNewname;
+        $aExcludes['dates'] = true;
+        $btranslinksfields = true;
+        Yii::app()->loadHelper('export');
+        $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
+        if (empty($copysurveydata)) {
+            return array(
+                'status' => 'Copy failed',
+                'error' => "No data from survey"
+            );
+        }
+        Yii::app()->loadHelper('admin/import');
+        $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, $DestSurveyID, $btranslinksfields);
+        if (empty($aImportResults['newsid'])) {
+            return array(
+                'status' => 'Copy failed',
+                'error' => $aImportResults['error']
+            );
+        }
+        if (isset($aExcludes['conditions'])) {
+            Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $aImportResults['newsid']);
+            QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $aImportResults['newsid']);
+        }
+        if (!isset($aExcludes['permissions'])) {
+            Permission::model()->copySurveyPermissions($iSurveyID, $aImportResults['newsid']);
+        }
+        return array(
+            'status' => 'OK',
+            'newsid' => $aImportResults['newsid']
+        );
+
+
     }
 
     /**
