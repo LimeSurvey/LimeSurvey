@@ -492,7 +492,7 @@ class ConditionsAction extends SurveyCommonAction
     }
 
     /**
-     * @param int $qid
+     * @param int $qid the id of the question
      * @return void
      * @throws CException
      */
@@ -513,7 +513,7 @@ class ConditionsAction extends SurveyCommonAction
 
     /**
      * Gets the condition text based on a qid
-     * @param int $qid
+     * @param int $qid the id of the question
      * @return void
      */
     protected function getConditionText(int $qid)
@@ -886,10 +886,10 @@ class ConditionsAction extends SurveyCommonAction
 
     /**
      * Maps keywords with paths so we can ensure that the service is agnostic to where the paths are which gives us flexibility
-     * @param string $what
-     * @param array $data
-     * @param bool $return
-     * @param bool $processOutput
+     * @param string $what the keyname of the view to be rendered
+     * @param array $data data array to be passed to the renderPartial method
+     * @param bool $return return to be passed to the renderPartial method
+     * @param bool $processOutput processOutput to be passed to the renderPartial method
      * @return string
      */
     protected function renderPartialView(string $what, array $data = null, bool $return = false, bool $processOutput = false)
@@ -947,8 +947,8 @@ class ConditionsAction extends SurveyCommonAction
 
     /**
      * Maps $pathKey with $path
-     * @param string $pathKey
-     * @param array $params
+     * @param string $pathKey the keyword of the path
+     * @param array $params an array to be passed to createUrl
      * @return string
      */
     protected function myCreateUrl(string $pathKey, array $params = [])
@@ -971,9 +971,9 @@ class ConditionsAction extends SurveyCommonAction
 
     /**
      * Adds a script to the view so the service can be agnostic to paths and scripts
-     * @param string $key
-     * @param string $which
-     * @param integer $how
+     * @param string $key the config
+     * @param string $which the filename
+     * @param integer $how the way
      * @return void
      */
     protected function addScript($key, $which, $how)

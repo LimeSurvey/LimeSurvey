@@ -19,6 +19,12 @@ class SurveyCondition
     protected string $language;
     protected const X = 'X';
 
+    /**
+     * Constructor
+     * @param \LSYii_Application $app
+     * @param \Permission $permission
+     * @param \Survey $survey
+     */
     public function __construct(
         LSYii_Application $app,
         Permission $permission,
@@ -69,13 +75,13 @@ class SurveyCondition
 
     /**
      * Gets the field's name by sid, gid, qid and title
-     * @param mixed $sid
-     * @param mixed $gid
-     * @param mixed $qid
-     * @param mixed $title
+     * @param int $sid
+     * @param int $gid
+     * @param int $qid
+     * @param string $title
      * @return string
      */
-    public function getFieldName($sid, $gid, $qid, $title = '')
+    public function getFieldName(int $sid, int $gid, int $qid, string $title = '')
     {
         return $sid . self::X . $gid . self::X . $qid . $title;
     }
@@ -86,7 +92,7 @@ class SurveyCondition
      * @param array $params
      * @return array
      */
-    public function initialize($params)
+    public function initialize(array $params)
     {
         $this->iSurveyID = $params['iSurveyID'];
         $this->tokenTableExists = tableExists($this->getSurveyTable('token', $this->iSurveyID));
@@ -112,16 +118,16 @@ class SurveyCondition
     /**
      * insertCondition action
      * @param array $args the arguments
-     * @param mixed $editSourceTab the source tab
-     * @param mixed $editTargetTab the target tab
-     * @param callable $write
-     * @param mixed $ConditionConst
-     * @param mixed $prevQuestionSGQA
-     * @param mixed $tokenAttr
-     * @param mixed $ConditionRegexp
+     * @param string $editSourceTab the source tab
+     * @param string $editTargetTab the target tab
+     * @param callable $write a callback to secure an output
+     * @param string $ConditionConst the constant value of the question to match
+     * @param string $prevQuestionSGQA the previous question's descriptor, such as @453614X608X15982@
+     * @param string $tokenAttr the token placeholder, such as {TOKEN:FIRSTNAME}
+     * @param string $ConditionRegexp the regular expression to match
      * @return void
      */
-    public function insertCondition(array $args, $editSourceTab, $editTargetTab, callable $write, $ConditionConst, $prevQuestionSGQA, $tokenAttr, $ConditionRegexp)
+    public function insertCondition(array $args, string $editSourceTab, string $editTargetTab, callable $write, string $ConditionConst, string $prevQuestionSGQA, string $tokenAttr, string $ConditionRegexp)
     {
         extract($args);
         if (isset($p_cquestions) && $p_cquestions != '' && $editSourceTab == '#SRCPREVQUEST') {
@@ -210,15 +216,15 @@ class SurveyCondition
     /**
      * updateCondition action
      * @param array $args the arguments
-     * @param mixed $editTargetTab the target tab
+     * @param string $editTargetTab the target tab
      * @param callable $write the writer callback
-     * @param mixed $ConditionConst
-     * @param mixed $prevQuestionSGQA
-     * @param mixed $tokenAttr
-     * @param mixed $ConditionRegexp
+     * @param string $ConditionConst the constant value the response is supposed to be equal to
+     * @param string $prevQuestionSGQA the previous question's descriptor, such as @453614X608X15982@
+     * @param string $tokenAttr the token placeholder, such as {TOKEN:FIRSTNAME}
+     * @param string $ConditionRegexp the regular expression to match
      * @return void
      */
-    public function updateCondition(array $args, $editTargetTab, callable $write, $ConditionConst, $prevQuestionSGQA, $tokenAttr, $ConditionRegexp)
+    public function updateCondition(array $args, string $editTargetTab, callable $write, string $ConditionConst, string $prevQuestionSGQA, string $tokenAttr, string $ConditionRegexp)
     {
         extract($args);
 
@@ -298,11 +304,11 @@ class SurveyCondition
 
     /**
      * deleteCondition action
-     * @param mixed $qid
-     * @param mixed $p_cid
+     * @param int $qid question id
+     * @param int $p_cid condition id
      * @return void
      */
-    public function deleteCondition($qid, $p_cid)
+    public function deleteCondition(int $qid, int $p_cid)
     {
         \LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid); // in case deleted the last condition
         \Condition::model()->deleteRecords(array('cid' => $p_cid));
@@ -311,13 +317,13 @@ class SurveyCondition
 
     /**
      * updateScenario action
-     * @param mixed $p_newscenarionum
-     * @param mixed $qid
-     * @param mixed $p_scenario
-     * @param callable $write
+     * @param int $p_newscenarionum the new scenario number
+     * @param int $qid the question id
+     * @param int $p_scenario the old scenario number
+     * @param callable $write writer callback
      * @return void
      */
-    public function updateScenario($p_newscenarionum, $qid, $p_scenario, callable $write)
+    public function updateScenario(int $p_newscenarionum, int $qid, int $p_scenario, callable $write)
     {
         if ($p_newscenarionum === null) {
             $write(gT("No scenario number specified"), 'error');
@@ -330,18 +336,24 @@ class SurveyCondition
 
     /**
      * deleteAllConditions action
-     * @param mixed $qid
-     * @param callable $write
+     * @param int $qid the question id
+     * @param callable $write writer callback
      * @return void
      */
-    public function deleteAllConditions($qid, callable $write)
+    public function deleteAllConditions(int $qid, callable $write)
     {
         \LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid); // in case deleted the last condition
         \Condition::model()->deleteRecords(array('qid' => $qid));
         $write(gT("All conditions for this question have been deleted."), 'success');
     }
 
-    public function deleteAllConditionsOfSurvey($sid, callable $write)
+    /**
+     * deleteAllConditionsOfSurvey cation
+     * @param int $sid the survey id
+     * @param callable $write writer callback
+     * @return void
+     */
+    public function deleteAllConditionsOfSurvey(int $sid, callable $write)
     {
         \LimeExpressionManager::RevertUpgradeConditionsToRelevance($sid);
         $qids = [0];
@@ -354,7 +366,13 @@ class SurveyCondition
         $write(gT("All conditions for this survey have been deleted.", 'success'));
     }
 
-    public function conditionScript($qid, $script)
+    /**
+     * conditionScript action
+     * @param int $qid the question id
+     * @param string $script the custom script to be stored
+     * @return void
+     */
+    public function conditionScript(int $qid, string $script)
     {
         $question = \Question::model()->findByPk($qid);
         if ($script != $question->relevance) {
@@ -366,11 +384,11 @@ class SurveyCondition
 
     /**
      * deleteScenario action
-     * @param mixed $qid
-     * @param mixed $p_scenario
+     * @param int $qid the question id
+     * @param int $p_scenario the scenario id
      * @return void
      */
-    public function deleteScenario($qid, $p_scenario)
+    public function deleteScenario(int $qid, int $p_scenario)
     {
         \LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid); // in case deleted the last condition
         \Condition::model()->deleteRecords(array('qid' => $qid, 'scenario' => $p_scenario));
@@ -379,8 +397,8 @@ class SurveyCondition
 
     /**
      * renumberScenarios action
-     * @param array $args
-     * @param callable $write
+     * @param int $qid the question id
+     * @param callable $write write callback
      * @return void
      */
     public function renumberScenarios(int $qid, callable $write)
@@ -400,10 +418,10 @@ class SurveyCondition
 
     /**
      * Finds the condition ids by the question's id they belong to
-     * @param mixed $qid
+     * @param int $qid the question id
      * @return int[]
      */
-    public function getCidsOfQid($qid)
+    public function getCidsOfQid(int $qid)
     {
         $conditions = \Condition::model()->findAllByAttributes(["qid" => $qid]);
         $cids = [];
@@ -415,11 +433,12 @@ class SurveyCondition
 
     /**
      * copyConditions action
-     * @param array $args
+     * @param int[] $copyconditionsfrom an int array containing the condition ids to be copied
+     * @param string[] $copyconditionto the fieldnames where the conditions are to be copied to
      * @param callable $write
      * @return void
      */
-    public function copyConditions($copyconditionsfrom, $copyconditionsto, callable $write)
+    public function copyConditions(array $copyconditionsfrom, array $copyconditionsto, callable $write)
     {
         if (isset($copyconditionsto) && is_array($copyconditionsto) && isset($copyconditionsfrom) && is_array($copyconditionsfrom)) {
             //Get the conditions we are going to copy and quote them properly
@@ -496,8 +515,8 @@ class SurveyCondition
 
     /**
      * Determines whether the survey is anonymized
-     * @param int $iSurveyID
-     * @return bool
+     * @param int $iSurveyID the survey id
+     * @return bool whether the survey is anonymized
      */
     public function getSurveyIsAnonymized(int $iSurveyID = 0)
     {
@@ -507,17 +526,17 @@ class SurveyCondition
 
     /**
      * Returns question title and text based on qid
-     * @param mixed $qid
+     * @param int $qid
      * @return array
      */
-    protected function getQuestionTitleAndText($qid)
+    protected function getQuestionTitleAndText(int $qid)
     {
         $oQuestion = \Question::model()->findByPk($qid);
         return array($oQuestion->title, $oQuestion->questionl10ns[$this->language]->question);
     }
 
     /**
-     * @param int $qid
+     * Gets the question rows based on the value of the $iSurveyID data-member
      * @return array
      */
     protected function getQuestionRows()
@@ -535,11 +554,11 @@ class SurveyCondition
 
     /**
      * Gets a question list by question id and rows
-     * @param mixed $qid
-     * @param array $qrows
+     * @param int $qid the question id
+     * @param array $qrows the question rows
      * @return array
      */
-    protected function getQuestionList($qid, array $qrows)
+    protected function getQuestionList(int $qid, array $qrows)
     {
         $position = "before";
         $questionlist = array();
@@ -558,9 +577,9 @@ class SurveyCondition
 
     /**
      * Gets the post question list based on question id and question rows
-     * @param mixed $qid
-     * @param array $qrows
-     * @return array
+     * @param int $qid the question id
+     * @param array $qrows the question rows
+     * @return array the post question list
      */
     protected function getPostQuestionList($qid, array $qrows)
     {
@@ -977,14 +996,14 @@ class SurveyCondition
 
     /**
      * Gets question navigation options
-     * @param mixed $gid
-     * @param mixed $qid
-     * @param array $theserows
-     * @param array $postrows
-     * @param array $args
-     * @param callable $getPath
-     * @param callable $renderPartial
-     * @return string
+     * @param int $gid the group id
+     * @param int $qid the question id
+     * @param array $theserows question rows
+     * @param array $postrows question post rows
+     * @param array $args further arguments
+     * @param callable $getPath a callback to get a path, inherited from legacy code
+     * @param callable $renderPartial a callback for render partial, inherited from legacy code
+     * @return string the nav options
      */
     protected function getQuestionNavOptions($gid, $qid, array $theserows, array $postrows, array $args, callable $getPath, callable $renderPartial): string
     {
@@ -1060,13 +1079,13 @@ class SurveyCondition
 
     /**
      * Returns the quick add condition form for the group and question based on the received arguments
-     * @param mixed $gid
-     * @param mixed $qid
-     * @param array $args
-     * @param callable $renderPartial
-     * @return mixed
+     * @param int $gid the group id
+     * @param int $qid the question id
+     * @param array $args further arguments
+     * @param callable $renderPartial a renderPartial callback due to legacy reasons
+     * @return string the form's HTML
      */
-    protected function getQuickAddConditionForm($gid, $qid, array $args, callable $renderPartial)
+    protected function getQuickAddConditionForm(int $gid, int $qid, array $args, callable $renderPartial)
     {
         /** @var integer $iSurveyID */
         /** @var integer $gid */
@@ -1094,8 +1113,8 @@ class SurveyCondition
 
     /**
      * Returns the attribute name based on extracted token attributes
-     * @param mixed $extractedTokenAttr
-     * @return string
+     * @param array $extractedTokenAttr an array of extracted token attributes
+     * @return string returns the attribute name
      */
     protected function getAttributeName($extractedTokenAttr): string
     {
@@ -1116,10 +1135,10 @@ class SurveyCondition
 
     /**
      * Returns hidden fields for rows
-     * @param array $rows
-     * @param string $leftOperandType
-     * @param string $rightOperandType
-     * @return string
+     * @param array $rows an array of rows
+     * @param string $leftOperandType the type of the left-hand operand
+     * @param string $rightOperandType the type of the right-hand operand
+     * @return string the html
      */
     protected function getHiddenFields(array $rows, string $leftOperandType, string $rightOperandType): string
     {
@@ -1183,21 +1202,21 @@ class SurveyCondition
 
     /**
      * index action. This is a composite action, a legacy code from its original implementation that calls the action and displays the results
-     * @param mixed $args
-     * @param mixed $aData
-     * @param mixed $subaction
-     * @param mixed $method
-     * @param mixed $gid
-     * @param mixed $qid
-     * @param mixed $imageurl
-     * @param mixed $extraGetParams
-     * @param callable $addScript
-     * @param callable $getPath
-     * @param callable $myCreateUrl
-     * @param callable $renderPartial
-     * @param callable $getJavascriptForMatching
-     * @param callable $getCopyForm
-     * @param callable $getEditConditionForm
+     * @param array $args arguments
+     * @param array $aData data to be passed to template
+     * @param string $subaction the subaction to be executed
+     * @param string $method the method to be performed
+     * @param int $gid the group id
+     * @param int $qid the question id
+     * @param string $imageurl the image's url
+     * @param mixed $extraGetParams legacy parameter, I don't know what it represents
+     * @param callable $addScript add callback
+     * @param callable $getPath path getter callback
+     * @param callable $myCreateUrl url creator callback
+     * @param callable $renderPartial partial renderer callback
+     * @param callable $getJavascriptForMatching JS matcher callback
+     * @param callable $getCopyForm copy form getter callback
+     * @param callable $getEditConditionForm edit condition form getter callback
      * @return array
      */
     public function index($args, $aData, $subaction, $method, $gid, $qid, $imageurl, $extraGetParams, callable $addScript, callable $getPath, callable $myCreateUrl, callable $renderPartial, callable $getJavascriptForMatching, callable $getCopyForm, callable $getEditConditionForm)
@@ -1622,6 +1641,28 @@ class SurveyCondition
         // TMSW Condition->Relevance:  Must call LEM->ConvertConditionsToRelevance() whenever Condition is added or updated - what is best location for that action?
     }
 
+    /**
+     * Retreives scenarios and conditions of question
+     * @param int $qid the question id
+     * @return array generates an array of the format of
+     * [
+     *     {
+     *         "scid": 1,
+     *         "conditions": [
+     *             {
+     *                 "cid": 1,
+     *                 "qid": 2,
+     *                 "cqid": 1,
+     *                 "cfieldname": "the fieldname taken from the database",
+     *                 "method": "the method",
+     *                 "value": "the value",
+     *             },
+     *             //...
+     *         ]
+     *     }
+     *     //...
+     * ]
+     */
     public function getScenariosAndConditionsOfQuestion($qid)
     {
         $results = [];

@@ -34,6 +34,10 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
 
     protected $permissionMap = [];
 
+    /**
+     * Constructor
+     * @param \LimeSurvey\Models\Services\SurveyCondition $surveyCondition the survey condition service object
+     */
     public function __construct(
         SurveyCondition $surveyCondition
     ) {
@@ -41,17 +45,24 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         $this->surveyCondition = $surveyCondition;
     }
 
+    /**
+     * Detemines whether the action can be handled
+     * @param \LimeSurvey\ObjectPatch\Op\OpInterface $op the operation
+     * @return bool whether the action can be handled
+     */
     public function canHandle(OpInterface $op): bool
     {
         return $op->getEntityType() === $this->entity;
     }
 
-    public function transformAll($collection, $options = [])
-    {
-        return $collection;
-    }
-
-    public function message($message, $type = 'success')
+    /**
+     * Since the service class depends on an output functionality due to legacy reasons, we have here a message function that will be used as a callback
+     * @param string $message the actual message
+     * @param string $type the type of the message, such as success, warning or error
+     * @throws \Exception
+     * @return void
+     */
+    public function message(string $message, string $type = 'success')
     {
         //dummy method at this point, because we do not support success messages yet
         if ($type !== 'success') {
@@ -798,33 +809,63 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         }
     }
 
-    protected function validateRenumberScenarios($props)
+    /**
+     * Validates the renumberScenarios action
+     * @param array $props the properties received
+     * @return bool whether the action is valid
+     */
+    protected function validateRenumberScenarios(array $props)
     {
         return true;
     }
 
-    protected function validateCopyConditions($props)
+    /**
+     * Validates the copyConditions action
+     * @param array $props the properties received
+     * @return bool whether the action is valid
+     */
+    protected function validateCopyConditions(array $props)
     {
-        return intval($props['fromqid']);
+        return !!intval($props['fromqid']);
     }
 
-    protected function validateDeleteAllConditions($props)
+    /**
+     * Validates the deleteAllConditions action
+     * @param array $props the properties received
+     * @return bool whether the action is valid
+     */
+    protected function validateDeleteAllConditions(array $props)
     {
         //At this point we have already checked everything we needed
         return true;
     }
 
-    protected function validateDeleteScenario($scenario)
+    /**
+     * Validates the deleteScenario action
+     * @param array $scenario the scenario
+     * @return bool whether the action is valid
+     */
+    protected function validateDeleteScenario(array $scenario)
     {
         return true;
     }
 
-    protected function validateUpdateScenario($scenario)
+    /**
+     * Validates the updateScenario action
+     * @param array $scenario the scenario
+     * @return bool whether the action is valid
+     */
+    protected function validateUpdateScenario(array $scenario)
     {
-        return intval($scenario['scenarioNumber'] ?? 0);
+        return !!intval($scenario['scenarioNumber'] ?? 0);
     }
 
-    protected function validateInsertCondition($condition)
+    /**
+     * Validates the insertCondition action
+     * @param array $condition the condition
+     * @return bool whether the action is valid
+     */
+    protected function validateInsertCondition(array $condition)
     {
         return
         isset($condition['method']) &&
@@ -832,7 +873,12 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         isset($condition['editTargetTab']);
     }
 
-    protected function validateUpdateCondition($condition)
+    /**
+     * Validates the updateCondition action
+     * @param array $condition the condition
+     * @return bool whether the action is valid
+     */
+    protected function validateUpdateCondition(array $condition)
     {
         return
         intval($condition['cid'] ?? 0) &&
@@ -840,26 +886,45 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         isset($condition['editTargetTab']);
     }
 
-    protected function validateDeleteCondition($condition)
+    /**
+     * Validates the deleteCondition action
+     * @param array $condition the condition
+     * @return bool whether the action is valid
+     */
+    protected function validateDeleteCondition(array $condition)
     {
         return
-        intval($condition['cid'] ?? 0);
+        !!intval($condition['cid'] ?? 0);
     }
 
-    protected function validateDeleteAllConditionsOfSurvey($condition)
+    /**
+     * Validates the deleteAllConditionsOfSurvey action
+     * @param array $condition the condition
+     * @return bool whether the action is valid
+     */
+    protected function validateDeleteAllConditionsOfSurvey(array $condition)
     {
-        return intval($condition['sid']);
+        return !!intval($condition['sid']);
     }
 
-    protected function validateConditionScript($props)
+    /**
+     * Validates the conditionScript action
+     * @param array $props the properties
+     * @return bool whether the action is valid
+     */
+    protected function validateConditionScript(array $props)
     {
         return isset($props['script']);
     }
 
     /**
      * Checks if patch is valid for this operation.
-     * @param OpInterface $op
-     * @return array
+     * We support three kinds of patches:
+     * - general, where we do someting to all conditions related to a question or a survey
+     * - scenario-based, where we do actions for scenarios inside the scenarios array
+     * - condition-based, where we do actions for conditions in the condition arrays of the scenarios in the scenarios array
+     * @param OpInterface $op the operation
+     * @return array the validation responses
      */
     public function validateOperation(OpInterface $op): array
     {
