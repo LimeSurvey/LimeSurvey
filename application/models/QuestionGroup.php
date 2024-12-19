@@ -183,7 +183,7 @@ class QuestionGroup extends LSActiveRecord
         if ($surveyIsActive) {
             throw new BadRequestException(gt("Can't delete question group when the survey is active"));
         }
-
+        $surveyId = $QuestionGroup->sid;
         $questionIds = QuestionGroup::getQuestionIdsInGroup($groupId);
         Question::deleteAllById($questionIds);
         Assessment::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
