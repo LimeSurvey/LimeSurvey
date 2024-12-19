@@ -205,7 +205,7 @@ class SurveymenuEntries extends LSActiveRecord
             'changed_at' => gT('Modified on'),
             'changed_by' => gT('Modified by'),
             'created_at' => gT('Created on'),
-            'created_by' => gT('Created by'),
+            'created_by' => gT('Owner'),
             'buttons' => gT('Action'),
             'showincollapse' => gT('Show in collapse'),
         );
