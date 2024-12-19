@@ -2034,10 +2034,19 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
 // 2. answers
 
 /**
- * @param string $action
+ * @param string $action unused
+ * @param integer $iSurveyID the Survey ID of the question
+ * @param integer $gid the Group ID of the question
  */
 function group_export($action, $iSurveyID, $gid)
 {
+    $group = QuestionGroup::model()->find(
+        "sid = :sid AND gid = :gid",
+        [":sid" => $iSurveyID, ":gid" => $gid]
+    );
+    if (empty($group)) {
+        throw new CHttpException(404, gT("Invalid group id"));
+    }
     $fn = "limesurvey_group_$gid.lsg";
     $xml = getXMLWriter();
 
@@ -2179,10 +2188,20 @@ function groupGetXMLStructure($xml, $gid)
 //  - Question attributes
 //  - Default values
 /**
- * @param string $action
+ * @param string $action unused
+ * @param integer $iSurveyID the Survey ID of the question
+ * @param integer $gid the Group ID of the question
+ * @param integer $qid the Question ID of the question
  */
 function questionExport($action, $iSurveyID, $gid, $qid)
 {
+    $question = Question::model()->find(
+        "sid = :sid AND gid = :gid AND qid = :qid",
+        [":sid" => $iSurveyID, ":gid" => $gid, ":qid" => $qid]
+    );
+    if (empty($question)) {
+        throw new CHttpException(404, gT("Invalid question id"));
+    }
     $fn = "limesurvey_question_$qid.lsq";
     $xml = getXMLWriter();
 
