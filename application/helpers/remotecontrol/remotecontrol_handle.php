@@ -2822,17 +2822,24 @@ class remotecontrol_handle
 
             $aUserSurveys = $oSurvey->with(array('languagesettings' => array('condition' => 'surveyls_language=language'), 'owner'))->findAll();
             if (count($aUserSurveys) == 0) {
-                            return array('status' => 'No surveys found');
+                return array('status' => 'No surveys found');
             }
 
             foreach ($aUserSurveys as $oSurvey) {
                 $oSurveyLanguageSettings = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $oSurvey->primaryKey, 'surveyls_language' => $oSurvey->language));
                 if (!isset($oSurveyLanguageSettings)) {
-                                    $aSurveyTitle = '';
+                    $aSurveyTitle = '';
                 } else {
-                                    $aSurveyTitle = $oSurveyLanguageSettings->attributes['surveyls_title'];
+                    $aSurveyTitle = $oSurveyLanguageSettings->attributes['surveyls_title'];
                 }
-                $aData[] = array('sid' => $oSurvey->primaryKey, 'surveyls_title' => $aSurveyTitle, 'startdate' => $oSurvey->attributes['startdate'], 'expires' => $oSurvey->attributes['expires'], 'active' => $oSurvey->attributes['active']);
+                $aData[] = array(
+                    'sid' => $oSurvey->primaryKey,
+                    'gsid' => $oSurvey->gsid,
+                    'surveyls_title' => $aSurveyTitle,
+                    'startdate' => $oSurvey->attributes['startdate'],
+                    'expires' => $oSurvey->attributes['expires'],
+                    'active' => $oSurvey->attributes['active']
+                );
             }
             return $aData;
         } else {
