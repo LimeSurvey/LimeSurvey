@@ -334,8 +334,7 @@ class QuestionGroup extends LSActiveRecord
                 'data-bs-toggle' => "modal",
                 'data-bs-target' => '#confirmation-modal',
                 'data-message'   => gT(
-                    "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?",
-                    "js"
+                    "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
                 ),
                 'data-btnclass'  => 'btn-danger',
                 'data-btntext'   => gt('Delete'),
