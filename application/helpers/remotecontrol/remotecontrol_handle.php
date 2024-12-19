@@ -298,7 +298,7 @@ class remotecontrol_handle
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
         }
-        if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
+        if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
             return array(
                 'status' => 'Copy failed',
                 'error' => "You don't have sufficient permissions."
