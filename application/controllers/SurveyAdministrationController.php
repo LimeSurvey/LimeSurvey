@@ -2360,7 +2360,11 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         $this->aData = $aData;
-        $this->render('importSurvey_view', $this->aData);
+        if ((App()->getConfig("editorEnabled")) && isset(($aImportResults['newsid']))) {
+            $this->redirect(App()->createUrl("editorLink/index", ["route" => "survey/" . $aImportResults['newsid']]));
+        } else {
+            $this->render('importSurvey_view', $this->aData);
+        }
     }
 
 
