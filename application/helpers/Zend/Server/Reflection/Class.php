@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -15,7 +14,7 @@
  *
  * @category   Zend
  * @package    Zend_Server
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -33,9 +32,9 @@ require_once 'Zend/Server/Reflection/Method.php';
  * @category   Zend
  * @package    Zend_Server
  * @subpackage Reflection
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version $Id: Class.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version $Id$
  */
 class Zend_Server_Reflection_Class
 {
@@ -44,13 +43,13 @@ class Zend_Server_Reflection_Class
      * {@link __set()}
      * @var array
      */
-    protected $_config = array();
+    protected $_config = [];
 
     /**
      * Array of {@link Zend_Server_Reflection_Method}s
      * @var array
      */
-    protected $_methods = array();
+    protected $_methods = [];
 
     /**
      * Namespace
@@ -103,7 +102,7 @@ class Zend_Server_Reflection_Class
     public function __call($method, $args)
     {
         if (method_exists($this->_reflection, $method)) {
-            return call_user_func_array(array($this->_reflection, $method), $args);
+            return call_user_func_array([$this->_reflection, $method], $args);
         }
 
         require_once 'Zend/Server/Reflection/Exception.php';

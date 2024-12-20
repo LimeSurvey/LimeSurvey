@@ -95,7 +95,7 @@ abstract class Token extends Dynamic
             'emailstatus' => gT('Email status'),
             'token' => gT('Access code'),
             'language' => gT('Language code'),
-            'blacklisted' => gT('Blacklisted'),
+            'blacklisted' => gT('Blocklisted'),
             'sent' => gT('Invitation sent date'),
             'remindersent' => gT('Last reminder sent date'),
             'remindercount' => gT('Total numbers of sent reminders'),

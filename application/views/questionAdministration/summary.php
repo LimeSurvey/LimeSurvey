@@ -83,7 +83,7 @@
 
         <!-- Validation -->
         <?php if ($question->preg):?>
-            <tr >
+            <div class="row">
                 <div class="col-2">
                     <strong>
                         <?php eT("Validation:"); ?>

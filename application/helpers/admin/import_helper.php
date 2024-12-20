@@ -664,6 +664,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             // TODO: Should this depend on $options['translinkfields']?
             $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
             $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+            // @todo Should only be executed based on dbversion of the file, otherwise this and possible in new format could be imported at the same time
             $oQuestionL10n = new QuestionL10n();
             $oQuestionL10n->question = $insertdata['question'];
             $oQuestionL10n->help = $insertdata['help'];
@@ -859,7 +860,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']];
             } else {
-                continue; //Skip invalid group ID
+                continue; //Skip invalid question ID
             }
             $oQuestionL10n = new QuestionL10n();
             $oQuestionL10n->setAttributes($insertdata, false);
@@ -1063,7 +1064,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 * Function resp[onsible to import a labelset from XML format.
 * @param string $sFullFilePath
 * @param mixed $options
-* @return
+* @return array Array with count of imported labelsets, labels, warning, etc.
 */
 function XMLImportLabelsets($sFullFilePath, $options)
 {
@@ -1636,7 +1637,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             // #14646: fix utf8 encoding issue
             if (!mb_detect_encoding($insertdata['group_name'], 'UTF-8', true)) {
-                $insertdata['group_name'] = utf8_encode($insertdata['group_name']);
+                $insertdata['group_name'] = mb_convert_encoding($insertdata['group_name'], 'UTF-8', 'ISO-8859-1');
             }
             // Insert the new group
             $oQuestionGroupL10n = new QuestionGroupL10n();
@@ -2581,6 +2582,8 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
         libxml_disable_entity_loader(true);
     }
     if (Yii::app()->db->schema->getTable($survey->responsesTableName) !== null) {
+        // Refresh metadata to make sure it reflects the current survey
+        SurveyDynamic::model($iSurveyID)->refreshMetadata();
         $DestinationFields = Yii::app()->db->schema->getTable($survey->responsesTableName)->getColumnNames();
         while ($oXMLReader->read()) {
             if ($oXMLReader->name === 'LimeSurveyDocType' && $oXMLReader->nodeType == XMLReader::ELEMENT) {
@@ -2617,9 +2620,11 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                             }
                         }
                         try {
-                            $iNewID = SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData);
-                            if (!$iNewID) {
-                                throw new Exception("Error, no entry id was returned.", 1);
+                            SurveyDynamic::sid($iSurveyID);
+                            $response = new SurveyDynamic();
+                            $response->setAttributes($aInsertData, false);
+                            if (!$response->encryptSave()) {
+                                throw new Exception("Failed to save response data.");
                             }
                         } catch (Exception $e) {
                             throw new Exception(gT("Error") . ": Failed to insert data in response table<br />");

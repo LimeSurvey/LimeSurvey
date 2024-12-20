@@ -44,7 +44,7 @@ class PluginManagerController extends SurveyCommonAction
             $data[] = [
                 'id'          => $oPlugin->id,
                 'name'        => $oPlugin->name,
-                'load_error'  => $oPlugin->load_error,
+                'load_error'  => $oPlugin->getLoadError(),
                 'description' => '',
                 'active'      => $oPlugin->active,
                 'settings'    => []
@@ -72,7 +72,7 @@ class PluginManagerController extends SurveyCommonAction
         );
 
         $aData['topbar']['title'] = gT('Plugins');
-        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
 
         $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/pluginmanager/partial/topbarBtns/leftSideButtons',

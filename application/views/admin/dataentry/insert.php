@@ -1,4 +1,4 @@
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
 <div class="col-12 list-surveys">
     <div class="row">
         <div class="col-12 content-right">

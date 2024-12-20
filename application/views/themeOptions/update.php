@@ -1,48 +1,33 @@
 <?php
 /* @var ThemeOptionsController $this */
 /* @var TemplateConfiguration $model */
+/* @var array $aOptionAttributes */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
-    $actionBaseUrl = 'themeOptions/update/';
-    $actionUrlArray = ['id' => $model->id];
 
-    if ($model->sid) {
-        unset($actionUrlArray['id']);
-        $actionUrlArray['sid'] = $model->sid;
-        $actionUrlArray['surveyd'] = $model->sid;
-        $actionUrlArray['gsid'] = $model->gsid ?  $model->gsid : $gsid;
-        $actionBaseUrl = 'themeOptions/updateSurvey/';
-    }
-    if ($model->gsid) {
-        unset($actionUrlArray['id']);
-        $actionBaseUrl = 'themeOptions/updateSurveyGroup/';
-        $actionUrlArray['gsid'] = $model->gsid;
-        $actionUrlArray['id'] = $model->id;
-    }
-
-    $actionUrl = Yii::app()->getController()->createUrl($actionBaseUrl, $actionUrlArray);
 ?>
 <?php if (empty($model->sid)) : ?>
 <div class="">
 <?php else : ?>
-    <div class="col-12 side-body ls-settings-wrapper <?= getSideBodyClass(false) ?>" id="theme-option-sidebody">
+    <div class="col-12 side-body ls-settings-wrapper" id="theme-option-sidebody">
 <?php endif; ?>
 
     <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
     <div class="row">
         <div class="col-12">
             <!-- Nav tabs -->
-            <ul class="nav nav-tabs test" id="theme-options-tabs" role="tablist">
-                <?php if ($aOptionAttributes['optionsPage'] === 'core'): ?>
-                    <?php foreach ($aOptionAttributes['categories'] as $key => $category): ?>
+            <ul class="nav nav-tabs" id="theme-options-tabs" role="tablist">
+                <?php if ($aOptionAttributes['optionsPage'] === 'core') : ?>
+                    <?php foreach ($aOptionAttributes['categories'] as $key => $category) : ?>
                         <li role="presentation" class="nav-item">
-                            <button class="nav-link <?php echo $key == 0 ? 'active' : 'tab_action_hide_on_inherit'; ?>" data-bs-target="#category-<?php echo $key; ?>" aria-controls="category-<?php echo $key; ?>" role="tab" data-bs-toggle="tab" aria-selected="<?php echo $key == 0 ? 'true' : 'false'; ?>">
-                                <?php echo $category; ?>
+                            <button class="nav-link <?php echo $key == 0 ? 'active' : 'tab_action_hide_on_inherit'; ?>" data-bs-target="#category-<?php echo $key; ?>"
+                                    aria-controls="category-<?php echo $key; ?>" role="tab" data-bs-toggle="tab" aria-selected="<?php echo $key == 0 ? 'true' : 'false'; ?>">
+                                <?php eT($category); ?>  
                             </button>
                         </li>
                     <?php endforeach; ?>
-                <?php else: ?>
+                <?php else : ?>
                     <li role="presentation" class="nav-item">
                         <button class="nav-link active" data-bs-target="#simple" aria-controls="home" role="tab" data-bs-toggle="tab" aria-selected="true">
                             <?php eT('Simple options') ?>
@@ -117,7 +102,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                 <?php echo $form->hiddenField($model, 'uid'); ?>
 
                 <?php echo CHtml::hiddenField('optionInheritedValues', json_encode($optionInheritedValues)); ?>
-                <?php echo CHtml::hiddenField('optionCssFiles', json_encode($optionCssFiles)); ?>
+                <?php echo CHtml::hiddenField('optionCssFiles', $optionCssFiles); ?>
                 <?php echo CHtml::hiddenField('optionCssFramework', json_encode($optionCssFramework)); ?>
                 <?php echo CHtml::hiddenField('translationInheritedValue', gT("Inherited value:") . ' '); ?>
 
@@ -151,101 +136,3 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
     <input type='hidden' name='action' value='templateuploadimagefile'/>
     <?php echo TbHtml::endForm() ?>
 </div>
-
-<?php
-Yii::app()->getClientScript()->registerScript(
-    "themeoptions-scripts",
-    '
-
-        var bindUpload = function(options){
-            var $activeForm = $(options.form);
-            var $activeInput = $(options.input);
-            var $progressBar = $(options.progress);
-
-            var onSuccess = options.onSuccess || function(){};
-            var onBeforeSend = options.onBeforeSend || function(){};
-
-            var progressHandling = function(event){
-                var percent = 0;
-                var position = event.loaded || event.position;
-                var total = event.total;
-                if (event.lengthComputable) {
-                    percent = Math.ceil(position / total * 100);
-                }
-                // update progressbars classes so it fits your code
-                $progressBar.css("width", String(percent)+"%");
-                $progressBar.find(\'span.visually-hidden\').text(percent + "%");
-            };
-
-            $activeInput.on(\'change\', function(e){
-                e.preventDefault();
-                var formData = new FormData($activeForm[0]);
-                console.log(JSON.stringify(formData));
-                // add assoc key values, this will be posts values
-                formData.append("file", $activeInput.prop(\'files\')[0]);
-
-                $.ajax({
-                    type: "POST",
-                    url: $activeForm.attr(\'action\'),
-                    xhr: function () {
-                        var myXhr = $.ajaxSettings.xhr();
-                        if (myXhr.upload) {
-                            myXhr.upload.addEventListener(\'progress\', progressHandling, false);
-                        }
-                        return myXhr;
-                    },
-                    beforeSend : onBeforeSend,
-                    success: function (data) {
-                        console.log(data);
-                        if(data.success === true){
-                            LS.LsGlobalNotifier.createAlert(data.message,  "success", {showCloseButton: true});
-                            $progressBar.css("width", "0%");
-                            $progressBar.find(\'span.visually-hidden\').text(\'0%\');
-                            onSuccess();
-                        } else {
-                            LS.LsGlobalNotifier.createAlert(data.message,  "danger", {showCloseButton: true});
-                            $progressBar.css("width", "0%");
-                            $progressBar.find(\'span.visually-hidden\').text(\'0%\');
-                        }
-                    },
-                    error: function (error) {
-                        $progressBar.css("width", "0%");
-                        $progressBar.find(\'span.visually-hidden\').text(\'0%\');
-                        console.log(error);
-                    },
-                    async: true,
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    timeout: 60000
-                });
-            });
-            return this;
-        };
-
-        $(document).on(\'ready pjax:scriptcomplete\', function(){
-            var uploadImageBind = new bindUpload({
-                form: \'#uploadimage\',
-                input: \'#upload_image\',
-                progress: \'#upload_progress\'
-            });
-            $("#theme-options-tabs li a").click(function(e){
-                if ($(this).attr("href") == "#advanced"){
-                    $("#advanced").show();
-                    $("#simple").hide();
-                    $("[id^=category-]").hide();
-                } else {
-                    $("#advanced").hide();
-                    $("#simple").show();
-                    $("[id^=category-]").hide();
-                    $($(this).attr("href")).show();
-                }
-            });
-            
-
-        });
-    ',
-    LSYii_ClientScript::POS_END
-);
-?>

@@ -8,14 +8,11 @@ use Survey;
 use Permission;
 
 use LimeSurvey\DI;
-
 use ls\tests\TestBaseClass;
-
 use LimeSurvey\Models\Services\QuestionAggregateService\{
     SubQuestionsService,
     L10nService
 };
-
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException,
     BadRequestException,

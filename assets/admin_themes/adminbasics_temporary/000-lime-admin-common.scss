@@ -492,23 +492,6 @@ html {
     border-radius: 0;
 }
 
-.welcome {
-    #lime-logo {
-        animation: fadein 1s;
-    }
-
-    .recent-activity {
-        margin-top: 1.72rem;
-        font-size: 0.95rem;
-        padding-right: 3rem;
-        opacity: 0.7;
-    }
-}
-
-#welcomeModal {
-    z-index: 20000;
-}
-
 @media screen and (min-width: 1280px) and (max-width: 1366px) {
     #user-control-table .form-group label {
         min-width: 80px;
@@ -1827,25 +1810,6 @@ a.explorer-group:focus {
 
 .statisticstable {
     word-wrap: break-word;
-}
-
-.summary-container,
-.summary,
-#massive-action-container,
-#surveyListActions,
-.listActions {
-    margin : 0 0 20px;
-}
-
-.summary-container {
-    text-align: right;
-}
-
-#massive-action-container,
-#surveyListActions,
-.listActions {
-    padding-left: 0px;
-    text-align: left;
 }
 
 .push-grid-pager {

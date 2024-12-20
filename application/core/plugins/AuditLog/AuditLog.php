@@ -7,7 +7,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     protected static $description = 'Core: Create an audit log of changes';
     protected static $name = 'auditlog';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     protected $settings = array(

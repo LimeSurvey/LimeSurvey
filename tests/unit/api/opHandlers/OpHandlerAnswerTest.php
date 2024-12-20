@@ -6,6 +6,7 @@ use LimeSurvey\DI;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerAnswer;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
 use LimeSurvey\Models\Services\{
+    QuestionAggregateService,
     QuestionAggregateService\AnswersService,
     QuestionAggregateService\QuestionService
 };
@@ -117,9 +118,9 @@ class OpHandlerAnswerTest extends TestBaseClass
     private function getCorrectProps($operation = 'create'): array
     {
         $answer = [
-            'code'    => 'AO01',
+            'code' => 'AO01',
             'scaleId' => '0',
-            'l10ns'   => [
+            'l10ns' => [
                 'en' => [
                     'answer' => 'answer',
                     'language' => 'en'
@@ -140,8 +141,10 @@ class OpHandlerAnswerTest extends TestBaseClass
         ];
     }
 
-    private function getWrongProps($wrongIndex = false, $operation = 'create'): array
-    {
+    private function getWrongProps(
+        $wrongIndex = false,
+        $operation = 'create'
+    ): array {
         $props = $this->getCorrectProps($operation);
         if ($wrongIndex) {
             $props['alphabetic'] = $props[0];
@@ -162,10 +165,15 @@ class OpHandlerAnswerTest extends TestBaseClass
         $mockQuestionService = \Mockery::mock(
             QuestionService::class
         )->makePartial();
+        /** @var QuestionAggregateService */
+        $mockQuestionAggregateService = \Mockery::mock(
+            QuestionAggregateService::class
+        );
         return new OpHandlerAnswer(
             DI::getContainer()->get(TransformerInputAnswer::class),
             $mockAnswersService,
-            $mockQuestionService
+            $mockQuestionService,
+            $mockQuestionAggregateService
         );
     }
 }

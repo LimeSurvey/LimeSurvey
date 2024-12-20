@@ -5,24 +5,24 @@
         color            : $nav-tabs-link-active-color;
         border           : 0;
         border-radius    : 0;
-        border-top       : 2px solid $g-100;
+        border-top       : 2px solid $g-200;
         border-bottom    : 2px solid $g-400;
-        background-color : $g-100;
+        background-color : $g-200;
         padding          : 6px 20px;
         &:hover,
         &:focus {
-            border-top : 2px solid $g-100;
+            border-top : 2px solid $g-200;
         }
         &:hover:not(.active) {
             border-bottom : 2px solid $grape75;
-            border-top    : 2px solid $g-100;
+            border-top    : 2px solid $g-200;
             box-shadow    : inset 0 0 0 1px $grape75;
         }
         &.disabled,
         &:disabled {
             color            : $g-600;
             border-bottom    : 2px solid $g-400;
-            background-color : $g-100;
+            background-color : $g-200;
         }
     }
     .nav-link.active,

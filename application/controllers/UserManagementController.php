@@ -22,16 +22,29 @@ class UserManagementController extends LSBaseController
             array(
                 'allow',
                 'actions' => array(
-                    'index', 'addEditUser', 'applyEdit', 'addDummyUser',
-                    'runAddDummyUser', 'addRole', 'batchAddGroup', 'batchApplyRoles', 'batchPermissions',
+                    'index', 'addEditUser', 'applyEdit',
+                    'addRole', 'batchAddGroup', 'batchApplyRoles', 'batchPermissions',
                     'batchSendAndResetLoginData', 'deleteConfirm',  'deleteMultiple', 'exportUser', 'importUser',
-                    'renderSelectedItems', 'renderUserImport', 'runAddDummyUser', 'saveRole', 'saveThemePermissions',
+                    'renderSelectedItems', 'renderUserImport', 'saveRole', 'saveThemePermissions',
                     'takeOwnership', 'userPermissions', 'userTemplatePermissions', 'viewUser'
                 ),
                 'users' => array('@'), //only login users
             ),
             array('deny'),
         );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function filters()
+    {
+        return [
+            'postOnly + applyEdit, deleteUser, userActivateDeactivate,'
+            . ' batchStatus, saveUserPermissions, saveThemePermissions, saveRole, importUsers, deleteMultiple,'
+            . ' batchSendAndResetLoginData, batchPermissions, batchAddGroup, batchApplyRoles,'
+            . ' TakeOwnership'
+        ];
     }
 
     /**
@@ -69,7 +82,7 @@ class UserManagementController extends LSBaseController
 
 
         $aData['topbar']['title'] = gT('User management');
-        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
 
         //this is really important, so we have the aData also before rendering the content
@@ -138,7 +151,7 @@ class UserManagementController extends LSBaseController
             $aUser['full_name'] = flattenText($aUser['full_name'], false, true);
         }
 
-        $passwordTest = Yii::app()->request->getParam('password_repeat', false);
+        $passwordTest = Yii::app()->request->getParam('password_repeat', '');
 
         if (!empty($passwordTest)) {
             if ($passwordTest !== $aUser['password']) {
@@ -147,17 +160,11 @@ class UserManagementController extends LSBaseController
                     'errors' => gT('Passwords do not match'),
                 ]]);
             }
-
-            $oPasswordTestEvent = new PluginEvent('checkPasswordRequirement');
-            $oPasswordTestEvent->set('password', $passwordTest);
-            $oPasswordTestEvent->set('passwordOk', true);
-            $oPasswordTestEvent->set('passwordError', '');
-            Yii::app()->getPluginManager()->dispatchEvent($oPasswordTestEvent);
-
-            if (!$oPasswordTestEvent->get('passwordOk')) {
+            $user = new User();
+            if ($passwordError = $user->checkPasswordStrength($passwordTest)) {
                 return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                     'success' => false,
-                    'errors' => gT('Passwords does not fulfill minimum requirement:') . '<br/>' . $oPasswordTestEvent->get('passwordError'),
+                    'errors' => gT('Passwords does not fulfill minimum requirement:') . '<br/>' . $passwordError,
                 ]]);
             }
         }
@@ -187,7 +194,7 @@ class UserManagementController extends LSBaseController
                 return App()->getController()->renderPartial('/admin/super/_renderJson', [
                     "data" => [
                         'success' => false,
-                        'errors'  => $this->renderErrors($oUser->getErrors()) ?? ''
+                        'errors'  => CHtml::errorSummary($oUser)
                     ]
                 ]);
             }
@@ -220,67 +227,6 @@ class UserManagementController extends LSBaseController
             ]);
         }
     }
-
-    /**
-     * Opens the modal to add dummy users
-     *
-     * @throws CException
-     */
-    public function actionAddDummyUser()
-    {
-        return $this->renderPartial('partial/adddummyuser', []);
-    }
-
-    /**
-     * Creates a batch of dummy users
-     *
-     * @return string | JSON
-     * @throws CException
-     */
-    public function actionRunAddDummyUser()
-    {
-        if (!Permission::model()->hasGlobalPermission('users', 'create')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
-        }
-        if (!App()->request->isPostRequest) {
-            //it has to be post request when inserting data to DB
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("Access denied.")], 'noButton' => true]
-            );
-        }
-        $times = App()->request->getPost('times', 5);
-        $minPwLength = \LimeSurvey\Models\Services\PasswordManagement::MIN_PASSWORD_LENGTH;
-        $passwordSize = (int) App()->request->getPost('passwordsize', $minPwLength);
-        $prefix = flattenText(App()->request->getPost('prefix', 'randuser_'));
-        $email = App()->request->getPost('email', User::model()->findByPk(App()->user->id)->email);
-
-        $randomUsers = [];
-
-        for (; $times > 0; $times--) {
-            $name = $this->getRandomUsername($prefix);
-            $password = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword($passwordSize);
-            $oUser = new User();
-            $oUser->users_name = $name;
-            $oUser->full_name = $name;
-            $oUser->email = $email;
-            $oUser->parent_id = App()->user->id;
-            $oUser->created = date('Y-m-d H:i:s');
-            $oUser->modified = date('Y-m-d H:i:s');
-            $oUser->password = password_hash($password, PASSWORD_DEFAULT);
-            $save = $oUser->save();
-            $randomUsers[] = ['username' => $name, 'password' => $password, 'save' => $save];
-        }
-
-        return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
-            'success' => true,
-            'html' => $this->renderPartial('partial/createdrandoms', ['randomUsers' => $randomUsers, 'filename' => $prefix], true),
-        ]]);
-    }
-
 
     /**
      * Deletes a user after  confirmation
@@ -451,29 +397,33 @@ class UserManagementController extends LSBaseController
      */
     public function actionUserActivateDeactivate()
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
+        // See User_>getManagementButtons for permission
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $userId = sanitize_int(Yii::app()->request->getParam('userid'));
-        // One can never deactivate the superadmin. Button should already be disabled in JS.
-        if ($userId === 1) {
-            throw new CHttpException(403, gT("You do not have permission to access this page."));
-        }
         $action = Yii::app()->request->getParam('action');
         $oUser = User::model()->findByPk($userId);
 
         if ($oUser == null) {
             throw new CHttpException(404, gT("Invalid user ID"));
-        } else {
-            if ($oUser->setActivationStatus($action)) {
-                return $this->renderPartial('/admin/super/_renderJson', [
-                    'data' => [
-                        'success' => true,
-                        'message' => gT('Status successfully updated')
-                    ]
-                ]);
-            };
         }
+        if (Permission::model()->getUserId() == $userId) { // canEdit allow user to update himself
+            throw new CHttpException(403, gT("You can not update this user."));
+        }
+        if (!$oUser->canEdit()) {
+            throw new CHttpException(403, gT("You can not update this user."));
+        }
+
+        if ($oUser->setActivationStatus($action)) {
+            return $this->renderPartial('/admin/super/_renderJson', [
+                'data' => [
+                    'success' => true,
+                    'message' => gT('Status successfully updated')
+                ]
+            ]);
+        };
+        /* activationstatus is not OK */
         return $this->renderPartial('/admin/super/_renderJson', [
             'data' => [
                 'success' => false
@@ -521,13 +471,16 @@ class UserManagementController extends LSBaseController
 
     /**
      * Activate / deactivate user
-     *
+     * @todo : move this to a private function !!!
      * @param array $userIds
      * @param string $operation activate or deactivate
      * @return array
      */
     public function userActivation($userIds, $operation)
     {
+        if (!App()->getRequest()->getIsPostRequest()) {
+            throw new CHttpException(400, gT('Your request is invalid.'));
+        }
         $results = [];
         foreach ($userIds as $iUserId) {
             $oUser = User::model()->findByPk($iUserId);
@@ -609,7 +562,18 @@ class UserManagementController extends LSBaseController
             return $oUGMap->group->name;
         }, UserInGroup::model()->findAllByAttributes(['uid' => $oUser->uid]));
 
-        return $this->renderPartial('partial/showuser', ['usergroups' => $userGroups, 'oUser' => $oUser]);
+        if (App()->getRequest()->getIsAjaxRequest()) {
+            return $this->renderPartial('partial/showuser', [
+                'usergroups' => $userGroups,
+                'oUser' => $oUser,
+                'ajax' => true
+            ]);
+        }
+        return $this->render('partial/showuser', [
+            'usergroups' => $userGroups,
+            'oUser' => $oUser,
+            'ajax' => false
+        ]);
     }
 
     /**
@@ -1399,6 +1363,7 @@ class UserManagementController extends LSBaseController
 
     /**
      * Deletes a user
+     * @todo : move to a private function
      *
      * @param int $uid
      * @return boolean
@@ -1406,6 +1371,9 @@ class UserManagementController extends LSBaseController
      */
     public function deleteUser(int $uid): bool
     {
+        if (!App()->getRequest()->getIsPostRequest()) {
+            throw new CHttpException(400, gT('Your request is invalid.'));
+        }
         $permission_users_delete = Permission::model()->hasGlobalPermission('users', 'delete');
         $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
         if (!$permission_users_delete) {
@@ -1461,6 +1429,7 @@ class UserManagementController extends LSBaseController
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
+     * Why not a private function here ?
      *
      * @param int $id the ID of the model to be loaded
      *
@@ -1480,6 +1449,7 @@ class UserManagementController extends LSBaseController
 
     /**
      * Update admin-user
+     * @todo : move to and private function, but need review unit test before.
      *
      * @param array $aUser array with user details
      * @return object user - updated user object
@@ -1487,6 +1457,12 @@ class UserManagementController extends LSBaseController
      */
     public function updateAdminUser(array $aUser): User
     {
+        if (
+            !App()->getRequest()->getIsPostRequest()
+            && !(defined('PHP_ENV') && PHP_ENV == 'test') // For unit test
+        ) {
+            throw new CHttpException(400, gT('Your request is invalid.'));
+        }
         $oUser = $this->loadModel($aUser['uid']);
         // Abort if logged in user has no access to this user.
         // Using same logic as User::getButtons().
@@ -1561,6 +1537,7 @@ class UserManagementController extends LSBaseController
 
     /**
      * Create new user
+     * @todo : move to private function
      *
      * @param array $aUser array with user details
      * @return array returns all attributes from model user as an array
@@ -1568,6 +1545,9 @@ class UserManagementController extends LSBaseController
      */
     public function createNewUser(array $aUser): array
     {
+        if (!App()->getRequest()->getIsPostRequest()) {
+            throw new CHttpException(400, gT('Your request is invalid.'));
+        }
         if (!Permission::model()->hasGlobalPermission('users', 'create')) {
             return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
                 "data" => [

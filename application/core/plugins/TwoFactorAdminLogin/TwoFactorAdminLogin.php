@@ -117,7 +117,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
     /**
      * Event direct happen
      * Usage : index --target=value [--function=] [--option=]
-     * @return @void
+     * @return void
      */
     public function direct()
     {

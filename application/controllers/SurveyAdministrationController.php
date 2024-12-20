@@ -217,9 +217,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['surveyActivationFeedback'] = $surveyActivationFeedback;
 
         $this->aData = $aData;
-        $this->render('sidebody', [
-            'sideMenuOpen' => true
-        ]);
+        $this->render('sidebody');
     }
 
     /**
@@ -239,7 +237,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['model'] = new Survey('search');
         $aData['groupModel'] = new SurveysGroups('search');
         $aData['topbar']['title'] = gT('Survey list');
-        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
 
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
 
@@ -976,7 +974,7 @@ class SurveyAdministrationController extends LSBaseController
                                         ]
                                     )
                                 ) . '})',
-                                'dataMessage' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js")
+                                'dataMessage' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", 'unescaped')
                             ];
                         } else {
                             $curGroup['groupDropdown']['delete'] =
@@ -986,7 +984,7 @@ class SurveyAdministrationController extends LSBaseController
                                 'icon' => 'ri-delete-bin-fill text-danger',
                                 'dataTitle' => gt('Delete group'),
                                 'disabled' => true,
-                                'title' => gt("Impossible to delete this group because there is at least one question having a condition on its content")
+                                'title' => gt("Impossible to delete this group because there is at least one question having a condition on its content", 'unescaped')
                             ];
                         }
                     } else {
@@ -997,7 +995,7 @@ class SurveyAdministrationController extends LSBaseController
                             'icon' => 'ri-delete-bin-fill text-danger',
                             'dataTitle' => gt('Delete group'),
                             'disabled' => true,
-                            'title' => gt("It is not possible to add/delete groups if the survey is active.")
+                            'title' => gt("It is not possible to add/delete groups if the survey is active.", 'unescaped')
                         ];
                     }
                 }
@@ -1093,7 +1091,7 @@ class SurveyAdministrationController extends LSBaseController
                                     'dataTitle' => gt('Delete this question'),
                                     'dataBtnText' => gt('Delete'),
                                     'dataOnclick' => '(function() { ' .  convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $question->qid, "redirectTo" => "groupoverview"])) . '})',
-                                    'dataMessage' => gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?")
+                                    'dataMessage' => gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?", 'unescaped')
                                 ];
                         } else {
                             $curQuestion['questionDropdown']['delete'] =
@@ -1103,7 +1101,7 @@ class SurveyAdministrationController extends LSBaseController
                                 'icon' => 'ri-delete-bin-fill text-danger',
                                 'dataTitle' => gt('Delete this question'),
                                 'disabled' => true,
-                                'title' => gt("You can not delete a question if the survey is active."),
+                                'title' => gt("You can not delete a question if the survey is active.", 'unescaped'),
                             ];
                         }
 
@@ -1587,156 +1585,58 @@ class SurveyAdministrationController extends LSBaseController
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $surveyDeactivate = $diContainer->get(
+            LimeSurvey\Models\Services\SurveyDeactivate::class
+        );
 
-        $survey = Survey::model()->findByPk($iSurveyID);
-        $datestamp = time();
-        $date = date('YmdHis', $datestamp); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
-        $DBDate = date('Y-m-d H:i:s', $datestamp);
-        $userID = Yii::app()->user->getId();
         $aData = array();
 
+        $datestamp = time();
+        $date = date('YmdHis', $datestamp); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
+        $survey = Survey::model()->findByPk($iSurveyID);
         $aData['aSurveysettings'] = getSurveyInfo($iSurveyID);
         $aData['surveyid'] = $iSurveyID;
         $aData['sid'] = $iSurveyID;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $aData['topBar']['hide'] = true;
+        $ok = Yii::app()->request->getPost('ok');
 
-        // Fire event beforeSurveyDeactivate
-        $beforeSurveyDeactivate = new PluginEvent('beforeSurveyDeactivate');
-        $beforeSurveyDeactivate->set('surveyId', $iSurveyID);
-        App()->getPluginManager()->dispatchEvent($beforeSurveyDeactivate);
-        $success = $beforeSurveyDeactivate->get('success');
-        $message = $beforeSurveyDeactivate->get('message');
-        if (!empty($message)) {
-            Yii::app()->user->setFlash('error', $message);
-        }
-        if ($success === false) {
-            // @todo: What if two plugins change this?
-            $aData['nostep'] = true;
-            $this->aData = $aData;
-        } else {
-            if (!tableExists('survey_' . $iSurveyID)) {
-                $_SESSION['flashmessage'] = gT("Error: Response table does not exist. Survey cannot be deactivated.");
-                $this->redirect($this->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
-            }
-            if (Yii::app()->request->getPost('ok') == '') {
-                if (!empty(Yii::app()->session->get('sNewSurveyTableName'))) {
-                    Yii::app()->session->remove('sNewSurveyTableName');
-                }
-
-                Yii::app()->session->add('sNewSurveyTableName', Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}");
-                $aData['surveyid'] = $iSurveyID;
-                $aData['date'] = $date;
-                $aData['dbprefix'] = Yii::app()->db->tablePrefix;
-                $aData['sNewSurveyTableName'] = Yii::app()->session->get('sNewSurveyTableName');
-                $aData['step1'] = true;
-            } else {
-                //See if there is a tokens table for this survey
-                if (tableExists("{{tokens_{$iSurveyID}}}")) {
-                    $toldtable = Yii::app()->db->tablePrefix . "tokens_{$iSurveyID}";
-                    $tnewtable = Yii::app()->db->tablePrefix . "old_tokens_{$iSurveyID}_{$date}";
-                    if (Yii::app()->db->getDriverName() == 'pgsql') {
-                        // Find out the trigger name for tid column
-                        $tidDefault = Yii::app()->db->createCommand("SELECT pg_get_expr(adbin, adrelid) as adsrc FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$toldtable' and pg_attribute.attname='tid'")->queryScalar();
-                        if (preg_match("/nextval\('(tokens_\d+_tid_seq\d*)'::regclass\)/", (string) $tidDefault, $matches)) {
-                            $oldSeq = $matches[1];
-                            Yii::app()->db->createCommand()->renameTable($oldSeq, $tnewtable . '_tid_seq');
-                            $setsequence = "ALTER TABLE " . Yii::app()->db->quoteTableName($toldtable) . " ALTER COLUMN tid SET DEFAULT nextval('{$tnewtable}_tid_seq'::regclass);";
-                            Yii::app()->db->createCommand($setsequence)->query();
-                        }
-                    }
-
-                    Yii::app()->db->createCommand()->renameTable($toldtable, $tnewtable);
-
-                    $archivedTokenSettings = new ArchivedTableSettings();
-                    $archivedTokenSettings->survey_id = $iSurveyID;
-                    $archivedTokenSettings->user_id = $userID;
-                    $archivedTokenSettings->tbl_name = "old_tokens_{$iSurveyID}_{$date}";
-                    $archivedTokenSettings->tbl_type = 'token';
-                    $archivedTokenSettings->created = $DBDate;
-                    $archivedTokenSettings->properties = $aData['aSurveysettings']['tokenencryptionoptions'];
-                    $archivedTokenSettings->attributes = json_encode($aData['aSurveysettings']['attributedescriptions']);
-                    $archivedTokenSettings->save();
-
-                    $aData['tnewtable'] = $tnewtable;
-                    $aData['toldtable'] = $toldtable;
-                }
-                // Reset the session of the survey when deactivating it
-                killSurveySession($iSurveyID);
-                //Remove any survey_links to the CPDB
-                SurveyLink::model()->deleteLinksBySurvey($iSurveyID);
-
-
-                // IF there are any records in the saved_control table related to this survey, they have to be deleted
-                SavedControl::model()->deleteSomeRecords(array('sid' => $iSurveyID)); //Yii::app()->db->createCommand($query)->query();
-                $sOldSurveyTableName = Yii::app()->db->tablePrefix . "survey_{$iSurveyID}";
-                $sNewSurveyTableName = Yii::app()->session->get('sNewSurveyTableName');
-                $aData['sNewSurveyTableName'] = $sNewSurveyTableName;
-
-                $query = "SELECT id FROM " . Yii::app()->db->quoteTableName($sOldSurveyTableName) . " ORDER BY id desc";
-                $sLastID = Yii::app()->db->createCommand($query)->limit(1)->queryScalar();
-                //Update the autonumber_start in the survey properties
-                $new_autonumber_start = $sLastID + 1;
-                $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
-                $survey->autonumber_start = $new_autonumber_start;
-                $survey->save();
-                if (Yii::app()->db->getDriverName() == 'pgsql') {
-                    $idDefault = Yii::app()->db->createCommand("SELECT pg_get_expr(pg_attrdef.adbin, pg_attrdef.adrelid) FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$sOldSurveyTableName' and pg_attribute.attname='id'")->queryScalar();
-                    if (preg_match("/nextval\('(survey_\d+_id_seq\d*)'::regclass\)/", (string) $idDefault, $matches)) {
-                        $oldSeq = $matches[1];
-                        Yii::app()->db->createCommand()->renameTable($oldSeq, $sNewSurveyTableName . '_id_seq');
-                        $setsequence = "ALTER TABLE " . Yii::app()->db->quoteTableName($sOldSurveyTableName) . " ALTER COLUMN id SET DEFAULT nextval('{{{$sNewSurveyTableName}}}_id_seq'::regclass);";
-                        Yii::app()->db->createCommand($setsequence)->query();
-                    }
-                }
-
-                Yii::app()->db->createCommand()->renameTable($sOldSurveyTableName, $sNewSurveyTableName);
-
-                $archivedTokenSettings = new ArchivedTableSettings();
-                $archivedTokenSettings->survey_id = $iSurveyID;
-                $archivedTokenSettings->user_id = $userID;
-                $archivedTokenSettings->tbl_name = "old_survey_{$iSurveyID}_{$date}";
-                $archivedTokenSettings->tbl_type = 'response';
-                $archivedTokenSettings->created = $DBDate;
-                $archivedTokenSettings->properties = json_encode(Response::getEncryptedAttributes($iSurveyID));
-                $archivedTokenSettings->save();
-
-                // Load the active record again, as there have been sporadic errors with the dataset not being updated
-                $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
-                $survey->scenario = 'activationStateChange';
-                $survey->active = 'N';
-                $survey->save();
-
-                $prow = Survey::model()->find('sid = :sid', array(':sid' => $iSurveyID));
-                if ($prow->savetimings == "Y") {
-                    $sOldTimingsTableName = Yii::app()->db->tablePrefix . "survey_{$iSurveyID}_timings";
-                    $sNewTimingsTableName = Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_timings_{$date}";
-                    Yii::app()->db->createCommand()->renameTable($sOldTimingsTableName, $sNewTimingsTableName);
-                    $aData['sNewTimingsTableName'] = $sNewTimingsTableName;
-                }
-
-                $archivedTokenSettings = new ArchivedTableSettings();
-                $archivedTokenSettings->survey_id = $iSurveyID;
-                $archivedTokenSettings->user_id = $userID;
-                $archivedTokenSettings->tbl_name = "old_survey_{$iSurveyID}_timings_{$date}";
-                $archivedTokenSettings->tbl_type = 'timings';
-                $archivedTokenSettings->created = $DBDate;
-                $archivedTokenSettings->properties = '';
-                $archivedTokenSettings->save();
-
-                $event = new PluginEvent('afterSurveyDeactivate');
-                $event->set('surveyId', $iSurveyID);
-                App()->getPluginManager()->dispatchEvent($event);
-
-                $aData['surveyid'] = $iSurveyID;
-                Yii::app()->db->schema->refresh();
-
-                //after deactivation redirect to survey overview and show message...
-                //$this->redirect(['surveyAdministration/view', 'surveyid' => $iSurveyID]);
+        if ($ok == '') {
+            if (!empty(Yii::app()->session->get('sNewSurveyTableName'))) {
                 Yii::app()->session->remove('sNewSurveyTableName');
             }
 
-            $aData['sidemenu']['state'] = false;
+            Yii::app()->session->add('sNewSurveyTableName', Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}");
+            $aData['date'] = $date;
+            $aData['dbprefix'] = Yii::app()->db->tablePrefix;
+            $aData['sNewSurveyTableName'] = Yii::app()->session->get('sNewSurveyTableName');
+            $aData['step1'] = true;
+        } else {
+            try {
+                $result = $surveyDeactivate->deactivate($iSurveyID, ['ok' => $ok]);
+            } catch (Exception $e) {
+                App()->user->setFlash('error', $e->getMessage());
+            }
+
+            if (!empty($result["beforeDeactivate"]["message"])) {
+                Yii::app()->user->setFlash('error', $result["beforeDeactivate"]["message"]);
+            }
+            if ($result["beforeDeactivate"]["message"] === false) {
+                // @todo: What if two plugins change this?
+                $aData = [];
+                $aData['nostep'] = true;
+                $this->aData = $aData;
+            } else {
+                if (!$result["surveyTableExists"]) {
+                    $_SESSION['flashmessage'] = gT("Error: Response table does not exist. Survey cannot be deactivated.");
+                    $this->redirect($this->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
+                }
+
+                $aData = $result['aData'];
+
+                $aData['sidemenu']['state'] = false;
+            }
         }
 
         $this->aData = $aData;
@@ -1761,6 +1661,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $success = false;
         if (($surveyId > 0) && ($questionId > 0)) {
+            App()->loadHelper('admin/activate');
             fixNumbering($questionId, $surveyId);
             $success = true;
         }
@@ -1857,68 +1758,58 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionActivate()
     {
-        $surveyId = (int) Yii::app()->request->getPost('surveyId');
+        $surveyId = (int) App()->request->getPost('surveyId');
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveyactivation', 'update')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $surveyActivate = $diContainer->get(
+            LimeSurvey\Models\Services\SurveyActivate::class
+        );
 
-        $survey = Survey::model()->findByPk($surveyId);
-        $surveyActivator = new SurveyActivator($survey);
-        $aData['oSurvey'] = $survey;
-        $aData['sidemenu']['state'] = false;
-        $aData['aSurveysettings'] = getSurveyInfo($surveyId);
-        $aData['surveyid'] = $surveyId;
-
-        $openAccessMode = Yii::app()->request->getPost('openAccessMode', null);
-
-        if (!is_null($survey)) {
-            $survey->anonymized = Yii::app()->request->getPost('anonymized');
-            $survey->datestamp = Yii::app()->request->getPost('datestamp');
-            $survey->ipaddr = Yii::app()->request->getPost('ipaddr');
-            $survey->ipanonymize = Yii::app()->request->getPost('ipanonymize');
-            $survey->refurl = Yii::app()->request->getPost('refurl');
-            $survey->savetimings = Yii::app()->request->getPost('savetimings');
-            $survey->save();
-
-            // Make sure the saved values will be picked up
-            Survey::model()->resetCache();
-            $survey->setOptions();
+        try {
+            $result = $surveyActivate->activate($surveyId);
+        } catch (Exception $e) {
+            App()->user->setFlash('error', $e->getMessage());
         }
 
-        $aResult = $surveyActivator->activate();
+
+
+        ######### OLD #########
         if (
-            (isset($aResult['error']) && $aResult['error'] == 'plugin')
-            || (isset($aResult['blockFeedback']) && $aResult['blockFeedback'])
+            (isset($result['error']) && $result['error'] == 'plugin')
+            || (isset($result['blockFeedback']) && $result['blockFeedback'])
         ) {
             // Got false from plugin, redirect to survey front-page
-            $this->redirect(array('surveyAdministration/view', 'surveyid' => $surveyId));
-        } elseif (isset($aResult['pluginFeedback'])) {
+            $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
+        } elseif (isset($result['pluginFeedback'])) {
             // Special feedback from plugin should be given to user
             //todo: what should be done here ...
-            $this->render('surveyActivation/_activation_feedback', $aResult);
-        } elseif (isset($aResult['error'])) {
-            $data['result'] = $aResult;
+            $this->render('surveyActivation/_activation_feedback', $result);
+        } elseif (isset($result['error'])) {
+            $data['result'] = $result;
             //$this->aData = $aData;
             //todo: what should be done here ...
             $this->render('surveyActivation/_activation_error', $data);
         } else {
-            $warning = (isset($aResult['warning'])) ? true : false;
-            $allowregister = $survey->isAllowRegister; //todo: where to ask for this one here
+            $warning = (isset($result['warning'])) ? true : false;
+            $allowregister = $result['isAllowRegister']; //todo: where to ask for this one here
 
+            $openAccessMode = Yii::app()->request->getPost('openAccessMode', null);
             if ($openAccessMode !== null) {
                 switch ($openAccessMode) {
                     case 'Y': //show a modal or give feedback on another page
                         $this->redirect([
                             '/surveyAdministration/view/',
-                            'surveyid' => $surveyId,
+                            'surveyid'                 => $surveyId,
                             'surveyActivationFeedback' => 'surveyActivationFeedback'
                         ]);
                         break;
                     case 'N': //check if token table exists or 'allowRegister' set to true
                         $this->redirect([
                             '/admin/tokens/sa/index/',
-                            'surveyid' => $surveyId,
+                            'surveyid'                 => $surveyId,
                             'surveyActivationFeedback' => 'surveyActivationFeedback'
                         ]);
                         break;
@@ -1926,13 +1817,13 @@ class SurveyAdministrationController extends LSBaseController
                 }
             }
 
-            $activationData = array(
-                'iSurveyID'           => $surveyId,
-                'survey'              => $survey,
-                'warning'             => $warning,
-                'allowregister'       => $allowregister,
-            );
-            $this->aData = $aData;
+            $activationData = [
+                'iSurveyID'     => $surveyId,
+                'survey'        => $result['oSurvey'],
+                'warning'       => $warning,
+                'allowregister' => $allowregister,
+            ];
+            $this->aData = $result;
             $this->render('surveyActivation/_activation_feedback', $activationData);
         }
     }
@@ -1966,7 +1857,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin', 'read');
             Survey::model()->deleteSurvey($iSurveyID);
             Yii::app()->session['flashmessage'] = gT("Survey deleted.");
-            $this->redirect(array("admin/index"));
+            $this->redirect(array("dashboard/view"));
         }
 
         $this->aData = $aData;
@@ -2387,7 +2278,7 @@ class SurveyAdministrationController extends LSBaseController
             } elseif ($action == 'copysurvey' && !$aData['bFailed']) {
                 $copyResources = Yii::app()->request->getPost('copysurveytranslinksfields') == '1';
                 $translateLinks = $copyResources;
-                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, sanitize_int(App()->request->getParam('copysurveyid')), $translateLinks);
+                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, sanitize_int(App()->request->getParam('copysurveyid'), '1', '999999'), $translateLinks);
                 if (isset($aExcludes['conditions'])) {
                     Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $aImportResults['newsid']);
                     QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $aImportResults['newsid']);
@@ -2891,8 +2782,8 @@ class SurveyAdministrationController extends LSBaseController
         $oQuestion->question_order = 1;
         $oQuestion->save();
         $oQuestionLS = new QuestionL10n();
-        $oQuestionLS->question = gT('A first example question. Please answer this question:', 'html', $sLanguage);
-        $oQuestionLS->help = gT('This is a question help text.', 'html', $sLanguage);
+        $oQuestionLS->question = '';
+        $oQuestionLS->help = '';
         $oQuestionLS->language = $sLanguage;
         $oQuestionLS->qid = $oQuestion->qid;
         $oQuestionLS->save();
@@ -3498,5 +3389,49 @@ class SurveyAdministrationController extends LSBaseController
             Yii::app()->user->setFlash('error', gT("Could not delete URL parameter"));
         }
         $this->redirect($redirectUrl);
+    }
+
+    /**
+     * Retrieves and renders a list of surveys with optional active status filter for the box widget Ajax.
+     *
+     * @return string|false Rendered partial view if surveys are found, otherwise false.
+     * @throws CException
+     */
+    public function actionBoxList()
+    {
+        $limit = (int)App()->request->getQuery('limit');
+        $page = (int)App()->request->getQuery('page');
+
+        $model = Survey::model();
+        if ($state = App()->request->getQuery('active')) {
+            $model->active = $state;
+            $surveys = $model
+                ->search(['pageSize' => $limit, 'currentPage' => $page]);
+        } else {
+            $surveys = $model
+                ->search(['pageSize' => $limit, 'currentPage' => $page]);
+        }
+
+
+        $boxes = [];
+        foreach ($surveys->getData() as $survey) {
+            $state = strip_tags($survey->getRunning());
+            $boxes[] = [
+                'survey' => $survey,
+                'type' => 0,
+                'external' => false,
+                'iconAlter' => $state,
+                'state' => $survey->getState(),
+                'buttons' => $survey->getButtons(),
+                'link' => App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid . '?allowRedirect=1'),
+            ];
+        }
+
+        return $this->renderPartial(
+            'ext.admin.BoxesWidget.views.box',
+            array(
+                'items' => $boxes
+            )
+        );
     }
 }

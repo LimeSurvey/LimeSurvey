@@ -4,7 +4,7 @@ App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 
 App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'organize.css');
 ?>
 
-<div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(true); ?>'>
+<div id='edit-survey-text-element' class='side-body'>
     <div class='row'>
         <div class='col-md-8'>
             <?php

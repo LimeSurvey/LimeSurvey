@@ -57,7 +57,8 @@
 		"league/oauth2-google": "^3.0",
 		"goldspecdigital/oooas": "^2.10",
 		"php-di/php-di": "6.4.0",
-		"doctrine/annotations": "~1.10"
+		"doctrine/annotations": "~1.10",
+		"anper/iuliia": "^1.2"
 	},
     "config": {
         "vendor-dir": "vendor",
@@ -77,6 +78,7 @@
 		"mockery/mockery": "^1.5"
     },
     "scripts": {
+		"phpcs": "phpcs --standard=phpcs.ruleset.xml",
 		"openapi": [
 			"php ./open-api-gen.php v1"
 		],

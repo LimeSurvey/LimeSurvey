@@ -8,7 +8,7 @@ class ExportR extends \LimeSurvey\PluginManager\PluginBase
     protected static $description = 'Core: R-export';
     protected static $name = 'Export results to R';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     public function init()
@@ -55,8 +55,8 @@ class ExportR extends \LimeSurvey\PluginManager\PluginBase
         $exports = $event->get('exportplugins');
         
         // Yes we overwrite existing classes if available
-        $exports['rsyntax'] = get_class();
-        $exports['rdata'] = get_class();
+        $exports['rsyntax'] = get_class($this);
+        $exports['rdata'] = get_class($this);
         $event->set('exportplugins', $exports);
     }
     

@@ -37,7 +37,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
     ?>
 </div>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <!-- Display mode -->
     <form action="<?= App()->createUrl('/responses/browse/', ['surveyId' => $surveyid]) ?>" class="pjax text-end" method="POST"
           id="change-display-mode-form">

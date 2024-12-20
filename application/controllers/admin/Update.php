@@ -655,7 +655,7 @@ class Update extends DynamicSurveyCommonAction
      * This function convert the huge updateinfos array to a base64 string, so it can be parsed to the view to be inserted in an hidden input element.
      *
      * @param array $updateinfos the udpadte infos array returned by the update server
-     * @return $string
+     * @return string
      */
     private function parseToView($updateinfos)
     {

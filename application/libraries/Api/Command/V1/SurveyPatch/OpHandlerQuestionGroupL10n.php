@@ -4,13 +4,16 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use DI\DependencyException;
 use DI\NotFoundException;
-use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerExceptionTrait,
+use LimeSurvey\Models\Services\{
+    Exception\PermissionDeniedException,
+    QuestionGroupService
+};
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerExceptionTrait,
     OpHandlerSurveyTrait,
     OpHandlerValidationTrait};
 use QuestionGroupL10n;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupL10ns;
-use LimeSurvey\Models\Services\QuestionGroupService;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpType\OpTypeUpdate,
@@ -81,8 +84,10 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
         $questionGroupService = $diContainer->get(
             QuestionGroupService::class
         );
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $questionGroupService->checkUpdatePermission($surveyId);
         $questionGroup = $questionGroupService->getQuestionGroupForUpdate(
-            $this->getSurveyIdFromContext($op),
+            $surveyId,
             $op->getEntityId()
         );
         $transformedProps = $this->transformer->transformAll(
@@ -105,7 +110,8 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->validateCollectionIndex($op, []);
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateCollectionIndex($op, $validationData);
         $validationData = $this->validateEntityId($op, $validationData);
         if (empty($validationData)) {
             $validationData = $this->transformer->validateAll(

@@ -105,18 +105,7 @@ class QuestionGroupService
      */
     public function getQuestionGroupForUpdate(int $surveyId, int $questionGroupId)
     {
-        if (
-            !$this->modelPermission->hasSurveyPermission(
-                $surveyId,
-                'surveycontent',
-                'update'
-            )
-        ) {
-            throw new PermissionDeniedException(
-                'Permission denied'
-            );
-        }
-
+        $this->checkUpdatePermission($surveyId);
         $questionGroup = $this->modelQuestionGroup->findByPk($questionGroupId);
         if (!$questionGroup) {
             throw new NotFoundException(
@@ -151,17 +140,7 @@ class QuestionGroupService
      */
     public function createGroup(int $surveyId, array $input)
     {
-        if (
-            !$this->modelPermission->hasSurveyPermission(
-                $surveyId,
-                'surveycontent',
-                'update'
-            )
-        ) {
-            throw new PermissionDeniedException(
-                'Permission denied'
-            );
-        }
+        $this->checkCreatePermission($surveyId);
         $questionGroup = $this->newQuestionGroup(
             $surveyId,
             $input['questionGroup'] ?? []
@@ -184,20 +163,7 @@ class QuestionGroupService
      */
     public function deleteGroup(int $questionGroupId, int $surveyId)
     {
-        $survey = $this->modelSurvey->findByPk($surveyId);
-        if (
-            $survey->isActive ||
-            !$this->modelPermission->hasSurveyPermission(
-                $surveyId,
-                'surveycontent',
-                'delete'
-            )
-        ) {
-            throw new PermissionDeniedException(
-                gT('Access denied')
-            );
-        }
-
+        $this->checkDeletePermission($surveyId);
         $this->proxyExpressionManager->revertUpgradeConditionsToRelevance($surveyId);
 
         $deletedGroups = $this->proxyQuestionGroup->deleteQuestionGroupWithDependency(
@@ -552,5 +518,67 @@ class QuestionGroupService
     {
         $this->modelQuestionGroup->unsetAttributes();
         $this->modelQuestionGroup->setIsNewRecord(true);
+    }
+
+    /**
+     * @param int $surveyId
+     * @return void
+     * @throws PermissionDeniedException
+     */
+    public function checkUpdatePermission(int $surveyId)
+    {
+        if (
+            !$this->modelPermission->hasSurveyPermission(
+                $surveyId,
+                'surveycontent',
+                'update'
+            )
+        ) {
+            throw new PermissionDeniedException(
+                'Permission denied'
+            );
+        }
+    }
+
+    /**
+     * @param int $surveyId
+     * @return void
+     * @throws PermissionDeniedException
+     */
+    public function checkCreatePermission(int $surveyId)
+    {
+        if (
+            !$this->modelPermission->hasSurveyPermission(
+                $surveyId,
+                'surveycontent',
+                'create'
+            )
+        ) {
+            throw new PermissionDeniedException(
+                'Permission denied'
+            );
+        }
+    }
+
+    /**
+     * @param int $surveyId
+     * @return void
+     * @throws PermissionDeniedException
+     */
+    public function checkDeletePermission(int $surveyId)
+    {
+        $survey = $this->modelSurvey->findByPk($surveyId);
+        if (
+            $survey->isActive ||
+            !$this->modelPermission->hasSurveyPermission(
+                $surveyId,
+                'surveycontent',
+                'delete'
+            )
+        ) {
+            throw new PermissionDeniedException(
+                gT('Access denied')
+            );
+        }
     }
 }

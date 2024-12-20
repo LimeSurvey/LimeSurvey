@@ -47,7 +47,7 @@ class SaveService
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
      * @param int $surveyId
-     * @param array{
+     * @param array {
      *  sid: int,
      *  ?question: array{
      *      ?qid: int,
@@ -127,6 +127,11 @@ class SaveService
                 $question,
                 $data['advancedSettings']
             );
+
+        $this->attributesService->saveMissingAttributes(
+            $question,
+            $surveyId
+        );
 
         $this->attributesService
             ->save(

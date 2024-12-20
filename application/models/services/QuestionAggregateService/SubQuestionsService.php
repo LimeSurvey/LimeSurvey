@@ -44,7 +44,7 @@ class SubQuestionsService
     /**
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
-     * @param array{
+     * @param array {
      *  ...<array-key, mixed>
      * } $subquestions
      * @return void
@@ -70,6 +70,7 @@ class SubQuestionsService
      * @param int $subquestionId
      * @throws PermissionDeniedException
      * @throws NotFoundException
+     * @throws \CDbException
      */
     public function delete($surveyId, $subquestionId)
     {

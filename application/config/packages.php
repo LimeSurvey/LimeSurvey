@@ -434,12 +434,8 @@ return [
         'devBaseUrl' => 'assets/packages/sortablejs/',
         'basePath'   => 'core.sortablejs',
         'position'   => CClientScript::POS_BEGIN,
-        'css'        => [
-            'css/ranking.css',
-        ],
         'js'         => [
             'sortable.min.js',
-            'scripts/ranking.js',
         ],
         'depends'    => [
             'jquery',
