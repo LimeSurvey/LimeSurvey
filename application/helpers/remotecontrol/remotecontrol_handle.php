@@ -298,42 +298,64 @@ class remotecontrol_handle
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
         }
-        $aData['bFailed'] = false; // Put a var for continue
+        if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
+            return array(
+                'status' => 'Copy failed',
+                'error' => "You don't have sufficient permissions."
+            );
+        }
         if (!$iSurveyID) {
-            $aData['sErrorMessage'] = "No survey ID has been provided. Cannot copy survey";
-            $aData['bFailed'] = true;
-        } elseif (!Survey::model()->findByPk($iSurveyID)) {
-            $aData['sErrorMessage'] = "Invalid survey ID";
-            $aData['bFailed'] = true;
-        } elseif (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
-            $aData['sErrorMessage'] = "You don't have sufficient permissions.";
-            $aData['bFailed'] = true;
-        } else {
-            $aExcludes = array();
-            $sNewSurveyName = $sNewname;
-            $aExcludes['dates'] = true;
-            $btranslinksfields = true;
-            Yii::app()->loadHelper('export');
-            $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
-            if ($copysurveydata) {
-                Yii::app()->loadHelper('admin/import');
-                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, $DestSurveyID, $btranslinksfields);
-                if (isset($aExcludes['conditions'])) {
-                    Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $aImportResults['newsid']);
-                    QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $aImportResults['newsid']);
-                }
-                if (!isset($aExcludes['permissions'])) {
-                    Permission::model()->copySurveyPermissions($iSurveyID, $aImportResults['newsid']);
-                }
-            } else {
-                $aData['bFailed'] = true;
-            }
+            return array(
+                'status' => 'Copy failed',
+                'error' => "No survey ID has been provided. Cannot copy survey"
+            );
         }
-        if ($aData['bFailed']) {
-            return array('status' => 'Copy failed', 'error' => $aData['sErrorMessage']);
-        } else {
-            return array('status' => 'OK', 'newsid' => $aImportResults['newsid']);
+        if (!Survey::model()->findByPk($iSurveyID)) {
+            return array(
+                'status' => 'Copy failed',
+                'error' => "Invalid survey ID"
+            );
         }
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
+            return array(
+                'status' => 'Copy failed',
+                'error' => "You don't have sufficient permissions"
+            );
+        }
+        /* All check : try to copy */
+        $aExcludes = array();
+        $sNewSurveyName = $sNewname;
+        $aExcludes['dates'] = true;
+        $btranslinksfields = true;
+        Yii::app()->loadHelper('export');
+        $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
+        if (empty($copysurveydata)) {
+            return array(
+                'status' => 'Copy failed',
+                'error' => "No data from survey"
+            );
+        }
+        Yii::app()->loadHelper('admin/import');
+        $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, $DestSurveyID, $btranslinksfields);
+        if (empty($aImportResults['newsid'])) {
+            return array(
+                'status' => 'Copy failed',
+                'error' => $aImportResults['error']
+            );
+        }
+        if (isset($aExcludes['conditions'])) {
+            Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $aImportResults['newsid']);
+            QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $aImportResults['newsid']);
+        }
+        if (!isset($aExcludes['permissions'])) {
+            Permission::model()->copySurveyPermissions($iSurveyID, $aImportResults['newsid']);
+        }
+        return array(
+            'status' => 'OK',
+            'newsid' => $aImportResults['newsid']
+        );
+
+
     }
 
     /**
@@ -1041,11 +1063,11 @@ class remotecontrol_handle
                 $iSurveyID = (int) $iSurveyID;
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
                 if (!isset($oSurvey)) {
-                                    return array('status' => 'Error: Invalid survey ID');
+                    return array('status' => 'Error: Invalid survey ID');
                 }
 
                 if ($oSurvey->isActive) {
-                                    return array('status' => 'Error:Survey is active and not editable');
+                    return array('status' => 'Error:Survey is active and not editable');
                 }
 
                 $oGroup = new QuestionGroup();
@@ -1087,43 +1109,39 @@ class remotecontrol_handle
      */
     public function delete_group($sSessionKey, $iSurveyID, $iGroupID)
     {
-        if ($this->_checkSessionKey($sSessionKey)) {
-            $iSurveyID = (int) $iSurveyID;
-            $iGroupID = (int) $iGroupID;
-            $oSurvey = Survey::model()->findByPk($iSurveyID);
-            if (!isset($oSurvey)) {
-                            return array('status' => 'Error: Invalid survey ID');
-            }
-
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'delete')) {
-                $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
-                if (!isset($oGroup)) {
-                                    return array('status' => 'Error: Invalid group ID');
-                }
-
-                if ($oSurvey->isActive) {
-                    return array('status' => 'Error:Survey is active and not editable');
-                }
-
-                $depented_on = getGroupDepsForConditions($oGroup->sid, "all", $iGroupID, "by-targgid");
-                if (isset($depented_on)) {
-                                    return array('status' => 'Group with depencdencies - deletion not allowed');
-                }
-
-                $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupID, $iSurveyID);
-
-                if ($iGroupsDeleted === 1) {
-                    QuestionGroup::model()->updateGroupOrder($iSurveyID);
-                    return (int) $iGroupID;
-                } else {
-                                    return array('status' => 'Group deletion failed');
-                }
-            } else {
-                            return array('status' => 'No permission');
-            }
-        } else {
-                    return array('status' => self::INVALID_SESSION_KEY);
+        if (!$this->_checkSessionKey($sSessionKey)) {
+            return array('status' => self::INVALID_SESSION_KEY);
         }
+        $iSurveyID = (int) $iSurveyID;
+        $iGroupID = (int) $iGroupID;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if (!isset($oSurvey)) {
+            return array('status' => 'Error: Invalid survey ID');
+        }
+        /* Find with surveyid to avoid bad parameters and don't send information on group existence
+         * @see https://bugs.limesurvey.org/view.php?id=19869 */
+        $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID, 'sid' => $iSurveyID));
+        if (!isset($oGroup)) {
+            return array('status' => 'Error: Invalid group ID');
+        }
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'delete')) {
+            return array('status' => 'No permission');
+        }
+        if ($oSurvey->isActive) {
+            return array('status' => 'Error:Survey is active and not editable');
+        }
+        $depented_on = getGroupDepsForConditions($oGroup->sid, "all", $iGroupID, "by-targgid");
+        if (isset($depented_on)) {
+            return array('status' => 'Group with depencdencies - deletion not allowed');
+        }
+        $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupID);
+        if ($iGroupsDeleted === 1) {
+            QuestionGroup::model()->updateGroupOrder($iSurveyID);
+            return (int) $iGroupID;
+        } else {
+            return array('status' => 'Group deletion failed');
+        }
+
     }
 
     /**
@@ -2958,28 +2976,32 @@ class remotecontrol_handle
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
         }
-        if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
-            $iSurveyID = (int) $iSurveyID;
-            $oSurvey = Survey::model()->findByPk($iSurveyID);
-            if (is_null($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
-            }
-            if (is_array($aAttributeFields) && count($aAttributeFields) > 0) {
-                foreach ($aAttributeFields as &$sField) {
-                    $sField = intval($sField);
-                    $sField = 'attribute_' . $sField;
-                }
-                $aAttributeFields = array_unique($aAttributeFields);
-            }
-            Yii::app()->loadHelper('admin/token');
-            if (Token::createTable($iSurveyID, $aAttributeFields)) {
-                return array('status' => 'OK');
-            } else {
-                return array('status' => 'Survey participants table could not be created');
-            }
-        } else {
-                    return array('status' => 'No permission');
+        $iSurveyID = (int) $iSurveyID;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if (is_null($oSurvey)) {
+            return array('status' => 'Error: Invalid survey ID');
         }
+        if (
+            /* Same test Tokens->newtokentable */
+            !Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') &&
+            !Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create')
+        ) {
+            return array('status' => 'No permission');
+        }
+        if (is_array($aAttributeFields) && count($aAttributeFields) > 0) {
+            foreach ($aAttributeFields as &$sField) {
+                $sField = intval($sField);
+                $sField = 'attribute_' . $sField;
+            }
+            $aAttributeFields = array_unique($aAttributeFields);
+        }
+        Yii::app()->loadHelper('admin/token');
+        if (Token::createTable($iSurveyID, $aAttributeFields)) {
+            return array('status' => 'OK');
+        } else {
+            return array('status' => 'Survey participants table could not be created');
+        }
+
     }
 
     /**
@@ -3935,12 +3957,19 @@ class remotecontrol_handle
 
             // Participant not found, so we create a new one
             if (!$model) {
+                if (!Permission::model()->hasGlobalPermission('participantpanel', 'create')) {
+                    /* No permission to create : continue */
+                    continue;
+                }
                 $model = new Participant();
                 if (isset($participant['participant_id'])) {
                     $model->participant_id = $participant['participant_id'];
                 } else {
                     $model->participant_id = Participant::genUuid();
                 }
+            } elseif (!$model->userHasPermissionToEdit()) {
+                /* No permission to update : continue */
+                continue;
             }
 
             $scenario = $model->getScenario(); // insert or update
