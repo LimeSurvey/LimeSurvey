@@ -338,20 +338,6 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['progress']['total']       = $totalVisibleSteps ? $totalVisibleSteps - $notRelevantSteps : $totalSteps;
             }
 
-            if (isset($this->aSurveyInfo['progress']['total'])) {
-                echo "progress total: " . $this->aSurveyInfo['progress']['total'] . "<br/>";
-            }
-            echo "totalsteps: " . $_SESSION[$this->LEMsessid]['totalsteps'] . "<br/>";
-            echo "step: " . $_SESSION[$this->LEMsessid]['step'] . "<br/>";
-            if (isset($_SESSION[$this->LEMsessid]['notRelevantSteps'])) {
-                echo "notRelevantSteps: " . $_SESSION[$this->LEMsessid]['notRelevantSteps'] . "<br/>";
-            }
-            echo "hiddenSteps: " . $hiddenSteps . "<br/>";
-            echo "current step: " . $this->aSurveyInfo['progress']['currentstep'] . "<br/>";
-
-            // echo "<br/>formula: currentstep - 1 / totalsteps * 100: " . ;
-            echo "<br/>progress percentage: ". $_SESSION[$this->LEMsessid]['step'] / $_SESSION[$this->LEMsessid]['totalsteps'] * 100 . "<br/>";
-
             $progressValue = ($this->aSurveyInfo['progress']['currentstep']) / $this->aSurveyInfo['progress']['total'] * 100;
             $progressValue = (int) round($progressValue);
             $progressValue = max(0, min(100, $progressValue));
