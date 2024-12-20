@@ -399,7 +399,6 @@ class Update extends DynamicSurveyCommonAction
      */
     public function step4()
     {
-        Yii::app()->loadLibrary("admin/pclzip");
         $event = new CExceptionEvent($this, new Exception());  // Dummy line to preload CExceptionEvent class.
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('destinationBuild')) {
@@ -411,7 +410,6 @@ class Update extends DynamicSurveyCommonAction
                     // this is the last step - Download the zip file, unpack it and replace files accordingly
 
                     $updateModel = new UpdateForm();
-                    Yii::app()->loadLibrary("admin/pclzip"); //Preload PCLZip library in case it is moved to a different location in the update
                     $remove = $updateModel->removeDeletedFiles((array)$changedFiles);
                     if (!$remove->result) {
                         return $this->renderErrorString($remove->error, $remove->message);
