@@ -2158,7 +2158,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 ->from('{{questions}} t')
                 ->leftJoin('{{question_attributes}} qa', 'qa.qid = t.qid AND qa.attribute = :hidden', [':hidden' => 'hidden'])
                 ->where('t.sid = :sid AND t.parent_qid = 0', [':sid' => $this->sid])
-                ->andWhere('qa.value IS NULL OR qa.value != :hidden_value', [':hidden_value' => '1']);    
+                ->andWhere('qa.value IS NULL OR qa.value != :hidden_value', [':hidden_value' => '1']);
             $result = $query->queryScalar();
             return (int) $result;
         }
