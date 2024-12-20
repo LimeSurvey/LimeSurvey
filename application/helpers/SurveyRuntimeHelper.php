@@ -334,8 +334,8 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['progress']['currentstep'] = $totalSteps + 1;
                 $this->aSurveyInfo['progress']['total']       = $totalVisibleSteps ? $totalVisibleSteps : $totalSteps;
             } else {
-                $this->aSurveyInfo['progress']['currentstep'] = $step - $notRelevantSteps - $hiddenSteps;
-                $this->aSurveyInfo['progress']['total']       = $totalVisibleSteps ? $totalVisibleSteps - $notRelevantSteps : $totalSteps;
+                $this->aSurveyInfo['progress']['currentstep'] = $step - $notRelevantSteps - $hiddenSteps - 1;
+                $this->aSurveyInfo['progress']['total']       = $totalVisibleSteps ? $totalVisibleSteps - $notRelevantSteps : $totalSteps  - $notRelevantSteps;
             }
 
             $progressValue = ($this->aSurveyInfo['progress']['currentstep']) / $this->aSurveyInfo['progress']['total'] * 100;
