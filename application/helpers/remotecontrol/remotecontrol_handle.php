@@ -2794,6 +2794,7 @@ class remotecontrol_handle
      *
      * Returns array with
      * * `sid` the ids of survey
+     * * `gsid` the surey group ids of survey
      * * `surveyls_title` the title of the survey
      * * `startdate` start date
      * * `expires` expiration date
@@ -2826,7 +2827,7 @@ class remotecontrol_handle
                         'languagesettings' => array('condition' => 'surveyls_language=language'),
                         'owner'
                     )
-                )->findAll("gsid = :gsid", [':gsid' => intval($gsid)]);
+                )->findAll("t.gsid = :gsid", [':gsid' => intval($gsid)]);
             } else {
                 $aUserSurveys = $oSurvey->with(array('languagesettings' => array('condition' => 'surveyls_language=language'), 'owner'))->findAll();
             }
