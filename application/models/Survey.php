@@ -2153,11 +2153,15 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $condn = array('sid' => $this->sid, 'parent_qid' => 0);
             $sumresult = Question::model()->countByAttributes($condn);
         } else {
-            $sumresult = Question::model()->with('questionattributes')
-              ->count(
-                  "sid=:sid AND parent_qid=:parent_qid AND((attribute='hidden' AND value!=:hidden )OR attribute IS NULL)",
-                  ['sid' => $this->sid, 'parent_qid' => 0, 'hidden' => '1']
-              );
+            $query = Yii::app()->db->createCommand()
+                ->select('COUNT(DISTINCT t.qid) as count')
+                ->from('{{questions}} t')
+                ->leftJoin('{{question_attributes}} qa', 'qa.qid = t.qid AND qa.attribute = :hidden', [':hidden' => 'hidden'])
+                ->where('t.sid = :sid AND t.parent_qid = 0', [':sid' => $this->sid])
+                ->andWhere('qa.value IS NULL OR qa.value != :hidden_value', [':hidden_value' => '1']);
+    
+            $result = $query->queryScalar();
+            return (int) $result;
         }
 
         return (int) $sumresult;
