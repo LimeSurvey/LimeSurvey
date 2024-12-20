@@ -27,6 +27,7 @@
  * @property Question[] $questions Questions without subquestions
  * @property QuestionGroupL10n[] $questiongroupl10ns
  */
+
 class QuestionGroup extends LSActiveRecord
 {
     public $aQuestions; // to stock array of questions of the group
