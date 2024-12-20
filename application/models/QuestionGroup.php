@@ -30,8 +30,11 @@
 class QuestionGroup extends LSActiveRecord
 {
     public $aQuestions; // to stock array of questions of the group
+
     public $group_name;
+
     public $language;
+
     public $description;
 
     /**
