@@ -2812,6 +2812,7 @@ class remotecontrol_handle
      *
      * Returns array with
      * * `sid` the ids of survey
+     * * `gsid` the surey group ids of survey
      * * `surveyls_title` the title of the survey
      * * `startdate` start date
      * * `expires` expiration date
@@ -2820,9 +2821,10 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param string|null $sUsername (optional) username to get list of surveys
+     * @param integer|null $gsid  (optional) the surveys group id to get list of surveys
      * @return array In case of success the list of surveys
      */
-    public function list_surveys($sSessionKey, $sUsername = null)
+    public function list_surveys($sSessionKey, $sUsername = null, $gsid = null)
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             $oSurvey = new Survey();
@@ -2831,26 +2833,41 @@ class remotecontrol_handle
             } elseif ($sUsername != null) {
                 $aUserData = User::model()->findByAttributes(array('users_name' => (string) $sUsername));
                 if (!isset($aUserData)) {
-                                    return array('status' => 'Invalid user');
+                    return array('status' => 'Invalid user');
                 } else {
-                                    $sUid = $aUserData->attributes['uid'];
+                    $sUid = $aUserData->attributes['uid'];
                 }
                 $oSurvey->permission($sUid);
             }
-
-            $aUserSurveys = $oSurvey->with(array('languagesettings' => array('condition' => 'surveyls_language=language'), 'owner'))->findAll();
+            if (!empty($gsid) && intval($gsid)) {
+                $aUserSurveys = $oSurvey->with(
+                    array(
+                        'languagesettings' => array('condition' => 'surveyls_language=language'),
+                        'owner'
+                    )
+                )->findAll("t.gsid = :gsid", [':gsid' => intval($gsid)]);
+            } else {
+                $aUserSurveys = $oSurvey->with(array('languagesettings' => array('condition' => 'surveyls_language=language'), 'owner'))->findAll();
+            }
             if (count($aUserSurveys) == 0) {
-                            return array('status' => 'No surveys found');
+                return array('status' => 'No surveys found');
             }
 
             foreach ($aUserSurveys as $oSurvey) {
                 $oSurveyLanguageSettings = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $oSurvey->primaryKey, 'surveyls_language' => $oSurvey->language));
                 if (!isset($oSurveyLanguageSettings)) {
-                                    $aSurveyTitle = '';
+                    $aSurveyTitle = '';
                 } else {
-                                    $aSurveyTitle = $oSurveyLanguageSettings->attributes['surveyls_title'];
+                    $aSurveyTitle = $oSurveyLanguageSettings->attributes['surveyls_title'];
                 }
-                $aData[] = array('sid' => $oSurvey->primaryKey, 'surveyls_title' => $aSurveyTitle, 'startdate' => $oSurvey->attributes['startdate'], 'expires' => $oSurvey->attributes['expires'], 'active' => $oSurvey->attributes['active']);
+                $aData[] = array(
+                    'sid' => $oSurvey->primaryKey,
+                    'gsid' => $oSurvey->gsid,
+                    'surveyls_title' => $aSurveyTitle,
+                    'startdate' => $oSurvey->attributes['startdate'],
+                    'expires' => $oSurvey->attributes['expires'],
+                    'active' => $oSurvey->attributes['active']
+                );
             }
             return $aData;
         } else {
