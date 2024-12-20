@@ -140,7 +140,7 @@ class SurveyCondition
         'qid'        => $qid,
         'scenario'   => $p_scenario,
         'cqid'       => $p_cqid,
-        'cfieldname' => $conditionCfieldname,
+        'cfieldname' => $conditionCfieldname ?? '',
         'method'     => $p_method
         );
 

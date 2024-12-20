@@ -131,12 +131,12 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      * {
      *     "patch": [{
      *             "entity": "questionCondition",
-     *             "op": "delete",
+     *             "op": "update",
      *             "id": 809,
      *             "props": {
      *                 "qid": 15977,
      *                 "action": "conditionScript",
-     *                 "script":"((TOKEN:LASTNAME == \"pomegrenade\"
+     *                 "script":"((TOKEN:LASTNAME == \"pomegrenade\"))"
      *             }
      *         }
      *     ]
@@ -420,7 +420,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *         }}
      *     ]
      * }
-     * updateCondition (prevq-regex)
+     * updateCondition (prevq-answer)
      * {
      *     "patch": [{
      *         "op": "update",
@@ -437,7 +437,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *                             "action": "updateCondition",
      *                             "method": "<=",
      *                             "cquestions": "453614X608X15979",
-     *                             "canswers": ["A4988"]
+     *                             "canswers": ["A4988"],
      *                             "ConditionConst": "",
      *                             "ConditionRegexp": "",
      *                             "cqid": 15978,
@@ -481,7 +481,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *         }}
      *     ]
      * }
-     * updateCondition (prevq-const)
+     * updateCondition (prevq-prevq)
      * {
      *     "patch": [{
      *         "op": "update",
@@ -593,6 +593,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *                             "method": "==",
      *                             "ConditionConst": "ABCDE",
      *                             "ConditionRegexp": "",
+     *                             "csrctoken": "{TOKEN:LASTNAME}",
      *                             "cqid": 15978,
      *                             "canswersToSelect": "",
      *                             "editSourceTab": "#SRCTOKENATTRS",
