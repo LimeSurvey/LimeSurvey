@@ -27,6 +27,11 @@
  * @property Question[] $questions Questions without subquestions
  * @property QuestionGroupL10n[] $questiongroupl10ns
  */
+
+use LimeSurvey\Models\Services\Exception\{
+    NotFoundException,
+    PermissionDeniedException
+};
 class QuestionGroup extends LSActiveRecord
 {
     public $aQuestions; // to stock array of questions of the group
@@ -166,18 +171,22 @@ class QuestionGroup extends LSActiveRecord
      * Deletes a question group and all its dependencies.
      * Returns affected rows of question group table (should be 1 or null)
      * @param integer $groupId
-     * @param integer $surveyId
+     * @param integer|null $surveyId deprecated
+     * @throw Exception
      * @return int|null
      */
-    public static function deleteWithDependency($groupId, $surveyId)
+    public static function deleteWithDependency($groupId, $surveyId = null)
     {
-        // Abort if the survey is active
-        $surveyIsActive = Survey::model()->findByPk($surveyId)->active !== 'N';
-        if ($surveyIsActive) {
-            Yii::app()->user->setFlash('error', gT("Can't delete question group when the survey is active"));
-            return null;
+        $QuestionGroup = self::model()->findByPk($groupId);
+        if (empty($QuestionGroup)) {
+            throw new NotFoundException(gt('Group not found'));
         }
-
+        // Abort if the survey is active
+        $surveyIsActive = Survey::model()->findByPk($QuestionGroup->sid)->active !== 'N';
+        if ($surveyIsActive) {
+            throw new BadRequestException(gt("Can't delete question group when the survey is active"));
+        }
+        $surveyId = $QuestionGroup->sid;
         $questionIds = QuestionGroup::getQuestionIdsInGroup($groupId);
         Question::deleteAllById($questionIds);
         Assessment::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
