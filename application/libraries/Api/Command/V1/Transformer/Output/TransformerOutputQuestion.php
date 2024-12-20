@@ -45,7 +45,7 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
             $collection,
             function ($a, $b) {
                 return (int)(
-                    (int)$a['sortOrder'] > (int)$b['sortOrder']
+                    (int)$a['questionOrder'] > (int)$b['questionOrder']
                 );
             }
         );

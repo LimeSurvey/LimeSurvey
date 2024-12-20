@@ -26,7 +26,7 @@ class SchemaFactoryQuestion
                 Schema::boolean('other')->default(null),
                 Schema::boolean('mandatory')->default(null),
                 Schema::boolean('encrypted')->default(null),
-                Schema::integer('questionOrder')->default(0),
+                Schema::integer('sortOrder')->default(0),
                 Schema::integer('scaleId')->default(null),
                 Schema::boolean('sameDefault')->default(null),
                 Schema::boolean('mandatory')->default(null),
