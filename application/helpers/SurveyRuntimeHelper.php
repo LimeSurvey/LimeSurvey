@@ -334,8 +334,8 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['progress']['currentstep'] = $_SESSION[$this->LEMsessid]['totalsteps'] + 1;
                 $this->aSurveyInfo['progress']['total']       = $totalVisibleSteps ? $totalVisibleSteps : $_SESSION[$this->LEMsessid]['totalsteps'];
             } else {
-                $this->aSurveyInfo['progress']['currentstep'] = $_SESSION[$this->LEMsessid]['step'] - ($_SESSION[$this->LEMsessid]['hiddenSteps'] ?? 0);
-                $this->aSurveyInfo['progress']['total']       = $totalVisibleSteps ? $totalVisibleSteps : $_SESSION[$this->LEMsessid]['totalsteps'] ?? 1;
+                $this->aSurveyInfo['progress']['currentstep'] = $step - $notRelevantSteps - $hiddenSteps - 1;
+                $this->aSurveyInfo['progress']['total']       = $totalVisibleSteps ? $totalVisibleSteps - $notRelevantSteps : $totalSteps  - $notRelevantSteps;
             }
 
             $progressValue = ($this->aSurveyInfo['progress']['currentstep'] - 1) / $this->aSurveyInfo['progress']['total'] * 100;
