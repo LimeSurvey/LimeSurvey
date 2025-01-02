@@ -43,9 +43,9 @@ class UserDetail implements CommandInterface
     public function run(Request $request)
     {
         $userId = $request->getData('_id');
-
-        //user should only be able to get his own data (for now only the users language is needed)
-        if (App()->user->getId() !== $userId) {
+        $hasPermission = $this->permission->hasGlobalPermission('users');
+        //users should only be able to get their own data (when they don't have permission)
+        if (App()->user->getId() !== $userId && !$hasPermission) {
             return $this->responseFactory
                 ->makeErrorForbidden();
         }
