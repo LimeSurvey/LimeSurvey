@@ -27,33 +27,42 @@ class FileUploadService
     {
         $this->checkUpdatePermission($surveyId);
         $returnedData = ['success' => false];
-        if (!empty($fileInfoArray)) {
-            $surveyId = $this->convertSurveyIdWhenUniqUploadDir($surveyId);
-            $destinationDir = $this->getSurveyUploadDirectory($surveyId);
-            $this->uploadValidator->post = ['surveyId' => $surveyId];
-            $this->uploadValidator->files = $fileInfoArray;
-            $validationError = $this->uploadValidator->getError('file');
-            if ($validationError === null) {
-                $checkImage = LSYii_ImageValidator::validateImage(
-                    $fileInfoArray['file']
-                );
-                if ($checkImage['check'] !== false) {
-                    if (!is_writeable($destinationDir)) {
-                        $returnedData['uploadResultMessage'] = gT(
-                            "Could not save file"
-                        );
-                    } else {
-                        $returnedData = $this->saveFileInDirectory(
-                            $fileInfoArray['file'],
-                            $destinationDir
-                        );
-                    }
-                } else {
-                    $returnedData['uploadResultMessage'] = $checkImage['uploadresult'];
-                }
-            } else {
-                $returnedData['uploadResultMessage'] = $validationError;
-            }
+
+        if (empty($fileInfoArray)) {
+            $returnedData['uploadResultMessage'] = gT('No file uploaded');
+            return $returnedData;
+        }
+
+        $surveyId = $this->convertSurveyIdWhenUniqUploadDir($surveyId);
+        $destinationDir = $this->getSurveyUploadDirectory($surveyId);
+        $this->uploadValidator->post = ['surveyId' => $surveyId];
+        $this->uploadValidator->files = $fileInfoArray;
+        $validationError = $this->uploadValidator->getError('file');
+        if ($validationError !== null) {
+            $returnedData['uploadResultMessage'] = $validationError;
+            return $returnedData;
+        }
+
+        $checkImage = LSYii_ImageValidator::validateImage(
+            $fileInfoArray['file']
+        );
+        if ($checkImage['check'] === false) {
+            $returnedData['uploadResultMessage'] = $checkImage['uploadresult'];
+            return $returnedData;
+        }
+
+        if (!is_writeable($destinationDir)) {
+            $returnedData['uploadResultMessage'] = gT(
+                "Could not save file"
+            );
+        } else {
+            $returnedData = $this->saveFileInDirectory(
+                $fileInfoArray['file'],
+                $destinationDir
+            );
+        }
+
+        if ($validationError === null) {
             $returnedData['uploaded']['filePath'] = $this->convertFullIntoRelativePath(
                 $returnedData['debug'][2]
             );
@@ -69,8 +78,6 @@ class FileUploadService
                 $destinationDir,
                 $surveyId
             );
-        } else {
-            $returnedData['uploadResultMessage'] = gT('No file uploaded');
         }
 
         return $returnedData;
