@@ -122,6 +122,7 @@
     }
     .box-widget-card.card-link {
       display: block;
+      background-color : inherit;
       align-content: center;
       text-align: center;
       color: $g-700;
@@ -137,7 +138,6 @@
           line-height: 20px;
           i:before {
             display: block;
-            color: $active-green;
             padding-right: 4px;
             width: 20px;
             height: 20px;

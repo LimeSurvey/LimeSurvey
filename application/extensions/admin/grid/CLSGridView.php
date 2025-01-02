@@ -214,7 +214,7 @@ class CLSGridView extends TbGridView
             return;
         }
         $columns_filter_button = '<button role="button" type="button" class="btn b-0" data-bs-toggle="modal" data-bs-target="#survey-column-filter-modal">
-                <i class="ri-add-fill"></i>
+                <i class="ri-layout-column-fill"></i>
             </button>';
         $this->columns[]  = [
             'header'            => $columns_filter_button,

@@ -42,7 +42,10 @@
                 'bindListItemclick();',
                 'switchStatusOfListActions();',
             ],
-            'rowLink'               => 'Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid,"allowRedirect"=>1))',
+            'rowLink'               =>
+                'App()->getConfig("editorEnabled") && Yii::app()->getConfig("debug")'
+                . ' ? App()->createUrl("editorLink/index", ["route" => "survey/" . $data->sid]) '
+                . ' : Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid))',
             // 'template'  => $this->template,
             'massiveActionTemplate' => $this->render('massive_actions/_selector', [], true, false),
             'columns'               => $this->model->getColumns(),

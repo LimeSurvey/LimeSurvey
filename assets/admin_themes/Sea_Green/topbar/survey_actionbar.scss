@@ -1,5 +1,6 @@
 .survey-actionbar {
-    padding: 16px 10px;
+    padding-top: 16px;
+    padding-bottom: 16px;
 
     .survey-actionbar-title {
       font-weight: 500;
@@ -14,6 +15,7 @@
         }
     }
     .survey-actionbar-button {
+        background-color: inherit;
         border-width  : 2px;
         border-radius : 5px;
         margin-bottom: 4px;
@@ -22,6 +24,7 @@
         }
     }
     .survey-actionbar-formfield {
+        background-color: inherit;
         cursor        : pointer;
         color         : $g-700;
         border-width  : 2px;
