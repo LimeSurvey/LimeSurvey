@@ -17,20 +17,21 @@ class UserDetail implements CommandInterface
 {
     use AuthPermissionTrait;
 
-    protected User $user;
-
     protected TransformerOutputSurveyOwner $transformerOutputSurveyOwner;
     protected ResponseFactory $responseFactory;
     protected Permission $permission;
+    protected User $modelUser;
 
     public function __construct(
         TransformerOutputSurveyOwner $transformerOutputSurveyOwner,
         ResponseFactory $responseFactory,
-        Permission $permission
+        Permission $permission,
+        User $modelUser
     ) {
         $this->transformerOutputSurveyOwner = $transformerOutputSurveyOwner;
         $this->responseFactory = $responseFactory;
         $this->permission = $permission;
+        $this->modelUser = $modelUser;
     }
 
     /**
@@ -49,7 +50,7 @@ class UserDetail implements CommandInterface
                 ->makeErrorForbidden();
         }
 
-        $userModel = User::model()->findByAttributes(['uid' => (int)$userId]);
+        $userModel = $this->modelUser->findByAttributes(['uid' => (int)$userId]);
 
         if (!$userModel) {
             return $this->responseFactory->makeErrorNotFound(
