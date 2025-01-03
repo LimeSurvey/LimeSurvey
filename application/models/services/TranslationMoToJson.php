@@ -20,7 +20,8 @@ class TranslationMoToJson
      *
      * @param string $language the language abbreviation (e.g. 'de').
      */
-    public function __construct($language){
+    public function __construct($language)
+    {
         $this->language = $language;
     }
 
@@ -38,16 +39,24 @@ class TranslationMoToJson
     public function translateMoToJson(bool $translateToJson = false)
     {
         $pathApplication = Yii::app()->getConfig('rootdir');
-        $pathToLanguageFiles = $pathApplication . DIRECTORY_SEPARATOR . "locale" . DIRECTORY_SEPARATOR . $this->language . DIRECTORY_SEPARATOR . $this->language . '.mo';
+        $pathToLanguageFiles = $pathApplication . DIRECTORY_SEPARATOR . "locale"
+            . DIRECTORY_SEPARATOR . $this->language . DIRECTORY_SEPARATOR
+            . $this->language . '.mo';
         if (!file_exists($pathToLanguageFiles)) {
-            return ['error' => 'Translation file not found.', 'path' => $pathToLanguageFiles];
+            return [
+                'error' => 'Translation file not found.',
+                'path' => $pathToLanguageFiles
+            ];
         }
 
         $file = new LSGettextMoFile(false);
         try {
             $messagesGettext = $file->load($pathToLanguageFiles, '');
         } catch (\CException $e) {
-            return ['error' => 'Error loading translation file.', 'exception' => $e->getMessage()];
+            return [
+                'error' => 'Error loading translation file.',
+                'exception' => $e->getMessage()
+            ];
         }
 
         if ($translateToJson) {
