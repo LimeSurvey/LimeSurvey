@@ -65,5 +65,4 @@ class TranslationMoToJson
 
         return $messagesGettext;
     }
-
 }
