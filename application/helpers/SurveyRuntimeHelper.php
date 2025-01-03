@@ -324,7 +324,11 @@ class SurveyRuntimeHelper
         }
 
         if ($this->sSurveyMode != 'survey' && isset($this->aSurveyInfo['showprogress']) && $this->aSurveyInfo['showprogress'] == 'Y') {
-            $totalVisibleSteps = null;
+            $totalSteps = $_SESSION[$this->LEMsessid]['totalsteps'] ?? 1;
+            $totalVisibleSteps = $_SESSION[$this->LEMsessid]['totalVisibleSteps'] ?? 0;
+            $step = $_SESSION[$this->LEMsessid]['step'] ?? 0;
+            $notRelevantSteps = $_SESSION[$this->LEMsessid]['notRelevantSteps'] ?? 0;
+            $hiddenSteps = $_SESSION[$this->LEMsessid]['hiddenSteps'] ?? 0;
 
             if (isset($_SESSION[$this->LEMsessid]['totalVisibleSteps'])) {
                 $totalVisibleSteps = $_SESSION[$this->LEMsessid]['totalVisibleSteps'];
