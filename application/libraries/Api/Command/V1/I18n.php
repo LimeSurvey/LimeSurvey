@@ -44,7 +44,7 @@ class I18n implements CommandInterface
         $lang = (string)$request->getData('_id', 'en');
         $transLateService = new TranslationMoToJson($lang);
         $translations = $transLateService->translateMoToJson();
-        if (array_key_exists('', $translations)) {
+        if (is_array($translations) && array_key_exists('', $translations)) {
             unset($translations['']);
         }
 
