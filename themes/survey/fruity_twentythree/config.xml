@@ -81,7 +81,7 @@
         <showpopups type="buttons" category="Simple options" width="4" title="Show popups" options="1|0|-1"
                     optionlabels="Popup|On page|No">1
         </showpopups>
-        <showclearall type="buttons" category="Simple options" width="4" title="Show Clear All button" options="on|off"
+        <showclearall type="buttons" category="Simple options" width="4" title="Show 'Clear all' button" options="on|off"
                       optionlabels="Yes|No">off
         </showclearall>
         <questionhelptextposition type="buttons" category="Simple options" width="4" title="Question help text position"

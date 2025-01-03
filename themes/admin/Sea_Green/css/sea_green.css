@@ -16479,19 +16479,19 @@ body {
 }
 
 .logo-alt-1 {
-  background: url(/assets/images/logo-white.png) no-repeat center;
+  background: url(../../../assets/images/logo-white.png) no-repeat center;
   width: 300px;
   height: 82px;
 }
 
 .decor-1 {
-  background: url(/assets/images/decor-1.png) no-repeat center;
+  background: url(../../../assets/images/decor-1.png) no-repeat center;
   width: 414px;
   height: 514px;
 }
 
 .decor-2 {
-  background: url(/assets/images/decor-2.png) no-repeat center;
+  background: url(../../../assets/images/decor-2.png) no-repeat center;
   width: 148px;
   height: 148px;
 }
@@ -17915,6 +17915,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 .box-widget .box-widget-card.card-link {
   display: block;
+  background-color: inherit;
   align-content: center;
   text-align: center;
   color: #6E748C;
@@ -18141,6 +18142,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   margin-left: 4px;
 }
 .survey-actionbar .survey-actionbar-button {
+  background-color: inherit;
   border-width: 2px;
   border-radius: 5px;
   margin-bottom: 4px;
@@ -18149,6 +18151,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   box-shadow: none;
 }
 .survey-actionbar .survey-actionbar-formfield {
+  background-color: inherit;
   cursor: pointer;
   color: #6E748C;
   border-width: 2px;
