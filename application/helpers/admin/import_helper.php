@@ -2623,10 +2623,10 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                             SurveyDynamic::sid($iSurveyID);
                             $response = new SurveyDynamic();
                             $response->setAttributes($aInsertData, false);
-                            if (!$response->startdate) {
+                            if (isset($response->startdate) && (!$response->startdate)) {
                                 $response->startdate = date('Y-m-d H:i:s');
                             }
-                            if (!$response->datestamp) {
+                            if (isset($response->datestamp) && (!$response->datestamp)) {
                                 $response->datestamp = date('Y-m-d H:i:s');
                             }
                             if (!$response->encryptSave()) {
