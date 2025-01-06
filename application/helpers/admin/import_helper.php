@@ -2623,6 +2623,12 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                             SurveyDynamic::sid($iSurveyID);
                             $response = new SurveyDynamic();
                             $response->setAttributes($aInsertData, false);
+                            if (!$response->startdate) {
+                                $response->startdate = date('Y-m-d H:i:s');
+                            }
+                            if (!$response->datestamp) {
+                                $response->datestamp = date('Y-m-d H:i:s');
+                            }
                             if (!$response->encryptSave()) {
                                 throw new Exception("Failed to save response data.");
                             }
