@@ -47,7 +47,8 @@ class TransformerInputSurvey extends Transformer
                 'key' => 'savetimings',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
-            'additionalLanguages' => 'additional_languages',
+            //'additionalLanguages' => 'additional_languages',
+            'languages' => true,
             'datestamp' => [
                 'filter' => 'trim',
                 'formatter' => ['ynToBool' => ['revert' => true]]
@@ -231,6 +232,8 @@ class TransformerInputSurvey extends Transformer
                     $survey['showqnumcode']
                 );
             }
+            $survey['additional_languages'] = $this->transformLanguages($survey);
+
             //useCaptcha
             $useCaptchaExists = (
                 array_key_exists('useCaptchaAccess', $survey) ||
@@ -245,6 +248,17 @@ class TransformerInputSurvey extends Transformer
             }
         }
         return $survey;
+    }
+
+    /**
+     * @param $survey
+     * @return string
+     */
+    public function transformLanguages($survey){
+        $index = array_search($survey->language, $survey->languages);
+        unset($survey->languages[$index]); //exclude baselanguage
+        //transform to string
+        return implode(' ', $survey->languages);
     }
 
     /**
