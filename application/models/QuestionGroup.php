@@ -16,7 +16,7 @@
 
 use LimeSurvey\Models\Services\Exception\{
     NotFoundException,
-    PermissionDeniedException
+    BadRequestException
 };
 
 /**
