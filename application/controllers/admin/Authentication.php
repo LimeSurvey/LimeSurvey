@@ -234,16 +234,11 @@ class Authentication extends SurveyCommonAction
 
         if (!$errorExists && !$usedLink) {
             //check if password is set correctly
-            $password = Yii::app()->request->getPost('password');
-            $passwordRepeat = Yii::app()->request->getPost('password_repeat');
-
-            $oPasswordTestEvent = new PluginEvent('checkPasswordRequirement');
-            $oPasswordTestEvent->set('password', $password);
-            $oPasswordTestEvent->set('passwordOk', true);
-            $oPasswordTestEvent->set('passwordError', '');
-            Yii::app()->getPluginManager()->dispatchEvent($oPasswordTestEvent);
-            $passwordError = $oPasswordTestEvent->get('passwordError');
-            if (($password !== null && $passwordRepeat !== null) && ($password === $passwordRepeat) && $oPasswordTestEvent->get('passwordOk')) {
+            $password = Yii::app()->request->getPost('password', '');
+            $passwordRepeat = Yii::app()->request->getPost('password_repeat', '');
+            $passwordStrengthError = $user->checkPasswordStrength($passwordRepeat) !== '';
+            $passwordRules = $user->getPasswordHelpText();
+            if (($password !== null && $passwordRepeat !== null) && ($password === $passwordRepeat) && $passwordStrengthError == '') {
                 //now everything is ok, save password
                 $user->setPassword($password, true);
                 // And remove validation_key
@@ -251,7 +246,7 @@ class Authentication extends SurveyCommonAction
                 $user->save(false, ['validation_key', 'validation_key_expiration']);
                 App()->getController()->redirect(array('/admin/authentication/sa/login'));
             } else {
-                Yii::app()->setFlashMessage(sprintf(gT('Password cannot be blank and must fulfill minimum requirements: %s'), $passwordError), 'error');
+                Yii::app()->setFlashMessage(sprintf(gT('Password cannot be blank and must fulfill minimum requirements: %s'), $passwordRules), 'error');
             }
         }
 

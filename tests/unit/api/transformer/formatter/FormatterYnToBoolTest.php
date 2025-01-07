@@ -12,7 +12,7 @@ class FormatterYnToBoolTest extends TestBaseClass
 {
     public function testConvertsYToTrue()
     {
-        $formatter = new FormatterYnToBool;
+        $formatter = new FormatterYnToBool();
         $config = $this->getConfig();
         $this->assertTrue($formatter->format('Y', $config));
         $this->assertTrue($formatter->format('y', $config));
@@ -20,7 +20,7 @@ class FormatterYnToBoolTest extends TestBaseClass
 
     public function testConvertsNToFalse()
     {
-        $formatter = new FormatterYnToBool;
+        $formatter = new FormatterYnToBool();
         $config = $this->getConfig();
         $this->assertFalse($formatter->format('N', $config));
         $this->assertFalse($formatter->format('n', $config));
@@ -28,37 +28,34 @@ class FormatterYnToBoolTest extends TestBaseClass
 
     public function testConvertsEmptyStringToNull()
     {
-        $formatter = new FormatterYnToBool;
+        $formatter = new FormatterYnToBool();
         $config = $this->getConfig();
         $this->assertNull($formatter->format('', $config));
     }
 
     public function testPassesNullUnchanged()
     {
-        $formatter = new FormatterYnToBool;
+        $formatter = new FormatterYnToBool();
         $config = $this->getConfig();
         $this->assertNull($formatter->format(null, $config));
     }
 
     public function testRevertsTrueToY()
     {
-        $formatter = new FormatterYnToBool;
+        $formatter = new FormatterYnToBool();
         $config = $this->getConfig(true);
         $this->assertEquals('Y', $formatter->format(true, $config));
     }
 
     public function testRevertsFalseToN()
     {
-        $formatter = new FormatterYnToBool;
+        $formatter = new FormatterYnToBool();
         $config = $this->getConfig(true);
         $this->assertEquals('N', $formatter->format(false, $config));
     }
 
     private function getConfig($revert = false)
     {
-        $options = $revert ? ['revert' => true] : true;
-        return [
-            'formatter' => ['ynToBool' => $options]
-        ];
+        return $revert ? ['revert' => true] : [];
     }
 }

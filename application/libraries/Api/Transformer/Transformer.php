@@ -132,6 +132,7 @@ class Transformer implements TransformerInterface
         $config['collection'] = isset($config['collection']) ? $config['collection'] : false;
         $config['transformer'] = isset($config['transformer']) ? $config['transformer'] : null;
         $config['default'] = isset($config['default']) ? $config['default'] : null;
+        $config['formatter'] = isset($config['formatter']) ? $config['formatter'] : null;
 
         return $config;
     }
@@ -168,12 +169,19 @@ class Transformer implements TransformerInterface
     private function format($value, $config)
     {
         if ($this->registry) {
-            if (array_key_exists('formatter', $config)) {
+            if (is_array($config['formatter'])) {
+                $formatterName = strval(array_key_first($config['formatter']));
                 $formatter = $this->registry->getFormatter(
                     strval(array_key_first($config['formatter']))
                 );
+                $formatterConfig = isset($config['formatter'][$formatterName])
+                    && is_array($config['formatter'][$formatterName])
+                    ? $config['formatter'][$formatterName] : [];
                 if ($formatter instanceof FormatterInterface) {
-                    $value = $formatter->format($value, $config);
+                    $value = $formatter->format(
+                        $value,
+                        $formatterConfig
+                    );
                 }
             }
         }

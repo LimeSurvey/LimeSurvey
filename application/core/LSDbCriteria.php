@@ -38,4 +38,25 @@ class LSDbCriteria extends CDbCriteria
             parent::compare($column, $value, $partialMatch, $operator, $escape);
         }
     }
+
+    /**
+     * inherit doc
+     * Replace escape systemfor MSSQL, mantis issue #18550
+     */
+    public function addSearchCondition($column, $keyword, $escape = true, $operator = 'AND', $like = 'LIKE')
+    {
+        if ($keyword !== '' && $escape && in_array(App()->db->driverName, ['sqlsrv', 'dblib', 'mssql'])) {
+                /* Escape are bad in Yii1, fix it, issue #18550 */
+                $escapingReplacements = [
+                    '%' => '[%]',
+                    '_' => '[_]',
+                    '[' => '[[]',
+                    ']' => '[]]',
+                    '\\' => '[\\]',
+                ];
+                $keyword = '%' . strtr($keyword, $escapingReplacements) . '%';
+                $escape = false;
+        }
+        return parent::addSearchCondition($column, $keyword, $escape, $operator, $like);
+    }
 }

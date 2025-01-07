@@ -101,6 +101,8 @@ DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, bu
 				}
 
 				if ( btnDisplay ) {
+					var disabled = btnClass.indexOf('disabled') !== -1;
+
 					node = $('<li>', {
 							'class': classes.sPageButton+' '+btnClass,
 							'id': idx === 0 && typeof button === 'string' ?
@@ -108,9 +110,12 @@ DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, bu
 								null
 						} )
 						.append( $('<a>', {
-								'href': '#',
+								'href': disabled ? null : '#',
 								'aria-controls': settings.sTableId,
+								'aria-disabled': disabled ? 'true' : null,
 								'aria-label': aria[ button ],
+								'aria-role': 'link',
+								'aria-current': btnClass === 'active' ? 'page' : null,
 								'data-dt-idx': button,
 								'tabindex': settings.iTabIndex,
 								'class': 'page-link'

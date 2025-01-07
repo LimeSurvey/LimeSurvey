@@ -1358,7 +1358,8 @@ var Autocomplete = function () {
             this.$init();
         this.popup.autoSelect = this.autoSelect;
         this.popup.setData(this.completions.filtered, this.completions.filterText);
-        this.editor.textInput.setAriaOptions({ activeDescendant: getAriaId(this.popup.getRow()) });
+        if (this.editor.textInput.setAriaOptions)
+            this.editor.textInput.setAriaOptions({ activeDescendant: getAriaId(this.popup.getRow()) });
         editor.keyBinding.addKeyboardHandler(this.keyboardHandler);
         var renderer = editor.renderer;
         this.popup.setRow(this.autoSelect ? 0 : -1);
@@ -1997,9 +1998,10 @@ var supportedModes = {
     Pascal: ["pas|p"],
     Perl: ["pl|pm"],
     pgSQL: ["pgsql"],
-    PHP_Laravel_blade: ["blade.php"],
     PHP: ["php|inc|phtml|shtml|php3|php4|php5|phps|phpt|aw|ctp|module"],
+    PHP_Laravel_blade: ["blade.php"],
     Pig: ["pig"],
+    PLSQL: ["plsql"],
     Powershell: ["ps1"],
     Praat: ["praat|praatscript|psc|proc"],
     Prisma: ["prisma"],

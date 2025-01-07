@@ -167,7 +167,7 @@ require(APPPATH . 'config/tcpdf' . EXT);
 ***********************************************************/
 class pdf extends TCPDF
 {
-
+    protected $cMargin;
 
     /**
      * TCPDF system constants that map to settings in our config file
@@ -843,7 +843,7 @@ class pdf extends TCPDF
 
     public function delete_html($text)
     {
-        $text = html_entity_decode((string) $text, null, 'UTF-8');
+        $text = html_entity_decode((string) $text, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8');
         $text = str_replace("\t", ' ', $text);
         return strip_tags($text);
     }
@@ -919,8 +919,13 @@ class pdf extends TCPDF
      */
     public function addHeader($aPdfLanguageSettings, $sSiteName, $sDefaultHeaderString)
     {
-
-        $oTemplate = Template::getLastInstance();
+        $oTemplate = null;
+        if (!empty($this->_aSurveyInfo['sid'])) {
+            $oTemplate = Template::getInstance(null, $this->_aSurveyInfo['sid']);
+        } else {
+            $oTemplate = Template::getLastInstance();
+        }
+        
         $sLogoFileName = $oTemplate->filesPath . Yii::app()->getConfig('pdflogofile');
         if (!file_exists($sLogoFileName)) {
             $sLogoFileName = '';

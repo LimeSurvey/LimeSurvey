@@ -24,6 +24,7 @@
  */
 
 use LimeSurvey\Helpers\questionHelper;
+use LimeSurvey\Models\Services\Quotas;
 
 Yii::import('application.helpers.expressions.em_core_helper', true);
 // TODO: Fix autoloading of warnings.
@@ -353,7 +354,8 @@ class LimeExpressionManager
      * 'hidden' => 0    // 1 if it should be always_hidden
      * 'gid' => "34"    // group id
      * 'mandatory' => 'N'   // 'Y' if mandatory, 'S' if soft mandatory
-     * 'eqn' => ""  // TODO ??
+     * 'mandSoftForced' => false // boolean value to keep Mandatroy soft question status. False if not seen, answered, not a soft mandatory or not checked one time. Check is done in self::_validateQuestion using $_POST['mandSoft']
+     * 'eqn' => ""  // TODO ?? Equation result for validation
      * 'help' => "" // the help text
      * 'qtext' => "Enter a larger number than {num}"    // the question text
      * 'code' => 'afDS_sq5_1' // the full variable name
@@ -3233,7 +3235,8 @@ class LimeExpressionManager
      * @param array $afelist - the list of array_filter_exclude $qroot codes
      * @return array
      */
-    private function _recursivelyFindAntecdentArrayFilters($qroot, $aflist, $afelist) {
+    private function _recursivelyFindAntecdentArrayFilters($qroot, $aflist, $afelist)
+    {
         if (isset($this->qrootVarName2arrayFilter[$qroot])) {
             if (isset($this->qrootVarName2arrayFilter[$qroot]['array_filter'])) {
                 $_afs = explode(';', (string) $this->qrootVarName2arrayFilter[$qroot]['array_filter']);
@@ -3326,6 +3329,12 @@ class LimeExpressionManager
             'jsName'    => '',
             'readWrite' => 'N',
         ];
+        $this->knownVars['LANG'] = [
+            'code'      => self::getEMlanguage(),
+            'jsName_on' => '',
+            'jsName'    => '',
+            'readWrite' => 'N',
+        ];
         if ($survey->getIsAssessments()) {
             $this->knownVars['ASSESSMENT_CURRENT_TOTAL'] = [
                 'code'      => 0,
@@ -3335,6 +3344,7 @@ class LimeExpressionManager
             ];
         }
         /* Add the core replacement before question code : needed if use it in equation , use SID to never send error */
+        /* Added replacement can not be used in condition, only for replacement */
         templatereplace("{SID}");
 
         // Since building array of allowable answers, need to know preset values for certain question types
@@ -3722,8 +3732,17 @@ class LimeExpressionManager
             }
 
             if (
-                !is_null($rowdivid) || $type == Question::QT_L_LIST || $type == Question::QT_N_NUMERICAL || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN || $type == Question::QT_O_LIST_WITH_COMMENT || !is_null($preg)
-                || $type == Question::QT_S_SHORT_FREE_TEXT || $type == Question::QT_D_DATE || $type == Question::QT_T_LONG_FREE_TEXT || $type == Question::QT_U_HUGE_FREE_TEXT || $type == Question::QT_VERTICAL_FILE_UPLOAD
+                !is_null($rowdivid)
+                || $type == Question::QT_L_LIST
+                || $type == Question::QT_N_NUMERICAL
+                || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN
+                || $type == Question::QT_O_LIST_WITH_COMMENT
+                || (!is_null($preg) && $type != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)
+                || $type == Question::QT_S_SHORT_FREE_TEXT
+                || $type == Question::QT_D_DATE
+                || $type == Question::QT_T_LONG_FREE_TEXT
+                || $type == Question::QT_U_HUGE_FREE_TEXT
+                || $type == Question::QT_VERTICAL_FILE_UPLOAD
             ) {
                 if (!isset($q2subqInfo[$questionNum])) {
                     $q2subqInfo[$questionNum] = [
@@ -3873,6 +3892,7 @@ class LimeExpressionManager
                 'hidden'         => $hidden,
                 'gid'            => $groupNum,
                 'mandatory'      => $mandatory,
+                'mandSoftForced' => false,
                 'eqn'            => '',
                 'help'           => $help,
                 'qtext'          => $fielddata['question'],    // $question,
@@ -4643,11 +4663,14 @@ class LimeExpressionManager
                         $value = null;  // can't upload a file via GET
                         break;
                 }
-                $_SESSION[$LEM->sessid][$knownVar['sgqa']] = $value;
-                $LEM->updatedValues[$knownVar['sgqa']] = [
-                    'type'  => $knownVar['type'],
-                    'value' => $value,
-                ];
+                /* Validate validity of startingValues : do not show error */
+                if (self::checkValidityAnswer($knownVar['type'], $value, $knownVar['sgqa'], $LEM->questionSeq2relevance[$knownVar['qseq']], false)) {
+                    $_SESSION[$LEM->sessid][$knownVar['sgqa']] = $value;
+                    $LEM->updatedValues[$knownVar['sgqa']] = [
+                        'type'  => $knownVar['type'],
+                        'value' => $value,
+                    ];
+                }
             }
             $LEM->_UpdateValuesInDatabase();
         }
@@ -4729,6 +4752,7 @@ class LimeExpressionManager
                 $LEM->StartProcessingPage();
                 $updatedValues = $LEM->ProcessCurrentResponses();
                 $message = '';
+                $hiddenSteps = $LEM->lastMoveResult['hiddenSteps'] ?? 0;
                 while (true) {
                     $LEM->currentQset = [];    // reset active list of questions
                     if (--$LEM->currentQuestionSeq < 0) { // Stop at start : can be a question
@@ -4740,6 +4764,7 @@ class LimeExpressionManager
                             'message'       => $message,
                             'unansweredSQs' => (isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                             'invalidSQs'    => (isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
+                            'hiddenSteps'   => $hiddenSteps
                         ];
                         return $LEM->lastMoveResult;
                     }
@@ -4760,6 +4785,7 @@ class LimeExpressionManager
                     $grel = $gRelInfo['result'];
 
                     if (!$grel || !$result['relevant'] || $result['hidden']) {
+                        $hiddenSteps -= 1;
                         // then skip this question - assume already saved?
                         continue;
                     } else {
@@ -4779,6 +4805,7 @@ class LimeExpressionManager
                             'valid'         => $result['valid'],
                             'unansweredSQs' => $result['unansweredSQs'],
                             'invalidSQs'    => $result['invalidSQs'],
+                            'hiddenSteps'   => $hiddenSteps
                         ];
                     }
                 }
@@ -4911,6 +4938,7 @@ class LimeExpressionManager
                 $updatedValues = $LEM->ProcessCurrentResponses();
                 $message = '';
                 $result = [];
+                $hiddenSteps = $LEM->lastMoveResult['hiddenSteps'] ?? 0;
                 if (!$force && $LEM->currentQuestionSeq != -1) {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
@@ -4933,6 +4961,7 @@ class LimeExpressionManager
                             'valid'         => $result['valid'],
                             'unansweredSQs' => $result['unansweredSQs'],
                             'invalidSQs'    => $result['invalidSQs'],
+                            'hiddenSteps'   => $hiddenSteps
                         ];
                         return $LEM->lastMoveResult;
                     }
@@ -4954,6 +4983,7 @@ class LimeExpressionManager
                             'valid'         => (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : true),
                             'unansweredSQs' => (isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                             'invalidSQs'    => (isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
+                            'hiddenSteps'   => $hiddenSteps
                         ];
                         return $LEM->lastMoveResult;
                     }
@@ -4975,6 +5005,7 @@ class LimeExpressionManager
                     $grel = $gRelInfo['result'];
 
                     if (!$grel || !$result['relevant'] || $result['hidden']) {
+                        $hiddenSteps += 1;
                         // then skip this question, $LEM->updatedValues updated in _ValidateQuestion
                         continue;
                     } else {
@@ -4994,6 +5025,7 @@ class LimeExpressionManager
                             'valid'         => (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : false),
                             'unansweredSQs' => $result['unansweredSQs'],
                             'invalidSQs'    => $result['invalidSQs'],
+                            'hiddenSteps'   => $hiddenSteps
                         ];
                         return $LEM->lastMoveResult;
                     }
@@ -5208,9 +5240,9 @@ class LimeExpressionManager
                     SavedControl::model()->updateByPk($_SESSION[$this->sessid]['scid'], ['saved_thisstep' => $_SESSION[$this->sessid]['step']]);
                 }
                 // Check Quotas
-                $aQuotas = checkCompletedQuota($this->sid, true);
+                $aQuotas = Quotas::checkCompletedQuota($this->sid, $updatedValues, true);
                 if ($aQuotas && !empty($aQuotas)) {
-                    checkCompletedQuota($this->sid);  // will create a page and quit: why not use it directly ?
+                    Quotas::checkCompletedQuota($this->sid);  // will create a page and quit: why not use it directly ?
                 } else {
                     if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion)) {
                         /* Less update : just do what you need to to */
@@ -5426,6 +5458,7 @@ class LimeExpressionManager
                     $updatedValues = [];
                 }
                 $message = '';
+                $hiddenSteps = $LEM->lastMoveResult['hiddenSteps'] ?? 0;
                 if ($LEM->currentQuestionSeq != -1 && $seq > $LEM->currentQuestionSeq) {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq, $force);
                     $message .= $result['message'];
@@ -5448,6 +5481,7 @@ class LimeExpressionManager
                             'valid'         => (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : true),
                             'unansweredSQs' => $result['unansweredSQs'],
                             'invalidSQs'    => $result['invalidSQs'],
+                            'hiddenSteps'   => $hiddenSteps
                         ];
                         return $LEM->lastMoveResult;
                     }
@@ -5472,6 +5506,7 @@ class LimeExpressionManager
                             'valid'         => (isset($result['valid']) ? $result['valid'] : false),
                             'unansweredSQs' => (isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                             'invalidSQs'    => (isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
+                            'hiddenSteps'   => $hiddenSteps
                         ];
                         return $LEM->lastMoveResult;
                     }
@@ -5496,6 +5531,7 @@ class LimeExpressionManager
                     $grel = $gRelInfo['result'];
 
                     if (!$preview && (!$grel || !$result['relevant'] || $result['hidden'])) {
+                        $hiddenSteps += 1;
                         // then skip this question
                         continue;
                     } elseif (!$preview && !($result['mandViolation'] || !$result['valid']) && $LEM->currentQuestionSeq < $seq) {
@@ -5519,6 +5555,7 @@ class LimeExpressionManager
                             'valid'         => (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : true),
                             'unansweredSQs' => $result['unansweredSQs'],
                             'invalidSQs'    => $result['invalidSQs'],
+                            'hiddenSteps'   => $hiddenSteps
                         ];
                         return $LEM->lastMoveResult;
                     }
@@ -6108,6 +6145,15 @@ class LimeExpressionManager
                     'qInfo'          => $qInfo
                 ]
             );
+            if ($qInfo['mandatory'] == 'S') {
+                $mandatoryTip .= App()->twigRenderer->renderPartial(
+                    '/survey/questions/question_help/softmandatory_input.twig',
+                    [
+                        'sCheckboxLabel' => $LEM->gT("Continue without answering to this question."),
+                        'qInfo'          => $qInfo
+                    ]
+                );
+            }
             switch ($qInfo['type']) {
                 case Question::QT_M_MULTIPLE_CHOICE:
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
@@ -6262,16 +6308,34 @@ class LimeExpressionManager
                     break;
             }
         }
-        /* Set qmandViolation to false if mandSoft and POST is set */
         if (
             $qmandViolation
             && $qInfo['mandatory'] == 'S'
-            && App()->request->getPost('mandSoft')
         ) {
-            $qmandViolation = false;
-            $mandatoryTip = '';
+            $mandSoftPost = App()->request->getPost('mandSoft', []);
+            /* Old template compatibility pre 6.2.3 */
+            if (is_string($mandSoftPost)) {
+                $qmandViolation = false;
+                $mandatoryTip = '';
+            }
+            /* New system mandSoft are an array with Y/N for each question in page */
+            if (is_array($mandSoftPost)) {
+                if (isset($mandSoftPost[$questionSeq])) {
+                    if ($mandSoftPost[$questionSeq] == "N") { // Currently, input are not shown after selection done. (no mandatiry violation)
+                        $this->questionSeq2relevance[$questionSeq]['mandSoftForced'] = $qInfo['mandSoftForced'] = false;
+                    } else {
+                        $this->questionSeq2relevance[$questionSeq]['mandSoftForced'] = $qInfo['mandSoftForced'] = true;
+                    }
+                }
+                if ($qInfo['mandSoftForced']) {
+                    $qmandViolation = false;
+                    $mandatoryTip = '';
+                }
+            }
+        } else {
+            /* If question are answered (or are not mandatory soft) : always set mandSoftForced to false */
+            $LEM->questionSeq2relevance[$questionSeq]['mandSoftForced'] = false;
         }
-
         /////////////////////////////////////////////////////////////
         // DETECT WHETHER QUESTION SHOULD BE FLAGGED AS UNANSWERED //
         /////////////////////////////////////////////////////////////
@@ -9109,8 +9173,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $criteria->params[':sid'] = $sid;
         $criteria->index = 'qid';
         $questions = Question::model()->with('question_theme')->findAll($criteria);
-        
-        $_gseq = -1;        
+
+        $_gseq = -1;
         $baseQuestionThemes = QuestionTheme::findQuestionMetaDataForAllTypes();
         foreach ($LEM->currentQset as $q) {
             $gseq = $q['info']['gseq'];
@@ -9765,7 +9829,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 break;
             case '!': //List - dropdown
             case 'L': //LIST drop-down/radio-button list
-                if (substr($sgq, -5) != 'other') {
+                if ($sgq != $LEM->getLEMsurveyId() . 'X' . $qinfo['gid'] . 'X' . $qinfo['qid'] . 'other') { // Check only not other
                     if ($value == "-oth-") {
                         if ($other != 'Y') {
                             $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
@@ -9886,13 +9950,20 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 /* No validty control ? size ? */
                 break;
             case 'M':
-                if ($value != "Y" && (substr($sgq, -5) != 'other' && $other == 'Y')) {
+                if (
+                    $value != "Y" // Y is always valid
+                    && !( $other == 'Y' && $sgq == $LEM->getLEMsurveyId() . 'X' . $qinfo['gid'] . 'X' . $qinfo['qid'] . 'other') // It's not other SGQA
+                ) {
                     $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
                     return false;
                 }
                 break;
             case 'P':
-                if (substr($sgq, -7) != 'comment' && $value != "Y" && (substr($sgq, -5) != 'other' && $other == 'Y')) {
+                if (
+                    $value != "Y" // Y is always valid
+                    && !( $other == 'Y' && $sgq == $LEM->getLEMsurveyId() . 'X' . $qinfo['gid'] . 'X' . $qinfo['qid'] . 'other') // It's not other SGQA
+                    && substr($sgq, -7) != 'comment' // It's not a comment SGQA
+                ) {
                     $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
                     return false;
                 }
@@ -9915,7 +9986,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $sid = intval($this->sid); // Show 0 for null, more clear
         Yii::log(sprintf("Survey %s invalid value %s for %s : %s (%s)", $sid, $value, $sgqa, $message, ($add ? "added" : "silently")), 'error', 'application.LimeExpressionManager.invalidAnswerString.addValidityString');
         if ($add) {
-            $this->invalidAnswerString[$sgqa] = sprintf($message, CHtml::tag('code', [], CHtml::encode($value)));
+            $this->invalidAnswerString[$sgqa] = sprintf($message, CHtml::tag('code', [], self::htmlSpecialCharsUserValue($value)));
         }
     }
 

@@ -185,7 +185,7 @@ class Assessment extends LSActiveRecord
 
         $survey = Survey::model()->findByPk($this->sid);
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
 
         $criteria->compare('id', $this->id);
         $criteria->compare('sid', $this->sid);

@@ -4,6 +4,7 @@ namespace LimeSurvey\ExtensionInstaller;
 
 use Exception;
 use InvalidArgumentException;
+use LimeSurvey\PluginManager\PluginManager;
 
 /**
  * @since 2018-09-24
@@ -34,11 +35,12 @@ class PluginInstaller extends ExtensionInstaller
         }
 
         $config = $this->getConfig();
+        /** @var PluginManager $pluginManager */
         $pluginManager = App()->getPluginManager();
         $destdir = $pluginManager->getPluginFolder($config, $this->pluginType);
 
         if ($this->fileFetcher->move($destdir)) {
-            list($result, $errorMessage) = $pluginManager->installUploadedPlugin($destdir);
+            [$result, $errorMessage] = $pluginManager->installUploadedPlugin($destdir);
             if ($result) {
                 // Do nothing.
             } else {

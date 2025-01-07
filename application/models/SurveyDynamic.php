@@ -112,6 +112,7 @@ class SurveyDynamic extends LSActiveRecord
      * @access public
      * @param array $data
      * @return boolean
+     * @deprecated Use setAttributes() and encryptSave()
      */
     public function insertRecords($data)
     {
