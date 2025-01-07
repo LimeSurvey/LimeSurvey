@@ -43,7 +43,7 @@ $googleAnalyticsStyleOptions = array(
                     </div>
                     <div class="card-footer d-flex">
                         <a class="btn btn-danger" href="<?php echo $this->createUrl("surveyAdministration/deactivate/surveyid/$oSurvey->sid"); ?>" role="button">
-                            Stop survey
+                            <?php eT("Stop survey"); ?>
                         </a>
                     </div>
                 </div>
