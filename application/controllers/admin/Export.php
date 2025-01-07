@@ -115,7 +115,7 @@ class Export extends SurveyCommonAction
         $gid = sanitize_int(Yii::app()->request->getParam('gid'));
         $group = QuestionGroup::model()->findByPk($gid);
         if (empty($group)) {
-            throw new CHttpException(404, gT("Invalid group id"));
+            throw new CHttpException(404, gT("Invalid group ID"));
         }
         if (!Permission::model()->hasSurveyPermission($group->sid, 'surveycontent', 'export')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
