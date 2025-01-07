@@ -1,15 +1,15 @@
 # LimeSurvey LANGUAGE FILE.
-# Copyright (C) 2024 LimeSurvey
+# Copyright (C) 2025 LimeSurvey
 # This file is distributed under the same license as the LimeSurvey package.
 msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-12-18 14:17:35+00:00\n"
+"POT-Creation-Date: 2025-01-06 13:29:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2024-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2025-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LimeSurvey Team <c_schmitz@users.sourceforge.net>\n"
 "X-Poedit-KeywordsList: gT;ngT:1,2;eT;neT:1,2\n"
@@ -177,8 +177,10 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:109
 #: application/controllers/admin/DataEntry.php:519
 #: application/controllers/admin/EmailTemplates.php:36
-#: application/controllers/admin/Export.php:658
-#: application/controllers/admin/Export.php:1080
+#: application/controllers/admin/Export.php:121
+#: application/controllers/admin/Export.php:139
+#: application/controllers/admin/Export.php:668
+#: application/controllers/admin/Export.php:1090
 #: application/controllers/admin/Expressions.php:53
 #: application/controllers/admin/Expressions.php:100
 #: application/controllers/admin/PrintableSurvey.php:38
@@ -217,7 +219,7 @@ msgstr ""
 #: application/controllers/admin/Tokens.php:2508
 #: application/controllers/admin/Tokens.php:2567
 #: application/controllers/admin/Tokens.php:2629
-#: application/controllers/admin/dumpdb.php:103
+#: application/controllers/admin/dumpdb.php:109
 #: application/controllers/admin/globalsettings.php:37
 #: application/controllers/admin/globalsettings.php:62
 #: application/controllers/admin/globalsettings.php:86
@@ -255,7 +257,7 @@ msgstr ""
 #: application/controllers/SurveyPermissionsController.php:74
 #: application/controllers/SurveyPermissionsController.php:220
 #: application/controllers/admin/EmailTemplates.php:92
-#: application/controllers/admin/Export.php:1234
+#: application/controllers/admin/Export.php:1244
 #: application/controllers/admin/Expressions.php:141
 #: application/controllers/admin/ParticipantsAction.php:2712
 #: application/controllers/admin/PluginHelper.php:31
@@ -1094,7 +1096,9 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:2614
 #: application/controllers/QuestionAdministrationController.php:2617
 #: application/controllers/QuestionAdministrationController.php:2644
+#: application/controllers/admin/Export.php:136
 #: application/core/SurveyCommonAction.php:151
+#: application/helpers/export_helper.php:2203
 msgid "Invalid question id"
 msgstr ""
 
@@ -1157,8 +1161,8 @@ msgstr ""
 #: application/controllers/UserManagementController.php:295
 #: application/controllers/UserManagementController.php:304
 #: application/controllers/UserManagementController.php:313
-#: application/controllers/admin/Export.php:977
-#: application/controllers/admin/Export.php:989
+#: application/controllers/admin/Export.php:987
+#: application/controllers/admin/Export.php:999
 #: application/controllers/admin/QuestionThemes.php:15
 #: application/controllers/admin/SurveymenuController.php:183
 #: application/controllers/admin/SurveymenuEntryController.php:221
@@ -1219,7 +1223,7 @@ msgstr ""
 #: application/controllers/SurveysGroupsPermissionController.php:373
 #: application/controllers/admin/Saved.php:87
 #: application/controllers/admin/SurveysGroupsController.php:421
-#: application/controllers/admin/dumpdb.php:98
+#: application/controllers/admin/dumpdb.php:104
 #: application/core/SurveyCommonAction.php:1120
 msgid "Invalid action"
 msgstr ""
@@ -1530,12 +1534,12 @@ msgstr ""
 #: application/controllers/ResponsesController.php:53
 #: application/controllers/ResponsesController.php:54
 #: application/controllers/admin/DataEntry.php:304
-#: application/controllers/admin/Export.php:284
-#: application/controllers/admin/Export.php:285
-#: application/controllers/admin/Export.php:430
-#: application/controllers/admin/Export.php:431
-#: application/controllers/admin/Export.php:678
-#: application/controllers/admin/Export.php:679
+#: application/controllers/admin/Export.php:294
+#: application/controllers/admin/Export.php:295
+#: application/controllers/admin/Export.php:440
+#: application/controllers/admin/Export.php:441
+#: application/controllers/admin/Export.php:688
+#: application/controllers/admin/Export.php:689
 #: application/controllers/admin/Saved.php:126
 #: application/controllers/admin/Saved.php:130
 #: application/controllers/admin/Statistics.php:833
@@ -2213,7 +2217,7 @@ msgstr ""
 #: application/models/Permission.php:677 application/models/Permission.php:686
 #: application/models/Permission.php:933
 #: application/models/Permissiontemplates.php:220
-#: application/models/Question.php:759 application/models/QuestionGroup.php:341
+#: application/models/Question.php:759 application/models/QuestionGroup.php:351
 #: application/models/Quota.php:239 application/models/Quota.php:249
 #: application/models/Survey.php:1534 application/models/SurveyDynamic.php:342
 #: application/models/SurveyDynamic.php:358
@@ -2272,7 +2276,7 @@ msgid "Delete"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:977
-#: application/models/QuestionGroup.php:336
+#: application/models/QuestionGroup.php:346
 #: application/views/questionGroupsAdministration/partial/topbarBtns/groupToolsDropdownItems.php:41
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
 msgstr ""
@@ -3499,7 +3503,7 @@ msgstr ""
 #: application/controllers/UploaderController.php:313
 #: application/controllers/UploaderController.php:331
 #: application/controllers/UploaderController.php:359
-#: application/helpers/remotecontrol/remotecontrol_handle.php:3539
+#: application/helpers/remotecontrol/remotecontrol_handle.php:3578
 msgid "The file has been successfully uploaded."
 msgstr ""
 
@@ -3848,6 +3852,7 @@ msgstr ""
 
 #: application/controllers/UserManagementController.php:1252
 #: application/core/SurveyCommonAction.php:169
+#: application/models/QuestionGroup.php:180
 msgid "Group not found"
 msgstr ""
 
@@ -5072,73 +5077,80 @@ msgstr ""
 msgid "Detailed notification attachments:"
 msgstr ""
 
-#: application/controllers/admin/Export.php:151
+#: application/controllers/admin/Export.php:118
+#: application/controllers/survey/SurveyIndex.php:121
+#: application/core/SurveyCommonAction.php:165
+#: application/helpers/export_helper.php:2048
+msgid "Invalid group ID"
+msgstr ""
+
+#: application/controllers/admin/Export.php:161
 #: application/views/admin/survey/surveybar_statistics.php:21
 msgid "This survey is not active - no responses are available."
 msgstr ""
 
-#: application/controllers/admin/Export.php:227
-#: application/controllers/admin/Export.php:286
-#: application/controllers/admin/Export.php:428
+#: application/controllers/admin/Export.php:237
+#: application/controllers/admin/Export.php:296
+#: application/controllers/admin/Export.php:438
 #: application/views/admin/export/exportresults_view.php:23
 #: application/views/admin/export/vv_view.php:110
 msgid "Export results"
 msgstr ""
 
-#: application/controllers/admin/Export.php:249
+#: application/controllers/admin/Export.php:259
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:98
 msgid "Question code"
 msgstr ""
 
-#: application/controllers/admin/Export.php:250
+#: application/controllers/admin/Export.php:260
 msgid "Abbreviated question text"
 msgstr ""
 
-#: application/controllers/admin/Export.php:251
+#: application/controllers/admin/Export.php:261
 msgid "Full question text"
 msgstr ""
 
-#: application/controllers/admin/Export.php:252
+#: application/controllers/admin/Export.php:262
 msgid "Question code & question text"
 msgstr ""
 
-#: application/controllers/admin/Export.php:263
+#: application/controllers/admin/Export.php:273
 #: application/views/admin/participants/importCSV_view.php:55
 #: application/views/admin/token/csvupload.php:42
 msgid "Comma"
 msgstr ""
 
-#: application/controllers/admin/Export.php:264
+#: application/controllers/admin/Export.php:274
 #: application/views/admin/participants/importCSV_view.php:57
 #: application/views/admin/token/csvupload.php:43
 msgid "Semicolon"
 msgstr ""
 
-#: application/controllers/admin/Export.php:265
+#: application/controllers/admin/Export.php:275
 msgid "Tab"
 msgstr ""
 
-#: application/controllers/admin/Export.php:665
+#: application/controllers/admin/Export.php:675
 msgid "Export VV file"
 msgstr ""
 
-#: application/controllers/admin/Export.php:680
+#: application/controllers/admin/Export.php:690
 #: application/views/admin/export/vv_view.php:7
 #: application/views/responses/partial/topbarBtns/responsesExportDropdownItems.php:23
 msgid "Export a VV survey file"
 msgstr ""
 
-#: application/controllers/admin/Export.php:993
+#: application/controllers/admin/Export.php:1003
 msgid "Not active."
 msgstr ""
 
-#: application/controllers/admin/Export.php:1007
-#: application/controllers/admin/Export.php:1022
+#: application/controllers/admin/Export.php:1017
+#: application/controllers/admin/Export.php:1032
 msgid "Unknown error"
 msgstr ""
 
-#: application/controllers/admin/Export.php:1232
-#: application/controllers/admin/Export.php:1233
+#: application/controllers/admin/Export.php:1242
+#: application/controllers/admin/Export.php:1243
 #: application/views/admin/survey/queXMLSurvey_view.php:4
 #: application/views/admin/survey/queXMLSurvey_view.php:6
 #: application/views/admin/survey/surveybar_displayexport.php:75
@@ -5147,7 +5159,7 @@ msgstr ""
 msgid "queXML PDF export"
 msgstr ""
 
-#: application/controllers/admin/Export.php:1296
+#: application/controllers/admin/Export.php:1306
 msgid "This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys."
 msgstr ""
 
@@ -6965,7 +6977,7 @@ msgstr ""
 msgid "Backup entire database"
 msgstr ""
 
-#: application/controllers/admin/dumpdb.php:107
+#: application/controllers/admin/dumpdb.php:113
 msgid "The database is too large to be downloaded. Please consider exporting it manually using your database client."
 msgstr ""
 
@@ -7039,11 +7051,6 @@ msgstr ""
 
 #: application/controllers/survey/SurveyIndex.php:64
 msgid "The survey in which you are trying to participate does not seem to exist."
-msgstr ""
-
-#: application/controllers/survey/SurveyIndex.php:121
-#: application/core/SurveyCommonAction.php:165
-msgid "Invalid group ID"
 msgstr ""
 
 #: application/controllers/survey/SurveyIndex.php:209
@@ -15257,36 +15264,36 @@ msgstr ""
 msgid "Question type"
 msgstr ""
 
-#: application/models/QuestionGroup.php:174
+#: application/models/QuestionGroup.php:185
 msgid "Can't delete question group when the survey is active"
 msgstr ""
 
-#: application/models/QuestionGroup.php:284
+#: application/models/QuestionGroup.php:294
 msgid "Edit group"
 msgstr ""
 
-#: application/models/QuestionGroup.php:295
+#: application/models/QuestionGroup.php:305
 msgid "Add new question to group"
 msgstr ""
 
-#: application/models/QuestionGroup.php:308
+#: application/models/QuestionGroup.php:318
 #: application/views/questionGroupsAdministration/group_view.php:9
 msgid "Group summary"
 msgstr ""
 
-#: application/models/QuestionGroup.php:322
+#: application/models/QuestionGroup.php:332
 msgid "Cannot delete this group because it's the only group in the survey."
 msgstr ""
 
-#: application/models/QuestionGroup.php:325
+#: application/models/QuestionGroup.php:335
 msgid "Group can not be deleted, because of depending conditions"
 msgstr ""
 
-#: application/models/QuestionGroup.php:329
+#: application/models/QuestionGroup.php:339
 msgid "Delete question group"
 msgstr ""
 
-#: application/models/QuestionGroup.php:432
+#: application/models/QuestionGroup.php:442
 msgid "You can not add a group if survey is active."
 msgstr ""
 
@@ -17712,23 +17719,23 @@ msgstr ""
 msgid "Cannot import the VVExport file."
 msgstr ""
 
-#: application/views/admin/dumpdb/dumpdb_view.php:13
+#: application/views/admin/dumpdb/dumpdb_view.php:15
 msgid "Database size check"
 msgstr ""
 
-#: application/views/admin/dumpdb/dumpdb_view.php:15
+#: application/views/admin/dumpdb/dumpdb_view.php:17
 msgid "This check evaluates the database size to determine if an immediate download is possible or if a manual backup is necessary."
 msgstr ""
 
-#: application/views/admin/dumpdb/dumpdb_view.php:22
+#: application/views/admin/dumpdb/dumpdb_view.php:24
 msgid "Your database can be downloaded now!"
 msgstr ""
 
-#: application/views/admin/dumpdb/dumpdb_view.php:32
+#: application/views/admin/dumpdb/dumpdb_view.php:34
 msgid "Yes - download now!"
 msgstr ""
 
-#: application/views/admin/dumpdb/dumpdb_view.php:38
+#: application/views/admin/dumpdb/dumpdb_view.php:40
 msgid "Your database is too large for immediate download. Please use your database client to perform a manual backup."
 msgstr ""
 

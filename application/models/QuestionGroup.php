@@ -14,6 +14,11 @@
 *    Files Purpose: lots of common functions
 */
 
+use LimeSurvey\Models\Services\Exception\{
+    NotFoundException,
+    BadRequestException
+};
+
 /**
  * Class QuestionGroup
  *
@@ -27,12 +32,6 @@
  * @property Question[] $questions Questions without subquestions
  * @property QuestionGroupL10n[] $questiongroupl10ns
  */
-
-use LimeSurvey\Models\Services\Exception\{
-    NotFoundException,
-    PermissionDeniedException
-};
-
 class QuestionGroup extends LSActiveRecord
 {
     public $aQuestions; // to stock array of questions of the group
