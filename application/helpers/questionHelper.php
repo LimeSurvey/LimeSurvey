@@ -453,7 +453,7 @@ class questionHelper
                 100 => gT('OpenStreetMap via MapQuest', 'unescaped'),
                 1 => gT('Google Maps', 'unescaped')
             ),
-            'default' => 0,
+            'default' => '1',
             "help" => gT("Activate this to show a map above the input field where the user can select a location"),
             "caption" => gT("Use mapping service")
         );
