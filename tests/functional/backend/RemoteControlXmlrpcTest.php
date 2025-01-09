@@ -30,7 +30,6 @@ class RemoteControlXmlrpcTest extends TestBaseClassWeb
 
         $cur_path = get_include_path();
         set_include_path($cur_path . PATH_SEPARATOR . APPPATH . 'helpers');
-        require_once('Zend/XmlRpc/Client.php');
 
         self::$client = new \Zend_XmlRpc_Client($serverUrl);
     }

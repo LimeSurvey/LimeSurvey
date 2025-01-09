@@ -25,7 +25,6 @@
             <directory name="vendor" />
             <directory name="application/views" />
             <directory name="application/tests" />
-            <directory name="application/helpers/Zend" />
             <directory name="application/libraries/*/views" />
             <directory name="application/core/plugins/*/views" />
             <directory name="application/core/plugins/*/vendor" />
