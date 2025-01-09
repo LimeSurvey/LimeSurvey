@@ -91,7 +91,7 @@ echo viewHelper::getViewTestTag('login');
                             ) . " - " . $aLanguage['description'];
                         }
 
-
+                        echo '<div id="language-selector">';
                         echo CHtml::label(gT('Language'), 'loginlang');
 
                         $this->widget('yiiwheels.widgets.select2.WhSelect2', [
@@ -105,7 +105,7 @@ echo viewHelper::getViewTestTag('login');
                             ]
                         ]);
                         ?>
-
+                        </div>
                         <?php
                         if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true) { ?>
                             <p><?php

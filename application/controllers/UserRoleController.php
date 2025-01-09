@@ -50,7 +50,7 @@ class UserRoleController extends LSBaseController
         }
 
         $aData['topbar']['title'] = gT('User roles');
-        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
 
         $aData['topbar']['middleButtons'] = $this->renderPartial(
             'partials/topbarBtns/leftSideButtons',

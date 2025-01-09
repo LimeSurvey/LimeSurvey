@@ -91,7 +91,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
         ],
         'ajaxUpdate' => true,
         'ajaxType' => 'POST',
-        'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();bindListItemclick();}',
+        'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();bindListItemclick();LS.actionDropdown.create();}',
     ]
 );
 ?>
