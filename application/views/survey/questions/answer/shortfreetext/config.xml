@@ -689,7 +689,7 @@
                     <text>Google Maps</text>
                 </option>
             </options>
-            <default>0</default>
+            <default>1</default>
             <help>Activate this to show a map above the input field where the user can select a location</help>
             <caption>Use mapping service</caption>
             <i18n></i18n>
