@@ -13,7 +13,8 @@ class Zip extends \ZipArchive
      * @inheritdoc
      * @param bool $checkZipBomb If true, check for Zip Bombing
      */
-    public function open($filename, $flags = null, $checkZipBomb = true)
+    #[\ReturnTypeWillChange]
+    public function open($filename, $flags = 0, $checkZipBomb = true)
     {
         $result = parent::open($filename, $flags);
         $this->opened = ($result === true);
@@ -26,7 +27,7 @@ class Zip extends \ZipArchive
     /**
      * @inheritdoc
      */
-    public function close()
+    public function close() : bool
     {
         $result = parent::close();
         $this->opened = false;
