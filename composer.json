@@ -1,12 +1,12 @@
 {
-	"name" : "limesurvey/limesurvey",
+	"name" : "gittsurvey/gittsurvey",
 	"description" : "The most popular FOSS online survey tool on the web",
-	"homepage" : "https://www.limesurvey.org/",
+	"homepage" : "https://www.gitit-tech.com/",
 	"license": "GPL-2.0-or-later",
 	"authors" : [{
-			"name" : "LimeSurvey Team",
-			"email" : "support@limesurvey.org",
-			"homepage" : "https://www.limesurvey.org",
+			"name" : "GitIT Technologies Ltd",
+			"email" : "support@gitit-tech.com",
+			"homepage" : "https://www.gitit-tech.com",
 			"role" : "Developer"
 		}
 	],

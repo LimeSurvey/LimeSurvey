@@ -47,7 +47,7 @@ $config['rootdir'] = getcwd(); //dirname(__FILE__); // This is the physical disk
 
 
 // Site Info
-$config['sitename']           = 'LimeSurvey'; // The official name of the site (appears in the Window title)
+$config['sitename']           = 'LBS Suvey App'; // The official name of the site (appears in the Window title)
 $config['scriptname']         = 'admin.php'; // The name of the admin script
 
 $config['defaultuser']        = 'admin'; // This is the default username when LimeSurvey is installed

@@ -26,12 +26,12 @@
 return array(
     'components' => array(
         'db' => array(
-            'connectionString' => 'mysql:host=localhost;port=3306;dbname=limesurvey;',
+            'connectionString' => 'mysql:host=mysql;port=3306;dbname=surveyapp;',
             'emulatePrepare' => true,
-            'username' => 'root',
-            'password' => 'root',
+            'username' => 'surveyapp_user',
+            'password' => 'xdgjwq45-4jg',
             'charset' => 'utf8mb4',
-            'tablePrefix' => 'lime_',
+            'tablePrefix' => '',
         ),
 
         // Uncomment the following lines if you need table-based sessions.
