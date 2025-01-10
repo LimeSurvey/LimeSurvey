@@ -1748,8 +1748,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             ),
 
             'owner' => array(
-                'asc' => 'owner.users_name asc',
-                'desc' => 'owner.users_name desc',
+                'asc' => Yii::app()->getConfig('nameDisplayType')=='username'?'owner.users_name asc':'owner.full_name asc',
+                'desc' => Yii::app()->getConfig('nameDisplayType')=='username'?'owner.users_name desc':'owner.full_name desc',
             ),
 
             'anonymized_responses' => array(
@@ -2311,7 +2311,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getOwnerUserName()
     {
-        return $this->owner["users_name"] ?? "";
+        return $this->owner["displayName"] ?? "";
     }
 
     /**
