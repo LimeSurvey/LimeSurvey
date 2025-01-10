@@ -2,4 +2,4 @@ For package size reasons the TlwgTypist font to show Thai characters in the stat
 is not included with LimeSurvey.
 
 Please download it from http://linux.thai.net/projects/fonts-tlwg , 
-unzip and put the TlwgTypist.tff file into the /assets/fonts/ directory of your LimeSurvey installation.
+unzip and put the TlwgTypist.tff file into the /assets/fonts/ directory of your GititSurvey installation.

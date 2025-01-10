@@ -8538,7 +8538,7 @@ Changes from 1.91+ (build 120302) to 1.92+ (build 120303) Mar 11, 2012
 #Updated feature: min_num_value_n - now also available for multiple_numeric (tmswhite)
 
 Changes from 1.90 (build 9642) to 1.91+ (build 120302) Mar 3, 2012
-+New feature: New variable $iFileUploadTotalSpaceMB which sets the maximum space available to all file uploads in the particular LimeSurvey installation - defaults to unlimited (c_schmitz)
++New feature: New variable $iFileUploadTotalSpaceMB which sets the maximum space available to all file uploads in the particular GititSurvey installation - defaults to unlimited (c_schmitz)
 +New feature: Updated FCKeditor to CKEditor (c_schmitz)
 +New feature #4927: added SurveyGroupQuestion identifier {SGQ} as a variable for use in questions - thanks to timbee for the patch (mennodekker)
 +New feature: Added the 'showsgqacode' parameter. When this settings is true/1 (default = false/0) then the printable survey option will show a reference to the "lime_survey_12345" table which stores the survey answers.  This code will be shown in front of each question and in front of each answer option at the printable survey. It can be used as a data analysis code book for querying data from the main response table.
@@ -8573,7 +8573,7 @@ Changes from 1.90 (build 9642) to 1.91+ (build 120302) Mar 3, 2012
 +New feature: Option in survey settings to hide the progress bar. (c_schmitz)
 +New feature: Optional question index to easily jump between questions while taking the survey. Index also shows if a part of a survey was completely answered or not - great work & patch done by Yuri D'Elia (wavexx) (c_schmitz)
 +New feature: Question attribute to reverse iteration order in Array (Numbers) question types - patch by wavexx (c_schmitz)
-+New feature: Show details about LimeSurvey installation before starting the db upgrade - work done by Google Code-In participant Little Bird
++New feature: Show details about GititSurvey installation before starting the db upgrade - work done by Google Code-In participant Little Bird
 +New feature: Support for the "maximum_chars" attribute to the array/numbers question type, when using the text input layout. (c_schmitz)
 +New feature: Spread sheet type row and colum totals for Array Multi text (numbers only) (eric_t_cruiser)
 +New feature: Switching SSL on and off  (eric_t_cruiser)

@@ -175,7 +175,7 @@ class WipeCommand extends CConsoleCommand
             SureRemoveDir($sBaseUploadDir . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . 'question', false);
         } else {
             // TODO: a valid error process
-            echo 'This CLI command wipes a LimeSurvey installation clean (including all user except for the user ID 1 and user-uploaded content). For security reasons this command can only started if you add the parameter \'yes\' to the command line.';
+            echo 'This CLI command wipes an instance installation clean (including all user except for the user ID 1 and user-uploaded content). For security reasons this command can only started if you add the parameter \'yes\' to the command line.';
         }
         return 0;
     }

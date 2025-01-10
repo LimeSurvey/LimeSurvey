@@ -19,7 +19,7 @@
 # deny access to hidden files and directories without mod_rewrite
 RedirectMatch 403 ^/(?!\.well-known/)(.*/)?\.+
 
-# General setting to properly handle LimeSurvey paths
+# General setting to properly handle paths
 # AcceptPathInfo on
 
 # XSS protection

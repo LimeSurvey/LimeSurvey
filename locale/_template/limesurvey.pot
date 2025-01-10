@@ -537,7 +537,7 @@ msgid "Welcome"
 msgstr ""
 
 #: application/controllers/InstallerController.php:137
-msgid "Welcome to the LimeSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey."
+msgid "Welcome to the GititSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey."
 msgstr ""
 
 #: application/controllers/InstallerController.php:161
@@ -23047,7 +23047,7 @@ msgid "The following steps will be done by this update:"
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_welcome.php:30
-msgid "Your LimeSurvey installation is checked if the update can be run successfully."
+msgid "Your GititSurvey installation is checked if the update can be run successfully."
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_welcome.php:31
@@ -23760,7 +23760,7 @@ msgstr ""
 
 #: application/views/layouts/installer.php:23
 #: application/views/layouts/installer.php:30
-msgid "LimeSurvey installer"
+msgid "GititSurvey installer"
 msgstr ""
 
 #: application/views/layouts/partial_modals/modal_footer_cancelchange.php:10

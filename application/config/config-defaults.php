@@ -333,7 +333,7 @@ $config['showaggregateddata'] = 1;
 
 /**
 * When this settings is true/1 (default) then the standard themes that are delivered with the
-* LimeSurvey installation package are read-only. If you want to modify a theme just copy it first.
+* GititSurvey installation package are read-only. If you want to modify a theme just copy it first.
 * This prevents upgrade problems later because if you modify your standard themes you could accidenitally
 * overwrite these on a LimSurvey upgrade. Only set this to 0 if you know what you are doing.
 */
@@ -695,7 +695,7 @@ $config['showEmailInError'] = false;
 
 // === Advanced Setup
 //The following url and dir locations do not need to be modified unless you have a non-standard
-//LimeSurvey installation. Do not change unless you know what you are doing.
+//GititSurvey installation. Do not change unless you know what you are doing.
 
 // The public URL is the URL that is used for anything that is facing a survey participant.
 // It can be used to have a separation / distinction between a public URL for surveys and a private one for

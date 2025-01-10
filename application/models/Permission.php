@@ -32,7 +32,7 @@
  */
 class Permission extends LSActiveRecord
 {
-    /* @var array[]|null The global base Permission LimeSurvey installation */
+    /* @var array[]|null The global base Permission GititSurvey installation */
     protected static $aGlobalBasePermissions;
 
     /* @var array[] The already loaded survey permissions */

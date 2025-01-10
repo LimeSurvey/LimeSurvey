@@ -25,7 +25,7 @@ use Question;
  */
 class questionHelper
 {
-    /* @var array[]|null The question attribute definition for this LimeSurvey installation */
+    /* @var array[]|null The question attribute definition for this GititSurvey installation */
     protected static $attributes;
     /* @var array[] The question attribute (settings) by question type*/
     protected static $questionAttributesSettings = array();

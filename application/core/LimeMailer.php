@@ -138,7 +138,7 @@ class LimeMailer extends PHPMailer
     public function __construct($exceptions = false)
     {
         parent::__construct($exceptions);
-        /* Global configuration for ALL email of this LimeSurvey instance */
+        /* Global configuration for ALL email of this GititSurvey instance */
         $emailmethod = Yii::app()->getConfig('emailmethod');
         $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
         $emailsmtpuser = Yii::app()->getConfig("emailsmtpuser");

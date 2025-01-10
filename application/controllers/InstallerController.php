@@ -134,7 +134,7 @@ class InstallerController extends CController
         Yii::app()->session->remove('configFileWritten');
         $aData = [];
         $aData['title'] = gT('Welcome');
-        $aData['descp'] = gT('Welcome to the LimeSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey.');
+        $aData['descp'] = gT('Welcome to the GititSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey.');
         $aData['classesForStep'] = array('on', 'off', 'off', 'off', 'off', 'off');
         $aData['progressValue'] = 10;
 

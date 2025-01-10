@@ -1,6 +1,6 @@
 ---
 applications:
-- name: limesurvey
+- name: gititsurvey
   memory: 1G
   buildpack: php_buildpack
   
