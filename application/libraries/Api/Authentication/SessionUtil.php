@@ -40,7 +40,7 @@ class SessionUtil
             // This format is defined as '6' in
             // insurveytranslator_helper.php / getDateFormatData()
             'dateformat' => 6,
-            'adminlang' => 'en'
+            'adminlang' => $aUserData['lang']
         );
         foreach ($session as $k => $v) {
             $app->session[$k] = $v;

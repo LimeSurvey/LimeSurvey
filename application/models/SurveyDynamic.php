@@ -80,7 +80,7 @@ class SurveyDynamic extends LSActiveRecord
     /** @inheritdoc */
     public function tableName()
     {
-        return '{{survey_' . self::$sid . '}}';
+        return '{{responses_' . self::$sid . '}}';
     }
 
     /** @inheritdoc */
@@ -167,8 +167,9 @@ class SurveyDynamic extends LSActiveRecord
         }
         $alias = $this->getTableAlias();
 
-        $newCriteria->join = "LEFT JOIN " . $this->survey->tokensTableName . " survey_timings ON $alias.id = survey_timings.id";
-        $newCriteria->select = 'survey_timings.*'; // Otherwise we don't get records from the survey participants table
+        // @todo Bug here? timings table missing  table prefix?
+        $newCriteria->join = "LEFT JOIN " . self::$survey->tokensTableName . " timings ON $alias.id = timings.id";
+        $newCriteria->select = 'timings.*'; // Otherwise we don't get records from the survey participants table
         $newCriteria->mergeWith($criteria);
 
         return $newCriteria;
@@ -222,7 +223,7 @@ class SurveyDynamic extends LSActiveRecord
                           ELSE 0
                  END) AS cntpartial',
             );
-        $result = Yii::app()->db->createCommand()->select($select)->from('{{survey_' . $sid . '}}')->queryRow();
+        $result = Yii::app()->db->createCommand()->select($select)->from('{{responses_' . $sid . '}}')->queryRow();
         return $result;
     }
 

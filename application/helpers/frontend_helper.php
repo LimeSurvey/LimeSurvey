@@ -961,7 +961,7 @@ function initFieldArray($surveyid, array $fieldmap)
 
     foreach ($fieldmap as $key => $field) {
         if (isset($field['qid']) && $field['qid'] != '') {
-            $_SESSION['survey_' . $surveyid]['fieldnamesInfo'][$field['fieldname']]   = $field['sid'] . 'X' . $field['gid'] . 'X' . $field['qid'];
+            $_SESSION['survey_' . $surveyid]['fieldnamesInfo'][$field['fieldname']]   = 'Q' . $field['qid'];
             $_SESSION['survey_' . $surveyid]['insertarray'][]                         = $field['fieldname'];
             //fieldarray ARRAY CONTENTS -
             //            [0]=questions.qid,
@@ -977,7 +977,7 @@ function initFieldArray($surveyid, array $fieldmap)
             //            [9]=used in group.php for question count
             //            [10]=new group id for question in randomization group (GroupbyGroup Mode)
 
-            if (!isset($_SESSION['survey_' . $surveyid]['fieldarray'][$field['sid'] . 'X' . $field['gid'] . 'X' . $field['qid']])) {
+            if (!isset($_SESSION['survey_' . $surveyid]['fieldarray']['Q' . $field['qid']])) {
                 //JUST IN CASE : PRECAUTION!
                 //following variables are set only if $style=="full" in createFieldMap() in common_helper.
                 //so, if $style = "short", set some default values here!
@@ -1011,8 +1011,8 @@ function initFieldArray($surveyid, array $fieldmap)
                                     $usedinconditions = 'N';
                 }
 
-                $_SESSION['survey_' . $surveyid]['fieldarray'][$field['sid'] . 'X' . $field['gid'] . 'X' . $field['qid']] = array($field['qid'],
-                $field['sid'] . 'X' . $field['gid'] . 'X' . $field['qid'],
+                $_SESSION['survey_' . $surveyid]['fieldarray']['Q' . $field['qid']] = array($field['qid'],
+                'Q' . $field['qid'],
                 $title,
                 $question,
                 $field['type'],
@@ -1023,7 +1023,7 @@ function initFieldArray($surveyid, array $fieldmap)
             }
 
             if (isset($field['random_gid'])) {
-                $_SESSION['survey_' . $surveyid]['fieldarray'][$field['sid'] . 'X' . $field['gid'] . 'X' . $field['qid']][10] = $field['random_gid'];
+                $_SESSION['survey_' . $surveyid]['fieldarray']['Q' . $field['qid']][10] = $field['random_gid'];
             }
         }
     }

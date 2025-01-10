@@ -709,7 +709,7 @@ class Statistics extends SurveyCommonAction
                         $fresults = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid'  AND scale_id = 1", 'question_order, title');
                         foreach ($results as $row1) {
                             foreach ($fresults as $row2) {
-                                $summary[] = $iSurveyId . 'X' . $row['gid'] . 'X' . $row['qid'] . $row1['title'] . '_' . $row2['title'];
+                                $summary[] = 'Q' . $row['qid'] . $row1['title'] . '_' . $row2['title'];
                             }
                         }
                     }
@@ -719,8 +719,8 @@ class Statistics extends SurveyCommonAction
                     $qid = $row['qid'];
                     $results = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid' ", 'question_order, title');
                     foreach ($results as $row1) {
-                        $summary[] = $iSurveyId . 'X' . $row['gid'] . 'X' . $row['qid'] . $row1['title'] . '#0';
-                        $summary[] = $iSurveyId . 'X' . $row['gid'] . 'X' . $row['qid'] . $row1['title'] . '#1';
+                        $summary[] = 'Q' . $row['qid'] . $row1['title'] . '#0';
+                        $summary[] = 'Q' . $row['qid'] . $row1['title'] . '#1';
                     }
 
                     break;
@@ -731,7 +731,7 @@ class Statistics extends SurveyCommonAction
                     $count = count($results);
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
                     for ($i = 1; $i <= $count; $i++) {
-                        $summary[] = $type . $iSurveyId . 'X' . $row['gid'] . 'X' . $row['qid'] . '-' . $i;
+                        $summary[] = 'Q' . $row['qid'] . '-' . $i;
                     }
                     break;
 
@@ -746,7 +746,7 @@ class Statistics extends SurveyCommonAction
                     $qid = $row['qid'];
                     $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' ", 'question_order');
                     foreach ($results as $row1) {
-                        $summary[] = $iSurveyId . 'X' . $row['gid'] . 'X' . $row['qid'] . $row1['title'];
+                        $summary[] = 'Q' . $row['qid'] . $row1['title'];
                     }
                     break;
 
@@ -756,7 +756,7 @@ class Statistics extends SurveyCommonAction
                 case Question::QT_S_SHORT_FREE_TEXT:
                 case Question::QT_T_LONG_FREE_TEXT: // Long free text
                 case Question::QT_N_NUMERICAL:
-                    $summary[] = $type . $iSurveyId . 'X' . $row['gid'] . 'X' . $row['qid'];
+                    $summary[] = 'Q' . $row['qid'];
                     break;
 
                     // Not shown (else would only show 'no answer' )
@@ -772,7 +772,7 @@ class Statistics extends SurveyCommonAction
 
 
                 default:
-                    $summary[] = $iSurveyId . 'X' . $row['gid'] . 'X' . $row['qid'];
+                    $summary[] = 'Q' . $row['qid'];
                     break;
             }
         }

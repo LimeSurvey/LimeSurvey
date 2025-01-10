@@ -160,7 +160,7 @@ class RemoteControlTest extends TestBaseClass
         $this->assertEquals('19', $result, '$result = ' . json_encode($result));
 
         // Check result via database.
-        $query = sprintf('SELECT * FROM {{survey_%d}}', self::$surveyId);
+        $query = sprintf('SELECT * FROM {{responses_%d}}', self::$surveyId);
         $result = $dbo->createCommand($query)->queryAll();
         $this->assertCount(1, $result, 'Exactly one response');
         $this->assertEquals('One answer', $result[0][$sgqa], '"One answer" response');
@@ -225,7 +225,7 @@ class RemoteControlTest extends TestBaseClass
         $this->assertEquals([19 => 'deleted'], $result, '$result = ' . json_encode($result));
 
         // Check result via database.
-        $query = sprintf('SELECT * FROM {{survey_%d}}', self::$surveyId);
+        $query = sprintf('SELECT * FROM {{responses_%d}}', self::$surveyId);
         $result = $dbo->createCommand($query)->queryAll();
         $this->assertCount(1, $result, 'Exactly one response');
 

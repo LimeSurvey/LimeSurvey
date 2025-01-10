@@ -463,8 +463,7 @@ class SurveyRuntimeHelper
                     $qid             = $qa[4];
                     $qinfo           = LimeExpressionManager::GetQuestionStatus($qid);
                     $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($qid);
-                    $lastgrouparray  = explode("X", (string) $qa[7]);
-                    $lastgroup       = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
+                    $lastgroup       = 'G' . $qa[6]; // id of the last group, derived from question id
                     $lastanswer      = $qa[7];
 
                     if ($qinfo['hidden'] && $qinfo['info']['type'] != '*') {
