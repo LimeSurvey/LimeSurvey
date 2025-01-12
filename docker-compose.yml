@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  surveyapp:
+    build: .
+    container_name: surveyapp
+    ports:
+      - "8080:80" # Maps port 8080 on your host to port 80 in the container
+    volumes:
+      - ./:/var/www/html:cached
+      - surveyapp_data:/var/www/html/upload
+      - surveyapp_config:/var/www/html/application/config
+      - surveyapp_tmp:/var/www/html/tmp
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=surveyapp
+      - DB_USER=surveyapp_user
+      - DB_PASSWORD=xdgjwq45-4jg
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: surveyapp
+      MYSQL_USER: surveyapp_user
+      MYSQL_PASSWORD: xdgjwq45-4jg
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
+      interval: 10s
+      retries: 3
+
+volumes:
+  surveyapp_data:
+  surveyapp_config:
+  surveyapp_tmp:
+  mysql_data:

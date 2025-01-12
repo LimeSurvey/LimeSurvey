@@ -224,7 +224,6 @@ package-lock.json
 # Docker related files
 .dockerignore
 .Dockerfile
-docker-compose.yml
 docker/
 /geckodriver-v0.23.0-linux64.tar.gz
 /yarn.lock
