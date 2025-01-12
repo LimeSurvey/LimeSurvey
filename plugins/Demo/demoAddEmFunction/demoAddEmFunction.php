@@ -22,7 +22,7 @@ class demoAddEmFunction extends PluginBase
                 'demoAddEmFunction.doHtmlList', // Javascript function
                 $this->gT("Show a HTML list with elements"), // Description for admin
                 'string doHtmlList(arg1, arg2, ... argN)', // Extra description
-                'https://www.limesurvey.org', // Help url
+                'https://www.gitit-tech.com', // Help url
                 -1, // Number of argument , here any number, no forced
             ),
             'sayHello' => array(
@@ -30,7 +30,7 @@ class demoAddEmFunction extends PluginBase
                 'demoAddEmFunction.sayHello', // Javascript function
                 $this->gT("Say hello"), // Description for admin
                 'string sayHello(string)', // Extra description
-                'https://www.limesurvey.org', // Help url
+                'https://www.gitit-tech.com', // Help url
                 1, // Number of argument (time to make a good description of EM …
             ),
         );

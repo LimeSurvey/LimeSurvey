@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A tutorial for ls3",
   "main": "./build/lstutorial.js",
-  "author": "Markus Flür <markus.fluer@limesurvey.org>",
+  "author": "Markus Flür <markus.fluer@gitit-tech.com>",
   "license": "GPL-3.0",
   "scripts": {
     "dev": "env-cmd -e dev rollup -c",

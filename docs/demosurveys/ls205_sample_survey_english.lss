@@ -4005,7 +4005,7 @@ Please correct this or you won't be able to pass some of the Validation Tests la
     <gid><![CDATA[5]]></gid>
     <type><![CDATA[:]]></type>
     <title><![CDATA[ls1]]></title>
-    <question><![CDATA[All bugs in LimeSurvey 1.91+]]></question>
+    <question><![CDATA[All bugs in GititSurvey 1.91+]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -18247,7 +18247,7 @@ Please correct this or you won't be able to pass some of the Validation Tests la
   <rows>
    <row>
     <sid><![CDATA[82556]]></sid>
-    <admin><![CDATA[LimeSurvey Development Team]]></admin>
+    <admin><![CDATA[GititSurvey Development Team]]></admin>
     <adminemail/>
     <anonymized><![CDATA[N]]></anonymized>
     <faxto/>
@@ -18334,8 +18334,8 @@ attribute_3=Attribute 3
    <row>
     <surveyls_survey_id><![CDATA[82556]]></surveyls_survey_id>
     <surveyls_language><![CDATA[en]]></surveyls_language>
-    <surveyls_title><![CDATA[Sample LimeSurvey for 1.92+]]></surveyls_title>
-    <surveyls_description><![CDATA[This demo shows all of the question types and options available within LimeSurvey versions 1.92+  Many of the new capabilities utilize  the built-in ExpressionManager (EM), including dynamic, relevance-based, cascading, conditional branching and micro-tailoring of questions.]]></surveyls_description>
+    <surveyls_title><![CDATA[Sample GititSurvey for 1.92+]]></surveyls_title>
+    <surveyls_description><![CDATA[This demo shows all of the question types and options available within GititSurvey versions 1.92+  Many of the new capabilities utilize  the built-in ExpressionManager (EM), including dynamic, relevance-based, cascading, conditional branching and micro-tailoring of questions.]]></surveyls_description>
     <surveyls_welcometext><![CDATA[This demo shows the main capabilities of ExpressionManager, including:
 <ol>
 <li>Dynamic tailoring of question text, including real-time Assessments.  This includes access to a dozen question attributes so that you can show print-answer-like reports mid-survey</li>

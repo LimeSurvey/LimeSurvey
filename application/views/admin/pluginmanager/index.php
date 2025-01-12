@@ -5,7 +5,7 @@
  * @var $this AdminController
  *
  * @since 2015-10-02
- * @author LimeSurvey GmbH
+ * @author GititSurvey GmbH
  */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page

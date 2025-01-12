@@ -68,7 +68,7 @@ if (isset($config)) {
         $app->commandRunner->addCommands($env);
     }
 
-    // @see https://bugs.limesurvey.org/view.php?id=15500
+    // @see https://bugs.gitit-tech.com/view.php?id=15500
     Yii::import('application.helpers.ClassFactory');
     ClassFactory::registerClass('Token_', 'Token');
     ClassFactory::registerClass('Response_', 'Response');

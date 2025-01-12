@@ -3,7 +3,7 @@
 /**
  * DemoDateSetting Plugin for LimeSurvey
  * @author Denis Chenu
- * @copyright LimeSurvey <https://community.limesurvey.org/>
+ * @copyright GititSurvey <https://community.gitit-tech.com/>
  * @version 0.2.0
  * @license MIT License
  */

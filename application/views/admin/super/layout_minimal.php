@@ -31,7 +31,7 @@ if (!isset($aData['display']['endscripts']) || $aData['display']['endscripts'] !
 
 if (!Yii::app()->user->isGuest) {
     if (!isset($aData['display']['footer']) || $aData['display']['footer'] !== false) {
-        Yii::app()->getController()->getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
+        Yii::app()->getController()->getAdminFooter('http://manual.gitit-tech.com', gT('GititSurvey online manual'));
     }
 } else {
     echo '</body>

@@ -1,5 +1,5 @@
     This is at least a partial credits-file of people who helped to
-    improve Limesurvey by submitting code, translations, manuals,
+    improve GititSurvey by submitting code, translations, manuals,
     bug reports, patches or good suggestions. It is sorted by first
     name.
 

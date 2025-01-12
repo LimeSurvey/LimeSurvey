@@ -307,7 +307,7 @@
                                                                     <tr>
                                                                         <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                                                                             <div style="font-family:Open Sans, Verdana, sans-serif;font-size:18px;line-height:1.8;text-align:center;color:#000000;">
-                                                                                <mj-raw> <?= gT("Please contact your LimeSurvey administrator for your password.") ?> </mj-raw>
+                                                                                <mj-raw> <?= gT("Please contact your GititSurvey administrator for your password.") ?> </mj-raw>
                                                                             </div>
                                                                         </td>
                                                                     </tr>

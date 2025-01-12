@@ -10,7 +10,7 @@
 ?>
 <?php $urlNew = Yii::app()->createUrl("admin/update", array("update" => 'checkFiles', 'destinationBuild' => $destinationBuild, 'access_token' => $access_token)); ?>
 
-<h3 class="maintitle"><?php eT('Checking existing LimeSurvey files...'); ?></h3>
+<h3 class="maintitle"><?php eT('Checking existing GititSurvey files...'); ?></h3>
 
 <?php if ($html_from_server != "") :?>
     <div>

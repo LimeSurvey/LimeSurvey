@@ -3559,7 +3559,7 @@ Assuming you are an adult, you are {weightstatus}.]]></question>
   <rows>
    <row>
     <sid><![CDATA[167418]]></sid>
-    <admin><![CDATA[LimeSurvey Development Team]]></admin>
+    <admin><![CDATA[GititSurvey Development Team]]></admin>
     <adminemail/>
     <anonymized><![CDATA[N]]></anonymized>
     <faxto/>
@@ -3649,7 +3649,7 @@ attribute_3=Attribute 3
     <surveyls_survey_id><![CDATA[167418]]></surveyls_survey_id>
     <surveyls_language><![CDATA[en]]></surveyls_language>
     <surveyls_title><![CDATA[Tailoring Examples]]></surveyls_title>
-    <surveyls_description><![CDATA[This demo shows many of the new capabilities of LimeSurvey 1.92+ using the built-in ExpressionManager (EM), especially dynamic tailoring and conditional branching (relevance).]]></surveyls_description>
+    <surveyls_description><![CDATA[This demo shows many of the new capabilities of GititSurvey 1.92+ using the built-in ExpressionManager (EM), especially dynamic tailoring and conditional branching (relevance).]]></surveyls_description>
     <surveyls_welcometext/>
     <surveyls_endtext/>
     <surveyls_url/>

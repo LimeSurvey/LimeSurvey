@@ -1,10 +1,10 @@
 /*
     LimeSurvey
     Copyright (C) 2007-2023
-    The LimeSurvey Project Team / Patrick Teichmann
+    The GititSurvey Project Team / Patrick Teichmann
     All rights reserved.
     License: GNU/GPL License v3 or later, see LICENSE.php
-    LimeSurvey is free software. This version may have been modified pursuant
+    GititSurvey is free software. This version may have been modified pursuant
     to the GNU General Public License, and as distributed it includes or
     is derivative of works licensed under the GNU General Public License or
     other free or open source software licenses.
@@ -278,7 +278,7 @@ exports.TemplateCoreClass = void 0;
 var _old_template_core_pre = require("./old_template_core_pre.js");
 /**
  * @file Default template functionnality
- * @copyright LimeSurvey <http://www.limesurvey.org>
+ * @copyright GititSurvey <http://www.gitit-tech.com>
  * @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-v3-or-Later
  */
 
@@ -380,7 +380,7 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
     /**
      * Hide/show question if all subquestions is hidden
      * @see assets/survey_themes/fruity_twentythree/core/old_template_core_pre.js:triggerEmRelevanceSubQuestion
-     * @see https://bugs.limesurvey.org/view.php?id=10055 (partial)
+     * @see https://bugs.gitit-tech.com/view.php?id=10055 (partial)
      * Must be before ready (event happen before ready)
      */
     hideQuestionWithRelevanceSubQuestion: function hideQuestionWithRelevanceSubQuestion() {
@@ -410,7 +410,7 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
     /**
      * Hide/show parent multiple list
      * @see assets/survey_themes/fruity_twentythree/core/old_template_core_pre.js:triggerEmRelevanceSubQuestion
-     * @see https://bugs.limesurvey.org/view.php?id=11787
+     * @see https://bugs.gitit-tech.com/view.php?id=11787
      * Must be before ready (event happen before ready)
      */
     hideMultipleColumn: function hideMultipleColumn() {
@@ -474,7 +474,7 @@ exports.updateRepeatHeading = updateRepeatHeading;
 /**
  * @file Javascript core function for public survey
  * @description loaded before template javascript : allow template to use own function (if function is called after template.js)
- * @copyright LimeSurvey <http://www.limesurvey.org/>
+ * @copyright GititSurvey <http://www.gitit-tech.com/>
  * @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-v3-or-Later
  */
 
@@ -1019,10 +1019,10 @@ window.ArrayScripts = ArrayScripts;
 /*
     LimeSurvey
     Copyright (C) 2007-2023
-    The LimeSurvey Project Team / Patrick Teichmann
+    The GititSurvey Project Team / Patrick Teichmann
     All rights reserved.
     License: GNU/GPL License v3 or later, see LICENSE.php
-    LimeSurvey is free software. This version may have been modified pursuant
+    GititSurvey is free software. This version may have been modified pursuant
     to the GNU General Public License, and as distributed it includes or
     is derivative of works licensed under the GNU General Public License or
     other free or open source software licenses.

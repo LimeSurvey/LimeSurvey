@@ -2,10 +2,10 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2011 The GititSurvey Project Team / Carsten Schmitz
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
+* GititSurvey is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
@@ -115,7 +115,7 @@ class AdminController extends LSYii_Controller
         $sOutput .= '</div>' . "\n";
         echo $sOutput;
 
-        $this->getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
+        $this->getAdminFooter('http://manual.gitit-tech.com', gT('GititSurvey online manual'));
 
         Yii::app()->end();
     }

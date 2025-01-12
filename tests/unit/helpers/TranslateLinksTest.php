@@ -25,21 +25,21 @@ class TranslateLinksTest extends TestBaseClass
         $this->assertEmpty($link);
 
         //Old survey ID should be in the link string
-        $linkString = 'https://limesurvey.org/upload/surveys/111111/files/file.ext';
+        $linkString = 'https://gitit-tech.com/upload/surveys/111111/files/file.ext';
 
         $link = translateLinks('survey', '333333', '444444', $linkString);
 
         $this->assertEquals($link, $linkString);
 
         //Link string should point to labels, not to surveys
-        $linkString = 'https://limesurvey.org/upload/surveys/111111/files/file.ext';
+        $linkString = 'https://gitit-tech.com/upload/surveys/111111/files/file.ext';
 
         $link = translateLinks('label', '111111', '222222', $linkString);
 
         $this->assertEquals($link, $linkString);
 
         //Type should be survey or label
-        $linkString = 'https://limesurvey.org/upload/surveys/111111/files/file.ext';
+        $linkString = 'https://gitit-tech.com/upload/surveys/111111/files/file.ext';
 
         $link = translateLinks('other', '111111', '222222', $linkString);
 
@@ -52,7 +52,7 @@ class TranslateLinksTest extends TestBaseClass
     public function testTranslateLabelLinks(): void
     {
         //HTTP only
-        $linkString = 'http://limesurvey.org/upload/labels/111111/files/file.ext';
+        $linkString = 'http://gitit-tech.com/upload/labels/111111/files/file.ext';
 
         $link = translateLinks('label', '111111', '222222', $linkString);
 
@@ -60,7 +60,7 @@ class TranslateLinksTest extends TestBaseClass
         $this->assertEquals($link, $publicUrl);
 
         //HTTPS
-        $linkString = 'https://limesurvey.org/upload/labels/333333/files/file.ext';
+        $linkString = 'https://gitit-tech.com/upload/labels/333333/files/file.ext';
 
         $link = translateLinks('label', '333333', '444444', $linkString);
 
@@ -90,7 +90,7 @@ class TranslateLinksTest extends TestBaseClass
     public function testTranslateSurveyLinks(): void
     {
         //HTTP only
-        $linkString = 'http://limesurvey.org/lime_survey/upload/surveys/111111/files/file.ext';
+        $linkString = 'http://gitit-tech.com/lime_survey/upload/surveys/111111/files/file.ext';
 
         $link = translateLinks('survey', '111111', '222222', $linkString);
 
@@ -98,7 +98,7 @@ class TranslateLinksTest extends TestBaseClass
         $this->assertEquals($link, $publicUrl);
 
         //HTTPS
-        $linkString = 'https://limesurvey.org/upload/surveys/333333/files/file.ext';
+        $linkString = 'https://gitit-tech.com/upload/surveys/333333/files/file.ext';
 
         $link = translateLinks('survey', '333333', '444444', $linkString);
 

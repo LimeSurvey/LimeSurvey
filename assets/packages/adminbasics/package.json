@@ -1,7 +1,7 @@
 {
   "name": "adminbasics",
   "license": "GPL-3.0",
-  "author": "LimeSurvey DevTeam",
+  "author": "GititSurvey DevTeam",
   "scripts": {
     "dev": "node_modules/.bin/env-cmd -e dev rollup -c",
     "prod": "node_modules/.bin/env-cmd -e prod rollup -c",

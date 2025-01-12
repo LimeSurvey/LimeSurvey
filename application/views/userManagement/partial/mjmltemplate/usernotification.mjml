@@ -84,7 +84,7 @@
         <mj-column>
           <mj-text align="center">
             <mj-raw>
-              <?=gT("Please contact your LimeSurvey administrator for your password")?>
+              <?=gT("Please contact your GititSurvey administrator for your password")?>
             </mj-raw>
           </mj-text>
         </mj-column>

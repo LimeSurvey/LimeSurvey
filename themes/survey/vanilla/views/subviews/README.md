@@ -1,5 +1,5 @@
-![LimeSurvey Logo](https://account.limesurvey.org/images/logos/logo_main.png)
-# LimeSurvey Bootstrap Vanilla Survey Theme
+![GititSurvey Logo](https://account.gitit-tech.com/images/logos/logo_main.png)
+# GititSurvey Bootstrap Vanilla Survey Theme
 
 ## subviews directory
 The subview directory contains only subdirectories.
@@ -24,7 +24,7 @@ If you're creating a template from scratch, there is no obligation to respect th
     *Those subviews are hard included in other views. So if you create a template from scratch, you can named them as you want (or you can even not create them at all)*
 
 * printanswers/
-    The views to print the survey. In future version of LimeSurvey (3.5 or 4.x ) The subfolder "question_type" will not exist anymore, and each question theme will have its own view for the print rendering.
+    The views to print the survey. In future version of GititSurvey (3.5 or 4.x ) The subfolder "question_type" will not exist anymore, and each question theme will have its own view for the print rendering.
     **If you create a template from scratch, you can update the content of those files, but keep the structure of that directory (file name, directories, etc)**
 
 * privacy/

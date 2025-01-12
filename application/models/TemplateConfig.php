@@ -821,8 +821,8 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['surveylistfooter']          = ' footer ';
         $aClassAndAttributes['class']['surveylistfootercont']      = '  ';
 
-        $aClassAndAttributes['attr']['surveylistfootercontpaa']    = ' href="https://www.limesurvey.org"  target="_blank" ';
-        $aClassAndAttributes['attr']['surveylistfootercontpab']    = ' href="https://www.limesurvey.org"  target="_blank" ';
+        $aClassAndAttributes['attr']['surveylistfootercontpaa']    = ' href="https://www.gitit-tech.com"  target="_blank" ';
+        $aClassAndAttributes['attr']['surveylistfootercontpab']    = ' href="https://www.gitit-tech.com"  target="_blank" ';
 
         $aClassAndAttributes['attr']['surveylistrow'] = $aClassAndAttributes['attr']['surveylistrowjumbotron'] = $aClassAndAttributes['attr']['surveylistrowdiva'] = $aClassAndAttributes['attr']['surveylistrowdivadiv'] = $aClassAndAttributes['attr']['surveylistrowdivb'] = $aClassAndAttributes['attr']['surveylistrowdivbdivul'] = '';
         $aClassAndAttributes['attr']['surveylistrowdivbdivulli'] = $aClassAndAttributes['attr']['surveylistrowdivc'] = $aClassAndAttributes['attr']['surveylistfooter'] = $aClassAndAttributes['attr']['surveylistfootercont'] = $aClassAndAttributes['class']['surveylistfootercontp'] = '';

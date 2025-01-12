@@ -38,7 +38,7 @@ if(yarnInstalled.split('\n').length < 1 ) {
     console.log("=".repeat(100));
     console.error("ERROR: yarn is not installed");
     console.log(`
-LimeSurvey uses the yarn package manager to build and manage dependancies.
+GititSurvey uses the yarn package manager to build and manage dependancies.
 To get it please visit 'https://yarnpkg.com/lang/en/' and follow the installation instructions.
 ----
 If you have installed yarn, check your PATH, or restart the console.

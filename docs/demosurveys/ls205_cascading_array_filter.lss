@@ -2221,14 +2221,14 @@
 <p>
 	<span style="text-align: left; ">They identified a bug in 1.91+ which prevented proper use of cascading array filters.&nbsp; In 1.91+, say you first pick several options from Q01 and Q02, then pick a favorite from Q04.&nbsp; If you uncheck the favorite option in Q01, that option does not disappear from Q04.</span><span style="text-align: left;">&nbsp; We also discovered the 'other' option were not being handled correctly.</span></p>
 <p>
-	<span style="text-align: left;">This survey shows that LimeSurvey 1.92 with Expression Manager makes the cascading work correctly.</span>&nbsp; It also lets us pick an 'other' option and have its label carry through to subsequent questions.&nbsp; This survey also shows that you can simultaneously use array_filter and array_filter_exclude (see question Q05).</p>
+	<span style="text-align: left;">This survey shows that GititSurvey 1.92 with Expression Manager makes the cascading work correctly.</span>&nbsp; It also lets us pick an 'other' option and have its label carry through to subsequent questions.&nbsp; This survey also shows that you can simultaneously use array_filter and array_filter_exclude (see question Q05).</p>
 ]]></surveyls_description>
     <surveyls_welcometext><![CDATA[<p>
 	This survey is based off the design of a survey courtesy of <span style="text-align: left; ">Joy Lane Research, LLC.</span></p>
 <p>
 	<span style="text-align: left; ">They identified a bug in 1.91+ which prevented proper use of cascading array filters.&nbsp; In 1.91+, say you first pick several options from Q01 and Q02, then pick a favorite from Q04.&nbsp; If you uncheck the favorite option in Q01, that option does not disappear from Q04.</span><span style="text-align: left;">&nbsp; We also discovered the 'other' option were not being handled correctly.</span></p>
 <p>
-	<span style="text-align: left;">This survey shows that LimeSurvey 1.92 with Expression Manager makes the cascading work correctly.</span>&nbsp; It also lets us pick an 'other' option and have its label carry through to subsequent questions.&nbsp; This survey also shows that you can simultaneously use array_filter and array_filter_exclude (see question Q05).</p>
+	<span style="text-align: left;">This survey shows that GititSurvey 1.92 with Expression Manager makes the cascading work correctly.</span>&nbsp; It also lets us pick an 'other' option and have its label carry through to subsequent questions.&nbsp; This survey also shows that you can simultaneously use array_filter and array_filter_exclude (see question Q05).</p>
 ]]></surveyls_welcometext>
     <surveyls_endtext/>
     <surveyls_url/>

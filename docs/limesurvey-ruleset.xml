@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <ruleset>
 
-  <description>Ruleset for LimeSurvey coding standard. Whoever has time to implement it fully, please do!</description>
+  <description>Ruleset for GititSurvey coding standard. Whoever has time to implement it fully, please do!</description>
 
   <!-- Rues are imported individually to allow for easy configuration -->
   <!-- Property names and values can be found here: http://phpmd.org/rules/index.html -->

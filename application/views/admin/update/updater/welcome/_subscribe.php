@@ -14,17 +14,17 @@ if( isset($serverAnswer->html) )
 <div class="updater-background">
     <br/>
     <p>
-    <?php eT('The LimeSurvey ComfortUpdate is a great feature to easily update to the latest version of LimeSurvey. To use it you will need an update key.');?></p><p>
+    <?php eT('The GititSurvey ComfortUpdate is a great feature to easily update to the latest version of LimeSurvey. To use it you will need an update key.');?></p><p>
         <?php
-        $aopen  = '<a href="https://account.limesurvey.org/get-your-free-comfortupdate-trial-key" target="_blank">';
+        $aopen  = '<a href="https://account.gitit-tech.com/get-your-free-comfortupdate-trial-key" target="_blank">';
         $aclose = '</a>';
         ?>
-        <?php echo sprintf(gT("You can get a free trial update key from %syour account on the limesurvey.org website%s."),$aopen, $aclose); ?>
+        <?php echo sprintf(gT("You can get a free trial update key from %syour account on the gitit-tech.com website%s."),$aopen, $aclose); ?>
         <?php
-        $aopen  = '<a href="https://account.limesurvey.org/sign-up">';
+        $aopen  = '<a href="https://account.gitit-tech.com/sign-up">';
         $aclose = '</a>';
         ?><br>
-    <?php echo sprintf(gT("If you don't have an account on limesurvey.org, please %sregister first%s."),$aopen, $aclose);?></p>
+    <?php echo sprintf(gT("If you don't have an account on gitit-tech.com, please %sregister first%s."),$aopen, $aclose);?></p>
 
     <?php
     $url = Yii::app()->createUrl('/admin/update/sa/submitkey');

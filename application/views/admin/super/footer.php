@@ -6,8 +6,8 @@
  */
 
 $systemInfos = [
-    gT('LimeSurvey version') => Yii::app()->getConfig('versionnumber'),
-    gT('LimeSurvey build') => Yii::app()->getConfig('buildnumber') == '' ? 'github' : Yii::app()->getConfig('buildnumber'),
+    gT('GititSurvey version') => Yii::app()->getConfig('versionnumber'),
+    gT('GititSurvey build') => Yii::app()->getConfig('buildnumber') == '' ? 'github' : Yii::app()->getConfig('buildnumber'),
     gT('Operating system') => php_uname(),
     gT('PHP version') => phpversion(),
     gT('Web server name') => $_SERVER['SERVER_NAME'],
@@ -53,32 +53,14 @@ $questionEditor = $questionEditor ?? false;
 <!-- Footer -->
 <footer class="container-fluid footer d-flex flex-grow-1 flex-column justify-content-end text-end">
     <div>
-        <a data-bs-toggle="tooltip" title='<?php eT("Visit our website!"); ?>' href='https://community.limesurvey.org' target='_blank'>LimeSurvey Community Edition</a>
+        <a data-bs-toggle="tooltip" title='<?php eT("Visit our website!"); ?>' href='https://community.gitit-tech.com' target='_blank'>GititSurvey</a>
         <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
             <a href="#modalSystemInformation" data-bs-toggle="modal" title="<?= gT("Get system information") ?>">
         <?php } ?>
             <?php echo $versiontitle . "  " . $versionnumber . $buildtext; ?>
             <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
             </a>
-            <?php } ?>
-
-        <!-- Support / Donate -->
-        <?php
-        $this->widget('ext.ButtonWidget.ButtonWidget', [
-            'name' => '',
-            'id' => 'donate-button',
-            'text' => gT('Donate'),
-            'icon' => 'ri-service-fill',
-            'iconPosition' => 'right',
-            'link' => 'https://donate.limesurvey.org',
-            'htmlOptions' =>
-            [
-                'class' => 'btn btn-primary btn-sm ms-4',
-                'title' => sprintf(gT("Support this project - Donate to %s!"), 'LimeSurvey'),
-                'data-bs-toggle' => 'tooltip',
-                'target' => '_blank'
-            ],
-        ]); ?>
+            <?php } ?>    
     </div>
     <!-- Help button -->
     <?php $this->renderPartial('/admin/super/help_button_dropup', ['questionEditor' => $questionEditor]); ?>

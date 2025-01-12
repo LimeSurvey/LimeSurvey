@@ -24,7 +24,7 @@ class AnswersAlphabeticalOrderTest extends TestBaseClassWeb
 
     /**
      * Check if orderig delete answers
-     * @see https://bugs.limesurvey.org/view.php?id=19208
+     * @see https://bugs.gitit-tech.com/view.php?id=19208
      */
     public function testOrderSameAnswersText()
     {
@@ -57,7 +57,7 @@ class AnswersAlphabeticalOrderTest extends TestBaseClassWeb
 
     /**
      * Test order UTF8
-     * @see https://bugs.limesurvey.org/view.php?id=19208
+     * @see https://bugs.gitit-tech.com/view.php?id=19208
      */
     public function testOrderUtf8AnswersText()
     {

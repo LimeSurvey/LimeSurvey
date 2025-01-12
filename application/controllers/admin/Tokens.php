@@ -838,7 +838,7 @@ class Tokens extends SurveyCommonAction
                 foreach ($aAdditionalAttributeFields as $attr_name => $desc) {
                     $value = $request->getPost($attr_name, '');
                     if ($desc['mandatory'] == 'Y' && trim($value) == '') {
-                        /* All this part is disable via JS, no way to submit : issue #19548 https://bugs.limesurvey.org/view.php?id=19548*/
+                        /* All this part is disable via JS, no way to submit : issue #19548 https://bugs.gitit-tech.com/view.php?id=19548*/
                         $warningString = sprintf(gT("Notice: Field '%s' (%s) was left empty, even though it is a mandatory attribute."), $desc['description'], $attr_name);
                         if ($ajax) {
                             $sOutput .= $warningString . '<br>';

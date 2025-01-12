@@ -14,10 +14,10 @@
         <title>Bootswatch</title>
         <type>theme</type>
         <creationDate>08/01/2016</creationDate>
-        <author>LimeSurvey GmbH</author>
-        <authorEmail>info@limesurvey.org</authorEmail>
-        <authorUrl>http://www.limesurvey.org</authorUrl>
-        <copyright>Copyright (C) 2005 - 2019 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <author>GititSurvey GmbH</author>
+        <authorEmail>info@gitit-tech.com</authorEmail>
+        <authorUrl>http://www.gitit-tech.com</authorUrl>
+        <copyright>Copyright (C) 2005 - 2019 GititSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
         <version>3.0</version>
         <apiVersion>3</apiVersion>
@@ -99,7 +99,7 @@
         </cssframework>
     </options>
 
-    <!-- Here datas about how LimeSurvey should load the theme -->
+    <!-- Here datas about how GititSurvey should load the theme -->
     <engine>
         <!-- If empty, bootstrap css/js files will not be loaded. In the future, we may have more engines, like foundation -->
         <cssframework>
@@ -334,7 +334,7 @@
                 <description type="data" twig="on"><![CDATA[<p>{{ gT('This is a sample survey description. It could be quite long.') }}</p><p>{{ gT("But this one isn't.") }}<p>]]></description>
                 <welcome  type="data" twig="on"><![CDATA[<p>{{ gT('Welcome to this sample survey')}} <p> <p> {{ gT('You should have a great time doing this') }} <p> ]]></welcome>
                 <therearexquestions  type="data" twig="on"><![CDATA[gT('There is 2 question in this survey'])]]></therearexquestions>
-                <surveyls_url type="data" twig="on">"https://www.limesurvey.org/"</surveyls_url>
+                <surveyls_url type="data" twig="on">"https://www.gitit-tech.com/"</surveyls_url>
                 <surveyls_urldescription type="data" twig="on"><![CDATA[ gT("Some URL description") ]]></surveyls_urldescription>
               </survey>
               <group type="core">
@@ -361,7 +361,7 @@
               <!-- Notice that the data you pass here are simple. You can't pass complex arrays inside the array, only key => value pairs.-->
               <quotas type="custom" arrayName="aQuotas">
                 <sMessage type="data" twig="on"><![CDATA[ {{ gT("Sorry your responses have exceeded a quota on this survey.") }} ]]></sMessage>
-                <sUrl type="data">http://limesurvey.org</sUrl>
+                <sUrl type="data">http://gitit-tech.com</sUrl>
                 <sUrlDescription type="data" twig="on"><![CDATA[ {{ gT("End url") }} ]]></sUrlDescription>
                 <bShowNavigator type="data">false</bShowNavigator>
               </quotas>

@@ -3,7 +3,7 @@
 namespace ls\tests;
 
 /**
- * Tests for the LimeSurvey remote API.
+ * Tests for the GititSurvey remote API.
  */
 class RemoteControlGetUploadedFilesTest extends TestBaseClass
 {

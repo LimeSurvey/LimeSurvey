@@ -18,7 +18,7 @@ import {
 
 /**
  * @file Default template functionnality
- * @copyright LimeSurvey <http://www.limesurvey.org>
+ * @copyright GititSurvey <http://www.gitit-tech.com>
  * @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-v3-or-Later
  */
 
@@ -125,7 +125,7 @@ export var TemplateCoreClass = function () {
         /**
          * Hide/show question if all subquestions is hidden
          * @see assets/survey_themes/fruity_twentythree/core/old_template_core_pre.js:triggerEmRelevanceSubQuestion
-         * @see https://bugs.limesurvey.org/view.php?id=10055 (partial)
+         * @see https://bugs.gitit-tech.com/view.php?id=10055 (partial)
          * Must be before ready (event happen before ready)
          */
         hideQuestionWithRelevanceSubQuestion: function () {
@@ -155,7 +155,7 @@ export var TemplateCoreClass = function () {
         /**
          * Hide/show parent multiple list
          * @see assets/survey_themes/fruity_twentythree/core/old_template_core_pre.js:triggerEmRelevanceSubQuestion
-         * @see https://bugs.limesurvey.org/view.php?id=11787
+         * @see https://bugs.gitit-tech.com/view.php?id=11787
          * Must be before ready (event happen before ready)
          */
         hideMultipleColumn: function () {

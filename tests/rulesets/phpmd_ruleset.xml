@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="LimeSurvey PHPMD Extension ruleset">
+<ruleset name="GititSurvey PHPMD Extension ruleset">
     <rule ref="rulesets/unusedcode.xml/UnusedPrivateField" />
     <rule ref="rulesets/unusedcode.xml/UnusedLocalVariable">
         <properties>

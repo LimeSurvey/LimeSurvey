@@ -1,5 +1,5 @@
-![LimeSurvey Logo](https://account.limesurvey.org/images/logos/logo_main.png)
-# LimeSurvey Bootstrap Vanilla Survey Theme
+![GititSurvey Logo](https://account.gitit-tech.com/images/logos/logo_main.png)
+# GititSurvey Bootstrap Vanilla Survey Theme
 
 ## content directory
 
@@ -31,4 +31,4 @@ Here are the subviews to render the content. Most of them corresponds to the old
 If you're creating a template from scratch, you're free to place the content views where ever you want. Just update the definition of sViewContent in layout_global.
 **But you must keep the filename as they are.**
 
-Please, contact LimeSurvey team if you think a file name should be changed.
+Please, contact GititSurvey team if you think a file name should be changed.

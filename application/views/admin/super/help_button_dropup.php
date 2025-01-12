@@ -7,22 +7,22 @@
             <span class="dropdown-header"><?php eT("Useful resources") ?></span>
         </li>
         <li>
-            <a class="dropdown-item" href="https://help.limesurvey.org/portal/en/home" target="_blank"><?php eT("Help center") ?></a>
+            <a class="dropdown-item" href="https://help.gitit-tech.com/portal/en/home" target="_blank"><?php eT("Help center") ?></a>
         </li>
         <li>
-            <a class="dropdown-item" href="https://translate.limesurvey.org/projects/" target="_blank"><?php eT("Help translating") ?></a>
+            <a class="dropdown-item" href="https://translate.gitit-tech.com/projects/" target="_blank"><?php eT("Help translating") ?></a>
         </li>
         <li>
-            <a class="dropdown-item" href="https://forums.limesurvey.org" target="_blank"><?php eT("Support forum") ?></a>
+            <a class="dropdown-item" href="https://forums.gitit-tech.com" target="_blank"><?php eT("Support forum") ?></a>
         </li>
         <li>
-            <a class="dropdown-item" href="https://community.limesurvey.org/releases/" target="_blank"><?php eT("Release notes") ?></a>
+            <a class="dropdown-item" href="https://community.gitit-tech.com/releases/" target="_blank"><?php eT("Release notes") ?></a>
         </li>
         <li>
-            <a class="dropdown-item" href="https://www.limesurvey.org/legal-notice" target="_blank"><?php eT("Legal information") ?></a>
+            <a class="dropdown-item" href="https://www.gitit-tech.com/legal-notice" target="_blank"><?php eT("Legal information") ?></a>
         </li>
         <li>
-            <a class="dropdown-item" href="mailto:info@limesurvey.org"><?php eT("Contact") ?></a>
+            <a class="dropdown-item" href="mailto:info@gitit-tech.com"><?php eT("Contact") ?></a>
         </li>
     </ul>
 </div>

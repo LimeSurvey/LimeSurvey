@@ -90,7 +90,7 @@
         </attribute>
     </attributes>
 
-    <!-- Here datas about how LimeSurvey should load the core js/css of the question -->
+    <!-- Here datas about how GititSurvey should load the core js/css of the question -->
     <engine>
         <load_core_css>true</load_core_css>
         <load_core_js>true</load_core_js>

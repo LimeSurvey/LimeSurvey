@@ -1916,7 +1916,7 @@ function killSurveySession($iSurveyID)
 
     //  unsetting LEMsingleton from session so new survey execution would start with new LEM instance
     //  SetDirtyFlag() method doesn't reset LEM properly
-    //  this solution fixes bug: https://bugs.limesurvey.org/view.php?id=10162
+    //  this solution fixes bug: https://bugs.gitit-tech.com/view.php?id=10162
     unset($_SESSION["LEMsingleton"]);
 }
 

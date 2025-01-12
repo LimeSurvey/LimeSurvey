@@ -443,7 +443,7 @@ class TemplateManifest extends TemplateConfiguration
         "<p>" . gT('Welcome to this sample survey') . "<p>" .
         "<p>" . gT('You should have a great time doing this') . "<p>";
         $thissurvey['therearexquestions'] = gT('There is 1 question in this survey');
-        $thissurvey['surveyls_url'] = "https://www.limesurvey.org/";
+        $thissurvey['surveyls_url'] = "https://www.gitit-tech.com/";
         $thissurvey['surveyls_urldescription'] = gT("Some URL description");
 
         return $thissurvey;

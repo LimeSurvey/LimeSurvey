@@ -61,7 +61,7 @@ gT('Themes');
                         <h5
                             class="modal-title"
                             id="welcome-modal-title"
-                        ><?php echo sprintf(gT("Welcome to %s!"), 'LimeSurvey'); ?></h5>
+                        ><?php echo sprintf(gT("Welcome to %s!"), 'GititSurvey'); ?></h5>
                         <button
                             type="button"
                             class="btn-close"
@@ -143,7 +143,7 @@ gT('Themes');
                 <div class='row'>
                     <div class='col-12'>" .
                 gT('You are using Microsoft Internet Explorer.') . "<br/><br/>" .
-                gT('LimeSurvey 3.x or newer does not support Internet Explorer for the LimeSurvey administration, anymore. However most of the functionality should still work.') . "<br/>" .
+                gT('GititSurvey 3.x or newer does not support Internet Explorer for the GititSurvey administration, anymore. However most of the functionality should still work.') . "<br/>" .
                 gT('If you have any issues, please try using a modern browser first, before reporting it.') .
                 "</div>
                 </div>";

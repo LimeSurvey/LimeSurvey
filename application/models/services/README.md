@@ -9,6 +9,6 @@ The newly added service classes are expected to have a higher quality than older
 * MessDetector might be used to enforce maximum class and method length
 * A [dependency injection container](https://www.yiiframework.com/doc/guide/2.0/en/concept-di-container) will be used to coordinate dependencies in the future
 
-For more information, please read the [code quality guide](https://manual.limesurvey.org/Code_quality_guide).
+For more information, please read the [code quality guide](https://manual.gitit-tech.com/Code_quality_guide).
 
 Discussions about code quality guidelines can be had on the forum.

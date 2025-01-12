@@ -6,10 +6,10 @@ steps: [
         backdrop: true,
         path: filterUrl('index'),
         container: '#in_survey_common_action',
-        title: 'Welcome to LimeSurvey!',
+        title: 'Welcome to GititSurvey!',
         placement: 'bottom',
-        content: `<p>This tour will help you get a hold of LimeSurvey.</p>
-        <p>We know that LimeSurvey may be hard to use at the beginning, that's why we would like to help with a quick tour through the most essential functions and features</p>
+        content: `<p>This tour will help you get a hold of GititSurvey.</p>
+        <p>We know that GititSurvey may be hard to use at the beginning, that's why we would like to help with a quick tour through the most essential functions and features</p>
         `,                    
         redirect:  false
 
@@ -18,7 +18,7 @@ steps: [
         element: '.selector__lstour--mainfunctionboxes',
         path: filterUrl('index'),
         title: 'The basic functions',
-        content: `The three top boxes are the most basic functions of LimeSurvey.
+        content: `The three top boxes are the most basic functions of GititSurvey.
         <p>From left to right it should be "Create survey", "List surveys" and "Global settings"
         At best we start by creating a survey.</p>
         <p>Click on Create survey or Next in this box</p>`,
@@ -121,7 +121,7 @@ steps: [
         title: 'The top-bar',
         content: `<p>This is the top bar.</p>
         <p>This bar will change, as you move through the functionalities. 
-        In this view it contains the most important LimeSurvey functionalities, like activating and previewing the survey</p>
+        In this view it contains the most important GititSurvey functionalities, like activating and previewing the survey</p>
         <p>An advanced user may even create custom menues and entries here.</p>`,
         redirect: false 
     },
@@ -228,7 +228,7 @@ steps: [
         backdrop: true,
         placement: 'left',
         title: 'Set your questions type.',
-        content: `<p>LimeSurvey offers you a lot of different question types.</p>
+        content: `<p>GititSurvey offers you a lot of different question types.</p>
         <p>The example question created for you as well as the deault setting is the 'Long free text'-type.
         This type will create a big text input for your participants.</p>
         <p class="alert bg-success"><b>Please select the 'Array'-type.</b></p>`,

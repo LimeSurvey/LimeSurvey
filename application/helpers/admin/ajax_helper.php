@@ -6,7 +6,7 @@ namespace ls\ajax;
  * Ajax helper
  * This class will help to standardize the Ajax communication
  * between server and client.
- * See the manual page for more info: https://www.limesurvey.org/manual/Backend_Ajax_protocol
+ * See the manual page for more info: https://www.gitit-tech.com/manual/Backend_Ajax_protocol
  *
  * @since 2016-09-27
  * @author Olle Härstedt

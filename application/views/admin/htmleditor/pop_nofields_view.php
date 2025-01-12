@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
 <html>
     <head>
-        <title>LimeSurvey <?php eT('HTML editor'); ?></title>
+        <title>GititSurvey <?php eT('HTML editor'); ?></title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="robots" content="noindex, nofollow" />
         <?php
@@ -12,7 +12,7 @@
 
     <body>
         <div class="maintitle">
-            LimeSurvey <?php eT('HTML editor'); ?>
+            GititSurvey <?php eT('HTML editor'); ?>
         </div>
         <hr />
 

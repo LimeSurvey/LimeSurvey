@@ -28,7 +28,7 @@ background-color:lightyellow;
 
 
 /**
- * Workaround for https://bugs.limesurvey.org/view.php?id=18250
+ * Workaround for https://bugs.gitit-tech.com/view.php?id=18250
  */
 .main-content-container {
     overflow-x: visible;

@@ -510,7 +510,7 @@ class PluginManager extends \CApplicationComponent
                 if (
                     !$record->getLoadError()
                     // NB: Authdb is hardcoded since updating sometimes causes error.
-                    // @see https://bugs.limesurvey.org/view.php?id=15908
+                    // @see https://bugs.gitit-tech.com/view.php?id=15908
                     || $record->name == 'Authdb'
                 ) {
                     $this->loadPlugin($record->name, $record->id);

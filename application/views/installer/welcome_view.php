@@ -37,11 +37,11 @@
 
     <div class="col-md-3">
         <div class="thumbnail" style="padding: 1em;">
-            <img class="rounded mx-auto d-block m-3" style="width: 50%;" src="<?php echo Yii::app()->baseUrl; ?>/installer/images/cloud-logo.svg" alt="LimeSurvey Cloud Logo">
+            <img class="rounded mx-auto d-block m-3" style="width: 50%;" src="<?php echo Yii::app()->baseUrl; ?>/installer/images/cloud-logo.svg" alt="GititSurvey Cloud Logo">
             <div class="caption">
-                <h3>LimeSurvey Cloud</h3>
+                <h3>GititSurvey Cloud</h3>
                 <p>
-                    <?= sprintf(gT("Subscribe to our %sLimeSurvey Cloud%s hosting and get:"), "<a target='_blank' href='https://www.limesurvey.org/'>", "</a>"); ?>
+                    <?= sprintf(gT("Subscribe to our %sLimeSurvey Cloud%s hosting and get:"), "<a target='_blank' href='https://www.gitit-tech.com/'>", "</a>"); ?>
                     <ul>
                         <li><?= gT("Great performance"); ?></li>
                         <li><?= gT("Automatic updates"); ?></li>
@@ -50,7 +50,7 @@
                     </ul>
                 </p>
                 <p class="text-center d-grid gap-2">
-                    <a href="https://www.limesurvey.org/pricing/" class="btn btn-primary btn-block" role="button" target="_blank">
+                    <a href="https://www.gitit-tech.com/pricing/" class="btn btn-primary btn-block" role="button" target="_blank">
                         <?= gT("Try now"); ?>
                     </a>
                 </p>

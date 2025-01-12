@@ -2,10 +2,10 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013 The GititSurvey Project Team / Carsten Schmitz
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
+ * GititSurvey is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
@@ -338,7 +338,7 @@ class Permission extends LSActiveRecord
 
         foreach ($aFilteredPermissions as $sPermissionname => $aPermission) {
             /* @todo : review this : any user with security update can delete or add any other permission, must be limited to own permission */
-            /* @see https://bugs.limesurvey.org/view.php?id=14551 */
+            /* @see https://bugs.gitit-tech.com/view.php?id=14551 */
             /* Move to : search or create, and update after */
             if ($aPermission['create'] || $aPermission['read'] || $aPermission['update'] || $aPermission['delete'] || $aPermission['import'] || $aPermission['export']) {
                 $data = array(
@@ -434,7 +434,7 @@ class Permission extends LSActiveRecord
     /**
      * Give all permission of a specific user without permission control of current user
      * Used when create survey
-     * @see mantis #16967: https://bugs.limesurvey.org/view.php?id=16967
+     * @see mantis #16967: https://bugs.gitit-tech.com/view.php?id=16967
      * @param integer $iUserID
      * @param integer $iSurveyID
      */

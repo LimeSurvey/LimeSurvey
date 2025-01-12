@@ -10,13 +10,13 @@
 <?php
 if (!isset( Yii::app()->session['updateinfo']))
 {
-	eT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
+	eT('On requesting the update information from gitit-tech.com there has been an error:').'<br />';
 	if ($updateinfo['error']==1)
     {
         eT('Your update key is invalid and was removed. ').'<br />';
     }
     else
-	    eT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
+	    eT('On requesting the update information from gitit-tech.com there has been an error:').'<br />';
 }
 
 if ($new_files)

@@ -4526,7 +4526,7 @@ function do_array_dual($ia)
     $sQuery         = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10ns}} l  ON l.qid=q.qid WHERE parent_qid=" . $ia[0] . " and scale_id=0 AND question like '%|%|%'";
     $centerCount    = Yii::app()->db->createCommand($sQuery)->queryScalar();
     $centerexists   = ($centerCount > 0); // $center_exists: flag to find out if there are any center hand answer parts. leaving center column but don't force with
-    /* Then always set to false : see bug https://bugs.limesurvey.org/view.php?id=11750 */
+    /* Then always set to false : see bug https://bugs.gitit-tech.com/view.php?id=11750 */
     //~ $rightexists=false;
     //~ $centerexists=false;
     // Label and code for input

@@ -31,7 +31,7 @@
                                         'uid' => $oUser->uid
                                     ]
                                 ); ?>
-                                <?php /* @see https://bugs.limesurvey.org/view.php?id=16792 */ ?>
+                                <?php /* @see https://bugs.gitit-tech.com/view.php?id=16792 */ ?>
                                 <a class="btn btn-outline-secondary btn-sm" role="button"
                                    data-bs-target='#confirmation-modal' data-bs-toggle='modal'
                                    data-message='<?= gT("Are you sure you want to remove all permissions for this user?") ?>'
