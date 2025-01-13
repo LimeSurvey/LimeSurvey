@@ -51,9 +51,13 @@ class Themes extends SurveyCommonAction
             $tempdir = Yii::app()->getConfig('tempdir');
 
             $zipfile = "$tempdir/$templatename.zip";
-            Yii::app()->loadLibrary('admin.pclzip');
-            $zip = new PclZip($zipfile, false);
-            $zip->create($templatedir, PCLZIP_OPT_REMOVE_PATH, $oEditedTemplate->path);
+            $zip = new LimeSurvey\Zip();
+            $zip->open($zipfile, ZipArchive::CREATE);
+
+            $zipHelper = new LimeSurvey\Helpers\ZipHelper($zip);
+            $zipHelper->addFolder($templatedir);
+
+            $zip->close();
 
             if (is_file($zipfile)) {
                 // Send the file for download!
@@ -125,9 +129,14 @@ class Themes extends SurveyCommonAction
         $tempdir = Yii::app()->getConfig('tempdir');
 
         $zipfile = "$tempdir/$templatename.zip";
-        Yii::app()->loadLibrary('admin.pclzip');
-        $zip = new PclZip($zipfile);
-        $zip->create($templatePath, PCLZIP_OPT_REMOVE_PATH, $templatePath);
+
+        $zip = new LimeSurvey\Zip();
+        $zip->open($zipfile, ZipArchive::CREATE);
+
+        $zipHelper = new LimeSurvey\Helpers\ZipHelper($zip);
+        $zipHelper->addFolder($templatePath);
+
+        $zip->close();
 
         if (is_file($zipfile)) {
             // Send the file for download!
@@ -277,8 +286,6 @@ class Themes extends SurveyCommonAction
      */
     protected function uploadTemplate()
     {
-        App()->loadLibrary('admin.pclzip');
-
         // Redirect back if demo mode is set.
         $this->checkDemoMode();
 
@@ -374,32 +381,32 @@ class Themes extends SurveyCommonAction
 
         // TODO: Move all this to new SurveyThemeInstaller class (same as done for QuestionThemeInstaller).
         if (is_file($_FILES['the_file']['tmp_name'])) {
-            $zip = new PclZip($_FILES['the_file']['tmp_name']);
-            $aExtractResult = $zip->extract(PCLZIP_OPT_PATH, $extractDir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
+            $zipExtractor = new \LimeSurvey\Models\Services\ZipExtractor($_FILES['the_file']['tmp_name']);
+            $zipExtractor->setFilterCallback('templateExtractFilter');
 
-            if ($aExtractResult === 0) {
+            if (!$zipExtractor->extractTo($extractDir)) {
                 App()->user->setFlash('error', gT("This file is not a valid ZIP file archive. Import failed."));
                 rmdirr($destdir);
                 $this->getController()->redirect(array("admin/themes/sa/upload"));
             } else {
                 // Successfully unpacked
+                $aExtractResult = $zipExtractor->getExtractResult();
                 foreach ($aExtractResult as $sFile) {
-                    if ($sFile['status'] == 'skipped' && !$sFile['folder']) {
+                    if ($sFile['status'] == 'skipped' && !$sFile['is_folder']) {
                         $aErrorFilesInfo[] = array(
-                            "filename" => $sFile['stored_filename'],
+                            "filename" => $sFile['name'],
                         );
                     } else {
                         $aImportedFilesInfo[] = [
-                            "filename" => $sFile['stored_filename'],
+                            "filename" => $sFile['name'],
                             "status" => gT("OK"),
-                            'is_folder' => $sFile['folder']
+                            'is_folder' => $sFile['is_folder']
                         ];
                     }
-                    if ($sFile['stored_filename'] == "config.xml") {
-                        SurveyThemeHelper::checkConfigFiles($sFile['filename']);
+                    if ($sFile['name'] == "config.xml") {
+                        SurveyThemeHelper::checkConfigFiles($sFile['target_filename']);
                     }
                 }
-
                 if (Template::checkIfTemplateExists($sNewDirectoryName)) {
                     App()->user->setFlash('error', gT("Can not import a theme that already exists!"));
                     rmdirr($destdir);
@@ -1460,6 +1467,7 @@ JAVASCRIPT
     /**
      * @param ZipArchive $zip
      * @return string|null
+     * @todo Remove this? Doesn't seem to be used anymore.
      */
     public function findConfigXml(ZipArchive $zip)
     {
