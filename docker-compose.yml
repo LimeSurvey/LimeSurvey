@@ -9,7 +9,6 @@ services:
     volumes:
       - ./:/var/www/html:cached
       - surveyapp_data:/var/www/html/upload
-      - surveyapp_config:/var/www/html/application/config
       - surveyapp_tmp:/var/www/html/tmp
     environment:
       - DB_HOST=mysql
