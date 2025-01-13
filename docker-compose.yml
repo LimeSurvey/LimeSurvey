@@ -8,8 +8,6 @@ services:
       - "8080:80" # Maps port 8080 on your host to port 80 in the container
     volumes:
       - ./:/var/www/html:cached
-      - surveyapp_data:/var/www/html/upload
-      - surveyapp_tmp:/var/www/html/tmp
     environment:
       - DB_HOST=mysql
       - DB_PORT=3306
