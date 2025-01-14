@@ -9,7 +9,7 @@
 ?>
 
 <!-- admin menu bar -->
-<nav class="navbar navbar-expand-md">
+<nav class="navbar navbar-expand-md" style="background-color: #122867;">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#small-screens-menus" aria-controls="small-screens-menus" aria-expanded="false">
             <span class="navbar-toggler-icon"></span>
