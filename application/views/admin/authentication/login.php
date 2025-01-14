@@ -120,13 +120,13 @@ echo viewHelper::getViewTestTag('login');
                     <div class="col-12">
                         <p><input type='hidden' name='action' value='login' />
                             <input type='hidden' id='width' name='width' value='' />
-                            <button type="submit" class="btn btn-primary" name='login_submit' value='login'><?php
-                                                                                                            eT('Log in'); ?></button>
+                            <button type="submit"  class="btn btn-primary" name='login_submit' value='login'><?php
+                                                                                                            eT('Log in'); ?> <i class="ri ri-arrow-right-line"></i></button>
                         </p>
                         <?php
                         if (Yii::app()->getConfig("display_user_password_in_email") === true) {
                         ?>
-                            <a href='<?php
+                            <a  href='<?php
                                         echo $this->createUrl("admin/authentication/sa/forgotpassword"); ?>'><?php
                                                                                                                 eT("Forgot your password?"); ?></a><br />
                         <?php

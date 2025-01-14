@@ -55,8 +55,10 @@ gT('Themes');
         </script>
 
         <div class="modal fade" id="welcomeModal" aria-labelledby="welcome-modal-title">
+ 
             <div class="modal-dialog">
                 <div class="modal-content">
+                
                     <div class="modal-header">
                         <h5
                             class="modal-title"
@@ -76,14 +78,14 @@ gT('Themes');
                                 <ol>
                                     <li><?php echo sprintf(
                                         gT('Create a new survey by clicking on the %s icon.'),
-                                        "<i class='ri-add-circle-fill text-success'></i>"
+                                        "<i class='ri-add-circle-fill text-primary'></i>"
                                         ); ?></li>
                                     <li><?php eT('Create a new question group inside your survey.'); ?></li>
                                     <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
                                     <li><?php
                                         echo sprintf(
                                             gT('Done. Test your survey using the %s icon.'),
-                                            "<i class='ri-settings-5-fill text-success'></i>"
+                                            "<i class='ri-settings-5-fill text-primary'></i>"
                                         );
                                         ?></li>
                                 </ol>
