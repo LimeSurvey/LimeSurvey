@@ -4973,10 +4973,12 @@ function crypto_rand_secure($min, $max)
  */
 function isZipBomb($zip_filename)
 {
+    $isZipBomb = false;
     $zip = new LimeSurvey\Zip();
-    $zip->open($zip_filename, null, false);
-    $isZipBomb = $zip->isZipBomb();
-    $zip->close();
+    if ($zip->open($zip_filename, null, false) === true) {
+        $isZipBomb = $zip->isZipBomb();
+        $zip->close();
+    }
     return $isZipBomb;
 }
 
