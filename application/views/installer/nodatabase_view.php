@@ -9,4 +9,4 @@ $this->widget('ext.AlertWidget.AlertWidget', [
 <?php eT("The database you specified does not exist:"); ?>
 <br /><br />
 <strong><?= $model->dbname; ?></strong><br /><br />
-<?php eT("LimeSurvey can attempt to create this database for you.")?><br /><br />
+<?php eT("GititSurvey can attempt to create this database for you.")?><br /><br />

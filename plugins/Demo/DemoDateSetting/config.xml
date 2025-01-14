@@ -6,7 +6,7 @@
         <creationDate>2022-12-01</creationDate>
         <lastUpdate>2023-03-06</lastUpdate>
         <author>Denis Chenu</author>
-        <authorUrl>https://community.limesurvey.org/</authorUrl>
+        <authorUrl>https://community.gitit-tech.com/</authorUrl>
         <version>0.1.0</version>
         <license>MIT</license>
         <description><![CDATA[Way to save date settings.]]></description>

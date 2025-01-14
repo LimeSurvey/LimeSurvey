@@ -1336,7 +1336,7 @@ input[type="checkbox"]:checked:after,
 
 // Pulse
 $size: 2em;
-// New for LimeSurvey 4 -> colors stored in :root as variables
+// New for GititSurvey 4 -> colors stored in :root as variables
 @keyframes pulse {
     00.000% {
         box-shadow: 0 0 1em $primary;

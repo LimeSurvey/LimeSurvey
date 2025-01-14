@@ -20,14 +20,14 @@ NB: More info can be found in deleted globalsettings module: bc85197a266d44b75e8
 ###  Global presentation
 
 The first part of the module HelloWorld is a "full page module".
-Example of this kind of modules in LimeSurvey are the Global Settings page, or the label sets page, or the user account page. They are accessible via the navigation bar, or via the boxes on the home page. When we'll provide you a module uploader, you'll can set your menu / box via the module manifest. For now, you must access it via the URL or by creating a box on the home page (see: index.php?r=admin/homepagesettings ).
+Example of this kind of modules in GititSurvey are the Global Settings page, or the label sets page, or the user account page. They are accessible via the navigation bar, or via the boxes on the home page. When we'll provide you a module uploader, you'll can set your menu / box via the module manifest. For now, you must access it via the URL or by creating a box on the home page (see: index.php?r=admin/homepagesettings ).
 
 You can reach this full page helloWorld module via the URL:
 
 **index.php?r=admin/HelloWorld/**
 
 You will see:
-![Full page HelloWorld Module](https://account.limesurvey.org/images/github/full-page-hello-world-module.png)
+![Full page HelloWorld Module](https://account.gitit-tech.com/images/github/full-page-hello-world-module.png)
 
 For now, it does not require any kind of configuration.
 So if you want to create your own module, just copy/paste the HelloWorld folder, rename the folder, the controller file and the controller class to something else, and it will work out immediately.
@@ -79,7 +79,7 @@ $this->renderWrappedTemplate('HelloWorld', 'index', array(
   ));
 ```
 
-It's pretty different from the normal Yii's renderPartial. That's because LimeSurvey (sadly) doesn't use the Yii Layout system, but rather a custom layout system that is defined in SurveyCommonAction. For you to know: this has been done by the Google Team during the Google Summer Code 2014, and we hope that for LS5 we'll totally get rid of it, and we'll use a real Yii Layout (and maybe even yii3 :) )
+It's pretty different from the normal Yii's renderPartial. That's because GititSurvey (sadly) doesn't use the Yii Layout system, but rather a custom layout system that is defined in SurveyCommonAction. For you to know: this has been done by the Google Team during the Google Summer Code 2014, and we hope that for LS5 we'll totally get rid of it, and we'll use a real Yii Layout (and maybe even yii3 :) )
 
 You don't need to understand the logic in SurveyCommonAction. The only thing you need to understand is the signature of the function:
 The first parameter is the name of the directory inside your module where is the view, the second one in the name of the file of the view (without ".php"), the last one is the array of variables that will be available in the view ('foo'=> "bar" : means in your view you will have a variable called "$foo" that will contain the string "var")
@@ -106,7 +106,7 @@ You can reach this full page helloWorld module via the url:
 
 You will see:
 
-![Full page HelloWorld Module](https://account.limesurvey.org/images/github/survey-page-hello-world-module.png)
+![Full page HelloWorld Module](https://account.gitit-tech.com/images/github/survey-page-hello-world-module.png)
 
 As you can see, this module offers its own top menu bar (the button "Hello User"), and use the breadcrumb system of survey edition (survey title (654523) => HelloWorld). Again, this breadcrumb system is a home made one, it's not using the Yii one. Again, we hope that in LS5 we can use the Yii Layout + breadcrumb system. In this module, you'll see how the top menu button call an action in the controller, render a specific view, and how you can use the breadcrumb to navigate back to the module landing page.
 
@@ -156,7 +156,7 @@ Notice 2 things:
 
 1. We choose what is shown inside that bar. By convention, we always show the survey title followed by the survey id. But you can pass to it what ever you want.
 
-2. The survey title is reached via "currentLanguageSettings->surveyls_title". It's calling a the related table "surveys_languagesettings" and retrieves it's field "surveyls_title". In a simple use case, we could use the AR pattern following rules inside defined in the model. But LimeSurvey being complex, here we're calling the function Survey::getCurrentLanguageSettings(). See:
+2. The survey title is reached via "currentLanguageSettings->surveyls_title". It's calling a the related table "surveys_languagesettings" and retrieves it's field "surveyls_title". In a simple use case, we could use the AR pattern following rules inside defined in the model. But GititSurvey being complex, here we're calling the function Survey::getCurrentLanguageSettings(). See:
 https://github.com/LimeSurvey/LimeSurvey/blob/bdeeb8edc4eca6d15f219bb1642e6457c46d213b/application/models/Survey.php#L340-L353
 
 So, if you want to see what you could do with the current edited survey, we suggest you to have a look to the methods of the survey / question / question group / token / etc models. Most of the time, your modules will consist in writting data in the survey related tables.  
@@ -173,7 +173,7 @@ $aData['title_bar']['module_subaction_url'] = App()->createUrl('admin/HelloWorld
 
 module_subaction define the string that will be shown in the breadcrumb, and  module_subaction_url will define what URL it will lead too.
 
-Notice we create the URL using the yii method App()->createUrl. This is important. Remember that LimeSurvey can use get url or path url, that user can configure specific url routing in their config files. So juste use this method to generate your url, and it will always fit the specificites of the installation of the user. Remember to define the parameters in a separate array (like "['surveyid' => $oSurvey->sid]") for the same reasons.
+Notice we create the URL using the yii method App()->createUrl. This is important. Remember that GititSurvey can use get url or path url, that user can configure specific url routing in their config files. So juste use this method to generate your url, and it will always fit the specificites of the installation of the user. Remember to define the parameters in a separate array (like "['surveyid' => $oSurvey->sid]") for the same reasons.
 
 To know more about the Yii createUrl method:
 https://www.yiiframework.com/doc/api/1.1/CController#createUrl-detail
@@ -264,12 +264,12 @@ https://github.com/LimeSurvey/LimeSurvey/blob/bdeeb8edc4eca6d15f219bb1642e6457c4
 
 It says hello to the logged in user, shows unsafely the value of the URL variable "sWho" and invite the user to go back to the module landing page by clicking on the link of the breadcrumb
 
-![Full page HelloWorld Module](https://account.limesurvey.org/images/github/say-hello-user-hello-world-module.png)
+![Full page HelloWorld Module](https://account.gitit-tech.com/images/github/say-hello-user-hello-world-module.png)
 
 
 ## That's all for now !
 
-Hope that quick HelloWorld will help you to develop custom components for the LimeSurvey admin interface. For now it's very basic, but you can already do very advanced stuff. Most of the current LimeSurvey module could be moved here now. What's really missing is a way for you to create new tables and update them, a way to provide your own tranlsation files. Remember that you can already register javascript via the normal Yii methods.
+Hope that quick HelloWorld will help you to develop custom components for the GititSurvey admin interface. For now it's very basic, but you can already do very advanced stuff. Most of the current GititSurvey module could be moved here now. What's really missing is a way for you to create new tables and update them, a way to provide your own tranlsation files. Remember that you can already register javascript via the normal Yii methods.
 
 ## Comming soon
 

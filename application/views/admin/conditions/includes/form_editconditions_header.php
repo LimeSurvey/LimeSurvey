@@ -206,7 +206,7 @@
                         <div class=''>
                             <textarea name='ConditionRegexp' class='form-control' id='ConditionRegexp' rows='5' cols='113'><?php echo $EDITConditionRegexp; ?></textarea>
                             <div id='ConditionRegexpLabel'>
-                                <a href="http://manual.limesurvey.org/Using_regular_expressions" target="_blank">
+                                <a href="http://manual.gitit-tech.com/Using_regular_expressions" target="_blank">
                                     <?php eT("Regular expression"); ?>
                                 </a>
                             </div>

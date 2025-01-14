@@ -1,20 +1,20 @@
 {
-	"name" : "limesurvey/limesurvey",
-	"description" : "The most popular FOSS online survey tool on the web",
-	"homepage" : "https://www.limesurvey.org/",
+	"name" : "gittsurvey/gittsurvey",
+	"description" : "The most advanced open-source survey tool on the planet",
+	"homepage" : "https://www.gitit-tech.com/",
 	"license": "GPL-2.0-or-later",
 	"authors" : [{
-			"name" : "LimeSurvey Team",
-			"email" : "support@limesurvey.org",
-			"homepage" : "https://www.limesurvey.org",
+			"name" : "GitIT Technologies Ltd",
+			"email" : "support@gitit-tech.com",
+			"homepage" : "https://www.gitit-tech.com",
 			"role" : "Developer"
 		}
 	],
 	"support" : {
-		"wiki" : "https://manual.limesurvey.org/LimeSurvey_Manual",
-		"source" : "https://github.com/LimeSurvey/LimeSurvey",
-		"issues" : "https://community.limesurvey.org/bug-tracker/",
-		"forum" : "https://forums.limesurvey.org"
+		"wiki" : "https://manual.gitit-tech.com/",
+		"source" : "https://gitit-tech.com/",
+		"issues" : "https://community.gitit-tech.com/bug-tracker/",
+		"forum" : "https://forums.gitit-tech.com"
 	},
 	"autoload": {
 		"psr-4": {

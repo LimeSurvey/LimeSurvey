@@ -2,10 +2,10 @@
 
 /**
 * LimeSurvey
-* Copyright (C) 2007-2016 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2016 The GititSurvey Project Team / Carsten Schmitz
 * All rights reserved.
 * License: GNU/GPL License v3 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
+* GititSurvey is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
@@ -25,7 +25,7 @@ use Question;
  */
 class questionHelper
 {
-    /* @var array[]|null The question attribute definition for this LimeSurvey installation */
+    /* @var array[]|null The question attribute definition for this GititSurvey installation */
     protected static $attributes;
     /* @var array[] The question attribute (settings) by question type*/
     protected static $questionAttributesSettings = array();

@@ -271,8 +271,8 @@ class SurveyDynamic extends LSActiveRecord
      * Return the buttons columns
      * This is the button column for response table
      * @see https://www.yiiframework.com/doc/api/1.1/CButtonColumn
-     * @see https://bugs.limesurvey.org/view.php?id=14219
-     * @see https://bugs.limesurvey.org/view.php?id=14222: When deleting a single response : all page is reloaded (not only grid)
+     * @see https://bugs.gitit-tech.com/view.php?id=14219
+     * @see https://bugs.gitit-tech.com/view.php?id=14222: When deleting a single response : all page is reloaded (not only grid)
      * @return string
      */
     public function getGridButtons()

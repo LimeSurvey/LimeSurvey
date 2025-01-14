@@ -176,7 +176,7 @@ class SurveyController extends LSYii_Controller
         $aReplacementData['URL'] = $url;
 
         // Adding this to replacement data : allow to update title (for example) :
-        // @see https://bugs.limesurvey.org/view.php?id=9106 (but need more)
+        // @see https://bugs.gitit-tech.com/view.php?id=9106 (but need more)
         $aReplacementData['title'] = $error;
 
         $oSurvey = Survey::model()->findByPk($iSurveyId);

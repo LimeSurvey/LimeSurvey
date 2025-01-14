@@ -1,5 +1,5 @@
-![LimeSurvey Logo](https://account.limesurvey.org/images/logos/logo_main.png)
-# LimeSurvey Bootstrap Vanilla Survey Theme
+![GititSurvey Logo](https://account.gitit-tech.com/images/logos/logo_main.png)
+# GititSurvey Bootstrap Vanilla Survey Theme
 
 ## Survey directory
 The subviews to render the question groups and the questions.

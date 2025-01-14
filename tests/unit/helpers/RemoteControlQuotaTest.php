@@ -3,7 +3,7 @@
 namespace ls\tests;
 
 /**
- * Tests for the LimeSurvey remote API Quota methods.
+ * Tests for the GititSurvey remote API Quota methods.
  */
 class RemoteControlQuotaTest extends TestBaseClass
 {

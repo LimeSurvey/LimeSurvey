@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- More strict ruleset to use for service classes and new code in general -->
-<ruleset name="LimeSurvey PHPMD Extension ruleset">
+<ruleset name="GititSurvey PHPMD Extension ruleset">
     <rule ref="rulesets/unusedcode.xml/UnusedPrivateField" />
     <rule ref="rulesets/unusedcode.xml/UnusedLocalVariable">
         <properties>

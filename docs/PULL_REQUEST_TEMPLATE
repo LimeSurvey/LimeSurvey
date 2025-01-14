@@ -1,6 +1,6 @@
 <!-- Thank you for contributing to LimeSurvey! To make our work easier, please make sure to follow the instructions below. Thank you. -->
 
-<!-- A pull request to LimeSurvey can either be a bug fix, a new feature or an internal development fix (refactoring etc). For bug fixes and new features, you must include the number to the Mantis issue from bugs.limesurvey.org. If no issue exists yet, please create it. Make sure to write down exactly how to reproduce a bug. For smaller internal changes, a Mantis issue is not necessary, but bigger refactoring tasks should always be discussed in a Mantis issue before implementation and merge. -->
+<!-- A pull request to GititSurvey can either be a bug fix, a new feature or an internal development fix (refactoring etc). For bug fixes and new features, you must include the number to the Mantis issue from bugs.limesurvey.org. If no issue exists yet, please create it. Make sure to write down exactly how to reproduce a bug. For smaller internal changes, a Mantis issue is not necessary, but bigger refactoring tasks should always be discussed in a Mantis issue before implementation and merge. -->
 
 <!-- Fixed issues should always go to the master branch, UNLESS they fix an issue in a yet unreleased feature in the develop branch. -->
 

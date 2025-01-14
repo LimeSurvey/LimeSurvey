@@ -34,7 +34,7 @@
                     </ul>
                 </p>
                 <p class="text-center d-grid gap-2">
-                    <a href="https://community.limesurvey.org/comfort-update-extension/" class="btn btn-primary btn-block" role="button" target="_blank">
+                    <a href="https://community.gitit-tech.com/comfort-update-extension/" class="btn btn-primary btn-block" role="button" target="_blank">
                         <?= gT("Free trial"); ?>
                     </a>
                 </p>

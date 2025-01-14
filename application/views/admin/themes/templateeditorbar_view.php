@@ -135,7 +135,7 @@ $importModal = false;
             <?php
             $message = sprintf(
                 gT(
-                    'We can not guarantee optimum operation. It would be preferable to no longer use it or to make it compatible with the version %s of the LimeSurvey API.'
+                    'We can not guarantee optimum operation. It would be preferable to no longer use it or to make it compatible with the version %s of the GititSurvey API.'
                 ),
                 intval(App()->getConfig("versionnumber"))
             );

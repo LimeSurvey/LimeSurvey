@@ -24,7 +24,7 @@
  * (3) The core of ExpressionScript Engine is a Recursive Descent Parser (RDP), based off of one build via JavaCC by TMSWhite in 1999.
  *   (a) Functions that start with RDP_ should not be touched unless you really understand compiler design.
  *
- * @author LimeSurvey Team (limesurvey.org)
+ * @author LimeSurvey Team (gitit-tech.com)
  * @author Thomas M. White (TMSWhite)
  */
 
@@ -1395,8 +1395,8 @@ class ExpressionManager
         foreach ($this->GetVarsUsed() as $var) {
             /* This function wants to see the NAOK suffix (NAOK|valueNAOK|shown)
              * OR static var and Check dynamic var inside static function too
-             * see https://bugs.limesurvey.org/view.php?id=18008 for issue about sgqa and question
-             * See https://bugs.limesurvey.org/view.php?id=14818 for feature
+             * see https://bugs.gitit-tech.com/view.php?id=18008 for issue about sgqa and question
+             * See https://bugs.gitit-tech.com/view.php?id=14818 for feature
              */
             if (!preg_match("/^.*\.(NAOK|valueNAOK|shown|relevanceStatus)$/", (string) $var) &&  !preg_match("/^.*\.(" . $this->getRegexpStaticValidAttributes() . ")$/", (string) $var)) {
                 if ($this->GetVarAttribute($var, 'jsName', '') != '') {
@@ -1747,7 +1747,7 @@ class ExpressionManager
     /**
      * Reset current warnings
      * @see Related issue #15547: Invalid error count on Survey Logic file for subquestion relevance
-     * @link https://bugs.limesurvey.org/view.php?id=15547
+     * @link https://bugs.gitit-tech.com/view.php?id=15547
      * ProcessBooleanExpression didn't reset RDP_errors anb RDP_warnings, need a way to reset for Survey logic checking
      * @return void
      */
@@ -1758,8 +1758,8 @@ class ExpressionManager
 
     /**
      * Reset current errors
-     * @see Related issue #16738: https://bugs.limesurvey.org/view.php?id=16738
-     * @link https://bugs.limesurvey.org/view.php?id=16738
+     * @see Related issue #16738: https://bugs.gitit-tech.com/view.php?id=16738
+     * @link https://bugs.gitit-tech.com/view.php?id=16738
      * ProcessBooleanExpression didn't reset RDP_errors anb RDP_warnings, need a way to reset for Survey logic checking
      * @return void
      */
@@ -3016,7 +3016,7 @@ function exprmgr_int($arg)
         $arg = preg_replace("/\.$/", "", rtrim(strval($arg), "0"));
     }
     // Allow 000 for value
-    // Disallow '' (and false) @link https://bugs.limesurvey.org/view.php?id=17950
+    // Disallow '' (and false) @link https://bugs.gitit-tech.com/view.php?id=17950
     return (preg_match("/^-?\d+$/", $arg));
 }
 

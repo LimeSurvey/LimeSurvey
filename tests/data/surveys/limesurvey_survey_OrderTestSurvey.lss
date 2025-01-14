@@ -360,7 +360,7 @@
     <id><![CDATA[1236]]></id>
     <qid><![CDATA[1037]]></qid>
     <question/>
-    <help><![CDATA[<a href="https://bugs.limesurvey.org/view.php?id=19206">Issue 19206: alphabetical order can be bad with utf8 caracter</a>
+    <help><![CDATA[<a href="https://bugs.gitit-tech.com/view.php?id=19206">Issue 19206: alphabetical order can be bad with utf8 caracter</a>
 ]]></help>
     <language><![CDATA[es]]></language>
     <script/>
@@ -377,7 +377,7 @@
     <id><![CDATA[3521]]></id>
     <qid><![CDATA[1304]]></qid>
     <question><![CDATA[Multiple same answers ]]></question>
-    <help><![CDATA[<a href="https://bugs.limesurvey.org/view.php?id=19208">Issue 19208: alphabetical order delete answers</a>]]></help>
+    <help><![CDATA[<a href="https://bugs.gitit-tech.com/view.php?id=19208">Issue 19208: alphabetical order delete answers</a>]]></help>
     <language><![CDATA[es]]></language>
     <script/>
    </row>

@@ -20,14 +20,14 @@
     App()->getClientScript()->registerScript('installer', $script);
     ?>
     <link rel="icon" href="<?php echo Yii::app()->baseUrl; ?>/images/favicon.ico"/>
-    <title><?php eT("LimeSurvey installer"); ?></title>
+    <title><?php eT("GititSurvey installer"); ?></title>
 </head>
 
 <body>
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <h1 class="pagetitle"><?php eT("LimeSurvey installer"); ?></h1>
+            <h1 class="pagetitle"><?php eT("GititSurvey installer"); ?></h1>
         </div>
     </div>
     <?php echo $content; ?>

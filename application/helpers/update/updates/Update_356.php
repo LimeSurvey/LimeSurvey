@@ -29,7 +29,7 @@ class Update_356 extends DatabaseUpdateBase
                         'title' => 'LimeStore',
                         'ico' => 'ri-shopping-cart-fill',
                         'desc' => 'LimeSurvey extension marketplace',
-                        'url' => 'https://account.limesurvey.org/limestore'
+                        'url' => 'https://account.gitit-tech.com/limestore'
                     ],
                     'id = 5'
                 );

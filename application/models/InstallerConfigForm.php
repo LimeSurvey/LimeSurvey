@@ -2,10 +2,10 @@
 
 /*
    * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013 The GititSurvey Project Team / Carsten Schmitz
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
-   * LimeSurvey is free software. This version may have been modified pursuant
+   * GititSurvey is free software. This version may have been modified pursuant
    * to the GNU General Public License, and as distributed it includes or
    * is derivative of works licensed under the GNU General Public License or
    * other free or open source software licenses.
@@ -87,7 +87,7 @@ class InstallerConfigForm extends CFormModel
     /** @var string $adminEmail */
     public $adminEmail = 'your-email@example.net';
     /** @var string $siteName */
-    public $siteName = 'LimeSurvey';
+    public $siteName = 'GititSurvey';
     /** @var string $surveylang */
     public $surveylang = 'en';
 
@@ -194,7 +194,7 @@ class InstallerConfigForm extends CFormModel
         return [
             'dbtype' => gT("The type of your database management system"),
             'dblocation' => gT('Set this to the IP/net location of your database server. In most cases "localhost" will work. You can force Unix socket with socket path.') . ' ' . gT('If your database is using a custom port, attach it using a colon. Example: db.host.com:5431'),
-            'dbname' => gT("If the database does not yet exist it will be created (make sure your database user has the necessary permissions). In contrast, if there are existing LimeSurvey tables in that database they will be upgraded automatically after installation."),
+            'dbname' => gT("If the database does not yet exist it will be created (make sure your database user has the necessary permissions). In contrast, if there are existing GititSurvey tables in that database they will be upgraded automatically after installation."),
             'dbuser' => gT('Your database server user name. In most cases "root" will work.'),
             'dbpwd' => gT("Your database server password."),
             'dbprefix' => gT('If your database is shared, recommended prefix is "lime_" else you can leave this setting blank.'),
@@ -303,10 +303,10 @@ class InstallerConfigForm extends CFormModel
             ) {
                 // Only for older db-engine
                 if (!$this->isInnoDbLargeFilePrefixEnabled()) {
-                    $this->addError($attribute, gT('You need to enable large_file_prefix setting in your database configuration in order to use InnoDB engine for LimeSurvey!'));
+                    $this->addError($attribute, gT('You need to enable large_file_prefix setting in your database configuration in order to use InnoDB engine for GititSurvey!'));
                 }
                 if (!$this->isInnoDbBarracudaFileFormat()) {
-                    $this->addError($attribute, gT('Your database configuration needs to have innodb_file_format and innodb_file_format_max set to use the Barracuda format in order to use InnoDB engine for LimeSurvey!'));
+                    $this->addError($attribute, gT('Your database configuration needs to have innodb_file_format and innodb_file_format_max set to use the Barracuda format in order to use InnoDB engine for GititSurvey!'));
                 }
             }
         }

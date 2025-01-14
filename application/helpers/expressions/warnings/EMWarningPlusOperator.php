@@ -21,6 +21,6 @@ class EMWarningPlusOperator extends EMWarningBase
     {
         $this->token = $token;
         $this->msg = gT("Usage of + with numeric value, see manual about usage of sum.", 'unescaped');
-        $this->helpLink = "https://www.limesurvey.org/manual/Expression_Manager#Warning_with_plus_operator_.28.2B.29";
+        $this->helpLink = "https://www.gitit-tech.com/manual/Expression_Manager#Warning_with_plus_operator_.28.2B.29";
     }
 }

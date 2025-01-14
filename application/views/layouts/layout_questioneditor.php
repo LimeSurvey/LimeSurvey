@@ -65,8 +65,8 @@ if (!isset($aData['display']['endscripts']) || $aData['display']['endscripts'] !
 
 if (!Yii::app()->user->isGuest) {
     if (!isset($aData['display']['footer']) || $aData['display']['footer'] !== false) {
-        //Yii::app()->getController()->_getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
-        $layoutHelper->getAdminFooter('http://manual.limesurvey.org', false, true);
+        //Yii::app()->getController()->_getAdminFooter('http://manual.gitit-tech.com', gT('GititSurvey online manual'));
+        $layoutHelper->getAdminFooter('http://manual.gitit-tech.com', false, true);
     }
 } else {
     echo '</body>

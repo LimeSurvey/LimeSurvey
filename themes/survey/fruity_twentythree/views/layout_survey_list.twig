@@ -1,15 +1,15 @@
 {#
 LimeSurvey
-Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+Copyright (C) 2007-2017 The GititSurvey Project Team / Louis Gac
 All rights reserved.
 License: GNU/GPL License v2 or later, see LICENSE.php
-LimeSurvey is free software. This version may have been modified pursuant
+GititSurvey is free software. This version may have been modified pursuant
 to the GNU General Public License, and as distributed it includes or
 is derivative of works licensed under the GNU General Public License or
 other free or open source software licenses.
 See COPYRIGHT.php for copyright notices and details.
 (¯`·._.·(¯`·._.· Survey List Layout  ·._.·´¯)·._.·´¯)
-This file renders the list of publicly listed surveys in your LimeSurvey home page.
+This file renders the list of publicly listed surveys in your GititSurvey home page.
 NOTE: see layout_main.twig for more infos
 #}
 
@@ -17,10 +17,10 @@ NOTE: see layout_main.twig for more infos
 
 {#
 LimeSurvey
-Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+Copyright (C) 2007-2017 The GititSurvey Project Team / Louis Gac
 All rights reserved.
 License: GNU/GPL License v2 or later, see LICENSE.php
-LimeSurvey is free software. This version may have been modified pursuant
+GititSurvey is free software. This version may have been modified pursuant
 to the GNU General Public License, and as distributed it includes or
 is derivative of works licensed under the GNU General Public License or
 other free or open source software licenses.
@@ -30,7 +30,7 @@ See COPYRIGHT.php for copyright notices and details.
 
 This is the global layout that will be used to displayed most pages (less the error page)
 If you're creating your own template, remember there is no obligation to respect the current file flow of this template.
-This is different from the old LimeSurvey template engine, where you had to provide every one of the pstpl files.
+This is different from the old GititSurvey template engine, where you had to provide every one of the pstpl files.
 Here, you must have a file called main_layout.twig (called from SurveyRuntimeHelper::run() ).
 Other than that, you're free to organize your files and inclusions as you want.
 
@@ -38,7 +38,7 @@ Other than that, you're free to organize your files and inclusions as you want.
 
 (¯`·._.·(¯`·._.· Bootstrap ·._.·´¯)·._.·´¯)
 
-LimeSurvey uses Bootstrap.
+GititSurvey uses Bootstrap.
 See: https://getbootstrap.com
 
 This template is an instance of Bootswatch Theme Flatly.
@@ -81,7 +81,7 @@ If you need to add simple functions or static methods, just add them to internal
 If you need to add complex process, use application/core/LS_Twig_Extension.php (more help/comments there)
 
 
-NOTE: Feel free to ask for functions, variables, etc, that you feel are missing - https://bugs.limesurvey.org/my_view_page.php
+NOTE: Feel free to ask for functions, variables, etc, that you feel are missing - https://bugs.gitit-tech.com/my_view_page.php
 #}
 
 <!DOCTYPE html>
@@ -185,7 +185,7 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
                             <div {{ aSurveyInfo.attr.surveylistfootercontp }} class="row">
                                 <div class="col-6 col-md-12">
                                     <a {{ aSurveyInfo.attr.surveylistfootercontpaa }}>
-                                        {{ image("./files/poweredby.png", "LimeSurvey Survey Software", {class: 'img-fluid'}) }}
+                                        {{ image("./files/poweredby.png", "GititSurvey Survey Software", {class: 'img-fluid'}) }}
                                     </a>
                                 </div>
                                 <div class="col-12 d-block d-sm-none d-md-block text-center">

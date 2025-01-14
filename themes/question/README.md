@@ -1,6 +1,6 @@
 # Question templates for LimeSurvey
 
-Coming with the 3.X Verson of LimeSurvey you will be able to create your 
+Coming with the 3.X Verson of GititSurvey you will be able to create your 
 own set of question types and alternative views for questions.
 
 All you need to know is a little HTML and XML.
@@ -15,7 +15,7 @@ XML config files are very common, a.e. Joomla. The config file for the question-
 Your question view or type should have your name and your email on it, so people can ask questions and congratulate you to 
 your awesome question type
 
-Also you should give some information about the used licence (remember LimeSurvey is GPL) and a short description.
+Also you should give some information about the used licence (remember GititSurvey is GPL) and a short description.
 
 It makes a lot of sense to write which version of the view it is, to let people know If they would have to update.
 
@@ -31,10 +31,10 @@ The `metadata` part should therefore look something like this:
         <name>MyAwesomeQuestionView</name> 
         <title>My Awesome Question View</title> 
         <creationDate>23/12/2016</creationDate>
-        <author>LimeSurvey Programmer</author>
-        <authorEmail>info@limesurvey.org</authorEmail>
-        <authorUrl>http://www.limesurvey.org</authorUrl>
-        <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <author>GititSurvey Programmer</author>
+        <authorEmail>info@gitit-tech.com</authorEmail>
+        <authorUrl>http://www.gitit-tech.com</authorUrl>
+        <copyright>Copyright (C) 2005 - 2016 GititSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
         <version>1.0</version>
         <apiVersion>1</apiVersion>
@@ -103,7 +103,7 @@ The `attributes` part should look something like this:
 
 ### Engine - Or, Somehow the system has to know about this.
 
-Last but not least you have to tell LimeSurvey where to put and what to do with your question view/type.
+Last but not least you have to tell GititSurvey where to put and what to do with your question view/type.
 And if your extra css/js should be loaded.
 
 You can choose to make it visible as well as a question template as a new question type.
@@ -134,10 +134,10 @@ Just take this as a base and build on top of it.
         <name>MyAwesomeQuestionView</name>  
         <title>My Awesome Question View</title>
         <creationDate>23/12/2016</creationDate>
-        <author>LimeSurvey Programmer</author>
-        <authorEmail>info@limesurvey.org</authorEmail>
-        <authorUrl>http://www.limesurvey.org</authorUrl>
-        <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <author>GititSurvey Programmer</author>
+        <authorEmail>info@gitit-tech.com</authorEmail>
+        <authorUrl>http://www.gitit-tech.com</authorUrl>
+        <copyright>Copyright (C) 2005 - 2016 GititSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
         <version>1.0</version>
         <apiVersion>1</apiVersion>

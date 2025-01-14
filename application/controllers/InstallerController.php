@@ -1,11 +1,11 @@
 <?php
 
 /*
-* LimeSurvey (tm)
-* Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+* GititSurvey (tm)
+* Copyright (C) 2011 The GititSurvey Project Team / Carsten Schmitz
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
+* GititSurvey is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
@@ -134,7 +134,7 @@ class InstallerController extends CController
         Yii::app()->session->remove('configFileWritten');
         $aData = [];
         $aData['title'] = gT('Welcome');
-        $aData['descp'] = gT('Welcome to the LimeSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey.');
+        $aData['descp'] = gT('Welcome to the GititSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of GititSurvey.');
         $aData['classesForStep'] = array('on', 'off', 'off', 'off', 'off', 'off');
         $aData['progressValue'] = 10;
 
@@ -192,7 +192,7 @@ class InstallerController extends CController
         $aData = [];
         $aData['model'] = $oModel;
         $aData['title'] = gT('Pre-installation check');
-        $aData['descp'] = gT('Pre-installation check for LimeSurvey ') . Yii::app()->getConfig('versionnumber');
+        $aData['descp'] = gT('Pre-installation check for GititSurvey ') . Yii::app()->getConfig('versionnumber');
         $aData['classesForStep'] = array('off', 'off', 'on', 'off', 'off', 'off');
         $aData['progressValue'] = 20;
         // variable storing next button link.initially null
@@ -229,7 +229,7 @@ class InstallerController extends CController
         // usual data required by view
         $aData = [];
         $aData['title'] = gT('Database configuration');
-        $aData['descp'] = gT('Please enter the database settings you want to use for LimeSurvey:');
+        $aData['descp'] = gT('Please enter the database settings you want to use for GititSurvey:');
         $aData['classesForStep'] = array('off', 'off', 'off', 'on', 'off', 'off');
         $aData['progressValue'] = 40;
         $aData['model'] = $oModel = new InstallerConfigForm();
@@ -286,7 +286,7 @@ class InstallerController extends CController
                     $this->writeConfigFile();
 
                     header("refresh:5;url=" . $this->createUrl("/admin"));
-                    $aData['noticeMessage'] = gT('The database exists and contains LimeSurvey tables.');
+                    $aData['noticeMessage'] = gT('The database exists and contains GititSurvey tables.');
                     $aData['text'] = sprintf(gT("You'll be redirected to the database update or (if your database is already up to date) to the administration login in 5 seconds. If not, please click %shere%s."), "<a href='" . $this->createUrl("/admin") . "'>", "</a>");
                     $this->render('/installer/redirectmessage_view', $aData);
                     exit();
@@ -364,7 +364,7 @@ class InstallerController extends CController
         $oModel->dbConnect();
         $aData['model'] = $oModel;
         $aData['title'] = gT("Database configuration");
-        $aData['descp'] = gT("Please enter the database settings you want to use for LimeSurvey:");
+        $aData['descp'] = gT("Please enter the database settings you want to use for GititSurvey:");
         $aData['classesForStep'] = array('off', 'off', 'off', 'on', 'off', 'off');
         $aData['progressValue'] = 40;
 
@@ -401,7 +401,7 @@ class InstallerController extends CController
             $oModel->addError('dbname', $e->getMessage());
 
             $aData['title'] = gT('Database configuration');
-            $aData['descp'] = gT('Please enter the database settings you want to use for LimeSurvey:');
+            $aData['descp'] = gT('Please enter the database settings you want to use for GititSurvey:');
             $aData['classesForStep'] = array('off', 'off', 'off', 'on', 'off', 'off');
             $aData['progressValue'] = 40;
             $aData['model'] = $oModel;
@@ -427,7 +427,7 @@ class InstallerController extends CController
 
         $aData['model'] = $model;
         $aData['title'] = gT("Database configuration");
-        $aData['descp'] = gT("Please enter the database settings you want to use for LimeSurvey:");
+        $aData['descp'] = gT("Please enter the database settings you want to use for GititSurvey:");
         $aData['classesForStep'] = array('off', 'off', 'off', 'on', 'off', 'off');
         $aData['progressValue'] = 40;
 
@@ -476,7 +476,7 @@ class InstallerController extends CController
             //run validation, if it fails, load the view again else proceed to next step.
             if ($model->validate()) {
                 $aData['title'] = gT("Database configuration");
-                $aData['descp'] = gT("Please enter the database settings you want to use for LimeSurvey:");
+                $aData['descp'] = gT("Please enter the database settings you want to use for GititSurvey:");
                 $aData['classesForStep'] = array('off', 'off', 'off', 'on', 'off', 'off');
                 $aData['progressValue'] = 40;
 
@@ -538,7 +538,7 @@ class InstallerController extends CController
                         Yii::app()->session['deletedirectories'] = true;
 
                         $aData['title'] = gT("Success!");
-                        $aData['descp'] = gT("LimeSurvey has been installed successfully.");
+                        $aData['descp'] = gT("GititSurvey has been installed successfully.");
                         $aData['classesForStep'] = array('off', 'off', 'off', 'off', 'off', 'off');
                         $aData['progressValue'] = 100;
                         $aData['user'] = $model->adminLoginName;
@@ -903,7 +903,7 @@ class InstallerController extends CController
                 /*
                 ."\t"     . "'basePath' => dirname(dirname(__FILE__))," . "\n"
                 ."\t"     . "'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime'," . "\n"
-                ."\t"     . "'name' => 'LimeSurvey',"                   . "\n"
+                ."\t"     . "'name' => 'GititSurvey',"                   . "\n"
                 ."\t"     . "'defaultController' => 'survey',"          . "\n"
                 ."\t"     . ""                                          . "\n"
 
@@ -975,7 +975,7 @@ class InstallerController extends CController
             . "\t" . "// debug: Set this to 1 if you are looking for errors. If you still get no errors after enabling this" . "\n"
             . "\t" . "// then please check your error-logs - either in your hosting provider admin panel or in some /logs directory" . "\n"
             . "\t" . "// on your webspace." . "\n"
-            . "\t" . "// LimeSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and get full access to standard templates" . "\n"
+            . "\t" . "// GititSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and get full access to standard templates" . "\n"
             . "\t\t" . "'debug'=>0," . "\n"
             . "\t\t" . "'debugsql'=>0, // Set this to 1 to enanble sql logging, only active when debug = 2" . "\n"
             . "\n"
@@ -988,7 +988,7 @@ class InstallerController extends CController
                 $sConfig .= "\t\t" . "// Mysql database engine (INNODB|MYISAM):" . "\n"
                 . "\t\t 'mysqlEngine' => '{$model->dbengine}'\n\n,";
             }
-            $sConfig .= "\t\t" . "// Update default LimeSurvey config here" . "\n"
+            $sConfig .= "\t\t" . "// Update default GititSurvey config here" . "\n"
             . "\t" . ")" . "\n"
             . ");" . "\n"
             . "/* End of file config.php */" . "\n"

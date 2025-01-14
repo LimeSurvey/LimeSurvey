@@ -8,13 +8,13 @@
     <metadata>
         <name>Sea Green</name>
         <creationDate>08/12/2015</creationDate>
-        <author>LimeSurvey GmbH</author>
-        <authorEmail>info@limesurvey.org</authorEmail>
-        <authorUrl>http://www.limesurvey.org</authorUrl>
-        <copyright>Copyright (C) 2005 - 2022 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <author>GititSurvey GmbH</author>
+        <authorEmail>info@gitit-tech.com</authorEmail>
+        <authorUrl>http://www.gitit-tech.com</authorUrl>
+        <copyright>Copyright (C) 2005 - 2022 GititSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
         <version>3.0</version>
-        <description>Default LimeSurvey admin interface template.</description>
+        <description>Default GititSurvey admin interface template.</description>
         <basecolor>#328637</basecolor>
         <lastUpdate>2017-27-11 17:00:00</lastUpdate>
     </metadata>
@@ -36,7 +36,7 @@
 
         <!--
             Those files will be loaded for right to left languages only
-            NOTE 1: If for any reason, you need to edit the RTL behaviors, feel free to contact the LimeSurvey team about it.
+            NOTE 1: If for any reason, you need to edit the RTL behaviors, feel free to contact the GititSurvey team about it.
             We'll be always pleased to make better the right to left display
 
             NOTE 2: those files are generated with the script R2. See: https://github.com/ded/R2

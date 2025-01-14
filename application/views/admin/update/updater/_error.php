@@ -65,7 +65,7 @@ switch ($errorObject->error) {
 
     case 'unknown_view':
         $title = gT("The server tried to call an unknown view!");
-        $message = gT('Is your ComfortUpdate up to date?') . ' ' . gT('Please contact the LimeSurvey team.');
+        $message = gT('Is your ComfortUpdate up to date?') . ' ' . gT('Please contact the GititSurvey team.');
         $buttons = 3;
         break;
 
@@ -77,25 +77,25 @@ switch ($errorObject->error) {
 
     case 'file_locked':
         $title = gT('Update server busy');
-        $message = gT('The update server is currently busy.') . ' ' . gT('Most likely this is a temporary problem, so please try again in 5 minutes. If the issue persists, please contact LimeSurvey support.');
+        $message = gT('The update server is currently busy.') . ' ' . gT('Most likely this is a temporary problem, so please try again in 5 minutes. If the issue persists, please contact GititSurvey support.');
         $buttons = 0;
         break;
 
     case 'server_error_creating_zip_update':
         $title = gT('Server error!');
-        $message = gT('An error occurred while creating your update package file.') . ' ' . gT('Most likely this is a temporary problem, so please try again in 5 minutes. If the issue persists, please contact LimeSurvey support.');
+        $message = gT('An error occurred while creating your update package file.') . ' ' . gT('Most likely this is a temporary problem, so please try again in 5 minutes. If the issue persists, please contact GititSurvey support.');
         $buttons = 0;
         break;
 
     case 'server_error_getting_checksums':
         $title = gT('Server error!');
-        $message = gT('An error occurred while getting checksums.') . ' ' . gT('Most likely this is a temporary problem, so please try again in 5 minutes. If the issue persists, please contact LimeSurvey support.');
+        $message = gT('An error occurred while getting checksums.') . ' ' . gT('Most likely this is a temporary problem, so please try again in 5 minutes. If the issue persists, please contact GititSurvey support.');
         $buttons = 0;
         break;
 
     case 'cant_get_changeset':
         $title = gT('Server error!');
-        $message = gT('An error occurred while getting the changeset.') . ' ' . gT('Most likely this is a temporary problem, so please try again in 5 minutes. If the issue persists, please contact LimeSurvey support.');
+        $message = gT('An error occurred while getting the changeset.') . ' ' . gT('Most likely this is a temporary problem, so please try again in 5 minutes. If the issue persists, please contact GititSurvey support.');
         $buttons = 0;
         break;
 
@@ -130,7 +130,7 @@ switch ($errorObject->error) {
 
     default:
         $title = $errorObject->error;
-        $message = gT('Unknown error.') . ' ' . gT('Please contact the LimeSurvey team.');
+        $message = gT('Unknown error.') . ' ' . gT('Please contact the GititSurvey team.');
         $buttons = 0;
         break;
 }
@@ -150,7 +150,7 @@ switch ($errorObject->error) {
 <div class="row">
     <div class="col-12 pt-2">
     <?php if ($buttons == 1) : ?>
-            <a class="btn btn-outline-secondary" href="https://community.limesurvey.org/comfort-update-extension/"
+            <a class="btn btn-outline-secondary" href="https://community.gitit-tech.com/comfort-update-extension/"
                role="button" aria-disabled="false" target="_blank">
                 <?php eT("Buy a new key"); ?>
             </a>

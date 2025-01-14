@@ -629,7 +629,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     /**
      * permission scope for this model
      * Actually only test if user have minimal access to survey (read)
-     * @see issue https://bugs.limesurvey.org/view.php?id=16799
+     * @see issue https://bugs.gitit-tech.com/view.php?id=16799
      * @access public
      * @param int $loginID
      * @return CActiveRecord

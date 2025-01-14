@@ -146,7 +146,7 @@ abstract class PluginBase implements iPlugin
         // TODO: Handle decryption in storage class, as that would allow each storage to handle
         // it on it's own way. Currently there is no good way of telling the storage which
         // attributes should be encrypted. Adding a method to the storage interface would break
-        // backward compatibility. See https://bugs.limesurvey.org/view.php?id=18375#c72133
+        // backward compatibility. See https://bugs.gitit-tech.com/view.php?id=18375#c72133
         if (!empty($data) && in_array($key, $this->encryptedSettings)) {
             try {
                 $json = LSActiveRecord::decryptSingle($data);
@@ -303,7 +303,7 @@ abstract class PluginBase implements iPlugin
         // TODO: Handle encryption in storage class, as that would allow each storage to handle
         // it on it's own way. Currently there is no good way of telling the storage which
         // attributes should be encrypted. Adding a method to the storage interface would break
-        // backward compatibility. See https://bugs.limesurvey.org/view.php?id=18375#c72133
+        // backward compatibility. See https://bugs.gitit-tech.com/view.php?id=18375#c72133
         if (!empty($data) && in_array($key, $this->encryptedSettings)) {
             // Data is json encoded before encryption because it might be an array or object.
             $data = LSActiveRecord::encryptSingle(json_encode($data));

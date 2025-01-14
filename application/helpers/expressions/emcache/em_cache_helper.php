@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Discussion here: https://bugs.limesurvey.org/view.php?id=14859
+ * Discussion here: https://bugs.gitit-tech.com/view.php?id=14859
  * PR: https://github.com/LimeSurvey/LimeSurvey/pull/1273
  *
  * @since 2019-05-23

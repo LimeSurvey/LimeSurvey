@@ -31,7 +31,7 @@
 
 
 <div>
-    <strong id="ls-updates"><?php echo gT('The following LimeSurvey updates are available:');?></strong>
+    <strong id="ls-updates"><?php echo gT('The following GititSurvey updates are available:');?></strong>
 </div>
 <br/>
 <br/>
@@ -42,7 +42,7 @@
     <thead>
         <tr>
             <th>
-                <?php eT('LimeSurvey version'); ?>
+                <?php eT('GititSurvey version'); ?>
             </th>
             <th>
                 <?php eT('Branch'); ?>
@@ -115,7 +115,7 @@
                         'id' => 'download-version',
                         'text' => gT('Download'),
                         'icon' => 'ri-download-fill',
-                        'link' => 'https://community.limesurvey.org/downloads/',
+                        'link' => 'https://community.gitit-tech.com/downloads/',
                         'htmlOptions' => [
                             'class' => 'ajax_button btn btn-sm btn-outline-secondary',
                             'target' => '_blank',

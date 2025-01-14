@@ -19689,7 +19689,7 @@ table [class^=ri-], table [class*=" ri-"] {
   border-bottom: 1px solid #D3D5DA;
 }
 
-/* See https://manual.limesurvey.org/Expression_Manager#Syntax_Highlighting for color,  */
+/* See https://manual.gitit-tech.com/Expression_Manager#Syntax_Highlighting for color,  */
 .em-expression {
   background: #eee8aa;
   display: inline-block;

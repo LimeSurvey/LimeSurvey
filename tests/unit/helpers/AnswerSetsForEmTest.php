@@ -6,7 +6,7 @@ use Yii;
 use LimeExpressionManager;
 
 /**
- * Tests for the LimeSurvey remote API.
+ * Tests for the GititSurvey remote API.
  */
 class AnswerSetsForEmTest extends TestBaseClass
 {

@@ -29,7 +29,7 @@ class AllInOneConditionGroupTest extends TestBaseClassWeb
 
     /**
      * Check if group condition work on all in one survey
-     * @see https://bugs.limesurvey.org/view.php?id=18035
+     * @see https://bugs.gitit-tech.com/view.php?id=18035
      **/
     public function testAllInOneConditionGroup()
     {

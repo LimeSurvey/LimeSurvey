@@ -576,7 +576,7 @@ INSERT INTO `prefix_boxes` (`id`, `position`, `url`, `title`, `ico`, `desc`, `pa
 (3, 3, 'admin/globalsettings', 'Global settings', 'settings', 'Edit global settings', 'welcome', '-2'),
 (4, 4, 'admin/update', 'ComfortUpdate', 'shield', 'Stay safe and up to date', 'welcome', '-2'),
 (5, 5, 'admin/labels/sa/view', 'Label sets', 'label', 'Edit label sets', 'welcome', '-2'),
-(6, 6, 'admin/templates/sa/view', 'Template editor', 'templates', 'Edit LimeSurvey templates', 'welcome', '-2');
+(6, 6, 'admin/templates/sa/view', 'Template editor', 'templates', 'Edit GititSurvey templates', 'welcome', '-2');
 --
 -- Secondary indexes
 --

@@ -3,7 +3,7 @@
 namespace LimeSurvey\Menu;
 
 /**
- * Interface descriptions here: https://www.limesurvey.org/manual/Extra_menus_event
+ * Interface descriptions here: https://www.gitit-tech.com/manual/Extra_menus_event
  */
 interface MenuItemInterface
 {

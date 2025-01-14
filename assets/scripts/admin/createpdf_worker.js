@@ -1,6 +1,6 @@
 /*
   LS statistics PDF-worker
-  Copyright (c) 2016 LimeSurvey GmbH - Markus Flür
+  Copyright (c) 2016 GititSurvey GmbH - Markus Flür
 
   Released under GPL3.0
 */

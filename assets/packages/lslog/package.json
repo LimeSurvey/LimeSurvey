@@ -1,7 +1,7 @@
 {
     "name": "lslog",
     "license": "GPL-3.0",
-    "author": "LimeSurvey DevTeam",
+    "author": "GititSurvey DevTeam",
     "scripts": {
         "dev": "env-cmd -e dev rollup -c",
         "prod": "env-cmd -e prod rollup -c",

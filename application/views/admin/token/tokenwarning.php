@@ -59,7 +59,7 @@ if ($tcount > 0 && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'sur
             <div class="card card-primary">
                 <h2><?php eT("Restore options"); ?></h2>
                 <p class="text-info">
-                    <?php eT("Please be aware that tables including encryption should not be restored if they have been created in LimeSurvey 4 before version 4.6.1")?>
+                    <?php eT("Please be aware that tables including encryption should not be restored if they have been created in GititSurvey 4 before version 4.6.1")?>
                 </p>
                 <p class="lead text-success">
                     <strong>

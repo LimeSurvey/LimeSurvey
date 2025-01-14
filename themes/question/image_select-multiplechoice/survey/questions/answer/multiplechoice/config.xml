@@ -10,10 +10,10 @@
         <type>question_theme</type>
         <title>Image select multiple choice</title>
         <creationDate>23/12/2016</creationDate>
-        <author>LimeSurvey GmbH</author>
-        <authorEmail>info@limesurvey.org</authorEmail>
-        <authorUrl>http://www.limesurvey.org</authorUrl>
-        <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <author>GititSurvey GmbH</author>
+        <authorEmail>info@gitit-tech.com</authorEmail>
+        <authorUrl>http://www.gitit-tech.com</authorUrl>
+        <copyright>Copyright (C) 2005 - 2016 GititSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
         <version>1.0</version>
         <apiVersion>1</apiVersion>
@@ -110,7 +110,7 @@
         </attribute>
     </attributes>
 
-    <!-- Here datas about how LimeSurvey should load the core js/css of the question -->
+    <!-- Here datas about how GititSurvey should load the core js/css of the question -->
     <engine>
         <load_core_css>true</load_core_css>
         <load_core_js>true</load_core_js>

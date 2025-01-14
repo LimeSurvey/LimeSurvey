@@ -10,6 +10,6 @@ Modules must be loaded first in internal.php. In the future, if we want to allow
 In the subfolder HelloWorld, you'll fin a minimal exemple of a Yii Module.
 
 ## Note about yii modules and admin interface
-Since LimeSurvey still doesn't use a real layout system, but rather the SurveyCommonAction strategy, those modules can't be shown inside the admin interface. They can still be usefull, for echoing pure json for exemple.
+Since GititSurvey still doesn't use a real layout system, but rather the SurveyCommonAction strategy, those modules can't be shown inside the admin interface. They can still be usefull, for echoing pure json for exemple.
 
 In future version of limesurve, we'll use the yii layout system so we'll can use real modules for the admin interface. For now, if you want to create modules for the admin interface, see modules/admin/.

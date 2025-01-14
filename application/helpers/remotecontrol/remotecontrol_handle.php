@@ -1119,7 +1119,7 @@ class remotecontrol_handle
             return array('status' => 'Error: Invalid survey ID');
         }
         /* Find with surveyid to avoid bad parameters and don't send information on group existence
-         * @see https://bugs.limesurvey.org/view.php?id=19869 */
+         * @see https://bugs.gitit-tech.com/view.php?id=19869 */
         $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID, 'sid' => $iSurveyID));
         if (!isset($oGroup)) {
             return array('status' => 'Error: Invalid group ID');
@@ -3279,7 +3279,7 @@ class remotecontrol_handle
      * @param array $aResponseData The actual response
      * @return int|array The response ID or an array with status message (can include result_id)
      * @todo Need to clean up return array, especially the case when response was added but file not uploaded.
-     * @todo See discussion: https://bugs.limesurvey.org/view.php?id=13794
+     * @todo See discussion: https://bugs.gitit-tech.com/view.php?id=13794
      */
     public function add_response($sSessionKey, $iSurveyID, $aResponseData)
     {

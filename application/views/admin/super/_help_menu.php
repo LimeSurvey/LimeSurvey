@@ -8,34 +8,34 @@
         <?php $this->renderPartial( "/admin/super/_tutorial_menu", []); ?>
         <li class="dropdown-divider"></li>
         <li>
-            <a href="http://manual.limesurvey.org/" target="_blank" class="dropdown-item">
+            <a href="http://manual.gitit-tech.com/" target="_blank" class="dropdown-item">
                 <!-- <i class="ri-question-fill"></i> -->
-                <?php eT('LimeSurvey Manual');?>
+                <?php eT('GititSurvey Manual');?>
                 <i class=" ri-external-link-fill  float-end"></i>
             </a>
         </li>
         <li>
-            <a href="https://forums.limesurvey.org" target="_blank" class="dropdown-item">
+            <a href="https://forums.gitit-tech.com" target="_blank" class="dropdown-item">
                 <span class="fa-stack halfed">
                     <span class="ri-chat-3-fill fa-stack-1x" ></span>
                     <span class="ri-group-fill fa-inverse fa-stack-1x halfed" ></span>
                 </span>
-                <?php eT('LimeSurvey Forums');?>
+                <?php eT('GititSurvey Forums');?>
                 <i class=" ri-external-link-fill  float-end"></i>
             </a>
         </li>
         <li class="dropdown-divider"></li>
         <li>
-            <a href="https://bugs.limesurvey.org/" target="_blank" class="dropdown-item">
+            <a href="https://bugs.gitit-tech.com/" target="_blank" class="dropdown-item">
                 <span class="ri-bug-fill" ></span>
                 <?php eT('Report bugs');?>
                 <i class=" ri-external-link-fill  float-end"></i>
             </a>
         </li>
         <li>
-            <a href="https://limesurvey.org/" target="_blank" class="dropdown-item">
+            <a href="https://gitit-tech.com/" target="_blank" class="dropdown-item">
                 <span class="ri-star-fill" ></span>
-                <?php eT('LimeSurvey Homepage');?>
+                <?php eT('GititSurvey Homepage');?>
                 <i class=" ri-external-link-fill  float-end"></i>
             </a>
         </li>

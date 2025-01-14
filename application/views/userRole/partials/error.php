@@ -3,7 +3,7 @@
  * Subview: Error messsage in the usermanagement panel
  *
  * @package UserManagement
- * @author LimeSurvey GmbH <info@limesurvey.org>
+ * @author GititSurvey GmbH <info@gitit-tech.com>
  * @license GPL3.0
  */
 ?>

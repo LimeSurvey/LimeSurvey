@@ -6,7 +6,7 @@ namespace ls\tests;
  * Test expression warning.
  *
  * Test for feature "16263: New config setting for date format and question code"
- * @see https://bugs.limesurvey.org/view.php?id=16263
+ * @see https://bugs.gitit-tech.com/view.php?id=16263
  */
 class QuexmlPDFTest extends TestBaseClass
 {

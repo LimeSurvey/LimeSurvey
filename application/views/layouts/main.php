@@ -43,7 +43,7 @@ if (!isset($aData['display']['endscripts']) || $aData['display']['endscripts'] !
 
 if (!Yii::app()->user->isGuest) {
     if (!isset($aData['display']['footer']) || $aData['display']['footer'] !== false) {
-        $layoutHelper->getAdminFooter('http://manual.limesurvey.org');
+        $layoutHelper->getAdminFooter('http://manual.gitit-tech.com');
     }
 } else {
     echo '</body>

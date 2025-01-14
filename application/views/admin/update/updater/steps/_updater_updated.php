@@ -12,7 +12,7 @@
         <?php eT("ComfortUpdate has been updated!");?>
     </p>
     <p>
-        <?php eT("You can now continue updating your LimeSurvey Installation.");?>
+        <?php eT("You can now continue updating your GititSurvey Installation.");?>
     </p>
 </div>
 

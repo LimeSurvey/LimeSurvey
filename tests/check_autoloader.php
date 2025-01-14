@@ -5,7 +5,7 @@
  * If it does, it means some vendor package was not added to git.
  *
  * @since 2020-03-10
- * @author LimeSurvey GmbH
+ * @author GititSurvey GmbH
  */
 
 require_once __DIR__ . '/../vendor/autoload.php';

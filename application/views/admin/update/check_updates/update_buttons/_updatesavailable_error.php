@@ -25,7 +25,7 @@ switch ($serverAnswer->error) {
         $sTile = gT('Error!');
         $sHeader = gT('No server answer!');
         $sMessage = gT(
-            "It seems that the ComfortUpdate server is not responding. Please try again in few minutes or contact the LimeSurvey team."
+            "It seems that the ComfortUpdate server is not responding. Please try again in few minutes or contact the GititSurvey team."
         );
         break;
 
@@ -46,7 +46,7 @@ switch ($serverAnswer->error) {
         $sTile = gT('Error!');
         $sHeader = gT('Not updatable!');
         $sMessage = gT(
-            'ComfortUpdate is disabled in your LimeSurvey configuration. Please contact your administrator for more information.'
+            'ComfortUpdate is disabled in your GititSurvey configuration. Please contact your administrator for more information.'
         );
         break;
 
@@ -54,7 +54,7 @@ switch ($serverAnswer->error) {
         $sTile = gT('Error!');
         $sHeader = gT('No build version found!');
         $sMessage = gT(
-            "It seems you're using a version coming from the LimeSurvey GitHub repository. You can't use ComfortUpdate."
+            "It seems you're using a version coming from the GititSurvey GitHub repository. You can't use ComfortUpdate."
         );
         break;
 
@@ -73,7 +73,7 @@ switch ($serverAnswer->error) {
     default :
         $sTile = gT('Error!');
         $sHeader = gT('Unknown error!');
-        $sMessage = gT('An unknown error occurred.') . ' ' . gT('Please contact the LimeSurvey team.');
+        $sMessage = gT('An unknown error occurred.') . ' ' . gT('Please contact the GititSurvey team.');
         $sErrorCode = gT('Error code:') . ' ' . $serverAnswer->error;
         break;
 }

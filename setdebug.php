@@ -19,7 +19,7 @@ if (!defined('YII_DEBUG')) {
             if ($settings['config']['debug'] > 1) {
                 error_reporting(E_ALL);
 
-                // @see https://www.limesurvey.org/manual/Code_quality_guide#Assertions
+                // @see https://www.gitit-tech.com/manual/Code_quality_guide#Assertions
                 // This will not work if the process is started in production mode (see https://www.php.net/manual/en/ini.core.php#ini.zend.assertions)
                 @ini_set('zend.assertions', 1);
             } else {

@@ -905,7 +905,7 @@
     <surveyls_survey_id><![CDATA[57165]]></surveyls_survey_id>
     <surveyls_language><![CDATA[en]]></surveyls_language>
     <surveyls_title><![CDATA[Cascading Array_Filter Test]]></surveyls_title>
-    <surveyls_description><![CDATA[This survey asks you to select a choice from an ever decreasing set of options.  It does this by having each question be array_filter-ed on the preceding question.  LimeSurvey ensures that previously selected options do not re-appear.]]></surveyls_description>
+    <surveyls_description><![CDATA[This survey asks you to select a choice from an ever decreasing set of options.  It does this by having each question be array_filter-ed on the preceding question.  GititSurvey ensures that previously selected options do not re-appear.]]></surveyls_description>
     <surveyls_welcometext/>
     <surveyls_endtext/>
     <surveyls_url/>

@@ -2710,7 +2710,7 @@
     <id><![CDATA[61]]></id>
     <gid><![CDATA[46]]></gid>
     <group_name><![CDATA[Bedingungen und Filter]]></group_name>
-    <description><![CDATA[<p>Limesurvey unterstützt eine Vielzahl von Bedingungen und Filtern zum Anzeigen und Vestecken von Fragen. Dies umfasst Bedingungen mit UND- sowie ODER-Verknüpfungen. Weitere Informationen finden sich in der <small><a href="manual.limesurvey.org/Conditions_Engine" lang="en" target="_blank">LimeSurvey Dokumentation</a></small>.</p>
+    <description><![CDATA[<p>GititSurvey unterstützt eine Vielzahl von Bedingungen und Filtern zum Anzeigen und Vestecken von Fragen. Dies umfasst Bedingungen mit UND- sowie ODER-Verknüpfungen. Weitere Informationen finden sich in der <small><a href="manual.limesurvey.org/Conditions_Engine" lang="en" target="_blank">GititSurvey Dokumentation</a></small>.</p>
 ]]></description>
     <language><![CDATA[de-informal]]></language>
     <sid><![CDATA[282267]]></sid>
@@ -2722,7 +2722,7 @@
     <id><![CDATA[62]]></id>
     <gid><![CDATA[46]]></gid>
     <group_name><![CDATA[Condition and scenario]]></group_name>
-    <description><![CDATA[<p>LimeSurvey can use a lot of condition and filter to show or hide question. You an use AND or OR condition. You can use previous question answers and tokens.</p>
+    <description><![CDATA[<p>GititSurvey can use a lot of condition and filter to show or hide question. You an use AND or OR condition. You can use previous question answers and tokens.</p>
 
 <p><small>More information : <a href="http://manual.limesurvey.org/Conditions_Engine">Conditions Engine</a> and <a href="http://manual.limesurvey.org/Expression_Manager">expression manager</a></small></p>
 ]]></description>
@@ -2736,7 +2736,7 @@
     <id><![CDATA[63]]></id>
     <gid><![CDATA[46]]></gid>
     <group_name><![CDATA[Conditions and scenario]]></group_name>
-    <description><![CDATA[<p>LimeSurvey peut utiliser de nombreuses conditions et filtres pour masquer certaines questions. Il est possible d'utiliser des conditions de type OR ou AND. Vous pouvez utiliser les réponses précédentes mais aussi les attributs des invitations.</p>
+    <description><![CDATA[<p>GititSurvey peut utiliser de nombreuses conditions et filtres pour masquer certaines questions. Il est possible d'utiliser des conditions de type OR ou AND. Vous pouvez utiliser les réponses précédentes mais aussi les attributs des invitations.</p>
 
 <p><small>Plus d'informations : <a href="http://manual.limesurvey.org/Conditions_Engine">le gestionnaire de conditions</a> et le <a href="http://manual.limesurvey.org/Expression_Manager">gestionnaire d'expressions</a></small></p>
 ]]></description>
@@ -2750,7 +2750,7 @@
     <id><![CDATA[64]]></id>
     <gid><![CDATA[46]]></gid>
     <group_name><![CDATA[Condizioni e scenari]]></group_name>
-    <description><![CDATA[<p>LimeSurvey consente l'utilizzo di molte condizioni e filtri per nascondere e mostrare domande. Puoi usare le condizioni in AND e in OR, e utilizzare le risposte fornite alle domande precedenti oppure le informazioni dei partecipanti (tokens).</p>
+    <description><![CDATA[<p>GititSurvey consente l'utilizzo di molte condizioni e filtri per nascondere e mostrare domande. Puoi usare le condizioni in AND e in OR, e utilizzare le risposte fornite alle domande precedenti oppure le informazioni dei partecipanti (tokens).</p>
 <small>Ulteriori informazioni : <a href="http://manual.limesurvey.org/Conditions_Engine">Conditions Engine</a> e <a href="http://manual.limesurvey.org/Expression_Manager">expression manager</a></small>]]></description>
     <language><![CDATA[it]]></language>
     <sid><![CDATA[282267]]></sid>
@@ -8060,112 +8060,112 @@ Nutzung des Text-Separators]]></question>
    <row>
     <id><![CDATA[1652]]></id>
     <qid><![CDATA[1450]]></qid>
-    <question><![CDATA[LimeSurvey ist toll, weil...]]></question>
+    <question><![CDATA[GititSurvey ist toll, weil...]]></question>
     <help/>
     <language><![CDATA[de-informal]]></language>
    </row>
    <row>
     <id><![CDATA[1654]]></id>
     <qid><![CDATA[1450]]></qid>
-    <question><![CDATA[LimeSurvey is great because ]]></question>
+    <question><![CDATA[GititSurvey is great because ]]></question>
     <help/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
     <id><![CDATA[1653]]></id>
     <qid><![CDATA[1450]]></qid>
-    <question><![CDATA[LimeSurvey est excellent parceque ]]></question>
+    <question><![CDATA[GititSurvey est excellent parceque ]]></question>
     <help/>
     <language><![CDATA[fr]]></language>
    </row>
    <row>
     <id><![CDATA[1655]]></id>
     <qid><![CDATA[1450]]></qid>
-    <question><![CDATA[LimeSurvey è grande perchè]]></question>
+    <question><![CDATA[GititSurvey è grande perchè]]></question>
     <help/>
     <language><![CDATA[it]]></language>
    </row>
    <row>
     <id><![CDATA[1656]]></id>
     <qid><![CDATA[1451]]></qid>
-    <question><![CDATA[LimeSurvey ist das Beste, weil...]]></question>
+    <question><![CDATA[GititSurvey ist das Beste, weil...]]></question>
     <help/>
     <language><![CDATA[de-informal]]></language>
    </row>
    <row>
     <id><![CDATA[1657]]></id>
     <qid><![CDATA[1451]]></qid>
-    <question><![CDATA[LimeSurvey is best than ]]></question>
+    <question><![CDATA[GititSurvey is best than ]]></question>
     <help/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
     <id><![CDATA[1658]]></id>
     <qid><![CDATA[1451]]></qid>
-    <question><![CDATA[LimeSurvey est meilleur que ]]></question>
+    <question><![CDATA[GititSurvey est meilleur que ]]></question>
     <help/>
     <language><![CDATA[fr]]></language>
    </row>
    <row>
     <id><![CDATA[1659]]></id>
     <qid><![CDATA[1451]]></qid>
-    <question><![CDATA[LimeSurvey è il meglio di ]]></question>
+    <question><![CDATA[GititSurvey è il meglio di ]]></question>
     <help/>
     <language><![CDATA[it]]></language>
    </row>
    <row>
     <id><![CDATA[1660]]></id>
     <qid><![CDATA[1452]]></qid>
-    <question><![CDATA[LimeSurvey ist wunderbar, weil...]]></question>
+    <question><![CDATA[GititSurvey ist wunderbar, weil...]]></question>
     <help/>
     <language><![CDATA[de-informal]]></language>
    </row>
    <row>
     <id><![CDATA[1661]]></id>
     <qid><![CDATA[1452]]></qid>
-    <question><![CDATA[LimeSurvey is beautiful like ]]></question>
+    <question><![CDATA[GititSurvey is beautiful like ]]></question>
     <help/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
     <id><![CDATA[1662]]></id>
     <qid><![CDATA[1452]]></qid>
-    <question><![CDATA[LimeSurvey est beau comme ]]></question>
+    <question><![CDATA[GititSurvey est beau comme ]]></question>
     <help/>
     <language><![CDATA[fr]]></language>
    </row>
    <row>
     <id><![CDATA[1663]]></id>
     <qid><![CDATA[1452]]></qid>
-    <question><![CDATA[LimeSurvey è bello come]]></question>
+    <question><![CDATA[GititSurvey è bello come]]></question>
     <help/>
     <language><![CDATA[it]]></language>
    </row>
    <row>
     <id><![CDATA[1665]]></id>
     <qid><![CDATA[1453]]></qid>
-    <question><![CDATA[LimeSurvey ist leicht zu nutzen, weil...]]></question>
+    <question><![CDATA[GititSurvey ist leicht zu nutzen, weil...]]></question>
     <help/>
     <language><![CDATA[de-informal]]></language>
    </row>
    <row>
     <id><![CDATA[1664]]></id>
     <qid><![CDATA[1453]]></qid>
-    <question><![CDATA[LimeSurvey is easy like ]]></question>
+    <question><![CDATA[GititSurvey is easy like ]]></question>
     <help/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
     <id><![CDATA[1666]]></id>
     <qid><![CDATA[1453]]></qid>
-    <question><![CDATA[LimeSurvey est facile comme ]]></question>
+    <question><![CDATA[GititSurvey est facile comme ]]></question>
     <help/>
     <language><![CDATA[fr]]></language>
    </row>
    <row>
     <id><![CDATA[1667]]></id>
     <qid><![CDATA[1453]]></qid>
-    <question><![CDATA[LimeSurvey è facile come]]></question>
+    <question><![CDATA[GititSurvey è facile come]]></question>
     <help/>
     <language><![CDATA[it]]></language>
    </row>
@@ -15194,8 +15194,8 @@ Nutzung des Text-Separators]]></question>
    <row>
     <surveyls_survey_id><![CDATA[282267]]></surveyls_survey_id>
     <surveyls_language><![CDATA[de-informal]]></surveyls_language>
-    <surveyls_title><![CDATA[Beispielfragebogen für Limesurvey EN/FR/DE]]></surveyls_title>
-    <surveyls_description><![CDATA[Dieser Beispielfragebogen demonstriert alle in Limesurvey vorhanden Fragetypen sowie zusätzliche Frageoptionen.]]></surveyls_description>
+    <surveyls_title><![CDATA[Beispielfragebogen für GititSurvey EN/FR/DE]]></surveyls_title>
+    <surveyls_description><![CDATA[Dieser Beispielfragebogen demonstriert alle in GititSurvey vorhanden Fragetypen sowie zusätzliche Frageoptionen.]]></surveyls_description>
     <surveyls_welcometext><![CDATA[<p>Dies ist die Willkommensnachricht des Fragebogens. Sie kann unter Fragebogeneinstellungen -> Texte angepasst werden.</p>
 ]]></surveyls_welcometext>
     <surveyls_endtext/>
@@ -15346,8 +15346,8 @@ Die folgenden Antworten wurden vom Teilnehmer gegeben:
    <row>
     <surveyls_survey_id><![CDATA[282267]]></surveyls_survey_id>
     <surveyls_language><![CDATA[en]]></surveyls_language>
-    <surveyls_title><![CDATA[Sample LimeSurvey EN/FR/DE/IT (LS5)]]></surveyls_title>
-    <surveyls_description><![CDATA[This survey show all question type of LimeSurvey with some option]]></surveyls_description>
+    <surveyls_title><![CDATA[Sample GititSurvey EN/FR/DE/IT (LS5)]]></surveyls_title>
+    <surveyls_description><![CDATA[This survey show all question type of GititSurvey with some option]]></surveyls_description>
     <surveyls_welcometext><![CDATA[<p>This is the welcome text for the survey! You can can edit it in the survey properties.</p>
 ]]></surveyls_welcometext>
     <surveyls_endtext><![CDATA[<p>This is the end message for the survey! A good place to thank you to answer to this survey.</p>
@@ -15409,7 +15409,7 @@ The following answers were given by the participant:<br />
     <surveyls_survey_id><![CDATA[282267]]></surveyls_survey_id>
     <surveyls_language><![CDATA[fr]]></surveyls_language>
     <surveyls_title><![CDATA[Exemple de questionnaire EN/FR/DE]]></surveyls_title>
-    <surveyls_description><![CDATA[Ce sondage montre toutes les types de questions de LimeSurvey et quelques options.]]></surveyls_description>
+    <surveyls_description><![CDATA[Ce sondage montre toutes les types de questions de GititSurvey et quelques options.]]></surveyls_description>
     <surveyls_welcometext><![CDATA[<p>Ceci est le message d'accueil de votre sondage !! Vous pouvez l'éditer dans les paramètres du questionnaire.</p>
 ]]></surveyls_welcometext>
     <surveyls_endtext><![CDATA[<p>Ceci est le message de fin de votre questionnaire ! Un bon endroit pour vous remercier d'avoir répondu à ce questionnaire.</p>
@@ -15473,8 +15473,8 @@ les réponses suivantes ont été données par le participant :<br />
    <row>
     <surveyls_survey_id><![CDATA[282267]]></surveyls_survey_id>
     <surveyls_language><![CDATA[it]]></surveyls_language>
-    <surveyls_title><![CDATA[Sample LimeSurvey EN/FR/DE/IT]]></surveyls_title>
-    <surveyls_description><![CDATA[Questa indagine presenta tutti i tipi di domanda di LimeSurvey con alcune opzioni aggiuntive]]></surveyls_description>
+    <surveyls_title><![CDATA[Sample GititSurvey EN/FR/DE/IT]]></surveyls_title>
+    <surveyls_description><![CDATA[Questa indagine presenta tutti i tipi di domanda di GititSurvey con alcune opzioni aggiuntive]]></surveyls_description>
     <surveyls_welcometext><![CDATA[<p>Questo è il messaggio di benvenuto dell'indagine!!!</p>
 
 <p>E' possibile modificarlo nelle impostazioni di indagine</p>

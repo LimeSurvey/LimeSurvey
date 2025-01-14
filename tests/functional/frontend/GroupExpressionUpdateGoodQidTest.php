@@ -38,7 +38,7 @@ class GroupExpressionUpdateGoodQidTest extends TestBaseClassWeb
 
     /**
      * Check if group text was updated
-     * @see https://bugs.limesurvey.org/view.php?id=17967
+     * @see https://bugs.gitit-tech.com/view.php?id=17967
      * 17967: Group description are not updated by javascript expression
      **/
     public function testGroupExpresssionAndGoodQid()
@@ -70,7 +70,7 @@ class GroupExpressionUpdateGoodQidTest extends TestBaseClassWeb
 
     /**
      * Check if last question is not used in previous condition
-     * @see https://bugs.limesurvey.org/view.php?id=17966
+     * @see https://bugs.gitit-tech.com/view.php?id=17966
      * 17966: twig processString assumes wrong question Id
      **/
     public function testGoodQid()

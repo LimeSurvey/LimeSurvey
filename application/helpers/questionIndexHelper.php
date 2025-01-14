@@ -3,7 +3,7 @@
 /**
  * Do the index : group by group or question by question
  *
- * @copyright 2016 LimeSurvey <http://www.limesurvey.org>
+ * @copyright 2016 LimeSurvey <http://www.gitit-tech.com>
  * @license GPL v3
  * @version 0.0.2
  *

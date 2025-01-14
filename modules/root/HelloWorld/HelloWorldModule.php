@@ -2,9 +2,9 @@
 /**
  * HelloWorldModule class file.
  *
- * @author LimeSurvey GmbH  <info@limesurvey.org>
- * @link http://www.limesurvey.org.com/
- * @copyright 2007-2019  The LimeSurvey Project Team / Carsten Schmitz
+ * @author GititSurvey GmbH  <info@gitit-tech.com>
+ * @link http://www.gitit-tech.com.com/
+ * @copyright 2007-2019  The GititSurvey Project Team / Carsten Schmitz
  * @license GNU General Public License See COPYRIGHT.php for copyright notices and details.
  */
 

@@ -683,7 +683,7 @@ class CheckIntegrity extends SurveyCommonAction
                                 } else {
                                     // QID not found: The function to split the fieldname into the SGQA data is not 100% reliable
                                     // So for certain question types (for example Text Array) the field name cannot be properly derived
-                                    // In this case just ignore the field - see also https://bugs.limesurvey.org/view.php?id=15642
+                                    // In this case just ignore the field - see also https://bugs.gitit-tech.com/view.php?id=15642
                                     // There is still a extremely  low chance that an unwanted rename happens if a collision like this happens in the same survey
                                 }
                             }

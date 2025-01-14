@@ -49,7 +49,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 {
     /**
      * If you add a new database version add any critical database version numbers to this array. See link
-     * @link https://www.limesurvey.org/manual/Database_versioning for explanations
+     * @link https://www.gitit-tech.com/manual/Database_versioning for explanations
      * @var array $aCriticalDBVersions An array of cricital database version.
      */
     $aCriticalDBVersions = array(310, 400, 450, 600);
@@ -130,7 +130,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     Notification::model()->refreshMetaData();
 
     // Try to clear tmp/runtime (database cache files).
-    // Related to problems like https://bugs.limesurvey.org/view.php?id=13699.
+    // Related to problems like https://bugs.gitit-tech.com/view.php?id=13699.
     // Some cache implementations may not have 'flush' method. Only call flush if method exists.
     if (method_exists(Yii::app()->cache, 'flush')) {
         Yii::app()->cache->flush();
@@ -1679,8 +1679,8 @@ function upgradeTemplateTables304($oDB)
         'title'                  => 'Advanced Template',
         'creation_date'          => '2017-07-12 12:00:00',
         'author'                 => 'LimeSurvey GmbH',
-        'author_email'           => 'info@limesurvey.org',
-        'author_url'             => 'https://www.limesurvey.org/',
+        'author_email'           => 'info@gitit-tech.com',
+        'author_url'             => 'https://www.gitit-tech.com/',
         'copyright'              => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\r\nAll rights reserved.',
         'license'                => 'License: GNU/GPL License v2 or later, see LICENSE.php\r\n\r\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
         'version'                => '1.0',
@@ -1699,8 +1699,8 @@ function upgradeTemplateTables304($oDB)
         'title'                  => 'Minimal Template',
         'creation_date'          => '2017-07-12 12:00:00',
         'author'                 => 'LimeSurvey GmbH',
-        'author_email'           => 'info@limesurvey.org',
-        'author_url'             => 'https://www.limesurvey.org/',
+        'author_email'           => 'info@gitit-tech.com',
+        'author_url'             => 'https://www.gitit-tech.com/',
         'copyright'              => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\r\nAll rights reserved.',
         'license'                => 'License: GNU/GPL License v2 or later, see LICENSE.php\r\n\r\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
         'version'                => '1.0',
@@ -1721,8 +1721,8 @@ function upgradeTemplateTables304($oDB)
         'title'                  => 'Material Template',
         'creation_date'          => '2017-07-12 12:00:00',
         'author'                 => 'LimeSurvey GmbH',
-        'author_email'           => 'info@limesurvey.org',
-        'author_url'             => 'https://www.limesurvey.org/',
+        'author_email'           => 'info@gitit-tech.com',
+        'author_url'             => 'https://www.gitit-tech.com/',
         'copyright'              => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\r\nAll rights reserved.',
         'license'                => 'License: GNU/GPL License v2 or later, see LICENSE.php\r\n\r\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
         'version'                => '1.0',
@@ -3203,7 +3203,7 @@ function regenerateLabelCodes400(int $lid, $hasLanguageColumn = true)
     )->queryRow();
     if (empty($labelSet)) {
         // No belonging label set, remove orphan labels.
-        // @see https://bugs.limesurvey.org/view.php?id=17608
+        // @see https://bugs.gitit-tech.com/view.php?id=17608
         $oDB->createCommand(
             sprintf(
                 'DELETE FROM {{labels}} WHERE lid = %d',

@@ -1,9 +1,9 @@
 /*
  * This file is part of LimeSurvey
- * Copyright (C) 2007-2018 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2018 The GititSurvey Project Team / Carsten Schmitz
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
+ * GititSurvey is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
@@ -423,7 +423,7 @@ function LEMsum()
  * @see: https://locutus.io/php/var/intval
  * original by: Kevin van Zonneveld (https://kvz.io)
  * improved by: stensi
- * adapated for LimeSurvey by Denis Chenu
+ * adapated for GititSurvey by Denis Chenu
  *   example 1: intval('150.03LimeSurvey')
  *   returns 1: 150
  *   example 2: intval('LimeSurvey: 10')
@@ -546,7 +546,7 @@ function LEMconvert_value( fValueToReplace, iStrict, sTranslateFromList, sTransl
  * @return float
  * @see: https://locutus.io/php/floatval/
  * original by: Michael White (https://getsprink.com)
- * updated for LimeSurvey by Denis Chenu
+ * updated for GititSurvey by Denis Chenu
  *      note 1: The native parseFloat() method of JavaScript returns NaN
  *      note 1: when it encounters a string before an int or float value.
  *   example 1: floatval('150.03LimeSurvey')
@@ -691,13 +691,13 @@ function LEMlog()
 
 /**
  * max like php in LimeSurvey, start by https://github.com/kvz/locutus/blob/master/src/php/math/max.js
- * @see https://bugs.limesurvey.org/view.php?id=14337
+ * @see https://bugs.gitit-tech.com/view.php?id=14337
  * Review for ExpressionManager
  **/
 function LEMmax () {
   // original at: http://locutus.io/php/max/
   // original by: Onno Marsman (https://twitter.com/onnomarsman)
-  //  revised by: Denis Chenu for LimeSurvey specific
+  //  revised by: Denis Chenu for GititSurvey specific
   //      note 1: Long code cause we're aiming for maximum PHP compatibility
   //   example 1: max(1, 3, 5, 6, 7,'')
   //   returns 1: 7
@@ -757,14 +757,14 @@ function LEMmax () {
   return retVal
 }
 /**
- * min like php in LimeSurvey : https://github.com/kvz/locutus/blob/master/src/php/math/min.js
- * @see https://bugs.limesurvey.org/view.php?id=14337
+ * min like php in GititSurvey : https://github.com/kvz/locutus/blob/master/src/php/math/min.js
+ * @see https://bugs.gitit-tech.com/view.php?id=14337
  * Review for ExpressionManager 
  **/
 function LEMmin () {
   // original at: http://locutus.io/php/max/
   // original by: Onno Marsman (https://twitter.com/onnomarsman)
-  //  revised by: Denis Chenu for LimeSurvey specific
+  //  revised by: Denis Chenu for GititSurvey specific
   //      note 1: Long code cause we're aiming for maximum PHP compatibility
   //   example 1: min(1, 3, 5, 6, 7)
   //   returns 1: 1

@@ -40,7 +40,7 @@ abstract class Response extends Dynamic
 
     /** @inheritdoc
      * Must be set by DB, adding by security here
-     * @see https://bugs.limesurvey.org/view.php?id=17208
+     * @see https://bugs.gitit-tech.com/view.php?id=17208
      **/
     public function primaryKey()
     {

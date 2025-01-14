@@ -18,7 +18,7 @@
  * This is a wrapper class around ExpressionManager that implements a Singleton and eases
  * passing of LimeSurvey variable values into ExpressionManager
  *
- * @author LimeSurvey Team (limesurvey.org)
+ * @author LimeSurvey Team (gitit-tech.com)
  * @author Thomas M. White (TMSWhite)
  * @author Denis Chenu <http://sondages.pro>
  */
@@ -7446,7 +7446,7 @@ class LimeExpressionManager
                         $_qid = $knownVar['qid'];
 
                         /**
-                         * https://bugs.limesurvey.org/view.php?id=8308#c26972
+                         * https://bugs.gitit-tech.com/view.php?id=8308#c26972
                          * Thomas White explained: "LEMrelXX functions were specifically designed to only be called for questions that have some dependency upon others "
                          * So $qrelQIDs contains those questions.
                          */

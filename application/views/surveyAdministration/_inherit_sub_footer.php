@@ -13,7 +13,7 @@
                 '</a>',
                 '<a href="' . $this->createUrl('/surveyAdministration/listsurveys') . '" target="_blank">',
                 '</a>',
-                '<a href="https://www.limesurvey.org/manual/Survey_settings_inheritance" target="_blank">',
+                '<a href="https://www.gitit-tech.com/manual/Survey_settings_inheritance" target="_blank">',
                 '</a>'
             ); ?>
         </div>

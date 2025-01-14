@@ -3,7 +3,7 @@
 namespace ls\tests;
 
 /**
- * Tests for the LimeSurvey remote API.
+ * Tests for the GititSurvey remote API.
  */
 class RemoteControlTest extends TestBaseClass
 {
@@ -236,7 +236,7 @@ class RemoteControlTest extends TestBaseClass
 
 
     /**
-     * @see https://bugs.limesurvey.org/view.php?id=15813
+     * @see https://bugs.gitit-tech.com/view.php?id=15813
      */
     public function testListGroups()
     {
@@ -293,7 +293,7 @@ class RemoteControlTest extends TestBaseClass
     }
 
     /**
-     * @see https://bugs.limesurvey.org/view.php?id=15813
+     * @see https://bugs.gitit-tech.com/view.php?id=15813
      */
     public function testGetGroupProperties()
     {

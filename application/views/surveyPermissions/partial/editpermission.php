@@ -46,7 +46,7 @@ Yii::app()->getController()->renderPartial(
                                         'data-indeterminate' => $aValues['indeterminate'],
                                         'id'                 => CHtml::getIdByName("set[{$aCurrentPermissions['entity']}][{$sPermission}][$sKey]"),
                                         'uncheckValue'       => 0,
-                                        /* See issue #14551 : https://bugs.limesurvey.org/view.php?id=14551 */
+                                        /* See issue #14551 : https://bugs.gitit-tech.com/view.php?id=14551 */
                                         'disabled'           => $aValues['disabled'],
                                     ]
                                 );

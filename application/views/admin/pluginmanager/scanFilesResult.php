@@ -30,7 +30,7 @@
                     && !$scannedPlugin['isCompatible']
                 ) : ?>
                     <i class='ri-forbid-2-line'></i>&nbsp;
-                    <span class='text-danger'><?php eT('Plugin is not compatible with your LimeSurvey version.'); ?></span>
+                    <span class='text-danger'><?php eT('Plugin is not compatible with your GititSurvey version.'); ?></span>
                 <?php else : ?>
                     <i class='fri-error-warning-fill'></i>&nbsp;
                     <span class='text-danger'><?php eT('Load error. Please contact the plugin author.'); ?></span>

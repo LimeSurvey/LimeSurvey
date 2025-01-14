@@ -138,7 +138,7 @@ class LimeMailer extends PHPMailer
     public function __construct($exceptions = false)
     {
         parent::__construct($exceptions);
-        /* Global configuration for ALL email of this LimeSurvey instance */
+        /* Global configuration for ALL email of this GititSurvey instance */
         $emailmethod = Yii::app()->getConfig('emailmethod');
         $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
         $emailsmtpuser = Yii::app()->getConfig("emailsmtpuser");
@@ -236,7 +236,7 @@ class LimeMailer extends PHPMailer
         $this->AltBody = "";
         $this->MIMEBody = "";
         $this->MIMEHeader = "";
-        $this->addCustomHeader("X-Surveymailer", Yii::app()->getConfig("sitename") . " Emailer (LimeSurvey.org)");
+        $this->addCustomHeader("X-Surveymailer", Yii::app()->getConfig("sitename") . " Emailer (gitit-tech.com)");
     }
 
     /**
@@ -865,7 +865,7 @@ class LimeMailer extends PHPMailer
     }
 
     /**
-     * Do the replacements : if current replacement jey is set and LimeSurvey core have it too : it reset to the needed one.
+     * Do the replacements : if current replacement jey is set and GititSurvey core have it too : it reset to the needed one.
      * @param string $string wher need to replace
      * @return string
      */

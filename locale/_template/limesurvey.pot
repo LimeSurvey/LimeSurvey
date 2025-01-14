@@ -1,17 +1,17 @@
-# LimeSurvey LANGUAGE FILE.
-# Copyright (C) 2025 LimeSurvey
-# This file is distributed under the same license as the LimeSurvey package.
+# GititSurvey LANGUAGE FILE.
+# Copyright (C) 2025 GititSurvey
+# This file is distributed under the same license as the GititSurvey package.
 msgid ""
 msgstr ""
-"Project-Id-Version: LimeSurvey language file\n"
-"Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
+"Project-Id-Version: GititSurvey language file\n"
+"Report-Msgid-Bugs-To: http://translate.gitit-tech.org/\n"
 "POT-Creation-Date: 2025-01-08 16:33:13+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2025-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LimeSurvey Team <c_schmitz@users.sourceforge.net>\n"
+"Language-Team: GititSurvey Team <c_schmitz@users.sourceforge.net>\n"
 "X-Poedit-KeywordsList: gT;ngT:1,2;eT;neT:1,2\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: ..\\..\\..\\\n"
@@ -109,7 +109,7 @@ msgstr ""
 #: application/views/admin/super/layout_insurvey.php:82
 #: application/views/admin/super/layout_main.php:47
 #: application/views/admin/super/layout_minimal.php:34
-msgid "LimeSurvey online manual"
+msgid "GititSurvey online manual"
 msgstr ""
 
 #: application/controllers/AdminController.php:499
@@ -537,7 +537,7 @@ msgid "Welcome"
 msgstr ""
 
 #: application/controllers/InstallerController.php:137
-msgid "Welcome to the LimeSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey."
+msgid "Welcome to the GititSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of GititSurvey."
 msgstr ""
 
 #: application/controllers/InstallerController.php:161
@@ -556,7 +556,7 @@ msgid "Pre-installation check"
 msgstr ""
 
 #: application/controllers/InstallerController.php:195
-msgid "Pre-installation check for LimeSurvey "
+msgid "Pre-installation check for GititSurvey "
 msgstr ""
 
 #: application/controllers/InstallerController.php:231
@@ -573,7 +573,7 @@ msgstr ""
 #: application/controllers/InstallerController.php:404
 #: application/controllers/InstallerController.php:430
 #: application/controllers/InstallerController.php:479
-msgid "Please enter the database settings you want to use for LimeSurvey:"
+msgid "Please enter the database settings you want to use for GititSurvey:"
 msgstr ""
 
 #: application/controllers/InstallerController.php:282
@@ -581,7 +581,7 @@ msgid "The database you specified does already exist."
 msgstr ""
 
 #: application/controllers/InstallerController.php:289
-msgid "The database exists and contains LimeSurvey tables."
+msgid "The database exists and contains GititSurvey tables."
 msgstr ""
 
 #: application/controllers/InstallerController.php:290
@@ -651,7 +651,7 @@ msgid "Success!"
 msgstr ""
 
 #: application/controllers/InstallerController.php:541
-msgid "LimeSurvey has been installed successfully."
+msgid "GititSurvey has been installed successfully."
 msgstr ""
 
 #: application/controllers/InstallerController.php:548
@@ -5614,7 +5614,7 @@ msgstr ""
 
 #: application/controllers/admin/PluginManagerController.php:219
 #: application/controllers/admin/PluginManagerController.php:568
-msgid "The plugin is not compatible with your version of LimeSurvey."
+msgid "The plugin is not compatible with your version of GititSurvey."
 msgstr ""
 
 #: application/controllers/admin/PluginManagerController.php:231
@@ -6173,7 +6173,7 @@ msgid "The survey group '%s' was deleted."
 msgstr ""
 
 #: application/controllers/admin/Themes.php:311
-msgid "The question theme is not compatible with your version of LimeSurvey."
+msgid "The question theme is not compatible with your version of GititSurvey."
 msgstr ""
 
 #: application/controllers/admin/Themes.php:356
@@ -6364,11 +6364,11 @@ msgid "Question group description"
 msgstr ""
 
 #: application/controllers/admin/Themes.php:1352
-msgid "LimeSurvey theme editor"
+msgid "GititSurvey theme editor"
 msgstr ""
 
 #: application/controllers/admin/Themes.php:1356
-msgid "Welcome to the theme editor of LimeSurvey. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s."
+msgid "Welcome to the theme editor of GititSurvey. To get an overview of new functionality and possibilities, please visit the %s GititSurvey manual %s. For further questions and information, feel free to post your questions on the %s GititSurvey forums %s."
 msgstr ""
 
 #: application/controllers/admin/Themes.php:1385
@@ -6934,7 +6934,7 @@ msgstr ""
 
 #: application/controllers/admin/Update.php:206
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:27
-msgid "It seems that the ComfortUpdate server is not responding. Please try again in few minutes or contact the LimeSurvey team."
+msgid "It seems that the ComfortUpdate server is not responding. Please try again in few minutes or contact the GititSurvey team."
 msgstr ""
 
 #: application/controllers/admin/UserAction.php:51
@@ -7758,11 +7758,11 @@ msgid "Next"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:1139
-msgid "Welcome to LimeSurvey!"
+msgid "Welcome to GititSurvey!"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:1140
-msgid "This tour will help you to easily get a basic understanding of LimeSurvey."
+msgid "This tour will help you to easily get a basic understanding of GititSurvey."
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:1141
@@ -7774,7 +7774,7 @@ msgid "The basic functions"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:1157
-msgid "The three top boxes are the most basic functions of LimeSurvey."
+msgid "The three top boxes are the most basic functions of GititSurvey."
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:1158
@@ -7886,7 +7886,7 @@ msgid "This is the top bar."
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:1296
-msgid "This bar will change as you move through the functionalities. The current bar corresponds to the \"overview\" tab. It contains the most important LimeSurvey functionalities such as preview and activate survey."
+msgid "This bar will change as you move through the functionalities. The current bar corresponds to the \"overview\" tab. It contains the most important GititSurvey functionalities such as preview and activate survey."
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:1307
@@ -7906,7 +7906,7 @@ msgid "What good would your survey be without questions?"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:1324
-msgid "In LimeSurvey a survey is organized in groups and questions. To begin creating questions, we first need a question group."
+msgid "In GititSurvey a survey is organized in groups and questions. To begin creating questions, we first need a question group."
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:1325
@@ -7962,7 +7962,7 @@ msgid "Set your question type."
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:1405
-msgid "LimeSurvey offers you a lot of different question types."
+msgid "GititSurvey offers you a lot of different question types."
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:1406
@@ -8836,7 +8836,7 @@ msgid "JSON"
 msgstr ""
 
 #: application/core/plugins/Authdb/Authdb.php:311
-msgid "LimeSurvey internal database"
+msgid "GititSurvey internal database"
 msgstr ""
 
 #: application/core/plugins/Authwebserver/Authwebserver.php:53
@@ -8888,7 +8888,7 @@ msgstr ""
 
 #: application/core/plugins/AzureOAuthSMTP/AzureOAuthSMTP.php:101
 #: application/core/plugins/GoogleOAuthSMTP/GoogleOAuthSMTP.php:73
-msgid "Access LimeSurvey over HTTPS."
+msgid "Access GititSurvey over HTTPS."
 msgstr ""
 
 #: application/core/plugins/AzureOAuthSMTP/AzureOAuthSMTP.php:102
@@ -10226,7 +10226,7 @@ msgid "Answer option %s has outdated links."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:1216
-msgid "This is not a valid LimeSurvey LSA file."
+msgid "This is not a valid GititSurvey LSA file."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:1260
@@ -10234,7 +10234,7 @@ msgid "Unable to create survey participants table"
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:1306
-msgid "This is not a valid LimeSurvey survey structure XML file."
+msgid "This is not a valid GititSurvey survey structure XML file."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:1411
@@ -10408,7 +10408,7 @@ msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:60
 #: application/helpers/userstatistics_helper.php:60
-msgid "The fonts file %s was not found in <limesurvey root folder>/fonts directory. Please, see the txt file for your language in fonts directory to generate the charts."
+msgid "The fonts file %s was not found in <GititSurvey root folder>/fonts directory. Please, see the txt file for your language in fonts directory to generate the charts."
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:75
@@ -14505,7 +14505,7 @@ msgid "Extension configuration file is not valid."
 msgstr ""
 
 #: application/libraries/PluginManager/PluginManager.php:136
-msgid "Extension is not compatible with your LimeSurvey version."
+msgid "Extension is not compatible with your GititSurvey version."
 msgstr ""
 
 #: application/libraries/PluginManager/PluginManager.php:146
@@ -14577,7 +14577,7 @@ msgid "Section"
 msgstr ""
 
 #: application/models/AdminTheme.php:383
-msgid "This is the LimeSurvey admin interface. Start to build your survey from here."
+msgid "This is the GititSurvey admin interface. Start to build your survey from here."
 msgstr ""
 
 #: application/models/Answer.php:87
@@ -14789,7 +14789,7 @@ msgid "If your database is using a custom port, attach it using a colon. Example
 msgstr ""
 
 #: application/models/InstallerConfigForm.php:197
-msgid "If the database does not yet exist it will be created (make sure your database user has the necessary permissions). In contrast, if there are existing LimeSurvey tables in that database they will be upgraded automatically after installation."
+msgid "If the database does not yet exist it will be created (make sure your database user has the necessary permissions). In contrast, if there are existing GititSurvey tables in that database they will be upgraded automatically after installation."
 msgstr ""
 
 #: application/models/InstallerConfigForm.php:198
@@ -14813,11 +14813,11 @@ msgid "Could not determine the database engine version. Please check your creden
 msgstr ""
 
 #: application/models/InstallerConfigForm.php:306
-msgid "You need to enable large_file_prefix setting in your database configuration in order to use InnoDB engine for LimeSurvey!"
+msgid "You need to enable large_file_prefix setting in your database configuration in order to use InnoDB engine for GititSurvey!"
 msgstr ""
 
 #: application/models/InstallerConfigForm.php:309
-msgid "Your database configuration needs to have innodb_file_format and innodb_file_format_max set to use the Barracuda format in order to use InnoDB engine for LimeSurvey!"
+msgid "Your database configuration needs to have innodb_file_format and innodb_file_format_max set to use the Barracuda format in order to use InnoDB engine for GititSurvey!"
 msgstr ""
 
 #: application/models/InstallerConfigForm.php:466
@@ -15362,11 +15362,11 @@ msgid "Configuration file %s could not be found or read."
 msgstr ""
 
 #: application/models/QuestionTheme.php:925
-msgid "Question theme could not be converted to the latest LimeSurvey version. Reason: No matching core theme with the name %s could be found"
+msgid "Question theme could not be converted to the latest GititSurvey version. Reason: No matching core theme with the name %s could be found"
 msgstr ""
 
 #: application/models/QuestionTheme.php:957
-msgid "Question theme has been successfully converted to the latest LimeSurvey version."
+msgid "Question theme has been successfully converted to the latest GititSurvey version."
 msgstr ""
 
 #: application/models/QuestionTheme.php:1104
@@ -16126,7 +16126,7 @@ msgstr ""
 
 #: application/models/TemplateConfig.php:920
 #: application/models/TemplateConfiguration.php:1184
-msgid "Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."
+msgid "Theme '%s' has been uninstalled because it's not compatible with this GititSurvey version."
 msgstr ""
 
 #: application/models/TemplateConfig.php:931
@@ -17490,7 +17490,7 @@ msgid "Target database version:"
 msgstr ""
 
 #: application/views/admin/databaseupdate/verify.php:24
-msgid "You will not be able to update because your previous LimeSurvey version is too old."
+msgid "You will not be able to update because your previous GititSurvey version is too old."
 msgstr ""
 
 #: application/views/admin/databaseupdate/verify.php:26
@@ -17589,7 +17589,7 @@ msgstr ""
 
 #: application/views/admin/dataentry/import.php:31
 #: application/views/admin/token/tokenwarning.php:62
-msgid "Please be aware that tables including encryption should not be restored if they have been created in LimeSurvey 4 before version 4.6.1"
+msgid "Please be aware that tables including encryption should not be restored if they have been created in GititSurvey 4 before version 4.6.1"
 msgstr ""
 
 #: application/views/admin/dataentry/import.php:36
@@ -18892,7 +18892,7 @@ msgid "Test if your server has SSL enabled by clicking on this link."
 msgstr ""
 
 #: application/views/admin/globalsettings/_security.php:134
-msgid "If the link does not work and you turn on HTTPS, you will not be able to access and use your LimeSurvey application!"
+msgid "If the link does not work and you turn on HTTPS, you will not be able to access and use your GititSurvey application!"
 msgstr ""
 
 #: application/views/admin/globalsettings/_security.php:143
@@ -19992,7 +19992,7 @@ msgid "Install this plugin"
 msgstr ""
 
 #: application/views/admin/pluginmanager/scanFilesResult.php:33
-msgid "Plugin is not compatible with your LimeSurvey version."
+msgid "Plugin is not compatible with your GititSurvey version."
 msgstr ""
 
 #: application/views/admin/pluginmanager/scanFilesResult.php:36
@@ -20130,11 +20130,11 @@ msgid "Global survey"
 msgstr ""
 
 #: application/views/admin/super/_help_menu.php:13
-msgid "LimeSurvey Manual"
+msgid "GititSurvey Manual"
 msgstr ""
 
 #: application/views/admin/super/_help_menu.php:23
-msgid "LimeSurvey Forums"
+msgid "GititSurvey Forums"
 msgstr ""
 
 #: application/views/admin/super/_help_menu.php:31
@@ -20142,7 +20142,7 @@ msgid "Report bugs"
 msgstr ""
 
 #: application/views/admin/super/_help_menu.php:38
-msgid "LimeSurvey Homepage"
+msgid "GititSurvey Homepage"
 msgstr ""
 
 #: application/views/admin/super/_tutorial_menu.php:12
@@ -20172,11 +20172,11 @@ msgstr ""
 
 #: application/views/admin/super/footer.php:9
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:45
-msgid "LimeSurvey version"
+msgid "GititSurvey version"
 msgstr ""
 
 #: application/views/admin/super/footer.php:10
-msgid "LimeSurvey build"
+msgid "GititSurvey build"
 msgstr ""
 
 #: application/views/admin/super/footer.php:11
@@ -21228,7 +21228,7 @@ msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:65
 #: application/views/admin/survey/surveybar_displayexport.php:79
-msgid "It is not suitable for backing up a LimeSurvey survey as it cannot export conditions, and isn't able to export all question types."
+msgid "It is not suitable for backing up a GititSurvey survey as it cannot export conditions, and isn't able to export all question types."
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:66
@@ -21771,7 +21771,7 @@ msgid "Extend theme"
 msgstr ""
 
 #: application/views/admin/themes/templateeditorbar_view.php:137
-msgid "We can not guarantee optimum operation. It would be preferable to no longer use it or to make it compatible with the version %s of the LimeSurvey API."
+msgid "We can not guarantee optimum operation. It would be preferable to no longer use it or to make it compatible with the version %s of the GititSurvey API."
 msgstr ""
 
 #: application/views/admin/themes/templateeditorbar_view.php:143
@@ -22447,7 +22447,7 @@ msgid "We will soon add the functionality to create your own tutorials and downl
 msgstr ""
 
 #: application/views/admin/update/_ajaxVariables.php:45
-msgid "You have an error inside your local installation of LimeSurvey. See:"
+msgid "You have an error inside your local installation of GititSurvey. See:"
 msgstr ""
 
 #: application/views/admin/update/_update_notification.php:20
@@ -22480,7 +22480,7 @@ msgid "New update available:"
 msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:34
-msgid "The following LimeSurvey updates are available:"
+msgid "The following GititSurvey updates are available:"
 msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:48
@@ -22545,7 +22545,7 @@ msgid "Your version is not updatable via ComfortUpdate. Please update manually."
 msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:48
-msgid "ComfortUpdate is disabled in your LimeSurvey configuration. Please contact your administrator for more information."
+msgid "ComfortUpdate is disabled in your GititSurvey configuration. Please contact your administrator for more information."
 msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:55
@@ -22554,7 +22554,7 @@ msgid "No build version found!"
 msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:56
-msgid "It seems you're using a version coming from the LimeSurvey GitHub repository. You can't use ComfortUpdate."
+msgid "It seems you're using a version coming from the GititSurvey GitHub repository. You can't use ComfortUpdate."
 msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:64
@@ -22584,7 +22584,7 @@ msgstr ""
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:76
 #: application/views/admin/update/updater/_error.php:68
 #: application/views/admin/update/updater/_error.php:133
-msgid "Please contact the LimeSurvey team."
+msgid "Please contact the GititSurvey team."
 msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:77
@@ -22622,17 +22622,17 @@ msgstr ""
 
 #: application/views/admin/update/manage/subscribe.php:17
 #: application/views/admin/update/updater/welcome/_subscribe.php:17
-msgid "The LimeSurvey ComfortUpdate is a great feature to easily update to the latest version of LimeSurvey. To use it you will need an update key."
+msgid "The GititSurvey ComfortUpdate is a great feature to easily update to the latest version of GititSurvey. To use it you will need an update key."
 msgstr ""
 
 #: application/views/admin/update/manage/subscribe.php:23
 #: application/views/admin/update/updater/welcome/_subscribe.php:22
-msgid "You can get a free trial update key from %syour account on the limesurvey.org website%s."
+msgid "You can get a free trial update key from %syour account on the GititSurvey.org website%s."
 msgstr ""
 
 #: application/views/admin/update/manage/subscribe.php:28
 #: application/views/admin/update/updater/welcome/_subscribe.php:27
-msgid "If you don't have an account on limesurvey.org, please %sregister first%s."
+msgid "If you don't have an account on GititSurvey.org, please %sregister first%s."
 msgstr ""
 
 #: application/views/admin/update/manage/subscribe.php:35
@@ -22712,7 +22712,7 @@ msgstr ""
 #: application/views/admin/update/updater/_error.php:86
 #: application/views/admin/update/updater/_error.php:92
 #: application/views/admin/update/updater/_error.php:98
-msgid "Most likely this is a temporary problem, so please try again in 5 minutes. If the issue persists, please contact LimeSurvey support."
+msgid "Most likely this is a temporary problem, so please try again in 5 minutes. If the issue persists, please contact GititSurvey support."
 msgstr ""
 
 #: application/views/admin/update/updater/_error.php:85
@@ -22918,7 +22918,7 @@ msgid "Everything looks alright. Please proceed to the next step."
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_fileSystem.php:13
-msgid "Checking existing LimeSurvey files..."
+msgid "Checking existing GititSurvey files..."
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_final.php:8
@@ -22953,7 +22953,7 @@ msgstr ""
 
 #: application/views/admin/update/updater/steps/_old_step4b.php:13
 #: application/views/admin/update/updater/steps/_old_step4b.php:19
-msgid "On requesting the update information from limesurvey.org there has been an error:"
+msgid "On requesting the update information from gitit-tech.org there has been an error:"
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_old_step4b.php:16
@@ -22982,7 +22982,7 @@ msgid "ComfortUpdate has been updated!"
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_updater_updated.php:15
-msgid "You can now continue updating your LimeSurvey Installation."
+msgid "You can now continue updating your GititSurvey Installation."
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_updater_updated.php:20
@@ -23027,19 +23027,19 @@ msgid "Key update"
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_updater_update.php:14
-msgid "Before you proceed to the LimeSurvey update, we must first update ComfortUpdate itself."
+msgid "Before you proceed to the GititSurvey update, we must first update ComfortUpdate itself."
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_updater_update.php:16
-msgid "At the end of the process we'll proceed to the LimeSurvey update."
+msgid "At the end of the process we'll proceed to the GititSurvey update."
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_welcome.php:11
-msgid "Welcome to the LimeSurvey ComfortUpdate!"
+msgid "Welcome to the GititSurvey ComfortUpdate!"
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_welcome.php:28
-msgid "The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey."
+msgid "The GititSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of GititSurvey."
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_welcome.php:29
@@ -23047,7 +23047,7 @@ msgid "The following steps will be done by this update:"
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_welcome.php:30
-msgid "Your LimeSurvey installation is checked if the update can be run successfully."
+msgid "Your GititSurvey installation is checked if the update can be run successfully."
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_welcome.php:31
@@ -23351,7 +23351,7 @@ msgid "You are using Microsoft Internet Explorer."
 msgstr ""
 
 #: application/views/dashboard/welcome.php:146
-msgid "LimeSurvey 3.x or newer does not support Internet Explorer for the LimeSurvey administration, anymore. However most of the functionality should still work."
+msgid "GititSurvey 3.x or newer does not support Internet Explorer for the GititSurvey administration, anymore. However most of the functionality should still work."
 msgstr ""
 
 #: application/views/dashboard/welcome.php:147
@@ -23504,7 +23504,7 @@ msgid "The database you specified does not exist:"
 msgstr ""
 
 #: application/views/installer/nodatabase_view.php:12
-msgid "LimeSurvey can attempt to create this database for you."
+msgid "GititSurvey can attempt to create this database for you."
 msgstr ""
 
 #: application/views/installer/optconfig_view.php:22
@@ -23726,7 +23726,7 @@ msgid "Start installation"
 msgstr ""
 
 #: application/views/installer/welcome_view.php:44
-msgid "Subscribe to our %sLimeSurvey Cloud%s hosting and get:"
+msgid "Subscribe to our %sGititSurvey Cloud%s hosting and get:"
 msgstr ""
 
 #: application/views/installer/welcome_view.php:46
@@ -23760,7 +23760,7 @@ msgstr ""
 
 #: application/views/layouts/installer.php:23
 #: application/views/layouts/installer.php:30
-msgid "LimeSurvey installer"
+msgid "GititSurvey installer"
 msgstr ""
 
 #: application/views/layouts/partial_modals/modal_footer_cancelchange.php:10
@@ -23979,7 +23979,7 @@ msgid "You can't delete a question if the survey is active."
 msgstr ""
 
 #: application/views/questionAdministration/questionCode.php:12
-msgid "The question code is used for quick identification of this question and must be unique. It is especially useful if you wish to use the LimeSurvey assessments feature and/or the ExpressionScript."
+msgid "The question code is used for quick identification of this question and must be unique. It is especially useful if you wish to use the GititSurvey assessments feature and/or the ExpressionScript."
 msgstr ""
 
 #: application/views/questionAdministration/summary.php:28
@@ -24503,7 +24503,7 @@ msgid "Your survey (%d) was deactivated."
 msgstr ""
 
 #: application/views/surveyAdministration/afterDeactivateSurvey_view.php:18
-msgid "Responses are no longer available in LimeSurvey."
+msgid "Responses are no longer available in GititSurvey."
 msgstr ""
 
 #: application/views/surveyAdministration/afterDeactivateSurvey_view.php:19
@@ -24687,7 +24687,7 @@ msgid "The new question editor is only available for surveys using the FruityTwe
 msgstr ""
 
 #: application/views/surveyAdministration/partial/topbar/_newQuestionEditorBtn.php:22
-msgid "Open in Limesurvey editor"
+msgid "Open in GititSurvey editor"
 msgstr ""
 
 #: application/views/surveyAdministration/partial/topbar/languagesDropdownItems.php:47
@@ -25175,7 +25175,7 @@ msgstr ""
 
 #: application/views/themeOptions/index.php:90
 #: application/views/themeOptions/index.php:272
-msgid "The theme is not compatible with your version of LimeSurvey."
+msgid "The theme is not compatible with your version of GititSurvey."
 msgstr ""
 
 #: application/views/themeOptions/index.php:92
@@ -25474,7 +25474,7 @@ msgid "Click here to reset your password"
 msgstr ""
 
 #: application/views/userManagement/partial/usernotificationemail.php:310
-msgid "Please contact your LimeSurvey administrator for your password."
+msgid "Please contact your GititSurvey administrator for your password."
 msgstr ""
 
 #: application/views/userManagement/partial/usernotificationemail.php:390

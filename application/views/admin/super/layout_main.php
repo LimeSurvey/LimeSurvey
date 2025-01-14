@@ -44,7 +44,7 @@ if (!isset($aData['display']['endscripts']) || $aData['display']['endscripts'] !
 ?>
 <?php if (!App()->user->isGuest) : ?>
     <?php if (!isset($aData['display']['footer']) || $aData['display']['footer'] !== false) : ?>
-        <?= App()->getController()->getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual')) ?>
+        <?= App()->getController()->getAdminFooter('http://manual.gitit-tech.com', gT('GititSurvey online manual')) ?>
     <?php endif; ?>
 <?php else : ?>
     </body>

@@ -36,7 +36,7 @@ $layoutHelper->showadminmenu($aData);
 
 <?php if (!App()->user->isGuest) : ?>
     <?php if (!isset($aData['display']['footer']) || $aData['display']['footer'] !== false) : ?>
-        <?php $layoutHelper->getAdminFooter('http://manual.limesurvey.org') ?>
+        <?php $layoutHelper->getAdminFooter('http://manual.gitit-tech.com') ?>
     <?php endif; ?>
 <?php else : ?>
     </body>

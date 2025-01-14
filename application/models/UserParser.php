@@ -3,7 +3,7 @@
 /**
  * Importing class to get users from a CSV file
  *
- * @author LimeSurvey GmbH <info@limesurvey.org>
+ * @author LimeSurvey GmbH <info@gitit-tech.com>
  * @license GPL3.0
  */
 class UserParser

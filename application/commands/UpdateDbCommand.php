@@ -7,7 +7,7 @@
  *
  * Usage: application/commands/console.php updatedb
  *
- * Copyright (C) 2017 LimeSurvey Team
+ * Copyright (C) 2017 GititSurvey Team
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -33,7 +33,7 @@ class UpdateDBCommand extends CConsoleCommand
         $currentDbVersion = intval(Yii::app()->getConfig('DBVersion'));
 
         if (!$currentDbVersion) {
-            throw new CException("DataBase version are not found, seems LimeSurvey are not installed.");
+            throw new CException("DataBase version are not found, seems GititSurvey are not installed.");
         }
 
         if ($newDbVersion > $currentDbVersion) {

@@ -1532,7 +1532,7 @@ class SurveyRuntimeHelper
             // delete the existing response but only if not already completed
             if (
                 isset($sessionSurvey['srid'])
-                && !SurveyDynamic::model($this->iSurveyid)->isCompleted($sessionSurvey['srid']) // see bug https://bugs.limesurvey.org/view.php?id=11978
+                && !SurveyDynamic::model($this->iSurveyid)->isCompleted($sessionSurvey['srid']) // see bug https://bugs.gitit-tech.com/view.php?id=11978
             ) {
                 $oResponse = Response::model($this->iSurveyid)->find("id = :srid", array(":srid" => $sessionSurvey['srid']));
 
@@ -1847,7 +1847,7 @@ class SurveyRuntimeHelper
      * Apply the plugin even beforeQuestionRender to
      * question data.
      *
-     * @see https://www.limesurvey.org/manual/BeforeQuestionRender
+     * @see https://www.gitit-tech.com/manual/BeforeQuestionRender
      *
      * @param array $data Question data
      * @return array Question data modified by plugin

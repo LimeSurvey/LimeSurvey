@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v6.x!
+Welcome to GititSurvey v6.x!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied,
 including, but not limited to, the implied warranties of merchantability and fitness for a particular
@@ -20,14 +20,14 @@ This release does have the following requirements:
     *PDO database driver for MySQL (pdo_mysql or pdo_mysqli) or Postgres (pdo_pgsql) or MSSQL (pdo_sqlsrv for Windows and pdo_dblib for Linux)
 
 If you are doing a complete new installation please refer to the manual at
-https://manual.limesurvey.org/Installation
+https://manual.gitit-tech.com/Installation
 
 Please also have a look at the "Installation security hints" section of the online manual in order to secure your installation.
 
 
 === UPGRADING=====
 We suggest to check out and hold close to the instructions, which can be found in our online manual:
-https://manual.limesurvey.org/Upgrading_from_a_previous_version
+https://manual.gitit-tech.com/Upgrading_from_a_previous_version
 
 Thank you to everyone who helped with this new release!
 
@@ -338,7 +338,7 @@ Changes from 6.5.18 (build 240723) to 6.6.0 (build 240729) July 29, 2024
 -Fixed issue #CT-907: Wrong File upload question texts in response view (#3930) (Mohab Elsheikh)
 -Fixed issue #CR-1421: Themes overview page showing error when configuration can't be loaded or is invalid (#3857) (Mohab Elsheikh)
 -Fixed issue #CT-854: Fix invalid logo path for PDF export (#3916) (Mohab Elsheikh)
--Fixed issue #19492: Different minimum password requirements inside and outside of LimeSurvey (#3928) (Gabriel Jenik)
+-Fixed issue #19492: Different minimum password requirements inside and outside of GititSurvey (#3928) (Gabriel Jenik)
 #Updated translation: Korean by modernity4r
 #Updated translation: Dutch by Han
 #Updated translation: Dutch (Informal) by Han
@@ -774,7 +774,7 @@ Changes from 6.4.3 (build 240122) to 6.4.4 (build 240130) January 30, 2024
 
 Changes from 6.4.2 (build 240115) to 6.4.3 (build 240122) January 22, 2024
 +New feature #19299: Unmask token field (#3673) (Denis Chenu)
--Fixed issue: LimeSurvey getting slower as more answer options are across all surveys (Carsten Schmitz)
+-Fixed issue: GititSurvey getting slower as more answer options are across all surveys (Carsten Schmitz)
 -Fixed issue #CT-605: column selector in responses tab wasn't working anymore (twilligls)
 -Fixed issue #CT-604: edit action in "Panel integration" wasn't working (twilligls)
 -Fixed issue #CT-598: removing additional languages didn't work anymore (twilligls)
@@ -956,7 +956,7 @@ Changes from 6.3.1 (build 231023) to 6.3.2 (build 231031) October 30, 2023
 -Fixed issue #19169: [security] Privilege escalation to edit survey (#3547) (Denis Chenu)
 -Fixed issue #19163: [security] Reflected XSS in HtmlEditorPop - Bypassing XSS sanitization function (#3565) (Gabriel Jenik)
 -Fixed issue #19161: Invalid adminemail/bounce_email address in lss results in white screen on import (#3556) (Gabriel Jenik)
--Fixed issue #19140: Problem with viewing LimeSurvey notifications (#3523) (Matthew)
+-Fixed issue #19140: Problem with viewing GititSurvey notifications (#3523) (Matthew)
 -Fixed issue #19132: Icon selection in the "Dashboard editor/create box" does not work (#3515) (Matthew)
 -Fixed issue #19107: [security] Superadmin can update any admin's information (#3495) (Denis Chenu)
 -Fixed issue #19101: Array by Column Has Incorrect Table Row/Column Ids (#3500) (Matthew)
@@ -1114,7 +1114,7 @@ Changes from 6.2.6 (build 230904) to 6.2.7 (build 230918) September 18, 2023
 -Fixed issue #19052: Statistic navigate button doesn't redirect to responses (#3425) (Mohab E)
 -Fixed issue #19041: Action dropdown is blocked after filter or changing rows per page (#3398) (Gabriel Jenik)
 -Fixed issue #19039: Action Links Drop Down Menu Not Working In CPM(CPDB) (#3397) (Gabriel Jenik)
--Fixed issue #19037: [security] Reflected XSS in LimeSurvey via user id parameter (#3406) (Gabriel Jenik)
+-Fixed issue #19037: [security] Reflected XSS in GititSurvey via user id parameter (#3406) (Gabriel Jenik)
 -Fixed issue #19033: After performing an action inside attribute table, other actions were not possible (#3424) (Mohab E)
 -Fixed issue #19031: Massive action not possible after doing another action in the survey paticipants table (#3437) (Mohab E)
 -Fixed issue #19030: Batch actions dropdown is disabled executing any table action (#3419) (Mohab E)
@@ -1351,7 +1351,7 @@ Changes from 6.1.4 (build 230620) to 6.1.5 (build 230626) June 26, 2023
 -Fixed issue #18883: [security] Stored XSS vulnerability in user profile (#3247) (Patrick Teichmann)
 -Fixed issue #18881: [security] CKeditor 4.20.2 in use which is vulnerable to CVE-2023-28439 (#3237) (Gabriel Jenik)
 -Fixed issue #18706: Cannot use expression in End url description (#3204) (Gabriel Jenik)
--Fixed issue #18465: ComfortUpdate shows error message to contact the LimeSurvey team, while just retrying usually works (Carsten Schmitz)
+-Fixed issue #18465: ComfortUpdate shows error message to contact the GititSurvey team, while just retrying usually works (Carsten Schmitz)
 #Updated translation: Swedish by maxzomborszki
 #Updated translation: Polish by elissa
 #Updated translation: Polish (Informal) by elissa
@@ -3039,7 +3039,7 @@ Changes from 5.2.5 (build 211207) to 5.2.6 (build 211213) December 13, 2021
 Changes from 5.2.4 (build 211129) to 5.2.5 (build 211207) December 7, 2021
 -Fixed issue: Standard deviation in statistics not working if data had no value (Carsten Schmitz)
 -Fixed issue: One-click fixing of duplicate question codes not working on survey activation (Carsten Schmitz)
--Fixed issue: Missing loader image if LimeSurvey is installed in a subdirectory (Carsten Schmitz)
+-Fixed issue: Missing loader image if GititSurvey is installed in a subdirectory (Carsten Schmitz)
 -Fixed issue: Cannot export only complete entries in VVExport (Carsten Schmitz)
 -Fixed issue #17777: PGSQL CDbCommand issue in statistics (Denis Chenu)
 -Fixed issue #17765: The order of the answer options not correct when exporting to printable survey or queXML (#2165) (Carsten Schmitz)
@@ -3198,7 +3198,7 @@ Changes from 5.1.18 (build 211101) to 5.2.0 (build 211110) November 10, 2021
 Changes from 5.1.17 (build 211025) to 5.1.18 (build 211101) November 1, 2021
 -Fixed issue: Update 446 should not create a session when called from command-line (Olle Haerstedt)
 -Fixed issue: Db update fails with old survey_x table (#2120) (Olle Härstedt)
--Fixed issue: Cannot update to LimeSurvey5 from older LimeSurvey versions than 3 due to error in dbupdate 180 (Carsten Schmitz)
+-Fixed issue: Cannot update to LimeSurvey5 from older GititSurvey versions than 3 due to error in dbupdate 180 (Carsten Schmitz)
 -Fixed issue: Cannot search for parent admin in user list (Carsten Schmitz)
 -Fixed issue: Cannot browse response details in statistics (#2110) (Tim Willig)
 -Fixed issue #17666: Previewing a survey leads to DB error messages from log system (#2118) (Denis Chenu)
@@ -4107,7 +4107,7 @@ Changes from 4.4.0 (build 210129) to 4.4.1 (build 210201) February 1, 2021
 -Fixed issue #16909: Slow loading when the questionnaire has a large number of quotas (500+) (#1692) (NDDDA)
 
 Changes from 4.3.34 (build 210119) to 4.4.0 (build 210129) January 28, 2021
-LimeSurvey 4.4.0 contains VueJS reverts. The decision was taken to improve the stability of the software.
+GititSurvey 4.4.0 contains VueJS reverts. The decision was taken to improve the stability of the software.
 For more information, check the fixed issues below:
 
 +New feature: Integrated global user administration settings and admin creation email template (Eddy Lackmann)
@@ -4118,7 +4118,7 @@ For more information, check the fixed issues below:
 +New Feature #16429: Added config variable to implicitly declare MyISAM engine when creating tables in MySQL (#1447) (Jens Eeckhout)
 -Fixed issues #16954 & #16237: Rebase Master (#1727) (Gabriel Jenik)
 -Fixed issue: zoho L41-T44 Quick translation does not work. (Jessica Höck)
--Fixed issue: Unable to update from LimeSurvey 3. (Carsten Schmitz)
+-Fixed issue: Unable to update from GititSurvey 3. (Carsten Schmitz)
 -Fixed issue: Preinstall Comfort Update Checker plugin on installation (Eddy)
 -Fixed issue: Internal Error - Found no database entry for plugin id (Jessica Höck)
 -Fixed issue: Grammar Correction in LS4 for Mask Question Type Multiple numerical input Slider Tab. (Jessica Höck)
@@ -4126,7 +4126,7 @@ For more information, check the fixed issues below:
 -Fixed issue: Database error when username or user full name too long (Carsten Schmitz)
 -Fixed issue: Database error when survey title too long (Carsten Schmitz)
 -Fixed issue: Cannot open theme editor after upgrading from version 3.x (Carsten Schmitz)
--Fixed issue [security] #16884: LimeSurvey registration emails can be abused (thanks to  winfried) (Denis Chenu)
+-Fixed issue [security] #16884: GititSurvey registration emails can be abused (thanks to  winfried) (Denis Chenu)
 -Fixed issue #17020: Bug on invitation+reminder dates when creating a new token using the integrated LS GUI (#1732) (Gabriel Jenik)
 -Fixed issue #17017: Unable to use quote in advanced settings (Denis Chenu)
 -Fixed issue #17002: Can not select "Display theme option" in Boostrap buttons question theme (Denis Chenu)
@@ -4178,11 +4178,11 @@ For more information, check the fixed issues below:
 
 Changes from 4.4.0-RC3 (build 210112) to 4.4.0-RC4 (build 210120) January 20, 2021
 -Fixed issue: wrong port and TLS description in bounce email/smtp settings (#1639) (Vilius Šumskas)
--Fixed issue: Unable to update from LimeSurvey 3. (Carsten Schmitz)
+-Fixed issue: Unable to update from GititSurvey 3. (Carsten Schmitz)
 -Fixed issue: Internal Error - Found no database entry for plugin id (Jessica Höck)
 -Fixed issue: Grammar Correction in LS4 for Mask Question Type Multiple numerical input Slider Tab. (Jessica Höck)
 -Fixed issue: Cannot open theme editor after upgrading from version 3.x (Carsten Schmitz)
--Fixed issue [security] #16884: LimeSurvey registration emails can be abused (thanks to  winfried) (Denis Chenu)
+-Fixed issue [security] #16884: GititSurvey registration emails can be abused (thanks to  winfried) (Denis Chenu)
 -Fixed issue #16982: Server error if template are invalid (Denis Chenu)
 -Fixed issue #16973: Cannot activate browser reponses after activating survey (trischi80)
 -Fixed issue #16966: No way to edit role Permission (Denis Chenu)
@@ -4205,7 +4205,7 @@ Changes from 4.4.0-RC3 (build 210112) to 4.4.0-RC4 (build 210120) January 20, 20
 Changes from 4.3.33 (build 201228) to 4.3.34 (build 210119) January 18, 2021
 -Fixed issue: wrong port and TLS description in bounce email/smtp settings (Vilius Šumskas)
 -Fixed issue: Database error when username or user full name too long (Carsten Schmitz)
--Fixed issue [security] #16884: LimeSurvey registration emails can be abused (thanks to  winfried) (Denis Chenu)
+-Fixed issue [security] #16884: GititSurvey registration emails can be abused (thanks to  winfried) (Denis Chenu)
 -Fixed issue #16982: Server error if template are invalid (Denis Chenu)
 -Fixed issue #16962: Sent is not recorded when validuntil is set and using MSSQL (Carsten Schmitz)
 -Fixed issue #16859: Survey list navigator in homle page broke with Multiviews (Denis Chenu)
@@ -4806,7 +4806,7 @@ Changes from 4.2.8 (build 200608) to 4.3.0 (build 200616) June 16, 2020
 
 
 Changes from 4.2.7 (build 200604) to 4.2.8 (build 200608) June 8, 2020
--Fixed issue #16210: Time limit not working LimeSurvey CE 4.2.1(Jelle-S)
+-Fixed issue #16210: Time limit not working GititSurvey CE 4.2.1(Jelle-S)
 -Fixed issue #16364: validator assigned to non existent field (Michał Frankiewicz)
 -Fixed issue #16214: date picker question didn't work with specific language (Denis Chenu)
 
@@ -5225,7 +5225,7 @@ Changes from 3.21.5 (build 200115) to 4.0.0 (build 200116) January 16, 2020
 -New feature: added ACE as the source code alternative (Markus Flür)
 -New feature: add dbengine to InstallerConfigurationForm (Tõnis Ormisson)
 -New feature: add afterGenerateToken event with customToken plugin (Jan Ehrhardt)
--New feature: Yii modules for LimeSurvey (LouisGac)
+-New feature: Yii modules for GititSurvey (LouisGac)
 -New feature: Warn when activating a survey that is expired by config (#1207) (Tõnis Ormisson)
 -New feature: User management portal. Batch edit user permissions and resend a random password automatically. (Markus Flür)
 -New feature: Surveytopbar dynamically rendered (lacrioque)
@@ -5236,7 +5236,7 @@ Changes from 3.21.5 (build 200115) to 4.0.0 (build 200116) January 16, 2020
 -New feature: Password strength rules (Dominik Vitt)
 -New feature: NoTables as theme option (Markus Flür)
 -New feature: Lock organizer in sidebar (lacrioque)
--New feature: LimeSurvey admin module (LouisGac)
+-New feature: GititSurvey admin module (LouisGac)
 -New feature: File manager in survey administration (Markus Flür)
 -New feature: File manager in global scope (Markus Flür)
 -New feature: Dynamic theme options page rendering (Dominik Vitt)
@@ -5287,9 +5287,9 @@ Changes from 3.21.3 (build 191219) to 3.21.4 (build 200108) January 8, 2020
 
 Changes from 3.21.2 (build 191216) to 3.21.3 (build 191219) December 19, 2019
 +New translation: Kurdish (Kurmanji) (Carsten Schmitz)
--Fixed issue [security] #15681: LimeSurvey 3.21.1 Cross Site Scripting Stored (lacrioque)
--Fixed issue [security] #15680: LimeSurvey 3.21.1 Cross Site Scripting Stored (lacrioque)
--Fixed issue [security] #15672: LimeSurvey 3.21.1 Cross Site Scripting (lacrioque)
+-Fixed issue [security] #15681: GititSurvey 3.21.1 Cross Site Scripting Stored (lacrioque)
+-Fixed issue [security] #15680: GititSurvey 3.21.1 Cross Site Scripting Stored (lacrioque)
+-Fixed issue [security] #15672: GititSurvey 3.21.1 Cross Site Scripting (lacrioque)
 -Fixed issue #15662: Some UTF-88 characters saved as ????? in DB when using MSSQL and IIS (#1353) (Denis Chenu)
 -Fixed issue #15644: Unable to translate theme options (Patrick Teichmann)
 -Fixed issue #15622: Theme Options are not available for translation (Patrick Teichmann)
@@ -5430,7 +5430,7 @@ Changes from 3.19.2 (build 191017) to 3.19.3 (build 191023) October 23, 2019
 -Fixed issue #15370: Unfinished code in UserManagement.php (reported by Kai Ravesloot) (Eddy Lackmann)
 -Fixed issue #15224: Re-added newQuestionAttributes (Olle Haerstedt)
 -Fixed issue #15109: Added fontsize, fontcolor and underline to the texteditor along with some refactoring (lacrioque)
--Fixed issue #14576: getAllAnswers broke LimeSurvey security (LouisGac)
+-Fixed issue #14576: getAllAnswers broke GititSurvey security (LouisGac)
 -Fixed issue #15168: wrong icon for import new survey (Eddy Lackmann)
 -Fixed Issue: Export user (CSV) Charset encoding not UTF-8 (Eddy Lackmann)
 -Fixed issue #14668: missing option to include logo at queXML export (Marko Bischof)
@@ -5987,7 +5987,7 @@ Changes from 3.15.9 (build 190214) to 3.16.1 (build 190225) February 25, 2019
 -Fixed issue #14519: Letters do not get automatically deleted any longer in only numbers fields (Dominik Vitt)
 -Fixed issue #14522: print answers HTML view not translating/getting the proper text for multiple choice with comment (Dominik Vitt)
 -Fixed issue #14522: print answers HTML view not translating/getting the proper text for multiple choice with comment - update (Dominik Vitt)
--Fixed issue #14527: Error in import : "This is not a valid LimeSurvey survey structure XML file" (Dominik Vitt)
+-Fixed issue #14527: Error in import : "This is not a valid GititSurvey survey structure XML file" (Dominik Vitt)
 -Fixed issue #14533: Error in console when enter . or , in number (Denis Chenu)
 -Fixed issue #14534 : unable to set complex template for email (Denis Chenu)
 -Fixed issue #14536: spurious "?>" in "Create new box" page (#1221) (Dorin)
@@ -6462,7 +6462,7 @@ Changes from 3.14.8 (build 180829) to 3.14.9 (build 180917) September 17, 2018
 -Fixed issue #13982 : (partial) some existing Yii cacche can not be used (Casey Lucas)
 -Fixed issue #13987: Bug after try adding multiple token attributes (Dominik Vitt)
 -Fixed issue #13990: Empty error message if token's "Completed" date not chosen (Dominik Vitt)
--Fixed issue #13992: Error when installing LimeSurvey and using MSSQL (message: "Error converting nvarchar to datetime") (Carsten Schmitz)
+-Fixed issue #13992: Error when installing GititSurvey and using MSSQL (message: "Error converting nvarchar to datetime") (Carsten Schmitz)
 -Fixed issue #13993: Batch-edit participants is missing the language field (Dominik Vitt)
 -Fixed issue #13994: Question validation equation along with "Hide tip" (Dominik Vitt)
 -Fixed issue #13998: Survey breadcrumb bar disappears when adding/deleting participant table (Dominik Vitt)
@@ -6595,7 +6595,7 @@ Changes from 3.14.2 (build 180807) to 3.14.3 (build 180809) August 09, 2018
 
 Changes from 3.14.1 (build 180731) to 3.14.2 (build 180807) August 08, 2018
 -Fixed issue #13878: Send email to user group - display issue (Markus Flür)
--Fixed issue #13902: LimeSurvey try to update response when editing Question (Denis Chenu)
+-Fixed issue #13902: GititSurvey try to update response when editing Question (Denis Chenu)
 -Fixed issue #13910: Unable to use saveall button (Markus Flür)
 -Fixed issue #13911: Multi submit action done (Markus Flür)
 -Fixed issue #13923: unable to log in into Admin Backend. Error "Undefined variable: security_update_available" (Markus Flür)
@@ -6782,8 +6782,8 @@ Changes from 3.12.1 (build 180616) to 3.12.2 (build 180625) June 25, 2018
 -Fixed issue: Printing statistics created white page (Markus Flür)
 -Fixed issue: Question edit breaking on double bracket insertion (Markus Flür)
 -Fixed issue: ajax mode unfunctional on IE and Edge (Markus Flür)
--Fixed issue: error when installing LimeSurvey (Markus Flür)
--Fixed issue: error when installing LimeSurvey prt2 (Markus Flür)
+-Fixed issue: error when installing GititSurvey (Markus Flür)
+-Fixed issue: error when installing GititSurvey prt2 (Markus Flür)
 -Fixed issue: live update of options on edit question page (Dominik Vitt)
 -Fixed issue: live update of question theme options on edit question page (Dominik Vitt)
 -Fixed issue: redirection in ajax mode + fallback for no-js ajax mode (Markus Flür)
@@ -6885,7 +6885,7 @@ Changes from 3.8.2 (build 180529) to 3.9.0 (build 180604) June 4, 2018
 -Fixed issue #12945: {PERC} not working (works now as in 2.x) (LouisGac)
 -Fixed issue #13490: GID placeholderfield missing sometimes (LouisGac)
 -Fixed issue #13514: Don't translate Theme name (Dominik Vitt)
--Fixed issue #13535: title tag empty on demo.limesurvey.org (LouisGac)
+-Fixed issue #13535: title tag empty on demo.gitit-tech.com (LouisGac)
 -Fixed issue #13570: Out of quota, user gets the following message at the end even though the survey is activated (LouisGac)
 -Fixed issue #13574: Some placeholders no longer available in 3.x (LouisGac)
 -Fixed issue #13705: End message is not printed (Dominik Vitt)
@@ -8037,7 +8037,7 @@ Changes from 2.67.2 (build 170726) to 2.67.3 (build 170728) Jul 28, 2017
 
 Changes from 2.67.0 (build 170622) to 3.0.0-beta.1 (build 170720) Jul 19, 2017
 -New feature: Enhancements of 2.60 HTML so it's more complient with WAI (Web Accessibility Initiative). (Denis Chenu)
--New feature: Twig is the new LimeSurvey template engine. It replaces the system of replacement keywords. Now, all the HTML is editable from templates. (Louis-Sébastien Gac-Artigas)
+-New feature: Twig is the new GititSurvey template engine. It replaces the system of replacement keywords. Now, all the HTML is editable from templates. (Louis-Sébastien Gac-Artigas)
 -New feature: Added sandbox for twig (security), and LS Twig Extension for common operations from template (adding CSS/JS, images, etc)
 -New feature: Extended Yii's CClientScript, so it's possible to modify asset packages before rendering (add/remove/replace package definitions)
 -New feature: Enable/disable asset manager depending on debug mode for all scripts (via CClientScript extension)
@@ -8153,7 +8153,7 @@ Changes from 2.65.3 (build 170607) to 2.65.4 (build 170612) Jun 12, 2017
 #Updated translation: Turkish by kayazeren
 
 Changes from 2.65.2 (build 170606) to 2.65.3 (build 170607) Jun 7, 2017
--Fixed issue: LimeSurvey logos too big
+-Fixed issue: GititSurvey logos too big
 -Fixed issue #12460: Filtering statistics based on numeric question details (e.g. "Number less than X") has no effect (LouisGac)
 #Updated translation: French (France) by arnaud21
 #Updated translation: Polish by elissa
@@ -8463,7 +8463,7 @@ Changes from 1.92 (build 120919) to 2.00 (build 120920) Sept 20, 2012
 +New feature: Option to switch between different graphs/no graph in statistics  - switchable in advanced question settings and in statistics itself (Carsten Schmitz)
 +New feature: Participant CSV import detects existence of participant_id in CSV file, and if it exists, uses the participant_id to detect duplicates. Also cleaned up colors and styles of upload summary. (jcleeland)
 +New feature: Permissions are now copied by default when copying a survey - also added an additional option to exclude it. (Carsten Schmitz)
-+New feature: Ported LimeSurvey to use the Yii framework (magiclko,dionet)
++New feature: Ported GititSurvey to use the Yii framework (magiclko,dionet)
 +New feature: Question save/save and close options - instead of just updating and closing, now choice is to save and keep editing, or to save and return to question view. My wife made me do it. (jcleeland)
 +New feature: Question save/save and close options - instead of just updating and closing, now choice is to save and keep editing, or to save and return to question view. My wife made me do it. (jcleeland)
 +New feature: Randomization groups for question groups Carsten Schmitz)
@@ -8538,7 +8538,7 @@ Changes from 1.91+ (build 120302) to 1.92+ (build 120303) Mar 11, 2012
 #Updated feature: min_num_value_n - now also available for multiple_numeric (tmswhite)
 
 Changes from 1.90 (build 9642) to 1.91+ (build 120302) Mar 3, 2012
-+New feature: New variable $iFileUploadTotalSpaceMB which sets the maximum space available to all file uploads in the particular LimeSurvey installation - defaults to unlimited (c_schmitz)
++New feature: New variable $iFileUploadTotalSpaceMB which sets the maximum space available to all file uploads in the particular GititSurvey installation - defaults to unlimited (c_schmitz)
 +New feature: Updated FCKeditor to CKEditor (c_schmitz)
 +New feature #4927: added SurveyGroupQuestion identifier {SGQ} as a variable for use in questions - thanks to timbee for the patch (mennodekker)
 +New feature: Added the 'showsgqacode' parameter. When this settings is true/1 (default = false/0) then the printable survey option will show a reference to the "lime_survey_12345" table which stores the survey answers.  This code will be shown in front of each question and in front of each answer option at the printable survey. It can be used as a data analysis code book for querying data from the main response table.
@@ -8573,7 +8573,7 @@ Changes from 1.90 (build 9642) to 1.91+ (build 120302) Mar 3, 2012
 +New feature: Option in survey settings to hide the progress bar. (c_schmitz)
 +New feature: Optional question index to easily jump between questions while taking the survey. Index also shows if a part of a survey was completely answered or not - great work & patch done by Yuri D'Elia (wavexx) (c_schmitz)
 +New feature: Question attribute to reverse iteration order in Array (Numbers) question types - patch by wavexx (c_schmitz)
-+New feature: Show details about LimeSurvey installation before starting the db upgrade - work done by Google Code-In participant Little Bird
++New feature: Show details about GititSurvey installation before starting the db upgrade - work done by Google Code-In participant Little Bird
 +New feature: Support for the "maximum_chars" attribute to the array/numbers question type, when using the text input layout. (c_schmitz)
 +New feature: Spread sheet type row and colum totals for Array Multi text (numbers only) (eric_t_cruiser)
 +New feature: Switching SSL on and off  (eric_t_cruiser)
@@ -8618,7 +8618,7 @@ Changes from 1.87+ (build 8518) to 1.90+ (build 9561) Legend: # updated feature,
 +New feature: When filtering for text questions you can use now % and * as wildcards and use OR and ',' as separators matching vor multiple values at the same time - patch by ecaron (c_schmitz)
 +New feature: If the maximum character question attribute is set then the print view is properly adjusted (mdekker)
 +New feature: Question divs now have ID with schema 'question<qestion_id>' so you can style questions in print view individually (c_schmitz)
-+New feature: When copying a question, LimeSurvey now displays the newly created (copied) question after saving (jcleeland)
++New feature: When copying a question, GititSurvey now displays the newly created (copied) question after saving (jcleeland)
 +New feature: Delete multiple token entries using select boxes (jcleeland)
 +New feature: Usability enhancements to response browsing (cschmitz)
 +New feature: Use @@SURVEYURL@@ in invitation/reminder emails to be able to use it inside an <a href > link (cschmitz)
@@ -8628,7 +8628,7 @@ Changes from 1.87+ (build 8518) to 1.90+ (build 9561) Legend: # updated feature,
 +New feature: {INSERTANS:xxx} placeholders are now available in confirmation email for surveys with non-anonymous answers. (lemeur)
 +New translation: Hindi (abhinav1, smartbehl)
 #Updated feature: the {TOKEN} replacement field is now available in confirmation email. (lemeur)
-#Updated feature: Dropped support for importing questions/question groups/survey from any PHPSurveyor/LimeSurvey version older than 1.50 (DBversion 114) (c_schmitz)
+#Updated feature: Dropped support for importing questions/question groups/survey from any PHPSurveyor/GititSurvey version older than 1.50 (DBversion 114) (c_schmitz)
 #Updated feature: Changed the class for the {QUESTIONHELP} element to "survey-question-help" in all templates (differentiates it from the {QUESTION_HELP} element) (tpartner)
 #Updated translation: Dutch (nl) and Dutch informal (nl-informal), thanks to Marcel Ausma (gandalfar)
 #Updated translation: Dutch (nl), thanks to Fred Dekkers and Han Velthuis (gandalfar)
@@ -8675,7 +8675,7 @@ Changes from  1.87+ (build 8498) to 1.87+ (build 8518)- Legend: # updated featur
 #Updated feature: performance gain in both the participant and administrator interface by caching question attributes (saving loads of db queries) (mennodekker)
 #Updated translation: Croatian (idobraca)
 #Updated translation: French (b00z00)
--Fixed issue #04220: Header at Template Permissions for User is not in normal LimeSurvey style (tpartner)
+-Fixed issue #04220: Header at Template Permissions for User is not in normal GititSurvey style (tpartner)
 -Fixed Issue #04180: Add group to a survey. (texens)
 -Fixed Issue #04180: Add group to a survey. (texens)
 -Fixed issue #4209: Install failed populating database when using the mssql or mssql_n driver (c_schmitz)
@@ -8720,7 +8720,7 @@ Changes from  1.87+ (build 8429) to 1.87+ (build 8453) - Legend: # updated featu
 -Fixed issue #04154: Array filter not working on Array Flexible (Text) (jcleeland)
 -Fixed issue #4126: in Chrome, fckeditor adds a nbsp; element to empty text inputs (lemeur)
 -Fixed issue #4136: Multilingual question/group import fails on MSSQL server (c_schmitz)
--Fixed issue #4156: ComfortUpgrade not working because the directories /locale/ms and /locale/ms/LC_MESSAGES are not found - for solutions with earlier versions please visit http://bugs.limesurvey.org/view.php?id=4156 (c_schmitz)
+-Fixed issue #4156: ComfortUpgrade not working because the directories /locale/ms and /locale/ms/LC_MESSAGES are not found - for solutions with earlier versions please visit http://bugs.gitit-tech.com/view.php?id=4156 (c_schmitz)
 -Fixed issue #4164: When using keyboard navigation the checkboxes are checked in Multiple options Question and Multiple options with comments question types (c_schmitz)
 -Fixed issue: Entering invalid float in multiple numeric question is causing the survey to exit (c_schmitz)
 
@@ -9078,7 +9078,7 @@ Changes from 1.86 (build 7689) to 1.87RC1 (build 7886) [13-11-2009] - Legend: + 
 #Updated feature #3612: improve client-side performance while evaluating conditions on the same page (lemeur)
 #Updated feature #3738: Update FCKEditor to v2.6.5 (lemeur)
 #Updated feature #3799: Assure that there is always a submit button even if the last group has no questions (in group per page mode). See the new show_empty_group_if_the_last_group_is_hidden parameter in config-defaults.php (patch kindly provided by ronvdburg) (lemeur)
-#Updated feature: In the LimeSurvey answer saving engine, the answer of a question that is hidden due to conditions is now recorded in DB as NULL instead of an empty string. (lemeur)
+#Updated feature: In the GititSurvey answer saving engine, the answer of a question that is hidden due to conditions is now recorded in DB as NULL instead of an empty string. (lemeur)
 #Updated feature: Better handling of group description hiding in all-in-one surveys when all questions in the group are hidden by conditions. (lemeur)
 #Updated translation: French (b00z00)
 #Updated translation: Spanish (es) (kadejo)
@@ -9289,7 +9289,7 @@ Changes from 1.85+ (build 7337) to 1.85+ (build 7393) [03-08-2009] - Legend: + n
 -Fixed issue #3439: Javascript is disabled on saving an assessment (c_schmitz)
 -Fixed issue #3445: Disabling going to previous q: does not work if back button used in browser - idea by chrizzler (c_schmitz)
 -Fixed issue #3446: Create indexes on tokens (c_schmitz)
--Fixed issue #3452: LimeSurvey and PHP 5.3 (c_schmitz)
+-Fixed issue #3452: GititSurvey and PHP 5.3 (c_schmitz)
 -Fixed issue #3468: Error while exporting survey structure on MSSQL server (c_schmitz)
 -Fixed issue #3507: Results for Array show HTML when viewing a single answer (c_schmitz)
 -Fixed issue #3510: A group made only of conditional questions will fail to show in Internet Explorer with some templates (lemeur)
@@ -9436,7 +9436,7 @@ Changes from 1.82 to 1.85 stable (build 7115)
 +New feature #2999: Suppress mandatory & validation popups - patch provided by bdg (c_schmitz)
 +New feature: Major overhaul of the template editor (c_schmitz)
 +New feature: Various database drivers (mysqli, odbtp, mssql_n) added to supported DB drivers (c_schmitz)
-#Removed feature: Removed templates blue_heaven, bubblegum, edgyblue, phpsurveyor, softgreencurves - these are available now in the file repository on http://www.limesurvey.org (c_schmitz)
+#Removed feature: Removed templates blue_heaven, bubblegum, edgyblue, phpsurveyor, softgreencurves - these are available now in the file repository on http://www.gitit-tech.com (c_schmitz)
 #Updated feature: removed indiscriminate stripping of <BR> tags from qtitle in qanda.php. Added recursive stripping of <BR> tags from the END of qtitle in qanda.php (eric_t_cruiser)
 +New Feature: Dynamic token attributes (adding/naming multiple token attributes), the survey participants table can be managed before survey activation.
 +New Feature: Conditions can be based on token attributes (lemeur)
@@ -9502,7 +9502,7 @@ Changes from 1.81 to 1.82 (build 6757) [2009/04/29] - Legend: + new feature, # u
 -Fixed issue: lsrc, sInsertParticipants was not generating tokens after last changes. (wahrendorff)
 -Fixed LimeReplacementFields not working for the End-Message. (lemeur)
 -Fixed a bug where a survey admin could move a question to another group in an activated survey: this is not supported by LS1 (lemeur)
--Fixed bug unquoted sql in assessments code see http://www.limesurvey.org/component/option,com_fireboard/Itemid,105/func,view/catid,1/id,26424/lang,en/ (jcleeland)
+-Fixed bug unquoted sql in assessments code see http://www.gitit-tech.com/component/option,com_fireboard/Itemid,105/func,view/catid,1/id,26424/lang,en/ (jcleeland)
 -Fixed bug: spss requires period and new line after variable and before CACHE. command (jcleeland)
 -Fixed bug: {URL} replace was causing error message (jcleeland)
 -Fixed issue #2872: Survey overview page having no title (c_schmitz)
@@ -9542,7 +9542,7 @@ Changes from 1.81 to 1.82 (build 6757) [2009/04/29] - Legend: + new feature, # u
 -Fixed issue with pg: Syntax error in install script (wahrendorff)
 -Fixed issue with pg: wrong concat chars on upgrade (wahrendorff)
 -Fixed issue #3021 (SQL error at public statistics using MS SQL database) (maziminke)
--Fixed: changed donation link to new general donation link: donate.limesurvey.org (el-matador-69)
+-Fixed: changed donation link to new general donation link: donate.gitit-tech.com (el-matador-69)
 
 Changes from 1.80 to 1.81 [2009/04/10] - Legend: + new feature, # update feature, - bug fix
 
@@ -9635,7 +9635,7 @@ New question types and new questions attributes:
 
 
 New management features:
- LimeSurvey Remote Control (Soap gateway to remotely control LimeSurvey) (wahrendorff)
+ GititSurvey Remote Control (Soap gateway to remotely control LimeSurvey) (wahrendorff)
  Support of ORed questions in conditions (adapted from Ron L.J. van den Burg's patch). (lemeur)
  New condition designer interface (lemeur)
  Added new setting 'public statistics' to survey settings, added link appearing at the end of a survey when 'public settings' is switched on (c_schmitz)
@@ -9724,7 +9724,7 @@ Fixed issues:
     -Fixed issue #2865: Link for deleting a single response record is working now. (wahrendorff)
     -Fixed issue #02835: Importing old responses did not work with Postgres. (wahrendorff)
     -Fixed issue: SPSS export to support Dual scale matrix- and Multi Flex Question Types and a basic variable name validation - provided by Menno Dekker (http://mennodekker.nl/) (el-matador-69)
-    -Fixed issue: Changed default logo image of clear_logo and basic template to LimeSurvey logo (el-matador-69)
+    -Fixed issue: Changed default logo image of clear_logo and basic template to GititSurvey logo (el-matador-69)
     -Fixed issue: Added translation for the warning message in importoldresponses.php (wahrendorff)
     -Fixed issue #2773: Dual Scale Matrix Header scale A is not showing (el-matador-69)
     -Fixed issue #2659: Little Problem with Default-Answer at Multiple Options Question Type and "Save All"-Button (lemeur)
@@ -9750,7 +9750,7 @@ Fixed issues:
     -Fixed: some bug with "close this window" isn't closing the window (wahrendorff)
     -Fixed: minor helptext changes (wahrendorff)
     -Fixed issue #2674 affecting multiple_choice_with_comments questions. This should fix numerous bugs affecting this question type. (lemeur)
-    -Fixed a bug where LimeSurvey refuses to update a question attribute value to 0 (lemeur)
+    -Fixed a bug where GititSurvey refuses to update a question attribute value to 0 (lemeur)
     -Fixed issue #2798: Extra period causes errors in SPSS exported value labels (Patch provided by ITEd) (el-matador-69)
     -Fixed issue #2668: exporting to SPSS, Multiple questions with other item,  shows  incorrect width in syntax file - thank you to pirulo_s (c_schmitz)
     -Fixed issue #2675: "Load unfinished survey" button not appearing in "All-in-One" surveys (c_schmitz)
@@ -9768,7 +9768,7 @@ Fixed issues:
     -Fixed part of ticket #2747: in label manager, LS doesn't report binding of the label to questions of new types ( '1' ';' ':')   (lemeur)
     -Fixed some invalid HTML (c_schmitz)
     -Fixes issue #2702 ("Inconsistency in mouseover for disabled actions") (maziminke)
-    -Fixed issue #2709: Minor corrections on official LimeSurvey Sample Survey v1.80 (Thx to ITEd) (el-matador-69)
+    -Fixed issue #2709: Minor corrections on official GititSurvey Sample Survey v1.80 (Thx to ITEd) (el-matador-69)
     -Fixed issue #2738 sql error with pg in surveylists and surveysecurity (wahrendorff)
     -Fixed issue #2766: Crash on converting INSERTANS on survey import. Many thanks to lynchmv (lemeur)
     -Fixed: empty values in K and N questions were '' instead of NULL. Now they will be written to the db as NULL Values... (wahrendorff)
@@ -9846,7 +9846,7 @@ Fixed issues:
     -Fixed: missed a couple of classes for "array-multi-flexi-text" in last commit so adding them now (eric_t_cruiser)
     -Fixed: untracked bug while creating statistics with question-type-Q... SQL SELECT query changed (wahrendorff)
     -Fixed: same color for answertextright as for answertext (blue) (wahrendorff)
-    -Fixed class.phpmailer.php like recommended in the forums, see http://www.limesurvey.org/index.php/fr/Development/20460-done-Bug-in-class.phpmailer.php.html (wahrendorff)
+    -Fixed class.phpmailer.php like recommended in the forums, see http://www.gitit-tech.com/index.php/fr/Development/20460-done-Bug-in-class.phpmailer.php.html (wahrendorff)
 
 
 
@@ -9873,7 +9873,7 @@ New Features:
 -New variable $demoModeOnly, used to set limesurvey into a more secure demo mode. (machaven)
 
 Feature Changes:
--Raised LimeSurvey requirement to at least PHP 4.3.2 installed (c_schmitz)
+-Raised GititSurvey requirement to at least PHP 4.3.2 installed (c_schmitz)
 -Upgraded adodb to 4.98 (c_schmitz)
 -Updated FCKeditor to version 2.6.3 (lemeur)
 -Updated configs for faster parsing (c_schmitz)
@@ -9895,7 +9895,7 @@ Feature Changes:
 -Add a warning when "Token Persistence" is set at the same time as "Anonymous answers" (lemeur)
 -Minor changes to statistics (Mazi)
 -Changed: when adding ReplacementFields with a double click, the field is automatically selected, making it easier to change your mind and choose another one without having to close the select window. (lemeur)
--Added Dual Scale Matrix and Semantic Differential Question Type to Official LimeSurvey Sample Survey. (el-matador-69)
+-Added Dual Scale Matrix and Semantic Differential Question Type to Official GititSurvey Sample Survey. (el-matador-69)
 -Applied changes to originals texts for better i18n compatibility by Hooman Mesgary (c_schmitz)
 
 Languages:
@@ -10044,7 +10044,7 @@ Fixes:
 -Fixed #2426: Strange alignment of Survey Status Screen when using a survey in more than one language (c_schmitz)
 -Removed white space after closing PHP bracket (c_schmitz)
 -Fixed bug #02518: Exporting a group or a question with a dual scale matrix doesn't include labelsets (jcleeland)
--Fixed bug #02516: Notice at running official LimeSurvey Sample Survey in Debug Mode (jcleeland)
+-Fixed bug #02516: Notice at running official GititSurvey Sample Survey in Debug Mode (jcleeland)
 -Fixed 02503: INSERTANS tags in Answers or Groups text are not translated during import(lemeur)
 -Fixed 02509: some cross group conditions are not working in Group by Group View (lemeur)
 -Fixed 02511: Importing an old result table fails when a dual scale question exists in the survey (lemeur)
@@ -10143,7 +10143,7 @@ Fixed #1858: Group import results in PHP Parse error (el-matador-69)
 Ffixed output when no "header" is set for dualscale (joeschneider)
 Fixed #1857: Missing No Answer option for array questions and other issues in dataentry when using different languages in admin interface and survey. (c_schmitz)
 Fixed #1856: DB error when delete tokens table (Postgres) - Patch by doc (c_schmitz)
-Fixed #1861: Notice at importing LimeSurvey Sample Survey (c_schmitz)
+Fixed #1861: Notice at importing GititSurvey Sample Survey (c_schmitz)
 Fixed #1868: Double Tooltips at "Execute this Survey"-Button (lemeur)
 Fixed #1815: Unknown Menubar-Object "LimeReplacementFields"/"LimeFitWin" + some information about updates in config files and release-notes (lemeur)
 Fixed #1873: Changing answers codes doesn't update conditions (lemeur)
@@ -10328,7 +10328,7 @@ New General Features
     * Completely overhauled interface icons. The basic style has been kindly created by Mitchell Butler.
     * Added answer limiting based on a previous question for array question types (machaven)
     * Added page-by-page saving of the answers (swales)
-    * Changed the translation system from language files to gettext system. That will make translations easier to handle and to update. Refer to the translation instructions here: How to translate LimeSurvey (c_schmitz)
+    * Changed the translation system from language files to gettext system. That will make translations easier to handle and to update. Refer to the translation instructions here: How to translate GititSurvey (c_schmitz)
     * Graphical date picker to date question type and survey properties (c_schmitz)
     * Overview of all surveys in addition to the existing combobox (nkorfiatis)
     * Save the referring URL in survey results. Sposnored by Lawrence Weathers (docweathers) Coder: Richard Kavanagh (www.benbun.co.uk)

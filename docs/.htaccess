@@ -1,5 +1,5 @@
 # Do not remove this file. With a correct apache configuration
-# this file should prevent snooping on your LimeSurvey version by
+# this file should prevent snooping on your GititSurvey version by
 # reading the release_notes.txt
 <IfVersion < 2.4>
     Order Allow,Deny

@@ -26,12 +26,12 @@
 return array(
     'components' => array(
         'db' => array(
-            'connectionString' => 'mysql:host=localhost;port=3306;dbname=limesurvey;',
+            'connectionString' => 'mysql:host=mysql;port=3306;dbname=surveyapp;',
             'emulatePrepare' => true,
-            'username' => 'root',
-            'password' => 'root',
+            'username' => 'surveyapp_user',
+            'password' => 'xdgjwq45-4jg',
             'charset' => 'utf8mb4',
-            'tablePrefix' => 'lime_',
+            'tablePrefix' => '',
         ),
 
         // Uncomment the following lines if you need table-based sessions.
@@ -56,12 +56,12 @@ return array(
         // debug: Set this to 1 if you are looking for errors. If you still get no errors after enabling this
         // then please check your error-logs - either in your hosting provider admin panel or in some /logs directory
         // on your webspace.
-        // LimeSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and put MySQL in STRICT mode and get full access to standard themes
+        // GititSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and put MySQL in STRICT mode and get full access to standard themes
         'debug'=>0,
         'debugsql'=>0, // Set this to 1 to enanble sql logging, only active when debug = 2
         // 'force_xmlsettings_for_survey_rendering' => true, // Uncomment if you want to force the use of the XML file rather than DB (for easy theme development)
         // 'use_asset_manager'=>true, // Uncomment if you want to use debug mode and asset manager at the same time
-        // Update default LimeSurvey config here
+        // Update default GititSurvey config here
     )
 );
 /* End of file config.php */
