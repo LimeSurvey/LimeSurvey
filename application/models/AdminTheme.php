@@ -358,6 +358,12 @@ class AdminTheme extends CFormModel
             } else {
                 define('LOGO_URL', App()->getAssetManager()->publish(App()->getConfig("styledir") . '/Sea_Green/images/logo.svg'));
             }
+            if (file_exists($this->path . '/images/login-img-bg.png')) {
+                define('LOGIN_BG_URL', App()->getAssetManager()->publish($this->path . '/images/login-img-bg.png'));
+            } else {
+                define('LOGIN_BG_URL', App()->getAssetManager()->publish(App()->getConfig("styledir") . '/Sea_Green/images/login-img-bg.png'));
+            }
+
             if (file_exists($this->path . '/images/logo_icon.png')) {
                 define('LOGO_ICON_URL', App()->getAssetManager()->publish($this->path . '/images/logo_icon.png'));
             } else {
@@ -373,6 +379,11 @@ class AdminTheme extends CFormModel
                 define('LOGO_ICON_URL', $this->sTemplateUrl . '/images/logo_icon.png');
             } else {
                 define('LOGO_ICON_URL', App()->getConfig('styleurl') . '/Sea_Green/images/logo_icon.png');
+            }
+            if (file_exists(filename: $this->path . '/images/login-img-bg.png')) {
+                define('LOGIN_BG_URL', value: $this->sTemplateUrl . '/images/login-img-bg.png');
+            } else {
+                define('LOGIN_BG_URL', App()->getConfig('styleurl') . '/Sea_Green/images/login-img-bg.png');
             }
         }
 

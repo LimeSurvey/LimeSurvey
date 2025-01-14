@@ -5,10 +5,10 @@
  */
 
 ?>
-<div class="sidebar">
+<div class="sidebar" style="width: 300px; background:white; height: 100vh">
     <div class="sidebar-icons">
         <?php foreach ($icons as $icon) : ?>
-            <div class="sidebar-icon">
+            <div class="sidebar-icon d-flex gap-3 ">
                 <div data-bs-toggle="tooltip"
                      title="<?= $icon['title'] ?>"
                      data-bs-offset="0, 20"
@@ -20,7 +20,10 @@
                     >
                         <i class="<?php echo CHtml::encode($icon['ico']); ?>"></i>
                     </a>
+                    
                 </div>
+
+                <div>  <?= $icon['title'] ?> </div>
             </div>
         <?php endforeach; ?>
     </div>
