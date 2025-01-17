@@ -5,10 +5,10 @@ namespace LimeSurvey\Models\Services;
 class UploadValidator
 {
     /** @var array<string,mixed> HTTP POST variables*/
-    public $post;
+    private $post;
 
     /** @var array<string,mixed> HTTP File Upload variables*/
-    public $files;
+    private $files;
 
     /**
      * UploadValidator constructor.
@@ -96,5 +96,37 @@ class UploadValidator
                 false
             );
         }
+    }
+
+    /**
+     * Sets the post property of the UploadValidator instance.
+     *
+     * This method allows for updating the post array after the object has been instantiated.
+     * It's useful for testing or when post data needs to be modified after initial creation.
+     *
+     * @param array $post An associative array of POST data, typically in the format of $_POST.
+     *                    This array contains key-value pairs of form data submitted via HTTP POST.
+     *
+     * @return void This method does not return a value.
+     */
+    public function setPost($post)
+    {
+        $this->post = $post;
+    }
+
+    /**
+     * Sets the files property of the UploadValidator instance.
+     *
+     * This method allows for updating the files array after the object has been instantiated.
+     * It's useful for testing or when file data needs to be modified after initial creation.
+     *
+     * @param array $files An associative array of uploaded file information, typically in the format of $_FILES.
+     *                     Each element should contain file details like name, type, size, tmp_name, and error.
+     *
+     * @return void This method does not return a value.
+     */
+    public function setFiles($files)
+    {
+        $this->files = $files;
     }
 }

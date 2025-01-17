@@ -35,8 +35,8 @@ class FileUploadService
 
         $surveyId = $this->convertSurveyIdWhenUniqUploadDir($surveyId);
         $destinationDir = $this->getSurveyUploadDirectory($surveyId);
-        $this->uploadValidator->post = ['surveyId' => $surveyId];
-        $this->uploadValidator->files = $fileInfoArray;
+        $this->uploadValidator->setPost(['surveyId' => $surveyId]);
+        $this->uploadValidator->setFiles($fileInfoArray);
         $validationError = $this->uploadValidator->getError('file');
         if ($validationError !== null) {
             $returnedData['uploadResultMessage'] = $validationError;
