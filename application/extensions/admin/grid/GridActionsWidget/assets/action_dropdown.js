@@ -34,6 +34,11 @@ LS.actionDropdown = {
             }
         });
     },
+    /**
+     * Removes dropdown menus that no longer have a toggle element (i.e. the toggle was in a table row
+     * and the table was filtered or sorted).
+     * This is limited to dropdown menus handled by LS.actionDropdown.create().
+     */
     removeOrphanedDropdowns: function () {
         document.querySelectorAll('.dropdown-menu').forEach(function (menu) {
             // If the menu doesn't have a 'data-for-ls-dropdown-toggle-id' attribute, it's not
