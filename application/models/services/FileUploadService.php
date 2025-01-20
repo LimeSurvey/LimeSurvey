@@ -295,16 +295,18 @@ class FileUploadService
 
         return $filesOutput;
     }
-
     /**
-     * Removes the configured "rootdir" part from the path which
+     * Removes the configured "uploaddir" part from the path which
      * results in the relative path
      * @param string $filePath
      * @return string
      */
     private function convertFullIntoRelativePath(string $filePath)
     {
-        return substr($filePath, strlen(App()->getConfig('rootdir')));
+        $uploadDirPath = dirname(App()->getConfig(
+            'uploaddir'
+        ));
+        return substr($filePath, strlen($uploadDirPath));
     }
 
     /**
