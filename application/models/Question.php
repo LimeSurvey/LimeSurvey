@@ -1579,7 +1579,7 @@ class Question extends LSActiveRecord
      * @param int $questionGroupId
      * @param integer|null $after questionorder
      */
-    public static function increaseAllOrderNumbersForGroup($questionGroupId, $after =  null)
+    public static function increaseAllOrderNumbersForGroup($questionGroupId, $after = null)
     {
         $criteria = new CDbCriteria();
         $criteria->compare("gid", $questionGroupId);
