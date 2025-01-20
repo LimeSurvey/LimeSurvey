@@ -1288,7 +1288,143 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 }
 
 
-
+function getFieldName($tableName, $fieldName, $questions, $sid, $gid)
+{
+    $newFieldName = "";
+    if (strpos($tableName, "timings") !== false) {
+        $X = explode("X", $fieldName);
+        $newFieldName = ((count($X) > 2) ? "Q" : "G") . $X[count($X) - 1];
+    } else {
+        $qid = ($questions[0]->parent_qid ? $questions[0]->parent_qid :  $questions[0]->qid);
+        switch ($questions[0]->type) {
+            case \Question::QT_1_ARRAY_DUAL:
+            case \Question::QT_5_POINT_CHOICE:
+            case \Question::QT_L_LIST:
+            case \Question::QT_M_MULTIPLE_CHOICE:
+            case \Question::QT_N_NUMERICAL:
+            case \Question::QT_O_LIST_WITH_COMMENT:
+                $currentQuestion = null;
+                $length = strlen("{$sid}X{$gid}X{$qid}");
+                $hashPos = strpos($fieldName, '#');
+                foreach ($questions as $question) {
+                    if ($question->title === substr($fieldName, $length, ($hashPos !== false) ? ($hashPos - $length) : null)) {
+                        $currentQuestion = $question;
+                    }
+                }
+                $hashTags = explode("#", $fieldName);
+                if ($currentQuestion === null) {
+                    $newFieldName = "Q{$qid}";
+                    if (strlen($fieldName) > strlen("{$sid}X{$gid}X{$qid}")) {
+                        $newFieldName .= "_C" . substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                    }
+                } else {
+                    $newFieldName = "Q{$qid}_S{$currentQuestion->qid}";
+                    if (count($hashTags)) {
+                        for ($index = 1; $index < count($hashTags); $index++) {
+                            $newFieldName .= "#{$hashTags[$index]}";
+                        }
+                    }
+                }
+                break;
+            case \Question::QT_A_ARRAY_5_POINT:
+            case \Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
+            case \Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
+            case \Question::QT_E_ARRAY_INC_SAME_DEC:
+            case \Question::QT_F_ARRAY:
+            case \Question::QT_H_ARRAY_COLUMN:
+            case \Question::QT_K_MULTIPLE_NUMERICAL:
+            case \Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
+            case \Question::QT_Q_MULTIPLE_SHORT_TEXT:
+                $code = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                $commentText = false;
+                $currentQuestion = null;
+                $excludeSubquestion = false;
+                foreach ($questions as $question) {
+                    if ($question->title === $code) {
+                        $currentQuestion = $question;
+                    } elseif (in_array($code, ["other", "comment", "othercomment", $question->title . "other", $question->title . "comment", $question->title . "othercomment"])) {
+                        $currentQuestion = $question;
+                        $commentText = $code;
+                        if (strpos($code, $question->title) === 0) {
+                            $commentText = substr($code, strlen($question->title));
+                        } else {
+                            $excludeSubquestion = true;
+                        }
+                    }
+                }
+                if ($currentQuestion) {
+                    $newFieldName = "Q{$qid}" . ($excludeSubquestion ? "" : "_S{$currentQuestion->qid}");
+                    if ($commentText) {
+                        $newFieldName = $newFieldName . "_C" . $commentText;
+                    }
+                }
+                break;
+            case \Question::QT_SEMICOLON_ARRAY_TEXT:
+            case \Question::QT_COLON_ARRAY_NUMBERS:
+                if (strpos($tableName, "timings") !== false) {
+                    $newFieldName = "Q{$qid}_Ctime";
+                } else {
+                    $suffix = explode("_", substr($fieldName, strlen("{$sid}X{$gid}X{$qid}")));
+                    $scales = [];
+                    foreach ($questions as $question) {
+                        if (($suffix[$question->scale_id] ?? null) === $question->title) {
+                            $scales[$question->scale_id] = $question->qid;
+                        }
+                    }
+                    $suffixText = "";
+                    for ($index = 0; $index < count($scales); $index++) {
+                        $suffixText .= "_S" . $scales[$index];
+                    }
+                    $newFieldName = "Q{$qid}" . $suffixText;
+                }
+                break;
+            case \Question::QT_D_DATE:
+            case \Question::QT_G_GENDER:
+            case \Question::QT_I_LANGUAGE:
+            case \Question::QT_S_SHORT_FREE_TEXT:
+            case \Question::QT_T_LONG_FREE_TEXT:
+            case \Question::QT_U_HUGE_FREE_TEXT:
+            case \Question::QT_X_TEXT_DISPLAY:
+            case \Question::QT_Y_YES_NO_RADIO:
+            case \Question::QT_EXCLAMATION_LIST_DROPDOWN:
+            case \Question::QT_VERTICAL_FILE_UPLOAD:
+            case \Question::QT_ASTERISK_EQUATION:
+                $isRoot = ((strpos($tableName, "timings") !== false) || (($questions[0]->parent_qid ?? 0) === 0));
+                $newFieldName = ($isRoot ? "Q{$qid}" : "Q{$questions[0]->parent_qid}");
+                $suffix = "";
+                $isComment = false;
+                if (!$isRoot) {
+                    $length = strlen("{$sid}X{$gid}X{$qid}");
+                    $hashPos = strpos($fieldName, '#');
+                    $code = substr($fieldName, $length, ($hashPos !== false) ? ($hashPos - $length) : null);
+                    $suffix = "_C{$code}";
+                    foreach ($questions as $question) {
+                        if ($question->title === $code) {
+                            $suffix = "_S{$question->qid}";
+                        } elseif ($question->title . "comment" === $code) {
+                            $suffix = "_S{$question->qid}";
+                            $isComment = true;
+                        }
+                    }
+                }
+                $newFieldName .= $suffix;
+                if (strpos($fieldName, "time") !== false) {
+                    $newFieldName .= "_Ctime";
+                } elseif (strpos($fieldName, "filecount") !== false) {
+                    $newFieldName .= "_Cfilecount";
+                }
+                if ($isComment) {
+                    $newFieldName .= "_Ccomment";
+                }
+                break;
+            case \Question::QT_R_RANKING:
+                $prefix = ((strpos($tableName, "timing") !== false) ? "C" : "R");
+                $newFieldName = "Q{$qid}_{$prefix}" . substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                break;
+        }
+    }
+    return $newFieldName;
+}
 
 
 /**
@@ -1539,7 +1675,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 case Question::QT_L_LIST:  //RADIO LIST
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN:  //DROPDOWN LIST
                     if ($arow['other'] == "Y") {
-                        $fieldname = "Q{$arow['qid']}other";
+                        $fieldname = "Q{$arow['qid']}_Cother";
                         if (isset($fieldmap[$fieldname])) {
                             $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                         }
@@ -1573,7 +1709,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     }
                     break;
                 case Question::QT_O_LIST_WITH_COMMENT: //DROPDOWN LIST WITH COMMENT
-                    $fieldname = "Q{$arow['qid']}comment";
+                    $fieldname = "Q{$arow['qid']}_Ccomment";
                     if (isset($fieldmap[$fieldname])) {
                         $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                     }
@@ -1622,7 +1758,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             reset($abrows);
             foreach ($abrows as $abrow) {
                 foreach ($answerset as $answer) {
-                    $fieldname = "Q{$arow['qid']}{$abrow['title']}_{$answer['title']}";
+                    $fieldname = "Q{$arow['qid']}_S{$abrow['qid']}_S{$answer['qid']}";
                     if (isset($fieldmap[$fieldname])) {
                         $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                     }
@@ -1659,7 +1795,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         } elseif ($arow['type'] == Question::QT_1_ARRAY_DUAL) {
             $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
             foreach ($abrows as $abrow) {
-                $fieldname = "Q{$arow['qid']}{$abrow['title']}#0";
+                $fieldname = "Q{$arow['qid']}_S{$abrow['qid']}#0";
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
@@ -1684,7 +1820,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['SQrelevance'] = $abrow['relevance'];
                 }
 
-                $fieldname = "Q{$arow['qid']}{$abrow['title']}#1";
+                $fieldname = "Q{$arow['qid']}_S{$abrow['qid']}#1";
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
@@ -1715,7 +1851,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             $columnsCount = (!$maxDbAnswer || intval($maxDbAnswer->value) < 1) ? $answersCount : intval($maxDbAnswer->value);
             $columnsCount = min($columnsCount, $answersCount); // Can not be upper than current answers #14899
             for ($i = 1; $i <= $columnsCount; $i++) {
-                $fieldname = "Q{$arow['qid']}$i";
+                $fieldname = "Q{$arow['qid']}_R$i";
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
@@ -1764,7 +1900,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
                 $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
             }
-            $fieldname = "Q{$arow['qid']}" . "_filecount";
+            $fieldname = "Q{$arow['qid']}" . "_Cfilecount";
             $fieldmap[$fieldname] = array(
                 "fieldname" => $fieldname,
                 'type' => $arow['type'],
@@ -1793,7 +1929,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             //MULTI ENTRY
             $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
             foreach ($abrows as $abrow) {
-                $fieldname = "Q{$arow['qid']}{$abrow['title']}";
+                $fieldname = "Q{$arow['qid']}_S{$abrow['qid']}";
 
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
@@ -1828,7 +1964,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     }
                 }
                 if ($arow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
-                    $fieldname = "Q{$arow['qid']}{$abrow['title']}comment";
+                    $fieldname = "Q{$arow['qid']}_S{$abrow['qid']}_Ccomment";
                     if (isset($fieldmap[$fieldname])) {
                         $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                     }
@@ -1852,7 +1988,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 }
             }
             if ($arow['other'] == "Y" && ($arow['type'] == Question::QT_M_MULTIPLE_CHOICE || $arow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
-                $fieldname = "Q{$arow['qid']}other";
+                $fieldname = "Q{$arow['qid']}_Cother";
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
@@ -1875,7 +2011,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['other'] = $arow['other'];
                 }
                 if ($arow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
-                    $fieldname = "Q{$arow['qid']}othercomment";
+                    $fieldname = "Q{$arow['qid']}_Cothercomment";
                     if (isset($fieldmap[$fieldname])) {
                         $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                     }
