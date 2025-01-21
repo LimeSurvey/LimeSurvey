@@ -34,6 +34,55 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.10.0 (build 250106) to 6.10.1 (build 250120) January 20, 2025
+-Fixed issue #19919: Stop survey button is not translatable (#4131) (tiborpacalat)
+-Fixed issue #19905: [security] Any user can get any user SurveyList (#4120) (Denis Chenu)
+-Fixed issue #19901: Wrong characters displayed in French when deletin… (#4116) (Denis Chenu)
+-Fixed issue #19896: zend.assertions warning if debug set (#4130) (Denis Chenu)
+-Fixed issue #19892: Activate survey modal is ignoring the global survey setting (#4125) (Gabriel Jenik)
+-Fixed issue #19886: Some translation are missing (Carsten Schmitz)
+-Fixed issue #19848: Array questions split on iPad 7 despite its large screen (Vanilla theme) (#4114) (Ahmed Abd El-Azeem)
+#Updated translation: Portuguese (Portugal) by c_schmitz, holch, samarta
+#Updated translation: Portuguese (Brazil) by holch, samarta
+#Updated translation: Portuguese (Brazil) by holch
+#Updated translation: Polish by 2BITS_PL, elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Luxembourgish by fieschen
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian by c_schmitz, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
+Changes from 6.9.0 (build 241218) to 6.10.0 (build 250106) January 6, 2025
++New feature #19881: Make survey group ID available as output or input for RPC (#4115) (Denis Chenu)
++New feature MW-1407: Add security check before db dump & check for database size before download (marticos)
+-Fixed issue QE-1310: New editor doesn't allow more than 200 characters for the privacy policy message (twilligls)
+-Fixed issue #19910: Error upgrading database to version 627 in MSSQL (#4124) (Gabriel Jenik)
+-Fixed issue #19888: Check Remote Control API Log off admin (#4105) (Denis Chenu)
+-Fixed issue #19873: [security] RC Any user can create or update any participant in CPDB (#4087) (Denis Chenu)
+-Fixed issue #19872: [security] RC Bad permission check on copy_survey (#4106) (Denis Chenu)
+-Fixed issue #19870: [security] Any user with survey create permission can activate tokens on any survey (#4088) (Denis Chenu)
+-Fixed issue #19869: [security] All group deletion accessible by any admin with one survey access (#4085) (Denis Chenu)
+-Fixed issue #19864: [security] Export question and group are not restricted (#4082) (Denis Chenu)
+-Fixed issue #19860: Row level dropdown menu gets trimmed (#4110) (Gabriel Jenik)
+#Updated translation: Welsh by ChrisWilliams
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.8.2 (build 241203) to 6.9.0 (build 241218) December 18, 2024
 +New feature: API get_quota_properties also returns completeCount (#4027) (Tõnis Ormisson)
 +New feature #MW-1407: Add check for database size before download (#4066) (marticos)
