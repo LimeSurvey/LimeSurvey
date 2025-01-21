@@ -6,7 +6,7 @@
  *
  * This variable must contain the name of your "system" folder.
  * Include the path if the folder is not in the same  directory
- * as this file.
+ * as this file. Just a test.
  *
  */
 $system_path = "vendor/yiisoft/yii/framework";
