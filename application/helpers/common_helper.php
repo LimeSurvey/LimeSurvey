@@ -1389,7 +1389,7 @@ function getFieldName($tableName, $fieldName, $questions, $sid, $gid)
             case \Question::QT_EXCLAMATION_LIST_DROPDOWN:
             case \Question::QT_VERTICAL_FILE_UPLOAD:
             case \Question::QT_ASTERISK_EQUATION:
-                $isRoot = ((strpos($tableName, "timings") !== false) || (($questions[0]->parent_qid ?? 0) === 0));
+                $isRoot = ((strpos($tableName, "timings") !== false) || (($questions[0]->parent_qid ?? 0) == "0"));
                 $newFieldName = ($isRoot ? "Q{$qid}" : "Q{$questions[0]->parent_qid}");
                 $suffix = "";
                 $isComment = false;
