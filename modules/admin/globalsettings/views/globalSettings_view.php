@@ -23,8 +23,8 @@ echo viewHelper::getViewTestTag('globalsettings');
     <li role="presentation" class="nav-item"><a role="tab" class="nav-link" data-bs-toggle="tab" href='#storage'><?php eT("Storage"); ?></a></li>
 </ul>
 <?php echo CHtml::form(["admin/globalsettings"], 'post', ['class' => '', 'id' => 'frmglobalsettings', 'name' => 'frmglobalsettings', 'autocomplete' => 'off']); ?>
-<div class="tab-content">
-    <div id="overview" class="tab-pane show active col-lg-6 offset-lg-1">
+<div class="tab-content pt-5">
+    <div id="overview" class="tab-pane show active col-lg-10 offset-lg-1">
         <?php $this->renderPartial(
             "./globalsettings/_overview",
             [

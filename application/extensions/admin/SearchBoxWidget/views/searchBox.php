@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This template renders a search box and action bar for managing surveys view type.
  * It includes filters for survey status, group selection, and a search field.
@@ -7,134 +8,107 @@
  * @var CActiveForm $form The form widget used for submitting search and filter parameters.
  */
 ?>
-<!-- Search Box -->
-<!-- Begin Form -->
-<div class="row">
-    <div class="survey-actionbar col-12">
-        <?php $form = $this->beginWidget('CActiveForm', ['action' => $this->formUrl, 'method' => 'get', 'id' => 'survey-search']); ?>
-        <div class="d-flex align-items-baseline">
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.getElementById('surveyDropdown').addEventListener('change', function() {
+        const selectedSurveyId = this.value;
+        const csrfTokenName = '<?= Yii::app()->request->csrfTokenName ?>';
+        const csrfToken = '<?= Yii::app()->request->csrfToken ?>';
 
-            <!-- select state -->
-            <p class="survey-actionbar-title"><?php eT('All surveys'); ?></p>
-            <?php if ($this->onlyfilter) : ?>
-                <div class="survey-actionbar-filters">
-                    <div class="survey-actionbar-item">
-                        <select name="active" id='survey_active' class="form-select survey-actionbar-formfield">
-                            <option value="" <?= empty(App()->request->getQuery('active')) ? "selected" : '' ?>>
-                                <?= gT('Status') ?>
-                            </option>
-                            <option value="Y" <?= App()->request->getQuery('active') === "Y" ? "selected" : '' ?>>
-                                <?= gT('Active') ?>
-                            </option>
-                            <option value="R" <?= App()->request->getQuery('active') === "R" ? "selected" : '' ?>>
-                                <?= gT('Running') ?>
-                            </option>
-                            <option value="N" <?= App()->request->getQuery('active') === "N" ? "selected" : '' ?>>
-                                <?= gT('Inactive') ?>
-                            </option>
-                            <option value="E" <?= App()->request->getQuery('active') === "E" ? "selected" : '' ?>>
-                                <?= gT('Expired') ?>
-                            </option>
-                            <option value="S" <?= App()->request->getQuery('active') === "S" ? "selected" : '' ?>>
-                                <?= gT('Not started') ?>
-                            </option>
-                        </select>
-                    </div>
-                </div>
+        //  URL with surveyid as a query parameter
+        const url = '<?= Yii::app()->createUrl('searchBoxWidget/getSurveyResponseTrends') ?>' + '?surveyid=' + selectedSurveyId;
 
-                <div class="survey-actionbar-actions ms-auto">
-                    <div class="survey-actionbar-item">
-                        <?php if (Permission::model()->hasGlobalPermission('surveys', 'create')) : ?>
-                            <a href="<?= Yii::app()->createUrl('surveyAdministration/newSurvey') ?>" id="createSurvey" class="btn btn-outline-info survey-actionbar-button">
-                                <i class="ri-add-line"></i>
-                                <?= gT('Create survey') ?>
-                            </a>
-                        <?php endif; ?>
-                    </div>
-                    <!--<div class="survey-actionbar-item">
-                        <?php if (\Permission::model()->hasGlobalPermission('surveysgroups', 'create')) : ?>
-                            <a href="<?= Yii::app()->createUrl('admin/surveysgroups/sa/create') ?>" id="createSurveyGroup" class="btn btn-outline-g-700 survey-actionbar-button">
-                                <i class="ri-add-line"></i>
-                                <?= gT('Create survey group') ?>
-                            </a>
-                        <?php endif; ?>
-                    </div>-->
-                </div>
+        // Fetch data using GET request
+        fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [csrfTokenName]: csrfToken
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                // Update the chart with the new data
+                const labels = data.map(item => item.response_date);
+                const responseData = data.map(item => item.response_count);
 
-            <?php else : ?>
-                <!-- select group -->
-                <div class="survey-actionbar-filters">
-                    <div class="survey-actionbar-item search-bar">
-                        <?= $form->textField($this->model, 'searched_value', ['class' => 'form-control survey-actionbar-formfield', 'placeholder' => 'Search', 'value' => App()->request->getQuery('Survey')['searched_value'] ?? '']) ?>
-                        <i class="ri-search-line"></i>
-                    </div>
-                    <div class="survey-actionbar-item">
-                        <select name="active" id='survey_active' class="form-select survey-actionbar-formfield">
-                            <option value="" <?= empty(App()->request->getQuery('active')) ? "selected" : '' ?>>
-                                <?= gT('Status') ?>
-                            </option>
-                            <option value="Y" <?= App()->request->getQuery('active') === "Y" ? "selected" : '' ?>>
-                                <?= gT('Active') ?>
-                            </option>
-                            <option value="R" <?= App()->request->getQuery('active') === "R" ? "selected" : '' ?>>
-                                <?= gT('Running') ?>
-                            </option>
-                            <option value="N" <?= App()->request->getQuery('active') === "N" ? "selected" : '' ?>>
-                                <?= gT('Inactive') ?>
-                            </option>
-                            <option value="E" <?= App()->request->getQuery('active') === "E" ? "selected" : '' ?>>
-                                <?= gT('Expired') ?>
-                            </option>
-                            <option value="S" <?= App()->request->getQuery('active') === "S" ? "selected" : '' ?>>
-                                <?= gT('Not started') ?>
-                            </option>
-                        </select>
-                    </div>
-                    <div class="survey-actionbar-item">
-                        <select name="gsid" id='survey_gsid' class="form-select survey-actionbar-formfield">
-                            <option value=""><?= gT('Group') ?></option>
-                            <?php foreach (SurveysGroups::getSurveyGroupsList() as $gsid => $group_title) : ?>
-                                <option value="<?= $gsid ?>" <?= (App()->request->getQuery('gsid') == $gsid) ? "selected" : "" ?>><?= CHtml::encode($group_title) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="survey-actionbar-item">
-                        <button id="survey_reset"
-                                class="btn btn-outline-g-700 btn-sm survey-actionbar-button <?= !empty(App()->request->getParam('Survey')) ? '' : 'd-none' ?>">
-                            <i class="ri-refresh-line"></i>
-                            <?= gT('Reset') ?>
-                        </button>
-                    </div>
-                </div>
+                responseChart.data.labels = labels;
+                responseChart.data.datasets[0].data = responseData;
+                responseChart.update();
+            })
+            .catch(error => {
+                console.error('Error fetching survey response trends:', error);
+            });
+    });
 
-                <div class="survey-actionbar-actions ms-auto">
-                    <div class="survey-actionbar-item">
-                        <?php if (Permission::model()->hasGlobalPermission('surveys', 'create')) : ?>
-                            <a href="<?= Yii::app()->createUrl('surveyAdministration/newSurvey') ?>" class="btn btn-outline-info survey-actionbar-button">
-                                <i class="ri-add-line"></i>
-                                <?= gT('Create survey') ?>
-                            </a>
-                        <?php endif; ?>
-                    </div>
-                    <!--<div class="survey-actionbar-item">
-                        <?php if (Permission::model()->hasGlobalPermission('surveysgroups', 'create')) : ?>
-                            <a href="<?= Yii::app()->createUrl('admin/surveysgroups/sa/create') ?>" class="btn btn-outline-g-700 survey-actionbar-button">
-                                <i class="ri-add-line"></i>
-                                <?= gT('Create survey group') ?>
-                            </a>
-                        <?php endif; ?>
-                    </div>-->
-                </div>
-            <?php endif; ?>
+    const ctx = document.getElementById('responseChart').getContext('2d');
+    const responseChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            datasets: [{
+                label: 'Responses',
+                data: [1200, 1900, 3000, 3400, 2200, 1900, 2800],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+</script>
+<style>
+    .survey-icon {
+        border-radius: 50%;
+        background-color: rgba(221, 225, 230, 1);
+        width: fit-content;
+        padding: 10px 12px
+    }
 
-            <?php if ($this->switch) : ?>
-                <div class="survey-actionbar-switch">
-                    <i class="view-switch ri-grid-fill survey-actionbar-item" data-action="box-widget" <?= $this->viewtype === 'box-widget' ? 'active' : '' ?>></i>
-                    <i class="view-switch ri-menu-line survey-actionbar-item" data-action="list-widget" <?= $this->viewtype === 'list-widget' ? 'active' : '' ?>></i>
-                </div>
-            <?php endif; ?>
+    .card {
+        border-radius: 12px;
+    }
 
-        </div>
-        <?php $this->endWidget(); ?>
-    </div>
-</div>
+    .quick-actions .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .active-surveys,
+    .recent-activity {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .chart-container {
+        height: 250px;
+    }
+
+    .nav-tabs {
+        border-bottom: 1px solid #ddd;
+    }
+
+    .nav-tabs .nav-link {
+        color: #555;
+
+        font-weight: bold;
+    }
+
+    .nav-tabs .nav-link.active {
+        border-bottom: 3px solid #122867;
+
+        border-top: none;
+        background: none;
+
+    }
+</style>
+

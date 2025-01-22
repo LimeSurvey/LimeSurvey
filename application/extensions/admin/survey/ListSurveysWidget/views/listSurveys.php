@@ -15,6 +15,7 @@
 /**
  * @var $this ListSurveysWidget
  */
+
 ?>
 
 <!-- Grid -->
@@ -47,7 +48,7 @@
                 . ' ? App()->createUrl("editorLink/index", ["route" => "survey/" . $data->sid]) '
                 . ' : Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid))',
             // 'template'  => $this->template,
-            'massiveActionTemplate' => $this->render('massive_actions/_selector', [], true, false),
+            'massiveActionTemplate' => $this->render('application.extensions.admin.survey.ListSurveysWidget.views.massive_actions/_selector', [], true, false),
             'columns'               => $this->model->getColumns(),
             'lsAdditionalColumns' => $this->model->getAdditionalColumns(),
 

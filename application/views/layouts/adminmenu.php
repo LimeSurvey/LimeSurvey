@@ -9,13 +9,13 @@
 ?>
 
 <!-- admin menu bar -->
-<nav class="navbar navbar-expand-md" style="background-color: #122867;">
+<nav class="navbar navbar-expand-md"style="position: fixed; top: 0; left: 0; width: 100%; background: #122867; color: white; z-index: 2000;" >
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#small-screens-menus" aria-controls="small-screens-menus" aria-expanded="false">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
-            <img src="<?= Yii::app()->baseUrl ?>/assets/images/logo-icon-white.png" height="34" class="d-inline-block align-bottom" alt="">
+        <a class="navbar-brand  mx-0" href="<?php echo $this->createUrl("/admin/"); ?>">
+            <img src="<?= Yii::app()->baseUrl ?>/assets/images/LBS-LOGO-2.jpg" height="34" class="d-inline-block align-bottom" alt="">
             <?= $sitename ?>
         </a>
         <!-- Only on xs screens -->
@@ -134,6 +134,7 @@
 
     </div>
 </nav>
+<div style="height: 45px;"></div> 
 <script type="text/javascript">
     //show tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
