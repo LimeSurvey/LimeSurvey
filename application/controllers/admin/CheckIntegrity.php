@@ -659,7 +659,7 @@ class CheckIntegrity extends SurveyCommonAction
                     $date = date('YmdHis', $datestamp); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
                     $DBDate = date('Y-m-d H:i:s', $datestamp);
                     $userID = Yii::app()->user->getId();
-                    // Check if it's really a survey_XXX table mantis #14938
+                    // Check if it's really a responses_XXX table mantis #14938
                     if (empty($aTableName[2])) {
                         $sOldTable = "responses_{$iSurveyID}";
                         $sNewTable = "old_responses_{$iSurveyID}_{$date}";

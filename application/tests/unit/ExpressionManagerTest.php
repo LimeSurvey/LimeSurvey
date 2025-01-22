@@ -1,146 +1,147 @@
 <?php
+
     /**
      * TODO: Why is it here? Move it to root tests folder!
      */
-    class ExpressionManagerTest extends CTestCase
+class ExpressionManagerTest extends CTestCase
+{
+    /**
+     *
+     * @var ExpressionManager
+     */
+    protected $em;
+
+    public function setUp(): void
     {
-        /**
-         *
-         * @var ExpressionManager
-         */
-        protected $em;
-
-        public function setUp(): void
-        {
-            parent::setUp();
-            Yii::import('application.helpers.expressions.em_core_helper', 'true');
-            if (!function_exists('gT')) {
-                // Create gT function that ExpressionManager uses (but ideally should not).
-                eval('function gT() { }');
-            }
-            $this->em = new ExpressionManager();
+        parent::setUp();
+        Yii::import('application.helpers.expressions.em_core_helper', 'true');
+        if (!function_exists('gT')) {
+            // Create gT function that ExpressionManager uses (but ideally should not).
+            eval('function gT() { }');
         }
-		
-//		public function testVariables()
-//		{
-//			$vars = array(
-//				'one' => array('sgqa'=>'one', 'code'=>1, 'jsName'=>'java_one', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
-//				'two' => array('sgqa'=>'two', 'code'=>2, 'jsName'=>'java_two', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
-//				'three' => array('sgqa'=>'three', 'code'=>3, 'jsName'=>'java_three', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
-//				'four' => array('sgqa'=>'four', 'code'=>4, 'jsName'=>'java_four', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
-//				'five' => array('sgqa'=>'five', 'code'=>5, 'jsName'=>'java_five', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
-//				'six' => array('sgqa'=>'six', 'code'=>6, 'jsName'=>'java_six', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
-//				'seven' => array('sgqa'=>'seven', 'code'=>7, 'jsName'=>'java_seven', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
-//				'eight' => array('sgqa'=>'eight', 'code'=>8, 'jsName'=>'java_eight', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
-//				'nine' => array('sgqa'=>'nine', 'code'=>9, 'jsName'=>'java_nine', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
-//				'ten' => array('sgqa'=>'ten', 'code'=>10, 'jsName'=>'java_ten', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
-//				'half' => array('sgqa'=>'half', 'code'=>.5, 'jsName'=>'java_half', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
-//				'hi' => array('sgqa'=>'hi', 'code'=>'there', 'jsName'=>'java_hi', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
-//				'hello' => array('sgqa'=>'hello', 'code'=>"Tom", 'jsName'=>'java_hello', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
-//				'a' => array('sgqa'=>'a', 'code'=>0, 'jsName'=>'java_a', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
-//				'b' => array('sgqa'=>'b', 'code'=>0, 'jsName'=>'java_b', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
-//				'c' => array('sgqa'=>'c', 'code'=>0, 'jsName'=>'java_c', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
-//				'd' => array('sgqa'=>'d', 'code'=>0, 'jsName'=>'java_d', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
-//				'eleven' => array('sgqa'=>'eleven', 'code'=>11, 'jsName'=>'java_eleven', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
-//				'twelve' => array('sgqa'=>'twelve', 'code'=>12, 'jsName'=>'java_twelve', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
-//				// Constants
-//				'ASSESSMENT_HEADING' => array('sgqa'=>'ASSESSMENT_HEADING', 'code'=>'"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"', 'jsName'=>'', 'readWrite'=>'N'),
-//				'QID' => array('sgqa'=>'QID', 'code'=>'value for {QID}', 'jsName'=>'', 'readWrite'=>'N'),
-//				'QUESTIONHELP' => array('sgqa'=>'QUESTIONHELP', 'code'=>'"can single quoted strings" . \'contain nested \'quoted sections\'?', 'jsName'=>'', 'readWrite'=>'N'),
-//				'QUESTION_HELP' => array('sgqa'=>'QUESTION_HELP', 'code'=>'Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and  &lt?', 'jsName'=>'', 'readWrite'=>'N'),
-//				'NUMBEROFQUESTIONS' => array('sgqa'=>'NUMBEROFQUESTIONS', 'code'=>'value for {NUMBEROFQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N'),
-//				'THEREAREXQUESTIONS' => array('sgqa'=>'THEREAREXQUESTIONS', 'code'=>'value for {THEREAREXQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N'),
-//				'TOKEN:FIRSTNAME' => array('sgqa'=>'TOKEN:FIRSTNAME', 'code' => 'value for {TOKEN:FIRSTNAME}', 'jsName' => '', 'readWrite' => 'N'),
-//				'WELCOME' => array('sgqa'=>'WELCOME', 'code'=>'value for {WELCOME}', 'jsName'=>'', 'readWrite'=>'N'),
-//				// also include SGQA values and read-only variable attributes
-//				'12X34X56' => array('sgqa'=>'12X34X56', 'code'=>5, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
-//				'12X3X5lab1_ber' => array('sgqa'=>'12X3X5lab1_ber', 'code'=>10, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
-//				'q5pointChoice' => array('sgqa'=>'q5pointChoice', 'code'=> 3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','shown'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>14,'gseq'=>2,'qseq'=>14),
-//				'qArrayNumbers_ls1_min' => array('sgqa'=>'qArrayNumbers_ls1_min', 'code'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N','shown'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6,'gseq'=>2,'qseq'=>6),
-//				'12X3X5lab1_ber#1' => array('sgqa'=>'12X3X5lab1_ber#1', 'code'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
-//				'zero' => array('sgqa'=>'zero', 'code'=>0, 'jsName'=>'java_zero', 'gseq'=>0,'qseq'=>0),
-//				'empty' => array('sgqa'=>'empty', 'code'=>'', 'jsName'=>'java_empty', 'gseq'=>0,'qseq'=>0),
-//				'BREAKS' => array('sgqa'=>'BREAKS', 'code'=>"1\n2\n3", 'jsName'=>'', 'readWrite'=>'N'),
-//			);
-//			$this->lem->setTempVars($vars);
+        $this->em = new ExpressionManager();
+    }
+
+//      public function testVariables()
+//      {
+//          $vars = array(
+//              'one' => array('sgqa'=>'one', 'code'=>1, 'jsName'=>'java_one', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
+//              'two' => array('sgqa'=>'two', 'code'=>2, 'jsName'=>'java_two', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
+//              'three' => array('sgqa'=>'three', 'code'=>3, 'jsName'=>'java_three', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
+//              'four' => array('sgqa'=>'four', 'code'=>4, 'jsName'=>'java_four', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
+//              'five' => array('sgqa'=>'five', 'code'=>5, 'jsName'=>'java_five', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
+//              'six' => array('sgqa'=>'six', 'code'=>6, 'jsName'=>'java_six', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
+//              'seven' => array('sgqa'=>'seven', 'code'=>7, 'jsName'=>'java_seven', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
+//              'eight' => array('sgqa'=>'eight', 'code'=>8, 'jsName'=>'java_eight', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
+//              'nine' => array('sgqa'=>'nine', 'code'=>9, 'jsName'=>'java_nine', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
+//              'ten' => array('sgqa'=>'ten', 'code'=>10, 'jsName'=>'java_ten', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+//              'half' => array('sgqa'=>'half', 'code'=>.5, 'jsName'=>'java_half', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+//              'hi' => array('sgqa'=>'hi', 'code'=>'there', 'jsName'=>'java_hi', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+//              'hello' => array('sgqa'=>'hello', 'code'=>"Tom", 'jsName'=>'java_hello', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+//              'a' => array('sgqa'=>'a', 'code'=>0, 'jsName'=>'java_a', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
+//              'b' => array('sgqa'=>'b', 'code'=>0, 'jsName'=>'java_b', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
+//              'c' => array('sgqa'=>'c', 'code'=>0, 'jsName'=>'java_c', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
+//              'd' => array('sgqa'=>'d', 'code'=>0, 'jsName'=>'java_d', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
+//              'eleven' => array('sgqa'=>'eleven', 'code'=>11, 'jsName'=>'java_eleven', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+//              'twelve' => array('sgqa'=>'twelve', 'code'=>12, 'jsName'=>'java_twelve', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+//              // Constants
+//              'ASSESSMENT_HEADING' => array('sgqa'=>'ASSESSMENT_HEADING', 'code'=>'"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"', 'jsName'=>'', 'readWrite'=>'N'),
+//              'QID' => array('sgqa'=>'QID', 'code'=>'value for {QID}', 'jsName'=>'', 'readWrite'=>'N'),
+//              'QUESTIONHELP' => array('sgqa'=>'QUESTIONHELP', 'code'=>'"can single quoted strings" . \'contain nested \'quoted sections\'?', 'jsName'=>'', 'readWrite'=>'N'),
+//              'QUESTION_HELP' => array('sgqa'=>'QUESTION_HELP', 'code'=>'Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and  &lt?', 'jsName'=>'', 'readWrite'=>'N'),
+//              'NUMBEROFQUESTIONS' => array('sgqa'=>'NUMBEROFQUESTIONS', 'code'=>'value for {NUMBEROFQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N'),
+//              'THEREAREXQUESTIONS' => array('sgqa'=>'THEREAREXQUESTIONS', 'code'=>'value for {THEREAREXQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N'),
+//              'TOKEN:FIRSTNAME' => array('sgqa'=>'TOKEN:FIRSTNAME', 'code' => 'value for {TOKEN:FIRSTNAME}', 'jsName' => '', 'readWrite' => 'N'),
+//              'WELCOME' => array('sgqa'=>'WELCOME', 'code'=>'value for {WELCOME}', 'jsName'=>'', 'readWrite'=>'N'),
+//              // also include SGQA values and read-only variable attributes
+//              '12X34X56' => array('sgqa'=>'12X34X56', 'code'=>5, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
+//              '12X3X5lab1_ber' => array('sgqa'=>'12X3X5lab1_ber', 'code'=>10, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
+//              'q5pointChoice' => array('sgqa'=>'q5pointChoice', 'code'=> 3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','shown'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>14,'gseq'=>2,'qseq'=>14),
+//              'qArrayNumbers_ls1_min' => array('sgqa'=>'qArrayNumbers_ls1_min', 'code'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N','shown'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6,'gseq'=>2,'qseq'=>6),
+//              '12X3X5lab1_ber#1' => array('sgqa'=>'12X3X5lab1_ber#1', 'code'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
+//              'zero' => array('sgqa'=>'zero', 'code'=>0, 'jsName'=>'java_zero', 'gseq'=>0,'qseq'=>0),
+//              'empty' => array('sgqa'=>'empty', 'code'=>'', 'jsName'=>'java_empty', 'gseq'=>0,'qseq'=>0),
+//              'BREAKS' => array('sgqa'=>'BREAKS', 'code'=>"1\n2\n3", 'jsName'=>'', 'readWrite'=>'N'),
+//          );
+//          $this->lem->setTempVars($vars);
 //
-//			foreach ($vars as $var => $attributes)
-//			{
-//				foreach ($attributes as $key => $val)
-//				{
-//					$this->assertEquals($val, $this->lem->GetVarAttribute($var, $key, null, 0, 0), "Failed GetVarAttribute: $var.$key");
-//				}
-//			}
+//          foreach ($vars as $var => $attributes)
+//          {
+//              foreach ($attributes as $key => $val)
+//              {
+//                  $this->assertEquals($val, $this->lem->GetVarAttribute($var, $key, null, 0, 0), "Failed GetVarAttribute: $var.$key");
+//              }
+//          }
 //
-//		}
-//		
-        public function testEvaluator()
-        {
-            $booleanExpressions = array(
-                "1" => true,
-                "0" => false,
-                "" => false,
-                "1 == 1" => true,
-                "0 == 1" => false,
-                "1 && 0" => false,
-                "1 && 1" => true,
-                "1 || 0" => true,
-                "0 || 0" => false,
-            );
+//      }
+//
+    public function testEvaluator()
+    {
+        $booleanExpressions = array(
+            "1" => true,
+            "0" => false,
+            "" => false,
+            "1 == 1" => true,
+            "0 == 1" => false,
+            "1 && 0" => false,
+            "1 && 1" => true,
+            "1 || 0" => true,
+            "0 || 0" => false,
+        );
 
-            foreach ($booleanExpressions as $expr => $expected) {
-                $this->assertEquals($expected, $this->em->ProcessBooleanExpression($expr), "Expression: '$expr'");
-            }
+        foreach ($booleanExpressions as $expr => $expected) {
+            $this->assertEquals($expected, $this->em->ProcessBooleanExpression($expr), "Expression: '$expr'");
         }
+    }
 
-        public function testFunctions()
-        {
-            $functions = array(
-                'abs(5)' => 5,
-                'abs(-5)' => 5,
-                'abs(0)' => 0,
-                'acos(0.5)' => acos(0.5),
-                'acos(0.1)' => acos(0.1),
-				
-            );
-            foreach ($functions as $function => $expected) {
-                $this->assertEquals($expected, $this->em->sProcessStringContainingExpressions('{'.$function.'}'));
-            }
-        }
+    public function testFunctions()
+    {
+        $functions = array(
+            'abs(5)' => 5,
+            'abs(-5)' => 5,
+            'abs(0)' => 0,
+            'acos(0.5)' => acos(0.5),
+            'acos(0.1)' => acos(0.1),
 
-        public function testEscapes()
-        {
-            $strings = array(
-                '\{1+1}' => '{1+1}',
-                'x{1+1}' => 'x2',
-                'x{1+1\}' => 'x{1+1}',
-            );
-            foreach ($strings as $escaped => $expected) {
-                $this->assertEquals($expected, $this->em->sProcessStringContainingExpressions($escaped));
-            }
+        );
+        foreach ($functions as $function => $expected) {
+            $this->assertEquals($expected, $this->em->sProcessStringContainingExpressions('{' . $function . '}'));
         }
+    }
 
-        public function testJuggling()
-        {
-            $equalities = array(
-                '"1" == 1' => 1,
-                '"5" + "2"' => 7,
-                '"1" == 0' => '', // False is an empty string.
-                '1 == "1"' => 1,
-                '1 + "2"' => 3,
-                '"1" + "a"' => '1a',
-                '1 + "a"' => '1a',
-                '"05" + "1"' => 6,
-                '"" + "1" + "2"' => 12
-            );
-            foreach ($equalities as $expression => $expected) {
-                $result = $this->em->sProcessStringContainingExpressions('{'.$expression.'}');
-                $this->assertEquals($expected, $result);
-            }
+    public function testEscapes()
+    {
+        $strings = array(
+            '\{1+1}' => '{1+1}',
+            'x{1+1}' => 'x2',
+            'x{1+1\}' => 'x{1+1}',
+        );
+        foreach ($strings as $escaped => $expected) {
+            $this->assertEquals($expected, $this->em->sProcessStringContainingExpressions($escaped));
         }
-        public function oldTestEvaluator()
-        {
-			
+    }
+
+    public function testJuggling()
+    {
+        $equalities = array(
+            '"1" == 1' => 1,
+            '"5" + "2"' => 7,
+            '"1" == 0' => '', // False is an empty string.
+            '1 == "1"' => 1,
+            '1 + "2"' => 3,
+            '"1" + "a"' => '1a',
+            '1 + "a"' => '1a',
+            '"05" + "1"' => 6,
+            '"" + "1" + "2"' => 12
+        );
+        foreach ($equalities as $expression => $expected) {
+            $result = $this->em->sProcessStringContainingExpressions('{' . $expression . '}');
+            $this->assertEquals($expected, $result);
+        }
+    }
+    public function oldTestEvaluator()
+    {
+
 
         // Syntax for $tests is
         // expectedResult~expression
@@ -686,8 +687,8 @@ EOD;
         $em = new ExpressionManager();
         $LEM->setTempVars($vars);
 
-        //$LEMsessid = 'survey_' . Yii::app()->getConfig('surveyID');
-        $LEMsessid = 'survey_12345';
+        //$LEMsessid = responses_' . Yii::app()->getConfig('surveyID');
+        $LEMsessid = 'responses_12345';
         // manually set relevance status
         $_SESSION[$LEMsessid]['relevanceStatus'] = array();
         foreach ($vars as $var) {
@@ -717,24 +718,24 @@ EOD;
             $valToShow = $result; // htmlspecialchars($result,ENT_QUOTES,'UTF-8',false);
             $expectedToShow = $expectedResult; // htmlspecialchars($expectedResult,ENT_QUOTES,'UTF-8',false);
             $body .= "<tr>";
-            $body .= "<td>".$em->GetPrettyPrintString()."</td>\n";
+            $body .= "<td>" . $em->GetPrettyPrintString() . "</td>\n";
             if (is_null($result)) {
                 $valToShow = "NULL";
             }
             if ($valToShow != $expectedToShow) {
                 $resultStatus = 'error';
             }
-            $body .= "<td class='".$resultStatus."'>".$valToShow."</td>\n";
-            $body .= '<td>'.$expectedToShow."</td>\n";
+            $body .= "<td class='" . $resultStatus . "'>" . $valToShow . "</td>\n";
+            $body .= '<td>' . $expectedToShow . "</td>\n";
             $javaScript[] = $em->GetJavascriptTestforExpression($expectedToShow, $i);
-            $body .= "<td id='test_".$i."'>&nbsp;</td>\n";
+            $body .= "<td id='test_" . $i . "'>&nbsp;</td>\n";
             $varsUsed = $em->GetVarsUsed();
             if (is_array($varsUsed) and count($varsUsed) > 0) {
                 $varDesc = array();
                 foreach ($varsUsed as $v) {
                     $varDesc[] = $v;
                 }
-                $body .= '<td>'.implode(',<br/>', $varDesc)."</td>\n";
+                $body .= '<td>' . implode(',<br/>', $varDesc) . "</td>\n";
             } else {
                 $body .= "<td>&nbsp;</td>\n";
             }
@@ -742,7 +743,7 @@ EOD;
             if ($jsEqn == '') {
                 $body .= "<td>&nbsp;</td>\n";
             } else {
-                $body .= '<td>'.$jsEqn."</td>\n";
+                $body .= '<td>' . $jsEqn . "</td>\n";
             }
             $body .= '</tr>';
         }
@@ -765,21 +766,21 @@ EOD;
         $LEMalias2varName = array();
         foreach ($allJsVarnamesUsed as $jsVarName) {
             ++$i;
-            $pre .= "<tr><td>".$i."</td><td>".$jsVarName;
+            $pre .= "<tr><td>" . $i . "</td><td>" . $jsVarName;
             foreach ($vars as $k => $v) {
                 if ($v['jsName'] == $jsVarName) {
                     $value = $v['code'];
                 }
             }
-            $pre .= "</td><td>".$value."</td><td><input type='text' id='relevance".$i."' value='1' onchange='recompute()'/>\n";
-            $pre .= "<input type='hidden' id='".$jsVarName."' name='".$jsVarName."' value='".$value."'/>\n";
+            $pre .= "</td><td>" . $value . "</td><td><input type='text' id='relevance" . $i . "' value='1' onchange='recompute()'/>\n";
+            $pre .= "<input type='hidden' id='" . $jsVarName . "' name='" . $jsVarName . "' value='" . $value . "'/>\n";
             $pre .= "</td></tr>\n";
-            $LEMalias2varName[] = "'".substr((string) $jsVarName, 5)."':'".$jsVarName."'";
-            $LEMalias2varName[] = "'".$jsVarName."':'".$jsVarName."'";
-            $attrInfo = "'".$jsVarName."': {'jsName':'".$jsVarName."'";
+            $LEMalias2varName[] = "'" . substr((string) $jsVarName, 5) . "':'" . $jsVarName . "'";
+            $LEMalias2varName[] = "'" . $jsVarName . "':'" . $jsVarName . "'";
+            $attrInfo = "'" . $jsVarName . "': {'jsName':'" . $jsVarName . "'";
 
             $varInfo = $vars[substr((string) $jsVarName, 5)];
-            foreach ($varInfo as $k=>$v) {
+            foreach ($varInfo as $k => $v) {
                 if ($k == 'code') {
                     continue; // will access it from hidden node
                 }
@@ -790,31 +791,29 @@ EOD;
                 if ($k == 'jsName') {
                     continue; // since already set
                 }
-                $attrInfo .= ", '".$k."':'".$v."'";
-
+                $attrInfo .= ", '" . $k . "':'" . $v . "'";
             }
-            $attrInfo .= ",'qid':".$i."}";
+            $attrInfo .= ",'qid':" . $i . "}";
             $LEMvarNameAttr[] = $attrInfo;
         }
         $pre .= "</table>\n";
 
         $pre .= "<script type='text/javascript'>\n";
         $pre .= "<!--\n";
-        $pre .= "var LEMalias2varName= {".implode(",\n", $LEMalias2varName)."};\n";
-        $pre .= "var LEMvarNameAttr= {".implode(",\n", $LEMvarNameAttr)."};\n";
+        $pre .= "var LEMalias2varName= {" . implode(",\n", $LEMalias2varName) . "};\n";
+        $pre .= "var LEMvarNameAttr= {" . implode(",\n", $LEMvarNameAttr) . "};\n";
         $pre .= "var LEMradix = '.';\n";
         $pre .= "//-->\n</script>\n";
 
         print $pre;
         print $body;
-    
-        }
+    }
 
 
-            /**
-             * Unit test the asSplitStringOnExpressions() function to ensure that accurately parses out all expressions
-             * surrounded by curly braces, allowing for strings and escaped curly braces.
-             */
+        /**
+         * Unit test the asSplitStringOnExpressions() function to ensure that accurately parses out all expressions
+         * surrounded by curly braces, allowing for strings and escaped curly braces.
+         */
 
     public function oldStringSplitter()
     {
@@ -851,7 +850,7 @@ EOD;
 
         foreach ($atests as $test) {
             $tokens = $em->asSplitStringOnExpressions($test);
-            print '<b>'.$test.'</b><hr/>';
+            print '<b>' . $test . '</b><hr/>';
             print '<code>';
             print implode("<br/>\n", explode("\n", print_r($tokens, true)));
             print '</code><hr/>';
@@ -886,12 +885,10 @@ EOD;
 
         foreach (explode("\n", $tests) as $test) {
             $tokens = array(); //$em->RDP_Tokenize($test);
-            print '<b>'.$test.'</b><hr/>';
+            print '<b>' . $test . '</b><hr/>';
             print '<code>';
             print implode("<br/>\n", explode("\n", print_r($tokens, true)));
             print '</code><hr/>';
         }
     }
-    }
-
-?>
+}

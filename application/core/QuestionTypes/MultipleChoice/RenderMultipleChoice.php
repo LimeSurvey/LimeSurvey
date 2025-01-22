@@ -52,7 +52,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         $this->iColumnWidth = ($this->iColumnWidth >= 1) ? $this->iColumnWidth : 1;
         $this->iColumnWidth = ($this->iColumnWidth <= 12) ? $this->iColumnWidth : 12;
         $this->iMaxRowsByColumn = ceil($this->getQuestionCount() / $this->iNbCols);
-    
+
         if ($this->iNbCols > 1) {
             $this->sCoreClasses .= " multiple-list nbcol-{$this->iNbCols}";
         }
@@ -70,7 +70,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/multiplechoice';
     }
-    
+
     public function getRows()
     {
         $otherAdded = false;
@@ -124,7 +124,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         $oth_checkconditionFunction = ($this->getQuestionAttribute('other_numbers_only') == 1) ? "fixnum_checkconditions" : "checkconditions";
 
         $myfname = $this->sSGQA . 'other';
-        $mSessionValue = $this->setDefaultIfEmpty($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname], '');
+        $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], '');
         $this->inputnames[] = $myfname;
 
         $sValue = '';

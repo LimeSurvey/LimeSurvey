@@ -19,10 +19,10 @@
 class RenderListComment extends QuestionBaseRenderer
 {
     public $sCoreClass = "ls-answers ";
-    
+
     public $checkconditionFunction = "checkconditions";
     protected $maxoptionsize          = 35;
-        
+
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
         parent::__construct($aFieldArray, $bRenderDirect);
@@ -78,8 +78,8 @@ class RenderListComment extends QuestionBaseRenderer
             'hint_comment'      => gT('Please enter your comment here'),
             'name'              => $this->sSGQA . 'comment',
             'tarows'            => floor($tarows),
-            'has_comment_saved' => isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$fname2],
-            'comment_saved'     => htmlspecialchars((string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$fname2]),
+            'has_comment_saved' => isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['reesponses_' . Yii::app()->getConfig('surveyID')][$fname2],
+            'comment_saved'     => htmlspecialchars((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2]),
             'java_name'         => 'java' . $this->sSGQA,
             'java_id'           => 'java' . $this->sSGQA,
             'java_value'        => $this->mSessionValue
@@ -144,13 +144,13 @@ class RenderListComment extends QuestionBaseRenderer
             'label_text'             => gT('Please enter your comment here'),
             'tarows'                 => $tarows,
             'maxoptionsize'          => $this->maxoptionsize,
-            'comment_saved'          => htmlspecialchars((string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$fname2]),
+            'comment_saved'          => htmlspecialchars((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2]),
             'value'                  => $this->mSessionValue,
             ), true);
 
         $inputnames[] = $this->sSGQA;
         $inputnames[] = $this->sSGQA . 'comment';
-        
+
         $this->registerAssets();
         return array($answer, $inputnames);
     }
@@ -161,7 +161,7 @@ class RenderListComment extends QuestionBaseRenderer
         return $sRows;
     }
 
-   
+
     public function render($sCoreClasses = '')
     {
         if ($this->getQuestionAttribute('use_dropdown') != 1) {

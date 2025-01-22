@@ -2295,8 +2295,8 @@ function tokensExport($iSurveyID)
     $sTokenLanguage = App()->request->getPost('tokenlanguage');
 
     $oSurvey = Survey::model()->findByPk($iSurveyID);
-    $bIsNotAnonymous = ($oSurvey->anonymized == 'N' && $oSurvey->active == 'Y'); // db table exist (survey_$iSurveyID) ?
-    $bIsDateStamped = ($oSurvey->datestamp == 'Y' && $oSurvey->active == 'Y'); // db table exist (survey_$iSurveyID) ?
+    $bIsNotAnonymous = ($oSurvey->anonymized == 'N' && $oSurvey->active == 'Y'); // db table exist (responses_$iSurveyID) ?
+    $bIsDateStamped = ($oSurvey->datestamp == 'Y' && $oSurvey->active == 'Y'); // db table exist (responses_$iSurveyID) ?
     $attrfieldnames = getAttributeFieldNames($iSurveyID);
 
     $oRecordSet = Yii::app()->db->createCommand()->from("{{tokens_$iSurveyID}} lt");

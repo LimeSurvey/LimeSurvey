@@ -2059,9 +2059,9 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
     if ($questionid === false) {
         // If the fieldmap was randomized, the master will contain the proper order.  Copy that fieldmap with the new language settings.
-        if (isset(Yii::app()->session['survey_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'])) {
-            $masterFieldmap = Yii::app()->session['survey_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'];
-            $mfieldmap = Yii::app()->session['survey_' . $surveyid][$masterFieldmap];
+        if (isset(Yii::app()->session['responses_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'])) {
+            $masterFieldmap = Yii::app()->session['responses_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'];
+            $mfieldmap = Yii::app()->session['responses_' . $surveyid][$masterFieldmap];
 
             foreach ($mfieldmap as $fieldname => $mf) {
                 if (isset($fieldmap[$fieldname])) {
@@ -4529,8 +4529,8 @@ function getHeader($meta = false)
     Yii::app()->loadHelper('surveytranslator');
 
     // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
-    if (Yii::app()->session['survey_' . $surveyid]['s_lang']) {
-        $languagecode = Yii::app()->session['survey_' . $surveyid]['s_lang'];
+    if (Yii::app()->session['responses_' . $surveyid]['s_lang']) {
+        $languagecode = Yii::app()->session['responses_' . $surveyid]['s_lang'];
     } elseif (isset($surveyid) && $surveyid && $oSurvey) {
         $languagecode = $oSurvey->language;
     } else {

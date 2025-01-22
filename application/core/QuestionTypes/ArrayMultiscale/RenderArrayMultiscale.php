@@ -85,7 +85,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                 $aData['labelans' . $iScaleId][$oAnswerOption->code] = $oAnswerOption->answerl10ns[$this->sLanguage]->answer;
                 $aData['labelcode' . $iScaleId][$oAnswerOption->code] = $oAnswerOption->code;
             }
-            
+
             $this->numrows = $this->numrows + count($aData['labelans' . $iScaleId]);
         }
         return $aData;
@@ -99,7 +99,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $rigthCount  = Yii::app()->db->createCommand($sQuery)->queryScalar();
         // $right_exists: flag to find out if there are any right hand answer parts. leaving right column but don't force with
         $rightexists = ($rigthCount > 0);
-        
+
         $sQuery  = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10ns}} l  ON l.qid=q.qid WHERE parent_qid=" . $this->oQuestion->qid . " and scale_id=0 AND question like '%|%|%'";
         $centerCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
         // $center_exists: flag to find out if there are any center hand answer parts. leaving center column but don't force with
@@ -107,10 +107,10 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         /* Then always set to false : see bug https://bugs.limesurvey.org/view.php?id=11750 */
         //~ $rightexists=false;
         //~ $centerexists=false;
-        
+
         $leftheader  = $this->setDefaultIfEmpty($this->getQuestionAttribute('dualscale_headerA', $this->sLanguage), '');
         $rightheader = $this->setDefaultIfEmpty($this->getQuestionAttribute('dualscale_headerB', $this->sLanguage), '');
-    
+
         $shownoanswer = ($this->oQuestion->mandatory != "Y" && SHOW_NO_ANSWER == 1);
 
         if ($shownoanswer) {
@@ -171,8 +171,8 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $myfid1 = $this->sSGQA . $oQuestionRow->title . "_1";
             $sActualAnswer0 = $this->setDefaultIfEmpty($this->getFromSurveySession($myfname0), "");
             $sActualAnswer1 = $this->setDefaultIfEmpty($this->getFromSurveySession($myfname1), "");
-            
-            
+
+
             $answertext = $oQuestionRow->questionl10ns[$this->sLanguage]->question;
 
             $aData['aSubQuestions'][$i]['question'] = $answertext;
@@ -189,7 +189,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $aData['aSubQuestions'][$i]['mandatoryviolation'] = (($this->oQuestion->mandatory == 'Y' || $this->oQuestion->mandatory == 'S') && (in_array($myfname0, $this->aMandatoryViolationSubQ) || in_array($myfname1, $this->aMandatoryViolationSubQ)));
             // Array filter : maybe leave EM do the trick
             $aData['aSubQuestions'][$i]['sDisplayStyle'] = "";
-            
+
             $aData['labels0'] = $this->aLabels[0];
             $aData['labels1'] = $this->aLabels[1];
             $aData['aSubQuestions'][$i]['showNoAnswer0'] = ($sActualAnswer0 != '' && ($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER);
@@ -211,7 +211,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $fn = 0;
         foreach ($this->aSubQuestions[0] as $i => $oQuestionRow) {
             // Build repeat headings if needed
-            
+
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $repeatheadings == 0) {
                 if (($anscount - $fn + 1) >= $minrepeatheadings) {
                     $aData['aSubQuestions'][$i]['repeatheadings'] = true;
@@ -286,7 +286,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                 // if second label set is used
 
                 if (!empty($this->getFromSurveySession($myfname1))) {
-                    //$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
+                    //$answer .= $_SESSION['responses_'.Yii::app()->getConfig('surveyID')][$myfname1];
                     $aData['aSubQuestions'][$i]['sessionfname1'] = $this->getFromSurveySession($myfname1);
                 } else {
                     $aData['aSubQuestions'][$i]['sessionfname1'] = '';
@@ -335,7 +335,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                     $fname0value = $this->getFromSurveySession($myfname0);
                     // If value is empty, notset should be checked.
                     // string "0" should be considered as valid answer,
-                    // so notset should not be checked in that case.                   
+                    // so notset should not be checked in that case.
                     if ($fname0value !== '0' && empty($fname0value)) {
                         //$answer .= CHECKED;
                         $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
@@ -361,10 +361,10 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $ddprefix = null;
             $ddsuffix = null;
         }
-        
+
         $aData['ddprefix'] = $ddprefix;
         $aData['ddsuffix'] = $ddsuffix;
-        
+
         if (trim((string) $this->getQuestionAttribute('dropdown_separators')) != '') {
             $aSeparator = explode('|', (string) $this->getQuestionAttribute('dropdown_separators'));
             if (isset($aSeparator[1])) {
@@ -383,7 +383,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         }
         $this->setAnsweroptions();
         $this->setSubquestions();
-        
+
         $this->getPositioningAndSizing($aData);
 
         $aData['interddSep'] = $interddSep;
@@ -407,14 +407,14 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $aData['basename'] = $this->sSGQA;
         $aData['answertypeclass'] = $this->answertypeclass;
 
-        
+
         $this->setAnsweroptions();
         $this->setSubquestions();
 
         $this->parseLabelsToArray($aData);
         $this->getPositioningAndSizing($aData);
         $this->parseSubquestionsNoDropdown($aData);
-        
+
         $answer = Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView() . '/answer',
             $aData,

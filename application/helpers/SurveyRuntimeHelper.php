@@ -850,7 +850,8 @@ class SurveyRuntimeHelper
     private function checkIfUseBrowserNav()
     {
         // Possibility to suppress the warning when Ajax is used to get survey content.
-        if (isset($_GET['ignorebrowsernavigationwarning'])
+        if (
+            isset($_GET['ignorebrowsernavigationwarning'])
             || isset($_SESSION[$this->LEMsessid]['ignorebrowsernavigationwarning'])
         ) {
             $_SESSION[$this->LEMsessid]['ignorebrowsernavigationwarning'] = 1;
@@ -1124,7 +1125,7 @@ class SurveyRuntimeHelper
             if ($this->aSurveyInfo === null) {
                 $this->aSurveyInfo = getSurveyInfo($this->iSurveyid, App()->getLanguage());
             }
-            $this->LEMsessid = 'survey_' . $this->iSurveyid;
+            $this->LEMsessid = 'responses_' . $this->iSurveyid;
             if ($this->aSurveyInfo['active'] == "Y" && isset($_SESSION[$this->LEMsessid])) {
                 $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false); // by jumping to current step, saves data so far
             }
@@ -1433,7 +1434,7 @@ class SurveyRuntimeHelper
         $this->LEMskipReprocessing    = $LEMskipReprocessing ?? null;
         $this->thissurvey             = $thissurvey ?? null;
         $this->iSurveyid              = $surveyid ?? null;
-        $this->LEMsessid              = $this->iSurveyid ? 'survey_' . $this->iSurveyid : null;
+        $this->LEMsessid              = $this->iSurveyid ? 'responses_' . $this->iSurveyid : null;
         $this->aSurveyOptions         = $surveyOptions ?? null;
         $this->aMoveResult            = $moveResult ?? null;
         $this->sMove                  = $move ?? null;
@@ -1515,7 +1516,7 @@ class SurveyRuntimeHelper
     private function manageClearAll()
     {
         global $token;
-        $sessionSurvey = Yii::app()->session["survey_{$this->iSurveyid}"];
+        $sessionSurvey = Yii::app()->session["responses_{$this->iSurveyid}"];
         if (App()->request->getPost('confirm-clearall') != 'confirm') {
             /* Save current response, and come back to survey if clearll is not confirmed */
             $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, true, true, false);
@@ -1555,7 +1556,7 @@ class SurveyRuntimeHelper
             if (!empty(App()->getLanguage())) {
                 $restartparam['lang'] = sanitize_languagecode(App()->getLanguage());
             } else {
-                $s_lang = Yii::app()->session['survey_' . $this->iSurveyid]['s_lang'] ?? 'en';
+                $s_lang = Yii::app()->session['responses_' . $this->iSurveyid]['s_lang'] ?? 'en';
                 $restartparam['lang'] = $s_lang;
             }
 
@@ -1599,7 +1600,7 @@ class SurveyRuntimeHelper
 
         $scenarios = array(
             "tokenRequired"   => ($tokensexist == 1),
-            "captchaRequired" => (isCaptchaEnabled('surveyaccessscreen', $this->aSurveyInfo['usecaptcha']) && !isset($_SESSION['survey_' . $this->iSurveyid]['captcha_surveyaccessscreen']))
+            "captchaRequired" => (isCaptchaEnabled('surveyaccessscreen', $this->aSurveyInfo['usecaptcha']) && !isset($_SESSION['responses_' . $this->iSurveyid]['captcha_surveyaccessscreen']))
         );
 
         /**
@@ -1680,7 +1681,7 @@ class SurveyRuntimeHelper
                 }
                 $renderCaptcha = 'main';
             } else {
-                $_SESSION['survey_' . $this->iSurveyid]['captcha_surveyaccessscreen'] = true;
+                $_SESSION['responses_' . $this->iSurveyid]['captcha_surveyaccessscreen'] = true;
                 $renderCaptcha = 'correct';
             }
         }

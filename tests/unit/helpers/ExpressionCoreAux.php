@@ -70,7 +70,7 @@ class ExpressionCoreAux extends TestCase
     public function compareExpression()
     {
         // Input value 3.
-        $_SESSION['survey_563168'][$this->sgqa] = $this->value;
+        $_SESSION['responses_563168'][$this->sgqa] = $this->value;
 
         $em = new \ExpressionManager();
         $lem = \LimeExpressionManager::singleton();

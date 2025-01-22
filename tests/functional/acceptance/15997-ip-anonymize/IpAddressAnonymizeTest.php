@@ -26,7 +26,6 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
         }
         // Browser login.
         self::adminLogin($username, $password);
-
     }
 
     /**
@@ -114,11 +113,11 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
             sleep(2);
 
             //now check if ip was anonymized (ipv4, last digit should be 0)
-            //get ipadr from table survey_573837 ...
+            //get ipadr from table responses_573837 ...
             $models = \Response::model(self::$surveyId)->findAll();
 
             $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr === '127.0.0.0'));
-        }  catch (\Exception $e) {
+        } catch (\Exception $e) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,
@@ -217,7 +216,7 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
             $models = \Response::model(self::$surveyId)->findAll();
 
             $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr === '127.0.0.1'));
-        }  catch (\Exception $e) {
+        } catch (\Exception $e) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,

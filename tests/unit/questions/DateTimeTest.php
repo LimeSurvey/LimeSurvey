@@ -2,14 +2,12 @@
 
 namespace ls\tests;
 
-
 /**
  * @since 2017-06-13
  * @group date
  */
 class DateTimeTest extends TestBaseClass
 {
-
     /**
      * Import survey in tests/surveys/.
      */
@@ -20,9 +18,8 @@ class DateTimeTest extends TestBaseClass
         $_POST = [];
         $_SESSION = [];
 
-        $surveyFile = self::$surveysFolder.'/limesurvey_survey_975622.lss';
+        $surveyFile = self::$surveysFolder . '/limesurvey_survey_975622.lss';
         self::importSurvey($surveyFile);
-
     }
 
     /**
@@ -196,6 +193,6 @@ class DateTimeTest extends TestBaseClass
         $result = \LimeExpressionManager::ProcessCurrentResponses();
         $moveResult = \LimeExpressionManager::NavigateForwards();
         $result = \LimeExpressionManager::ProcessCurrentResponses();
-        $this->assertEquals(date('Y-m-d'), $_SESSION['survey_' . self::$surveyId][$sgqa]);
+        $this->assertEquals(date('Y-m-d'), $_SESSION['responses_' . self::$surveyId][$sgqa]);
     }
 }

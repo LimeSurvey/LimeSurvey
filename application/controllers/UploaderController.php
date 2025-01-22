@@ -32,7 +32,7 @@ class UploaderController extends SurveyController
             throw new CHttpException(400);
         }
 
-        $sLanguage = Yii::app()->session['survey_' . $surveyid]['s_lang'] ?? "";
+        $sLanguage = Yii::app()->session['responses_' . $surveyid]['s_lang'] ?? "";
         Yii::app()->setLanguage($sLanguage);
         $uploaddir = Yii::app()->getConfig("uploaddir");
         $tempdir = Yii::app()->getConfig("tempdir");
@@ -190,7 +190,7 @@ class UploaderController extends SurveyController
             $event = new PluginEvent('beforeProcessFileUpload');
             /* Current state */
             $event->set('surveyId', $surveyid);
-            $event->set('responseId', Yii::app()->session['survey_' . $surveyid]['srid']); // NULL if not exist
+            $event->set('responseId', Yii::app()->session['responses_' . $surveyid]['srid']); // NULL if not exist
             $event->set('qid', $oQuestion->qid);
             $event->set('preview', $preview);
             $event->set('fieldname', $sFieldName);

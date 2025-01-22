@@ -254,11 +254,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
             return false;
         }
         if ($recursive) {
-            //delete the survey_$iSurveyID table
+            //delete the responses_$iSurveyID table
             if (tableExists("{{responses_" . $this->sid . "}}")) {
                 Yii::app()->db->createCommand()->dropTable("{{responses_" . $this->sid . "}}");
             }
-            //delete the survey_$iSurveyID_timings table
+            //delete the timings_$iSurveyID table
             if (tableExists("{{timings_" . $this->sid . "}}")) {
                 Yii::app()->db->createCommand()->dropTable("{{timings_" . $this->sid . "}}");
             }
@@ -392,8 +392,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $sLang = Yii::app()->request->getParam('lang');
         } else {
             // SESSION
-            if (isset(Yii::app()->session['survey_' . $this->sid]['s_lang'])) {
-                $sLang = Yii::app()->session['survey_' . $this->sid]['s_lang'];
+            if (isset(Yii::app()->session['responses_' . $this->sid]['s_lang'])) {
+                $sLang = Yii::app()->session['responses_' . $this->sid]['s_lang'];
             }
         }
         return $sLang;

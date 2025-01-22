@@ -19,9 +19,9 @@
 /*
 * Let's explain what this strange $ia var means
 *
-* The $ia string comes from the $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['insertarray'] variable which is built at the commencement of the survey.
+* The $ia string comes from the $_SESSION['responses_'.Yii::app()->getConfig('surveyID')]['insertarray'] variable which is built at the commencement of the survey.
 * See index.php, function "buildsurveysession()"
-* One $ia array zexists for every question in the survey. The $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['insertarray']
+* One $ia array zexists for every question in the survey. The $_SESSION['responses_'.Yii::app()->getConfig('surveyID')]['insertarray']
 * string is an array of $ia arrays.
 *
 * $ia[0] => question id
@@ -115,7 +115,7 @@ function retrieveAnswers($ia)
     // 2. No tokens
     // 3. Always first time it's shown to one user (and no tokens).
     // 4. No expressions with tokens or time or other dynamic features.
-    if (EmCacheHelper::cacheQanda($ia, $_SESSION['survey_' . $thissurvey['sid']])) {
+    if (EmCacheHelper::cacheQanda($ia, $_SESSION['responses_' . $thissurvey['sid']])) {
         $cacheKey = 'retrieveAnswers_' . sha1(implode('_', $ia));
         $value = EmCacheHelper::get($cacheKey);
         if ($value !== false) {
@@ -165,7 +165,7 @@ function retrieveAnswers($ia)
 
     //If this question is mandatory but wasn't answered in the last page
     //add a message HIGHLIGHTING the question
-    $mandatory_msg = (($_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['prevstep'])) ? mandatory_message($ia) : '';
+    $mandatory_msg = (($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['prevstep'])) ? mandatory_message($ia) : '';
     $qtitle .= $mandatory_msg;
     $question_text['man_message'] = $mandatory_msg;
 
@@ -180,7 +180,7 @@ function retrieveAnswers($ia)
     $qtitle .= $validation_msg;
     $question_text['valid_message'] = $validation_msg;
 
-    if (($_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['prevstep'])) {
+    if (($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['prevstep'])) {
         $file_validation_msg = file_validation_message($ia);
     } else {
         $file_validation_msg = '';
@@ -246,7 +246,7 @@ function retrieveAnswers($ia)
     // =====================================================
 
     $qanda = array($qtitle, $answer, 'help', $display, $qid, $ia[2], $ia[5], $ia[1]);
-    if (EmCacheHelper::cacheQanda($ia, $_SESSION['survey_' . $thissurvey['sid']])) {
+    if (EmCacheHelper::cacheQanda($ia, $_SESSION['responses_' . $thissurvey['sid']])) {
         EmCacheHelper::set($cacheKey, [$qanda, $inputnames]);
     }
     //New Return
@@ -363,7 +363,6 @@ function file_validation_popup($ia, $filenotvalidated = null)
         unset($filenotvalidated);
     }
     if (isset($filenotvalidated) && is_array($filenotvalidated)) {
-
         if (!isset($filevalidationpopup)) {
             $fpopup = gT("One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed");
             $filevalidationpopup = "Y";
@@ -384,7 +383,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     global $thissurvey;
     global $gid;
     $time_limit = intval($aQuestionAttributes['time_limit']);
-    if($time_limit <= 0) {
+    if ($time_limit <= 0) {
         return;
     }
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'coookies.js', CClientScript::POS_BEGIN);
@@ -400,11 +399,11 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     /* Registering script : don't go to EM : no need usage of ls_json_encode */
     App()->getClientScript()->registerScript("LSVarLangTimer", "LSvar.lang.timer=" . json_encode($langTimer) . ";", CClientScript::POS_BEGIN);
     /**
-     * The following lines cover for previewing questions, because no $_SESSION['survey_'.$surveyId]['fieldarray'] exists.
+     * The following lines cover for previewing questions, because no $_SESSION['responses_'.$surveyId]['fieldarray'] exists.
      * This just stops error messages occuring
      */
-    if (!isset($_SESSION['survey_' . $surveyId]['fieldarray'])) {
-        $_SESSION['survey_' . $surveyId]['fieldarray'] = [];
+    if (!isset($_SESSION['responses_' . $surveyId]['fieldarray'])) {
+        $_SESSION['responses_' . $surveyId]['fieldarray'] = [];
     }
     /* End */
 
@@ -414,17 +413,17 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     $disable_next = trim((string) $aQuestionAttributes['time_limit_disable_next']) != '' ? $aQuestionAttributes['time_limit_disable_next'] : 0;
     $disable_prev = trim((string) $aQuestionAttributes['time_limit_disable_prev']) != '' ? $aQuestionAttributes['time_limit_disable_prev'] : 0;
     $time_limit_action = trim((string) $aQuestionAttributes['time_limit_action']) != '' ? $aQuestionAttributes['time_limit_action'] : 1;
-    $time_limit_message = trim((string) $aQuestionAttributes['time_limit_message'][$_SESSION['survey_' . $surveyId]['s_lang']]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_message'][$_SESSION['survey_' . $surveyId]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has expired");
+    $time_limit_message = trim((string) $aQuestionAttributes['time_limit_message'][$_SESSION['responses_' . $surveyId]['s_lang']]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_message'][$_SESSION['responses_' . $surveyId]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has expired");
     $time_limit_warning = trim((string) $aQuestionAttributes['time_limit_warning']) != '' ? intval($aQuestionAttributes['time_limit_warning']) : 0;
     $time_limit_warning_2 = trim((string) $aQuestionAttributes['time_limit_warning_2']) != '' ? intval($aQuestionAttributes['time_limit_warning_2']) : 0;
-    $time_limit_countdown_message = trim((string) $aQuestionAttributes['time_limit_countdown_message'][$_SESSION['survey_' . $surveyId]['s_lang']]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_countdown_message'][$_SESSION['survey_' . $surveyId]['s_lang']], ENT_QUOTES) : gT("Time remaining");
-    $time_limit_warning_message = trim((string) $aQuestionAttributes['time_limit_warning_message'][$_SESSION['survey_' . $surveyId]['s_lang']]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_warning_message'][$_SESSION['survey_' . $surveyId]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
+    $time_limit_countdown_message = trim((string) $aQuestionAttributes['time_limit_countdown_message'][$_SESSION['responses_' . $surveyId]['s_lang']]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_countdown_message'][$_SESSION['responses_' . $surveyId]['s_lang']], ENT_QUOTES) : gT("Time remaining");
+    $time_limit_warning_message = trim((string) $aQuestionAttributes['time_limit_warning_message'][$_SESSION['responses_' . $surveyId]['s_lang']]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_warning_message'][$_SESSION['responses_' . $surveyId]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
 
     //Render timer
     $timer_html = Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer', array('iQid' => $questionId, 'sWarnId' => ''), true);
     $time_limit_warning_message = str_replace("{TIME}", $timer_html, $time_limit_warning_message);
     $time_limit_warning_display_time = trim((string) $aQuestionAttributes['time_limit_warning_display_time']) != '' ? intval($aQuestionAttributes['time_limit_warning_display_time']) + 1 : 0;
-    $time_limit_warning_2_message = trim((string) $aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['survey_' . $surveyId]['s_lang']]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['survey_' . $surveyId]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
+    $time_limit_warning_2_message = trim((string) $aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['responses_' . $surveyId]['s_lang']]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['responses_' . $surveyId]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
 
     //Render timer 2
     $timer_html = Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer', array('iQid' => $questionId, 'sWarnId' => '_Warning_2'), true);
@@ -441,8 +440,8 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     $time_limit_timer_class = "ls-timer-content ls-timer-countdown ls-no-js-hidden";
 
     $timersessionname = "timer_question_" . $questionId;
-    if (isset($_SESSION['survey_' . $surveyId][$timersessionname])) {
-        $time_limit = $_SESSION['survey_' . $surveyId][$timersessionname];
+    if (isset($_SESSION['responses_' . $surveyId][$timersessionname])) {
+        $time_limit = $_SESSION['responses_' . $surveyId][$timersessionname];
     }
 
     App()->getClientScript()->registerScript(
@@ -457,7 +456,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
         $iAction = '';
         if (isset($thissurvey['format']) && $thissurvey['format'] == "G") {
             $qcount = 0;
-            foreach ($_SESSION['survey_' . $surveyId]['fieldarray'] as $ib) {
+            foreach ($_SESSION['responses_' . $surveyId]['fieldarray'] as $ib) {
                 if ($ib[5] == $gid) {
                     $qcount++;
                 }
@@ -520,7 +519,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
 
 function currentRelevecanceClass($surveyId, $baseName, $name, $aQuestionAttributes)
 {
-    $relevanceStatus = !isset($_SESSION["survey_{$surveyId}"]['relevanceStatus'][$name]) || $_SESSION["survey_{$surveyId}"]['relevanceStatus'][$name];
+    $relevanceStatus = !isset($_SESSION["responses_{$surveyId}"]['relevanceStatus'][$name]) || $_SESSION["responses_{$surveyId}"]['relevanceStatus'][$name];
     if ($relevanceStatus) {
         return "";
     }
@@ -530,8 +529,8 @@ function currentRelevecanceClass($surveyId, $baseName, $name, $aQuestionAttribut
         foreach (explode(';', $sExcludeAllOther) as $sExclude) {
             $sExclude = $baseName . $sExclude;
             if (
-                (!isset($_SESSION["survey_{$surveyId}"]['relevanceStatus'][$sExclude]) || $_SESSION["survey_{$surveyId}"]['relevanceStatus'][$sExclude])
-                && (isset($_SESSION["survey_{$surveyId}"][$sExclude]) && $_SESSION["survey_{$surveyId}"][$sExclude] == "Y")
+                (!isset($_SESSION["responses_{$surveyId}"]['relevanceStatus'][$sExclude]) || $_SESSION["responses_{$surveyId}"]['relevanceStatus'][$sExclude])
+                && (isset($_SESSION["responses_{$surveyId}"][$sExclude]) && $_SESSION["responses_{$surveyId}"][$sExclude] == "Y")
             ) {
                 return "ls-irrelevant ls-disabled";
             }
@@ -562,14 +561,14 @@ function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $an
     $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'";
     $htmltbody2 .= ($class !== null) ? " class='$class'" : "";
     $surveyid = $thissurvey['sid'];
-    if (isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname]) && !$_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname]) {
+    if (isset($_SESSION["responses_{$surveyid}"]['relevanceStatus'][$rowname]) && !$_SESSION["responses_{$surveyid}"]['relevanceStatus'][$rowname]) {
         // If using exclude_all_others, then need to know whether irrelevant rows should be hidden or disabled
         if (isset($aQuestionAttributes['exclude_all_others'])) {
             $disableit = false;
             foreach (explode(';', trim((string) $aQuestionAttributes['exclude_all_others'])) as $eo) {
                 $eorow = $ia[1] . $eo;
                 if (
-                    (!isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$eorow]) || $_SESSION["survey_{$surveyid}"]['relevanceStatus'][$eorow])
+                    (!isset($_SESSION["responses_{$surveyid}"]['relevanceStatus'][$eorow]) || $_SESSION["responses_{$surveyid}"]['relevanceStatus'][$eorow])
                     && (isset($_SESSION[$eorow]) && $_SESSION[$eorow] == "Y")
                 ) {
                     $disableit = true;
@@ -622,7 +621,7 @@ function do_language($ia)
     $checkconditionFunction = "checkconditions";
     $answerlangs            = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->additionalLanguages;
     $answerlangs[]          = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
-    $sLang                  = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
+    $sLang                  = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang'];
     $coreClass              = "ls-answers answer-item dropdow-item language-item";
     $inputnames = [];
 
@@ -658,7 +657,7 @@ function do_list_dropdown($ia)
     // Question attribute variables
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey ID
-    $sSurveyLang = $_SESSION['survey_' . $iSurveyId]['s_lang']; // survey language
+    $sSurveyLang = $_SESSION['responses_' . $iSurveyId]['s_lang']; // survey language
     $othertext              = (trim((string) $aQuestionAttributes['other_replace_text'][$sSurveyLang]) != '') ? $aQuestionAttributes['other_replace_text'][$sSurveyLang] : gT('Other:'); // text for 'other'
     $optCategorySeparator   = (trim((string) $aQuestionAttributes['category_separator']) != '') ? $aQuestionAttributes['category_separator'] : '';
     $coreClass              = "ls-answers answer-item dropdown-item";
@@ -682,7 +681,7 @@ function do_list_dropdown($ia)
         $_height    = sanitize_int($aQuestionAttributes['dropdown_size']);
         $_maxHeight = count($ansresult);
 
-        if ((!is_null($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] === '') && ($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
+        if ((!is_null($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] === '') && ($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
             ++$_maxHeight; // for No Answer
         }
 
@@ -690,7 +689,7 @@ function do_list_dropdown($ia)
             ++$_maxHeight; // for Other
         }
 
-        if (is_null($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]])) {
+        if (is_null($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]])) {
             ++$_maxHeight; // for 'Please choose:'
         }
 
@@ -709,11 +708,11 @@ function do_list_dropdown($ia)
     $_rowNum = 0;
     $_prefix = '';
 
-    $value            = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]];
+    $value            = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]];
     $sOptions         = '';
 
     // If no answer previously selected
-    if (is_null($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] === '') {
+    if (is_null($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] === '') {
         $sOptions .= doRender('/survey/questions/answer/list_dropdown/rows/option', array(
             'name' => $ia[1],
             'value' => '',
@@ -725,7 +724,7 @@ function do_list_dropdown($ia)
     if (!isset($optCategorySeparator)) {
         foreach ($ansresult as $ansrow) {
             $opt_select = '';
-            if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code']) {
+            if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code']) {
                 $opt_select = SELECTED;
             }
             if ($prefixStyle == 1) {
@@ -756,7 +755,7 @@ function do_list_dropdown($ia)
         foreach ($optgroups as $categoryname => $optionlistarray) {
             $sOptGroupOptions = '';
             foreach ($optionlistarray as $optionarray) {
-                if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == $optionarray['code']) {
+                if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == $optionarray['code']) {
                     $opt_select = SELECTED;
                 } else {
                     $opt_select = '';
@@ -778,7 +777,7 @@ function do_list_dropdown($ia)
                 ), true);
         }
         foreach ($defaultopts as $optionarray) {
-            if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == $optionarray['code']) {
+            if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == $optionarray['code']) {
                 $opt_select = SELECTED;
             } else {
                 $opt_select = '';
@@ -795,7 +794,7 @@ function do_list_dropdown($ia)
     }
 
     if (isset($other) && $other == 'Y') {
-        if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == '-oth-') {
+        if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == '-oth-') {
             $opt_select = SELECTED;
         } else {
             $opt_select = '';
@@ -813,7 +812,7 @@ function do_list_dropdown($ia)
             ), true);
     }
 
-    if (!(is_null($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] === "") && ($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
+    if (!(is_null($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] === "") && ($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         if ($prefixStyle == 1) {
             $_prefix = ++$_rowNum . ') ';
         }
@@ -834,10 +833,10 @@ function do_list_dropdown($ia)
         $aData = [];
         $aData['name'] = $ia[1];
         $aData['checkconditionFunction'] = $checkconditionFunction;
-        $aData['display'] = ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] != '-oth-') ? 'display: none;' : '';
+        $aData['display'] = ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] != '-oth-') ? 'display: none;' : '';
         $aData['label'] = $othertext;
         $thisfieldname = "$ia[1]other";
-        $aData['value'] = (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$thisfieldname])) ? htmlspecialchars((string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$thisfieldname], ENT_QUOTES) : '';
+        $aData['value'] = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$thisfieldname])) ? htmlspecialchars((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$thisfieldname], ENT_QUOTES) : '';
 
         // ==> other
         $sOther .= doRender('/survey/questions/answer/list_dropdown/rows/othertext', $aData, true);
@@ -881,7 +880,7 @@ function do_list_radio($ia)
     $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $checkconditionFunction = "checkconditions"; // name of the function to check condition TODO : check is used more than once
     $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey ID
-    $sSurveyLang            = $_SESSION['survey_' . $iSurveyId]['s_lang']; // survey language
+    $sSurveyLang            = $_SESSION['responses_' . $iSurveyId]['s_lang']; // survey language
     $inputnames = [];
     $coreClass = "ls-answers answers-list radio-list";
     // Question attribute variables
@@ -936,7 +935,7 @@ function do_list_radio($ia)
         $myfname = $ia[1] . $ansrow['code'];
 
         $checkedState = '';
-        if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code']) {
+        if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code']) {
             $checkedState = 'CHECKED';
         }
 
@@ -987,7 +986,7 @@ function do_list_radio($ia)
         $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeparator = $sSeparator['separator'];
 
-        if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == '-oth-') {
+        if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == '-oth-') {
             $checkedState = CHECKED;
         } else {
             $checkedState = '';
@@ -995,8 +994,8 @@ function do_list_radio($ia)
 
         $myfname = $thisfieldname = $ia[1] . 'other';
 
-        if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$thisfieldname])) {
-            $dispVal = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$thisfieldname];
+        if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$thisfieldname])) {
+            $dispVal = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$thisfieldname];
             if ($aQuestionAttributes['other_numbers_only'] == 1) {
                 $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
             }
@@ -1046,7 +1045,7 @@ function do_list_radio($ia)
     if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         $iRowCount++;
 
-        if ((!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == '') || ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == ' ')) {
+        if ((!isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == '') || ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == ' ')) {
             $check_ans = CHECKED; //Check the "no answer" radio button if there is no answer in session.
         } else {
             $check_ans = '';
@@ -1086,7 +1085,7 @@ function do_list_radio($ia)
         'sRows' => $sRows,
         'name'  => $ia[1],
         'basename' => $ia[1],
-        'value' => $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]],
+        'value' => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]],
         'coreClass' => $coreClass,
         ), true);
 
@@ -1105,7 +1104,7 @@ function do_listwithcomment($ia)
     $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $checkconditionFunction = "checkconditions";
     $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey ID
-    $sSurveyLang            = $_SESSION['survey_' . $iSurveyId]['s_lang']; // survey language
+    $sSurveyLang            = $_SESSION['responses_' . $iSurveyId]['s_lang']; // survey language
     $maxoptionsize          = 35;
     $coreClass              = "ls-answers";
     $inputnames = [];
@@ -1124,7 +1123,7 @@ function do_listwithcomment($ia)
         foreach ($ansresult as $ansrow) {
             $check_ans = '';
 
-            if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code']) {
+            if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code']) {
                 $check_ans = CHECKED;
             }
 
@@ -1143,9 +1142,9 @@ function do_listwithcomment($ia)
         // ==> rows
         $check_ans = '';
         if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
-            if ((!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == '') || ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == ' ')) {
+            if ((!isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == '') || ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == ' ')) {
                 $check_ans = CHECKED;
-            } elseif (($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] != '')) {
+            } elseif (($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] != '')) {
                 $check_ans = '';
             }
 
@@ -1175,11 +1174,11 @@ function do_listwithcomment($ia)
             'kpclass'           => $kpclass,
             'name'              => $ia[1] . 'comment',
             'tarows'            => floor($tarows),
-            'has_comment_saved' => isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$fname2],
-            'comment_saved'     => htmlspecialchars((string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$fname2]),
+            'has_comment_saved' => isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2],
+            'comment_saved'     => htmlspecialchars((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2]),
             'java_name'         => 'java' . $ia[1],
             'java_id'           => 'java' . $ia[1],
-            'java_value'        => $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]]
+            'java_value'        => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]]
             ), true);
 
 
@@ -1190,7 +1189,7 @@ function do_listwithcomment($ia)
         $sOptions = '';
         foreach ($ansresult as $ansrow) {
             $check_ans = '';
-            if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code']) {
+            if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code']) {
                 $check_ans = SELECTED;
             }
 
@@ -1205,9 +1204,9 @@ function do_listwithcomment($ia)
                 $maxoptionsize = strlen((string) $ansrow['answer']);
             }
         }
-        if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1 && !is_null($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]])) {
+        if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1 && !is_null($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]])) {
             $check_ans = "";
-            if (trim((string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]]) == '') {
+            if (trim((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]]) == '') {
                 $check_ans = SELECTED;
             }
             $itemData = array(
@@ -1245,13 +1244,13 @@ function do_listwithcomment($ia)
             'coreClass'              => $coreClass,
             'id'                     => 'answer' . $ia[1],
             'basename'               => $ia[1],
-            'show_noanswer'          => is_null($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]]),
+            'show_noanswer'          => is_null($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]]),
             'label_text'             => $hint_comment,
             'kpclass'                => $kpclass,
             'tarows'                 => $tarows,
             'maxoptionsize'          => $maxoptionsize,
-            'comment_saved'          => htmlspecialchars((string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$fname2]), /* htmlspecialchars(null)=="" right ? */
-            'value'                  => $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]],
+            'comment_saved'          => htmlspecialchars((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2]), /* htmlspecialchars(null)=="" right ? */
+            'value'                  => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]],
             ), true);
 
         $inputnames[] = $ia[1];
@@ -1299,7 +1298,7 @@ function do_ranking($ia)
     $inputnames = [];
     $sSelects   = '';
     $myfname    = '';
-    $sSurveyLanguage = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
+    $sSurveyLanguage = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang'];
 
     $thisvalue = "";
     for ($i = 1; $i <= $iMaxLine; $i++) {
@@ -1307,7 +1306,7 @@ function do_ranking($ia)
         $labeltext = ($i == 1) ? gT('First choice') : sprintf(gT('Choice of rank %s'), $i);
         $aItemData = [];
 
-        if (!$_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) {
+        if (!$_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) {
             $aItemData[] = array(
                 'value'      => '',
                 'selected'   => 'SELECTED',
@@ -1318,9 +1317,9 @@ function do_ranking($ia)
         }
 
         foreach ($aAnswers as $aAnswer) {
-            if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == $aAnswer['code']) {
+            if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == $aAnswer['code']) {
                 $selected = SELECTED;
-                $thisvalue = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname];
+                $thisvalue = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname];
             } else {
                 $selected = '';
             }
@@ -1397,7 +1396,7 @@ function do_multiplechoice($ia)
     $inputnames             = array(); // It is used!
     $checkconditionFunction = "checkconditions"; // name of the function to check condition TODO : check is used more than once
     $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey ID
-    $sSurveyLang            = $_SESSION['survey_' . $iSurveyId]['s_lang']; // survey language
+    $sSurveyLang            = $_SESSION['responses_' . $iSurveyId]['s_lang']; // survey language
     $coreClass = "ls-answers checkbox-list answers-list";
     // Question attribute variables
     $aQuestionAttributes    = (array) QuestionAttribute::model()->getQuestionAttributes($ia[0]); // Question attributes
@@ -1437,14 +1436,14 @@ function do_multiplechoice($ia)
         $relevanceClass = currentRelevecanceClass($iSurveyId, $ia[1], $myfname, $aQuestionAttributes);
         $checkedState = '';
         /* If the question has already been ticked, check the checkbox */
-        if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname])) {
-            if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == 'Y') {
+        if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname])) {
+            if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'Y') {
                 $checkedState = 'CHECKED';
             }
         }
 
         $sCheckconditionFunction = $checkconditionFunction . '(this.value, this.name, this.type)';
-        $sValue                  = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] ?? '';
+        $sValue                  = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] ?? '';
         $inputnames[]            = $myfname;
 
 
@@ -1470,13 +1469,13 @@ function do_multiplechoice($ia)
         $relevanceClass = currentRelevecanceClass($iSurveyId, $ia[1], $myfname, $aQuestionAttributes);
         $checkedState = '';
         // othercbox can be not display, because only input text goes to database
-        if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && trim((string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) != '') {
+        if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && trim((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) != '') {
             $checkedState = 'CHECKED';
         }
 
         $sValue = '';
-        if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname])) {
-            $dispVal = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname];
+        if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname])) {
+            $dispVal = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname];
             if ($aQuestionAttributes['other_numbers_only'] == 1) {
                 $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
             }
@@ -1485,8 +1484,8 @@ function do_multiplechoice($ia)
 
         // TODO : check if $sValueHidden === $sValue
         $sValueHidden = '';
-        if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname])) {
-            $dispVal = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname];
+        if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname])) {
+            $dispVal = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname];
             if ($aQuestionAttributes['other_numbers_only'] == 1) {
                 $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
             }
@@ -1548,14 +1547,14 @@ function do_multiplechoice_withcomments($ia)
         $sSeparator = '.';
     }
 
-    if (trim((string) $aQuestionAttributes['other_replace_text'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $othertext = $aQuestionAttributes['other_replace_text'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']];
+    if (trim((string) $aQuestionAttributes['other_replace_text'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $othertext = $aQuestionAttributes['other_replace_text'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']];
     } else {
         $othertext = gT('Other:');
     }
 
     $aQuestion = Question::model()->findByPk($ia[0]);
-    $sSurveyLanguage = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
+    $sSurveyLanguage = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang'];
     // Get questions and answers by defined order
     if ($aQuestionAttributes['random_order'] == 1) {
         $sOrder = dbRandom();
@@ -1622,20 +1621,20 @@ function do_multiplechoice_withcomments($ia)
 
         /* If the question has already been ticked, check the checkbox */
         $checked = '';
-        if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname])) {
-            if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == 'Y') {
+        if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname])) {
+            if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'Y') {
                 $checked = CHECKED;
             }
         }
 
-        $javavalue = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] ?? '';
+        $javavalue = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] ?? '';
 
         $fn++;
         $fn++;
         $inputnames[] = $myfname;
         $inputnames[] = $myfname2;
 
-        $inputCOmmentValue = htmlspecialchars((string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname2], ENT_QUOTES);
+        $inputCOmmentValue = htmlspecialchars((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname2], ENT_QUOTES);
         $sRows .= doRender('/survey/questions/answer/multiplechoice_with_comments/rows/answer_row', array(
             'kpclass'                       => $kpclass,
             'title'                         => '',
@@ -1663,16 +1662,16 @@ function do_multiplechoice_withcomments($ia)
         $myfname2 = $myfname . 'comment';
         $anscount = $anscount + 2;
         // SPAN LABEL OPTION //////////////////////////
-        if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) {
-            $dispVal = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname];
+        if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) {
+            $dispVal = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname];
             if ($aQuestionAttributes['other_numbers_only'] == 1) {
                 $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
             }
             $value = htmlspecialchars((string) $dispVal, ENT_QUOTES);
         }
 
-        if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname2])) {
-            $inputCOmmentValue = htmlspecialchars((string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname2], ENT_QUOTES);
+        if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname2])) {
+            $inputCOmmentValue = htmlspecialchars((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname2], ENT_QUOTES);
         }
 
         // TODO: $value is not defined for some execution paths.
@@ -1734,16 +1733,16 @@ function do_file_upload($ia)
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $coreClass = "ls-answers upload-item";
     // Fetch question attributes
-    $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['fieldname'] = $ia[1];
+    $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['fieldname'] = $ia[1];
     $bPreview = Yii::app()->request->getParam('action') == "previewgroup" || Yii::app()->request->getParam('action') == "previewquestion" || $thissurvey['active'] != "Y";
     if ($bPreview) {
-        $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['preview'] = 1;
+        $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['preview'] = 1;
         $questgrppreview = 1; // Preview is launched from Question or group level
     } elseif ($thissurvey['active'] != "Y") {
-        $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['preview'] = 1;
+        $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['preview'] = 1;
         $questgrppreview = 0;
     } else {
-        $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['preview'] = 0;
+        $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['preview'] = 0;
         $questgrppreview = 0;
     }
     $scriptloc = Yii::app()->getController()->createUrl(
@@ -1763,8 +1762,8 @@ function do_file_upload($ia)
     Yii::app()->getClientScript()->registerPackage('question-file-upload');
     // Modal dialog
     $filecountvalue = '0';
-    if (array_key_exists($ia[1] . "_filecount", $_SESSION['survey_' . Yii::app()->getConfig('surveyID')])) {
-        $tempval = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1] . "_filecount"];
+    if (array_key_exists($ia[1] . "_filecount", $_SESSION['responses_' . Yii::app()->getConfig('surveyID')])) {
+        $tempval = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1] . "_filecount"];
         if (is_numeric($tempval)) {
             $filecountvalue = $tempval;
         }
@@ -1777,7 +1776,7 @@ function do_file_upload($ia)
 
     $fileuploadData = array(
         'fileid' => $ia[1],
-        'value' => $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]],
+        'value' => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]],
         'filecountvalue' => $filecountvalue,
         'coreClass' => $coreClass,
         'maxFiles' =>  $aQuestionAttributes['max_num_of_files'],
@@ -1832,27 +1831,27 @@ function do_multipleshorttext($ia)
     list($sLabelWidth, $sInputContainerWidth, $defaultWidth) = getLabelInputWidth($aQuestionAttributes['label_input_columns'], $aQuestionAttributes['text_input_columns']);
 
 
-    if (trim((string) $aQuestionAttributes['prefix'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $prefix      = $aQuestionAttributes['prefix'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']];
+    if (trim((string) $aQuestionAttributes['prefix'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $prefix      = $aQuestionAttributes['prefix'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .= " withprefix";
     } else {
         $prefix = '';
     }
 
-    if (trim((string) $aQuestionAttributes['suffix'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $suffix      = $aQuestionAttributes['suffix'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']];
+    if (trim((string) $aQuestionAttributes['suffix'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $suffix      = $aQuestionAttributes['suffix'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .= " withsuffix";
     } else {
         $suffix = '';
     }
-    if (trim((string) $aQuestionAttributes['placeholder'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']];
+    if (trim((string) $aQuestionAttributes['placeholder'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']];
     } else {
         $placeholder = '';
     }
     $kpclass = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
 
-    $sSurveyLanguage = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
+    $sSurveyLanguage = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang'];
     // Get questions and answers by defined order
     if ($aQuestionAttributes['random_order'] == 1) {
         $sOrder = dbRandom();
@@ -1872,8 +1871,8 @@ function do_multipleshorttext($ia)
             $sSubquestionText = ($aSubquestion->questionl10ns[$sSurveyLanguage]->question == "") ? "&nbsp;" : $aSubquestion->questionl10ns[$sSurveyLanguage]->question;
 
             // color code missing mandatory questions red
-            if (($_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['prevstep'])) {
-                if (($ia[6] == 'Y' || $ia[6] == 'S') && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] === '') {
+            if (($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['prevstep'])) {
+                if (($ia[6] == 'Y' || $ia[6] == 'S') && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] === '') {
                     $alert = true;
                 }
             }
@@ -1881,8 +1880,8 @@ function do_multipleshorttext($ia)
             $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
             $dispVal       = '';
 
-            if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname])) {
-                $dispVal = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname];
+            if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname])) {
+                $dispVal = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname];
                 if ($aQuestionAttributes['numbers_only'] == 1) {
                     $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
                 }
@@ -1956,15 +1955,15 @@ function do_numerical($ia)
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $coreClass = "ls-answers answer-item text-item numeric-item";
 
-    if (trim((string) $aQuestionAttributes['prefix'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $prefix      = $aQuestionAttributes['prefix'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']];
+    if (trim((string) $aQuestionAttributes['prefix'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $prefix      = $aQuestionAttributes['prefix'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .= " withprefix";
     } else {
         $prefix = '';
     }
 
-    if (trim((string) $aQuestionAttributes['suffix'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $suffix      = $aQuestionAttributes['suffix'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']];
+    if (trim((string) $aQuestionAttributes['suffix'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $suffix      = $aQuestionAttributes['suffix'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .= " withsuffix";
     } else {
         $suffix = '';
@@ -1996,13 +1995,13 @@ function do_numerical($ia)
     } else {
         $integeronly = 0;
     }
-    if (trim((string) $aQuestionAttributes['placeholder'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']];
+    if (trim((string) $aQuestionAttributes['placeholder'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']];
     } else {
         $placeholder = '';
     }
 
-    $fValue     = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]];
+    $fValue     = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]];
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];
 
@@ -2061,10 +2060,10 @@ function do_shortfreetext($ia)
         $sSeparator             = $sSeparator['separator'];
         $extraclass            .= " numberonly";
         $coreClass             .= " numeric-item";
-        $numberonly             = true; 
+        $numberonly             = true;
     } else {
         $sSeparator = '';
-        $numberonly             = false; 
+        $numberonly             = false;
     }
     if (intval(trim((string) $aQuestionAttributes['maximum_chars'])) > 0) {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
@@ -2087,20 +2086,20 @@ function do_shortfreetext($ia)
     } else {
         $inputsize = null;
     }
-    if (trim((string) $aQuestionAttributes['prefix'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $prefix      = $aQuestionAttributes['prefix'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']];
+    if (trim((string) $aQuestionAttributes['prefix'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $prefix      = $aQuestionAttributes['prefix'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .= " withprefix";
     } else {
         $prefix = '';
     }
-    if (trim((string) $aQuestionAttributes['suffix'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $suffix      = $aQuestionAttributes['suffix'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']];
+    if (trim((string) $aQuestionAttributes['suffix'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $suffix      = $aQuestionAttributes['suffix'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .= " withsuffix";
     } else {
         $suffix = '';
     }
-    if (trim((string) $aQuestionAttributes['placeholder'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']];
+    if (trim((string) $aQuestionAttributes['placeholder'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']];
     } else {
         $placeholder = '';
     }
@@ -2120,8 +2119,8 @@ function do_shortfreetext($ia)
 
         $dispVal = "";
 
-        if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]]) {
-            $dispVal = str_replace("\\", "", (string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]]);
+        if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]]) {
+            $dispVal = str_replace("\\", "", (string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]]);
 
             if ($aQuestionAttributes['numbers_only'] == 1) {
                 $dispVal = str_replace('.', $sSeparator, $dispVal);
@@ -2148,7 +2147,7 @@ function do_shortfreetext($ia)
             ), true);
     } elseif ((int) ($aQuestionAttributes['location_mapservice']) == 1) {
         $coreClass       = "ls-answers map-item geoloc-item";
-        $currentLocation = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]];
+        $currentLocation = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]];
         $currentLatLong  = null;
         // Get the latitude/longtitude for the point that needs to be displayed by default
         if (strlen((string) $currentLocation) > 2 && strpos((string) $currentLocation, ";")) { // Quick check if current location is OK
@@ -2211,7 +2210,7 @@ function do_shortfreetext($ia)
             'name'                   => $ia[1],
             'qid'                    => $ia[0],
             'basename'               => $ia[1],
-            'value'                  => $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]],
+            'value'                  => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]],
             'kpclass'                => $kpclass,
             'currentLocation'        => $currentLocation,
             'strBuild'               => $strBuild,
@@ -2226,7 +2225,7 @@ function do_shortfreetext($ia)
             ), true);
     } elseif ((int) ($aQuestionAttributes['location_mapservice']) == 100) {
         $coreClass       = "ls-answers map-item geoloc-item";
-        $currentLocation = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]];
+        $currentLocation = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]];
         $currentCenter   = $currentLatLong = null;
         // Get the latitude/longtitude for the point that needs to be displayed by default
         if (strlen((string) $currentLocation) > 2 && strpos((string) $currentLocation, ";")) {
@@ -2275,7 +2274,7 @@ function do_shortfreetext($ia)
             'name' => $ia[1],
             'qid' => $ia[0],
             'basename'               => $ia[1],
-            'value' => $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]],
+            'value' => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]],
             'strBuild' => $strBuild,
             'location_mapservice' => $aQuestionAttributes['location_mapservice'],
             'location_mapzoom' => $aQuestionAttributes['location_mapzoom'],
@@ -2292,7 +2291,7 @@ function do_shortfreetext($ia)
         $answer = doRender('/survey/questions/answer/shortfreetext/location_mapservice/item_100', $itemDatas, true);
     } else {
         //no question attribute set, use common input text field
-        $dispVal = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]];
+        $dispVal = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]];
         if ($aQuestionAttributes['numbers_only'] == 1) {
             $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
         }
@@ -2388,13 +2387,13 @@ function do_longfreetext($ia)
     } else {
         $inputsize = null;
     }
-    if (trim((string) $aQuestionAttributes['placeholder'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']];
+    if (trim((string) $aQuestionAttributes['placeholder'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']];
     } else {
         $placeholder = '';
     }
 
-    $dispVal = ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]]) ? htmlspecialchars((string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]]) : '';
+    $dispVal = ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]]) ? htmlspecialchars((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]]) : '';
 
     $answer = doRender('/survey/questions/answer/longfreetext/answer', array(
         'extraclass'             => $extraclass,
@@ -2465,15 +2464,15 @@ function do_hugefreetext($ia)
     } else {
         $inputsize = null;
     }
-    if (trim((string) $aQuestionAttributes['placeholder'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']];
+    if (trim((string) $aQuestionAttributes['placeholder'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']];
     } else {
         $placeholder = '';
     }
 
     $dispVal = "";
-    if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]]) {
-        $dispVal = htmlspecialchars((string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]]);
+    if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]]) {
+        $dispVal = htmlspecialchars((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]]);
     }
 
     $itemDatas = array(
@@ -2510,18 +2509,18 @@ function do_hugefreetext($ia)
 function do_yesno($ia)
 {
     $yChecked = $nChecked = $naChecked = '';
-    if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == 'Y') {
+    if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == 'Y') {
         $yChecked = CHECKED;
     }
 
-    if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == 'N') {
+    if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == 'N') {
         $nChecked = CHECKED;
     }
 
     $noAnswer = false;
     if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         $noAnswer = true;
-        if (empty($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]])) {
+        if (empty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]])) {
             $naChecked = CHECKED;
         }
     }
@@ -2536,7 +2535,7 @@ function do_yesno($ia)
         'nChecked' => $nChecked,
         'naChecked' => $naChecked,
         'noAnswer' => $noAnswer,
-        'value' => $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]],
+        'value' => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]],
         'displayType' => $displayType,
     );
     if ($displayType === 0) {
@@ -2558,14 +2557,14 @@ function do_yesno($ia)
  */
 function do_gender($ia)
 {
-    $fChecked               = ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == 'F') ? 'CHECKED' : '';
-    $mChecked               = ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == 'M') ? 'CHECKED' : '';
+    $fChecked               = ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == 'F') ? 'CHECKED' : '';
+    $mChecked               = ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == 'M') ? 'CHECKED' : '';
     $naChecked              = '';
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $displayType            = (int) $aQuestionAttributes['display_type'];
     if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         $noAnswer = true;
-        if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == '') {
+        if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == '') {
             $naChecked = CHECKED;
         }
     }
@@ -2579,7 +2578,7 @@ function do_gender($ia)
         'mChecked'               => $mChecked,
         'naChecked'              => $naChecked,
         'noAnswer'               => $noAnswer,
-        'value'                  => $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]],
+        'value'                  => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]],
     );
 
     if ($displayType === 0) {
@@ -2652,7 +2651,7 @@ function do_array_5point($ia)
 
     $fn            = 1;
     $sColumns      = $sHeaders = $sRows = $answer_tds = '';
-    $sSurveyLanguage = $_SESSION['survey_' . App()->getConfig('surveyID')]['s_lang'];
+    $sSurveyLanguage = $_SESSION['responses_' . App()->getConfig('surveyID')]['s_lang'];
 
     // Check if any subquestion use suffix/prefix
     $right_exists  = false;
@@ -2734,10 +2733,10 @@ function do_array_5point($ia)
         $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
         // Value
-        $value = $_SESSION['survey_' . App()->getConfig('surveyID')][$myfname] ?? '';
+        $value = $_SESSION['responses_' . App()->getConfig('surveyID')][$myfname] ?? '';
 
         for ($i = 1; $i <= 5; $i++) {
-            $CHECKED = (isset($_SESSION['survey_' . App()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_' . App()->getConfig('surveyID')][$myfname] == $i) ? 'CHECKED' : '';
+            $CHECKED = (isset($_SESSION['responses_' . App()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . App()->getConfig('surveyID')][$myfname] == $i) ? 'CHECKED' : '';
             $answer_tds .= doRender('/survey/questions/answer/arrays/5point/rows/cells/answer_td_input', array(
                 'i' => $i,
                 'labelText' => (string) $i,
@@ -2770,7 +2769,7 @@ function do_array_5point($ia)
 
         // ==>tds
         if (($isNotYes && $isNotS) && $showNoAnswer) {
-            $CHECKED = (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
+            $CHECKED = (!isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
             $answer_tds .= doRender('/survey/questions/answer/arrays/5point/rows/cells/answer_td_input', array(
                 'i' => "",
                 'labelText' => gT('No answer'),
@@ -2907,7 +2906,7 @@ function do_array_10point($ia)
     $sRows = '';
     $inputnames = [];
     $iSurveyId = Question::model()->findByPk($ia[0])->sid;
-    $sSurveyLanguage = isset($_SESSION['survey_' . $iSurveyId]) ? $_SESSION['survey_' . $iSurveyId]['s_lang'] : Question::model()->findByPk($ia[0])->survey->language;
+    $sSurveyLanguage = isset($_SESSION['responses_' . $iSurveyId]) ? $_SESSION['responses_' . $iSurveyId]['s_lang'] : Question::model()->findByPk($ia[0])->survey->language;
     foreach ($aSubquestions as $j => $ansrow) {
         $myfname = $ia[1] . $ansrow['title'];
         $answertext = $ansrow->questionl10ns[$sSurveyLanguage]->question;
@@ -2919,11 +2918,11 @@ function do_array_10point($ia)
         $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
         // Value
-        $value = $_SESSION['survey_' . $iSurveyId][$myfname] ?? '';
+        $value = $_SESSION['responses_' . $iSurveyId][$myfname] ?? '';
 
         $answer_tds = '';
         for ($i = 1; $i <= 10; $i++) {
-            $CHECKED = (isset($_SESSION['survey_' . $iSurveyId][$myfname]) && $_SESSION['survey_' . $iSurveyId][$myfname] == $i) ? 'CHECKED' : '';
+            $CHECKED = (isset($_SESSION['responses_' . $iSurveyId][$myfname]) && $_SESSION['responses_' . $iSurveyId][$myfname] == $i) ? 'CHECKED' : '';
 
             $answer_tds .= doRender(
                 '/survey/questions/answer/arrays/10point/rows/cells/answer_td_input',
@@ -2941,7 +2940,7 @@ function do_array_10point($ia)
         }
 
         if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1) {
-            $CHECKED = (!isset($_SESSION['survey_' . $iSurveyId][$myfname]) || $_SESSION['survey_' . $iSurveyId][$myfname] == '') ? 'CHECKED' : '';
+            $CHECKED = (!isset($_SESSION['responses_' . $iSurveyId][$myfname]) || $_SESSION['responses_' . $iSurveyId][$myfname] == '') ? 'CHECKED' : '';
             $answer_tds .= doRender(
                 '/survey/questions/answer/arrays/10point/rows/cells/answer_td_input',
                 array(
@@ -3045,7 +3044,7 @@ function do_array_yesnouncertain($ia)
     );
 
     $inputnames = [];
-    $sSurveyLanguage = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
+    $sSurveyLanguage = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang'];
 
     if ($anscount > 0) {
         $sRows = '';
@@ -3058,11 +3057,11 @@ function do_array_yesnouncertain($ia)
 
             // Get array_filter stuff
             $no_answer = (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) ? true : false;
-            $value     = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] ?? '';
-            $Ychecked  = (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == 'Y') ? 'CHECKED' : '';
-            $Uchecked  = (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == 'U') ? 'CHECKED' : '';
-            $Nchecked  = (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == 'N') ? 'CHECKED' : '';
-            $NAchecked = (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
+            $value     = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] ?? '';
+            $Ychecked  = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'Y') ? 'CHECKED' : '';
+            $Uchecked  = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'U') ? 'CHECKED' : '';
+            $Nchecked  = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'N') ? 'CHECKED' : '';
+            $NAchecked = (!isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
 
             $sRows .= doRender('/survey/questions/answer/arrays/yesnouncertain/rows/answer_row', array(
                 'basename'               => $ia[1],
@@ -3120,7 +3119,7 @@ function do_array_increasesamedecrease($ia)
 
     $cellwidth = round(((100 - $answerwidth) / $cellwidth), 1); // convert number of columns to percentage of table width
 
-    $sSurveyLanguage = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
+    $sSurveyLanguage = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang'];
     // Get questions and answers by defined order
     if ($aQuestionAttributes['random_order'] == 1) {
         $sOrder = dbRandom();
@@ -3161,11 +3160,11 @@ function do_array_increasesamedecrease($ia)
         $myfname        = $ia[1] . $ansrow['title'];
         $answertext     = $ansrow->questionl10ns[$sSurveyLanguage]->question;
         $error          = (($ia[6] == 'Y' || $ia[6] == 'S') && in_array($myfname, $aMandatoryViolationSubQ)) ? true : false; /* Check the sub Q mandatory violation */
-        $value          = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] ?? '';
-        $Ichecked       = (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == 'I') ? 'CHECKED' : '';
-        $Schecked       = (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == 'S') ? 'CHECKED' : '';
-        $Dchecked       = (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == 'D') ? 'CHECKED' : '';
-        $NAchecked      = (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
+        $value          = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] ?? '';
+        $Ichecked       = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'I') ? 'CHECKED' : '';
+        $Schecked       = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'S') ? 'CHECKED' : '';
+        $Dchecked       = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'D') ? 'CHECKED' : '';
+        $NAchecked      = (!isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
         $no_answer      = (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) ? true : false;
 
         $sRows .= doRender('/survey/questions/answer/arrays/increasesamedecrease/rows/answer_row', array(
@@ -3207,7 +3206,7 @@ function do_array_increasesamedecrease($ia)
  */
 function do_array($ia)
 {
-    $sSurveyLanguage = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
+    $sSurveyLanguage = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang'];
     $aLastMoveResult         = LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && ($ia[6] == 'Y' || $ia[6] == 'S')) ? explode("|", (string) $aLastMoveResult['unansweredSQs']) : [];
     $repeatheadings          = Yii::app()->getConfig("repeatheadings");
@@ -3336,13 +3335,13 @@ function do_array($ia)
             }
 
             $error          = (in_array($myfname, $aMandatoryViolationSubQ)) ? true : false; /* Check the mandatory sub Q violation */
-            $value          = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] ?? '';
+            $value          = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] ?? '';
             $thiskey        = 0;
             $answer_tds     = '';
             $fn++;
 
             foreach ($labelcode as $ld) {
-                $CHECKED     = (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == $ld) ? 'CHECKED' : '';
+                $CHECKED     = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == $ld) ? 'CHECKED' : '';
                 $answer_tds .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/answer_td', array(
                     'myfname' => $myfname,
                     'ld' => $ld,
@@ -3356,7 +3355,7 @@ function do_array($ia)
             // NB: $ia[6] = mandatory
             $no_answer_td = '';
             if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
-                $CHECKED = (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
+                $CHECKED = (!isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
                 $no_answer_td .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/answer_td', array(
                     'myfname'                => $myfname,
                     'ld'                     => '',
@@ -3469,7 +3468,7 @@ function do_array($ia)
             $answertext     = $ansrow->questionl10ns[$sSurveyLanguage]['question'];
             $answertext     = (strpos((string) $answertext, '|') !== false) ? substr((string) $answertext, 0, strpos((string) $answertext, '|')) : $answertext;
             $error          = (in_array($myfname, $aMandatoryViolationSubQ)) ? true : false; /* Check the mandatory sub Q violation */
-            $value          = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] ?? '';
+            $value          = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] ?? '';
 
             if ($right_exists && (strpos((string) $ansrow->questionl10ns[$sSurveyLanguage]['question'], '|') !== false)) {
                 $answertextright = substr((string) $ansrow->questionl10ns[$sSurveyLanguage]['question'], strpos((string) $ansrow['question'], '|') + 1);
@@ -3481,7 +3480,7 @@ function do_array($ia)
 
             /* Dropdown representation : first choice (activated) must be Please choose... if there are no actual answer */
             $showNoAnswer = ($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1; // Tag if we must show no-answer
-            if (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] === '') {
+            if (!isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] === '') {
                 $options[] = array(
                     'text' => gT('Please choose...'),
                     'value' => '',
@@ -3493,7 +3492,7 @@ function do_array($ia)
             foreach ($labels as $i => $aAnswer) {
                 $options[] = array(
                     'value' => $aAnswer['code'],
-                    'selected' => ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == $aAnswer['code']) ? SELECTED : '',
+                    'selected' => ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == $aAnswer['code']) ? SELECTED : '',
                     'text' => $aAnswer['answer']
                 );
             }
@@ -3502,7 +3501,7 @@ function do_array($ia)
                 $options[] = array(
                     'text' => gT('No answer'),
                     'value' => '',
-                    'selected' => ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] === '') ?  SELECTED : '',
+                    'selected' => ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] === '') ?  SELECTED : '',
                 );
             }
             unset($showNoAnswer);
@@ -3593,8 +3592,8 @@ function do_array_texts($ia)
     } else {
         $inputsize = null;
     }
-    if (trim((string) $aQuestionAttributes['placeholder'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']];
+    if (trim((string) $aQuestionAttributes['placeholder'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']];
     } else {
         $placeholder = '';
     }
@@ -3737,7 +3736,7 @@ function do_array_texts($ia)
     $columnswidth = 100 - ($answerwidth);
 
     $aSubquestionsX = Question::model()->findAll(array('order' => 'question_order', 'condition' => 'parent_qid=:parent_qid AND scale_id=1', 'params' => array(':parent_qid' => $ia[0])));
-    $sSurveyLanguage = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
+    $sSurveyLanguage = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang'];
     $labelans     = [];
 
     foreach ($aSubquestionsX as $oSubquestion) {
@@ -3763,7 +3762,7 @@ function do_array_texts($ia)
         }
 
 
-        $sSurveyLanguage = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
+        $sSurveyLanguage = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang'];
         // Get questions and answers by defined order
         if ($aQuestionAttributes['random_order'] == 1) {
             $sOrder = dbRandom();
@@ -3811,7 +3810,7 @@ function do_array_texts($ia)
                     $error = true;
                 }
             }
-            $value = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] ?? '';
+            $value = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] ?? '';
 
             if (strpos((string) $answertext, '|') !== false) {
                 $answertext = (string) substr((string) $answertext, 0, strpos((string) $answertext, '|'));
@@ -3821,7 +3820,7 @@ function do_array_texts($ia)
 
             foreach ($labelans as $title => $label) {
                 $myfname2 = $myfname . "_$title";
-                $myfname2value = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname2] ?? "";
+                $myfname2value = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname2] ?? "";
 
                 if ($aQuestionAttributes['numbers_only'] == 1) {
                     $myfname2value = str_replace('.', $sSeparator, (string) $myfname2value);
@@ -4015,7 +4014,7 @@ function do_array_multiflexi($ia)
     } else {
         $layout = "dropdown";
         $answertypeclass     = " ls-dropdown-item";
-        
+
         $coreClass          .= " dropdown-array";
         $coreRowClass .= " dropdown-list";
         $caption            .= gT("Please select an answer for each combination.");
@@ -4058,7 +4057,7 @@ function do_array_multiflexi($ia)
 
     $columnswidth   = 100 - ($answerwidth);
     $aQuestions = Question::model()->findAll(array('order' => 'question_order', 'condition' => 'parent_qid=:parent_qid AND scale_id=1', 'params' => array(':parent_qid' => $ia[0])));
-    $sSurveyLanguage = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
+    $sSurveyLanguage = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang'];
     $labelans       = [];
     $labelcode      = [];
 
@@ -4081,7 +4080,7 @@ function do_array_multiflexi($ia)
             $right_exists = false;
         }
 
-        $sSurveyLanguage = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
+        $sSurveyLanguage = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang'];
         // Get questions and answers by defined order
         if ($aQuestionAttributes['random_order'] == 1) {
             $sOrder = dbRandom();
@@ -4094,7 +4093,7 @@ function do_array_multiflexi($ia)
         if (trim($aQuestionAttributes['parent_order'] != '')) {
             $iParentQID = (int) $aQuestionAttributes['parent_order'];
             $aResult    = [];
-            $sessionao  = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['answer_order'] ?? [];
+            $sessionao  = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['answer_order'] ?? [];
 
             if (isset($sessionao[$iParentQID])) {
                 foreach ($sessionao[$iParentQID] as $aOrigRow) {
@@ -4167,18 +4166,18 @@ function do_array_multiflexi($ia)
                 $answertext = (string) substr((string) $answertext, 0, strpos((string) $answertext, '|'));
             }
 
-            $row_value = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] ?? '';
+            $row_value = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] ?? '';
 
             $thiskey            = 0;
             $answer_tds         = '';
 
             foreach ($labelcode as $i => $ld) {
                 $myfname2   = $myfname . "_$ld";
-                $value      = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname2] ?? '';
+                $value      = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname2] ?? '';
 
                 // Possibly replace '.' with ','
                 $surveyId = Yii::app()->getConfig('surveyID');
-                $surveyLabel = 'survey_' . $surveyId;
+                $surveyLabel = 'responses_' . $surveyId;
                 $fieldnameIsNumeric = isset($_SESSION[$surveyLabel][$myfname2])
                 && is_numeric($_SESSION[$surveyLabel][$myfname2]);
                 if ($fieldnameIsNumeric) {
@@ -4213,7 +4212,7 @@ function do_array_multiflexi($ia)
                     $inputnames[] = $myfname2;
                     $thiskey++;
                 } else {
-                    if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname2] == '1') {
+                    if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname2] == '1') {
                         $myvalue    = '1';
                         $setmyvalue = CHECKED;
                     } else {
@@ -4313,7 +4312,7 @@ function do_arraycolumns($ia)
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
-    $sSurveyLanguage = $_SESSION['survey_' . App()->getConfig('surveyID')]['s_lang'];
+    $sSurveyLanguage = $_SESSION['responses_' . App()->getConfig('surveyID')]['s_lang'];
     $aAnswers = Answer::model()->findAll(array('order' => 'sortorder, code', 'condition' => 'qid=:qid AND scale_id=0', 'params' => array(':qid' => $ia[0])));
 
     $labelans = [];
@@ -4392,7 +4391,6 @@ function do_arraycolumns($ia)
 
             // TODO: What is this? What is happening here?
             foreach ($labels as $labelIdx => $ansrow) {
-
                 // create the html ids for the table rows, which are
                 // the answer options for this question type
                 $aData['labels'][$labelIdx]['myfname'] = $ia[1] . $ansrow['code'];
@@ -4402,17 +4400,17 @@ function do_arraycolumns($ia)
                     $myfname = $ia[1] . $ld;
                     $aData['aQuestions'][$j]['myfname'] = $myfname;
                     if (
-                        isset($_SESSION['survey_' . App()->getConfig('surveyID')][$myfname]) &&
-                        $_SESSION['survey_' . App()->getConfig('surveyID')][$myfname] === $ansrow['code']
+                        isset($_SESSION['responses_' . App()->getConfig('surveyID')][$myfname]) &&
+                        $_SESSION['responses_' . App()->getConfig('surveyID')][$myfname] === $ansrow['code']
                     ) {
                         $aData['checked'][$ansrow['code']][$ld] = CHECKED;
                     } elseif (
-                        !isset($_SESSION['survey_' . App()->getConfig('surveyID')][$myfname]) &&
+                        !isset($_SESSION['responses_' . App()->getConfig('surveyID')][$myfname]) &&
                         $ansrow['code'] == ''
                     ) {
                         $aData['checked'][$ansrow['code']][$ld] = CHECKED;
                     // Humm.. (by lemeur), not sure this section can be reached
-                        // because I think $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] is always set (by save.php ??) !
+                        // because I think $_SESSION['responses_'.Yii::app()->getConfig('surveyID')][$myfname] is always set (by save.php ??) !
                         // should remove the !isset part I think !!
                     } else {
                         $aData['checked'][$ansrow['code']][$ld] = "";
@@ -4424,8 +4422,8 @@ function do_arraycolumns($ia)
             foreach ($anscode as $j => $ld) {
                 $myfname = $ia[1] . $ld;
 
-                if (isset($_SESSION['survey_' . App()->getConfig('surveyID')][$myfname])) {
-                    $aData['aQuestions'][$j]['myfname_value'] = $_SESSION['survey_' . App()->getConfig('surveyID')][$myfname];
+                if (isset($_SESSION['responses_' . App()->getConfig('surveyID')][$myfname])) {
+                    $aData['aQuestions'][$j]['myfname_value'] = $_SESSION['responses_' . App()->getConfig('surveyID')][$myfname];
                 } else {
                     $aData['aQuestions'][$j]['myfname_value'] = '';
                 }
@@ -4472,7 +4470,7 @@ function do_array_dual($ia)
     * Get Question Attributes
     */
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $sLanguage = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
+    $sLanguage = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang'];
 
     // Get questions and answers by defined order
     if ($aQuestionAttributes['random_order'] == 1) {
@@ -4509,8 +4507,8 @@ function do_array_dual($ia)
         $minrepeatheadings = 0;
     }
 
-    $leftheader     = (trim((string) $aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') ? $aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']] : '';
-    $rightheader    = (trim((string) $aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') ? $aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']] : '';
+    $leftheader     = (trim((string) $aQuestionAttributes['dualscale_headerA'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') ? $aQuestionAttributes['dualscale_headerA'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']] : '';
+    $rightheader    = (trim((string) $aQuestionAttributes['dualscale_headerB'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') ? $aQuestionAttributes['dualscale_headerB'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']] : '';
     if (ctype_digit(trim((string) $aQuestionAttributes['answer_width']))) {
         $answerwidth = trim((string) $aQuestionAttributes['answer_width']);
         $defaultWidth = false;
@@ -4672,17 +4670,17 @@ function do_array_dual($ia)
                 $aData['aSubQuestions'][$i]['sDisplayStyle'] = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
                 array_push($inputnames, $myfname0);
 
-                if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname0])) {
-                    $aData['aSubQuestions'][$i]['sessionfname0'] = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname0];
+                if (isset($_SESSION['response_' . Yii::app()->getConfig('surveyID')][$myfname0])) {
+                    $aData['aSubQuestions'][$i]['sessionfname0'] = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname0];
                 } else {
                     $aData['aSubQuestions'][$i]['sessionfname0'] = '';
                 }
 
                 if (count($labelans1) > 0) {
                     // if second label set is used
-                    if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname1])) {
-                        //$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
-                        $aData['aSubQuestions'][$i]['sessionfname1'] = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname1];
+                    if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname1])) {
+                        //$answer .= $_SESSION['responses_'.Yii::app()->getConfig('surveyID')][$myfname1];
+                        $aData['aSubQuestions'][$i]['sessionfname1'] = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname1];
                     } else {
                         $aData['aSubQuestions'][$i]['sessionfname1'] = '';
                     }
@@ -4690,7 +4688,7 @@ function do_array_dual($ia)
 
                 foreach ($labelcode0 as $j => $ld) {
                     // First label set
-                    if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname0]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname0] == $ld) {
+                    if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname0]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname0] == $ld) {
                         $aData['labelcode0_checked'][$aQuestionRow['title']][$ld] = CHECKED;
                     } else {
                         $aData['labelcode0_checked'][$aQuestionRow['title']][$ld] = "";
@@ -4701,7 +4699,7 @@ function do_array_dual($ia)
                     // if second label set is used
                     if ($shownoanswer) {
                         // No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
-                        if (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname0] == "") {
+                        if (!isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname0] == "") {
                             $answer .= CHECKED;
                             $aData['myfname0_notset'] = CHECKED;
                         } else {
@@ -4713,7 +4711,7 @@ function do_array_dual($ia)
 
                     foreach ($labelcode1 as $j => $ld) {
                         // second label set
-                        if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname1] == $ld) {
+                        if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname1] == $ld) {
                             $aData['labelcode1_checked'][$aQuestionRow['title']][$ld] = CHECKED;
                         } else {
                             $aData['labelcode1_checked'][$aQuestionRow['title']][$ld] = "";
@@ -4723,14 +4721,14 @@ function do_array_dual($ia)
                 $aData['answertextright'] = $answertextright;
                 if ($shownoanswer) {
                     if (count($labelans1) > 0) {
-                        if (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname1]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname1] == "") {
+                        if (!isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname1]) || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname1] == "") {
                             $answer .= CHECKED;
                             $aData['myfname1_notset'] = CHECKED;
                         } else {
                             $aData['myfname1_notset'] = "";
                         }
                     } else {
-                        if (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname0] == "") {
+                        if (!isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname0] == "") {
                             $answer .= CHECKED;
                             $aData['myfname0_notset'] = CHECKED;
                         } else {
@@ -4755,8 +4753,8 @@ function do_array_dual($ia)
             $aData['basename'] = $ia[1];
 
             // Get attributes for Headers and Prefix/Suffix
-            if (trim((string) $aQuestionAttributes['dropdown_prepostfix'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-                list($ddprefix, $ddsuffix) = explode("|", (string) $aQuestionAttributes['dropdown_prepostfix'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]);
+            if (trim((string) $aQuestionAttributes['dropdown_prepostfix'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+                list($ddprefix, $ddsuffix) = explode("|", (string) $aQuestionAttributes['dropdown_prepostfix'][$_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang']]);
             } else {
                 $ddprefix = null;
                 $ddsuffix = null;
@@ -4794,8 +4792,8 @@ function do_array_dual($ia)
                 $myfid0 = $ia[1] . $aQuestionRow['title'] . "_0";
                 $myfname1 = $ia[1] . $aQuestionRow['title'] . "#1";
                 $myfid1 = $ia[1] . $aQuestionRow['title'] . "_1";
-                $sActualAnswer0 = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname0] ?? "";
-                $sActualAnswer1 = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname1] ?? "";
+                $sActualAnswer0 = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname0] ?? "";
+                $sActualAnswer1 = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname1] ?? "";
 
                 $aData['aSubQuestions'][$i]['myfname'] = $myfname;
                 $aData['aSubQuestions'][$i]['myfname0'] = $myfname0;

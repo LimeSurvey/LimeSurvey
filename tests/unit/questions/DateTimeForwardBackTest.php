@@ -2,14 +2,12 @@
 
 namespace ls\tests;
 
-
 /**
  * @since 2017-06-13
  * @group dateforward
  */
 class DateTimeForwardBackTest extends TestBaseClass
 {
-
     /**
      * Import survey in tests/surveys/.
      */
@@ -20,7 +18,7 @@ class DateTimeForwardBackTest extends TestBaseClass
         $_POST = [];
         $_SESSION = [];
 
-        $surveyFile = self::$surveysFolder.'/limesurvey_survey_917744.lss';
+        $surveyFile = self::$surveysFolder . '/limesurvey_survey_917744.lss';
         self::importSurvey($surveyFile);
     }
 
@@ -66,8 +64,8 @@ class DateTimeForwardBackTest extends TestBaseClass
         $_POST['thisstep'] = 1;
         $_POST['sid'] = self::$surveyId;
         $_POST[$sgqa] = '10:00';
-        $_SESSION['survey_' . self::$surveyId]['maxstep'] = 2;
-        $_SESSION['survey_' . self::$surveyId]['step'] = 1;
+        $_SESSION['responses_' . self::$surveyId]['maxstep'] = 2;
+        $_SESSION['responses_' . self::$surveyId]['step'] = 1;
 
         $moveResult = \LimeExpressionManager::NavigateForwards();
         $result = \LimeExpressionManager::ProcessCurrentResponses();
@@ -85,7 +83,7 @@ class DateTimeForwardBackTest extends TestBaseClass
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
-            $_SESSION['survey_' . self::$surveyId]['fieldarray'][0]
+            $_SESSION['responses_' . self::$surveyId]['fieldarray'][0]
         );
         $this->assertEquals(false, strpos($qanda[0][1], "value=\"11:00\""), 'No 11:00 value from qanda');
         $this->assertNotEquals(false, strpos($qanda[0][1], "value=\"10:00\""), 'One 10:00 value from qanda');

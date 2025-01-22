@@ -202,7 +202,7 @@ class LimeExpressionManager
      * 'savetimings' => // "Y" if should save survey timings
      * 'startlanguage' => // the starting language -- e.g. 'en'
      * 'surveyls_dateformat' => // the index of the language specific date format -- e.g. 1
-     * 'tablename' => // the name of the table storing the survey data, if active -- e.g. lime_survey_38612
+     * 'tablename' => // the name of the table storing the survey data, if active -- e.g. lime_responses_38612
      * 'target' => // the path for uploading files -- e.g. '/temp/files/'
      * 'timeadjust' => // the time offset -- e.g. 0
      * 'tempdir' => // the temporary directory for uploading files -- e.g. '/temp/'
@@ -499,7 +499,7 @@ class LimeExpressionManager
     private $maxGroupSeq;
     /**
      * the maximum Question reached sequencly ordered, used to show error to the user if we stop before this step with indexed survey.
-     * In question by question mode : $maxQuestionSeq==$_SESSION['survey_'.surveyid]['maxstep'], use it ?
+     * In question by question mode : $maxQuestionSeq==$_SESSION['responses_'.surveyid]['maxstep'], use it ?
      * @var integer
      */
     private $maxQuestionSeq = -1;
@@ -758,9 +758,9 @@ class LimeExpressionManager
         $_SESSION['LEMforceRefresh'] = true;// For Expression manager string
         /* Bug #09589 : update a survey don't reset actual test => Force reloading of survey */
         $iSessionSurveyId = self::getLEMsurveyId();
-        if ($aSessionSurvey = Yii::app()->session["survey_{$iSessionSurveyId}"]) {
+        if ($aSessionSurvey = Yii::app()->session["responses_{$iSessionSurveyId}"]) {
             $aSessionSurvey['LEMtokenResume'] = true;
-            Yii::app()->session["survey_{$iSessionSurveyId}"] = $aSessionSurvey;
+            Yii::app()->session["responses_{$iSessionSurveyId}"] = $aSessionSurvey;
         }
     }
 
@@ -3286,7 +3286,7 @@ class LimeExpressionManager
         // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
         $fieldmap = createFieldMap($survey, $style = 'full', $forceRefresh, false, $_SESSION['LEMlang']);
         $this->sid = $surveyid;
-        $this->sessid = 'survey_' . $this->sid;
+        $this->sessid = 'responses_' . $this->sid;
         $this->runtimeTimings[] = [__METHOD__ . '.createFieldMap', (microtime(true) - $now)];
         //      LimeExpressionManager::ShowStackTrace();
 
@@ -4571,7 +4571,7 @@ class LimeExpressionManager
         $survey = Survey::model()->findByPk($surveyid);
         $LEM =& LimeExpressionManager::singleton();
         $LEM->sid = $survey->sid;
-        $LEM->sessid = 'survey_' . $survey->sid;
+        $LEM->sessid = 'responses_' . $survey->sid;
         $LEM->em->StartProcessingGroup($survey->sid);
         if (is_null($aSurveyOptions)) {
             $aSurveyOptions = [];
@@ -8455,11 +8455,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             ++$_order;
         }
         // Needed for Randomization group.
-        $groupRemap = (!$this->sPreviewMode && !empty($_SESSION['survey_' . $surveyid]['groupReMap']) && !empty($_SESSION['survey_' . $surveyid]['grouplist']));
+        $groupRemap = (!$this->sPreviewMode && !empty($_SESSION['responses_' . $surveyid]['groupReMap']) && !empty($_SESSION['responses_' . $surveyid]['grouplist']));
         if ($groupRemap) {
             $_order = 0;
             $qinfo = [];
-            foreach ($_SESSION['survey_' . $surveyid]['grouplist'] as $info) {
+            foreach ($_SESSION['responses_' . $surveyid]['grouplist'] as $info) {
                 $gid[$info['gid']]['group_order'] = $_order;
                 $qinfo[$_order] = $gid[$info['gid']];
                 ++$_order;

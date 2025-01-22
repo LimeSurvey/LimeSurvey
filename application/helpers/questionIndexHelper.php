@@ -25,7 +25,6 @@ use LimeExpressionManager;
 
 class questionIndexHelper
 {
-
     /**
      * Singleton
      * @var questionIndexHelper
@@ -123,7 +122,7 @@ class questionIndexHelper
         if (!$type) {
             return array();
         }
-        $sessionLem = Yii::app()->session["survey_{$this->iSurveyId}"];
+        $sessionLem = Yii::app()->session["responses_{$this->iSurveyId}"];
         if (empty($sessionLem['grouplist'])) {
             return array();
         }
@@ -169,7 +168,7 @@ class questionIndexHelper
      */
     private function getIndexItemsQuestions()
     {
-        $sessionLem = Yii::app()->session["survey_{$this->iSurveyId}"];
+        $sessionLem = Yii::app()->session["responses_{$this->iSurveyId}"];
         /* get field map : have more info*/
         /* get group list : for information about group ...*/
         $groupList = $sessionLem['grouplist'];

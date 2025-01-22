@@ -267,7 +267,7 @@ class LimesurveyApi
         if (empty($surveyId)) {
             return;
         }
-        $sessionSurvey = Yii::app()->session["survey_{$surveyId}"];
+        $sessionSurvey = Yii::app()->session["responses_{$surveyId}"];
         if (empty($sessionSurvey['srid'])) {
             return;
         }
