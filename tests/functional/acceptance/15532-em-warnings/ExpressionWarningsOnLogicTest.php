@@ -128,7 +128,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
                 'qid' => $questions['CheckOnRelevance']['qid'],
             ]
         );
-        try {
+        // try {
             self::$webDriver->get($url);
             sleep(1);
             /* Did we have thew warning alert */
@@ -136,8 +136,8 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             /* We found the count of warnings */
             $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning strong'));
             $strongAlert = $elementStrong->getText();
-            $this->assertEquals($strongAlert, "This question has at least 1 warning.", "Numbers of warning seems invalid, need one warning. Question ID: " . $questions['CheckOnRelevance']['qid']);
-        } catch (Exception $ex) {
+            $this->assertEquals($strongAlert, "This question has at least 1 warning.", "Numbers of warning seems invalid, need one warning: " . "/" . self::$surveyId . "/" . $questions['CheckOnRelevance']['gid'] . "/" . $questions['CheckOnRelevance']['qid']);
+        // } catch (Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
             file_put_contents($filename, $screenshot);
@@ -146,7 +146,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
                 'Url: ' . $url . PHP_EOL .
                 'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
             );
-        }
+        // }
     }
 
     /**
