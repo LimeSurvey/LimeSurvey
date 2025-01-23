@@ -417,7 +417,8 @@ class SurveyActivator
      */
     protected function createTimingsTable()
     {
-        if ($this->survey->isSaveTimings) {
+        $prow = $this->survey->find('sid = :sid', array(':sid' => $this->survey->sid));
+        if ($prow->savetimings == "Y") {
             $this->prepareTimingsTable();
             $sTableName = $this->survey->timingsTableName;
             try {
