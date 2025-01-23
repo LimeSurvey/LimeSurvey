@@ -140,7 +140,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             mkdir(self::$screenshotsFolder, 0777, true);
         }
         $screenshot = self::$webDriver->takeScreenshot();
-        $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
+        $filename = self::$screenshotsFolder.'/'.'test-001.png';
         file_put_contents($filename, $screenshot);
     }
 
