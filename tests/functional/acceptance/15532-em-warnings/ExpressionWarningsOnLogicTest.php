@@ -128,25 +128,20 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
                 'qid' => $questions['CheckOnRelevance']['qid'],
             ]
         );
-        // try {
-            self::$webDriver->get($url);
-            sleep(1);
-            /* Did we have thew warning alert */
-            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning'))->isDisplayed(), "Unable to find the alert");
-            /* We found the count of warnings */
-            $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning strong'));
-            $strongAlert = $elementStrong->getText();
-            $this->assertEquals($strongAlert, "This question has at least 1 warning.", "Numbers of warning seems invalid, need one warning: " . $url);
-        // } catch (Exception $ex) {
-            $screenshot = self::$webDriver->takeScreenshot();
-            $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
-            file_put_contents($filename, $screenshot);
-            $this->assertFalse(
-                true,
-                'Url: ' . $url . PHP_EOL .
-                'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
-            );
-        // }
+        self::$webDriver->get($url);
+        sleep(1);
+        /* Did we have thew warning alert */
+        $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning'))->isDisplayed(), "Unable to find the alert");
+        /* We found the count of warnings */
+        $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning strong'));
+        $strongAlert = $elementStrong->getText();
+        $this->assertEquals($strongAlert, "This question has at least 1 warning.", "Numbers of warning seems invalid, need one warning: " . $url);
+        if (!file_exists(self::$screenshotsFolder)) {
+            mkdir(self::$screenshotsFolder, 0777, true);
+        }
+        $screenshot = self::$webDriver->takeScreenshot();
+        $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
+        file_put_contents($filename, $screenshot);
     }
 
     /**
