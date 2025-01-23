@@ -135,12 +135,13 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
         /* We found the count of warnings */
         $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning strong'));
         $strongAlert = $elementStrong->getText();
-        $this->assertEquals($strongAlert, "This question has at least 1 warning.", "Numbers of warning seems invalid, need one warning: " . $url);
+        $this->assertEquals($strongAlert, "This question has at least 1 warning.", "Numbers of warning seems invalid, need one warning. Tested url is " . $url);
         if (!file_exists(self::$screenshotsFolder)) {
             mkdir(self::$screenshotsFolder, 0777, true);
         }
         $screenshot = self::$webDriver->takeScreenshot();
         $filename = self::$screenshotsFolder.'/'.'test-001.png';
+        echo "Screenshot saved in ". $filename. PHP_EOL;
         file_put_contents($filename, $screenshot);
     }
 
