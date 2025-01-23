@@ -89,7 +89,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         $checkconditionFunction = "checkconditions";
         /// Generate answer rows
         foreach ($this->aSubQuestions[0] as $oQuestion) {
-            $myfname = $this->sSGQA . $oQuestion->title;
+            $myfname = $this->sSGQA . "_S" . $oQuestion->qid;
             $this->inputnames[] = $myfname;
             ////
             // Insert row
@@ -123,7 +123,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         $sSeparator = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
         $oth_checkconditionFunction = ($this->getQuestionAttribute('other_numbers_only') == 1) ? "fixnum_checkconditions" : "checkconditions";
 
-        $myfname = $this->sSGQA . 'other';
+        $myfname = $this->sSGQA . '_Cother';
         $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], '');
         $this->inputnames[] = $myfname;
 

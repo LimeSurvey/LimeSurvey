@@ -111,8 +111,8 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
 
         $checkconditionFunction = "checkconditions";
         foreach ($this->aSubQuestions[0] as $oQuestion) {
-            $myfname = $this->sSGQA . $oQuestion->title;
-            $myfname2 = $myfname . "comment";
+            $myfname = $this->sSGQA . "_C" . $oQuestion->qid;
+            $myfname2 = $myfname . "_Ccomment";
             $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], '');
             $mSessionValue2 = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname2], '');
 
@@ -164,7 +164,7 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
 
         $sSeparator = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
 
-        $myfname = $this->sSGQA . 'other';
+        $myfname = $this->sSGQA . '_Cother';
         $myfname2 = $myfname . "comment";
 
         $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], '');
