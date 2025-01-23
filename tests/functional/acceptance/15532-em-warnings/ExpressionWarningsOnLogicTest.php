@@ -136,7 +136,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             /* We found the count of warnings */
             $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning strong'));
             $strongAlert = $elementStrong->getText();
-            $this->assertEquals($strongAlert, "This question has at least 1 warning.", "Numbers of warning seems invalid, need one warning: " . "/" . self::$surveyId . "/" . $questions['CheckOnRelevance']['gid'] . "/" . $questions['CheckOnRelevance']['qid']);
+            $this->assertEquals($strongAlert, "This question has at least 1 warning.", "Numbers of warning seems invalid, need one warning: " . $url);
         // } catch (Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
