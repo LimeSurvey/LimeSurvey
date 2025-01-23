@@ -295,6 +295,7 @@ class FileUploadService
 
         return $filesOutput;
     }
+
     /**
      * Removes the configured "uploaddir" part from the path which
      * results in the relative path
