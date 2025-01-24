@@ -641,13 +641,13 @@ class statistics_helper
                 'params' => array(':qid' => $qqid)
             ));
             foreach ($rows as $row) {
-                $mfield = substr($rt, 1, strlen($rt)) . $row['title'];
+                $mfield = $rt . "_S" . $row['title'];
                 $alist[] = array($row['title'], flattenText($row->questionl10ns[$language]->question), $mfield);
             }
 
             //Add the "other" answer if it exists
             if ($qother == "Y") {
-                $mfield = substr($rt, 1, strlen($rt)) . "other";
+                $mfield = $rt . "_C" . "other";
                 $alist[] = array(gT("Other"), gT("Other"), $mfield);
             }
         } elseif ($sQuestionType == Question::QT_T_LONG_FREE_TEXT || $sQuestionType == Question::QT_S_SHORT_FREE_TEXT) {
@@ -663,7 +663,7 @@ class statistics_helper
                 $qtype = $nresult->type;
                 $qquestion = flattenText($nresult->questionl10ns[$language]->question);
 
-                $mfield = substr($rt, 1, strlen($rt));
+                $mfield = $rt;
 
                 //Text questions either have an answer, or they don't. There's no other way of quantising the results.
                 // So, instead of building an array of predefined answers like we do with lists & other types,
@@ -700,7 +700,7 @@ class statistics_helper
             $qtitle .= " [$atext]";
 
             //even more substrings...
-            $mfield = substr($rt, 1, strlen($rt));
+            $mfield = $rt;
 
             //Text questions either have an answer, or they don't. There's no other way of quantising the results.
             // So, instead of building an array of predefined answers like we do with lists & other types,
@@ -738,7 +738,7 @@ class statistics_helper
             foreach ($rows->readAll() as $row) {
                 $row = array_values($row);
                 //create an array containing answer code, answer and fieldname(??)
-                $mfield = substr($rt, 1, strpos($rt, "-") - 1);
+                $mfield = $rt;
                 $alist[] = array("$row[0]", flattenText($row[1]), $mfield);
             }
         } elseif ($sQuestionType == "|") {
@@ -865,7 +865,7 @@ class statistics_helper
                 //DO NOTHING
             } else {
                 $showem = array();
-                $fld = substr($rt, 1, strlen($rt));
+                $fld = $rt;//substr($rt, 1, strlen($rt));
                 $fielddata = $fieldmap[$fld];
 
                 $qtitle = flattenText($fielddata['title']);
@@ -924,7 +924,7 @@ class statistics_helper
                 }
 
                 //this field is queried using mathematical functions
-                $fieldname = substr($rt, 1, strlen($rt));
+                $fieldname = $rt;
 
                 $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname);
                 //Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
@@ -1434,11 +1434,11 @@ class statistics_helper
                     //handling for "other" field for list radio or list drowpdown
                     if ((($qtype == Question::QT_L_LIST || $qtype == Question::QT_EXCLAMATION_LIST_DROPDOWN) && $qother == Question::QT_Y_YES_NO_RADIO)) {
                         //add "other"
-                        $alist[] = array(gT("Other"), gT("Other"), $fielddata['fieldname'] . 'other');
+                        $alist[] = array(gT("Other"), gT("Other"), $fielddata['fieldname'] . '_Cother');
                     }
                     if ($qtype == Question::QT_O_LIST_WITH_COMMENT) {
                         //add "comment"
-                        $alist[] = array(gT("Comments"), gT("Comments"), $fielddata['fieldname'] . 'comment', 'is_comment');
+                        $alist[] = array(gT("Comments"), gT("Comments"), $fielddata['fieldname'] . '_Ccomment', 'is_comment');
                     }
             }    //end switch question type
 
@@ -1483,7 +1483,7 @@ class statistics_helper
                 //handling for "other" option
                 if ($al[0] == gT("Other")) {
                     if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST) {
-                        $columnName = substr((string) $al[2], 0, strlen((string) $al[2]) - 5);
+                        $columnName = $al[2];
                         $othEncrypted = getEncryptedCondition($responseModel, $columnName, '-oth-');
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($columnName) . "='$othEncrypted'";
                     } else {
@@ -1516,7 +1516,7 @@ class statistics_helper
                 } elseif ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
                     $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ( ";
                     $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2]) . " <> '')" : " (" . Yii::app()->db->quoteColumnName($al[2]) . " NOT LIKE ''))";
-                // all other question types
+                    // all other question types
                 } else {
                     $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($al[2]) . " =";
                     //ranking question?
@@ -1559,6 +1559,7 @@ class statistics_helper
                     }
                 }
             }
+
 
             if (incompleteAnsFilterState() == "incomplete") {
                 $query .= " AND submitdate is null";
@@ -4133,8 +4134,8 @@ class statistics_helper
                 $firstRowFieldvalue = (float) LSActiveRecord::decryptSingle($allRows[$row][$fielddata['fieldname']]);
                 $nextRowFieldvalue = (float) LSActiveRecord::decryptSingle($allRows[$row + 1][$fielddata['fieldname']]);
             } else {
-                $firstRowFieldvalue = $allRows[$row][$fielddata['fieldname']];
-                $nextRowFieldvalue = $allRows[$row + 1][$fielddata['fieldname']];
+                $firstRowFieldvalue = $allRows[(int)$row][$fielddata['fieldname']];
+                $nextRowFieldvalue = $allRows[(int)$row + 1][$fielddata['fieldname']];
             }
             return $firstRowFieldvalue + $diff * ($nextRowFieldvalue - $firstRowFieldvalue);
         }
