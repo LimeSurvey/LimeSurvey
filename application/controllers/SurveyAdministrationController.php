@@ -1763,6 +1763,14 @@ class SurveyAdministrationController extends LSBaseController
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
+
+        // Avoid reactivating a survey that is already active
+        // Doing so might override the survey settings, causing an "Error: didn't save" issue
+        if (Survey::model()->findByPk($surveyId)->getIsActive()) {
+            App()->user->setFlash('error', gT("The survey is already active."));
+            $this->redirect(App()->request->urlReferrer);
+        }
+
         $diContainer = \LimeSurvey\DI::getContainer();
         $surveyActivate = $diContainer->get(
             LimeSurvey\Models\Services\SurveyActivate::class
