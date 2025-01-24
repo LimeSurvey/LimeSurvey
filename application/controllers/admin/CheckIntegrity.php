@@ -719,7 +719,7 @@ class CheckIntegrity extends SurveyCommonAction
 
         /*** Check for active survey tables with missing survey entry or where survey entry is inactivate and rename them ***/
         $sDBPrefix = Yii::app()->db->tablePrefix;
-        $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{survey}}\_%'))->queryColumn();
+        $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{responses}}\_%'))->queryColumn();
         $sSurveyIDs = Yii::app()->db->createCommand("select sid from {{surveys}} where active='Y'")->queryColumn();
         foreach ($aResult as $aRow) {
             $sTableName = (string) substr((string) $aRow, strlen((string) $sDBPrefix));
@@ -734,10 +734,10 @@ class CheckIntegrity extends SurveyCommonAction
                     $date = date('YmdHis', $datestamp); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
                     $DBDate = date('Y-m-d H:i:s', $datestamp);
                     $userID = Yii::app()->user->getId();
-                    // Check if it's really a survey_XXX table mantis #14938
+                    // Check if it's really a responses_XXX table mantis #14938
                     if (empty($aTableName[2])) {
-                        $sOldTable = "survey_{$iSurveyID}";
-                        $sNewTable = "old_survey_{$iSurveyID}_{$date}";
+                        $sOldTable = "responses_{$iSurveyID}";
+                        $sNewTable = "old_responses_{$iSurveyID}_{$date}";
                         Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
                         $archivedTokenSettings = new ArchivedTableSettings();
                         $archivedTokenSettings->survey_id = $iSurveyID;
@@ -750,8 +750,8 @@ class CheckIntegrity extends SurveyCommonAction
                         $bDirectlyFixed = true;
                     }
                     if (!empty($aTableName[2]) && $aTableName[2] == "timings" && empty($aTableName[3])) {
-                        $sOldTable = "survey_{$iSurveyID}_timings";
-                        $sNewTable = "old_survey_{$iSurveyID}_timings_{$date}";
+                        $sOldTable = "timings_{$iSurveyID}";
+                        $sNewTable = "old_timings_{$iSurveyID}_{$date}";
                         Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
                         $archivedTokenSettings = new ArchivedTableSettings();
                         $archivedTokenSettings->survey_id = $iSurveyID;
@@ -1030,10 +1030,10 @@ class CheckIntegrity extends SurveyCommonAction
         /**********************************************************************/
         /*     Check old survey tables                                        */
         /**********************************************************************/
-        //1: Get list of 'old_survey' tables and extract the survey ID
+        //1: Get list of 'old_responses' tables and extract the survey ID
         //2: Check if that survey ID still exists
         //3: If it doesn't offer it for deletion
-        $sQuery = dbSelectTablesLike('{{old_survey}}%');
+        $sQuery = dbSelectTablesLike('{{old_responses}}%');
         $aTables = Yii::app()->db->createCommand($sQuery)->queryColumn();
 
         $aOldSIDs = array();

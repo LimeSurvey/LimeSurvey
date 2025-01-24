@@ -1589,7 +1589,7 @@ class SurveyAdministrationController extends LSBaseController
                 Yii::app()->session->remove('sNewSurveyTableName');
             }
 
-            Yii::app()->session->add('sNewSurveyTableName', Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}");
+            Yii::app()->session->add('sNewSurveyTableName', Yii::app()->db->tablePrefix . "old_responses_{$iSurveyID}_{$date}");
             $aData['date'] = $date;
             $aData['dbprefix'] = Yii::app()->db->tablePrefix;
             $aData['sNewSurveyTableName'] = Yii::app()->session->get('sNewSurveyTableName');
@@ -2900,7 +2900,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $aData['activated'] = $activated;
         if ($oSurvey->isActive) {
-            $aData['surveydb'] = Yii::app()->db->tablePrefix . "survey_" . $iSurveyID;
+            $aData['surveydb'] = Yii::app()->db->tablePrefix . "responses_" . $iSurveyID;
         }
 
         $aData['warnings'] = [];
