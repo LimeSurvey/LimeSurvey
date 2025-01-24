@@ -4650,7 +4650,7 @@ function ls_json_encode($content)
  */
 function json_decode_ls($jsonString)
 {
-    $decoded = json_decode($jsonString, true);
+    $decoded = json_decode($jsonString ?? '', true);
 
     if (is_null($decoded) && !empty($jsonString)) {
         // probably we need stipslahes
