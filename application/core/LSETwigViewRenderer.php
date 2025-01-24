@@ -174,7 +174,7 @@ window.addEventListener('message', function(event) {
             }
 
             $sHtml     = $this->convertTwigToHtml($line, $aData, $oTemplate);
-            
+
             $sEmHiddenInputs = LimeExpressionManager::FinishProcessPublicPage(true);
             if ($sEmHiddenInputs) {
                 $sHtml = str_replace(
@@ -630,7 +630,7 @@ window.addEventListener('message', function(event) {
             // button won't be rendered on welcome and final page because 'srid' key doesn't exist on those pages
             // additionally checks for submit page to compensate when srid is needed to render other views
             if (
-                isset($_SESSION['survey_' . $surveyid]['srid'])
+                isset($_SESSION['responses_' . $surveyid]['srid'])
                 && isset($aData['aSurveyInfo']['active']) && $aData['aSurveyInfo']['active'] == 'Y'
                 && isset($aData['aSurveyInfo']['include_content']) && $aData['aSurveyInfo']['include_content'] !== 'submit'
                 && isset($aData['aSurveyInfo']['include_content']) && $aData['aSurveyInfo']['include_content'] !== 'submit_preview'
@@ -694,10 +694,10 @@ window.addEventListener('message', function(event) {
 
             // NB: Session is flushed at submit, so sid is not defined here.
             if (
-                isset($_SESSION['survey_' . $aData['aSurveyInfo']['sid']]) &&
-                isset($_SESSION['survey_' . $aData['aSurveyInfo']['sid']]['totalquestions'])
+                isset($_SESSION['responses_' . $aData['aSurveyInfo']['sid']]) &&
+                isset($_SESSION['responses_' . $aData['aSurveyInfo']['sid']]['totalquestions'])
             ) {
-                $aData["aSurveyInfo"]['iTotalquestions'] = $_SESSION['survey_' .
+                $aData["aSurveyInfo"]['iTotalquestions'] = $_SESSION['responses_' .
                 $aData['aSurveyInfo']['sid']]['totalVisibleQuestions'];
             }
 

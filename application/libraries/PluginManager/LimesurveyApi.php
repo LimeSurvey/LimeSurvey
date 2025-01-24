@@ -267,7 +267,7 @@ class LimesurveyApi
         if (empty($surveyId)) {
             return;
         }
-        $sessionSurvey = Yii::app()->session["survey_{$surveyId}"];
+        $sessionSurvey = Yii::app()->session["responses_{$surveyId}"];
         if (empty($sessionSurvey['srid'])) {
             return;
         }
@@ -333,7 +333,7 @@ class LimesurveyApi
      */
     public function getResponseTable($surveyId)
     {
-        return App()->getDb()->tablePrefix . 'survey_' . $surveyId;
+        return App()->getDb()->tablePrefix . 'responses_' . $surveyId;
     }
 
     /**
@@ -344,8 +344,8 @@ class LimesurveyApi
     public function getOldResponseTables($surveyId)
     {
         $tables = array();
-        $base = App()->getDb()->tablePrefix . 'old_survey_' . $surveyId;
-        $timingbase = App()->getDb()->tablePrefix . 'old_survey_' . $surveyId . '_timings_';
+        $base = App()->getDb()->tablePrefix . 'old_responses_' . $surveyId;
+        $timingbase = App()->getDb()->tablePrefix . 'old_timings_' . $surveyId;
         foreach (App()->getDb()->getSchema()->getTableNames() as $table) {
             if (strpos((string) $table, $base) === 0 && strpos((string) $table, $timingbase) === false) {
                 $tables[] = $table;

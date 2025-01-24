@@ -91,7 +91,7 @@ class DataEntry extends SurveyCommonAction
         );
 
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'create')) {
-            if (tableExists("{{survey_$iSurveyId}}")) {
+            if (tableExists("{{responses_$iSurveyId}}")) {
                 // First load the database helper
                 Yii::app()->loadHelper('database'); // Really needed ?
 
@@ -126,9 +126,9 @@ class DataEntry extends SurveyCommonAction
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveyactivation', 'update')) {
             if (Yii::app()->request->getParam('unfinalizeanswers') == 'true') {
                 SurveyDynamic::sid($surveyid);
-                Yii::app()->db->createCommand("DELETE from {{survey_$surveyid}} WHERE submitdate IS NULL AND token in (SELECT * FROM ( SELECT answ2.token from {{survey_$surveyid}} AS answ2 WHERE answ2.submitdate IS NOT NULL) tmp )")->execute();
+                Yii::app()->db->createCommand("DELETE from {{responses_$surveyid}} WHERE submitdate IS NULL AND token in (SELECT * FROM ( SELECT answ2.token from {{responses_$surveyid}} AS answ2 WHERE answ2.submitdate IS NOT NULL) tmp )")->execute();
                 // Then set all remaining answers to incomplete state
-                Yii::app()->db->createCommand("UPDATE {{survey_$surveyid}} SET submitdate=NULL, lastpage=NULL")->execute();
+                Yii::app()->db->createCommand("UPDATE {{responses_$surveyid}} SET submitdate=NULL, lastpage=NULL")->execute();
                 // Finally, reset the token completed and sent status
                 Yii::app()->db->createCommand("UPDATE {{tokens_$surveyid}} SET sent='N', remindersent='N', remindercount=0, completed='N', usesleft=1 where usesleft=0")->execute();
                 $aData['success'] = true;
@@ -237,7 +237,7 @@ class DataEntry extends SurveyCommonAction
 
         $aData['charsetsout'] = $charsetsout;
         $aData['aEncodings'] = $aEncodings;
-        $aData['tableExists'] = tableExists("{{survey_$surveyid}}");
+        $aData['tableExists'] = tableExists("{{responses_$surveyid}}");
 
         $aData['display']['menu_bars']['browse'] = gT("Import VV file");
 
@@ -362,7 +362,7 @@ class DataEntry extends SurveyCommonAction
             foreach ($sourceResponses as $sourceResponse) {
                 $iOldID = $sourceResponse->id;
                 // Using plugindynamic model because I dont trust surveydynamic.
-                $targetResponse = new PluginDynamic("{{survey_$iSurveyId}}");
+                $targetResponse = new PluginDynamic("{{responses_$iSurveyId}}");
                 if ($preserveIDs) {
                     $targetResponse->id = $sourceResponse->id;
                 }
@@ -392,19 +392,19 @@ class DataEntry extends SurveyCommonAction
 
                 $imported++;
                 if ($preserveIDs) {
-                    switchMSSQLIdentityInsert("survey_$iSurveyId", true);
+                    switchMSSQLIdentityInsert("responses_$iSurveyId", true);
                 }
                 $targetResponse->save();
                 if ($preserveIDs) {
-                    switchMSSQLIdentityInsert("survey_$iSurveyId", false);
+                    switchMSSQLIdentityInsert("responses_$iSurveyId", false);
                 }
                 $aSRIDConversions[$iOldID] = $targetResponse->id;
                 unset($targetResponse);
             }
 
             Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
-            $sOldTimingsTable = (string) substr(substr((string) $sourceTable->tableName(), 0, (string) strrpos((string) $sourceTable->tableName(), '_')) . '_timings' . (string) substr((string) $sourceTable->tableName(), (string) strrpos((string) $sourceTable->tableName(), '_')), strlen((string) Yii::app()->db->tablePrefix));
-            $sNewTimingsTable = "survey_{$surveyid}_timings";
+            $sOldTimingsTable = substr(str_replace('responses_', 'timings_', $sourceTable->tableName()), strlen(Yii::app()->db->tablePrefix));
+            $sNewTimingsTable = "timings_{$surveyid}";
 
             if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable)) {
                 // Import timings
@@ -1713,7 +1713,7 @@ class DataEntry extends SurveyCommonAction
         }
         if ($insertSubaction && $hasResponsesCreatePermission) {
             // TODO: $surveytable is unused. Remove it.
-            $surveytable = "{{survey_{$surveyid}}}";
+            $surveytable = "{{responses_{$surveyid}}}";
             $thissurvey  = getSurveyInfo($surveyid);
             $errormsg = "";
 

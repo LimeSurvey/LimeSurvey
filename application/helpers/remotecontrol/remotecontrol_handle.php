@@ -3511,7 +3511,7 @@ class remotecontrol_handle
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'create')) {
-            if (!Yii::app()->db->schema->getTable('{{survey_' . $iSurveyID . '}}')) {
+            if (!Yii::app()->db->schema->getTable('{{responses_' . $iSurveyID . '}}')) {
                 return array('status' => 'No survey response table');
             }
         } else {
@@ -3736,7 +3736,7 @@ class remotecontrol_handle
         $oFormattingOptions->answerFormat = $sResponseType;
         $oFormattingOptions->output = 'file';
         $oExport = new ExportSurveyResultsService();
-        $sTableName = Yii::app()->db->tablePrefix . 'survey_' . $iSurveyID;
+        $sTableName = Yii::app()->db->tablePrefix . 'responses_' . $iSurveyID;
         $sTempFile = $oExport->exportResponses($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, "{$sTableName}.token" . $tokenFilter);
         return new BigFile($sTempFile, true, 'base64');
     }

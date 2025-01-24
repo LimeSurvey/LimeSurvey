@@ -52,7 +52,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         $this->iColumnWidth = ($this->iColumnWidth >= 1) ? $this->iColumnWidth : 1;
         $this->iColumnWidth = ($this->iColumnWidth <= 12) ? $this->iColumnWidth : 12;
         $this->iMaxRowsByColumn = ceil($this->getQuestionCount() / $this->iNbCols);
-    
+
         if ($this->iNbCols > 1) {
             $this->sCoreClasses .= " multiple-list nbcol-{$this->iNbCols}";
         }
@@ -70,7 +70,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/multiplechoice';
     }
-    
+
     public function getRows()
     {
         $otherAdded = false;
@@ -89,7 +89,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         $checkconditionFunction = "checkconditions";
         /// Generate answer rows
         foreach ($this->aSubQuestions[0] as $oQuestion) {
-            $myfname = $this->sSGQA . $oQuestion->title;
+            $myfname = $this->sSGQA . "_S" . $oQuestion->qid;
             $this->inputnames[] = $myfname;
             ////
             // Insert row
@@ -123,8 +123,8 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         $sSeparator = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
         $oth_checkconditionFunction = ($this->getQuestionAttribute('other_numbers_only') == 1) ? "fixnum_checkconditions" : "checkconditions";
 
-        $myfname = $this->sSGQA . 'other';
-        $mSessionValue = $this->setDefaultIfEmpty($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname], '');
+        $myfname = $this->sSGQA . '_Cother';
+        $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], '');
         $this->inputnames[] = $myfname;
 
         $sValue = '';

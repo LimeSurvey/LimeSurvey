@@ -19,7 +19,7 @@
 class RenderListRadio extends QuestionBaseRenderer
 {
     public $sCoreClass = "ls-answers answers-list radio-list";
-    
+
     protected $sOthertext;
     protected $iNbCols;
     protected $iColumnWidth;
@@ -43,7 +43,7 @@ class RenderListRadio extends QuestionBaseRenderer
     const OTHER_POS_START = 'beginning';
     const OTHER_POS_END = 'end';
     const OTHER_POS_AFTER_OPTION = 'specific';
-    
+
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
         parent::__construct($aFieldArray, $bRenderDirect);
@@ -120,11 +120,11 @@ class RenderListRadio extends QuestionBaseRenderer
     public function getRows()
     {
         $sRows = "";
-        
+
         foreach ($this->renderRowsArray() as $iterator => $sRow) {
             // counter of number of row by column. Is reset to zero each time a column is full.
             $this->iRowCount++;
-                
+
             ////
             // Open Column
             // The column is opened if user set more than one column in question attribute
@@ -137,7 +137,7 @@ class RenderListRadio extends QuestionBaseRenderer
                 );
                 $this->bColumnIsOpen  = true; // If a column is not closed, it will be closed at the end of the process
             }
-        
+
             ////
             // Insert row
             // Display the answer row
@@ -192,14 +192,14 @@ class RenderListRadio extends QuestionBaseRenderer
     {
         $sSeparator = getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat);
         $sSeparator = $sSeparator['separator'];
-        
+
         $oth_checkconditionFunction = ($this->getQuestionAttribute('other_numbers_only') == 1) ? 'fixnum_checkconditions' : 'checkconditions';
         $checkedState = ($this->mSessionValue == '-oth-') ? CHECKED : '';
 
         $myfname = $thisfieldname = $this->sSGQA . 'other';
 
-        if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$thisfieldname])) {
-            $dispVal = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$thisfieldname];
+        if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$thisfieldname])) {
+            $dispVal = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$thisfieldname];
             if ($this->getQuestionAttribute('other_numbers_only') == 1) {
                 $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
             }
@@ -209,7 +209,7 @@ class RenderListRadio extends QuestionBaseRenderer
         }
 
         $this->inputnames[] = $thisfieldname;
-        
+
         return Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/answer_row_other', array(
             'name' => $this->sSGQA,
             'answer_other' => $answer_other,

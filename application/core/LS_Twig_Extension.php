@@ -195,6 +195,7 @@ class LS_Twig_Extension extends AbstractExtension
      */
     public static function getAllQuestionClasses($iQid)
     {
+        die('todo2233');
 
         $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
         $sType           = $lemQuestionInfo['info']['type'];
@@ -230,7 +231,7 @@ class LS_Twig_Extension extends AbstractExtension
             $aQuestionClass .= ' mandatory';
         }
 
-        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION['survey_' . $iSurveyId]['maxstep'] != $_SESSION['survey_' . $iSurveyId]['step']) {
+        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION['responses_' . $iSurveyId]['maxstep'] != $_SESSION['responses_' . $iSurveyId]['step']) {
             $aQuestionClass .= ' missing';
         }
 
@@ -672,7 +673,7 @@ class LS_Twig_Extension extends AbstractExtension
         $oResponses = SurveyDynamic::model($iSurveyID)->findAll(
             array(
                                 'condition' => 'token = :token',
-                                'params'    => array( ':token' => $_SESSION['survey_' . $iSurveyID]['token']),
+                                'params'    => array( ':token' => $_SESSION['responses_' . $iSurveyID]['token']),
                             )
         );
 

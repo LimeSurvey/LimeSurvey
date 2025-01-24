@@ -618,90 +618,15 @@ class CheckIntegrity extends SurveyCommonAction
                 $bDirectlyFixed = true;
             }
         }
-
-        /**
-         * Check for active surveys if questions are in the correct group
-         * This will only run if an additional URL parameter checkResponseTableFields=y is set
-         * This is to prevent this costly check from running on every page load
-         */
-        if (Yii::app()->request->getParam('checkResponseTableFields') == 'y') {
-            foreach ($oSurveys as $oSurvey) {
-                // This actually clears the schema cache, not just refreshes it
-                $oDB->schema->refresh();
-                // We get the active surveys
-                if ($oSurvey->isActive && $oSurvey->hasResponsesTable) {
-                    $model    = SurveyDynamic::model($oSurvey->sid);
-                    $aColumns = $model->getMetaData()->columns;
-                    $aQids    = array();
-
-                    // We get the columns of the responses table
-                    foreach ($aColumns as $oColumn) {
-                        // Question columns start with the SID
-                        if (strpos((string) $oColumn->name, (string)$oSurvey->sid) !== false) {
-                            // Fileds are separated by X
-                            $aFields = explode('X', (string) $oColumn->name);
-
-                            if (isset($aFields[1])) {
-                                $sGid = $aFields[1];
-
-                                // QID field can be more than just QID, like: 886other or 886A1
-                                // So we clean it by finding the first alphabetical character
-                                $sDirtyQid = $aFields[2];
-                                preg_match('~[a-zA-Z_#]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
-
-                                if (isset($match[0][1])) {
-                                    $sQID = substr($sDirtyQid, 0, $match[0][1]);
-                                } else {
-                                    // It was just the QID.... (maybe)
-                                    $sQID = $sDirtyQid;
-                                }
-
-                                // Here, we get the question as defined in backend
-                                try {
-                                    $oQuestion = Question::model()->findByAttributes(['qid' => $sQID , 'sid' => $oSurvey->sid]);
-                                } catch (Exception $e) {
-                                    // QID potentially invalid , see #17458, reset $oQuestion
-                                    $oQuestion = null;
-                                }
-                                if (is_a($oQuestion, 'Question')) {
-                                    // We check if its GID is the same as the one defined in the column name
-                                    if ($oQuestion->gid != $sGid) {
-                                        // If not, we change the column name
-                                        $sNvColName = $oSurvey->sid . 'X' . $oQuestion->group->gid . 'X' . $sDirtyQid;
-
-                                        if (array_key_exists($sNvColName, $aColumns)) {
-                                            // This case will not happen often, only when QID + Subquestion ID == QID of a question in the target group
-                                            // So we'll change the group of the question question group table (so in admin interface, not in frontend)
-                                            $oQuestion->gid = $sGid;
-                                            $oQuestion->save();
-                                        } else {
-                                            $oTransaction = $oDB->beginTransaction();
-                                            $oDB->createCommand()->renameColumn($model->tableName(), $oColumn->name, $sNvColName);
-                                            $oTransaction->commit();
-                                        }
-                                    }
-                                } else {
-                                    // QID not found: The function to split the fieldname into the SGQA data is not 100% reliable
-                                    // So for certain question types (for example Text Array) the field name cannot be properly derived
-                                    // In this case just ignore the field - see also https://bugs.limesurvey.org/view.php?id=15642
-                                    // There is still a extremely  low chance that an unwanted rename happens if a collision like this happens in the same survey
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            $oDB->schema->refresh();
-            $oDB->schemaCachingDuration = 3600;
-            $oDB->schema->getTables();
-            $oDB->active = false;
-            $oDB->active = true;
-            User::model()->refreshMetaData();
-            Yii::app()->db->schema->getTable('{{surveys}}', true);
-            Yii::app()->db->schema->getTable('{{templates}}', true);
-            Survey::model()->refreshMetaData();
-        }
+        $oDB->schema->refresh();
+        $oDB->schemaCachingDuration = 3600;
+        $oDB->schema->getTables();
+        $oDB->active = false;
+        $oDB->active = true;
+        User::model()->refreshMetaData();
+        Yii::app()->db->schema->getTable('{{surveys}}', true);
+        Yii::app()->db->schema->getTable('{{templates}}', true);
+        Survey::model()->refreshMetaData();
         /* Check method before using #14596 */
         if (method_exists(Yii::app()->cache, 'flush')) {
             Yii::app()->cache->flush();
@@ -719,7 +644,7 @@ class CheckIntegrity extends SurveyCommonAction
 
         /*** Check for active survey tables with missing survey entry or where survey entry is inactivate and rename them ***/
         $sDBPrefix = Yii::app()->db->tablePrefix;
-        $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{survey}}\_%'))->queryColumn();
+        $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{responses}}\_%'))->queryColumn();
         $sSurveyIDs = Yii::app()->db->createCommand("select sid from {{surveys}} where active='Y'")->queryColumn();
         foreach ($aResult as $aRow) {
             $sTableName = (string) substr((string) $aRow, strlen((string) $sDBPrefix));
@@ -734,10 +659,10 @@ class CheckIntegrity extends SurveyCommonAction
                     $date = date('YmdHis', $datestamp); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
                     $DBDate = date('Y-m-d H:i:s', $datestamp);
                     $userID = Yii::app()->user->getId();
-                    // Check if it's really a survey_XXX table mantis #14938
+                    // Check if it's really a responses_XXX table mantis #14938
                     if (empty($aTableName[2])) {
-                        $sOldTable = "survey_{$iSurveyID}";
-                        $sNewTable = "old_survey_{$iSurveyID}_{$date}";
+                        $sOldTable = "responses_{$iSurveyID}";
+                        $sNewTable = "old_responses_{$iSurveyID}_{$date}";
                         Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
                         $archivedTokenSettings = new ArchivedTableSettings();
                         $archivedTokenSettings->survey_id = $iSurveyID;
@@ -750,8 +675,8 @@ class CheckIntegrity extends SurveyCommonAction
                         $bDirectlyFixed = true;
                     }
                     if (!empty($aTableName[2]) && $aTableName[2] == "timings" && empty($aTableName[3])) {
-                        $sOldTable = "survey_{$iSurveyID}_timings";
-                        $sNewTable = "old_survey_{$iSurveyID}_timings_{$date}";
+                        $sOldTable = "timings_{$iSurveyID}";
+                        $sNewTable = "old_timings_{$iSurveyID}_{$date}";
                         Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
                         $archivedTokenSettings = new ArchivedTableSettings();
                         $archivedTokenSettings->survey_id = $iSurveyID;
@@ -1030,10 +955,10 @@ class CheckIntegrity extends SurveyCommonAction
         /**********************************************************************/
         /*     Check old survey tables                                        */
         /**********************************************************************/
-        //1: Get list of 'old_survey' tables and extract the survey ID
-        //2: Check if that survey ID still exists
+        //1: Get list of 'old_responses' tables and extract the survey id
+        //2: Check if that survey id still exists
         //3: If it doesn't offer it for deletion
-        $sQuery = dbSelectTablesLike('{{old_survey}}%');
+        $sQuery = dbSelectTablesLike('{{old_responses}}%');
         $aTables = Yii::app()->db->createCommand($sQuery)->queryColumn();
 
         $aOldSIDs = array();
