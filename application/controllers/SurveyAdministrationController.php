@@ -1772,7 +1772,7 @@ class SurveyAdministrationController extends LSBaseController
         // Avoid reactivating a survey that is already active
         // Doing so might override the survey settings, causing an "Error: didn't save" issue
         if (Survey::model()->findByPk($surveyId)->getIsActive()) {
-            App()->user->setFlash('error', gT("Survey already active"));
+            App()->user->setFlash('error', gT("The survey is already active."));
             $this->redirect(App()->request->urlReferrer);
         }
 
