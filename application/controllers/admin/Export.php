@@ -351,7 +351,7 @@ class Export extends SurveyCommonAction
         }
 
         if (Yii::app()->request->getPost('response_id')) {
-                    $sFilter = "{{survey_{$iSurveyID}}}.id=" . (int) Yii::app()->request->getPost('response_id');
+                    $sFilter = "{{responses_{$iSurveyID}}}.id=" . (int) Yii::app()->request->getPost('response_id');
         } elseif (App()->request->getQuery('statfilter') && is_array(Yii::app()->session['statistics_selects_' . $iSurveyID])) {
             $sFilter = Yii::app()->session['statistics_selects_' . $iSurveyID];
         } else {
@@ -675,7 +675,7 @@ class Export extends SurveyCommonAction
             $aData['display']['menu_bars']['browse'] = gT("Export VV file");
             $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
 
-            $surveytable = "{{survey_$iSurveyId}}";
+            $surveytable = "{{responses_$iSurveyId}}";
             // Control if fieldcode are unique
             $fieldnames = App()->db->schema->getTable($surveytable)->getColumnNames();
             foreach ($fieldnames as $field) {
@@ -731,7 +731,7 @@ class Export extends SurveyCommonAction
             $this->addHeaders($fileName, "text/tab-separated-values", 0);
 
             $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
-            $surveytable = "{{survey_$iSurveyId}}";
+            $surveytable = "{{responses_$iSurveyId}}";
 
             $fieldnames = App()->db->schema->getTable($surveytable)->getColumnNames();
 
@@ -1122,7 +1122,7 @@ class Export extends SurveyCommonAction
         }
 
         if (isset($survey->hasTimingsTable) && $survey->hasTimingsTable == 'Y') {
-            getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID . '_timings', 'Timings', 'timings', $sLSIFileName);
+            getXMLDataSingleTable($iSurveyID, 'timings_' . $iSurveyID, 'Timings', 'timings', $sLSIFileName);
             $this->addToZip($zip, $sLSIFileName, 'survey_' . $iSurveyID . '_timings.lsi');
             unlink($sLSIFileName);
         }

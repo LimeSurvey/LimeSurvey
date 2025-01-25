@@ -49,7 +49,7 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
         if ($this->oQuestion->other == 'Y') {
             $this->iLabelWidth = 25;
         }
-        
+
         /*Find the col-sm width : if none is set : default, if one is set, set another one to be 12, if two is set : no change */
 
         $this->attributeInputContainerWidth = intval(trim((string) $this->getQuestionAttribute('text_input_columns')));
@@ -94,7 +94,7 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/multiplechoice_with_comments';
     }
-    
+
     public function getRows()
     {
         $otherAdded = false;
@@ -111,11 +111,11 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
 
         $checkconditionFunction = "checkconditions";
         foreach ($this->aSubQuestions[0] as $oQuestion) {
-            $myfname = $this->sSGQA . $oQuestion->title;
-            $myfname2 = $myfname . "comment";
-            $mSessionValue = $this->setDefaultIfEmpty($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname], '');
-            $mSessionValue2 = $this->setDefaultIfEmpty($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname2], '');
-            
+            $myfname = $this->sSGQA . "_C" . $oQuestion->qid;
+            $myfname2 = $myfname . "_Ccomment";
+            $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], '');
+            $mSessionValue2 = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname2], '');
+
             if ($this->iLabelWidth < strlen(trim(strip_tags((string) $oQuestion->questionl10ns[$this->sLanguage]->question)))) {
                 $this->iLabelWidth = strlen(trim(strip_tags((string) $oQuestion->questionl10ns[$this->sLanguage]->question)));
             }
@@ -164,11 +164,11 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
 
         $sSeparator = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
 
-        $myfname = $this->sSGQA . 'other';
+        $myfname = $this->sSGQA . '_Cother';
         $myfname2 = $myfname . "comment";
 
-        $mSessionValue = $this->setDefaultIfEmpty($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname], '');
-        $mSessionValue2 = $this->setDefaultIfEmpty($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname2], '');
+        $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], '');
+        $mSessionValue2 = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname2], '');
 
         $this->inputnames[] = $myfname;
         $this->inputnames[] = $myfname2;
