@@ -182,7 +182,7 @@ class RenderListDropdown extends QuestionBaseRenderer
                 'checkconditionFunction' => $this->checkconditionFunction,
                 'display' => $this->mSessionValue != '-oth-' ? 'display: none;' : '',
                 'label' => $this->othertext,
-                'value' => (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$this->sSGQA . "other"]))
+                'value' => (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$this->sSGQA . "_Cother"]))
                     ? htmlspecialchars((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$this->sSGQA . "_Cother"], ENT_QUOTES)
                     : ''
             ], true);
