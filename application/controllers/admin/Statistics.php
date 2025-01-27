@@ -709,7 +709,7 @@ class Statistics extends SurveyCommonAction
                         $fresults = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid'  AND scale_id = 1", 'question_order, title');
                         foreach ($results as $row1) {
                             foreach ($fresults as $row2) {
-                                $summary[] = 'Q' . $row['qid'] . $row1['title'] . '_' . $row2['title'];
+                                $summary[] = 'Q' . $row['qid'] . '_S' . $row1['qid'] . '_S' . $row2['qid'];
                             }
                         }
                     }
@@ -719,8 +719,8 @@ class Statistics extends SurveyCommonAction
                     $qid = $row['qid'];
                     $results = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid' ", 'question_order, title');
                     foreach ($results as $row1) {
-                        $summary[] = 'Q' . $row['qid'] . $row1['title'] . '#0';
-                        $summary[] = 'Q' . $row['qid'] . $row1['title'] . '#1';
+                        $summary[] = 'Q' . $row['qid'] . '_S' . $row1['title'] . '#0';
+                        $summary[] = 'Q' . $row['qid'] . '_S' . $row1['title'] . '#1';
                     }
 
                     break;
@@ -731,7 +731,7 @@ class Statistics extends SurveyCommonAction
                     $count = count($results);
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
                     for ($i = 1; $i <= $count; $i++) {
-                        $summary[] = 'Q' . $row['qid'] . '-' . $i;
+                        $summary[] = 'Q' . $row['qid'] . '_R' . $results[$i - 1]['qid'];
                     }
                     break;
 
