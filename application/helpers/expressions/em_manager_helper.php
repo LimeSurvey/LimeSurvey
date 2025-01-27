@@ -5554,7 +5554,7 @@ class LimeExpressionManager
                     $grel = $gRelInfo['result'];
 
                     // Skip this question
-                    if (!$grel || !$result['relevant'] || $result['hidden']) {
+                    if (!$preview (!$grel || !$result['relevant'] || $result['hidden'])) {
                         if (!$grel || !$result['relevant']) {
                             $notRelevantSteps++;
                         }
