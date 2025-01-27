@@ -34,6 +34,21 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.10.1 (build 250120) to 6.10.2 (build 250127) January 27, 2025
+-Fixed issue: Error when trying to attach file to email template using PHP 8.2 (Carsten Schmitz)
+-Fixed issue #19939: Correction to the path pointing the images in log-in page (#4149) (Gabriel Jenik)
+-Fixed issue #19924: Multiplication of #pjaxClickInhibitor DOM element when switching response view mode in LimeSurvey (#4138) (Gabriel Jenik)
+-Fixed issue #19908: Import participants to survey - Can't import CSV without tokens (#4126) (Gabriel Jenik)
+-Fixed issue #19899: Order of question when copying are bad (#4136) (Gabriel Jenik)
+-Fixed issue #18892: Edit condition button under Relevance in email attachment does not function (#4141) (Gabriel Jenik)
+#Updated translation: Welsh by ChrisWilliams
+#Updated translation: Spanish (Spain) by aesteban, Gronnd, ireneoh
+#Updated translation: Japanese by nomoto
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Croatian by rovinj
+#Updated translation: Arabic by c_schmitz
+
+
 Changes from 6.10.0 (build 250106) to 6.10.1 (build 250120) January 20, 2025
 -Fixed issue #19919: Stop survey button is not translatable (#4131) (tiborpacalat)
 -Fixed issue #19905: [security] Any user can get any user SurveyList (#4120) (Denis Chenu)
