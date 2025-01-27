@@ -1484,9 +1484,9 @@ class statistics_helper
                 //handling for "other" option
                 if ($al[0] == gT("Other")) {
                     if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST) {
-                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($columnName) . "='$othEncrypted'";
+                        $columnName = $al[2];
                         $othEncrypted = getEncryptedCondition($responseModel, $columnName, '-oth-');
-                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($columnName)."='$othEncrypted'";
+                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($columnName) . "='$othEncrypted'";
                     } else {
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ";
                         $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
