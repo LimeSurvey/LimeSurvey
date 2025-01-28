@@ -95,7 +95,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $showxquestions = Yii::app()->getConfig('showxquestions');
     }
     if (!isset($s_lang)) {
-        $s_lang = (Yii::app()->session['survey_' . $_surveyid]['s_lang'] ?? 'en');
+        $s_lang = (Yii::app()->session['responses_' . $_surveyid]['s_lang'] ?? 'en');
     }
     if ($_surveyid && !isset($thissurvey)) {
         $thissurvey = getSurveyInfo($_surveyid, $s_lang);
@@ -234,13 +234,13 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     $_linkreplace = '';
 
-    if (isset($thissurvey['sid']) && isset($_SESSION['survey_' . $thissurvey['sid']]['srid']) && $thissurvey['active'] == 'Y') {
-        $iscompleted = $thissurvey['iscompleted'] = SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_' . $thissurvey['sid']]['srid']);
+    if (isset($thissurvey['sid']) && isset($_SESSION['responses_' . $thissurvey['sid']]['srid']) && $thissurvey['active'] == 'Y') {
+        $iscompleted = $thissurvey['iscompleted'] = SurveyDynamic::model($surveyid)->isCompleted($_SESSION['responses_' . $thissurvey['sid']]['srid']);
     } else {
         $iscompleted = $thissurvey['iscompleted'] = false;
     }
 
-    if (isset($surveyid) && isset($_SESSION['survey_' . $surveyid]['srid'])) {
+    if (isset($surveyid) && isset($_SESSION['responses_' . $surveyid]['srid'])) {
         $_quexmlpdf = CHtml::link(gT("Save as PDF"), array("/printanswers/view/surveyid/{$surveyid}/printableexport/quexmlpdf"), array('data-bs-toggle' => 'tooltip', 'data-bs-placement' => 'right', 'title' => gT("Note: Print will not include items on this page")));
     } else {
         $_quexmlpdf = "";
@@ -275,7 +275,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();
-    if (isset($thissurvey['sid']) && !empty($_SESSION['survey_' . $thissurvey['sid']])) {
+    if (isset($thissurvey['sid']) && !empty($_SESSION['responses_' . $thissurvey['sid']])) {
         $coreReplacements = getStandardsReplacementFields($thissurvey);
     }
 
@@ -491,8 +491,8 @@ function PassthruReplace($line, $thissurvey)
 
         // lookup for the fitting arg
         $sValue = '';
-        if (isset($_SESSION['survey_' . $thissurvey['sid']]['urlparams'][$arg])) {
-            $sValue = urlencode((string) $_SESSION['survey_' . $thissurvey['sid']]['urlparams'][$arg]);
+        if (isset($_SESSION['responses_' . $thissurvey['sid']]['urlparams'][$arg])) {
+            $sValue = urlencode((string) $_SESSION['responses_' . $thissurvey['sid']]['urlparams'][$arg]);
         }
         $line = str_replace($cmd, $sValue, (string) $line); // replace
     }
