@@ -890,7 +890,6 @@ class SurveyCondition
                 // End if type R
             } elseif ($rows['type'] == \Question::QT_M_MULTIPLE_CHOICE || $rows['type'] == \Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                 $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid']);
-                $fieldNameWithTitle = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], $arows['title']);
                 $shortanswer = " [" . gT("Group of checkboxes") . "]";
                 $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $rows['question']);
                 $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $fieldName);
@@ -900,6 +899,7 @@ class SurveyCondition
                 ), array('order' => 'question_order desc'));
 
                 foreach ($aresult as $arows) {
+                    $fieldNameWithTitle = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], $arows['title']);
                     $theanswer = $arows->questionl10ns[$this->language]->question;
                     $canswers[] = array($fieldName, $arows['title'], $theanswer);
 
