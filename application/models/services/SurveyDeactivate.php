@@ -77,7 +77,7 @@ class SurveyDeactivate
         if (!empty($result["beforeDeactivate"]["message"])) {
             return $result;
         }
-        $result["surveyTableExists"] = tableExists('survey_' . $iSurveyID);
+        $result["surveyTableExists"] = tableExists('responses_' . $iSurveyID);
         if (!$result["surveyTableExists"]) {
             return $result;
         }
@@ -85,7 +85,7 @@ class SurveyDeactivate
             if (!empty($this->app->session->get('sNewSurveyTableName'))) {
                 $this->app->session->remove('sNewSurveyTableName');
             }
-            $this->app->session->add('sNewSurveyTableName', $this->app->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}");
+            $this->app->session->add('sNewSurveyTableName', $this->app->db->tablePrefix . "old_responses_{$iSurveyID}_{$date}");
             $aData['surveyid'] = $iSurveyID;
             $aData['date'] = $date;
             $aData['dbprefix'] = $this->app->db->tablePrefix;
@@ -210,9 +210,9 @@ class SurveyDeactivate
         $this->surveyLink->deleteLinksBySurvey($iSurveyID);
         // IF there are any records in the saved_control table related to this survey, they have to be deleted
         $this->savedControl->deleteSomeRecords(array('sid' => $iSurveyID)); //Yii::app()->db->createCommand($query)->query();
-        $sOldSurveyTableName = $this->app->db->tablePrefix . "survey_{$iSurveyID}";
+        $sOldSurveyTableName = $this->app->db->tablePrefix . "responses_{$iSurveyID}";
         if (empty($this->app->session->get('sNewSurveyTableName'))) {
-            $this->app->session->add('sNewSurveyTableName', $this->app->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}");
+            $this->app->session->add('sNewSurveyTableName', $this->app->db->tablePrefix . "old_responses_{$iSurveyID}_{$date}");
         }
         $sNewSurveyTableName = $this->app->session->get('sNewSurveyTableName');
         $aData['sNewSurveyTableName'] = $sNewSurveyTableName;
@@ -226,7 +226,7 @@ class SurveyDeactivate
         $survey->save();
         if ($this->app->db->getDriverName() == 'pgsql') {
             $idDefault = $this->app->db->createCommand("SELECT pg_get_expr(pg_attrdef.adbin, pg_attrdef.adrelid) FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$sOldSurveyTableName' and pg_attribute.attname='id'")->queryScalar();
-            if (preg_match("/nextval\('(survey_\d+_id_seq\d*)'::regclass\)/", (string) $idDefault, $matches)) {
+            if (preg_match("/nextval\('(responses_\d+_id_seq\d*)'::regclass\)/", (string) $idDefault, $matches)) {
                 $oldSeq = $matches[1];
                 $this->app->db->createCommand()->renameTable($oldSeq, $sNewSurveyTableName . '_id_seq');
                 $setsequence = "ALTER TABLE " . $this->app->db->quoteTableName($sOldSurveyTableName) . " ALTER COLUMN id SET DEFAULT nextval('{{{$sNewSurveyTableName}}}_id_seq'::regclass);";
@@ -258,11 +258,11 @@ class SurveyDeactivate
     {
         $prow = $this->survey->find('sid = :sid', array(':sid' => $iSurveyID));
         if ($prow->savetimings == "Y") {
-            $sOldTimingsTableName = $this->app->db->tablePrefix . "survey_{$iSurveyID}_timings";
-            $sNewTimingsTableName = $this->app->db->tablePrefix . "old_survey_{$iSurveyID}_timings_{$date}";
+            $sOldTimingsTableName = $this->app->db->tablePrefix . "timings_{$iSurveyID}";
+            $sNewTimingsTableName = $this->app->db->tablePrefix . "old_timings_{$iSurveyID}_{$date}";
             $this->app->db->createCommand()->renameTable($sOldTimingsTableName, $sNewTimingsTableName);
             $aData['sNewTimingsTableName'] = $sNewTimingsTableName;
         }
-        $this->archiveTable($iSurveyID, $userID, "old_survey_{$iSurveyID}_timings_{$date}", 'timings', $DBDate, '');
+        $this->archiveTable($iSurveyID, $userID, "old_timings_{$iSurveyID}_{$date}", 'timings', $DBDate, '');
     }
 }
