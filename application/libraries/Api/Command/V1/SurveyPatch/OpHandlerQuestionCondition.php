@@ -62,7 +62,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      * @throws \Exception
      * @return void
      */
-    public function message(string $message, string $type = 'success')
+    public function setFlashMessage(string $message, string $type = 'success')
     {
         //dummy method at this point, because we do not support success messages yet
         if ($type !== 'success') {
@@ -707,13 +707,13 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                     if ($op->getType()->getId() !== OpTypeDelete::ID) {
                         throw new \Exception("Incompatible op with the action");
                     }
-                    $this->surveyCondition->deleteAllConditions($qid, $this->message(...));
+                    $this->surveyCondition->deleteAllConditions($qid, $this);
                     break;
                 case "renumberScenarios":
                     if ($op->getType()->getId() !== OpTypeUpdate::ID) {
                         throw new \Exception("Incompatible op with the action");
                     }
-                    $this->surveyCondition->renumberScenarios($qid, $this->message(...));
+                    $this->surveyCondition->renumberScenarios($qid, $this);
                     break;
                 case "copyConditions":
                     if ($op->getType()->getId() !== OpTypeCreate::ID) {
@@ -723,7 +723,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                     $this->surveyCondition->copyConditions($this->surveyCondition->getCidsOfQid($op->getProps()['fromqid']), [$this->surveyCondition->setISurveyID($question->sid)->getFieldName($question->sid, $question->gid, $question->qid)], $this->message(...));
                     break;
                 case "deleteAllConditionsOfSurvey":
-                    $this->surveyCondition->deleteAllConditionsOfSurvey($op->getProps()['sid'], $this->message(...));
+                    $this->surveyCondition->deleteAllConditionsOfSurvey($op->getProps()['sid'], $this);
                     break;
                 case "conditionScript":
                     $this->surveyCondition->conditionScript($qid, $op->getProps()['script']);
@@ -748,7 +748,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                             if ($op->getType()->getId() !== OpTypeUpdate::ID) {
                                 throw new \Exception("Incompatible op with the action");
                             }
-                            $this->surveyCondition->updateScenario($scenario['scenarioNumber'], $qid, $scid, $this->message(...));
+                            $this->surveyCondition->updateScenario($scenario['scenarioNumber'], $qid, $scid, $this);
                             break;
                     }
                 } else {
@@ -772,7 +772,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                                     ],
                                     $condition['editSourceTab'],
                                     $condition['editTargetTab'],
-                                    $this->message(...),
+                                    $this,
                                     $condition['ConditionConst'] ?? '',
                                     $condition['prevQuestionSGQA'] ?? '',
                                     $condition['tokenAttr'] ?? '',
@@ -793,7 +793,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                                         'p_cid' => $condition['cid']
                                         ],
                                     $condition['editTargetTab'],
-                                    $this->message(...),
+                                    $this,
                                     $condition['ConditionConst'] ?? '',
                                     $condition['prevQuestionSGQA'] ?? '',
                                     $condition['tokenAttr'] ?? '',

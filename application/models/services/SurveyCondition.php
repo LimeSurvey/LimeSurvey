@@ -120,14 +120,14 @@ class SurveyCondition
      * @param array $args the arguments
      * @param string $editSourceTab the source tab
      * @param string $editTargetTab the target tab
-     * @param callable $write a callback to secure an output
+     * @param object $app the app object
      * @param string $ConditionConst the constant value of the question to match
      * @param string $prevQuestionSGQA the previous question's descriptor, such as @453614X608X15982@
      * @param string $tokenAttr the token placeholder, such as {TOKEN:FIRSTNAME}
      * @param string $ConditionRegexp the regular expression to match
      * @return void
      */
-    public function insertCondition(array $args, string $editSourceTab, string $editTargetTab, callable $write, string $ConditionConst, string $prevQuestionSGQA, string $tokenAttr, string $ConditionRegexp)
+    public function insertCondition(array $args, string $editSourceTab, string $editTargetTab, $app, string $ConditionConst, string $prevQuestionSGQA, string $tokenAttr, string $ConditionRegexp)
     {
         extract($args);
         if (isset($p_cquestions) && $p_cquestions != '' && $editSourceTab == '#SRCPREVQUEST') {
@@ -163,11 +163,11 @@ class SurveyCondition
 
             // Check if any result returned false
             if (in_array(false, $results, true)) {
-                $write(gT('Could not insert all conditions.'), 'error');
+                $app->setFlashMessage(gT('Could not insert all conditions.'), 'error');
             } elseif (!empty($results)) {
-                $write(gT('Condition added.'), 'success');
+                $app->setFlashMessage(gT('Condition added.'), 'success');
             } else {
-                $write(
+                $app->setFlashMessage(
                     gT(
                         "The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
                         "js"
@@ -201,12 +201,12 @@ class SurveyCondition
                 $result = \Condition::model()->insertRecords($condition_data);
             }
             if ($result) {
-                $write(gT('Condition added.'), 'success');
+                $app->setFlashMessage(gT('Condition added.'), 'success');
             } else {
                 if ($result === false) {
-                    $write(gT('Could not insert all conditions.'), 'error');
+                    $app->setFlashMessage(gT('Could not insert all conditions.'), 'error');
                 } else {
-                    $write(gT("The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."), 'error');
+                    $app->setFlashMessage(gT("The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."), 'error');
                 }
             }
         }
@@ -217,14 +217,14 @@ class SurveyCondition
      * updateCondition action
      * @param array $args the arguments
      * @param string $editTargetTab the target tab
-     * @param callable $write the writer callback
+     * @param object $app the application object
      * @param string $ConditionConst the constant value the response is supposed to be equal to
      * @param string $prevQuestionSGQA the previous question's descriptor, such as @453614X608X15982@
      * @param string $tokenAttr the token placeholder, such as {TOKEN:FIRSTNAME}
      * @param string $ConditionRegexp the regular expression to match
      * @return void
      */
-    public function updateCondition(array $args, string $editTargetTab, callable $write, string $ConditionConst, string $prevQuestionSGQA, string $tokenAttr, string $ConditionRegexp)
+    public function updateCondition(array $args, string $editTargetTab, $app, string $ConditionConst, string $prevQuestionSGQA, string $tokenAttr, string $ConditionRegexp)
     {
         extract($args);
 
@@ -252,11 +252,11 @@ class SurveyCondition
 
             // Check if any result returned false
             if (in_array(false, $results, true)) {
-                $write(gT('Could not update condition.'), 'error');
+                $app->setFlashMessage(gT('Could not update condition.'), 'error');
             } elseif (!empty($results)) {
-                $write(gT('Condition updated.'), 'success');
+                $app->setFlashMessage(gT('Condition updated.'), 'success');
             } else {
-                $write(gT('Could not update condition.'), 'error');
+                $app->setFlashMessage(gT('Could not update condition.'), 'error');
             }
         } else {
             switch ($editTargetTab) {
@@ -289,12 +289,12 @@ class SurveyCondition
                 $result = \Condition::model()->insertRecords($updated_data, true, array('cid' => $p_cid));
             }
             if ($result) {
-                $write(gT('Condition updated.'), 'success');
+                $app->setFlashMessage(gT('Condition updated.'), 'success');
             } else {
                 if ($result === false) {
-                    $write(gT('Could not update condition.'), 'error');
+                    $app->setFlashMessage(gT('Could not update condition.'), 'error');
                 } else {
-                    $write(gT("The condition could not be updated! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."), 'error');
+                    $app->setFlashMessage(gT("The condition could not be updated! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."), 'error');
                 }
             }
         }
@@ -320,13 +320,13 @@ class SurveyCondition
      * @param int $p_newscenarionum the new scenario number
      * @param int $qid the question id
      * @param int $p_scenario the old scenario number
-     * @param callable $write writer callback
+     * @param object $app the app object
      * @return void
      */
-    public function updateScenario(int $p_newscenarionum, int $qid, int $p_scenario, callable $write)
+    public function updateScenario(int $p_newscenarionum, int $qid, int $p_scenario, $app)
     {
         if ($p_newscenarionum === null) {
-            $write(gT("No scenario number specified"), 'error');
+            $app->setFlashMessage(gT("No scenario number specified"), 'error');
         } else {
             \Condition::model()->insertRecords(array('scenario' => $p_newscenarionum), true, array(
                 'qid' => $qid, 'scenario' => $p_scenario));
@@ -337,14 +337,14 @@ class SurveyCondition
     /**
      * deleteAllConditions action
      * @param int $qid the question id
-     * @param callable $write writer callback
+     * @param $app the app object
      * @return void
      */
-    public function deleteAllConditions(int $qid, callable $write)
+    public function deleteAllConditions(int $qid, $app)
     {
         \LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid); // in case deleted the last condition
         \Condition::model()->deleteRecords(array('qid' => $qid));
-        $write(gT("All conditions for this question have been deleted."), 'success');
+        $app->setFlashMessage(gT("All conditions for this question have been deleted."), 'success');
     }
 
     /**
@@ -398,10 +398,10 @@ class SurveyCondition
     /**
      * renumberScenarios action
      * @param int $qid the question id
-     * @param callable $write write callback
+     * @param object $app the app object
      * @return void
      */
-    public function renumberScenarios(int $qid, callable $write)
+    public function renumberScenarios(int $qid, $app)
     {
         /** @var string $p_cid */
         $query = "SELECT DISTINCT scenario FROM {{conditions}} WHERE qid=:qid ORDER BY scenario";
@@ -413,7 +413,7 @@ class SurveyCondition
             $newindex++;
         }
         \LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
-        $write(gT("All conditions scenarios were renumbered."));
+        $app->setFlashMessage(gT("All conditions scenarios were renumbered."));
     }
 
     /**
@@ -435,10 +435,10 @@ class SurveyCondition
      * copyConditions action
      * @param int[] $copyconditionsfrom an int array containing the condition ids to be copied
      * @param string[] $copyconditionto the fieldnames where the conditions are to be copied to
-     * @param callable $write
+     * @param object $app the app object
      * @return void
      */
-    public function copyConditions(array $copyconditionsfrom, array $copyconditionsto, callable $write)
+    public function copyConditions(array $copyconditionsfrom, array $copyconditionsto, $app)
     {
         if (isset($copyconditionsto) && is_array($copyconditionsto) && isset($copyconditionsfrom) && is_array($copyconditionsfrom)) {
             //Get the conditions we are going to copy and quote them properly
@@ -502,12 +502,12 @@ class SurveyCondition
 
             if (isset($conditionCopied) && $conditionCopied === true) {
                 if (isset($conditionDuplicated) && $conditionDuplicated == true) {
-                    $write(gT("Condition successfully copied (some were skipped because they were duplicates)"), 'warning');
+                    $app->setFlashMessage(gT("Condition successfully copied (some were skipped because they were duplicates)"), 'warning');
                 } else {
-                    $write(gT("Condition successfully copied"));
+                    $app->setFlashMessage(gT("Condition successfully copied"));
                 }
             } else {
-                $write(gT("No conditions could be copied (due to duplicates)"), 'error');
+                $app->setFlashMessage(gT("No conditions could be copied (due to duplicates)"), 'error');
             }
         }
         \LimeExpressionManager::UpgradeConditionsToRelevance($this->iSurveyID); // do for whole survey, since don't know which questions affected.
@@ -1001,11 +1001,10 @@ class SurveyCondition
      * @param array $theserows question rows
      * @param array $postrows question post rows
      * @param array $args further arguments
-     * @param callable $getPath a callback to get a path, inherited from legacy code
-     * @param callable $renderPartial a callback for render partial, inherited from legacy code
+     * @param object $caller the object that uses the service
      * @return string the nav options
      */
-    protected function getQuestionNavOptions($gid, $qid, array $theserows, array $postrows, array $args, callable $getPath, callable $renderPartial): string
+    protected function getQuestionNavOptions($gid, $qid, array $theserows, array $postrows, array $args, $caller): string
     {
         /** @var integer $gid */
         /** @var integer $qid */
@@ -1018,7 +1017,7 @@ class SurveyCondition
             $question = strip_tags((string) $row['question']);
             $questionselecter = \viewHelper::flatEllipsizeText($question, true, '40');
             $theserows2[] = array(
-                'value' => $getPath($row['gid'], $row['qid']),
+                'value' => $caller->createNavigatorUrl($row['gid'], $row['qid']),
                 'text' => strip_tags((string) $row['title']) . ':' . $questionselecter
             );
         }
@@ -1028,7 +1027,7 @@ class SurveyCondition
             $question = strip_tags((string) $row['question']);
             $questionselecter = \viewHelper::flatEllipsizeText($question, true, '40');
             $postrows2[] = array(
-                'value' => $getPath($row['gid'], $row['qid']),
+                'value' => $caller->createNavigatorUrl($row['gid'], $row['qid']),
                 'text' => strip_tags((string) $row['title']) . ':' . $questionselecter
             );
         }
@@ -1036,12 +1035,11 @@ class SurveyCondition
         $data = array(
             'theserows' => $theserows2,
             'postrows' => $postrows2,
-            'currentValue' => $getPath($gid, $qid),
+            'currentValue' => $caller->createNavigatorUrl($gid, $qid),
             'currentText' => $questiontitle . ':' . \viewHelper::flatEllipsizeText(strip_tags((string) $sCurrentFullQuestionText), true, '40')
         );
 
-        //return $this->getController()->renderPartial('/admin/conditions/includes/navigator', $data, true);
-        return $renderPartial('navigator', $data, true);
+        return $caller->renderPartialView('navigator', $data, true);
     }
 
     /**
@@ -1082,10 +1080,10 @@ class SurveyCondition
      * @param int $gid the group id
      * @param int $qid the question id
      * @param array $args further arguments
-     * @param callable $renderPartial a renderPartial callback due to legacy reasons
+     * @param object $caller the object that uses the service
      * @return string the form's HTML
      */
-    protected function getQuickAddConditionForm(int $gid, int $qid, array $args, callable $renderPartial)
+    protected function getQuickAddConditionForm(int $gid, int $qid, array $args, $caller)
     {
         /** @var integer $iSurveyID */
         /** @var integer $gid */
@@ -1107,7 +1105,7 @@ class SurveyCondition
             'tokenFieldsAndNames' => $this->tokenFieldsAndNames,
             'method'        => $method,
         );
-        $html = $renderPartial('quickAddConditionForm', $data, true);
+        $html = $caller->renderPartialView('quickAddConditionForm', $data, true);
         return $html;
     }
 
@@ -1210,16 +1208,10 @@ class SurveyCondition
      * @param int $qid the question id
      * @param string $imageurl the image's url
      * @param mixed $extraGetParams legacy parameter, I don't know what it represents
-     * @param callable $addScript add callback
-     * @param callable $getPath path getter callback
-     * @param callable $myCreateUrl url creator callback
-     * @param callable $renderPartial partial renderer callback
-     * @param callable $getJavascriptForMatching JS matcher callback
-     * @param callable $getCopyForm copy form getter callback
-     * @param callable $getEditConditionForm edit condition form getter callback
+     * @param object $caller the object using the service
      * @return array
      */
-    public function index($args, $aData, $subaction, $method, $gid, $qid, $imageurl, $extraGetParams, callable $addScript, callable $getPath, callable $myCreateUrl, callable $renderPartial, callable $getJavascriptForMatching, callable $getCopyForm, callable $getEditConditionForm)
+    public function index($args, $aData, $subaction, $method, $gid, $qid, $imageurl, $extraGetParams, $caller)
     {
         $cquestions = array();
         $canswers   = array();
@@ -1289,11 +1281,11 @@ class SurveyCondition
         $args['sCurrentFullQuestionText'] = $sCurrentFullQuestionText;
         $args['questiontitle'] = $questiontitle;
         $args['gid'] = $gid;
-        $questionNavOptions = $this->getQuestionNavOptions($gid, $qid, $theserows, $postrows, $args, $getPath, $renderPartial);
+        $questionNavOptions = $this->getQuestionNavOptions($gid, $qid, $theserows, $postrows, $args, $caller);
 
         //Now display the information and forms
 
-        $javascriptpre = $getJavascriptForMatching($canswers, $cquestions, $surveyIsAnonymized);
+        $javascriptpre = $caller->getJavascriptForMatching($canswers, $cquestions, $surveyIsAnonymized);
 
         $aViewUrls = array();
 
@@ -1325,9 +1317,9 @@ class SurveyCondition
         $args['cquestions'] = $cquestions;
         $args['scenariocount'] = count($scenarios);
 
-        $aData['quickAddConditionForm'] = $this->getQuickAddConditionForm($gid, $qid, $args, $renderPartial);
+        $aData['quickAddConditionForm'] = $this->getQuickAddConditionForm($gid, $qid, $args, $caller);
 
-        $aData['quickAddConditionURL'] = $myCreateUrl(
+        $aData['quickAddConditionURL'] = $caller->myCreateUrl(
             'quickAddCondition',
             array(
                 'surveyId' => $this->iSurveyID,
@@ -1367,7 +1359,7 @@ class SurveyCondition
             }
 
             if ($scenariocount > 0) {
-                $addScript('adminscripts', 'checkgroup', \LSYii_ClientScript::POS_BEGIN);
+                $caller->addScript('adminscripts', 'checkgroup', \LSYii_ClientScript::POS_BEGIN);
                 foreach ($scenarios as $scenarionr) {
                     if ($s == 0 && $scenariocount > 1) {
                         $aData['showScenarioText'] = 'normal';
@@ -1396,7 +1388,7 @@ class SurveyCondition
                     $aData['scenarionr'] = $scenarionr;
 
                     // Used when click on button to add condition to scenario
-                    $aData['addConditionToScenarioURL'] = $myCreateUrl(
+                    $aData['addConditionToScenarioURL'] = $caller->myCreateUrl(
                         'index',
                         array(
                             'subaction' => 'editconditionsform',
@@ -1448,7 +1440,7 @@ class SurveyCondition
                                 $data['andOrOr'] = '';
                             }
 
-                            $data['formAction'] = $myCreateUrl(
+                            $data['formAction'] = $caller->myCreateUrl(
                                 'index',
                                 array(
                                     'subaction' => $subaction,
@@ -1560,14 +1552,14 @@ class SurveyCondition
                                 $aData['rows'] = $rows;
                                 $aData['sImageURL'] = $imageurl;
 
-                                $data['editButtons'] = $renderPartial('conditions_edit', $aData, true);
+                                $data['editButtons'] = $caller->renderPartialView('conditions_edit', $aData, true);
                                 $data['hiddenFields'] = $this->getHiddenFields($rows, $leftOperandType, $rightOperandType);
                             } else {
                                 $data['editButtons'] = '';
                                 $data['hiddenFields'] = '';
                             }
 
-                            $aData['conditionHtml'] .= $renderPartial(
+                            $aData['conditionHtml'] .= $caller->renderPartialView(
                                 'condition',
                                 $data,
                                 true
@@ -1579,7 +1571,7 @@ class SurveyCondition
 
                     $s++;
 
-                    $aViewUrls['output'] .= $renderPartial(
+                    $aViewUrls['output'] .= $caller->renderPartialView(
                         'conditions_scenario',
                         $aData,
                         true
@@ -1588,11 +1580,11 @@ class SurveyCondition
                 // If we have a condition, all ways reset the condition, this can fix old import (see #09344)
                 // LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
             } elseif (!empty(trim((string) $oQuestion->relevance)) ||  trim((string) $oQuestion->relevance) == '1') {
-                $aViewUrls['output'] = $renderPartial('customized_conditions', $aData, true);
+                $aViewUrls['output'] = $caller->renderPartialView('customized_conditions', $aData, true);
             } else {
                 // no condition ==> disable delete all conditions button, and display a simple comment
                 // no_conditions
-                $aViewUrls['output'] = $renderPartial('no_condition', $aData, true);
+                $aViewUrls['output'] = $caller->renderPartialView('no_condition', $aData, true);
             }
 
             //// To close the div opened in condition header....  see : https://goo.gl/BY7gUJ
@@ -1605,7 +1597,7 @@ class SurveyCondition
             $subaction == "copyconditionsform"
             || $subaction == "copyconditions"
         ) {
-            $aViewUrls['output'] .= $getCopyForm($qid, $gid, $conditionsList, $pquestions);
+            $aViewUrls['output'] .= $caller->getCopyForm($qid, $gid, $conditionsList, $pquestions);
         }
 
         if (
@@ -1619,16 +1611,16 @@ class SurveyCondition
             || $subaction == "editthiscondition"
             || $subaction == "delete"
         ) {
-            $aViewUrls['output'] .= $getEditConditionForm($args);
+            $aViewUrls['output'] .= $caller->getEditConditionForm($args);
         }
 
         // Top Bar
-        $aData['topbar']['middleButtons'] = $renderPartial(
+        $aData['topbar']['middleButtons'] = $caller->renderPartialView(
             'leftSideButtons',
             ['aData' => $aData],
             true
         );
-        $aData['topbar']['rightButtons'] = $renderPartial(
+        $aData['topbar']['rightButtons'] = $caller->renderPartialView(
             'rightSideButtons',
             ['aData' => $aData],
             true

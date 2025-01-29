@@ -232,7 +232,7 @@ class ConditionsAction extends SurveyCommonAction
         $aData['returnUrl'] = $returnUrl;
         $aData['conditionsoutput_action_error'] = '';
 
-        $results = $this->surveyCondition->index($args, $aData, $subaction, $method, $gid, $qid, $imageurl, $extraGetParams, $this->addScript(...), $this->createNavigatorUrl(...), $this->myCreateUrl(...), $this->renderPartialView(...), $this->getJavascriptForMatching(...), $this->getCopyForm(...), $this->getEditConditionForm(...));
+        $results = $this->surveyCondition->index($args, $aData, $subaction, $method, $gid, $qid, $imageurl, $extraGetParams, $this);
         $results['aData']['returnUrl'] = $returnUrl;
         $this->renderWrappedTemplate('conditions', $results['aViewUrls'], $results['aData']);
 
@@ -301,7 +301,7 @@ class ConditionsAction extends SurveyCommonAction
 
         $editSourceTab = $request->getPost('editSourceTab');
         $editTargetTab = $request->getPost('editTargetTab');
-        $this->surveyCondition->insertCondition($args, $editSourceTab, $editTargetTab, Yii::app()->setFlashMessage(...), Yii::app()->request->getPost('ConditionConst', ''), Yii::app()->request->getPost('prevQuestionSGQA', ''), Yii::app()->request->getPost('tokenAttr', ''), Yii::app()->request->getPost('ConditionRegexp', ''));
+        $this->surveyCondition->insertCondition($args, $editSourceTab, $editTargetTab, Yii::app(), Yii::app()->request->getPost('ConditionConst', ''), Yii::app()->request->getPost('prevQuestionSGQA', ''), Yii::app()->request->getPost('tokenAttr', ''), Yii::app()->request->getPost('ConditionRegexp', ''));
 
         $this->redirectToConditionStart($qid, $gid);
     }
@@ -487,7 +487,7 @@ class ConditionsAction extends SurveyCommonAction
         /** @var CHttpRequest $request */
         /** @var string $editSourceTab */
         $request = $args['request'];
-        $this->surveyCondition->updateCondition($args, $request->getPost('editTargetTab'), Yii::app()->setFlashMessage(...), Yii::app()->request->getPost('ConditionConst', ''), Yii::app()->request->getPost('prevQuestionSGQA', ''), Yii::app()->request->getPost('tokenAttr', ''), Yii::app()->request->getPost('ConditionRegexp', ''));
+        $this->surveyCondition->updateCondition($args, $request->getPost('editTargetTab'), Yii::app(), Yii::app()->request->getPost('ConditionConst', ''), Yii::app()->request->getPost('prevQuestionSGQA', ''), Yii::app()->request->getPost('tokenAttr', ''), Yii::app()->request->getPost('ConditionRegexp', ''));
         $this->redirectToConditionStart($args['qid'], $args['gid']);
     }
 
@@ -498,7 +498,7 @@ class ConditionsAction extends SurveyCommonAction
      */
     protected function renumberScenarios(int $qid)
     {
-        $this->surveyCondition->renumberScenarios($qid, Yii::app()->setFlashMessage(...));
+        $this->surveyCondition->renumberScenarios($qid, Yii::app());
     }
 
     /**
@@ -508,7 +508,7 @@ class ConditionsAction extends SurveyCommonAction
      */
     protected function copyConditions(array $args)
     {
-        $this->surveyCondition->copyConditions(returnGlobal('copyconditionsfrom'), returnGlobal('copyconditionsto'), Yii::app()->setFlashMessage(...));
+        $this->surveyCondition->copyConditions(returnGlobal('copyconditionsfrom'), returnGlobal('copyconditionsto'), Yii::app());
     }
 
     /**
@@ -556,11 +556,11 @@ class ConditionsAction extends SurveyCommonAction
                 break;
             // Update scenario
             case "updatescenario":
-                $this->surveyCondition->updateScenario($p_newscenarionum, $qid, $p_scenario, Yii::app()->setFlashMessage(...));
+                $this->surveyCondition->updateScenario($p_newscenarionum, $qid, $p_scenario, Yii::app());
                 break;
             // Delete all conditions for this question
             case "deleteallconditions":
-                $this->surveyCondition->deleteAllConditions($qid, Yii::app()->setFlashMessage(...));
+                $this->surveyCondition->deleteAllConditions($qid, Yii::app());
                 $this->redirectToConditionStart($qid, $gid);
                 break;
             // Renumber scenarios
@@ -609,7 +609,7 @@ class ConditionsAction extends SurveyCommonAction
      * @return string html
      * @throws CException
      */
-    protected function getCopyForm(int $qid, int $gid, array $conditionsList, array $pquestions): string
+    public function getCopyForm(int $qid, int $gid, array $conditionsList, array $pquestions): string
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'checkgroup.js', LSYii_ClientScript::POS_BEGIN);
 
@@ -643,7 +643,7 @@ class ConditionsAction extends SurveyCommonAction
      * @return string
      * @throws CException
      */
-    protected function getEditConditionForm(array $args): string
+    public function getEditConditionForm(array $args): string
     {
         /** @var array $cquestions */
         /** @var string $p_cquestions */
@@ -892,7 +892,7 @@ class ConditionsAction extends SurveyCommonAction
      * @param bool $processOutput processOutput to be passed to the renderPartial method
      * @return string
      */
-    protected function renderPartialView(string $what, array $data = null, bool $return = false, bool $processOutput = false)
+    public function renderPartialView(string $what, array $data = null, bool $return = false, bool $processOutput = false)
     {
         switch ($what) {
             case 'navigator':
@@ -933,7 +933,7 @@ class ConditionsAction extends SurveyCommonAction
      * @param int $qid Questino id
      * @return string url
      */
-    protected function createNavigatorUrl(int $gid, int $qid): string
+    public function createNavigatorUrl(int $gid, int $qid): string
     {
         return $this->getController()->createUrl(
             '/admin/conditions/sa/index/subaction/editconditionsform/',
@@ -951,7 +951,7 @@ class ConditionsAction extends SurveyCommonAction
      * @param array $params an array to be passed to createUrl
      * @return string
      */
-    protected function myCreateUrl(string $pathKey, array $params = [])
+    public function myCreateUrl(string $pathKey, array $params = [])
     {
         switch ($pathKey) {
             case 'quickAddCondition':
@@ -976,7 +976,7 @@ class ConditionsAction extends SurveyCommonAction
      * @param integer $how the way
      * @return void
      */
-    protected function addScript($key, $which, $how)
+    public function addScript($key, $which, $how)
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig($key) . $which . '.js', $how);
     }
@@ -988,7 +988,7 @@ class ConditionsAction extends SurveyCommonAction
      * @param boolean $surveyIsAnonymized
      * @return string js
      */
-    protected function getJavascriptForMatching(array $canswers, array $cquestions, bool $surveyIsAnonymized): string
+    public function getJavascriptForMatching(array $canswers, array $cquestions, bool $surveyIsAnonymized): string
     {
         $javascriptpre = ""
             . "\tvar Fieldnames = new Array();\n"
