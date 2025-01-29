@@ -19,12 +19,12 @@ App()->getClientScript()->registerScript(
         <ul class="nav nav-tabs" id="boxeslist">
             <li class="nav-item">
                 <a class="nav-link active" href='#boxes' data-bs-toggle="tab">
-                    <?php eT('Boxes') ?>
+                    <?php eT('Buttons') ?>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href='#boxsettings' data-bs-toggle="tab">
-                    <?php eT('Box Settings'); ?>
+                    <?php eT('Settings'); ?>
                 </a>
             </li>
         </ul>
@@ -145,7 +145,7 @@ App()->getClientScript()->registerScript(
 //                        ]); ?>
 <!--                        <input type="hidden" id="show_survey_list-url" data-url="--><?php //echo App()->createUrl('homepageSettings/toggleShowSurveyList'); ?><!--"/>-->
 <!--                    </div>-->
-<!---->
+<!--
                     <label class="col-md-4 col-form-label"><?php eT("Show search box on survey list:"); ?> </label>
                     <div class="col-md-2">
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -158,7 +158,7 @@ App()->getClientScript()->registerScript(
                         ]); ?>
                         <input type="hidden" id="show_survey_list_search-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowSurveyListSearch'); ?>"/>
                     </div>
-<!---->
+-->
 <!--                    <br/><br/>-->
                 </div>
 

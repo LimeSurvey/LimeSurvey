@@ -8,7 +8,6 @@
  */
 class LsDefaultDataSets
 {
-
     public static function getSurveyMenuEntryData()
     {
         $sOldLanguage = App()->language;
@@ -324,7 +323,6 @@ class LsDefaultDataSets
                 0,
                 1
             ],
-         
             [
                 2,
                 null,
@@ -863,13 +861,13 @@ class LsDefaultDataSets
         ];
         $returnArray[] = [
             'position'   => '2',
-            'url'        => 'userManagement/index',
-            'title'      => gT('Manage administrators'),
-            'ico'        => 'ri-user-settings-line',
-            'desc'       => gT('The user management allows you to add additional users to your survey administration.'),
+            'url'        => 'admin/globalsettings',
+            'title'      => gT('Global settings'),
+            'ico'        => 'ri-settings-3-fill',
+            'desc'       => gT('Edit global settings'),
             'page'       => 'welcome',
             'usergroup'  => '-2',
-            'buttontext' => gt('Manage administrators')
+            'buttontext' => gt('View global settings')
         ];
         $returnArray[] = [
             'position'   => '3',
@@ -883,19 +881,19 @@ class LsDefaultDataSets
         ];
         $returnArray[] = [
             'position'   => '4',
-            'url'        => 'admin/globalsettings',
-            'title'      => gT('Global settings'),
-            'ico'        => 'ri-settings-3-fill',
-            'desc'       => gT('Edit global settings'),
+            'url'        => 'userManagement/index',
+            'title'      => gT('Manage administrators'),
+            'ico'        => 'ri-group-line',
+            'desc'       => gT('The user management allows you to add additional users to your survey administration.'),
             'page'       => 'welcome',
             'usergroup'  => '-2',
-            'buttontext' => gt('View global settings')
+            'buttontext' => gt('Manage administrators')
         ];
         $returnArray[] = [
             'position'   => '5',
             'url'        => 'admin/pluginmanager/sa/index',
             'title'      => gT('Plugins'),
-            'ico'        => 'ri-plug-line',
+            'ico'        => 'ri-plug-fill',
             'desc'       => gT('Plugins can be used to add custom features'),
             'page'       => 'welcome',
             'usergroup'  => '-2',
@@ -2811,8 +2809,13 @@ class LsDefaultDataSets
             gt("Show link to legal notice in survey:"),
             gt("Show link to data policy in survey:"),
             gt("Survey legal notice:"),
-            gt("Legal notice")
-
+            gt("Legal notice"),
+            gt("Show 'Clear all' button"),
+            gt("Wrap tables"),
+            gt("Variations"),
+            gt("Colors"),
+            gt("Animations"),
+            gt("Fonts")
         ];
     }
 
