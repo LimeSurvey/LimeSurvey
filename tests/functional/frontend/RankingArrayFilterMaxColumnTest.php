@@ -105,7 +105,7 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
 
             // Check that answer was recorded correctly.
             /** @var string */
-            $query = sprintf('SELECT * FROM {{survey_%d}}', $survey->sid);
+            $query = sprintf('SELECT * FROM {{responses_%d}}', $survey->sid);
             /** @var CDbConnection */
             $dbo = \Yii::app()->getDb();
             /** @var array */

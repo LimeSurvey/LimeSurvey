@@ -77,7 +77,7 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
             $this->assertFalse(self::$webDriver->findById('question'.$questions['G2Q04']['qid'])->isDisplayed());
 
             /* Check Y on question 1, and check if Q02 is visible */
-            $yTextSGQA = self::$surveyId."X".$questions['G2Q01']['gid']."X".$questions['G2Q01']['qid'];
+            $yTextSGQA = "Q".$questions['G2Q01']['qid'];
             $yText = self::$webDriver->findElement(WebDriverBy::id("answer".$yTextSGQA));
             $yText->sendKeys("Y");
             sleep(1);
@@ -149,15 +149,14 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
                 "Question preview force relevance broken"
             );
             /* Check filter is done */
-            $thirdLineSGQA = self::$surveyId."X".$questions['G3Q02']['gid']."X".$questions['G3Q02']['qid']."SQ003";
+            $thirdLineSGQA = "Q".$questions['G3Q02']['qid']."SQ003";
             $this->assertFalse(
                 self::$webDriver->findElement(WebDriverBy::id('javatbd'.$thirdLineSGQA))->isDisplayed(),
                 "Question preview force relevance broken"
             );
             /* Check EM js */
             $checkboxToClickSGQA =
-                self::$surveyId."X".$questions['G3Q02']['gid']
-                . "X".$questions['G3Q02']['qid']."SQ001";
+                "Q".$questions['G3Q02']['qid']."SQ001";
             $label = self::$webDriver->findElement(
                 WebDriverBy::cssSelector(
                     sprintf(
@@ -208,7 +207,7 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
                 "Question preview force relevance broken"
             );
             /* Check filter is done */
-            $secondLineSGQA = self::$surveyId."X".$questions['G3Q02']['gid']."X".$questions['G3Q02']['qid']."SQ002";
+            $secondLineSGQA = "Q".$questions['G3Q02']['qid']."SQ002";
             $this->assertTrue(
                 self::$webDriver->findElement(WebDriverBy::id('javatbd'.$secondLineSGQA))->isDisplayed(),
                 "Question preview force relevance broken"

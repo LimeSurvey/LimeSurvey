@@ -55,16 +55,16 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
         );
 
         // Qanda needs this.
-        $_SESSION['survey_' . self::$surveyId]['maxstep'] = 2;
-        $_SESSION['survey_' . self::$surveyId]['step'] = 1;
-        $_SESSION['survey_' . self::$surveyId]['s_lang'] = 'pt';        
+        $_SESSION['responses_' . self::$surveyId]['maxstep'] = 2;
+        $_SESSION['responses_' . self::$surveyId]['step'] = 1;
+        $_SESSION['responses_' . self::$surveyId]['s_lang'] = 'pt';        
 
         // Move one step to run expressions.
         $moveResult = \LimeExpressionManager::NavigateForwards();
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
-            $_SESSION['survey_' . self::$surveyId]['fieldarray'][0]
+            $_SESSION['responses_' . self::$surveyId]['fieldarray'][0]
         );
 
         $correctDate = date('d/m/Y');
