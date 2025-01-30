@@ -350,10 +350,10 @@ class SurveyCondition
     /**
      * deleteAllConditionsOfSurvey cation
      * @param int $sid the survey id
-     * @param callable $write writer callback
+     * @param object $app the app object
      * @return void
      */
-    public function deleteAllConditionsOfSurvey(int $sid, callable $write)
+    public function deleteAllConditionsOfSurvey(int $sid, $app)
     {
         \LimeExpressionManager::RevertUpgradeConditionsToRelevance($sid);
         $qids = [0];
@@ -363,7 +363,7 @@ class SurveyCondition
         }
         $qids_str = implode(",", $qids);
         \Condition::model()->deleteRecords("qid in ({$qids_str})");
-        $write(gT("All conditions for this survey have been deleted.", 'success'));
+        $app->setFlashMessage(gT("All conditions for this survey have been deleted.", 'success'));
     }
 
     /**

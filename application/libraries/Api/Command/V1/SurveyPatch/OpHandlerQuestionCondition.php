@@ -612,20 +612,20 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *         "entity": "questionCondition",
      *         "error": false,
      *         "props": {
-     *             "qid": 15977,
+     *             "qid": 32,
      *             "scenarios": [
      *                 {
-     *                     "scid": 123,
+     *                     "scid": 9,
      *                     "conditions": [
      *                         {
-     *                             "cid": 2601,
+     *                             "cid": 65,
      *                             "action": "updateCondition",
      *                             "method": "==",
-     *                             "csrctoken": "{TOKEN:LASTNAME}",
+     *                             "csrctoken": "{TOKEN:FIRSTNAME}",
      *                             "ConditionConst": "",
-     *                             "prevQuestionSGQA": "@453614X608X15978@",
+     *                             "prevQuestionSGQA": "@543869X1X1@",
+     *                             "cquestions":"543869X1X1",
      *                             "ConditionRegexp": "",
-     *                             "cqid": 0,
      *                             "canswersToSelect": "",
      *                             "editSourceTab": "#SRCTOKENATTRS",
      *                             "editTargetTab": "#PREVQUESTIONS"
@@ -720,7 +720,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                         throw new \Exception("Incompatible op with the action");
                     }
                     $question = \Question::model()->findByPk($qid);
-                    $this->surveyCondition->copyConditions($this->surveyCondition->getCidsOfQid($op->getProps()['fromqid']), [$this->surveyCondition->setISurveyID($question->sid)->getFieldName($question->sid, $question->gid, $question->qid)], $this->message(...));
+                    $this->surveyCondition->copyConditions($this->surveyCondition->getCidsOfQid($op->getProps()['fromqid']), [$this->surveyCondition->setISurveyID($question->sid)->getFieldName($question->sid, $question->gid, $question->qid)], $this);
                     break;
                 case "deleteAllConditionsOfSurvey":
                     $this->surveyCondition->deleteAllConditionsOfSurvey($op->getProps()['sid'], $this);
