@@ -125,11 +125,6 @@ class SurveyAdministrationController extends LSBaseController
         $beforeSurveyAdminView = new PluginEvent('beforeSurveyAdminView');
         $beforeSurveyAdminView->set('surveyId', $iSurveyID);
         App()->getPluginManager()->dispatchEvent($beforeSurveyAdminView);
-        $redirectUrl = $beforeSurveyAdminView->get('redirectUrl');
-        if ($redirectUrl && App()->getRequest()->getParam('allowRedirect', 0) == 1) {
-            // if redirect URL is provided by a plugin, redirect:
-            $this->redirect($redirectUrl);
-        }
 
         // We load the panel packages for quick actions
         $iSurveyID = sanitize_int($iSurveyID);
@@ -242,7 +237,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['model'] = new Survey('search');
         $aData['groupModel'] = new SurveysGroups('search');
         $aData['topbar']['title'] = gT('Survey list');
-        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
 
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
 
@@ -979,7 +974,7 @@ class SurveyAdministrationController extends LSBaseController
                                         ]
                                     )
                                 ) . '})',
-                                'dataMessage' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js")
+                                'dataMessage' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", 'unescaped')
                             ];
                         } else {
                             $curGroup['groupDropdown']['delete'] =
@@ -989,7 +984,7 @@ class SurveyAdministrationController extends LSBaseController
                                 'icon' => 'ri-delete-bin-fill text-danger',
                                 'dataTitle' => gt('Delete group'),
                                 'disabled' => true,
-                                'title' => gt("Impossible to delete this group because there is at least one question having a condition on its content")
+                                'title' => gt("Impossible to delete this group because there is at least one question having a condition on its content", 'unescaped')
                             ];
                         }
                     } else {
@@ -1000,7 +995,7 @@ class SurveyAdministrationController extends LSBaseController
                             'icon' => 'ri-delete-bin-fill text-danger',
                             'dataTitle' => gt('Delete group'),
                             'disabled' => true,
-                            'title' => gt("It is not possible to add/delete groups if the survey is active.")
+                            'title' => gt("It is not possible to add/delete groups if the survey is active.", 'unescaped')
                         ];
                     }
                 }
@@ -1096,7 +1091,7 @@ class SurveyAdministrationController extends LSBaseController
                                     'dataTitle' => gt('Delete this question'),
                                     'dataBtnText' => gt('Delete'),
                                     'dataOnclick' => '(function() { ' .  convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $question->qid, "redirectTo" => "groupoverview"])) . '})',
-                                    'dataMessage' => gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?")
+                                    'dataMessage' => gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?", 'unescaped')
                                 ];
                         } else {
                             $curQuestion['questionDropdown']['delete'] =
@@ -1106,7 +1101,7 @@ class SurveyAdministrationController extends LSBaseController
                                 'icon' => 'ri-delete-bin-fill text-danger',
                                 'dataTitle' => gt('Delete this question'),
                                 'disabled' => true,
-                                'title' => gt("You can not delete a question if the survey is active."),
+                                'title' => gt("You can not delete a question if the survey is active.", 'unescaped'),
                             ];
                         }
 
@@ -1768,6 +1763,14 @@ class SurveyAdministrationController extends LSBaseController
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
+
+        // Avoid reactivating a survey that is already active
+        // Doing so might override the survey settings, causing an "Error: didn't save" issue
+        if (Survey::model()->findByPk($surveyId)->getIsActive()) {
+            App()->user->setFlash('error', gT("The survey is already active."));
+            $this->redirect(App()->request->urlReferrer);
+        }
+
         $diContainer = \LimeSurvey\DI::getContainer();
         $surveyActivate = $diContainer->get(
             LimeSurvey\Models\Services\SurveyActivate::class
@@ -1862,7 +1865,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin', 'read');
             Survey::model()->deleteSurvey($iSurveyID);
             Yii::app()->session['flashmessage'] = gT("Survey deleted.");
-            $this->redirect(array("admin/index"));
+            $this->redirect(array("dashboard/view"));
         }
 
         $this->aData = $aData;
@@ -2787,8 +2790,8 @@ class SurveyAdministrationController extends LSBaseController
         $oQuestion->question_order = 1;
         $oQuestion->save();
         $oQuestionLS = new QuestionL10n();
-        $oQuestionLS->question = gT('A first example question. Please answer this question:', 'html', $sLanguage);
-        $oQuestionLS->help = gT('This is a question help text.', 'html', $sLanguage);
+        $oQuestionLS->question = '';
+        $oQuestionLS->help = '';
         $oQuestionLS->language = $sLanguage;
         $oQuestionLS->qid = $oQuestion->qid;
         $oQuestionLS->save();
@@ -3394,5 +3397,49 @@ class SurveyAdministrationController extends LSBaseController
             Yii::app()->user->setFlash('error', gT("Could not delete URL parameter"));
         }
         $this->redirect($redirectUrl);
+    }
+
+    /**
+     * Retrieves and renders a list of surveys with optional active status filter for the box widget Ajax.
+     *
+     * @return string|false Rendered partial view if surveys are found, otherwise false.
+     * @throws CException
+     */
+    public function actionBoxList()
+    {
+        $limit = (int)App()->request->getQuery('limit');
+        $page = (int)App()->request->getQuery('page');
+
+        $model = Survey::model();
+        if ($state = App()->request->getQuery('active')) {
+            $model->active = $state;
+            $surveys = $model
+                ->search(['pageSize' => $limit, 'currentPage' => $page]);
+        } else {
+            $surveys = $model
+                ->search(['pageSize' => $limit, 'currentPage' => $page]);
+        }
+
+
+        $boxes = [];
+        foreach ($surveys->getData() as $survey) {
+            $state = strip_tags($survey->getRunning());
+            $boxes[] = [
+                'survey' => $survey,
+                'type' => 0,
+                'external' => false,
+                'iconAlter' => $state,
+                'state' => $survey->getState(),
+                'buttons' => $survey->getButtons(),
+                'link' => App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid . '?allowRedirect=1'),
+            ];
+        }
+
+        return $this->renderPartial(
+            'ext.admin.BoxesWidget.views.box',
+            array(
+                'items' => $boxes
+            )
+        );
     }
 }

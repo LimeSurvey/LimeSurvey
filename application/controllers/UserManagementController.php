@@ -22,10 +22,10 @@ class UserManagementController extends LSBaseController
             array(
                 'allow',
                 'actions' => array(
-                    'index', 'addEditUser', 'applyEdit', 'addDummyUser',
-                    'runAddDummyUser', 'addRole', 'batchAddGroup', 'batchApplyRoles', 'batchPermissions',
+                    'index', 'addEditUser', 'applyEdit',
+                    'addRole', 'batchAddGroup', 'batchApplyRoles', 'batchPermissions',
                     'batchSendAndResetLoginData', 'deleteConfirm',  'deleteMultiple', 'exportUser', 'importUser',
-                    'renderSelectedItems', 'renderUserImport', 'runAddDummyUser', 'saveRole', 'saveThemePermissions',
+                    'renderSelectedItems', 'renderUserImport', 'saveRole', 'saveThemePermissions',
                     'takeOwnership', 'userPermissions', 'userTemplatePermissions', 'viewUser'
                 ),
                 'users' => array('@'), //only login users
@@ -40,7 +40,7 @@ class UserManagementController extends LSBaseController
     public function filters()
     {
         return [
-            'postOnly + applyEdit, runAddDummyUser, deleteUser, userActivateDeactivate,'
+            'postOnly + applyEdit, deleteUser, userActivateDeactivate,'
             . ' batchStatus, saveUserPermissions, saveThemePermissions, saveRole, importUsers, deleteMultiple,'
             . ' batchSendAndResetLoginData, batchPermissions, batchAddGroup, batchApplyRoles,'
             . ' TakeOwnership'
@@ -82,7 +82,7 @@ class UserManagementController extends LSBaseController
 
 
         $aData['topbar']['title'] = gT('User management');
-        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
 
         //this is really important, so we have the aData also before rendering the content
@@ -151,7 +151,7 @@ class UserManagementController extends LSBaseController
             $aUser['full_name'] = flattenText($aUser['full_name'], false, true);
         }
 
-        $passwordTest = Yii::app()->request->getParam('password_repeat', false);
+        $passwordTest = Yii::app()->request->getParam('password_repeat', '');
 
         if (!empty($passwordTest)) {
             if ($passwordTest !== $aUser['password']) {
@@ -227,60 +227,6 @@ class UserManagementController extends LSBaseController
             ]);
         }
     }
-
-    /**
-     * Opens the modal to add dummy users
-     *
-     * @throws CException
-     */
-    public function actionAddDummyUser()
-    {
-        return $this->renderPartial('partial/adddummyuser', []);
-    }
-
-    /**
-     * Creates a batch of dummy users
-     *
-     * @return string | JSON
-     * @throws CException
-     */
-    public function actionRunAddDummyUser()
-    {
-        if (!Permission::model()->hasGlobalPermission('users', 'create')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
-        }
-        $times = App()->request->getPost('times', 5);
-        $minPwLength = \LimeSurvey\Models\Services\PasswordManagement::MIN_PASSWORD_LENGTH;
-        $passwordSize = (int) App()->request->getPost('passwordsize', $minPwLength);
-        $prefix = flattenText(App()->request->getPost('prefix', 'randuser_'));
-        $email = App()->request->getPost('email', User::model()->findByPk(App()->user->id)->email);
-
-        $randomUsers = [];
-
-        for (; $times > 0; $times--) {
-            $name = $this->getRandomUsername($prefix);
-            $password = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword($passwordSize);
-            $oUser = new User();
-            $oUser->users_name = $name;
-            $oUser->full_name = $name;
-            $oUser->email = $email;
-            $oUser->parent_id = App()->user->id;
-            $oUser->created = date('Y-m-d H:i:s');
-            $oUser->modified = date('Y-m-d H:i:s');
-            $oUser->password = password_hash($password, PASSWORD_DEFAULT);
-            $save = $oUser->save();
-            $randomUsers[] = ['username' => $name, 'password' => $password, 'save' => $save];
-        }
-
-        return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
-            'success' => true,
-            'html' => $this->renderPartial('partial/createdrandoms', ['randomUsers' => $randomUsers, 'filename' => $prefix], true),
-        ]]);
-    }
-
 
     /**
      * Deletes a user after  confirmation

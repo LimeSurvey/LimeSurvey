@@ -21,7 +21,7 @@ if (!defined('YII_DEBUG')) {
 
                 // @see https://www.limesurvey.org/manual/Code_quality_guide#Assertions
                 // This will not work if the process is started in production mode (see https://www.php.net/manual/en/ini.core.php#ini.zend.assertions)
-                ini_set('zend.assertions', 1);
+                @ini_set('zend.assertions', 1);
             } else {
                 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
             }

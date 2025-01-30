@@ -32,6 +32,7 @@ class SchemaFactorySurvey
                 Schema::boolean('datestamp')->default(null),
                 Schema::boolean('useCookie')->default(null),
                 Schema::boolean('allowRegister')->default(null),
+                Schema::boolean('htmlEmail')->default(null),
                 Schema::boolean('allowSave')->default(null),
                 Schema::integer('autoNumberStart')->default(0),
                 Schema::boolean('autoRedirect')->default(null),

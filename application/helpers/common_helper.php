@@ -972,9 +972,10 @@ function sendSurveyHttpHeaders()
 * @param string $sFieldCode Field code of the particular field
 * @param string $sValue The stored response value
 * @param string $sLanguage Initialized limesurvey_lang object for the resulting response data
+* @param Question|null $question
 * @return string
 */
-function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
+function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $question = null)
 {
 
     if ($sValue == null || $sValue == '') {
@@ -984,7 +985,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
     //Fieldcode used to determine question, $sValue used to match against answer code
     //Returns NULL if question type does not suit
     if (strpos($sFieldCode, "{$iSurveyID}X") === 0) {
-//Only check if it looks like a real fieldcode
+        //Only check if it looks like a real fieldcode
         $fieldmap = createFieldMap($survey, 'short', false, false, $sLanguage);
         if (isset($fieldmap[$sFieldCode])) {
             $fields = $fieldmap[$sFieldCode];
@@ -1002,7 +1003,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
         switch ($this_type) {
             case Question::QT_D_DATE:
                 if (trim($sValue) != '') {
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fields['qid']);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($question ?? $fields['qid']);
                     $dateformatdetails = getDateFormatDataForQID($qidattributes, $iSurveyID);
                     $sValue = convertDateTimeFormat($sValue, "Y-m-d H:i:s", $dateformatdetails['phpdate']);
                 }
@@ -1468,6 +1469,15 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     $aquery .= " ORDER BY group_order, question_order";
     /** @var Question[] $questions */
     $questions = Yii::app()->db->createCommand($aquery)->queryAll();
+    $qids = [0];
+    foreach ($questions as $q) {
+        $qids[] = $q['qid'];
+    }
+    $rawQuestions = Question::model()->findAllByPk($qids);
+    $qs = [];
+    foreach ($rawQuestions as $rawQuestion) {
+        $qs[$rawQuestion->qid] = $rawQuestion;
+    }
     $questionSeq = -1; // this is incremental question sequence across all groups
     $groupSeq = -1;
     $_groupOrder = -1;
@@ -1728,7 +1738,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 }
             }
         } elseif ($arow['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {
-            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arow['qid']);
+            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($qs[$arow['qid']] ?? $arow['qid']);
             $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
             $fieldmap[$fieldname] = array(
                 "fieldname" => $fieldname,
@@ -2269,16 +2279,23 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid = "", $output = 
         $qrows = $fieldmap;
     }
     $grows = array(); //Create an empty array in case query not return any rows
+    $qids = [0];
     // Store each result as an array with in the $grows array
     foreach ($qrows as $qrow) {
         if (isset($qrow['gid']) && !empty($qrow['gid'])) {
+            $qids[] = $qrow['qid'];
             $grows[$qrow['qid']] = array('qid' => $qrow['qid'], 'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
         }
+    }
+    $rawQuestions = Question::model()->findAllByPk($qids);
+    $questions = [];
+    foreach ($rawQuestions as $rawQuestion) {
+        $questions[$rawQuestion->qid] = $rawQuestion;
     }
     foreach ($grows as $qrow) {
     // Cycle through questions to see if any have list_filter attributes
         $qidtotitle[$qrow['qid']] = $qrow['title'];
-        $qresult = QuestionAttribute::model()->getQuestionAttributes($qrow['qid']);
+        $qresult = QuestionAttribute::model()->getQuestionAttributes($questions[$qrow['qid']] ?? $qrow['qid']);
         if (isset($qresult['array_filter_exclude'])) {
         // We Found a array_filter attribute
             $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
@@ -3242,9 +3259,18 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
     $aResultTable = array();
     $oldgid = 0;
     $oldqid = 0;
+    $qids = [0];
+    foreach ($aRelevantFields as $sKey => $fname) {
+        $qids[] = $fname['qid'];
+    }
+    $rawQuestions = Question::model()->findAllByPk($qids);
+    $questions = [];
+    foreach ($rawQuestions as $rawQuestion) {
+        $questions[$rawQuestion->qid] = $rawQuestion;
+    }
     foreach ($aRelevantFields as $sKey => $fname) {
         if (!empty($fname['qid'])) {
-            $attributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
+            $attributes = QuestionAttribute::model()->getQuestionAttributes($questions[$fname['qid']] ?? $fname['qid']);
             if (getQuestionAttributeValue($attributes, 'hidden') == 1) {
                 continue;
             }
@@ -3266,13 +3292,13 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
                 if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2'])) {
                     $aResultTable['qid_' . $fname['sid'] . 'X' . $fname['gid'] . 'X' . $fname['qid']] = array($fname['question'], '', '');
                 } else {
-                    $answer = getExtendedAnswer($iSurveyID, $fname['fieldname'], $idrow[$fname['fieldname']], $sLanguageCode);
+                    $answer = getExtendedAnswer($iSurveyID, $fname['fieldname'], $idrow[$fname['fieldname']], $sLanguageCode, $questions[$fname['qid']] ?? null);
                     $aResultTable[$fname['fieldname']] = array($question, '', $answer);
                     continue;
                 }
             }
         } else {
-            $answer = getExtendedAnswer($iSurveyID, $fname['fieldname'], $idrow[$fname['fieldname']], $sLanguageCode);
+            $answer = getExtendedAnswer($iSurveyID, $fname['fieldname'], $idrow[$fname['fieldname']], $sLanguageCode, $questions[$fname['qid']] ?? null);
             $aResultTable[$fname['fieldname']] = array($question, '', $answer);
             continue;
         }
@@ -3288,7 +3314,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
                     $subquestion .= "[{$fname['subquestion2']}]";
         }
 
-        $answer = getExtendedAnswer($iSurveyID, $fname['fieldname'], $idrow[$fname['fieldname']], $sLanguageCode);
+        $answer = getExtendedAnswer($iSurveyID, $fname['fieldname'], $idrow[$fname['fieldname']], $sLanguageCode, $questions[$fname['qid']] ?? null);
         $aResultTable[$fname['fieldname']] = array($question, $subquestion, $answer);
     }
     return $aResultTable;
