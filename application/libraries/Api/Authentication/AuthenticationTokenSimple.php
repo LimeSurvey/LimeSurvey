@@ -80,7 +80,6 @@ class AuthenticationTokenSimple implements AuthenticationInterface
                 '@' . $session->expire
             ),
             'userId' => (int) $userId,
-            'adminLang' => App()->session->get('adminlang', 'en'),
         ];
     }
 
