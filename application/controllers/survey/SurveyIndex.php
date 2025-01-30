@@ -195,6 +195,11 @@ class SurveyIndex extends CAction
             $sDisplayLanguage = $oSurvey->language;
         }
 
+        if (Yii::app()->request->getParam('popuppreview', false) && ($baseLanguage = Yii::app()->request->getParam('language', false)) && Permission::model()->hasGlobalPermission('superadmin', 'update')) {
+            $sDisplayLanguage = $oSurvey->language = $oSurvey->additional_languages = $baseLanguage;
+            $oSurvey->save();
+        }
+
         if ($surveyid && $surveyExists) {
             SetSurveyLanguage($surveyid, $sDisplayLanguage);
         }
