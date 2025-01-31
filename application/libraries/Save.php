@@ -244,7 +244,7 @@ class Save
     /**
      * This functions saves the answer time for question/group and whole survey.
      * [ It compares current time with the time in $_POST['start_time'] ]
-     * The times are saved in table: {prefix}{surveytable}_timings
+     * The times are saved in table: {prefix}_timings
      * @return void
      */
     function set_answer_time()
