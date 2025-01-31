@@ -1110,7 +1110,7 @@ class Export extends SurveyCommonAction
         unlink($sLSSFileName);
 
         if ($survey->isActive) {
-            getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID, 'Responses', 'responses', $sLSRFileName, false);
+            getXMLDataSingleTable($iSurveyID, 'responses_' . $iSurveyID, 'Responses', 'responses', $sLSRFileName, false);
             $this->addToZip($zip, $sLSRFileName, 'survey_' . $iSurveyID . '_responses.lsr');
             unlink($sLSRFileName);
         }

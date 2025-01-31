@@ -1681,7 +1681,7 @@ class SurveyRuntimeHelper
                 }
                 $renderCaptcha = 'main';
             } else {
-                $_SESSION['survey_' . $this->iSurveyid]['captcha_surveyaccessscreen'] = true;
+                $_SESSION['responses_' . $this->iSurveyid]['captcha_surveyaccessscreen'] = true;
                 $renderCaptcha = 'correct';
             }
         }
