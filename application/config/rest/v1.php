@@ -25,6 +25,10 @@ $rest = [
                 'name' => 'Site Settings',
                 'description' => 'Site Settings',
             ],
+            'i18n' => [
+                'name' => 'I18n',
+                'description' => 'Translations',
+            ],
             'user' => [
                 'name' => 'User',
                 'description' => 'User',

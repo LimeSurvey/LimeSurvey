@@ -34,7 +34,7 @@ class I18n implements CommandInterface
     }
 
     /**
-     * Run survey detail command
+     * Run i18n command to fetch all translation data for one language
      *
      * @param Request $request
      * @return Response
