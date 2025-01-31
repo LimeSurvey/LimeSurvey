@@ -1317,7 +1317,9 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                 $length = strlen("{$sid}X{$gid}X{$qid}");
                 $hashPos = strpos($fieldName, '#');
                 foreach ($questions as $question) {
-                    if ($question->title === substr($fieldName, $length, ($hashPos !== false) ? ($hashPos - $length) : null)) {
+                    if ($hashPos && ($question->title === substr($fieldName, $length, ($hashPos !== false) ? ($hashPos - $length) : null))) {
+                        $currentQuestion = $question;
+                    } else if ($question->title === substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"))) {
                         $currentQuestion = $question;
                     }
                 }
