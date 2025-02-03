@@ -34,6 +34,22 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.10.2 (build 250127) to 6.10.3 (build 250203) February 3, 2025
+-Fixed issue #19927: postgres and unit tests  (#4137) (Gabriel Jenik)
+-Fixed issue #19856: Import LDAP - error 500 - ldap_set_option (#4101) (Denis Chenu)
+-Fixed issue #19839: Exporting a survey to PDF will result in PHP error (#4044) (Adam Zammit)
+-Fixed issue #19800: Error when selecting single choice answer in secondary language with debug=2 (#4000) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Brazil) by thiagosmartins
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.10.1 (build 250120) to 6.10.2 (build 250127) January 27, 2025
 -Fixed issue: Error when trying to attach file to email template using PHP 8.2 (Carsten Schmitz)
 -Fixed issue #19939: Correction to the path pointing the images in log-in page (#4149) (Gabriel Jenik)
