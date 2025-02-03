@@ -1434,7 +1434,7 @@ class SurveyRuntimeHelper
         $this->LEMskipReprocessing    = $LEMskipReprocessing ?? null;
         $this->thissurvey             = $thissurvey ?? null;
         $this->iSurveyid              = $surveyid ?? null;
-        $this->LEMsessid              = $this->iSurveyid ? 'response_' . $this->iSurveyid : null;
+        $this->LEMsessid              = $this->iSurveyid ? 'responses_' . $this->iSurveyid : null;
         $this->aSurveyOptions         = $surveyOptions ?? null;
         $this->aMoveResult            = $moveResult ?? null;
         $this->sMove                  = $move ?? null;
@@ -1516,7 +1516,7 @@ class SurveyRuntimeHelper
     private function manageClearAll()
     {
         global $token;
-        $sessionSurvey = Yii::app()->session["response_{$this->iSurveyid}"];
+        $sessionSurvey = Yii::app()->session["responses_{$this->iSurveyid}"];
         if (App()->request->getPost('confirm-clearall') != 'confirm') {
             /* Save current response, and come back to survey if clearll is not confirmed */
             $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, true, true, false);

@@ -46,7 +46,6 @@ class SurveyIndex extends CAction
             killSurveySession($surveyid);
             resetQuestionTimers($surveyid);
         }
-
         /* Get client token by POST or GET value */
         $clienttoken = trim((string)$param['token']);
         /* If not set : get by SESSION to avoid multiple submit of same token in different navigator */
