@@ -2,12 +2,15 @@
 
 use LimeSurvey\Api\Command\V1\I18n;
 use LimeSurvey\Libraries\Api\Command\V1\I18nMissing;
-use LimeSurvey\Libraries\Api\Rest\V1\SchemaFactory\SchemaFactoryI18nMissingTranslations;
-use LimeSurvey\Api\Rest\V1\SchemaFactory\{SchemaFactoryError,
+use LimeSurvey\Api\Rest\V1\SchemaFactory\{
+    SchemaFactoryError,
+    SchemaFactoryI18nMissingTranslations,
+    SchemaFactoryI18nMissingTranslationsResponse,
     SchemaFactoryI18nTranslations};
 
 $errorSchema = (new SchemaFactoryError())->make();
 $i18nTranslationsSchema = (new SchemaFactoryI18nTranslations())->make();
+$i18nMissingSchemaResponse = (new SchemaFactoryI18nMissingTranslationsResponse())->make();
 $i18nMissingSchema = (new SchemaFactoryI18nMissingTranslations())->make();
 
 $rest = [];
@@ -57,38 +60,15 @@ $rest['v1/i18n-missing'] = [
         'tag' => 'i18n',
         'summary' => 'Save missing translations',
         'description' => 'Save missing translations for a specific language',
-        'params' => [
-            'keys' => ['src' => 'json'],
-        ],
         'commandClass' => I18nMissing::class,
         'auth' => true,
-        'requestBody' => [
-            'required' => true,
-            'content' => [
-                'application/json' => [
-                    'schema' => [
-                        'type' => 'object',
-                        'properties' => [
-                            'lang' => [
-                                'type' => 'string',
-                                'description' => 'Language code'
-                            ],
-                            'text' => [
-                                'type' => 'string',
-                                'description' => 'Text to be translated'
-                            ]
-                        ],
-                        'required' => ['lang', 'text']
-                    ]
-                ]
-            ]
-        ],
+        'schema' => $i18nMissingSchema,
         'responses' => [
             'success' => [
                 'code' => 200,
                 'description' => 'Success',
                 'content' => null,
-                'schema' => $i18nMissingSchema
+                'schema' => $i18nMissingSchemaResponse
             ],
             'unauthorized' => [
                 'code' => 401,

@@ -45,9 +45,9 @@ class I18nMissing implements CommandInterface
      */
     public function run(Request $request)
     {
-        $keyObjects = $request->getData('keys');
+        $keys = $request->getData('keys');
 
-        if (empty($keyObjects) || !is_array($keyObjects)) {
+        if (empty($keys) || !is_array($keys)) {
             return $this->responseFactory
                 ->makeError('Missing or invalid translation keys');
         }
@@ -67,8 +67,7 @@ class I18nMissing implements CommandInterface
         // Read existing content
         $content = file_get_contents($absolutePath);
 
-        foreach ($keyObjects as $keyObject) {
-            $key = $keyObject['key'] ?? null;
+        foreach ($keys as $key) {
             if (empty($key)) continue;
 
             $newLine = "gT('" . addslashes($key) . "');";

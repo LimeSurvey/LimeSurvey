@@ -1,25 +1,35 @@
 <?php
 
-namespace LimeSurvey\Libraries\Api\Rest\V1\SchemaFactory;
+namespace LimeSurvey\Api\Rest\V1\SchemaFactory;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
-use GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\{
+    Schema,
+    AllOf
+};
 
 class SchemaFactoryI18nMissingTranslations
 {
-    /**
-     * @param \GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract $properties
-     */
-    public function make(SchemaContract ...$properties): Schema
+    public function make(): Schema
     {
+        $props = [
+            Schema::array('keys')->items(
+                AllOf::create()->schemas(
+                    Schema::object()
+                        ->properties(
+                            Schema::string('key')
+                                ->description('Text to be translated'),
+                            Schema::string('lang')
+                                ->description('Language code')
+                        )
+                        ->required('key', 'lang')
+                )
+            )
+        ];
+
         return Schema::create()
-            ->title('I18nMissingTranslations')
-            ->description('Schema for saving missing translations')
+            ->title('I18n Missing Translations')
+            ->description('Schema for missing translations')
             ->type(Schema::TYPE_OBJECT)
-            ->properties(
-                Schema::string('message')
-                    ->description('Success message with the saved key')
-                    ->example('Translation key saved: key')
-            );
+            ->properties(...$props);
     }
 }
