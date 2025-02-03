@@ -58,7 +58,7 @@ $rest['v1/i18n-missing'] = [
         'summary' => 'Save missing translations',
         'description' => 'Save missing translations for a specific language',
         'params' => [
-            'key' => ['src' => 'form'],
+            'keys' => ['src' => 'json'],
         ],
         'commandClass' => I18nMissing::class,
         'auth' => true,

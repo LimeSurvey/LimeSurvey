@@ -35,64 +35,74 @@ class I18nMissing implements CommandInterface
 
     /**
      * Handle missing translations
-     * This will get single missing strings which miss a translation.
+     * This will get an array of missing strings which need translation.
      * Those will be written in the file /application/helpers/newEditorTranslations
      * as gT('example');
-     * The function checks if this string already exists in the file to avoid duplicates.
-     * Before pushing the file it should be checked if the newly added strings
-     * are worthy to be pushed.
+     * The function checks if each string already exists in the file to avoid duplicates.
      *
      * @param Request $request
      * @return Response
      */
     public function run(Request $request)
     {
-        $key = $request->getData('key');
+        $keyObjects = $request->getData('keys');
 
-        if (empty($key)) {
+        if (empty($keyObjects) || !is_array($keyObjects)) {
             return $this->responseFactory
-                ->makeError('Missing translation key');
+                ->makeError('Missing or invalid translation keys');
         }
 
         $filename = '/helpers/newEditorTranslations.php';
         $absolutePath = App()->getBasePath() . $filename;
 
-        $newLine = "gT('" . addslashes($key) . "');";
-        $updated = false;
-        $success = false;
+        $updatedKeys = [];
+        $existingKeys = [];
 
         if (!file_exists($absolutePath)) {
             // Create new file with header
-            $content = "<?php\n// Translation-source for new editor. \n// Updated on " . date('Y-m-d H:i:s') . "\n\n" . $newLine . "\n";
-            $success = file_put_contents($absolutePath, $content);
-            $updated = $success !== false;
-        } else {
-            // Read existing content
-            $content = file_get_contents($absolutePath);
+            $content = "<?php\n// Translation-source for new editor. \n// Updated on " . date('Y-m-d H:i:s') . "\n\n";
+            file_put_contents($absolutePath, $content);
+        }
+
+        // Read existing content
+        $content = file_get_contents($absolutePath);
+
+        foreach ($keyObjects as $keyObject) {
+            $key = $keyObject['key'] ?? null;
+            if (empty($key)) continue;
+
+            $newLine = "gT('" . addslashes($key) . "');";
 
             // Check if the key already exists
             if (strpos($content, $newLine) === false) {
                 // Append new line to the file
-                $content = rtrim($content, "\n") . "\n" . $newLine . "\n";
-
-                // Update the timestamp
-                $content = preg_replace(
-                    '/\/\/ Updated on .*/',
-                    '// Updated on ' . date('Y-m-d H:i:s'),
-                    $content
-                );
-
-                file_put_contents($absolutePath, $content);
-                $updated = true;
+                $content = rtrim($content, "\n") . "\n" . $newLine;
+                $updatedKeys[] = $key;
+            } else {
+                $existingKeys[] = $key;
             }
         }
 
-        if ($updated) {
-            return $this->responseFactory
-                ->makeSuccess(['message' => "Translation key saved: $key"]);
-        } else {
-            return $this->responseFactory
-                ->makeSuccess(['message' => "Translation key already exists: $key"]);
+        if (!empty($updatedKeys)) {
+            // Update the timestamp
+            $content = preg_replace(
+                '/\/\/ Updated on .*/',
+                '// Updated on ' . date('Y-m-d H:i:s'),
+                $content
+            );
+
+            file_put_contents($absolutePath, $content);
         }
+
+        $message = '';
+        if (!empty($updatedKeys)) {
+            $message .= "Translation keys saved: " . implode(', ', $updatedKeys) . ". ";
+        }
+        if (!empty($existingKeys)) {
+            $message .= "Translation keys already exist: " . implode(', ', $existingKeys) . ".";
+        }
+
+        return $this->responseFactory
+            ->makeSuccess(['message' => $message]);
     }
 }
