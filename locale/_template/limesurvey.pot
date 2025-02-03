@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-01-27 09:25:25+00:00\n"
+"POT-Creation-Date: 2025-02-03 15:04:25+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -40,23 +40,23 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:206
 #: application/helpers/admin/import_helper.php:316
 #: application/helpers/admin/import_helper.php:812
-#: application/helpers/admin/import_helper.php:1548
-#: application/helpers/admin/import_helper.php:1551
-#: application/helpers/admin/import_helper.php:1603
-#: application/helpers/admin/import_helper.php:1730
-#: application/helpers/admin/import_helper.php:1849
-#: application/helpers/admin/import_helper.php:2088
-#: application/helpers/admin/import_helper.php:2095
-#: application/helpers/admin/import_helper.php:2196
-#: application/helpers/admin/import_helper.php:2228
-#: application/helpers/admin/import_helper.php:2254
-#: application/helpers/admin/import_helper.php:2314
-#: application/helpers/admin/import_helper.php:2337
-#: application/helpers/admin/import_helper.php:2440
-#: application/helpers/admin/import_helper.php:2630
-#: application/helpers/admin/import_helper.php:2992
-#: application/helpers/admin/import_helper.php:3623
-#: application/helpers/admin/import_helper.php:3668
+#: application/helpers/admin/import_helper.php:1549
+#: application/helpers/admin/import_helper.php:1552
+#: application/helpers/admin/import_helper.php:1604
+#: application/helpers/admin/import_helper.php:1731
+#: application/helpers/admin/import_helper.php:1850
+#: application/helpers/admin/import_helper.php:2089
+#: application/helpers/admin/import_helper.php:2096
+#: application/helpers/admin/import_helper.php:2197
+#: application/helpers/admin/import_helper.php:2229
+#: application/helpers/admin/import_helper.php:2255
+#: application/helpers/admin/import_helper.php:2315
+#: application/helpers/admin/import_helper.php:2338
+#: application/helpers/admin/import_helper.php:2441
+#: application/helpers/admin/import_helper.php:2631
+#: application/helpers/admin/import_helper.php:2993
+#: application/helpers/admin/import_helper.php:3624
+#: application/helpers/admin/import_helper.php:3669
 #: application/models/TemplateManifest.php:173
 #: application/models/services/PasswordManagement.php:88
 #: application/views/admin/checkintegrity/fix_view.php:16
@@ -177,10 +177,10 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:109
 #: application/controllers/admin/DataEntry.php:519
 #: application/controllers/admin/EmailTemplates.php:36
-#: application/controllers/admin/Export.php:121
-#: application/controllers/admin/Export.php:139
-#: application/controllers/admin/Export.php:668
-#: application/controllers/admin/Export.php:1090
+#: application/controllers/admin/Export.php:65
+#: application/controllers/admin/Export.php:83
+#: application/controllers/admin/Export.php:612
+#: application/controllers/admin/Export.php:1050
 #: application/controllers/admin/Expressions.php:53
 #: application/controllers/admin/Expressions.php:100
 #: application/controllers/admin/PrintableSurvey.php:38
@@ -215,10 +215,10 @@ msgstr ""
 #: application/controllers/admin/Tokens.php:1491
 #: application/controllers/admin/Tokens.php:1767
 #: application/controllers/admin/Tokens.php:1894
-#: application/controllers/admin/Tokens.php:2162
-#: application/controllers/admin/Tokens.php:2508
-#: application/controllers/admin/Tokens.php:2567
-#: application/controllers/admin/Tokens.php:2629
+#: application/controllers/admin/Tokens.php:2164
+#: application/controllers/admin/Tokens.php:2510
+#: application/controllers/admin/Tokens.php:2569
+#: application/controllers/admin/Tokens.php:2631
 #: application/controllers/admin/dumpdb.php:109
 #: application/controllers/admin/globalsettings.php:37
 #: application/controllers/admin/globalsettings.php:62
@@ -257,7 +257,7 @@ msgstr ""
 #: application/controllers/SurveyPermissionsController.php:74
 #: application/controllers/SurveyPermissionsController.php:220
 #: application/controllers/admin/EmailTemplates.php:92
-#: application/controllers/admin/Export.php:1244
+#: application/controllers/admin/Export.php:1185
 #: application/controllers/admin/Expressions.php:141
 #: application/controllers/admin/ParticipantsAction.php:2712
 #: application/controllers/admin/PluginHelper.php:31
@@ -271,12 +271,12 @@ msgstr ""
 #: application/controllers/admin/Tokens.php:1501
 #: application/controllers/admin/Tokens.php:1759
 #: application/controllers/admin/Tokens.php:1904
-#: application/controllers/admin/Tokens.php:2172
-#: application/controllers/admin/Tokens.php:2520
-#: application/controllers/admin/Tokens.php:2577
-#: application/controllers/admin/Tokens.php:2668
-#: application/controllers/admin/Tokens.php:2755
-#: application/controllers/admin/Tokens.php:2813
+#: application/controllers/admin/Tokens.php:2174
+#: application/controllers/admin/Tokens.php:2522
+#: application/controllers/admin/Tokens.php:2579
+#: application/controllers/admin/Tokens.php:2670
+#: application/controllers/admin/Tokens.php:2757
+#: application/controllers/admin/Tokens.php:2815
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
 #: application/helpers/admin/statistics_helper.php:2346
 #: application/helpers/admin/statistics_helper.php:2356
@@ -470,7 +470,7 @@ msgstr ""
 #: application/controllers/UserGroupController.php:209
 #: application/controllers/admin/Expressions.php:52
 #: application/controllers/admin/Expressions.php:99
-#: application/controllers/admin/Labels.php:117
+#: application/controllers/admin/Labels.php:116
 #: application/controllers/admin/ParticipantsAction.php:1317
 #: application/controllers/admin/PrintableSurvey.php:37
 msgid "Access denied!"
@@ -1096,7 +1096,7 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:2615
 #: application/controllers/QuestionAdministrationController.php:2618
 #: application/controllers/QuestionAdministrationController.php:2645
-#: application/controllers/admin/Export.php:136
+#: application/controllers/admin/Export.php:80
 #: application/core/SurveyCommonAction.php:151
 #: application/helpers/export_helper.php:2203
 msgid "Invalid question id"
@@ -1161,22 +1161,22 @@ msgstr ""
 #: application/controllers/UserManagementController.php:295
 #: application/controllers/UserManagementController.php:304
 #: application/controllers/UserManagementController.php:313
-#: application/controllers/admin/Export.php:987
-#: application/controllers/admin/Export.php:999
+#: application/controllers/admin/Export.php:946
+#: application/controllers/admin/Export.php:958
 #: application/controllers/admin/QuestionThemes.php:15
 #: application/controllers/admin/SurveymenuController.php:183
 #: application/controllers/admin/SurveymenuEntryController.php:221
 #: application/controllers/admin/Themes.php:33
-#: application/controllers/admin/Themes.php:72
-#: application/controllers/admin/Themes.php:121
-#: application/controllers/admin/Themes.php:198
-#: application/controllers/admin/Themes.php:513
-#: application/controllers/admin/Themes.php:642
-#: application/controllers/admin/Themes.php:660
-#: application/controllers/admin/Themes.php:703
-#: application/controllers/admin/Themes.php:757
-#: application/controllers/admin/Themes.php:809
-#: application/controllers/admin/Themes.php:961
+#: application/controllers/admin/Themes.php:76
+#: application/controllers/admin/Themes.php:125
+#: application/controllers/admin/Themes.php:207
+#: application/controllers/admin/Themes.php:520
+#: application/controllers/admin/Themes.php:649
+#: application/controllers/admin/Themes.php:667
+#: application/controllers/admin/Themes.php:710
+#: application/controllers/admin/Themes.php:764
+#: application/controllers/admin/Themes.php:816
+#: application/controllers/admin/Themes.php:968
 #: application/controllers/admin/Tokens.php:172
 #: application/controllers/admin/Tokens.php:587
 #: application/controllers/survey/SurveyIndex.php:100
@@ -1534,12 +1534,12 @@ msgstr ""
 #: application/controllers/ResponsesController.php:53
 #: application/controllers/ResponsesController.php:54
 #: application/controllers/admin/DataEntry.php:304
-#: application/controllers/admin/Export.php:294
-#: application/controllers/admin/Export.php:295
-#: application/controllers/admin/Export.php:440
-#: application/controllers/admin/Export.php:441
-#: application/controllers/admin/Export.php:688
-#: application/controllers/admin/Export.php:689
+#: application/controllers/admin/Export.php:238
+#: application/controllers/admin/Export.php:239
+#: application/controllers/admin/Export.php:384
+#: application/controllers/admin/Export.php:385
+#: application/controllers/admin/Export.php:632
+#: application/controllers/admin/Export.php:633
 #: application/controllers/admin/Saved.php:126
 #: application/controllers/admin/Saved.php:130
 #: application/controllers/admin/Statistics.php:833
@@ -2088,20 +2088,20 @@ msgstr ""
 msgid "Demo mode only: Uploading files is disabled in this system."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:610
+#: application/controllers/SurveyAdministrationController.php:607
 #: application/controllers/SurveyAdministrationController.php:1515
-#: application/controllers/admin/Labels.php:63
+#: application/controllers/admin/Labels.php:60
 #: application/controllers/admin/PluginManagerController.php:681
-#: application/controllers/admin/Themes.php:1418
+#: application/controllers/admin/Themes.php:1425
 msgid "Incorrect permissions in your %s folder."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:628
+#: application/controllers/SurveyAdministrationController.php:626
 msgid "This file is not a valid ZIP file archive. Import failed. "
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:655
-#: application/controllers/admin/Labels.php:94
+#: application/controllers/admin/Labels.php:93
 msgid "This ZIP archive contains no valid Resources files. Import failed."
 msgstr ""
 
@@ -2110,12 +2110,12 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:2222
 #: application/controllers/UserRoleController.php:331
 #: application/controllers/admin/DataEntry.php:198
-#: application/controllers/admin/Labels.php:97
-#: application/controllers/admin/Labels.php:135
+#: application/controllers/admin/Labels.php:96
+#: application/controllers/admin/Labels.php:134
 #: application/controllers/admin/ParticipantsAction.php:818
-#: application/controllers/admin/Themes.php:258
-#: application/controllers/admin/Themes.php:424
-#: application/controllers/admin/Themes.php:503
+#: application/controllers/admin/Themes.php:267
+#: application/controllers/admin/Themes.php:431
+#: application/controllers/admin/Themes.php:510
 #: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:231
 #: application/models/UserParser.php:39
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."
@@ -2354,8 +2354,8 @@ msgid "You don't have sufficient permissions to upload images in this survey"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:1537
-#: application/controllers/admin/Themes.php:260
-#: application/controllers/admin/Themes.php:505
+#: application/controllers/admin/Themes.php:269
+#: application/controllers/admin/Themes.php:512
 msgid "File %s uploaded"
 msgstr ""
 
@@ -2451,7 +2451,7 @@ msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:2478
 #: application/controllers/admin/ParticipantsAction.php:871
-#: application/controllers/admin/Themes.php:394
+#: application/controllers/admin/Themes.php:402
 #: application/core/SurveyCommonAction.php:1047
 #: application/helpers/SurveyRuntimeHelper.php:1467
 #: application/helpers/frontend_helper.php:2028
@@ -2574,7 +2574,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:844
 #: application/controllers/admin/PrintableSurvey.php:929
 #: application/controllers/admin/PrintableSurvey.php:943
-#: application/controllers/admin/Tokens.php:2532
+#: application/controllers/admin/Tokens.php:2534
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:215
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:224
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:232
@@ -2719,7 +2719,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:843
 #: application/controllers/admin/PrintableSurvey.php:927
 #: application/controllers/admin/PrintableSurvey.php:941
-#: application/controllers/admin/Tokens.php:2530
+#: application/controllers/admin/Tokens.php:2532
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:184
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:193
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:211
@@ -5081,80 +5081,80 @@ msgstr ""
 msgid "Detailed notification attachments:"
 msgstr ""
 
-#: application/controllers/admin/Export.php:118
+#: application/controllers/admin/Export.php:62
 #: application/controllers/survey/SurveyIndex.php:121
 #: application/core/SurveyCommonAction.php:165
 #: application/helpers/export_helper.php:2048
 msgid "Invalid group ID"
 msgstr ""
 
-#: application/controllers/admin/Export.php:161
+#: application/controllers/admin/Export.php:105
 #: application/views/admin/survey/surveybar_statistics.php:21
 msgid "This survey is not active - no responses are available."
 msgstr ""
 
-#: application/controllers/admin/Export.php:237
-#: application/controllers/admin/Export.php:296
-#: application/controllers/admin/Export.php:438
+#: application/controllers/admin/Export.php:181
+#: application/controllers/admin/Export.php:240
+#: application/controllers/admin/Export.php:382
 #: application/views/admin/export/exportresults_view.php:23
 #: application/views/admin/export/vv_view.php:110
 msgid "Export results"
 msgstr ""
 
-#: application/controllers/admin/Export.php:259
+#: application/controllers/admin/Export.php:203
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:98
 msgid "Question code"
 msgstr ""
 
-#: application/controllers/admin/Export.php:260
+#: application/controllers/admin/Export.php:204
 msgid "Abbreviated question text"
 msgstr ""
 
-#: application/controllers/admin/Export.php:261
+#: application/controllers/admin/Export.php:205
 msgid "Full question text"
 msgstr ""
 
-#: application/controllers/admin/Export.php:262
+#: application/controllers/admin/Export.php:206
 msgid "Question code & question text"
 msgstr ""
 
-#: application/controllers/admin/Export.php:273
+#: application/controllers/admin/Export.php:217
 #: application/views/admin/participants/importCSV_view.php:55
 #: application/views/admin/token/csvupload.php:42
 msgid "Comma"
 msgstr ""
 
-#: application/controllers/admin/Export.php:274
+#: application/controllers/admin/Export.php:218
 #: application/views/admin/participants/importCSV_view.php:57
 #: application/views/admin/token/csvupload.php:43
 msgid "Semicolon"
 msgstr ""
 
-#: application/controllers/admin/Export.php:275
+#: application/controllers/admin/Export.php:219
 msgid "Tab"
 msgstr ""
 
-#: application/controllers/admin/Export.php:675
+#: application/controllers/admin/Export.php:619
 msgid "Export VV file"
 msgstr ""
 
-#: application/controllers/admin/Export.php:690
+#: application/controllers/admin/Export.php:634
 #: application/views/admin/export/vv_view.php:7
 #: application/views/responses/partial/topbarBtns/responsesExportDropdownItems.php:23
 msgid "Export a VV survey file"
 msgstr ""
 
-#: application/controllers/admin/Export.php:1003
+#: application/controllers/admin/Export.php:962
 msgid "Not active."
 msgstr ""
 
-#: application/controllers/admin/Export.php:1017
-#: application/controllers/admin/Export.php:1032
+#: application/controllers/admin/Export.php:976
+#: application/controllers/admin/Export.php:991
 msgid "Unknown error"
 msgstr ""
 
-#: application/controllers/admin/Export.php:1242
-#: application/controllers/admin/Export.php:1243
+#: application/controllers/admin/Export.php:1183
+#: application/controllers/admin/Export.php:1184
 #: application/views/admin/survey/queXMLSurvey_view.php:4
 #: application/views/admin/survey/queXMLSurvey_view.php:6
 #: application/views/admin/survey/surveybar_displayexport.php:75
@@ -5163,7 +5163,7 @@ msgstr ""
 msgid "queXML PDF export"
 msgstr ""
 
-#: application/controllers/admin/Export.php:1306
+#: application/controllers/admin/Export.php:1241
 msgid "This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys."
 msgstr ""
 
@@ -5295,76 +5295,76 @@ msgstr ""
 msgid "Survey logic file"
 msgstr ""
 
+#: application/controllers/admin/Labels.php:180
 #: application/controllers/admin/Labels.php:181
-#: application/controllers/admin/Labels.php:182
 #: application/models/LabelSet.php:141
 #: application/views/admin/labels/partials/topbarBtns_singlelabelset/leftSideButtons.php:14
 msgid "Edit label set"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:190
+#: application/controllers/admin/Labels.php:189
 #: tmp/runtime/twig_cache/3d/3d752458b6dd7f66fbf057c65616a7a9.php:179
 msgid "New label set"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:191
+#: application/controllers/admin/Labels.php:190
 #: application/views/admin/labels/partials/topbarBtns/leftSideButtons.php:11
 msgid "Create or import new label set(s)"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:292
-#: application/controllers/admin/Labels.php:309
+#: application/controllers/admin/Labels.php:291
+#: application/controllers/admin/Labels.php:308
 #: tmp/runtime/twig_cache/3d/3d752458b6dd7f66fbf057c65616a7a9.php:119
 msgid "Label sets list"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:341
+#: application/controllers/admin/Labels.php:340
 msgid "Label set successfully saved."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:358
+#: application/controllers/admin/Labels.php:357
 msgid "Label set successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:390
+#: application/controllers/admin/Labels.php:389
 msgid "Label set successfully created."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:393
+#: application/controllers/admin/Labels.php:392
 msgid "Label could not be created."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:409
+#: application/controllers/admin/Labels.php:408
 msgid "Label set “%s” was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:411
+#: application/controllers/admin/Labels.php:410
 msgid "Unable to delete label set %s."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:425
+#: application/controllers/admin/Labels.php:424
 #: application/views/admin/labels/partials/topbarBtns/rightSideButtons.php:11
 msgid "Export multiple label sets"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:488
+#: application/controllers/admin/Labels.php:487
 msgid "Could not save label set: Label set name is empty."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:491
+#: application/controllers/admin/Labels.php:490
 msgid "Could not save label set: Found no answers."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:509
-#: application/controllers/admin/Labels.php:659
+#: application/controllers/admin/Labels.php:508
+#: application/controllers/admin/Labels.php:658
 msgid "Label set successfully saved"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:537
+#: application/controllers/admin/Labels.php:536
 msgid "Label set successfully updated"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:794
+#: application/controllers/admin/Labels.php:793
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:18
 msgid "Label set not found"
 msgstr ""
@@ -5826,7 +5826,7 @@ msgid "Plugin upload is disabled"
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:77
-#: application/controllers/admin/Themes.php:1239
+#: application/controllers/admin/Themes.php:1246
 msgid "Please submit by %s"
 msgstr ""
 
@@ -5839,12 +5839,12 @@ msgid "table"
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:126
-#: application/controllers/admin/Themes.php:1237
+#: application/controllers/admin/Themes.php:1244
 msgid "Submit your survey."
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:129
-#: application/controllers/admin/Themes.php:1240
+#: application/controllers/admin/Themes.php:1247
 msgid "Thank you for completing this survey."
 msgstr ""
 
@@ -5940,7 +5940,7 @@ msgid "Question code:"
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:549
-#: application/controllers/admin/Themes.php:1214
+#: application/controllers/admin/Themes.php:1221
 msgid "*"
 msgstr ""
 
@@ -5949,7 +5949,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:607
 #: application/controllers/admin/PrintableSurvey.php:666
 #: application/controllers/admin/PrintableSurvey.php:842
-#: application/controllers/admin/Themes.php:1218
+#: application/controllers/admin/Themes.php:1225
 msgid "Please choose *only one* of the following:"
 msgstr ""
 
@@ -6176,210 +6176,210 @@ msgstr ""
 msgid "The survey group '%s' was deleted."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:311
+#: application/controllers/admin/Themes.php:318
 msgid "The question theme is not compatible with your version of LimeSurvey."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:356
+#: application/controllers/admin/Themes.php:363
 msgid "This theme type (%s) is not allowed."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:381
-#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:249
+#: application/controllers/admin/Themes.php:388
+#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:244
 msgid "This file is not a valid ZIP file archive. Import failed."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:404
+#: application/controllers/admin/Themes.php:411
 msgid "Can not import a theme that already exists!"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:411
+#: application/controllers/admin/Themes.php:418
 msgid "This ZIP archive contains no valid template files. Import failed."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:484
+#: application/controllers/admin/Themes.php:491
 msgid "The folder %s doesn't exist and can't be created."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:495
+#: application/controllers/admin/Themes.php:502
 msgid "Demo mode: Uploading template files is disabled."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:497
+#: application/controllers/admin/Themes.php:504
 msgid "This filename is not allowed to be uploaded."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:499
+#: application/controllers/admin/Themes.php:506
 #: application/views/admin/themes/templateeditorbar_view.php:34
 #: application/views/admin/themes/templateeditorbar_view.php:40
 msgid "This file type is not allowed to be uploaded."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:555
+#: application/controllers/admin/Themes.php:562
 msgid "Theme %s does not exist."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:565
+#: application/controllers/admin/Themes.php:572
 msgid "Undo (Ctrl-Z)"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:566
+#: application/controllers/admin/Themes.php:573
 msgid "Redo (Ctrl-Y)"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:567
+#: application/controllers/admin/Themes.php:574
 msgid "Find (Ctrl-F)"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:568
+#: application/controllers/admin/Themes.php:575
 msgid "Replace (Ctrl-H)"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:588
+#: application/controllers/admin/Themes.php:595
 msgid "Theme editor:"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:649
+#: application/controllers/admin/Themes.php:656
 msgid "File %s cannot be deleted for security reasons."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:654
+#: application/controllers/admin/Themes.php:661
 msgid "The file %s was deleted."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:657
+#: application/controllers/admin/Themes.php:664
 msgid "File %s couldn't be deleted. Please check the permissions on the /upload/themes folder"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:682
-#: application/controllers/admin/Themes.php:684
-#: application/controllers/admin/Themes.php:686
+#: application/controllers/admin/Themes.php:689
+#: application/controllers/admin/Themes.php:691
+#: application/controllers/admin/Themes.php:693
 msgid "Template could not be renamed to '%s'."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:682
+#: application/controllers/admin/Themes.php:689
 msgid "This name is reserved for standard template."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:684
+#: application/controllers/admin/Themes.php:691
 msgid "A template with that name already exists."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:686
+#: application/controllers/admin/Themes.php:693
 msgid "Maybe you don't have permission."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:697
+#: application/controllers/admin/Themes.php:704
 msgid "Template '%s' could not be found."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:726
-#: application/controllers/admin/Themes.php:746
+#: application/controllers/admin/Themes.php:733
+#: application/controllers/admin/Themes.php:753
 msgid "Directory with the name `%s` already exists - choose another name"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:749
+#: application/controllers/admin/Themes.php:756
 msgid "Unable to create directory `%s`."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:750
+#: application/controllers/admin/Themes.php:757
 msgid "Please check the directory permissions."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:798
+#: application/controllers/admin/Themes.php:805
 msgid "Template '%s' was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:800
-#: application/controllers/admin/Themes.php:866
+#: application/controllers/admin/Themes.php:807
+#: application/controllers/admin/Themes.php:873
 msgid "There was a problem deleting the template '%s'. Please check your directory/file permissions."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:803
+#: application/controllers/admin/Themes.php:810
 msgid "You can't delete template '%s' because one or more templates inherit from it."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:806
+#: application/controllers/admin/Themes.php:813
 msgid "Theme '%s' does not exist."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:831
-#: application/controllers/admin/Themes.php:864
+#: application/controllers/admin/Themes.php:838
+#: application/controllers/admin/Themes.php:871
 msgid "Theme '%s' was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:834
+#: application/controllers/admin/Themes.php:841
 msgid "Not a broken theme!"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:921
+#: application/controllers/admin/Themes.php:928
 msgid "Invalid theme name"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:934
+#: application/controllers/admin/Themes.php:941
 msgid "Could not open file "
 msgstr ""
 
-#: application/controllers/admin/Themes.php:939
+#: application/controllers/admin/Themes.php:946
 msgid "Could not write file "
 msgstr ""
 
-#: application/controllers/admin/Themes.php:942
+#: application/controllers/admin/Themes.php:949
 msgid "Changes saved successfully."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1131
+#: application/controllers/admin/Themes.php:1138
 msgid "Invalid screen name"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1178
+#: application/controllers/admin/Themes.php:1185
 #: tmp/runtime/twig_cache/27/27315d6298c5357261532245b4abc04b.php:41
 msgid "How many roads must a man walk down?"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1180
+#: application/controllers/admin/Themes.php:1187
 #: application/models/TemplateManifest.php:394
 #: application/models/TemplateManifest.php:404
 msgid "This is some helpful text."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1189
+#: application/controllers/admin/Themes.php:1196
 msgid "Hint when response is valid"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1225
+#: application/controllers/admin/Themes.php:1232
 msgid "This is a sample question text. The user was asked to pick an entry."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1226
+#: application/controllers/admin/Themes.php:1233
 msgid "This is some help text for this question."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1241
+#: application/controllers/admin/Themes.php:1248
 msgid "This is the survey end message."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1263
+#: application/controllers/admin/Themes.php:1270
 msgid "Question group name"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1264
+#: application/controllers/admin/Themes.php:1271
 msgid "Question group description"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1352
+#: application/controllers/admin/Themes.php:1359
 msgid "LimeSurvey theme editor"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1356
+#: application/controllers/admin/Themes.php:1363
 msgid "Welcome to the theme editor of LimeSurvey. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1385
+#: application/controllers/admin/Themes.php:1392
 msgid "Demo mode: Uploading templates is disabled."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1423
+#: application/controllers/admin/Themes.php:1430
 msgid "Template '%s' does already exist."
 msgstr ""
 
@@ -6595,8 +6595,8 @@ msgid "Some emails were not sent because the server did not accept the email(s) 
 msgstr ""
 
 #: application/controllers/admin/Tokens.php:1720
-#: application/controllers/admin/Tokens.php:2544
-#: application/controllers/admin/Tokens.php:2548
+#: application/controllers/admin/Tokens.php:2546
+#: application/controllers/admin/Tokens.php:2550
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:14
 #: application/views/admin/authentication/error.php:6
 #: application/views/admin/error_view.php:5
@@ -6742,77 +6742,77 @@ msgstr ""
 msgid "Uploading LDAP Query"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2136
+#: application/controllers/admin/Tokens.php:2138
 msgid "Can't bind to the LDAP directory. Error message: %s"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2145
+#: application/controllers/admin/Tokens.php:2147
 msgid "Can't connect to the LDAP directory"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2218
+#: application/controllers/admin/Tokens.php:2220
 msgid "Only CSV files are allowed."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2220
+#: application/controllers/admin/Tokens.php:2222
 msgid "Upload file not found. Check your permissions and path (%s) for the upload directory"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2314
+#: application/controllers/admin/Tokens.php:2316
 msgid "Line %s"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2335
+#: application/controllers/admin/Tokens.php:2337
 msgid "Line %s : %s %s"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2356
-#: application/controllers/admin/Tokens.php:2371
-#: application/controllers/admin/Tokens.php:3195
+#: application/controllers/admin/Tokens.php:2358
+#: application/controllers/admin/Tokens.php:2373
+#: application/controllers/admin/Tokens.php:3197
 msgid "Line %s : %s %s (%s)"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2379
-#: application/controllers/admin/Tokens.php:2385
+#: application/controllers/admin/Tokens.php:2381
+#: application/controllers/admin/Tokens.php:2387
 msgid "Line %s : %s %s (%s) - token : %s"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2527
-#: application/controllers/admin/Tokens.php:2551
+#: application/controllers/admin/Tokens.php:2529
+#: application/controllers/admin/Tokens.php:2553
 msgid "Create access codes"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2528
+#: application/controllers/admin/Tokens.php:2530
 msgid "Clicking 'Yes' will generate access codes for all those in this participant list that have not been issued one. Continue?"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2542
+#: application/controllers/admin/Tokens.php:2544
 msgid "Only {n} access code has been created.|Only {n} access codes have been created."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2543
+#: application/controllers/admin/Tokens.php:2545
 msgid "Need {n} access code.|Need {n} access codes."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2547
+#: application/controllers/admin/Tokens.php:2549
 msgid "{n} access code has been created.|{n} access codes have been created."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2660
+#: application/controllers/admin/Tokens.php:2662
 msgid "Bounce settings have been saved."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2797
+#: application/controllers/admin/Tokens.php:2799
 #: application/views/admin/token/tokenwarning.php:13
 msgid "Survey participants have not been initialised for this survey."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2803
+#: application/controllers/admin/Tokens.php:2805
 msgid "Participant table already exist for this survey."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2827
-#: application/controllers/admin/Tokens.php:2948
+#: application/controllers/admin/Tokens.php:2829
+#: application/controllers/admin/Tokens.php:2950
 #: application/core/LsDefaultDataSets.php:331
 #: application/extensions/BreadcrumbWidget/BreadcrumbWidget.php:206
 #: application/views/admin/token/browse.php:21
@@ -6820,12 +6820,12 @@ msgstr ""
 msgid "Survey participants"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2828
+#: application/controllers/admin/Tokens.php:2830
 msgid "A participant table has been created for this survey."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2830
-#: application/controllers/admin/Tokens.php:2888
+#: application/controllers/admin/Tokens.php:2832
+#: application/controllers/admin/Tokens.php:2890
 #: application/views/SurveysGroupsPermission/subviews/deleteUserResult.php:11
 #: application/views/admin/authentication/message.php:45
 #: application/views/admin/participants/attributeMapCSV_view.php:86
@@ -6851,23 +6851,23 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2885
+#: application/controllers/admin/Tokens.php:2887
 msgid "Import old participant table"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2886
+#: application/controllers/admin/Tokens.php:2888
 msgid "A survey participants table has been created for this survey and the old participants were imported."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2905
+#: application/controllers/admin/Tokens.php:2907
 msgid "Import failed"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2906
+#: application/controllers/admin/Tokens.php:2908
 msgid "There are no matching settings to start the restoration of the participant table."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:3190
+#: application/controllers/admin/Tokens.php:3192
 msgid "%s records with other errors"
 msgstr ""
 
@@ -10171,43 +10171,43 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:210
 #: application/helpers/admin/import_helper.php:320
 #: application/helpers/admin/import_helper.php:816
-#: application/helpers/admin/import_helper.php:1734
-#: application/helpers/admin/import_helper.php:1853
+#: application/helpers/admin/import_helper.php:1735
+#: application/helpers/admin/import_helper.php:1854
 msgid "Error while saving: "
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:221
-#: application/helpers/admin/import_helper.php:1745
-#: application/helpers/admin/import_helper.php:1917
+#: application/helpers/admin/import_helper.php:1746
+#: application/helpers/admin/import_helper.php:1918
 msgid "Question %s has outdated links."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:224
-#: application/helpers/admin/import_helper.php:1748
-#: application/helpers/admin/import_helper.php:1929
+#: application/helpers/admin/import_helper.php:1749
+#: application/helpers/admin/import_helper.php:1930
 msgid "Help text for question %s has outdated links."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:235
 #: application/helpers/admin/import_helper.php:695
-#: application/helpers/admin/import_helper.php:1759
+#: application/helpers/admin/import_helper.php:1760
 msgid "Question code %s was updated to %s."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:332
-#: application/helpers/admin/import_helper.php:1865
-#: application/helpers/admin/import_helper.php:1921
+#: application/helpers/admin/import_helper.php:1866
+#: application/helpers/admin/import_helper.php:1922
 msgid "Subquestion %s of question %s has outdated links."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:344
 #: application/helpers/admin/import_helper.php:840
-#: application/helpers/admin/import_helper.php:1877
+#: application/helpers/admin/import_helper.php:1878
 msgid "Title of subquestion %s was updated to %s."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:577
-#: application/helpers/admin/import_helper.php:2454
+#: application/helpers/admin/import_helper.php:2455
 msgid "Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions."
 msgstr ""
 
@@ -10229,168 +10229,168 @@ msgstr ""
 msgid "Answer option %s has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1216
+#: application/helpers/admin/import_helper.php:1217
 msgid "This is not a valid LimeSurvey LSA file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1260
+#: application/helpers/admin/import_helper.php:1261
 msgid "Unable to create survey participants table"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1306
+#: application/helpers/admin/import_helper.php:1307
 msgid "This is not a valid LimeSurvey survey structure XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1411
+#: application/helpers/admin/import_helper.php:1412
 msgid "This survey setting has not been imported: %s => %s"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1418
+#: application/helpers/admin/import_helper.php:1419
 msgid "The desired survey ID was already in use, therefore a random one was assigned."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1421
+#: application/helpers/admin/import_helper.php:1422
 msgid "Unable to import survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1473
+#: application/helpers/admin/import_helper.php:1474
 msgid "Survey title has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1476
+#: application/helpers/admin/import_helper.php:1477
 msgid "Survey description has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1479
+#: application/helpers/admin/import_helper.php:1480
 msgid "Welcome text has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1482
+#: application/helpers/admin/import_helper.php:1483
 msgid "URL description has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1485
+#: application/helpers/admin/import_helper.php:1486
 msgid "Invitation email template has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1488
+#: application/helpers/admin/import_helper.php:1489
 msgid "Reminder email template has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1491
+#: application/helpers/admin/import_helper.php:1492
 msgid "Registration email template has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1494
+#: application/helpers/admin/import_helper.php:1495
 msgid "Confirmation email template has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1541
+#: application/helpers/admin/import_helper.php:1542
 msgid "The survey alias for '%s' has been cleared because it was already in use by another survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1556
+#: application/helpers/admin/import_helper.php:1557
 msgid "The email attachments have not been imported because they were in an old format."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1560
+#: application/helpers/admin/import_helper.php:1561
 msgid "Email templates have attachments but the resources have not been copied. Please update the attachments manually."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1585
+#: application/helpers/admin/import_helper.php:1586
 msgid "Group name has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1588
+#: application/helpers/admin/import_helper.php:1589
 msgid "Group description has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1646
+#: application/helpers/admin/import_helper.php:1647
 msgid "Error while saving group: "
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1980
-#: application/helpers/admin/import_helper.php:2019
+#: application/helpers/admin/import_helper.php:1981
+#: application/helpers/admin/import_helper.php:2020
 msgid "Answer option %s of question %s has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2288
-#: application/helpers/admin/import_helper.php:2292
+#: application/helpers/admin/import_helper.php:2289
+#: application/helpers/admin/import_helper.php:2293
 #: application/views/admin/databaseupdate/verify.php:24
 msgid "Error:"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2360
+#: application/helpers/admin/import_helper.php:2361
 msgid "Error when saving %s for plugin %s"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2363
+#: application/helpers/admin/import_helper.php:2364
 msgid "Plugin %s didn't exist, settings not imported"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2503
+#: application/helpers/admin/import_helper.php:2504
 msgid "This is not a valid participant data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2547
+#: application/helpers/admin/import_helper.php:2548
 msgid "Skipped participant entry:"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2592
+#: application/helpers/admin/import_helper.php:2593
 msgid "This is not a valid response data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2649
+#: application/helpers/admin/import_helper.php:2650
 #: application/views/surveyAdministration/surveyActivation/_activation_error.php:20
 msgid "The survey response table could not be created."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2649
+#: application/helpers/admin/import_helper.php:2650
 #: application/views/surveyAdministration/surveyActivation/_activation_error.php:21
 msgid "Usually this is caused by having too many (sub-)questions in your survey. Please try removing questions from your survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2698
+#: application/helpers/admin/import_helper.php:2699
 msgid "File is empty or you selected an invalid character set (%s)."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2711
+#: application/helpers/admin/import_helper.php:2712
 msgid "File seems empty or has only one line"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2761
+#: application/helpers/admin/import_helper.php:2762
 msgid "Import failed: Forced import was requested but the input file doesn't contain enough columns to fill the survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2768
+#: application/helpers/admin/import_helper.php:2769
 msgid "Import failed: No answers could be mapped."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2928
+#: application/helpers/admin/import_helper.php:2929
 msgid "%s response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2930
+#: application/helpers/admin/import_helper.php:2931
 msgid "No response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2933
+#: application/helpers/admin/import_helper.php:2934
 msgid "%s responses were inserted."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2937
+#: application/helpers/admin/import_helper.php:2938
 msgid "%s responses were updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2940
+#: application/helpers/admin/import_helper.php:2941
 msgid "%s responses cannot be inserted or updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2943
+#: application/helpers/admin/import_helper.php:2944
 msgid "%s responses already exist."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2960
+#: application/helpers/admin/import_helper.php:2961
 msgid "This is not a valid timings data XML file."
 msgstr ""
 
@@ -15800,7 +15800,7 @@ msgstr ""
 msgid "Edit this survey participant"
 msgstr ""
 
-#: application/models/SurveyLanguageSetting.php:324
+#: application/models/SurveyLanguageSetting.php:334
 msgid "Alias must be unique"
 msgstr ""
 
