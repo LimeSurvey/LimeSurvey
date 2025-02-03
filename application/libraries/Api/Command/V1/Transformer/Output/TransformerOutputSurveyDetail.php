@@ -184,11 +184,16 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 
         //todo: later this should be done with an separate endpoint or service
         $survey['groupsList'] = SurveysGroups::getSurveyGroupsList();
-        if($survey['active']) {
-            $survey['responsesTotal'] = (int)\SurveyDynamic::model($data->sid)->count();
-            $survey['responsesCompleted'] = (int)\SurveyDynamic::model($data->sid)->count('submitdate IS NOT NULL');
-            $survey['responsesIncomplete'] = $survey['responsesTotal'] - $survey['responsesCompleted'];
-        }else{
+        if ($survey['active']) {
+            $survey['responsesTotal'] = (int)\SurveyDynamic::model(
+                $data->sid
+            )->count();
+            $survey['responsesCompleted'] = (int)\SurveyDynamic::model(
+                $data->sid
+            )->count('submitdate IS NOT NULL');
+            $survey['responsesIncomplete'] = $survey['responsesTotal']
+                - $survey['responsesCompleted'];
+        } else {
             $survey['responsesTotal'] = 0;
             $survey['responsesCompleted'] = 0;
             $survey['responsesIncomplete'] = 0;
