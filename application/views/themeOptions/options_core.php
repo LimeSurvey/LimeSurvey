@@ -194,7 +194,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
 
                                 <div class="col-12">
                                     <select class="<?= $classValue ?>" data-parent="<?= $attribute['parent'] ?>"
-                                            data-inheritvalue="<?= ($attributeKey === 'font' && isset($sPackagesToLoad) ? $sPackagesToLoad : $sParentOption) ?>"
+                                            data-inheritvalue="<?= ($attributeKey === 'font' && isset($sPackagesToLoad) ? htmlspecialchars($sPackagesToLoad) : $sParentOption) ?>"
                                             id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>">
                                         <?php if ($bInherit) : ?>
                                             <?php
