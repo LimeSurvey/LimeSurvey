@@ -64,6 +64,12 @@
 !/tmp/runtime/index.html
 !/tmp/upload/index.html
 
+# ignore plugins directory by default except LS plugin
+# if you want to add a new distributed plugin : use /application/core/plugins
+/plugins/*
+!/plugins/index.html
+!/plugins/Demo/
+
 # ignore editor contents - reserved for future use
 /editor/*
 
