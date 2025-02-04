@@ -42,13 +42,15 @@ class I18n implements CommandInterface
     public function run(Request $request)
     {
         $lang = (string)$request->getData('_id', 'en');
+        App()->setLanguage($lang);
         $transLateService = new TranslationMoToJson($lang);
         $translations = $transLateService->translateMoToJson();
         if (is_array($translations) && array_key_exists('', $translations)) {
             unset($translations['']);
         }
-
+        $data['translations'] = $translations;
+        $data['languages'] =  getLanguageData();
         return $this->responseFactory
-            ->makeSuccess([$translations]);
+            ->makeSuccess([$data]);
     }
 }
