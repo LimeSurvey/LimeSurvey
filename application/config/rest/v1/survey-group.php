@@ -13,6 +13,7 @@ $rest = [];
 
 $rest['v1/survey-group-list'] = [
     'GET' => [
+        'tag' => 'survey-group',
         'description' => 'Survey group list',
         'commandClass' => SurveyGroupList::class,
         'auth' => true,
@@ -38,6 +39,7 @@ $rest['v1/survey-group-list'] = [
 
 $rest['v1/survey-groups'] = [
     'GET' => [
+        'tag' => 'survey-group',
         'description' => 'Survey groups',
         'commandClass' => SurveyGroups::class,
         'auth' => true,
