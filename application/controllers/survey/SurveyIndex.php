@@ -195,7 +195,7 @@ class SurveyIndex extends CAction
             $sDisplayLanguage = $oSurvey->language;
         }
 
-        if (Yii::app()->request->getParam('popuppreview', false) && ($baseLanguage = Yii::app()->request->getParam('language', false)) && Permission::model()->hasGlobalPermission('superadmin', 'update')) {
+        if (Yii::app()->request->getParam('popuppreview', false) && ($baseLanguage = Yii::app()->request->getParam('language', false)) && Permission::model()->hasSurveyPermission((int)$oSurvey->sid, 'survey', 'update')) {
             $supportedLanguages = explode(" ", $oSurvey->language . " " . $oSurvey->additional_languages);
             $found = in_array($baseLanguage, $supportedLanguages);
             if (!$found) {
@@ -203,8 +203,7 @@ class SurveyIndex extends CAction
                 $found = in_array($baseLanguage, $supportedLanguages);
             }
             if ($found) {
-                $sDisplayLanguage = $oSurvey->language = $oSurvey->additional_languages = $baseLanguage;
-                $oSurvey->save();
+                $sDisplayLanguage = $oSurvey->language = $baseLanguage;
             }
         }
 
