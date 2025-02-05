@@ -136,6 +136,19 @@ class SurveyAdministrationController extends LSBaseController
         $survey = Survey::model()->findByPk($iSurveyID);  //yii standard is overwritten here ...
         $baselang = $survey->language;
 
+        if (Yii::app()->request->getParam('popuppreview', false) && ($baseLanguage = Yii::app()->request->getParam('language', false)) && Permission::model()->hasSurveyPermission((int)$iSurveyID, 'survey', 'update')) {
+            $supportedLanguages = explode(" ", $survey->language . " " . $survey->additional_languages);
+            $found = in_array($baseLanguage, $supportedLanguages);
+            if (!$found) {
+                $baseLanguage = explode("-", $baseLanguage)[0];
+                $found = in_array($baseLanguage, $supportedLanguages);
+            }
+            if ($found) {
+                $baselang = $survey->language = $survey->additional_languages = $baseLanguage;
+                $survey->save();
+            }
+        }
+        
         $aData = array('aAdditionalLanguages' => $survey->additionalLanguages);
 
         // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey ID
