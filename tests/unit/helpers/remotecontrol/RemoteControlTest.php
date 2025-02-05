@@ -150,7 +150,7 @@ class RemoteControlTest extends TestBaseClass
         // Get sgqa.
         $survey = \Survey::model()->findByPk(self::$surveyId);
         $question = $survey->groups[0]->questions[0];
-        $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $question->qid;
+        $sgqa = 'Q' . $question->qid;
 
         // Add response
         $response = [

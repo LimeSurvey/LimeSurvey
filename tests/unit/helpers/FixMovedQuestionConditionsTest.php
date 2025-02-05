@@ -89,7 +89,7 @@ class FixMovedQuestionConditions extends BaseTest
 
         $questionConditions = $conditions->readAll();
 
-        $expectedCfieldname = self::$surveyId . 'X' . $groups[2]->gid . 'X' . $questions[2]->qid;
+        $expectedCfieldname = 'Q' . $questions[2]->qid;
 
         foreach ($questionConditions as $condition) {
             $this->assertSame(
@@ -112,7 +112,7 @@ class FixMovedQuestionConditions extends BaseTest
 
         $questionFixedConditions = $fixedConditions->readAll();
 
-        $expectedFixedCfieldname = self::$surveyId . 'X' . $groups[3]->gid . 'X' . $questions[2]->qid;
+        $expectedFixedCfieldname = 'Q' . $questions[2]->qid;
 
         foreach ($questionFixedConditions as $condition) {
             $this->assertSame(
@@ -152,7 +152,7 @@ class FixMovedQuestionConditions extends BaseTest
 
         $this->assertSame(
             $firstQuestionConditions[0]['cfieldname'],
-            self::$surveyId . 'X' . $groups[1]->gid . 'X' . $questions[3]->qid,
+            'Q' . $questions[3]->qid,
             'The cfieldname field is not correct.'
         );
 
@@ -171,7 +171,7 @@ class FixMovedQuestionConditions extends BaseTest
 
         $this->assertSame(
             $firstQuestionFixedConditions[0]['cfieldname'],
-            self::$surveyId . 'X' . $groups[0]->gid . 'X' . $questions[3]->qid,
+            'Q' . $questions[3]->qid,
             'The cfieldname field is not correct : bad group after moving question'
         );
     }
@@ -199,7 +199,7 @@ class FixMovedQuestionConditions extends BaseTest
 
         $questionConditions = $conditions->readAll();
 
-        $expectedCfieldname = self::$surveyId . 'X' . $groups[0]->gid . 'X' . $questions[0]->qid;
+        $expectedCfieldname = 'Q' . $questions[0]->qid;
 
         foreach ($questionConditions as $condition) {
             $this->assertSame(
@@ -222,7 +222,7 @@ class FixMovedQuestionConditions extends BaseTest
 
         $questionFixedConditions = $fixedConditions->readAll();
 
-        $expectedFixedCfieldname = self::$surveyId . 'X' . $groups[1]->gid . 'X' . $questions[0]->qid;
+        $expectedFixedCfieldname = 'Q' . $questions[0]->qid;
 
         foreach ($questionFixedConditions as $condition) {
             $this->assertSame(
