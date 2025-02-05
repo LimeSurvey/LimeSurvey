@@ -199,8 +199,8 @@ class LS_Twig_Extension extends AbstractExtension
 
         $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
         $sType           = $lemQuestionInfo['info']['type'];
-        $aSGQA           = explode('X', (string) $lemQuestionInfo['sgqa']);
-        $iSurveyId       = $aSGQA[0];
+        $qid             = substr(explode("_", (string) $lemQuestionInfo['sgqa'])[0], 1);
+        $iSurveyId       = Question::model()->findByPk($qid)->sid;
 
         $aQuestionClass  = Question::getQuestionClass($sType);
 

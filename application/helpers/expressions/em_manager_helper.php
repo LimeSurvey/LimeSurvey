@@ -9829,7 +9829,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 break;
             case '!': //List - dropdown
             case 'L': //LIST drop-down/radio-button list
-                if ($sgq != $LEM->getLEMsurveyId() . 'X' . $qinfo['gid'] . 'X' . $qinfo['qid'] . 'other') { // Check only not other
+                if ($sgq != 'Q' . $qinfo['qid'] . '_other') { // Check only not other
                     if ($value == "-oth-") {
                         if ($other != 'Y') {
                             $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
@@ -9952,7 +9952,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             case 'M':
                 if (
                     $value != "Y" // Y is always valid
-                    && !( $other == 'Y' && $sgq == $LEM->getLEMsurveyId() . 'X' . $qinfo['gid'] . 'X' . $qinfo['qid'] . 'other') // It's not other SGQA
+                    && !( $other == 'Y' && $sgq == 'Q' . $qinfo['qid'] . '_other') // It's not other SGQA
                 ) {
                     $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
                     return false;
@@ -9961,7 +9961,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             case 'P':
                 if (
                     $value != "Y" // Y is always valid
-                    && !( $other == 'Y' && $sgq == $LEM->getLEMsurveyId() . 'X' . $qinfo['gid'] . 'X' . $qinfo['qid'] . 'other') // It's not other SGQA
+                    && !( $other == 'Y' && $sgq == 'Q' . $qinfo['qid'] . '_other') // It's not other SGQA
                     && substr($sgq, -7) != 'comment' // It's not a comment SGQA
                 ) {
                     $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);

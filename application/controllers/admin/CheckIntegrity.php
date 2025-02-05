@@ -740,8 +740,9 @@ class CheckIntegrity extends SurveyCommonAction
             //Only do this if there actually is a 'cfieldname'
             if ($condition['cfieldname']) {
                 // only if cfieldname isn't Tag such as {TOKEN:EMAIL} or any other token
-                if (preg_match('/^\+{0,1}[0-9]+X[0-9]+X*$/', (string) $condition['cfieldname'])) {
-                    list ($surveyid, $gid, $rest) = explode('X', (string) $condition['cfieldname']);
+                if (preg_match('/^Q{0,1}[0-9]*$/', (string) $condition['cfieldname'])) {
+                    $qid = substr(explode("_", $condition['cfieldname'])[0], 1);
+                    $gid = Question::model->findByPk($qid)->gid;
 
                     $iRowCount = count(QuestionGroup::model()->findAllByAttributes(array('gid' => $gid)));
                     if (!$iRowCount) {

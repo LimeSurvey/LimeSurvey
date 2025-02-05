@@ -541,20 +541,29 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 continue;
             }
 
-            list($oldcsid, $oldcgid, $oldqidanscode) = explode("X", (string) $insertdata["cfieldname"], 3);
-
-            if ($oldcgid != $oldgid) {
-                // this means that the condition is in another group (so it should not have to be been exported -> skip it
-                continue;
+            $cfieldname = (string) $insertdata["cfieldname"];
+            $qid = substr($cfieldname, 1);
+            $underscorePosition = strpos($qid, "_");
+            $hashtagPosition = strpos($qid, "#");
+            $suffix = "";
+            if (($underscorePosition !== false) || ($hashtagPosition !== false)) {
+                if ($underscorePosition === false) {
+                    $underscorePosition = $hashtagPosition;
+                } else if ($hashtagPosition === false) {
+                    $hashtagPosition = $underscorePosition;
+                }
+                $position = min($underscorePosition, $hashtagPosition);
+                $suffix = substr($qid, $position);
+                $qid = substr($qid, 0, $position);
             }
 
             unset($insertdata["cid"]);
 
             // recreate the cfieldname with the new IDs
             if (preg_match("/^\+/", $oldcsid)) {
-                $newcfieldname = '+' . $iNewSID . "X" . $newgid . "X" . $insertdata["cqid"] . substr($oldqidanscode, strlen((string) $iOldQID));
+                $newcfieldname = '+' . "Q" . $insertdata["cqid"] . $suffix;
             } else {
-                $newcfieldname = $iNewSID . "X" . $newgid . "X" . $insertdata["cqid"] . substr($oldqidanscode, strlen((string) $iOldQID));
+                $newcfieldname = "Q" . $insertdata["cqid"] . $suffix;
             }
 
             $insertdata["cfieldname"] = $newcfieldname;
@@ -1762,8 +1771,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 unset($sOldTitle);
             }
 
-            // question codes in format "38612X105X3011" are collected for replacing
-            $aQuestionsMapping[$iOldSID . 'X' . $iOldGID . 'X' . $iOldQID] = $iNewSID . 'X' . $oQuestion->gid . 'X' . $oQuestion->qid;
+            // question codes in format "Q3011" are collected for replacing
+            $aQuestionsMapping['Q' . $iOldQID] = 'Q' . $oQuestion->qid;
         }
     }
 
@@ -1901,8 +1910,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 continue; //Skip invalid question ID
             }
 
-            // question codes in format "38612X105X3011" are collected for replacing
-            $aQuestionsMapping[$iOldSID . 'X' . $iOldGID . 'X' . $iOldQID . $oQuestion->title] = $iNewSID . 'X' . $oQuestion->gid . 'X' . $oQuestion->qid . $oQuestion->title;
+            // question codes in format "Q3011" are collected for replacing
+            $aQuestionsMapping['Q' . $iOldQID . $oQuestion->title] = 'Q' . $oQuestion->qid . $oQuestion->title;
             $oQuestionL10n = new QuestionL10n();
             $oQuestionL10n->setAttributes($insertdata, false);
             $oQuestionL10n->save();
@@ -2156,12 +2165,22 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     continue;
                 }
 
-                list($oldcsid, $oldcgid, $oldqidanscode) = explode("X", (string) $insertdata["cfieldname"], 3);
-
-                // replace the gid for the new one in the cfieldname(if there is no new gid in the $aGIDReplacements array it means that this condition is orphan -> error, skip this record)
-                if (!isset($aGIDReplacements[$oldcgid])) {
-                    continue;
+                $cfieldname = (string) $insertdata["cfieldname"];
+                $qid = substr($cfieldname, 1);
+                $underscorePosition = strpos($qid, "_");
+                $hashtagPosition = strpos($qid, "#");
+                $suffix = "";
+                if (($underscorePosition !== false) || ($hashtagPosition !== false)) {
+                    if ($underscorePosition === false) {
+                        $underscorePosition = $hashtagPosition;
+                    } else if ($hashtagPosition === false) {
+                        $hashtagPosition = $underscorePosition;
+                    }
+                    $position = min($underscorePosition, $hashtagPosition);
+                    $suffix = substr($qid, $position);
+                    $qid = substr($qid, 0, $position);
                 }
+
             }
 
             unset($insertdata["cid"]);
@@ -2169,9 +2188,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             // recreate the cfieldname with the new IDs
             if ($insertdata['cqid'] != 0) {
                 if (preg_match("/^\+/", $oldcsid)) {
-                    $newcfieldname = '+' . $iNewSID . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] . substr($oldqidanscode, strlen((string) $oldcqid));
+                    $newcfieldname = '+' . "Q" . $insertdata["cqid"] . $suffix;
                 } else {
-                    $newcfieldname = $iNewSID . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] . substr($oldqidanscode, strlen((string) $oldcqid));
+                    $newcfieldname = "Q" . $insertdata["cqid"] . $suffix;
                 }
             } else {
                 // The cfieldname is a not a previous question cfield but a {XXXX} replacement field

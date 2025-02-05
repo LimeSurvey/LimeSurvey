@@ -2856,12 +2856,12 @@ function reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQID
     $aFieldMappings = array();
     foreach ($aFieldMap as $sFieldname => $aFieldinfo) {
         if ($aFieldinfo['qid'] != null) {
-            $aFieldMappings[$sFieldname] = $iOldSID . 'X' . $aGIDReplacements[$aFieldinfo['gid']] . 'X' . $aQIDReplacements[$aFieldinfo['qid']] . $aFieldinfo['aid'];
+            $aFieldMappings[$sFieldname] = 'Q' . $aQIDReplacements[$aFieldinfo['qid']] . '_' . $aFieldinfo['aid'];
             if ($aFieldinfo['type'] == '1') {
                 $aFieldMappings[$sFieldname] = $aFieldMappings[$sFieldname] . '#' . $aFieldinfo['scale_id'];
             }
             // now also add a shortened field mapping which is needed for certain kind of condition mappings
-            $aFieldMappings[$iNewSID . 'X' . $aFieldinfo['gid'] . 'X' . $aFieldinfo['qid']] = $iOldSID . 'X' . $aGIDReplacements[$aFieldinfo['gid']] . 'X' . $aQIDReplacements[$aFieldinfo['qid']];
+            $aFieldMappings['Q' . $aFieldinfo['qid']] = 'Q' . $aQIDReplacements[$aFieldinfo['qid']];
             // Shortened field mapping for timings table
             $aFieldMappings[$iNewSID . 'X' . $aFieldinfo['gid']] = $iOldSID . 'X' . $aGIDReplacements[$aFieldinfo['gid']];
         }
@@ -3426,7 +3426,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
             if ($oldqid !== $fname['qid']) {
                 $oldqid = $fname['qid'];
                 if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2'])) {
-                    $aResultTable['qid_' . $fname['sid'] . 'X' . $fname['gid'] . 'X' . $fname['qid']] = array($fname['question'], '', '');
+                    $aResultTable['qid_' . 'Q' . $fname['qid']] = array($fname['question'], '', '');
                 } else {
                     $answer = getExtendedAnswer($iSurveyID, $fname['fieldname'], $idrow[$fname['fieldname']], $sLanguageCode, $questions[$fname['qid']] ?? null);
                     $aResultTable[$fname['fieldname']] = array($question, '', $answer);
