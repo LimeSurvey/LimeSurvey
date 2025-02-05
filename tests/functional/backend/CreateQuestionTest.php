@@ -170,7 +170,7 @@ class CreateQuestionTest extends TestBaseClassWeb
 
             print_r('Already here');
             // Enter answer text.
-            $sgqa = $sid . 'X' . $survey->groups[0]->gid . 'X' . $questions['question1']->qid;
+            $sgqa = 'Q' . $questions['question1']->qid;
             $question = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa));
             $question->sendKeys('foo bar');
 

@@ -117,7 +117,7 @@ class LanguageChangerTest extends TestBaseClassWeb
         foreach ($questions['q1']->subquestions as $subq) {
             $subquestions[$subq->title] = $subq;
         }
-        $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['q1']->qid;
+        $sgqa ='Q' . $questions['q1']->qid;
         return $sgqa;
     }
 }

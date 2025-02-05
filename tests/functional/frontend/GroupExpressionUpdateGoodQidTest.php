@@ -51,7 +51,7 @@ class GroupExpressionUpdateGoodQidTest extends TestBaseClassWeb
             /* Group update */
             $inGroupTitleCurrent = $web->findElement(WebDriverBy::cssSelector('.group-title .G1Q00001NAOK'))->getText();
             $this->assertEquals("", $inGroupTitleCurrent, "Group title G1Q00001NAOK seems not empty, get “".$inGroupTitleCurrent."”");
-            $textSgqa = self::$surveyId . 'X' . $questions['G1Q00001']->gid . 'X' .$questions['G1Q00001']->qid;
+            $textSgqa = 'Q' .$questions['G1Q00001']->qid;
             $web->answerTextQuestion($textSgqa, 'CheckUpdated');
             $inGroupTitleCurrent = $web->findElement(WebDriverBy::cssSelector('.group-title .G1Q00001NAOK'))->getText();
             $this->assertEquals("CheckUpdated", $inGroupTitleCurrent, "Group title seems not updated, get “".$inGroupTitleCurrent."”");
@@ -84,7 +84,7 @@ class GroupExpressionUpdateGoodQidTest extends TestBaseClassWeb
             $question4 = $web->findElement(WebDriverBy::id('question' . $questions['G1Q00004']->qid));
             $this->assertFalse($question4->isDisplayed());
             /* Multiple numeric question update */
-            $answerBSgqa = self::$surveyId . 'X' . $questions['G1Q00003']->gid . 'X' .$questions['G1Q00003']->qid . 'SQ002';
+            $answerBSgqa = 'Q' .$questions['G1Q00003']->qid . 'SQ002';
             $web->answerTextQuestion($answerBSgqa, 40);
             /* Validate current total value */
             $totalvalue = $web->findElement(WebDriverBy::id('totalvalue_' . $questions['G1Q00003']->qid))->getText();
@@ -93,12 +93,12 @@ class GroupExpressionUpdateGoodQidTest extends TestBaseClassWeb
             $remainingvalue = $web->findElement(WebDriverBy::id('remainingvalue_' . $questions['G1Q00003']->qid))->getText();
             $this->assertEquals("60", $remainingvalue, "Remaining value are not updated");
             /* Check the A checkbox */
-            $ACheckboxSGQ = self::$surveyId . 'X' . $questions['G1Q00002']->gid . 'X' .$questions['G1Q00002']->qid . 'SQ001';
+            $ACheckboxSGQ = 'Q' .$questions['G1Q00002']->qid . 'SQ001';
             $web->findElement(WebDriverBy::cssSelector('#javatbd' . $ACheckboxSGQ. ' label'))->click();
             /* G1Q00004 must be shown */
             $this->assertTrue($question4->isDisplayed());
             /* Check too */
-            $answerCSgqa = self::$surveyId . 'X' . $questions['G1Q00003']->gid . 'X' .$questions['G1Q00003']->qid . 'SQ003';
+            $answerCSgqa = 'Q' .$questions['G1Q00003']->qid . 'SQ003';
             $web->answerTextQuestion($answerCSgqa, 60);
         } catch (\Exception $e) {
             $filename = __CLASS__ ."_". __FUNCTION__;
