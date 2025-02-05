@@ -42,7 +42,7 @@ class FixMovedQuestionConditions extends BaseTest
 
         $this->assertSame(
             $firstQuestionConditions[0]['cfieldname'],
-            self::$surveyId . 'X' . $groups[0]->gid . 'X' . $questions[0]->qid,
+            'Q' . $questions[0]->qid,
             'The cfieldname field is not correct.'
         );
 
@@ -61,7 +61,7 @@ class FixMovedQuestionConditions extends BaseTest
 
         $this->assertSame(
             $firstQuestionFixedConditions[0]['cfieldname'],
-            self::$surveyId . 'X' . $groups[1]->gid . 'X' . $questions[0]->qid,
+            'Q' . $questions[0]->qid,
             'The cfieldname field is not correct : bad group after moving question'
         );
     }

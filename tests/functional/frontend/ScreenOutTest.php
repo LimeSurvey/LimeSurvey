@@ -93,8 +93,8 @@ class ScreenOutTest extends TestBaseClassWeb
         try {
             self::$webDriver->get($url);
 
-            //javatbd186734X355X1911Y
-            $answerId = 'javatbd' . self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['q1']->qid . 'Y';
+            //javatbdQ1911Y
+            $answerId = 'javatbd' . 'Q' . $questions['q1']->qid . 'Y';
             $yesButton = self::$webDriver->findElement(WebDriverBy::id($answerId));
             $yesButton->click();
 
@@ -102,8 +102,8 @@ class ScreenOutTest extends TestBaseClassWeb
             $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $nextButton->click();
 
-            // answer186734X355X1912
-            $question2Id = 'answer' . self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['q2']->qid;
+            // answerQ1912
+            $question2Id = 'answer' . 'Q' . $questions['q2']->qid;
             $question2 = self::$webDriver->findElement(WebDriverBy::id($question2Id));
             $this->assertNotEmpty($question2);
 

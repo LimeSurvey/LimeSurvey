@@ -132,7 +132,7 @@ class ExpressionCoreAux extends TestCase
             $value = $this->value;
         }
 
-        list($surveyId, $groupId, /* questionId */) = explode('X', $this->sgqa, 3);
+        $qid = substr(explode("_", $this->sgqa)[0], 1);
         return <<<EOT
             // Dummy jQuery.
             $ = function() {
@@ -144,7 +144,7 @@ class ExpressionCoreAux extends TestCase
             document = {
                 getElementById: function(id) {
                     //console.log(id);
-                    if (id == 'relevance$surveyId' || id == 'relevance' || id == 'relevanceG0') {
+                    if (id == 'relevance$qid' || id == 'relevance' || id == 'relevanceG0') {
                         return {value: 1};
                     }
                     return {value: $value};
@@ -162,8 +162,7 @@ class ExpressionCoreAux extends TestCase
                     'jsName':'java$this->sgqa',
                     'jsName_on':'java$this->sgqa',
                     'sgqa':'$this->sgqa',
-                    'qid': '$surveyId',
-                    'gid': '$groupId',
+                    'qid': '$qid',
                     'type':'N',
                     'default':'',
                     'rowdivid':'',
