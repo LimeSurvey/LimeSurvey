@@ -148,7 +148,7 @@ class SurveyAdministrationController extends LSBaseController
                 $survey->save();
             }
         }
-        
+
         $aData = array('aAdditionalLanguages' => $survey->additionalLanguages);
 
         // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey ID
