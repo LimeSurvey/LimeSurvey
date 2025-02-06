@@ -96,7 +96,7 @@ $config['createsample']              = true;
 $config['customassetversionnumber']  = 1;        // Used to generate the path of tmp assets (see: LSYii_AssetManager::generatePath()  )
 
 // Please be very careful if you want to allow SVG files - there are several XSS dangerous security issues
-$config['allowedthemeimageformats'] = 'gif,ico,jpg,png'; // Image file types allowed to be uploaded in the themes section.
+$config['allowedthemeimageformats'] = 'gif,ico,jpg,jpeg,png'; // Image file types allowed to be uploaded in the themes section.
 $config['allowedthemeuploads'] = 'css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,lss,lsa,lsq,lsg'; // Other file types allowed to be uploaded in the themes section.
 $config['allowedfileuploads'] = [
     //Documents

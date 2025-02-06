@@ -5122,17 +5122,13 @@ function crypto_rand_secure($min, $max)
  */
 function isZipBomb($zip_filename)
 {
-    $totalSize = 0;
-    $zip = new ZipArchive();
-    if ($zip->open($zip_filename) === true) {
-        for ($i = 0; $i < $zip->numFiles; $i++) {
-            $fileStats = $zip->statIndex($i);
-            $totalSize += $fileStats['size'];
-        }
-
+    $isZipBomb = false;
+    $zip = new LimeSurvey\Zip();
+    if ($zip->open($zip_filename, null, false) === true) {
+        $isZipBomb = $zip->isZipBomb();
         $zip->close();
     }
-    return ( $totalSize >  Yii::app()->getConfig('maximum_unzipped_size'));
+    return $isZipBomb;
 }
 
 /**
