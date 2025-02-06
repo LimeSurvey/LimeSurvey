@@ -101,13 +101,13 @@ class QuotaMember extends LSActiveRecord
                     $sValue = $this->code;
                     break;
                 case "M":
-                    $sFieldName = 'Q' . $this->parent_qid . '_' . $this->qid;
+                    $sFieldName = 'Q' . $this->parent_qid . '_S' . $this->qid;
                     $sValue = "Y";
                     break;
                 case "A":
                 case "B":
                     $temp = explode('-', $this->code);
-                    $sFieldName = 'Q' . $this->parent_qid . '_' . $this->qid;
+                    $sFieldName = 'Q' . $this->parent_qid . '_S' . $this->qid;
                     $sValue = $temp[1];
                     break;
                 default:

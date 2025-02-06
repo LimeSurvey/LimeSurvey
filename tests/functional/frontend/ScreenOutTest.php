@@ -94,7 +94,7 @@ class ScreenOutTest extends TestBaseClassWeb
             self::$webDriver->get($url);
 
             //javatbdQ1911Y
-            $answerId = 'javatbd' . 'Q' . $questions['q1']->qid . 'Y';
+            $answerId = 'javatbd' . 'Q' . $questions['q1']->qid . '_CY';
             $yesButton = self::$webDriver->findElement(WebDriverBy::id($answerId));
             $yesButton->click();
 

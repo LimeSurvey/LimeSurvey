@@ -2856,7 +2856,7 @@ function reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQID
     $aFieldMappings = array();
     foreach ($aFieldMap as $sFieldname => $aFieldinfo) {
         if ($aFieldinfo['qid'] != null) {
-            $aFieldMappings[$sFieldname] = 'Q' . $aQIDReplacements[$aFieldinfo['qid']] . '_' . $aFieldinfo['aid'];
+            $aFieldMappings[$sFieldname] = 'Q' . $aQIDReplacements[$aFieldinfo['qid']] . '_S' . $aFieldinfo['aid'];
             if ($aFieldinfo['type'] == '1') {
                 $aFieldMappings[$sFieldname] = $aFieldMappings[$sFieldname] . '#' . $aFieldinfo['scale_id'];
             }
