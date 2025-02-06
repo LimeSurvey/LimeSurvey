@@ -40,7 +40,7 @@ class ArrayNumberCheckboxTest extends TestBaseClassWeb
         }
         /* Used vars */
         $checkboxQuestion = $questions["question"];
-        $checkboxBaseSGQ = $checkboxQuestion->sid."X".$checkboxQuestion->gid."X".$checkboxQuestion->qid;
+        $checkboxBaseSGQ = "Q".$checkboxQuestion->qid;
         $relevanceJsQuestion = $questions["QHiddenJS"];
         $relevancePHPQuestion = $questions["QHiddenPHP"];
         try {

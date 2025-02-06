@@ -618,7 +618,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
                 $ftype = $fielddata['type'];
                 $fsid = $fielddata['sid'];
                 $fgid = $fielddata['gid'];
-                $code = mb_substr((string) $fielddata['fieldname'], strlen($fsid . "X" . $fgid . "X" . $qid));
+                $code = mb_substr((string) $fielddata['fieldname'], strlen("Q" . $qid));
                 $varlabel = $fielddata['question'];
                 if (isset($fielddata['scale'])) {
                     $varlabel = "[{$fielddata['scale']}] " . $varlabel;
@@ -1330,7 +1330,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
             $category->appendChild($label);
             $category->appendChild($value);
 
-            $st = QueXMLSkipTo($qid, 'Y', " AND c.cfieldname LIKE '+$iSurveyID" . "X" . $Row['gid'] . "X" . $qid . $Row['title'] . "' ");
+            $st = QueXMLSkipTo($qid, 'Y', " AND c.cfieldname LIKE 'Q" . $qid . '_' . $Row['qid'] . "' ");
             if ($st !== false) {
                 $quexml_skipto = $dom->createElement("skipTo", $st);
                 $category->appendChild($quexml_skipto);

@@ -559,7 +559,7 @@ function createFieldMap450($survey): array
         // Implicit (subqestion intermal to a question type) or explicit qubquestions/answer count starts at 1
 
         // Types "L", "!", "O", "D", "G", "N", "X", "Y", "5", "S", "T", "U"
-        $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
+        $fieldname = "Q{$arow['qid']}";
 
         if ($questionTypeMetaData[$arow['type']]['settings']->subquestions == 0 && $arow['type'] != Question::QT_R_RANKING && $arow['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
             if (isset($fieldmap[$fieldname])) {

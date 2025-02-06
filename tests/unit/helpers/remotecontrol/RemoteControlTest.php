@@ -585,7 +585,7 @@ class RemoteControlTest extends TestBaseClass
         $survey = \Survey::model()->findByPk(self::$surveyId);
         $group = $survey->groups[0];
         $question = $group->questions[0];
-        $sgq = self::$surveyId . "X" . $group->gid . "X" . $question->qid;
+        $sgq = "Q" . $question->qid;
 
         // Check base language fieldmap
         $result = $handler->get_fieldmap($sessionKey, self::$surveyId);

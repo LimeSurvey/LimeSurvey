@@ -546,11 +546,10 @@ class Statistics extends SurveyCommonAction
         if (isset($_POST['cmd']) && isset($_POST['id'])) {
             $sStatisticsLanguage = sanitize_languagecode($_POST['sStatisticsLanguage']);
             $sQCode = $_POST['id'];
-            if (!is_numeric(substr((string) $sQCode, 0, 1))) {
-                // Strip first char when not numeric (probably T or D)
-                $sQCode = substr((string) $sQCode, 1);
-            }
-            list($qsid, $qgid, $qqid) = explode("X", substr((string) $sQCode, 0), 3);
+            $qqid = substr(explode("_", $sQCode)[0], 1);
+            $question = Question::model()->findByPk($qqid);
+            $qsid = $question->sid;
+            $qgid = $question->gid;
 
             if (!Permission::model()->hasSurveyPermission($qsid, 'statistics', 'read')) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
