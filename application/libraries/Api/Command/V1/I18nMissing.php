@@ -40,6 +40,7 @@ class I18nMissing implements CommandInterface
      * as gT('example');
      * The function checks if each string already exists in the file to avoid duplicates.
      *
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @param Request $request
      * @return Response
      */
