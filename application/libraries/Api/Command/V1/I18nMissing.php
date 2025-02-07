@@ -68,7 +68,9 @@ class I18nMissing implements CommandInterface
         $content = file_get_contents($absolutePath);
 
         foreach ($keys as $key) {
-            if (empty($key)) continue;
+            if (empty($key)) {
+                continue;
+            }
 
             $newLine = "gT('" . addslashes($key) . "');";
 
