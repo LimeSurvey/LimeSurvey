@@ -41,6 +41,7 @@ class I18n implements CommandInterface
      */
     public function run(Request $request)
     {
+        $data = [];
         $lang = (string)$request->getData('_id', 'en');
         App()->setLanguage($lang);
         $transLateService = new TranslationMoToJson($lang);
