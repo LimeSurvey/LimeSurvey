@@ -110,7 +110,7 @@ class QuestionCreate extends Question
         $survey = Survey::model()->findByPk($this->sid);
         $group = QuestionGroup::model()->findByPk($this->gid);
         $isTitleValid = false;
-        for ($i = 0; $i < 9999; $i++) {
+        for ($i = 0; $i <= 9999; $i++) {
             $this->title = 'Q' . str_pad((safecount($survey->baseQuestions) + $i), 4, '0', STR_PAD_LEFT);
             if ($this->validate(['title'])) {
                 $isTitleValid = true;
