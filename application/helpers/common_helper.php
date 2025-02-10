@@ -2874,9 +2874,9 @@ function reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQID
                 $aFieldMappings[$sFieldname] = $aFieldMappings[$sFieldname] . '#' . $aFieldinfo['scale_id'];
             }
             // now also add a shortened field mapping which is needed for certain kind of condition mappings
-            $aFieldMappings[$iNewSID . 'X' . $aFieldinfo['gid'] . 'X' . $aFieldinfo['qid']] = $iOldSID . 'X' . $aGIDReplacements[$aFieldinfo['gid']] . 'X' . $aQIDReplacements[$aFieldinfo['qid']];
+            $aFieldMappings[$iNewSID . 'X' . $aFieldinfo['gid'] . 'X' . $aFieldinfo['qid']] = 'Q' . $aQIDReplacements[$aFieldinfo['qid']];
             // Shortened field mapping for timings table
-            $aFieldMappings[$iNewSID . 'X' . $aFieldinfo['gid']] = $iOldSID . 'X' . $aGIDReplacements[$aFieldinfo['gid']];
+            $aFieldMappings[$iNewSID . 'X' . $aFieldinfo['gid']] = 'G' . $aGIDReplacements[$aFieldinfo['gid']];
         }
     }
     return array_flip($aFieldMappings);
