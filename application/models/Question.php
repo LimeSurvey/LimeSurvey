@@ -1677,7 +1677,7 @@ class Question extends LSActiveRecord
         // TODO: Assuming no collision.
         $answer->aid = 'new' . rand(1, 100000);
         $answer->sortorder = 0;
-        $answer->code = (Yii::app()->getConfig('answeroptionprefix', 'A')) . '01';
+        $answer->code = (Yii::app()->getConfig('answeroptionprefix', 'A')) . '0001';
 
         $l10n = [];
         foreach ($this->survey->allLanguages as $language) {
