@@ -34,6 +34,22 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.10.3 (build 250203) to 6.10.4 (build 250210) February 10, 2025
+-Fixed issue: Error 500 shown if dual scale question does not have any answer options (Carsten Schmitz)
+-Fixed issue #MW-1415: Progress bar displays 100 value before the end of the survey (#4118) (marticos)
+-Fixed issue #19953: Double encoding in quota page (Carsten Schmitz)
+-Fixed issue #19950: Wrong content (#4160) (Gabriel Jenik)
+-Fixed issue #19925: Multiplication of dropdown-menu DOM element when switching response view mode in LimeSurvey (#4139) (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by c_schmitz
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Brazil) by holch
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by c_schmitz
+
+
 Changes from 6.10.2 (build 250127) to 6.10.3 (build 250203) February 3, 2025
 -Fixed issue #19927: postgres and unit tests  (#4137) (Gabriel Jenik)
 -Fixed issue #19856: Import LDAP - error 500 - ldap_set_option (#4101) (Denis Chenu)
