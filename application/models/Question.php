@@ -1661,7 +1661,7 @@ class Question extends LSActiveRecord
     {
         $question = new Question();
         $question->qid = 0;
-        $question->title = (Yii::app()->getConfig('subquestionprefix', 'SQ')) . '001';
+        $question->title = (Yii::app()->getConfig('subquestionprefix', 'SQ')) . '0001';
         $question->relevance = 1;
         return $question;
     }
