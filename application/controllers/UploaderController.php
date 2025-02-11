@@ -144,11 +144,11 @@ class UploaderController extends SurveyController
             $size = $_FILES['uploadfile']['size'] / 1024;
             $preview = Yii::app()->session['preview'];
             /* Find the question by sFieldName : must be a upload question type, and id is end of sFieldName in $surveyid*/
-            $aFieldName = explode("X", $sFieldName);
-            if (empty($aFieldName[2]) || !ctype_digit($aFieldName[2])) {
+            $qid = substr(explode("_", $sFieldname)[0], 1);
+            if (empty($qid) || !ctype_digit($qid)) {
                 throw new CHttpException(400);
             }
-            $oQuestion = self::getQuestion($surveyid, $aFieldName[2]);
+            $oQuestion = self::getQuestion($surveyid, $qid);
             $aAttributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion);
             $maxfilesize = min(intval($aAttributes['max_filesize']), getMaximumFileUploadSize() / 1024);
             if ($maxfilesize <= 0) {

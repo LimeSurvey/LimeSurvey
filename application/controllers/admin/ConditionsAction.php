@@ -256,7 +256,7 @@ class ConditionsAction extends SurveyCommonAction
             //Build the array used for the questionNav and copyTo select boxes
             foreach ($postrows as $pr) {
                 $pquestions[] = array("text" => $pr['title'] . ": " . (string) substr(strip_tags((string) $pr['question']), 0, 80),
-                    "fieldname" => $pr['sid'] . "X" . $pr['gid'] . "X" . $pr['qid']);
+                    "fieldname" => "Q" . $pr['qid']);
             }
         }
 
@@ -1107,7 +1107,7 @@ class ConditionsAction extends SurveyCommonAction
             } // while
 
             foreach ($copyconditionsto as $copyc) {
-                list(,, $newqid) = explode("X", (string) $copyc);
+                $newqid = substr((explode("_", $copyc))[0], 1);
                 foreach ($proformaconditions as $pfc) {
                     //TIBO
 
@@ -1385,7 +1385,7 @@ class ConditionsAction extends SurveyCommonAction
      */
     protected function getCAnswersAndCQuestions(array $theserows)
     {
-        $X = "X";
+        $Q = "Q";
         $cquestions = array();
         $canswers = array();
 
@@ -1399,33 +1399,33 @@ class ConditionsAction extends SurveyCommonAction
                     $shortanswer = "{$arows['title']}: [" . flattenText($arows->questionl10ns[$this->language]->question) . "]";
                     $shortquestion = $rows['title'] . ":$shortanswer " . flattenText($rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'],
-                        $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title']
+                        $Q . $rows['qid'] . '_S' . $arows['qid']
                     );
 
                     switch ($rows['type']) {
                         // Array 5 buttons
                         case "A":
                             for ($i = 1; $i <= 5; $i++) {
-                                $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], $i, $i);
+                                $canswers[] = array($Q . $rows['qid'] . '_S' . $arows['qid'], $i, $i);
                             }
                             break;
                         // Array 10 buttons
                         case "B":
                             for ($i = 1; $i <= 10; $i++) {
-                                $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], $i, $i);
+                                $canswers[] = array($Q . $rows['qid'] . '_S' . $arows['qid'], $i, $i);
                             }
                             break;
                         // Array Y/N/NA
                         case "C":
-                            $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], "Y", gT("Yes"));
-                            $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], "U", gT("Uncertain"));
-                            $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], "N", gT("No"));
+                            $canswers[] = array($Q . $rows['qid'] . '_S' . $arows['qid'], "Y", gT("Yes"));
+                            $canswers[] = array($Q . $rows['qid'] . '_S' . $arows['qid'], "U", gT("Uncertain"));
+                            $canswers[] = array($Q . $rows['qid'] . '_S' . $arows['qid'], "N", gT("No"));
                             break;
                             // Array >/=/<
                         case "E":
-                            $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], "I", gT("Increase"));
-                            $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], "S", gT("Same"));
-                            $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], "D", gT("Decrease"));
+                            $canswers[] = array($Q . $rows['qid'] . '_S' . $arows['qid'], "I", gT("Increase"));
+                            $canswers[] = array($Q . $rows['qid'] . '_S' . $arows['qid'], "S", gT("Same"));
+                            $canswers[] = array($Q . $rows['qid'] . '_S' . $arows['qid'], "D", gT("Decrease"));
                             break;
                             // Array Flexible Row
                         case "F":
@@ -1443,13 +1443,13 @@ class ConditionsAction extends SurveyCommonAction
                                 )
                             );
                             foreach ($fresult as $frow) {
-                                $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], $frow['code'], $frow->answerl10ns[$this->language]->answer);
+                                $canswers[] = array($Q . $rows['qid'] . '_S' . $arows['qid'], $frow['code'], $frow->answerl10ns[$this->language]->answer);
                             }
                             break;
                     }
                     // Only Show No-Answer if question is not mandatory
                     if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
-                        $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], "", gT("No answer"));
+                        $canswers[] = array($Q . $rows['qid'] . '_S' . $arows['qid'], "", gT("No answer"));
                     }
                 } //foreach
             } elseif ($rows['type'] == Question::QT_COLON_ARRAY_NUMBERS || $rows['type'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
@@ -1489,13 +1489,13 @@ class ConditionsAction extends SurveyCommonAction
                 $x_axis = [];
 
                 foreach ($x_axis_db->readAll() as $frow) {
-                    $x_axis[$frow['title']] = $frow['question'];
+                    $x_axis[$frow['qid']] = $frow;
                 }
 
                 foreach ($y_axis_db->readAll() as $yrow) {
                     foreach ($x_axis as $key => $val) {
-                        $shortquestion = $rows['title'] . ":{$yrow['title']}:$key: [" . strip_tags((string) $yrow['question']) . "][" . strip_tags((string) $val) . "] " . flattenText($rows['question']);
-                        $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $yrow['title'] . "_" . $key);
+                        $shortquestion = $rows['title'] . ":{$yrow['title']}:$val['title']: [" . strip_tags((string) $yrow['question']) . "][" . strip_tags((string) $val['question']) . "] " . flattenText($rows['question']);
+                        $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $Q . $rows['qid'] . '_S' . $yrow['title'] . "_S" . $key);
                         if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
                         }
                     }
@@ -1517,11 +1517,11 @@ class ConditionsAction extends SurveyCommonAction
                     $label2 = empty($attr['dualscale_headerB'][$sLanguage]) ? gT('Scale 2') : $attr['dualscale_headerB'][$sLanguage];
                     $shortanswer = "{$arows['title']}: [" . strip_tags((string) $arows->questionl10ns[$this->language]->question) . "][$label1]";
                     $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $arows->questionl10ns[$this->language]->question);
-                    $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'] . "#0");
+                    $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $Q . $rows['qid'] . '_S' . $arows['qid'] . "#0");
 
                     $shortanswer = "{$arows['title']}: [" . strip_tags((string) $arows->questionl10ns[$this->language]->question) . "][$label2]";
                     $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $arows->questionl10ns[$this->language]->question);
-                    $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'] . "#1");
+                    $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $Q . $rows['qid'] . '_S' . $arows['qid'] . "#1");
 
                     // first label
                     $lresult = Answer::model()->with(array(
@@ -1530,7 +1530,7 @@ class ConditionsAction extends SurveyCommonAction
                                 'params' => array(':lang' => $this->language)
                             )))->findAllByAttributes(array('qid' => $rows['qid'], 'scale_id' => 0));
                     foreach ($lresult as $lrows) {
-                        $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'] . "#0", "{$lrows['code']}", "{$lrows['code']}");
+                        $canswers[] = array($Q . $rows['qid'] . '_S' . $arows['qid'] . "#0", "{$lrows['code']}", "{$lrows['code']}");
                     }
 
                     // second label
@@ -1544,13 +1544,13 @@ class ConditionsAction extends SurveyCommonAction
                             ));
 
                     foreach ($lresult as $lrows) {
-                        $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'] . "#1", "{$lrows['code']}", "{$lrows['code']}");
+                        $canswers[] = array($Q . $rows['qid'] . '_S' . $arows['qid'] . "#1", "{$lrows['code']}", "{$lrows['code']}");
                     }
 
                     // Only Show No-Answer if question is not mandatory
                     if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
-                        $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'] . "#0", "", gT("No answer"));
-                        $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'] . "#1", "", gT("No answer"));
+                        $canswers[] = array($Q . $rows['qid'] . '_S' . $arows['qid'] . "#0", "", gT("No answer"));
+                        $canswers[] = array($Q . $rows['qid'] . '_S' . $arows['qid'] . "#1", "", gT("No answer"));
                     }
                 } //foreach
             } elseif ($rows['type'] == Question::QT_K_MULTIPLE_NUMERICAL || $rows['type'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
@@ -1562,11 +1562,11 @@ class ConditionsAction extends SurveyCommonAction
                 foreach ($aresult as $arows) {
                     $shortanswer = "{$arows['title']}: [" . strip_tags((string) $arows->questionl10ns[$this->language]->question) . "]";
                     $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $rows['question']);
-                    $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title']);
+                    $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $Q . $rows['qid'] . '_S' . $arows['qid']);
 
                     // Only Show No-Answer if question is not mandatory
                     if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
-                        $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], "", gT("No answer"));
+                        $canswers[] = array($Q . $rows['qid'] . '_S' . $arows['qid'], "", gT("No answer"));
                     }
                 } //foreach
             } elseif ($rows['type'] == Question::QT_R_RANKING) {
@@ -1591,13 +1591,13 @@ class ConditionsAction extends SurveyCommonAction
                 }
 
                 for ($i = 1; $i <= $acount; $i++) {
-                    $cquestions[] = array("{$rows['title']}: [RANK $i] " . strip_tags((string) $rows['question']), $rows['qid'], $rows['type'], $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $i);
+                    $cquestions[] = array("{$rows['title']}: [RANK $i] " . strip_tags((string) $rows['question']), $rows['qid'], $rows['type'], $Q . $rows['qid'] . '_S' . $aresult[$i - 1]);
                     foreach ($quicky as $qck) {
-                        $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $i, $qck[0], $qck[1]);
+                        $canswers[] = array($Q . $rows['qid'] . '_S' . $aresult[$i - 1], $qck[0], $qck[1]);
                     }
                     // Only Show No-Answer if question is not mandatory
                     if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
-                        $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $i, " ", gT("No answer"));
+                        $canswers[] = array($Q . $rows['qid'] . '_S' . $aresult[$i - 1], " ", gT("No answer"));
                     }
                 }
                 unset($quicky);
@@ -1605,7 +1605,7 @@ class ConditionsAction extends SurveyCommonAction
             } elseif ($rows['type'] == Question::QT_M_MULTIPLE_CHOICE || $rows['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                 $shortanswer = " [" . gT("Group of checkboxes") . "]";
                 $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $rows['question']);
-                $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid']);
+                $cquestions[] = array($shortquestion, $rows['qid'], $Q . $rows['qid']);
 
                 $aresult = Question::model()->with('questionl10ns')->findAllByAttributes(array(
                     "parent_qid" => $rows['qid'],
@@ -1613,48 +1613,48 @@ class ConditionsAction extends SurveyCommonAction
 
                 foreach ($aresult as $arows) {
                     $theanswer = $arows->questionl10ns[$this->language]->question;
-                    $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'], $arows['title'], $theanswer);
+                    $canswers[] = array($Q . $rows['qid'], $arows['title'], $theanswer);
 
                     $shortanswer = "{$arows['title']}: [" . strip_tags((string) $theanswer) . "]";
                     $shortanswer .= "[" . gT("Single checkbox") . "]";
                     $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $rows['question']);
-                    $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], "+" . $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title']);
-                    $canswers[] = array("+" . $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], 'Y', gT("checked"));
-                    $canswers[] = array("+" . $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], '', gT("not checked"));
+                    $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], "+" . $Q . $rows['qid'] . '_S' . $arows['qid']);
+                    $canswers[] = array("+" . $Q . '_S' . $rows['qid'] . '_S' . $arows['qid'], 'Y', gT("checked"));
+                    $canswers[] = array("+" . $Q . $rows['qid'] . '_S' . $arows['qid'], '', gT("not checked"));
                 }
             } else {
-                $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid']);
+                $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $Q . $rows['qid']);
 
                 switch ($rows['type']) {
                     case Question::QT_Y_YES_NO_RADIO: // Y/N/NA
-                        $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'], "Y", gT("Yes"));
-                        $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'], "N", gT("No"));
+                        $canswers[] = array($Q . $rows['qid'], "Y", gT("Yes"));
+                        $canswers[] = array($Q . $rows['qid'], "N", gT("No"));
                         // Only Show No-Answer if question is not mandatory
                         if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
-                            $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'], " ", gT("No answer"));
+                            $canswers[] = array($Q . $rows['qid'], " ", gT("No answer"));
                         }
                         break;
                     case Question::QT_G_GENDER: //Gender
-                        $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'], "F", gT("Female"));
-                        $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'], "M", gT("Male"));
+                        $canswers[] = array($Q . $rows['qid'], "F", gT("Female"));
+                        $canswers[] = array($Q . $rows['qid'], "M", gT("Male"));
                         // Only Show No-Answer if question is not mandatory
                         if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
-                            $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'], " ", gT("No answer"));
+                            $canswers[] = array($Q . $rows['qid'], " ", gT("No answer"));
                         }
                         break;
                     case Question::QT_5_POINT_CHOICE: // 5 choice
                         for ($i = 1; $i <= 5; $i++) {
-                            $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'], $i, $i);
+                            $canswers[] = array($Q . $rows['qid'], $i, $i);
                         }
                         // Only Show No-Answer if question is not mandatory
                         if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
-                            $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'], " ", gT("No answer"));
+                            $canswers[] = array($Q . $rows['qid'], " ", gT("No answer"));
                         }
                         break;
                     case Question::QT_N_NUMERICAL: // Simple Numerical questions
                         // Only Show No-Answer if question is not mandatory
                         if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
-                            $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'], " ", gT("No answer"));
+                            $canswers[] = array($Q . $rows['qid'], " ", gT("No answer"));
                         }
                         break;
 
@@ -1671,12 +1671,12 @@ class ConditionsAction extends SurveyCommonAction
 
                         foreach ($aresult as $arows) {
                             $theanswer = $arows->answerl10ns[$this->language]->answer;
-                            $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'], $arows['code'], $theanswer);
+                            $canswers[] = array($Q . $rows['qid'], $arows['code'], $theanswer);
                         }
                         if ($rows['type'] == Question::QT_D_DATE) {
                             // Only Show No-Answer if question is not mandatory
                             if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
-                                $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'], " ", gT("No answer"));
+                                $canswers[] = array($Q . $rows['qid'], " ", gT("No answer"));
                             }
                         } elseif (
                             $rows['type'] != Question::QT_M_MULTIPLE_CHOICE &&
@@ -1690,12 +1690,12 @@ class ConditionsAction extends SurveyCommonAction
                                 $rows['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN) &&
                                 $rows['other'] == "Y"
                             ) {
-                                $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'], "-oth-", gT("Other"));
+                                $canswers[] = array($Q . $rows['qid'], "-oth-", gT("Other"));
                             }
 
                             // Only Show No-Answer if question is not mandatory
                             if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
-                                $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'], " ", gT("No answer"));
+                                $canswers[] = array($Q . $rows['qid'], " ", gT("No answer"));
                             }
                         }
                         break;

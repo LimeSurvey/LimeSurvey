@@ -389,7 +389,7 @@ function buildSelects($allfields, $surveyid, $language)
             elseif ($firstletter == "M" || $firstletter == "P") {
                 $mselects = array();
                 //create a list out of the $pv array
-                list($lsid, $lgid, $lqid) = explode("X", $pv);
+                $qid = substr(explode("_", $pv)[0], 1);
 
                 $aresult = Question::model()->findAll(array('order' => 'question_order', 'condition' => 'parent_qid=:parent_qid AND scale_id=0', 'params' => array(":parent_qid" => $lqid)));
                 foreach ($aresult as $arow) {
@@ -2496,7 +2496,7 @@ class userstatistics_helper
             $summaryRs = Yii::app()->db->createCommand($summarySql)->query()->readAll();
 
             foreach ($summaryRs as $field) {
-                $myField = $surveyid . "X" . $field['gid'] . "X" . $field['qid'];
+                $myField = "Q" . $field['qid'];
 
                 // Multiple choice get special treatment
                 if ($field['type'] == Question::QT_M_MULTIPLE_CHOICE) {

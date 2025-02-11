@@ -2229,7 +2229,7 @@ class DataEntry extends SurveyCommonAction
                     }
 
                     $qid = $arQuestion['qid'];
-                    $fieldname = "$surveyid" . "X" . "$gid" . "X" . "$qid";
+                    $fieldname = "Q" . "$qid";
 
                     $cdata['bgc'] = $bgc;
                     $cdata['fieldname'] = $fieldname;

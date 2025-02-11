@@ -550,7 +550,10 @@ class Statistics extends SurveyCommonAction
                 // Strip first char when not numeric (probably T or D)
                 $sQCode = substr((string) $sQCode, 1);
             }
-            list($qsid, $qgid, $qqid) = explode("X", substr((string) $sQCode, 0), 3);
+            $qqid = substr(explode("_", $sQCode)[0], 1);
+            $qq = Question->model()->findByPk($qqid);
+            $qsid = $qq->sid;
+            $qgid = $qq->gid;
 
             if (!Permission::model()->hasSurveyPermission($qsid, 'statistics', 'read')) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
