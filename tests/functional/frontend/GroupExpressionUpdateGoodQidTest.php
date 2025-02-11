@@ -51,7 +51,7 @@ class GroupExpressionUpdateGoodQidTest extends TestBaseClassWeb
             /* Group update */
             $inGroupTitleCurrent = $web->findElement(WebDriverBy::cssSelector('.group-title .G1Q00001NAOK'))->getText();
             $this->assertEquals("", $inGroupTitleCurrent, "Group title G1Q00001NAOK seems not empty, get “".$inGroupTitleCurrent."”");
-            $textSgqa = self::$surveyId . 'X' . $questions['G1Q00001']->gid . 'X' .$questions['G1Q00001']->qid;
+            $textSgqa = 'Q' .$questions['G1Q00001']->qid;
             $web->answerTextQuestion($textSgqa, 'CheckUpdated');
             $inGroupTitleCurrent = $web->findElement(WebDriverBy::cssSelector('.group-title .G1Q00001NAOK'))->getText();
             $this->assertEquals("CheckUpdated", $inGroupTitleCurrent, "Group title seems not updated, get “".$inGroupTitleCurrent."”");
