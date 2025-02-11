@@ -61,7 +61,7 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
                 "Q01 is not hidden by relevance"
             );
             sleep(1);
-            $sgqa = self::$surveyId."X".$questions['Q00']->gid."X".$questions['Q00']->qid;
+            $sgqa = "Q".$questions['Q00']->qid;
             $Input = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa ));
             $Input->sendKeys('10');
             $this->assertTrue(
@@ -86,7 +86,7 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
             $submit->click();
             sleep(1); // Needed ?
             /** Relevance on subquestion **/
-            $sgqa = self::$surveyId."X".$questions['Q03']->gid."X".$questions['Q03']->qid;
+            $sgqa = "Q".$questions['Q03']->qid;
             // Line to be relevant
             $lineRelevance = self::$webDriver->findElements(
                 WebDriverBy::cssSelector("#javatbd".$sgqa."SQ001.ls-irrelevant")
