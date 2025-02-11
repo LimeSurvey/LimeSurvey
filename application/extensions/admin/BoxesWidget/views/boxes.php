@@ -27,7 +27,7 @@
                 </div>
                 <div class="box-widget-loadmore">
                     <a href="#" id="load-more" data-page="1" data-limit="<?= $limit ?>" data-max-count="<?= $itemsCount ?>">
-                        <?= gT('Load more') ?>
+                        <?= gT('Load more...') ?>
                     </a>
                 </div>
             </div>

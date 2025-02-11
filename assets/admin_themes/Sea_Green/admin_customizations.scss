@@ -45,7 +45,7 @@
   }
   .accordion-button,
   .accordion-body {
-    background: $g-100;
+    background: $g-200;
   }
   .accordion-button {
     padding-left: 0;
@@ -167,11 +167,6 @@ blockquote {
 .container-fluid {
   padding-left: $container-padding;
   padding-right: $container-padding;
-}
-
-.container-fluid#in_survey_common_action {
-  padding-left: 0px;
-  padding-right: 0px;
 }
 
 .full-page-wrapper {
