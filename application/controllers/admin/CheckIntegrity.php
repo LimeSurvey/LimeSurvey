@@ -628,6 +628,11 @@ class CheckIntegrity extends SurveyCommonAction
             foreach ($oSurveys as $oSurvey) {
                 // This actually clears the schema cache, not just refreshes it
                 $oDB->schema->refresh();
+                $rawQuestions = Question::model()->findAll('sid = :sid', [':sid' => $oSurvey->sid]);
+                $questions = [];
+                foreach ($rawQuestions as $rawQuestion) {
+                    $questions[$rawQuestion->qid] = $rawQuestion;
+                }
                 // We get the active surveys
                 if ($oSurvey->isActive && $oSurvey->hasResponsesTable) {
                     $model    = SurveyDynamic::model($oSurvey->sid);
@@ -639,23 +644,14 @@ class CheckIntegrity extends SurveyCommonAction
                         // Question columns start with the SID
                         if (strpos((string) $oColumn->name, (string)$oSurvey->sid) !== false) {
                             // Fileds are separated by X
-                            $aFields = explode('X', (string) $oColumn->name);
+                            $qid = substr(explode("_", (string) $oColumn->Name)[0], 1);
 
-                            if (isset($aFields[1])) {
-                                $sGid = $aFields[1];
+                            if (isset($questions[$qid])) {
+                                $sGid = $questions[$qid]->gid;
 
                                 // QID field can be more than just QID, like: 886other or 886A1
                                 // So we clean it by finding the first alphabetical character
-                                $sDirtyQid = $aFields[2];
-                                preg_match('~[a-zA-Z_#]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
-
-                                if (isset($match[0][1])) {
-                                    $sQID = substr($sDirtyQid, 0, $match[0][1]);
-                                } else {
-                                    // It was just the QID.... (maybe)
-                                    $sQID = $sDirtyQid;
-                                }
-
+                                $sQID = $qid;
                                 // Here, we get the question as defined in backend
                                 try {
                                     $oQuestion = Question::model()->findByAttributes(['qid' => $sQID , 'sid' => $oSurvey->sid]);
@@ -667,7 +663,7 @@ class CheckIntegrity extends SurveyCommonAction
                                     // We check if its GID is the same as the one defined in the column name
                                     if ($oQuestion->gid != $sGid) {
                                         // If not, we change the column name
-                                        $sNvColName = $oSurvey->sid . 'X' . $oQuestion->group->gid . 'X' . $sDirtyQid;
+                                        $sNvColName = $oColumn->Name;
 
                                         if (array_key_exists($sNvColName, $aColumns)) {
                                             // This case will not happen often, only when QID + Subquestion ID == QID of a question in the target group
@@ -814,18 +810,7 @@ class CheckIntegrity extends SurveyCommonAction
             }
             //Only do this if there actually is a 'cfieldname'
             if ($condition['cfieldname']) {
-                // only if cfieldname isn't Tag such as {TOKEN:EMAIL} or any other token
-                if (preg_match('/^\+{0,1}[0-9]+X[0-9]+X*$/', (string) $condition['cfieldname'])) {
-                    list ($surveyid, $gid, $rest) = explode('X', (string) $condition['cfieldname']);
-
-                    $iRowCount = count(QuestionGroup::model()->findAllByAttributes(array('gid' => $gid)));
-                    if (!$iRowCount) {
-                        $aDelete['conditions'][] = array(
-                            'cid'    => $condition['cid'],
-                            'reason' => gT('No matching CFIELDNAME group!') . " ($gid) ({$condition['cfieldname']})"
-                        );
-                    }
-                }
+                //we have a cfieldname
             } elseif (!$condition['cfieldname']) {
                 $aDelete['conditions'][] = array(
                     'cid'    => $condition['cid'],

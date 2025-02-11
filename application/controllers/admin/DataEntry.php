@@ -867,7 +867,7 @@ class DataEntry extends SurveyCommonAction
                         $thisqid = $fname['qid'];
                         $currentvalues = array();
                         $rawvalues = [];
-                        $myfname = $fname['sid'] . 'X' . $fname['gid'] . 'X' . $fname['qid'];
+                        $myfname = 'Q' . $fname['qid'];
                         $questionInput = '<div id="question' . $thisqid . '" class="ranking-answers"><ul class="answers-list select-list">';
                         $unseen = true;
                         while (isset($fname['type']) && $fname['type'] == "R" && $fname['qid'] == $thisqid) {
@@ -1559,7 +1559,7 @@ class DataEntry extends SurveyCommonAction
             // For questions, if the "Unseen" checkbox is checked, we must set the field to null.
             // There are some special cases we need to handle.
             if ($irow['type'] == Question::QT_R_RANKING) {
-                $unseenFieldName = "unseen:" . $irow['sid'] . 'X' . $irow['gid'] . 'X' . $irow['qid'];
+                $unseenFieldName = "unseen:" . 'Q' . $irow['qid'];
             } elseif ($irow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                 // Remove trailing "comment" from the fieldname, if present
                 $unseenFieldName = "unseen:" . preg_replace('/comment$/', '', $fieldname);

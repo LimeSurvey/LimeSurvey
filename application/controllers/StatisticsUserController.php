@@ -242,7 +242,7 @@ class StatisticsUserController extends SurveyController
         foreach ($filters as $flt) {
             //SGQ identifier
             $type = $flt['type'];
-            $SGQidentifier = $this->iSurveyID . 'X' . $flt->gid . 'X' . $flt->qid;
+            $SGQidentifier = 'Q' . $flt->qid;
 
             //let's switch through the question type for each question
             switch ($type) {

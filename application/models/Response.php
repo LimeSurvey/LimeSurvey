@@ -69,7 +69,7 @@ abstract class Response extends Dynamic
             ->findAll($criteria);
         $files = array();
         foreach ($questions as $question) {
-            $field = $question->sid . 'X' . $question->gid . 'X' . $question->qid;
+            $field = 'Q' . $question->qid;
             $fieldDataJson = $this->getAttribute($field);
             if ($question->encrypted === 'Y') {
                 $fieldDataJson = self::decryptSingle($fieldDataJson);
@@ -110,7 +110,7 @@ abstract class Response extends Dynamic
         $files = array();
         foreach ($aQuestions as $question) {
             $encrypted = $question->encrypted === 'Y';
-            $field = $question->sid . 'X' . $question->gid . 'X' . $question->qid;
+            $field = 'Q' . $question->qid;
             $fieldDataJson = $this->getAttribute($field);
             if ($encrypted) {
                 $fieldDataJson = self::decryptSingle($fieldDataJson);
