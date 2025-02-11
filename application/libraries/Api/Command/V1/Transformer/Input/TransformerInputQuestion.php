@@ -52,7 +52,11 @@ class TransformerInputQuestion extends Transformer
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
             'moduleName' => ['key' => 'modulename', 'length' => ['max' => 255]],
-            'gid' => ['type' => 'int'],
+            'gid' => [
+                'type' => 'int',
+                'empty' => false,
+                'numerical' => ['min' => 1, 'max' => PHP_INT_MAX]
+            ],
             'relevance' => ['filter' => 'trim'],
             'sameScript' => [
                 'key' => 'same_script',
