@@ -706,10 +706,10 @@ window.addEventListener('message', function(event) {
                 foreach ($oTemplate->oOptions as $key => $value) {
                     // TODO: Same issue as commit 2972aea41c51c74db95bfe40c337ae839471152c
                     // Options are not loaded the same way in all places.
-                    if ($value instanceof stdClass) {
+                    if (!is_string($value)) {
                         $value = 'N/A';
                     }
-                    $aData["aSurveyInfo"]["options"][$key] = (string) $value;
+                    $aData["aSurveyInfo"]["options"][$key] = $value;
                 }
             }
         } else {
