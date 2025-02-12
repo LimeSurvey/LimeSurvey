@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-02-10 15:08:02+00:00\n"
+"POT-Creation-Date: 2025-02-12 09:56:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10240,7 +10240,7 @@ msgid "This is not a valid LimeSurvey survey structure XML file."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:1359
-msgid "Survey entry not found in the XML file."
+msgid "XML Parsing Error: Missing or malformed element of type 'survey'"
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:1427
@@ -14895,8 +14895,8 @@ msgstr ""
 msgid "Participant"
 msgstr ""
 
-#: application/models/Participant.php:199
-msgid "Blacklisted"
+#: application/models/Participant.php:199 application/models/Token.php:98
+msgid "Blocklisted"
 msgstr ""
 
 #: application/models/Participant.php:200
@@ -16353,10 +16353,6 @@ msgstr ""
 #: application/views/admin/participants/massive_actions/_update_results.php:17
 #: application/views/admin/token/massive_actions/_update_results.php:17
 msgid "Participant ID"
-msgstr ""
-
-#: application/models/Token.php:98
-msgid "Blocklisted"
 msgstr ""
 
 #: application/models/Token.php:104 application/models/TokenDynamic.php:718
@@ -19755,7 +19751,7 @@ msgid "Select language..."
 msgstr ""
 
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:73
-msgid "Blocklist user:"
+msgid "Participant is on blocklist:"
 msgstr ""
 
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:91
