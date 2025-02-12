@@ -1356,7 +1356,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
     // Import survey entry  ====================================================
     if (!isset($xml->surveys->rows->row)) {
-        $results['error'] = gT("Survey entry not found in the XML file.");
+        $results['error'] = gT("XML Parsing Error: Missing or malformed element of type 'survey'");
         return $results;
     }
     foreach ($xml->surveys->rows->row as $row) {
