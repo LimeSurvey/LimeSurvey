@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-02-12 09:56:15+00:00\n"
+"POT-Creation-Date: 2025-02-12 15:58:31+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1130,7 +1130,7 @@ msgstr ""
 #: application/controllers/admin/PluginManagerController.php:323
 #: application/controllers/admin/PluginManagerController.php:403
 #: application/controllers/admin/PluginManagerController.php:751
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:397
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:399
 #: application/core/plugins/TwoFactorAdminLogin/views/index.php:12
 #: application/helpers/admin/ajax_helper.php:176
 msgid "No permission"
@@ -9099,21 +9099,21 @@ msgstr ""
 msgid "The confirmation key is not correct."
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:378
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:380
 msgid "The two-factor authentication key could not be stored."
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:401
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:421
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:403
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:423
 msgid "Successfully deleted"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:401
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:421
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:403
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:423
 msgid "Deletion failed"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:417
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:419
 msgid "No 2FA key set for user ID %s"
 msgstr ""
 
