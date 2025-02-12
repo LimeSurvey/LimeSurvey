@@ -236,8 +236,7 @@ class Authentication extends SurveyCommonAction
             //check if password is set correctly
             $password = Yii::app()->request->getPost('password', '');
             $passwordRepeat = Yii::app()->request->getPost('password_repeat', '');
-            $passwordStrengthError = $user->checkPasswordStrength($passwordRepeat) !== '';
-            $passwordRules = $user->getPasswordHelpText();
+            $passwordStrengthError = $user->checkPasswordStrength($passwordRepeat);
             if (($password !== null && $passwordRepeat !== null) && ($password === $passwordRepeat) && $passwordStrengthError == '') {
                 //now everything is ok, save password
                 $user->setPassword($password, true);
@@ -246,7 +245,7 @@ class Authentication extends SurveyCommonAction
                 $user->save(false, ['validation_key', 'validation_key_expiration']);
                 App()->getController()->redirect(array('/admin/authentication/sa/login'));
             } else {
-                Yii::app()->setFlashMessage(sprintf(gT('Password cannot be blank and must fulfill minimum requirements: %s'), $passwordRules), 'error');
+                Yii::app()->setFlashMessage(sprintf(gT('Password cannot be blank and must fulfill minimum requirements: %s'), $passwordStrengthError), 'error');
             }
         }
 
