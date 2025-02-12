@@ -61,7 +61,7 @@ class DateTimeForwardBackTest extends TestBaseClass
         $gseq = 0;
         $_POST['relevance' . $qid] = 1;
         $_POST['relevanceG' . $gseq] = 1;
-        $_POST['lastgroup'] = self::$surveyId . 'X' . $group->gid;
+        $_POST['lastgroup'] = 'Q' . $group->gid;
         $_POST['movenext'] = 'movenext';
         $_POST['thisstep'] = 1;
         $_POST['sid'] = self::$surveyId;
