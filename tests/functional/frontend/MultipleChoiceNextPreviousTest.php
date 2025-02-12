@@ -67,7 +67,7 @@ class MultipleChoiceNextPreviousTest extends TestBaseClassWeb
             $prev->click();
 
             // Check value of checkbox.
-            $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['q2']->qid;
+            $sgqa = 'Q' . $questions['q2']->qid;
             $checkbox = self::$webDriver->findElement(WebDriverBy::id('java' . $sgqa . 'SQ001'));
             $this->assertEquals('Y', $checkbox->getAttribute('value'));
 

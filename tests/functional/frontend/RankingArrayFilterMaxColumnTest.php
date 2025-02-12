@@ -131,9 +131,7 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
     protected function getAnswerId(\Survey $survey)
     {
         return 'javatbd'
-            . self::$surveyId
-            . 'X' . $survey->groups[0]->gid
-            . 'X'
+            . 'Q'
             . $survey->groups[0]->questions[0]->qid;
     }
 
@@ -143,9 +141,8 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
      */
     protected function getItemListId(\Survey $survey)
     {
-        return self::$surveyId
-            . 'X' . $survey->groups[1]->gid
-            . 'X'
+        return 
+            'Q'
             . $survey->groups[1]->questions[0]->qid;
     }
 
