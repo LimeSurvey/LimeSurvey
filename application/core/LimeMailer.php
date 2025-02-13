@@ -223,6 +223,8 @@ class LimeMailer extends PHPMailer
      */
     public function init()
     {
+        // Make sure that any existing SMTP connection is closed
+        $this->smtpClose();
         $this->debug = [];
         $this->ContentType = self::CONTENT_TYPE_PLAINTEXT;
         $this->clearCustomHeaders();
