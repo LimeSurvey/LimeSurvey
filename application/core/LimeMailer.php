@@ -176,6 +176,7 @@ class LimeMailer extends PHPMailer
                 break;
             case self::MethodSmtp:
                 $this->IsSMTP();
+                $this->SMTPKeepAlive = true;
                 if ($emailsmtpdebug > 0) {
                     $this->SMTPDebug = $emailsmtpdebug;
                 }
