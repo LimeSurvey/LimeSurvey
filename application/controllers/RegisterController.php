@@ -44,6 +44,10 @@ class RegisterController extends LSYii_Controller
      * The message to diplay after sending the register email
      */
     private $sMailMessage;
+    /**
+     * Whether to send the registration email or not
+     */
+    private $sendRegistrationEmail;
 
     public function actions()
     {
@@ -112,6 +116,8 @@ class RegisterController extends LSYii_Controller
             Yii::app()->setLanguage($sLanguage);
         }
 
+        $this->sendRegistrationEmail = true;
+
         $event = new PluginEvent('beforeRegister');
         $event->set('surveyid', $iSurveyId);
         $event->set('lang', $sLanguage);
@@ -138,7 +144,9 @@ class RegisterController extends LSYii_Controller
                 Yii::app()->getController()->redirect($redirectUrl);
                 Yii::app()->end();
             }
-            self::sendRegistrationEmail($iSurveyId, $iTokenId);
+            if ($this->sendRegistrationEmail) {
+                self::sendRegistrationEmail($iSurveyId, $iTokenId);
+            }
             self::display($iSurveyId, $iTokenId, 'register_success');
             Yii::app()->end();
         }
@@ -333,6 +341,7 @@ class RegisterController extends LSYii_Controller
                 $this->aRegisterErrors[] = gT("This email address is already registered but email to that adress could not be delivered.");
             } else {
                 $this->sMailMessage = gT("The address you have entered is already registered. An email has been sent to this address with a link that gives you access to the survey.");
+                $this->sendRegistrationEmail = false;
                 return $oToken->tid;
             }
         } else {
