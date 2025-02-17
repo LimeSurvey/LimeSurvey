@@ -52,6 +52,15 @@ class TranslationMoToJson
         $file = new LSGettextMoFile(false);
         try {
             $messagesGettext = $file->load($pathToLanguageFiles, '');
+            foreach ($messagesGettext as $original => $translation) {
+                // if original contains ":" in the end, make an extra entry without the ":"
+                if (str_ends_with($original, ':')) {
+                    $strippedOriginal = rtrim($original, ':');
+//                    trimming translation both for LTR and RTL
+                    $strippedTranslation = trim($translation, ':');
+                    $messagesGettext[$strippedOriginal] = $strippedTranslation;
+                }
+            }
         } catch (\CException $e) {
             return [
                 'error' => 'Error loading translation file.',
