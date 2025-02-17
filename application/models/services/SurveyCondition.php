@@ -125,11 +125,13 @@ class SurveyCondition
      * @param string $prevQuestionSGQA the previous question's descriptor, such as @453614X608X15982@
      * @param string $tokenAttr the token placeholder, such as {TOKEN:FIRSTNAME}
      * @param string $ConditionRegexp the regular expression to match
-     * @return void
+     * @param array  $tempcids the list of cids to be replaced with actual ids
+     * @return array
      */
-    public function insertCondition(array $args, string $editSourceTab, string $editTargetTab, $app, string $ConditionConst, string $prevQuestionSGQA, string $tokenAttr, string $ConditionRegexp)
+    public function insertCondition(array $args, string $editSourceTab, string $editTargetTab, $app, string $ConditionConst, string $prevQuestionSGQA, string $tokenAttr, string $ConditionRegexp, array $tempcids = [])
     {
         extract($args);
+        $cids = [];
         if (isset($p_cquestions) && $p_cquestions != '' && $editSourceTab == '#SRCPREVQUEST') {
             $conditionCfieldname = $p_cquestions;
         } elseif (isset($p_csrctoken) && $p_csrctoken != '') {
@@ -146,6 +148,7 @@ class SurveyCondition
 
         if ($editTargetTab == '#CANSWERSTAB') {
             $results = array();
+            $i = 0;
 
             foreach ($p_canswers as $ca) {
                 //First lets make sure there isn't already an exact replica of this condition
@@ -211,6 +214,11 @@ class SurveyCondition
             }
         }
         \LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
+        $conditions = \Condition::model()->findAll('qid = :qid order by cid', [':qid' => $qid]);
+        for ($i = 0; $i < count($tempcids); $i++) {
+            $cids[$tempcids[$i]] = $conditions[count($conditions) - count($tempcids) + $i]->cid;
+        }
+        return $cids;
     }
 
     /**

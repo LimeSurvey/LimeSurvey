@@ -7,6 +7,7 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerSurveyTrait,
     OpHandlerValidationTrait
 };
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapItem;
 use LimeSurvey\Models\Services\{
     Exception\NotFoundException,
     Exception\PermissionDeniedException,
@@ -691,15 +692,16 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *
      *
      * @param OpInterface $op
-     * @return void
+     * @return array
      * @throws OpHandlerException
      * @throws PersistErrorException
      * @throws NotFoundException
      * @throws PermissionDeniedException
      */
-    public function handle(OpInterface $op): void
+    public function handle(OpInterface $op): array
     {
         $qid = $op->getProps()['qid'] ?? '';
+        $mapping = [];
         if (isset($op->getProps()['action'])) {
             $action = $op->getProps()['action'];
             switch ($action) {
@@ -759,7 +761,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                         $action = $condition['action'];
                         switch ($action) {
                             case 'insertCondition':
-                                $this->surveyCondition->insertCondition(
+                                $cids = $this->surveyCondition->insertCondition(
                                     [
                                     'p_cquestions' => $condition['cquestions'] ?? '',
                                     'p_csrctoken' => $condition['csrctoken'] ?? '',
@@ -776,8 +778,19 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                                     $condition['ConditionConst'] ?? '',
                                     $condition['prevQuestionSGQA'] ?? '',
                                     $condition['tokenAttr'] ?? '',
-                                    $condition['ConditionRegexp'] ?? ''
+                                    $condition['ConditionRegexp'] ?? '',
+                                    $condition['tempcids']
                                 );
+                                if (!isset($mapping['conditionsMap'])) {
+                                    $mapping['conditionsMap'] = [];
+                                }
+                                foreach ($cids as $key => $value) {
+                                    $mapping['conditionsMap'] []= new TempIdMapItem(
+                                        $key,
+                                        $value,
+                                        'cid'
+                                    );
+                                }
                                 break;
                             case 'updateCondition':
                                 $this->surveyCondition->updateCondition(
@@ -808,6 +821,9 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                 }
             }
         }
+        return !empty($mapping) ? [
+            'tempIdMapping' => $mapping
+        ] : [];
     }
 
     /**
@@ -871,7 +887,8 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         return
         isset($condition['method']) &&
         isset($condition['editSourceTab']) &&
-        isset($condition['editTargetTab']);
+        isset($condition['editTargetTab']) &&
+        isset($condition['tempcids']);
     }
 
     /**
