@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-02-12 15:58:31+00:00\n"
+"POT-Creation-Date: 2025-02-17 15:31:52+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -213,12 +213,12 @@ msgstr ""
 #: application/controllers/admin/Tokens.php:1343
 #: application/controllers/admin/Tokens.php:1427
 #: application/controllers/admin/Tokens.php:1491
-#: application/controllers/admin/Tokens.php:1767
-#: application/controllers/admin/Tokens.php:1894
-#: application/controllers/admin/Tokens.php:2164
-#: application/controllers/admin/Tokens.php:2510
-#: application/controllers/admin/Tokens.php:2569
-#: application/controllers/admin/Tokens.php:2631
+#: application/controllers/admin/Tokens.php:1768
+#: application/controllers/admin/Tokens.php:1895
+#: application/controllers/admin/Tokens.php:2165
+#: application/controllers/admin/Tokens.php:2511
+#: application/controllers/admin/Tokens.php:2570
+#: application/controllers/admin/Tokens.php:2632
 #: application/controllers/admin/dumpdb.php:109
 #: application/controllers/admin/globalsettings.php:37
 #: application/controllers/admin/globalsettings.php:62
@@ -269,14 +269,14 @@ msgstr ""
 #: application/controllers/admin/Tokens.php:1155
 #: application/controllers/admin/Tokens.php:1297
 #: application/controllers/admin/Tokens.php:1501
-#: application/controllers/admin/Tokens.php:1759
-#: application/controllers/admin/Tokens.php:1904
-#: application/controllers/admin/Tokens.php:2174
-#: application/controllers/admin/Tokens.php:2522
-#: application/controllers/admin/Tokens.php:2579
-#: application/controllers/admin/Tokens.php:2670
-#: application/controllers/admin/Tokens.php:2757
-#: application/controllers/admin/Tokens.php:2815
+#: application/controllers/admin/Tokens.php:1760
+#: application/controllers/admin/Tokens.php:1905
+#: application/controllers/admin/Tokens.php:2175
+#: application/controllers/admin/Tokens.php:2523
+#: application/controllers/admin/Tokens.php:2580
+#: application/controllers/admin/Tokens.php:2671
+#: application/controllers/admin/Tokens.php:2758
+#: application/controllers/admin/Tokens.php:2816
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
 #: application/helpers/admin/statistics_helper.php:2346
 #: application/helpers/admin/statistics_helper.php:2356
@@ -410,7 +410,7 @@ msgstr ""
 
 #: application/controllers/FailedEmailController.php:20
 #: application/controllers/FailedEmailController.php:21
-#: application/controllers/admin/Authentication.php:425
+#: application/controllers/admin/Authentication.php:424
 #: application/core/LsDefaultDataSets.php:387
 #: application/core/LsDefaultDataSets.php:388
 #: application/views/failedEmail/failedEmail_index.php:10
@@ -1416,7 +1416,7 @@ msgstr ""
 #: application/controllers/ResponsesController.php:199
 #: application/controllers/ResponsesController.php:201
 #: application/controllers/admin/DataEntry.php:540
-#: application/controllers/admin/Tokens.php:1790
+#: application/controllers/admin/Tokens.php:1791
 #: application/helpers/common_helper.php:2963
 #: application/models/TemplateManifest.php:168 application/models/Token.php:102
 #: application/views/admin/token/exportdialog.php:17
@@ -2568,7 +2568,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:844
 #: application/controllers/admin/PrintableSurvey.php:929
 #: application/controllers/admin/PrintableSurvey.php:943
-#: application/controllers/admin/Tokens.php:2534
+#: application/controllers/admin/Tokens.php:2535
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:215
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:224
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:232
@@ -2713,7 +2713,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:843
 #: application/controllers/admin/PrintableSurvey.php:927
 #: application/controllers/admin/PrintableSurvey.php:941
-#: application/controllers/admin/Tokens.php:2532
+#: application/controllers/admin/Tokens.php:2533
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:184
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:193
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:211
@@ -3051,7 +3051,7 @@ msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:3259
 #: application/controllers/admin/Tokens.php:1310
-#: application/controllers/admin/Tokens.php:1739
+#: application/controllers/admin/Tokens.php:1740
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:68
 #: application/core/plugins/TwoFactorAdminLogin/views/_partial/create.php:39
 #: application/extensions/admin/grid/ColumnFilterWidget/views/columns_filter.php:63
@@ -3991,29 +3991,29 @@ msgstr ""
 msgid "The validation key expired. Please contact the administrator."
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:249
+#: application/controllers/admin/Authentication.php:248
 msgid "Password cannot be blank and must fulfill minimum requirements: %s"
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:272
+#: application/controllers/admin/Authentication.php:271
 msgid "Logout successful."
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:301
+#: application/controllers/admin/Authentication.php:300
 #: application/models/services/PasswordManagement.php:183
 #: application/models/services/PasswordManagement.php:188
 msgid "If the username and email address is valid a password reminder email has been sent to you. This email can only be requested once in %d minutes."
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:346
+#: application/controllers/admin/Authentication.php:345
 msgid "Please log in first."
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:351
+#: application/controllers/admin/Authentication.php:350
 msgid "Welcome %s!"
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:355
+#: application/controllers/admin/Authentication.php:354
 msgid "Reloading screen. Please wait."
 msgstr ""
 
@@ -4380,7 +4380,7 @@ msgid "No answer"
 msgstr ""
 
 #: application/controllers/admin/ConditionsAction.php:673
-#: application/controllers/admin/Tokens.php:1732
+#: application/controllers/admin/Tokens.php:1733
 #: application/helpers/SurveyRuntimeHelper.php:1188
 #: application/views/admin/checkintegrity/fix_view.php:30
 #: application/views/admin/dataentry/vvimport_result.php:22
@@ -6576,25 +6576,25 @@ msgstr ""
 msgid "Error message: %s"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1710
+#: application/controllers/admin/Tokens.php:1711
 msgid "All emails were sent."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1712
+#: application/controllers/admin/Tokens.php:1713
 msgid "Not all emails were sent:"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1714
+#: application/controllers/admin/Tokens.php:1715
 msgid "Some entries had a validity date set which was not yet valid or not valid anymore."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1717
+#: application/controllers/admin/Tokens.php:1718
 msgid "Some emails were not sent because the server did not accept the email(s) or some other error occurred."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1720
-#: application/controllers/admin/Tokens.php:2546
-#: application/controllers/admin/Tokens.php:2550
+#: application/controllers/admin/Tokens.php:1721
+#: application/controllers/admin/Tokens.php:2547
+#: application/controllers/admin/Tokens.php:2551
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:14
 #: application/views/admin/authentication/error.php:6
 #: application/views/admin/error_view.php:5
@@ -6603,63 +6603,63 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1733
+#: application/controllers/admin/Tokens.php:1734
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of:"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1734
+#: application/controllers/admin/Tokens.php:1735
 msgid "having a valid email address"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1735
+#: application/controllers/admin/Tokens.php:1736
 msgid "not having been sent an invitation already"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1736
+#: application/controllers/admin/Tokens.php:1737
 msgid "not having already completed the survey"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1737
+#: application/controllers/admin/Tokens.php:1738
 msgid "having an access code"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1738
+#: application/controllers/admin/Tokens.php:1739
 msgid "having at least one use left"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1783
+#: application/controllers/admin/Tokens.php:1784
 #: application/views/admin/participants/modal_subviews/_exportCSV.php:5
 #: application/views/admin/participants/modal_subviews/_exportCSV.php:67
 #: application/views/admin/token/exportdialog.php:146
 msgid "Export participants"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1790
+#: application/controllers/admin/Tokens.php:1791
 #: application/views/admin/token/exportdialog.php:16
 #: application/views/admin/token/surveyParticipantView.php:89
 msgid "All participants"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1790
+#: application/controllers/admin/Tokens.php:1791
 #: application/views/admin/token/exportdialog.php:18
 msgid "Not completed"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1792
+#: application/controllers/admin/Tokens.php:1793
 #: application/extensions/admin/SearchBoxWidget/views/searchBox.php:39
 #: application/extensions/admin/SearchBoxWidget/views/searchBox.php:89
 #: application/views/admin/token/exportdialog.php:19
 msgid "Not started"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1793
+#: application/controllers/admin/Tokens.php:1794
 #: application/views/admin/token/exportdialog.php:20
 msgid "Started but not yet completed"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1797
-#: application/controllers/admin/Tokens.php:1813
-#: application/controllers/admin/Tokens.php:1822
+#: application/controllers/admin/Tokens.php:1798
+#: application/controllers/admin/Tokens.php:1814
+#: application/controllers/admin/Tokens.php:1823
 #: application/models/Assessment.php:149
 #: application/views/admin/token/exportdialog.php:35
 #: application/views/admin/token/exportdialog.php:53
@@ -6668,149 +6668,149 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1806
+#: application/controllers/admin/Tokens.php:1807
 #: application/views/admin/token/exportdialog.php:12
 msgid "Survey status:"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1811
+#: application/controllers/admin/Tokens.php:1812
 #: application/views/admin/token/exportdialog.php:28
 msgid "Invitation status:"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1814
+#: application/controllers/admin/Tokens.php:1815
 #: application/views/admin/token/exportdialog.php:36
 msgid "Invited"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1815
+#: application/controllers/admin/Tokens.php:1816
 #: application/views/admin/token/exportdialog.php:37
 msgid "Not invited"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1820
+#: application/controllers/admin/Tokens.php:1821
 #: application/views/admin/token/exportdialog.php:46
 msgid "Reminder status:"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1823
+#: application/controllers/admin/Tokens.php:1824
 #: application/views/admin/token/exportdialog.php:54
 msgid "Reminder(s) sent"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1824
+#: application/controllers/admin/Tokens.php:1825
 #: application/views/admin/token/exportdialog.php:55
 msgid "No reminder(s) sent"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1829
+#: application/controllers/admin/Tokens.php:1830
 #: application/views/admin/token/exportdialog.php:64
 msgid "Filter by language:"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1834
+#: application/controllers/admin/Tokens.php:1835
 #: application/views/admin/token/exportdialog.php:80
 msgid "Filter by email address:"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1835
+#: application/controllers/admin/Tokens.php:1836
 #: application/views/admin/token/exportdialog.php:87
 msgid "Only export entries which contain this string in the email address."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1839
+#: application/controllers/admin/Tokens.php:1840
 #: application/views/admin/token/exportdialog.php:100
 msgid "Delete exported participants:"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1840
+#: application/controllers/admin/Tokens.php:1841
 #: application/views/admin/token/exportdialog.php:114
 msgid "Warning: Deleted participants entries cannot be recovered."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1844
+#: application/controllers/admin/Tokens.php:1845
 msgid "Quote equations"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1845
+#: application/controllers/admin/Tokens.php:1846
 msgid "Warning: Quotes all content that starts with an equal sign to prevent CSV injections"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1943
+#: application/controllers/admin/Tokens.php:1944
 msgid "Uploading LDAP Query"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2138
+#: application/controllers/admin/Tokens.php:2139
 msgid "Can't bind to the LDAP directory. Error message: %s"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2147
+#: application/controllers/admin/Tokens.php:2148
 msgid "Can't connect to the LDAP directory"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2220
+#: application/controllers/admin/Tokens.php:2221
 msgid "Only CSV files are allowed."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2222
+#: application/controllers/admin/Tokens.php:2223
 msgid "Upload file not found. Check your permissions and path (%s) for the upload directory"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2316
+#: application/controllers/admin/Tokens.php:2317
 msgid "Line %s"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2337
+#: application/controllers/admin/Tokens.php:2338
 msgid "Line %s : %s %s"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2358
-#: application/controllers/admin/Tokens.php:2373
-#: application/controllers/admin/Tokens.php:3197
+#: application/controllers/admin/Tokens.php:2359
+#: application/controllers/admin/Tokens.php:2374
+#: application/controllers/admin/Tokens.php:3198
 msgid "Line %s : %s %s (%s)"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2381
-#: application/controllers/admin/Tokens.php:2387
+#: application/controllers/admin/Tokens.php:2382
+#: application/controllers/admin/Tokens.php:2388
 msgid "Line %s : %s %s (%s) - token : %s"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2529
-#: application/controllers/admin/Tokens.php:2553
+#: application/controllers/admin/Tokens.php:2530
+#: application/controllers/admin/Tokens.php:2554
 msgid "Create access codes"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2530
+#: application/controllers/admin/Tokens.php:2531
 msgid "Clicking 'Yes' will generate access codes for all those in this participant list that have not been issued one. Continue?"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2544
+#: application/controllers/admin/Tokens.php:2545
 msgid "Only {n} access code has been created.|Only {n} access codes have been created."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2545
+#: application/controllers/admin/Tokens.php:2546
 msgid "Need {n} access code.|Need {n} access codes."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2549
+#: application/controllers/admin/Tokens.php:2550
 msgid "{n} access code has been created.|{n} access codes have been created."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2662
+#: application/controllers/admin/Tokens.php:2663
 msgid "Bounce settings have been saved."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2799
+#: application/controllers/admin/Tokens.php:2800
 #: application/views/admin/token/tokenwarning.php:13
 msgid "Survey participants have not been initialised for this survey."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2805
+#: application/controllers/admin/Tokens.php:2806
 msgid "Participant table already exist for this survey."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2829
-#: application/controllers/admin/Tokens.php:2950
+#: application/controllers/admin/Tokens.php:2830
+#: application/controllers/admin/Tokens.php:2951
 #: application/core/LsDefaultDataSets.php:331
 #: application/extensions/BreadcrumbWidget/BreadcrumbWidget.php:206
 #: application/views/admin/token/browse.php:21
@@ -6818,12 +6818,12 @@ msgstr ""
 msgid "Survey participants"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2830
+#: application/controllers/admin/Tokens.php:2831
 msgid "A participant table has been created for this survey."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2832
-#: application/controllers/admin/Tokens.php:2890
+#: application/controllers/admin/Tokens.php:2833
+#: application/controllers/admin/Tokens.php:2891
 #: application/views/SurveysGroupsPermission/subviews/deleteUserResult.php:11
 #: application/views/admin/authentication/message.php:45
 #: application/views/admin/participants/attributeMapCSV_view.php:86
@@ -6849,23 +6849,23 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2887
+#: application/controllers/admin/Tokens.php:2888
 msgid "Import old participant table"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2888
+#: application/controllers/admin/Tokens.php:2889
 msgid "A survey participants table has been created for this survey and the old participants were imported."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2907
+#: application/controllers/admin/Tokens.php:2908
 msgid "Import failed"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2908
+#: application/controllers/admin/Tokens.php:2909
 msgid "There are no matching settings to start the restoration of the participant table."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:3192
+#: application/controllers/admin/Tokens.php:3193
 msgid "%s records with other errors"
 msgstr ""
 
@@ -7235,12 +7235,12 @@ msgstr ""
 msgid "Usage of processString without a string in your template"
 msgstr ""
 
-#: application/core/LimeMailer.php:585 application/core/LimeMailer.php:624
-#: application/core/LimeMailer.php:653
+#: application/core/LimeMailer.php:588 application/core/LimeMailer.php:627
+#: application/core/LimeMailer.php:656
 msgid "Email was not sent because demo-mode is activated."
 msgstr ""
 
-#: application/core/LimeMailer.php:962
+#: application/core/LimeMailer.php:965
 msgid "File not found: %s"
 msgstr ""
 
@@ -11476,7 +11476,7 @@ msgstr ""
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:3284
+#: application/helpers/expressions/em_core_helper.php:3309
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
