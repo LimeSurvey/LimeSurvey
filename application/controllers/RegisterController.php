@@ -44,9 +44,8 @@ class RegisterController extends LSYii_Controller
      * The message to diplay after sending the register email
      */
     private $sMailMessage;
-    /**
-     * Whether to send the registration email or not
-     */
+
+    /** @var bool Whether to send the registration email or not */
     private $sendRegistrationEmail;
 
     public function actions()
@@ -136,7 +135,7 @@ class RegisterController extends LSYii_Controller
         if (empty($this->aRegisterErrors) && $iTokenId && $this->sMessage === null) {
             $directLogin = $event->get('directLogin', false);
             if ($directLogin == true) {
-                if ($event->get('sendRegistrationEmail', false)) {
+                if ($event->get('sendRegistrationEmail', false) && $this->sendRegistrationEmail) {
                     self::sendRegistrationEmail($iSurveyId, $iTokenId);
                 }
                 $oToken = Token::model($iSurveyId)->findByPk($iTokenId)->decrypt();
