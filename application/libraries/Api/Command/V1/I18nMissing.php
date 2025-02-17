@@ -58,7 +58,9 @@ class I18nMissing implements CommandInterface
 
         $updatedKeys = [];
         $existingKeys = [];
-
+        App()->setLanguage('de');
+        $transLateService = new TranslationMoToJson('de');
+        $translations = $transLateService->translateMoToJson();
         if (!file_exists($absolutePath)) {
             // Create new file with header
             $content = "<?php\n// Translation-source for new editor. \n// Updated on " . date('Y-m-d H:i:s') . "\n\n";
@@ -70,6 +72,11 @@ class I18nMissing implements CommandInterface
 
         foreach ($keys as $key) {
             if (empty($key)) {
+                continue;
+            }
+            // check if key is also a key in array translations, then we can skip it
+            if (array_key_exists($key, $translations)) {
+                $existingKeys[] = $key;
                 continue;
             }
 
