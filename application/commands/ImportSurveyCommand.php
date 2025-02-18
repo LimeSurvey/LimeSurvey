@@ -44,7 +44,7 @@ class ImportSurveyCommand extends CConsoleCommand
             $baselang = $split[1];
         }
         $file = $source;
-        $result = $this->importFile($file, $baselang);        
+        $result = $this->importFile($file, $baselang);
         if (is_array($result) && isset($result['newsid'])) {
             echo $result['newsid'];
         } else {
