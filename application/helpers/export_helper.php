@@ -3144,11 +3144,6 @@ function writeXmlFromArray(XMLWriter $xml, $aData, $sParentKey = '')
 {
     $bCloseElement = false;
     foreach ($aData as $key => $value) {
-        if ($key == "@attributes") {
-            /* Survey theme option export XML of theme without filtering attributes (happen for cssframework) */
-            /* see mantis issue #19404: Export survey propblem with PHP version 8.0 https://bugs.limesurvey.org/view.php?id=19404 */
-            continue;
-        }
         if (!empty($value)) {
             if (is_array($value)) {
                 if (is_numeric($key)) {
@@ -3197,6 +3192,11 @@ function surveyGetThemeConfiguration($iSurveyId = null, $oXml = null, $bInherit 
 
         foreach ($aSurveyConfiguration as $iThemeKey => $oConfig) {
             foreach ($oConfig as $key => $attribute) {
+                if ($key == "@attributes") {
+                    /* Survey theme option export XML of theme without filtering attributes (happen for cssframework) */
+                    /* see mantis issue #19404: Export survey propblem with PHP version 8.0 https://bugs.limesurvey.org/view.php?id=19404 */
+                    continue;
+                }
                 if (is_array($attribute)) {
                     $attribute = (array)$attribute;
                 } elseif (isJson($attribute)) {
