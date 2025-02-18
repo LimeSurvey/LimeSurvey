@@ -890,7 +890,7 @@ class DataEntry extends SurveyCommonAction
                         }
                         for ($i = 1; $i <= $anscount; $i++) {
                             $questionInput .= "\n<li class=\"select-item\">";
-                            $questionInput .= "<label for=\"answer{$myfname}{$i}\">";
+                            $questionInput .= "<label for=\"answer{$myfname}_S{$answers[$i - 1]}\">";
                             if ($i == 1) {
                                 $questionInput .= gT('First choice');
                             } else {
@@ -898,7 +898,7 @@ class DataEntry extends SurveyCommonAction
                             }
 
                             $questionInput .= "</label>";
-                            $questionInput .= "<select name=\"{$myfname}{$i}\" id=\"answer{$myfname}{$i}\" class='form-select'>\n";
+                            $questionInput .= "<select name=\"{$myfname}_S{$answers[$i - 1]}\" id=\"answer{$myfname}_S{{$answers[$i - 1]}\" class='form-select'>\n";
                             (!isset($currentvalues[$i - 1])) ? $selected = " selected=\"selected\"" : $selected = "";
                             $questionInput .= "\t<option value=\"\" $selected>" . gT('None') . "</option>\n";
                             foreach ($ansresult as $ansrow) {

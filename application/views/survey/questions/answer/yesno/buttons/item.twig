@@ -14,12 +14,12 @@
 <div class="ls-answers answers-list yesno-button btn-group btn-group-justified" role="radiogroup" aria-labelledby="ls-question-text-{{ basename }}">
     <!-- Yes -->
     <input type="radio" class="btn-check ls-button-radio" name="{{ name }}" id="answer{{ name }}Y" value="Y" {{ yChecked }}>
-    <label class="btn btn-primary mb-3 answer-item ls-button-label" id="javatbd{{ name }}Y" for="answer{{ name }}Y">
+    <label class="btn btn-primary mb-3 answer-item ls-button-label" id="javatbd{{ name }}_CY" for="answer{{ name }}Y">
         <span class="fa fa-check ls-icon ri-checkbox-circle-line" aria-hidden="true"></span> {{ gT('Yes') }}
     </label>
     <!-- No -->
     <input type="radio" class="btn-check ls-button-radio" name="{{ name }}" id="answer{{ name }}N" value="N" {{ nChecked }}>
-    <label class="btn btn-primary mb-3 answer-item ls-button-label" id="javatbd{{ name }}N" for="answer{{ name }}N">
+    <label class="btn btn-primary mb-3 answer-item ls-button-label" id="javatbd{{ name }}_CN" for="answer{{ name }}N">
         <span class="fa fa-ban ri-close-circle-line ls-icon" aria-hidden="true"></span> {{ gT('No') }}
     </label>
     <!-- No answer -->

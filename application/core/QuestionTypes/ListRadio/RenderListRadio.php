@@ -94,7 +94,7 @@ class RenderListRadio extends QuestionBaseRenderer
                 'code'          => $oAnswer->code,
                 'answer'        => $oAnswer->answerl10ns[$this->sLanguage]->answer,
                 'checkedState'  => ($this->mSessionValue == $oAnswer->code ? 'CHECKED' : ''),
-                'myfname'       => $this->sSGQA . $oAnswer->code,
+                'myfname'       => $this->sSGQA . '_S' . $oAnswer->aid,
                 ), true);
             if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_OPTION && $this->answerBeforeOther == $oAnswer->code) {
                 $aRows[] = $this->addOtherRow();
@@ -196,7 +196,7 @@ class RenderListRadio extends QuestionBaseRenderer
         $oth_checkconditionFunction = ($this->getQuestionAttribute('other_numbers_only') == 1) ? 'fixnum_checkconditions' : 'checkconditions';
         $checkedState = ($this->mSessionValue == '-oth-') ? CHECKED : '';
 
-        $myfname = $thisfieldname = $this->sSGQA . 'other';
+        $myfname = $thisfieldname = $this->sSGQA . '_Cother';
 
         if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$thisfieldname])) {
             $dispVal = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$thisfieldname];

@@ -63,7 +63,7 @@ class RenderRanking extends QuestionBaseRenderer
         $curValue = '';
 
         for ($i = 1; $i <= $iMaxLine; $i++) {
-            $myfname = $this->sSGQA . $i;
+            $myfname = $this->sSGQA . '_S' . $this->aAnswerOptions[0][$i - 1];
             $this->sLabeltext = ($i == 1) ? gT('First choice') : sprintf(gT('Choice of rank %s'), $i);
             $aItemData = [];
 

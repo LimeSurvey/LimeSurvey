@@ -111,7 +111,7 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
 
         $checkconditionFunction = "checkconditions";
         foreach ($this->aSubQuestions[0] as $oQuestion) {
-            $myfname = $this->sSGQA . "_C" . $oQuestion->qid;
+            $myfname = $this->sSGQA . "_S" . $oQuestion->qid;
             $myfname2 = $myfname . "_Ccomment";
             $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], '');
             $mSessionValue2 = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname2], '');

@@ -6,7 +6,7 @@
         <!-- @todo : move htmlblock at the good place -->      
         <div id="sortable-choice-{{qId}}" class="sortable-choice sortable-list display_bubble_group">
             {% for index, ansrow in  answers %}
-                <div id="javatbd{{rankingName}}{{ansrow.code}}" class="ls-choice answer-item sortable-item sortable-enable grabable display_bubble" data-value="{{ansrow.code}}">
+                <div id="javatbd{{rankingName}}_S{{ansrow.aid}}" class="ls-choice answer-item sortable-item sortable-enable grabable display_bubble" data-value="{{ansrow.code}}">
                     {% if show_number is same as('yes') %} 
                         <b class="selector__index_row">#{{(index+1)}}</b>
                         &nbsp;

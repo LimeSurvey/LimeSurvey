@@ -43,7 +43,8 @@ class RenderListComment extends QuestionBaseRenderer
                 'li_classes'             => 'answer-item radio-item',
                 'name'                   => $this->sSGQA,
                 'id'                     => 'answer' . $this->sSGQA . $ansrow['code'],
-                'value'                  => $ansrow['code'],
+		'value'                  => $ansrow['code'],
+		'aid'                    => $ansrow['aid'],
                 'check_ans'              => ($this->mSessionValue == $ansrow['code'] ? CHECKED : ''),
                 'checkconditionFunction' => $this->checkconditionFunction . '(this.value, this.name, this.type);',
                 'labeltext'              => $ansrow->answerl10ns[$this->sLanguage]->answer,
@@ -65,18 +66,18 @@ class RenderListComment extends QuestionBaseRenderer
             $sRows .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/list/rows/answer_row', $itemData, true);
         }
 
-        $fname2 = $this->sSGQA . 'comment';
+        $fname2 = $this->sSGQA . '_Ccomment';
         $tarows = ($this->getAnswerCount() > 8) ? $this->getAnswerCount() / 1.2 : 4;
 
         $this->sCoreClass .= " " . $sCoreClasses;
 
         $answer = Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/list/answer', array(
             'sRows'             => $sRows,
-            'id'                => 'answer' . $this->sSGQA . 'comment',
+            'id'                => 'answer' . $this->sSGQA . '_Ccomment',
             'basename'          => $this->sSGQA,
             'coreClass'         => $this->sCoreClass,
             'hint_comment'      => gT('Please enter your comment here'),
-            'name'              => $this->sSGQA . 'comment',
+            'name'              => $this->sSGQA . '_Ccomment',
             'tarows'            => floor($tarows),
             'has_comment_saved' => isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2],
             'comment_saved'     => htmlspecialchars((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2]),
@@ -87,7 +88,7 @@ class RenderListComment extends QuestionBaseRenderer
 
 
         $inputnames[] = $this->sSGQA;
-        $inputnames[] = $this->sSGQA . 'comment';
+        $inputnames[] = $this->sSGQA . '_Ccomment';
 
         $this->registerAssets();
         return array($answer, $inputnames);
@@ -119,7 +120,7 @@ class RenderListComment extends QuestionBaseRenderer
             $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/dropdown/rows/option', $itemData, true);
         }
 
-        $fname2 = $this->sSGQA . 'comment';
+        $fname2 = $this->sSGQA . '_Ccomment';
         $tarows =  ($this->getAnswerCount() > 8 ? ($this->getAnswerCount() / 1.2) : 4);
         $tarows =  ($tarows > 15) ? 15 : $tarows;
 
@@ -149,7 +150,7 @@ class RenderListComment extends QuestionBaseRenderer
             ), true);
 
         $inputnames[] = $this->sSGQA;
-        $inputnames[] = $this->sSGQA . 'comment';
+        $inputnames[] = $this->sSGQA . '_Ccomment';
 
         $this->registerAssets();
         return array($answer, $inputnames);
