@@ -74,8 +74,8 @@ class I18nMissing implements CommandInterface
             if (empty($key)) {
                 continue;
             }
-            // check if key is also a key in array translations, then we can skip it
-            if (array_key_exists($key, $translations)) {
+            // check if key is also a key in array translations, then we can skip it as false positive
+            if (is_array($translations) && array_key_exists($key, $translations)) {
                 $existingKeys[] = $key;
                 continue;
             }
