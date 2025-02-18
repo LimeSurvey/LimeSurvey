@@ -2273,7 +2273,7 @@ class remotecontrol_handle
                 return array('status' => 'Error: Invalid survey ID');
             }
 
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
                 $oGroupList = QuestionGroup::model()->with('questiongroupl10ns')->findAllByAttributes(array("sid" => $iSurveyID));
                 if (count($oGroupList) == 0) {
                     return array('status' => 'No groups found');
@@ -2454,7 +2454,7 @@ class remotecontrol_handle
                 return ['status' => 'Error: Invalid survey ID'];
             }
 
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
                 if (is_null($sLanguage)) {
                     $sLanguage = $oSurvey->language;
                 }
