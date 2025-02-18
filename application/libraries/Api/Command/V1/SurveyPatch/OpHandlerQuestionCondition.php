@@ -803,7 +803,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                                         'conditionCfieldname' => $condition['fieldname'] ?? '',
                                         'p_method' => $condition['method'],
                                         'p_canswers' => $condition['canswers'] ?? [],
-                                        'p_cid' => $condition['cid']
+                                        'p_cid' => $condition['cid'],
                                         ],
                                     $condition['editTargetTab'],
                                     $this,
