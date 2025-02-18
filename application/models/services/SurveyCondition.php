@@ -179,6 +179,9 @@ class SurveyCondition
                 );
             }
         } else {
+            if ($editSourceTab != '#SRCPREVQUEST') {
+                $condition_data['cqid'] = 0;
+            }
             $posted_condition_value = null;
             // Other conditions like constant, other question or token field
             switch ($editTargetTab) {
@@ -245,6 +248,9 @@ class SurveyCondition
         $results = array();
 
         if ($editTargetTab == '#CANSWERSTAB') {
+            if (isset($p_csrctoken) && $p_csrctoken != '') {
+                $conditionCfieldname = $p_csrctoken;
+            }
             foreach ($p_canswers as $ca) {
                 // This is an Edit, there will only be ONE VALUE
                 $updated_data = array(
@@ -289,7 +295,6 @@ class SurveyCondition
                 $updated_data = array(
                     'qid' => $qid,
                     'scenario' => $p_scenario,
-                    'cqid' => $p_cqid,
                     'cfieldname' => $conditionCfieldname,
                     'method' => $p_method,
                     'value' => $posted_condition_value
