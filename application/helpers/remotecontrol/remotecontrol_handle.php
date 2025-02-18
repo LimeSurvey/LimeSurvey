@@ -1686,10 +1686,8 @@ class remotecontrol_handle
             if (!isset($oQuestion)) {
                 return array('status' => 'Error: Invalid questionid');
             }
-
             $iSurveyID = $oQuestion->sid;
-
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
                 if (empty($sLanguage)) {
                     $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
                 }
