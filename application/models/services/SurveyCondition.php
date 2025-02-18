@@ -236,10 +236,10 @@ class SurveyCondition
     {
         extract($args);
 
-        if (isset($p_cquestions) && $p_cquestions != '') {
-            $conditionCfieldname = $p_cquestions;
-        } elseif (isset($p_csrctoken) && $p_csrctoken != '') {
+        if (isset($p_csrctoken) && $p_csrctoken != '') {
             $conditionCfieldname = $p_csrctoken;
+        } elseif (isset($p_cquestions) && $p_cquestions != '') {
+            $conditionCfieldname = $p_cquestions;
         }
 
         $results = array();
