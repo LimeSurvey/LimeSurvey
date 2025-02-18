@@ -11,7 +11,7 @@ class ImportSurveyCommand extends CConsoleCommand
      * @param string $filename
      * @return array Import result
      */
-    protected function importFile($filename)
+    protected function importFile($filename, $baselang)
     {
         // TODO: Add support to customize these.
         $params = [
@@ -24,6 +24,7 @@ class ImportSurveyCommand extends CConsoleCommand
             $params["bTranslateLinkFields"],
             $params["sNewSurveyName"],
             $params["DestSurveyID"],
+            $baselang
         );
     }
 
@@ -35,8 +36,15 @@ class ImportSurveyCommand extends CConsoleCommand
      */
     public function run($args)
     {
-        $file = $args[0];
-        $result = $this->importFile($file);
+        $source = $args[0];
+        $baselang = null;
+        if (strpos($args[0], ':') !== 0) {
+            $split = explode(":", $args[0]);
+            $source = $split[0];
+            $baselang = $split[1];
+        }
+        $file = $source;
+        $result = $this->importFile($file, $baselang);        
         if (is_array($result) && isset($result['newsid'])) {
             echo $result['newsid'];
         } else {

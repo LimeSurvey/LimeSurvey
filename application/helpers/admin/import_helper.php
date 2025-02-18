@@ -1171,13 +1171,31 @@ function XMLImportLabelsets($sFullFilePath, $options)
     return $results;
 }
 
+function finalizeSurveyImportFile($newsid, $baselang)
+{
+    if ($baselang) {
+        $survey = Survey::model()->findByPk($newsid);
+        $supportedLanguages = explode(" ", $survey->language . " " . $survey->additional_languages);
+        $found = in_array($baselang, $supportedLanguages);
+        if (!$found) {
+            $baselang = explode("-", $baselang)[0];
+            $found = in_array($baselang, $supportedLanguages);
+        }
+        if ($found) {
+            $survey->language = $baselang;
+            $survey->additional_languages = '';
+            $survey->save();
+        }
+    }
+}
+
 /**
  * @param string $sFullFilePath
  * @param boolean $bTranslateLinksFields
  * @param string $sNewSurveyName
  * @param integer $DestSurveyID
  */
-function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName = null, $DestSurveyID = null)
+function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName = null, $DestSurveyID = null, $baselang = null)
 {
     $aPathInfo = pathinfo($sFullFilePath);
     if (isset($aPathInfo['extension'])) {
@@ -1190,6 +1208,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             $aImportResults = XMLImportSurvey($sFullFilePath, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields);
             if (!empty($aImportResults['newsid'])) {
                 $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
+                finalizeSurveyImportFile($aImportResults['newsid'], $baselang);
                 $SurveyIntegrity->fixSurveyIntegrity();
             }
             return $aImportResults;
@@ -1198,6 +1217,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             $aImportResults = TSVImportSurvey($sFullFilePath);
             if ($aImportResults && $aImportResults['newsid']) {
                 $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
+                finalizeSurveyImportFile($aImportResults['newsid'], $baselang);
                 $SurveyIntegrity->fixSurveyIntegrity();
             }
             return $aImportResults;
@@ -1223,6 +1243,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                     //Import the LSS file
                     $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename, null, $sNewSurveyName, null, true, false);
                     if ($aImportResults && $aImportResults['newsid']) {
+                        finalizeSurveyImportFile($aImportResults['newsid'], $baselang);
                         $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
                         $SurveyIntegrity->fixSurveyIntegrity();
                     }
