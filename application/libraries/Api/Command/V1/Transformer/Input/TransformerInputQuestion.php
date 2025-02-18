@@ -53,8 +53,8 @@ class TransformerInputQuestion extends Transformer
             ],
             'moduleName' => ['key' => 'modulename', 'length' => ['max' => 255]],
             'gid' => [
+                'required' => 'create',
                 'type' => 'int',
-                'empty' => false,
                 'numerical' => ['min' => 1, 'max' => PHP_INT_MAX]
             ],
             'relevance' => ['filter' => 'trim'],
