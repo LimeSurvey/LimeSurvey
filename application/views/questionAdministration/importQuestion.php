@@ -9,7 +9,7 @@
  */
 
 ?>
-<div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div id='edit-question-body' class='side-body'>
     <div class="pagetitle h1"><?php eT("Import a question"); ?></div>
     <div class="row">
         <div class="col-6">

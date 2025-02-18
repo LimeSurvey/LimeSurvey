@@ -184,7 +184,7 @@ class QuestionService
 
         $question = $this->saveQuestionData($data, $questionGroupId);
 
-        $this->initL10nService($survey, $question->gid);
+        $this->initL10nService($survey, $question->qid);
 
         return $question;
     }

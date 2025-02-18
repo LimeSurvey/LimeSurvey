@@ -48,7 +48,7 @@ question_template_attribute.horizontal_scroll   : {{question_template_attribute.
         />
         <label for="answer{{ name }}{{ code }}" class="imageselect-label" onclick='cancelBubbleThis(event); {{ sCheckconditionFunction }}'>
 
-         <img class="unforce-height" src="{{ answer }}" 
+         <img class="unforce-height" src="{{ answer|escape('html_attr') }}"
          style="{%if question_template_attribute.fix_width > 1%} 
             width: {{question_template_attribute.fix_width}}px 
             {% endif %} {%if question_template_attribute.fix_height > 1%}

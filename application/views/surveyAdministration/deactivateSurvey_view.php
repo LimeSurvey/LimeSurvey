@@ -1,5 +1,5 @@
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
 <?php if (isset($step1)) {
 
     $this->renderPartial('stopSurvey_view', [

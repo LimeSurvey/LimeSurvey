@@ -17,22 +17,6 @@ if (Permission::model()->hasGlobalPermission('users', 'create')) {
         ]
     );
 
-    $dummyUserHtmlOptions = [
-        'class' => 'btn btn-secondary UserManagement--action--openmodal',
-        'data-bs-toggle' => 'modal',
-        'data-href' => $this->createUrl("userManagement/addDummyUser")
-    ];
-    $this->widget(
-        'ext.ButtonWidget.ButtonWidget',
-        [
-            'name' => 'ls-question-tools-button',
-            'id' => 'ls-question-tools-button',
-            'text' => gT('Add dummy user'),
-            'icon' => 'ri-user-add-line',
-            'htmlOptions' => $dummyUserHtmlOptions,
-        ]
-    );
-
 //dropdown for import with two buttons (csv and json)
     $dropdownItemsImp = $this->renderPartial('/userManagement/partial/topbarBtns/dropDownItemsImport', [], true);
     ?>
@@ -69,5 +53,5 @@ if (Permission::model()->hasGlobalPermission('users', 'create')) {
         ],
     ]); ?>
 
-<?php
+    <?php
 }

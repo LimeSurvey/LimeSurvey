@@ -1,6 +1,6 @@
 // input field
 .form-control {
-    border        : $input-border-width solid $input-border-color !important;
+    border        : $input-border-width solid $input-border-color;
     line-height   : $line-height-16;
     border-radius : $border-radius;
     &:focus {

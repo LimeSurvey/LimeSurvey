@@ -133,7 +133,7 @@ class UserAction extends SurveyCommonAction
             }
 
             if (Yii::app()->request->getPost("saveandclose")) {
-                $this->getController()->redirect(array("admin/index"));
+                $this->getController()->redirect(array("dashboard/view"));
             }
         }
 

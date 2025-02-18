@@ -17,6 +17,9 @@ on:
 jobs:
   job_build_packages:
     runs-on: ubuntu-20.04 # ubuntu runner hosted by Github
+    concurrency: 
+      group: ${{ github.ref_name }}-frontend # Groups by branch and job name 
+      cancel-in-progress: true # Cancel in-progress jobs if a new job is triggered     
     strategy:
       matrix:
         # Specify what version of nodejs you want to test
@@ -24,7 +27,7 @@ jobs:
     name: Build Frontend Packages
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Run composer
         run: |
@@ -75,7 +78,7 @@ jobs:
     name: Run Frontend Tests
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       
       - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
         run: |

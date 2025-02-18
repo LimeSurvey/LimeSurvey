@@ -83,7 +83,7 @@
 
         <!-- Validation -->
         <?php if ($question->preg):?>
-            <tr >
+            <div class="row">
                 <div class="col-2">
                     <strong>
                         <?php eT("Validation:"); ?>
@@ -116,8 +116,8 @@
             </div>
             <div class="col-10">
                 <span class='statusentryhighlight'>
-                    <?php eT("Warning"); ?>:
-                    <?php eT("You need to add answer options to this question"); ?>
+                    <?php eT("Warning:"); ?>
+                    <?php eT("You need to add answer options to this question."); ?>
                 </span>
             </div>
         </div>
@@ -129,8 +129,8 @@
                 <div class="col-2"></div>
                 <div class="col-10">
                     <span class='statusentryhighlight'>
-                        <?php eT("Warning"); ?>:
-                        <?php eT("You need to add subquestions to this question"); ?>
+                        <?php eT("Warning:"); ?>
+                        <?php eT("You need to add subquestions to this question."); ?>
                     </span>
                 </div>
             </div>

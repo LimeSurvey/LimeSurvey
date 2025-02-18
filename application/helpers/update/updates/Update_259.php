@@ -10,13 +10,13 @@ class Update_259 extends DatabaseUpdateBase
                 '{{notifications}}',
                 array(
                     'id' => 'pk',
-                    'entity' => 'string(15) not null',
-                    'entity_id' => 'integer not null',
-                    'title' => 'string not null', // varchar(255) in postgres
-                    'message' => 'text not null',
-                    'status' => "string(15) not null default 'new' ",
-                    'importance' => 'integer not null default 1',
-                    'display_class' => "string(31) default 'default'",
+                    'entity' => 'string(15) NOT NULL',
+                    'entity_id' => 'integer NOT NULL',
+                    'title' => 'string NOT NULL', // varchar(255) in postgres
+                    'message' => 'text NOT NULL',
+                    'status' => "string(15) NOT NULL DEFAULT 'new' ",
+                    'importance' => 'integer NOT NULL DEFAULT 1',
+                    'display_class' => "string(31) DEFAULT 'default'",
                     'created' => 'datetime',
                     'first_read' => 'datetime'
                 )

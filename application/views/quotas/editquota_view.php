@@ -3,7 +3,7 @@
 /* @var QuotaLanguageSetting[] $aQuotaLanguageSettings */
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <div class="row">
         <div class="col-12 content-right">
             <h3>

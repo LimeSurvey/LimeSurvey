@@ -44,7 +44,7 @@ class PluginManagerController extends SurveyCommonAction
             $data[] = [
                 'id'          => $oPlugin->id,
                 'name'        => $oPlugin->name,
-                'load_error'  => $oPlugin->load_error,
+                'load_error'  => $oPlugin->getLoadError(),
                 'description' => '',
                 'active'      => $oPlugin->active,
                 'settings'    => []
@@ -72,7 +72,7 @@ class PluginManagerController extends SurveyCommonAction
         );
 
         $aData['topbar']['title'] = gT('Plugins');
-        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
 
         $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/pluginmanager/partial/topbarBtns/leftSideButtons',
@@ -779,21 +779,20 @@ class PluginManagerController extends SurveyCommonAction
 }
 
 /**
- * PCLZip callback for plugin ZIP install.
- * @param mixed $p_event
- * @param mixed $p_header
+ * Callback for plugin ZIP install. Filters files by extension.
+ * @param mixed $file
  * @return int Return 1 for yes (file can be extracted), 0 for no
  */
-function pluginExtractFilter($p_event, &$p_header)
+function pluginExtractFilter($file)
 {
     $aAllowExtensions = explode(
         ',',
         Yii::app()->getConfig('allowedpluginuploads', '')
     );
-    $info = pathinfo((string) $p_header['filename']);
+    $info = pathinfo((string) $file['name']);
 
     if (
-        $p_header['folder']
+        $file['is_folder']
         || !isset($info['extension'])
         || in_array($info['extension'], $aAllowExtensions)
     ) {

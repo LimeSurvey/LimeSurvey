@@ -178,7 +178,11 @@ class Template extends LSActiveRecord
         /* Validate if template is OK in user dir, DIRECTORY_SEPARATOR not needed "/" is OK */
         $oTemplate = self::model()->findByPk($sTemplateName);
 
-        if (!empty($oTemplate) && $oTemplate->checkTemplate() && (self::checkTemplateXML($oTemplate->name, $oTemplate->folder))) {
+        if (
+            !empty($oTemplate)
+            && $oTemplate->checkTemplate()
+            && (self::checkTemplateXML($oTemplate))
+        ) {
             self::$aNamesFiltered[$sTemplateName] = $sTemplateName;
             return self::$aNamesFiltered[$sTemplateName];
         }
@@ -279,16 +283,22 @@ class Template extends LSActiveRecord
     /**
      * Check if a given Template has a valid XML File
      *
-     * @param string $templateName the template name
-     * @param string $templateFolder the template folder name where to look for the XML
+     * @param Template $template The template model
      * @return boolean
      * @throws CDbException
      */
-    public static function checkTemplateXML($templateName, $templateFolder)
+    public static function checkTemplateXML($template)
     {
+        // Core templates should never be checked for validity
+        // TODO: we can not trust the filestate and need to be
+        //  able to check the theme type (core or custom) from the database, this should replace the call to getTemplatesData()
+        $templates = array_column(LsDefaultDataSets::getTemplatesData(), 'name');
+        if (in_array($template->name, $templates, true)) {
+            return true;
+        }
         // check if the configuration can be found
-        $userThemePath = App()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $templateFolder . DIRECTORY_SEPARATOR . 'config.xml';
-        $standardThemePath = App()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $templateFolder . DIRECTORY_SEPARATOR . 'config.xml';
+        $userThemePath = App()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $template->folder . DIRECTORY_SEPARATOR . 'config.xml';
+        $standardThemePath = App()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $template->folder . DIRECTORY_SEPARATOR . 'config.xml';
         if (is_file($userThemePath)) {
             $currentThemePath = $userThemePath;
         } elseif (is_file($standardThemePath)) {
@@ -298,7 +308,7 @@ class Template extends LSActiveRecord
         }
 
         // check compatability with current limesurvey version
-        if (!TemplateConfig::validateTheme($templateName, $currentThemePath)) {
+        if (!TemplateConfig::validateTheme($template->name, $currentThemePath)) {
             return false;
         }
 
@@ -746,7 +756,7 @@ class Template extends LSActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
 
         $criteria->compare('name', $this->name, true);
         $criteria->compare('folder', $this->folder, true);

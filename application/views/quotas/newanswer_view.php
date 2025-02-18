@@ -3,7 +3,7 @@
 /* @var Quota $oQuota */
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <div class="row">
         <div class="col-xl-8 content-right">
             <h3>

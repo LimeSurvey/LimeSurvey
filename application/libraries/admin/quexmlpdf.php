@@ -1349,6 +1349,7 @@ class quexmlpdf extends pdf
      */
     public function setStyle($style)
     {
+        $style = htmlspecialchars($style, ENT_NOQUOTES); // Allow  background url src
         $this->style = "<style>" . $style . "</style>";
     }
 
@@ -1605,7 +1606,6 @@ class quexmlpdf extends pdf
 
         // set document information
         $this->SetCreator('queXMLPDF (http://quexml.sourceforge.net)');
-        $this->SetAuthor('Adam Zammit <adam.zammit@acspri.org.au>');
         $this->SetTitle('queXML Document');
         $this->SetSubject('queXML');
         $this->SetKeywords('queXML queXF');
@@ -1968,7 +1968,7 @@ class quexmlpdf extends pdf
                 $qtmp['split'] = 'notset';
 
                 if (isset($qu['split'])) {
-                    if (current($qu['split']) == "true") {
+                    if ((string) $qu['split'] == "true") {
                         $qtmp['split'] = true;
                     } else {
                         $qtmp['split'] = false;
@@ -1987,12 +1987,14 @@ class quexmlpdf extends pdf
 
                 $qtmp['text'] = "";
 
+                $qucount = count($qu->text);
+                $quiterate = 0;
                 foreach ($qu->text as $ttmp) {
                     //Add a new line if we aren't at the end
-                    if ($ttmp != end($qu->text)) {
+                    if ($quiterate == $qucount - 1) {
                         $qtmp['text'] .= "<br/>";
                     }
-
+                    $quiterate++;
                     $qtmp['text'] .= $ttmp;
                 }
 
@@ -2037,23 +2039,23 @@ class quexmlpdf extends pdf
                     $sqtmp['varname'] = $sq['varName'];
 
                     if (isset($sq['defaultValue'])) {
-                        $sqtmp['defaultvalue'] = current($sq['defaultValue']);
+                        $sqtmp['defaultvalue'] = (string) $sq['defaultValue'];
                     }
 
                     if (isset($sq->contingentQuestion)) {
                         //Need to handle contingent questions
                         $oarr = array();
-                        $oarr['width'] = current($sq->contingentQuestion->length);
-                        $oarr['text'] = current($sq->contingentQuestion->text);
+                        $oarr['width'] = (string) $sq->contingentQuestion->length;
+                        $oarr['text'] = (string) $sq->contingentQuestion->text;
 
                         $oarr['format'] = 'text';
 
                         if (isset($sq->contingentQuestion->format)) {
-                            $oarr['format'] = current($sq->contingentQuestion->format);
+                            $oarr['format'] = (string) $sq->contingentQuestion->format;
                         }
 
                         if (isset($sq->contingentQuestion['defaultValue'])) {
-                            $oarr['defaultvalue'] = current($sq->contingentQuestion['defaultValue']);
+                            $oarr['defaultvalue'] = (string) $sq->contingentQuestion['defaultValue'];
                         }
 
                         $oarr['varname'] = $sq->contingentQuestion['varName'];
@@ -2070,7 +2072,7 @@ class quexmlpdf extends pdf
                     $rtmp['split'] = 'notset';
 
                     if (isset($r['split'])) {
-                        if (current($r['split']) == "true") {
+                        if ((string) $r['split'] == "true") {
                             $rtmp['split'] = true;
                         } else {
                             $rtmp['split'] = false;
@@ -2078,7 +2080,7 @@ class quexmlpdf extends pdf
                     }
 
                     if (isset($r['defaultValue'])) {
-                        $rstmp['defaultvalue'] = current($r['defaultValue']);
+                        $rstmp['defaultvalue'] = (string) $r['defaultValue'];
                     }
 
                     if (isset($r->fixed)) {
@@ -2096,27 +2098,27 @@ class quexmlpdf extends pdf
                         $ctmp = array();
                         foreach ($r->fixed->category as $c) {
                             $cat = array();
-                            $cat['text'] = current($c->label) !== false ? current($c->label) : '';
-                            $cat['value'] = current($c->value);
+                            $cat['text'] = (string) $c->label !== false ? (string) $c->label : '';
+                            $cat['value'] = (string) $c->value;
                             if (isset($c->skipTo)) {
-                                $cat['skipto'] = current($c->skipTo);
+                                $cat['skipto'] = (string) $c->skipTo;
                                 //save a skip
-                                $this->skipToRegistry[current($c->skipTo) . $this->questionTitleSuffix] = $qtmp['title'];
+                                $this->skipToRegistry[(string) $c->skipTo . $this->questionTitleSuffix] = $qtmp['title'];
                             }
                             if (isset($c->contingentQuestion)) {
                                 //Need to handle contingent questions
                                 $oarr = array();
-                                $oarr['width'] = current($c->contingentQuestion->length);
-                                $oarr['text'] = current($c->contingentQuestion->text);
+                                $oarr['width'] = (string) $c->contingentQuestion->length;
+                                $oarr['text'] = (string) $c->contingentQuestion->text;
 
                                 $oarr['format'] = 'text';
 
                                 if (isset($c->contingentQuestion->format)) {
-                                    $oarr['format'] = current($c->contingentQuestion->format);
+                                    $oarr['format'] = (string) $c->contingentQuestion->format;
                                 }
 
                                 if (isset($c->contingentQuestion['defaultValue'])) {
-                                    $oarr['defaultvalue'] = current($c->contingentQuestion['defaultValue']);
+                                    $oarr['defaultvalue'] = (string) $c->contingentQuestion['defaultValue'];
                                 }
 
                                 $oarr['varname'] = $c->contingentQuestion['varName'];
@@ -2126,7 +2128,7 @@ class quexmlpdf extends pdf
                         }
                         $rtmp['categories'] = $ctmp;
                     } elseif (isset($r->free)) {
-                        $format = strtolower(trim(current($r->free->format)));
+                        $format = strtolower(trim((string) $r->free->format));
                         if ($format == 'longtext') {
                             $rtmp['type'] = 'longtext';
                         } elseif ($format == 'number' || $format == 'numeric' || $format == 'integer') {
@@ -2138,13 +2140,13 @@ class quexmlpdf extends pdf
                         } else {
                             $rtmp['type'] = 'text';
                         }
-                        $rtmp['width'] = current($r->free->length);
-                        $rtmp['text'] = current($r->free->label);
+                        $rtmp['width'] = (string) $r->free->length;
+                        $rtmp['text'] = (string) $r->free->label;
                     } elseif (isset($r->vas)) {
                         $rtmp['type'] = 'vas';
                         $rtmp['width'] = 100;
-                        $rtmp['labelleft'] = current($r->vas->labelleft);
-                        $rtmp['labelright'] = current($r->vas->labelright);
+                        $rtmp['labelleft'] = (string) $r->vas->labelleft;
+                        $rtmp['labelright'] = (string) $r->vas->labelright;
                     }
                     $rstmp['response'] = $rtmp;
                     $qtmp['responses'][] = $rstmp;
@@ -2334,7 +2336,7 @@ class quexmlpdf extends pdf
                 $iv = $this->$m(); // get the current data
 
                 if (isset($xml->$itemname)) {
-//if setting exists in xml then set it
+                    //if setting exists in xml then set it
                     if (is_bool($iv)) {
                         if ($xml->$itemname == "true") {
                             $this->$setname(true);

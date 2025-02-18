@@ -94,10 +94,19 @@ class SurveyIndex extends CAction
         $redata = compact(array_keys(get_defined_vars()));
         $redata['popuppreview'] = Yii::app()->request->getParam('popuppreview', false);
 
+        $canPreviewSurvey = $this->canUserPreviewSurvey($surveyid);
+
+        if ($redata['popuppreview'] && !$canPreviewSurvey) {
+            $message = gT("We are sorry but you don't have permissions to do this.", 'unescaped');
+            if (Permission::model()->getUserId()) {
+                throw new CHttpException(403, $message);
+            }
+            throw new CHttpException(401, $message);
+        }
 
         $previewmode = false;
         if (isset($param['action']) && (in_array($param['action'], array('previewgroup', 'previewquestion')))) {
-            if (!$this->canUserPreviewSurvey($surveyid)) {
+            if (!$canPreviewSurvey) {
                 $aErrors  = array(gT('Error'));
                 $message = gT("We are sorry but you don't have permissions to do this.", 'unescaped');
                 if (Permission::model()->getUserId()) {
@@ -106,8 +115,18 @@ class SurveyIndex extends CAction
                 throw new CHttpException(401, $message);
             } else {
                 killSurveySession($surveyid);
-                if ((intval($param['qid']) && $param['action'] == 'previewquestion')) {
+                // Check if group exists in this survey
+                $arGroup = QuestionGroup::model()->find("sid = :sid and gid = :gid", [":sid" => $surveyid, ":gid" => intval($param['gid'])]);
+                if (empty($arGroup)) {
+                    throw new CHttpException(400, gT("Invalid group ID"));
+                }
+                if ($param['action'] == 'previewquestion') {
                     $previewmode = 'question';
+                    // Check if question exists in this survey and group
+                    $arQuestion = Question::model()->find("sid = :sid and qid = :qid and gid = :gid", [":sid" => $surveyid, ":qid" => intval($param['qid']), ":gid" => intval($param['gid'])]);
+                    if (empty($arQuestion)) {
+                        throw new CHttpException(400, gT("Invalid question ID"));
+                    }
                 }
                 if ((intval($param['gid']) && $param['action'] == 'previewgroup')) {
                     $previewmode = 'group';
@@ -174,6 +193,19 @@ class SurveyIndex extends CAction
             $sDisplayLanguage = $oToken->language;
         } elseif ($oSurvey) {
             $sDisplayLanguage = $oSurvey->language;
+        }
+
+        if (Yii::app()->request->getParam('popuppreview', false) && ($baseLanguage = Yii::app()->request->getParam('language', false)) && Permission::model()->hasGlobalPermission('superadmin', 'update')) {
+            $supportedLanguages = explode(" ", $oSurvey->language . " " . $oSurvey->additional_languages);
+            $found = in_array($baseLanguage, $supportedLanguages);
+            if (!$found) {
+                $baseLanguage = explode("-", $baseLanguage)[0];
+                $found = in_array($baseLanguage, $supportedLanguages);
+            }
+            if ($found) {
+                $sDisplayLanguage = $oSurvey->language = $oSurvey->additional_languages = $baseLanguage;
+                $oSurvey->save();
+            }
         }
 
         if ($surveyid && $surveyExists) {
@@ -632,7 +664,7 @@ class SurveyIndex extends CAction
             resetQuestionTimers($surveyid);
         }
 
-        sendCacheHeaders();
+        sendSurveyHttpHeaders();
 
         //Send local variables to the appropriate survey type
         unset($redata);
@@ -649,7 +681,7 @@ class SurveyIndex extends CAction
     private function getParameters($args = array(), $post = array())
     {
         $param = array();
-        if (@$args[0] == __CLASS__) {
+        if (isset($args[0]) && $args[0] == __CLASS__) {
             array_shift($args);
         }
         $iArgCount = count($args);

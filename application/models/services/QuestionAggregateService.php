@@ -4,6 +4,7 @@ namespace LimeSurvey\Models\Services;
 
 use Permission;
 use Question;
+use Survey;
 use CDbConnection;
 use LimeSurvey\Models\Services\{
     QuestionAggregateService\SaveService,
@@ -25,17 +26,20 @@ class QuestionAggregateService
     private SaveService $saveService;
     private DeleteService $deleteService;
     private Permission $modelPermission;
+    private Survey $modelSurvey;
     private CDbConnection $yiiDb;
 
     public function __construct(
         SaveService $saveService,
         DeleteService $deleteService,
         Permission $modelPermission,
+        Survey $modelSurvey,
         CDbConnection $yiiDb
     ) {
         $this->saveService = $saveService;
         $this->deleteService = $deleteService;
         $this->modelPermission = $modelPermission;
+        $this->modelSurvey = $modelSurvey;
         $this->yiiDb = $yiiDb;
     }
 
@@ -105,6 +109,7 @@ class QuestionAggregateService
      * @throws NotFoundException
      * @throws PermissionDeniedException
      * @throws PersistErrorException
+     * @throws \CException
      */
     public function save($surveyId, $input)
     {
@@ -124,36 +129,34 @@ class QuestionAggregateService
         return $question;
     }
 
-    /*
-     * @param int $questionIds
-     * @throws PersistErrorException
-     * @throws QuestionHasConditionsException
+    /**
+     * @param $surveyId
+     * @param $questionId
      * @return void
+     * @throws Exception\QuestionHasConditionsException
+     * @throws PermissionDeniedException
+     * @throws PersistErrorException
+     * @throws \CDbException
+     * @throws \CException
      */
     public function delete($surveyId, $questionId)
     {
         $this->deleteMany($surveyId, [$questionId]);
     }
 
-    /*
-     * @param array $questionIds
-     * @throws PersistErrorException
-     * @throws QuestionHasConditionsException
+    /**
+     * @param $surveyId
+     * @param $questionIds
      * @return void
+     * @throws Exception\QuestionHasConditionsException
+     * @throws PermissionDeniedException
+     * @throws PersistErrorException
+     * @throws \CDbException
+     * @throws \CException
      */
     public function deleteMany($surveyId, $questionIds)
     {
-        if (
-            !$this->modelPermission->hasSurveyPermission(
-                $surveyId,
-                'surveycontent',
-                'delete'
-            )
-        ) {
-            throw new PermissionDeniedException(
-                'Access denied'
-            );
-        }
+        $this->checkDeletePermission($surveyId);
 
         $transaction = $this->yiiDb->beginTransaction();
         try {
@@ -188,15 +191,15 @@ class QuestionAggregateService
     }
 
     /**
-     * Delete answer from a question.
-     * All language entries for this answer will be deleted.
      * @param $surveyId
-     * @param $answerId
      * @return void
+     * @throws PermissionDeniedException
      */
-    public function deleteAnswer($surveyId, $answerId)
+    public function checkDeletePermission($surveyId): void
     {
+        $survey = $this->modelSurvey->findByPk($surveyId);
         if (
+            $survey->isActive ||
             !$this->modelPermission->hasSurveyPermission(
                 $surveyId,
                 'surveycontent',
@@ -207,6 +210,18 @@ class QuestionAggregateService
                 'Access denied'
             );
         }
+    }
+
+    /**
+     * Delete answer from a question.
+     * All language entries for this answer will be deleted.
+     * @param $surveyId
+     * @param $answerId
+     * @return void
+     */
+    public function deleteAnswer($surveyId, $answerId)
+    {
+        $this->checkDeletePermission($surveyId);
 
         $transaction = $this->yiiDb->beginTransaction();
         try {

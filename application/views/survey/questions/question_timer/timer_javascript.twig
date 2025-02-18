@@ -1,0 +1,50 @@
+{#
+ * This file render the javascript for the timer
+ * TODO : replace all php statement by JavaScript on hidden html input
+ * @var $iAction
+#}
+<!-- Some var for timer script, no need to post -->
+<input
+    type='hidden'
+    name='timerquestion'
+    value='{{ timersessionname }}'
+    disabled
+/>
+<input
+    type='hidden'
+    name='{{ timersessionname }}'
+    id='{{ timersessionname }}'
+    value='{{ time_limit }}'
+    disabled
+/>
+<input
+    type='hidden'
+    name='action-{{ timersessionname }}'
+    id='action-{{ timersessionname }}'
+    value='{{ intval(iAction) }}'
+    disabled
+/>
+<input
+    type='hidden'
+    name='disablenext-{{ timersessionname }}'
+    id='disablenext-{{ timersessionname }}'
+    value={{ intval(disable_next) }}
+    disabled
+/>
+<input
+    type='hidden'
+    name='disableprev-{{ timersessionname }}'
+    id='disableprev-{{ timersessionname }}'
+    value='{{ intval(disable_prev) }}'
+    disabled
+/>
+<input
+    type='hidden'
+    name='message-delay-{{ timersessionname }}'
+    id='message-delay-{{ timersessionname }}'
+    value='{{ intval(time_limit_message_delay) }}'
+    disabled
+/>
+<div id='countdown-message-{{ timersessionname }}' class="d-none">
+{{ time_limit_countdown_message }}
+</div>

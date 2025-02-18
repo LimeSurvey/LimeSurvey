@@ -16,7 +16,7 @@ $this->notifications();
 echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';
 
 echo '<!-- Full page, started in SurveyCommonAction::renderWrappedTemplate() -->
-    <div class="container-fluid full-page-wrapper" id="in_survey_common_action">
+    <div class="container-fluid" id="in_survey_common_action">
 ';
 
 echo $content;

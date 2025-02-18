@@ -1,14 +1,3 @@
-// Body
-body {
-  background-color: $g-100;
-
-  margin: 0;
-  padding: 0;
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-}
-
 .selector_openSharePanel {
   display: inline-block;
 }
@@ -56,7 +45,7 @@ body {
   }
   .accordion-button,
   .accordion-body {
-    background: $g-100;
+    background: $g-200;
   }
   .accordion-button {
     padding-left: 0;

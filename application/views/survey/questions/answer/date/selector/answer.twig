@@ -43,8 +43,8 @@
 
 <div class="d-none" style='display:none'>
     <!-- Obs: No spaces in the div - it will mess up Javascript string parsing , EM replacement done in qanda -->
-    <div id='datemin{{ name }}'>{{ mindate }}</div>
-    <div id='datemax{{ name }}'>{{ maxdate }}</div>
+    <div id='datemin{{ name }}'>{{ processString(mindate) }}</div>
+    <div id='datemax{{ name }}'>{{ processString(maxdate) }}</div>
     <div id='dateformat{{ name }}'>{{ dateformatdetailsjs }}</div>
 </div>
 <!-- end of answer -->

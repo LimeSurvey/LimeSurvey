@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
+use LimeSurvey\Models\Services\SurveyUseCaptcha;
 use Survey;
 use LimeSurvey\Api\Transformer\{
     Output\TransformerOutputActiveRecord,
@@ -101,11 +102,12 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
                 'key' => 'tokenAnswersPersistence',
                 'formatter' => ['ynToBool' => true]
             ],
-            "assessments" => ['formatter' => ['ynToBool' => true]],
-            "usecaptcha" => [
-                'key' => 'useCaptcha',
+            "htmlemail" => [
+                'key' => 'htmlEmail',
                 'formatter' => ['ynToBool' => true]
             ],
+            "assessments" => ['formatter' => ['ynToBool' => true]],
+            "usecaptcha" => 'useCaptcha',
             "usetokens" => [
                 'key' => 'useTokens',
                 'formatter' => ['ynToBool' => true]
@@ -179,6 +181,65 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             $data->languagesettings,
             $options
         );
+        $survey['showGroupInfo'] = $this->convertShowGroupInfo(
+            $data['showgroupinfo']
+        );
+        $survey['showQNumCode'] = $this->convertShowQNumCode(
+            $data['showqnumcode']
+        );
+        return $this->transformUseCaptcha($survey);
+    }
+
+    /**
+     * Converts single value of showgroupinfo to an array with
+     * showGroupName and showGroupDescription keys.
+     *
+     * @param string $showGroupInfoValue
+     * @return array
+     */
+    private function convertShowGroupInfo($showGroupInfoValue)
+    {
+        $showGroupName = in_array($showGroupInfoValue, ['B', 'N']);
+        $showGroupDescription = in_array($showGroupInfoValue, ['B', 'D']);
+        return [
+            'showGroupName' => $showGroupName,
+            'showGroupDescription' => $showGroupDescription,
+        ];
+    }
+
+    /**
+     * Converts single value of showqnumcode to an array with
+     * showNumber and showCode keys.
+     * @param string $showQNumCodeValue
+     * @return array
+     */
+    private function convertShowQNumCode($showQNumCodeValue)
+    {
+        $showNumber = in_array($showQNumCodeValue, ['B', 'N']);
+        $showCode = in_array($showQNumCodeValue, ['B', 'C']);
+        return [
+            'showNumber' => $showNumber,
+            'showCode' => $showCode,
+        ];
+    }
+
+    /**
+     * Transforms useCaptcha into three values.
+     *  -- survey access
+     *  -- registration
+     *  -- save and load
+     *
+     * @param array $survey
+     * @return array
+     */
+    private function transformUseCaptcha($survey)
+    {
+        $surveyUseCaptcha = new SurveyUseCaptcha();
+        $threeValues = $surveyUseCaptcha->convertUseCaptchaFromDB($survey['useCaptcha']);
+        $survey['useCaptchaAccess'] = ($threeValues['surveyAccess'] == 'Y');
+        $survey['useCaptchaRegistration'] = ($threeValues['registration'] == 'Y');
+        $survey['useCaptchaSaveLoad'] = ($threeValues['saveAndLoad'] == 'Y');
+
         return $survey;
     }
 }

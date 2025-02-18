@@ -2,7 +2,7 @@
 
 use SPSS\Sav\Variable;
 
-/** 
+/**
  * Creates a file containing responses in the SAV (native SPSS binary format). Uses: https://github.com/tiamo/spss/ to do so
  * In contrast to importing a plain CSV or xls-file, the data is fully labelled with variable- and value labels.
  * Date and time strings are converted to SPSSs time format (seconds since midnight, 14 October 1582), so they can be directly used in calculations
@@ -108,10 +108,22 @@ class SPSSWriter extends Writer
         // add per-survey info
         $aFieldmap['info'] = $survey->info;
 
+        $qids = [0];
+        foreach ($aFieldmap['questions'] as $sSGQAKey => $aQuestion) {
+            $qids [] = $aQuestion['qid'];
+        }
+
+        $rawQuestions = Question::model()->findAllByPk($qids);
+
+        $questions = [];
+        foreach ($rawQuestions as $rawQuestion) {
+            $questions[$rawQuestion->qid] = $rawQuestion;
+        }
+
         // go through the questions array and create/modify vars for SPSS-output
         foreach ($aFieldmap['questions'] as $sSGQAkey => $aQuestion) {
             //get SPSS output type if selected
-            $aQuestionAttribs = QuestionAttribute::model()->getQuestionAttributes($aQuestion['qid'], $sLanguage);
+            $aQuestionAttribs = QuestionAttribute::model()->getQuestionAttributes($questions[$aQuestion['qid']] ?? $aQuestion['qid'], $sLanguage);
             if (isset($aQuestionAttribs['scale_export'])) {
                     $export_scale = $aQuestionAttribs['scale_export'];
                     $aFieldmap['questions'][$sSGQAkey]['spssmeasure'] = $export_scale;
@@ -295,7 +307,7 @@ class SPSSWriter extends Writer
     /* Function is called for every response
      * Here we just use it to create arrays with variable names and data
      */
-    protected function outputRecord($headers, $values, FormattingOptions $oOptions)
+    protected function outputRecord($headers, $values, FormattingOptions $oOptions, $fieldNames = [])
     {
         // function is called for every response to be exported....only write header once
         if (empty($this->headers)) {
