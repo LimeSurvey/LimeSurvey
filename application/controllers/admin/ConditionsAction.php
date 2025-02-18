@@ -487,7 +487,7 @@ class ConditionsAction extends SurveyCommonAction
         /** @var CHttpRequest $request */
         /** @var string $editSourceTab */
         $request = $args['request'];
-        $this->surveyCondition->updateCondition($args, $request->getPost('editTargetTab'), Yii::app(), Yii::app()->request->getPost('ConditionConst', ''), Yii::app()->request->getPost('prevQuestionSGQA', ''), Yii::app()->request->getPost('tokenAttr', ''), Yii::app()->request->getPost('ConditionRegexp', ''));
+        $this->surveyCondition->updateCondition($args, $request->getPost('editTargetTab'), Yii::app(), Yii::app()->request->getPost('ConditionConst', ''), Yii::app()->request->getPost('prevQuestionSGQA', ''), Yii::app()->request->getPost('tokenAttr', ''), Yii::app()->request->getPost('ConditionRegexp', ''), $request->getPost('editSourceTab'));
         $this->redirectToConditionStart($args['qid'], $args['gid']);
     }
 

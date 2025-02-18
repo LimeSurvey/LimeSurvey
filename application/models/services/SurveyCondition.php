@@ -236,7 +236,7 @@ class SurveyCondition
      * @param string $editSourceTab the source tab
      * @return void
      */
-    public function updateCondition(array $args, string $editTargetTab, $app, string $ConditionConst, string $prevQuestionSGQA, string $tokenAttr, string $ConditionRegexp, string $editSourceTab = "SRCPREVQUEST")
+    public function updateCondition(array $args, string $editTargetTab, $app, string $ConditionConst, string $prevQuestionSGQA, string $tokenAttr, string $ConditionRegexp, string $editSourceTab = "#SRCPREVQUEST")
     {
         extract($args);
 
@@ -300,7 +300,7 @@ class SurveyCondition
                     'method' => $p_method,
                     'value' => $posted_condition_value
                 );
-                if ($editSourceTab === "SRCPREVQUEST") {
+                if ($editSourceTab === "#SRCPREVQUEST") {
                     $updated_data['cqid'] = $p_cqid;
                 }
                 $result = \Condition::model()->insertRecords($updated_data, true, array('cid' => $p_cid));
