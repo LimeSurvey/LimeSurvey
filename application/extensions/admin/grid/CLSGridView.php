@@ -209,6 +209,7 @@ class CLSGridView extends TbGridView
             return;
         }
         $columnsSelected = (array) App()->request->getQuery('columnsSelected');
+        $columnsIsSelected = App()->request->getParam('selectColumns');
         $ajaxUpdate = (string) App()->request->getQuery('ajax');
         if (!$this->dataProvider instanceof CActiveDataProvider) {
             return;
@@ -226,7 +227,8 @@ class CLSGridView extends TbGridView
         ];
         // If there are no columns selected, we delete the user setting.
         if (
-            empty($columnsSelected)
+            $columnsIsSelected == 'select'
+            && empty($columnsSelected)
             && $this->ajaxUpdate === $ajaxUpdate
             // Preserve selected column parameters during sorting
             // The current sorting AJAX request resets the selected grid view columns
@@ -238,7 +240,8 @@ class CLSGridView extends TbGridView
 
         // If there are columns selected, we save them in the user setting.
         if (
-            !empty($columnsSelected)
+            $columnsIsSelected == 'select'
+            && !empty($columnsSelected)
             && $this->ajaxUpdate === $ajaxUpdate
         ) {
             SettingsUser::setUserSetting('gridview_columns_' . $this->ajaxUpdate, json_encode($columnsSelected));
