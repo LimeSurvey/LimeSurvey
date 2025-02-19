@@ -199,6 +199,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *                                 "ConditionRegexp":"",
      *                                 "cqid":0,
      *                                 "canswersToSelect":"",
+     *                                 "tempcids":["temp_0004"],
      *                                 "editSourceTab":"#SRCTOKENATTRS",
      *                                 "editTargetTab":"#CONST"
      *                             }
@@ -230,6 +231,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *                                 "ConditionRegexp":"",
      *                                 "cqid":0,
      *                                 "canswersToSelect":"",
+     *                                 "tempcids":["temp_0004"],
      *                                 "editSourceTab":"#SRCTOKENATTRS",
      *                                 "editTargetTab":"#TOKENATTRS"
      *                             }
@@ -257,11 +259,12 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *                                 "method":"==",
      *                                 "cquestions":"453614X608X15979",
      *                                 "csrctoken":"{TOKEN:EMAIL}",
-     *                                 "canswers":[""],
+     *                                 "canswers":["A01","A02","A03"],
      *                                 "ConditionConst":"",
      *                                 "ConditionRegexp":"",
      *                                 "cqid":15979,
      *                                 "canswersToSelect":"",
+     *                                 "tempcids":["temp_0004","temp_0008","temp_00012"],
      *                                 "editSourceTab":"#SRCPREVQUEST",
      *                                 "editTargetTab":"#CANSWERSTAB"
      *                             }
@@ -292,6 +295,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *                                 "ConditionRegexp":"",
      *                                 "cqid":15978,
      *                                 "canswersToSelect":"",
+     *                                 "tempcids":["temp_0004"],
      *                                 "editSourceTab":"#SRCPREVQUEST",
      *                                 "editTargetTab":"#CONST"
      *                             }
@@ -322,6 +326,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *                             "ConditionRegexp": "",
      *                             "cqid": 15979,
      *                             "canswersToSelect": "",
+     *                             "tempcids":["temp_0004"],
      *                             "editSourceTab": "#SRCPREVQUEST",
      *                             "editTargetTab": "#PREVQUESTIONS"
      *                         }
@@ -353,6 +358,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *                             "ConditionRegexp": "",
      *                             "cqid": 15979,
      *                             "canswersToSelect": "",
+     *                             "tempcids":["temp_0004"],
      *                             "editSourceTab": "#SRCPREVQUEST",
      *                             "editTargetTab": "#TOKENATTRS"
      *                         }
@@ -383,6 +389,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *                             "ConditionRegexp": "La*",
      *                             "cqid": 0,
      *                             "canswersToSelect": "",
+     *                             "tempcids":["temp_0004"],
      *                             "editSourceTab": "#SRCTOKENATTRS",
      *                             "editTargetTab": "#REGEXP"
      *                         }
@@ -412,6 +419,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *                             "ConditionRegexp": "La*",
      *                             "cqid": 15978,
      *                             "canswersToSelect": "",
+     *                             "tempcids":["temp_0004"],
      *                             "editSourceTab": "#SRCPREVQUEST",
      *                             "editTargetTab": "#REGEXP"
      *                         }
