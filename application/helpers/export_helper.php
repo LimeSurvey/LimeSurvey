@@ -2834,11 +2834,15 @@ function tsvSurveyExport($surveyid)
         }
 
         // subquestions data
+        $subquestions_data = [];
         if (array_key_exists('subquestions', $xmlData)) {
+            if (isset($xmlData['subquestions']['rows']['row']['qid'])) {
+                // Only one subquestion then one row : set as array like we have multiple rows
+                $xmlData['subquestions']['rows']['row'] = [$xmlData['subquestions']['rows']['row']];
+            }
             foreach ($xmlData['subquestions']['rows']['row'] as $subquestion) {
                 $subquestions_data[$subquestion['qid']] = $subquestion;
             }
-
             foreach ($xmlData['question_l10ns']['rows']['row'] as $subquestion_l10ns) {
                 if (array_key_exists($subquestion_l10ns['qid'], $subquestions_data)) {
                     if ($subquestion_l10ns['language'] === $language) {
@@ -2849,8 +2853,6 @@ function tsvSurveyExport($surveyid)
                     }
                 }
             }
-        } else {
-            $subquestions_data = array();
         }
 
         // answers data
