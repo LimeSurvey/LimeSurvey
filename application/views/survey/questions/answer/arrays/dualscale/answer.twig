@@ -10,6 +10,12 @@
 
 <!-- answer -->
  <div class="ls-table-wrapper" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+    {% if labelans0|length == 0 %}
+    <div class="alert alert-warning" role="alert">
+        {{ gT("Warning:") }} {{ gT("You need to add answer options to this question!") }}<br>
+        {{ gT("This question cannot be properly displayed.") }}
+    </div>
+    {% endif %}
     <table class="{{ coreClass }} table table-bordered table-hover">
         <col class="col-answers" style='width: {{ answerwidth }}%;' >
         {% if leftheader != '' or rightheader !='' %}

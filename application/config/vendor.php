@@ -410,4 +410,13 @@ return array(
             'moment'
         )
     ),
+    // Used for Statistics
+    'chart.js' => array(
+        'devBaseUrl' => 'node_modules/chart.js/dist',
+        'basePath' => 'node_modules.chartjs',
+        'position' => CClientScript::POS_BEGIN,
+        'js' => array(
+            'chart.umd.js'
+        ),
+    ),
 );
