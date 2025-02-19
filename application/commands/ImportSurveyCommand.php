@@ -8,7 +8,8 @@ Yii::import('application.helpers.admin.import_helper', true);
 class ImportSurveyCommand extends CConsoleCommand
 {
     /**
-     * @param string $filename
+     * @param string $filename the name of the file
+     * @param string|null $baselang the base language either chosen or defaulted to null in the run method
      * @return array Import result
      */
     protected function importFile($filename, $baselang)
