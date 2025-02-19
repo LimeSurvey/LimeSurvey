@@ -1171,6 +1171,10 @@ function XMLImportLabelsets($sFullFilePath, $options)
     return $results;
 }
 
+/**
+ * @param int|string  $newsid
+ * @param string|null $baselang
+ */
 function finalizeSurveyImportFile($newsid, $baselang)
 {
     if ($baselang) {
