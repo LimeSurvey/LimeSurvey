@@ -551,7 +551,7 @@ class Statistics extends SurveyCommonAction
                 $sQCode = substr((string) $sQCode, 1);
             }
             $qqid = substr(explode("_", $sQCode)[0], 1);
-            $qq = Question->model()->findByPk($qqid);
+            $qq = Question::model()->findByPk($qqid);
             $qsid = $qq->sid;
             $qgid = $qq->gid;
 
