@@ -65,61 +65,38 @@ class DashboardController extends LSBaseController
         }
         // display old dashboard interface
         $aData['oldDashboard'] = App()->getConfig('display_old_dashboard') === '1';
-        $setting_entry = 'last_survey_' . App()->user->getId();
-        $lastsurvey = App()->getConfig($setting_entry);
-        if ($lastsurvey) {
-            try {
-                $survey = Survey::model()->findByPk($lastsurvey);
-                if ($survey) {
-                    $aData['showLastSurvey'] = true;
-                    $iSurveyID = $lastsurvey;
-                    $aData['surveyTitle'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
-                    $aData['surveyUrl'] = $this->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}");
-                } else {
-                    $aData['showLastSurvey'] = false;
-                }
-            } catch (Exception $e) {
-                $aData['showLastSurvey'] = false;
-            }
-        } else {
-            $aData['showLastSurvey'] = false;
-        }
-
-        // We get the last question visited by user
-        $setting_entry = 'last_question_' . App()->user->getId();
-        $lastquestion = App()->getConfig($setting_entry);
-
-        // the question group of this question
-        $setting_entry = 'last_question_gid_' . App()->user->getId();
-        $lastquestiongroup = App()->getConfig($setting_entry);
-
-        // the sid of this question : last_question_sid_1
-        $setting_entry = 'last_question_sid_' . App()->user->getId();
-        $lastquestionsid = App()->getConfig($setting_entry);
-
-        if ($lastquestion && $lastquestiongroup && $lastquestionsid) {
-            $survey = Survey::model()->findByPk($lastquestionsid);
+        // Last survey
+        $aData['showLastSurvey'] = false;
+        $lastsurveyId = intval(SettingsUser::getUserSettingValue('last_survey'));
+        if ($lastsurveyId) {
+            $survey = Survey::model()->findByPk($lastsurveyId);
             if ($survey) {
-                $baselang = $survey->language;
-                $aData['showLastQuestion'] = true;
-                $qid = $lastquestion;
-                $gid = $lastquestiongroup;
-                $sid = $lastquestionsid;
-                $qrrow = Question::model()->findByAttributes(['qid' => $qid, 'gid' => $gid, 'sid' => $sid]);
-                if ($qrrow) {
-                    $aData['last_question_name'] = $qrrow['title'];
-                    if (!empty($qrrow->questionl10ns[$baselang]['question'])) {
-                        $aData['last_question_name'] .= ' : ' . $qrrow->questionl10ns[$baselang]['question'];
-                    }
-                    $aData['last_question_link'] = $this->createUrl("questionAdministration/view/surveyid/$sid/gid/$gid/qid/$qid");
-                } else {
-                    $aData['showLastQuestion'] = false;
-                }
-            } else {
-                $aData['showLastQuestion'] = false;
+                $aData['showLastSurvey'] = true;
+                $aData['surveyTitle'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $lastsurveyId . ")";
+                $aData['surveyUrl'] = $this->createUrl("surveyAdministration/view", ['surveyid' => $lastsurveyId]);
             }
-        } else {
-            $aData['showLastQuestion'] = false;
+        }
+        // Last question
+        $aData['showLastQuestion'] = false;
+        $lastquestionID = intval(SettingsUser::getUserSettingValue('last_question'));
+        if ($lastquestionID) {
+            $question = Question::model()->findByPk($lastquestionID);
+            if ($question) {
+                $survey = Survey::model()->findByPk($question->sid);
+                $baselang = $survey->language;
+                $aData['last_question_name'] = $question['title'];
+                if (!empty($question->questionl10ns[$baselang]['question'])) {
+                    $aData['last_question_name'] .= ' : ' . $qrrow->questionl10ns[$baselang]['question'];
+                }
+                $aData['last_question_link'] = $this->createUrl(
+                    "questionAdministration/view", 
+                    [
+                        'surveyid' => $question->sid,
+                        'gid' => $question->gid,
+                        'qid' => $question->qid
+                    ]
+                );
+            }
         }
 
         $aData['countSurveyList'] = Survey::model()->count();
