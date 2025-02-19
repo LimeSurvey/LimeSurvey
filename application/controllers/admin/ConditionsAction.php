@@ -1494,7 +1494,7 @@ class ConditionsAction extends SurveyCommonAction
 
                 foreach ($y_axis_db->readAll() as $yrow) {
                     foreach ($x_axis as $key => $val) {
-                        $shortquestion = $rows['title'] . ":{$yrow['title']}:$val['title']: [" . strip_tags((string) $yrow['question']) . "][" . strip_tags((string) $val['question']) . "] " . flattenText($rows['question']);
+                        $shortquestion = $rows['title'] . ":{$yrow['title']}:{$val['title']}: [" . strip_tags((string) $yrow['question']) . "][" . strip_tags((string) $val['question']) . "] " . flattenText($rows['question']);
                         $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $Q . $rows['qid'] . '_S' . $yrow['title'] . "_S" . $key);
                         if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
                         }
