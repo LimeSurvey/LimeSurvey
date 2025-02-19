@@ -2746,12 +2746,12 @@ function tsvSurveyExport($surveyid)
         $defaultvalues_data = array();
     }
     // insert translations to defaultvalues_datas
+    $defaultvalues_datas = [];
     if (array_key_exists('defaultvalue_l10ns', $xmlData)) {
         $defaultvalues_l10ns_data = $xmlData['defaultvalue_l10ns']['rows']['row'];
         if (!array_key_exists('0', $defaultvalues_l10ns_data)) {
             $defaultvalues_l10ns_data = array($defaultvalues_l10ns_data);
         }
-        $defaultvalues_datas = [];
         foreach ($defaultvalues_l10ns_data as $defaultvalue_l10ns_key => $defaultvalue_l10ns_data) {
             foreach ($defaultvalues_data as $defaultvalue_key => $defaultvalue_data) {
                 if ($defaultvalue_l10ns_data['dvid'] === $defaultvalue_data['dvid']) {
@@ -2764,9 +2764,9 @@ function tsvSurveyExport($surveyid)
             }
         }
     }
-        unset($defaultvalues_data);
-        unset($defaultvalues_l10ns_data);
-        $defaultvalues = array();
+    unset($defaultvalues_data);
+    unset($defaultvalues_l10ns_data);
+    $defaultvalues = array();
     foreach ($defaultvalues_datas as $key => $defaultvalue) {
         if ($defaultvalue['sqid'] > 0) {
             $defaultvalues[$defaultvalue['language']][$defaultvalue['sqid']] = $defaultvalue['defaultvalue'];
