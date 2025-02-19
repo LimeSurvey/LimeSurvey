@@ -94,7 +94,7 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
             $this->assertCount(0, $lineRelevance, 'Relevance is broken : SQ001 is irrelevant.');
             // Line to be irrelevant
             $lineRelevance = self::$webDriver->findElements(
-                WebDriverBy::cssSelector("#javatbd".$sgqa."_S31.ls-irrelevant")
+                WebDriverBy::cssSelector("#javatbd".$sgqa."_S34.ls-irrelevant")
             );
             $this->assertCount(1, $lineRelevance, 'Relevance is broken : SQ003 is relevant.');
             /** Text of subquestion **/
