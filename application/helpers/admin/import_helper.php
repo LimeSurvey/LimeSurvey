@@ -1191,10 +1191,11 @@ function finalizeSurveyImportFile($newsid, $baselang)
 }
 
 /**
- * @param string $sFullFilePath
- * @param boolean $bTranslateLinksFields
- * @param string $sNewSurveyName
- * @param integer $DestSurveyID
+ * @param string       $sFullFilePath
+ * @param boolean      $bTranslateLinksFields
+ * @param string|null  $sNewSurveyName
+ * @param integer|null $DestSurveyID
+ * @param string|null  $baselang
  */
 function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName = null, $DestSurveyID = null, $baselang = null)
 {
