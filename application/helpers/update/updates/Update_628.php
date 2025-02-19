@@ -6,52 +6,21 @@ use CException;
 
 class Update_628 extends DatabaseUpdateBase
 {
-    public function up()
-    {
-        $scripts = [];
-        $responsesTables = $this->db->createCommand("
+
+    protected $scriptMapping = [
+        'responses' => "
             SELECT TABLE_NAME AS old_name, REPLACE(TABLE_NAME, 'survey', 'responses') AS new_name
             FROM information_schema.tables
             WHERE TABLE_SCHEMA = DATABASE() AND
                   TABLE_NAME REGEXP '^.*survey_[0-9]*(_[0-9]*)?$'
-        ")->queryAll();
-        foreach ($responsesTables as $responsesTable) {
-            $scripts[$responsesTable['old_name']] = [
-                'new_name' => $responsesTable['new_name'],
-                'old_name' => $responsesTable['old_name']
-            ];
-            /*$scripts [] = "
-                CREATE TABLE {$responsesTable['new_name']} LIKE {$responsesTable['old_name']};
-                INSERT INTO {$responsesTable['new_name']} SELECT * FROM {$responsesTable['old_name']};
-                DROP TABLE {$responsesTable['old_name']};
-            ";*/
-            $createTable = $this->db->createCommand("SHOW CREATE TABLE {$responsesTable['old_name']}")->queryRow();
-            $scripts[$responsesTable['old_name']]['CREATE'] = $createTable["Create Table"];
-            $scripts[$responsesTable['old_name']]['DROP'] = "DROP TABLE {$responsesTable['old_name']}";
-            $scripts[$responsesTable['old_name']]['columns'] = $this->db->createCommand("SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = database() AND TABLE_NAME = '{$responsesTable['old_name']}'")->queryAll();
-        }
-        $timingsTables = $this->db->createCommand("
+        ",
+        'timings' => "
             SELECT TABLE_NAME AS old_name, REPLACE(REPLACE(TABLE_NAME, '_timings', ''), 'survey', 'timings') AS new_name
             FROM information_schema.tables
             WHERE TABLE_SCHEMA = DATABASE() AND
                   TABLE_NAME LIKE '%timings%';
-        ")->queryAll();
-        foreach ($timingsTables as $timingsTable) {
-            $scripts[$timingsTable['old_name']] = [
-                'new_name' => $timingsTable['new_name'],
-                'old_name' => $timingsTable['old_name']
-            ];
-            /*$scripts [] = "
-                CREATE TABLE {$timingsTable['new_name']} LIKE {$timingsTable['old_name']};
-                INSERT INTO {$timingsTable['new_name']} SELECT * FROM {$timingsTable['old_name']};
-                DROP TABLE {$timingsTable['old_name']};
-            ";*/
-            $createTable = $this->db->createCommand("SHOW CREATE TABLE {$timingsTable['old_name']}")->queryRow();
-            $scripts[$timingsTable['old_name']]['CREATE'] = $createTable["Create Table"];
-            $scripts[$timingsTable['old_name']]['DROP'] = "DROP TABLE {$timingsTable['old_name']}";
-            $scripts[$timingsTable['old_name']]['columns'] = $this->db->createCommand("SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = database() AND TABLE_NAME = '{$timingsTable['old_name']}'")->queryAll();
-        }
-        $fields = $this->db->createCommand("
+        ",
+        'fields' => "
             SELECT TABLE_NAME, COLUMN_NAME
             FROM information_schema.columns
             WHERE TABLE_SCHEMA = DATABASE() AND (
@@ -65,7 +34,35 @@ class Update_628 extends DatabaseUpdateBase
                   )
             )
             ORDER BY TABLE_NAME, COLUMN_NAME
-        ")->queryAll();
+        ",
+    ];
+
+    public function up()
+    {
+        $scripts = [];
+        $responsesTables = $this->db->createCommand($this->scriptMapping['responses'])->queryAll();
+        foreach ($responsesTables as $responsesTable) {
+            $scripts[$responsesTable['old_name']] = [
+                'new_name' => $responsesTable['new_name'],
+                'old_name' => $responsesTable['old_name']
+            ];
+            $createTable = $this->db->createCommand("SHOW CREATE TABLE {$responsesTable['old_name']}")->queryRow();
+            $scripts[$responsesTable['old_name']]['CREATE'] = $createTable["Create Table"];
+            $scripts[$responsesTable['old_name']]['DROP'] = "DROP TABLE {$responsesTable['old_name']}";
+            $scripts[$responsesTable['old_name']]['columns'] = $this->db->createCommand("SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = database() AND TABLE_NAME = '{$responsesTable['old_name']}'")->queryAll();
+        }
+        $timingsTables = $this->db->createCommand($this->scriptMapping['timings'])->queryAll();
+        foreach ($timingsTables as $timingsTable) {
+            $scripts[$timingsTable['old_name']] = [
+                'new_name' => $timingsTable['new_name'],
+                'old_name' => $timingsTable['old_name']
+            ];
+            $createTable = $this->db->createCommand("SHOW CREATE TABLE {$timingsTable['old_name']}")->queryRow();
+            $scripts[$timingsTable['old_name']]['CREATE'] = $createTable["Create Table"];
+            $scripts[$timingsTable['old_name']]['DROP'] = "DROP TABLE {$timingsTable['old_name']}";
+            $scripts[$timingsTable['old_name']]['columns'] = $this->db->createCommand("SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = database() AND TABLE_NAME = '{$timingsTable['old_name']}'")->queryAll();
+        }
+        $fields = $this->db->createCommand($this->scriptMapping['fields'])->queryAll();
         $fieldMap = [];
         foreach ($fields as $field) {
             $tableName = $field['TABLE_NAME'];
@@ -85,7 +82,7 @@ class Update_628 extends DatabaseUpdateBase
                 }
                 $commaSeparatedQIDs = implode(",", $qids);
                 $questions = \Question::model()->findAll([
-                'condition' => "sid = {$sid} and gid = {$gid} and (qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
+                    'condition' => "sid = {$sid} and gid = {$gid} and (qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
                 ]);
             }
             if (count($questions) || ((strpos($tableName, "timings") !== false) && ($split > 1))) {
