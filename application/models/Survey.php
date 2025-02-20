@@ -275,13 +275,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
             SettingsUser::model()->deleteAll($oCriteria);
             // Settings specific for this survey, 2nd part
             $oCriteria = new CDbCriteria();
-            $oCriteria->compare('stg_name', 'last_question');
-            $oCriteria->compare('entity_id', $this->sid);
-            $oCriteria->compare('entity', 'Survey');
-            SettingsUser::model()->deleteAll($oCriteria);
-            // All Group id from this survey for ALL users
-            $oCriteria = new CDbCriteria();
-            $oCriteria->compare('stg_name', 'last_group');
             $oCriteria->compare('entity_id', $this->sid);
             $oCriteria->compare('entity', 'Survey');
             SettingsUser::model()->deleteAll($oCriteria);
@@ -290,6 +283,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $oCriteria = new CDbCriteria();
             $oCriteria->compare('stg_name', 'last_question');
             if (Yii::app()->db->getDriverName() == 'pgsql') {
+                // Still needed ? : CHtml::listData return only existing qid as integer
                 $oCriteria->addInCondition('CAST(NULLIF(stg_value, \'\') AS ' . App()->db->schema->getColumnType("integer") . ')', $aQuestionId);
             } else {
                 $oCriteria->addInCondition('stg_value', $aQuestionId);
