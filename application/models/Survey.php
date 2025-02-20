@@ -1419,6 +1419,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Use the creation date for old entries when the last modified date is unavailable
+     */
+    public function getLastModifiedDate()
+    {
+        $date = $this->lastModified > $this->creationdate ?
+            $this->lastModified : $this->creationdate;
+        return date('d.m.Y', strtotime($date));
+    }
+
+    /**
      * @return int|string
      */
     public function getCountFullAnswers()
@@ -1624,9 +1634,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'headerHtmlOptions' => ['class' => 'text-nowrap'],
             ],
             [
-                'header'            => gT('Created'),
-                'name'              => 'creation_date',
-                'value'             => '$data->creationdate',
+                'header'            => gT('Last modified'),
+                'name'              => 'last modified',
+                'value'             => '$data->lastModifiedDate',
                 'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
                 'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
             ],
@@ -2577,5 +2587,20 @@ class Survey extends LSActiveRecord implements PermissionInterface
             return new DateTime($datetime);
         }
         return null;
+    }
+
+    /**
+     * Update last modified date
+     * @param int $sid survey id
+     */
+    public function updateLastModifiedDate($sid)
+    {
+        App()->db->createCommand()->update(
+            '{{surveys}}',
+            array(
+                'lastModified' => date('Y-m-d H:i:s'),
+            ),
+            "sid=" . $sid
+        );
     }
 }
