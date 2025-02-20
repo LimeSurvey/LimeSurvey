@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-02-17 15:31:52+00:00\n"
+"POT-Creation-Date: 2025-02-20 16:07:17+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2876,9 +2876,9 @@ msgstr ""
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:330
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:236
 #: application/views/themeOptions/options_core.php:5
-#: application/views/themeOptions/options_core.php:214
-#: application/views/themeOptions/options_core.php:242
-#: application/views/themeOptions/options_core.php:253
+#: application/views/themeOptions/options_core.php:227
+#: application/views/themeOptions/options_core.php:255
+#: application/views/themeOptions/options_core.php:266
 msgid "Inherit"
 msgstr ""
 
@@ -3501,7 +3501,7 @@ msgstr ""
 #: application/controllers/UploaderController.php:313
 #: application/controllers/UploaderController.php:331
 #: application/controllers/UploaderController.php:359
-#: application/helpers/remotecontrol/remotecontrol_handle.php:3577
+#: application/helpers/remotecontrol/remotecontrol_handle.php:3580
 msgid "The file has been successfully uploaded."
 msgstr ""
 
@@ -3571,7 +3571,7 @@ msgid "You do not have permission to view this user group."
 msgstr ""
 
 #: application/controllers/UserGroupController.php:156
-#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:212
+#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:208
 #: application/core/QuestionTypes/ListDropdown/RenderListDropdown.php:72
 #: application/core/QuestionTypes/RankingStyle/RenderRanking.php:76
 #: application/helpers/common_helper.php:181
@@ -4342,9 +4342,9 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:1208
 #: application/controllers/admin/DataEntry.php:1244
 #: application/core/QuestionTypes/5PointChoice/RenderFivePointChoice.php:50
-#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:168
-#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:229
-#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:301
+#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:164
+#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:225
+#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:297
 #: application/core/QuestionTypes/ListDropdown/RenderListDropdown.php:206
 #: application/core/QuestionTypes/ListWithComment/RenderListComment.php:62
 #: application/core/QuestionTypes/ListWithComment/RenderListComment.php:117
@@ -8341,7 +8341,7 @@ msgid "Brandlogo file"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2775
-#: application/views/themeOptions/options_core.php:295
+#: application/views/themeOptions/options_core.php:308
 msgid "Preview image"
 msgstr ""
 
@@ -19550,7 +19550,7 @@ msgstr ""
 #: application/views/admin/token/csvupload.php:137
 #: application/views/admin/token/ldapform.php:83
 #: application/views/themeOptions/advanced.php:25
-#: application/views/themeOptions/options_core.php:317
+#: application/views/themeOptions/options_core.php:330
 #: tmp/runtime/twig_cache/36/3617f66c5bc7f6201de45ef509259593.php:165
 msgid "Upload"
 msgstr ""
@@ -25108,7 +25108,7 @@ msgid "Don't touch the values below unless you know what you're doing."
 msgstr ""
 
 #: application/views/themeOptions/advanced.php:17
-#: application/views/themeOptions/options_core.php:309
+#: application/views/themeOptions/options_core.php:322
 msgid "Upload an image (maximum size: %d MB):"
 msgstr ""
 
@@ -25239,12 +25239,12 @@ msgid "Visible inside the Question Selector"
 msgstr ""
 
 #: application/views/themeOptions/options_core.php:5
-#: application/views/themeOptions/options_core.php:214
-#: application/views/themeOptions/options_core.php:242
-#: application/views/themeOptions/options_core.php:253
-#: application/views/themeOptions/options_core.php:269
-#: application/views/themeOptions/options_core.php:277
-#: application/views/themeOptions/options_core.php:285
+#: application/views/themeOptions/options_core.php:227
+#: application/views/themeOptions/options_core.php:255
+#: application/views/themeOptions/options_core.php:266
+#: application/views/themeOptions/options_core.php:282
+#: application/views/themeOptions/options_core.php:290
+#: application/views/themeOptions/options_core.php:298
 msgid "inherited value:"
 msgstr ""
 
