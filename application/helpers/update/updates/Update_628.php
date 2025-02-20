@@ -6,7 +6,6 @@ use CException;
 
 class Update_628 extends DatabaseUpdateBase
 {
-
     protected $scriptMapping = [
         'responses' => "
             SELECT TABLE_NAME AS old_name, REPLACE(TABLE_NAME, 'survey', 'responses') AS new_name
