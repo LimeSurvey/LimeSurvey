@@ -11,6 +11,6 @@ class Update_628 extends DatabaseUpdateBase
      */
     public function up()
     {
-        $this->db->createCommand()->addColumn('{{surveys}}', 'lastModified', 'TIMESTAMP ON UPDATE CURRENT_TIMESTAMP');
+        $this->db->createCommand()->addColumn('{{surveys}}', 'lastModified', 'datetime NULL');
     }
 }

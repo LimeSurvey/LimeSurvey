@@ -1425,11 +1425,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getLastModifiedDate()
     {
-        if ($this->lastModified != '0000-00-00 00:00:00') {
-            return date('d.m.Y', strtotime($this->lastModified));
-        } else {
-            return $this->creationdate;
-        }
+        $data = $this->lastModified > $this->creationdate ?
+            $this->lastModified : $this->creationdate;
+        return date('d.m.Y', strtotime($data));
     }
 
     /**

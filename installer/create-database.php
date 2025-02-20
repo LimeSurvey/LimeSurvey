@@ -678,7 +678,7 @@ function populateDatabase($oDB)
             'googleanalyticsstyle' => "string(1) NULL",
             'googleanalyticsapikey' => "string(25) NULL",
             'tokenencryptionoptions' => "text NULL",
-            'lastModified' => "TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
+            'lastModified' => "datetime",
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_pk}}', '{{surveys}}', 'sid');
