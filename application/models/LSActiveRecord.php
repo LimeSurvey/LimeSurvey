@@ -511,8 +511,12 @@ class LSActiveRecord extends CActiveRecord
 
     public function updateSurveyLastModifiedDate($event)
     {
-        $sid = null;
+        $models = ['Survey', 'SurveyLanguageSetting', 'Participant', 'Permission', 'Question', 'QuestionGroup'];
+        if (!in_array(get_class($event->sender), $models)) {
+            return;
+        }
 
+        $sid = null;
         // Try to get survey ID from the event sender if it exists.
         if (isset($event->sender->sid)) {
             $sid = $event->sender->sid;
