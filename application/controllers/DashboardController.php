@@ -67,9 +67,9 @@ class DashboardController extends LSBaseController
         $aData['oldDashboard'] = App()->getConfig('display_old_dashboard') === '1';
         // Last survey
         $aData['showLastSurvey'] = false;
-        $lastsurveyId = intval(SettingsUser::getUserSettingValue('last_survey'));
+        $lastsurveyId = SettingsUser::getUserSettingValue('last_survey');
         if ($lastsurveyId) {
-            $survey = Survey::model()->findByPk($lastsurveyId);
+            $survey = Survey::model()->findByPk(intval($lastsurveyId));
             if ($survey) {
                 $aData['showLastSurvey'] = true;
                 $aData['surveyTitle'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $lastsurveyId . ")";
@@ -78,25 +78,27 @@ class DashboardController extends LSBaseController
         }
         // Last question
         $aData['showLastQuestion'] = false;
-        $lastquestionID = intval(SettingsUser::getUserSettingValue('last_question'));
+        $lastquestionID = SettingsUser::getUserSettingValue('last_question');
         if ($lastquestionID) {
-            $question = Question::model()->findByPk($lastquestionID);
+            $question = Question::model()->findByPk(intval($lastquestionID));
             if ($question) {
-                $aData['showLastQuestion'] = true;
                 $survey = Survey::model()->findByPk($question->sid);
-                $baselang = $survey->language;
-                $aData['last_question_name'] = $question['title'];
-                if (!empty($question->questionl10ns[$baselang]['question'])) {
-                    $aData['last_question_name'] .= ' : ' . $qrrow->questionl10ns[$baselang]['question'];
-                }
-                $aData['last_question_link'] = $this->createUrl(
-                    "questionAdministration/view", 
-                    [
-                        'surveyid' => $question->sid,
-                        'gid' => $question->gid,
-                        'qid' => $question->qid
-                    ]
-                );
+                if ($survey) {
+                    $aData['showLastQuestion'] = true;
+                    $baselang = $survey->language;
+                    $aData['last_question_name'] = $question['title'];
+                    if (!empty($question->questionl10ns[$baselang]['question'])) {
+                        $aData['last_question_name'] .= ' : ' . $qrrow->questionl10ns[$baselang]['question'];
+                    }
+                    $aData['last_question_link'] = $this->createUrl(
+                        "questionAdministration/view",
+                        [
+                            'surveyid' => $question->sid,
+                            'gid' => $question->gid,
+                            'qid' => $question->qid
+                        ]
+                    );
+                } // else need a data entegrity check question without survey
             }
         }
         $aData['countSurveyList'] = Survey::model()->count();
