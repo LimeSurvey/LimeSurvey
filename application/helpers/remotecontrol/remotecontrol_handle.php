@@ -1248,6 +1248,9 @@ class remotecontrol_handle
     public function get_response_ids($sSessionKey, $iSurveyID, $sToken)
     {
         if ($this->_checkSessionKey($sSessionKey)) {
+            if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')) {
+                return array('status' => 'No permission');
+            }
             $iSurveyID = (int) $iSurveyID;
             $responses = SurveyDynamic::model($iSurveyID)->findAllByAttributes(array('token' => $sToken));
             $result = array();
