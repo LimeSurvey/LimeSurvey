@@ -1163,10 +1163,10 @@ class remotecontrol_handle
             $sImportData = (string) $sImportData;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                            return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID');
             }
 
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'import')) {
                 if ($oSurvey->isActive) {
                     return array('status' => 'Error:Survey is active and not editable');
                 }
@@ -1230,10 +1230,10 @@ class remotecontrol_handle
                     return (int) $aImportResults['newgid'];
                 }
             } else {
-                            return array('status' => 'No permission');
+                return array('status' => 'No permission');
             }
         } else {
-                    return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY);
         }
     }
 
