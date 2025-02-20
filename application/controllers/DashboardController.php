@@ -82,6 +82,7 @@ class DashboardController extends LSBaseController
         if ($lastquestionID) {
             $question = Question::model()->findByPk($lastquestionID);
             if ($question) {
+                $aData['showLastQuestion'] = true;
                 $survey = Survey::model()->findByPk($question->sid);
                 $baselang = $survey->language;
                 $aData['last_question_name'] = $question['title'];
@@ -98,7 +99,6 @@ class DashboardController extends LSBaseController
                 );
             }
         }
-
         $aData['countSurveyList'] = Survey::model()->count();
 
         //show banner after welcome logo
