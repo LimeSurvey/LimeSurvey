@@ -2273,7 +2273,7 @@ class remotecontrol_handle
                 return array('status' => 'Error: Invalid survey ID');
             }
 
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
                 $oGroupList = QuestionGroup::model()->with('questiongroupl10ns')->findAllByAttributes(array("sid" => $iSurveyID));
                 if (count($oGroupList) == 0) {
                     return array('status' => 'No groups found');
@@ -2454,7 +2454,7 @@ class remotecontrol_handle
                 return ['status' => 'Error: Invalid survey ID'];
             }
 
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
                 if (is_null($sLanguage)) {
                     $sLanguage = $oSurvey->language;
                 }
@@ -2828,9 +2828,8 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             $oSurvey = new Survey();
-            if (!Permission::model()->hasGlobalPermission('superadmin', 'read') && ($sUsername == null)) {
-                $oSurvey->permission(Yii::app()->user->getId());
-            } elseif ($sUsername != null) {
+            $oSurvey->permission(Yii::app()->user->getId());
+            if ($sUsername != null) {
                 $aUserData = User::model()->findByAttributes(array('users_name' => (string) $sUsername));
                 if (!isset($aUserData)) {
                     return array('status' => 'Invalid user');
