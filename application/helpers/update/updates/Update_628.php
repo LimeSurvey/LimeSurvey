@@ -36,7 +36,7 @@ class Update_628 extends DatabaseUpdateBase
         ",
     ];
 
-    /** @psalm-suppress ExcessiveMethodLength */
+    /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
     public function up()
     {
         $scripts = [];
