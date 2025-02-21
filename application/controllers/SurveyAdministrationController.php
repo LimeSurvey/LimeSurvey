@@ -175,7 +175,6 @@ class SurveyAdministrationController extends LSBaseController
         // 2025-02-19 seem not used , we are inside survey
         $aData['showLastQuestion'] = false;
         $lastquestionID = SettingsUser::getUserSetting('last_question', $iSurveyID, 'Survey');
-        $lastquestiongroupID = SettingsUser::getUserSetting('last_group', $iSurveyID, 'Survey');
         if ($lastquestionID) {
             $question = Question::model()->findByPk(intval($lastquestionID));
             if ($question) {
@@ -183,7 +182,7 @@ class SurveyAdministrationController extends LSBaseController
                 $baselang = $survey->language;
                 $aData['last_question_name'] = $question['title'];
                 if (!empty($question->questionl10ns[$baselang]['question'])) {
-                    $aData['last_question_name'] .= ' : ' . $qrrow->questionl10ns[$baselang]['question'];
+                    $aData['last_question_name'] .= ' : ' . $question->questionl10ns[$baselang]['question'];
                 }
                 $aData['last_question_link'] = $this->createUrl(
                     "questionAdministration/view",
