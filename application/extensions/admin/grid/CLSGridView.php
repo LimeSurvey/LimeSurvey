@@ -208,8 +208,6 @@ class CLSGridView extends TbGridView
         if (empty($this->lsAdditionalColumns)) {
             return;
         }
-        $columnsSelected = (array) App()->request->getQuery('columnsSelected');
-        $columnsIsSelected = App()->request->getParam('selectColumns');
         $ajaxUpdate = (string) App()->request->getQuery('ajax');
         if (!$this->dataProvider instanceof CActiveDataProvider) {
             return;
@@ -225,31 +223,17 @@ class CLSGridView extends TbGridView
             'headerHtmlOptions' => ['class' => 'text-center ls-sticky-column', 'style' => 'font-size: 1.5em; font-weight: 400;'],
             'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
         ];
-        // If there are no columns selected, we delete the user setting.
-        if (
-            $columnsIsSelected == 'select'
-            && empty($columnsSelected)
-            && $this->ajaxUpdate === $ajaxUpdate
-            // Preserve selected column parameters during sorting
-            // The current sorting AJAX request resets the selected grid view columns
-            && App()->request->getQuery('sort') == null
-        ) {
-            SettingsUser::deleteUserSetting('gridview_columns_' . $this->ajaxUpdate);
-            return;
+        /* Updating the columns to be added */
+        if (App()->request->getParam('selectColumns') && $this->ajaxUpdate === $ajaxUpdate) {
+            $columnsSelected = (array) App()->request->getQuery('columnsSelected');
+            // If there are no columns selected, we delete the user setting.
+            if (empty($columnsSelected)) {
+                SettingsUser::deleteUserSetting('gridview_columns_' . $this->ajaxUpdate);
+            } else {
+                SettingsUser::setUserSetting('gridview_columns_' . $this->ajaxUpdate, json_encode($columnsSelected));
+            }
         }
-
-        // If there are columns selected, we save them in the user setting.
-        if (
-            $columnsIsSelected == 'select'
-            && !empty($columnsSelected)
-            && $this->ajaxUpdate === $ajaxUpdate
-        ) {
-            SettingsUser::setUserSetting('gridview_columns_' . $this->ajaxUpdate, json_encode($columnsSelected));
-            $this->addColumns($columnsSelected);
-            return;
-        }
-
-        // If there are no columns defined in the request, we check if a user setting exists.
+        /* get the columns to be added */
         $userColumns = SettingsUser::getUserSettingValue('gridview_columns_' . $this->ajaxUpdate);
         if (!empty($userColumns)) {
             $columnsSelected = json_decode($userColumns, false);
