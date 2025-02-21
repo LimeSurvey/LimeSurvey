@@ -88,7 +88,7 @@ class DashboardController extends LSBaseController
                     $baselang = $survey->language;
                     $aData['last_question_name'] = $question['title'];
                     if (!empty($question->questionl10ns[$baselang]['question'])) {
-                        $aData['last_question_name'] .= ' : ' . $qrrow->questionl10ns[$baselang]['question'];
+                        $aData['last_question_name'] .= ' : ' . $question->questionl10ns[$baselang]['question'];
                     }
                     $aData['last_question_link'] = $this->createUrl(
                         "questionAdministration/view",
