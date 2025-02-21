@@ -839,5 +839,9 @@ $config['passwordValidationRules'] = array(
 // Enable or disable single page application editor
 $config['editorEnabled'] = false;
 
+// Minimum delay between registration emails for the same token.
+// Must be a valid DateInterval string (ie: "15 minutes", "1 hour", "1 day").
+$config['registrationEmailDelay'] = '1 hour';
+
 return $config;
 //settings deleted

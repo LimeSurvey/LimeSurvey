@@ -287,6 +287,13 @@ class RegisterController extends LSYii_Controller
         $aSurveyInfo = getSurveyInfo($iSurveyId, $sLanguage);
 
         $oToken = Token::model($iSurveyId)->findByPk($iTokenId)->decrypt(); // Reload the token (needed if just created)
+        // Make sure enough time has passed since the last email was sent
+        $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+        $delay = Yii::app()->getConfig('registrationEmailDelay');
+        if (!empty($oToken->sent) && $oToken->sent != "N" && dateShift($oToken->sent, "Y-m-d H:i", $delay) > $now) {
+            return false;
+        }
+
         $mailer = new \LimeMailer();
         $mailer->setSurvey($iSurveyId);
         $mailer->setToken($oToken->token);
@@ -299,8 +306,7 @@ class RegisterController extends LSYii_Controller
         $aMessage = array();
         $aMessage['mail-thanks'] = gT("Thank you for registering to participate in this survey.");
         if ($mailerSent) {
-            $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
-            Token::model($iSurveyId)->updateByPk($iTokenId, array('sent' => $today));
+            Token::model($iSurveyId)->updateByPk($iTokenId, array('sent' => $now));
             $aMessage['mail-message'] = $this->sMailMessage;
         } else {
             $aMessage['mail-message-error'] = gT("You are registered but an error happened when trying to send the email - please contact the survey administrator.");
@@ -340,7 +346,12 @@ class RegisterController extends LSYii_Controller
                 $this->aRegisterErrors[] = gT("This email address is already registered but email to that adress could not be delivered.");
             } else {
                 $this->sMailMessage = gT("The address you have entered is already registered. An email has been sent to this address with a link that gives you access to the survey.");
-                $this->sendRegistrationEmail = false;
+                $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+                $delay = Yii::app()->getConfig('registrationEmailDelay');
+                if (!empty($oToken->sent) && $oToken->sent != "N" && dateShift($oToken->sent, "Y-m-d H:i", $delay) > $now) {
+                    /** @todo: Figure out a way to show a different message to the user */
+                    $this->sendRegistrationEmail = false;
+                }
                 return $oToken->tid;
             }
         } else {
