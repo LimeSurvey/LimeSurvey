@@ -74,6 +74,7 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionView($surveyid, $gid = null, $qid = null, $landOnSideMenuTab = 'structure')
     {
+        SettingsUser::setUserSetting('last_question', $qid);
         $this->actionEdit($qid);
     }
 
