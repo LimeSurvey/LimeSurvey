@@ -202,7 +202,7 @@ class SurveyCondition
             }
 
             $result = null;
-            if ($posted_condition_value !== '') {
+            if (($editTargetTab === '#CONST') || ($posted_condition_value !== '')) {
                 $condition_data['value'] = $posted_condition_value;
                 $result = \Condition::model()->insertRecords($condition_data);
             }
