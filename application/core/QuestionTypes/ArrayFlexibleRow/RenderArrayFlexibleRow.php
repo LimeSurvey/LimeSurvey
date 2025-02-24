@@ -189,7 +189,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         //$aAnswer->answerl10ns[$sSurveyLanguage]->answer
         $aRows = [];
         foreach ($this->aSubQuestions[0] as $i => $oQuestion) {
-            $myfname        = $this->sSGQA . $oQuestion->title;
+            $myfname        = $this->sSGQA . '_S' . $oQuestion->qid;
             $answertext     = $oQuestion->questionl10ns[$this->sLanguage]['question'];
             // Check the mandatory sub Q violation
             $error = (in_array($myfname, $this->aMandatoryViolationSubQ));
@@ -266,7 +266,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 }
             }
 
-            $myfname        = $this->sSGQA . $oQuestion->title;
+            $myfname        = $this->sSGQA . '_S' . $oQuestion->qid;
             $answertext     = $oQuestion->questionl10ns[$this->sLanguage]->question;
             $answertext     = (strpos((string) $answertext, '|') !== false) ? substr((string) $answertext, 0, strpos((string) $answertext, '|')) : $answertext;
 

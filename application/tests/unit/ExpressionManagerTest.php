@@ -686,8 +686,8 @@ EOD;
         $em = new ExpressionManager();
         $LEM->setTempVars($vars);
 
-        //$LEMsessid = 'survey_' . Yii::app()->getConfig('surveyID');
-        $LEMsessid = 'survey_12345';
+        //$LEMsessid = 'responses_' . Yii::app()->getConfig('surveyID');
+        $LEMsessid = 'responses_12345';
         // manually set relevance status
         $_SESSION[$LEMsessid]['relevanceStatus'] = array();
         foreach ($vars as $var) {

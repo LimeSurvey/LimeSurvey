@@ -62,7 +62,7 @@ function fixNumbering($iQuestionID, $iSurveyID)
         foreach ($aSwitcher as $aSwitch) {
             $sQuery = "UPDATE {{conditions}}
             SET cqid=$iNewQID,
-            cfieldname='" . str_replace("X" . $iQuestionID, "X" . $iNewQID, (string) $aSwitch['cfieldname']) . "'
+            cfieldname='" . str_replace("Q" . $iNewQID, (string) $aSwitch['cfieldname']) . "'
             WHERE cqid=$iQuestionID";
             Yii::app()->db->createCommand($sQuery)->query();
         }
