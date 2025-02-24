@@ -1853,6 +1853,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $importedSubQuestions[$aQIDReplacements[$iOldQID]] = $oQuestion;
             }
 
+            $aQuestionsMapping['Q' . array_search($insertdata['parent_qid'], $aQIDReplacements) . '_S' . $iOldQID] = 'Q' . $oQuestion->parent_qid . '_S' . $oQuestion->qid;
+
             // If translate links is disabled, check for old links.
             // We only do it here if the XML doesn't have a question_l10ns section.
             if (!$bTranslateInsertansTags && !isset($xml->question_l10ns->rows->row)) {
@@ -1864,6 +1866,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             if (isset($oQuestionL10n)) {
                 $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
+                $oQuestionL10n->question = str_replace('Q' . $insertdata['parent_qid'] . '_S' . $iOldQID, $aQuestionsMapping['Q' . $insertdata['parent_qid'] . '_S' . $iOldQID], $oQuestionL10n->question);
                 $oQuestionL10n->save();
                 unset($oQuestionL10n);
             }
@@ -1901,6 +1904,20 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $aQuestionsMapping['Q' . array_search($oQuestion->parent_qid, $aQIDReplacements) . '_S' . $iOldQID] = 'Q' . $oQuestion->parent_qid . '_S' . $oQuestion->qid;
             $oQuestionL10n = new QuestionL10n();
             $oQuestionL10n->setAttributes($insertdata, false);
+            $keys = array_keys($aQuestionsMapping);
+            usort($keys, function($a, $b) {
+                $left = count(explode("_", $a));
+                $right = count(explode("_", $b));
+                if ($left === $right) {
+                    return 0;
+                }
+                return ($a > $b) ? -1 : 1;
+            });
+            foreach ($keys as $key) {
+                $value = $aQuestionsMapping[$key];
+                $oQuestionL10n->question = str_replace($key, $value, $oQuestionL10n->question);
+            }
+            //$oQuestionL10n->question = str_replace('Q' . array_search($oQuestion->parent_qid, $aQIDReplacements) . '_S' . $iOldQID, $aQuestionsMapping['Q' . array_search($oQuestion->parent_qid, $aQIDReplacements) . '_S' . $iOldQID], $oQuestionL10n->question);
             $oQuestionL10n->save();
 
             // If translate links is disabled, check for old links.

@@ -3730,10 +3730,21 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
 */
 function replaceExpressionCodes($iSurveyID, $aCodeMap)
 {
+    $keys = array_keys($aCodeMap);
+    usort($keys, function($a, $b) {
+        $left = count(explode("_", $a));
+        $right = count(explode("_", $b));
+        if ($left === $right) {
+            return 0;
+        }
+        return ($a > $b) ? -1 : 1;
+    });
     $arQuestions = Question::model()->findAll("sid=:sid", array(':sid' => $iSurveyID));
     foreach ($arQuestions as $arQuestion) {
         $bModified = false;
-        foreach ($aCodeMap as $sOldCode => $sNewCode) {
+        foreach ($keys as $key) {
+            $sOldCode = $key;
+            $sNewCode = $aCodeMap[$key];
             // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
             if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode)) {
                 $sOldCode = preg_quote((string) $sOldCode, '~');

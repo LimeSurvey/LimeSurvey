@@ -89,12 +89,12 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
             $sgqa = "Q".$questions['Q03']->qid;
             // Line to be relevant
             $lineRelevance = self::$webDriver->findElements(
-                WebDriverBy::cssSelector("#javatbd".$sgqa."_S32.ls-irrelevant")
+                WebDriverBy::cssSelector("#javatbd".$sgqa."_S" . $questions['SQ001'] . ".ls-irrelevant")
             );
             $this->assertCount(0, $lineRelevance, 'Relevance is broken : SQ001 is irrelevant.');
             // Line to be irrelevant
             $lineRelevance = self::$webDriver->findElements(
-                WebDriverBy::cssSelector("#javatbd".$sgqa."_S34.ls-irrelevant")
+                WebDriverBy::cssSelector("#javatbd".$sgqa."_S" . $questions['SQ003'] . ".ls-irrelevant")
             );
             $this->assertCount(1, $lineRelevance, 'Relevance is broken : SQ003 is relevant.');
             /** Text of subquestion **/
