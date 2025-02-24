@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-02-24 15:07:38+00:00\n"
+"POT-Creation-Date: 2025-02-24 15:12:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5820,6 +5820,10 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:77
 #: application/controllers/admin/Themes.php:1246
 msgid "Please submit by %s"
+msgstr ""
+
+#: application/controllers/admin/PrintableSurvey.php:114
+msgid "Table name: %s"
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:126
