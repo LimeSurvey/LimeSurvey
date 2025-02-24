@@ -85,8 +85,9 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                 $aData['labelans' . $iScaleId][$oAnswerOption->code] = $oAnswerOption->answerl10ns[$this->sLanguage]->answer;
                 $aData['labelcode' . $iScaleId][$oAnswerOption->code] = $oAnswerOption->code;
             }
-
-            $this->numrows = $this->numrows + count($aData['labelans' . $iScaleId]);
+            if (isset($aData['labelans' . $iScaleId])) {
+                $this->numrows = $this->numrows + count($aData['labelans' . $iScaleId]);
+            }
         }
         return $aData;
     }
@@ -272,54 +273,57 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                 $aData['aSubQuestions'][$i]['sessionfname0'] = '';
             }
 
-            foreach ($aData['labelcode0'] as $j => $ld) {
-                // First label set
-                if (!is_null($this->getFromSurveySession($myfname0)) && $this->getFromSurveySession($myfname0) == $ld) {
-                    $aData['labelcode0_checked'][$oQuestionRow->title][$ld] = CHECKED;
-                } else {
-                    $aData['labelcode0_checked'][$oQuestionRow->title][$ld] = "";
+            if (isset($aData['labelcode0'])) {
+                foreach ($aData['labelcode0'] as $j => $ld) {
+                    // First label set
+                    if (!is_null($this->getFromSurveySession($myfname0)) && $this->getFromSurveySession($myfname0) == $ld) {
+                        $aData['labelcode0_checked'][$oQuestionRow->title][$ld] = CHECKED;
+                    } else {
+                        $aData['labelcode0_checked'][$oQuestionRow->title][$ld] = "";
+                    }
                 }
             }
 
-
-            if (count($aData['labelans1']) > 0) {
+            if (isset($aData['labelans1'])) {
+                if (count($aData['labelans1']) > 0) {
                 // if second label set is used
 
-                if (!empty($this->getFromSurveySession($myfname1))) {
-                    //$answer .= $_SESSION['responses_'.Yii::app()->getConfig('surveyID')][$myfname1];
-                    $aData['aSubQuestions'][$i]['sessionfname1'] = $this->getFromSurveySession($myfname1);
-                } else {
-                    $aData['aSubQuestions'][$i]['sessionfname1'] = '';
-                }
-
-                if ($aData['shownoanswer']) {
-                    // No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
-                    $fname0value = $this->getFromSurveySession($myfname0);
-                    // If value is empty, notset should be checked.
-                    // string "0" should be considered as valid answer,
-                    // so notset should not be checked in that case.
-                    if ($fname0value !== '0' && empty($fname0value)) {
-                        //$answer .= CHECKED;
-                        $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
+                    if (!empty($this->getFromSurveySession($myfname1))) {
+                        //$answer .= $_SESSION['responses_'.Yii::app()->getConfig('surveyID')][$myfname1];
+                        $aData['aSubQuestions'][$i]['sessionfname1'] = $this->getFromSurveySession($myfname1);
                     } else {
-                        $aData['aSubQuestions'][$i]['myfname0_notset'] = "";
+                        $aData['aSubQuestions'][$i]['sessionfname1'] = '';
                     }
-                }
 
-                array_push($this->inputnames, $myfname1);
+                    if ($aData['shownoanswer']) {
+                        // No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
+                        $fname0value = $this->getFromSurveySession($myfname0);
+                        // If value is empty, notset should be checked.
+                        // string "0" should be considered as valid answer,
+                        // so notset should not be checked in that case.
+                        if ($fname0value !== '0' && empty($fname0value)) {
+                            //$answer .= CHECKED;
+                            $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
+                        } else {
+                            $aData['aSubQuestions'][$i]['myfname0_notset'] = "";
+                        }
+                    }
 
-                foreach ($aData['labelcode1'] as $j => $ld) {
-                    // second label set
-                    if (!is_null($this->getFromSurveySession($myfname1)) && $this->getFromSurveySession($myfname1) == $ld) {
-                        $aData['labelcode1_checked'][$oQuestionRow->title][$ld] = CHECKED;
-                    } else {
-                        $aData['labelcode1_checked'][$oQuestionRow->title][$ld] = "";
+                    array_push($this->inputnames, $myfname1);
+
+                    foreach ($aData['labelcode1'] as $j => $ld) {
+                        // second label set
+                        if (!is_null($this->getFromSurveySession($myfname1)) && $this->getFromSurveySession($myfname1) == $ld) {
+                            $aData['labelcode1_checked'][$oQuestionRow->title][$ld] = CHECKED;
+                        } else {
+                            $aData['labelcode1_checked'][$oQuestionRow->title][$ld] = "";
+                        }
                     }
                 }
             }
 
             $aData['answertextright'] = $answertextright;
-            if ($aData['shownoanswer']) {
+            if ($aData['shownoanswer'] && isset($aData['labelans1'])) {
                 if (count($aData['labelans1']) > 0) {
                     $fname1value = $this->getFromSurveySession($myfname1);
                     // If value is empty, notset should be checked.

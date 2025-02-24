@@ -5,6 +5,10 @@
  *  Setup YII_DEBUG constant and error reporting according to config
  * ------------------------------------------------------------------
  */
+if (!defined('BASEPATH')) {
+    http_response_code(403);
+    exit('No direct script access allowed');
+}
 if (!defined('YII_DEBUG')) {
     if (file_exists(APPPATH . 'config' . DIRECTORY_SEPARATOR . 'config.php')) {
         $settings = include(APPPATH . 'config' . DIRECTORY_SEPARATOR . 'config.php');

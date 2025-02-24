@@ -1688,7 +1688,8 @@ class Tokens extends SurveyCommonAction
 
                     unset($fieldsarray);
                 }
-
+                // Closes a still active SMTP connection if it exists
+                $mail->smtpClose();
                 $aViewUrls = array();
                 $aData['tokenoutput'] = $tokenoutput;
 

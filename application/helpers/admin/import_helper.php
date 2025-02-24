@@ -1167,12 +1167,36 @@ function XMLImportLabelsets($sFullFilePath, $options)
 }
 
 /**
- * @param string $sFullFilePath
- * @param boolean $bTranslateLinksFields
- * @param string $sNewSurveyName
- * @param integer $DestSurveyID
+ * @param int|string  $newsid
+ * @param string|null $baselang
  */
-function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName = null, $DestSurveyID = null)
+function finalizeSurveyImportFile($newsid, $baselang)
+{
+    if ($baselang) {
+        $survey = Survey::model()->findByPk($newsid);
+        $supportedLanguages = explode(" ", $survey->language . " " . $survey->additional_languages);
+        $found = in_array($baselang, $supportedLanguages);
+        if (!$found) {
+            $baselang = explode("-", $baselang)[0];
+            $found = in_array($baselang, $supportedLanguages);
+        }
+        if ($found) {
+            $survey->language = $baselang;
+            $survey->additional_languages = '';
+            $survey->save();
+            fixLanguageConsistency($newsid);
+        }
+    }
+}
+
+/**
+ * @param string       $sFullFilePath
+ * @param boolean      $bTranslateLinksFields
+ * @param string|null  $sNewSurveyName
+ * @param integer|null $DestSurveyID
+ * @param string|null  $baselang
+ */
+function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName = null, $DestSurveyID = null, $baselang = null)
 {
     $aPathInfo = pathinfo($sFullFilePath);
     if (isset($aPathInfo['extension'])) {
@@ -1186,6 +1210,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             if (!empty($aImportResults['newsid'])) {
                 $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
                 $SurveyIntegrity->fixSurveyIntegrity();
+                finalizeSurveyImportFile($aImportResults['newsid'], $baselang);
             }
             return $aImportResults;
         case 'txt':
@@ -1194,6 +1219,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             if ($aImportResults && $aImportResults['newsid']) {
                 $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
                 $SurveyIntegrity->fixSurveyIntegrity();
+                finalizeSurveyImportFile($aImportResults['newsid'], $baselang);
             }
             return $aImportResults;
         case 'lsa':
@@ -1272,6 +1298,9 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                     break;
                 }
             }
+            if ($aImportResults && isset($aImportResults['newsid'])) {
+                finalizeSurveyImportFile($aImportResults['newsid'], $baselang);
+            }
             return $aImportResults;
         default:
             // Unknow file , return null why not throw error ?
@@ -1280,12 +1309,25 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
 }
 
 /**
-* This function imports a LimeSurvey .lss survey XML file
-*
-* @param string $sFullFilePath  The full filepath of the uploaded file
-* @param string $sXMLdata
-* @todo Use transactions to prevent orphaned data and clean rollback on errors
-*/
+ * Imports a survey from an XML file or XML data string.
+ *
+ * This function processes the XML data to import a survey, including its questions, groups, and language settings.
+ * It handles various aspects such as translating links, converting question codes, and managing attachments.
+ *
+ * @param string $sFullFilePath The full file path to the XML file (optional if $sXMLdata is provided)
+ * @param string|null $sXMLdata The XML data as a string (optional if $sFullFilePath is provided)
+ * @param string|null $sNewSurveyName The new name for the survey if it's being copied
+ * @param int|null $iDesiredSurveyId The desired ID for the new survey (optional)
+ * @param bool $bTranslateInsertansTags Whether to translate insertans tags (default true)
+ * @param bool $bConvertInvalidQuestionCodes Whether to convert invalid question codes (default true)
+ * @return array An array containing the results of the import process, including:
+ *               - 'error': Any error message if the import failed
+ *               - 'newsid': The ID of the newly created survey
+ *               - 'oldsid': The ID of the original survey in the XML
+ *               - Various counters for imported elements (questions, groups, etc.)
+ *               - 'importwarnings': An array of warning messages
+ * @todo Use transactions to prevent orphaned data and clean rollback on errors
+ */
 function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = null, $iDesiredSurveyId = null, $bTranslateInsertansTags = true, $bConvertInvalidQuestionCodes = true)
 {
     $isCopying = ($sNewSurveyName != null);
@@ -1336,8 +1378,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
     $results['languages'] = count($aLanguagesSupported);
 
-    // Import surveys table ====================================================
-
+    // Import survey entry  ====================================================
+    if (!isset($xml->surveys->rows->row)) {
+        $results['error'] = gT("XML Parsing Error: Missing or malformed element of type 'survey'");
+        return $results;
+    }
     foreach ($xml->surveys->rows->row as $row) {
         $insertdata = array();
 
@@ -1352,12 +1397,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $insertdata[(string) $key] = (string) $value;
         }
         $iOldSID = $results['oldsid'] = $insertdata['sid'];
-        // Fix#14609 wishSID overwrite sid
         if (!is_null($iDesiredSurveyId)) {
             $insertdata['sid'] = $iDesiredSurveyId;
         }
-
         if ($iDBVersion < 145) {
+            // Convert to new field names
             if (isset($insertdata['private'])) {
                 $insertdata['anonymized'] = $insertdata['private'];
             }
