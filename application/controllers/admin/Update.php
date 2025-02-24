@@ -114,7 +114,7 @@ class Update extends DynamicSurveyCommonAction
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
 
-        $aData['topbar']['title'] = gt('ComfortUpdate');
+        $aData['topbar']['title'] = gT('ComfortUpdate');
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/update/partials/topbarBtns/rightSideButtons',
             [],
@@ -138,9 +138,9 @@ class Update extends DynamicSurveyCommonAction
             $updateKey = $aData['updateKey'] = getGlobalSetting('update_key');
 
             if (!$updateKey) {
-                $pageTitle = gt('Subscribe to ComfortUpdate');
+                $pageTitle = gT('Subscribe to ComfortUpdate');
             } else {
-                $pageTitle = gt('ComfortUpdate');
+                $pageTitle = gT('ComfortUpdate');
             }
 
             $aData['topbar']['title'] = $pageTitle;

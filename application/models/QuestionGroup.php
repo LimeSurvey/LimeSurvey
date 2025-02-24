@@ -179,12 +179,12 @@ class QuestionGroup extends LSActiveRecord
     {
         $QuestionGroup = self::model()->findByPk($groupId);
         if (empty($QuestionGroup)) {
-            throw new NotFoundException(gt('Group not found'));
+            throw new NotFoundException(gT('Group not found'));
         }
         // Abort if the survey is active
         $surveyIsActive = Survey::model()->findByPk($QuestionGroup->sid)->active !== 'N';
         if ($surveyIsActive) {
-            throw new BadRequestException(gt("Can't delete question group when the survey is active"));
+            throw new BadRequestException(gT("Can't delete question group when the survey is active"));
         }
         $surveyId = $QuestionGroup->sid;
         $questionIds = QuestionGroup::getQuestionIdsInGroup($groupId);
@@ -349,7 +349,7 @@ class QuestionGroup extends LSActiveRecord
                     "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
                 ),
                 'data-btnclass'  => 'btn-danger',
-                'data-btntext'   => gt('Delete'),
+                'data-btntext'   => gT('Delete'),
                 'data-onclick'  => '(function() { ' . CHtml::encode(convertGETtoPOST(
                     Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid" => $this->gid])
                 )) . '})'

@@ -31,7 +31,7 @@
         <div class="col-md-6 offset-md-3"><?= $sQRCodeContent ?></div>
     </div>
     <div class="mb-3">
-        <?php echo TbHtml::label(gt('Confirmation key'), 'confirmationKey', ['class' => 'form-label']); ?>
+        <?php echo TbHtml::label(gT('Confirmation key'), 'confirmationKey', ['class' => 'form-label']); ?>
         <?php echo TbHtml::textField('confirmationKey', null, ['required' => true]); ?>
     </div>
 </div>
