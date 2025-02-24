@@ -111,7 +111,7 @@ class PrintableSurvey extends SurveyCommonAction
             //if $showsgqacode is enabled at config.php show table name for reference
             $showsgqacode = Yii::app()->getConfig("showsgqacode");
             if (isset($showsgqacode) && $showsgqacode == true) {
-                $surveyname = $surveyname . "<br />[" . gT('Database') . " " . gT('table') . ": $surveytable]";
+                $surveyname = $surveyname . "<br />[" . sprintf('Table name: %s', $surveytable) . "]";
             }
 
             /* Get the HTML tag */
