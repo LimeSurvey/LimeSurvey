@@ -120,7 +120,7 @@ class SurveysGroupsettings extends LSActiveRecord
     public function save($runValidation = true, $attributes = null)
     {
         unset(self::$aSurveysGroupSettings[$this->gsid]);
-        parent::save($runValidation, $attributes);
+        return parent::save($runValidation, $attributes);
     }
     /**
      * @return array relational rules.

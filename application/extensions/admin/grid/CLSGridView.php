@@ -13,13 +13,25 @@ class CLSGridView extends TbGridView
      * An array of Javascript functions that will be passed to afterAjaxUpdate
      * @var array
      */
-    public $lsAfterAjaxUpdate;
+    public array $lsAfterAjaxUpdate;
+
+    /**
+     * An array of columns that should be selectable for display
+     * @var array
+     */
+    public array $lsAdditionalColumns = [];
+
+    /**
+     * An array of columns that is selected for display
+     * @var array
+     */
+    public array $lsAdditionalColumnsSelected = [];
 
     /**
      * string for a link that is on every row
      * @var string
      */
-    public $rowLink;
+    public string $rowLink;
 
     /**
      * Initializes the widget.
@@ -51,6 +63,7 @@ class CLSGridView extends TbGridView
      */
     protected function initColumns()
     {
+        $this->appendAdditionalColumns();
         foreach ($this->columns as $i => $column) {
             if (is_array($column) && !isset($column['class'])) {
                 $this->columns[$i]['class'] = '\TbDataColumn';
@@ -74,6 +87,9 @@ class CLSGridView extends TbGridView
             }
             $this->afterAjaxUpdate .= 'LS.actionDropdown.create();';
             $this->afterAjaxUpdate .= 'LS.rowlink.create();';
+            if ($this->lsAdditionalColumns) {
+                $this->afterAjaxUpdate .= 'initColumnFilter()';
+            }
             $this->afterAjaxUpdate .= '}';
         }
     }
@@ -180,5 +196,65 @@ class CLSGridView extends TbGridView
             "jQuery('#$id').yiiGridView($options);",
             LSYii_ClientScript::POS_POSTSCRIPT
         );
+    }
+
+    /**
+     * Appends columns to the gridview based on the selected columns of the columnFilter param.
+     * If available loads saved column filter from user settings.
+     * @return void
+     */
+    protected function appendAdditionalColumns(): void
+    {
+        if (empty($this->lsAdditionalColumns)) {
+            return;
+        }
+        $ajaxUpdate = (string) App()->request->getQuery('ajax');
+        if (!$this->dataProvider instanceof CActiveDataProvider) {
+            return;
+        }
+        $columns_filter_button = '<button role="button" type="button" class="btn b-0" data-bs-toggle="modal" data-bs-target="#survey-column-filter-modal">
+                <i class="ri-layout-column-fill"></i>
+            </button>';
+        $this->columns[]  = [
+            'header'            => $columns_filter_button,
+            'name'              => 'dropdown_actions',
+            'value'             => '$data->buttons',
+            'type'              => 'raw',
+            'headerHtmlOptions' => ['class' => 'text-center ls-sticky-column', 'style' => 'font-size: 1.5em; font-weight: 400;'],
+            'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
+        ];
+        /* Updating the columns to be added */
+        if (App()->request->getParam('selectColumns') && $this->ajaxUpdate === $ajaxUpdate) {
+            $columnsSelected = (array) App()->request->getQuery('columnsSelected');
+            // If there are no columns selected, we delete the user setting.
+            if (empty($columnsSelected)) {
+                SettingsUser::deleteUserSetting('gridview_columns_' . $this->ajaxUpdate);
+            } else {
+                SettingsUser::setUserSetting('gridview_columns_' . $this->ajaxUpdate, json_encode($columnsSelected));
+            }
+        }
+        /* get the columns to be added */
+        $userColumns = SettingsUser::getUserSettingValue('gridview_columns_' . $this->ajaxUpdate);
+        if (!empty($userColumns)) {
+            $columnsSelected = json_decode($userColumns, false);
+            if ($columnsSelected !== null) {
+                $this->addColumns($columnsSelected);
+            }
+        }
+    }
+
+    protected function addColumns(array $selectedColumns): void
+    {
+        $additionalColumns = $this->lsAdditionalColumns;
+        foreach ($selectedColumns as $selectedColumn) {
+            $column_data = null;
+            if (isset($additionalColumns[$selectedColumn])) {
+                $column_data = $additionalColumns[$selectedColumn];
+            }
+            if (is_array($column_data)) {
+                $this->lsAdditionalColumnsSelected[] = $selectedColumn;
+                array_splice($this->columns, count($this->columns) - 2, 0, [$column_data]);
+            }
+        }
     }
 }

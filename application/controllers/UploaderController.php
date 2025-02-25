@@ -190,7 +190,7 @@ class UploaderController extends SurveyController
             $event = new PluginEvent('beforeProcessFileUpload');
             /* Current state */
             $event->set('surveyId', $surveyid);
-            $event->set('responseId', Yii::app()->session['survey_' . $surveyid]['srid']); // NULL if not exist
+            $event->set('responseId', Yii::app()->session['survey_' . $surveyid]['srid'] ?? null); // NULL if not exist
             $event->set('qid', $oQuestion->qid);
             $event->set('preview', $preview);
             $event->set('fieldname', $sFieldName);

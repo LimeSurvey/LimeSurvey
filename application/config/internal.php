@@ -45,6 +45,7 @@ $internalConfig = array(
         'node_modules_datatables_bs5' => realpath(__DIR__ . '/../../node_modules/datatables.net-bs5'),
         'node_modules_decimal' => realpath(__DIR__ . '/../../node_modules/decimal.js'),
         'node_modules_jquery_actual' => realpath(__DIR__ . '/../../node_modules/jquery.actual'),
+        'node_modules.chartjs' => realpath(__DIR__ . '/../../node_modules/chart.js/dist'),
         'core' => realpath(__DIR__ . '/../../assets/packages'),
         'fonts' => realpath(__DIR__ . '/../../assets/fonts'),
 
@@ -289,6 +290,7 @@ $internalConfig = array(
                 'empty'                   => 'empty',
                 'count'                   => 'LS_Twig_Extension::safecount',
                 'reset'                   => 'reset',
+                'strip_tags'              => 'strip_tags',
                 'in_array'                => 'in_array',
                 'in_multiarray'           => 'LS_Twig_Extension::in_multiarray',
                 'array_search'            => 'array_search',
@@ -349,7 +351,7 @@ $internalConfig = array(
                     'capitalize',
                     'lower',
                     'upper',
-                    'strip_tags',
+                    'striptags',
                     'number_format',
                     'isAbsoluteUrl'
                 ),
