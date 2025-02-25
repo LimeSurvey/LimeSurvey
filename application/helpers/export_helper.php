@@ -2045,7 +2045,7 @@ function group_export($action, $iSurveyID, $gid)
         [":sid" => $iSurveyID, ":gid" => $gid]
     );
     if (empty($group)) {
-        throw new CHttpException(404, gT("Invalid group id"));
+        throw new CHttpException(404, gT("Invalid group ID"));
     }
     $fn = "limesurvey_group_$gid.lsg";
     $xml = getXMLWriter();

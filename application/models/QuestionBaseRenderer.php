@@ -134,7 +134,7 @@ abstract class QuestionBaseRenderer extends StaticModel
         $time_limit_warning_display_time = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_display_time']['value'], 0));
         $time_limit_warning_2_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_message']['value'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
 
-        $time_limit_message_delay = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_delay']['value'], 1000));
+        $time_limit_message_delay = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_delay']['value'], 1)) * 1000;
         $time_limit_warning_2_display_time = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_display_time']['value'], 0));
         $time_limit_message_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_style']['value'], '');
         $time_limit_message_class = "d-none ls-timer-content ls-timer-message ls-no-js-hidden";

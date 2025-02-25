@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\CopySurveyResources;
+use LimeSurvey\Models\Services\FileUploadService;
 use LimeSurvey\Models\Services\FilterImportedResources;
 use LimeSurvey\Models\Services\GroupHelper;
 
@@ -602,9 +603,6 @@ class SurveyAdministrationController extends LSBaseController
             $basedestdir = Yii::app()->getConfig('uploaddir') . "/surveys";
             $destdir = $basedestdir . "/$iSurveyID/";
 
-            Yii::app()->loadLibrary('admin.pclzip');
-            $zip = new PclZip($zipfilename);
-
             if (!is_writeable($basedestdir)) {
                 Yii::app()->user->setFlash('error', sprintf(
                     gT("Incorrect permissions in your %s folder."),
@@ -622,13 +620,16 @@ class SurveyAdministrationController extends LSBaseController
             $aErrorFilesInfo = array();
 
             if (is_file($zipfilename)) {
-                if ($zip->extract($extractdir) <= 0) {
+                $zip = new LimeSurvey\Zip();
+                if ($zip->open($zipfilename) !== true || $zip->extractTo($extractdir) !== true) {
                     Yii::app()->user->setFlash(
                         'error',
-                        gT("This file is not a valid ZIP file archive. Import failed. ") . $zip->errorInfo(true)
+                        gT("This file is not a valid ZIP file archive. Import failed. ") . $zip->getStatusString()
                     );
                     $this->redirect(array('surveyAdministration/rendersidemenulink/', 'surveyid' => $iSurveyID, 'subaction' => 'generalsettings'));
                 }
+                $zip->close();
+
                 // now read tempdir and copy authorized files only
                 $folders = array('flash', 'files', 'images');
 
@@ -1471,77 +1472,58 @@ class SurveyAdministrationController extends LSBaseController
         $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
         $uploadValidator->renderJsonOnError('file', $debug);
 
-        $iSurveyID = (int) Yii::app()->request->getPost('surveyid');
+        $iSurveyID = (int)Yii::app()->request->getPost('surveyid');
         $success = false;
         $debug = [];
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                array(
-                    'data' => [
-                        'success' => $success,
-                        'message' => gT("You don't have sufficient permissions to upload images in this survey"),
-                        'debug' => $debug
-                    ]
-                ),
-                false,
-                false
-            );
-        }
-        $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]);
-        if ($checkImage['check'] === false) {
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                array(
-                    'data' => [
-                        'success' => $success,
-                        'message' => $checkImage['uploadresult'],
-                        'debug' => $checkImage['debug']
-                    ]
-                ),
-                false,
-                false
-            );
-        }
-        $surveyDir = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID;
-        if (!is_dir($surveyDir)) {
-            @mkdir($surveyDir);
-        }
-        if (!is_dir($surveyDir . "/images")) {
-            @mkdir($surveyDir . "/images");
-        }
-        $destdir = $surveyDir . "/images/";
-        if (!is_writeable($destdir)) {
-            $uploadresult = sprintf(gT("Incorrect permissions in your %s folder."), $destdir);
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-                false,
-                false
+        if (
+            Permission::model()->hasSurveyPermission(
+                $iSurveyID,
+                'surveycontent',
+                'update'
+            )
+        ) {
+            $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]);
+            if ($checkImage['check'] !== false) {
+                $diContainer = \LimeSurvey\DI::getContainer();
+                $fileUploadService = $diContainer->get(
+                    FileUploadService::class
+                );
+                $destDir = $fileUploadService->getSurveyUploadDirectory(
+                    $iSurveyID
+                );
+                if (is_writeable($destDir)) {
+                    $returnedData = $fileUploadService->saveFileInDirectory(
+                        $_FILES['file'],
+                        $destDir
+                    );
+                    $message = $returnedData['uploadResultMessage'];
+                    $debug = $returnedData['debug'];
+                    $success = $returnedData['success'];
+                } else {
+                    $message = sprintf(
+                        gT("Incorrect permissions in your %s folder."),
+                        $destDir
+                    );
+                }
+            } else {
+                $message = $checkImage['uploadresult'];
+                $debug = $checkImage['debug'];
+            }
+        } else {
+            $message = gT(
+                "You don't have sufficient permissions to upload images in this survey"
             );
         }
 
-        $filename = sanitize_filename(
-            $_FILES['file']['name'],
-            false,
-            false,
-            false
-        ); // Don't force lowercase or alphanumeric
-        $fullfilepath = $destdir . $filename;
-        $debug[] = $destdir;
-        $debug[] = $filename;
-        $debug[] = $fullfilepath;
-        if (!@move_uploaded_file($_FILES['file']['tmp_name'], $fullfilepath)) {
-            $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
-        } else {
-            $uploadresult = sprintf(gT("File %s uploaded"), $filename);
-            $success = true;
-        };
         return $this->renderPartial(
             '/admin/super/_renderJson',
-            array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-            false,
-            false
+            array(
+                'data' => [
+                    'success' => $success,
+                    'message' => $message,
+                    'debug' => $debug
+                ]
+            ),
         );
     }
 
@@ -1763,6 +1745,14 @@ class SurveyAdministrationController extends LSBaseController
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
+
+        // Avoid reactivating a survey that is already active
+        // Doing so might override the survey settings, causing an "Error: didn't save" issue
+        if (Survey::model()->findByPk($surveyId)->getIsActive()) {
+            App()->user->setFlash('error', gT("The survey is already active."));
+            $this->redirect(App()->request->urlReferrer);
+        }
+
         $diContainer = \LimeSurvey\DI::getContainer();
         $surveyActivate = $diContainer->get(
             LimeSurvey\Models\Services\SurveyActivate::class
@@ -2359,6 +2349,14 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
 
+        if ((App()->getConfig("editorEnabled")) && isset(($aImportResults['newsid']))) {
+            if (!isset($oSurvey)) {
+                $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
+            }
+            if ($oSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
+                $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $aImportResults['newsid']]);
+            }
+        }
         $this->aData = $aData;
         $this->render('importSurvey_view', $this->aData);
     }

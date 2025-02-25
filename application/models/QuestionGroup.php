@@ -14,6 +14,11 @@
 *    Files Purpose: lots of common functions
 */
 
+use LimeSurvey\Models\Services\Exception\{
+    NotFoundException,
+    BadRequestException
+};
+
 /**
  * Class QuestionGroup
  *
@@ -27,16 +32,14 @@
  * @property Question[] $questions Questions without subquestions
  * @property QuestionGroupL10n[] $questiongroupl10ns
  */
-
-use LimeSurvey\Models\Services\Exception\{
-    NotFoundException,
-    PermissionDeniedException
-};
 class QuestionGroup extends LSActiveRecord
 {
     public $aQuestions; // to stock array of questions of the group
+
     public $group_name;
+
     public $language;
+
     public $description;
 
     /**
@@ -343,8 +346,7 @@ class QuestionGroup extends LSActiveRecord
                 'data-bs-toggle' => "modal",
                 'data-bs-target' => '#confirmation-modal',
                 'data-message'   => gT(
-                    "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?",
-                    "js"
+                    "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
                 ),
                 'data-btnclass'  => 'btn-danger',
                 'data-btntext'   => gt('Delete'),
