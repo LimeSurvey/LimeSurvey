@@ -600,8 +600,8 @@ class statistics_helper
         $qquestion = "";
         $qtype = "";
         $subquestionText = "";
-        $$sQuestionType = isset($fieldmap[$rt]['type']) ? $fieldmap[$rt]['type'] : '';
         $fieldmap = createFieldMap($survey, "full", false, false, $language);
+        $sQuestionType = isset($fieldmap[$rt]['type']) ? $fieldmap[$rt]['type'] : '';
         $sDatabaseType = Yii::app()->db->getDriverName();
         $statisticsoutput = "";
         $qqid = "";
@@ -1320,8 +1320,8 @@ class statistics_helper
 
                     //output
                     $qquestion .= $linefeed;
-                    $qtitle .= "($qanswer)" . "[" . $atext . "]";
-                    $subquestionText = $atext;
+                    $qtitle .= "($qanswer)" . "[" . ($atext ?? '') . "]";
+                    $subquestionText = ($atext ?? '');
                     break;
 
 

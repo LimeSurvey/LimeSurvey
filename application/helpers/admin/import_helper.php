@@ -543,11 +543,6 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 
             $oldqidanscode = $insertdata["cfieldname"];
 
-            if ($oldcgid != $oldgid) {
-                // this means that the condition is in another group (so it should not have to be been exported -> skip it
-                continue;
-            }
-
             unset($insertdata["cid"]);
 
             $newcfieldname = $oldqidanscode;

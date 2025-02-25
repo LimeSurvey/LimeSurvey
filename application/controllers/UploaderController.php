@@ -144,7 +144,7 @@ class UploaderController extends SurveyController
             $size = $_FILES['uploadfile']['size'] / 1024;
             $preview = Yii::app()->session['preview'];
             /* Find the question by sFieldName : must be a upload question type, and id is end of sFieldName in $surveyid*/
-            $qid = substr(explode("_", $sFieldname)[0], 1);
+            $qid = substr(explode("_", $sFieldName)[0], 1);
             if (empty($qid) || !ctype_digit($qid)) {
                 throw new CHttpException(400);
             }
