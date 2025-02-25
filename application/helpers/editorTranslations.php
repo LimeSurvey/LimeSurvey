@@ -94,7 +94,7 @@ gT('Download QR Code');
 gT('Your survey has been deactivated.');
 gT('Deactivate survey to edit');
 gT(
-    'When activated, you will not be able to add or delete questions, question groups, or sub-questions. However, you can still edit.'
+    'When activated, you will not be able to add or delete questions, question groups, or sub-questions. However, you can still edit text.'
 );
 gT('Upgrade plan');
 gT('Upgrade');
