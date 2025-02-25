@@ -110,6 +110,19 @@ class SurveyDeactivate
     }
 
     /**
+     * Marks a survey as expired
+     * @param int $iSurveyID
+     * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
+     * @return void
+     */
+    public function expire(int $iSurveyID) {
+        if (!$this->permission->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
+            throw new PermissionDeniedException('Access denied');
+        }
+        $this->survey->expire($iSurveyID);
+    }
+
+    /**
      * Archives token table
      *
      * @param int $iSurveyID
