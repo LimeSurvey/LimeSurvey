@@ -23,7 +23,7 @@ class OpHandlerSurveyStatus implements OpHandlerInterface
 
     protected TransformerInputSurvey $transformer;
 
-    protected string $action = false;
+    protected $action = false;
 
     public function __construct(TransformerInputSurvey $transformer)
     {
