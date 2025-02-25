@@ -1,7 +1,7 @@
 <?php
 // Translation-source for new editor.
 // Updated on 2025-02-17 15:00:00
-gT('Welcome settings');
+gT('Welcome screen settings');
 gT('Show welcome screen');
 gT('Show “There are X questions in this survey.”');
 gT('Alt text');
@@ -34,7 +34,6 @@ gT('List with comment (Radio)');
 gT('This question type can be only configured in the');
 gT('core application');
 gT('Single choice buttons');
-gT('Subquestion title for \'After specific subquestion\'');
 gT('Answer order');
 gT('Multiple choice buttons');
 gT('Extra small');
@@ -62,9 +61,6 @@ gT('Map/Browser detection');
 gT('Show Platform Information');
 gT('Page break in printable view');
 gT('End screen settings');
-gT(
-    'The survey owner has all survey permissions and can add more lower admin users to this survey site.'
-);
 gT('Theme preview');
 gT('Languages and texts');
 gT('Collapsible');
