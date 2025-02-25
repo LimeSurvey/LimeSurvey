@@ -2,11 +2,8 @@
 // Translation-source for new editor.
 // Updated on 2025-02-17 15:00:00
 gT('Welcome settings');
-gT('Layout');
 gT('Show welcome screen');
 gT('Show “There are X questions in this survey.”');
-gT('To enter privacy policy texts go to survey settings.');
-gT('Edit privacy policy');
 gT('Alt text');
 gT('Leave a comment here');
 gT('Drop image here');
@@ -98,7 +95,6 @@ gT(
 gT('Your survey has been activated.');
 gT('Publish');
 gT('PUBLIC LINK');
-gT('Link');
 gT('Survey link');
 gT('Download QR Code');
 gT('Your survey has been deactivated.');
@@ -133,7 +129,7 @@ gT('Enter your comment here.');
 gT('Enter your answer here.');
 gT('Choose file or drop image here');
 gT('End screen');
-gT('Enter your thank you message here.');
+gT('Enter your end message here.');
 gT('Single choice');
 gT('List image Select (Radio)');
 gT('Ranking & Rating');
