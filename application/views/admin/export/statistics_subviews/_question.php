@@ -1,4 +1,4 @@
-<?php $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}"; $niceqtext=flattenText($flt[5]); ?>
+<?php $myfield = "{$flt[0]}"; $niceqtext=flattenText($flt[5]); ?>
 
 <?php
     // If boilerplate don't render anything
@@ -40,7 +40,7 @@
                 <select name='<?php
                     if ($flt[2] == Question::QT_M_MULTIPLE_CHOICE ) { echo Question::QT_M_MULTIPLE_CHOICE;};
                     if ($flt[2] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS ) { echo Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS;};
-                    echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]";?>' multiple='multiple' class='form-control'>
+                    echo "Q{$flt[0]}[]";?>' multiple='multiple' class='form-control'>
             <?php endif; ?>
 
         <?php endif; ?>
@@ -144,7 +144,7 @@
                 echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                 $myfield2="T$myfield";
                 echo "\t<input type='checkbox'  name='summary[]' value='$myfield2'";
-                if (isset($summary) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+                if (isset($summary) && (array_search("TQ{$flt[0]}", $summary) !== FALSE))
                 {echo " checked='checked'";}
 
                 echo " />&nbsp;"
@@ -162,7 +162,7 @@
                 $myfield2="T$myfield";
                 echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
 
-                if (isset($summary) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+                if (isset($summary) && (array_search("TQ{$flt[0]}", $summary) !== FALSE))
                 {echo " checked='checked'";}
 
                 echo " />&nbsp;"
