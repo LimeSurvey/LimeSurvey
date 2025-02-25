@@ -60,7 +60,7 @@
                                     gT("Bypass date control before sending email:"),
                                     'bypassdatecontrol', 
                                     array(
-                                        'title'=>gt("If some participants have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
+                                        'title'=>gT("If some participants have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
                                         'unescaped' => 'unescaped', 
                                         'class' => 'form-label ')
                                     ); ?>

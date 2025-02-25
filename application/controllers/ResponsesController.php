@@ -669,7 +669,7 @@ class ResponsesController extends LSBaseController
 
         $resultErrors = $this->deleteResponse($surveyId, $responseId);
         if ($resultErrors['numberOfErrors'] > 0 || $resultErrors['numberOfTimingErrors']) {
-            $message = gt('Response could not be deleted');
+            $message = gT('Response could not be deleted');
             App()->user->setFlash('error', $message);
             $this->redirect(["responses/browse", "surveyId" => $surveyId]);
         }

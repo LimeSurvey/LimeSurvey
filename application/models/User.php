@@ -1044,7 +1044,7 @@ class User extends LSActiveRecord
         if (empty($this->full_name)) {
             return $this->users_name;
         }
-        return sprintf(gt("%s (%s)"), $this->users_name, $this->full_name);
+        return sprintf(gT("%s (%s)"), $this->users_name, $this->full_name);
     }
 
     /**
@@ -1093,7 +1093,7 @@ class User extends LSActiveRecord
             'linkAttributes'   => [
                 'data-bs-toggle' => "modal",
                 'data-btnclass'  => 'btn-danger',
-                'data-btntext'   => gt('Delete'),
+                'data-btntext'   => gT('Delete'),
                 'data-post-url'  => App()->createUrl("userGroup/deleteUserFromGroup"),
                 'data-post-datas' => json_encode(['ugid' => $userGroupId, 'uid' => $currentUserId]),
                 'data-message'   => sprintf(
