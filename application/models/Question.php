@@ -1661,7 +1661,7 @@ class Question extends LSActiveRecord
     {
         $question = new Question();
         $question->qid = 0;
-        $question->title = (Yii::app()->getConfig('subquestionprefix', 'SQ')) . '001';
+        $question->title = (SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id) ?? Yii::app()->getConfig('subquestionprefix', 'SQ')) . '001';
         $question->relevance = 1;
         return $question;
     }
@@ -1677,7 +1677,7 @@ class Question extends LSActiveRecord
         // TODO: Assuming no collision.
         $answer->aid = 'new' . rand(1, 100000);
         $answer->sortorder = 0;
-        $answer->code = (Yii::app()->getConfig('answeroptionprefix', 'A')) . '001';
+        $answer->code = (SettingsUser::getUserSettingValue('answeroptionprefix', App()->user->id) ?? Yii::app()->getConfig('answeroptionprefix', 'A')) . '001';
 
         $l10n = [];
         foreach ($this->survey->allLanguages as $language) {
