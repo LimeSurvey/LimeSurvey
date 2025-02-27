@@ -1612,7 +1612,7 @@ class Tokens extends SurveyCommonAction
 
                     // If "Bypass date control before sending email" is disabled, check the token validity range
                     if (!Yii::app()->request->getPost('bypassdatecontrol')) {
-                        $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+                        $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i");
                         $fieldsarray = [
                             '{FIRSTNAME}' => $emrow['firstname'],
                             '{LASTNAME}' => $emrow['lastname'],
@@ -1637,10 +1637,10 @@ class Tokens extends SurveyCommonAction
                         $oToken = Token::model($iSurveyId)->findByPk($emrow['tid'])->decrypt();
                         if ($bIsInvitation) {
                             $tokenoutput .= gT("Invitation sent to:");
-                            $oToken->sent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+                            $oToken->sent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i");
                         } else {
                             $tokenoutput .= gT("Reminder sent to:");
-                            $oToken->remindersent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+                            $oToken->remindersent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i");
                             $oToken->remindercount++;
                         }
                         $tokenSaveError = "";
@@ -1669,7 +1669,7 @@ class Tokens extends SurveyCommonAction
                         if (!empty($emrow['participant_id'])) {
                             $slquery = SurveyLink::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid' => $emrow['participant_id'], ':sid' => $iSurveyId, ':tid' => $emrow['tid']));
                             if (!is_null($slquery)) {
-                                $slquery->date_invited = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+                                $slquery->date_invited = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i");
                                 $slquery->save();
                             }
                         }
@@ -3002,14 +3002,12 @@ class Tokens extends SurveyCommonAction
                 && intval($request->getPost('minreminderdelay')) != 0
             ) {
                 // Yii::app()->request->getPost('minreminderdelay') in days (86400 seconds per day)
-                $timeadjust = Yii::app()->getConfig("timeadjust");
                 $compareddate = dateShift(
                     date(
                         "Y-m-d H:i:s",
                         time() - 86400 * intval($request->getPost('minreminderdelay'))
                     ),
-                    "Y-m-d H:i",
-                    $timeadjust
+                    "Y-m-d H:i"
                 );
                 $condition = " ( "
                     . " (remindersent = 'N' AND sent < '" . $compareddate . "') "

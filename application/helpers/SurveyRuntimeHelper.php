@@ -119,7 +119,7 @@ class SurveyRuntimeHelper
      * getConfig should be public variable on the surveyModel, set via
      * public methods (active, allowsave, anonymized, assessments,
      * datestamp, deletenonvalues, ipaddr, radix, refurl, savetimings,
-     * surveyls_dateformat, startlanguage, target, tempdir,timeadjust)
+     * surveyls_dateformat, startlanguage, target, tempdir, displayTimeZone )
      * @var array|null
      */
     private $aSurveyOptions = null;
@@ -746,7 +746,6 @@ class SurveyRuntimeHelper
         global $clienttoken;
 
         $radix         = $this->getRadix();
-        $timeadjust    = Yii::app()->getConfig("timeadjust");
 
         $this->aSurveyOptions = array(
             'active'                      => ($this->aSurveyInfo['active'] == 'Y'),
@@ -764,7 +763,9 @@ class SurveyRuntimeHelper
             'startlanguage'               => (App()->language ?? $this->aSurveyInfo['language']),
             'target'                      => Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $this->aSurveyInfo['sid'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR,
             'tempdir'                     => Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR,
-            'timeadjust'                  => $timeadjust,
+            'timezone'                    => Yii::app()->getConfig('displayTimezone'),
+            // for backward compatibilty convert timezone string to +/- hours
+            'timeadjust'                  => convertTimezoneDiffToHours(),
             'token'                       => $clienttoken,
         );
     }

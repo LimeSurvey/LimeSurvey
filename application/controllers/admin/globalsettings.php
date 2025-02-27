@@ -94,7 +94,7 @@ class GlobalSettings extends SurveyCommonAction
         }
         Yii::app()->loadLibrary('Date_Time_Converter');
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-        $datetimeobj = new Date_Time_Converter(dateShift(getGlobalSetting("updatelastcheck"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')), 'Y-m-d H:i:s');
+        $datetimeobj = new Date_Time_Converter(dateShift(getGlobalSetting("updatelastcheck"), 'Y-m-d H:i:s'), 'Y-m-d H:i:s');
         $data['updatelastcheck'] = $datetimeobj->convert($dateformatdetails['phpdate'] . " H:i:s");
 
         // @todo getGlobalSetting is deprecated!
@@ -426,11 +426,12 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('admincreationemailsubject', App()->getRequest()->getPost('admincreationemailsubject'));
         SettingGlobal::setSetting('admincreationemailtemplate', App()->getRequest()->getPost('admincreationemailtemplate'));
 
-        $savetime = intval((float) Yii::app()->getRequest()->getPost('timeadjust') * 60) . ' minutes'; //makes sure it is a number, at least 0
-        if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
-            $savetime = '+' . $savetime;
+        // Check if time zone exists, then save it
+        $timezone = App()->getRequest()->getPost('displayTimezone');
+        if (in_array($timezone, DateTimeZone::listIdentifiers())) {
+            SettingGlobal::setSetting('displayTimezone', $timezone);
         }
-        SettingGlobal::setSetting('timeadjust', $savetime);
+
         SettingGlobal::setSetting('usercontrolSameGroupPolicy', strip_tags(Yii::app()->getRequest()->getPost('usercontrolSameGroupPolicy', '')));
 
         $request = App()->request;

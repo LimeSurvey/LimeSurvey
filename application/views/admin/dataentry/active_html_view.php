@@ -27,7 +27,7 @@ if ($thissurvey['active'] == "Y")
                 <table><tr><td align='left'>
                 <div class="checkbox">
                     <input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' checked='checked'/><label for='closerecord'><?php eT("Finalize response submission"); ?></label></td></tr>
-                    <input type='hidden' name='closedate' value='<?php echo dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", $yii->getConfig('timeadjust')); ?>' />
+                    <input type='hidden' name='closedate' value='<?php echo dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i"); ?>' />
                 </div>
                 <?php if ($thissurvey['allowsave'] == "Y")
                 { ?>

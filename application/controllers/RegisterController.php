@@ -103,7 +103,7 @@ class RegisterController extends LSYii_Controller
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
         } elseif ($oSurvey->allowregister != 'Y' || !tableExists("{{tokens_{$iSurveyId}}}")) {
             throw new CHttpException(404, "The survey in which you are trying to register don't accept registration. It may have been updated or the link you were given is outdated or incorrect.");
-        } elseif (!is_null($oSurvey->expires) && $oSurvey->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'))) {
+        } elseif (!is_null($oSurvey->expires) && $oSurvey->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i")) {
             $this->redirect(array('survey/index', 'sid' => $iSurveyId, 'lang' => $sLanguage));
         }
         /* Fix language according to existing language in survey */
@@ -292,7 +292,7 @@ class RegisterController extends LSYii_Controller
         $aMessage = array();
         $aMessage['mail-thanks'] = gT("Thank you for registering to participate in this survey.");
         if ($mailerSent) {
-            $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+            $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i");
             Token::model($iSurveyId)->updateByPk($iTokenId, array('sent' => $today));
             $aMessage['mail-message'] = $this->sMailMessage;
         } else {
@@ -408,7 +408,7 @@ class RegisterController extends LSYii_Controller
     public function getStartDate($iSurveyId)
     {
         $aSurveyInfo = getSurveyInfo($iSurveyId, Yii::app()->language);
-        if (empty($aSurveyInfo['startdate']) || dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")) >= $aSurveyInfo['startdate']) {
+        if (empty($aSurveyInfo['startdate']) || dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s") >= $aSurveyInfo['startdate']) {
                     return;
         }
         Yii::app()->loadHelper("surveytranslator");

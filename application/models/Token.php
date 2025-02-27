@@ -454,7 +454,7 @@ abstract class Token extends Dynamic
     /** @inheritdoc */
     public function scopes()
     {
-        $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
+        $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s");
         return array(
             'incomplete' => array(
                 'condition' => "completed = 'N'"
