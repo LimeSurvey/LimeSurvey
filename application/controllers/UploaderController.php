@@ -123,7 +123,7 @@ class UploaderController extends SurveyController
             // That probably indicates post_max_size has been exceeded.
             // https://www.php.net/manual/en/ini.core.php#ini.post-max-size
             if (empty($_POST) && empty($_FILES)) {
-                if (YII_DEBUG || Permission::isForcedSuperAdmin(Permission::getUserId())) {
+                if (YII_DEBUG || Permission::isForcedSuperAdmin(Permission::model()->getUserId())) {
                     throw new CHttpException(500, "Empty \$_POST and \$_FILES. Probably post_max_size was exceeded.");
                 }
                 $return = array(
