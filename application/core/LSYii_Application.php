@@ -839,7 +839,7 @@ class LSYii_Application extends CWebApplication
         $targetSchema = SurveyDynamic::model($surveyId)->getTableSchema();
         $encryptedAttributes = Response::getEncryptedAttributes($surveyId);
         if (strpos($archivedResponseTableName, App()->db->tablePrefix) === 0) {
-            $tbl_name = substr($archivedResponseTableName, strlen(App()->db->tablePrefix));
+            $tbl_name = str_replace('old_survey', 'old_tokens', substr($archivedResponseTableName, strlen(App()->db->tablePrefix)));
         }
         $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name]);
         $archivedEncryptedAttributes = [];
@@ -850,29 +850,45 @@ class LSYii_Application extends CWebApplication
 
         $tableName = "{{survey_$surveyId}}";
         $importedResponses = 0;
+        $batchData = [];
         foreach ($archivedResponses as $archivedResponse) {
+            $dataRow = [];
             // Using plugindynamic model because I dont trust surveydynamic.
             $targetResponse = new PluginDynamic($tableName);
             if ($preserveIDs) {
                 $targetResponse->id = $archivedResponse->id;
+                $dataRow['id'] = $archivedResponse->id;
             }
 
-            foreach ($validatedColumns as $validatedColumn => $validatedColumnValue) {
-                $targetResponse[$validatedColumnValue] = $archivedResponse[$validatedColumnValue];
-                if (in_array($validatedColumnValue, $archivedEncryptedAttributes, false) && !in_array($validatedColumnValue, $encryptedAttributes, false)) {
-                    $targetResponse[$validatedColumnValue] = $archivedResponse->decryptSingle($archivedResponse[$validatedColumnValue]);
+            $to = 'new_c';
+            $from = 'old_c';
+            for ($index = 0; $index < count($validatedColumns[$to]); $index++) {
+                $source = $validatedColumns[$from][$index];
+                $target = $validatedColumns[$to][$index];
+                $targetResponse->{$target} = $archivedResponse[$source];
+                if (in_array($source, $archivedEncryptedAttributes, false) && !in_array($target, $encryptedAttributes, false)) {
+                    $targetResponse->{$target} = $archivedResponse->decryptSingle($archivedResponse[$source]);
+                } elseif (!in_array($source, $archivedEncryptedAttributes, false) && in_array($target, $encryptedAttributes, false)) {
+                    $targetResponse->{$target} = $archivedResponse->encryptSingle($archivedResponse[$source]);
+                } else {
+                    $targetResponse->{$target} = $archivedResponse[$source];
                 }
-                if (!in_array($validatedColumnValue, $archivedEncryptedAttributes, false) && in_array($validatedColumnValue, $encryptedAttributes, false)) {
-                    $targetResponse[$validatedColumnValue] = $archivedResponse->encryptSingle($archivedResponse[$validatedColumnValue]);
-                }
+                $dataRow[$target] = $targetResponse->{$target};
             }
 
             if (isset($targetSchema->columns['startdate']) && empty($targetResponse['startdate'])) {
-                $targetResponse['startdate'] = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
+                $targetResponse->{'startdate'} = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
+                $dataRow['startdate'] = $targetResponse->{'startdate'};
             }
 
             if (isset($targetSchema->columns['datestamp']) && empty($targetResponse['datestamp'])) {
-                $targetResponse['datestamp'] = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
+                $targetResponse->{'datestamp'} = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
+                $dataRow['datestamp'] = $targetResponse->{'datestamp'};
+            }
+
+            if (isset($targetSchema->columns['startlanguage']) && empty($targetResponse['startlanguage'])) {
+                $targetResponse->{'startlanguage'} = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
+                $dataRow['startlanguage'] = $targetResponse->{'startlanguage'};
             }
 
             $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
@@ -881,9 +897,9 @@ class LSYii_Application extends CWebApplication
             App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
 
             if ($targetResponse->validate()){
-                $batchData[] = $targetResponse;
+                $batchData[] = $dataRow;
             }
-            if (($archivedResponses->key() + 1) / 500 === 1 || ($archivedResponses->key() + 1) === $archivedResponses->getTotalItemCount()) {
+            if (count($batchData) % 500 === 0) {
                 if ($preserveIDs) {
                     switchMSSQLIdentityInsert("survey_$surveyId", true);
                 }
@@ -893,12 +909,24 @@ class LSYii_Application extends CWebApplication
                 if ($preserveIDs) {
                     switchMSSQLIdentityInsert("survey_$surveyId", false);
                 }
+                $batchData = [];
             }
 
             $aSRIDConversions[$archivedResponse->id] = $targetResponse->id;
             unset($targetResponse);
         }
 
+        if (count($batchData)) {
+            if ($preserveIDs) {
+                switchMSSQLIdentityInsert("survey_$surveyId", true);
+            }
+            $builder = App()->db->getCommandBuilder();
+            $command = $builder->createMultipleInsertCommand($tableName, $batchData);
+            $importedResponses += $command->execute();
+            if ($preserveIDs) {
+                switchMSSQLIdentityInsert("survey_$surveyId", false);
+            }
+        }
         return $importedResponses;
     }
 

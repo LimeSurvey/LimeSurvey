@@ -96,7 +96,7 @@ class SurveyActivate
             $sParts = explode("_", $archives['survey']);
             $sTimestamp = $sParts[count($sParts) - 1];
             $dynamicColumns = $this->app->getUnchangedColumns($surveyId, $sTimestamp, $qTimestamp);
-            $this->app->recoverSurveyResponses($surveyId, $archives["survey"], $dynamicColumns);
+            $this->app->recoverSurveyResponses($surveyId, $archives["survey"], true, $dynamicColumns);
             if (isset($archives["tokens"])) {
                 $tokenTable = $this->app->db->tablePrefix . "tokens_" . $surveyId;
                 $this->app->createTableFromPattern($tokenTable, $archives["tokens"]);
