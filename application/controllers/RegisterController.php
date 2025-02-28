@@ -349,7 +349,7 @@ class RegisterController extends LSYii_Controller
                 $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
                 $delay = Yii::app()->getConfig('registrationEmailDelay');
                 if (!empty($oToken->sent) && $oToken->sent != "N" && dateShift($oToken->sent, "Y-m-d H:i", $delay) > $now) {
-                    /** @todo: Figure out a way to show a different message to the user */
+                    $this->sMailMessage = gT("The address you have entered is already registered. An email has already been sent previously. A new email will not be sent yet. Please try again later.");
                     $this->sendRegistrationEmail = false;
                 }
                 return $oToken->tid;
