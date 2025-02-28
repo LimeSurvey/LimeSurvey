@@ -100,10 +100,7 @@ $dateformatdata                  = getDateFormatData(Yii::app()->session['datefo
                 <span>
                     <select class="form-select" name="displayTimezone" id="displayTimezone">
                     <?php // show a select box with all available time zones
-                    $displayTimezone = getGlobalSetting('displayTimezone');
-                    if (!$displayTimezone) {
-                        $displayTimezone = date_default_timezone_get();
-                    }
+                    $displayTimezone = App()->getConfig('displayTimezone');
                     foreach (DateTimeZone::listIdentifiers() as $timezone) {
                         echo "<option value='" . $timezone . "'";
                         if ($displayTimezone == $timezone) {
