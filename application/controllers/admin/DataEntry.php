@@ -323,9 +323,11 @@ class DataEntry extends SurveyCommonAction
             $sourceSchema = $sourceTable->getTableSchema();
             $encryptedAttributes = Response::getEncryptedAttributes($iSurveyId);
             $tbl_name = $sourceSchema->name;
-            if (strpos((string) $sourceSchema->name, (string) Yii::app()->db->tablePrefix) === 0) {
-                $tbl_name = substr((string) $sourceSchema->name, strlen((string) Yii::app()->db->tablePrefix));
+
+            if (!empty(App()->db->tablePrefix) && strpos((string) $sourceSchema->name, (string) App()->db->tablePrefix) === 0) {
+                $tbl_name = substr((string) $sourceSchema->name, strlen((string) App()->db->tablePrefix));
             }
+
             $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name]);
             $archivedEncryptedAttributes = [];
             if ($archivedTableSettings) {
@@ -1517,7 +1519,7 @@ class DataEntry extends SurveyCommonAction
 
         $surveyid = (int) ($surveyid);
         $survey = Survey::model()->findByPk($surveyid);
-        if (!$survey->getIsActive()) {
+        if (!$survey || !$survey->getIsActive()) {
             throw new CHttpException(404, gT("Invalid survey ID"));
         }
         $id = (int)Yii::app()->request->getPost('id');
@@ -1574,7 +1576,8 @@ class DataEntry extends SurveyCommonAction
             }
             switch ($irow['type']) {
                 case 'lastpage':
-                    // Last page not updated : not in view
+                case 'seed':
+                    // Not updated : not in view or as disabled
                     break;
                 case Question::QT_D_DATE:
                     if (empty($thisvalue)) {

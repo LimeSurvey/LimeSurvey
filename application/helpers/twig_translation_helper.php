@@ -55,4 +55,10 @@ function dummy_twig_translation_helper()
     gT("Indicates where the 'Other' option should be placed"); // From application/views/survey/questions/answer/list_dropdown/config.xml
     gT("Answer code for 'After specific answer option'"); // From application/views/survey/questions/answer/list_dropdown/config.xml
     gT("The code of the answer option after which the 'Other:' option will be placed if the position is set to 'After specific answer option'"); // From application/views/survey/questions/answer/list_dropdown/config.xml
+    gT("Position for 'Other:' option");  //  From application\views\survey\questions\answer\listradio\config.xml
+    gT("Subquestion title for 'After specific subquestion'"); // From application/views/survey/questions/answer/multiplechoice/config.xml
+    gT("The title of the subquestion after which the 'Other:' option will be placed if the position is set to 'After specific subquestion'"); // From application/views/survey/questions/answer/multiplechoice/config.xml
+    gt("Indicates where the 'Other' option should be placed"); // From application/views/survey/questions/answer/multiplechoice/config.xml
+    gT("After specific answer option"); // From application\views\survey\questions\answer\list_dropdown\config.xml
+    gT("Before 'No Answer'"); // From application\views\survey\questions\answer\list_dropdown\config.xml
 }

@@ -18,7 +18,6 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Response\Schema as ResponseSchema;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Tag;
 use GoldSpecDigital\ObjectOrientedOAS\OpenApi;
 
-
 $versionNum = !empty($argv[1]) ? ltrim($argv[1], 'v') : '1';
 $version = 'v' . $versionNum;
 
@@ -32,16 +31,15 @@ $apiConfig = isset($rest[$version]) ? $rest[$version] : [];
 $info = Info::create()
     ->title(
         !empty($apiConfig['title'])
-        ? $apiConfig['title']
-        : 'Title'
+            ? $apiConfig['title']
+            : 'Title'
     )
     ->version($versionNum)
     ->description(
         !empty($apiConfig['description'])
-        ? $apiConfig['description']
-        : 'description'
+            ? $apiConfig['description']
+            : 'description'
     );
-
 
 $securityScheme = SecurityScheme::create('bearerAuth')
     ->scheme('bearer')
@@ -93,8 +91,8 @@ foreach ($rest as $path => $config) {
             : $oaMethod . '.' . $entity;
 
         $oaOperation = Operation::$oaMethod()->summary(
-                        !empty($methodConfig['description']) ? $methodConfig['description'] : ''
-                    )->operationId($oaOpId);
+            !empty($methodConfig['description']) ? $methodConfig['description'] : ''
+        )->operationId($oaOpId);
 
         if (!empty($methodConfig['auth'])) {
             $oaOperation = $oaOperation->security($securityRequirement);
@@ -103,11 +101,13 @@ foreach ($rest as $path => $config) {
         ///////////////////////////////////////////////////////////////////////////
         // Tag
         $tagId = !empty($methodConfig['tag']) ? $methodConfig['tag'] : $entity;
-        $tagConfig = isset($tagsConfig[$tagId])? $tagsConfig[$tagId] : null;
+        $tagConfig = isset($tagsConfig[$tagId]) ? $tagsConfig[$tagId] : null;
         if ($tagConfig) {
             $tags[$tagId] = Tag::create($tagId)
                 ->name(
-                    !empty($tagConfig['name']) ? $tagConfig['name'] : ucfirst($entity)
+                    !empty($tagConfig['name']) ? $tagConfig['name'] : ucfirst(
+                        $entity
+                    )
                 )
                 ->description(
                     !empty($tagConfig['description']) ? $tagConfig['description'] : ''
@@ -132,7 +132,9 @@ foreach ($rest as $path => $config) {
         $formProps = [];
         foreach ($paramsConfig as $paramName => $paramConfig) {
             if ($paramConfig) {
-                $src = is_array($paramConfig) && !empty($paramConfig['src']) ? $paramConfig['src'] : 'query';
+                $src = is_array(
+                    $paramConfig
+                ) && !empty($paramConfig['src']) ? $paramConfig['src'] : 'query';
 
                 $paramSchema = null;
 
@@ -143,14 +145,14 @@ foreach ($rest as $path => $config) {
                     switch ($type) {
                         case 'int':
                             $paramSchema = Schema::integer($paramName);
-                        break;
+                            break;
                         case 'number':
                             $paramSchema = Schema::number($paramName);
                             break;
                         case 'string':
                         default:
                             $paramSchema = Schema::string($paramName);
-                        break;
+                            break;
                     }
                 }
 
@@ -175,16 +177,26 @@ foreach ($rest as $path => $config) {
         $schema = !empty($methodConfig['schema']) ? $methodConfig['schema'] : null;
         $example = !empty($methodConfig['example']) ? $methodConfig['example'] : null;
         $mediaType = null;
-        if (!empty($schema) && $schema instanceof Schema) {
-            $mediaType = MediaType::json()
-                ->schema($schema);
-        } elseif ($formSchema) {
-            $mediaType = MediaType::formUrlEncoded()
-                ->schema($formSchema);
-        }
         $requestBody = null;
-        if ($mediaType) {
-            if ($example) {
+
+        if (!empty($methodConfig['multipart']) && $methodConfig['multipart'] === true) {
+            $multipartSchema = Schema::object()
+                ->properties(
+                    Schema::string('file')->format('binary')
+                );
+            $mediaType = createMultipartFormDataMediaType($multipartSchema);
+        } elseif (!empty($schema) && $schema instanceof Schema) {
+            $mediaType = MediaType::json();
+        } elseif ($formSchema) {
+            $mediaType = MediaType::formUrlEncoded();
+            $schema = $formSchema;
+        }
+
+        if ($mediaType !== null) {
+            if (!empty($schema) && $schema instanceof Schema) {
+                $mediaType = $mediaType->schema($schema);
+            }
+            if ($example !== null) {
                 if (is_string($example) && file_exists($example)) {
                     $example = (new Example)
                         ->create('Example')
@@ -194,7 +206,6 @@ foreach ($rest as $path => $config) {
                             )
                         );
                 }
-
                 if ($example instanceof Example) {
                     $mediaType = $mediaType->examples($example);
                 }
@@ -203,12 +214,12 @@ foreach ($rest as $path => $config) {
                 $mediaType
             );
         }
-        if ($requestBody) {
+
+        if ($requestBody instanceof RequestBody) {
             $oaOperation = $oaOperation->requestBody(
-               $requestBody
+                $requestBody
             );
         }
-
         //////////////////////////////////////////////////////////////////////////
         // Responses
         $responsesConfig = !empty($methodConfig['responses']) ? $methodConfig['responses'] : [];
@@ -269,5 +280,17 @@ file_put_contents(
     $outputFile,
     $openApi->toJson()
 );
+
+function createMultipartFormDataMediaType($schema = null)
+{
+    $mediaType = MediaType::create()
+        ->mediaType('multipart/form-data');
+
+    if ($schema instanceof Schema) {
+        $mediaType = $mediaType->schema($schema);
+    }
+
+    return $mediaType;
+}
 
 echo "\n" . 'Created ' . $outputFile . "\n";

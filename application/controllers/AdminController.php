@@ -197,8 +197,10 @@ class AdminController extends LSYii_Controller
         }
 
         $this->runModuleController($action);
-
-
+        // this will redirect the default action to the new controller previously "admin/index" or "admin" to "dashboard/view"
+        if (empty($action) || $action === 'index') {
+            $this->redirect($this->createUrl('dashboard/view'));
+        }
         return parent::run($action);
     }
 
@@ -351,7 +353,6 @@ class AdminController extends LSYii_Controller
             'htmleditorpop'    => 'HtmlEditorPop',
             'surveysgroups'    => 'SurveysGroupsController',
             'limereplacementfields' => 'limereplacementfields',
-            'index'            => 'index',
             'labels'           => 'Labels',
             'participants'     => 'ParticipantsAction',
             'pluginmanager'    => 'PluginManagerController',

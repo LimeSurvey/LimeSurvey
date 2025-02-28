@@ -54,6 +54,9 @@
 </style>
 <?php
 if ((Yii::app()->request->getParam('popuppreview', false) !== false) && ($sid = intval(Yii::app()->request->getParam('surveyid', false)))) {
+    if ($language = Yii::app()->request->getParam('language', '')) {
+        $language = "&language={$language}";
+    }
 ?>
 <div id="template-preview" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -69,7 +72,7 @@ if ((Yii::app()->request->getParam('popuppreview', false) !== false) && ($sid = 
                     <?php echo sprintf(gT("You can always make changes to the %stheme%s and customise questions of this %stemplate%s"), "<a target='_blank' href='/themeOptions/updateSurvey?surveyid={$sid}&gsid=1'>", "</a>", "<a target='_blank' href='/questionAdministration/listQuestions?surveyid={$sid}'>", "</a>"); ?>
                 </div>
                 <div class="preview">
-                    <iframe id="actual-preview" src="/<?php echo $sid; ?>?newtest=Y&lang=en&popuppreview=true"></iframe>
+                    <iframe id="actual-preview" src="/<?php echo $sid; ?>?newtest=Y&lang=en&popuppreview=true<?php echo $language; ?>"></iframe>
                 </div>
             </div>
             <div class="modal-footer modal-footer-buttons">

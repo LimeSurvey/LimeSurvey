@@ -233,7 +233,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
                         break;
                     case ':':
                         $aSize = explode(".", (string) $field['size']);
-                        if (isset($aSize[1]) && $aSize[1]) {
+                        if (is_numeric($row[$fieldno]) && isset($aSize[1]) && $aSize[1]) {
                             // We need to add decimal
                             echo quoteSPSS(number_format($row[$fieldno], $aSize[1], ".", ""), $q, $field);
                         } else {
@@ -2034,10 +2034,19 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
 // 2. answers
 
 /**
- * @param string $action
+ * @param string $action unused
+ * @param integer $iSurveyID the Survey ID of the question
+ * @param integer $gid the Group ID of the question
  */
 function group_export($action, $iSurveyID, $gid)
 {
+    $group = QuestionGroup::model()->find(
+        "sid = :sid AND gid = :gid",
+        [":sid" => $iSurveyID, ":gid" => $gid]
+    );
+    if (empty($group)) {
+        throw new CHttpException(404, gT("Invalid group ID"));
+    }
     $fn = "limesurvey_group_$gid.lsg";
     $xml = getXMLWriter();
 
@@ -2179,10 +2188,20 @@ function groupGetXMLStructure($xml, $gid)
 //  - Question attributes
 //  - Default values
 /**
- * @param string $action
+ * @param string $action unused
+ * @param integer $iSurveyID the Survey ID of the question
+ * @param integer $gid the Group ID of the question
+ * @param integer $qid the Question ID of the question
  */
 function questionExport($action, $iSurveyID, $gid, $qid)
 {
+    $question = Question::model()->find(
+        "sid = :sid AND gid = :gid AND qid = :qid",
+        [":sid" => $iSurveyID, ":gid" => $gid, ":qid" => $qid]
+    );
+    if (empty($question)) {
+        throw new CHttpException(404, gT("Invalid question id"));
+    }
     $fn = "limesurvey_question_$qid.lsq";
     $xml = getXMLWriter();
 
@@ -3144,6 +3163,17 @@ function writeXmlFromArray(XMLWriter $xml, $aData, $sParentKey = '')
 {
     $bCloseElement = false;
     foreach ($aData as $key => $value) {
+        if (is_array($value) && isset($value['@attributes'])) {
+            // If '@attributes' exists, handle the element with attributes
+            $xml->startElement($key);
+            foreach ($value['@attributes'] as $attrName => $attrValue) {
+                $xml->writeAttribute($attrName, $attrValue);
+            }
+            writeXmlFromArray($xml, array_diff_key($value, ['@attributes' => '']));
+            $xml->endElement();
+            continue;
+        }
+
         if (!empty($value)) {
             if (is_array($value)) {
                 if (is_numeric($key)) {
@@ -3154,11 +3184,7 @@ function writeXmlFromArray(XMLWriter $xml, $aData, $sParentKey = '')
                     $bCloseElement = true;
                 }
 
-                if (is_numeric($key)) {
-                    writeXmlFromArray($xml, $value, $sParentKey);
-                } else {
-                    writeXmlFromArray($xml, $value, $key);
-                }
+                writeXmlFromArray($xml, $value, $key);
 
                 if ($bCloseElement === true) {
                     $xml->endElement();

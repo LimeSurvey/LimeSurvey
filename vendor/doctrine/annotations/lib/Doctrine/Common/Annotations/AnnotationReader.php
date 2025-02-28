@@ -12,7 +12,10 @@ use ReflectionProperty;
 use function array_merge;
 use function class_exists;
 use function extension_loaded;
+use function filter_var;
 use function ini_get;
+
+use const FILTER_VALIDATE_BOOLEAN;
 
 /**
  * A reader for docblock annotations.
@@ -109,13 +112,17 @@ class AnnotationReader implements Reader
     public function __construct(?DocParser $parser = null)
     {
         if (
-            extension_loaded('Zend Optimizer+') && (ini_get('zend_optimizerplus.save_comments') === '0' ||
-            ini_get('opcache.save_comments') === '0')
+            extension_loaded('Zend Optimizer+') &&
+            (filter_var(ini_get('zend_optimizerplus.save_comments'), FILTER_VALIDATE_BOOLEAN)  === false ||
+            filter_var(ini_get('opcache.save_comments'), FILTER_VALIDATE_BOOLEAN) === false)
         ) {
             throw AnnotationException::optimizerPlusSaveComments();
         }
 
-        if (extension_loaded('Zend OPcache') && ini_get('opcache.save_comments') === 0) {
+        if (
+            extension_loaded('Zend OPcache') &&
+            filter_var(ini_get('opcache.save_comments'), FILTER_VALIDATE_BOOLEAN) === false
+        ) {
             throw AnnotationException::optimizerPlusSaveComments();
         }
 

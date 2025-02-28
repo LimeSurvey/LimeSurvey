@@ -152,7 +152,7 @@ class GTranslate
         $this->available_languages = parse_ini_string(
             file_get_contents(
                 __DIR__ . '/' . $this->available_languages_file
-            )
+			), false, INI_SCANNER_RAW 
         );
     }
 
@@ -338,7 +338,6 @@ class GTranslate
 		$language_list_v  	= 	array_map( "strtolower", array_values($language_list) );
 		$language_list_k 	= 	array_map( "strtolower", array_keys($language_list) );
 		$valid_languages 	= 	false;
-
 		if( TRUE == in_array($languages[0],$language_list_v) AND TRUE == in_array($languages[1],$language_list_v) )
 		{
 			$valid_languages 	= 	true;	

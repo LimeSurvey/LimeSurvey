@@ -1,7 +1,7 @@
 /*
     LimeSurvey
 
-    Copyright (C) 2007-2023 The LimeSurvey Project Team / Patrick Teichmann
+    Copyright (C) 2007-2024 The LimeSurvey Project Team / Patrick Teichmann
     All rights reserved.
 
     License: GNU/GPL License v2 or later, see LICENSE.php
@@ -105,20 +105,6 @@ $base-color: #ffffff;
 @import "forms/radio/radio_list.scss";
 @import "tables/tables.scss";
 @import "tables/tables_colors.scss";
-@import "questiontypes/imageselect/imageselect.scss";
-@import "questiontypes/imageselect/imageselect_colors.scss";
-@import "questiontypes/ranking/ranking.scss";
-@import "questiontypes/ranking/ranking_colors.scss";
-@import "questiontypes/ranking/ranking_advanced.scss";
-@import "questiontypes/ranking/ranking_advanced_colors.scss";
-@import "questiontypes/multiple_numerical_input/multiple_numerical_input.scss";
-@import "questiontypes/multiple_numerical_input/multiple_numerical_input_colors.scss";
-@import "questiontypes/file_upload/file_upload.scss";
-@import "questiontypes/bootstrap_select/bootstrap_select.scss";
-@import "questiontypes/bootstrap_select/bootstrap_select_colors.scss";
-@import "questiontypes/array/array_colors.scss";
-@import "questiontypes/5pointchoice/5pointchoice.scss";
-@import "questiontypes/shortfreetext/shortfreetext.scss";
 @import "forms/checkboxes/checkboxes.scss";
 @import "forms/checkboxes/checkboxes_colors.scss";
 @import "datetimepicker/datetimepicker.scss";
@@ -157,7 +143,24 @@ $base-color: #ffffff;
 @import "language-changer/language-changer_colors.scss";
 @import "video/video.scss";
 
-// 6.2 Utilities
+// 6.2 question type customizations
+@import "questiontypes/imageselect/imageselect.scss";
+@import "questiontypes/imageselect/imageselect_colors.scss";
+@import "questiontypes/ranking/ranking.scss";
+@import "questiontypes/ranking/ranking_colors.scss";
+@import "questiontypes/ranking/ranking_advanced.scss";
+@import "questiontypes/ranking/ranking_advanced_colors.scss";
+@import "questiontypes/multiple_numerical_input/multiple_numerical_input.scss";
+@import "questiontypes/multiple_numerical_input/multiple_numerical_input_colors.scss";
+@import "questiontypes/file_upload/file_upload.scss";
+@import "questiontypes/bootstrap_select/bootstrap_select.scss";
+@import "questiontypes/bootstrap_select/bootstrap_select_colors.scss";
+@import "questiontypes/array/array.scss";
+@import "questiontypes/array/array_colors.scss";
+@import "questiontypes/5pointchoice/5pointchoice.scss";
+@import "questiontypes/shortfreetext/shortfreetext.scss";
+
+// 6.3 Utilities
 @import "spacing/spacing.scss";
 
 // TODO: placeholder, will probbably be removed

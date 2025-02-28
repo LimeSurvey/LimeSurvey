@@ -5,6 +5,10 @@
  *  Setup YII_DEBUG constant and error reporting according to config
  * ------------------------------------------------------------------
  */
+if (!defined('BASEPATH')) {
+    http_response_code(403);
+    exit('No direct script access allowed');
+}
 if (!defined('YII_DEBUG')) {
     if (file_exists(APPPATH . 'config' . DIRECTORY_SEPARATOR . 'config.php')) {
         $settings = include(APPPATH . 'config' . DIRECTORY_SEPARATOR . 'config.php');
@@ -19,15 +23,9 @@ if (!defined('YII_DEBUG')) {
             if ($settings['config']['debug'] > 1) {
                 error_reporting(E_ALL);
 
-                // @see https://manual.limesurvey.org/Code_quality_guide#Assertions
-                assert_options(ASSERT_ACTIVE, true);
-                assert_options(ASSERT_WARNING, false);
-                assert_options(
-                    ASSERT_CALLBACK,
-                    function ($file, $line, $assertion, $message) {
-                        throw new Exception("The assertion $assertion in $file on line $line has failed: $message");
-                    }
-                );
+                // @see https://www.limesurvey.org/manual/Code_quality_guide#Assertions
+                // This will not work if the process is started in production mode (see https://www.php.net/manual/en/ini.core.php#ini.zend.assertions)
+                @ini_set('zend.assertions', 1);
             } else {
                 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
             }
