@@ -18,6 +18,5 @@ class Update_628 extends DatabaseUpdateBase
         $this->db->createCommand(
             "DELETE FROM {{settings_global}} WHERE " . $this->db->quoteColumnName('stg_name') . " LIKE 'last_question_%'"
         )->execute();
-        $this->db->createCommand()->update('{{settings_global}}', array('stg_value' => 628), "stg_name='DBVersion'");
     }
 }
