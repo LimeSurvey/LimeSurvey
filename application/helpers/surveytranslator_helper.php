@@ -328,6 +328,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['fr']['radixpoint'] = 1;
     $supportedLanguages['fr']['momentjs'] = 'fr';
 
+	// French (Canada)
+    $supportedLanguages['fr-ca']['description'] = gT('French (Canada)');
+    $supportedLanguages['fr-ca']['nativedescription'] = 'Fran&#231;ais (Canada)';
+    $supportedLanguages['fr-ca']['rtl'] = false;
+    $supportedLanguages['fr-ca']['dateformat'] = 5;
+    $supportedLanguages['fr-ca']['radixpoint'] = 1;
+    $supportedLanguages['fr-ca']['momentjs'] = 'fr-ca';
+
     // Fula
     $supportedLanguages['ful']['description'] = gT('Fula');
     $supportedLanguages['ful']['nativedescription'] = 'Fulfulde';
