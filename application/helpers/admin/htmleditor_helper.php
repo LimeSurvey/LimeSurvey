@@ -149,10 +149,6 @@ function PrepareEditorScript($load = false, $controller = null)
      */
 function getEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
-    if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
-        $surveyID = 'uniq';
-    }
-
     initKcfinder();
 
     $session = &Yii::app()->session;
@@ -195,12 +191,6 @@ function getEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = 
  */
 function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
-
-    if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
-        $surveyID = 'uniq';
-    }
-
-
     $htmlcode = '';
 
     if (
@@ -277,11 +267,6 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
  */
 function getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
-
-    if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
-        $surveyID = 'uniq';
-    }
-
     $htmlcode = "<a href='#' class='btn btn-sm btn-outline-secondary htmleditor--openmodal' data-target-field-id='$fieldname' data-modal-title='$fieldtext' data-bs-toggle='tooltip' data-bs-original-title='" . gT("Open editor") . "'>\n" .
                 "\t<i class='ri-pencil-fill' id='{$fieldname}_modal_icon'></i>\n" .
                 "</a>\n";
@@ -291,10 +276,6 @@ function getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
 
 function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
-    if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
-        $surveyID = 'uniq';
-    }
-
     $htmlcode = '';
     $toolbaroption = "";
     $sFileBrowserAvailable = '';
