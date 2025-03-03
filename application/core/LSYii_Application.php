@@ -841,10 +841,10 @@ class LSYii_Application extends CWebApplication
         if (strpos($archivedResponseTableName, App()->db->tablePrefix) === 0) {
             $tbl_name = str_replace('old_survey', 'old_tokens', substr($archivedResponseTableName, strlen(App()->db->tablePrefix)));
         }
-        $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name]);
+        $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name, 'tbl_type' => 'response']);
         $archivedEncryptedAttributes = [];
         if ($archivedTableSettings) {
-            $archivedEncryptedAttributes = json_decode($archivedTableSettings->properties);
+            $archivedEncryptedAttributes = json_decode($archivedTableSettings->properties, true);
         }
         $archivedResponses = new CDataProviderIterator(new CActiveDataProvider($pluginDynamicArchivedResponseModel), 500);
 
@@ -876,6 +876,17 @@ class LSYii_Application extends CWebApplication
                 $dataRow[$target] = $targetResponse->{$target};
             }
 
+            $additionalFields = [
+                'token',
+                'submitdate',
+                'lastpage',
+                'startlanguage',
+                'seed',
+                'startdate',
+                'datestamp',
+                'version_number'
+            ];
+
             if (isset($targetSchema->columns['startdate']) && empty($targetResponse['startdate'])) {
                 $targetResponse->{'startdate'} = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
                 $dataRow['startdate'] = $targetResponse->{'startdate'};
@@ -886,9 +897,10 @@ class LSYii_Application extends CWebApplication
                 $dataRow['datestamp'] = $targetResponse->{'datestamp'};
             }
 
-            if (isset($targetSchema->columns['startlanguage']) && empty($targetResponse['startlanguage'])) {
-                $targetResponse->{'startlanguage'} = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
-                $dataRow['startlanguage'] = $targetResponse->{'startlanguage'};
+            foreach ($additionalFields as $additionalField) {
+                if (isset($archivedResponse->{$additionalField}) && isset($targetSchema->columns[$additionalField])) {
+                    $dataRow[$additionalField] = $archivedResponse->{$additionalField};
+                }
             }
 
             $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
@@ -912,7 +924,6 @@ class LSYii_Application extends CWebApplication
                 $batchData = [];
             }
 
-            $aSRIDConversions[$archivedResponse->id] = $targetResponse->id;
             unset($targetResponse);
         }
 

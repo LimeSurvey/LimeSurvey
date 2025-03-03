@@ -73,7 +73,7 @@ class SurveyActivate
         }
 
         $result = $this->surveyActivator->setSurvey($survey)->activate();
-        if ($params['restore'] ?? false) {
+        if (($params['restore'] ?? false)) {
             $result['restored'] = $this->restoreData($surveyId);
         }
         return $result;
@@ -104,7 +104,11 @@ class SurveyActivate
             }
             if (isset($archives["timings"])) {
                 $timingsTable = $this->app->db->tablePrefix . "survey_" . $surveyId . "_timings";
-                $this->app->createTableFromPattern($timingsTable, $archives["timings"]);
+                try {
+                    $this->app->createTableFromPattern($timingsTable, $archives["timings"]);
+                } catch (\Exception $ex) {
+                    //Table already exists, ignore
+                }
                 $this->app->copyFromOneTableToTheOther($archives["timings"], $timingsTable);
             }
             return true;
