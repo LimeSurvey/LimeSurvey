@@ -23,7 +23,7 @@ use \LimeSurvey\Models\Services\Exception\{
 use LimeSurvey\Models\Services\SurveyActivate;
 use Permission;
 
-class OpHandlerSurveyStatus implements OpHandlerInterface
+class OpHandlerImport implements OpHandlerInterface
 {
     use OpHandlerExceptionTrait;
     use OpHandlerSurveyTrait;
@@ -56,12 +56,21 @@ class OpHandlerSurveyStatus implements OpHandlerInterface
     }
 
     /**
+     *     "patch": [{
+     *             "entity": "importResponses",
+     *             "op": "update",
+     *             "id": 809,
+     *             "props": {
+     *                 "timestamp": 20250303173908,
+     *             }
+     *         }
+     *     ] 
      * @param \LimeSurvey\ObjectPatch\Op\OpInterface $op
      * @return void
      */
     public function handle(OpInterface $op)
     {
-        $this->surveyActivate->restoreData((int)$op->getProps()['sid']);
+        $this->surveyActivate->restoreData((int)$op->getEntityId(), $op->getProps()['timestamp'] ? intval($op->getProps()['timestamp']) : null);
     }
 
     /**
@@ -73,8 +82,7 @@ class OpHandlerSurveyStatus implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $props = $op->getProps();
-        if (!($sid = intval($props['sid']))) {
+        if (!($sid = intval($op->getEntityId()))) {
             throw new NotFoundException('sid is not a number');
         }
         if (!Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update')) {

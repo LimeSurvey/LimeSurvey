@@ -793,11 +793,13 @@ class LSYii_Application extends CWebApplication
      * An empty array is returned if the query results in nothing.
      * @throws CException execution failed
      */
-    public function getNewestArchives($sid)
+    public function getDeactivatedArchives($sid)
     {
         $sid = intval($sid);
         $command = "
-            SELECT n, MAX(TABLE_NAME) AS TABLE_NAME
+            SELECT n, GROUP_CONCAT(TABLE_NAME) AS TABLE_NAME
+            FROM
+            (SELECT n, TABLE_NAME
             FROM information_schema.tables
             JOIN (
                 SELECT 'survey' AS n
@@ -808,8 +810,9 @@ class LSYii_Application extends CWebApplication
                 UNION
                 SELECT 'questions' AS n
             ) t
-            ON TABLE_SCHEMA = DATABASE() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
+            ON TABLE_SCHEMA = DATABASE() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%827246%' AND
             ((n <> 'survey') OR (TABLE_NAME NOT LIKE '%timings%'))
+            ORDER BY TABLE_NAME) t
             GROUP BY n;
         ";
         $rawResults = $this->db->createCommand($command)->queryAll();

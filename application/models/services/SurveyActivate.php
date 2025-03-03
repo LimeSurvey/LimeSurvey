@@ -83,12 +83,32 @@ class SurveyActivate
      * Restores all archived data tables
      *
      * @param int $surveyId
+     * @param string|null $timestamp
      * @return bool
      * @throws CException
      */
-    public function restoreData(int $surveyId): bool
+    public function restoreData(int $surveyId, $timestamp = null): bool
     {
-        $archives = $this->app->getNewestArchives($surveyId);
+        $deactivatedArchives = $this->app->getDeactivatedArchives($surveyId);
+        $archives = [];
+        foreach ($deactivatedArchives as $key => $deactivatedArchive) {
+            $candidates = explode(",", $deactivatedArchive);
+            $found = false;
+            if ($timestamp) {
+                foreach ($candidates as $candidate) {
+                    if (!$found) {
+                        $exploded = explode("_", $candidate);
+                        if ($exploded[count($exploded) - 1] == $timestamp) {
+                            $found = true;
+                            $archives[$key] = $candidate;
+                        }
+                    }
+                }
+            }
+            if (!$found) {
+                $archives[$key] = $candidates[count($candidates) - 1];
+            }
+        }
         if (is_array($archives) && isset($archives['survey']) && isset($archives['questions'])) {
             //Recover survey
             $qParts = explode("_", $archives['questions']);
@@ -104,11 +124,6 @@ class SurveyActivate
             }
             if (isset($archives["timings"])) {
                 $timingsTable = $this->app->db->tablePrefix . "survey_" . $surveyId . "_timings";
-                try {
-                    $this->app->createTableFromPattern($timingsTable, $archives["timings"]);
-                } catch (\Exception $ex) {
-                    //Table already exists, ignore
-                }
                 $this->app->copyFromOneTableToTheOther($archives["timings"], $timingsTable);
             }
             return true;
