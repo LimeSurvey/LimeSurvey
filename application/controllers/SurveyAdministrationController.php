@@ -963,8 +963,8 @@ class SurveyAdministrationController extends LSBaseController
                                 'id' => '',
                                 'label' => gT("Delete group"),
                                 'icon' => 'ri-delete-bin-fill text-danger',
-                                'dataTitle' => gt('Delete group'),
-                                'dataBtnText' => gt('Delete'),
+                                'dataTitle' => gT('Delete group'),
+                                'dataBtnText' => gT('Delete'),
                                 'dataOnclick' => '(function() { ' .  convertGETtoPOST(
                                     Yii::app()->createUrl(
                                         "questionGroupsAdministration/delete/",
@@ -983,9 +983,9 @@ class SurveyAdministrationController extends LSBaseController
                                 'id' => '',
                                 'label' => gT("Delete group"),
                                 'icon' => 'ri-delete-bin-fill text-danger',
-                                'dataTitle' => gt('Delete group'),
+                                'dataTitle' => gT('Delete group'),
                                 'disabled' => true,
-                                'title' => gt("Impossible to delete this group because there is at least one question having a condition on its content", 'unescaped')
+                                'title' => gT("Impossible to delete this group because there is at least one question having a condition on its content", 'unescaped')
                             ];
                         }
                     } else {
@@ -994,9 +994,9 @@ class SurveyAdministrationController extends LSBaseController
                             'id' => '',
                             'label' => gT("Delete group"),
                             'icon' => 'ri-delete-bin-fill text-danger',
-                            'dataTitle' => gt('Delete group'),
+                            'dataTitle' => gT('Delete group'),
                             'disabled' => true,
-                            'title' => gt("It is not possible to add/delete groups if the survey is active.", 'unescaped')
+                            'title' => gT("It is not possible to add/delete groups if the survey is active.", 'unescaped')
                         ];
                     }
                 }
@@ -1089,8 +1089,8 @@ class SurveyAdministrationController extends LSBaseController
                                     'id' => '',
                                     'label' => gT("Delete question"),
                                     'icon' => 'ri-delete-bin-fill text-danger',
-                                    'dataTitle' => gt('Delete this question'),
-                                    'dataBtnText' => gt('Delete'),
+                                    'dataTitle' => gT('Delete this question'),
+                                    'dataBtnText' => gT('Delete'),
                                     'dataOnclick' => '(function() { ' .  convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $question->qid, "redirectTo" => "groupoverview"])) . '})',
                                     'dataMessage' => gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?", 'unescaped')
                                 ];
@@ -1100,9 +1100,9 @@ class SurveyAdministrationController extends LSBaseController
                                 'id' => '',
                                 'label' => gT("Delete question"),
                                 'icon' => 'ri-delete-bin-fill text-danger',
-                                'dataTitle' => gt('Delete this question'),
+                                'dataTitle' => gT('Delete this question'),
                                 'disabled' => true,
-                                'title' => gt("You can not delete a question if the survey is active.", 'unescaped'),
+                                'title' => gT("You can not delete a question if the survey is active.", 'unescaped'),
                             ];
                         }
 
@@ -3367,7 +3367,7 @@ class SurveyAdministrationController extends LSBaseController
         $redirectUrl = ['surveyAdministration/rendersidemenulink/', 'surveyid' => $surveyId, 'subaction' => 'panelintegration'];
         $paramId = Yii::app()->request->getPost('urlParamId');
         if (empty($paramId)) {
-            throw new CHttpException(400, gt('Invalid request'));
+            throw new CHttpException(400, gT('Invalid request'));
         }
 
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveysettings', 'update')) {

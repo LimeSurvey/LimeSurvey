@@ -409,7 +409,7 @@ function buildSelects($allfields, $surveyid, $language)
 
                 //N - Numerical input
                 //K - Multiple numerical input
-            elseif ($firstletter == "N" || $firstletter == "K") {
+            elseif ($firstletter == "N" || $firstletter == "K" || $firstletter == ":") {
                 //value greater than
                 if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
                     $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1)) . " > " . sanitize_float($_POST[$pv]);
@@ -856,7 +856,8 @@ class statistics_helper
 
         //N = Numerical input
         //K = Multiple numerical input
-        elseif ($sQuestionType == "N" || $sQuestionType == "K") {
+        //: = Array (Numbers) - Only when using "Text Input"
+        elseif ($sQuestionType == "N" || $sQuestionType == "K" || $sQuestionType == ":") {
             //NUMERICAL TYPE
             //Zero handling
             $excludezeros = 1;
@@ -876,6 +877,11 @@ class statistics_helper
                 if (substr($rt, 0, 1) == "K") {
                     //put single items in brackets at output
                     $qtitle .= " [" . $fielddata['subquestion'] . "]";
+                } elseif ($sQuestionType == ":") {
+                    //put single items in brackets at output
+                    list($myans, $mylabel) = explode("_", (string) $fielddata['aid']);
+                    $qtitle .= "[$myans][$mylabel]";
+                    $qquestion .= $linefeed . "[" . $fielddata['subquestion1'] . "] [" . $fielddata['subquestion2'] . "]";
                 }
 
                 //outputting
@@ -929,6 +935,14 @@ class statistics_helper
                 $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname);
                 //Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
                 $query .= " FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($fieldname) . " IS NOT NULL";
+
+                // Array (Numbers) DB columns are not numeric, so empty answers (shown, but empty) are
+                // empty strings, not nulls.
+                /** @todo: Fix the DB schema to use numeric columns Array (Numbers)? */
+                if ($sQuestionType == ':') {
+                    $query .= " AND " . Yii::app()->db->quoteColumnName($fieldname) . " <> ''";
+                }
+
                 //special treatment for MS SQL databases
                 if ($sDatabaseType === 'mssql' || $sDatabaseType === 'sqlsrv' || $sDatabaseType === 'dblib') {
                     //no NULL/empty values please
@@ -4090,6 +4104,11 @@ class statistics_helper
         if ($fielddata['sid'] !== $sid || $fielddata['fieldname'] !== $field) {
             //get data
             $criteria->addCondition(Yii::app()->db->quoteColumnName($fielddata['fieldname']) . " IS NOT null");
+            // Array (Numbers) DB columns are not numeric, so empty answers (shown, but empty) are
+            // empty strings, not nulls.
+            if ($fielddata['type'] == ':') {
+                $criteria->addCondition($fielddata['fieldname'] . " <> ''");
+            }
             //NO ZEROES
             if (!$excludezeros) {
                 $criteria->addCondition(Yii::app()->db->quoteColumnName($fielddata['fieldname']) . " != 0");

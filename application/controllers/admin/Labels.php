@@ -421,7 +421,7 @@ class Labels extends SurveyCommonAction
     {
         $aData = [];
 
-        $aData['topbar']['title'] = gt('Export multiple label sets');
+        $aData['topbar']['title'] = gT('Export multiple label sets');
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/labels/partials/topbarBtns_export/rightSideButtons',
             [],
