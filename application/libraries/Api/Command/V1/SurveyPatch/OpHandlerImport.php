@@ -2,31 +2,28 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use \LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
+    OpHandler\OpHandlerInterface,
+    OpType\OpTypeUpdate
+};
+use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
+use LimeSurvey\Models\Services\SurveyAggregateService;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerExceptionTrait,
     OpHandlerSurveyTrait,
     OpHandlerValidationTrait
 };
 
-use \LimeSurvey\Models\Services\{
-    Exception\NotFoundException,
-    Exception\PermissionDeniedException,
-    Exception\PersistErrorException
-};
-
-use \LimeSurvey\ObjectPatch\{
-    Op\OpInterface,
-    OpHandler\OpHandlerException,
-    OpHandler\OpHandlerInterface,
-    OpType\OpTypeCreate,
-    OpType\OpTypeUpdate,
-    OpType\OpTypeDelete
+use \LimeSurvey\Models\Services\Exception\{
+    NotFoundException,
+    PermissionDeniedException
 };
 
 use LimeSurvey\Models\Services\SurveyActivate;
 use Permission;
 
-class OpHandlerImport extends OpHandlerInterface
+class OpHandlerSurveyStatus implements OpHandlerInterface
 {
     use OpHandlerExceptionTrait;
     use OpHandlerSurveyTrait;
@@ -61,16 +58,19 @@ class OpHandlerImport extends OpHandlerInterface
     /**
      * @param \LimeSurvey\ObjectPatch\Op\OpInterface $op
      * @return void
-     * @throws OpHandlerException
-     * @throws PersistErrorException
-     * @throws NotFoundException
-     * @throws PermissionDeniedException
      */
     public function handle(OpInterface $op)
     {
         $this->surveyActivate->restoreData((int)$op->getProps()['sid']);
     }
 
+    /**
+     * Checks if patch is valid for this operation.
+     * @param OpInterface $op
+     * @return array
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
+     */
     public function validateOperation(OpInterface $op): array
     {
         $props = $op->getProps();
