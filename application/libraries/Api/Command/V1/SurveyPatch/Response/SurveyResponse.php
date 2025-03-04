@@ -108,7 +108,7 @@ class SurveyResponse
     {
         if (array_key_exists('additional', $handleResponse)) {
             $this->additional = [
-                'extras' => $handleResponse
+                'extras' => $handleResponse['additional']
             ];
         }
     }
