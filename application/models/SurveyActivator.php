@@ -79,7 +79,7 @@ class SurveyActivator
         if (!$this->createResponseTable()) {
             return ['error' => $this->error];
         }
-        
+
         if (!$this->createTimingsTable()) {
             return ['error' => 'timingstablecreation'];
         }
