@@ -7,19 +7,16 @@ use LimeSurvey\ObjectPatch\{
     OpHandler\OpHandlerInterface,
     OpType\OpTypeUpdate
 };
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
-use LimeSurvey\Models\Services\SurveyAggregateService;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerExceptionTrait,
     OpHandlerSurveyTrait,
     OpHandlerValidationTrait
 };
 
-use \LimeSurvey\Models\Services\Exception\{
+use LimeSurvey\Models\Services\Exception\{
     NotFoundException,
     PermissionDeniedException
 };
-
 use LimeSurvey\Models\Services\SurveyActivate;
 use Permission;
 
@@ -39,8 +36,7 @@ class OpHandlerImport implements OpHandlerInterface
      */
     public function __construct(
         SurveyActivate $surveyActivate
-    )
-    {
+    ) {
         $this->entity = 'importResponses';
         $this->surveyActivate = $surveyActivate;
     }
@@ -64,7 +60,7 @@ class OpHandlerImport implements OpHandlerInterface
      *                 "timestamp": 20250303173908,
      *             }
      *         }
-     *     ] 
+     *     ]
      * @param \LimeSurvey\ObjectPatch\Op\OpInterface $op
      * @return void
      */
