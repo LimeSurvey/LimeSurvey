@@ -1172,12 +1172,36 @@ function XMLImportLabelsets($sFullFilePath, $options)
 }
 
 /**
- * @param string $sFullFilePath
- * @param boolean $bTranslateLinksFields
- * @param string $sNewSurveyName
- * @param integer $DestSurveyID
+ * @param int|string  $newsid
+ * @param string|null $baselang
  */
-function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName = null, $DestSurveyID = null)
+function finalizeSurveyImportFile($newsid, $baselang)
+{
+    if ($baselang) {
+        $survey = Survey::model()->findByPk($newsid);
+        $supportedLanguages = explode(" ", $survey->language . " " . $survey->additional_languages);
+        $found = in_array($baselang, $supportedLanguages);
+        if (!$found) {
+            $baselang = explode("-", $baselang)[0];
+            $found = in_array($baselang, $supportedLanguages);
+        }
+        if ($found) {
+            $survey->language = $baselang;
+            $survey->additional_languages = '';
+            $survey->save();
+            fixLanguageConsistency($newsid);
+        }
+    }
+}
+
+/**
+ * @param string       $sFullFilePath
+ * @param boolean      $bTranslateLinksFields
+ * @param string|null  $sNewSurveyName
+ * @param integer|null $DestSurveyID
+ * @param string|null  $baselang
+ */
+function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName = null, $DestSurveyID = null, $baselang = null)
 {
     $aPathInfo = pathinfo($sFullFilePath);
     if (isset($aPathInfo['extension'])) {
@@ -1191,6 +1215,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             if (!empty($aImportResults['newsid'])) {
                 $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
                 $SurveyIntegrity->fixSurveyIntegrity();
+                finalizeSurveyImportFile($aImportResults['newsid'], $baselang);
             }
             return $aImportResults;
         case 'txt':
@@ -1199,6 +1224,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             if ($aImportResults && $aImportResults['newsid']) {
                 $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
                 $SurveyIntegrity->fixSurveyIntegrity();
+                finalizeSurveyImportFile($aImportResults['newsid'], $baselang);
             }
             return $aImportResults;
         case 'lsa':
@@ -1276,6 +1302,9 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                     unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename);
                     break;
                 }
+            }
+            if ($aImportResults && isset($aImportResults['newsid'])) {
+                finalizeSurveyImportFile($aImportResults['newsid'], $baselang);
             }
             return $aImportResults;
         default:
@@ -1561,7 +1590,14 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $surveyLanguageSetting->clearErrors('surveyls_alias');
             }
             if (!$surveyLanguageSetting->save()) {
-                throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid.");
+                $errors = $surveyLanguageSetting->errors;
+                // Clean up 
+                Survey::model()->deleteSurvey($iNewSID);
+                $errorsStr = '';
+                foreach ($errors as $attribute => $error) {
+                    $errorsStr.= $error[0]. "\n";
+                }
+                throw new Exception(gT("Error: Failed to import survey language settings.") . " " . $errorsStr);
             }
         } catch (CDbException $e) {
             throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid.");
