@@ -14,6 +14,7 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerSurveyTrait,
     OpHandlerValidationTrait
 };
+use Survey;
 
 class OpHandlerSurveyStatus implements OpHandlerInterface
 {
@@ -65,7 +66,7 @@ class OpHandlerSurveyStatus implements OpHandlerInterface
 
      *
      * @param OpInterface $op
-     * @return void
+     * @return []
      * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
      * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
      * @throws \LimeSurvey\ObjectPatch\OpHandler\OpHandlerException
@@ -81,6 +82,13 @@ class OpHandlerSurveyStatus implements OpHandlerInterface
             $props['ok'] = true;
         }
         $surveyActivateService->{$this->action}($op->getEntityId(), $props);
+        $return = [];
+        if ($this->action === 'expire') {
+            $return['additional'] = [
+                'expire' => Survey::model()->findByPk($op->getEntityId())->expires
+            ];
+        }
+        return $return;
     }
 
     /**
