@@ -58,6 +58,7 @@ class OpHandlerImport implements OpHandlerInterface
      *             "id": 809,
      *             "props": {
      *                 "timestamp": 20250303173908,
+     *                 "preserveIDs": true
      *             }
      *         }
      *     ]
@@ -66,7 +67,7 @@ class OpHandlerImport implements OpHandlerInterface
      */
     public function handle(OpInterface $op)
     {
-        $this->surveyActivate->restoreData((int)$op->getEntityId(), $op->getProps()['timestamp'] ? intval($op->getProps()['timestamp']) : null);
+        $this->surveyActivate->restoreData((int)$op->getEntityId(), $op->getProps()['timestamp'] ? intval($op->getProps()['timestamp']) : null, ($op->getProps()['preserveIDs'] ?? false) == "true");
     }
 
     /**

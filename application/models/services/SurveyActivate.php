@@ -84,15 +84,17 @@ class SurveyActivate
      *
      * @param int $surveyId
      * @param string|null $timestamp
+     * @param bool $preserveIDs
      * @return bool
      * @throws CException
      */
-    public function restoreData(int $surveyId, $timestamp = null): bool
+    public function restoreData(int $surveyId, $timestamp = null, $preserveIDs = false): bool
     {
         $deactivatedArchives = $this->app->getDeactivatedArchives($surveyId);
         $archives = [];
         foreach ($deactivatedArchives as $key => $deactivatedArchive) {
             $candidates = explode(",", $deactivatedArchive);
+            sort($candidates);
             $found = false;
             if ($timestamp) {
                 foreach ($candidates as $candidate) {
@@ -116,7 +118,7 @@ class SurveyActivate
             $sParts = explode("_", $archives['survey']);
             $sTimestamp = $sParts[count($sParts) - 1];
             $dynamicColumns = $this->app->getUnchangedColumns($surveyId, $sTimestamp, $qTimestamp);
-            $this->app->recoverSurveyResponses($surveyId, $archives["survey"], true, $dynamicColumns);
+            $this->app->recoverSurveyResponses($surveyId, $archives["survey"], $preserveIDs, $dynamicColumns);
             if (isset($archives["tokens"])) {
                 $tokenTable = $this->app->db->tablePrefix . "tokens_" . $surveyId;
                 $this->app->createTableFromPattern($tokenTable, $archives["tokens"]);

@@ -810,7 +810,7 @@ class LSYii_Application extends CWebApplication
                 UNION
                 SELECT 'questions' AS n
             ) t
-            ON TABLE_SCHEMA = DATABASE() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%827246%' AND
+            ON TABLE_SCHEMA = DATABASE() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
             ((n <> 'survey') OR (TABLE_NAME NOT LIKE '%timings%'))
             ORDER BY TABLE_NAME) t
             GROUP BY n;
