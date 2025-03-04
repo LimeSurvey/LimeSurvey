@@ -829,9 +829,17 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                 }
             }
         }
-        return !empty($mapping) ? [
-            'tempIdMapping' => $mapping
-        ] : [];
+        $return = [];
+        if ($qid) {
+            $question = \Question::model()->findByPk($qid);
+            $return['additional'] = [
+                'relevance' => $question->relevance
+            ];
+        }
+        if (!empty($mapping)) {
+            $return['tempIdMapping'] = $mapping;
+        }
+        return $return;
     }
 
     /**
