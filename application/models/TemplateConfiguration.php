@@ -742,8 +742,8 @@ class TemplateConfiguration extends TemplateConfig
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
             'linkAttributes'   => [
                 'title'            => sprintf(gT('Type in the new name to extend %s'), $templateName),
-                'data-button-no'   => gt('Cancel'),
-                'data-button-yes'  => gt('Extend'),
+                'data-button-no'   => gT('Cancel'),
+                'data-button-yes'  => gT('Extend'),
                 'data-text'        => gT('Please type in the new theme name above.'),
                 'data-post'        => json_encode([
                     "copydir" => $templateName,
@@ -766,8 +766,8 @@ class TemplateConfiguration extends TemplateConfig
                                     $templateName != App()->getConfig('defaulttheme'),
             'linkAttributes'   => [
                 'title'            => gT('Uninstall this theme'),
-                'data-button-no'   => gt('Cancel'),
-                'data-button-yes'  => gt('Uninstall'),
+                'data-button-no'   => gT('Cancel'),
+                'data-button-yes'  => gT('Uninstall'),
                 'data-text'        => gT('This will reset all the specific configurations of this theme.')
                                          . '<br>' . gT('Do you want to continue?'),
                 'data-post'        => json_encode([ "templatename" => $templateName ]),
@@ -784,8 +784,8 @@ class TemplateConfiguration extends TemplateConfig
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
             'linkAttributes'   => [
                 'title'            => gT('Reset this theme'),
-                'data-button-no'   => gt('Cancel'),
-                'data-button-yes'  => gt('Reset'),
+                'data-button-no'   => gT('Cancel'),
+                'data-button-yes'  => gT('Reset'),
                 'data-text'        => gT('This will reload the configuration file of this theme.') . '<br>' . gT('Do you want to continue?'),
                 'data-post'        => json_encode([ "templatename" => $templateName ]),
                 'data-button-type' => "btn-warning"

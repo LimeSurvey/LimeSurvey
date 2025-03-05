@@ -365,10 +365,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
         } elseif (isset($this->languagesettings[$this->language])) {
             return $this->languagesettings[$this->language];
         } else {
-            $errorString = 'Survey language not found - looked for ' . App()->language;
+            $searchedLanguages = App()->language;
             if ($this->language != App()->language) {
-                $errorString .= ' and ' . $this->language;
+                $searchedLanguages .= ',' . $this->language;
             }
+            $errorString = sprintf(gT('Survey language settings (%s) not found. Please run the integrity check from the main menu.'), $searchedLanguages);
             throw new Exception($errorString);
         }
     }
@@ -626,7 +627,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
     }
 
-
     /**
      * permission scope for this model
      * Actually only test if user have minimal access to survey (read)
@@ -643,7 +643,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $criteria->mergeWith($criteriaPerm, 'AND');
         return $this;
     }
-
 
     /**
      * Returns additional languages formatted into a string
@@ -1887,29 +1886,29 @@ class Survey extends LSActiveRecord implements PermissionInterface
             /* Read is set on survey */
             $criteriaPerm->mergeWith(
                 array(
-                    'join' => "LEFT JOIN {{permissions}} AS surveypermissions ON (surveypermissions.entity_id = t.sid AND surveypermissions.permission='survey' AND surveypermissions.entity='survey' AND surveypermissions.uid= :surveypermissionuserid) ",
+                    'join' => "LEFT JOIN {{permissions}} AS surveypermissions{$userid} ON (surveypermissions{$userid}.entity_id = t.sid AND surveypermissions{$userid}.permission='survey' AND surveypermissions{$userid}.entity='survey' AND surveypermissions{$userid}.uid= :surveypermissionuserid{$userid}) ",
                 )
             );
-            $criteriaPerm->params[':surveypermissionuserid'] = $userid;
-            $criteriaPerm->compare('surveypermissions.read_p', '1', false, 'OR');
+            $criteriaPerm->params[":surveypermissionuserid{$userid}"] = $userid;
+            $criteriaPerm->compare("surveypermissions{$userid}.read_p", '1', false, 'OR');
 
             /* Read on Surveys in group */
             $criteriaPerm->mergeWith(
                 array(
-                    'join' => "LEFT JOIN {{permissions}} AS surveysingrouppermissions ON (surveysingrouppermissions.entity_id = t.gsid AND surveysingrouppermissions.entity='surveysingroup' AND surveysingrouppermissions.uid= :surveysingrouppermissionuserid) ",
+                    'join' => "LEFT JOIN {{permissions}} AS surveysingrouppermissions{$userid} ON (surveysingrouppermissions{$userid}.entity_id = t.gsid AND surveysingrouppermissions{$userid}.entity='surveysingroup' AND surveysingrouppermissions{$userid}.uid= :surveysingrouppermissionuserid{$userid}) ",
                 )
             );
-            $criteriaPerm->params[':surveysingrouppermissionuserid'] = $userid;
-            $criteriaPerm->compare('surveysingrouppermissions.read_p', '1', false, 'OR'); // This mean : update, export … didn't allow see in list
+            $criteriaPerm->params[":surveysingrouppermissionuserid{$userid}"] = $userid;
+            $criteriaPerm->compare("surveysingrouppermissions{$userid}.read_p", '1', false, 'OR'); // This mean : update, export … didn't allow see in list
 
             /* Under condition : owner of group */
             if (App()->getConfig('ownerManageAllSurveysInGroup')) {
                 $criteriaPerm->mergeWith(
                     array(
-                        'join' => "LEFT JOIN {{surveys_groups}} AS surveysgroupsowner ON (surveysgroupsowner.gsid = t.gsid) ",
+                        'join' => "LEFT JOIN {{surveys_groups}} AS surveysgroupsowner{$userid} ON (surveysgroupsowner{$userid}.gsid = t.gsid) ",
                     )
                 );
-                $criteriaPerm->compare('surveysgroupsowner.owner_id', $userid, false, 'OR');
+                $criteriaPerm->compare("surveysgroupsowner{$userid}.owner_id", $userid, false, 'OR');
             }
         }
         /* Place for a new event */
@@ -2155,11 +2154,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $condn = array('sid' => $this->sid, 'parent_qid' => 0);
             $sumresult = Question::model()->countByAttributes($condn);
         } else {
-            $sumresult = Question::model()->with('questionattributes')
-              ->count(
-                  "sid=:sid AND parent_qid=:parent_qid AND((attribute='hidden' AND value!=:hidden )OR attribute IS NULL)",
-                  ['sid' => $this->sid, 'parent_qid' => 0, 'hidden' => '1']
-              );
+            $query = Yii::app()->db->createCommand()
+                ->select('COUNT(DISTINCT t.qid) as count')
+                ->from('{{questions}} t')
+                ->leftJoin('{{question_attributes}} qa', 'qa.qid = t.qid AND qa.attribute = :hidden', [':hidden' => 'hidden'])
+                ->where('t.sid = :sid AND t.parent_qid = 0', [':sid' => $this->sid])
+                ->andWhere('qa.value IS NULL OR qa.value != :hidden_value', [':hidden_value' => '1']);
+            $result = $query->queryScalar();
+            return (int) $result;
         }
 
         return (int) $sumresult;

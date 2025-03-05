@@ -23,7 +23,7 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
             </h2>
             <p>
                 <a role="button" class="btn btn-outline-secondary TFA--actionopenmodal TFA--excludefromlock" data-href="<?=App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallCreateNewKey")?>" data-bs-toggle="modal" id="TFA--register2fa">
-                    <?=gt("Activate 2FA now");?>
+                    <?=gT("Activate 2FA now");?>
                 </a>
             <?php if ($force2FA == true) { ?>
                 <a role="button" class="btn btn-danger TFA--excludefromlock" href="<?=App()->createUrl("admin")?>" id="TFA--excludeNotNow">

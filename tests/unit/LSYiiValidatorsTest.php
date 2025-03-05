@@ -292,6 +292,8 @@ class LSYiiValidatorsTest extends TestBaseClass
      */
     public function testLanguageFilters()
     {
+        \Yii::app()->session['loginID'] = 1;
+
         // Testing languageFilter.
         $survey = \Survey::model()->insertNewSurvey(array('language' => 'ko')); // Set language to Korean.
 

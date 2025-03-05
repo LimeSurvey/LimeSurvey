@@ -123,7 +123,7 @@ class UploaderController extends SurveyController
             // That probably indicates post_max_size has been exceeded.
             // https://www.php.net/manual/en/ini.core.php#ini.post-max-size
             if (empty($_POST) && empty($_FILES)) {
-                if (YII_DEBUG || Permission::isForcedSuperAdmin(Permission::getUserId())) {
+                if (YII_DEBUG || Permission::isForcedSuperAdmin(Permission::model()->getUserId())) {
                     throw new CHttpException(500, "Empty \$_POST and \$_FILES. Probably post_max_size was exceeded.");
                 }
                 $return = array(
@@ -190,7 +190,7 @@ class UploaderController extends SurveyController
             $event = new PluginEvent('beforeProcessFileUpload');
             /* Current state */
             $event->set('surveyId', $surveyid);
-            $event->set('responseId', Yii::app()->session['survey_' . $surveyid]['srid']); // NULL if not exist
+            $event->set('responseId', Yii::app()->session['survey_' . $surveyid]['srid'] ?? null); // NULL if not exist
             $event->set('qid', $oQuestion->qid);
             $event->set('preview', $preview);
             $event->set('fieldname', $sFieldName);

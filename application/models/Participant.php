@@ -196,7 +196,7 @@ class Participant extends LSActiveRecord
             'lastname' => gT('Last name') . $this->setEncryptedAttributeLabel(0, 'Participant', 'lastname'),
             'email' => gT('Email address') . $this->setEncryptedAttributeLabel(0, 'Participant', 'email'),
             'language' => gT('Language') . $this->setEncryptedAttributeLabel(0, 'Participant', 'language'),
-            'blacklisted' => gT('Blacklisted') . $this->setEncryptedAttributeLabel(0, 'Participant', 'blacklisted'),
+            'blacklisted' => gT('Blocklisted') . $this->setEncryptedAttributeLabel(0, 'Participant', 'blacklisted'),
             'owner_uid' => gT('Owner ID') . $this->setEncryptedAttributeLabel(0, 'Participant', 'owner_uid'),
             'surveyid' => gT('Active survey ID') . $this->setEncryptedAttributeLabel(0, 'Participant', 'surveyid'),
             'created' => gT('Created on') . $this->setEncryptedAttributeLabel(0, 'Participant', 'created')
