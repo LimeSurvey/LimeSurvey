@@ -12,6 +12,7 @@ use LimeSurvey\Api\Command\{
     ResponseData\ResponseDataError
 };
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
+require_once "application/helpers/admin/import_helper.php";
 
 class SurveyArchive implements CommandInterface
 {
