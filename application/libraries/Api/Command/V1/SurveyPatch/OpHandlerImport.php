@@ -12,7 +12,6 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerSurveyTrait,
     OpHandlerValidationTrait
 };
-
 use LimeSurvey\Models\Services\Exception\{
     NotFoundException,
     PermissionDeniedException
