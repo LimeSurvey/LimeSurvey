@@ -66,7 +66,7 @@ class OpHandlerSurveyStatus implements OpHandlerInterface
 
      *
      * @param OpInterface $op
-     * @return []
+     * @return array
      * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
      * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
      * @throws \LimeSurvey\ObjectPatch\OpHandler\OpHandlerException
@@ -83,9 +83,10 @@ class OpHandlerSurveyStatus implements OpHandlerInterface
         }
         $surveyActivateService->{$this->action}($op->getEntityId(), $props);
         $return = [];
-        if ($this->action === 'expire') {
+        $survey = Survey::model()->findByPk($op->getEntityId());
+        if (($this->action === 'expire') && $survey->expires) {
             $return['additional'] = [
-                'expire' => Survey::model()->findByPk($op->getEntityId())->expires
+                'expire' => $survey->expires
             ];
         }
         return $return;
