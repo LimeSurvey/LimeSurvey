@@ -73,7 +73,7 @@ class QuotaLanguageSetting extends LSActiveRecord
             array('quotals_url', 'LSYii_Validators', 'isUrl' => true),
             array('quotals_urldescrip', 'LSYii_Validators'),
             array('quotals_url', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
-            array('quotals_url', 'urlValidator'),
+            array('quotals_url', 'urlValidator', 'except' => 'import'), // Do not validate during import : quota can be set as autoload after language settings was set
             array('quotals_name', 'length', 'min' => 0, 'max' => 255),
             array('quotals_url', 'length', 'min' => 0, 'max' => 255),
             array('quotals_urldescrip', 'length', 'min' => 0, 'max' => 255),
