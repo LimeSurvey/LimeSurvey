@@ -357,6 +357,7 @@ class DataEntry extends SurveyCommonAction
             }
             $imported = 0;
             $sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
+            /* @var boolean preserveIDs */
             $preserveIDs = (bool)App()->getRequest()->getPost('preserveIDs');
             foreach ($sourceResponses as $sourceResponse) {
                 $iOldID = $sourceResponse->id;
