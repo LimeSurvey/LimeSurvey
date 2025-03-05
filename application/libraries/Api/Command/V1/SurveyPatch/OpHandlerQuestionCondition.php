@@ -833,7 +833,8 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         if ($qid) {
             $question = \Question::model()->findByPk($qid);
             $return['additional'] = [
-                'relevance' => $question->relevance
+                'relevance' => $question->relevance,
+                'qid' => $qid
             ];
         }
         if (!empty($mapping)) {
