@@ -87,10 +87,10 @@ class SurveyDeactivate
                 $this->app->session->remove('sNewSurveyTableName');
             }
             $this->app->session->add('sNewSurveyTableName', $this->app->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}");
-            if (!empty($this->app->session->get('sNewSIDDate'))) {
-                $this->app->session->remove('sNewSIDDate');
+            if (!empty($this->app->session->get('NewSIDDate'))) {
+                $this->app->session->remove('NewSIDDate');
             }
-            $this->app->session->add('sNewSIDDate', "{$iSurveyID}_{$date}");
+            $this->app->session->add('NewSIDDate', "{$iSurveyID}_{$date}");
             $aData['surveyid'] = $iSurveyID;
             $aData['date'] = $date;
             $aData['dbprefix'] = $this->app->db->tablePrefix;
@@ -107,7 +107,7 @@ class SurveyDeactivate
             $aData['surveyid'] = $iSurveyID;
             $this->app->db->schema->refresh();
             //after deactivation redirect to survey overview and show message...
-            $siddate = $this->app->session->get('sNewSIDDate', "{$iSurveyID}_{$date}");
+            $siddate = $this->app->session->get('NewSIDDate', "{$iSurveyID}_{$date}");
             $this->app->createTableFromPattern($this->app->db->tablePrefix . "old_questions_{$siddate}", $this->app->db->tablePrefix . "questions", ['sid', 'gid', 'qid', 'parent_qid', 'type'], ['sid' => $iSurveyID]);
             $this->app->session->remove('sNewSurveyTableName');
         }
@@ -129,7 +129,7 @@ class SurveyDeactivate
     protected function archiveToken($iSurveyID, $date, $userID, $DBDate, &$aData)
     {
         $toldtable = $this->app->db->tablePrefix . "tokens_{$iSurveyID}";
-        $siddate = $this->app->session->get('sNewSIDDate', "{$iSurveyID}_{$date}");
+        $siddate = $this->app->session->get('NewSIDDate', "{$iSurveyID}_{$date}");
         $tnewtable = $this->app->db->tablePrefix . "old_tokens_{$siddate}";
         if ($this->app->db->getDriverName() == 'pgsql') {
             // Find out the trigger name for tid column
@@ -218,7 +218,7 @@ class SurveyDeactivate
         // IF there are any records in the saved_control table related to this survey, they have to be deleted
         $this->savedControl->deleteSomeRecords(array('sid' => $iSurveyID)); //Yii::app()->db->createCommand($query)->query();
         $sOldSurveyTableName = $this->app->db->tablePrefix . "survey_{$iSurveyID}";
-        $siddate = $this->app->session->get('sNewSIDDate', "{$iSurveyID}_{$date}");
+        $siddate = $this->app->session->get('NewSIDDate', "{$iSurveyID}_{$date}");
         if (empty($this->app->session->get('sNewSurveyTableName'))) {
             $this->app->session->add('sNewSurveyTableName', $this->app->db->tablePrefix . "old_survey_{$siddate}");
         }
