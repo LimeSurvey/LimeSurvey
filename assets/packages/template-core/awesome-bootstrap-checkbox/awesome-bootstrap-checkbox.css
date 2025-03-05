@@ -336,3 +336,14 @@ input[type="checkbox"] .styled:checked + label::after,
 input[type="radio"] .styled:checked + label::after {
   color: #fff;
 }
+/* focus and focus-visble : color from BS5 basic theme */
+.checkbox-item input[type="checkbox"]:focus-visible + label::before{
+    box-shadow: 0 0 0 3px rgba(13,110,253,.25); /* color #2c3e50 from radio-item */
+    border-color: #86b7fe;
+    outline: 0;
+}
+.radio-item input[type="radio"]:focus-visible + label::before{
+    box-shadow: 0 0 0 3px rgba(13,110,253,.25);
+    border-color: #86b7fe;
+    outline: 0;
+}
