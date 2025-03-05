@@ -229,6 +229,8 @@ table.ls-answers input[type="radio"] {
 .dir-rtl .radio-item label.ls-label-xs-visibility::before,
 .dir-rtl .checkbox-item label.ls-label-xs-visibility::before {
     margin-right: 0;
+    right:3px;
+    top:3px;
 }
 
 .dir-ltr .radio-item label.ls-label-xs-visibility::after,
