@@ -48,6 +48,7 @@ class SurveyDeactivate
      * @param array $params
      * @return array
      * @throws PermissionDeniedException
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function deactivate(int $iSurveyID, $params = [])
     {
