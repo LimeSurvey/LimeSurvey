@@ -84,7 +84,7 @@ class OpHandlerSurveyStatus implements OpHandlerInterface
         $surveyActivateService->{$this->action}($op->getEntityId(), $props);
         $return = [];
         $survey = Survey::model()->findByPk($op->getEntityId());
-        if (($this->action === 'expire') && $survey->expires) {
+        if (($this->action === 'expire') && $survey && $survey->expires) {
             $return['additional'] = [
                 'expire' => $survey->expires
             ];
