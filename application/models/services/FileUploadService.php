@@ -94,9 +94,13 @@ class FileUploadService
         $surveyId,
         string $directoryName = 'images'
     ) {
-        $surveyDir = App()->getConfig(
-            'uploaddir'
-        ) . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId;
+        $surveyDir = $this->buildUrlPath([
+            App()->getConfig(
+                'uploaddir'
+            ),
+            'surveys',
+            $surveyId
+        ]);
         if (!is_dir($surveyDir)) {
             @mkdir($surveyDir);
         }
@@ -104,7 +108,7 @@ class FileUploadService
             @mkdir($surveyDir . DIRECTORY_SEPARATOR . $directoryName);
         }
 
-        return $surveyDir . DIRECTORY_SEPARATOR . $directoryName . DIRECTORY_SEPARATOR;
+        return rtrim($surveyDir . DIRECTORY_SEPARATOR . $directoryName, '/\\');
     }
 
     /**
@@ -304,10 +308,33 @@ class FileUploadService
      */
     private function convertFullIntoRelativePath(string $filePath)
     {
-        $uploadDirPath = dirname(App()->getConfig(
-            'uploaddir'
-        ));
-        return substr($filePath, strlen($uploadDirPath));
+        return $this->rTrimPathSeparators(
+            substr($filePath, strlen($this->getUploadPath()))
+        );
+    }
+
+    private function getUploadPath()
+    {
+        return $this->rTrimPathSeparators(
+            dirname(App()->getConfig(
+                'uploaddir'
+            ))
+        );
+    }
+
+    private function rTrimPathSeparators($path)
+    {
+        return rtrim($path, '/\\');
+    }
+
+    private function buildUrlPath($parts)
+    {
+        return implode(
+            '/',
+            array_map(function ($part){
+                return $this->rTrimPathSeparators($part);
+            }, $parts)
+        );
     }
 
     /**
