@@ -83,7 +83,7 @@ class SurveyActivate
      * Restores all archived data tables
      *
      * @param int $surveyId
-     * @param string|null $timestamp
+     * @param int|null $timestamp
      * @param bool $preserveIDs
      * @return bool
      * @throws CException
