@@ -391,7 +391,7 @@ function buildSelects($allfields, $surveyid, $language)
                 //create a list out of the $pv array
                 $qid = substr(explode("_", $pv)[0], 1);
 
-                $aresult = Question::model()->findAll(array('order' => 'question_order', 'condition' => 'parent_qid=:parent_qid AND scale_id=0', 'params' => array(":parent_qid" => $lqid)));
+                $aresult = Question::model()->findAll(array('order' => 'question_order', 'condition' => 'parent_qid=:parent_qid AND scale_id=0', 'params' => array(":parent_qid" => $qid)));
                 foreach ($aresult as $arow) {
                     // only add condition if answer has been chosen
                     if (in_array($arow['title'], $_POST[$pv])) {
