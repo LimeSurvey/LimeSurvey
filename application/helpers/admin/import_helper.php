@@ -541,21 +541,11 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 continue;
             }
 
-            list($oldcsid, $oldcgid, $oldqidanscode) = explode("X", (string) $insertdata["cfieldname"], 3);
-
-            if ($oldcgid != $oldgid) {
-                // this means that the condition is in another group (so it should not have to be been exported -> skip it
-                continue;
-            }
+            $oldqidanscode = $insertdata["cfieldname"];
 
             unset($insertdata["cid"]);
 
-            // recreate the cfieldname with the new IDs
-            if (preg_match("/^\+/", $oldcsid)) {
-                $newcfieldname = '+' . $iNewSID . "X" . $newgid . "X" . $insertdata["cqid"] . substr($oldqidanscode, strlen((string) $iOldQID));
-            } else {
-                $newcfieldname = $iNewSID . "X" . $newgid . "X" . $insertdata["cqid"] . substr($oldqidanscode, strlen((string) $iOldQID));
-            }
+            $newcfieldname = $oldqidanscode;
 
             $insertdata["cfieldname"] = $newcfieldname;
             if (trim((string) $insertdata["method"]) == '') {
@@ -1296,7 +1286,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             // Step 4 - import the timings file - if exists
             Yii::app()->db->schema->refresh();
             foreach ($files as $filename) {
-                if (pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lsi' && tableExists("survey_{$aImportResults['newsid']}_timings")) {
+                if (pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lsi' && tableExists("timings_{$aImportResults['newsid']}")) {
                     $aTimingsImportResults = XMLImportTimings(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename, $aImportResults['newsid'], $aImportResults['FieldReMap']);
                     $aImportResults = array_merge($aTimingsImportResults, $aImportResults);
                     unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename);
@@ -1815,7 +1805,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
 
             // question codes in format "38612X105X3011" are collected for replacing
-            $aQuestionsMapping[$iOldSID . 'X' . $iOldGID . 'X' . $iOldQID] = $iNewSID . 'X' . $oQuestion->gid . 'X' . $oQuestion->qid;
+            $aQuestionsMapping['Q' . $iOldQID] = 'Q' . $oQuestion->qid;
         }
     }
 
@@ -1909,6 +1899,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $importedSubQuestions[$aQIDReplacements[$iOldQID]] = $oQuestion;
             }
 
+            $aQuestionsMapping['Q' . array_search($insertdata['parent_qid'], $aQIDReplacements) . '_S' . $iOldQID] = 'Q' . $oQuestion->parent_qid . '_S' . $oQuestion->qid;
+
             // If translate links is disabled, check for old links.
             // We only do it here if the XML doesn't have a question_l10ns section.
             if (!$bTranslateInsertansTags && !isset($xml->question_l10ns->rows->row)) {
@@ -1920,6 +1912,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             if (isset($oQuestionL10n)) {
                 $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
+                $oQuestionL10n->question = str_replace('Q' . $insertdata['parent_qid'] . '_S' . $iOldQID, $aQuestionsMapping['Q' . $insertdata['parent_qid'] . '_S' . $iOldQID], $oQuestionL10n->question);
                 $oQuestionL10n->save();
                 unset($oQuestionL10n);
             }
@@ -1954,9 +1947,23 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
 
             // question codes in format "38612X105X3011" are collected for replacing
-            $aQuestionsMapping[$iOldSID . 'X' . $iOldGID . 'X' . $iOldQID . $oQuestion->title] = $iNewSID . 'X' . $oQuestion->gid . 'X' . $oQuestion->qid . $oQuestion->title;
+            $aQuestionsMapping['Q' . array_search($oQuestion->parent_qid, $aQIDReplacements) . '_S' . $iOldQID] = 'Q' . $oQuestion->parent_qid . '_S' . $oQuestion->qid;
             $oQuestionL10n = new QuestionL10n();
             $oQuestionL10n->setAttributes($insertdata, false);
+            $keys = array_keys($aQuestionsMapping);
+            usort($keys, function($a, $b) {
+                $left = count(explode("_", $a));
+                $right = count(explode("_", $b));
+                if ($left === $right) {
+                    return 0;
+                }
+                return ($a > $b) ? -1 : 1;
+            });
+            foreach ($keys as $key) {
+                $value = $aQuestionsMapping[$key];
+                $oQuestionL10n->question = str_replace($key, $value, $oQuestionL10n->question);
+            }
+            //$oQuestionL10n->question = str_replace('Q' . array_search($oQuestion->parent_qid, $aQIDReplacements) . '_S' . $iOldQID, $aQuestionsMapping['Q' . array_search($oQuestion->parent_qid, $aQIDReplacements) . '_S' . $iOldQID], $oQuestionL10n->question);
             $oQuestionL10n->save();
 
             // If translate links is disabled, check for old links.
@@ -2175,6 +2182,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         }
     }
 
+
     // Import defaultvalues ------------------------------------------------------
     importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results);
 
@@ -2208,8 +2216,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     continue;
                 }
 
-                list($oldcsid, $oldcgid, $oldqidanscode) = explode("X", (string) $insertdata["cfieldname"], 3);
-
                 // replace the gid for the new one in the cfieldname(if there is no new gid in the $aGIDReplacements array it means that this condition is orphan -> error, skip this record)
                 if (!isset($aGIDReplacements[$oldcgid])) {
                     continue;
@@ -2219,17 +2225,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             unset($insertdata["cid"]);
 
             // recreate the cfieldname with the new IDs
-            if ($insertdata['cqid'] != 0) {
-                if (preg_match("/^\+/", $oldcsid)) {
-                    $newcfieldname = '+' . $iNewSID . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] . substr($oldqidanscode, strlen((string) $oldcqid));
-                } else {
-                    $newcfieldname = $iNewSID . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] . substr($oldqidanscode, strlen((string) $oldcqid));
-                }
-            } else {
-                // The cfieldname is a not a previous question cfield but a {XXXX} replacement field
-                $newcfieldname = $insertdata["cfieldname"];
-            }
-            $insertdata["cfieldname"] = $newcfieldname;
             if (trim((string) $insertdata["method"]) == '') {
                 $insertdata["method"] = '==';
             }
@@ -2621,7 +2616,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
     Yii::app()->loadHelper('database');
     $survey = Survey::model()->findByPk($iSurveyID);
 
-    switchMSSQLIdentityInsert('survey_' . $iSurveyID, true);
+    switchMSSQLIdentityInsert('responses_' . $iSurveyID, true);
     $results = [];
     $results['responses'] = 0;
 
@@ -2688,7 +2683,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
         }
         $oXMLReader->close();
 
-        switchMSSQLIdentityInsert('survey_' . $iSurveyID, false);
+        switchMSSQLIdentityInsert('responses_' . $iSurveyID, false);
         if (Yii::app()->db->getDriverName() == 'pgsql') {
             try {
                 Yii::app()->db->createCommand("SELECT pg_catalog.setval(pg_get_serial_sequence('" . $survey->responsesTableName . "', 'id'), (SELECT MAX(id) FROM " . $survey->responsesTableName . "))")->execute();
@@ -2926,7 +2921,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
             $oTransaction = Yii::app()->db->beginTransaction();
             try {
                 if (isset($oSurvey->id) && !is_null($oSurvey->id)) {
-                    switchMSSQLIdentityInsert('survey_' . $iSurveyId, true);
+                    switchMSSQLIdentityInsert('responses_' . $iSurveyId, true);
                     $bSwitched = true;
                 }
                 if ($oSurvey->encryptSave()) {
@@ -2947,7 +2942,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                     $aResponsesError[] = $aResponses[$iIdResponsesKey];
                 }
                 if (isset($bSwitched) && $bSwitched == true) {
-                    switchMSSQLIdentityInsert('survey_' . $iSurveyId, false);
+                    switchMSSQLIdentityInsert('responses_' . $iSurveyId, false);
                     $bSwitched = false;
                 }
             } catch (Exception $oException) {
@@ -2963,10 +2958,10 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     // mysql dot need fix, but what for mssql ?
     // Do a model function for this can be a good idea (see activate_helper/activateSurvey)
     if (Yii::app()->db->driverName == 'pgsql') {
-        $sSequenceName = Yii::app()->db->getSchema()->getTable("{{survey_{$iSurveyId}}}")->sequenceName;
+        $sSequenceName = Yii::app()->db->getSchema()->getTable("{{responses_{$iSurveyId}}}")->sequenceName;
         $iActualSerial = Yii::app()->db->createCommand("SELECT last_value FROM  {$sSequenceName}")->queryScalar();
         if ($iActualSerial < $iMaxId) {
-            $sQuery = "SELECT setval(pg_get_serial_sequence('{{survey_{$iSurveyId}}}', 'id'),{$iMaxId},false);";
+            $sQuery = "SELECT setval(pg_get_serial_sequence('{{responses_{$iSurveyId}}}', 'id'),{$iMaxId},false);";
             try {
                 Yii::app()->db->createCommand($sQuery)->execute();
             } catch (Exception $oException) {
@@ -3026,7 +3021,7 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
     if (!isset($xml->timings->rows)) {
         return $results;
     }
-    switchMSSQLIdentityInsert('survey_' . $iSurveyID . '_timings', true);
+    switchMSSQLIdentityInsert('timings_' . $iSurveyID, true);
     foreach ($xml->timings->rows->row as $row) {
         $insertdata = array();
 
@@ -3046,7 +3041,7 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 
         $results['responses']++;
     }
-    switchMSSQLIdentityInsert('survey_' . $iSurveyID . '_timings', false);
+    switchMSSQLIdentityInsert('timings_' . $iSurveyID, false);
     return $results;
 }
 
