@@ -13,8 +13,6 @@ use LimeSurvey\Api\Command\{
 };
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
-require_once "application/helpers/admin/import_helper.php";
-
 class SurveyArchive implements CommandInterface
 {
     use AuthPermissionTrait;
@@ -61,6 +59,7 @@ class SurveyArchive implements CommandInterface
                 )->toArray()
             );
         }
+        require_once "application/helpers/admin/import_helper.php";
         $rawData = getTableArchivesAndTimestamps($surveyId);
         $data = [];
         for ($index = 0; $index < count($rawData); $index++) {
