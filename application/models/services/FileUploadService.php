@@ -63,15 +63,16 @@ class FileUploadService
         }
 
         if ($validationError === null) {
+            $baseUrl = $this->rTrimPathSeparators(App()->getBaseUrl(true));
             $returnedData['uploaded']['filePath'] = $this->convertFullIntoRelativePath(
                 $returnedData['debug'][2]
             );
-            $returnedData['uploaded']['fileUrl'] = App()->getBaseUrl(true)
+            $returnedData['uploaded']['fileUrl'] = $baseUrl . '/'
                 . $returnedData['debug'][2];
             $returnedData['uploaded']['previewPath'] = $this->getPreviewPath(
                 $returnedData['uploaded']['filePath']
             );
-            $returnedData['uploaded']['previewUrl'] = App()->getBaseUrl(true)
+            $returnedData['uploaded']['previewUrl'] = $baseUrl . '/'
                 . $returnedData['uploaded']['filePath'];
             unset($returnedData['debug']);
             $returnedData['allFilesInDir'] = $this->getFilesPathsFromDirectory(
@@ -108,7 +109,7 @@ class FileUploadService
             @mkdir($surveyDir . DIRECTORY_SEPARATOR . $directoryName);
         }
 
-        return rtrim($surveyDir . DIRECTORY_SEPARATOR . $directoryName, '/\\');
+        return $this->rTrimPathSeparators($surveyDir . DIRECTORY_SEPARATOR . $directoryName);
     }
 
     /**
@@ -139,7 +140,7 @@ class FileUploadService
                 $destinationDir
             );
         }
-        $fullFilePath = $destinationDir . $fileName;
+        $fullFilePath = $destinationDir . DIRECTORY_SEPARATOR . $fileName;
         $debugInfoArray[] = $destinationDir;
         $debugInfoArray[] = $fileName;
         $debugInfoArray[] = $fullFilePath;
@@ -205,7 +206,7 @@ class FileUploadService
     private function isDuplicateFile(array $fileInfoArray, $path)
     {
         $newFilePath = $fileInfoArray['tmp_name'];
-        $existingFilePath = $path . $fileInfoArray['name'];
+        $existingFilePath = $path . DIRECTORY_SEPARATOR . $fileInfoArray['name'];
 
         // Check if a file with the same name exists
         if (!file_exists($existingFilePath)) {
@@ -284,17 +285,16 @@ class FileUploadService
         string $directory,
         int $surveyId
     ) {
-        $filesOutput = [];
+        $baseUrl = $this->rTrimPathSeparators(App()->getBaseUrl(true));
         $relativePath = $this->convertFullIntoRelativePath($directory);
         $files = $this->getFilesFromDirectory($directory, $surveyId);
         foreach ($files as $i => $file) {
-            $filesOutput[$i]['filePath'] = $relativePath . $file;
-            $filesOutput[$i]['fileUrl'] = App()->getBaseUrl(true) . $filesOutput[$i]['filePath'];
+            $filesOutput[$i]['filePath'] = $relativePath . DIRECTORY_SEPARATOR . $file;
+            $filesOutput[$i]['fileUrl'] = $baseUrl . '/' .  $relativePath . '/' . $file;
             $filesOutput[$i]['previewPath'] = $this->getPreviewPath(
-                $filesOutput[$i]['filePath']
+                $relativePath . '/' . $file
             );
-            $filesOutput[$i]['previewUrl'] = App()->getBaseUrl(true) .
-                $filesOutput[$i]['filePath'];
+            $filesOutput[$i]['previewUrl'] = $baseUrl . '/' . $relativePath . '/' . $file;
         }
 
         return $filesOutput;
