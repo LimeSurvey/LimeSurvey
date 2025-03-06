@@ -97,6 +97,7 @@ class SurveyDeactivate
             $aData['sNewSurveyTableName'] = $this->app->session->get('sNewSurveyTableName');
             $aData['step1'] = true;
         } else {
+            require_once "application/helpers/admin/import_helper.php";
             //See if there is a tokens table for this survey
             if (tableExists("{{tokens_{$iSurveyID}}}")) {
                 $this->archiveToken($iSurveyID, $date, $userID, $DBDate, $aData);
@@ -108,7 +109,7 @@ class SurveyDeactivate
             $this->app->db->schema->refresh();
             //after deactivation redirect to survey overview and show message...
             $siddate = $this->app->session->get('NewSIDDate', "{$iSurveyID}_{$date}");
-            $this->app->createTableFromPattern($this->app->db->tablePrefix . "old_questions_{$siddate}", $this->app->db->tablePrefix . "questions", ['sid', 'gid', 'qid', 'parent_qid', 'type'], ['sid' => $iSurveyID]);
+            createTableFromPattern($this->app->db->tablePrefix . "old_questions_{$siddate}", $this->app->db->tablePrefix . "questions", ['sid', 'gid', 'qid', 'parent_qid', 'type'], ['sid' => $iSurveyID]);
             $this->app->session->remove('sNewSurveyTableName');
         }
         $result['aData'] = $aData;

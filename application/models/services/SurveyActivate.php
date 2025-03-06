@@ -90,7 +90,8 @@ class SurveyActivate
      */
     public function restoreData(int $surveyId, $timestamp = null, $preserveIDs = false): bool
     {
-        $deactivatedArchives = $this->app->getDeactivatedArchives($surveyId);
+        require_once "application/helpers/admin/import_helper.php";
+        $deactivatedArchives = getDeactivatedArchives($surveyId);
         $archives = [];
         foreach ($deactivatedArchives as $key => $deactivatedArchive) {
             $candidates = explode(",", $deactivatedArchive);
@@ -117,11 +118,11 @@ class SurveyActivate
             $qTimestamp = $qParts[count($qParts) - 1];
             $sParts = explode("_", $archives['survey']);
             $sTimestamp = $sParts[count($sParts) - 1];
-            $dynamicColumns = $this->app->getUnchangedColumns($surveyId, $sTimestamp, $qTimestamp);
+            $dynamicColumns = getUnchangedColumns($surveyId, $sTimestamp, $qTimestamp);
             $this->app->recoverSurveyResponses($surveyId, $archives["survey"], $preserveIDs, $dynamicColumns);
             if (isset($archives["tokens"])) {
                 $tokenTable = $this->app->db->tablePrefix . "tokens_" . $surveyId;
-                $this->app->createTableFromPattern($tokenTable, $archives["tokens"]);
+                createTableFromPattern($tokenTable, $archives["tokens"]);
                 $this->app->copyFromOneTableToTheOther($archives["tokens"], $tokenTable);
             }
             if (isset($archives["timings"])) {

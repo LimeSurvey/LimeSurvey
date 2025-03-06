@@ -1314,6 +1314,237 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
 }
 
 /**
+ * Creates a table based on another
+ *
+ * @param string $table
+ * @param string $pattern
+ * @param array $columns
+ * @param array $where
+ * @return integer number of rows affected by the execution.
+ * @throws CDbException execution failed
+ */
+function createTableFromPattern($table, $pattern, $columns = [], $where = [])
+{
+    if (!is_array($columns)) {
+        $columns = [];
+    }
+    if (!is_array($where)) {
+        $where = [];
+    }
+    $whereClause = "";
+    $criterias = [];
+    if (count($where)) {
+        foreach ($where as $field => $value) {
+            $criterias[] = Yii::app()->db->quoteColumnName($field) . " = " . Yii::app()->db->quoteValue($value);
+        }
+        $whereClause = " WHERE " . implode(" AND ", $criterias);
+    }
+    if (count($columns)) {
+        foreach ($columns as $index => $column) {
+            if (!ctype_alnum($column)) {
+                $columns[$index] = Yii::app()->db->quoteColumnName($column);
+            }
+        }
+        $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " AS SELECT " . implode(",", $columns) . " FROM " . Yii::app()->db->quoteTableName($pattern) . $whereClause;
+    } else {
+        $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " LIKE " . Yii::app()->db->quoteTableName($pattern) . ";";
+    }
+    return Yii::app()->db->createCommand($command)->execute();
+}
+
+/**
+ * Generates a temporary table creation script
+ *
+ * @param string $source
+ * @param string $destination
+ * @return string
+ */
+function generateTemporaryTableCreate(string $source, string $destination)
+{
+    return  "
+        CREATE TEMPORARY TABLE {$destination}
+        SELECT *
+        FROM (
+            SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
+                   SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
+                   SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
+                   temp.COLUMN_NAME
+            FROM information_schema.columns temp
+            WHERE temp.TABLE_SCHEMA = DATABASE() AND 
+                  temp.TABLE_NAME = '{$source}'
+        ) t;
+    ";
+}
+
+/**
+ * Generates a drop statement for a temporary table
+ *
+ * @param string $name
+ * @return string
+ */
+function generateTemporaryTableDrop(string $name)
+{
+    return "DROP TEMPORARY TABLE {$name};";
+}
+
+/**
+ * Gets the unchanged columns
+ *
+ * @param int $sid
+ * @param int $qTimestamp
+ * @param int $sTimestamp
+ * @return array all rows of the query result. Each array element is an array representing a row.
+ * An empty array is returned if the query results in nothing.
+ * @throws CException execution failed
+ */
+function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
+{
+    $sourceTables = [
+        Yii::app()->db->tablePrefix . "survey_" . $sid,
+        Yii::app()->db->tablePrefix . "survey_" . $sid,
+        Yii::app()->db->tablePrefix . "survey_" . $sid,
+        Yii::app()->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
+        Yii::app()->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
+        Yii::app()->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
+    ];
+    $destinationTables = [
+        'new_s_c',
+        'new_parent1',
+        'new_parent2',
+        'old_s_c',
+        'old_parent1',
+        'old_parent2'
+    ];
+    Yii::app()->db->createCommand(implode("\n\n", generateTemporaryTableCreates($sourceTables, $destinationTables)))->execute();
+    $command =
+    "
+        SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
+        FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
+        JOIN " . Yii::app()->db->tablePrefix . "questions new_q
+        ON old_q.qid = new_q.qid AND old_q.type = new_q.type
+        JOIN new_s_c
+        ON new_s_c.sid = new_q.sid AND
+           new_s_c.gid = new_q.gid AND
+           new_s_c.qidsuffix like concat(new_q.qid, '%')
+        JOIN old_s_c
+        ON old_s_c.sid = old_q.sid AND
+           old_s_c.gid = old_q.gid AND
+           old_s_c.qidsuffix LIKE CONCAT(old_q.qid, '%') AND
+           old_s_c.qidsuffix = new_s_c.qidsuffix
+        LEFT JOIN new_parent1
+        ON new_s_c.sid = new_parent1.sid AND
+           new_s_c.gid = new_parent1.gid AND
+           new_s_c.qidsuffix <> new_parent1.qidsuffix AND
+           new_parent1.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+        LEFT JOIN new_parent2
+        ON new_s_c.sid = new_parent2.sid AND
+           new_s_c.gid = new_parent2.gid AND
+           new_s_c.qidsuffix <> new_parent2.qidsuffix AND new_parent1.qidsuffix <> new_parent2.qidsuffix AND
+           new_parent2.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+        LEFT JOIN old_parent1
+        ON old_s_c.sid = old_parent1.sid AND
+           old_s_c.gid = old_parent1.gid AND
+           old_s_c.qidsuffix <> old_parent1.qidsuffix AND
+           old_parent1.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+        LEFT JOIN old_parent2
+           ON old_s_c.sid = old_parent2.sid AND
+              old_s_c.gid = old_parent2.gid AND
+              old_s_c.qidsuffix <> old_parent2.qidsuffix AND old_parent1.qidsuffix <> old_parent2.qidsuffix AND
+              old_parent2.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+        WHERE (new_parent2.sid IS NULL) AND
+              (old_parent2.sid IS NULL) AND
+              (((new_parent1.sid IS NULL) AND (old_parent1.sid IS NULL)) OR
+               (
+                (new_parent1.sid = old_parent1.sid) AND
+                (new_parent1.gid = old_parent1.gid) AND
+                (new_parent1.qidsuffix = old_parent1.qidsuffix)
+               )
+              )
+        ;
+    "
+    ;
+
+    $rawResults = Yii::app()->db->createCommand($command)->queryAll();
+    $results = ['old_c' => [], 'new_c' => []];
+    foreach ($rawResults as $rawResult) {
+        $results['old_c'][] = $rawResult['old_c'];
+        $results['new_c'][] = $rawResult['new_c'];
+    }
+    Yii::app()->db->createCommand(implode("\n\n", generateTemporaryTableDrops($destinationTables)))->execute();
+    return $results;
+}
+
+/**
+ * Generates temporary table creation scripts from the arrays received and returns the scripts that were generated,
+ * we expect count($sourceTables) and count($destinationTables) to be the same
+ *
+ * @param array $sourceTables
+ * @param array $destinationTables
+ * @return array
+ */
+function generateTemporaryTableCreates(array $sourceTables, array $destinationTables)
+{
+    $output = [];
+    for ($index = 0; $index < count($sourceTables); $index++) {
+        $output [] = generateTemporaryTableCreate($sourceTables[$index], $destinationTables[$index]);
+    }
+    return $output;
+}
+
+/**
+ * Generates temporary table drops for the tables received and returns the scripts
+ *
+ * @param array $tables
+ * @return array
+ */
+function generateTemporaryTableDrops(array $tables)
+{
+    $output = [];
+    foreach ($tables as $table) {
+        $output [] = generateTemporaryTableDrop($table);
+    }
+    return $output;
+}
+
+/**
+ * Finds the newest archive table from each kind
+ *
+ * @param int $sid
+ * @return array all rows of the query result. Each array element is an array representing a row.
+ * An empty array is returned if the query results in nothing.
+ * @throws CException execution failed
+ */
+function getDeactivatedArchives($sid)
+{
+    $sid = intval($sid);
+    $command = "
+        SELECT n, GROUP_CONCAT(TABLE_NAME) AS TABLE_NAME
+        FROM
+        (SELECT n, TABLE_NAME
+        FROM information_schema.tables
+        JOIN (
+            SELECT 'survey' AS n
+            UNION
+            SELECT 'tokens' AS n
+            UNION
+            SELECT 'timings' AS n
+            UNION
+            SELECT 'questions' AS n
+        ) t
+        ON TABLE_SCHEMA = DATABASE() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
+        ((n <> 'survey') OR (TABLE_NAME NOT LIKE '%timings%'))
+        ORDER BY TABLE_NAME) t
+        GROUP BY n;
+    ";
+    $rawResults = Yii::app()->db->createCommand($command)->queryAll();
+    $results = [];
+    foreach ($rawResults as $rawResult) {
+        $results[$rawResult['n']] = $rawResult["TABLE_NAME"];
+    }
+    return $results;
+}
+
+/**
  * Imports a survey from an XML file or XML data string.
  *
  * This function processes the XML data to import a survey, including its questions, groups, and language settings.
