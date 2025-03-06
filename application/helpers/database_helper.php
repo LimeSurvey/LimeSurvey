@@ -103,3 +103,14 @@ function dbSelectTablesLike($table)
             safeDie("Couldn't create 'select tables like' query for connection type '" . Yii::app()->db->getDriverName() . "'");
     }
 }
+
+/**
+* Gets the table names. Do not prefix.
+* @param string $table String to match
+* @uses dbSelectTablesLike() To get the tables like sql query
+* @return array Array of matched table names
+*/
+function dbGetTablesLike($table)
+{
+    return (array) Yii::app()->db->createCommand(dbSelectTablesLike("{{{$table}}}"))->queryColumn();
+}

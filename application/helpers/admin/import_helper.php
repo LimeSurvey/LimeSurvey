@@ -1195,17 +1195,6 @@ function finalizeSurveyImportFile($newsid, $baselang)
 }
 
 /**
-* Gets the table names. Do not prefix.
-* @param string $table String to match
-* @uses dbSelectTablesLike() To get the tables like sql query
-* @return array Array of matched table names
-*/
-function dbGetTablesLike($table)
-{
-    return (array) Yii::app()->db->createCommand(dbSelectTablesLike("{{{$table}}}"))->queryColumn();
-}
-
-/**
  * Returns the tables which
  * @param int $sid
  * @return array
