@@ -12,6 +12,7 @@ use LimeSurvey\Api\Command\{
     ResponseData\ResponseDataError
 };
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
+
 require_once "application/helpers/admin/import_helper.php";
 
 class SurveyArchive implements CommandInterface
@@ -68,21 +69,21 @@ class SurveyArchive implements CommandInterface
             $types = [];
             foreach ($split as $tbl) {
                 if (strpos($tbl, 'questions') !== false) {
-                    $types []= 'questions';
+                    $types[] = 'questions';
                     $newData['newformat'] = true;
                 } elseif (strpos($tbl, 'timings') !== false) {
-                    $types []= 'timings';
+                    $types[] = 'timings';
                 } elseif (strpos($tbl, 'tokens') !== false) {
-                    $types []= 'tokens';
+                    $types[] = 'tokens';
                 } elseif (strpos($tbl, 'survey') !== false) {
-                    $types []= 'survey';
+                    $types[] = 'survey';
                 }
             }
             $newData['types'] = $types;
             $newData['count'] = $rawData[$index]['cnt'];
             $newData['timestamp'] = $rawData[$index]['timestamp'];
-            $data []= $newData;
-    }
+            $data[] = $newData;
+        }
         return $this->responseFactory->makeSuccess($data);
     }
 
