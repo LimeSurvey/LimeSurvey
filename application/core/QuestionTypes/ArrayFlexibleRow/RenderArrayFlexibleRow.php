@@ -52,13 +52,9 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         if ($this->getQuestionAttribute('use_dropdown') == 1) {
             $this->bUseDropdownLayout = true;
             $this->sCoreClass .= " dropdown-array";
-            // I suppose this is irrelevant and if not, why t** f*** is there hardcoded text in the renderer function?
-            //$caption           = gT("A table with a subquestion on each row. You have to select your answer.");
         } else {
             $this->bUseDropdownLayout = false;
             $this->sCoreClass .= " radio-array";
-            // I suppose this is irrelevant and if not, why t** f*** is there hardcoded text in the renderer function?
-            //$caption           = gT("A table with a subquestion on each row. The answer options are contained in the table header.");
         }
 
         $this->setSubquestions();

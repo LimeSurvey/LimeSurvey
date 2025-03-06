@@ -51,7 +51,7 @@ class Update_626 extends DatabaseUpdateBase
                 'desc'       => gT('View dashboard'),
                 'page'       => 'welcome',
                 'usergroup'  => '-1',
-                'buttontext' => gt('View dashboard')
+                'buttontext' => gT('View dashboard')
             ]);
         }
     }

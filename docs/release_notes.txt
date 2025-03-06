@@ -34,6 +34,23 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.10.5 (build 250217) to 6.10.6 (build 250224) February 24, 2025
+-Fixed issue #19957: Wrong operator in removeFromBacklist (#4171) (Gabriel Jenik)
+-Fixed issue #19909: Issues with font handling in the custom configuration of the survey theme (#4166) (Gabriel Jenik)
+-Fixed issue #19909: Issues with font handling in the custom configuration of the survey theme (#4165) (Gabriel Jenik)
+-Fixed issue #19902: Choice of columlns shown at survey listing disappear (#4179) (Denis Chenu)
+-Fixed issue #19879: RC - user with only Survey content update can not use set_group_properties or set_question_properties (#4178) (Denis Chenu)
+-Fixed issue #19878: RC - Bad permission check on list_groups list_questions remote control (#4177) (Denis Chenu)
+-Fixed issue #19877: RC - Bad permission check on import_group remote control (#4176) (Denis Chenu)
+-Fixed issue #19876: RC - No permission control on get_response_ids (#4175) (Denis Chenu)
+-Fixed issue #19875: Bad permission check on get_question_properties remote control (#4174) (Denis Chenu)
+-Fixed issue #19874: Bad permission check on remote control get_language_properties (#4173) (Denis Chenu)
+-Fixed issue #19647: Statistics calculation error for number tables with free fields (#4167) (Gabriel Jenik)
+-Fixed issue #19404: Unable to export survey with PHP 8.0 (#3845) (Denis Chenu)
+#Updated translation: Luxembourgish by dmzyyDbd
+#Updated translation: Japanese by d_inoue
+
+
 Changes from 6.10.4 (build 250210) to 6.10.5 (build 250217) February 17, 2025
 -Fixed issue #19962: SMTP session always closed and reopened between emails (#4169) (Carsten Schmitz)
 -Fixed issue #19897: Unable to test sample survey - array_sum issue (#4113) (Denis Chenu)
@@ -45,7 +62,6 @@ Changes from 6.10.4 (build 250210) to 6.10.5 (build 250217) February 17, 2025
 -Fixed issue #19701: Outdated or unused libraries at latest 6.6.1 version (#4083) (Gabriel Jenik)
 #Updated translation: Spanish (Spain) by ireneoh
 #Updated translation: Portuguese (Brazil) by holch, mauriciofurtado
-#Updated translation: Portuguese (Brazil) by holch
 #Updated translation: Polish by elissa
 #Updated translation: Polish (Informal) by elissa
 #Updated translation: Japanese by d_inoue, nomoto

@@ -71,8 +71,8 @@
                 data-bs-toggle="modal"
                 data-bs-target="#confirmation-modal"
                 data-btnclass="btn-danger"
-                data-title="<?= gt('Delete this question') ?>"
-                data-btntext="<?= gt('Delete') ?>"
+                data-title="<?= gT('Delete this question') ?>"
+                data-btntext="<?= gT('Delete') ?>"
                 data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $qid, "redirectTo" => "groupoverview"])); ?>})'
                 data-message="<?php echo CHtml::encode(gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?", "unescaped")); ?>"
             >

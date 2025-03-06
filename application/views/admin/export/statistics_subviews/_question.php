@@ -4,12 +4,22 @@
     // If boilerplate don't render anything
     if (in_array( $flt[2],[Question::QT_X_TEXT_DISPLAY,Question::QT_ASTERISK_EQUATION])) return;
 
+    // Get qidattributes for this question
+    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($flt[0]);
+
     //$specialQuestionTypes = array("M","P","T","S","Q","|","","N","K","D");
     $specialQuestionTypes = array(Question::QT_M_MULTIPLE_CHOICE, Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS);
     if ( in_array( $flt[2], $specialQuestionTypes))
     {
         $myfield = $flt[2].$myfield;
     }
+
+    // Array (Numbers) questions, have two "modes": dropdowns or text inputs
+    // When using text inputs, we need to treat them as single numerical questions
+    if ($flt[2] == Question::QT_COLON_ARRAY_NUMBERS && !empty($qidattributes['input_boxes'])) {
+        $myfield = $flt[2] . $myfield;
+    }
+
     $counter2 = 0;
 ?>
 
@@ -595,69 +605,120 @@
                 break;
 
             case Question::QT_COLON_ARRAY_NUMBERS:  // Array (Numbers)
-                //Get qidattributes for this question
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
-                $qidattributes=QuestionAttribute::model()->getQuestionAttributes($flt[0]);
-                $minvalue = 1;
-                $maxvalue = 10;
-                if (trim((string) $qidattributes['multiflexible_max']) != '' && trim((string) $qidattributes['multiflexible_min']) == '') {
-                    $maxvalue = $qidattributes['multiflexible_max'];
+                if (empty($qidattributes['input_boxes'])) {
+                    // Inputs are dropdowns, so options are limited.
                     $minvalue = 1;
-                }
-                if (trim((string) $qidattributes['multiflexible_min']) != '' && trim((string) $qidattributes['multiflexible_max']) == '') {
-                    $minvalue = $qidattributes['multiflexible_min'];
-                    $maxvalue = $qidattributes['multiflexible_min'] + 10;
-                }
-                if (trim((string) $qidattributes['multiflexible_min']) != '' && trim((string) $qidattributes['multiflexible_max']) != '') {
-                    if ($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']) {
-                        $minvalue = $qidattributes['multiflexible_min'];
+                    $maxvalue = 10;
+                    if (trim((string) $qidattributes['multiflexible_max']) != '' && trim((string) $qidattributes['multiflexible_min']) == '') {
                         $maxvalue = $qidattributes['multiflexible_max'];
+                        $minvalue = 1;
                     }
-                }
-
-                $stepvalue = (trim((string) $qidattributes['multiflexible_step']) != '' && $qidattributes['multiflexible_step'] > 0) ? $qidattributes['multiflexible_step'] : 1;
-
-                if ($qidattributes['reverse'] == 1) {
-                    $tmp = $minvalue;
-                    $minvalue = $maxvalue;
-                    $maxvalue = $tmp;
-                    $reverse = true;
-                    $stepvalue = -$stepvalue;
-                } else {
-                    $reverse = false;
-                }
-
-                if ($qidattributes['multiflexible_checkbox']!=0)
-                {
-                    $minvalue=0;
-                    $maxvalue=1;
-                    $stepvalue=1;
-                }
-                foreach($result[$key1] as $row)
-                {
-                    //$fresult = Question::model()->getQuestionsForStatistics('*', "parent_qid='{$row->qid}' AND language = '{$language}' AND scale_id = 1", 'question_order, title');
-                    $fresult = Question::model()->with('questionl10ns')->findAll(array('condition' =>'parent_qid = ' . $row['parent_qid'] . ' AND scale_id = 1', 'order' => 'question_order ASC'));
-                    foreach ($fresult as $frow) {
-                        $myfield2 = $myfield . $row['title'] . "_" . $frow['title'];
-                        echo "<!-- MyField2:  $myfield2 - ";
-                        if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
-                        echo " -->\n";
-                        echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
-                        if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
-                        echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
-                        if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
-                        echo " />&nbsp;"
-                        .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row['question']." [".$frow->questionl10ns[$language]->question."]")." - ".$row['title']."/".$frow['title'])
-                        ."\n"
-                        ."</div>\n";
-                        echo "\t<select name='{$myfield2}[]' multiple='multiple' rows='5' cols='5' class='form-select'>\n";
-                        for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue)
-                        {
-                            echo "\t<option value='$ii'";
-                            if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {echo " selected='selected' ";}
-                            echo ">$ii</option>\n";
+                    if (trim((string) $qidattributes['multiflexible_min']) != '' && trim((string) $qidattributes['multiflexible_max']) == '') {
+                        $minvalue = $qidattributes['multiflexible_min'];
+                        $maxvalue = $qidattributes['multiflexible_min'] + 10;
+                    }
+                    if (trim((string) $qidattributes['multiflexible_min']) != '' && trim((string) $qidattributes['multiflexible_max']) != '') {
+                        if ($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']) {
+                            $minvalue = $qidattributes['multiflexible_min'];
+                            $maxvalue = $qidattributes['multiflexible_max'];
                         }
-                        echo "\t</select>";
+                    }
+
+                    $stepvalue = (trim((string) $qidattributes['multiflexible_step']) != '' && $qidattributes['multiflexible_step'] > 0) ? $qidattributes['multiflexible_step'] : 1;
+
+                    if ($qidattributes['reverse'] == 1) {
+                        $tmp = $minvalue;
+                        $minvalue = $maxvalue;
+                        $maxvalue = $tmp;
+                        $reverse = true;
+                        $stepvalue = -$stepvalue;
+                    } else {
+                        $reverse = false;
+                    }
+
+                    if ($qidattributes['multiflexible_checkbox']!=0)
+                    {
+                        $minvalue=0;
+                        $maxvalue=1;
+                        $stepvalue=1;
+                    }
+                    foreach($result[$key1] as $row)
+                    {
+                        //$fresult = Question::model()->getQuestionsForStatistics('*', "parent_qid='{$row->qid}' AND language = '{$language}' AND scale_id = 1", 'question_order, title');
+                        $fresult = Question::model()->with('questionl10ns')->findAll(array('condition' =>'parent_qid = ' . $row['parent_qid'] . ' AND scale_id = 1', 'order' => 'question_order ASC'));
+                        foreach ($fresult as $frow) {
+                            $myfield2 = $myfield . $row['title'] . "_" . $frow['title'];
+                            echo "<!-- MyField2:  $myfield2 - ";
+                            if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
+                            echo " -->\n";
+                            echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
+                            if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
+                            echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
+                            if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
+                            echo " />&nbsp;"
+                            .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row['question']." [".$frow->questionl10ns[$language]->question."]")." - ".$row['title']."/".$frow['title'])
+                            ."\n"
+                            ."</div>\n";
+                            echo "\t<select name='{$myfield2}[]' multiple='multiple' rows='5' cols='5' class='form-select'>\n";
+                            for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue)
+                            {
+                                echo "\t<option value='$ii'";
+                                if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {echo " selected='selected' ";}
+                                echo ">$ii</option>\n";
+                            }
+                            echo "\t</select>";
+                        }
+                    }
+                } else {
+                    // Inputs are text inputs (numerical), so we treat each single subquestion as a numerical question
+                    foreach($result[$key1] as $row) {
+                        $fresult = Question::model()->with('questionl10ns')->findAll(array(
+                            'condition' => 'parent_qid = ' . $row['parent_qid'] . ' AND scale_id = 1',
+                            'order' => 'question_order ASC'
+                        ));
+                        foreach ($fresult as $frow) {
+                            /*
+                            * filter form for numerical input
+                            * - checkbox
+                            * - greater than
+                            * - less than
+                            */
+                            $myfield1 = $myfield . $row['title'] . "_" . $frow['title'];
+                            $myfield2 = $myfield1 . "G";
+                            $myfield3 = $myfield1 . "L";
+                            if ($counter2 == 4) {
+                                echo "\t</tr>\n\t<tr>\n";
+                                $counter2 = 0;
+                            }
+
+                            //checkbox
+                            echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
+                            echo "<input type='checkbox'  name='summary[]' value='$myfield1'";
+
+                            //check SGQA -> do we want to pre-check the checkbox?
+                            if (isset($summary) && array_search($myfield1, $summary)!== FALSE) {
+                                echo " checked='checked'";
+                            }
+
+                            echo " />&nbsp;";
+
+                            //show speaker
+                            echo $oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row['question']." [".$frow->questionl10ns[$language]->question."]")." - ".$row['title']."/".$frow['title'])
+                                . "</div>
+                                <div class='mb-3 row'>
+                                <label for='" . $myfield2 . "' class='col-md-4 form-label'>" . gT("Number greater than:") . "</label>
+                                <div class='col-md-6'>"
+                                . CHtml::numberField($myfield2, $_POST[$myfield2] ?? '', array('class'=>'form-control', 'step'=>'any'))
+                                . "</div>
+                                </div>
+                                <div class='mb-3 row'>
+                                <label for='N" . $myfield3 . "' class='col-md-4 form-label'>" . gT("Number less than:") . "</label>
+                                <div class='col-md-6'>"
+                                . CHtml::numberField($myfield3, $_POST[$myfield3] ?? '', array('class'=>'form-control', 'step'=>'any'))
+                                . "</div>
+                                </div>";
+                        }
                     }
                 }
                 break;

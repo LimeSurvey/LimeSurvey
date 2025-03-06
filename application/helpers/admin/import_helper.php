@@ -1580,7 +1580,14 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $surveyLanguageSetting->clearErrors('surveyls_alias');
             }
             if (!$surveyLanguageSetting->save()) {
-                throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid.");
+                $errors = $surveyLanguageSetting->errors;
+                // Clean up 
+                Survey::model()->deleteSurvey($iNewSID);
+                $errorsStr = '';
+                foreach ($errors as $attribute => $error) {
+                    $errorsStr.= $error[0]. "\n";
+                }
+                throw new Exception(gT("Error: Failed to import survey language settings.") . " " . $errorsStr);
             }
         } catch (CDbException $e) {
             throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid.");

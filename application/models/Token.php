@@ -311,7 +311,8 @@ abstract class Token extends Dynamic
     public static function sanitizeToken($token)
     {
         // According to Yii doc : http://www.yiiframework.com/doc/api/1.1/CSecurityManager#generateRandomString-detail
-        return preg_replace('/[^0-9a-zA-Z_~]/', '', (string) $token);
+        $pattern = Yii::app()->getConfig("allowedcharacters_pattern_token");
+        return preg_replace($pattern, '', $token);
     }
 
     /**
