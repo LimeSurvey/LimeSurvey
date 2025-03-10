@@ -102,7 +102,6 @@ gT(
 );
 gT('Don\'t ask again');
 gT('Enter here');
-gT('What is your question group about?');
 gT('Duplicate group');
 gT('Welcome screen');
 gT('Welcome title');
