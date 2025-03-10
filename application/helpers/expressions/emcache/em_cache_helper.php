@@ -189,7 +189,7 @@ class EmCacheHelper
         }
 
         // Don't use emcache with randomization.
-        if ($_SESSION['survey_' . self::$surveyinfo['sid']]['randomized']) {
+        if ($_SESSION['responses_' . self::$surveyinfo['sid']]['randomized']) {
             return false;
         }
 

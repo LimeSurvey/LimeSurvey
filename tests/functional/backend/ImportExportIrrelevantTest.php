@@ -138,6 +138,6 @@ class ImportExportIrrelevantTest extends TestBaseClassWeb
      */
     private function getSGQ($question)
     {
-        return self::$surveyId . 'X' . $question->gid . 'X' . $question->qid;
+        return 'Q' . $question->qid;
     }
 }
