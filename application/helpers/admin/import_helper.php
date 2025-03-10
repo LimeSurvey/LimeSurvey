@@ -2233,6 +2233,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $insertdata["method"] = '==';
             }
 
+            if (!empty($insertdata['cfieldname'])) {
+                $insertdata['cfieldname'] = $aQuestionsMapping[$insertdata['cfieldname']];
+            }
             // Now process the value and replace @sgqa@ codes
             if (preg_match("/^@(.*)@$/", (string) $insertdata["value"], $cfieldnameInCondValue)) {
                 if (isset($aOldNewFieldmap[$cfieldnameInCondValue[1]])) {
