@@ -341,11 +341,11 @@ class LSYii_Application extends CWebApplication
     /**
      * Get the pluginManager
      *
-     * @return PluginManager
+     * @return \LimeSurvey\PluginManager\PluginManager
      */
-    public function getPluginManager()
+    public function getPluginManager(): \LimeSurvey\PluginManager\PluginManager
     {
-        /** @var PluginManager $pluginManager */
+        /** @var \LimeSurvey\PluginManager\PluginManager $pluginManager */
         $pluginManager = $this->getComponent('pluginManager');
         return $pluginManager;
     }
@@ -403,7 +403,7 @@ class LSYii_Application extends CWebApplication
      */
     public function onException($event)
     {
-        (new AppErrorHandler)->onException($this->dbVersion, $event);
+        (new AppErrorHandler())->onException($this->dbVersion, $event);
     }
 
     /**
@@ -414,7 +414,7 @@ class LSYii_Application extends CWebApplication
      */
     public function onError($event)
     {
-        (new AppErrorHandler)->onError($this->dbVersion, $event);
+        (new AppErrorHandler())->onError($this->dbVersion, $event);
     }
 
     /**
@@ -514,7 +514,7 @@ class LSYii_Application extends CWebApplication
      * @inheritdoc
      * Special handling for SEO friendly URLs
      */
-    public function createController($route, $owner=null)
+    public function createController($route, $owner = null)
     {
         $controller = parent::createController($route, $owner);
 
@@ -590,5 +590,141 @@ class LSYii_Application extends CWebApplication
         App()->getSession()->setCookieParams([
             'lifetime' => $lifetime
         ]);
+    }
+
+    /**
+     * Recovers archived survey responses
+     *
+     * @param int $surveyId survey ID
+     * @param string $archivedResponseTableName archived response table name to be imported
+     * @param bool $preserveIDs if archived response IDs should be preserved
+     * @param array $validatedColumns the columns that are validated and can be inserted again
+     * @return integer number of rows affected by the execution.
+     * @throws Exception execution failed
+     */
+    public function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName, $preserveIDs, array $validatedColumns = []): int
+    {
+        if (!is_array($validatedColumns)) {
+            $validatedColumns = [];
+        }
+        $pluginDynamicArchivedResponseModel = PluginDynamic::model($archivedResponseTableName);
+        $targetSchema = SurveyDynamic::model($surveyId)->getTableSchema();
+        $encryptedAttributes = Response::getEncryptedAttributes($surveyId);
+        if ((App()->db->tablePrefix) && (strpos($archivedResponseTableName, App()->db->tablePrefix) === 0)) {
+            $tbl_name = str_replace('old_survey', 'old_tokens', substr($archivedResponseTableName, strlen(App()->db->tablePrefix)));
+        } else {
+            $tbl_name = str_replace('old_survey', 'old_tokens', $archivedResponseTableName);
+        }
+        $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name, 'tbl_type' => 'response']);
+        $archivedEncryptedAttributes = [];
+        if ($archivedTableSettings) {
+            $archivedEncryptedAttributes = json_decode($archivedTableSettings->properties, true);
+        }
+        $archivedResponses = new CDataProviderIterator(new CActiveDataProvider($pluginDynamicArchivedResponseModel), 500);
+
+        $tableName = "{{survey_$surveyId}}";
+        $importedResponses = 0;
+        $batchData = [];
+        foreach ($archivedResponses as $archivedResponse) {
+            $dataRow = [];
+            // Using plugindynamic model because I dont trust surveydynamic.
+            $targetResponse = new PluginDynamic($tableName);
+            if ($preserveIDs) {
+                $targetResponse->id = $archivedResponse->id;
+                $dataRow['id'] = $archivedResponse->id;
+            }
+
+            $to = 'new_c';
+            $from = 'old_c';
+            for ($index = 0; $index < count($validatedColumns[$to]); $index++) {
+                $source = $validatedColumns[$from][$index];
+                $target = $validatedColumns[$to][$index];
+                $targetResponse->{$target} = $archivedResponse[$source];
+                if (in_array($source, $archivedEncryptedAttributes, false) && !in_array($target, $encryptedAttributes, false)) {
+                    $targetResponse->{$target} = $archivedResponse->decryptSingle($archivedResponse[$source]);
+                } elseif (!in_array($source, $archivedEncryptedAttributes, false) && in_array($target, $encryptedAttributes, false)) {
+                    $targetResponse->{$target} = $archivedResponse->encryptSingle($archivedResponse[$source]);
+                } else {
+                    $targetResponse->{$target} = $archivedResponse[$source];
+                }
+                $dataRow[$target] = $targetResponse->{$target};
+            }
+
+            $additionalFields = [
+                'token',
+                'submitdate',
+                'lastpage',
+                'startlanguage',
+                'seed',
+                'startdate',
+                'datestamp',
+                'version_number'
+            ];
+
+            if (isset($targetSchema->columns['startdate']) && empty($targetResponse['startdate'])) {
+                $targetResponse->{'startdate'} = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
+                $dataRow['startdate'] = $targetResponse->{'startdate'};
+            }
+
+            if (isset($targetSchema->columns['datestamp']) && empty($targetResponse['datestamp'])) {
+                $targetResponse->{'datestamp'} = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
+                $dataRow['datestamp'] = $targetResponse->{'datestamp'};
+            }
+
+            foreach ($additionalFields as $additionalField) {
+                if (isset($archivedResponse->{$additionalField}) && isset($targetSchema->columns[$additionalField])) {
+                    $dataRow[$additionalField] = $archivedResponse->{$additionalField};
+                }
+            }
+
+            $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
+            $beforeDataEntryImport->set('iSurveyID', $surveyId);
+            $beforeDataEntryImport->set('oModel', $targetResponse);
+            App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
+
+            if ($targetResponse->validate()){
+                $batchData[] = $dataRow;
+            }
+            if (count($batchData) % 500 === 0) {
+                if ($preserveIDs) {
+                    switchMSSQLIdentityInsert("survey_$surveyId", true);
+                }
+                $builder = App()->db->getCommandBuilder();
+                $command = $builder->createMultipleInsertCommand($tableName, $batchData);
+                $importedResponses += $command->execute();
+                if ($preserveIDs) {
+                    switchMSSQLIdentityInsert("survey_$surveyId", false);
+                }
+                $batchData = [];
+            }
+
+            unset($targetResponse);
+        }
+
+        if (count($batchData)) {
+            if ($preserveIDs) {
+                switchMSSQLIdentityInsert("survey_$surveyId", true);
+            }
+            $builder = App()->db->getCommandBuilder();
+            $command = $builder->createMultipleInsertCommand($tableName, $batchData);
+            $importedResponses += $command->execute();
+            if ($preserveIDs) {
+                switchMSSQLIdentityInsert("survey_$surveyId", false);
+            }
+        }
+        return $importedResponses;
+    }
+
+    /**
+     * Copying all data from source table to a target table having the same structure
+     *
+     * @param string $source
+     * @param string $destination
+     * @return integer number of rows affected by the execution.
+     * @throws CDbException execution failed
+     */
+    public function copyFromOneTableToTheOther($source, $destination)
+    {
+        return $this->db->createCommand("INSERT INTO " . $this->db->quoteTableName($destination) . " SELECT * FROM " . $this->db->quoteTableName($source))->execute();
     }
 }
