@@ -89,8 +89,6 @@ LoadQuestionTypes::loadAll();
 
 // TODO: PATH_SEPARATOR for Windows
 set_include_path(get_include_path() . ':' . APPPATH . 'helpers');
-require_once(APPPATH . '/helpers/Zend/XmlRpc/Client.php');
-require_once(APPPATH . '/helpers/Zend/XmlRpc/Server.php');
 Yii::import('application.libraries.LSZend_XmlRpc_Response_Http', true);
 Yii::import('application.libraries.LSjsonRPCServer', true);
 

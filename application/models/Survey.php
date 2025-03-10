@@ -365,10 +365,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
         } elseif (isset($this->languagesettings[$this->language])) {
             return $this->languagesettings[$this->language];
         } else {
-            $errorString = 'Survey language not found - looked for ' . App()->language;
+            $searchedLanguages = App()->language;
             if ($this->language != App()->language) {
-                $errorString .= ' and ' . $this->language;
+                $searchedLanguages .= ',' . $this->language;
             }
+            $errorString = sprintf(gT('Survey language settings (%s) not found. Please run the integrity check from the main menu.'), $searchedLanguages);
             throw new Exception($errorString);
         }
     }
@@ -2153,11 +2154,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $condn = array('sid' => $this->sid, 'parent_qid' => 0);
             $sumresult = Question::model()->countByAttributes($condn);
         } else {
-            $sumresult = Question::model()->with('questionattributes')
-              ->count(
-                  "sid=:sid AND parent_qid=:parent_qid AND((attribute='hidden' AND value!=:hidden )OR attribute IS NULL)",
-                  ['sid' => $this->sid, 'parent_qid' => 0, 'hidden' => '1']
-              );
+            $query = Yii::app()->db->createCommand()
+                ->select('COUNT(DISTINCT t.qid) as count')
+                ->from('{{questions}} t')
+                ->leftJoin('{{question_attributes}} qa', 'qa.qid = t.qid AND qa.attribute = :hidden', [':hidden' => 'hidden'])
+                ->where('t.sid = :sid AND t.parent_qid = 0', [':sid' => $this->sid])
+                ->andWhere('qa.value IS NULL OR qa.value != :hidden_value', [':hidden_value' => '1']);
+            $result = $query->queryScalar();
+            return (int) $result;
         }
 
         return (int) $sumresult;

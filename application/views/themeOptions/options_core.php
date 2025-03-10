@@ -190,11 +190,24 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                     $classes[] = 'selector_image_selector';
                                 }
                                 $classValue = implode(' ', $classes);
+
+                                if ($attributeKey === 'font') {
+                                    // Register font packages
+                                    // All fonts are displayed in the dropdowns, so we need to register the packages for font preview to work.
+                                    // Packages are separated in two groups: core and user.
+                                    foreach (Yii::app()->getClientScript()->fontPackages as $fontPackages) {
+                                        foreach (array_keys($fontPackages) as $fontKey) {
+                                            Yii::app()->getClientScript()->registerPackage('font-' . $fontKey);
+                                        }
+                                    }
+                                    // Websafe fonts are on a separate package
+                                    Yii::app()->getClientScript()->registerPackage('font-websafe');
+                                }
                                 ?>
 
                                 <div class="col-12">
                                     <select class="<?= $classValue ?>" data-parent="<?= $attribute['parent'] ?>"
-                                            data-inheritvalue="<?= ($attributeKey === 'font' && isset($sPackagesToLoad) ? $sPackagesToLoad : $sParentOption) ?>"
+                                            data-inheritvalue="<?= ($attributeKey === 'font' && isset($sPackagesToLoad) ? htmlspecialchars($sPackagesToLoad) : $sParentOption) ?>"
                                             id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>">
                                         <?php if ($bInherit) : ?>
                                             <?php

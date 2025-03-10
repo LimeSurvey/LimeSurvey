@@ -58,7 +58,8 @@
 		"goldspecdigital/oooas": "^2.10",
 		"php-di/php-di": "6.4.0",
 		"doctrine/annotations": "~1.10",
-		"anper/iuliia": "^1.2"
+		"anper/iuliia": "^1.2",
+		"shardj/zf1-future": "^1.24"
 	},
     "config": {
         "vendor-dir": "vendor",

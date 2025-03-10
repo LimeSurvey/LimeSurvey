@@ -371,6 +371,8 @@ class TwoFactorAdminLogin extends AuthPluginBase
             return $this->createJSONResponse(false, gT("The confirmation key is not correct."));
         }
 
+        TFAUserKey::model()->deleteAllByAttributes(['uid' => $uid]);
+
         $oTFAModel = new TFAUserKey();
         $oTFAModel->setAttributes($aTFAUserKey, false);
         $oTFAModel->firstLogin = 0;
