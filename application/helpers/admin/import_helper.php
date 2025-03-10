@@ -1695,6 +1695,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     // We have to run the question table data two times - first to find all main questions
     // then for subquestions (because we need to determine the new qids for the main questions first)
     $aQuestionsMapping = array(); // collect all old and new question codes for replacement
+    $oldQIDGIDMap = [];
     /** @var Question[] */
     $importedQuestions = [];
     if (isset($xml->questions)) {
@@ -1722,6 +1723,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $insertdata['sid'] = $iNewSID;
             $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
             $iOldQID = $insertdata['qid']; // save the old qid
+            $oldQIDGIDMap[$iOldQID] = $iOldGID;
             unset($insertdata['qid']);
 
             // now translate any links
@@ -1834,6 +1836,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $insertdata['sid'] = $iNewSID;
             $insertdata['gid'] = $aGIDReplacements[(int) $insertdata['gid']];
             $iOldQID = (int) $insertdata['qid'];
+            $oldQIDGIDMap[$iOldGID] = $iOldQID;
             unset($insertdata['qid']); // save the old qid
             $insertdata['parent_qid'] = $aQIDReplacements[(int) $insertdata['parent_qid']]; // remap the parent_qid
             if (!isset($insertdata['help'])) {
@@ -2207,9 +2210,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 // a problem with this answer record -> don't consider
                 continue;
             }
-            if ($insertdata['cqid'] != 0) {
+            if (($insertdata['cqid'] != 0) && (!(is_array($insertdata['cqid']) && empty($insertdata['cqid'])))) {
                 if (isset($aQIDReplacements[$insertdata['cqid']])) {
                     $oldcqid = $insertdata['cqid']; //Save for cfield transformation
+                    $oldcgid = $oldQIDGIDMap[$oldcqid];
                     $insertdata['cqid'] = $aQIDReplacements[$insertdata['cqid']]; // remap the qid
                 } else {
                     // a problem with this answer record -> don't consider
