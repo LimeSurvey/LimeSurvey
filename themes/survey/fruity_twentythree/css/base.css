@@ -34,3 +34,55 @@
     margin-bottom: 1rem;
 }
 
+/* Fix for kayboard navigation */
+.checkbox-item input[type="checkbox"]:focus-visible + label::before{
+    box-shadow: 0 0 0 3px rgba(13,110,253,.25); /* color #2c3e50 from radio-item */
+    /*border-color: #14AE5C;*/
+    outline: 0;
+}
+.radio-item input[type="radio"]:focus-visible + label::before{
+    box-shadow: 0 0 0 3px rgba(13,110,253,.25);
+    /*border-color: #14AE5C;*/
+    outline: 0;
+}
+.radio-item .ls-label-xs-visibility{
+    width: 26px;
+    height: 26px;
+    line-height: 30px;
+    text-indent: 30px;
+}
+.checkbox-item .ls-label-xs-visibility {
+  width: 30px;
+  height: 30px;
+  line-height: 34px;
+  text-indent: 34px;
+}
+.dir-ltr .radio-item label.ls-label-xs-visibility::before,
+.dir-ltr .checkbox-item label.ls-label-xs-visibility::before {
+    left:3px;
+    top:3px;
+}
+
+.dir-rtl .radio-item label.ls-label-xs-visibility::before,
+.dir-rtl .checkbox-item label.ls-label-xs-visibility::before {
+    right:3px;
+    top:3px;
+}
+.dir-ltr .checkbox-item label.ls-label-xs-visibility::after {
+    left:5px;
+    top:5px;
+    line-height: 20px;
+}
+.dir-ltr .radio-item label.ls-label-xs-visibility::after {
+    left:6px;
+    top:6px;
+}
+.dir-rtl .checkbox-item label.ls-label-xs-visibility::after {
+    left:5px;
+    top:5px;
+    line-height: 20px;
+}
+.dir-rtl .radio-item label.ls-label-xs-visibility::after {
+    left:6px;
+    top:6px;
+}
