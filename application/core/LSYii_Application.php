@@ -610,8 +610,10 @@ class LSYii_Application extends CWebApplication
         $pluginDynamicArchivedResponseModel = PluginDynamic::model($archivedResponseTableName);
         $targetSchema = SurveyDynamic::model($surveyId)->getTableSchema();
         $encryptedAttributes = Response::getEncryptedAttributes($surveyId);
-        if (strpos($archivedResponseTableName, App()->db->tablePrefix) === 0) {
+        if ((App()->db->tablePrefix) && (strpos($archivedResponseTableName, App()->db->tablePrefix) === 0)) {
             $tbl_name = str_replace('old_survey', 'old_tokens', substr($archivedResponseTableName, strlen(App()->db->tablePrefix)));
+        } else {
+            $tbl_name = str_replace('old_survey', 'old_tokens', $archivedResponseTableName);
         }
         $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name, 'tbl_type' => 'response']);
         $archivedEncryptedAttributes = [];
