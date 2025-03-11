@@ -1012,18 +1012,20 @@ class LimeMailer extends PHPMailer
     */
     public static function validateAddresses($aEmailAddressList, $patternselect = null)
     {
-        $aOutList = [];
-        if (!is_array($aEmailAddressList)) {
+        if (is_string($aEmailAddressList)) {
             $aEmailAddressList = explode(';', $aEmailAddressList);
         }
-
-        foreach ($aEmailAddressList as $sEmailAddress) {
-            $sEmailAddress = trim($sEmailAddress);
-            if (self::validateAddress($sEmailAddress, $patternselect)) {
-                $aOutList[] = $sEmailAddress;
+        if (is_array($aEmailAddressList)) {
+            $aOutList = [];
+            foreach ($aEmailAddressList as $sEmailAddress) {
+                $sEmailAddress = trim($sEmailAddress);
+                if (self::validateAddress($sEmailAddress, $patternselect)) {
+                    $aOutList[] = $sEmailAddress;
+                }
             }
+            return $aOutList;
         }
-        return $aOutList;
+        return [];
     }
 
 
