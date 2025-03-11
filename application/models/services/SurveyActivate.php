@@ -31,13 +31,14 @@ class SurveyActivate
     /**
      * @param int $surveyId
      * @param array $params
+     * @param bool $force
      * @return array
      * @throws PermissionDeniedException
      * @throws CException
      */
-    public function activate(int $surveyId, array $params = []): array
+    public function activate(int $surveyId, array $params = [], bool $force = false): array
     {
-        if (!$this->permission->hasSurveyPermission($surveyId, 'surveyactivation', 'update')) {
+        if ((!$force) && (!$this->permission->hasSurveyPermission($surveyId, 'surveyactivation', 'update'))) {
             throw new PermissionDeniedException(
                 'Access denied'
             );
@@ -62,8 +63,18 @@ class SurveyActivate
                 'refurl',
                 'savetimings'
             ];
+            $notNullable = [
+                'anonymized',
+                'savetimings',
+                'datestamp',
+                'ipaddr',
+                'ipanonymize',
+                'refurl'
+            ];
             foreach ($fields as $field) {
-                $survey->{$field} = $this->app->request->getPost($field, $params[$field] ?? null);
+                if ((!in_array($field, $notNullable)) || ($fielvalue !== null)) {
+                    $survey->{$field} = $this->app->request->getPost($field, $params[$field] ?? null);
+                }
             }
             $survey->save();
 

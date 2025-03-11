@@ -27,6 +27,21 @@ class SurveyDeactivate
     private SurveyLink $surveyLink;
     private SavedControl $savedControl;
 
+    public function setArchivedResponseSettings(ArchivedTableSettings $archivedResponseSettings)
+    {
+        $this->archivedResponseSettings = $archivedResponseSettings;
+    }
+
+    public function setArchivedTokenSettings(ArchivedTableSettings $archivedTokenSettings)
+    {
+        $this->archivedTokenSettings = $archivedTokenSettings;
+    }
+
+    public function setArchivedTimingsSettings(ArchivedTableSettings $archivedTimingsSettings)
+    {
+        $this->archivedTimingsSettings = $archivedTimingsSettings;
+    }
+
     public function __construct(
         Survey $survey,
         Permission $permission,
@@ -46,13 +61,14 @@ class SurveyDeactivate
     /**
      * @param int $surveyId
      * @param array $params
+     * @param bool $force
      * @return array
      * @throws PermissionDeniedException
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    public function deactivate(int $iSurveyID, $params = [])
+    public function deactivate(int $iSurveyID, $params = [], bool $force = false)
     {
-        if (!$this->permission->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
+        if ((!$force) && (!$this->permission->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update'))) {
             throw new PermissionDeniedException(
                 'Access denied'
             );
