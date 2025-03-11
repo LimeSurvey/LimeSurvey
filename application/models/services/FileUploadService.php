@@ -35,53 +35,68 @@ class FileUploadService
 
         $surveyId = $this->convertSurveyIdWhenUniqUploadDir($surveyId);
         $destinationDir = $this->getSurveyUploadDirectory($surveyId);
-        $this->uploadValidator->setPost(['surveyId' => $surveyId]);
-        $this->uploadValidator->setFiles($fileInfoArray);
-        $validationError = $this->uploadValidator->getError('file');
+
+        $validationError = $this->validateFileUpload($surveyId, $fileInfoArray, $destinationDir);
         if ($validationError !== null) {
             $returnedData['uploadResultMessage'] = $validationError;
             return $returnedData;
+        }
+
+        $returnedData = $this->saveFileInDirectory(
+            $fileInfoArray['file'],
+            $destinationDir
+        );
+
+        $baseUrl = $this->rTrimPathSeparators(App()->getBaseUrl(true));
+        $returnedData['uploaded']['filePath'] = $this->convertFullIntoRelativePath(
+            $returnedData['debug'][2]
+        );
+        $returnedData['uploaded']['fileUrl'] = $baseUrl . '/'
+            . $returnedData['debug'][2];
+        $returnedData['uploaded']['previewPath'] = $this->getPreviewPath(
+            $returnedData['uploaded']['filePath']
+        );
+        $returnedData['uploaded']['previewUrl'] = $baseUrl . '/'
+            . $returnedData['uploaded']['filePath'];
+        unset($returnedData['debug']);
+        $returnedData['allFilesInDir'] = $this->getFilesPathsFromDirectory(
+            $destinationDir,
+            $surveyId
+        );
+
+        return $returnedData;
+    }
+
+
+    /**
+     * @param int|string $surveyId
+     * @param array $fileInfoArray
+     * @param string $destinationDir
+     * @return null|string
+     */
+    private function validateFileUpload($surveyId, array $fileInfoArray, $destinationDir)
+    {
+        $this->uploadValidator->setPost(['surveyId' => $surveyId]);
+        $this->uploadValidator->setFiles($fileInfoArray);
+        $error = $this->uploadValidator->getError('file');
+        if ( $error != null) {
+            return $error;
         }
 
         $checkImage = LSYii_ImageValidator::validateImage(
             $fileInfoArray['file']
         );
         if ($checkImage['check'] === false) {
-            $returnedData['uploadResultMessage'] = $checkImage['uploadresult'];
-            return $returnedData;
+            return $checkImage['uploadresult'];
         }
 
         if (!is_writeable($destinationDir)) {
-            $returnedData['uploadResultMessage'] = gT(
+            return gT(
                 "Could not save file"
             );
-        } else {
-            $returnedData = $this->saveFileInDirectory(
-                $fileInfoArray['file'],
-                $destinationDir
-            );
         }
 
-        if ($validationError === null) {
-            $baseUrl = $this->rTrimPathSeparators(App()->getBaseUrl(true));
-            $returnedData['uploaded']['filePath'] = $this->convertFullIntoRelativePath(
-                $returnedData['debug'][2]
-            );
-            $returnedData['uploaded']['fileUrl'] = $baseUrl . '/'
-                . $returnedData['debug'][2];
-            $returnedData['uploaded']['previewPath'] = $this->getPreviewPath(
-                $returnedData['uploaded']['filePath']
-            );
-            $returnedData['uploaded']['previewUrl'] = $baseUrl . '/'
-                . $returnedData['uploaded']['filePath'];
-            unset($returnedData['debug']);
-            $returnedData['allFilesInDir'] = $this->getFilesPathsFromDirectory(
-                $destinationDir,
-                $surveyId
-            );
-        }
-
-        return $returnedData;
+        return null;
     }
 
     /**
