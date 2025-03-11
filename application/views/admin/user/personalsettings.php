@@ -430,11 +430,8 @@ echo $oQuestionSelector->getModal();
             </div>
         </div>
     </div>
-
     <!-- Buttons -->
-    <p>
-        <?php echo TbHtml::submitButton(gT("Save settings", 'unescaped'), ['class' => 'd-none']); ?>
-    </p>
+    <?php echo TbHtml::submitButton(gT("Save settings", 'unescaped'), ['class' => 'd-none']); ?>
     <?php echo TbHtml::endForm(); ?>
 
 </div>

@@ -123,9 +123,9 @@ class WipeCommand extends CConsoleCommand
                 $actquery = "truncate table {{twoFactorUsers}}";
                 Yii::app()->db->createCommand($actquery)->execute();
             }            
-            $actquery = "delete from {{settings_global}} where stg_name LIKE 'last_question%'";
+            $actquery = "delete from {{settings_user}} where stg_name LIKE 'last_question'";
             Yii::app()->db->createCommand($actquery)->execute();
-            $actquery = "delete from {{settings_global}} where stg_name LIKE 'last_survey%'";
+            $actquery = "delete from {{settings_user}} where stg_name LIKE 'last_survey'";
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "update {{users}} set email = 'test@domain.test', full_name='Administrator'";
             Yii::app()->db->createCommand($actquery)->execute();
