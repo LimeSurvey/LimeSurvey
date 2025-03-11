@@ -63,16 +63,9 @@ class SurveyActivate
                 'refurl',
                 'savetimings'
             ];
-            $notNullable = [
-                'anonymized',
-                'savetimings',
-                'datestamp',
-                'ipaddr',
-                'ipanonymize',
-                'refurl'
-            ];
             foreach ($fields as $field) {
-                if ((!in_array($field, $notNullable)) || ($fielvalue !== null)) {
+                $fieldvalue = $this->app->request->getPost($field, $params[$field] ?? null);
+                if ($fieldvalue !== null) {
                     $survey->{$field} = $this->app->request->getPost($field, $params[$field] ?? null);
                 }
             }
