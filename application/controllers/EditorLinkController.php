@@ -54,8 +54,11 @@ class EditorLinkController extends LSYii_Controller
         $this->setAuthenticationInitCookie();
         $editorUrl = Yii::app()->request->getQuery(
             'url',
-            Yii::app()->request->baseUrl
-                . static::REACT_APP_BASE_PATH
+            rtrim(
+                Yii::app()->request->baseUrl
+                . static::REACT_APP_BASE_PATH,
+                '/'
+            )
         );
         $editorRoute = Yii::app()->request->getQuery('route');
         $url = $editorUrl . '/' . $editorRoute;
