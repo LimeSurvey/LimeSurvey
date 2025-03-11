@@ -79,7 +79,7 @@ class FileUploadService
         $this->uploadValidator->setPost(['surveyId' => $surveyId]);
         $this->uploadValidator->setFiles($fileInfoArray);
         $error = $this->uploadValidator->getError('file');
-        if ( $error != null) {
+        if ($error != null) {
             return $error;
         }
 
