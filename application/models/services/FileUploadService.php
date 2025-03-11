@@ -331,7 +331,7 @@ class FileUploadService
     {
         return implode(
             '/',
-            array_map(function ($part){
+            array_map(function($part){
                 return $this->rTrimPathSeparators($part);
             }, $parts)
         );
