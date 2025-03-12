@@ -281,7 +281,7 @@ class SurveyDeactivate
      */
     protected function handleTimingTable($iSurveyID, $date, &$aData, $userID, $DBDate)
     {
-        $siddate = $this->app->session->get('sNewSIDDate', "{$iSurveyID}_{$date}");
+        $siddate = $this->app->session->get('NewSIDDate', "{$iSurveyID}_{$date}");
         $prow = $this->survey->find('sid = :sid', array(':sid' => $iSurveyID));
         if ($prow->savetimings == "Y") {
             $sOldTimingsTableName = $this->app->db->tablePrefix . "survey_{$iSurveyID}_timings";
