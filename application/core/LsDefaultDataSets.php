@@ -1817,6 +1817,7 @@ class LsDefaultDataSets
     {
         return [
             ['stg_name' => 'editorPreset', 'stg_value' => 'wysiwyg'],
+            ['stg_name' => 'showQuestionCodes', 'stg_value' => '0'],
             ['stg_name' => 'showScriptEdit', 'stg_value' => '1'],
             ['stg_name' => 'noViewMode', 'stg_value' => '0'],
             ['stg_name' => 'answeroptionprefix', 'stg_value' => 'AO'],

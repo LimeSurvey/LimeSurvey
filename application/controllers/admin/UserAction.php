@@ -119,6 +119,7 @@ class UserAction extends SurveyCommonAction
 
                 SettingsUser::setUserSetting('preselectquestiontype', Yii::app()->request->getPost('preselectquestiontype'));
                 SettingsUser::setUserSetting('preselectquestiontheme', Yii::app()->request->getPost('preselectquestiontheme'));
+                SettingsUser::setUserSetting('showQuestionCodes', Yii::app()->request->getPost('showQuestionCodes'));
                 SettingsUser::setUserSetting('showScriptEdit', Yii::app()->request->getPost('showScriptEdit'));
                 SettingsUser::setUserSetting('noViewMode', Yii::app()->request->getPost('noViewMode'));
                 SettingsUser::setUserSetting('answeroptionprefix', Yii::app()->request->getPost('answeroptionprefix'));
