@@ -34,6 +34,40 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.11.0 (build 250303) to 6.12.0 (build 250310) March 10, 2025
+-New translation: Hungarian (Informal) (Dániel Kiss-Kálmán)
+-Fixed issue #20000: Special characters in question text not properly shown in column selector on export (Carsten Schmitz)
+-Fixed issue #19994: Unable to get to dashboard in some condition (#4190) (Denis Chenu)
+-Fixed issue #19992: Errors after importing surveys related to quota language settings (#4189) (Denis Chenu)
+-Fixed issue #19965: Lot of security issue in jspdf (#4192) (Gabriel Jenik)
+-Fixed issue #19947: Exporting to tab-separated-values error (#4181) (Denis Chenu)
+-Fixed issue #19904: Last survey and last question must be in SettingsUser (#4182) (Denis Chenu)
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Georgian by giorgi, lucas_encuesta.biz, makosmith, Tchumbura, zch5368
+
+
+Changes from 6.10.6 (build 250224) to 6.11.0 (build 250303) March 3, 2025
++New feature: Support for setting base language on CLI survey import (MW-1447) (lajosarpad)
+-Fixed issue: PHP Error when post_max_size is exceeded in file upload question (Carsten Schmitz)
+-Fixed issue: Cryptic error message when language settings for a survey are missing (Carsten Schmitz)
+-Fixed issue: Broken survey after import when there is an error in language settings (Carsten Schmitz)
+-Fixed issue #19984: No way to update user settings (#4188) (Denis Chenu)
+-Fixed issue #19982: DOMDocument::load(): I/O warning : failed to load external entity - on PHP 7.4 when entering the themes screen (#4186) (Gabriel Jenik)
+-Fixed issue #19980: RemoteControl2 - export_responses - ResponseType doesn't support 0 for answercodes (#4187) (Gabriel Jenik)
+-Fixed issue #19960: Registration Form spamming (#4170) (Gabriel Jenik)
+-Fixed issue #19959: token will not allow standard uuid format tokens (removes dashes) (#4168) (Tõnis Ormisson)
+#Updated translation: Portuguese (Portugal) by c_schmitz, holch, samarta, sazevedo
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: English by twilllig
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 6.10.5 (build 250217) to 6.10.6 (build 250224) February 24, 2025
 -Fixed issue #19957: Wrong operator in removeFromBacklist (#4171) (Gabriel Jenik)
 -Fixed issue #19909: Issues with font handling in the custom configuration of the survey theme (#4166) (Gabriel Jenik)
