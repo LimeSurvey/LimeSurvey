@@ -12,18 +12,10 @@ class SchemaFactoryI18nMissingTranslations
     public function make(): Schema
     {
         $props = [
-            Schema::array('keys')->items(
-                AllOf::create()->schemas(
-                    Schema::object()
-                        ->properties(
-                            Schema::string('key')
-                                ->description('Text to be translated'),
-                            Schema::string('lang')
-                                ->description('Language code')
-                        )
-                        ->required('key', 'lang')
-                )
-            )
+            Schema::array('keys')
+                ->items(Schema::string())
+                ->description('Array of missing translation strings')
+                ->example(['missingTranslationString1', 'missingTranslationString2'])
         ];
 
         return Schema::create()

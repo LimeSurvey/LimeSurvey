@@ -58,6 +58,7 @@ class I18nMissing implements CommandInterface
 
         $updatedKeys = [];
         $existingKeys = [];
+        // fetching german to see what is already translated in the core app:
         App()->setLanguage('de');
         $transLateService = new TranslationMoToJson('de');
         $translations = $transLateService->translateMoToJson();
