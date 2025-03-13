@@ -842,5 +842,8 @@ $config['editorEnabled'] = false;
 // Participants token sanitizing rules as regex pattern
 $config['allowedcharacters_pattern_token'] = '/[^0-9a-zA-Z_\-~]/';
 
+// Google Gemini API key:  https://makersuite.google.com/app/apikey
+$config['googleGeminiAPIKey'] = '';
+
 return $config;
 //settings deleted
