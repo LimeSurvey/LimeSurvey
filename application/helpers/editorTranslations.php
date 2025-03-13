@@ -107,7 +107,6 @@ gT('Group title');
 gT('Your question here');
 gT('Optional help description');
 gT('answer options');
-gT('Add answer option');
 gT('Add subquestion');
 gT('Write your equation here.');
 gT('Enter your comment here.');
