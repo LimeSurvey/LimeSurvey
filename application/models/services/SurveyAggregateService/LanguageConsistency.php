@@ -63,6 +63,14 @@ class LanguageConsistency
         );
     }
 
+    public function updateQuestionsOnly(Survey $survey)
+    {
+        $languagesToCheck = $survey->getAdditionalLanguages();
+        $surveyId = $survey->sid;
+        $baseLang = $survey->language;
+        fixLanguageConsistencyForQuestions($languagesToCheck, $surveyId, $baseLang);
+    }
+
     /**
      * Update
      *

@@ -6,13 +6,12 @@ use Permission;
 use Question;
 use Survey;
 use CDbConnection;
-use LimeSurvey\Models\Services\{
-    QuestionAggregateService\SaveService,
+use LimeSurvey\Models\Services\{QuestionAggregateService\SaveService,
     QuestionAggregateService\DeleteService,
     Exception\PersistErrorException,
     Exception\NotFoundException,
-    Exception\PermissionDeniedException
-};
+    Exception\PermissionDeniedException,
+    SurveyAggregateService\LanguageConsistency};
 
 /**
  * Question Aggregate Service
@@ -28,19 +27,22 @@ class QuestionAggregateService
     private Permission $modelPermission;
     private Survey $modelSurvey;
     private CDbConnection $yiiDb;
+    private LanguageConsistency $languageConsistency;
 
     public function __construct(
         SaveService $saveService,
         DeleteService $deleteService,
         Permission $modelPermission,
         Survey $modelSurvey,
-        CDbConnection $yiiDb
+        CDbConnection $yiiDb,
+        LanguageConsistency $languageConsistency
     ) {
         $this->saveService = $saveService;
         $this->deleteService = $deleteService;
         $this->modelPermission = $modelPermission;
         $this->modelSurvey = $modelSurvey;
         $this->yiiDb = $yiiDb;
+        $this->languageConsistency = $languageConsistency;
     }
 
     /**
@@ -105,13 +107,14 @@ class QuestionAggregateService
      *      ...<array-key, mixed>
      *  }
      * } $input
+     * @param bool $fromNewEditor
      * @return Question
      * @throws NotFoundException
      * @throws PermissionDeniedException
      * @throws PersistErrorException
      * @throws \CException
      */
-    public function save($surveyId, $input)
+    public function save($surveyId, $input, $fromNewEditor = false)
     {
         $this->checkUpdatePermission($surveyId);
         $transaction = $this->yiiDb->beginTransaction();
@@ -121,6 +124,13 @@ class QuestionAggregateService
                 $input
             );
             $transaction->commit();
+            // fix language consistency for all question related content when called from new editor
+            if ($fromNewEditor) {
+                $survey = $this->modelSurvey->findByPk($surveyId);
+                $this->languageConsistency->updateQuestionsOnly(
+                    $survey
+                );
+            }
         } catch (\Exception $e) {
             $transaction->rollback();
             throw $e;

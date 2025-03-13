@@ -3778,51 +3778,7 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
             }
         }
     }
-
-    $query = "SELECT q.qid, ls.question, ls.help FROM {{questions}} q JOIN {{question_l10ns}} ls ON ls.qid=q.qid WHERE sid={$sid} AND language='{$baselang}'";
-    $result = Yii::app()->db->createCommand($query)->query();
-    $origQuestions = $result->readAll();
-    if (count($origQuestions) > 0) {
-        foreach ($languagesToCheck as $lang) {
-            $query = "SELECT q.qid FROM {{questions}} q JOIN {{question_l10ns}} ls ON ls.qid=q.qid WHERE sid={$sid} AND language='{$lang}'";
-            $gresult = Yii::app()->db->createCommand($query)->queryColumn();
-            foreach ($origQuestions as $question) {
-                if (!in_array($question['qid'], $gresult)) {
-                    $data = array(
-                    'qid' => $question['qid'],
-                    'question' => $question['question'],
-                    'help' => $question['help'],
-                    'language' => $lang,
-                    );
-                    Yii::app()->db->createCommand()->insert('{{question_l10ns}}', $data);
-                }
-            }
-        }
-    }
-
-    $query = "SELECT a.aid, ls.answer FROM {{answers}} a
-    JOIN {{answer_l10ns}} ls ON ls.aid=a.aid
-    JOIN  {{questions}} q on a.qid=q.qid
-    WHERE language='{$baselang}' and q.sid={$sid}";
-    $baseAnswerResult = Yii::app()->db->createCommand($query)->query();
-    $origAnswers = $baseAnswerResult->readAll();
-    foreach ($languagesToCheck as $lang) {
-        $query = "SELECT a.aid FROM {{answers}} a
-        JOIN {{answer_l10ns}} ls ON ls.aid=a.aid
-        JOIN  {{questions}} q on a.qid=q.qid
-        WHERE language='{$lang}' and q.sid={$sid}";
-        $gresult = Yii::app()->db->createCommand($query)->queryColumn();
-        foreach ($origAnswers as $answer) {
-            if (!in_array($answer['aid'], $gresult)) {
-                $data = array(
-                'aid' => $answer['aid'],
-                'answer' => $answer['answer'],
-                'language' => $lang
-                );
-                Yii::app()->db->createCommand()->insert('{{answer_l10ns}}', $data);
-            }
-        }
-    }
+    fixLanguageConsistencyForQuestions($languagesToCheck, $sid, $baselang);
 
     switchMSSQLIdentityInsert('assessments', true);
     $query = "SELECT id, sid, scope, gid, name, minimum, maximum, message FROM {{assessments}} WHERE sid='{$sid}' AND language='{$baselang}'";
@@ -3874,6 +3830,60 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
         }
     }
     return true;
+}
+
+function fixLanguageConsistencyForQuestions($languagesToCheck, $sid, $baseLang)
+{
+    $query = "SELECT q.qid, ls.question, ls.help FROM {{questions}} q JOIN {{question_l10ns}} ls ON ls.qid=q.qid WHERE sid={$sid} AND language='{$baseLang}'";
+    $result = Yii::app()->db->createCommand($query)->query();
+    $origQuestions = $result->readAll();
+    if (count($origQuestions) > 0) {
+        foreach ($languagesToCheck as $lang) {
+            $query = "SELECT q.qid FROM {{questions}} q JOIN {{question_l10ns}} ls ON ls.qid=q.qid WHERE sid={$sid} AND language='{$lang}'";
+            $gresult = Yii::app()->db->createCommand($query)->queryColumn();
+            foreach ($origQuestions as $question) {
+                if (!in_array($question['qid'], $gresult)) {
+                    $data = array(
+                        'qid' => $question['qid'],
+                        'question' => $question['question'],
+                        'help' => $question['help'],
+                        'language' => $lang,
+                    );
+                    Yii::app()->db->createCommand()->insert(
+                        '{{question_l10ns}}',
+                        $data
+                    );
+                }
+            }
+        }
+    }
+
+    $query = "SELECT a.aid, ls.answer FROM {{answers}} a
+    JOIN {{answer_l10ns}} ls ON ls.aid=a.aid
+    JOIN  {{questions}} q on a.qid=q.qid
+    WHERE language='{$baseLang}' and q.sid={$sid}";
+    $baseAnswerResult = Yii::app()->db->createCommand($query)->query();
+    $origAnswers = $baseAnswerResult->readAll();
+    foreach ($languagesToCheck as $lang) {
+        $query = "SELECT a.aid FROM {{answers}} a
+        JOIN {{answer_l10ns}} ls ON ls.aid=a.aid
+        JOIN  {{questions}} q on a.qid=q.qid
+        WHERE language='{$lang}' and q.sid={$sid}";
+        $gresult = Yii::app()->db->createCommand($query)->queryColumn();
+        foreach ($origAnswers as $answer) {
+            if (!in_array($answer['aid'], $gresult)) {
+                $data = array(
+                    'aid' => $answer['aid'],
+                    'answer' => $answer['answer'],
+                    'language' => $lang
+                );
+                Yii::app()->db->createCommand()->insert(
+                    '{{answer_l10ns}}',
+                    $data
+                );
+            }
+        }
+    }
 }
 
 /**

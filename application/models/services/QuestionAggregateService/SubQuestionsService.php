@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Models\Services\QuestionAggregateService;
 
+use LimeSurvey\Models\Services\SurveyAggregateService\LanguageConsistency;
 use Permission;
 use Question;
 use Survey;
@@ -28,17 +29,20 @@ class SubQuestionsService
     private Question $modelQuestion;
     private Survey $modelSurvey;
     private Permission $modelPermission;
+    private LanguageConsistency $languageConsistency;
 
     public function __construct(
         L10nService $l10nService,
         Question $modelQuestion,
         Survey $modelSurvey,
-        Permission $modelPermission
+        Permission $modelPermission,
+        LanguageConsistency $languageConsistency
     ) {
         $this->l10nService = $l10nService;
         $this->modelQuestion = $modelQuestion;
         $this->modelSurvey = $modelSurvey;
         $this->modelPermission = $modelPermission;
+        $this->languageConsistency = $languageConsistency;
     }
 
     /**
@@ -47,12 +51,13 @@ class SubQuestionsService
      * @param array {
      *  ...<array-key, mixed>
      * } $subquestions
+     * @param bool $fromNewEditor
      * @return void
      * @throws PersistErrorException
      * @throws NotFoundException
      * @throws PermissionDeniedException
      */
-    public function save(Question $question, $subquestions)
+    public function save(Question $question, $subquestions, $fromNewEditor = false)
     {
         if ($question->questionType->subquestions > 0) {
             $this->storeSubquestions(
@@ -60,6 +65,12 @@ class SubQuestionsService
                 $subquestions ?? [],
                 $question->survey->active != 'N'
             );
+            if ($fromNewEditor) {
+                $survey = $this->modelSurvey->findByPk($question->sid);
+                $this->languageConsistency->updateQuestionsOnly(
+                    $survey
+                );
+            }
         }
     }
 

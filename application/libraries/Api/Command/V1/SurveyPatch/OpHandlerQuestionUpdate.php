@@ -90,7 +90,8 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
             $surveyId,
             [
                 'question' => $transformedProps
-            ]
+            ],
+            true
         );
     }
 

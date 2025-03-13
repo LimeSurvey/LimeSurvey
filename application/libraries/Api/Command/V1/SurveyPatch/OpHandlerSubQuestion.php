@@ -174,7 +174,8 @@ class OpHandlerSubQuestion implements OpHandlerInterface
         );
         $this->subQuestionsService->save(
             $question,
-            $data
+            $data,
+            true
         );
         $mapping = $this->getSubQuestionNewIdMapping(
             $question,
