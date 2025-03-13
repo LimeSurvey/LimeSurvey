@@ -20,7 +20,7 @@ class QuestionTest extends BaseModelTestCase
     public function testGetQuestionThemeOnNewQuestion()
     {
         $question = new Question();
-        $question->type = "S";
+        $question->type = "Q";
         $question->question_theme_name = 'browserdetect';
 
         $questionTheme = $question->questionTheme;
