@@ -735,7 +735,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                         throw new \Exception("Incompatible op with the action");
                     }
                     $question = \Question::model()->findByPk($qid);
-                    $this->surveyCondition->copyConditions($this->surveyCondition->getCidsOfQid($op->getProps()['fromqid']), [$this->surveyCondition->setISurveyID(intval($question->sid))->getFieldName($question->sid, $question->gid, intval($question->qid))], $this);
+                    $this->surveyCondition->copyConditions($this->surveyCondition->getCidsOfQid($op->getProps()['fromqid']), [$this->surveyCondition->setISurveyID(intval($question->sid ?? 0))->getFieldName($question->sid, intval($question->gid ?? 0), intval($question->qid ?? 0))], $this);
                     break;
                 case "deleteAllConditionsOfSurvey":
                     $this->surveyCondition->deleteAllConditionsOfSurvey($op->getProps()['sid'], $this);
@@ -827,7 +827,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                                 );
                                 break;
                             case 'deleteCondition':
-                                $this->surveyCondition->deleteCondition($qid, (int)$condition['cid']);
+                                $this->surveyCondition->deleteCondition(intval($qid), (int)$condition['cid']);
                                 break;
                         }
                     }
@@ -1068,7 +1068,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         if ($qid) {
             $question = \Question::model()->findByPk($qid);
             foreach ($this->permissionMap as $permission => $value) {
-                if (!\Permission::model()->hasSurveyPermission($question->sid ?? 0, 'surveycontent', $permission)) {
+                if (!\Permission::model()->hasSurveyPermission(intval($question->sid ?? 0), 'surveycontent', $permission)) {
                     throw new \Exception("Missing {$permission} permission from {$question->sid}");
                 }
             }
