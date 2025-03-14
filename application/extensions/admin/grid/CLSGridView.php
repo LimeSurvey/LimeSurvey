@@ -87,7 +87,7 @@ class CLSGridView extends TbGridView
             }
             $this->afterAjaxUpdate .= 'LS.actionDropdown.create();';
             $this->afterAjaxUpdate .= 'LS.rowlink.create();';
-            if ($this->lsAdditionalColumns) {
+            if (!empty($this->lsAdditionalColumns)) {
                 $this->afterAjaxUpdate .= 'initColumnFilter()';
             }
             $this->afterAjaxUpdate .= '}';
