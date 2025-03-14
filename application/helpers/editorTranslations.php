@@ -89,6 +89,9 @@ gT('Deactivate survey to edit');
 gT(
     'When activated, you will not be able to add or delete questions, question groups, or sub-questions. However, you can still edit text.'
 );
+gT(
+    'When reactivated, you will not be able to add or delete questions, question groups, or sub-questions. However, you can still edit text.'
+);
 gT('Upgrade plan');
 gT('Upgrade');
 gT('Help us with your feedback');
