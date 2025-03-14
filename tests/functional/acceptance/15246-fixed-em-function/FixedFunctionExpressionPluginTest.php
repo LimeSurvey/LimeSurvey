@@ -96,7 +96,7 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
             $lineRelevance = self::$webDriver->findElements(
                 WebDriverBy::cssSelector("#javatbdQ" . $questions['SQ003']->parent_qid . '_S' . $questions['SQ003']->qid . ".ls-irrelevant")
             );
-            $this->assertCount(1, $lineRelevance, 'Relevance is broken : SQ003 is relevant.');
+            $this->assertCount(1, $lineRelevance, 'Relevance is broken : ' . ("#javatbdQ" . $questions['SQ003']->parent_qid . '_S' . $questions['SQ003']->qid) . ' is relevant.');
             /** Text of subquestion **/
             $textToCompare = self::$webDriver->findElement(WebDriverBy::id('answertext'.$sgqa.'Q' . $questions['SQ001']->parent_qid . "_S" . $questions['SQ001']->qid))->getText();
             $this->assertEquals(
