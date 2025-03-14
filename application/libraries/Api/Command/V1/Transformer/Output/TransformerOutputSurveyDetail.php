@@ -214,6 +214,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * @param array $questionLookup
      * @param array $questions
      * @param ?array $options
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @return void
      */
     private function transformQuestions(

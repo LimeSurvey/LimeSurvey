@@ -23,6 +23,10 @@ use LimeSurvey\ObjectPatch\{
     OpType\OpTypeDelete
 };
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
+
 class OpHandlerQuestionCondition implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
@@ -700,6 +704,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *
      *
      * @param OpInterface $op
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @return array
      * @throws OpHandlerException
      * @throws PersistErrorException
@@ -959,6 +964,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      * - scenario-based, where we do actions for scenarios inside the scenarios array
      * - condition-based, where we do actions for conditions in the condition arrays of the scenarios in the scenarios array
      * @param OpInterface $op the operation
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @return array the validation responses
      */
     public function validateOperation(OpInterface $op): array
