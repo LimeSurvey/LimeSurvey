@@ -8,6 +8,10 @@ use Permission;
 use Survey;
 use Response;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
+
 class SurveyCondition
 {
     private LSYii_Application $app;
@@ -127,6 +131,7 @@ class SurveyCondition
      * @param string $ConditionRegexp the regular expression to match
      * @param array  $tempcids the list of cids to be replaced with actual ids
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      * @return array
      */
     public function insertCondition(array $args, string $editSourceTab, string $editTargetTab, $app, string $ConditionConst, string $prevQuestionSGQA, string $tokenAttr, string $ConditionRegexp, array $tempcids = [])
@@ -235,6 +240,7 @@ class SurveyCondition
      * @param string $tokenAttr the token placeholder, such as {TOKEN:FIRSTNAME}
      * @param string $ConditionRegexp the regular expression to match
      * @param string $editSourceTab the source tab
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @return void
      */
     public function updateCondition(array $args, string $editTargetTab, $app, string $ConditionConst, string $prevQuestionSGQA, string $tokenAttr, string $ConditionRegexp, string $editSourceTab = "#SRCPREVQUEST")
@@ -454,6 +460,7 @@ class SurveyCondition
      * @param int[] $copyconditionsfrom an int array containing the condition ids to be copied
      * @param string[] $copyconditionto the fieldnames where the conditions are to be copied to
      * @param object $app the app object
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @return void
      */
     public function copyConditions(array $copyconditionsfrom, array $copyconditionsto, $app)
@@ -681,6 +688,7 @@ class SurveyCondition
     /**
      * Gets C answers and C questions based on an array of rows
      * @param array $theserows
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @return array
      */
     protected function getCAnswersAndCQuestions(array $theserows)
@@ -1020,7 +1028,8 @@ class SurveyCondition
      * @param array $postrows question post rows
      * @param array $args further arguments
      * @param object $caller the object that uses the service
-     * @return string the nav options
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+    * @return string the nav options
      */
     protected function getQuestionNavOptions($gid, $qid, array $theserows, array $postrows, array $args, $caller): string
     {
@@ -1099,6 +1108,7 @@ class SurveyCondition
      * @param int $qid the question id
      * @param array $args further arguments
      * @param object $caller the object that uses the service
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      * @return string the form's HTML
      */
     protected function getQuickAddConditionForm(int $gid, int $qid, array $args, $caller)
@@ -1227,6 +1237,7 @@ class SurveyCondition
      * @param string $imageurl the image's url
      * @param mixed $extraGetParams legacy parameter, I don't know what it represents
      * @param object $caller the object using the service
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @return array
      */
     public function index($args, $aData, $subaction, $method, $gid, $qid, $imageurl, $extraGetParams, $caller)
