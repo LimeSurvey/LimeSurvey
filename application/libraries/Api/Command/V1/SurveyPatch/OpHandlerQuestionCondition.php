@@ -1068,7 +1068,8 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         if ($qid) {
             $question = \Question::model()->findByPk($qid);
             foreach ($this->permissionMap as $permission => $value) {
-                if (!\Permission::model()->hasSurveyPermission(intval($question->sid ?? 0), 'surveycontent', $permission)) {
+                $sid = ($question->sid ?? 0);
+                if (!\Permission::model()->hasSurveyPermission((int)$sid, 'surveycontent', $permission)) {
                     throw new \Exception("Missing {$permission} permission from {$question->sid}");
                 }
             }
