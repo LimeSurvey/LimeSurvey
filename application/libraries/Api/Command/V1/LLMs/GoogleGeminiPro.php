@@ -97,13 +97,18 @@ class GoogleGeminiPro implements AIClientInterface
         return "{$this->googleai_url}/{$this->googleai_model}:generateContent?key={$this->googleai_apikey}";
     }
 
-    private function handleResponse(string $response): string
+    private function handleResponse(string $response)
     {
         $responseData = json_decode($response, true);
-        if (isset($responseData['candidates'][0]['content']['parts'][0]['text'])) {
-            return $responseData['candidates'][0]['content']['parts'][0]['text'];
-        } else {
-            return "No text";
+        if (isset($responseData['candidates'])) {
+            $array = array_map(function ($candidate) {
+                return $candidate['content']['parts'][0]['text'];
+            }, $responseData['candidates']);
+            return json_encode([
+                'content' => $array,
+                'error' => false,
+                'errorMsg' => null,
+            ]);
         }
     }
 
@@ -121,9 +126,17 @@ class GoogleGeminiPro implements AIClientInterface
             if (is_string($response)) {
                 return $this->handleResponse($response);
             }
-            return 'No text';
+            return json_encode([
+                'content' => null,
+                'error' => true,
+                'errorMsg' => 'No text generated',
+            ]);
         }
-        return 'No API key';
+        return json_encode([
+            'content' => null,
+            'error' => true,
+            'errorMsg' => 'No API key',
+        ]);
     }
 
     public function run(): string
