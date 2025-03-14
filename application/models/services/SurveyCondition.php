@@ -661,7 +661,7 @@ class SurveyCondition
     /**
      * Gets the post rows from the question list
      * @param array $postquestionlist
-     * @return array{gid: mixed, mandatory: mixed, other: mixed, qid: mixed, question: string, sid: mixed, title: mixed, type: mixed[]}
+     * @return list<array{gid: mixed, mandatory: mixed, other: mixed, qid: mixed, question: mixed, sid: mixed, title: mixed, type: mixed}>
      */
     protected function getPostRows(array $postquestionlist)
     {
@@ -1238,6 +1238,7 @@ class SurveyCondition
      * @param mixed $extraGetParams legacy parameter, I don't know what it represents
      * @param object $caller the object using the service
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @psalm-suppress InvalidArrayOffset
      * @return array
      */
     public function index($args, $aData, $subaction, $method, $gid, $qid, $imageurl, $extraGetParams, $caller)
