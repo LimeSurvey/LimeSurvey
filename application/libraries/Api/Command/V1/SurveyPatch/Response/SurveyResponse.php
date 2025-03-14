@@ -16,7 +16,7 @@ class SurveyResponse
     protected TempIdMapping $tempIdMapping;
     protected ValidationErrors $validationErrors;
     protected ExceptionErrors $exceptionErrors;
-    protected $additional = [];
+    protected array $additional = [];
 
     /**
      * @param TempIdMapping $tempIdMapping
@@ -110,6 +110,20 @@ class SurveyResponse
                 );
             }
             $this->isValidOperation = false;
+        }
+    }
+
+    /**
+     * Extracts additional fields
+     * @param array $handleResponse
+     * @return void
+     */
+    public function extractAdditional(array $handleResponse)
+    {
+        if (array_key_exists('additional', $handleResponse)) {
+            $this->additional = [
+                'extras' => $handleResponse['additional']
+            ];
         }
     }
 

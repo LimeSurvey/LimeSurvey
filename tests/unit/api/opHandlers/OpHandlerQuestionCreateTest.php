@@ -100,7 +100,7 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
                 'title'               => 'G01Q01',
                 'type'                => '1',
                 'question_theme_name' => 'arrays\/dualscale',
-                'gid'                 => '50',
+                'gid'                 => 50,
                 'mandatory'           => false
             ],
             'questionL10n' => [

@@ -47,7 +47,8 @@ class TransformerInputAnswer extends Transformer
             $index = array_key_exists(
                 'aid',
                 $answer
-            ) && $answer['aid'] > 0 ? $answer['aid'] : $index;
+            ) && (int)$answer['aid'] > 0
+                ? (int)$answer['aid'] : (int)$index;
             $output[$index][$scaleId] = $answer;
         }
         return $output;

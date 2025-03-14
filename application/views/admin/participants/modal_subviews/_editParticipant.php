@@ -70,7 +70,7 @@ Yii::app()->getController()->renderPartial(
             </div>
         </div>
         <div class='mb-3'>
-            <label class='form-label '><?php eT("Blocklist user:"); ?></label>
+            <label class='form-label '><?php eT("Participant is on blocklist:"); ?></label>
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'model'         => $model,
