@@ -793,7 +793,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                                     $mapping['conditionsMap'] = [];
                                 }
                                 foreach ($cids as $key => $value) {
-                                    $mapping['conditionsMap'] []= new TempIdMapItem(
+                                    $mapping['conditionsMap'][] = new TempIdMapItem(
                                         $key,
                                         $value,
                                         'cid'
