@@ -624,7 +624,7 @@ class SurveyCondition
     /**
      * Gets rows from the question list
      * @param array $questionlist
-     * @return array{gid: mixed, mandatory: mixed, other: mixed, qid: mixed, question: mixed, sid: mixed, title: mixed, type: mixed[]}
+     * @return list<array{gid: mixed, mandatory: mixed, other: mixed, qid: mixed, question: mixed, sid: mixed, title: mixed, type: mixed}>
      */
     protected function getTheseRows(array $questionlist)
     {
