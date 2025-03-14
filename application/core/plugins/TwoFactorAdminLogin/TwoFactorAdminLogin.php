@@ -28,6 +28,12 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
     private $o2FA = null;
 
+    /** @inheritdoc **/
+    public $allowedPublicMethods = [
+        'userindex',
+        'index'
+    ];
+
     protected $storage = 'DbStorage';
     protected $settings = array(
         'issuer' => array(
@@ -71,10 +77,12 @@ class TwoFactorAdminLogin extends AuthPluginBase
             'default' => '0',
             'options' => [
                 '0 ' => 'No',
-                '1' => 'Yes',
+                '1' => 'Only prompt, no enforcement',
+                '2' => 'Always enforce 2FA activation',
             ],
             'help' => 'Upon login, users who have not enabled two-factor authentication (2FA) will be prompted to set it up.'
         ),
+
     );
 
     public function init()
@@ -241,6 +249,32 @@ class TwoFactorAdminLogin extends AuthPluginBase
         if (TFAHelper::isPluginActive()) {
             $oEvent->append('extraMenus', [$oNewMenu]);
         }
+
+        /* Admin GUI : redirect if needed (force2fa >=2) */
+        if ($this->get('force2fa', null, null, 0) < 2) {
+            return;
+        }
+        /* Already set */
+        if (TFAUserKey::model()->findByPk(App()->user->id)) {
+            return;
+        }
+        /* Page to set (already redirected) */
+        if (
+            App()->getController() && App()->getController()->getId() == 'admin'
+            && App()->getController()->getAction() && App()->getController()->getAction()->getId() == 'pluginhelper'
+            && App()->getRequest()->getQuery('plugin') == 'TwoFactorAdminLogin'
+            && App()->getRequest()->getQuery('method') == 'userindex'
+        ) {
+            return;
+        }
+        Yii::app()->getController()->redirect(
+            [
+                'admin/pluginhelper',
+                'sa' => 'fullpagewrapper',
+                'plugin' => 'TwoFactorAdminLogin',
+                'method' => 'userindex'
+            ]
+        );
     }
 
     /**
@@ -252,8 +286,15 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $oEvent = $this->getEvent();
         $oTFAModel =  TFAUserKey::model()->findByPk(App()->user->id);
 
-        if ($oTFAModel == null && $this->get('force2fa', null, null, 0) == 1) {
-            Yii::app()->getController()->redirect($this->api->createUrl('admin/pluginhelper/sa/fullpagewrapper/plugin/TwoFactorAdminLogin/method/userindex', []));
+        if ($oTFAModel == null && $this->get('force2fa', null, null, 0) >= 1) {
+            Yii::app()->getController()->redirect(
+                [
+                    'admin/pluginhelper',
+                    'sa' => 'fullpagewrapper',
+                    'plugin' => 'TwoFactorAdminLogin',
+                    'method' => 'userindex'
+                ]
+            );
         }
     }
 
@@ -299,7 +340,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
         $aData = [
             'oTFAModel' => $oTFAModel,
-            'force2FA' => $this->get('force2fa', null, null, 0) == 1
+            'force2FA' => $this->get('force2fa', null, null, 0)
         ];
 
         $this->pageScripts();
@@ -379,7 +420,6 @@ class TwoFactorAdminLogin extends AuthPluginBase
         if (!$oTFAModel->save()) {
             return $this->createJSONResponse(false, gT("The two-factor authentication key could not be stored."));
         }
-
         return $this->createJSONResponse(true, "Two-factor method successfully stored", ['reload' => true]);
     }
 
