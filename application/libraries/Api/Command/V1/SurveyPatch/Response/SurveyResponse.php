@@ -85,15 +85,6 @@ class SurveyResponse
         }
     }
 
-    public function extractAdditional(array $handleResponse)
-    {
-        if (array_key_exists('additional', $handleResponse)) {
-            $this->additional = [
-                'extras' => $handleResponse['additional']
-            ];
-        }
-    }
-
     /**
      * Extracts possible validationErrors from the $operationData array
      * @param array $handleResponse
