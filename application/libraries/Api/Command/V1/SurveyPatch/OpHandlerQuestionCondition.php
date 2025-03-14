@@ -37,7 +37,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
 
     protected SurveyCondition $surveyCondition;
 
-    protected $permissionMap = [];
+    protected array $permissionMap = [];
 
     /**
      * Constructor
@@ -722,26 +722,26 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                     if ($op->getType()->getId() !== OpTypeDelete::ID) {
                         throw new \Exception("Incompatible op with the action");
                     }
-                    $this->surveyCondition->deleteAllConditions($qid, $this);
+                    $this->surveyCondition->deleteAllConditions(intval($qid), $this);
                     break;
                 case "renumberScenarios":
                     if ($op->getType()->getId() !== OpTypeUpdate::ID) {
                         throw new \Exception("Incompatible op with the action");
                     }
-                    $this->surveyCondition->renumberScenarios($qid, $this);
+                    $this->surveyCondition->renumberScenarios(intval($qid), $this);
                     break;
                 case "copyConditions":
                     if ($op->getType()->getId() !== OpTypeCreate::ID) {
                         throw new \Exception("Incompatible op with the action");
                     }
                     $question = \Question::model()->findByPk($qid);
-                    $this->surveyCondition->copyConditions($this->surveyCondition->getCidsOfQid($op->getProps()['fromqid']), [$this->surveyCondition->setISurveyID($question->sid)->getFieldName($question->sid, $question->gid, $question->qid)], $this);
+                    $this->surveyCondition->copyConditions($this->surveyCondition->getCidsOfQid($op->getProps()['fromqid']), [$this->surveyCondition->setISurveyID(intval($question->sid))->getFieldName($question->sid, $question->gid, intval($question->qid))], $this);
                     break;
                 case "deleteAllConditionsOfSurvey":
                     $this->surveyCondition->deleteAllConditionsOfSurvey($op->getProps()['sid'], $this);
                     break;
                 case "conditionScript":
-                    $this->surveyCondition->conditionScript($qid, $op->getProps()['script']);
+                    $this->surveyCondition->conditionScript((int)$qid, $op->getProps()['script']);
                     break;
             }
         } else {
@@ -757,13 +757,13 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                             if ($op->getType()->getId() !== OpTypeDelete::ID) {
                                 throw new \Exception("Incompatible op with the action");
                             }
-                            $this->surveyCondition->deleteScenario($qid, $scid);
+                            $this->surveyCondition->deleteScenario((int)$qid, $scid);
                             break;
                         case "updateScenario":
                             if ($op->getType()->getId() !== OpTypeUpdate::ID) {
                                 throw new \Exception("Incompatible op with the action");
                             }
-                            $this->surveyCondition->updateScenario($scenario['scenarioNumber'], $qid, $scid, $this);
+                            $this->surveyCondition->updateScenario($scenario['scenarioNumber'], (int)$qid, $scid, $this);
                             break;
                     }
                 } else {
@@ -827,7 +827,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                                 );
                                 break;
                             case 'deleteCondition':
-                                $this->surveyCondition->deleteCondition($qid, $condition['cid']);
+                                $this->surveyCondition->deleteCondition($qid, (int)$condition['cid']);
                                 break;
                         }
                     }
@@ -838,7 +838,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         if ($qid) {
             $question = \Question::model()->findByPk($qid);
             $return['additional'] = [
-                'relevance' => $question->relevance,
+                'relevance' => $question->relevance ?? 1,
                 'qid' => $qid
             ];
         }
@@ -985,7 +985,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                     if (!$this->validateCopyConditions($props)) {
                         throw new \Exception("Cannot copy conditions");
                     }
-                    $sid = \Question::model()->findByPk($props['fromqid'])->sid;
+                    $sid = \Question::model()->findByPk($props['fromqid'])->sid ?? 0;
                     if (!\Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read')) {
                         throw new \Exception("Missing read permission from {$sid}");
                     }
@@ -1068,7 +1068,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         if ($qid) {
             $question = \Question::model()->findByPk($qid);
             foreach ($this->permissionMap as $permission => $value) {
-                if (!\Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', $permission)) {
+                if (!\Permission::model()->hasSurveyPermission($question->sid ?? 0, 'surveycontent', $permission)) {
                     throw new \Exception("Missing {$permission} permission from {$question->sid}");
                 }
             }
