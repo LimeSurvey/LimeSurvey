@@ -705,6 +705,9 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *
      * @param OpInterface $op
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @psalm-suppress RedundantConditionGivenDocblockType
+     * @psalm-suppress DocblockTypeContradiction
+     * @psalm-suppress PossiblyNullArgument
      * @return array
      * @throws OpHandlerException
      * @throws PersistErrorException
@@ -965,6 +968,8 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      * - condition-based, where we do actions for conditions in the condition arrays of the scenarios in the scenarios array
      * @param OpInterface $op the operation
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @psalm-suppress RedundantConditionGivenDocblockType
+     * @psalm-suppress DocblockTypeContradiction
      * @return array the validation responses
      */
     public function validateOperation(OpInterface $op): array
