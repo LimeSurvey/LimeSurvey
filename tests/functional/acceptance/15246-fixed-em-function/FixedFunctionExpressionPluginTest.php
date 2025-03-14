@@ -30,6 +30,9 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
     public function testPluginsStats()
     {
         $questions = $this->getAllSurveyQuestions();
+        foreach ($questions['Q03']->subquestions as $subquestion) {
+            $questions[$subquestion->title] = $subquestion;
+        }
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
