@@ -126,6 +126,7 @@ class SurveyCondition
      * @param string $tokenAttr the token placeholder, such as {TOKEN:FIRSTNAME}
      * @param string $ConditionRegexp the regular expression to match
      * @param array  $tempcids the list of cids to be replaced with actual ids
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @return array
      */
     public function insertCondition(array $args, string $editSourceTab, string $editTargetTab, $app, string $ConditionConst, string $prevQuestionSGQA, string $tokenAttr, string $ConditionRegexp, array $tempcids = [])
