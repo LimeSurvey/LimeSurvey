@@ -108,13 +108,18 @@ jobs:
           # sed -i '60s/.*/        "debug"=>2,/' application/config/config.php
           # cat application/config/config.php
 
+      # for debugging
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+        if: ${{ contains(matrix.php-versions, '7.4') }}
+
       - name: Test the server
         run: |
           # Test server.
-          #wget -O - localhost
-          #sudo tail -n 500 /var/log/apache2/error.log || true
-          #sudo tail -n 500 /var/log/nginx/error.log || true
-          #sudo tail -n 500 /var/log/php7.4-fpm.log || true
+          wget -O - localhost
+          sudo tail -n 500 /var/log/apache2/error.log || true
+          sudo tail -n 500 /var/log/nginx/error.log || true
+          sudo tail -n 500 /var/log/php7.4-fpm.log || true
           #sudo tail -n 500 /var/log/php8.0-fpm.log || true
           # NOTE: php --version might not be the same as setup in apache. Use fwrite(STDERR, phpversion()); in index.php to be sure.
           #which php
