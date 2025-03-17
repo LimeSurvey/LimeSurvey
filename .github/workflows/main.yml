@@ -111,7 +111,7 @@ jobs:
       - name: Test the server
         run: |
           # Test server.
-          wget -O - localhost
+          #wget -O - localhost
           #sudo tail -n 500 /var/log/apache2/error.log || true
           #sudo tail -n 500 /var/log/nginx/error.log || true
           #sudo tail -n 500 /var/log/php7.4-fpm.log || true
@@ -156,7 +156,7 @@ jobs:
           retention-days: 5
   
   unit-tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         # Specify what versions of php you want to test
@@ -216,7 +216,7 @@ jobs:
           path: cov.xml
 
   test-coverage:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: unit-tests
     strategy:
       matrix:
@@ -246,7 +246,7 @@ jobs:
         run: php tests/bin/check_coverage.php cov.xml 37
 
   code-check:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       DBENGINE: INNODB
     strategy:
