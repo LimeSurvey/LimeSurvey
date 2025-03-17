@@ -34,6 +34,22 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.12.0 (build 250310) to 6.12.1 (build 250317) March 17, 2025
+-Fixed issue #20004: User massive action drop-down list not translated (#4196) (Franck)
+-Fixed issue #19997: Bad HTML on theme list (#4198) (Denis Chenu)
+-Fixed issue #19995: Error Export SPSS file doesn't work (#4197) (Adam Zammit)
+-Fixed issue #19773: Translation function added to Reordering title (#4195) (Franck)
+-Fixed issue #18713: Better focus on radio and checkbox - keyboard navigation broken (#4191) (Denis Chenu)
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by c_schmitz, kkd
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 6.11.0 (build 250303) to 6.12.0 (build 250310) March 10, 2025
 -New translation: Hungarian (Informal) (Dániel Kiss-Kálmán)
 -Fixed issue #20000: Special characters in question text not properly shown in column selector on export (Carsten Schmitz)
