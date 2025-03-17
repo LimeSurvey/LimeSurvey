@@ -13,7 +13,7 @@ on:
 
 jobs:
   CI-pipeline:
-    runs-on: ubuntu-20.04    # ubuntu runner hosted by Github
+    runs-on: ubuntu-22.04    # ubuntu runner hosted by Github
     strategy:
       matrix:
         # Specify what versions of php you want to test
@@ -80,6 +80,7 @@ jobs:
           chmod -R 777 ./tests/tmp
           chmod -R 777 ./application/config
           chmod +x ./tests/bin/lint-*
+          chmod 777 /home/runner
 
       - name: Check MySQL service
         run: |
