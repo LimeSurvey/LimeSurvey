@@ -31,9 +31,10 @@ jobs:
       - uses: actions/checkout@v4
       # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
       - name: Install specified PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
+        run: |
+          sudo add-apt-repository ppa:ondrej/php
+          sudo apt update
+          sudo apt -y install php${{ matrix.php-versions }}
 
       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
       - name: Start the MySQL service
@@ -117,9 +118,9 @@ jobs:
         run: |
           # Test server.
           wget -O - localhost
-          sudo tail -n 500 /var/log/apache2/error.log || true
-          sudo tail -n 500 /var/log/nginx/error.log || true
-          sudo tail -n 500 /var/log/php7.4-fpm.log || true
+          #sudo tail -n 500 /var/log/apache2/error.log || true
+          #sudo tail -n 500 /var/log/nginx/error.log || true
+          #sudo tail -n 500 /var/log/php7.4-fpm.log || true
           #sudo tail -n 500 /var/log/php8.0-fpm.log || true
           # NOTE: php --version might not be the same as setup in apache. Use fwrite(STDERR, phpversion()); in index.php to be sure.
           #which php
