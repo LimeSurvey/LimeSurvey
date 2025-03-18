@@ -433,7 +433,19 @@ class GeneralSettings
             $meta['updateFields'][] = $field;
         }
 
+        if ($field == 'othersettings') {
+            // Update othersettings
+            $this->updateOtherSettings($input, $survey);
+        }
+
         return $meta;
+    }
+
+    private function updateOtherSettings($input, Survey $survey)
+    {
+        // Update other settings
+        $survey->setNonNumericalSetting("non_numerical_prefix", $input['non_numerical_prefix'] ?? 'A');
+        $survey->setNonNumericalSetting("non_numerical_subquestions_prefix", $input['non_numerical_subquestions_prefix'] ?? 'SQ');
     }
 
     private function getAdditionalLanguagesArray($input, Survey $survey)
