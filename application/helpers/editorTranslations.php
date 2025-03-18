@@ -187,3 +187,4 @@ gT('Questions and edits that were done in the meantime will be %smerged%s with y
 gT('Start from scratch');
 gT('Keep them archived and create a new response table.');
 gT('Start with a brand %snew responses%s table without importing an existing one.');
+gT('Congrats! Your survey has been activated.');
