@@ -33,6 +33,12 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         }
     });
 
+    // Use window focus trick to ensure loading spinner is hidden after export
+    $('#exportlabelset').on('submit', function(){
+        $(window).one('focus', function(){ $('#ls-loading').hide(); });
+    });
+
+
     const answersTable = $(".answertable tbody");
     if (answersTable.length && answersTable.children().length == 0) {
         add_label(undefined);
