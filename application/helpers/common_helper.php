@@ -1218,7 +1218,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 
                 //go through all the (multiple) answers
                 foreach ($result as $row) {
-                    $myfield2 = $myfield . $row['title'];
+                    $myfield2 = $myfield . "_S" . $row['qid'];
                     $allfields[] = $myfield2;
                 }
                 break;

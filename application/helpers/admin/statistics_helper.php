@@ -601,7 +601,8 @@ class statistics_helper
         $qtype = "";
         $subquestionText = "";
         $fieldmap = createFieldMap($survey, "full", false, false, $language);
-        $sQuestionType = isset($fieldmap[$rt]['type']) ? $fieldmap[$rt]['type'] : '';
+        $letterIndex = strcspn($rt, '0123456789');
+        $sQuestionType = substr($rt, ($letterIndex > 1) ? 0 : 2, 1);
         $sDatabaseType = Yii::app()->db->getDriverName();
         $statisticsoutput = "";
         $qqid = "";
@@ -622,7 +623,7 @@ class statistics_helper
         //M - Multiple choice, therefore multiple fields - one for each answer
         if ($sQuestionType == "M" || $sQuestionType == "P") {
             //get SGQ data
-            $qqid = substr($rt, 1);
+            $qqid = substr($rt, 2);
 
             //select details for this question
             $nresult = Question::model()->find('parent_qid=0 AND qid=:qid', array(':qid' => $qqid));
@@ -641,13 +642,13 @@ class statistics_helper
                 'params' => array(':qid' => $qqid)
             ));
             foreach ($rows as $row) {
-                $mfield = $rt . "_S" . $row['title'];
+                $mfield = substr($rt, 1) . "_S" . $row['qid'];
                 $alist[] = array($row['title'], flattenText($row->questionl10ns[$language]->question), $mfield);
             }
 
             //Add the "other" answer if it exists
             if ($qother == "Y") {
-                $mfield = $rt . "_C" . "other";
+                $mfield = substr($rt, 1) . "_C" . "other";
                 $alist[] = array(gT("Other"), gT("Other"), $mfield);
             }
         } elseif ($sQuestionType == Question::QT_T_LONG_FREE_TEXT || $sQuestionType == Question::QT_S_SHORT_FREE_TEXT) {
@@ -678,9 +679,13 @@ class statistics_helper
         }
 
         //Q - Multiple short text
-        elseif ($sQuestionType == "Q") {
+        elseif ($sQuestionType == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
             //Build an array of legitimate qid's for testing later
-            $aQuestionInfo = $fieldmap[substr($rt, 1)];
+            $key = substr($rt, strcspn($rt, '0123456789') - 1);
+            if (!isset($fieldmap[$key])) {
+                return [];
+            }
+            $aQuestionInfo = $fieldmap[substr($rt, strcspn($rt, '0123456789') - 1)];
             $qqid = $aQuestionInfo['qid'];
             $qaid = $aQuestionInfo['aid'];
 
@@ -695,7 +700,7 @@ class statistics_helper
                 'condition' => 'language=:language AND parent_qid=:parent_qid AND title=:title',
                 'params' => array(':language' => $language, ':parent_qid' => $qqid, ':title' => $qaid)
             ));
-            $atext = flattenText($nresult->questionl10ns[$language]->question);
+            $atext = flattenText($nresult->questionl10ns[$language]->question ?? '');
             //add this to the question title
             $qtitle .= " [$atext]";
 
@@ -1318,7 +1323,7 @@ class statistics_helper
 
                 case Question::QT_F_ARRAY: // Array of Flexible
                 case Question::QT_H_ARRAY_COLUMN: // Array of Flexible by Column
-                    $qresult = Question::model()->findAll(array('order' => 'question_order', 'condition' => 'parent_qid=:parent_qid AND title=:title', 'params' => array(":parent_qid" => $qiqid, ':title' => $qanswer)));
+                    $qresult = Question::model()->findAll(array('order' => 'question_order', 'condition' => 'qid=:qid', 'params' => array(":qid" => substr(explode("_", $fielddata['fieldname'])[1], 1))));
                     //loop through answers
                     foreach ($qresult as $qrow) {
                         $fresult = Answer::model()->findAllByAttributes(['qid' => $qiqid, 'scale_id' => 0]);
@@ -1599,7 +1604,7 @@ class statistics_helper
             //"Answer" means that we show an option to list answer to "other" text field
             elseif (($al[0] === gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === "O" && $al[0] === gT("Comments")) || $outputs['qtype'] === "P") && count($al) > 2) {
                 if ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
-                    $sColumnName = $al[2] . "comment";
+                    $sColumnName = $al[2] . "_Ccomment";
                 } else {
                     $sColumnName = $al[2];
                 }
@@ -2016,8 +2021,10 @@ class statistics_helper
 
 
         //-------------------------- PCHART OUTPUT ----------------------------
-        $qqid = substr($rt, 1);
-        $attrQid = $outputs['parentqid'] > 0 ? $outputs['parentqid'] : $qqid; // use parentqid if exists
+        $letterPosition = strcspn($rt, '0123456789');
+        $qqid = substr($rt, $letterPosition - 1);
+        $actualQID = substr(explode("_", $qqid)[0], $letterPosition);
+        $attrQid = $outputs['parentqid'] > 0 ? $outputs['parentqid'] : $actualQID; // use parentqid if exists
         $aattr = QuestionAttribute::model()->getQuestionAttributes($attrQid);
 
         //PCHART has to be enabled and we need some data
