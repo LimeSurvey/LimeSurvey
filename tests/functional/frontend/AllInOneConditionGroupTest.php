@@ -36,7 +36,7 @@ class AllInOneConditionGroupTest extends TestBaseClassWeb
 
         $web = self::$webDriver;
         $urlMan = \Yii::app()->urlManager;
-        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
+        $urlMan->setBaseUrl('https://' . self::$domain . '/index.php');
         $surveyUrl = $urlMan->createUrl(
             'survey/index',
             [
@@ -52,7 +52,7 @@ class AllInOneConditionGroupTest extends TestBaseClassWeb
             $this->assertFalse($questionG02Q02->isDisplayed());
             /* click on F Q00 : shown G02Q02 */
             $baseSGQ = 'Q' .$questions['Q00']->qid;
-            $web->findElement(WebDriverBy::id('javatbd' . $baseSGQ . 'F'))->click();
+            $web->findElement(WebDriverBy::id('javatbd' . $baseSGQ . '_CF'))->click();
             $this->assertTrue($questionG02Q02->isDisplayed());
             /* Update G02Q02 text : check group descriptin */
             $textSgqa = 'Q' .$questions['G02Q02']->qid;
@@ -61,7 +61,7 @@ class AllInOneConditionGroupTest extends TestBaseClassWeb
             $this->assertEquals("CheckUpdated", $checkInGroupG02Q02Text, "checkInGroupG02Q02Text seems not updated, get “" . $checkInGroupG02Q02Text . "”");
             /* click on M Q00 : hide G02Q02*/
             $baseSGQ = 'Q' .$questions['Q00']->qid;
-            $web->findElement(WebDriverBy::id('javatbd' . $baseSGQ . 'M'))->click();
+            $web->findElement(WebDriverBy::id('javatbd' . $baseSGQ . '_CM'))->click();
             $this->assertFalse($questionG02Q02->isDisplayed());
             $checkInGroupG02Q02Text = $web->findElement(WebDriverBy::id('checkInGroupG02Q02'))->getText();
             $this->assertEquals("", $checkInGroupG02Q02Text, "checkInGroupG02Q02Text seems not updated by relevance, get “" . $checkInGroupG02Q02Text . "”");
