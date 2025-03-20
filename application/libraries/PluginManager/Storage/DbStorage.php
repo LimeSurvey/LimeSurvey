@@ -1,7 +1,7 @@
 <?php
 
-namespace LimeSurvey\PluginManager;
-
+namespace LimeSurvey\PluginManager\Storage;
+use LimeSurvey\PluginManager\iPlugin;
 use PluginSetting;
 
 class DbStorage implements iPluginStorage

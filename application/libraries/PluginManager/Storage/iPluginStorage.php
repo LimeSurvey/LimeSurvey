@@ -1,6 +1,7 @@
 <?php
 
-namespace LimeSurvey\PluginManager;
+namespace LimeSurvey\PluginManager\Storage;
+use LimeSurvey\PluginManager\iPlugin;
 
 interface iPluginStorage
 {
