@@ -182,15 +182,17 @@ class PluginManager extends \CApplicationComponent
      */
     public function getStore($storageClass)
     {
-        if (
-            !class_exists($storageClass)
-                && class_exists('LimeSurvey\\PluginManager\\' . $storageClass)
-        ) {
-            $storageClass = 'LimeSurvey\\PluginManager\\' . $storageClass;
+        if (isset($this->stores[$storageClass])) {
+            return $this->stores[$storageClass];
         }
-        if (!isset($this->stores[$storageClass])) {
-            $this->stores[$storageClass] = new $storageClass();
+        if (!@class_exists($storageClass, true)) {
+            if (@class_exists('LimeSurvey\\PluginManager\\' . $storageClass)) {
+                $storageClass = 'LimeSurvey\\PluginManager\\' . $storageClass;
+            }
         }
+        // Thrown an error in case storageClass is not found
+        class_exists($storageClass);
+        $this->stores[$storageClass] = new $storageClass();
         return $this->stores[$storageClass];
     }
 
