@@ -285,7 +285,8 @@ class GeneralSettings
             'bounce_email' => [],
             'gsid' => ['default' => 1],
             'format' => [],
-            'template' => []
+            'template' => [],
+            'othersettings' => ['canUpdate' => $surveyNotActive]
         ];
     }
 
@@ -325,6 +326,13 @@ class GeneralSettings
                     break;
                 }
             }
+        }
+
+        // Other settins doesn't have it's own key in the array input
+        // Must be updated earlier
+        if ($field == 'othersettings') {
+            // Update othersettings
+            $this->updateOtherSettings($input, $survey);
         }
 
         if (
@@ -433,18 +441,13 @@ class GeneralSettings
             $meta['updateFields'][] = $field;
         }
 
-        if ($field == 'othersettings') {
-            // Update othersettings
-            $this->updateOtherSettings($input, $survey);
-        }
-
         return $meta;
     }
 
     private function updateOtherSettings($input, Survey $survey)
     {
-        // Update other settings
-        $survey->setNonNumericalSetting("non_numerical_prefix", $input['non_numerical_prefix'] ?? 'A');
+        // Update other settings, only two for now
+        $survey->setNonNumericalSetting("non_numerical_answer_prefix", $input['non_numerical_answer_prefix'] ?? 'A');
         $survey->setNonNumericalSetting("non_numerical_subquestions_prefix", $input['non_numerical_subquestions_prefix'] ?? 'SQ');
     }
 

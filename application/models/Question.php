@@ -1661,7 +1661,7 @@ class Question extends LSActiveRecord
     {
         $question = new Question();
         $question->qid = 0;
-        $question->title = (Yii::app()->getConfig('subquestionprefix', 'SQ')) . '001';
+        $question->title = self::getCodePrefix('non_numerical_subquestions_prefix', $this->survey->sid) . '001';
         $question->relevance = 1;
         return $question;
     }
@@ -1677,7 +1677,7 @@ class Question extends LSActiveRecord
         // TODO: Assuming no collision.
         $answer->aid = 'new' . rand(1, 100000);
         $answer->sortorder = 0;
-        $answer->code = (Yii::app()->getConfig('answeroptionprefix', 'A')) . '001';
+        $answer->code = self::getCodePrefix('non_numerical_answer_prefix', $this->survey->sid) . '001';
 
         $l10n = [];
         foreach ($this->survey->allLanguages as $language) {
@@ -1694,6 +1694,27 @@ class Question extends LSActiveRecord
         $answer->answerl10ns = $l10n;
 
         return $answer;
+    }
+
+    public static function getCodePrefix($prefixType, $surveyid)
+    {
+        $prefixCode = '';
+        $survey = Survey::model()->findByPk($surveyid);
+        $nonNumericalSettings = $survey->getNonNumericalSettings();
+        if ($prefixType == 'non_numerical_answer_prefix') {
+            $prefixCode = $nonNumericalSettings['non_numerical_answer_prefix'];
+            if (!$prefixCode) {
+                $prefixCode = Yii::app()->getConfig('non_numerical_answer_prefix', 'A');
+            }
+        } else if ($prefixType == 'non_numerical_subquestions_prefix') {
+            $prefixCode = empty($nonNumericalSettings['non_numerical_subquestions_prefix']);
+            if (!$prefixCode) {
+                $prefixCode = Yii::app()->getConfig('non_numerical_subquestions_prefix', 'SQ');
+            }
+        } else if ($prefixType == 'non_numerical_question_prefix') {
+            $prefixCode = 'Q';
+        }
+        return $prefixCode;
     }
 
     /**

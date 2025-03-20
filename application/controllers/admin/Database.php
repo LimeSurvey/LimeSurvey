@@ -370,7 +370,7 @@ class Database extends SurveyCommonAction
             'owner_id' => $request->getPost('owner_id'),
             'gsid' => $request->getPost('gsid'),
             'template' => $request->getPost('template'),
-            'non_numerical_prefix' => $request->getPost('non_numerical_prefix'),
+            'non_numerical_answer_prefix' => $request->getPost('non_numerical_answer_prefix'),
             'non_numerical_subquestions_prefix' => $request->getPost('non_numerical_subquestions_prefix'),
         ];
         try {
