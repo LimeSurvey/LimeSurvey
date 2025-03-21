@@ -36,7 +36,7 @@ class AllInOneConditionGroupTest extends TestBaseClassWeb
 
         $web = self::$webDriver;
         $urlMan = \Yii::app()->urlManager;
-        $urlMan->setBaseUrl('https://' . self::$domain . '/index.php');
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $surveyUrl = $urlMan->createUrl(
             'survey/index',
             [
