@@ -91,7 +91,7 @@ class DataEntry extends SurveyCommonAction
         );
 
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'create')) {
-            if (tableExists("{{survey_$iSurveyId}}")) {
+            if (tableExists("{{responses_$iSurveyId}}")) {
                 // First load the database helper
                 Yii::app()->loadHelper('database'); // Really needed ?
 
@@ -126,9 +126,9 @@ class DataEntry extends SurveyCommonAction
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveyactivation', 'update')) {
             if (Yii::app()->request->getParam('unfinalizeanswers') == 'true') {
                 SurveyDynamic::sid($surveyid);
-                Yii::app()->db->createCommand("DELETE from {{survey_$surveyid}} WHERE submitdate IS NULL AND token in (SELECT * FROM ( SELECT answ2.token from {{survey_$surveyid}} AS answ2 WHERE answ2.submitdate IS NOT NULL) tmp )")->execute();
+                Yii::app()->db->createCommand("DELETE from {{responses_$surveyid}} WHERE submitdate IS NULL AND token in (SELECT * FROM ( SELECT answ2.token from {{responses_$surveyid}} AS answ2 WHERE answ2.submitdate IS NOT NULL) tmp )")->execute();
                 // Then set all remaining answers to incomplete state
-                Yii::app()->db->createCommand("UPDATE {{survey_$surveyid}} SET submitdate=NULL, lastpage=NULL")->execute();
+                Yii::app()->db->createCommand("UPDATE {{responses_$surveyid}} SET submitdate=NULL, lastpage=NULL")->execute();
                 // Finally, reset the token completed and sent status
                 Yii::app()->db->createCommand("UPDATE {{tokens_$surveyid}} SET sent='N', remindersent='N', remindercount=0, completed='N', usesleft=1 where usesleft=0")->execute();
                 $aData['success'] = true;
@@ -237,7 +237,7 @@ class DataEntry extends SurveyCommonAction
 
         $aData['charsetsout'] = $charsetsout;
         $aData['aEncodings'] = $aEncodings;
-        $aData['tableExists'] = tableExists("{{survey_$surveyid}}");
+        $aData['tableExists'] = tableExists("{{responses_$surveyid}}");
 
         $aData['display']['menu_bars']['browse'] = gT("Import VV file");
 
@@ -362,7 +362,7 @@ class DataEntry extends SurveyCommonAction
             foreach ($sourceResponses as $sourceResponse) {
                 $iOldID = $sourceResponse->id;
                 // Using plugindynamic model because I dont trust surveydynamic.
-                $targetResponse = new PluginDynamic("{{survey_$iSurveyId}}");
+                $targetResponse = new PluginDynamic("{{responses_$iSurveyId}}");
                 if ($preserveIDs) {
                     $targetResponse->id = $sourceResponse->id;
                 }
@@ -392,19 +392,19 @@ class DataEntry extends SurveyCommonAction
 
                 $imported++;
                 if ($preserveIDs) {
-                    switchMSSQLIdentityInsert("survey_$iSurveyId", true);
+                    switchMSSQLIdentityInsert("responses_$iSurveyId", true);
                 }
                 $targetResponse->save();
                 if ($preserveIDs) {
-                    switchMSSQLIdentityInsert("survey_$iSurveyId", false);
+                    switchMSSQLIdentityInsert("responses_$iSurveyId", false);
                 }
                 $aSRIDConversions[$iOldID] = $targetResponse->id;
                 unset($targetResponse);
             }
 
             Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
-            $sOldTimingsTable = (string) substr(substr((string) $sourceTable->tableName(), 0, (string) strrpos((string) $sourceTable->tableName(), '_')) . '_timings' . (string) substr((string) $sourceTable->tableName(), (string) strrpos((string) $sourceTable->tableName(), '_')), strlen((string) Yii::app()->db->tablePrefix));
-            $sNewTimingsTable = "survey_{$surveyid}_timings";
+            $sOldTimingsTable = substr(str_replace('responses_', 'timings_', $sourceTable->tableName()), strlen(Yii::app()->db->tablePrefix));
+            $sNewTimingsTable = "timings_{$surveyid}";
 
             if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable)) {
                 // Import timings
@@ -867,7 +867,7 @@ class DataEntry extends SurveyCommonAction
                         $thisqid = $fname['qid'];
                         $currentvalues = array();
                         $rawvalues = [];
-                        $myfname = $fname['sid'] . 'X' . $fname['gid'] . 'X' . $fname['qid'];
+                        $myfname = 'Q' . $fname['qid'];
                         $questionInput = '<div id="question' . $thisqid . '" class="ranking-answers"><ul class="answers-list select-list">';
                         $unseen = true;
                         while (isset($fname['type']) && $fname['type'] == "R" && $fname['qid'] == $thisqid) {
@@ -890,7 +890,7 @@ class DataEntry extends SurveyCommonAction
                         }
                         for ($i = 1; $i <= $anscount; $i++) {
                             $questionInput .= "\n<li class=\"select-item\">";
-                            $questionInput .= "<label for=\"answer{$myfname}{$i}\">";
+                            $questionInput .= "<label for=\"answer{$myfname}_S{$answers[$i - 1]}\">";
                             if ($i == 1) {
                                 $questionInput .= gT('First choice');
                             } else {
@@ -898,7 +898,7 @@ class DataEntry extends SurveyCommonAction
                             }
 
                             $questionInput .= "</label>";
-                            $questionInput .= "<select name=\"{$myfname}{$i}\" id=\"answer{$myfname}{$i}\" class='form-select'>\n";
+                            $questionInput .= "<select name=\"{$myfname}_S{$answers[$i - 1]}\" id=\"answer{$myfname}_S{{$answers[$i - 1]}\" class='form-select'>\n";
                             (!isset($currentvalues[$i - 1])) ? $selected = " selected=\"selected\"" : $selected = "";
                             $questionInput .= "\t<option value=\"\" $selected>" . gT('None') . "</option>\n";
                             foreach ($ansresult as $ansrow) {
@@ -1559,7 +1559,7 @@ class DataEntry extends SurveyCommonAction
             // For questions, if the "Unseen" checkbox is checked, we must set the field to null.
             // There are some special cases we need to handle.
             if ($irow['type'] == Question::QT_R_RANKING) {
-                $unseenFieldName = "unseen:" . $irow['sid'] . 'X' . $irow['gid'] . 'X' . $irow['qid'];
+                $unseenFieldName = "unseen:" . 'Q' . $irow['qid'];
             } elseif ($irow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                 // Remove trailing "comment" from the fieldname, if present
                 $unseenFieldName = "unseen:" . preg_replace('/comment$/', '', $fieldname);
@@ -1713,7 +1713,7 @@ class DataEntry extends SurveyCommonAction
         }
         if ($insertSubaction && $hasResponsesCreatePermission) {
             // TODO: $surveytable is unused. Remove it.
-            $surveytable = "{{survey_{$surveyid}}}";
+            $surveytable = "{{responses_{$surveyid}}}";
             $thissurvey  = getSurveyInfo($surveyid);
             $errormsg = "";
 
@@ -2229,7 +2229,7 @@ class DataEntry extends SurveyCommonAction
                     }
 
                     $qid = $arQuestion['qid'];
-                    $fieldname = "$surveyid" . "X" . "$gid" . "X" . "$qid";
+                    $fieldname = "Q" . "$qid";
 
                     $cdata['bgc'] = $bgc;
                     $cdata['fieldname'] = $fieldname;

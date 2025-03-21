@@ -20,7 +20,7 @@
     <cid><![CDATA[5]]></cid>
     <qid><![CDATA[482]]></qid>
     <cqid><![CDATA[481]]></cqid>
-    <cfieldname><![CDATA[494923X97X481]]></cfieldname>
+    <cfieldname><![CDATA[Q481]]></cfieldname>
     <method><![CDATA[==]]></method>
     <value><![CDATA[F]]></value>
     <scenario><![CDATA[1]]></scenario>
@@ -139,7 +139,7 @@
     <question_order><![CDATA[1]]></question_order>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[((Q00.NAOK == "F"))]]></relevance>
+    <relevance><![CDATA[((Q481.NAOK == "F"))]]></relevance>
     <question_theme_name><![CDATA[longfreetext]]></question_theme_name>
     <modulename/>
    </row>
