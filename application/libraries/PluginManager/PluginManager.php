@@ -193,8 +193,8 @@ class PluginManager extends \CApplicationComponent
                 class_exists('LimeSurvey\\PluginManager\\' . $storageClass, true);
                 /* If no exception : rename $storageClass */
                 $storageClass = 'LimeSurvey\\PluginManager\\' . $storageClass;
-            } catch (Exception $e) {
-                throw new Exception('Unable to find ' . $storageClass . ' class');
+            } catch (\Exception $e) {
+                throw new \Exception('Unable to find ' . $storageClass . ' class');
             }
         }
         $this->stores[$storageClass] = new $storageClass();
