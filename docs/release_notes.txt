@@ -34,6 +34,19 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.12.1 (build 250317) to 6.12.2 (build 250324) March 24, 2025
++New feature #20002: Create 2FA enforcement setting for 2FA plugin (#4202) (Denis Chenu)
+-Fixed issue #20009: Central user DB admin UI - PHP 8.2 deprecation (#4206) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: Greek by baltzis
+#Updated translation: German by c_schmitz, twilllig
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 6.12.0 (build 250310) to 6.12.1 (build 250317) March 17, 2025
 -Fixed issue #20004: User massive action drop-down list not translated (#4196) (Franck)
 -Fixed issue #19997: Bad HTML on theme list (#4198) (Denis Chenu)
