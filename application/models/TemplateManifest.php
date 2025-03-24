@@ -683,8 +683,8 @@ class TemplateManifest extends TemplateConfiguration
               href="' . $sDeleteUrl . '"
               data-post=\'{ "templatename": "' . CHtml::encode($this->sTemplateName) . '" }\'
               data-text="' . gT('Are you sure you want to delete this theme? ') . '"
-              data-button-no="' . gt('Cancel') . '"  
-              data-button-yes="' . gt('Delete') . '"
+              data-button-no="' . gT('Cancel') . '"  
+              data-button-yes="' . gT('Delete') . '"
               data-button-type="btn-danger"
               title="' . gT('Delete') . '"
               class="btn btn-danger btn-sm selector--ConfirmModal">

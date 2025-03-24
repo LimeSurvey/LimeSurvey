@@ -2708,7 +2708,7 @@ class ParticipantsAction extends SurveyCommonAction
         );
 
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $aData['subaction'] = gt('Add participants to central database');
+        $aData['subaction'] = gT('Add participants to central database');
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $topbarData = TopbarConfiguration::getSurveyTopbarData($oSurvey->sid);
         $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
