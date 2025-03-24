@@ -725,6 +725,29 @@ class LSYii_Application extends CWebApplication
      */
     public function copyFromOneTableToTheOther($source, $destination)
     {
-        return $this->db->createCommand("INSERT INTO " . $this->db->quoteTableName($destination) . " SELECT * FROM " . $this->db->quoteTableName($source))->execute();
+        $customFilter = [
+            'mysql' => 'a.TABLE_SCHEMA = b.TABLE_SCHEMA and a.TABLE_SCHEMA = DATABASE()',
+            'mysqli' => 'a.TABLE_SCHEMA = b.TABLE_SCHEMA and a.TABLE_SCHEMA = DATABASE()',
+            'pgsql' => 'a.TABLE_CATALOG = b.TABLE_CATALOG and a.TABLE_CATALOG = current_database()',
+            'mssql' => 'a.TABLE_CATALOG = b.TABLE_CATALOG and a.TABLE_CATALOG = db_name()',
+            'sqlsrv' => 'a.TABLE_CATALOG = b.TABLE_CATALOG and a.TABLE_CATALOG = db_name()',
+        ];
+        $filter = ($customFilter[Yii::app()->db->getDriverName()] ?? '');
+        $command = "
+            select a.COLUMN_NAME as cname
+            from information_schema.columns a
+            join information_schema.columns b
+            on {$filter} and
+               a.TABLE_NAME = '" . $destination . "' and
+               b.TABLE_NAME = '" . $source . "' and
+               a.COLUMN_NAME = b.COLUMN_NAME
+            where a.COLUMN_NAME not in ('id', 'tid')
+        ";
+        $rawResults = Yii::app()->db->createCommand($command)->queryAll();
+        $columns = [];
+        foreach ($rawResults as $rawResult) {
+            $columns[] = $this->db->quoteColumnName($rawResult['cname']);
+        }
+        return count($columns) ? $this->db->createCommand("INSERT INTO " . $this->db->quoteTableName($destination) . "(" . implode(",", $columns) . ") SELECT " . implode(",", $columns) . " FROM " . $this->db->quoteTableName($source))->execute() : 0;
     }
 }

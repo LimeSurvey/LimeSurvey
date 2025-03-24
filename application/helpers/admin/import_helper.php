@@ -1345,7 +1345,16 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
                 $columns[$index] = Yii::app()->db->quoteColumnName($column);
             }
         }
-        $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " AS SELECT " . implode(",", $columns) . " FROM " . Yii::app()->db->quoteTableName($pattern) . $whereClause;
+        $command = "";
+        switch (Yii::app()->db->getDriverName()) {
+            case 'mysqli':
+            case 'mysql':
+            case 'pgsql':
+            $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " AS SELECT " . implode(",", $columns) . " FROM " . Yii::app()->db->quoteTableName($pattern) . $whereClause;
+            case 'mssql':
+            case 'sqlsrv':
+            $command = "SELECT " . implode(",", $columns) . " into " . Yii::app()->db->quoteTableName($table) . " FROM " . Yii::app()->db->quoteTableName($pattern) . $whereClause;
+        }
     } else {
         $command = "";
         switch (Yii::app()->db->getDriverName()) {
@@ -1354,6 +1363,9 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
             $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " LIKE " . Yii::app()->db->quoteTableName($pattern) . ";";
             case 'pgsql':
             $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " (LIKE " . Yii::app()->db->quoteTableName($pattern) . " INCLUDING ALL);";
+            case 'mssql':
+            case 'sqlsrv':
+            $command = "SELECT * into " . Yii::app()->db->quoteTableName($table) . " FROM " . Yii::app()->db->quoteTableName($pattern) . " where 1=0";
         }
     }
     return Yii::app()->db->createCommand($command)->execute();
@@ -1364,9 +1376,10 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
  *
  * @param string $source
  * @param string $destination
+ * @param int $sid
  * @return string
  */
-function generateTemporaryTableCreate(string $source, string $destination)
+function generateTemporaryTableCreate(string $source, string $destination, int $sid)
 {
     switch (Yii::app()->db->getDriverName()) {
         case 'mysqli':
@@ -1425,6 +1438,52 @@ function generateTemporaryTableCreate(string $source, string $destination)
                       temp.TABLE_NAME = '{$source}'
             ) t;
         ";
+        case 'mssql':
+        case 'sqlsrv':
+            Yii::app()->db->createCommand(
+<<<EOD
+IF OBJECT_ID('dbo.SUBSTRING_INDEX') IS NOT NULL
+  DROP FUNCTION SUBSTRING_INDEX
+EOD
+            )->execute();
+            Yii::app()->db->createCommand(
+<<<EOD
+                CREATE FUNCTION dbo.SUBSTRING_INDEX (
+                    @str NVARCHAR(4000),
+                    @delim NVARCHAR(1),
+                    @count INT
+              )
+              RETURNS NVARCHAR(4000)
+              WITH SCHEMABINDING
+              BEGIN
+              DECLARE @XmlSourceString XML;
+              SET @XmlSourceString = (SELECT N'<root><row>' + REPLACE( (SELECT @str AS '*' FOR XML PATH('')) , @delim, N'</row><row>' ) + N'</row></root>');
+              RETURN STUFF
+              (
+                ((
+                SELECT  @delim + x.XmlCol.value(N'(text())[1]', N'NVARCHAR(4000)') AS '*'
+                FROM    @XmlSourceString.nodes(N'(root/row)[position() <= sql:variable("@count")]') x(XmlCol)
+                FOR XML PATH(N''), TYPE
+                ).value(N'.', N'NVARCHAR(4000)')),
+              1, 1, N''
+              );
+              END
+EOD
+            )->execute();
+        $destination .= "_" . $sid;
+        return "
+            SELECT *
+            INTO {$destination}
+            FROM (
+                SELECT dbo.SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
+                       dbo.SUBSTRING_INDEX(SUBSTRING(temp.COLUMN_NAME, 2 + LEN(dbo.SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1)), 2000), 'X', 1) AS gid,
+                       SUBSTRING(temp.COLUMN_NAME, charindex('X', temp.COLUMN_NAME, (charindex('X', temp.COLUMN_NAME, 1))+1) + 1, 2000) AS qidsuffix,
+                       temp.COLUMN_NAME
+                FROM information_schema.columns temp
+                WHERE temp.TABLE_CATALOG = db_name() AND
+                      temp.TABLE_NAME = '{$source}'
+            ) t;
+        ";
     }
     //unsupported
     return '';
@@ -1434,9 +1493,10 @@ function generateTemporaryTableCreate(string $source, string $destination)
  * Generates a drop statement for a temporary table
  *
  * @param string $name
+ * @param int $sid
  * @return string
  */
-function generateTemporaryTableDrop(string $name)
+function generateTemporaryTableDrop(string $name, int $sid)
 {
     switch (Yii::app()->db->getDriverName()) {
         case 'mysqli':
@@ -1444,7 +1504,10 @@ function generateTemporaryTableDrop(string $name)
         return "DROP TEMPORARY TABLE {$name};";
         case 'pgsql':
         return "DROP TABLE {$name};";
-        }
+        case 'mssql':
+        case 'sqlsrv':
+        return "DROP TABLE {$name}_{$sid};";
+    }
     //unsupported
     return '';
 }
@@ -1477,7 +1540,7 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
         'old_parent1',
         'old_parent2'
     ];
-    Yii::app()->db->createCommand(implode("\n\n", generateTemporaryTableCreates($sourceTables, $destinationTables)))->execute();
+    Yii::app()->db->createCommand(implode("\n\n", generateTemporaryTableCreates($sourceTables, $destinationTables, $sid)))->execute();
     $command = "";
     switch (Yii::app()->db->getDriverName()) {
         case 'mysqli':
@@ -1575,7 +1638,55 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
             ;
             "
             ;
-        }
+        case 'mssql':
+        case 'sqlsrv':
+            $command = "
+            SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
+                    FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
+                    JOIN " . Yii::app()->db->tablePrefix . "questions new_q
+                    ON old_q.qid = new_q.qid AND old_q.type = new_q.type
+                    JOIN new_s_c_{$sid} new_s_c
+                    ON new_s_c.sid = convert(nvarchar(255), new_q.sid) AND
+                       new_s_c.gid = convert(nvarchar(255), new_q.gid) AND
+                       new_s_c.qidsuffix like concat(new_q.qid, '%')
+                    JOIN old_s_c_{$sid} old_s_c
+                    ON old_s_c.sid = convert(nvarchar(255), old_q.sid) AND
+                       old_s_c.gid = convert(nvarchar(255), old_q.gid) AND
+                       old_s_c.qidsuffix LIKE CONCAT(old_q.qid, '%') AND
+                       old_s_c.qidsuffix = new_s_c.qidsuffix
+                    LEFT JOIN new_parent1_{$sid} new_parent1
+                    ON new_s_c.sid = new_parent1.sid AND
+                       new_s_c.gid = new_parent1.gid AND
+                       new_s_c.qidsuffix <> new_parent1.qidsuffix AND
+                       new_parent1.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+                    LEFT JOIN new_parent2_{$sid} new_parent2
+                    ON new_s_c.sid = new_parent2.sid AND
+                       new_s_c.gid = new_parent2.gid AND
+                       new_s_c.qidsuffix <> new_parent2.qidsuffix AND new_parent1.qidsuffix <> new_parent2.qidsuffix AND
+                       new_parent2.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+                    LEFT JOIN old_parent1_{$sid} old_parent1
+                    ON old_s_c.sid = old_parent1.sid AND
+                       old_s_c.gid = old_parent1.gid AND
+                       old_s_c.qidsuffix <> old_parent1.qidsuffix AND
+                       old_parent1.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+                    LEFT JOIN old_parent2_{$sid} old_parent2
+                       ON old_s_c.sid = old_parent2.sid AND
+                          old_s_c.gid = old_parent2.gid AND
+                          old_s_c.qidsuffix <> old_parent2.qidsuffix AND old_parent1.qidsuffix <> old_parent2.qidsuffix AND
+                          old_parent2.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+                    WHERE (new_parent2.sid IS NULL) AND
+                          (old_parent2.sid IS NULL) AND
+                          (((new_parent1.sid IS NULL) AND (old_parent1.sid IS NULL)) OR
+                           (
+                            (new_parent1.sid = old_parent1.sid) AND
+                            (new_parent1.gid = old_parent1.gid) AND
+                            (new_parent1.qidsuffix = old_parent1.qidsuffix)
+                           )
+                          )
+            ;            
+            "
+            ;
+    }
 
     $rawResults = Yii::app()->db->createCommand($command)->queryAll();
     $results = ['old_c' => [], 'new_c' => []];
@@ -1583,7 +1694,7 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
         $results['old_c'][] = $rawResult['old_c'];
         $results['new_c'][] = $rawResult['new_c'];
     }
-    Yii::app()->db->createCommand(implode("\n\n", generateTemporaryTableDrops($destinationTables)))->execute();
+    Yii::app()->db->createCommand(implode("\n\n", generateTemporaryTableDrops($destinationTables, $sid)))->execute();
     return $results;
 }
 
@@ -1593,13 +1704,14 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
  *
  * @param array $sourceTables
  * @param array $destinationTables
+ * @param int $sid
  * @return array
  */
-function generateTemporaryTableCreates(array $sourceTables, array $destinationTables)
+function generateTemporaryTableCreates(array $sourceTables, array $destinationTables, int $sid)
 {
     $output = [];
     for ($index = 0; $index < count($sourceTables); $index++) {
-        $output [] = generateTemporaryTableCreate($sourceTables[$index], $destinationTables[$index]);
+        $output [] = generateTemporaryTableCreate($sourceTables[$index], $destinationTables[$index], $sid);
     }
     return $output;
 }
@@ -1608,13 +1720,14 @@ function generateTemporaryTableCreates(array $sourceTables, array $destinationTa
  * Generates temporary table drops for the tables received and returns the scripts
  *
  * @param array $tables
+ * @param int $sid
  * @return array
  */
-function generateTemporaryTableDrops(array $tables)
+function generateTemporaryTableDrops(array $tables, int $sid)
 {
     $output = [];
     foreach ($tables as $table) {
-        $output [] = generateTemporaryTableDrop($table);
+        $output [] = generateTemporaryTableDrop($table, $sid);
     }
     return $output;
 }
@@ -1674,6 +1787,28 @@ function getDeactivatedArchives($sid)
         GROUP BY n;
             "
             ;
+        case 'mssql':
+        case 'sqlsrv':
+        $command = "
+		SELECT n, STRING_AGG(TABLE_NAME, ',') AS table_name
+        FROM
+        (SELECT n, TABLE_NAME
+        FROM information_schema.tables
+        JOIN (
+            SELECT 'survey' AS n
+            UNION
+            SELECT 'tokens' AS n
+            UNION
+            SELECT 'timings' AS n
+            UNION
+            SELECT 'questions' AS n
+        ) t
+        ON TABLE_CATALOG = db_name() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
+        ((n <> 'survey') OR (TABLE_NAME NOT LIKE '%timings%'))
+        ) t
+        GROUP BY n;
+        "
+        ;
     }
     $rawResults = Yii::app()->db->createCommand($command)->queryAll();
     $results = [];
