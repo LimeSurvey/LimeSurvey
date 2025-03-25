@@ -1706,12 +1706,12 @@ class Question extends LSActiveRecord
             if (!$prefixCode) {
                 $prefixCode = Yii::app()->getConfig('non_numerical_answer_prefix', 'A');
             }
-        } else if ($prefixType == 'non_numerical_subquestions_prefix') {
-            $prefixCode = empty($nonNumericalSettings['non_numerical_subquestions_prefix']);
+        } elseif ($prefixType == 'non_numerical_subquestions_prefix') {
+            $prefixCode = $nonNumericalSettings['non_numerical_subquestions_prefix'];
             if (!$prefixCode) {
                 $prefixCode = Yii::app()->getConfig('non_numerical_subquestions_prefix', 'SQ');
             }
-        } else if ($prefixType == 'non_numerical_question_prefix') {
+        } elseif ($prefixType == 'non_numerical_question_prefix') {
             $prefixCode = 'Q';
         }
         return $prefixCode;

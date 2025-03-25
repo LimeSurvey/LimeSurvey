@@ -111,8 +111,8 @@ class QuestionCreate extends Question
         $group = QuestionGroup::model()->findByPk($this->gid);
         $isTitleValid = false;
         for ($i = 0; $i <= 999; $i++) {
-            $this->title = 
-                Question::getCodePrefix('non_numerical_question_prefix', $this->sid) . 
+            $this->title =
+                Question::getCodePrefix('non_numerical_question_prefix', $this->sid) .
                 str_pad((safecount($survey->baseQuestions) + $i), 3, '0', STR_PAD_LEFT);
             if ($this->validate(['title'])) {
                 $isTitleValid = true;
