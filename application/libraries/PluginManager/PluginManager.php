@@ -192,9 +192,11 @@ class PluginManager extends \CApplicationComponent
         /* Know issue about class_exists (and debug mode ?) : move error to Exception */
         App()->setErrorHandler();
         try {
-            class_exists($storageClass);
+            if (!class_exists($storageClass) && class_exists('LimeSurvey\\PluginManager\\' . $storageClass)) { // No debug or www
+                $storageClass = 'LimeSurvey\\PluginManager\\' . $storageClass;
+            }
         } catch (\Exception $e) {
-            if (class_exists('LimeSurvey\\PluginManager\\' . $storageClass)) {
+            if (class_exists('LimeSurvey\\PluginManager\\' . $storageClass)) { // can broke before test of existance (CLI, issue #14704)
                 $storageClass = 'LimeSurvey\\PluginManager\\' . $storageClass;
             } else {
                 throw new \CException('Unable to find ' . $storageClass . ' class');
