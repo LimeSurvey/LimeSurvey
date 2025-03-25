@@ -140,7 +140,7 @@ class RenderListComment extends QuestionBaseRenderer
             'coreClass'              => $this->sCoreClass,
             'id'                     => 'answer' . $this->sSGQA,
             'basename'               => $this->sSGQA,
-            'show_noanswer'          => is_null($this->mSessionValue),
+            'show_noanswer'          => is_null($this->aSurveySessionArray[$this->sSGQA]),
             'label_text'             => gT('Please enter your comment here'),
             'tarows'                 => $tarows,
             'maxoptionsize'          => $this->maxoptionsize,
