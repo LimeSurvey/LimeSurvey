@@ -77,37 +77,27 @@ trait LSApplicationTrait
     }
 
     /**
-     * Function to set error ha,ndler to set_error_handler, using self::handleError
+     * Function to Throw Exception when error happen
      * @see https://www.php.net/set-error-handler
-     * @return void
+     * @throws \ErrorException
+     * @return null|array : last error handler, null if default
      */
     public function setErrorHandler()
     {
-        set_error_handler('LSApplicationTrait::errorHandler');
+        return set_error_handler(
+            function ($errno, $errstr, $errfile = null, $errline = null, $context = null) {
+                throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
+            }
+        );
     }
 
     /**
      * function to reset error handler
      * @see https://www.php.net/restore-error-handler
+     * @return void
      */
     public function resetErrorHandler()
     {
         restore_error_handler();
-    }
-
-    /**
-     * function to replace error by Exception via set_error_handler
-     * @see https://www.php.net/set-error-handler
-     * @param int $errno,
-     * @param string $errstr,
-     * @param string|null $errfile,
-     * @param int|null $errline
-     * @param array|null $errcontext
-     * @Throws \ErrorException
-     * @return void
-     */
-    public static function errorHandler($errno, $errstr, $errfile = null, $errline = null, $errcontext = null)
-    {
-        throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
     }
 }
