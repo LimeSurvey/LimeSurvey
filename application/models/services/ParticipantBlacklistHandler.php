@@ -54,7 +54,7 @@ class ParticipantBlacklistHandler
         }
 
         // Remove participant from the blocklist
-        $participant->blacklisted == 'N';
+        $participant->blacklisted = 'N';
         $participant->save();
 
         $result = new BlacklistResult(false, gT("You have been added back to the central participants list for this site."));

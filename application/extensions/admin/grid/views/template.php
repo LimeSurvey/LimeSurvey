@@ -17,10 +17,12 @@
             <div class="summary-container">{summary}</div>
     </div>
 <?php
-App()->getController()->widget('ext.admin.grid.ColumnFilterWidget.ColumnFilterWidget', [
-    'modalId'           => 'survey-column-filter-modal',
-    'filterableColumns' => $this->lsAdditionalColumns,
-    'filteredColumns'   => $this->lsAdditionalColumnsSelected,
-    'columnsData'       => $this->columns,
-]);
+if (!empty($this->lsAdditionalColumns)) {
+    App()->getController()->widget('ext.admin.grid.ColumnFilterWidget.ColumnFilterWidget', [
+        'modalId'           => 'survey-column-filter-modal',
+        'filterableColumns' => $this->lsAdditionalColumns,
+        'filteredColumns'   => $this->lsAdditionalColumnsSelected,
+        'columnsData'       => $this->columns,
+    ]);
+}
 ?>

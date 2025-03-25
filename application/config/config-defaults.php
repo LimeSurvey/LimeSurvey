@@ -841,5 +841,8 @@ $config['passwordValidationRules'] = array(
 // Enable or disable single page application editor
 $config['editorEnabled'] = false;
 
+// Participants token sanitizing rules as regex pattern
+$config['allowedcharacters_pattern_token'] = '/[^0-9a-zA-Z_\-~]/';
+
 return $config;
 //settings deleted

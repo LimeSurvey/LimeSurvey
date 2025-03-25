@@ -236,7 +236,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     // We get the HTML of the new row to insert
     return $.ajax({
       type: 'GET',
-      contentType: 'json',
+      contentType: 'application/json',
       url: $dataInput.data('url'),
       data: datas,
     });

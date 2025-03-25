@@ -61,7 +61,7 @@
                 </div>
                 <div class="modal-footer">
                     <button id="<?= $modalId ?>-cancel" type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
-                    <button role="button" type="button" id="<?= $modalId ?>-submit" class="btn btn-primary">
+                    <button role="button" type="submit" id="<?= $modalId ?>-submit" class="btn btn-primary" name="selectColumns" value="select" >
                         <?php eT('Select'); ?>
                     </button>
                 </div>

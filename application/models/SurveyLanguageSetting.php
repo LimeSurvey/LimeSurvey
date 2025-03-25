@@ -50,6 +50,16 @@ class SurveyLanguageSetting extends LSActiveRecord
     private $oldSurveyId;
     private $oldAlias;
 
+    public $surveyls_language = "";
+    public $surveyls_title = "";
+    public $surveyls_description = "";
+    public $surveyls_welcometext = "";
+    public $surveyls_endtext = "";
+    public $surveyls_policy_notice = "";
+    public $surveyls_policy_notice_label = "";
+    public $surveyls_url = "";
+    public $surveyls_urldescription = "";
+
     /** @inheritdoc */
     public function tableName()
     {

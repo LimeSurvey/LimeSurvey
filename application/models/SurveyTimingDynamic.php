@@ -224,7 +224,7 @@ class SurveyTimingDynamic extends LSActiveRecord
                 'data-bs-toggle' => "modal",
                 'data-bs-target' => '#confirmation-modal',
                 'data-post-url'  => App()->createUrl("admin/dataentry/sa/delete/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id),
-                'data-message'   => gt("Do you want to delete this response?"),
+                'data-message'   => gT("Do you want to delete this response?"),
             ],
             'enabledCondition' => $permission_responses_delete
         ];
