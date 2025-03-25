@@ -85,7 +85,7 @@ class ConsoleApplication extends CConsoleApplication
             }
         }
         $this->config = array_merge($this->config, $lsConfig);
-        
+
         /* encrypt emailsmtppassword value, because emailsmtppassword in database is also encrypted
            it would be decrypted in LimeMailer when needed */
            $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword']);
@@ -200,5 +200,40 @@ class ConsoleApplication extends CConsoleApplication
     public function getPluginManager()
     {
         return $this->getComponent('pluginManager');
+    }
+
+    /**
+     * Function to set error ha,ndler to set_error_handler, using self::handleError
+     * @see https://www.php.net/set-error-handler
+     * @return void
+     */
+    public function setErrorHandler()
+    {
+        set_error_handler('ConsoleApplication::errorHandler');
+    }
+
+    /**
+     * function to reset error handler
+     * @see https://www.php.net/restore-error-handler
+     */
+    public function resetErrorHandler()
+    {
+        restore_error_handler();
+    }
+
+    /**
+     * function to replace error by Exception via set_error_handler
+     * @see https://www.php.net/set-error-handler
+     * @param int $errno,
+     * @param string $errstr,
+     * @param string|null $errfile,
+     * @param int|null $errline
+     * @param array|null $errcontext
+     * @Throws \ErrorException
+     * @return void
+     */
+    public static function errorHandler($errno, $errstr, $errfile = null, $errline = null, $errcontext = null)
+    {
+        throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
     }
 }
