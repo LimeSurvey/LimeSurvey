@@ -1351,9 +1351,11 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
             case 'mysql':
             case 'pgsql':
             $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " AS SELECT " . implode(",", $columns) . " FROM " . Yii::app()->db->quoteTableName($pattern) . $whereClause;
+            break;
             case 'mssql':
             case 'sqlsrv':
             $command = "SELECT " . implode(",", $columns) . " into " . Yii::app()->db->quoteTableName($table) . " FROM " . Yii::app()->db->quoteTableName($pattern) . $whereClause;
+            break;
         }
     } else {
         $command = "";
@@ -1361,11 +1363,14 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
             case 'mysqli':
             case 'mysql':
             $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " LIKE " . Yii::app()->db->quoteTableName($pattern) . ";";
+            break;
             case 'pgsql':
             $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " (LIKE " . Yii::app()->db->quoteTableName($pattern) . " INCLUDING ALL);";
+            break;
             case 'mssql':
             case 'sqlsrv':
             $command = "SELECT * into " . Yii::app()->db->quoteTableName($table) . " FROM " . Yii::app()->db->quoteTableName($pattern) . " where 1=0";
+            break;
         }
     }
     return Yii::app()->db->createCommand($command)->execute();
@@ -1591,6 +1596,7 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
         ;
         "
         ;
+        break;
         case 'pgsql':
             $command = "
             SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
@@ -1638,6 +1644,7 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
             ;
             "
             ;
+        break;
         case 'mssql':
         case 'sqlsrv':
             $command = "
@@ -1686,6 +1693,7 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
             ;            
             "
             ;
+            break;
     }
 
     $rawResults = Yii::app()->db->createCommand($command)->queryAll();
@@ -1766,6 +1774,7 @@ function getDeactivatedArchives($sid)
         ORDER BY TABLE_NAME) t
         GROUP BY n;
         ";
+        break;
         case 'pgsql':
         $command = "
         SELECT n, array_to_string(array_agg(TABLE_NAME), ',') AS table_name
@@ -1787,6 +1796,7 @@ function getDeactivatedArchives($sid)
         GROUP BY n;
             "
             ;
+        break;
         case 'mssql':
         case 'sqlsrv':
         $command = "
@@ -1809,6 +1819,7 @@ function getDeactivatedArchives($sid)
         GROUP BY n;
         "
         ;
+        break;
     }
     $rawResults = Yii::app()->db->createCommand($command)->queryAll();
     $results = [];

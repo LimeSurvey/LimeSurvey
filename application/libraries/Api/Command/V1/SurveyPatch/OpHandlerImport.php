@@ -47,7 +47,7 @@ class OpHandlerImport implements OpHandlerInterface
      */
     public function canHandle(OpInterface $op): bool
     {
-        return ($op->getType()->getId() === OpTypeUpdate::ID);
+        return ($op->getEntityType() === $this->entity) && ($op->getType()->getId() === OpTypeUpdate::ID);
     }
 
     /**
