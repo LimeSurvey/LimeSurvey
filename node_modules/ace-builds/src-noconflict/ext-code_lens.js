@@ -1,5 +1,4 @@
-ace.define("ace/ext/code_lens",["require","exports","module","ace/line_widgets","ace/lib/event","ace/lib/lang","ace/lib/dom","ace/editor","ace/config"], function(require, exports, module){"use strict";
-var LineWidgets = require("../line_widgets").LineWidgets;
+ace.define("ace/ext/code_lens",["require","exports","module","ace/lib/event","ace/lib/lang","ace/lib/dom","ace/editor","ace/config"], function(require, exports, module){"use strict";
 var event = require("../lib/event");
 var lang = require("../lib/lang");
 var dom = require("../lib/dom");
@@ -121,10 +120,6 @@ function attachToEditor(editor) {
         var session = editor.session;
         if (!session)
             return;
-        if (!session.widgetManager) {
-            session.widgetManager = new LineWidgets(session);
-            session.widgetManager.attach(editor);
-        }
         var providersToWaitNum = editor.codeLensProviders.length;
         var lenses = [];
         editor.codeLensProviders.forEach(function (provider) {
