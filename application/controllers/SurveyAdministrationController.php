@@ -358,7 +358,7 @@ class SurveyAdministrationController extends LSBaseController
                 $iGroupSequence++;
             }
             $sNewTitle = (($sSubAction == 'bygroup') ? ('G' . $iGroupSequence) : '') . "Q" .
-                str_pad($iQuestionNumber, 5, "0", STR_PAD_LEFT);
+                str_pad($iQuestionNumber, 3, "0", STR_PAD_LEFT);
             Question::model()->updateAll(array('title' => $sNewTitle), 'qid=:qid', array(':qid' => $oQuestion->qid));
             $iQuestionNumber++;
             $iGroupNumber = $oQuestion->gid;
