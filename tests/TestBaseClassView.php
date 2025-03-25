@@ -63,8 +63,8 @@ class TestBaseClassView extends TestBaseClassWeb
             $screenshot = self::$webDriver->takeScreenshot();
             file_put_contents(self::$screenshotsFolder. '/'.$name.'.png', $screenshot);
         }
-        $body = self::$webDriver->findElement(WebDriverBy::tagName('body'));
-        var_dump($body->getText());
+        // $body = self::$webDriver->findElement(WebDriverBy::tagName('body'));
+        // var_dump($body->getText());
         $this->assertNotEmpty(
             $element,
             'Possible screenshot at ' . $filename . PHP_EOL .
