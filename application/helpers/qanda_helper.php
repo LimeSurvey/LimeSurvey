@@ -4244,6 +4244,7 @@ function do_array_multiflexi($ia)
                         'myfname2'                  => $myfname2,
                         'checkconditionFunction'    => $checkconditionFunction,
                         'extraclass'                => $extraclass,
+                        'qid'                       => $ld['qid'],
                         ), true);
                     $inputnames[] = $myfname2;
                     $thiskey++;

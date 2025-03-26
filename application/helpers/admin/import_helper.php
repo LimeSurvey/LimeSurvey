@@ -1836,6 +1836,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $insertdata['sid'] = $iNewSID;
             $insertdata['gid'] = $aGIDReplacements[(int) $insertdata['gid']];
             $iOldQID = (int) $insertdata['qid'];
+            $iOldParentQID = $insertdata['parent_qid'];
             $oldQIDGIDMap[$iOldGID] = $iOldQID;
             unset($insertdata['qid']); // save the old qid
             $insertdata['parent_qid'] = $aQIDReplacements[(int) $insertdata['parent_qid']]; // remap the parent_qid
@@ -1902,7 +1903,19 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $importedSubQuestions[$aQIDReplacements[$iOldQID]] = $oQuestion;
             }
 
-            $aQuestionsMapping['Q' . array_search($insertdata['parent_qid'], $aQIDReplacements) . '_S' . $iOldQID] = 'Q' . $oQuestion->parent_qid . '_S' . $oQuestion->qid;
+            if (($scaleID = intval($insertdata['scale_id'])) > 0) {
+                $keys = array_keys($aQuestionsMapping);
+                foreach ($keys as $key) {
+                    if (strpos($aQuestionsMapping[$key], "Q" . $insertdata['parent_qid'] . "_") === 0) {
+                        $parts = explode("_", $aQuestionsMapping[$key]);
+                        if (count($parts) === $scaleID + 1) {
+                            $aQuestionsMapping[$key . "_S" . $iOldQID] = $aQuestionsMapping[$key] . "_S" . $oQuestion->qid;
+                        }
+                    }
+                }
+            } else {
+                $aQuestionsMapping['Q' . array_search($insertdata['parent_qid'], $aQIDReplacements) . '_S' . $iOldQID] = 'Q' . $oQuestion->parent_qid . '_S' . $oQuestion->qid;
+            }
 
             // If translate links is disabled, check for old links.
             // We only do it here if the XML doesn't have a question_l10ns section.
@@ -1915,7 +1928,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             if (isset($oQuestionL10n)) {
                 $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
-                $oQuestionL10n->question = str_replace('Q' . $insertdata['parent_qid'] . '_S' . $iOldQID, $aQuestionsMapping['Q' . $insertdata['parent_qid'] . '_S' . $iOldQID], $oQuestionL10n->question);
                 $oQuestionL10n->save();
                 unset($oQuestionL10n);
             }
@@ -1955,20 +1967,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             $oQuestionL10n = new QuestionL10n();
             $oQuestionL10n->setAttributes($insertdata, false);
-            $keys = array_keys($aQuestionsMapping);
-            usort($keys, function($a, $b) {
-                $left = count(explode("_", $a));
-                $right = count(explode("_", $b));
-                if ($left === $right) {
-                    return 0;
-                }
-                return ($a > $b) ? -1 : 1;
-            });
-            foreach ($keys as $key) {
-                $value = $aQuestionsMapping[$key];
-                $oQuestionL10n->question = str_replace($key, $value, $oQuestionL10n->question);
-            }
-            //$oQuestionL10n->question = str_replace('Q' . array_search($oQuestion->parent_qid, $aQIDReplacements) . '_S' . $iOldQID, $aQuestionsMapping['Q' . array_search($oQuestion->parent_qid, $aQIDReplacements) . '_S' . $iOldQID], $oQuestionL10n->question);
             $oQuestionL10n->save();
 
             // If translate links is disabled, check for old links.

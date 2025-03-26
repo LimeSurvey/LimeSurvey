@@ -3735,9 +3735,9 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
         $left = count(explode("_", $a));
         $right = count(explode("_", $b));
         if ($left === $right) {
-            return 0;
+            return strlen($a) > strlen($b) ? -1 : 1;
         }
-        return ($a > $b) ? -1 : 1;
+        return ($left > $right) ? -1 : 1;
     });
     $arQuestions = Question::model()->findAll("sid=:sid", array(':sid' => $iSurveyID));
     foreach ($arQuestions as $arQuestion) {
@@ -3758,16 +3758,20 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
         foreach ($arQuestion->questionl10ns as $arQuestionLS) {
             $bModified = false;
             foreach ($aCodeMap as $sOldCode => $sNewCode) {
-                // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
-                if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode[0])) {
-                    $sOldCode = preg_quote((string) $sOldCode, '~');
-                    // The following regex only matches the last occurrence of the old code within each pair of brackets, so we apply the replace recursively
-                    // to catch all occurrences.
-                    $arQuestionLS->question = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->question, -1, $iCount);
-                    $bModified = $bModified || $iCount;
-                    // Apply the replacement on question help text
-                    $arQuestionLS->help = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->help, -1, $iCount);
-                    $bModified = $bModified || $iCount;
+                foreach ($keys as $key) {
+                    $sOldCode = $key;
+                    $sNewCode = $aCodeMap[$key];
+                    // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
+                    if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode[0])) {
+                        $sOldCode = preg_quote((string) $sOldCode, '~');
+                        // The following regex only matches the last occurrence of the old code within each pair of brackets, so we apply the replace recursively
+                        // to catch all occurrences.
+                        $arQuestionLS->question = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->question, -1, $iCount);
+                        $bModified = $bModified || $iCount;
+                        // Apply the replacement on question help text
+                        $arQuestionLS->help = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->help, -1, $iCount);
+                        $bModified = $bModified || $iCount;
+                    }
                 }
             }
             if ($bModified) {
