@@ -123,15 +123,15 @@ class SurveyActivate
             $sParts = explode("_", $archives['survey']);
             $sTimestamp = $sParts[count($sParts) - 1];
             $dynamicColumns = getUnchangedColumns($surveyId, $sTimestamp, $qTimestamp);
-            $this->app->recoverSurveyResponses($surveyId, $archives["survey"], $preserveIDs, $dynamicColumns);
+            recoverSurveyResponses($surveyId, $archives["survey"], $preserveIDs, $dynamicColumns);
             if (isset($archives["tokens"])) {
                 $tokenTable = $this->app->db->tablePrefix . "tokens_" . $surveyId;
                 createTableFromPattern($tokenTable, $archives["tokens"]);
-                $this->app->copyFromOneTableToTheOther($archives["tokens"], $tokenTable);
+                copyFromOneTableToTheOther($archives["tokens"], $tokenTable);
             }
             if (isset($archives["timings"])) {
                 $timingsTable = $this->app->db->tablePrefix . "survey_" . $surveyId . "_timings";
-                $this->app->copyFromOneTableToTheOther($archives["timings"], $timingsTable);
+                copyFromOneTableToTheOther($archives["timings"], $timingsTable);
             }
             return true;
         } else {

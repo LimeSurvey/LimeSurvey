@@ -1830,6 +1830,166 @@ function getDeactivatedArchives($sid)
 }
 
 /**
+ * Copying all data from source table to a target table having the same structure
+ *
+ * @param string $source
+ * @param string $destination
+ * @return integer number of rows affected by the execution.
+ * @throws CDbException execution failed
+ */
+function copyFromOneTableToTheOther($source, $destination)
+{
+    $customFilter = [
+        'mysql' => 'a.TABLE_SCHEMA = b.TABLE_SCHEMA and a.TABLE_SCHEMA = DATABASE()',
+        'mysqli' => 'a.TABLE_SCHEMA = b.TABLE_SCHEMA and a.TABLE_SCHEMA = DATABASE()',
+        'pgsql' => 'a.TABLE_CATALOG = b.TABLE_CATALOG and a.TABLE_CATALOG = current_database()',
+        'mssql' => 'a.TABLE_CATALOG = b.TABLE_CATALOG and a.TABLE_CATALOG = db_name()',
+        'sqlsrv' => 'a.TABLE_CATALOG = b.TABLE_CATALOG and a.TABLE_CATALOG = db_name()',
+    ];
+    $filter = ($customFilter[Yii::app()->db->getDriverName()] ?? '');
+    $command = "
+        select a.COLUMN_NAME as cname
+        from information_schema.columns a
+        join information_schema.columns b
+        on {$filter} and
+           a.TABLE_NAME = '" . $destination . "' and
+           b.TABLE_NAME = '" . $source . "' and
+           a.COLUMN_NAME = b.COLUMN_NAME
+        where a.COLUMN_NAME not in ('id', 'tid')
+    ";
+    $rawResults = Yii::app()->db->createCommand($command)->queryAll();
+    $columns = [];
+    foreach ($rawResults as $rawResult) {
+        $columns[] = Yii::app()->db->quoteColumnName($rawResult['cname']);
+    }
+    return count($columns) ? Yii::app()->db->createCommand("INSERT INTO " . Yii::app()->db->quoteTableName($destination) . "(" . implode(",", $columns) . ") SELECT " . implode(",", $columns) . " FROM " . Yii::app()->db->quoteTableName($source))->execute() : 0;
+}
+
+/**
+ * Recovers archived survey responses
+ *
+ * @param int $surveyId survey ID
+ * @param string $archivedResponseTableName archived response table name to be imported
+ * @param bool $preserveIDs if archived response IDs should be preserved
+ * @param array $validatedColumns the columns that are validated and can be inserted again
+ * @return integer number of rows affected by the execution.
+ * @throws Exception execution failed
+ */
+function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName, $preserveIDs, array $validatedColumns = []): int
+{
+    if (!is_array($validatedColumns)) {
+        $validatedColumns = [];
+    }
+    $pluginDynamicArchivedResponseModel = PluginDynamic::model($archivedResponseTableName);
+    $targetSchema = SurveyDynamic::model($surveyId)->getTableSchema();
+    $encryptedAttributes = Response::getEncryptedAttributes($surveyId);
+    if ((App()->db->tablePrefix) && (strpos($archivedResponseTableName, App()->db->tablePrefix) === 0)) {
+        $tbl_name = str_replace('old_survey', 'old_tokens', substr($archivedResponseTableName, strlen(App()->db->tablePrefix)));
+    } else {
+        $tbl_name = str_replace('old_survey', 'old_tokens', $archivedResponseTableName);
+    }
+    $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name, 'tbl_type' => 'response']);
+    $archivedEncryptedAttributes = [];
+    if ($archivedTableSettings) {
+        $archivedEncryptedAttributes = json_decode($archivedTableSettings->properties, true);
+    }
+    $archivedResponses = new CDataProviderIterator(new CActiveDataProvider($pluginDynamicArchivedResponseModel), 500);
+
+    $tableName = "{{survey_$surveyId}}";
+    $importedResponses = 0;
+    $batchData = [];
+    foreach ($archivedResponses as $archivedResponse) {
+        $dataRow = [];
+        // Using plugindynamic model because I dont trust surveydynamic.
+        $targetResponse = new PluginDynamic($tableName);
+        if ($preserveIDs) {
+            $targetResponse->id = $archivedResponse->id;
+            $dataRow['id'] = $archivedResponse->id;
+        }
+
+        $to = 'new_c';
+        $from = 'old_c';
+        for ($index = 0; $index < count($validatedColumns[$to]); $index++) {
+            $source = $validatedColumns[$from][$index];
+            $target = $validatedColumns[$to][$index];
+            $targetResponse->{$target} = $archivedResponse[$source];
+            if (in_array($source, $archivedEncryptedAttributes, false) && !in_array($target, $encryptedAttributes, false)) {
+                $targetResponse->{$target} = $archivedResponse->decryptSingle($archivedResponse[$source]);
+            } elseif (!in_array($source, $archivedEncryptedAttributes, false) && in_array($target, $encryptedAttributes, false)) {
+                $targetResponse->{$target} = $archivedResponse->encryptSingle($archivedResponse[$source]);
+            } else {
+                $targetResponse->{$target} = $archivedResponse[$source];
+            }
+            $dataRow[$target] = $targetResponse->{$target};
+        }
+
+        $additionalFields = [
+            'token',
+            'submitdate',
+            'lastpage',
+            'startlanguage',
+            'seed',
+            'startdate',
+            'datestamp',
+            'version_number'
+        ];
+
+        if (isset($targetSchema->columns['startdate']) && empty($targetResponse['startdate'])) {
+            $targetResponse->{'startdate'} = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
+            $dataRow['startdate'] = $targetResponse->{'startdate'};
+        }
+
+        if (isset($targetSchema->columns['datestamp']) && empty($targetResponse['datestamp'])) {
+            $targetResponse->{'datestamp'} = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
+            $dataRow['datestamp'] = $targetResponse->{'datestamp'};
+        }
+
+        foreach ($additionalFields as $additionalField) {
+            if (isset($archivedResponse->{$additionalField}) && isset($targetSchema->columns[$additionalField])) {
+                $dataRow[$additionalField] = $archivedResponse->{$additionalField};
+            }
+        }
+
+        $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
+        $beforeDataEntryImport->set('iSurveyID', $surveyId);
+        $beforeDataEntryImport->set('oModel', $targetResponse);
+        App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
+
+        if ($targetResponse->validate()){
+            $batchData[] = $dataRow;
+        }
+        if (count($batchData) % 500 === 0) {
+            if ($preserveIDs) {
+                switchMSSQLIdentityInsert("survey_$surveyId", true);
+            }
+            $builder = App()->db->getCommandBuilder();
+            $command = $builder->createMultipleInsertCommand($tableName, $batchData);
+            $importedResponses += $command->execute();
+            if ($preserveIDs) {
+                switchMSSQLIdentityInsert("survey_$surveyId", false);
+            }
+            $batchData = [];
+        }
+
+        unset($targetResponse);
+    }
+
+    if (count($batchData)) {
+        if ($preserveIDs) {
+            switchMSSQLIdentityInsert("survey_$surveyId", true);
+        }
+        $builder = App()->db->getCommandBuilder();
+        $command = $builder->createMultipleInsertCommand($tableName, $batchData);
+        $importedResponses += $command->execute();
+        if ($preserveIDs) {
+            switchMSSQLIdentityInsert("survey_$surveyId", false);
+        }
+    }
+    return $importedResponses;
+}
+
+
+/**
  * Imports a survey from an XML file or XML data string.
  *
  * This function processes the XML data to import a survey, including its questions, groups, and language settings.
