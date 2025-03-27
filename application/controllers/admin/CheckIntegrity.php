@@ -767,8 +767,9 @@ class CheckIntegrity extends SurveyCommonAction
             }
         }
 
-        /*** Check for active survey participants tables with missing survey entry ***/
+        /*** Check for active survey participants tables with missing survey ***/
         $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{tokens}}\_%'))->queryColumn();
+        $sSurveyIDs = Yii::app()->db->createCommand("select sid from {{surveys}}")->queryColumn();
         foreach ($aResult as $aRow) {
             $sTableName = (string) substr((string) $aRow, strlen((string) $sDBPrefix));
             $aTableName = explode('_', $sTableName);
