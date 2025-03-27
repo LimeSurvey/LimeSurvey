@@ -33,6 +33,10 @@ App()->getClientScript()->registerScriptFile(
     ]); ?>
 <?php } ?>
 <!-- survey activation -->
+
+<?php
+    if ($showActivateStopButtons) {
+?>
 <?php if (!$oSurvey->isActive) : ?>
     <!-- activate -->
     <?php
@@ -76,6 +80,7 @@ App()->getClientScript()->registerScriptFile(
         ]); ?>
     <?php endif; ?>
 <?php endif; ?>
+<?php }?>
 
 <!-- Preview/Run survey -->
 <?php
