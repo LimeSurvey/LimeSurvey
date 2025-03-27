@@ -34,6 +34,7 @@ class SurveyAggregateService
     private $restMode = false;
     private SurveyActivate $surveyActivate;
     private SurveyDeactivate $surveyDeactivate;
+    private SurveyThemeConfiguration $surveyThemeConfiguration;
 
     public function __construct(
         LanguageSettings $languageSettings,
@@ -43,7 +44,8 @@ class SurveyAggregateService
         TemplateConfiguration $templateConfiguration,
         Permission $modelPermission,
         SurveyActivate $surveyActivate,
-        SurveyDeactivate $surveyDeactivate
+        SurveyDeactivate $surveyDeactivate,
+        surveyThemeConfiguration $surveyThemeConfiguration
     ) {
         $this->languageSettings = $languageSettings;
         $this->generalSettings = $generalSettings;
@@ -53,6 +55,7 @@ class SurveyAggregateService
         $this->modelPermission = $modelPermission;
         $this->surveyActivate = $surveyActivate;
         $this->surveyDeactivate = $surveyDeactivate;
+        $this->surveyThemeConfiguration = $surveyThemeConfiguration;
     }
 
     /**
@@ -158,5 +161,10 @@ class SurveyAggregateService
     public function expire($surveyId)
     {
         return $this->surveyDeactivate->expire($surveyId);
+    }
+
+    public function updateSurveyThemeConfiguration($surveyId)
+    {
+        $this->surveyThemeConfiguration->update($surveyId);
     }
 }
