@@ -3763,14 +3763,22 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
                     $sNewCode = $aCodeMap[$key];
                     // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
                     if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode[0])) {
-                        $sOldCode = preg_quote((string) $sOldCode, '~');
-                        // The following regex only matches the last occurrence of the old code within each pair of brackets, so we apply the replace recursively
-                        // to catch all occurrences.
-                        $arQuestionLS->question = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->question, -1, $iCount);
-                        $bModified = $bModified || $iCount;
-                        // Apply the replacement on question help text
-                        $arQuestionLS->help = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->help, -1, $iCount);
-                        $bModified = $bModified || $iCount;
+                        if (preg_match('/^Q[0-9]*.*$/', $sOldCode)) {
+                            $text1 = $arQuestionLS->question;
+                            $text2 = $arQuestionLS->help;
+                            $arQuestionLS->question = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $arQuestionLS->question, -1, $iCount);
+                            $arQuestionLS->help = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $arQuestionLS->help, -1, $iCount);
+                            $bModified = $bModified || (($text1 !== $arQuestionLS->question) || ($text2 !== $arQuestionLS->help));
+                        } else {
+                            $sOldCode = preg_quote((string) $sOldCode, '~');
+                            // The following regex only matches the last occurrence of the old code within each pair of brackets, so we apply the replace recursively
+                            // to catch all occurrences.
+                            $arQuestionLS->question = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->question, -1, $iCount);
+                            $bModified = $bModified || $iCount;
+                            // Apply the replacement on question help text
+                            $arQuestionLS->help = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->help, -1, $iCount);
+                            $bModified = $bModified || $iCount;
+                        }
                     }
                 }
             }
