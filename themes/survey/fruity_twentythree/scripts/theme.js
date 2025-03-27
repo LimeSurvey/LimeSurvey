@@ -891,13 +891,10 @@ function updateMandatoryErrorClass() {
  * Soft mandatory
  */
 function activateSoftMandatory() {
-  if (window.LSvar.showpopup > 0) {
-    $('#limesurvey').find(".ls-softmandatory-input").hide();
-  }
   $('#mandatory-soft-alert-box-modal').on('click', function (ev) {
     ev.preventDefault();
     var $form = $('#limesurvey');
-    $form.find(".ls-mandSoft-checkbox").prop('checked',true);
+    $form.append('<input type="hidden" name="mandSoft" value="' + $(this).data('movenext') + '" />');
     $form.find('#ls-button-submit').trigger('click');
     $("#bootstrap-alert-box-modal").modal('hide');
   });
@@ -2709,7 +2706,7 @@ exports.Tooltip = exports.Toast = exports.Tab = exports.ScrollSpy = exports.Popo
 var Popper = _interopRequireWildcard(require("@popperjs/core"));
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
-function _superPropGet(t, e, o, r) { var p = _get(_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
+function _superPropGet(t, o, e, r) { var p = _get(_getPrototypeOf(1 & r ? t.prototype : t), o, e); return 2 & r && "function" == typeof p ? function (t) { return p.apply(e, t); } : p; }
 function _get() { return _get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = _superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, _get.apply(null, arguments); }
 function _superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = _getPrototypeOf(t));); return t; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }

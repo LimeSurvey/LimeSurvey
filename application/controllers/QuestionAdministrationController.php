@@ -74,6 +74,7 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionView($surveyid, $gid = null, $qid = null, $landOnSideMenuTab = 'structure')
     {
+        SettingsUser::setUserSetting('last_question', $qid);
         $this->actionEdit($qid);
     }
 
@@ -1746,6 +1747,7 @@ class QuestionAdministrationController extends LSBaseController
                     $newQuestionPosition = 1;
                     break;
                 default: //all other cases means after question X (the value coming from frontend is already correct)
+                    Question::increaseAllOrderNumbersForGroup($questionGroupId, $questionPosition);
                     $newQuestionPosition = $questionPosition;
             }
             $copyQuestionValues->setQuestionPositionInGroup($newQuestionPosition);

@@ -167,7 +167,7 @@ class browser extends uploader {
             $this->sendDefaultThumb();
 
         $dir = $this->getDir();
-        $file = "{$this->thumbsTypeDir}/{$_GET['dir']}/${_GET['file']}";
+        $file = "{$this->thumbsTypeDir}/{$_GET['dir']}/{$_GET['file']}";
 
         // Create thumbnail
         if (!is_file($file) || !is_readable($file)) {

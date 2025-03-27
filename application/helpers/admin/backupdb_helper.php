@@ -201,3 +201,31 @@ function _getDbName()
 
     return $sDbName;
 }
+
+/**
+ * Get database size in MB
+ */
+function getDatabaseSize()
+{
+    $dbName = _getDbName();
+
+    // Run the query using Yii's DB component
+    $result = Yii::app()->db->createCommand("
+        SELECT 
+            table_schema AS `Database`, 
+            ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS `Size (MB)`
+        FROM 
+            information_schema.tables 
+        WHERE 
+            table_schema = :dbName
+        GROUP BY 
+            table_schema;
+    ")->bindValue(':dbName', $dbName)->queryRow();
+
+    if ($result) {
+        // echo "Database: " . $result['Database'] . "<br>";
+        return $result['Size (MB)']; // Size in MB
+    } else {
+        return null;
+    }
+}

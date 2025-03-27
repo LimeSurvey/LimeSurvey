@@ -347,6 +347,7 @@ return array(
         'basePath' => 'node_modules.jspdf.dist',
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
+            'jspdf.umd.min.js',
             'jspdf.min.js'
         ),
         'depends' => array(
@@ -409,5 +410,14 @@ return array(
         'depends' => array(
             'moment'
         )
+    ),
+    // Used for Statistics
+    'chart.js' => array(
+        'devBaseUrl' => 'node_modules/chart.js/dist',
+        'basePath' => 'node_modules.chartjs',
+        'position' => CClientScript::POS_BEGIN,
+        'js' => array(
+            'chart.umd.js'
+        ),
     ),
 );

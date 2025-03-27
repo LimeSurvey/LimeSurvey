@@ -668,7 +668,10 @@ window.addEventListener('message', function(event) {
             if (!empty($aData["sid"]) || LimeExpressionManager::getLEMsurveyId()) {
                 $sid = empty($aData["sid"]) ? LimeExpressionManager::getLEMsurveyId() : $aData["sid"];
                 $language = empty($aData["language"]) ? App()->getLanguage() : $aData["language"];
-                $aData["aSurveyInfo"] = getSurveyInfo($sid, $language);
+                /* Outdated sid in LimeExpressionManager */
+                if (Survey::model()->findByPk($sid)) {
+                    $aData["aSurveyInfo"] = getSurveyInfo($sid, $language);
+                }
             }
         }
         // We retrieve the definition of the core class and attributes
@@ -706,10 +709,10 @@ window.addEventListener('message', function(event) {
                 foreach ($oTemplate->oOptions as $key => $value) {
                     // TODO: Same issue as commit 2972aea41c51c74db95bfe40c337ae839471152c
                     // Options are not loaded the same way in all places.
-                    if ($value instanceof stdClass) {
+                    if (!is_string($value)) {
                         $value = 'N/A';
                     }
-                    $aData["aSurveyInfo"]["options"][$key] = (string) $value;
+                    $aData["aSurveyInfo"]["options"][$key] = $value;
                 }
             }
         } else {

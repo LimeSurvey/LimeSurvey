@@ -3,7 +3,7 @@
 /** @var  $oSurvey Survey */
 /** @var bool $closeAccessMode */
 
-$optionsOnOff = ['Y' => gt('On'), 'N' => gt('Off')];
+$optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
 ?>
 <div class="row">
     <div class='col-md-12'>
@@ -169,7 +169,7 @@ if (!$closeAccessMode) {
 
                 //only allow here to switch to close-access-mode (and to open-access-mode)
                 //close-access-mode means that 'N' should be selected
-                $optionsOnOff = ['Y' => gt('Open-access mode'), 'N' => gt('Closed-access mode')];
+                $optionsOnOff = ['Y' => gT('Open-access mode'), 'N' => gT('Closed-access mode')];
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'openAccessMode',
                     'checkedOption' => $closeAccessMode ? 'N' : 'Y',

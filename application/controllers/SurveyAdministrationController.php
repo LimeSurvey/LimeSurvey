@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\CopySurveyResources;
+use LimeSurvey\Models\Services\FileUploadService;
 use LimeSurvey\Models\Services\FilterImportedResources;
 use LimeSurvey\Models\Services\GroupHelper;
 
@@ -125,11 +126,6 @@ class SurveyAdministrationController extends LSBaseController
         $beforeSurveyAdminView = new PluginEvent('beforeSurveyAdminView');
         $beforeSurveyAdminView->set('surveyId', $iSurveyID);
         App()->getPluginManager()->dispatchEvent($beforeSurveyAdminView);
-        $redirectUrl = $beforeSurveyAdminView->get('redirectUrl');
-        if ($redirectUrl && App()->getRequest()->getParam('allowRedirect', 0) == 1) {
-            // if redirect URL is provided by a plugin, redirect:
-            $this->redirect($redirectUrl);
-        }
 
         // We load the panel packages for quick actions
         $iSurveyID = sanitize_int($iSurveyID);
@@ -171,33 +167,32 @@ class SurveyAdministrationController extends LSBaseController
         $aData['sid'] = $iSurveyID; //frontend need this to render topbar for the view
 
         // Last survey visited
-        $userId = App()->user->getId();
-        SettingGlobal::setSetting('last_survey_' . $userId, $iSurveyID);
+        SettingsUser::setUserSetting('last_survey', $iSurveyID);
 
         $aData['sidemenu']["survey_menu"] = true;
 
         // We get the last question visited by user for this survey
-        // TODO: getGlobalSetting() DEPRECATED
-        $lastquestion = getGlobalSetting('last_question_' . $userId . '_' . $iSurveyID);
-
-        // TODO: getGlobalSetting() DEPRECATED
-        $lastquestiongroup = getGlobalSetting('last_question_' . $userId . '_' . $iSurveyID . '_gid');
-
-        if ($lastquestion != null && $lastquestiongroup != null) {
-            $aData['showLastQuestion'] = true;
-            $iQid = $lastquestion;
-            $iGid = $lastquestiongroup;
-            $qrrow = Question::model()->findByAttributes(array('qid' => $iQid, 'gid' => $iGid, 'sid' => $iSurveyID));
-
-            $aData['last_question_name'] = $qrrow['title'];
-            if (!empty($qrrow->questionl10ns[$baselang]['question'])) {
-                $aData['last_question_name'] .= ' : ' . $qrrow->questionl10ns[$baselang]['question'];
+        // 2025-02-19 seem not used , we are inside survey
+        $aData['showLastQuestion'] = false;
+        $lastquestionID = SettingsUser::getUserSetting('last_question', $iSurveyID, 'Survey');
+        if ($lastquestionID) {
+            $question = Question::model()->findByPk(intval($lastquestionID));
+            if ($question) {
+                $survey = Survey::model()->findByPk($question->sid);
+                $baselang = $survey->language;
+                $aData['last_question_name'] = $question['title'];
+                if (!empty($question->questionl10ns[$baselang]['question'])) {
+                    $aData['last_question_name'] .= ' : ' . $question->questionl10ns[$baselang]['question'];
+                }
+                $aData['last_question_link'] = $this->createUrl(
+                    "questionAdministration/view",
+                    [
+                        'surveyid' => $question->sid,
+                        'gid' => $question->gid,
+                        'qid' => $question->qid
+                    ]
+                );
             }
-
-            $aData['last_question_link'] =
-                $this->createUrl("questionEditor/view/surveyid/$iSurveyID/gid/$iGid/qid/$iQid");
-        } else {
-            $aData['showLastQuestion'] = false;
         }
         $aData['templateapiversion'] = Template::model()->getTemplateConfiguration(null, $iSurveyID)->getApiVersion();
 
@@ -242,7 +237,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['model'] = new Survey('search');
         $aData['groupModel'] = new SurveysGroups('search');
         $aData['topbar']['title'] = gT('Survey list');
-        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
 
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
 
@@ -607,9 +602,6 @@ class SurveyAdministrationController extends LSBaseController
             $basedestdir = Yii::app()->getConfig('uploaddir') . "/surveys";
             $destdir = $basedestdir . "/$iSurveyID/";
 
-            Yii::app()->loadLibrary('admin.pclzip');
-            $zip = new PclZip($zipfilename);
-
             if (!is_writeable($basedestdir)) {
                 Yii::app()->user->setFlash('error', sprintf(
                     gT("Incorrect permissions in your %s folder."),
@@ -627,13 +619,16 @@ class SurveyAdministrationController extends LSBaseController
             $aErrorFilesInfo = array();
 
             if (is_file($zipfilename)) {
-                if ($zip->extract($extractdir) <= 0) {
+                $zip = new LimeSurvey\Zip();
+                if ($zip->open($zipfilename) !== true || $zip->extractTo($extractdir) !== true) {
                     Yii::app()->user->setFlash(
                         'error',
-                        gT("This file is not a valid ZIP file archive. Import failed. ") . $zip->errorInfo(true)
+                        gT("This file is not a valid ZIP file archive. Import failed. ") . $zip->getStatusString()
                     );
                     $this->redirect(array('surveyAdministration/rendersidemenulink/', 'surveyid' => $iSurveyID, 'subaction' => 'generalsettings'));
                 }
+                $zip->close();
+
                 // now read tempdir and copy authorized files only
                 $folders = array('flash', 'files', 'images');
 
@@ -903,11 +898,8 @@ class SurveyAdministrationController extends LSBaseController
 
         $survey = Survey::model()->findByPk($iSurveyID);
         $baselang = $survey->language;
-        $setting_entry = 'last_question_' . Yii::app()->user->getId() . '_' . $iSurveyID;
-        $lastquestion = getGlobalSetting($setting_entry);
-        $setting_entry = 'last_question_' . Yii::app()->user->getId() . '_' . $iSurveyID . '_gid';
-        $lastquestiongroup = getGlobalSetting($setting_entry);
-
+        $lastquestionID = SettingsUser::getUserSetting('last_question', $iSurveyID, 'Survey');
+        $lastquestiongroupID = SettingsUser::getUserSetting('last_group', $iSurveyID, 'Survey');
         $aGroups = QuestionGroup::model()->findAllByAttributes(
             array('sid' => $iSurveyID),
             array('order' => 'group_order ASC')
@@ -967,8 +959,8 @@ class SurveyAdministrationController extends LSBaseController
                                 'id' => '',
                                 'label' => gT("Delete group"),
                                 'icon' => 'ri-delete-bin-fill text-danger',
-                                'dataTitle' => gt('Delete group'),
-                                'dataBtnText' => gt('Delete'),
+                                'dataTitle' => gT('Delete group'),
+                                'dataBtnText' => gT('Delete'),
                                 'dataOnclick' => '(function() { ' .  convertGETtoPOST(
                                     Yii::app()->createUrl(
                                         "questionGroupsAdministration/delete/",
@@ -979,7 +971,7 @@ class SurveyAdministrationController extends LSBaseController
                                         ]
                                     )
                                 ) . '})',
-                                'dataMessage' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js")
+                                'dataMessage' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", 'unescaped')
                             ];
                         } else {
                             $curGroup['groupDropdown']['delete'] =
@@ -987,9 +979,9 @@ class SurveyAdministrationController extends LSBaseController
                                 'id' => '',
                                 'label' => gT("Delete group"),
                                 'icon' => 'ri-delete-bin-fill text-danger',
-                                'dataTitle' => gt('Delete group'),
+                                'dataTitle' => gT('Delete group'),
                                 'disabled' => true,
-                                'title' => gt("Impossible to delete this group because there is at least one question having a condition on its content")
+                                'title' => gT("Impossible to delete this group because there is at least one question having a condition on its content", 'unescaped')
                             ];
                         }
                     } else {
@@ -998,9 +990,9 @@ class SurveyAdministrationController extends LSBaseController
                             'id' => '',
                             'label' => gT("Delete group"),
                             'icon' => 'ri-delete-bin-fill text-danger',
-                            'dataTitle' => gt('Delete group'),
+                            'dataTitle' => gT('Delete group'),
                             'disabled' => true,
-                            'title' => gt("It is not possible to add/delete groups if the survey is active.")
+                            'title' => gT("It is not possible to add/delete groups if the survey is active.", 'unescaped')
                         ];
                     }
                 }
@@ -1093,10 +1085,10 @@ class SurveyAdministrationController extends LSBaseController
                                     'id' => '',
                                     'label' => gT("Delete question"),
                                     'icon' => 'ri-delete-bin-fill text-danger',
-                                    'dataTitle' => gt('Delete this question'),
-                                    'dataBtnText' => gt('Delete'),
+                                    'dataTitle' => gT('Delete this question'),
+                                    'dataBtnText' => gT('Delete'),
                                     'dataOnclick' => '(function() { ' .  convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $question->qid, "redirectTo" => "groupoverview"])) . '})',
-                                    'dataMessage' => gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?")
+                                    'dataMessage' => gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?", 'unescaped')
                                 ];
                         } else {
                             $curQuestion['questionDropdown']['delete'] =
@@ -1104,9 +1096,9 @@ class SurveyAdministrationController extends LSBaseController
                                 'id' => '',
                                 'label' => gT("Delete question"),
                                 'icon' => 'ri-delete-bin-fill text-danger',
-                                'dataTitle' => gt('Delete this question'),
+                                'dataTitle' => gT('Delete this question'),
                                 'disabled' => true,
-                                'title' => gt("You can not delete a question if the survey is active."),
+                                'title' => gT("You can not delete a question if the survey is active.", 'unescaped'),
                             ];
                         }
 
@@ -1124,8 +1116,8 @@ class SurveyAdministrationController extends LSBaseController
                 'data' => array(
                     'groups' => $aGroupViewable,
                     'settings' => array(
-                        'lastquestion' => $lastquestion,
-                        'lastquestiongroup' => $lastquestiongroup,
+                        'lastquestion' => $lastquestionID,
+                        'lastquestiongroup' => $lastquestiongroupID,
                     ),
                 )
             ),
@@ -1476,77 +1468,58 @@ class SurveyAdministrationController extends LSBaseController
         $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
         $uploadValidator->renderJsonOnError('file', $debug);
 
-        $iSurveyID = (int) Yii::app()->request->getPost('surveyid');
+        $iSurveyID = (int)Yii::app()->request->getPost('surveyid');
         $success = false;
         $debug = [];
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                array(
-                    'data' => [
-                        'success' => $success,
-                        'message' => gT("You don't have sufficient permissions to upload images in this survey"),
-                        'debug' => $debug
-                    ]
-                ),
-                false,
-                false
-            );
-        }
-        $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]);
-        if ($checkImage['check'] === false) {
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                array(
-                    'data' => [
-                        'success' => $success,
-                        'message' => $checkImage['uploadresult'],
-                        'debug' => $checkImage['debug']
-                    ]
-                ),
-                false,
-                false
-            );
-        }
-        $surveyDir = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID;
-        if (!is_dir($surveyDir)) {
-            @mkdir($surveyDir);
-        }
-        if (!is_dir($surveyDir . "/images")) {
-            @mkdir($surveyDir . "/images");
-        }
-        $destdir = $surveyDir . "/images/";
-        if (!is_writeable($destdir)) {
-            $uploadresult = sprintf(gT("Incorrect permissions in your %s folder."), $destdir);
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-                false,
-                false
+        if (
+            Permission::model()->hasSurveyPermission(
+                $iSurveyID,
+                'surveycontent',
+                'update'
+            )
+        ) {
+            $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]);
+            if ($checkImage['check'] !== false) {
+                $diContainer = \LimeSurvey\DI::getContainer();
+                $fileUploadService = $diContainer->get(
+                    FileUploadService::class
+                );
+                $destDir = $fileUploadService->getSurveyUploadDirectory(
+                    $iSurveyID
+                );
+                if (is_writeable($destDir)) {
+                    $returnedData = $fileUploadService->saveFileInDirectory(
+                        $_FILES['file'],
+                        $destDir
+                    );
+                    $message = $returnedData['uploadResultMessage'];
+                    $debug = $returnedData['debug'];
+                    $success = $returnedData['success'];
+                } else {
+                    $message = sprintf(
+                        gT("Incorrect permissions in your %s folder."),
+                        $destDir
+                    );
+                }
+            } else {
+                $message = $checkImage['uploadresult'];
+                $debug = $checkImage['debug'];
+            }
+        } else {
+            $message = gT(
+                "You don't have sufficient permissions to upload images in this survey"
             );
         }
 
-        $filename = sanitize_filename(
-            $_FILES['file']['name'],
-            false,
-            false,
-            false
-        ); // Don't force lowercase or alphanumeric
-        $fullfilepath = $destdir . $filename;
-        $debug[] = $destdir;
-        $debug[] = $filename;
-        $debug[] = $fullfilepath;
-        if (!@move_uploaded_file($_FILES['file']['tmp_name'], $fullfilepath)) {
-            $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
-        } else {
-            $uploadresult = sprintf(gT("File %s uploaded"), $filename);
-            $success = true;
-        };
         return $this->renderPartial(
             '/admin/super/_renderJson',
-            array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-            false,
-            false
+            array(
+                'data' => [
+                    'success' => $success,
+                    'message' => $message,
+                    'debug' => $debug
+                ]
+            ),
         );
     }
 
@@ -1768,6 +1741,14 @@ class SurveyAdministrationController extends LSBaseController
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
+
+        // Avoid reactivating a survey that is already active
+        // Doing so might override the survey settings, causing an "Error: didn't save" issue
+        if (Survey::model()->findByPk($surveyId)->getIsActive()) {
+            App()->user->setFlash('error', gT("The survey is already active."));
+            $this->redirect(App()->request->urlReferrer);
+        }
+
         $diContainer = \LimeSurvey\DI::getContainer();
         $surveyActivate = $diContainer->get(
             LimeSurvey\Models\Services\SurveyActivate::class
@@ -1862,7 +1843,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin', 'read');
             Survey::model()->deleteSurvey($iSurveyID);
             Yii::app()->session['flashmessage'] = gT("Survey deleted.");
-            $this->redirect(array("admin/index"));
+            $this->redirect(array("dashboard/view"));
         }
 
         $this->aData = $aData;
@@ -2364,6 +2345,14 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
 
+        if ((App()->getConfig("editorEnabled")) && isset(($aImportResults['newsid']))) {
+            if (!isset($oSurvey)) {
+                $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
+            }
+            if ($oSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
+                $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $aImportResults['newsid']]);
+            }
+        }
         $this->aData = $aData;
         $this->render('importSurvey_view', $this->aData);
     }
@@ -2787,8 +2776,8 @@ class SurveyAdministrationController extends LSBaseController
         $oQuestion->question_order = 1;
         $oQuestion->save();
         $oQuestionLS = new QuestionL10n();
-        $oQuestionLS->question = gT('A first example question. Please answer this question:', 'html', $sLanguage);
-        $oQuestionLS->help = gT('This is a question help text.', 'html', $sLanguage);
+        $oQuestionLS->question = '';
+        $oQuestionLS->help = '';
         $oQuestionLS->language = $sLanguage;
         $oQuestionLS->qid = $oQuestion->qid;
         $oQuestionLS->save();
@@ -3374,7 +3363,7 @@ class SurveyAdministrationController extends LSBaseController
         $redirectUrl = ['surveyAdministration/rendersidemenulink/', 'surveyid' => $surveyId, 'subaction' => 'panelintegration'];
         $paramId = Yii::app()->request->getPost('urlParamId');
         if (empty($paramId)) {
-            throw new CHttpException(400, gt('Invalid request'));
+            throw new CHttpException(400, gT('Invalid request'));
         }
 
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveysettings', 'update')) {
@@ -3394,5 +3383,49 @@ class SurveyAdministrationController extends LSBaseController
             Yii::app()->user->setFlash('error', gT("Could not delete URL parameter"));
         }
         $this->redirect($redirectUrl);
+    }
+
+    /**
+     * Retrieves and renders a list of surveys with optional active status filter for the box widget Ajax.
+     *
+     * @return string|false Rendered partial view if surveys are found, otherwise false.
+     * @throws CException
+     */
+    public function actionBoxList()
+    {
+        $limit = (int)App()->request->getQuery('limit');
+        $page = (int)App()->request->getQuery('page');
+
+        $model = Survey::model();
+        if ($state = App()->request->getQuery('active')) {
+            $model->active = $state;
+            $surveys = $model
+                ->search(['pageSize' => $limit, 'currentPage' => $page]);
+        } else {
+            $surveys = $model
+                ->search(['pageSize' => $limit, 'currentPage' => $page]);
+        }
+
+
+        $boxes = [];
+        foreach ($surveys->getData() as $survey) {
+            $state = strip_tags($survey->getRunning());
+            $boxes[] = [
+                'survey' => $survey,
+                'type' => 0,
+                'external' => false,
+                'iconAlter' => $state,
+                'state' => $survey->getState(),
+                'buttons' => $survey->getButtons(),
+                'link' => App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid . '?allowRedirect=1'),
+            ];
+        }
+
+        return $this->renderPartial(
+            'ext.admin.BoxesWidget.views.box',
+            array(
+                'items' => $boxes
+            )
+        );
     }
 }

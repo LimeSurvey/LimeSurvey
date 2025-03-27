@@ -236,7 +236,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     // We get the HTML of the new row to insert
     return $.ajax({
       type: 'GET',
-      contentType: 'json',
+      contentType: 'application/json',
       url: $dataInput.data('url'),
       data: datas,
     });
@@ -2000,6 +2000,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
               $('#question-title-warning').removeClass('d-none');
               $('#question-title-warning').text(message);
               $('#questionCode')[0].setCustomValidity(message); // must set customvalidity to avoid submit by another enter
+              $('#ls-loading').hide();
           } else {
             $('#question-title-warning').addClass('d-none');
             $('#question-title-warning').text('');

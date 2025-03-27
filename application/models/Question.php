@@ -490,9 +490,9 @@ class Question extends LSActiveRecord
     public function removeFromLastVisited()
     {
         $oCriteria = new CDbCriteria();
-        $oCriteria->compare('stg_name', 'last_question_%', true, 'AND', false);
-        $oCriteria->compare('stg_value', $this->qid, false, 'AND');
-        SettingGlobal::model()->deleteAll($oCriteria);
+        $oCriteria->compare('stg_name', 'last_question');
+        $oCriteria->compare('stg_value', $this->qid);
+        SettingsUser::model()->deleteAll($oCriteria);
     }
 
     /**
@@ -500,22 +500,16 @@ class Question extends LSActiveRecord
      *
      * @param ?array $exceptIds Don't delete subquestions with these ids.
      * @return void
-     * @todo Duplication from delete()
      */
     public function deleteAllSubquestions($exceptIds = [])
     {
         $ids = !empty($exceptIds)
             ? array_diff($this->allSubQuestionIds, $exceptIds)
             : $this->allSubQuestionIds;
-        $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
-        $res = Question::model()->deleteAll((new CDbCriteria())->addInCondition('qid', $ids));
-        QuestionAttribute::model()->deleteAll($qidsCriteria);
-        QuestionL10n::model()->deleteAll($qidsCriteria);
-        QuotaMember::model()->deleteAll($qidsCriteria);
-        $defaultValues = DefaultValue::model()->findAll((new CDbCriteria())->addInCondition('qid', $ids));
-        foreach ($defaultValues as $defaultValue) {
-            DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultValue->dvid));
-            DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultValue->dvid));
+
+        $questions = Question::model()->findAll((new CDbCriteria())->addInCondition('qid', $ids));
+        foreach ($questions as $question) {
+            $question->delete();
         }
     }
 
@@ -529,16 +523,15 @@ class Question extends LSActiveRecord
         $ids = array_merge([$this->qid], $this->allSubQuestionIds);
         $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
         $qidsCriteria->addNotInCondition('aid', $exceptIds);
-        $answerIds = [];
         $answers = Answer::model()->findAll($qidsCriteria);
         if (!empty($answers)) {
             foreach ($answers as $answer) {
-                $answerIds[] = $answer->aid;
+                $answerId = $answer->aid;
+                if ($answer->delete()) {
+                    AnswerL10n::model()->deleteAllByAttributes(['aid' => $answerId]);
+                }
             }
         }
-        $aidsCriteria = (new CDbCriteria())->addInCondition('aid', $answerIds);
-        AnswerL10n::model()->deleteAll($aidsCriteria);
-        Answer::model()->deleteAll($qidsCriteria);
     }
 
     /**
@@ -1089,7 +1082,7 @@ class Question extends LSActiveRecord
                 'header' => gT('Question type'),
                 'name' => 'type',
                 'type' => 'raw',
-                'value' => '$data->question_theme->title . (YII_DEBUG ? " <em>{$data->type}</em>" : "")',
+                'value' => 'gT($data->question_theme->title) . (YII_DEBUG ? " <em>{$data->type}</em>" : "")',
                 'htmlOptions' => array('class' => ''),
             ),
 
@@ -1584,10 +1577,16 @@ class Question extends LSActiveRecord
      * Increases all question_order numbers for questions belonging to the group by +1
      *
      * @param int $questionGroupId
+     * @param integer|null $after questionorder
      */
-    public static function increaseAllOrderNumbersForGroup($questionGroupId)
+    public static function increaseAllOrderNumbersForGroup($questionGroupId, $after = null)
     {
-        $questionsInGroup = Question::model()->findAllByAttributes(["gid" => $questionGroupId]);
+        $criteria = new CDbCriteria();
+        $criteria->compare("gid", $questionGroupId);
+        if ($after) {
+            $criteria->compare("question_order", ">=" . $after);
+        }
+        $questionsInGroup = Question::model()->findAll($criteria);
         foreach ($questionsInGroup as $question) {
             $question->question_order = $question->question_order + 1;
             $question->save();

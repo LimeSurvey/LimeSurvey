@@ -77,7 +77,7 @@ class BreadcrumbWidget extends CWidget
             [
                 'id' => 'breadcrumb__surveylist--link',
                 'href' => App()->createUrl('surveyAdministration/listsurveys'),
-                'text' => gt('Surveys')
+                'text' => gT('Surveys')
             ];*/
         if (isset($survey)) {
             $surveyTitle = flattenText($survey->defaultlanguage->surveyls_title);
@@ -97,7 +97,7 @@ class BreadcrumbWidget extends CWidget
             if (isset($subAction) && !isset($questionGroup) && !isset($question)) {
                 $breadcrumbs[] =
                     [
-                        'text' => gt($subAction),
+                        'text' => gT($subAction),
                     ];
             }
         }

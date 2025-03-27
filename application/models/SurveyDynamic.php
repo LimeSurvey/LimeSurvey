@@ -112,6 +112,7 @@ class SurveyDynamic extends LSActiveRecord
      * @access public
      * @param array $data
      * @return boolean
+     * @deprecated Use setAttributes() and encryptSave()
      */
     public function insertRecords($data)
     {
@@ -337,11 +338,11 @@ class SurveyDynamic extends LSActiveRecord
                 'data-bs-toggle' => "modal",
                 'data-bs-target' => "#confirmation-modal",
                 'data-btnclass'  => 'btn-danger',
-                'data-title'     => gt('Delete all response files'),
-                'data-btntext'   => gt('Delete'),
+                'data-title'     => gT('Delete all response files'),
+                'data-btntext'   => gT('Delete'),
                 'data-post-url'  => App()->createUrl("responses/deleteAttachments"),
                 'data-post-datas' => json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]),
-                'data-message'   => gt("Do you want to delete all files of this response?"),
+                'data-message'   => gT("Do you want to delete all files of this response?"),
             ]
         ];
 
@@ -353,11 +354,11 @@ class SurveyDynamic extends LSActiveRecord
                 'data-bs-toggle' => "modal",
                 'data-bs-target' => "#confirmation-modal",
                 'data-btnclass'  => 'btn-danger',
-                'data-title'     => gt('Delete this response'),
-                'data-btntext'   => gt('Delete'),
+                'data-title'     => gT('Delete this response'),
+                'data-btntext'   => gT('Delete'),
                 'data-post-url'  => App()->createUrl("responses/deleteSingle"),
                 'data-post-datas' => json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]),
-                'data-message'   => gt("Do you want to delete this response?") . '<br/>' .
+                'data-message'   => gT("Do you want to delete this response?") . '<br/>' .
                     gT("Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it."),
             ]
         ];
