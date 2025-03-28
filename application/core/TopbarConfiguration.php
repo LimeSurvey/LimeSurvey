@@ -255,7 +255,6 @@ class TopbarConfiguration
             'editorEnabled' => $editorEnabled,
             'editorUrl' => $editorUrl,
             'enableEditorButton' => $enableEditorButton,
-            'showActivateStopButtons' => $showActivateStopButtons,
         );
     }
 
