@@ -4,6 +4,7 @@ namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
 use Survey;
 use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
+use LimeSurvey\Models\Services\SurveyCondition;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 use SurveysGroups;
 
@@ -37,6 +38,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     private TransformerOutputAnswerL10ns $transformerAnswerL10ns;
     private TransformerOutputSurveyMenus $transformerOutputSurveyMenus;
     private TransformerOutputSurveyMenuItems $transformerOutputSurveyMenuItems;
+    private SurveyCondition $surveyCondition;
 
     /**
      * Construct
@@ -54,7 +56,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         TransformerOutputSurveyOwner $transformerOutputSurveyOwner,
         TransformerOutputSurveyMenus $transformerOutputSurveyMenus,
         TransformerOutputSurveyMenuItems $transformerOutputSurveyMenuItems,
-        QuestionService $questionService
+        QuestionService $questionService,
+        SurveyCondition $surveyCondition
     ) {
         $this->transformerSurvey = $transformerOutputSurvey;
         $this->transformerSurveyGroup = $transformerOutputSurveyGroup;
@@ -69,6 +72,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $this->transformerOutputSurveyMenus = $transformerOutputSurveyMenus;
         $this->transformerOutputSurveyMenuItems = $transformerOutputSurveyMenuItems;
         $this->questionService = $questionService;
+        $this->surveyCondition = $surveyCondition;
     }
 
     /**
@@ -210,6 +214,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * @param array $questionLookup
      * @param array $questions
      * @param ?array $options
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @return void
      */
     private function transformQuestions(
@@ -236,6 +241,10 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 ),
                 $options
             );
+
+            $question['scenarios'] = $this->surveyCondition->getScenariosAndConditionsOfQuestion($questionModel->qid);
+
+            $question['conditiontext'] = $this->surveyCondition->getConditionText($questionModel);
 
             if ($questionModel->subquestions) {
                 $question['subquestions'] = $this->transformerQuestion->transformAll(
