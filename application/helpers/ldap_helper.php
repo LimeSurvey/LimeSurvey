@@ -18,39 +18,36 @@
 /*                      */
 /*********************************************/
 
-
+/**
+ * Create the ldap connexion for token management
+ * @param int|null $server_id
+ * @return LDAP\Connection|false
+ */
 function ldap_getCnx($server_id = null)
 {
     $ldap_server = Yii::app()->getConfig('ldap_server');
-
-    if (is_null($server_id)) {
+     if (is_null($server_id) || empty($ldap_server[$server_id])) {
         return false;
-    } else {
-        $ds = false;
-        if ($ldap_server[$server_id]['protoversion'] == 'ldapv3' && $ldap_server[$server_id]['encrypt'] != 'ldaps') {
-            $ds = ldap_connect("ldap://" . "{$ldap_server[$server_id]['server']}:{$ldap_server[$server_id]['port']}");
-            ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
-
-            if (!$ldap_server[$server_id]['referrals']) {
-                ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);
-            }
-
-            if ($ldap_server[$server_id]['encrypt'] == 'start-tls') {
-                ldap_start_tls($ds);
-            }
-        } elseif ($ldap_server[$server_id]['protoversion'] == 'ldapv2') {
-            if ($ldap_server[$server_id]['encrypt'] == 'ldaps') {
-                $ds = ldap_connect("ldaps://" . "{$ldap_server[$server_id]['server']}:{$ldap_server[$server_id]['port']}");
-            } else {
-                $ds = ldap_connect("ldap://" . "{$ldap_server[$server_id]['server']}:{$ldap_server[$server_id]['port']}");
-            }
-
-            if (!$ldap_server[$server_id]['referrals']) {
-                ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);
-            }
-        }
-        return $ds;
     }
+    if ($ldap_server[$server_id]['encrypt'] == 'ldaps') {
+        $ds = ldap_connect("ldaps://" . "{$ldap_server[$server_id]['server']}:{$ldap_server[$server_id]['port']}");
+    } else {
+        $ds = ldap_connect("ldap://" . "{$ldap_server[$server_id]['server']}:{$ldap_server[$server_id]['port']}");
+    }
+    if ($ds === false) {
+        // Invalid uri
+        return false;
+    }
+    if ($ldap_server[$server_id]['protoversion'] == 'ldapv3') {
+        ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
+    }
+    if ($ldap_server[$server_id]['encrypt'] == 'start-tls') {
+        ldap_start_tls($ds);
+    }
+    if (!$ldap_server[$server_id]['referrals']) {
+        ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);
+    }
+    return $ds;
 }
 
 
