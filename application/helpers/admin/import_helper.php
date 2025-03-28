@@ -1195,6 +1195,26 @@ function finalizeSurveyImportFile($newsid, $baselang)
 }
 
 /**
+ * Returns the tables which
+ * @param int $sid
+ * @return array
+ */
+function getTableArchivesAndTimestamps(int $sid)
+{
+    return (array) Yii::app()->db->createCommand("
+        SELECT GROUP_CONCAT(t1.TABLE_NAME) AS tables, SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1) AS timestamp, MAX(t2.TABLE_ROWS) AS cnt
+        FROM information_schema.tables t1
+        JOIN information_schema.tables t2
+        ON t1.TABLE_SCHEMA = t2.TABLE_SCHEMA AND
+           t2.TABLE_NAME LIKE CONCAT('%_old_survey_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
+        WHERE t1.TABLE_SCHEMA = DATABASE() AND
+              t1.TABLE_NAME LIKE '%old%' AND
+              t1.TABLE_NAME LIKE '%{$sid}%'
+        GROUP BY SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1)
+    ")->queryAll();
+}
+
+/**
  * @param string       $sFullFilePath
  * @param boolean      $bTranslateLinksFields
  * @param string|null  $sNewSurveyName
