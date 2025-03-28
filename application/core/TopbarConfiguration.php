@@ -198,7 +198,6 @@ class TopbarConfiguration
         $event->set('surveyId', $oSurvey->sid);
         App()->getPluginManager()->dispatchEvent($event);
         $beforeSurveyBarRender = $event->get('menus');
-        $showActivateStopButtons = $event->get('showActivateStopButtons') ?? true;
 
         $showToolsMenu = $hasDeletePermission
             || $hasSurveyTranslatePermission

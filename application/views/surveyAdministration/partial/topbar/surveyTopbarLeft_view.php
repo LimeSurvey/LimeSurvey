@@ -35,7 +35,7 @@ App()->getClientScript()->registerScriptFile(
 <!-- survey activation -->
 
 <?php
-    if ($showActivateStopButtons) {
+    if (!$editorEnabled) {
 ?>
 <?php if (!$oSurvey->isActive) : ?>
     <!-- activate -->
