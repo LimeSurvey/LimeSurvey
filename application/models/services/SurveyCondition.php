@@ -299,7 +299,7 @@ class SurveyCondition
             }
 
             $result = null;
-            if ($posted_condition_value !== '') {
+            if (($editTargetTab === "#CONST") || ($posted_condition_value !== '')) {
                 $updated_data = array(
                     'qid' => $qid,
                     'scenario' => $p_scenario,
@@ -312,7 +312,7 @@ class SurveyCondition
                 }
                 $result = \Condition::model()->insertRecords($updated_data, true, array('cid' => $p_cid));
             }
-            if ($result) {
+            if (is_numeric($result)) {
                 $app->setFlashMessage(gT('Condition updated.'), 'success');
             } else {
                 if ($result === false) {
