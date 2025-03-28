@@ -62,7 +62,7 @@ jobs:
         run: |
           # Set up the Apache and PHP
           sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php-mysql php8.3-mysql php8.3-xml php-curl php8.3-curl php7.4-curl php-xml php8.3-mbstring php7.4-mbstring php7.4-xml php7.4-mysql libapache2-mod-php8.3 -y
+          sudo apt --fix-broken install php php-mysql php8.3-zip php7.4-zip php8.3-mysql php8.3-xml php-curl php8.3-curl php7.4-curl php-xml php8.3-mbstring php7.4-mbstring php7.4-xml php7.4-mysql libapache2-mod-php8.3 -y
 
           sudo cp -f ./tests/CI-pipeline/github-actions-apache /etc/apache2/sites-available/000-default.conf
           sudo sed -e "s?%CI_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
