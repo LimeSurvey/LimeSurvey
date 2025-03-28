@@ -1201,17 +1201,38 @@ function finalizeSurveyImportFile($newsid, $baselang)
  */
 function getTableArchivesAndTimestamps(int $sid)
 {
-    return (array) Yii::app()->db->createCommand("
-        SELECT GROUP_CONCAT(t1.TABLE_NAME) AS tables, SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1) AS timestamp, MAX(t2.TABLE_ROWS) AS cnt
-        FROM information_schema.tables t1
-        JOIN information_schema.tables t2
-        ON t1.TABLE_SCHEMA = t2.TABLE_SCHEMA AND
-           t2.TABLE_NAME LIKE CONCAT('%_old_survey_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
-        WHERE t1.TABLE_SCHEMA = DATABASE() AND
-              t1.TABLE_NAME LIKE '%old%' AND
-              t1.TABLE_NAME LIKE '%{$sid}%'
-        GROUP BY SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1)
-    ")->queryAll();
+    switch (Yii::app()->db->getDriverName()) {
+        case 'mysqli':
+        case 'mysql':
+                return (array) Yii::app()->db->createCommand("
+                SELECT GROUP_CONCAT(t1.TABLE_NAME) AS tables, SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1) AS timestamp, MAX(t2.TABLE_ROWS) AS cnt
+                FROM information_schema.tables t1
+                JOIN information_schema.tables t2
+                ON t1.TABLE_SCHEMA = t2.TABLE_SCHEMA AND
+                   t2.TABLE_NAME LIKE CONCAT('%_old_survey_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
+                WHERE t1.TABLE_SCHEMA = DATABASE() AND
+                      t1.TABLE_NAME LIKE '%old%' AND
+                      t1.TABLE_NAME LIKE '%{$sid}%'
+                GROUP BY SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1)
+            ")->queryAll();
+        case 'pgsql':
+            polyfillSUBSTRING_INDEX(Yii::app()->db->getDriverName());
+            return (array) Yii::app()->db->createCommand("
+            SELECT array_to_string(array_agg(t1.TABLE_NAME), ',') AS tables, SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1) AS timestamp, replace((regexp_split_to_array(XMLSERIALIZE(DOCUMENT query_to_xml(format('select count(*) as cnt from %I', t2.table_name), false, true, '') as text), '>'::text))[3], '</cnt', '') AS cnt
+            FROM information_schema.tables t1
+            JOIN information_schema.tables t2
+            ON t1.TABLE_CATALOG = t2.TABLE_CATALOG AND
+               t2.TABLE_NAME LIKE CONCAT('%_old_survey_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
+            WHERE t1.TABLE_CATALOG = current_database() AND
+                  t1.TABLE_NAME LIKE '%old%' AND
+                  t1.TABLE_NAME LIKE '%{$sid}%'
+            GROUP BY SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1), t2.table_name;
+            ")->queryAll();
+        case 'mssql':
+        case 'sqlsrv':
+            return [];
+        default: return [];
+    }
 }
 
 /**
@@ -1396,32 +1417,8 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
     return Yii::app()->db->createCommand($command)->execute();
 }
 
-/**
- * Generates a temporary table creation script
- *
- * @param string $source
- * @param string $destination
- * @param int $sid
- * @return string
- */
-function generateTemporaryTableCreate(string $source, string $destination, int $sid)
-{
-    switch (Yii::app()->db->getDriverName()) {
-        case 'mysqli':
-        case 'mysql':
-        return  "
-            CREATE TEMPORARY TABLE {$destination}
-            SELECT *
-            FROM (
-                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
-                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
-                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
-                       temp.COLUMN_NAME
-                FROM information_schema.columns temp
-                WHERE temp.TABLE_SCHEMA = DATABASE() AND 
-                      temp.TABLE_NAME = '{$source}'
-            ) t;
-        ";
+function polyfillSUBSTRING_INDEX($driver) {
+    switch ($driver) {
         case 'pgsql':
             Yii::app()->db->createCommand('CREATE OR REPLACE FUNCTION public.SUBSTRING_INDEX (
                     str text,
@@ -1449,6 +1446,72 @@ function generateTemporaryTableCreate(string $source, string $destination, int $
                 CALLED ON NULL INPUT
                 SECURITY INVOKER
                 COST 5;')->execute();
+        break;
+        case 'mssql':
+            case 'sqlsrv':
+                Yii::app()->db->createCommand(
+    <<<EOD
+    IF OBJECT_ID('dbo.SUBSTRING_INDEX') IS NOT NULL
+      DROP FUNCTION SUBSTRING_INDEX
+    EOD
+                )->execute();
+                Yii::app()->db->createCommand(
+    <<<EOD
+                    CREATE FUNCTION dbo.SUBSTRING_INDEX (
+                        @str NVARCHAR(4000),
+                        @delim NVARCHAR(1),
+                        @count INT
+                  )
+                  RETURNS NVARCHAR(4000)
+                  WITH SCHEMABINDING
+                  BEGIN
+                  DECLARE @XmlSourceString XML;
+                  SET @XmlSourceString = (SELECT N'<root><row>' + REPLACE( (SELECT @str AS '*' FOR XML PATH('')) , @delim, N'</row><row>' ) + N'</row></root>');
+                  RETURN STUFF
+                  (
+                    ((
+                    SELECT  @delim + x.XmlCol.value(N'(text())[1]', N'NVARCHAR(4000)') AS '*'
+                    FROM    @XmlSourceString.nodes(N'(root/row)[position() <= sql:variable("@count")]') x(XmlCol)
+                    FOR XML PATH(N''), TYPE
+                    ).value(N'.', N'NVARCHAR(4000)')),
+                  1, 1, N''
+                  );
+                  END
+    EOD
+                )->execute();
+        break;
+    
+    }
+}
+
+/**
+ * Generates a temporary table creation script
+ *
+ * @param string $source
+ * @param string $destination
+ * @param int $sid
+ * @return string
+ */
+function generateTemporaryTableCreate(string $source, string $destination, int $sid)
+{
+    switch (Yii::app()->db->getDriverName()) {
+        case 'mysqli':
+        case 'mysql':
+        return  "
+            CREATE TEMPORARY TABLE {$destination}
+            SELECT *
+            FROM (
+                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
+                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
+                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
+                       temp.COLUMN_NAME
+                FROM information_schema.columns temp
+                WHERE temp.TABLE_SCHEMA = DATABASE() AND 
+                      temp.TABLE_NAME = '{$source}'
+            ) t;
+        ";
+        case 'pgsql':
+        polyfillSUBSTRING_INDEX(Yii::app()->db->getDriverName());
         return "
             CREATE TEMPORARY TABLE {$destination}
             AS
@@ -1465,36 +1528,7 @@ function generateTemporaryTableCreate(string $source, string $destination, int $
         ";
         case 'mssql':
         case 'sqlsrv':
-            Yii::app()->db->createCommand(
-<<<EOD
-IF OBJECT_ID('dbo.SUBSTRING_INDEX') IS NOT NULL
-  DROP FUNCTION SUBSTRING_INDEX
-EOD
-            )->execute();
-            Yii::app()->db->createCommand(
-<<<EOD
-                CREATE FUNCTION dbo.SUBSTRING_INDEX (
-                    @str NVARCHAR(4000),
-                    @delim NVARCHAR(1),
-                    @count INT
-              )
-              RETURNS NVARCHAR(4000)
-              WITH SCHEMABINDING
-              BEGIN
-              DECLARE @XmlSourceString XML;
-              SET @XmlSourceString = (SELECT N'<root><row>' + REPLACE( (SELECT @str AS '*' FOR XML PATH('')) , @delim, N'</row><row>' ) + N'</row></root>');
-              RETURN STUFF
-              (
-                ((
-                SELECT  @delim + x.XmlCol.value(N'(text())[1]', N'NVARCHAR(4000)') AS '*'
-                FROM    @XmlSourceString.nodes(N'(root/row)[position() <= sql:variable("@count")]') x(XmlCol)
-                FOR XML PATH(N''), TYPE
-                ).value(N'.', N'NVARCHAR(4000)')),
-              1, 1, N''
-              );
-              END
-EOD
-            )->execute();
+        polyfillSUBSTRING_INDEX(Yii::app()->db->getDriverName());
         $destination .= "_" . $sid;
         return "
             SELECT *
