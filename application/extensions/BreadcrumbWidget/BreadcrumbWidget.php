@@ -56,13 +56,7 @@ class BreadcrumbWidget extends CWidget
         // After building of the full breadcrumb array we want to preserve the full texts for the tooltip
         // before they potentially get shortened
         $breadcrumbs = $this->preserveOriginalBreadcrumbTexts($breadcrumbs);
-        // check length of whole breadcrumb
-        $countChars = $this->getLengthOfBreadcrumb($breadcrumbs);
 
-        // maxlength should be not longer than configured chars
-        if ($countChars > self::THRESHOLD) {
-            $breadcrumbs = $this->reduceBreadcrumbStringLength($breadcrumbs, $countChars);
-        }
         return $breadcrumbs;
     }
 
@@ -78,28 +72,28 @@ class BreadcrumbWidget extends CWidget
         $questionGroup = $breadcrumbConfigArray['oQuestionGroup'];
         $subAction = $breadcrumbConfigArray['sSubaction'];
         $question = $breadcrumbConfigArray['oQuestion'];
-        $breadcrumbs[] =
+        $mode = $breadcrumbConfigArray['mode'];
+        /*$breadcrumbs[] =
             [
                 'id' => 'breadcrumb__surveylist--link',
                 'href' => App()->createUrl('surveyAdministration/listsurveys'),
                 'text' => gT('Surveys')
-            ];
+            ];*/
         if (isset($survey)) {
-            if (!isset($questionGroup)) {
-                $breadcrumbs[] =
-                    [
-                        'id' => 'breadcrumb__survey--overview',
-                        'href' => App()->createUrl('/surveyAdministration/view/', ['iSurveyID' => $survey->sid]),
-                        'text' => flattenText($survey->defaultlanguage->surveyls_title) . ' (' . $survey->sid . ')',
-                    ];
-            } else {
-                $breadcrumbs[] =
-                    [
-                        'id' => 'breadcrumb__survey--overview',
-                        'href' => App()->createUrl('/surveyAdministration/view/', ['iSurveyID' => $survey->sid]),
-                        'text' => flattenText($survey->defaultlanguage->surveyls_title),
-                    ];
+            $surveyTitle = flattenText($survey->defaultlanguage->surveyls_title);
+            if ($mode == 'long' || (!isset($questionGroup) && !isset($question))) {
+                $surveyTitle .= ' (' . $survey->sid . ')';
             }
+            if (empty($surveyTitle)) {
+                $surveyTitle = "&nbsp;";
+            }
+            $breadcrumbs[] =
+                [
+                    'id' => 'breadcrumb__survey--overview',
+                    'href' => App()->createUrl('/surveyAdministration/view/', ['iSurveyID' => $survey->sid]),
+                    'text' => $surveyTitle,
+                    'title' => gT('Survey overview'),
+                ];
             if (isset($subAction) && !isset($questionGroup) && !isset($question)) {
                 $breadcrumbs[] =
                     [
@@ -122,13 +116,19 @@ class BreadcrumbWidget extends CWidget
         $questionGroup = $breadcrumbConfigArray['oQuestionGroup'];
         $subAction = $breadcrumbConfigArray['sSubaction'];
         $question = $breadcrumbConfigArray['oQuestion'];
+        $mode = $breadcrumbConfigArray['mode'];
         if (isset($questionGroup)) {
+            $groupTitle = flattenText($questionGroup->questiongroupl10ns[$survey->language]->group_name);
+            if ($mode == 'long') {
+                $groupTitle .= ' (' . $questionGroup->gid . ')';
+            }
+            if (empty($groupTitle)) {
+                $groupTitle = "&nbsp;";
+            }
             // If the questiongroup view is active right now, don't link it?
             if (!$subAction && !isset($question)) {
                 $breadcrumbs[] = [
-                    'text' => $questionGroup->isNewRecord ? gT('New question group') : flattenText(
-                        $questionGroup->questiongroupl10ns[$survey->language]->group_name
-                    )
+                    'text' => $questionGroup->isNewRecord ? gT('New question group') : $groupTitle,
                 ];
             } else {
                 $breadcrumbs[] =
@@ -138,7 +138,8 @@ class BreadcrumbWidget extends CWidget
                             'questionGroupsAdministration/view/',
                             ['surveyid' => $questionGroup->sid, 'gid' => $questionGroup->gid]
                         ),
-                        'text' => flattenText($questionGroup->questiongroupl10ns[$survey->language]->group_name),
+                        'text' => $groupTitle,
+                        'title' => gT('Group summary'),
                     ];
                 if (isset($subAction) && !isset($question)) {
                     $breadcrumbs[] =
@@ -161,12 +162,21 @@ class BreadcrumbWidget extends CWidget
     {
         $subAction = $breadcrumbConfigArray['sSubaction'];
         $question = $breadcrumbConfigArray['oQuestion'];
+        $survey = $breadcrumbConfigArray['oSurvey'];
+        $mode = $breadcrumbConfigArray['mode'];
         if (isset($question)) {
+            $questionTitle = $question->title . ' - ' . flattenText($question->questionl10ns[$survey->language]->question);
+            if ($mode == 'long') {
+                $questionTitle .= ' (' . $question->qid . ')';
+            }
+            if (empty($questionTitle)) {
+                $questionTitle = "&nbsp;";
+            }
             // If the question view is active right now, don't link it
             if (!isset($subAction)) {
                 $breadcrumbs[] =
                     [
-                        'text' => $question->title,
+                        'text' => $questionTitle,
                     ];
             } else {
                 $breadcrumbs[] =
@@ -176,7 +186,8 @@ class BreadcrumbWidget extends CWidget
                             'questionAdministration/view/',
                             ['surveyid' => $question->sid, 'gid' => $question->gid, 'qid' => $question->qid]
                         ),
-                        'text' => $question->title,
+                        'text' => $questionTitle,
+                        'title' => gT('Question summary'),
                     ];
                 $breadcrumbs[] =
                     [
@@ -254,73 +265,6 @@ class BreadcrumbWidget extends CWidget
             //
             $breadcrumbs[$i]['fullText'] = $breadcrumbArray['text'];
         }
-        return $breadcrumbs;
-    }
-
-    /**
-     * returns the number of chars of the whole breadcrumb text
-     * @param array $breadcrumbs
-     * @return int
-     */
-    private function getLengthOfBreadcrumb(array $breadcrumbs)
-    {
-        $countChars = 0;
-        foreach ($breadcrumbs as $breadcrumbArray) {
-            // counts the number of chars
-            $countChars += strlen((string) $breadcrumbArray['text']) + 1;
-        }
-        return $countChars;
-    }
-
-    /**
-     * Replaces 2nd and maybe 3rd element string with ellipsis to fit the maximum characters allowed for the whole breadcrumb
-     * @param array $breadcrumbs
-     * @param int $countChars number of characters of the whole breadcrumbs text
-     * @return mixed
-     */
-    private function reduceBreadcrumbStringLength(array $breadcrumbs, int $countChars)
-    {
-        // keep the first breadcrumb full, only touch 2nd and maybe 3rd entry
-        $charsTooMuch = $countChars - self::THRESHOLD;
-        $charsOf2nd = array_key_exists(1, $breadcrumbs) ? strlen((string) $breadcrumbs[1]['text']) : 0;
-        $charsOf3rd = array_key_exists(2, $breadcrumbs) ? strlen((string) $breadcrumbs[2]['text']) : 0;
-        $secondIsLastElement = count($breadcrumbs) === 2;
-        $thirdIsLastElement = count($breadcrumbs) === 3;
-        if ($charsOf2nd > $charsTooMuch) {
-            // Replace whole 2nd element with ellipsis
-            if ($secondIsLastElement) {
-                // if it's the löast element, only cut it
-                $breadcrumbs = $this->replaceCharsWithEllipsis($breadcrumbs, 1, $charsOf2nd - $charsTooMuch - 3);
-            } else {
-                $breadcrumbs = $this->replaceCharsWithEllipsis($breadcrumbs, 1);
-            }
-        } elseif ($charsOf3rd > $charsTooMuch && !$thirdIsLastElement) {
-            // Replace whole 3rd element with ellipsis
-            $breadcrumbs = $this->replaceCharsWithEllipsis($breadcrumbs, 2);
-        } else {
-            // Fallback: then we're just replacing those elements possible with ellipsis and hope for the best
-            $breadcrumbs = $this->replaceCharsWithEllipsis($breadcrumbs, 1);
-            if (!$thirdIsLastElement) {
-                $breadcrumbs = $this->replaceCharsWithEllipsis($breadcrumbs, 2);
-            }
-        }
-        return $breadcrumbs;
-    }
-
-    /**
-     * Returns the breadcrumbs array after replacing the/some text of a element with ellipsis
-     * As of now the partially replacement of a string is not used.
-     * @param array $breadcrumbs the full breadcrumbs array
-     * @param int $index location of the element which needs to be fixed in the array
-     * @param int $location number of chars after the ellipsis should replace the remaining text. 0 means fully replace
-     * @return array
-     */
-    private function replaceCharsWithEllipsis(array $breadcrumbs, int $index, int $location = 0)
-    {
-        $location = $location <= 3 ? 0 : $location;
-        $ellipsis = "<i class='ri-more-fill'></i>";
-        $breadcrumbs[$index]['text'] = ellipsize($breadcrumbs[$index]['text'], $location, 1, $ellipsis);
-
         return $breadcrumbs;
     }
 }
