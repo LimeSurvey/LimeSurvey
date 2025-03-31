@@ -2583,7 +2583,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return null;
     }
 
-    public function getNonNumericalSettings()
+    public function getNonNumericCodePrefixes()
     {
         $otherSettings = json_decode($this->othersettings, true) ?? [];
         return [

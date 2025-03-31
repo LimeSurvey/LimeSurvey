@@ -321,7 +321,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
         ?>
 
         <!-- Non-Numerical settings -->
-        <?php $nonNumericalSettings = $oSurvey->getNonNumericalSettings(); ?>
+        <?php $nonNumericalSettings = $oSurvey->getNonNumericCodePrefixes(); ?>
         <div class="mb-3">
             <label class="form-label" for="non_numerical_answer_prefix"><?php eT("Non-Numerical answer option prefix:"); ?></label>
             <div class="">

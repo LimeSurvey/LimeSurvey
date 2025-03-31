@@ -1706,7 +1706,7 @@ class Question extends LSActiveRecord
     {
         $prefixCode = '';
         $survey = Survey::model()->findByPk($surveyid);
-        $nonNumericalSettings = $survey->getNonNumericalSettings();
+        $nonNumericalSettings = $survey->getNonNumericCodePrefixes();
         if ($prefixType == 'non_numerical_answer_prefix') {
             $prefixCode = $nonNumericalSettings['non_numerical_answer_prefix'];
             if (!$prefixCode) {
