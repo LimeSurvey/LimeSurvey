@@ -2357,13 +2357,16 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (!isset($insertdata['quotals_quota_id']) || (int)$insertdata['quotals_quota_id'] < 1) {
                 continue;
             }
-            $insertdata['autoload_url'] = 0; // used to bypass urlValidator check in QuotaLanguageSetting model
             $insertdata['quotals_quota_id'] = $aQuotaReplacements[(int) $insertdata['quotals_quota_id']]; // remap the qid
             unset($insertdata['quotals_id']);
-            $quotaLanguagesSetting = new QuotaLanguageSetting();
+            $quotaLanguagesSetting = new QuotaLanguageSetting('import');
             $quotaLanguagesSetting->setAttributes($insertdata, false);
             if (!$quotaLanguagesSetting->save()) {
-                throw new Exception(gT("Error") . ": Failed to insert data<br />");
+                $header = sprintf(gT("Unable to insert quota language settings for quota %s"), $insertdata['quotals_quota_id']);
+                if (isset($insertdata['quotals_language'])) {
+                    $header = sprintf(gT("Unable to insert quota language settings for quota %s and language %s"), $insertdata['quotals_quota_id'], $insertdata['quotals_language']);
+                }
+                $results['importwarnings'][] = CHtml::errorSummary($quotaLanguagesSetting, $header);
             }
             $results['quotals']++;
         }
