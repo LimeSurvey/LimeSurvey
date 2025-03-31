@@ -64,6 +64,6 @@ class UserDetail implements CommandInterface
 
         $user = $this->transformerOutputSurveyOwner->transform($userModel);
 
-        return $this->responseFactory->makeSuccess(['user' => $user]);
+        return $this->responseFactory->makeSuccess($user);
     }
 }

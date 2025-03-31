@@ -13,7 +13,7 @@ on:
 
 jobs:
   CI-pipeline:
-    runs-on: ubuntu-20.04    # ubuntu runner hosted by Github
+    runs-on: ubuntu-22.04    # ubuntu runner hosted by Github
     strategy:
       matrix:
         # Specify what versions of php you want to test
@@ -31,9 +31,11 @@ jobs:
       - uses: actions/checkout@v4
       # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
       - name: Install specified PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
+        run: |
+          sudo add-apt-repository ppa:ondrej/php
+          sudo apt update
+          sudo apt -y install php${{ matrix.php-versions }}
+          sudo apt -y install php-curl php-zip php-xml php-mbstring 
 
       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
       - name: Start the MySQL service
@@ -60,7 +62,9 @@ jobs:
         run: |
           # Set up the Apache and PHP
           sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php-mysql php8.0-mysql php7.4-mysql libapache2-mod-php8.0 -y
+          sudo apt --fix-broken install php php-ldap php-gd php-intl php-mysql php-curl php-xml libapache2-mod-php -y
+          sudo apt --fix-broken install php php7.4-ldap php7.4-gd php7.4-intl php7.4-zip php7.4-mysql php7.4-xml php7.4-curl php7.4-mbstring libapache2-mod-php7.4 -y
+          sudo apt --fix-broken install php php8.3-ldap php8.3-gd php8.3-intl php8.3-zip php8.3-mysql php8.3-xml php8.3-curl php8.3-mbstring libapache2-mod-php8.3 -y
 
           sudo cp -f ./tests/CI-pipeline/github-actions-apache /etc/apache2/sites-available/000-default.conf
           sudo sed -e "s?%CI_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
@@ -80,6 +84,7 @@ jobs:
           chmod -R 777 ./tests/tmp
           chmod -R 777 ./application/config
           chmod +x ./tests/bin/lint-*
+          chmod 777 /home/runner
 
       - name: Check MySQL service
         run: |
@@ -107,6 +112,11 @@ jobs:
           # sed -i '60s/.*/        "debug"=>2,/' application/config/config.php
           # cat application/config/config.php
 
+      # for debugging
+     # - name: Setup upterm session
+     #   uses: lhotari/action-upterm@v1
+     #   if: ${{ contains(matrix.php-versions, '7.4') }}
+
       - name: Test the server
         run: |
           # Test server.
@@ -114,7 +124,7 @@ jobs:
           #sudo tail -n 500 /var/log/apache2/error.log || true
           #sudo tail -n 500 /var/log/nginx/error.log || true
           #sudo tail -n 500 /var/log/php7.4-fpm.log || true
-          #sudo tail -n 500 /var/log/php8.0-fpm.log || true
+          #sudo tail -n 500 /var/log/php8.3-fpm.log || true
           # NOTE: php --version might not be the same as setup in apache. Use fwrite(STDERR, phpversion()); in index.php to be sure.
           #which php
           #php --version
@@ -155,7 +165,7 @@ jobs:
           retention-days: 5
   
   unit-tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         # Specify what versions of php you want to test
@@ -176,7 +186,7 @@ jobs:
           composer install -vvv
 
           sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php-mysql php8.0-mysql php7.4-mysql -y
+          sudo apt --fix-broken install php php-mysql php8.3-mysql php7.4-mysql -y
 
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
@@ -215,7 +225,7 @@ jobs:
           path: cov.xml
 
   test-coverage:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: unit-tests
     strategy:
       matrix:
@@ -245,7 +255,7 @@ jobs:
         run: php tests/bin/check_coverage.php cov.xml 37
 
   code-check:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       DBENGINE: INNODB
     strategy:
@@ -266,7 +276,7 @@ jobs:
           composer install -vvv
 
           sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php-mysql php8.0-mysql php7.4-mysql -y
+          sudo apt --fix-broken install php php-mysql php8.3-mysql php7.4-mysql -y
 
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
