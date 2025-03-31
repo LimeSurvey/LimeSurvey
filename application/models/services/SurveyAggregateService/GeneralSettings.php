@@ -447,8 +447,8 @@ class GeneralSettings
     private function updateOtherSettings($input, Survey $survey)
     {
         // Update other settings, only two for now
-        $survey->setNonNumericalSetting("non_numerical_answer_prefix", $input['non_numerical_answer_prefix'] ?? 'A');
-        $survey->setNonNumericalSetting("non_numerical_subquestions_prefix", $input['non_numerical_subquestions_prefix'] ?? 'SQ');
+        $survey->setNonNumericCodePrefixes("non_numerical_answer_prefix", $input['non_numerical_answer_prefix'] ?? 'A');
+        $survey->setNonNumericCodePrefixes("non_numerical_subquestions_prefix", $input['non_numerical_subquestions_prefix'] ?? 'SQ');
     }
 
     private function getAdditionalLanguagesArray($input, Survey $survey)

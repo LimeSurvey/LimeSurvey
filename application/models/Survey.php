@@ -2592,7 +2592,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         ];
     }
 
-    public function setNonNumericalSetting($attribute, $value)
+    public function setNonNumericCodePrefixes($attribute, $value)
     {
         $otherSettings = json_decode($this->othersettings, true) ?? [];
         $otherSettings[$attribute] = $value;
