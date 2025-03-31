@@ -1230,7 +1230,24 @@ function getTableArchivesAndTimestamps(int $sid)
             ")->queryAll();
         case 'mssql':
         case 'sqlsrv':
-            return [];
+            return (array) Yii::app()->db->createCommand("
+                SELECT STRING_AGG(t1.TABLE_NAME, ',') AS tables, substring(t1.TABLE_NAME, len(t1.TABLE_NAME) - charindex('_', reverse(t1.TABLE_NAME)) + 2, 2000) AS timestamp,
+				(
+				    SELECT TOP 1 p.rows
+			    	FROM sys.tables t
+	    			JOIN sys.partitions p
+    				ON p.object_id = t.object_id
+		    		WHERE t2.TABLE_NAME = t.[name]
+				) AS cnt
+                FROM information_schema.tables t1
+                JOIN information_schema.tables t2
+                ON t1.TABLE_CATALOG = t2.TABLE_CATALOG AND
+                   t2.TABLE_NAME LIKE CONCAT('%old_survey_{$sid}_', substring(t1.TABLE_NAME, len(t1.TABLE_NAME) - charindex('_', reverse(t1.TABLE_NAME)) + 2, 2000))
+                WHERE t1.TABLE_CATALOG = db_name() AND
+                      t1.TABLE_NAME LIKE '%old%' AND
+                      t1.TABLE_NAME LIKE '%{$sid}%'
+                GROUP BY t2.TABLE_NAME, substring(t1.TABLE_NAME, len(t1.TABLE_NAME) - charindex('_', reverse(t1.TABLE_NAME)) + 2, 2000)
+            ")->queryAll();
         default: return [];
     }
 }
