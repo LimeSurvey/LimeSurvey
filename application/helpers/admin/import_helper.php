@@ -1195,6 +1195,64 @@ function finalizeSurveyImportFile($newsid, $baselang)
 }
 
 /**
+ * Returns the tables which
+ * @param int $sid
+ * @return array
+ */
+function getTableArchivesAndTimestamps(int $sid)
+{
+    switch (Yii::app()->db->getDriverName()) {
+        case 'mysqli':
+        case 'mysql':
+                return (array) Yii::app()->db->createCommand("
+                SELECT GROUP_CONCAT(t1.TABLE_NAME) AS tables, SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1) AS timestamp, MAX(t2.TABLE_ROWS) AS cnt
+                FROM information_schema.tables t1
+                JOIN information_schema.tables t2
+                ON t1.TABLE_SCHEMA = t2.TABLE_SCHEMA AND
+                   t2.TABLE_NAME LIKE CONCAT('%old_survey_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
+                WHERE t1.TABLE_SCHEMA = DATABASE() AND
+                      t1.TABLE_NAME LIKE '%old%' AND
+                      t1.TABLE_NAME LIKE '%{$sid}%'
+                GROUP BY SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1)
+            ")->queryAll();
+        case 'pgsql':
+            polyfillSUBSTRING_INDEX(Yii::app()->db->getDriverName());
+            return (array) Yii::app()->db->createCommand("
+            SELECT array_to_string(array_agg(t1.TABLE_NAME), ',') AS tables, SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1) AS timestamp, replace((regexp_split_to_array(XMLSERIALIZE(DOCUMENT query_to_xml(format('select count(*) as cnt from %I', t2.table_name), false, true, '') as text), '>'::text))[3], '</cnt', '') AS cnt
+            FROM information_schema.tables t1
+            JOIN information_schema.tables t2
+            ON t1.TABLE_CATALOG = t2.TABLE_CATALOG AND
+               t2.TABLE_NAME LIKE CONCAT('%old_survey_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
+            WHERE t1.TABLE_CATALOG = current_database() AND
+                  t1.TABLE_NAME LIKE '%old%' AND
+                  t1.TABLE_NAME LIKE '%{$sid}%'
+            GROUP BY SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1), t2.table_name;
+            ")->queryAll();
+        case 'mssql':
+        case 'sqlsrv':
+            return (array) Yii::app()->db->createCommand("
+                SELECT STRING_AGG(t1.TABLE_NAME, ',') AS tables, substring(t1.TABLE_NAME, len(t1.TABLE_NAME) - charindex('_', reverse(t1.TABLE_NAME)) + 2, 2000) AS timestamp,
+				(
+        		    SELECT TOP 1 p.rows
+			    	FROM sys.tables t
+	    			JOIN sys.partitions p
+    				ON p.object_id = t.object_id
+		    		WHERE t2.TABLE_NAME = t.[name]
+				) AS cnt
+                FROM information_schema.tables t1
+                JOIN information_schema.tables t2
+                ON t1.TABLE_CATALOG = t2.TABLE_CATALOG AND
+                   t2.TABLE_NAME LIKE CONCAT('%old_survey_{$sid}_', substring(t1.TABLE_NAME, len(t1.TABLE_NAME) - charindex('_', reverse(t1.TABLE_NAME)) + 2, 2000))
+                WHERE t1.TABLE_CATALOG = db_name() AND
+                      t1.TABLE_NAME LIKE '%old%' AND
+                      t1.TABLE_NAME LIKE '%{$sid}%'
+                GROUP BY t2.TABLE_NAME, substring(t1.TABLE_NAME, len(t1.TABLE_NAME) - charindex('_', reverse(t1.TABLE_NAME)) + 2, 2000)
+            ")->queryAll();
+        default: return [];
+    }
+}
+
+/**
  * @param string       $sFullFilePath
  * @param boolean      $bTranslateLinksFields
  * @param string|null  $sNewSurveyName
@@ -1312,6 +1370,695 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             return null;
     }
 }
+
+/**
+ * Creates a table based on another
+ *
+ * @param string $table
+ * @param string $pattern
+ * @param array $columns
+ * @param array $where
+ * @return integer number of rows affected by the execution.
+ * @throws CDbException execution failed
+ */
+function createTableFromPattern($table, $pattern, $columns = [], $where = [])
+{
+    if (!is_array($columns)) {
+        $columns = [];
+    }
+    if (!is_array($where)) {
+        $where = [];
+    }
+    $whereClause = "";
+    $criterias = [];
+    if (count($where)) {
+        foreach ($where as $field => $value) {
+            $criterias[] = Yii::app()->db->quoteColumnName($field) . " = " . Yii::app()->db->quoteValue($value);
+        }
+        $whereClause = " WHERE " . implode(" AND ", $criterias);
+    }
+    if (count($columns)) {
+        foreach ($columns as $index => $column) {
+            if (!ctype_alnum($column)) {
+                $columns[$index] = Yii::app()->db->quoteColumnName($column);
+            }
+        }
+        $command = "";
+        switch (Yii::app()->db->getDriverName()) {
+            case 'mysqli':
+            case 'mysql':
+            case 'pgsql':
+            $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " AS SELECT " . implode(",", $columns) . " FROM " . Yii::app()->db->quoteTableName($pattern) . $whereClause;
+            break;
+            case 'mssql':
+            case 'sqlsrv':
+            $command = "SELECT " . implode(",", $columns) . " into " . Yii::app()->db->quoteTableName($table) . " FROM " . Yii::app()->db->quoteTableName($pattern) . $whereClause;
+            break;
+        }
+    } else {
+        $command = "";
+        switch (Yii::app()->db->getDriverName()) {
+            case 'mysqli':
+            case 'mysql':
+            $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " LIKE " . Yii::app()->db->quoteTableName($pattern) . ";";
+            break;
+            case 'pgsql':
+            $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " (LIKE " . Yii::app()->db->quoteTableName($pattern) . " INCLUDING ALL);";
+            break;
+            case 'mssql':
+            case 'sqlsrv':
+            $command = "SELECT * into " . Yii::app()->db->quoteTableName($table) . " FROM " . Yii::app()->db->quoteTableName($pattern) . " where 1=0";
+            break;
+        }
+    }
+    return Yii::app()->db->createCommand($command)->execute();
+}
+
+function polyfillSUBSTRING_INDEX($driver) {
+    switch ($driver) {
+        case 'pgsql':
+            Yii::app()->db->createCommand('CREATE OR REPLACE FUNCTION public.SUBSTRING_INDEX (
+                    str text,
+                    delim text,
+                    count integer = 1,
+                    out SUBSTRING_INDEX text
+                )
+                RETURNS text AS
+                $body$
+                BEGIN
+                    IF count > 0 THEN
+                        SUBSTRING_INDEX = array_to_string((string_to_array(str, delim))[:count], delim);
+                    ELSE
+                        DECLARE
+                        _array TEXT[];
+                         BEGIN
+                             _array = string_to_array(str, delim);
+                             SUBSTRING_INDEX = array_to_string(_array[array_length(_array, 1) + count + 1:], delim);    
+                         END;  
+                    END IF;
+                END;
+                $body$
+                LANGUAGE \'plpgsql\'
+                IMMUTABLE
+                CALLED ON NULL INPUT
+                SECURITY INVOKER
+                COST 5;')->execute();
+        break;
+        case 'mssql':
+            case 'sqlsrv':
+                Yii::app()->db->createCommand(
+    <<<EOD
+    IF OBJECT_ID('dbo.SUBSTRING_INDEX') IS NOT NULL
+      DROP FUNCTION SUBSTRING_INDEX
+    EOD
+                )->execute();
+                Yii::app()->db->createCommand(
+    <<<EOD
+                    CREATE FUNCTION dbo.SUBSTRING_INDEX (
+                        @str NVARCHAR(4000),
+                        @delim NVARCHAR(1),
+                        @count INT
+                  )
+                  RETURNS NVARCHAR(4000)
+                  WITH SCHEMABINDING
+                  BEGIN
+                  DECLARE @XmlSourceString XML;
+                  SET @XmlSourceString = (SELECT N'<root><row>' + REPLACE( (SELECT @str AS '*' FOR XML PATH('')) , @delim, N'</row><row>' ) + N'</row></root>');
+                  RETURN STUFF
+                  (
+                    ((
+                    SELECT  @delim + x.XmlCol.value(N'(text())[1]', N'NVARCHAR(4000)') AS '*'
+                    FROM    @XmlSourceString.nodes(N'(root/row)[position() <= sql:variable("@count")]') x(XmlCol)
+                    FOR XML PATH(N''), TYPE
+                    ).value(N'.', N'NVARCHAR(4000)')),
+                  1, 1, N''
+                  );
+                  END
+    EOD
+                )->execute();
+        break;
+    
+    }
+}
+
+/**
+ * Generates a temporary table creation script
+ *
+ * @param string $source
+ * @param string $destination
+ * @param int $sid
+ * @return string
+ */
+function generateTemporaryTableCreate(string $source, string $destination, int $sid)
+{
+    switch (Yii::app()->db->getDriverName()) {
+        case 'mysqli':
+        case 'mysql':
+        return  "
+            CREATE TEMPORARY TABLE {$destination}
+            SELECT *
+            FROM (
+                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
+                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
+                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
+                       temp.COLUMN_NAME
+                FROM information_schema.columns temp
+                WHERE temp.TABLE_SCHEMA = DATABASE() AND 
+                      temp.TABLE_NAME = '{$source}'
+            ) t;
+        ";
+        case 'pgsql':
+        polyfillSUBSTRING_INDEX(Yii::app()->db->getDriverName());
+        return "
+            CREATE TEMPORARY TABLE {$destination}
+            AS
+            SELECT *
+            FROM (
+                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
+                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
+                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
+                       temp.COLUMN_NAME
+                FROM information_schema.columns temp
+                WHERE temp.TABLE_CATALOG = current_database() AND 
+                      temp.TABLE_NAME = '{$source}'
+            ) t;
+        ";
+        case 'mssql':
+        case 'sqlsrv':
+        polyfillSUBSTRING_INDEX(Yii::app()->db->getDriverName());
+        $destination .= "_" . $sid;
+        return "
+            SELECT *
+            INTO {$destination}
+            FROM (
+                SELECT dbo.SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
+                       dbo.SUBSTRING_INDEX(SUBSTRING(temp.COLUMN_NAME, 2 + LEN(dbo.SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1)), 2000), 'X', 1) AS gid,
+                       SUBSTRING(temp.COLUMN_NAME, charindex('X', temp.COLUMN_NAME, (charindex('X', temp.COLUMN_NAME, 1))+1) + 1, 2000) AS qidsuffix,
+                       temp.COLUMN_NAME
+                FROM information_schema.columns temp
+                WHERE temp.TABLE_CATALOG = db_name() AND
+                      temp.TABLE_NAME = '{$source}'
+            ) t;
+        ";
+    }
+    //unsupported
+    return '';
+}
+
+/**
+ * Generates a drop statement for a temporary table
+ *
+ * @param string $name
+ * @param int $sid
+ * @return string
+ */
+function generateTemporaryTableDrop(string $name, int $sid)
+{
+    switch (Yii::app()->db->getDriverName()) {
+        case 'mysqli':
+        case 'mysql':
+        return "DROP TEMPORARY TABLE {$name};";
+        case 'pgsql':
+        return "DROP TABLE {$name};";
+        case 'mssql':
+        case 'sqlsrv':
+        return "DROP TABLE {$name}_{$sid};";
+    }
+    //unsupported
+    return '';
+}
+
+/**
+ * Gets the unchanged columns
+ *
+ * @param int $sid
+ * @param int $qTimestamp
+ * @param int $sTimestamp
+ * @return array all rows of the query result. Each array element is an array representing a row.
+ * An empty array is returned if the query results in nothing.
+ * @throws CException execution failed
+ */
+function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
+{
+    $sourceTables = [
+        Yii::app()->db->tablePrefix . "survey_" . $sid,
+        Yii::app()->db->tablePrefix . "survey_" . $sid,
+        Yii::app()->db->tablePrefix . "survey_" . $sid,
+        Yii::app()->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
+        Yii::app()->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
+        Yii::app()->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
+    ];
+    $destinationTables = [
+        'new_s_c',
+        'new_parent1',
+        'new_parent2',
+        'old_s_c',
+        'old_parent1',
+        'old_parent2'
+    ];
+    Yii::app()->db->createCommand(implode("\n\n", generateTemporaryTableCreates($sourceTables, $destinationTables, $sid)))->execute();
+    $command = "";
+    switch (Yii::app()->db->getDriverName()) {
+        case 'mysqli':
+        case 'mysql':
+        $command = "
+        SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
+        FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
+        JOIN " . Yii::app()->db->tablePrefix . "questions new_q
+        ON old_q.qid = new_q.qid AND old_q.type = new_q.type
+        JOIN new_s_c
+        ON new_s_c.sid = new_q.sid AND
+           new_s_c.gid = new_q.gid AND
+           new_s_c.qidsuffix like concat(new_q.qid, '%')
+        JOIN old_s_c
+        ON old_s_c.sid = old_q.sid AND
+           old_s_c.gid = old_q.gid AND
+           old_s_c.qidsuffix LIKE CONCAT(old_q.qid, '%') AND
+           old_s_c.qidsuffix = new_s_c.qidsuffix
+        LEFT JOIN new_parent1
+        ON new_s_c.sid = new_parent1.sid AND
+           new_s_c.gid = new_parent1.gid AND
+           new_s_c.qidsuffix <> new_parent1.qidsuffix AND
+           new_parent1.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+        LEFT JOIN new_parent2
+        ON new_s_c.sid = new_parent2.sid AND
+           new_s_c.gid = new_parent2.gid AND
+           new_s_c.qidsuffix <> new_parent2.qidsuffix AND new_parent1.qidsuffix <> new_parent2.qidsuffix AND
+           new_parent2.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+        LEFT JOIN old_parent1
+        ON old_s_c.sid = old_parent1.sid AND
+           old_s_c.gid = old_parent1.gid AND
+           old_s_c.qidsuffix <> old_parent1.qidsuffix AND
+           old_parent1.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+        LEFT JOIN old_parent2
+           ON old_s_c.sid = old_parent2.sid AND
+              old_s_c.gid = old_parent2.gid AND
+              old_s_c.qidsuffix <> old_parent2.qidsuffix AND old_parent1.qidsuffix <> old_parent2.qidsuffix AND
+              old_parent2.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+        WHERE (new_parent2.sid IS NULL) AND
+              (old_parent2.sid IS NULL) AND
+              (((new_parent1.sid IS NULL) AND (old_parent1.sid IS NULL)) OR
+               (
+                (new_parent1.sid = old_parent1.sid) AND
+                (new_parent1.gid = old_parent1.gid) AND
+                (new_parent1.qidsuffix = old_parent1.qidsuffix)
+               )
+              )
+        ;
+        "
+        ;
+        break;
+        case 'pgsql':
+            $command = "
+            SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
+            FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
+            JOIN " . Yii::app()->db->tablePrefix . "questions new_q
+            ON old_q.qid = new_q.qid AND old_q.type = new_q.type
+            JOIN new_s_c
+            ON new_s_c.sid::text = new_q.sid::text AND
+               new_s_c.gid::text = new_q.gid::text AND
+               new_s_c.qidsuffix like concat(new_q.qid, '%')
+            JOIN old_s_c
+            ON old_s_c.sid::text = old_q.sid::text AND
+               old_s_c.gid::text = old_q.gid::text AND
+               old_s_c.qidsuffix LIKE CONCAT(old_q.qid, '%') AND
+               old_s_c.qidsuffix = new_s_c.qidsuffix
+            LEFT JOIN new_parent1
+            ON new_s_c.sid = new_parent1.sid AND
+               new_s_c.gid = new_parent1.gid AND
+               new_s_c.qidsuffix <> new_parent1.qidsuffix AND
+               new_parent1.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+            LEFT JOIN new_parent2
+            ON new_s_c.sid = new_parent2.sid AND
+               new_s_c.gid = new_parent2.gid AND
+               new_s_c.qidsuffix <> new_parent2.qidsuffix AND new_parent1.qidsuffix <> new_parent2.qidsuffix AND
+               new_parent2.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+            LEFT JOIN old_parent1
+            ON old_s_c.sid = old_parent1.sid AND
+               old_s_c.gid = old_parent1.gid AND
+               old_s_c.qidsuffix <> old_parent1.qidsuffix AND
+               old_parent1.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+            LEFT JOIN old_parent2
+               ON old_s_c.sid = old_parent2.sid AND
+                  old_s_c.gid = old_parent2.gid AND
+                  old_s_c.qidsuffix <> old_parent2.qidsuffix AND old_parent1.qidsuffix <> old_parent2.qidsuffix AND
+                  old_parent2.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+            WHERE (new_parent2.sid IS NULL) AND
+                  (old_parent2.sid IS NULL) AND
+                  (((new_parent1.sid IS NULL) AND (old_parent1.sid IS NULL)) OR
+                   (
+                    (new_parent1.sid = old_parent1.sid) AND
+                    (new_parent1.gid = old_parent1.gid) AND
+                    (new_parent1.qidsuffix = old_parent1.qidsuffix)
+                   )
+                  )
+            ;
+            "
+            ;
+        break;
+        case 'mssql':
+        case 'sqlsrv':
+            $command = "
+            SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
+                    FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
+                    JOIN " . Yii::app()->db->tablePrefix . "questions new_q
+                    ON old_q.qid = new_q.qid AND old_q.type = new_q.type
+                    JOIN new_s_c_{$sid} new_s_c
+                    ON new_s_c.sid = convert(nvarchar(255), new_q.sid) AND
+                       new_s_c.gid = convert(nvarchar(255), new_q.gid) AND
+                       new_s_c.qidsuffix like concat(new_q.qid, '%')
+                    JOIN old_s_c_{$sid} old_s_c
+                    ON old_s_c.sid = convert(nvarchar(255), old_q.sid) AND
+                       old_s_c.gid = convert(nvarchar(255), old_q.gid) AND
+                       old_s_c.qidsuffix LIKE CONCAT(old_q.qid, '%') AND
+                       old_s_c.qidsuffix = new_s_c.qidsuffix
+                    LEFT JOIN new_parent1_{$sid} new_parent1
+                    ON new_s_c.sid = new_parent1.sid AND
+                       new_s_c.gid = new_parent1.gid AND
+                       new_s_c.qidsuffix <> new_parent1.qidsuffix AND
+                       new_parent1.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+                    LEFT JOIN new_parent2_{$sid} new_parent2
+                    ON new_s_c.sid = new_parent2.sid AND
+                       new_s_c.gid = new_parent2.gid AND
+                       new_s_c.qidsuffix <> new_parent2.qidsuffix AND new_parent1.qidsuffix <> new_parent2.qidsuffix AND
+                       new_parent2.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+                    LEFT JOIN old_parent1_{$sid} old_parent1
+                    ON old_s_c.sid = old_parent1.sid AND
+                       old_s_c.gid = old_parent1.gid AND
+                       old_s_c.qidsuffix <> old_parent1.qidsuffix AND
+                       old_parent1.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+                    LEFT JOIN old_parent2_{$sid} old_parent2
+                       ON old_s_c.sid = old_parent2.sid AND
+                          old_s_c.gid = old_parent2.gid AND
+                          old_s_c.qidsuffix <> old_parent2.qidsuffix AND old_parent1.qidsuffix <> old_parent2.qidsuffix AND
+                          old_parent2.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+                    WHERE (new_parent2.sid IS NULL) AND
+                          (old_parent2.sid IS NULL) AND
+                          (((new_parent1.sid IS NULL) AND (old_parent1.sid IS NULL)) OR
+                           (
+                            (new_parent1.sid = old_parent1.sid) AND
+                            (new_parent1.gid = old_parent1.gid) AND
+                            (new_parent1.qidsuffix = old_parent1.qidsuffix)
+                           )
+                          )
+            ;            
+            "
+            ;
+            break;
+    }
+
+    $rawResults = Yii::app()->db->createCommand($command)->queryAll();
+    $results = ['old_c' => [], 'new_c' => []];
+    foreach ($rawResults as $rawResult) {
+        $results['old_c'][] = $rawResult['old_c'];
+        $results['new_c'][] = $rawResult['new_c'];
+    }
+    Yii::app()->db->createCommand(implode("\n\n", generateTemporaryTableDrops($destinationTables, $sid)))->execute();
+    return $results;
+}
+
+/**
+ * Generates temporary table creation scripts from the arrays received and returns the scripts that were generated,
+ * we expect count($sourceTables) and count($destinationTables) to be the same
+ *
+ * @param array $sourceTables
+ * @param array $destinationTables
+ * @param int $sid
+ * @return array
+ */
+function generateTemporaryTableCreates(array $sourceTables, array $destinationTables, int $sid)
+{
+    $output = [];
+    for ($index = 0; $index < count($sourceTables); $index++) {
+        $output [] = generateTemporaryTableCreate($sourceTables[$index], $destinationTables[$index], $sid);
+    }
+    return $output;
+}
+
+/**
+ * Generates temporary table drops for the tables received and returns the scripts
+ *
+ * @param array $tables
+ * @param int $sid
+ * @return array
+ */
+function generateTemporaryTableDrops(array $tables, int $sid)
+{
+    $output = [];
+    foreach ($tables as $table) {
+        $output [] = generateTemporaryTableDrop($table, $sid);
+    }
+    return $output;
+}
+
+/**
+ * Finds the newest archive table from each kind
+ *
+ * @param int $sid
+ * @return array all rows of the query result. Each array element is an array representing a row.
+ * An empty array is returned if the query results in nothing.
+ * @throws CException execution failed
+ */
+function getDeactivatedArchives($sid)
+{
+    $sid = intval($sid);
+    $command = "";
+    switch (Yii::app()->db->getDriverName()) {
+        case 'mysqli':
+        case 'mysql':
+        $command = "
+        SELECT n, GROUP_CONCAT(TABLE_NAME) AS table_name
+        FROM
+        (SELECT n, TABLE_NAME
+        FROM information_schema.tables
+        JOIN (
+            SELECT 'survey' AS n
+            UNION
+            SELECT 'tokens' AS n
+            UNION
+            SELECT 'timings' AS n
+            UNION
+            SELECT 'questions' AS n
+        ) t
+        ON TABLE_SCHEMA = DATABASE() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
+        ((n <> 'survey') OR (TABLE_NAME NOT LIKE '%timings%'))
+        ORDER BY TABLE_NAME) t
+        GROUP BY n;
+        ";
+        break;
+        case 'pgsql':
+        $command = "
+        SELECT n, array_to_string(array_agg(TABLE_NAME), ',') AS table_name
+        FROM
+        (SELECT n, TABLE_NAME
+        FROM information_schema.tables
+        JOIN (
+            SELECT 'survey' AS n
+            UNION
+            SELECT 'tokens' AS n
+            UNION
+            SELECT 'timings' AS n
+            UNION
+            SELECT 'questions' AS n
+        ) t
+        ON TABLE_CATALOG = current_database() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
+        ((n <> 'survey') OR (TABLE_NAME NOT LIKE '%timings%'))
+        ORDER BY TABLE_NAME) t
+        GROUP BY n;
+            "
+            ;
+        break;
+        case 'mssql':
+        case 'sqlsrv':
+        $command = "
+		SELECT n, STRING_AGG(TABLE_NAME, ',') AS table_name
+        FROM
+        (SELECT n, TABLE_NAME
+        FROM information_schema.tables
+        JOIN (
+            SELECT 'survey' AS n
+            UNION
+            SELECT 'tokens' AS n
+            UNION
+            SELECT 'timings' AS n
+            UNION
+            SELECT 'questions' AS n
+        ) t
+        ON TABLE_CATALOG = db_name() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
+        ((n <> 'survey') OR (TABLE_NAME NOT LIKE '%timings%'))
+        ) t
+        GROUP BY n;
+        "
+        ;
+        break;
+    }
+    $rawResults = Yii::app()->db->createCommand($command)->queryAll();
+    $results = [];
+    foreach ($rawResults as $rawResult) {
+        $results[$rawResult['n']] = $rawResult["table_name"];
+    }
+    return $results;
+}
+
+/**
+ * Copying all data from source table to a target table having the same structure
+ *
+ * @param string $source
+ * @param string $destination
+ * @return integer number of rows affected by the execution.
+ * @throws CDbException execution failed
+ */
+function copyFromOneTableToTheOther($source, $destination)
+{
+    $customFilter = [
+        'mysql' => 'a.TABLE_SCHEMA = b.TABLE_SCHEMA and a.TABLE_SCHEMA = DATABASE()',
+        'mysqli' => 'a.TABLE_SCHEMA = b.TABLE_SCHEMA and a.TABLE_SCHEMA = DATABASE()',
+        'pgsql' => 'a.TABLE_CATALOG = b.TABLE_CATALOG and a.TABLE_CATALOG = current_database()',
+        'mssql' => 'a.TABLE_CATALOG = b.TABLE_CATALOG and a.TABLE_CATALOG = db_name()',
+        'sqlsrv' => 'a.TABLE_CATALOG = b.TABLE_CATALOG and a.TABLE_CATALOG = db_name()',
+    ];
+    $filter = ($customFilter[Yii::app()->db->getDriverName()] ?? '');
+    $command = "
+        select a.COLUMN_NAME as cname
+        from information_schema.columns a
+        join information_schema.columns b
+        on {$filter} and
+           a.TABLE_NAME = '" . $destination . "' and
+           b.TABLE_NAME = '" . $source . "' and
+           a.COLUMN_NAME = b.COLUMN_NAME
+        where a.COLUMN_NAME not in ('id', 'tid')
+    ";
+    $rawResults = Yii::app()->db->createCommand($command)->queryAll();
+    $columns = [];
+    foreach ($rawResults as $rawResult) {
+        $columns[] = Yii::app()->db->quoteColumnName($rawResult['cname']);
+    }
+    return count($columns) ? Yii::app()->db->createCommand("INSERT INTO " . Yii::app()->db->quoteTableName($destination) . "(" . implode(",", $columns) . ") SELECT " . implode(",", $columns) . " FROM " . Yii::app()->db->quoteTableName($source))->execute() : 0;
+}
+
+/**
+ * Recovers archived survey responses
+ *
+ * @param int $surveyId survey ID
+ * @param string $archivedResponseTableName archived response table name to be imported
+ * @param bool $preserveIDs if archived response IDs should be preserved
+ * @param array $validatedColumns the columns that are validated and can be inserted again
+ * @return integer number of rows affected by the execution.
+ * @throws Exception execution failed
+ */
+function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName, $preserveIDs, array $validatedColumns = []): int
+{
+    if (!is_array($validatedColumns)) {
+        $validatedColumns = [];
+    }
+    $pluginDynamicArchivedResponseModel = PluginDynamic::model($archivedResponseTableName);
+    $targetSchema = SurveyDynamic::model($surveyId)->getTableSchema();
+    $encryptedAttributes = Response::getEncryptedAttributes($surveyId);
+    if ((App()->db->tablePrefix) && (strpos($archivedResponseTableName, App()->db->tablePrefix) === 0)) {
+        $tbl_name = str_replace('old_survey', 'old_tokens', substr($archivedResponseTableName, strlen(App()->db->tablePrefix)));
+    } else {
+        $tbl_name = str_replace('old_survey', 'old_tokens', $archivedResponseTableName);
+    }
+    $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name, 'tbl_type' => 'response']);
+    $archivedEncryptedAttributes = [];
+    if ($archivedTableSettings) {
+        $archivedEncryptedAttributes = json_decode($archivedTableSettings->properties, true);
+    }
+    $archivedResponses = new CDataProviderIterator(new CActiveDataProvider($pluginDynamicArchivedResponseModel), 500);
+
+    $tableName = "{{survey_$surveyId}}";
+    $importedResponses = 0;
+    $batchData = [];
+    foreach ($archivedResponses as $archivedResponse) {
+        $dataRow = [];
+        // Using plugindynamic model because I dont trust surveydynamic.
+        $targetResponse = new PluginDynamic($tableName);
+        if ($preserveIDs) {
+            $targetResponse->id = $archivedResponse->id;
+            $dataRow['id'] = $archivedResponse->id;
+        }
+
+        $to = 'new_c';
+        $from = 'old_c';
+        for ($index = 0; $index < count($validatedColumns[$to]); $index++) {
+            $source = $validatedColumns[$from][$index];
+            $target = $validatedColumns[$to][$index];
+            $targetResponse->{$target} = $archivedResponse[$source];
+            if (in_array($source, $archivedEncryptedAttributes, false) && !in_array($target, $encryptedAttributes, false)) {
+                $targetResponse->{$target} = $archivedResponse->decryptSingle($archivedResponse[$source]);
+            } elseif (!in_array($source, $archivedEncryptedAttributes, false) && in_array($target, $encryptedAttributes, false)) {
+                $targetResponse->{$target} = $archivedResponse->encryptSingle($archivedResponse[$source]);
+            } else {
+                $targetResponse->{$target} = $archivedResponse[$source];
+            }
+            $dataRow[$target] = $targetResponse->{$target};
+        }
+
+        $additionalFields = [
+            'token',
+            'submitdate',
+            'lastpage',
+            'startlanguage',
+            'seed',
+            'startdate',
+            'datestamp',
+            'version_number'
+        ];
+
+        if (isset($targetSchema->columns['startdate']) && empty($targetResponse['startdate'])) {
+            $targetResponse->{'startdate'} = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
+            $dataRow['startdate'] = $targetResponse->{'startdate'};
+        }
+
+        if (isset($targetSchema->columns['datestamp']) && empty($targetResponse['datestamp'])) {
+            $targetResponse->{'datestamp'} = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
+            $dataRow['datestamp'] = $targetResponse->{'datestamp'};
+        }
+
+        foreach ($additionalFields as $additionalField) {
+            if (isset($archivedResponse->{$additionalField}) && isset($targetSchema->columns[$additionalField])) {
+                $dataRow[$additionalField] = $archivedResponse->{$additionalField};
+            }
+        }
+
+        $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
+        $beforeDataEntryImport->set('iSurveyID', $surveyId);
+        $beforeDataEntryImport->set('oModel', $targetResponse);
+        App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
+
+        if ($targetResponse->validate()){
+            $batchData[] = $dataRow;
+        }
+        if (count($batchData) % 500 === 0) {
+            if ($preserveIDs) {
+                switchMSSQLIdentityInsert("survey_$surveyId", true);
+            }
+            $builder = App()->db->getCommandBuilder();
+            $command = $builder->createMultipleInsertCommand($tableName, $batchData);
+            $importedResponses += $command->execute();
+            if ($preserveIDs) {
+                switchMSSQLIdentityInsert("survey_$surveyId", false);
+            }
+            $batchData = [];
+        }
+
+        unset($targetResponse);
+    }
+
+    if (count($batchData)) {
+        if ($preserveIDs) {
+            switchMSSQLIdentityInsert("survey_$surveyId", true);
+        }
+        $builder = App()->db->getCommandBuilder();
+        $command = $builder->createMultipleInsertCommand($tableName, $batchData);
+        $importedResponses += $command->execute();
+        if ($preserveIDs) {
+            switchMSSQLIdentityInsert("survey_$surveyId", false);
+        }
+    }
+    return $importedResponses;
+}
+
 
 /**
  * Imports a survey from an XML file or XML data string.
