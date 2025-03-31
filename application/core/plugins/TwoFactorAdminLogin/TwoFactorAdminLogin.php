@@ -81,7 +81,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
             'type' => 'password',
             'label' => 'YubiCloud - Secret Key',
             'default' => '',
-            'help' => 'Your YubiCloud Secret Key. If not set, the YubiCloud responses authenticity will not be verified (not recommended).'
+            'help' => 'Your YubiCloud Secret Key. If not set, the YubiCloud responses authenticity will not be verified. Verifying authenticity is recommended for increased security.'
         ),
         'force2fa' => array(
             'type' => 'select',

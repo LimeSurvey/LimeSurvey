@@ -11,8 +11,8 @@ class TFAYubikeyOtpHelper
     /** @var string the last error message, if any */
     private $lastError = "";
 
-    /** @var bool (Use only for development purposes). If true, already seen OTPs will not be rejected. */
-    private $devMode = false;
+    /** @var bool If true, already seen OTPs will not be rejected. */
+    private $allowReplayedOtp = false;
 
     /**
      * @param string $otpCode   The full Yubikey OTP code
@@ -77,7 +77,7 @@ class TFAYubikeyOtpHelper
             $this->validateResponse($response, $nonce);
 
             $status = $response['status'];
-            if ($status == 'OK' || ($this->devMode && $status == 'REPLAYED_OTP')) {
+            if ($status == 'OK' || ($this->allowReplayedOtp && $status == 'REPLAYED_OTP')) {
                 return true;
             }
 
@@ -107,7 +107,7 @@ class TFAYubikeyOtpHelper
                     $this->setLastError(gT("Server has seen the OTP/Nonce combination before"));
                     break;
                 case 'REPLAYED_OTP':
-                    // We should only get here if $this->devMode is false.
+                    // We should only get here if $this->allowReplayedOtp is false.
                     $this->setLastError(gT("The OTP has already been seen by the service."));
                     break;
                 default:
