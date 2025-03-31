@@ -1233,7 +1233,7 @@ function getTableArchivesAndTimestamps(int $sid)
             return (array) Yii::app()->db->createCommand("
                 SELECT STRING_AGG(t1.TABLE_NAME, ',') AS tables, substring(t1.TABLE_NAME, len(t1.TABLE_NAME) - charindex('_', reverse(t1.TABLE_NAME)) + 2, 2000) AS timestamp,
 				(
-                    SELECT TOP 1 p.rows
+        		    SELECT TOP 1 p.rows
 			    	FROM sys.tables t
 	    			JOIN sys.partitions p
     				ON p.object_id = t.object_id
