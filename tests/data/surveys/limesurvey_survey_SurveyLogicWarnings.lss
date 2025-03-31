@@ -64,7 +64,7 @@
    <row>
     <qid><![CDATA[19133]]></qid>
     <code><![CDATA[A1]]></code>
-    <answer><![CDATA[gt : {Q00.NAOK gt "1"}]]></answer>
+    <answer><![CDATA[gt : {Q19122.NAOK gt "1"}]]></answer>
     <sortorder><![CDATA[1]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
     <language><![CDATA[en]]></language>
@@ -73,7 +73,7 @@
    <row>
     <qid><![CDATA[19133]]></qid>
     <code><![CDATA[A2]]></code>
-    <answer><![CDATA[lt : {Q00.NAOK lt "1"}]]></answer>
+    <answer><![CDATA[lt : {Q19122.NAOK lt "1"}]]></answer>
     <sortorder><![CDATA[2]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
     <language><![CDATA[en]]></language>
@@ -82,7 +82,7 @@
    <row>
     <qid><![CDATA[19133]]></qid>
     <code><![CDATA[A3]]></code>
-    <answer><![CDATA[ge : {Q00.NAOK ge "1"}]]></answer>
+    <answer><![CDATA[ge : {Q19122.NAOK ge "1"}]]></answer>
     <sortorder><![CDATA[3]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
     <language><![CDATA[en]]></language>
@@ -91,7 +91,7 @@
    <row>
     <qid><![CDATA[19133]]></qid>
     <code><![CDATA[A4]]></code>
-    <answer><![CDATA[le : {Q00.NAOK le "1"}]]></answer>
+    <answer><![CDATA[le : {Q19122.NAOK le "1"}]]></answer>
     <sortorder><![CDATA[4]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
     <language><![CDATA[en]]></language>
@@ -170,7 +170,7 @@
     <gid><![CDATA[1143]]></gid>
     <type><![CDATA[S]]></type>
     <title><![CDATA[CheckInvalid]]></title>
-    <question><![CDATA[Invalid comparaison: {intval(Q00.NAOK) > "1"}]]></question>
+    <question><![CDATA[Invalid comparaison: {intval(Q19122.NAOK) > "1"}]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -217,7 +217,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[Q00 = 4]]></relevance>
+    <relevance><![CDATA[Q19122 = 4]]></relevance>
     <modulename/>
    </row>
    <row>
@@ -246,7 +246,7 @@
     <gid><![CDATA[1143]]></gid>
     <type><![CDATA[S]]></type>
     <title><![CDATA[CheckNoIssue]]></title>
-    <question><![CDATA[{intval(Q00.NAOK) ge 1}]]></question>
+    <question><![CDATA[{intval(Q19122.NAOK) ge 1}]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -255,7 +255,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[intval(Q00.NAOK) ge 1]]></relevance>
+    <relevance><![CDATA[intval(Q19122.NAOK) ge 1]]></relevance>
    </row>
    <row>
     <qid><![CDATA[19135]]></qid>
@@ -264,7 +264,7 @@
     <gid><![CDATA[1143]]></gid>
     <type><![CDATA[S]]></type>
     <title><![CDATA[CheckValidString]]></title>
-    <question><![CDATA[String compare : {Q00.NAOK+"" > "1"}]]></question>
+    <question><![CDATA[String compare : {Q19122.NAOK+"" > "1"}]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -292,7 +292,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[Q00.NAOK > "1"]]></relevance>
+    <relevance><![CDATA[Q19122.NAOK > "1"]]></relevance>
    </row>
   </rows>
  </questions>
@@ -330,7 +330,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[Q00 > "1"]]></relevance>
+    <relevance><![CDATA[Q19122 > "1"]]></relevance>
     <modulename/>
    </row>
    <row>
@@ -346,7 +346,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[Q00 > "2"]]></relevance>
+    <relevance><![CDATA[Q19122 > "2"]]></relevance>
    </row>
    <row>
     <qid><![CDATA[19139]]></qid>
@@ -361,7 +361,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[intval(Q00) > 3]]></relevance>
+    <relevance><![CDATA[intval(Q19122) > 3]]></relevance>
    </row>
   </rows>
  </subquestions>
