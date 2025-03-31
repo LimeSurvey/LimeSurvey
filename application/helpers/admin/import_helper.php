@@ -1209,7 +1209,7 @@ function getTableArchivesAndTimestamps(int $sid)
                 FROM information_schema.tables t1
                 JOIN information_schema.tables t2
                 ON t1.TABLE_SCHEMA = t2.TABLE_SCHEMA AND
-                   t2.TABLE_NAME LIKE CONCAT('%_old_survey_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
+                   t2.TABLE_NAME LIKE CONCAT('%old_survey_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
                 WHERE t1.TABLE_SCHEMA = DATABASE() AND
                       t1.TABLE_NAME LIKE '%old%' AND
                       t1.TABLE_NAME LIKE '%{$sid}%'
@@ -1222,7 +1222,7 @@ function getTableArchivesAndTimestamps(int $sid)
             FROM information_schema.tables t1
             JOIN information_schema.tables t2
             ON t1.TABLE_CATALOG = t2.TABLE_CATALOG AND
-               t2.TABLE_NAME LIKE CONCAT('%_old_survey_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
+               t2.TABLE_NAME LIKE CONCAT('%old_survey_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
             WHERE t1.TABLE_CATALOG = current_database() AND
                   t1.TABLE_NAME LIKE '%old%' AND
                   t1.TABLE_NAME LIKE '%{$sid}%'
