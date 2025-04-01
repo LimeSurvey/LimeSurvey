@@ -3785,6 +3785,24 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
             if ($bModified) {
                 $arQuestionLS->save();
             }
+            foreach ($arQuestion->answers as $answer) {
+                foreach ($answer->answerl10ns as $answerl10n) {
+                    $bModified = false;
+                    foreach ($keys as $key) {
+                        $sOldCode = $key;
+                        $sNewCode = $aCodeMap[$key];
+                        // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
+                        if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode)) {
+                            $sOldCode = preg_quote((string) $sOldCode, '~');
+                            $answerl10n->answer = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $answerl10n->answer, -1, $iCount);
+                            $bModified = $bModified || $iCount;
+                        }
+                    }
+                    if ($bModified) {
+                        $answerl10n->save();
+                    }
+                }
+            }
         }
         // Also apply on question's default values
         $defaultValues = DefaultValue::model()->with('defaultvaluel10ns')->findAllByAttributes(['qid' => $arQuestion->qid]);

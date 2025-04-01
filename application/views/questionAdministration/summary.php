@@ -50,8 +50,7 @@
                         false,
                         $question->qid
                     );
-                    //viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
-                    echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                    echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                 ?>
             </div>
         </div>
