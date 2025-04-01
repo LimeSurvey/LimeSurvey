@@ -3,15 +3,15 @@ var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 var DocCommentHighlightRules = function () {
     this.$rules = {
-        "start": [{
-                token: "comment.doc.tag",
-                regex: "@[\\w\\d_]+" // TODO: fix email addresses
-            },
-            DocCommentHighlightRules.getTagRule(),
+        "start": [
             {
-                defaultToken: "comment.doc",
+                token: "comment.doc.tag",
+                regex: "@\\w+(?=\\s|$)"
+            }, DocCommentHighlightRules.getTagRule(), {
+                defaultToken: "comment.doc.body",
                 caseInsensitive: true
-            }]
+            }
+        ]
     };
 };
 oop.inherits(DocCommentHighlightRules, TextHighlightRules);
@@ -23,14 +23,14 @@ DocCommentHighlightRules.getTagRule = function (start) {
 };
 DocCommentHighlightRules.getStartRule = function (start) {
     return {
-        token: "comment.doc",
-        regex: "\\/\\*(?=\\*)",
+        token: "comment.doc", // doc comment
+        regex: /\/\*\*(?!\/)/,
         next: start
     };
 };
 DocCommentHighlightRules.getEndRule = function (start) {
     return {
-        token: "comment.doc",
+        token: "comment.doc", // closing comment
         regex: "\\*\\/",
         next: start
     };
@@ -65,20 +65,20 @@ var scryptHighlightRules = function () {
             },
             DocCommentHighlightRules.getStartRule("doc-start"),
             {
-                token: "comment",
+                token: "comment", // multi line comment
                 regex: "\\/\\*",
                 next: "comment"
             }, {
-                token: "string",
+                token: "string", // single line
                 regex: '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
             }, {
-                token: "string",
+                token: "string", // single line
                 regex: "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // hex
                 regex: /0(?:[xX][0-9a-fA-F][0-9a-fA-F_]*|[bB][01][01_]*)[LlSsDdFfYy]?\b/
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // float
                 regex: /[+-]?\d[\d_]*(?:(?:\.[\d_]*)?(?:[eE][+-]?[\d_]+)?)?[LlSsDdFfYy]?\b/
             }, {
                 token: "constant.language.boolean",
@@ -144,7 +144,7 @@ var scryptHighlightRules = function () {
         ],
         "comment": [
             {
-                token: "comment",
+                token: "comment", // closing comment
                 regex: "\\*\\/",
                 next: "start"
             }, {
@@ -287,12 +287,19 @@ var FoldMode = require("./folding/cstyle").FoldMode;
 var Mode = function () {
     this.HighlightRules = scryptHighlightRules;
     this.foldingRules = new FoldMode();
+    this.$behaviour = this.$defaultBehaviour;
 };
 oop.inherits(Mode, TextMode);
 (function () {
     this.lineCommentStart = "//";
-    this.blockComment = { start: "/*", end: "*/" };
-    this.$quotes = { '"': '"', "'": "'" };
+    this.blockComment = {
+        start: "/*",
+        end: "*/"
+    };
+    this.$quotes = {
+        '"': '"',
+        "'": "'"
+    };
     this.createWorker = function (session) {
         return null;
     };

@@ -123,6 +123,7 @@ class UserAction extends SurveyCommonAction
                 SettingsUser::setUserSetting('noViewMode', Yii::app()->request->getPost('noViewMode'));
                 SettingsUser::setUserSetting('lock_organizer', Yii::app()->request->getPost('lock_organizer'));
                 SettingsUser::setUserSetting('createsample', Yii::app()->request->getPost('createsample'));
+                SettingsUser::setUserSetting('breadcrumbMode', Yii::app()->request->getPost('breadcrumbMode'));
 
                 Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
             } else {

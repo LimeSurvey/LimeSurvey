@@ -2305,6 +2305,7 @@ class remotecontrol_handle
      * Return the IDs and properties of survey participants (RPC function)
      *
      * If $bUnused is true, user will get the list of uncompleted tokens (token_return functionality).
+     * If $bUnused is omitted or false, user will get the list of all tokens.
      * Parameters iStart and iLimit are used to limit the number of results of this call.
      * Starting with version 4.3.0 it is not possible anymore to query for several IDs just using
      * an array of values - instead you have use the 'IN' operator.

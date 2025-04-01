@@ -1822,6 +1822,7 @@ class LsDefaultDataSets
             ['stg_name' => 'non_numerical_answer_prefix', 'stg_value' => 'A'],
             ['stg_name' => 'non_numerical_subquestions_prefix', 'stg_value' => 'SQ'],
             ['stg_name' => 'lock_organizer', 'stg_value' => '0'],
+            ['stg_name' => 'breadcrumbMode', 'stg_value' => 'default'],
         ];
     }
 

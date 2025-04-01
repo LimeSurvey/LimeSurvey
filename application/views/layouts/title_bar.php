@@ -7,6 +7,12 @@ if (!isset($oQuestion)) {
 if (!isset($oQuestionGroup)) {
     $oQuestionGroup = isset($gid) ? @QuestionGroup::model()->find('gid=:gid', ['gid' => $gid]) : null;
 }
+
+$breadcrumbMode = SettingsUser::getUserSettingValue('breadcrumbMode');
+if (empty($breadcrumbMode) || $breadcrumbMode == 'default') {
+    $breadcrumbMode = Yii::app()->getConfig('defaultBreadcrumbMode');
+}
+
 App()->getController()->widget('ext.BreadcrumbWidget.BreadcrumbWidget', [
     'breadCrumbConfigArray' => [
         'oSurvey' => $oSurvey ?? Survey::model()->findByPk((int)$surveyid),
@@ -21,6 +27,7 @@ App()->getController()->widget('ext.BreadcrumbWidget.BreadcrumbWidget', [
         'active' => $title_bar['active'] ?? null,
         'title' => $title_bar['title'] ?? ' ',
         'extraClass' => "title-bar-breadcrumb",
+        'mode' => $breadcrumbMode,
     ],
     'htmlOptions' => [
         'id' => 'breadcrumb-container',

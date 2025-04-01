@@ -1,6 +1,6 @@
 <?php
 // Translation-source for new editor.
-// Updated on 2025-02-17 15:00:00
+// Updated on 2025-03-26 09:25:00
 gT('Welcome screen settings');
 gT('Show welcome screen');
 gT('Show “There are X questions in this survey.”');
@@ -187,3 +187,5 @@ gT('Keep them archived and create a new response table.');
 gT('Start with a brand new responses table without importing an existing one.');
 gT('Congrats! Your survey has been activated.');
 gT('Copied !');
+gT('Loading survey...');
+gT('or press %s');
