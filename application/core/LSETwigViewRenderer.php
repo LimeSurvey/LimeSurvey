@@ -668,7 +668,10 @@ window.addEventListener('message', function(event) {
             if (!empty($aData["sid"]) || LimeExpressionManager::getLEMsurveyId()) {
                 $sid = empty($aData["sid"]) ? LimeExpressionManager::getLEMsurveyId() : $aData["sid"];
                 $language = empty($aData["language"]) ? App()->getLanguage() : $aData["language"];
-                $aData["aSurveyInfo"] = getSurveyInfo($sid, $language);
+                /* Outdated sid in LimeExpressionManager */
+                if (Survey::model()->findByPk($sid)) {
+                    $aData["aSurveyInfo"] = getSurveyInfo($sid, $language);
+                }
             }
         }
         // We retrieve the definition of the core class and attributes

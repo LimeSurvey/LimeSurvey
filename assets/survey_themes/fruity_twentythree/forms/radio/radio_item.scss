@@ -39,22 +39,29 @@ li.radio-item {
     display     : inline-block;
     position    : relative;
     overflow    : hidden;
-    width       : 20px;
-    height      : 20px;
-    line-height : 21px;
-    text-indent : 21px;
+    width       : 26px;
+    height      : 26px;
+    line-height : 30px;
+    text-indent : 30px;
 }
 
 /* no margin on label : no margin after and before too */
 .radio-item label.ls-label-xs-visibility::before {
     margin-left : 0;
 }
-
+/* Get some space for focus */
+.radio-item label.ls-label-xs-visibility::before {
+    left:3px;
+    top:3px;
+}
 .radio-item label.ls-label-xs-visibility::after {
     margin-left  : 2px;
     padding-left : 0;
 }
-
+.radio-item label.ls-label-xs-visibility::after {
+    left:6px;
+    top:6px;
+}
 /* Hide the other content inside visually-hidden */
 .radio-item label.ls-label-xs-visibility > * {
     position : absolute;
