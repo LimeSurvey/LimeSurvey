@@ -1667,7 +1667,7 @@ class Question extends LSActiveRecord
     {
         $question = new Question();
         $question->qid = 0;
-        $question->title = self::getCodePrefix('non_numerical_subquestions_prefix', $this->survey->sid) . '001';
+        $question->title = self::getCodePrefix('subquestion_code_prefix', $this->survey->sid) . '001';
         $question->relevance = 1;
         return $question;
     }
@@ -1683,7 +1683,7 @@ class Question extends LSActiveRecord
         // TODO: Assuming no collision.
         $answer->aid = 'new' . rand(1, 100000);
         $answer->sortorder = 0;
-        $answer->code = self::getCodePrefix('non_numerical_answer_prefix', $this->survey->sid) . '001';
+        $answer->code = self::getCodePrefix('answer_code_prefix', $this->survey->sid) . '001';
 
         $l10n = [];
         foreach ($this->survey->allLanguages as $language) {
@@ -1707,15 +1707,15 @@ class Question extends LSActiveRecord
         $prefixCode = '';
         $survey = Survey::model()->findByPk($surveyid);
         $nonNumericalSettings = $survey->getNonNumericCodePrefixes();
-        if ($prefixType == 'non_numerical_answer_prefix') {
-            $prefixCode = $nonNumericalSettings['non_numerical_answer_prefix'];
+        if ($prefixType == 'answer_code_prefix') {
+            $prefixCode = $nonNumericalSettings['answer_code_prefix'];
             if (!$prefixCode) {
-                $prefixCode = Yii::app()->getConfig('non_numerical_answer_prefix', 'A');
+                $prefixCode = Yii::app()->getConfig('answer_code_prefix', 'A');
             }
-        } elseif ($prefixType == 'non_numerical_subquestions_prefix') {
-            $prefixCode = $nonNumericalSettings['non_numerical_subquestions_prefix'];
+        } elseif ($prefixType == 'subquestion_code_prefix') {
+            $prefixCode = $nonNumericalSettings['subquestion_code_prefix'];
             if (!$prefixCode) {
-                $prefixCode = Yii::app()->getConfig('non_numerical_subquestions_prefix', 'SQ');
+                $prefixCode = Yii::app()->getConfig('subquestion_code_prefix', 'SQ');
             }
         } elseif ($prefixType == 'non_numerical_question_prefix') {
             $prefixCode = 'Q';

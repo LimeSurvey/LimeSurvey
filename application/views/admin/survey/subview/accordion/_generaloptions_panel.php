@@ -323,15 +323,15 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
         <!-- Non-Numerical settings -->
         <?php $nonNumericalSettings = $oSurvey->getNonNumericCodePrefixes(); ?>
         <div class="mb-3">
-            <label class="form-label" for="non_numerical_answer_prefix"><?php eT("Non-Numerical answer option prefix:"); ?></label>
+            <label class="form-label" for="answer_code_prefix"><?php eT("Non-Numerical answer option prefix:"); ?></label>
             <div class="">
-                <input type="text" class="form-control" id="non_numerical_answer_prefix" name="non_numerical_answer_prefix" value="<?php echo htmlspecialchars($nonNumericalSettings['non_numerical_answer_prefix']); ?>">
+                <input type="text" class="form-control" id="answer_code_prefix" name="answer_code_prefix" value="<?php echo htmlspecialchars($nonNumericalSettings['answer_code_prefix']); ?>">
             </div>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="non_numerical_subquestions_prefix"><?php eT("Non-Numerical subquestions prefix:"); ?></label>
+            <label class="form-label" for="subquestion_code_prefix"><?php eT("Non-Numerical subquestions prefix:"); ?></label>
             <div class="">
-                <input type="text" class="form-control" id="non_numerical_subquestions_prefix" name="non_numerical_subquestions_prefix" value="<?php echo htmlspecialchars($nonNumericalSettings['non_numerical_subquestions_prefix']); ?>">
+                <input type="text" class="form-control" id="subquestion_code_prefix" name="subquestion_code_prefix" value="<?php echo htmlspecialchars($nonNumericalSettings['subquestion_code_prefix']); ?>">
             </div>
         </div>
 

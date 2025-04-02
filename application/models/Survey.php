@@ -2587,8 +2587,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         $otherSettings = json_decode($this->othersettings, true) ?? [];
         return [
-            'non_numerical_answer_prefix' => $otherSettings['non_numerical_answer_prefix'] ?? '',
-            'non_numerical_subquestions_prefix' => $otherSettings['non_numerical_subquestions_prefix'] ?? ''
+            'answer_code_prefix' => $otherSettings['answer_code_prefix'] ?? '',
+            'subquestion_code_prefix' => $otherSettings['subquestion_code_prefix'] ?? ''
         ];
     }
 

@@ -370,8 +370,8 @@ class Database extends SurveyCommonAction
             'owner_id' => $request->getPost('owner_id'),
             'gsid' => $request->getPost('gsid'),
             'template' => $request->getPost('template'),
-            'non_numerical_answer_prefix' => $request->getPost('non_numerical_answer_prefix'),
-            'non_numerical_subquestions_prefix' => $request->getPost('non_numerical_subquestions_prefix'),
+            'answer_code_prefix' => $request->getPost('answer_code_prefix'),
+            'subquestion_code_prefix' => $request->getPost('subquestion_code_prefix'),
         ];
         try {
             $surveyUpdater->update(

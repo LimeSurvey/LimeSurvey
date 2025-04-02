@@ -306,8 +306,8 @@ class GlobalSettings extends SurveyCommonAction
             SettingGlobal::setSetting('allow_unstable_extension_update', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('allow_unstable_extension_update', false)));
         }
 
-        SettingGlobal::setSetting('non_numerical_answer_prefix', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('non_numerical_answer_prefix', Yii::app()->getConfig('non_numerical_answer_prefix', 'A'))));
-        SettingGlobal::setSetting('non_numerical_subquestions_prefix', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('non_numerical_subquestions_prefix', Yii::app()->getConfig('non_numerical_subquestions_prefix', 'SQ'))));
+        SettingGlobal::setSetting('answer_code_prefix', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('answer_code_prefix', Yii::app()->getConfig('answer_code_prefix', 'A'))));
+        SettingGlobal::setSetting('subquestion_code_prefix', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('subquestion_code_prefix', Yii::app()->getConfig('subquestion_code_prefix', 'SQ'))));
         SettingGlobal::setSetting('createsample', Yii::app()->getRequest()->getPost('createsample'));
 
         if (!Yii::app()->getConfig('demoMode')) {
