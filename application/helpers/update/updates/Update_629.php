@@ -20,6 +20,6 @@ class Update_629 extends DatabaseUpdateBase
                 'name = :name',
                 [':name' => $name]
             );
-        }   
+        }
     }
 }
