@@ -839,6 +839,13 @@ $config['passwordValidationRules'] = array(
 // Enable or disable single page application editor
 $config['editorEnabled'] = false;
 
+/**
+ * Default breadcrumb mode:
+ * short: Survey, Group and Question titles
+ * long: Survey, Group, Question titles plus IDs
+ */
+$config['defaultBreadcrumbMode'] = 'short';
+
 // Minimum delay between registration emails for the same token.
 // Must be a valid DateInterval string (ie: "15 minutes", "1 hour", "1 day").
 $config['registrationEmailDelay'] = '1 hour';
