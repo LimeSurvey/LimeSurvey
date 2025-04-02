@@ -75,6 +75,12 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                        <td><?= $model->isPhpZlibPresent ? $iconOk : $iconFail ?></td>
                 </tr>
                 <tr>
+                    <td><?php eT("PHP zip library"); ?></td>
+                    <td><span class='ri-check-fill text-success'></span></td>
+                    <td><?= $model->isPhpZipPresent ? $iconOk : $iconFail ?></td>
+                </tr>
+
+                <tr>
                        <td><?php eT("PHP/PECL JSON library"); ?></td>
                        <td><span class='ri-check-fill text-success'></span></td>
                        <td><?= $model->isPhpJsonPresent ? $iconOk : $iconFail ?></td>
@@ -134,11 +140,6 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                <td><?php eT("PHP LDAP library"); ?></td>
                <td><span class='ri-check-fill text-success'></span></td>
                <td><?= $model->isPhpLdapPresent ? $iconOk : $iconFail ?></td>
-        </tr>
-        <tr>
-               <td><?php eT("PHP zip library"); ?></td>
-               <td><span class='ri-check-fill text-success'></span></td>
-               <td><?= $model->isPhpZipPresent ? $iconOk : $iconFail ?></td>
         </tr>
         <tr>
                <td><?php eT("PHP imap library"); ?></td>

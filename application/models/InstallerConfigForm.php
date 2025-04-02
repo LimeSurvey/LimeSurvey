@@ -244,6 +244,7 @@ class InstallerConfigForm extends CFormModel
             or !$this->isPhpMbStringPresent
             or !$this->isPhpFileInfoPresent
             or !$this->isPhpZlibPresent
+            or !$this->isPhpZipPresent
             or !$this->isPhpJsonPresent
         ) {
             return false;

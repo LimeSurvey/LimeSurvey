@@ -292,6 +292,7 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('javascriptdebugbcknd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugbcknd', false)));
         SettingGlobal::setSetting('javascriptdebugfrntnd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugfrntnd', false)));
         SettingGlobal::setSetting('maintenancemode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('maintenancemode', 'off')));
+        SettingGlobal::setSetting('defaultBreadcrumbMode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultBreadcrumbMode', 'short')));
 
         //security: for failed login attempts by user/admin
         SettingGlobal::setSetting('maxLoginAttempt', sanitize_int(Yii::app()->getRequest()->getPost('maxLoginAttempt', 3)));
