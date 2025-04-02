@@ -347,6 +347,7 @@ return array(
         'basePath' => 'node_modules.jspdf.dist',
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
+            'jspdf.umd.min.js',
             'jspdf.min.js'
         ),
         'depends' => array(

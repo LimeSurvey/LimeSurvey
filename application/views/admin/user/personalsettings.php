@@ -316,6 +316,7 @@ echo $oQuestionSelector->getModal();
                                 </div>
                             </div>
                         </div>
+
                         <!-- Show script field in question editor -->
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">

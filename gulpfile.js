@@ -26,7 +26,6 @@ const babelify = require('babelify');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const browserify = require('browserify');
-const header = require('gulp-header');
 const fs = require('fs');
 
 function js_minify() {
@@ -245,7 +244,7 @@ function survey_theme_ls6_js() {
         // buffer
         .pipe(buffer())
         // distination
-        .pipe(header(fs.readFileSync('assets/survey_themes/fruity_twentythree/theme_js_disclaimer.js')))
+        .pipe(replace(/^/, fs.readFileSync('assets/survey_themes/fruity_twentythree/theme_js_disclaimer.js')))
         .pipe(dest('themes/survey/fruity_twentythree/scripts/'));
 }
 
