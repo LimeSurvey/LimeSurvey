@@ -112,7 +112,7 @@ class QuestionCreate extends Question
         $isTitleValid = false;
         for ($i = 0; $i <= 999; $i++) {
             $this->title =
-                Question::getCodePrefix('non_numerical_question_prefix', $this->sid) .
+                Question::getCodePrefix('question_code_prefix', $this->sid) .
                 str_pad((safecount($survey->baseQuestions) + $i), 3, '0', STR_PAD_LEFT);
             if ($this->validate(['title'])) {
                 $isTitleValid = true;
