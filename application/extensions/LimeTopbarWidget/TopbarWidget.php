@@ -51,6 +51,7 @@ class TopbarWidget extends CWidget
                 'rightSide' => $this->rightSide,
                 'isBreadCrumb' => $this->isBreadCrumb,
                 'titleBackLink' => $this->titleBackLink,
+                'editorEnabled' => Yii::app()->getConfig('editorEnabled') ?? false,
             ]
         );
     }

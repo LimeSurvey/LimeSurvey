@@ -18099,6 +18099,10 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   z-index: 1000;
   background-color: #EEEFF7;
 }
+.topbar.editor {
+  margin-left: 365px;
+}
+
 .topbar .ls-topbar-buttons {
   margin-bottom: -4px;
 }
