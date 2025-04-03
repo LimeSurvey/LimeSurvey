@@ -297,4 +297,3 @@ jobs:
       - name: Run Psalm on application/ folder with low strictness
         run: |
           ./vendor/bin/psalm -c psalm-all.xml
-Dev: updated workflows with ubuntu 22.04 · LimeSurvey/LimeSurvey@a108fc8 
