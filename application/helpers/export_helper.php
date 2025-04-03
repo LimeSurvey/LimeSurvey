@@ -2515,7 +2515,8 @@ function CPDBExport($data, $filename)
 function stringSize(string $sColumn)
 {
     // Find the sid
-    $iSurveyId = substr($sColumn, 0, strpos($sColumn, 'X'));
+    $qid = substr(explode("_")[0], 1);
+    $sid = Question::model()->findByPk($qid)->sid;
     switch (Yii::app()->db->driverName) {
         case 'sqlsrv':
         case 'dblib':

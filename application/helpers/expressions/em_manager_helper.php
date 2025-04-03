@@ -996,7 +996,7 @@ class LimeExpressionManager
             }
             $_subqid = $subqid;
 
-            if (preg_match('/^@\d+X\d+X\d+.*@$/', (string) $value)) {
+            if (preg_match('/^@Q\d+.*@$/', (string) $value)) {
                 $value = (string)substr((string) $value, 1, -1);
             } elseif (preg_match('/^{.+}$/', $value)) {
                 $value = (string)substr($value, 1, -1);

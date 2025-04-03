@@ -3829,19 +3829,31 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
     $arGroups = QuestionGroup::model()->findAll("sid=:sid", array(':sid' => $iSurveyID));
     foreach ($arGroups as $arGroup) {
         $bModified = false;
-        foreach ($aCodeMap as $sOldCode => $sNewCode) {
-            $sOldCode = preg_quote((string) $sOldCode, '~');
-            $arGroup->grelevance = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $arGroup->grelevance, -1, $iCount);
-            $bModified = $bModified || $iCount;
+        foreach ($keys as $key) {
+            $sOldCode = $key;
+            $sNewCode = $aCodeMap[$key];
+            // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
+            if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode)) {
+                $sOldCode = preg_quote((string) $sOldCode, '~');
+                $arGroup->grelevance = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $arGroup->grelevance, -1, $iCount);
+                $bModified = $bModified || $iCount;
+            }
         }
         if ($bModified) {
             $arGroup->save();
         }
         foreach ($arGroup->questiongroupl10ns as $arQuestionGroupLS) {
-            foreach ($aCodeMap as $sOldCode => $sNewCode) {
-                $sOldCode = preg_quote((string) $sOldCode, '~');
-                $arQuestionGroupLS->description = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionGroupLS->description, -1, $iCount);
-                $bModified = $bModified || $iCount;
+            $bModified = false;
+            foreach ($keys as $key) {
+                $sOldCode = $key;
+                $sNewCode = $aCodeMap[$key];
+                // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
+                if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode)) {
+                    $sOldCode = preg_quote((string) $sOldCode, '~');
+                    $arQuestionGroupLS->description = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $arQuestionGroupLS->description, -1, $iCount);
+                    $arQuestionGroupLS->group_name = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $arQuestionGroupLS->group_name, -1, $iCount);
+                    $bModified = $bModified || $iCount;
+                }
             }
             if ($bModified) {
                 $arQuestionGroupLS->save();

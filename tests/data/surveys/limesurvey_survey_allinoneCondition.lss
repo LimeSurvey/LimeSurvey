@@ -68,8 +68,8 @@
    <row>
     <id><![CDATA[97]]></id>
     <gid><![CDATA[97]]></gid>
-    <group_name><![CDATA[My first question group {Q00.NAOK}]]></group_name>
-    <description><![CDATA[G02Q02 : <code id="checkInGroupG02Q02">{G02Q02.NAOK}</code>]]></description>
+    <group_name><![CDATA[My first question group {Q481.NAOK}]]></group_name>
+    <description><![CDATA[G02Q02 : <code id="checkInGroupG02Q02">{Q482.NAOK}</code>]]></description>
     <language><![CDATA[en]]></language>
     <sid><![CDATA[494923]]></sid>
     <group_order><![CDATA[1]]></group_order>
