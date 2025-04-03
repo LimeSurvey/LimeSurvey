@@ -19,9 +19,9 @@ jobs:
         # Specify what versions of php you want to test
         php-versions: ['7.4', '8.3']
     # Env vars for this job
-    concurrency: 
-      group: ${{ github.ref_name }}-${{ matrix.php-versions }}-main # Groups by branch, PHP version, and job name 
-      cancel-in-progress: true # Cancel in-progress jobs if a new job is triggered     
+    concurrency:
+      group: ${{ github.ref_name }}-${{ matrix.php-versions }}-main # Groups by branch, PHP version, and job name
+      cancel-in-progress: true # Cancel in-progress jobs if a new job is triggered
     env:
       DBENGINE: INNODB
 
@@ -163,7 +163,7 @@ jobs:
           name: screenshots
           path: tests/tmp/screenshots/
           retention-days: 5
-  
+
   unit-tests:
     runs-on: ubuntu-22.04
     strategy:
@@ -179,6 +179,8 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, xml, gd, zip, mysql, curl
+          ini-values: error_reporting = E_ALL &amp; ~E_DEPRECATED
 
       - name: Setup
         run: |
@@ -187,6 +189,11 @@ jobs:
 
           sudo apt-get update > /dev/null
           sudo apt --fix-broken install php php-mysql php8.3-mysql php7.4-mysql -y
+
+          sudo apt --fix-broken install php \
+          php-mysql php-xml php-mbstring php-gd php-zip \
+          php8.3-mysql php8.3-xml php8.3-mbstring php8.3-gd php8.3-zip \
+          php7.4-mysql php7.4-xml php7.4-mbstring php7.4-gd php7.4-zip -y
 
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
