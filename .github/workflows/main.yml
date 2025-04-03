@@ -266,7 +266,7 @@ jobs:
           composer install -vvv
 
           sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php-mysql php-xml php8.0-mysql php8.0-xml php7.4-mysql php7.4xml -y
+          sudo apt --fix-broken install php php-mysql php-xml php8.0-mysql php8.0-xml php7.4-mysql php7.4-xml -y
 
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
