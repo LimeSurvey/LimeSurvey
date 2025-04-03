@@ -169,6 +169,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, xml, zip, curl, mysql, mysqli, pdo_mysql, gd, intl, bcmath, soap
 
       - name: Setup
         run: |
@@ -176,7 +177,7 @@ jobs:
           composer install -vvv
 
           sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php-mysql php8.0-mysql php7.4-mysql -y
+          sudo apt --fix-broken install php php-mysql php-xml php8.3-mysql php8.3-xml php7.4-mysql php7.4-xml -y
 
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
