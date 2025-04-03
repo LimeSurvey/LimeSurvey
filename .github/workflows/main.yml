@@ -44,6 +44,9 @@ jobs:
         run: |
           sudo systemctl start mysql.service
 
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+
       - name: Initialize and check all dependencies
         run: |
           # Before running composer install, check that the autoloader is up-to-date and all classes can be loaded.
@@ -59,9 +62,6 @@ jobs:
           # NB: PHPUnit 6.5.* is installed with composer.
           composer install -vvv
           ./vendor/bin/phpunit --version
-          
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
 
       - name: Set up Apache+PHP
         run: |
