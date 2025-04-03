@@ -179,7 +179,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          extensions: mbstring, xml, gd, zip, mysql, curl
           ini-values: error_reporting = E_ALL &amp; ~E_DEPRECATED
 
       - name: Setup
@@ -188,12 +187,11 @@ jobs:
           composer install -vvv
 
           sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php-mysql php8.3-mysql php7.4-mysql -y
 
-          sudo apt --fix-broken install php \
+          sudo apt --fix-broken install -y php \
           php-mysql php-xml php-mbstring php-gd php-zip \
           php8.3-mysql php8.3-xml php8.3-mbstring php8.3-gd php8.3-zip \
-          php7.4-mysql php7.4-xml php7.4-mbstring php7.4-gd php7.4-zip -y
+          php7.4-mysql php7.4-xml php7.4-mbstring php7.4-gd php7.4-zip
 
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
