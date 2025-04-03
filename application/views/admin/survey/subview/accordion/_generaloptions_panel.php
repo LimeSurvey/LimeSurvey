@@ -319,6 +319,22 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             $themeConf = TemplateConfiguration::getInstanceFromTemplateName(($oSurvey->template === 'inherit') ? $oSurveyOptions->template : $oSurvey->template);
             $inheritedThemeName = $oSurvey->oOptions->template;
         ?>
+
+        <!-- Non-Numerical settings -->
+        <?php $nonNumericalSettings = $oSurvey->getNonNumericCodePrefixes(); ?>
+        <div class="mb-3">
+            <label class="form-label" for="answer_code_prefix"><?php eT("Non-Numerical answer option prefix:"); ?></label>
+            <div class="">
+                <input type="text" class="form-control" id="answer_code_prefix" name="answer_code_prefix" value="<?php echo htmlspecialchars($nonNumericalSettings['answer_code_prefix']); ?>">
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="subquestion_code_prefix"><?php eT("Non-Numerical subquestions prefix:"); ?></label>
+            <div class="">
+                <input type="text" class="form-control" id="subquestion_code_prefix" name="subquestion_code_prefix" value="<?php echo htmlspecialchars($nonNumericalSettings['subquestion_code_prefix']); ?>">
+            </div>
+        </div>
+
         <!-- Theme -->
         <div class="mb-3" >
             <label class=" form-label" for='template'><?php eT("Theme:"); ?></label>

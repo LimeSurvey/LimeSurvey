@@ -51,6 +51,26 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             </div>
         </div>
 
+        <!-- Non-Numerical answer option prefix -->
+        <div class="mb-3">
+            <label class="col-12 form-label" for='answer_code_prefix'>
+                <?php eT("Non-Numerical answer option prefix:"); ?>
+            </label>
+            <div class="col-12">
+                <input class="form-control" type='text' size='35' id='answer_code_prefix' name='answer_code_prefix' value="<?php echo htmlspecialchars((string) getGlobalSetting('answer_code_prefix')); ?>"/>
+            </div>
+        </div>
+
+        <!-- Non-Numerical subquestions prefix -->
+        <div class="mb-3">
+            <label class="col-12 form-label" for='subquestion_code_prefix'>
+                <?php eT("Non-Numerical subquestions prefix:"); ?>
+            </label>
+            <div class="col-12">
+                <input class="form-control" type='text' size='35' id='subquestion_code_prefix' name='subquestion_code_prefix' value="<?php echo htmlspecialchars((string) getGlobalSetting('subquestion_code_prefix')); ?>"/>
+            </div>
+        </div>
+
         <!-- Autocreate group and question -->
         <div class="mb-3">
             <label class="col-12 form-label" for="createsample">

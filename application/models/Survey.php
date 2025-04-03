@@ -144,6 +144,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property SurveyLanguageSetting $defaultlanguage
  * @property SurveysGroups $surveygroup
  * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
+ * @property string othersettings
  * @method mixed active()
  */
 class Survey extends LSActiveRecord implements PermissionInterface
@@ -169,6 +170,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
 
     private $sSurveyUrl;
+
+    private $otherSettings;
 
     /**
      * Set defaults
@@ -2568,5 +2571,21 @@ class Survey extends LSActiveRecord implements PermissionInterface
             return new DateTime($datetime);
         }
         return null;
+    }
+
+    public function getNonNumericCodePrefixes()
+    {
+        $otherSettings = json_decode($this->othersettings, true) ?? [];
+        return [
+            'answer_code_prefix' => $otherSettings['answer_code_prefix'] ?? '',
+            'subquestion_code_prefix' => $otherSettings['subquestion_code_prefix'] ?? ''
+        ];
+    }
+
+    public function setNonNumericCodePrefixes($attribute, $value)
+    {
+        $otherSettings = json_decode($this->othersettings, true) ?? [];
+        $otherSettings[$attribute] = $value;
+        $this->othersettings = json_encode($otherSettings);
     }
 }
