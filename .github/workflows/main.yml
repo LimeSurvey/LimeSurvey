@@ -19,9 +19,9 @@ jobs:
         # Specify what versions of php you want to test
         php-versions: ['7.4', '8.3']
     # Env vars for this job
-    concurrency: 
-      group: ${{ github.ref_name }}-${{ matrix.php-versions }}-main # Groups by branch, PHP version, and job name 
-      cancel-in-progress: true # Cancel in-progress jobs if a new job is triggered     
+    concurrency:
+      group: ${{ github.ref_name }}-${{ matrix.php-versions }}-main # Groups by branch, PHP version, and job name
+      cancel-in-progress: true # Cancel in-progress jobs if a new job is triggered
     env:
       DBENGINE: INNODB
 
@@ -59,6 +59,9 @@ jobs:
           # NB: PHPUnit 6.5.* is installed with composer.
           composer install -vvv
           ./vendor/bin/phpunit --version
+          
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
 
       - name: Set up Apache+PHP
         run: |
@@ -161,7 +164,7 @@ jobs:
           name: screenshots
           path: tests/tmp/screenshots/
           retention-days: 5
-  
+
   unit-tests:
     runs-on: ubuntu-22.04
     strategy:
