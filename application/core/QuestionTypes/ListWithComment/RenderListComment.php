@@ -109,7 +109,7 @@ class RenderListComment extends QuestionBaseRenderer
             }
         }
 
-        if (($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER == 1) {
+        if ($this->mSessionValue !== "" && $this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S' && SHOW_NO_ANSWER == 1) {
             $itemData = array(
                 'classes' => ' noanswer-item ',
                 'value' => '',
@@ -140,7 +140,7 @@ class RenderListComment extends QuestionBaseRenderer
             'coreClass'              => $this->sCoreClass,
             'id'                     => 'answer' . $this->sSGQA,
             'basename'               => $this->sSGQA,
-            'show_noanswer'          => is_null($this->mSessionValue),
+            'show_noanswer'          => $this->mSessionValue === "",
             'label_text'             => gT('Please enter your comment here'),
             'tarows'                 => $tarows,
             'maxoptionsize'          => $this->maxoptionsize,
