@@ -109,7 +109,7 @@ class QuexmlPDFTest extends TestBaseClass
         \Yii::app()->setConfig('quexmlusequestiontitleasid', true);
 
         $id = $this->getQuestionIdentifier();
-        $this->assertEquals($id, self::$questions['q1']->qid, "Unexpected identifier for question 1.");
+        $this->assertEquals($id, self::$questions['q1']->qid . '.', "Unexpected identifier for question 1.");
 
     }
 
