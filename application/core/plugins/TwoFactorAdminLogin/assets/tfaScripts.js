@@ -95,7 +95,11 @@ var TFAUserSettingsClass = function(){
     var wireCreateForm = function(){
         var onSubmit = function(e, self) {
             e.preventDefault();
-            if($('#confirmationKey').val() == '') {
+            const authType = $('#TFAUserKey_authType').val();
+            if (
+                (authType == 'totp' && $('#confirmationKey').val() == '')
+                || (authType == 'yubi' && $('#yubikeyOtp').val() == '')
+            ) {
                 return;
             }
             startSubmit();
@@ -131,7 +135,22 @@ var TFAUserSettingsClass = function(){
             e.preventDefault();
             triggerModalClose();
         });
-        
+
+        $('#TFAUserKey_authType').on('change', function(){
+            if($(this).val() == 'totp') {
+                $('#yubiSection').hide();
+                $('#totpSection').show();
+                $('#confirmationKey').prop('required', true);
+                $('#yubikeyOtp').prop('required', false);
+            } else {
+                $('#totpSection').hide();
+                $('#yubiSection').show();
+                $('#confirmationKey').prop('required', false);
+                $('#yubikeyOtp').prop('required', true);
+            }
+        });
+
+        $('#TFAUserKey_authType').trigger('change');
     };
 
     var bsButtonAction = confirmButtonAction(function(){
