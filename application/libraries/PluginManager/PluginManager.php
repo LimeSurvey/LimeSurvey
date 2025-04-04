@@ -174,7 +174,7 @@ class PluginManager extends \CApplicationComponent
         }
     }
 
-    /**
+/**
      * Returns the storage instance of type $storageClass.
      * If needed initializes the storage object.
      * @param string $storageClass
@@ -182,18 +182,24 @@ class PluginManager extends \CApplicationComponent
      */
     public function getStore($storageClass)
     {
+        if (isset($this->stores[$storageClass])) {
+            return $this->stores[$storageClass];
+        }
+        $withoutNamespace = class_exists($storageClass, false);
+        $withNamespace = class_exists('LimeSurvey\\PluginManager\\' . $storageClass, false);
         if (
-            !class_exists($storageClass)
-                && class_exists('LimeSurvey\\PluginManager\\' . $storageClass)
+            !$withoutNamespace && $withNamespace
         ) {
             $storageClass = 'LimeSurvey\\PluginManager\\' . $storageClass;
+        } else if (!($withoutNamespace || $withNamespace)) {
+            $relativePath = App()->getConfig('rootdir') . "/application/libraries/PluginManager/Storage/{$storageClass}.php";
+            if (file_exists($relativePath)) {
+                require_once $relativePath;
+                $storageClass = 'LimeSurvey\\PluginManager\\' . $storageClass;
+            }
         }
-        if (!isset($this->stores[$storageClass])) {
-            $this->stores[$storageClass] = new $storageClass();
-        }
-        return $this->stores[$storageClass];
+        return $this->stores[$storageClass] = new $storageClass();
     }
-
 
     /**
      * This function returns an API object, exposing an API to each plugin.
