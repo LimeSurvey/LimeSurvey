@@ -2515,7 +2515,7 @@ function CPDBExport($data, $filename)
 function stringSize(string $sColumn)
 {
     // Find the sid
-    $qid = substr(explode("_")[0], 1);
+    $qid = substr(explode("_", $sColumn)[0], 1);
     $sid = Question::model()->findByPk($qid)->sid;
     switch (Yii::app()->db->driverName) {
         case 'sqlsrv':
@@ -2528,7 +2528,7 @@ function stringSize(string $sColumn)
     }
     $lengthReal = Yii::app()->db->createCommand()
     ->select("MAX({$lengthWord}(" . Yii::app()->db->quoteColumnName($sColumn) . "))")
-    ->from("{{responses_" . $iSurveyId . "}}")
+    ->from("{{responses_" . $sid . "}}")
     ->where(Yii::app()->db->quoteColumnName($sColumn) . " IS NOT NULL ")
     ->queryScalar();
     // PSPP didn't accept A0 then min value to 1, see bug #13008
