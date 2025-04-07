@@ -164,10 +164,6 @@ class TFAUserKey extends LSActiveRecord
 
     public function getAllEncryptedAttributes($iSurveyId, $sClassName)
     {
-        $encryptedAttributes = [];
-        if (Yii::app()->getConfig('DBVersion') >= 629) {
-            $encryptedAttributes = ['secretKey'];
-        }
-        return $encryptedAttributes;
+        return ['secretKey'];
     }
 }
