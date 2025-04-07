@@ -51,7 +51,7 @@ class UploaderController extends SurveyController
         // Using 'futmp_'.randomChars(15).'_'.$pathinfo['extension'] for filename, then remove all other characters
         $sFileGetContentFiltered = preg_replace('/[^a-zA-Z0-9_]/', '', (string) $sFileGetContent);
         $sFileNameFiltered = preg_replace('/[^a-zA-Z0-9_]/', '', (string) $sFileName);
-        $sFieldNameFiltered = preg_replace('/[^X0-9]/', '', (string) $sFieldName);
+        $sFieldNameFiltered = preg_replace('/[^Q0-9]/', '', (string) $sFieldName);
         if ($sFileGetContent != $sFileGetContentFiltered || $sFileName != $sFileNameFiltered || $sFieldName != $sFieldNameFiltered) {
             // If one seems to be a hack: Bad request
             throw new CHttpException(400); // See for debug > 1
