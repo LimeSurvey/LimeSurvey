@@ -453,7 +453,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $oTFAModel = new TFAUserKey();
         $oTFAModel->setAttributes($tfaUserKey, false);
         $oTFAModel->firstLogin = 0;
-        if (!$oTFAModel->save()) {
+        if (!$oTFAModel->encryptSave()) {
             return $this->createJSONResponse(false, gT("The two-factor authentication key could not be stored."));
         }
         return $this->createJSONResponse(true, "Two-factor method successfully stored", ['reload' => true]);

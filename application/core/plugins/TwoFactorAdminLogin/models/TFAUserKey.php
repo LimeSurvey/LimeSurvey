@@ -25,7 +25,7 @@ class TFAUserKey extends LSActiveRecord
     /** @inheritdoc */
     public function tableName()
     {
-        return '{{twoFactorUsers}}';
+        return '{{user_mfa_settings}}';
     }
 
     /** @inheritdoc */
