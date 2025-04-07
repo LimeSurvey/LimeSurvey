@@ -9,11 +9,14 @@ class AzureOAuthSMTP extends SmtpOAuthPluginBase
     protected static $description = 'Core: Adds Azure OAuth support for email sending';
     protected static $name = 'AzureOAuthSMTP';
 
-    /** @inheritdoc, this plugin doesn't have any public method */
+    /** @inheritdoc this plugin doesn't have any public method */
     public $allowedPublicMethods = [];
 
     /** @inheritdoc */
     protected $credentialAttributes = ['clientId', 'clientSecret', 'tenantId'];
+
+    /** @inheritdoc */
+    protected $encryptedSettings = ['clientSecret'];
 
     protected $settings = [
         'help' => [

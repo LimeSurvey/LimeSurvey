@@ -4,7 +4,7 @@
  */
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <h3><?php eT("Send email reminder"); ?></h3>
     <div class="row">
         <div class="col-12 content-right">
@@ -136,7 +136,7 @@
                         $fieldsarray["{ADMINEMAIL}"] = $thissurvey['adminemail'];
                         $fieldsarray["{SURVEYNAME}"] = $thissurvey[$language]['name'];
                         $fieldsarray["{SURVEYDESCRIPTION}"] = $thissurvey[$language]['description'];
-                        $fieldsarray["{EXPIRY}"] = $thissurvey["expiry"];
+                        $fieldsarray["{EXPIRY}"] = strval($thissurvey["expiry"]);
 
                         $subject = Replacefields($thissurvey[$language]['email_remind_subj'], $fieldsarray, false);
                         $textarea = Replacefields($thissurvey[$language]['email_remind'], $fieldsarray, false);

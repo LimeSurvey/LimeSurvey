@@ -236,7 +236,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     // We get the HTML of the new row to insert
     return $.ajax({
       type: 'GET',
-      contentType: 'json',
+      contentType: 'application/json',
       url: $dataInput.data('url'),
       data: datas,
     });
@@ -886,8 +886,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
         var generatedIds = currentIds;
 
         // Loop the preview table and copy rows to destination (subquestions or answer options).
-        $('#labelsetpreview').find(`#language_${lang}`).find('.selector_label-list').find('.selector_label-list-row')
-        .each((i, item) => {
+        let importedLabelset = $('#labelsetpreview').find(`#language_${lang}`).find('.selector_label-list').find('.selector_label-list-row');
+        if (importedLabelset.length === 0) {
+          importedLabelset = $('#labelsetpreview').find(`.tab-pane:first`).find('.selector_label-list').find('.selector_label-list-row');
+        }
+        importedLabelset.each((i, item) => {
           try {
             const label /*: {code: string, title: string} */ = $(item).data('label');
             const $row = $(row);
@@ -1151,11 +1154,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 throw 'inputText is not an HTMLInputElement';
               }
               inputText.value = row.text;
-              const inputCode = tableRow.querySelector('input.code');
+              let inputCode = tableRow.querySelector('input.code');
               if (inputCode instanceof HTMLInputElement) {
                 inputCode.value = row.code;
               } else {
-                // Ignore.
+                // If there is no input for the code, it's probably a "secondary" language.
+                inputCode = tableRow.querySelector('td.code-title');
+                if (inputCode instanceof HTMLElement) {
+                  inputCode.textContent = row.code;
+                }
               }
               const relevanceEquation = tableRow.querySelector('td.relevance-equation input');
               if (relevanceEquation instanceof HTMLInputElement) {
@@ -1993,6 +2000,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
               $('#question-title-warning').removeClass('d-none');
               $('#question-title-warning').text(message);
               $('#questionCode')[0].setCustomValidity(message); // must set customvalidity to avoid submit by another enter
+              $('#ls-loading').hide();
           } else {
             $('#question-title-warning').addClass('d-none');
             $('#question-title-warning').text('');

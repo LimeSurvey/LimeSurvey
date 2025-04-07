@@ -70,7 +70,7 @@ class SurveyCommonAction extends CAction
 
         // Get the action classes from the admin controller as the urls necessarily do not equal the class names. Eg. survey -> surveyaction
         // Merges it with actions from admin modules
-        $aActions = array_merge(Yii::app()->getController()->getActionClasses(), Yii::app()->getController()->getAdminModulesActionClasses());
+        $aActions = array_merge(App()->getController()->getActionClasses(), Yii::app()->getController()->getAdminModulesActionClasses());
 
         if (empty($aActions[$this->getId()]) || strtolower($oMethod->getDeclaringClass()->name) != strtolower((string) $aActions[$this->getId()]) || !$oMethod->isPublic()) {
             // Either action doesn't exist in our allowlist, or the method class doesn't equal the action class or the method isn't public
@@ -162,7 +162,7 @@ class SurveyCommonAction extends CAction
         if (!empty($params['iGroupId'])) {
             if ((string) (int) $params['iGroupId'] !== (string) $params['iGroupId']) {
                 // pgsql need filtering before find
-                throw new CHttpException(403, gT("Invalid group id"));
+                throw new CHttpException(403, gT("Invalid group ID"));
             }
             $oGroup = QuestionGroup::model()->find("gid=:gid", array(":gid" => $params['iGroupId'])); //Move this in model to use cache
             if (!$oGroup) {
@@ -677,7 +677,7 @@ class SurveyCommonAction extends CAction
                 $this->getController()->renderPartial('/survey_view', ['display' => $questionsummary]);
             } else {
                 Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
-                $this->getController()->redirect(array("admin/index"));
+                $this->getController()->redirect(array("dashboard/view"));
             }
         }
     }
@@ -888,7 +888,7 @@ class SurveyCommonAction extends CAction
             $this->getController()->renderPartial("/admin/super/sidemenu", $aData);
         } else {
             Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
-            $this->getController()->redirect(array("admin/index"));
+            $this->getController()->redirect(array("dashboard/view"));
         }
     }
 

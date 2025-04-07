@@ -110,7 +110,7 @@ class LimeMailer extends PHPMailer
     public $BodySubjectCharset = 'utf-8';
 
     /**
-     * @inheritdoc, defaultto utf-8
+     * @inheritdoc defaultto utf-8
      */
     public $CharSet = 'utf-8';
 
@@ -176,6 +176,7 @@ class LimeMailer extends PHPMailer
                 break;
             case self::MethodSmtp:
                 $this->IsSMTP();
+                $this->SMTPKeepAlive = true;
                 if ($emailsmtpdebug > 0) {
                     $this->SMTPDebug = $emailsmtpdebug;
                 }
@@ -222,6 +223,8 @@ class LimeMailer extends PHPMailer
      */
     public function init()
     {
+        // Make sure that any existing SMTP connection is closed
+        $this->smtpClose();
         $this->debug = [];
         $this->ContentType = self::CONTENT_TYPE_PLAINTEXT;
         $this->clearCustomHeaders();

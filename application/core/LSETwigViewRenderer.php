@@ -655,10 +655,10 @@ window.addEventListener('message', function(event) {
      * (surveyRuntime, frontend_helper, etc)
      * In LS3, we did a first cycle of refactorisation. Some logic common to the different
      * files are for now here, in this function.
-     * TODO: move all the display logic to surveyRuntime so we don't need this function here
      *
+     * @todo move all the display logic to surveyRuntime so we don't need this function here
      * @param TemplateConfiguration $oTemplate
-     * @return
+     * @return array
      */
     private function getAdditionalInfos($aData, $oTemplate)
     {
@@ -668,7 +668,10 @@ window.addEventListener('message', function(event) {
             if (!empty($aData["sid"]) || LimeExpressionManager::getLEMsurveyId()) {
                 $sid = empty($aData["sid"]) ? LimeExpressionManager::getLEMsurveyId() : $aData["sid"];
                 $language = empty($aData["language"]) ? App()->getLanguage() : $aData["language"];
-                $aData["aSurveyInfo"] = getSurveyInfo($sid, $language);
+                /* Outdated sid in LimeExpressionManager */
+                if (Survey::model()->findByPk($sid)) {
+                    $aData["aSurveyInfo"] = getSurveyInfo($sid, $language);
+                }
             }
         }
         // We retrieve the definition of the core class and attributes
@@ -698,7 +701,7 @@ window.addEventListener('message', function(event) {
                 isset($_SESSION['survey_' . $aData['aSurveyInfo']['sid']]['totalquestions'])
             ) {
                 $aData["aSurveyInfo"]['iTotalquestions'] = $_SESSION['survey_' .
-                $aData['aSurveyInfo']['sid']]['totalquestions'];
+                $aData['aSurveyInfo']['sid']]['totalVisibleQuestions'];
             }
 
             // Add the survey theme options
@@ -706,10 +709,10 @@ window.addEventListener('message', function(event) {
                 foreach ($oTemplate->oOptions as $key => $value) {
                     // TODO: Same issue as commit 2972aea41c51c74db95bfe40c337ae839471152c
                     // Options are not loaded the same way in all places.
-                    if ($value instanceof stdClass) {
+                    if (!is_string($value)) {
                         $value = 'N/A';
                     }
-                    $aData["aSurveyInfo"]["options"][$key] = (string) $value;
+                    $aData["aSurveyInfo"]["options"][$key] = $value;
                 }
             }
         } else {
@@ -741,7 +744,7 @@ window.addEventListener('message', function(event) {
         $aFilesOptions = array( 'brandlogo' => 'brandlogofile'  , 'backgroundimage' => 'backgroundimagefile' );
 
         foreach ($aFilesOptions as $sOption => $sFileOption) {
-            if ($aData["aSurveyInfo"]["options"] !== null) {
+            if (is_array($aData["aSurveyInfo"]["options"])) {
                 if (array_key_exists($sFileOption, $aData["aSurveyInfo"]["options"])) {
                     if (empty($aData["aSurveyInfo"]["options"][$sFileOption])) {
                         $aData["aSurveyInfo"]["options"][$sOption] = "false";

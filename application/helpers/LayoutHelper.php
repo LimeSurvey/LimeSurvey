@@ -341,6 +341,12 @@ class LayoutHelper
         $iSurveyID = $aData['surveyid'];
 
         $survey = Survey::model()->findByPk($iSurveyID);
+
+        if (App()->getConfig('editorEnabled') && $survey->getTemplateEffectiveName() == 'fruity_twentythree') {
+            App()->controller->widget('ext.admin.survey.SurveySidemenuWidget.SurveySidemenuWidget', ['sid' => $iSurveyID]);
+            return;
+        }
+
         // TODO : create subfunctions
         $sumresult1 = Survey::model()->with(
             array(
@@ -382,7 +388,7 @@ class LayoutHelper
             Yii::app()->getController()->renderPartial("/layouts/sidemenu", $aData);
         } else {
             Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
-            Yii::app()->getController()->redirect(array("admin/index"));
+            Yii::app()->getController()->redirect(array("dashboard/view"));
         }
     }
 

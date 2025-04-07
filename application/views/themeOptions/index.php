@@ -65,7 +65,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                             <?php foreach ($aTemplatesWithoutDB['valid'] as $key => $oTemplate) : ?>
                                 <tr class="odd">
                                     <td class="col-lg-1"><?php echo $oTemplate->getPreview(); ?></td>
-                                    <td class="col-lg-2"><?php echo $oTemplate->sTemplateName; ?></td>
+                                    <td class="col-lg-2"><?php echo CHtml::encode($oTemplate->sTemplateName); ?></td>
                                     <td class="col-lg-3"><?php echo $oTemplate->getDescription(); ?></td>
                                     <td class="col-lg-2"><?php eT('XML themes'); ?></td>
                                     <td class="col-lg-1"><?php echo $oTemplate->config->metadata->extends; ?></td>
@@ -88,7 +88,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                             </div>
                                                             <div class="modal-body">
                                                                 <p><?= gT('The theme is not compatible with your version of LimeSurvey.') ?><br>
-                                                                    <a href="https://manual.limesurvey.org/Extension_compatibility" target="_blank">
+                                                                    <a href="https://www.limesurvey.org/manual/Extension_compatibility" target="_blank">
                                                                         <?= gT('For more information consult our manual.') ?>
                                                                     </a>
                                                                 </p>
@@ -270,7 +270,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                     </div>
                                                     <div class="modal-body">
                                                         <p><?= gT('The theme is not compatible with your version of LimeSurvey.') ?></p>
-                                                        <a href="https://manual.limesurvey.org/Extension_compatibility" target="_blank">
+                                                        <a href="https://www.limesurvey.org/manual/Extension_compatibility" target="_blank">
                                                             <?= gT('For more information consult our manual.') ?>
                                                         </a>
                                                     </div>

@@ -125,7 +125,7 @@ class Plugin extends LSActiveRecord
      */
     public function getStatus()
     {
-        if ($this->load_error == 1) {
+        if ($this->getLoadError()) {
             return sprintf(
                 "<span data-bs-toggle='tooltip' title='%s' class='btntooltip ri-close-fill text-danger'></span>",
                 CHtml::encode(sprintf(gT('Plugin load error: %s'), $this->load_error_message))
@@ -150,7 +150,7 @@ class Plugin extends LSActiveRecord
                 'id' => $this->id
             ]
         );
-        if ($this->load_error == 0) {
+        if (!$this->getLoadError()) {
             return sprintf(
                 '<a href="%s">%s</a>',
                 $url,
@@ -199,7 +199,7 @@ class Plugin extends LSActiveRecord
         $output = '';
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
             $output .= "<div class='icon-btn-row'>";
-            if ($this->load_error == 1) {
+            if ($this->getLoadError()) {
                 $reloadUrl = Yii::app()->createUrl(
                     'admin/pluginmanager',
                     [
@@ -365,8 +365,8 @@ class Plugin extends LSActiveRecord
                     'data-bs-target'  => '#confirmation-modal',
                     'data-btnclass'   => 'btn-success',
                     'type'            => 'submit',
-                    'data-btntext'    => gt("Activate"),
-                    'data-title'      => gt('Activate plugin'),
+                    'data-btntext'    => gT("Activate"),
+                    'data-title'      => gT('Activate plugin'),
                     'data-message'    => gT("Are you sure you want to activate this plugin?"),
                     'data-post-url'   => $activateUrl,
                     'data-post-datas' => json_encode(['pluginId' => $this->id]),
@@ -383,8 +383,8 @@ class Plugin extends LSActiveRecord
                     'data-bs-target'  => '#confirmation-modal',
                     'data-btnclass'   => 'btn-danger',
                     'type'            => 'submit',
-                    'data-btntext'    => gt("Deactivate"),
-                    'data-title'      => gt('Deactivate plugin'),
+                    'data-btntext'    => gT("Deactivate"),
+                    'data-title'      => gT('Deactivate plugin'),
                     'data-message'    => gT("Are you sure you want to deactivate this plugin?"),
                     'data-post-url'   => $deactivateUrl,
                     'data-post-datas' => json_encode(['pluginId' => $this->id]),
@@ -401,8 +401,8 @@ class Plugin extends LSActiveRecord
                     'data-bs-target'  => '#confirmation-modal',
                     'data-btnclass'   => 'btn-danger',
                     'type'            => 'submit',
-                    'data-btntext'    => gt("Uninstall"),
-                    'data-title'      => gt('Uninstall plugin'),
+                    'data-btntext'    => gT("Uninstall"),
+                    'data-title'      => gT('Uninstall plugin'),
                     'data-message'    => gT("Are you sure you want to uninstall this plugin?"),
                     'data-post-url'   => $uninstallUrl,
                     'data-post-datas' => json_encode(['pluginId' => $this->id]),
@@ -410,6 +410,20 @@ class Plugin extends LSActiveRecord
             ];
         }
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
+    }
+
+    /**
+     * @param Plugin|null $plugin
+     * @param string $pluginName
+     * @param array $error Array with 'message' and 'file' keys (as get from error_get_last).
+     * @return int Rows affected, always 0 for debug >=2
+     */
+    public static function handlePluginLoadError($plugin, $pluginName, array $error)
+    {
+        if (App()->getConfig('debug') >= 2) {
+            return 0;
+        }
+        return self::setPluginLoadError($plugin, $pluginName, $error);
     }
 
     /**
@@ -435,6 +449,18 @@ class Plugin extends LSActiveRecord
                 );
         }
         return $result;
+    }
+
+    /**
+     * Get load error as boolean
+     * @return boolean
+     */
+    public function getLoadError()
+    {
+        if (App()->getConfig('debug') >= 2) {
+            return false;
+        }
+        return isset($this->load_error) && boolval($this->load_error);
     }
 
     /**

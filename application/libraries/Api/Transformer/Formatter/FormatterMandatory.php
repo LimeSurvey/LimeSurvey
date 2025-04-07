@@ -3,46 +3,50 @@
 namespace LimeSurvey\Api\Transformer\Formatter;
 
 /**
- * This class is extending the FormatterYnToBool class in revert mode
- * to be able to translate null value to 'S'.
+ * This class is extending the FormatterYnToBool class
+ * to be able to have 'S' as a third option.
  * It is only needed for prop of type "mandatory"
  */
 class FormatterMandatory extends FormatterYnToBool
 {
-    private string $name = 'mandatory';
-
     /**
-     * @param bool $revert
+     * Cast y/n to boolean while keeping 'S' as a third option
+     *
+     * Converts 'Y' or 'y' to boolean true.
+     * Converts 'N' or 'n' to boolean false.
+     *
+     * @param ?string $value
+     * @return bool|string|null
      */
-    public function __construct($revert = false)
+    protected function apply($value)
     {
-        parent::__construct(!$revert);
-        parent::setName($this->name);
+        $lowercase = is_string($value)
+            ? strtolower($value)
+            : $value;
+        if (
+            $value === null
+            || $value === ''
+            || !in_array($lowercase, ['y', 'n', 's'])
+        ) {
+            return null;
+        }
+        return $lowercase === 's' ? 'S' : $lowercase === 'y';
     }
 
     /**
-     * @param ?mixed $value
-     * @param array $config
-     * @param array $options
-     * @return ?mixed
-     */
-    public function format($value, $config, $options = [])
-    {
-        $this->setClassBasedOnConfig($config);
-        return $this->revert
-            ? $this->revert($value)
-            : $this->apply($value);
-    }
-
-    /**
-     * if parent revert function returns null, 'S' is returned
+     * if value is 'S' it will be returned,
+     * otherwise the parent revert function will be called
      *
      * @param ?mixed $value
-     * @return ?mixed
+     * @param array $config
+     * @return mixed|string|null
      */
-    protected function revert($value)
+    protected function revert($value, array $config = [])
     {
-        $string = parent::revert($value);
-        return $string === null ? 'S' : $string;
+        if ($value !== 'S') {
+            $value = parent::revert($value, $config);
+        }
+
+        return $value;
     }
 }

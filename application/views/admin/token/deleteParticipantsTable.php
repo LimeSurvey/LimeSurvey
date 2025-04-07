@@ -3,7 +3,7 @@
  * Delete Participants Table view
  */
 ?>
-<div class="side-body <?php echo getSideBodyClass(false); ?>">
+<div class="side-body">
     <div class="row welcom survey-action">
         <div class="col-12 content-right">
             <div class="card card-primary border-left-danger">

@@ -57,7 +57,7 @@ class RSyntaxWriter extends Writer
         fwrite($this->handle, $content . "\n");
     }
 
-    protected function outputRecord($headers, $values, FormattingOptions $oOptions)
+    protected function outputRecord($headers, $values, FormattingOptions $oOptions, $fieldNames = [])
     {
         $this->headers = $oOptions->selectedColumns;
         foreach ($oOptions->selectedColumns as $id => $title) {

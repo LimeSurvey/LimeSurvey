@@ -28,11 +28,8 @@ class TransformerInputSurveyLanguageSettings extends Transformer
             'description' => 'surveyls_description',
             'welcomeText' => 'surveyls_welcometext',
             'endText' => 'surveyls_endtext',
-            'policyNotice' => [
-                'key' => 'surveyls_policy_notice',
-                'length' => ['min' => 0, 'max' => 200]
-            ],
-            'surveyAlias' => [
+            'policyNotice' => 'surveyls_policy_notice',
+            'alias' => [
                 'key' => 'surveyls_alias',
                 'length' => ['min' => 0, 'max' => 100],
                 'pattern' => '/^[^\d\W][\w\-]*$/u'
@@ -89,19 +86,7 @@ class TransformerInputSurveyLanguageSettings extends Transformer
         array $collection,
         array $options
     ): array {
-        $props = [];
-        $entityId = array_key_exists(
-            'entityId',
-            $options
-        ) ? $options['entityId'] : null;
-        if (!empty($entityId)) {
-            // indicator for variant 1
-            $props[$entityId] = $collection;
-        } else {
-            // variant 2
-            $props = $collection;
-        }
-
+        $props = $collection;
         $surveyId = array_key_exists('sid', $options) ? $options['sid'] : null;
         foreach (array_keys($props) as $language) {
             $props[$language]['sid'] = $surveyId;

@@ -24,7 +24,7 @@ class statFunctions extends PluginBase
     protected static $description = 'Add some function in ExpressionScript Engine to get count from other responses';
     protected static $name = 'statCountFunctions';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     public function init()
@@ -41,7 +41,7 @@ class statFunctions extends PluginBase
                 null, // No javascript function : set as static function
                 $this->gT("Count the number of complete responses  with a value equal to a specific value"), // Description for admin
                 'integer statCountIf(QuestionCode.sgqa, value[, submitted = true][, self = true])', // Extra description
-                'https://manual.limesurvey.org/StatFunctions', // Help url
+                'https://www.limesurvey.org/manual/StatFunctions', // Help url
                 2, 3, 4 // Number of arguments : 2 , 3 or 4
             ),
             'statCount' => array(
@@ -49,7 +49,7 @@ class statFunctions extends PluginBase
                 null, // No javascript function : set as static function
                 $this->gT("Count the number of complete responses which are not empty"), // Description for admin
                 'integer statCount(QuestionCode.sgqa[, submitted = true][, self = true])', // Extra description
-                'https://manual.limesurvey.org/StatFunctions', // Help url
+                'https://www.limesurvey.org/manual/StatFunctions', // Help url
                 1, 2, 3 // Number of argument : 1 , 2 or 3
             ),
         );

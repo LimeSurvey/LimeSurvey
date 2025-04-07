@@ -215,7 +215,7 @@ class LS_Twig_Extension extends AbstractExtension
             $aQuestionClass .= ' ls-hidden';
         }
 
-        $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($iQid);
+        $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes(Question::model()->findByPk($iQid));
 
         //add additional classes
         if (isset($aQuestionAttributes['cssclass']) && $aQuestionAttributes['cssclass'] != "") {
@@ -300,12 +300,12 @@ class LS_Twig_Extension extends AbstractExtension
             $sUrlImgAsset =  $sImagePath;
 
             if ($oTemplate) {
-                $sFullPath = $oTemplate->path.$sImagePath;
+                $sFullPath = $oTemplate->path . $sImagePath;
             }
         }
 
         if (empty($sFullPath)) {
-            if($default) {
+            if ($default) {
                 return self::imageSrc($default);
             }
             return false;
@@ -741,7 +741,7 @@ class LS_Twig_Extension extends AbstractExtension
                         $groupInfo = LimeExpressionManager::GetStepIndexInfo($moveInfo['seq']);
                         $groupName = isset($groupInfo['gname']) ? $groupInfo['gname'] : '';
                     }
-                    $page = $moveInfo['gseq']+1;
+                    $page = $moveInfo['gseq'] + 1;
                 };
             }
         }
