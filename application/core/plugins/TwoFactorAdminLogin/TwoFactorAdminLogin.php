@@ -36,6 +36,21 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
     protected $storage = 'DbStorage';
     protected $settings = array(
+        'force2fa' => array(
+            'type' => 'select',
+            'label' => 'Prompt to activate 2FA on login',
+            'default' => '0',
+            'options' => [
+                '0 ' => 'No',
+                '1' => 'Only prompt, no enforcement',
+                '2' => 'Always enforce 2FA activation',
+            ],
+            'help' => 'Upon login, users who have not enabled two-factor authentication (2FA) will be prompted to set it up.'
+        ),
+        'separatorTotp' => array(
+            'type' => 'separator',
+            'title' => 'TOTP Settings',
+        ),
         'issuer' => array(
             'type' => 'string',
             'label' => 'Issuer',
@@ -71,6 +86,10 @@ class TwoFactorAdminLogin extends AuthPluginBase
             ],
             'help' => 'Please keep in mind, that most tools only work with SHA1 hashing.'
         ),
+        'separatorYubi' => array(
+            'type' => 'separator',
+            'title' => 'YubiKey Settings',
+        ),
         'yubiClientId' => array(
             'type' => 'string',
             'label' => 'YubiCloud - Client ID',
@@ -83,18 +102,6 @@ class TwoFactorAdminLogin extends AuthPluginBase
             'default' => '',
             'help' => 'Your YubiCloud Secret Key. If not set, the YubiCloud responses authenticity will not be verified. Verifying authenticity is recommended for increased security.'
         ),
-        'force2fa' => array(
-            'type' => 'select',
-            'label' => 'Prompt to activate 2FA on login',
-            'default' => '0',
-            'options' => [
-                '0 ' => 'No',
-                '1' => 'Only prompt, no enforcement',
-                '2' => 'Always enforce 2FA activation',
-            ],
-            'help' => 'Upon login, users who have not enabled two-factor authentication (2FA) will be prompted to set it up.'
-        ),
-
     );
 
     public function init()
