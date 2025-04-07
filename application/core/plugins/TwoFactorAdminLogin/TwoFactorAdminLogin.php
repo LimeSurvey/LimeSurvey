@@ -212,6 +212,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
                 $this->setAuthFailure(null, 'Authentication method not supported');
                 return;
             }
+            $oTFAModel->decrypt();
             $authenticationKey = Yii::app()->getRequest()->getPost('twofactor', false);
             if (!$authenticationKey || !$this->confirmKey($oTFAModel, $authenticationKey)) {
                 $this->setAuthFailure(null, 'Authentication key invalid');
@@ -353,6 +354,9 @@ class TwoFactorAdminLogin extends AuthPluginBase
     {
         $iUserId = Yii::app()->getRequest()->getPost('iUserId', Yii::app()->user->id);
         $oTFAModel =  TFAUserKey::model()->findByPk($iUserId);
+        if ($oTFAModel != null) {
+            $oTFAModel->decrypt();
+        }
 
         $aData = [
             'oTFAModel' => $oTFAModel,
@@ -476,7 +480,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $oTFAModel = new TFAUserKey();
         $oTFAModel->setAttributes($tfaUserKey, false);
         $oTFAModel->firstLogin = 0;
-        if (!$oTFAModel->save()) {
+        if (!$oTFAModel->encryptSave()) {
             return $this->createJSONResponse(false, gT("The two-factor authentication key could not be stored."));
         }
         return $this->createJSONResponse(true, "Two-factor method successfully stored", ['reload' => true]);

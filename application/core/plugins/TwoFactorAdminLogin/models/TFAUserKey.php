@@ -156,4 +156,9 @@ class TFAUserKey extends LSActiveRecord
         ));
         return $oDataProvider;
     }
+
+    public function getAllEncryptedAttributes($iSurveyId, $sClassName)
+    {
+        return ['secretKey'];
+    }
 }
