@@ -12,7 +12,7 @@
 </div>
 <div class="modal-body">
     <div class="row">
-        <div class="errorContainer"></div>
+        <div class="errorContainer alert alert-danger" style="display: none"></div>
     </div>
     <?php echo TbHtml::activeHiddenField($model, 'uid'); ?>
     <div class="mb-3">

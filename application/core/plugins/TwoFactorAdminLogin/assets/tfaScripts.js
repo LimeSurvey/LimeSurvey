@@ -111,6 +111,7 @@ var TFAUserSettingsClass = function(){
                 success: function(data){
                     stopSubmit();
                     if(data.success) {
+                        $(formId).find('.errorContainer').hide();
                         $('#TFA--actionmodal').modal('hide');
                         $(formId).parent().html(data.message);
                         modalCloseTimeout = setTimeout(triggerModalClose, 2000);
@@ -120,7 +121,7 @@ var TFAUserSettingsClass = function(){
                         LS.ajaxAlerts(data.message, 'success', {showCloseButton: true});
                         return;
                     }
-                    $(formId).find('.errorContainer').html(data.message);
+                    $(formId).find('.errorContainer').html(data.message).show();
                 }
             });
         };
