@@ -2650,11 +2650,11 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
     $iOldSurveyID = (int) $iOldSurveyID;
     $iNewSurveyID = (int) $iNewSurveyID; // To avoid injection of a /e regex modifier without having to check all execution paths
     if ($sType == 'survey') {
-        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
+        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_:])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
         if ($isLocalPath) {
             $sReplace = rtrim(App()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
         } else {
-            $sReplace = rtrim(App()->getConfig("publicurl"), "/") . "/upload/surveys/{$iNewSurveyID}/";
+            $sReplace = rtrim(App()->getPublicBaseUrl(true), "/") . "/upload/surveys/{$iNewSurveyID}/";
         }
         return preg_replace('/' . $sPattern . '/u', $sReplace, $sString);
     } elseif ($sType == 'label') {
