@@ -216,13 +216,13 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
         if ($oTFAModel != null) {
             if (!in_array($oTFAModel->authType, ['totp', 'yubi'])) {
-                $this->setAuthFailure(null, 'Authentication method not supported');
+                $this->setAuthFailure(null, gT('Authentication method not supported'));
                 return;
             }
             $oTFAModel->decrypt();
             $authenticationKey = Yii::app()->getRequest()->getPost('twofactor', false);
             if (!$authenticationKey || !$this->confirmKey($oTFAModel, $authenticationKey)) {
-                $this->setAuthFailure(null, 'Authentication key invalid');
+                $this->setAuthFailure(null, gT('Authentication key invalid'));
             }
         }
         return;
@@ -424,7 +424,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $aTFAUserKey = Yii::app()->getRequest()->getPost('TFAUserKey', []);
         $uid = $aTFAUserKey['uid'];
         if (!(Permission::model()->hasGlobalPermission('users', 'update') || $uid == Yii::app()->user->id)) {
-            return $this->createJSONResponse(false, "No permission");
+            return $this->createJSONResponse(false, gT("No permission"));
         }
 
         $authType = $aTFAUserKey['authType'];
@@ -446,7 +446,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
     private function setupTotp($tfaUserKey, $confirmationKey)
     {
         if ($confirmationKey == '') {
-            return $this->createJSONResponse(false, "Please enter a confirmation key");
+            return $this->createJSONResponse(false, gT("Please enter a confirmation key"));
         }
 
         $o2FA = $this->get2FAObject();
@@ -463,13 +463,13 @@ class TwoFactorAdminLogin extends AuthPluginBase
         if (!$oTFAModel->encryptSave()) {
             return $this->createJSONResponse(false, gT("The two-factor authentication key could not be stored."));
         }
-        return $this->createJSONResponse(true, "Two-factor method successfully stored", ['reload' => true]);
+        return $this->createJSONResponse(true, gT("Two-factor method successfully stored"), ['reload' => true]);
     }
 
     private function setupYubi($tfaUserKey, $yubiOtp)
     {
         if (empty($yubiOtp)) {
-            return $this->createJSONResponse(false, "Please enter a YubiKey OTP");
+            return $this->createJSONResponse(false, gT("Please enter a YubiKey OTP"));
         }
 
         $yubikeyOtpHelper = $this->getYubikeyOtpHelper($yubiOtp);
@@ -490,7 +490,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         if (!$oTFAModel->encryptSave()) {
             return $this->createJSONResponse(false, gT("The two-factor authentication key could not be stored."));
         }
-        return $this->createJSONResponse(true, "Two-factor method successfully stored", ['reload' => true]);
+        return $this->createJSONResponse(true, gT("Two-factor method successfully stored"), ['reload' => true]);
     }
 
     /**
