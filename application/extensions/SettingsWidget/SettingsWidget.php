@@ -171,7 +171,7 @@ class SettingsWidget extends CWidget
             throw new CHttpException(405, 'invalid settings type');
         }
         $wrapperCss = '';
-        if ($metaData['type'] === 'radio' || 'checkbox') {
+        if ($metaData['type'] === 'radio') {
             $wrapperCss = "align-items-center";
         }
 
