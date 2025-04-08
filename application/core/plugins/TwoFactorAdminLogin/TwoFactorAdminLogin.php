@@ -222,7 +222,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
             $oTFAModel->decrypt();
             $authenticationKey = Yii::app()->getRequest()->getPost('twofactor', false);
             if (!$authenticationKey || !$this->confirmKey($oTFAModel, $authenticationKey)) {
-                $this->setAuthFailure(null, gT('Authentication key invalid'));
+                $this->setAuthFailure(null, gT('Incorrect 2FA key'));
             }
         }
         return;
