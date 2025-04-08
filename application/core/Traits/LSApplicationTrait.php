@@ -75,4 +75,29 @@ trait LSApplicationTrait
         }
         return $baseUrl;
     }
+
+    /**
+     * Function to Throw Exception when error happen
+     * @see https://www.php.net/set-error-handler
+     * @throws \ErrorException
+     * @return null|array : last error handler, null if default
+     */
+    public function setErrorHandler()
+    {
+        return set_error_handler(
+            function ($errno, $errstr, $errfile = null, $errline = null, $context = null) {
+                throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
+            }
+        );
+    }
+
+    /**
+     * function to reset error handler
+     * @see https://www.php.net/restore-error-handler
+     * @return void
+     */
+    public function resetErrorHandler()
+    {
+        restore_error_handler();
+    }
 }
