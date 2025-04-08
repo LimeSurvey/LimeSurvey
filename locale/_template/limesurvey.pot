@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-04-08 11:12:14+00:00\n"
+"POT-Creation-Date: 2025-04-08 11:21:27+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1547,7 +1547,7 @@ msgstr ""
 #: application/controllers/admin/Statistics.php:833
 #: application/controllers/admin/Statistics.php:847
 #: application/views/admin/dataentry/delete.php:10
-#: application/views/admin/dataentry/import_result.php:25
+#: application/views/admin/dataentry/import_result.php:23
 #: application/views/admin/dataentry/vvimport_result.php:34
 msgid "Browse responses"
 msgstr ""
@@ -2134,7 +2134,7 @@ msgstr ""
 #: application/helpers/SurveyRuntimeHelper.php:1173
 #: application/helpers/update/update_helper.php:37
 #: application/models/services/PasswordManagement.php:102
-#: application/views/admin/dataentry/import_result.php:10
+#: application/views/admin/dataentry/import_result.php:8
 #: application/views/admin/dataentry/insert.php:37
 #: application/views/admin/dataentry/iteratesurvey.php:6
 #: application/views/admin/dataentry/vvimport_result.php:10
@@ -4388,7 +4388,7 @@ msgstr ""
 #: application/controllers/admin/Tokens.php:1733
 #: application/helpers/SurveyRuntimeHelper.php:1188
 #: application/views/admin/checkintegrity/fix_view.php:30
-#: application/views/admin/dataentry/import_result.php:17
+#: application/views/admin/dataentry/import_result.php:15
 #: application/views/admin/dataentry/vvimport_result.php:22
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:224
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:252
@@ -4741,12 +4741,12 @@ msgid "Quick statistics"
 msgstr ""
 
 #: application/controllers/admin/DataEntry.php:421
-#: application/views/admin/dataentry/import_result.php:11
+#: application/views/admin/dataentry/import_result.php:9
 msgid "%s old response(s) were successfully imported."
 msgstr ""
 
 #: application/controllers/admin/DataEntry.php:446
-#: application/views/admin/dataentry/import_result.php:13
+#: application/views/admin/dataentry/import_result.php:11
 msgid "%s old response(s) and according %s timings were successfully imported."
 msgstr ""
 
@@ -17668,11 +17668,11 @@ msgstr ""
 msgid "Question is added to target (result is set to database default value)."
 msgstr ""
 
-#: application/views/admin/dataentry/import_result.php:7
-msgid "Import old table result"
+#: application/views/admin/dataentry/import_result.php:5
+msgid "Responses import summary"
 msgstr ""
 
-#: application/views/admin/dataentry/import_result.php:19
+#: application/views/admin/dataentry/import_result.php:17
 msgid "Error on response ID %s"
 msgstr ""
 
@@ -18784,10 +18784,12 @@ msgid "Default breadcrumb mode:"
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:308
+#: application/views/admin/user/personalsettings.php:359
 msgid "Short"
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:309
+#: application/views/admin/user/personalsettings.php:358
 msgid "Long"
 msgstr ""
 
@@ -23273,14 +23275,6 @@ msgstr ""
 
 #: application/views/admin/user/personalsettings.php:351
 msgid "Breadcrumb mode:"
-msgstr ""
-
-#: application/views/admin/user/personalsettings.php:358
-msgid "Long breadcrumb"
-msgstr ""
-
-#: application/views/admin/user/personalsettings.php:359
-msgid "Short breadcrumb"
 msgstr ""
 
 #: application/views/admin/user/personalsettings.php:369
