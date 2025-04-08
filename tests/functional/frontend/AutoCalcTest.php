@@ -42,11 +42,11 @@ class AutoCalcTest extends TestBaseClassWeb
             // Get first page.
             self::$webDriver->get($url);
 
-            $sgqa ='Q' . $questions['CenterID']->qid;
+            $sgqa = 'Q' . $questions['CenterID']->qid;
             $centerIdInput = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa));
             $centerIdInput->sendKeys('90');
 
-            $sgqa = 'Q' . $questions['MinimumDataOnly']->qid . '_N';
+            $sgqa = 'Q' . $questions['MinimumDataOnly']->qid . 'N';
             $minimumDataOnlyNo = self::$webDriver->findElement(WebDriverBy::id('javatbd' . $sgqa));
             $minimumDataOnlyNo->click();
 
