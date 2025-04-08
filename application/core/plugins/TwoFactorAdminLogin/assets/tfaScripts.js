@@ -132,6 +132,14 @@ var TFAUserSettingsClass = function(){
             onSubmit(e,this);
         });
 
+        // Handle ENTER keypress in confirmation key field
+        $('#confirmationKey,#yubikeyOtp').on('keydown', function(e){
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                onSubmit(e, this);
+            }
+        });
+
         $('#TFA--cancelform').on('click',function(e) {
             e.preventDefault();
             triggerModalClose();
