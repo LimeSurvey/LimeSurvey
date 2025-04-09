@@ -3,16 +3,15 @@
 namespace LimeSurvey\Api\Rest\V1\SchemaFactory;
 
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
+use GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract;
+
 
 class SchemaFactoryPersonalSettings 
 {    
-    public function make(): Schema
+    public function make(SchemaContract ...$properties
+    ): Schema
     {
-        $schema = new Schema();
-        
-        // Define your schema properties here
-        // Example:
-        $schema->title('Personal Settings')
+        return Schema::create()->title('Personal Settings')
             ->description('Personal Settings')
             ->type(Schema::TYPE_OBJECT)
             ->properties(
@@ -20,7 +19,5 @@ class SchemaFactoryPersonalSettings
                 Schema::string('subquestionprefix')->default('SQ'),
                 Schema::boolean('showQuestionCodes')->default(false)
             );
-        
-        return $schema;
     }
 }
