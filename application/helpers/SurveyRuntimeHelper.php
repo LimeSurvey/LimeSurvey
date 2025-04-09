@@ -529,9 +529,9 @@ class SurveyRuntimeHelper
                         $aGroup['lastanswer']         = $lastanswer;
                     }
                 }
-                Yii::app()->setConfig('gid', '');
                 $this->aSurveyInfo['aGroups'][$gid] = $aGroup;
             }
+            Yii::app()->setConfig('gid', '');
             LimeExpressionManager::updateReplacementFields(array(
                 'GID' => null,
                 'GROUPNAME' => null,

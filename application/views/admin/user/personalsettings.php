@@ -355,8 +355,8 @@ echo $oQuestionSelector->getModal();
                                         ($aUserSettings['breadcrumbMode'] ?? 'default'),
                                         [
                                             'default' => gT("Default"),
-                                            'long'    => gT("Long breadcrumb"),
-                                            'short'   => gT("Short breadcrumb"),
+                                            'long'    => gT("Long"),
+                                            'short'   => gT("Short"),
                                         ],
                                         ['class' => "form-select"]
                                     ); ?>
