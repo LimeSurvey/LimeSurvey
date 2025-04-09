@@ -9,7 +9,7 @@ class Update_629 extends DatabaseUpdateBase
      */
     public function up(): void
     {
-        if (!tableExists('{{twoFactorUsers}}')) {
+        if (!tableExists('{{twoFactorUsers}}') && !tableExists('{{twofactorusers}}')) {
             return;
         }
 
