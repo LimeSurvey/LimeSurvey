@@ -2,42 +2,39 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\Command\CommandInterface;
-use LimeSurvey\Api\Auth\AuthSession;
+use Yii;
+use LimeSurvey\Api\Command\{
+    CommandInterface,
+    Request\Request,
+    Response\Response,
+    Response\ResponseFactory
+};
 
 class PersonalSettings implements CommandInterface
 {
-    /**
-     * @var AuthSession
-     */
-    protected $authSession;
+    protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
      *
-     * @param AuthSession $authSession
+     * @param ResponseFactory $responseFactory
      */
-    public function __construct(AuthSession $authSession)
+    public function __construct(ResponseFactory $responseFactory)
     {
-        $this->authSession = $authSession;
+        $this->responseFactory = $responseFactory;
     }
 
     /**
-     * Execute the command and return personal settings
-     *
-     * @return array
+     * @param Request $request
+     * @return Response
      */
-    public function execute()
+    public function run(Request $request)
     {
-        // Get the current user
-        // $settings = $this->
-        
-        // Fetch personal settings for the user
-        // to retrieve the user's personal settings
-        $personalSettings = [
-
-        ];
-        
-        return $personalSettings;
+        return $this->responseFactory
+            ->makeSuccess([
+                'answeroptionprefix' => Yii::app()->getConfig('answeroptionprefix'),
+                'subquestionprefix' => Yii::app()->getConfig('subquestionprefix'),
+                'showQuestionCodes' => Yii::app()->getConfig('showQuestionCodes')
+            ]);
     }
 }

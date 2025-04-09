@@ -33,6 +33,10 @@ $rest = [
                 'name' => 'File Upload',
                 'description' => 'File Upload',
             ],
+            'personal-settings' => [
+                'name' => 'Personal Settings',
+                'description' => 'Personal Settings',
+            ],
         ]
     ]
 ];
@@ -45,4 +49,5 @@ return array_merge(
     include_once __DIR__ . '/v1/user.php',
     include_once __DIR__ . '/v1/site-settings.php',
     include_once __DIR__ . '/v1/file-upload.php',
+    include_once __DIR__ . '/v1/personal-settings.php'
 );

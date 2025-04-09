@@ -2,32 +2,24 @@
 
 namespace LimeSurvey\Api\Rest\V1\SchemaFactory;
 
-use LimeSurvey\Api\Rest\V1\Schema;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
-class SchemaFactoryPersonalSettings implements SchemaFactoryInterface
-{
-    /**
-     * Create and return the schema for personal settings
-     *
-     * @return Schema
-     */
-    public function make()
+class SchemaFactoryPersonalSettings 
+{    
+    public function make(): Schema
     {
         $schema = new Schema();
         
         // Define your schema properties here
         // Example:
-        $schema->setProperties([
-            'language' => [
-                'type' => 'string',
-                'description' => 'User interface language'
-            ],
-            'theme' => [
-                'type' => 'string',
-                'description' => 'User interface theme'
-            ],
-            // Add more personal settings as needed
-        ]);
+        $schema->title('Personal Settings')
+            ->description('Personal Settings')
+            ->type(Schema::TYPE_OBJECT)
+            ->properties(
+                Schema::string('answeroptionprefix')->default('A'),
+                Schema::string('subquestionprefix')->default('SQ'),
+                Schema::boolean('showQuestionCodes')->default(false)
+            );
         
         return $schema;
     }
