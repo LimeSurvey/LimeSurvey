@@ -3897,13 +3897,14 @@ class LimeExpressionManager
             ];
 
             $this->knownVars[$sgqa] = $varInfo_Code;
-            $this->qcode2sgqa[$varName] = $sgqa;
+            $this->qcode2sgqa[$fielddata['title']] = $sgqa;
             $this->jsVar2qid[$jsVarName] = $questionNum;
             $this->qcode2sgq[$fielddata['title']] = 'Q' . $questionNum;
 
             // Create JavaScript arrays
             $this->alias2varName[$varName] = ['jsName' => $jsVarName, 'jsPart' => "'" . $varName . "':'" . $jsVarName . "'"];
             $this->alias2varName[$sgqa] = ['jsName' => $jsVarName, 'jsPart' => "'" . $sgqa . "':'" . $jsVarName . "'"];
+            $this->alias2varName[$fielddata['title']] = ['jsName' => $jsVarName, 'jsPart' => "'" . $fielddata['title'] . "':'" . $jsVarName . "'"];
 
             $this->varNameAttr[$jsVarName] = "'" . $jsVarName . "':{ "
                 . "'jsName':'" . $jsVarName

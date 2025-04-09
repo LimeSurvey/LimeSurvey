@@ -3812,13 +3812,15 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
             }
             foreach ($defaultValue->defaultvaluel10ns as $defaultValueL10n) {
                 $bModified = false;
-                foreach ($aCodeMap as $sOldCode => $sNewCode) {
-                    if (strlen((string) $sOldCode) <= 1 || is_numeric($sOldCode)) {
-                        continue;
+                foreach ($keys as $key) {
+                    $sOldCode = $key;
+                    $sNewCode = $aCodeMap[$key];
+                    // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
+                    if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode)) {
+                        $sOldCode = preg_quote((string) $sOldCode, '~');
+                        $defaultValueL10n->defaultvalue = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $defaultValueL10n->defaultvalue, -1, $iCount);
+                        $bModified = $bModified || $iCount;
                     }
-                    $sOldCode = preg_quote((string) $sOldCode, '~');
-                    $defaultValueL10n->defaultvalue = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $defaultValueL10n->defaultvalue, -1, $iCount);
-                    $bModified = $bModified || $iCount;
                 }
                 if ($bModified > 0) {
                     $defaultValueL10n->save();
@@ -3864,13 +3866,15 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
     $surveyLanguageSettings = SurveyLanguageSetting::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
     foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
         $bModified = false;
-        foreach ($aCodeMap as $sOldCode => $sNewCode) {
-            if (strlen((string) $sOldCode) <= 1 || is_numeric($sOldCode)) {
-                continue;
+        foreach ($keys as $key) {
+            $sOldCode = $key;
+            $sNewCode = $aCodeMap[$key];
+            // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
+            if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode)) {
+                $sOldCode = preg_quote((string) $sOldCode, '~');
+                $surveyLanguageSetting->surveyls_endtext = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $surveyLanguageSetting->surveyls_endtext, -1, $iCount);
+                $bModified = $bModified || $iCount;
             }
-            $sOldCode = preg_quote((string) $sOldCode, '~');
-            $surveyLanguageSetting->surveyls_endtext = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $surveyLanguageSetting->surveyls_endtext, -1, $iCount);
-            $bModified = $bModified || $iCount;
         }
         if ($bModified) {
             $surveyLanguageSetting->save();

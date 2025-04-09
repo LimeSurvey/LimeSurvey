@@ -223,7 +223,7 @@
     <gid><![CDATA[26]]></gid>
     <type><![CDATA[*]]></type>
     <title><![CDATA[BMIReport]]></title>
-    <question><![CDATA[Body Mass Index (BMI) is Q3864.]]></question>
+    <question><![CDATA[Body Mass Index (BMI) is {BMI}.]]></question>
     <preg/>
     <help><![CDATA[]]></help>
     <other><![CDATA[N]]></other>
