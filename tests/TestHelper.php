@@ -78,9 +78,7 @@ class TestHelper extends TestCase
         $this->assertNotEmpty($group);
 
         $sgqa = sprintf(
-            '%sX%sX%s',
-            $surveyId,
-            $group->gid,
+            'Q%s',
             $question->qid
         );
 
