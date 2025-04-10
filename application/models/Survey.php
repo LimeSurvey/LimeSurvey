@@ -144,7 +144,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property SurveyLanguageSetting $defaultlanguage
  * @property SurveysGroups $surveygroup
  * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
- * @property string othersettings
+ * @property string $othersettings Other settings that don't require a searchabla database column and can be save here as a JSON
  * @method mixed active()
  */
 class Survey extends LSActiveRecord implements PermissionInterface
@@ -234,6 +234,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 }
             }
         }
+        // default these values to the ones from global settings
+        $this->setOtherSettingAttribute('question_code_prefix', App()->getConfig('question_code_prefix'));
+        $this->setOtherSettingAttribute('subquestion_code_prefix', App()->getConfig('subquestion_code_prefix'));
+        $this->setOtherSettingAttribute('answer_code_prefix', App()->getConfig('answer_code_prefix'));
     }
 
     /** @inheritdoc */
@@ -2573,18 +2577,41 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return null;
     }
 
-    public function getNonNumericCodePrefixes()
+    /**
+     * Retrieves other setting attributes from the survey's othersettings field.
+     *
+     * This function decodes the JSON-encoded othersettings field and returns
+     * specific attributes related to question, subquestion, and answer code prefixes.
+     *
+     * @return array An associative array containing the following keys:
+     *               - 'question_code_prefix': The prefix for question codes (string)
+     *               - 'subquestion_code_prefix': The prefix for subquestion codes (string)
+     *               - 'answer_code_prefix': The prefix for answer codes (string)
+     *               If a specific prefix is not set, an empty string is returned for that key.
+     */
+    public function getOtherSettingAttributes()
     {
-        $otherSettings = json_decode($this->othersettings, true) ?? [];
+        $otherSettings = json_decode(is_null($this->othersettings) ? '[]' : $this->othersettings, true) ?? [];
         return [
+            'question_code_prefix' => $otherSettings['question_code_prefix'] ?? '',
+            'subquestion_code_prefix' => $otherSettings['subquestion_code_prefix'] ?? '',
             'answer_code_prefix' => $otherSettings['answer_code_prefix'] ?? '',
-            'subquestion_code_prefix' => $otherSettings['subquestion_code_prefix'] ?? ''
         ];
     }
 
-    public function setNonNumericCodePrefixes($attribute, $value)
+    /**
+     * Sets a specific attribute in the survey's other settings.
+     *
+     * This function updates or adds a single attribute in the survey's othersettings field.
+     * The othersettings field is a JSON-encoded string that stores various additional settings.
+     *
+     * @param string $attribute The name of the attribute to set
+     * @param mixed $value The value to set for the attribute
+     * @return void
+     */
+    public function setOtherSettingAttribute($attribute, $value)
     {
-        $otherSettings = json_decode($this->othersettings, true) ?? [];
+        $otherSettings = json_decode(is_null($this->othersettings) ? '[]' : $this->othersettings, true) ?? [];
         $otherSettings[$attribute] = $value;
         $this->othersettings = json_encode($otherSettings);
     }

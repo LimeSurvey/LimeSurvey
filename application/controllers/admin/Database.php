@@ -372,6 +372,7 @@ class Database extends SurveyCommonAction
             'template' => $request->getPost('template'),
             'answer_code_prefix' => $request->getPost('answer_code_prefix'),
             'subquestion_code_prefix' => $request->getPost('subquestion_code_prefix'),
+            'question_code_prefix' => $request->getPost('question_code_prefix'),
         ];
         try {
             $surveyUpdater->update(

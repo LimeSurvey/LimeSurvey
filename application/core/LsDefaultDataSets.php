@@ -1819,8 +1819,9 @@ class LsDefaultDataSets
             ['stg_name' => 'editorPreset', 'stg_value' => 'wysiwyg'],
             ['stg_name' => 'showScriptEdit', 'stg_value' => '1'],
             ['stg_name' => 'noViewMode', 'stg_value' => '0'],
-            ['stg_name' => 'answer_code_prefix', 'stg_value' => 'A'],
+            ['stg_name' => 'question_code_prefix', 'stg_value' => 'Q'],
             ['stg_name' => 'subquestion_code_prefix', 'stg_value' => 'SQ'],
+            ['stg_name' => 'answer_code_prefix', 'stg_value' => 'A'],
             ['stg_name' => 'lock_organizer', 'stg_value' => '0'],
             ['stg_name' => 'breadcrumbMode', 'stg_value' => 'default'],
         ];

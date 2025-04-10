@@ -307,6 +307,7 @@ class GlobalSettings extends SurveyCommonAction
             SettingGlobal::setSetting('allow_unstable_extension_update', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('allow_unstable_extension_update', false)));
         }
 
+        SettingGlobal::setSetting('question_code_prefix', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('question_code_prefix', Yii::app()->getConfig('question_code_prefix', 'Q'))));
         SettingGlobal::setSetting('answer_code_prefix', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('answer_code_prefix', Yii::app()->getConfig('answer_code_prefix', 'A'))));
         SettingGlobal::setSetting('subquestion_code_prefix', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('subquestion_code_prefix', Yii::app()->getConfig('subquestion_code_prefix', 'SQ'))));
         SettingGlobal::setSetting('createsample', Yii::app()->getRequest()->getPost('createsample'));

@@ -1064,7 +1064,7 @@ class Question extends LSActiveRecord
             array(
                 'header' => gT("Group / Question order"),
                 'name' => 'question_order',
-                'value' => '$data->group->group_order ." / ". $data->question_order',
+                'value' => '$data->group->group_order ." / ". $data->question_order',
             ),
             array(
                 'header' => gT('Code'),
@@ -1706,7 +1706,7 @@ class Question extends LSActiveRecord
     {
         $prefixCode = '';
         $survey = Survey::model()->findByPk($surveyid);
-        $nonNumericalSettings = $survey->getNonNumericCodePrefixes();
+        $nonNumericalSettings = $survey->getOtherSettingAttributes();
         if ($prefixType == 'answer_code_prefix') {
             $prefixCode = $nonNumericalSettings['answer_code_prefix'];
             if (!$prefixCode) {
