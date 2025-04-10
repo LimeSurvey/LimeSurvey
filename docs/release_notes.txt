@@ -34,6 +34,53 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.12.3 (build 250331) to 6.12.4 (build 250408) April 8, 2025
+-Fixed issue: Participant tables not properly using the correct charset (Carsten Schmitz)
+-Fixed issue CR-1470: Remove icons from config.xml <dropdownoptions> (#4225) (K Foster)
+-Fixed issue #20032: PHP Error When Importing Participants From CSV (#4233) (Denis Chenu)
+-Fixed issue #20030: Import LDAP - Can't connect LDAP Server with ldapv3 and ldpaps (#4217) (Denis Chenu)
+-Fixed issue #19380: Switching between questions in the structure tab causes sever slowdown or crash of browser tab (#3836) (Gabriel Jenik)
+-Fixed issue #18878: GID not accessible in question text in specific conditions (#4234) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Dutch by BloomingPrime, Han
+#Updated translation: Dutch (Informal) by BloomingPrime, Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.12.2 (build 250324) to 6.12.3 (build 250331) March 31, 2025
+-Fixed issue: Library PHP-Zip wasn't shown as mandatory during installation (Carsten Schmitz)
+-Fixed issue [security]: Export survey/label set resources with limited permissions (Carsten Schmitz)
+-Fixed issue #20022: Encryption of the Client Secret - AzureOAuthSMTP Plugin (#4215) (Gabriel Jenik)
+-Fixed issue #20008: XSS on survey theme description (#4205) (Gabriel Jenik)
+-Fixed issue #19966: Npm show a lot of security issue (#4210) (Gabriel Jenik)
+-Fixed issue #19956: Ugly error message after trying to import not compatible responses (#4211) (Denis Chenu)
+-Fixed issue #19725: When trying to recover the participants it says There are no matching configurations to start restoring the participants table. (#4221) (Gabriel Jenik)
+-Fixed issue #19552: Breadcrumb is badly placed, cut off, and doesn't show survey name, group name etc (#4016) (Gabriel Jenik)
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by jelen1
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1, VBraun
+#Updated translation: Czech (Informal) by jelen1, VBraun
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.12.1 (build 250317) to 6.12.2 (build 250324) March 24, 2025
 +New feature #20002: Create 2FA enforcement setting for 2FA plugin (#4202) (Denis Chenu)
 -Fixed issue #20009: Central user DB admin UI - PHP 8.2 deprecation (#4206) (Gabriel Jenik)

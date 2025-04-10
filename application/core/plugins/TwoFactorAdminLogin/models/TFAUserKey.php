@@ -18,19 +18,14 @@ class TFAUserKey extends LSActiveRecord
      * @var array
      */
     public static $authTypeOptions = [
-        'google' => 'Google Authenticator',
-        'authy' => 'Authy',
-        'yubi' => 'YubiKey',
-        'auplus' => 'Authenticator Plus',
-        'duo' => 'Duo',
-        'hde' => 'HDE OTP',
-        'other' => 'Other solution'
+        'totp' => 'TOTP (Google Authenticator, Authy, etc.)',
+        'yubi' => 'YubiKey OTP',
     ];
 
     /** @inheritdoc */
     public function tableName()
     {
-        return '{{twoFactorUsers}}';
+        return '{{user_mfa_settings}}';
     }
 
     /** @inheritdoc */
@@ -160,5 +155,10 @@ class TFAUserKey extends LSActiveRecord
             )
         ));
         return $oDataProvider;
+    }
+
+    public function getAllEncryptedAttributes($iSurveyId, $sClassName)
+    {
+        return ['secretKey'];
     }
 }
