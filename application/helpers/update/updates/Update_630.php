@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-class Update_629 extends DatabaseUpdateBase
+class Update_630 extends DatabaseUpdateBase
 {
     public function up()
     {
