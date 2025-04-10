@@ -2653,14 +2653,35 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_:])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
         if ($isLocalPath) {
             $sReplace = rtrim(App()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
+            return preg_replace('/' . $sPattern . '/u', $sReplace, $sString);
         } else {
-            $sReplace = rtrim(App()->getPublicBaseUrl(true), "/") . "/upload/surveys/{$iNewSurveyID}/";
+            // Make the replacement conditionaly.
+            // If the URL is absolute, make sure we keep it absolute.
+            // If it is relative, use the publicurl config (if the publicurl is absolute we assume it
+            // makes sense to make the urls absolute)
+            return preg_replace_callback('/' . $sPattern . '/u', function ($matches) use ($iNewSurveyID) {
+                $url = $matches[0];
+                $parsedUrl = parse_url($url);
+                $replacementUrl = "/upload/surveys/{$iNewSurveyID}/";
+                if (isset($parsedUrl['scheme']) && isset($parsedUrl['host'])) {
+                    return rtrim(App()->getPublicBaseUrl(true), "/") . $replacementUrl;
+                } else {
+                    return rtrim(App()->getConfig("publicurl"), '/') . $replacementUrl;
+                }
+            }, $sString);
         }
-        return preg_replace('/' . $sPattern . '/u', $sReplace, $sString);
     } elseif ($sType == 'label') {
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_])*(?=(\/upload))\/upload\/labels\/' . $iOldSurveyID . '\/)';
-        $sReplace =  rtrim(App()->getConfig("publicurl"), "/") . "/upload/labels/{$iNewSurveyID}/";
-        return preg_replace("/" . $sPattern . "/u", $sReplace, $sString);
+        return preg_replace_callback('/' . $sPattern . '/u', function ($matches) use ($iNewSurveyID) {
+            $url = $matches[0];
+            $parsedUrl = parse_url($url);
+            $replacementUrl = "/upload/labels/{$iNewSurveyID}/";
+            if (isset($parsedUrl['scheme']) && isset($parsedUrl['host'])) {
+                return rtrim(App()->getPublicBaseUrl(true), "/") . $replacementUrl;
+            } else {
+                return rtrim(App()->getConfig("publicurl"), '/') . $replacementUrl;
+            }
+        }, $sString);
     } else // unknown type
     {
         return $sString;
