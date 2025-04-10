@@ -319,6 +319,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             $themeConf = TemplateConfiguration::getInstanceFromTemplateName(($oSurvey->template === 'inherit') ? $oSurveyOptions->template : $oSurvey->template);
             $inheritedThemeName = $oSurvey->oOptions->template;
         ?>
+
         <!-- Theme -->
         <div class="mb-3" >
             <label class=" form-label" for='template'><?php eT("Theme:"); ?></label>
