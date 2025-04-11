@@ -21,44 +21,48 @@ class SurveyThemeConfiguration
 
     /**
      * @param int $surveyId
-     * @param int $surveyGroupId
+     * @param array $props properties (in options json string)
      *
-     * @return array
+     * @return void
      * @throws PermissionDeniedException
      */
-    public function update($surveyId, $surveyGroupId = null): array
+    public function updateThemeOption($surveyId, $props): void 
     {
         if (
-            // Did we really need hasGlobalPermission template ? We are inside survey : hasSurveyPermission only seem better
             !Permission::model()->hasGlobalPermission('templates', 'update')
             && !Permission::model()->hasSurveyPermission($surveyId, 'surveysettings', 'update')
         ) {
             throw new PermissionDeniedException(gT("You do not have permission to access this page."), 403);
         }
-        // turn ajaxmode off as default behavior and return the theme configuration
-        $model = $this->turnAjaxmodeOffAsDefault($surveyId);
+       
+        $model = $this->turnAjaxmodeOffAsDefault($surveyId, $props['templateName']);
         $model->save();
+        $model->setOptionKeysToInherit();
+        $attributes = $model->attributes;
+        $oPreviousOptions = json_decode($attributes['options'], true);
 
-        if (isset($_POST['TemplateConfiguration'])) {
-            $model->attributes = $_POST['TemplateConfiguration'];
-            if ($model->save()) {
-                App()->user->setFlash('success', gT('Theme options saved.'));
+        foreach ($props as $key => $value) {
+            if ($key != 'templateName') {
+                $oPreviousOptions[$key] = $value;
             }
         }
-        $this->updateCommon($model, $surveyId, $surveyGroupId);
 
-        return $model;
+        $sNewOptions = json_encode($oPreviousOptions);
+        $attributes['options'] = $sNewOptions;
+        $model->attributes = $attributes;
+        $model->save();
     }
 
     /**
      * This method turns ajaxmode off as default.
      * @param int $surveyId survey ID of the survey
+     * @param string $sTemplateName
      *
      * @return TemplateConfiguration
      */
-    protected function turnAjaxmodeOffAsDefault(int $surveyId): TemplateConfiguration
+    protected function turnAjaxmodeOffAsDefault(int $surveyId, $sTemplateName = null): TemplateConfiguration
     {
-        $templateConfiguration = TemplateConfiguration::getInstance(null, null, $surveyId);
+        $templateConfiguration = TemplateConfiguration::getInstance($sTemplateName, null, $surveyId);
         $attributes = $templateConfiguration->getAttributes();
         $hasOptions = isset($attributes['options']);
         if ($hasOptions) {
@@ -148,5 +152,78 @@ class SurveyThemeConfiguration
         }
         $aData['actionUrl'] = App()->getController()->createUrl($actionBaseUrl, $actionUrlArray);
         return $aData;
+    }
+
+     /**
+     * Returns a Theme options
+     *
+     * @param integer $iSurveyId
+     * @param string $sTemplateName
+     * @param bool $bInherited should inherited theme option values be used?
+     * @return array
+     */
+    public function getSurveyThemeOptions($iSurveyId = 0, $sTemplateName = null, $bInherited = false): array
+    {
+        $themeOptions = TemplateConfiguration::getThemeOptionsFromSurveyId($iSurveyId, $sTemplateName, $bInherited);
+
+        if (empty($themeOptions)) {
+            return [];
+        }
+
+        $options = $themeOptions[0]['config']['options'];
+        return $options;
+    }
+
+     /**
+     * Returns a Theme options attributes (eg: fonts, variations ...)
+     *
+     * @param integer $iSurveyId
+     * @param string $sTemplateName
+     * @return array
+     */
+    public function getSurveyThemeOptionsAttributes($iSurveyId = 0, $sTemplateName = null): array
+    {
+        $attributes = [];
+        $oTemplate = Template::model()->getInstance($sTemplateName, $iSurveyId);
+
+        $aTemplateAttribute = $oTemplate->getOptionPageAttributes();
+        $attributes['imageFileList'] = $aTemplateAttribute['imageFileList'];
+
+        $aOptionAttributes = TemplateManifest::getOptionAttributes($oTemplate->path);
+        $fontsDropdownString = $aOptionAttributes['optionAttributes']['font']['dropdownoptions'];
+        $cssframeworkDropdownString = $aOptionAttributes['optionAttributes']['cssframework']['dropdownoptions'];
+
+        $attributes['fonts'] = $this->extractDropdownOptions($fontsDropdownString);
+        $attributes['cssframework'] = $this->extractDropdownOptions($cssframeworkDropdownString);
+
+        return $attributes;
+    }
+
+     /**
+     * Extracts option values and labels from HTML dropdown options string
+     * 
+     * @param string $optionsHtml string containing option tags
+     * @return array values and labels
+     */
+    protected function extractDropdownOptions($optionsHtml): array {
+        $options = [];
+
+        // Match all option tags with their values and content
+        preg_match_all('/<option\s+[^>]*value=["\'](.*?)["\'](.*?)>(.*?)<\/option>/is', $optionsHtml, $matches, PREG_SET_ORDER);
+
+        foreach ($matches as $match) {
+            $value = $match[1];
+
+            $label = strip_tags($match[3]); // strip tags
+            $label = preg_replace('/\s+/', ' ', $label); // Replace multiple whitespace with single space
+            $label = trim($label);
+
+            $options[] = [
+                'value' => $value,
+                'label' => $label
+            ];
+        }
+
+        return $options;
     }
 }

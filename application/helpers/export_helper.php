@@ -3214,7 +3214,7 @@ function surveyGetThemeConfiguration($iSurveyId = null, $oXml = null, $bInherit 
     $aThemeData = array();
 
     if ($iSurveyId != null) {
-        $aSurveyConfiguration = TemplateConfiguration::getThemeOptionsFromSurveyId($iSurveyId, $bInherit);
+        $aSurveyConfiguration = TemplateConfiguration::getThemeOptionsFromSurveyId($iSurveyId, null, $bInherit);
 
         foreach ($aSurveyConfiguration as $iThemeKey => $oConfig) {
             foreach ($oConfig as $key => $attribute) {
