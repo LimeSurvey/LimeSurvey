@@ -258,23 +258,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install specified PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-
       - name: Setup
         run: |
           touch enabletests
           composer install -vvv
           sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php-mysql php8.3-mysql php7.4-mysql -y
+          sudo apt --fix-broken install php php-mysql -y
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
           chmod -R 777 ./themes
           chmod -R 777 ./tests/tmp
           chmod -R 777 ./application/config
           chmod +x ./tests/bin/lint-*
+      - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
       - name: Check MySQL service
         run: |
           # InnoDB needs large_file_prefix & Barracuda file format
@@ -291,7 +290,6 @@ jobs:
         run: |
           cp application/config/config-sample-mysql.php application/config/config.php
           php application/commands/console.php install admin password TravisLS no@email.com verbose
-          
       - name: Run syntax check, CodeSniffer, MessDetector, ...
         run: composer test
 
