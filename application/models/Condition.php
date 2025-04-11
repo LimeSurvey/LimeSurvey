@@ -114,8 +114,8 @@ class Condition extends LSActiveRecord
         $oResults = $this->findAllByAttributes(array('cqid' => $iQuestionID));
         foreach ($oResults as $oRow) {
             $cfnregs = [];
-            if (preg_match('/(\S*?)' . $iSurveyID . "X" . $iOldGroupID . "X" . $iQuestionID . "(.*)/", $oRow->cfieldname, $cfnregs) > 0) {
-                $sNewCfn = $cfnregs[1] . $iSurveyID . "X" . $iNewGroupID . "X" . $iQuestionID . $cfnregs[2];
+            if (preg_match('/(\S*?)' . "Q" . $iQuestionID . "(.*)/", $oRow->cfieldname, $cfnregs) > 0) {
+                $sNewCfn = $cfnregs[1] . "Q" . $iQuestionID . $cfnregs[2];
                 Yii::app()->db->createCommand()
                     ->update(
                         $this->tableName(),
