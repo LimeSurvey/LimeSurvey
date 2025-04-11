@@ -75,7 +75,7 @@ class OpHandlerThemeSettings implements OpHandlerInterface
             ['surveyID' => $surveyId]
         );
 
-        $surveyThemeConfigurationService->updateThemeOption($op->getEntityId(), $readyProps);
+        $surveyThemeConfigurationService->updateThemeOption($surveyId, $readyProps);
 
         return;
     }
