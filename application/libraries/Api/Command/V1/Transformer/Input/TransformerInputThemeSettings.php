@@ -25,7 +25,6 @@ class TransformerInputThemeSettings extends Transformer
             'fixnumauto' => true,
             'backgroundimage' => true,
             'brandlogo' => true,
-            ],
-        );
+        ]);
     }
 }

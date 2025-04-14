@@ -75,6 +75,11 @@ class OpHandlerThemeSettings implements OpHandlerInterface
             ['surveyID' => $surveyId]
         );
 
+        if ($aProps === null || $readyProps === null) {
+            $this->throwNoValuesException($op);
+            return;
+        }
+
         $surveyThemeConfigurationService->updateThemeOption($surveyId, $readyProps);
 
         return;

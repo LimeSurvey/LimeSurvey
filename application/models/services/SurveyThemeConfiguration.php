@@ -108,17 +108,10 @@ class SurveyThemeConfiguration
         } else {
             $templateOptionPage = $oModelWithInheritReplacement->getOptionPage();
         }
-        $oSimpleInheritance = Template::getInstance(
-            $oModelWithInheritReplacement->sTemplateName,
-            $sid,
-            $gsid,
-            null,
-            true
-        );
+        $inheritName = $oModelWithInheritReplacement->sTemplateName;
+        $oSimpleInheritance = Template::getInstance($inheritName, $sid, $gsid, null, true);
         $oSimpleInheritance->options = 'inherit';
-        $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering(
-            $oModelWithInheritReplacement->sTemplateName
-        );
+        $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering($inheritName);
         $oParentOptions = (array)$oSimpleInheritanceTemplate->oOptions;
         $aData = [
             'model'                  => $model,
