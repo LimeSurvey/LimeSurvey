@@ -26,7 +26,7 @@ class SurveyThemeConfiguration
      * @return void
      * @throws PermissionDeniedException
      */
-    public function updateThemeOption($surveyId, $props): void 
+    public function updateThemeOption($surveyId, $props): void
     {
         if (
             !Permission::model()->hasGlobalPermission('templates', 'update')
@@ -34,7 +34,7 @@ class SurveyThemeConfiguration
         ) {
             throw new PermissionDeniedException(gT("You do not have permission to access this page."), 403);
         }
-       
+
         $model = $this->turnAjaxmodeOffAsDefault($surveyId, $props['templateName']);
         $model->save();
         $model->setOptionKeysToInherit();
@@ -201,11 +201,12 @@ class SurveyThemeConfiguration
 
      /**
      * Extracts option values and labels from HTML dropdown options string
-     * 
+     *
      * @param string $optionsHtml string containing option tags
      * @return array values and labels
      */
-    protected function extractDropdownOptions($optionsHtml): array {
+    protected function extractDropdownOptions($optionsHtml): array
+    {
         $options = [];
 
         // Match all option tags with their values and content

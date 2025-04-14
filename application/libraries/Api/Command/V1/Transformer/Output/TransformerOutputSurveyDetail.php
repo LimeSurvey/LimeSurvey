@@ -201,7 +201,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             $survey['responsesIncomplete'] = 0;
         }
 
-        $this->tranformThemeSettings($data->sid, $data['template'], $survey['themesettings'], $survey['themesettingattributes'], $survey['templatePreview']);
+        $this->tranformThemeSettings($survey['themesettings'], $survey['themesettingattributes'], $survey['templatePreview'], $data->sid, $data['template']);
 
         return $survey;
     }
@@ -389,7 +389,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * @param string $sTemplatePreview
      * @return void
      */
-    private function tranformThemeSettings($iSurveyId = 0, $sTemplateName = null, &$oThemeSettings, &$themesettingattributes, &$sTemplatePreview) {
+    private function tranformThemeSettings(&$oThemeSettings, &$themesettingattributes, &$sTemplatePreview, $iSurveyId = 0, $sTemplateName = null) {
         $oThemeSettings = $this->surveyThemeConfiguration->getSurveyThemeOptions($iSurveyId, $sTemplateName, true);
         $oThemeSettings = &$oThemeSettings;
 
