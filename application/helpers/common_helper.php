@@ -1796,7 +1796,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     'sid' => $surveyid,
                     "gid" => $arow['gid'],
                     "qid" => $arow['qid'],
-                    "aid" => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']) . "_S" . $answer['qid'],
+                    "aid" => $abrow['title'] . "_" . $answer['title'],
+                    "suffix" => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']) . "_S" . $answer['qid'],
                     "sqid" => $abrow['qid']);
                     if (isset($answerColumnDefinition)) {
                         $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
@@ -1829,7 +1830,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
 
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']), "scale_id" => 0);
+                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => $abrow['title'], "suffix" => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']), "scale_id" => 0);
                 if (isset($answerColumnDefinition)) {
                     $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                 }
@@ -1853,7 +1854,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']), "scale_id" => 1);
+                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => $abrow['title'], "suffix" => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']), "scale_id" => 1);
                 if (isset($answerColumnDefinition)) {
                     $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                 }
@@ -1885,7 +1886,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => '_S' . $answers[$i - 1]->aid);
+                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => $i, "suffix" => "_R" . $i);
                 if (isset($answerColumnDefinition)) {
                     $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                 }
@@ -1912,7 +1913,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 'sid' => $surveyid,
                 "gid" => $arow['gid'],
                 "qid" => $arow['qid'],
-                "aid" => ''
+                "aid" => '',
+                "suffix" => ''
             );
             if (isset($answerColumnDefinition)) {
                 $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
@@ -1937,7 +1939,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 'sid' => $surveyid,
                 "gid" => $arow['gid'],
                 "qid" => $arow['qid'],
-                "aid" => "_Cfilecount"
+                "aid" => "filecount",
+                "suffix" => "_Cfilecount"
             );
             if (isset($answerColumnDefinition)) {
                 $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
@@ -1969,7 +1972,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 'sid' => $surveyid,
                 'gid' => $arow['gid'],
                 'qid' => $arow['qid'],
-                'aid' => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']),
+                'aid' => $abrow['title'],
+                'suffix' => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']),
                 'sqid' => $abrow['qid']);
                 if (isset($answerColumnDefinition)) {
                     $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
@@ -1998,7 +2002,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     if (isset($fieldmap[$fieldname])) {
                         $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                     }
-                    $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']) . "_Ccomment");
+                    $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => $abrow['title'] . "comment", "suffix" => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']) . "_Ccomment");
                     if (isset($answerColumnDefinition)) {
                         $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                     }
@@ -2022,7 +2026,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => "_Cother");
+                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => "other", "suffix" => "_Cother");
                 if (isset($answerColumnDefinition)) {
                     $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                 }
@@ -2045,7 +2049,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     if (isset($fieldmap[$fieldname])) {
                         $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                     }
-                    $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => "_Cothercomment");
+                    $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => "othercomment", "suffix" => "_Cothercomment");
                     if (isset($answerColumnDefinition)) {
                         $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                     }
@@ -2152,19 +2156,19 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
     //do something
     $fields = createFieldMap($survey, $style, $force_refresh, $questionid, $sQuestionLanguage);
     $fieldmap = [];
-    $fieldmap['interviewtime'] = array('fieldname' => 'interviewtime', 'type' => 'interview_time', 'sid' => $surveyid, 'gid' => '', 'qid' => '', 'aid' => '', 'question' => gT('Total time'), 'title' => 'interviewtime');
+    $fieldmap['interviewtime'] = array('fieldname' => 'interviewtime', 'type' => 'interview_time', 'sid' => $surveyid, 'gid' => '', 'qid' => '', 'aid' => '', 'suffix' => '', 'question' => gT('Total time'), 'title' => 'interviewtime');
     foreach ($fields as $field) {
         if (!empty($field['gid'])) {
             // field for time spent on page
             $fieldname = "{$field['sid']}X{$field['gid']}time";
             if (!isset($fieldmap[$fieldname])) {
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => "page_time", 'sid' => $surveyid, "gid" => $field['gid'], "group_name" => $field['group_name'], "qid" => '', 'aid' => '', 'title' => 'groupTime' . $field['gid'], 'question' => gT('Group time') . ": " . $field['group_name']);
+                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => "page_time", 'sid' => $surveyid, "gid" => $field['gid'], "group_name" => $field['group_name'], "qid" => '', 'aid' => '', 'suffix' => '', 'title' => 'groupTime' . $field['gid'], 'question' => gT('Group time') . ": " . $field['group_name']);
             }
 
             // field for time spent on answering a question
             $fieldname = "{$field['sid']}X{$field['gid']}X{$field['qid']}time";
             if (!isset($fieldmap[$fieldname])) {
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => "answer_time", 'sid' => $surveyid, "gid" => $field['gid'], "group_name" => $field['group_name'], "qid" => $field['qid'], 'aid' => '', "title" => $field['title'] . 'Time', "question" => gT('Question time') . ": " . $field['title']);
+                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => "answer_time", 'sid' => $surveyid, "gid" => $field['gid'], "group_name" => $field['group_name'], "qid" => $field['qid'], 'aid' => '', 'suffix' => '', "title" => $field['title'] . 'Time', "question" => gT('Question time') . ": " . $field['title']);
             }
         }
     }
@@ -2887,7 +2891,7 @@ function reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQID
     $aFieldMappings = array();
     foreach ($aFieldMap as $sFieldname => $aFieldinfo) {
         if ($aFieldinfo['qid'] != null) {
-            $aFieldMappings[$sFieldname] = 'Q' . $aQIDReplacements[$aFieldinfo['qid']] . $aFieldinfo['aid'];
+            $aFieldMappings[$sFieldname] = 'Q' . $aQIDReplacements[$aFieldinfo['qid']] . $aFieldinfo['suffix'];
             if ($aFieldinfo['type'] == '1') {
                 $aFieldMappings[$sFieldname] = $aFieldMappings[$sFieldname] . '#' . $aFieldinfo['scale_id'];
             }
