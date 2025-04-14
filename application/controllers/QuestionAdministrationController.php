@@ -2523,7 +2523,7 @@ class QuestionAdministrationController extends LSBaseController
                     'questionGroupName' => $questionTheme->group
                 );
             }
-            
+
             $questionThemeData = [];
             $questionThemeData['title'] = $questionTheme->title;
             $questionThemeData['name'] = $questionTheme->name;
@@ -2532,7 +2532,7 @@ class QuestionAdministrationController extends LSBaseController
                 <div class="col-12 currentImageContainer">
                 <img src="' . $questionTheme->image_path . '" />
                 </div>';
-            
+
             $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionThemeData;
         }
         return $aQuestionTypeGroups;
