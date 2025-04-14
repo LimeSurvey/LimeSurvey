@@ -22,7 +22,7 @@ if (isset($editorEnabled) && $editorEnabled && $editorUrl) {
                 'text' => gT('Open in Limesurvey editor'),
                 'link' => '',
                 'htmlOptions' => [
-                    'class' => 'btn btn-info',
+                    'class' => 'btn btn-info editor-link-button',
                     'role' => 'button',
                     'disabled' => $disabled,
                     'data-url' => $editorUrl,
