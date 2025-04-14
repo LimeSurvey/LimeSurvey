@@ -43,7 +43,7 @@ class SurveyAggregateService
         TemplateConfiguration $templateConfiguration,
         Permission $modelPermission,
         SurveyActivate $surveyActivate,
-        SurveyDeactivate $surveyDeactivate,
+        SurveyDeactivate $surveyDeactivate
     ) {
         $this->languageSettings = $languageSettings;
         $this->generalSettings = $generalSettings;
