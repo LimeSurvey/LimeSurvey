@@ -3522,7 +3522,7 @@ class remotecontrol_handle
 
         $tempdir = Yii::app()->getConfig("tempdir");
 
-        $sTempUploadDir = $tempdir . '/upload/';
+		$sTempUploadDir = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/";
         if (!file_exists($sTempUploadDir)) {
             if (!mkdir($sTempUploadDir)) {
                 return array('status' => 'Can not make temporary upload directory');
