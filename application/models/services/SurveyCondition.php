@@ -1694,7 +1694,7 @@ class SurveyCondition
             if (!isset($keys[$condition->scenario])) {
                 $keys[$condition->scenario] = count($results);
                 $results [] = [
-                    "scid" => $condition->scenario,
+                    "scid" => (int)$condition->scenario,
                     "conditions" => []
                 ];
             }
