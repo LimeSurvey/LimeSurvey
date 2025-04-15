@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-04-08 11:21:27+00:00\n"
+"POT-Creation-Date: 2025-04-15 09:16:18+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -925,7 +925,7 @@ msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:490
 #: application/core/LsDefaultDataSets.php:52
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:219
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:243
 #: application/views/admin/dataentry/vvimport.php:28
 #: application/views/admin/export/exportresult_panels/_general.php:4
 #: application/views/admin/globalsettings/globalSettings_view.php:15
@@ -1128,7 +1128,8 @@ msgstr ""
 #: application/controllers/admin/PluginManagerController.php:323
 #: application/controllers/admin/PluginManagerController.php:403
 #: application/controllers/admin/PluginManagerController.php:751
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:439
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:427
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:509
 #: application/core/plugins/TwoFactorAdminLogin/views/index.php:12
 #: application/helpers/admin/ajax_helper.php:176
 msgid "No permission"
@@ -1608,7 +1609,7 @@ msgstr ""
 
 #: application/controllers/ResponsesController.php:190
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:118
-#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:115
+#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:110
 #: application/models/User.php:182 application/models/User.php:801
 #: application/models/User.php:897
 #: application/views/admin/token/massive_actions/_selector.php:78
@@ -1771,8 +1772,8 @@ msgstr ""
 
 #: application/controllers/ResponsesController.php:924
 #: application/controllers/SurveyAdministrationController.php:3239
-#: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:138
-#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:101
+#: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:140
+#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:96
 #: application/models/Assessment.php:173 application/models/FailedEmail.php:191
 #: application/models/Participant.php:405
 #: application/models/ParticipantAttributeName.php:286
@@ -2578,7 +2579,7 @@ msgstr ""
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:224
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:232
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:241
-#: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:126
+#: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:127
 #: application/core/plugins/expressionFixedDbVar/expressionFixedDbVar.php:160
 #: application/core/plugins/expressionFixedDbVar/expressionFixedDbVar.php:165
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no-lg.php:52
@@ -2727,7 +2728,7 @@ msgstr ""
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:210
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:228
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:237
-#: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:125
+#: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:126
 #: application/core/plugins/expressionFixedDbVar/expressionFixedDbVar.php:160
 #: application/core/plugins/expressionFixedDbVar/expressionFixedDbVar.php:164
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no-lg.php:43
@@ -3058,7 +3059,7 @@ msgstr ""
 #: application/controllers/admin/Tokens.php:1310
 #: application/controllers/admin/Tokens.php:1740
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:68
-#: application/core/plugins/TwoFactorAdminLogin/views/_partial/create.php:39
+#: application/core/plugins/TwoFactorAdminLogin/views/_partial/create.php:47
 #: application/extensions/admin/grid/ColumnFilterWidget/views/columns_filter.php:63
 #: application/extensions/admin/survey/LanguagesWidget/LanguagesWidget.php:22
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:44
@@ -3733,7 +3734,7 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1272
 #: application/controllers/UserManagementController.php:1320
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:17
-#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:48
+#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:43
 #: application/models/User.php:176 application/models/User.php:792
 #: application/models/User.php:889
 msgid "User ID"
@@ -3750,7 +3751,7 @@ msgstr ""
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:386
 #: application/core/plugins/Authdb/Authdb.php:142
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:110
-#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:105
+#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:100
 #: application/models/User.php:177 application/models/User.php:797
 #: application/models/User.php:893
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:8
@@ -9090,11 +9091,19 @@ msgstr ""
 msgid "Check password when use “Save and return later” feature"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:173
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:192
 msgid "2FA key (optional)"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:230
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:219
+msgid "Authentication method not supported"
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:225
+msgid "Incorrect 2FA key"
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:254
 #: application/views/admin/authentication/forgotpassword.php:15
 #: application/views/admin/authentication/login.php:17
 #: application/views/admin/authentication/newPassword.php:17
@@ -9102,53 +9111,130 @@ msgstr ""
 msgid "Administration"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:239
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:263
 msgid "2FA settings"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:407
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:442
+msgid "Invalid auth type"
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:449
 msgid "Please enter a confirmation key"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:412
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:455
 msgid "The confirmation key is not correct."
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:421
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:464
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:491
 msgid "The two-factor authentication key could not be stored."
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:443
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:463
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:466
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:493
+msgid "Two-factor method successfully stored"
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:472
+msgid "Please enter a YubiKey OTP"
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:479
+msgid "The YubiKey OTP is not correct."
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:513
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:533
 msgid "Successfully deleted"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:443
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:463
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:513
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:533
 msgid "Deletion failed"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:459
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:529
 msgid "No 2FA key set for user ID %s"
 msgstr ""
 
+#: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:36
+#: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:51
+msgid "Yubikey OTP code must be 44 characters long."
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:86
+msgid "The OTP is invalid format."
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:89
+msgid "The HMAC signature verification failed."
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:92
+msgid "The request lacks a parameter."
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:95
+msgid "The request id does not exist."
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:98
+msgid "The request id is not allowed to verify OTPs."
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:101
+msgid "Unexpected error in YubiClud server."
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:104
+msgid "Server could not get requested number of syncs during before timeout"
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:107
+msgid "Server has seen the OTP/Nonce combination before"
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:111
+msgid "The OTP has already been seen by the service."
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:114
+msgid "Unexpected error."
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:173
+msgid "YubiCloud response is empty."
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:178
+msgid "YubiCloud response does not contain a status."
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:188
+#: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:196
+#: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:202
+msgid "Could not verify the authenticity of the YubiCloud response."
+msgstr ""
+
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:15
-#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:46
+#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:41
 msgid "Two-factor authentication method"
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:16
-#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:47
+#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:42
 msgid "Secret base key"
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:18
-#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:49
+#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:44
 msgid "Logged in with 2FA"
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:19
-#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:50
+#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:45
 msgid "Force to enable 2FA"
 msgstr ""
 
@@ -9165,7 +9251,7 @@ msgid "An error has happened, and the key could not be deleted."
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:114
-#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:110
+#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:105
 #: application/models/User.php:179 application/models/User.php:805
 #: application/models/User.php:901
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:9
@@ -9179,8 +9265,8 @@ msgstr ""
 msgid "2FA enabled"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:131
-#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:120
+#: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:132
+#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:115
 msgid "2FA method"
 msgstr ""
 
@@ -9188,15 +9274,19 @@ msgstr ""
 msgid "Register 2FA Method"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/views/_partial/create.php:30
+#: application/core/plugins/TwoFactorAdminLogin/views/_partial/create.php:31
 msgid "QR code"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/views/_partial/create.php:34
+#: application/core/plugins/TwoFactorAdminLogin/views/_partial/create.php:35
 msgid "Confirmation key"
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/views/_partial/create.php:41
+msgid "YubiKey OTP"
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/views/_partial/create.php:49
 msgid "Confirm & save"
 msgstr ""
 
@@ -9311,7 +9401,7 @@ msgid "Do you want to remove/renew it?"
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/views/userindex.php:46
-msgid "Are you sure you want to disable two-factor authentication (2FA) for your account?"
+msgid "Are you sure you want to remove two-factor authentication (2FA) for your account?"
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/views/userindex.php:47
