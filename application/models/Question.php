@@ -1718,7 +1718,10 @@ class Question extends LSActiveRecord
                 $prefixCode = Yii::app()->getConfig('subquestion_code_prefix', 'SQ');
             }
         } elseif ($prefixType == 'question_code_prefix') {
-            $prefixCode = 'Q';
+            $prefixCode = $nonNumericalSettings['question_code_prefix'];
+            if (!$prefixCode) {
+                $prefixCode = Yii::app()->getConfig('question_code_prefix', 'Q');
+            }
         }
         return $prefixCode;
     }
