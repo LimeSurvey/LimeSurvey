@@ -83,7 +83,7 @@ class TFAYubikeyOtpHelper
 
             switch ($status) {
                 case 'BAD_OTP':
-                    $this->setLastError(gT("The OTP is invalid format."));
+                    $this->setLastError(gT("The OTP has an invalid format."));
                     break;
                 case 'BAD_SIGNATURE':
                     $this->setLastError(gT("The HMAC signature verification failed."));
