@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-04-15 09:16:18+00:00\n"
+"POT-Creation-Date: 2025-04-15 09:26:33+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9165,7 +9165,7 @@ msgid "Yubikey OTP code must be 44 characters long."
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:86
-msgid "The OTP is invalid format."
+msgid "The OTP has an invalid format."
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:89
@@ -9177,15 +9177,15 @@ msgid "The request lacks a parameter."
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:95
-msgid "The request id does not exist."
+msgid "The request ID does not exist."
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:98
-msgid "The request id is not allowed to verify OTPs."
+msgid "The request ID is not allowed to verify OTPs."
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:101
-msgid "Unexpected error in YubiClud server."
+msgid "Unexpected error in YubiCloud server."
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:104
@@ -9193,7 +9193,7 @@ msgid "Server could not get requested number of syncs during before timeout"
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:107
-msgid "Server has seen the OTP/Nonce combination before"
+msgid "Server has seen the OTP/nonce combination before"
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:111
