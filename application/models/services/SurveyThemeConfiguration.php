@@ -42,9 +42,21 @@ class SurveyThemeConfiguration
         $oPreviousOptions = json_decode($attributes['options'], true);
 
         foreach ($props as $key => $value) {
-            if ($key != 'templateName') {
-                $oPreviousOptions[$key] = $value;
+            if ($key === 'templateName') {
+                continue;
             }
+
+            // Process replacement for cssframework and font files references
+            if ($key === 'cssframework' || $key === 'font') {
+                $oldFileValue = $this->getOptionAttributeDataValue($surveyId, $props['templateName'], $oPreviousOptions[$key], $key);
+                $newFileValue = $this->getOptionAttributeDataValue($surveyId, $props['templateName'], $value, $key);
+
+                $attributeKey = ($key === 'cssframework') ? 'files_css' : 'packages_to_load';
+
+                $attributes[$attributeKey] = str_replace($oldFileValue, $newFileValue, $attributes[$attributeKey]);
+            }
+
+            $oPreviousOptions[$key] = $value;
         }
 
         $sNewOptions = json_encode($oPreviousOptions);
@@ -202,14 +214,25 @@ class SurveyThemeConfiguration
     {
         $options = [];
 
-        // Match all option tags with their values and content
-        preg_match_all('/<option\s+[^>]*value=["\'](.*?)["\'](.*?)>(.*?)<\/option>/is', $optionsHtml, $matches, PREG_SET_ORDER);
+        if (empty($optionsHtml)) {
+            return $options;
+        }
 
-        foreach ($matches as $match) {
-            $value = $match[1];
+        $dom = new \DOMDocument();
+        $html = '<select>' . $optionsHtml . '</select>';
 
-            $label = strip_tags($match[3]); // strip tags
-            $label = preg_replace('/\s+/', ' ', $label); // Replace multiple whitespace with single space
+        // Suppress errors for invalid HTML
+        libxml_use_internal_errors(true);
+        @$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        libxml_clear_errors();
+
+        $optionElements = $dom->getElementsByTagName('option');
+
+        foreach ($optionElements as $option) {
+            $value = $option->getAttribute('value');
+
+            $label = $option->textContent;
+            $label = preg_replace('/\s+/', ' ', $label);
             $label = trim($label);
 
             $options[] = [
@@ -219,5 +242,42 @@ class SurveyThemeConfiguration
         }
 
         return $options;
+    }
+
+     /**
+     * Gets the specific data value for an option based on its value
+     *
+     * @param integer $iSurveyId The survey ID
+     * @param string $sTemplateName The template name
+     * @param string $optionValue The value of the option to find
+     * @param string $optionType The type of option ('font' || 'cssframework')
+     * @return string
+     */
+    public function getOptionAttributeDataValue($iSurveyId = 0, $sTemplateName = null, $optionValue = '', $optionType = ''): string
+    {
+        $oTemplate = Template::model()->getInstance($sTemplateName, $iSurveyId);
+
+        $aOptionAttributes = TemplateManifest::getOptionAttributes($oTemplate->path);
+
+        if (!isset($aOptionAttributes['optionAttributes'][$optionType]['dropdownoptions'])) {
+            return '';
+        }
+
+        $optionsHtml = $aOptionAttributes['optionAttributes'][$optionType]['dropdownoptions'];
+
+        $attributeName = ($optionType === 'font') ? 'data-font-package' : 'data-value';
+
+        $dom = new \DOMDocument();
+        @$dom->loadHTML('<select>' . $optionsHtml . '</select>');
+
+        $options = $dom->getElementsByTagName('option');
+
+        foreach ($options as $option) {
+            if ($option->getAttribute('value') === $optionValue) {
+                return $option->getAttribute($attributeName);
+            }
+        }
+
+        return '';
     }
 }
