@@ -34,6 +34,116 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.12.3 (build 250331) to 6.12.4 (build 250408) April 8, 2025
+-Fixed issue: Participant tables not properly using the correct charset (Carsten Schmitz)
+-Fixed issue CR-1470: Remove icons from config.xml <dropdownoptions> (#4225) (K Foster)
+-Fixed issue #20032: PHP Error When Importing Participants From CSV (#4233) (Denis Chenu)
+-Fixed issue #20030: Import LDAP - Can't connect LDAP Server with ldapv3 and ldpaps (#4217) (Denis Chenu)
+-Fixed issue #19380: Switching between questions in the structure tab causes sever slowdown or crash of browser tab (#3836) (Gabriel Jenik)
+-Fixed issue #18878: GID not accessible in question text in specific conditions (#4234) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Dutch by BloomingPrime, Han
+#Updated translation: Dutch (Informal) by BloomingPrime, Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.12.2 (build 250324) to 6.12.3 (build 250331) March 31, 2025
+-Fixed issue: Library PHP-Zip wasn't shown as mandatory during installation (Carsten Schmitz)
+-Fixed issue [security]: Export survey/label set resources with limited permissions (Carsten Schmitz)
+-Fixed issue #20022: Encryption of the Client Secret - AzureOAuthSMTP Plugin (#4215) (Gabriel Jenik)
+-Fixed issue #20008: XSS on survey theme description (#4205) (Gabriel Jenik)
+-Fixed issue #19966: Npm show a lot of security issue (#4210) (Gabriel Jenik)
+-Fixed issue #19956: Ugly error message after trying to import not compatible responses (#4211) (Denis Chenu)
+-Fixed issue #19725: When trying to recover the participants it says There are no matching configurations to start restoring the participants table. (#4221) (Gabriel Jenik)
+-Fixed issue #19552: Breadcrumb is badly placed, cut off, and doesn't show survey name, group name etc (#4016) (Gabriel Jenik)
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by jelen1
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1, VBraun
+#Updated translation: Czech (Informal) by jelen1, VBraun
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.12.1 (build 250317) to 6.12.2 (build 250324) March 24, 2025
++New feature #20002: Create 2FA enforcement setting for 2FA plugin (#4202) (Denis Chenu)
+-Fixed issue #20009: Central user DB admin UI - PHP 8.2 deprecation (#4206) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: Greek by baltzis
+#Updated translation: German by c_schmitz, twilllig
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.12.0 (build 250310) to 6.12.1 (build 250317) March 17, 2025
+-Fixed issue #20004: User massive action drop-down list not translated (#4196) (Franck)
+-Fixed issue #19997: Bad HTML on theme list (#4198) (Denis Chenu)
+-Fixed issue #19995: Error Export SPSS file doesn't work (#4197) (Adam Zammit)
+-Fixed issue #19773: Translation function added to Reordering title (#4195) (Franck)
+-Fixed issue #18713: Better focus on radio and checkbox - keyboard navigation broken (#4191) (Denis Chenu)
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by c_schmitz, kkd
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
+Changes from 6.11.0 (build 250303) to 6.12.0 (build 250310) March 10, 2025
+-New translation: Hungarian (Informal) (Dániel Kiss-Kálmán)
+-Fixed issue #20000: Special characters in question text not properly shown in column selector on export (Carsten Schmitz)
+-Fixed issue #19994: Unable to get to dashboard in some condition (#4190) (Denis Chenu)
+-Fixed issue #19992: Errors after importing surveys related to quota language settings (#4189) (Denis Chenu)
+-Fixed issue #19965: Lot of security issue in jspdf (#4192) (Gabriel Jenik)
+-Fixed issue #19947: Exporting to tab-separated-values error (#4181) (Denis Chenu)
+-Fixed issue #19904: Last survey and last question must be in SettingsUser (#4182) (Denis Chenu)
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Georgian by giorgi, lucas_encuesta.biz, makosmith, Tchumbura, zch5368
+
+
+Changes from 6.10.6 (build 250224) to 6.11.0 (build 250303) March 3, 2025
++New feature: Support for setting base language on CLI survey import (MW-1447) (lajosarpad)
+-Fixed issue: PHP Error when post_max_size is exceeded in file upload question (Carsten Schmitz)
+-Fixed issue: Cryptic error message when language settings for a survey are missing (Carsten Schmitz)
+-Fixed issue: Broken survey after import when there is an error in language settings (Carsten Schmitz)
+-Fixed issue #19984: No way to update user settings (#4188) (Denis Chenu)
+-Fixed issue #19982: DOMDocument::load(): I/O warning : failed to load external entity - on PHP 7.4 when entering the themes screen (#4186) (Gabriel Jenik)
+-Fixed issue #19980: RemoteControl2 - export_responses - ResponseType doesn't support 0 for answercodes (#4187) (Gabriel Jenik)
+-Fixed issue #19960: Registration Form spamming (#4170) (Gabriel Jenik)
+-Fixed issue #19959: token will not allow standard uuid format tokens (removes dashes) (#4168) (Tõnis Ormisson)
+#Updated translation: Portuguese (Portugal) by c_schmitz, holch, samarta, sazevedo
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: English by twilllig
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 6.10.5 (build 250217) to 6.10.6 (build 250224) February 24, 2025
 -Fixed issue #19957: Wrong operator in removeFromBacklist (#4171) (Gabriel Jenik)
 -Fixed issue #19909: Issues with font handling in the custom configuration of the survey theme (#4166) (Gabriel Jenik)

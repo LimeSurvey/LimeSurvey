@@ -16,12 +16,11 @@
     display: inline-block;
     position: relative;
     overflow: hidden;
-    width: 24px;
-    height: 24px;
-    line-height: 21px;
-    text-indent: 21px;
+    width: 30px;
+    height: 30px;
+    line-height: 34px;
+    text-indent: 34px;
 }
-
 .checkbox-item label::before {
     content: "";
     display: inline-block;
@@ -36,13 +35,23 @@
     -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
     transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
 }
-
+/* Get some space for focus */
+.checkbox-item label.ls-label-xs-visibility::before {
+    left:3px;
+    top:3px;
+}
 .checkbox-item label::after {
     display: inline-block;
     position: absolute;
     left: 2px;
     top: 2px;
     margin-left: -20px;
+}
+/* focus an reset line-height */
+.checkbox-item label.ls-label-xs-visibility::after {
+    left:5px;
+    top:5px;
+    line-height: 20px;
 }
 
 .checkbox-item input[type="checkbox"]:checked + label::after,

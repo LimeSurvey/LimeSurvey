@@ -376,7 +376,7 @@ class Data extends Record
         for ($index = 0; $index < $varCount; $index++) {
             $var = $variables[$index];
             $isNumeric = 0 === $var->width && \SPSS\Sav\Variable::isNumberFormat($var->write[1]);
-            $width = isset($var->write[2]) ? $var->write[2] : $var->width;
+            $width = (isset($var->write[2]) && ($var->write[2] !== 0)) ? $var->write[2] : $var->width;
 
             // var_dump($var);
             // exit;
@@ -463,7 +463,7 @@ class Data extends Record
 
             // $isNumeric = $var->width == 0;
             $isNumeric = 0 === $var->width && \SPSS\Sav\Variable::isNumberFormat($var->write[1]);
-            $width = isset($var->write[2]) ? $var->write[2] : $var->width;
+            $width = (isset($var->write[2]) && ($var->write[2] !== 0)) ? $var->write[2] : $var->width;
 
             if ($isNumeric) {
                 if (!$compressed) {

@@ -348,7 +348,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                     )
                 )
             ) {
-                if (isset($survey->oOptions->$setting)) {
+                if (property_exists($survey->oOptions, $setting)) {
                     $survey->$setting = $survey->oOptions->$setting;
                 }
             }

@@ -17,7 +17,12 @@ class Buffer
     /**
      * @var string
      */
-    public $charset;
+    public $streamCharset = 'UTF-8';
+
+    /**
+     * @var string
+     */
+    public $systemCharset = 'UTF-8';
 
     /**
      * @var resource
@@ -158,21 +163,18 @@ class Buffer
     /**
      * @param int  $length
      * @param int  $round
-     * @param null $charset
      *
      * @return false|string
      */
-    public function readString($length, $round = 0, $charset = null)
+    public function readString($length, $round = 0)
     {
         if ($bytes = $this->readBytes($length)) {
             if ($round !== 0) {
                 $this->skip(Utils::roundUp($length, $round) - $length);
             }
             $str = Utils::bytesToString($bytes);
-            if ($charset) {
-                $str = mb_convert_encoding($str, 'utf8', $charset);
-            } elseif (!empty($this->charset)) {
-                $str = mb_convert_encoding($str, 'utf8', $this->charset);
+            if (isset($str) && (strtolower($this->streamCharset) != strtolower($this->systemCharset))) {
+                $str = mb_convert_encoding($str, $this->systemCharset, $this->streamCharset);
             }
 
             return $str;
@@ -214,16 +216,13 @@ class Buffer
     /**
      * @param $data
      * @param int|string $length
-     * @param null       $charset
      *
      * @return false|int
      */
-    public function writeString($data, $length = '*', $charset = null)
+    public function writeString($data, $length = '*')
     {
-        if ($charset) {
-            $data = mb_convert_encoding($data, 'utf8', $charset);
-        } elseif (!empty($this->charset)) {
-            $data = mb_convert_encoding($data, 'utf8', $this->charset);
+        if (strtolower($this->streamCharset) != strtolower($this->systemCharset)) {
+            $data = mb_convert_encoding($data, $this->streamCharset, $this->systemCharset);
         }
 
         return $this->write(pack('A' . $length, $data));
