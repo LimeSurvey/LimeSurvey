@@ -1064,7 +1064,7 @@ class Question extends LSActiveRecord
             array(
                 'header' => gT("Group / Question order"),
                 'name' => 'question_order',
-                'value' => '$data->group->group_order ." / ". $data->question_order',
+                'value' => '$data->group->group_order ." / ". $data->question_order',
             ),
             array(
                 'header' => gT('Code'),
@@ -1667,7 +1667,7 @@ class Question extends LSActiveRecord
     {
         $question = new Question();
         $question->qid = 0;
-        $question->title = (SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id) ?? 'SQ') . '001';
+        $question->title = self::getCodePrefix('subquestion_code_prefix', $this->survey->sid) . '001';
         $question->relevance = 1;
         return $question;
     }
@@ -1683,7 +1683,7 @@ class Question extends LSActiveRecord
         // TODO: Assuming no collision.
         $answer->aid = 'new' . rand(1, 100000);
         $answer->sortorder = 0;
-        $answer->code = (SettingsUser::getUserSettingValue('answeroptionprefix', App()->user->id) ?? 'AO') . '01';
+        $answer->code = self::getCodePrefix('answer_code_prefix', $this->survey->sid) . '001';
 
         $l10n = [];
         foreach ($this->survey->allLanguages as $language) {
@@ -1700,6 +1700,30 @@ class Question extends LSActiveRecord
         $answer->answerl10ns = $l10n;
 
         return $answer;
+    }
+
+    public static function getCodePrefix($prefixType, $surveyid)
+    {
+        $prefixCode = '';
+        $survey = Survey::model()->findByPk($surveyid);
+        $nonNumericalSettings = $survey->getOtherSettingAttributes();
+        if ($prefixType == 'answer_code_prefix') {
+            $prefixCode = $nonNumericalSettings['answer_code_prefix'];
+            if (!$prefixCode) {
+                $prefixCode = Yii::app()->getConfig('answer_code_prefix', 'A');
+            }
+        } elseif ($prefixType == 'subquestion_code_prefix') {
+            $prefixCode = $nonNumericalSettings['subquestion_code_prefix'];
+            if (!$prefixCode) {
+                $prefixCode = Yii::app()->getConfig('subquestion_code_prefix', 'SQ');
+            }
+        } elseif ($prefixType == 'question_code_prefix') {
+            $prefixCode = $nonNumericalSettings['question_code_prefix'];
+            if (!$prefixCode) {
+                $prefixCode = Yii::app()->getConfig('question_code_prefix', 'Q');
+            }
+        }
+        return $prefixCode;
     }
 
     /**

@@ -452,7 +452,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
 
     // Hungarian informal
     $supportedLanguages['hu-informal']['description'] = gT('Hungarian (informal)');
-    $supportedLanguages['hu-informal']['nativedescription'] = 'Magyar (tegez&#245;d&#245;)';
+    $supportedLanguages['hu-informal']['nativedescription'] = 'Magyar (tegez&#337;d&#337;)';
     $supportedLanguages['hu-informal']['rtl'] = false;
     $supportedLanguages['hu-informal']['dateformat'] = 6;
     $supportedLanguages['hu-informal']['radixpoint'] = 1;

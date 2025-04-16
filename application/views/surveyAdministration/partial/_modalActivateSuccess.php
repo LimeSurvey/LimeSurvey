@@ -26,7 +26,7 @@
                 </div>
                 <div class="row">
                     <p><?php et('Statistics and responses are now accessible.');?></p>
-                    <a href="<?php App()->getController()->createUrl('responses/browse', ['surveyid' => $surveyId])?>">
+                    <a href="<?php App()->getController()->createUrl('responses/browse', ['surveyId' => $surveyId])?>">
                         <?= gT('See all responses and statistics') ?><i class="ri-arrow-right-line"></i>
                     </a>
                 </div>
