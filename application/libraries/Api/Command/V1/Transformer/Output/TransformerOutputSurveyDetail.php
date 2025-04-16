@@ -4,6 +4,7 @@ namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
 use Survey;
 use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
+use LimeSurvey\Models\Services\SurveyThemeConfiguration;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 use SurveysGroups;
 
@@ -34,6 +35,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     private TransformerOutputAnswer $transformerAnswer;
     private TransformerOutputSurveyOwner $transformerSurveyOwner;
     private QuestionService $questionService;
+    private SurveyThemeConfiguration $surveyThemeConfiguration;
     private TransformerOutputAnswerL10ns $transformerAnswerL10ns;
     private TransformerOutputSurveyMenus $transformerOutputSurveyMenus;
     private TransformerOutputSurveyMenuItems $transformerOutputSurveyMenuItems;
@@ -54,7 +56,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         TransformerOutputSurveyOwner $transformerOutputSurveyOwner,
         TransformerOutputSurveyMenus $transformerOutputSurveyMenus,
         TransformerOutputSurveyMenuItems $transformerOutputSurveyMenuItems,
-        QuestionService $questionService
+        QuestionService $questionService,
+        SurveyThemeConfiguration $surveyThemeConfiguration
     ) {
         $this->transformerSurvey = $transformerOutputSurvey;
         $this->transformerSurveyGroup = $transformerOutputSurveyGroup;
@@ -69,6 +72,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $this->transformerOutputSurveyMenus = $transformerOutputSurveyMenus;
         $this->transformerOutputSurveyMenuItems = $transformerOutputSurveyMenuItems;
         $this->questionService = $questionService;
+        $this->surveyThemeConfiguration = $surveyThemeConfiguration;
     }
 
     /**
@@ -93,8 +97,6 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $data = $this->setInheritedBetaOptions($data);
         $survey = $this->transformerSurvey->transform($data);
         $survey['templateInherited'] = $data->oOptions->template;
-        $templateConf = \TemplateConfiguration::getInstanceFromTemplateName($data['template']);
-        $survey['templatePreview'] = $templateConf->getPreview(true);
         $survey['formatInherited'] = $data->oOptions->format;
         $survey['languages'] = $data->allLanguages;
         $survey['previewLink'] = App()->createUrl(
@@ -198,6 +200,11 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             $survey['responsesCompleted'] = 0;
             $survey['responsesIncomplete'] = 0;
         }
+
+        $survey['themesettings'] = [];
+        $survey['themesettingattributes'] = [];
+        $survey['templatePreview'] = '';
+        $this->tranformThemeSettings($survey['themesettings'], $survey['themesettingattributes'], $survey['templatePreview'], $data['template'], $data->sid);
 
         return $survey;
     }
@@ -341,7 +348,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                     )
                 )
             ) {
-                if (isset($survey->oOptions->$setting)) {
+                if (property_exists($survey->oOptions, $setting)) {
                     $survey->$setting = $survey->oOptions->$setting;
                 }
             }
@@ -374,5 +381,27 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 $options
             );
         }
+    }
+
+    /**
+     * Prepares theme settings necessary values,
+     * @param-out array<array-key, mixed> $aThemeSettings
+     * @param-out array<mixed> $aThemesettingattributes
+     * @param-out string $sTemplatePreview
+     * @param string $sTemplateName
+     * @param integer $iSurveyId
+     * @return void
+     */
+    private function tranformThemeSettings(array &$aThemeSettings, array &$aThemesettingattributes, string &$sTemplatePreview, $sTemplateName, $iSurveyId = 0)
+    {
+        $aThemeSettings = $this->surveyThemeConfiguration->getSurveyThemeOptions($iSurveyId, $sTemplateName, true);
+        $aThemeSettings = &$aThemeSettings;
+
+        $aThemesettingattributes = $this->surveyThemeConfiguration->getSurveyThemeOptionsAttributes($iSurveyId, $sTemplateName);
+        $aThemesettingattributes = &$aThemesettingattributes;
+
+        $templateConf = \TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+        $sTemplatePreview = $templateConf->getPreview(true);
+        $sTemplatePreview = &$sTemplatePreview;
     }
 }
