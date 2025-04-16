@@ -1,6 +1,6 @@
 <?php
 // Translation-source for new editor.
-// Updated on 2025-02-17 15:00:00
+// Updated on 2025-03-26 09:25:00
 gT('Welcome screen settings');
 gT('Show welcome screen');
 gT('Show “There are X questions in this survey.”');
@@ -187,3 +187,23 @@ gT('Keep them archived and create a new response table.');
 gT('Start with a brand new responses table without importing an existing one.');
 gT('Congrats! Your survey has been activated.');
 gT('Copied !');
+gT('Loading survey...');
+gT('or press %s');
+gT('You are about to go back without saving your changes on this scenario. Do you want to proceed?');
+gT('Unsaved changes');
+gT('Go back without saving');
+gT('Continue editing');
+gT('You are about to go back without saving your changes. Do you want to proceed?');
+gT('Expression script');
+gT('All scenarios');
+gT('Enter expression...');
+gT('Condition code');
+gT('Edit or copy large conditions');
+gT('Are you sure you want to delete scenario %s for this question?');
+gT('AND');
+gT('Display only if');
+gT('Reference value');
+gT('Enter regular expression');
+gT('Participant data');
+gT('+ Add Condition');
+gT('New logic');

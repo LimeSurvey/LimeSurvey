@@ -490,9 +490,9 @@ class Question extends LSActiveRecord
     public function removeFromLastVisited()
     {
         $oCriteria = new CDbCriteria();
-        $oCriteria->compare('stg_name', 'last_question_%', true, 'AND', false);
-        $oCriteria->compare('stg_value', $this->qid, false, 'AND');
-        SettingGlobal::model()->deleteAll($oCriteria);
+        $oCriteria->compare('stg_name', 'last_question');
+        $oCriteria->compare('stg_value', $this->qid);
+        SettingsUser::model()->deleteAll($oCriteria);
     }
 
     /**
