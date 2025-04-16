@@ -3544,13 +3544,13 @@ class LimeExpressionManager
                 case Question::QT_ASTERISK_EQUATION: //Equation
                     $csuffix = '';
                     $sqsuffix = '';
-                    $varName = $fielddata['fieldname'];
+                    $varName = $fielddata['title'];
                     $question = $fielddata['question'];
                     break;
                 case Question::QT_1_ARRAY_DUAL: // Array dual scale
                     $csuffix = $fielddata['aid'] . '#' . $fielddata['scale_id'];
                     $sqsuffix = '_' . $fielddata['aid'];
-                    $varName = $fielddata['fieldname'];
+                    $varName = $fielddata['title'] . '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];
                     ;
                     $question = $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
                     //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
@@ -3567,7 +3567,7 @@ class LimeExpressionManager
                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text                 // note does not have javatbd equivalent - so array filters don't work on it
                 case Question::QT_R_RANKING: // Ranking STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
                     $csuffix = $fielddata['aid'];
-                    $varName = $fielddata['fieldname'];
+                    $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['subquestion'];
                     // In M and P , we use $question (sub question) for shown. With other : we show to the user 'other_replace_text' if it's set. see #13505
                     if ($other == "Y") {
@@ -3588,7 +3588,7 @@ class LimeExpressionManager
                     break;
                 case Question::QT_H_ARRAY_COLUMN:
                     $csuffix = $fielddata['aid'];
-                    $varName = $fielddata['fieldname'];
+                    $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['subquestion'];
                     $sqsuffix = '_' . $fielddata['aid'];
                     $rowdivid = $sgqa; // Really bad name here because row are subquestion not row
@@ -3597,7 +3597,7 @@ class LimeExpressionManager
                 case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
                     $csuffix = $fielddata['aid'];
                     $sqsuffix = '_' . substr((string) $fielddata['aid'], 0, (int)strpos((string) $fielddata['aid'], '_'));
-                    $varName = $fielddata['fieldname'];
+                    $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
                     //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
                     $rowdivid = substr((string) $sgqa, 0, (int)strpos((string) $sgqa, '_'));
@@ -3897,7 +3897,7 @@ class LimeExpressionManager
             ];
 
             $this->knownVars[$sgqa] = $varInfo_Code;
-            $this->qcode2sgqa[$fielddata['title']] = $sgqa;
+            $this->qcode2sgqa[$varName] = $sgqa;
             $this->jsVar2qid[$jsVarName] = $questionNum;
             $this->qcode2sgq[$fielddata['title']] = 'Q' . $questionNum;
 
