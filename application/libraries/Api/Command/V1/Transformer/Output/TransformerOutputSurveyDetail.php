@@ -200,6 +200,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             $survey['responsesCompleted'] = 0;
             $survey['responsesIncomplete'] = 0;
         }
+        $survey['attributeDescriptions'] = $data->getDecodedAttributedescriptions();
 
         $survey['themesettings'] = [];
         $survey['themesettingattributes'] = [];
