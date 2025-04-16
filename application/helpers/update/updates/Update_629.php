@@ -21,7 +21,7 @@ class Update_629 extends DatabaseUpdateBase
         $this->db->createCommand()->update(
             '{{user_mfa_settings}}',
             ['authType' => 'totp'],
-            "authType != 'yubi'"
+            $this->db->quoteColumnName("authType") . " != 'yubi'"
         );
 
         // Encrypt the secretKey
