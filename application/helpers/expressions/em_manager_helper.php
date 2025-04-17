@@ -4494,7 +4494,7 @@ class LimeExpressionManager
                     }
                 }
                 $sgq = 'Q' . $kv['qid'];
-                $ext = (string)substr((string) $kv['sgqa'], strlen($sgq));
+                $ext = (string)substr((string) $kv['qcode'], strlen($sgq));
                 if ($sqpatt != '') {
                     if (!preg_match('/' . $sqpatt . '/', $ext)) {
                         continue;
