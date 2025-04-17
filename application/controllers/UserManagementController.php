@@ -1063,7 +1063,7 @@ class UserManagementController extends LSBaseController
             $model = $this->loadModel($user);
             $aResults[$user]['title'] = $model->users_name;
             $aResults[$user]['result'] = $this->deleteUser($user);
-            if (!$aResults[$user]['result'] && $user == Yii::app()->user->id) {
+            if (!$aResults[$user]['result'] || $user == Yii::app()->user->id) {
                 $aResults[$user]['error'] = gT("You cannot delete yourself or a protected user.");
             }
         }
