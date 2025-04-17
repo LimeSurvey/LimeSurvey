@@ -342,7 +342,7 @@ $config['standard_themes_readonly'] = true;
 
 /**
 * When this settings is true/1 (default = false/0) then the printable survey option will show a reference
-* to the "lime_survey_12345" table which stores the survey answers.
+* to the "lime_responses_12345" table which stores the survey answers.
 * It will show a code like "12345X22X333name":
 * 12345 = surveyID
 * 22 = groupID
