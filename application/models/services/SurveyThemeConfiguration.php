@@ -37,9 +37,11 @@ class SurveyThemeConfiguration
 
         $model = $this->turnAjaxmodeOffAsDefault($surveyId, $props['templateName']);
         $model->save();
-        $model->setOptionKeysToInherit();
+        $model->bUseMagicInherit = true;
+
+        $model->setOptions();
         $attributes = $model->attributes;
-        $oPreviousOptions = json_decode($attributes['options'], true);
+        $oPreviousOptions = $model->oOptions;
 
         foreach ($props as $key => $value) {
             if ($key === 'templateName') {
@@ -48,15 +50,15 @@ class SurveyThemeConfiguration
 
             // Process replacement for cssframework and font files references
             if ($key === 'cssframework' || $key === 'font') {
-                $oldFileValue = $this->getOptionAttributeDataValue($surveyId, $props['templateName'], $oPreviousOptions[$key], $key);
+                $oldFileValue = $this->getOptionAttributeDataValue($surveyId, $props['templateName'], $oPreviousOptions->$key, $key);
                 $newFileValue = $this->getOptionAttributeDataValue($surveyId, $props['templateName'], $value, $key);
 
                 $attributeKey = ($key === 'cssframework') ? 'files_css' : 'packages_to_load';
-
-                $attributes[$attributeKey] = str_replace($oldFileValue, $newFileValue, $attributes[$attributeKey]);
+                $attributeInherited = $model->__get($attributeKey);
+                $attributes[$attributeKey] = str_replace($oldFileValue, $newFileValue, $attributeInherited);
             }
 
-            $oPreviousOptions[$key] = $value;
+            $oPreviousOptions->$key = $value;
         }
 
         $sNewOptions = json_encode($oPreviousOptions);
@@ -255,6 +257,7 @@ class SurveyThemeConfiguration
      */
     public function getOptionAttributeDataValue($iSurveyId = 0, $sTemplateName = null, $optionValue = '', $optionType = ''): string
     {
+        $lowercasedValue = strtolower($optionValue);
         $oTemplate = Template::model()->getInstance($sTemplateName, $iSurveyId);
 
         $aOptionAttributes = TemplateManifest::getOptionAttributes($oTemplate->path);
@@ -273,7 +276,7 @@ class SurveyThemeConfiguration
         $options = $dom->getElementsByTagName('option');
 
         foreach ($options as $option) {
-            if ($option->getAttribute('value') === $optionValue) {
+            if ($option->getAttribute('value') === $lowercasedValue) {
                 return $option->getAttribute($attributeName);
             }
         }

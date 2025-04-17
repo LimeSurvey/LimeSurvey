@@ -1253,7 +1253,7 @@ class TemplateConfiguration extends TemplateConfig
      * Also triggers inheritence checks
      * @return void
      */
-    protected function setOptions()
+    public function setOptions()
     {
         $this->oOptions = new stdClass();
         if (!empty($this->options)) {
