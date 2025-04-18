@@ -288,25 +288,19 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Returns a Theme options array based on a surveyID & templateName
+     * Returns a Theme options array based on a surveyID
      *
      * @param integer $iSurveyId
-     * @param string $sTemplateName
      * @param bool $bInherited should inherited theme option values be used?
      * @return array
      */
-    public static function getThemeOptionsFromSurveyId($iSurveyId = 0, $sTemplateName = null, $bInherited = false)
+    public static function getThemeOptionsFromSurveyId($iSurveyId = 0, $bInherited = false)
     {
         $aTemplateConfigurations = array();
         // fetch all themes belonging to $iSurveyId
         $criteria = new CDbCriteria();
         $criteria->addCondition('sid=:sid');
         $criteria->params = array('sid' => $iSurveyId);
-
-        if ($sTemplateName != null) {
-            $criteria->addCondition('template_name = :template_name');
-            $criteria->params['template_name'] = $sTemplateName;
-        }
 
         $oTemplateConfigurations = self::model()->findAll($criteria);
 

@@ -166,19 +166,24 @@ class SurveyThemeConfiguration
      *
      * @param integer $iSurveyId
      * @param string $sTemplateName
-     * @param bool $bInherited should inherited theme option values be used?
      * @return array
      */
-    public function getSurveyThemeOptions($iSurveyId = 0, $sTemplateName = null, $bInherited = false): array
+    public function getSurveyThemeOptions($iSurveyId = 0, $sTemplateName = null): array
     {
-        $themeOptions = TemplateConfiguration::getThemeOptionsFromSurveyId($iSurveyId, $sTemplateName, $bInherited);
+        $oParentMainConfiguration = Template::getTemplateConfiguration($sTemplateName, null, null);
+        $oCurrentConfiguration = TemplateConfiguration::model()->getInstanceFromSurveyId($iSurveyId, $sTemplateName);
+        $oCurrentConfiguration->bUseMagicInherit = true;
+
+        $oCurrentConfiguration->oParentTemplate = $oParentMainConfiguration;
+        $oCurrentConfiguration->oParentTemplate->bUseMagicInherit = true;
+        $oCurrentConfiguration->setOptions();
+        $themeOptions = (array)$oCurrentConfiguration->oOptions;
 
         if (empty($themeOptions)) {
             return [];
         }
 
-        $options = $themeOptions[0]['config']['options'];
-        return $options;
+        return $themeOptions;
     }
 
      /**
