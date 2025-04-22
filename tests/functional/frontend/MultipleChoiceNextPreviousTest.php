@@ -33,14 +33,13 @@ class MultipleChoiceNextPreviousTest extends TestBaseClassWeb
         );
 
         // Get questions.
-        $survey = \Survey::model()->findByPk(self::$surveyId);
-        $questionObjects = $survey->groups[0]->questions;
         $questions = [];
-        foreach ($questionObjects as $q) {
-            $questions[$q->title] = $q;
+        $rawQuestions = \Question::model()->findAll("sid = :sid", [":sid" => self::$surveyId]);
+        foreach ($rawQuestions as $rawQuestion) {
+            $questions[$rawQuestion->title] = $rawQuestion;
         }
 
-        try {
+        //try {
 
             self::$webDriver->get($url);
 
@@ -68,10 +67,10 @@ class MultipleChoiceNextPreviousTest extends TestBaseClassWeb
 
             // Check value of checkbox.
             $sgqa = 'Q' . $questions['q2']->qid;
-            $checkbox = self::$webDriver->findElement(WebDriverBy::id('java' . $sgqa . 'SQ001'));
+            $checkbox = self::$webDriver->findElement(WebDriverBy::id('java' . $sgqa . '_S'. $questions['SQ001']->qid));
             $this->assertEquals('Y', $checkbox->getAttribute('value'));
 
-        } catch (NoSuchElementException $ex) {
+        /*} catch (NoSuchElementException $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/MultipleChoiceNextPreviousTest.png';
             file_put_contents($filename, $screenshot);
@@ -80,6 +79,6 @@ class MultipleChoiceNextPreviousTest extends TestBaseClassWeb
                 'Url: ' . $url . PHP_EOL .
                 'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
             );
-        }
+        }*/
     }
 }
