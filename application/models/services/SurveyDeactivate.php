@@ -249,6 +249,7 @@ class SurveyDeactivate
         // IF there are any records in the saved_control table related to this survey, they have to be deleted
         $this->savedControl->deleteSomeRecords(array('sid' => $iSurveyID)); //Yii::app()->db->createCommand($query)->query();
         $sOldSurveyTableName = $this->app->db->tablePrefix . "responses_{$iSurveyID}";
+        $siddate = $this->app->session->get('NewSIDDate', "{$iSurveyID}_{$date}");
         if (empty($this->app->session->get('sNewSurveyTableName'))) {
             $this->app->session->add('sNewSurveyTableName', $this->app->db->tablePrefix . "old_responses_{$iSurveyID}_{$date}");
         }
