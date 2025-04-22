@@ -259,6 +259,7 @@ abstract class Response extends Dynamic
     {
     }
 
+    /** Get all encrypted questions for a survey, as array of fieldnames */
     public static function getEncryptedAttributes($surveyid = 0)
     {
         $survey = Survey::model()->findByPk($surveyid);
