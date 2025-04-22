@@ -535,6 +535,9 @@ class Tokens extends SurveyCommonAction
                         if ($sCoreTokenField == 'language' && empty($value)) {
                             continue;
                         }
+                        if (($sCoreTokenField == 'sent' || $sCoreTokenField == 'remindersent' || $sCoreTokenField == 'completed') && empty($value)) {
+                            $value='N';
+                        }
                         $aData[$sCoreTokenField] = $value;
                     }
                 }
