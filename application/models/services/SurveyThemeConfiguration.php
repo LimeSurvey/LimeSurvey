@@ -260,7 +260,7 @@ class SurveyThemeConfiguration
      * @param string $optionType The type of option ('font' || 'cssframework')
      * @return string
      */
-    public function getOptionAttributeDataValue($iSurveyId = 0, $sTemplateName = null, $optionValue = '', $optionType = ''): string
+    protected function getOptionAttributeDataValue($iSurveyId = 0, $sTemplateName = null, $optionValue = '', $optionType = ''): string
     {
         $lowercasedValue = strtolower($optionValue);
         $oTemplate = Template::model()->getInstance($sTemplateName, $iSurveyId);
@@ -281,7 +281,8 @@ class SurveyThemeConfiguration
         $options = $dom->getElementsByTagName('option');
 
         foreach ($options as $option) {
-            if ($option->getAttribute('value') === $lowercasedValue) {
+            $lowercasedAttributeValue = strtolower($option->getAttribute('value'));
+            if ($lowercasedAttributeValue === $lowercasedValue) {
                 return $option->getAttribute($attributeName);
             }
         }
