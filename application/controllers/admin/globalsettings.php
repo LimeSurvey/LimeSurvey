@@ -307,11 +307,6 @@ class GlobalSettings extends SurveyCommonAction
             SettingGlobal::setSetting('allow_unstable_extension_update', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('allow_unstable_extension_update', false)));
         }
 
-        SettingGlobal::setSetting('question_code_prefix', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('question_code_prefix', Yii::app()->getConfig('question_code_prefix', 'Q'))));
-        SettingGlobal::setSetting('answer_code_prefix', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('answer_code_prefix', Yii::app()->getConfig('answer_code_prefix', 'A'))));
-        SettingGlobal::setSetting('subquestion_code_prefix', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('subquestion_code_prefix', Yii::app()->getConfig('subquestion_code_prefix', 'SQ'))));
-        SettingGlobal::setSetting('createsample', Yii::app()->getRequest()->getPost('createsample'));
-
         if (!Yii::app()->getConfig('demoMode')) {
             $sTemplate = Yii::app()->getRequest()->getPost("defaulttheme");
             if (array_key_exists($sTemplate, Template::getTemplateList())) {
@@ -518,6 +513,23 @@ class GlobalSettings extends SurveyCommonAction
         $sPartial = Yii::app()->request->getParam('partial', '_generaloptions_panel');
 
         if (!empty($_POST)) {
+            // Get the current othersettings
+            $currentOtherSettings = $oSurveyGroupSetting->othersettings ? json_decode($oSurveyGroupSetting->othersettings, true) : [];
+            
+            // Add your new attributes to othersettings
+            $newOtherSettings = [
+                'question_code_prefix' => Yii::app()->request->getPost('question_code_prefix', ''),
+                'subquestion_code_prefix' => Yii::app()->request->getPost('subquestion_code_prefix', ''),
+                'answer_code_prefix' => Yii::app()->request->getPost('answer_code_prefix', '')
+            ];
+            
+            // Merge with existing settings (preserving other values that might be there)
+            $mergedOtherSettings = array_merge($currentOtherSettings, $newOtherSettings);
+            
+            // Convert back to JSON
+            $_POST['othersettings'] = json_encode($mergedOtherSettings);
+            
+            // Now proceed with the normal save
             $oSurveyGroupSetting->attributes = $_POST;
             $oSurveyGroupSetting->gsid = 0;
             $oSurveyGroupSetting->usecaptcha = Survey::saveTranscribeCaptchaOptions();

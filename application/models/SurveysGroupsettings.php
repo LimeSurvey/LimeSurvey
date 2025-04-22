@@ -50,6 +50,7 @@
  * @property string $nokeyboard
  * @property string $alloweditaftercompletion
  * @property string $ipanonymize
+ * @property string $othersettings
  */
 class SurveysGroupsettings extends LSActiveRecord
 {
@@ -68,11 +69,12 @@ class SurveysGroupsettings extends LSActiveRecord
                                                 'ipaddr','ipanonymize', 'refurl', 'publicstatistics', 'publicgraphs', 'listpublic', 'htmlemail', 'sendconfirmation', 'tokenanswerspersistence',
                                                 'assessments', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'nokeyboard',
                                                 'alloweditaftercompletion');
-    protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto');
+    protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto', 'othersettings');
 
     public $showInherited = 1;
     public $active;
     public $additional_languages;
+    protected $othersettings;
 
     /* self[] used in self::getInstance() */
     private static $aSurveysGroupSettings = [];
@@ -101,7 +103,8 @@ class SurveysGroupsettings extends LSActiveRecord
             array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, nokeyboard, alloweditaftercompletion, ipanonymize', 'length', 'max' => 1),
             array('adminemail, bounce_email', 'length', 'max' => 255),
             array('template', 'length', 'max' => 100),
-            array('expires, startdate, datecreated, attributedescriptions, emailresponseto, emailnotificationto', 'safe'),
+            array('expires, startdate, datecreated, attributedescriptions, emailresponseto, emailnotificationto, othersettings', 'safe'),
+            array('othersettings', 'default', 'value' => '{}'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('gsid, owner_id, admin, expires, startdate, adminemail, anonymized, format,
@@ -110,7 +113,7 @@ class SurveysGroupsettings extends LSActiveRecord
 			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence,
 			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto,
 			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress,
-			questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on' => 'search'),
+			questionindex, navigationdelay, nokeyboard, alloweditaftercompletion, othersettings', 'safe', 'on' => 'search'),
         );
     }
 
@@ -187,6 +190,8 @@ class SurveysGroupsettings extends LSActiveRecord
             'navigationdelay' => 'Navigationdelay',
             'nokeyboard' => 'Nokeyboard',
             'alloweditaftercompletion' => 'Alloweditaftercompletion',
+            'ipanonymize' => 'Ipanonymize',
+            'othersettings' => 'Other settings',
         );
     }
 
@@ -253,6 +258,8 @@ class SurveysGroupsettings extends LSActiveRecord
         $criteria->compare('navigationdelay', $this->navigationdelay);
         $criteria->compare('nokeyboard', $this->nokeyboard, true);
         $criteria->compare('alloweditaftercompletion', $this->alloweditaftercompletion, true);
+        $criteria->compare('ipanonymize', $this->ipanonymize, true);
+        $criteria->compare('othersettings', $this->othersettings, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -325,6 +332,12 @@ class SurveysGroupsettings extends LSActiveRecord
             if ($model === null) {
                 $instance = new SurveysGroupsettings();
                 $instance->optionAttributes = new stdClass();
+                $otherSettings = $model->othersettings ? json_decode($model->othersettings, true) : [];
+                foreach ($otherSettings as $key => $value) {
+                    $instance->oOptions->{$key} = $value;
+                    // You might want to add labels too if needed
+                    $instance->oOptionLabels->{$key} = $value;
+                }
             } else {
                 $instance = $model;
                 $instance->optionAttributes = array_keys($model->attributes);
@@ -488,6 +501,7 @@ class SurveysGroupsettings extends LSActiveRecord
         }
         foreach ($this->optionAttributesText as $attribute) {
             $this->$attribute = 'inherit';
+            $this->othersettings = 'inherit';
         }
     }
 
@@ -500,6 +514,7 @@ class SurveysGroupsettings extends LSActiveRecord
         $this->admin = substr((string) App()->getConfig('siteadminname'), 0, 50);
         $this->adminemail = substr((string) App()->getConfig('siteadminemail'), 0, 254);
         $this->template = Template::templateNameFilter(App()->getConfig('defaulttheme'));
+        $this->othersettings = '';
     }
 
     /**
@@ -536,5 +551,84 @@ class SurveysGroupsettings extends LSActiveRecord
         }
 
         return false;
+    }
+
+    /**
+     * Get other settings as array
+     * @return array
+     */
+    public function getOtherSettings()
+    {
+        if (empty($this->otherSettings)) {
+            $this->otherSettings = array();
+            if (!empty($this->othersettings)) {
+                $this->otherSettings = json_decode($this->othersettings, true);
+                if (!is_array($this->otherSettings)) {
+                    $this->otherSettings = array();
+                }
+            }
+        }
+        return $this->otherSettings;
+    }
+    
+    /**
+     * Set other settings as array
+     * @param array $settings
+     */
+    public function setOtherSettings($settings)
+    {
+        $this->othersettings = json_encode($settings);
+    }
+
+    /**
+     * Get a value from othersettings
+     * 
+     * @param string $key The setting key to retrieve
+     * @param mixed $default Default value if setting doesn't exist
+     * @return mixed The setting value or default
+     */
+    public function getOtherSetting($key, $default = null)
+    {
+        $settings = $this->othersettings ? json_decode($this->othersettings, true) : [];
+        return isset($settings[$key]) ? $settings[$key] : $default;
+    }
+
+    /**
+     * Set a value in othersettings
+     * 
+     * @param string $key The setting key to set
+     * @param mixed $value The value to set
+     * @return bool Success/failure
+     */
+    public function setOtherSetting($key, $value)
+    {
+        $settings = $this->othersettings ? json_decode($this->othersettings, true) : [];
+        $settings[$key] = $value;
+        $this->othersettings = json_encode($settings);
+        return $this->save();
+    }
+
+    /**
+     * Retrieves other setting attributes from the survey's othersettings field.
+     *
+     * This function decodes the JSON-encoded othersettings field and returns
+     * specific attributes related to question, subquestion, and answer code prefixes.
+     *
+     * @return array An associative array containing the following keys:
+     *               - 'question_code_prefix': The prefix for question codes (string)
+     *               - 'subquestion_code_prefix': The prefix for subquestion codes (string)
+     *               - 'answer_code_prefix': The prefix for answer codes (string)
+     *               If a specific prefix is not set, an empty string is returned for that key.
+     */
+    public function getOtherSettingAttributes()
+    {
+        if ($this->othersettings === null) {
+            return [
+                'question_code_prefix' => Yii::app()->getConfig('question_code_prefix', ''),
+                'subquestion_code_prefix' => Yii::app()->getConfig('subquestion_code_prefix', ''),
+                'answer_code_prefix' => Yii::app()->getConfig('answer_code_prefix', '')
+            ];
+        }
+        return json_decode($this->othersettings, true);
     }
 }

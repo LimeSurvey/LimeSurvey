@@ -1704,26 +1704,9 @@ class Question extends LSActiveRecord
 
     public static function getCodePrefix($prefixType, $surveyid)
     {
-        $prefixCode = '';
         $survey = Survey::model()->findByPk($surveyid);
         $nonNumericalSettings = $survey->getOtherSettingAttributes();
-        if ($prefixType == 'answer_code_prefix') {
-            $prefixCode = $nonNumericalSettings['answer_code_prefix'];
-            if (!$prefixCode) {
-                $prefixCode = Yii::app()->getConfig('answer_code_prefix', 'A');
-            }
-        } elseif ($prefixType == 'subquestion_code_prefix') {
-            $prefixCode = $nonNumericalSettings['subquestion_code_prefix'];
-            if (!$prefixCode) {
-                $prefixCode = Yii::app()->getConfig('subquestion_code_prefix', 'SQ');
-            }
-        } elseif ($prefixType == 'question_code_prefix') {
-            $prefixCode = $nonNumericalSettings['question_code_prefix'];
-            if (!$prefixCode) {
-                $prefixCode = Yii::app()->getConfig('question_code_prefix', 'Q');
-            }
-        }
-        return $prefixCode;
+        return $nonNumericalSettings[$prefixType] ?? '';
     }
 
     /**

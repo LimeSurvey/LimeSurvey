@@ -447,9 +447,9 @@ class GeneralSettings
     private function updateOtherSettings($input, Survey $survey)
     {
         // Update other settings, only two for now
-        $survey->setOtherSettingAttribute("question_code_prefix", $input['question_code_prefix'] ?? 'Q');
-        $survey->setOtherSettingAttribute("subquestion_code_prefix", $input['subquestion_code_prefix'] ?? 'SQ');
-        $survey->setOtherSettingAttribute("answer_code_prefix", $input['answer_code_prefix'] ?? 'A');
+        $survey->setOtherSetting("question_code_prefix", $input['question_code_prefix'] ?? 'Q');
+        $survey->setOtherSetting("subquestion_code_prefix", $input['subquestion_code_prefix'] ?? 'SQ');
+        $survey->setOtherSetting("answer_code_prefix", $input['answer_code_prefix'] ?? 'A');
     }
 
     private function getAdditionalLanguagesArray($input, Survey $survey)

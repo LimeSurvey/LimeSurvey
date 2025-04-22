@@ -171,7 +171,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     private $sSurveyUrl;
 
-    private $otherSettings;
+    protected $othersettings;
 
     /**
      * Set defaults
@@ -234,10 +234,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 }
             }
         }
-        // default these values to the ones from global settings
-        $this->setOtherSettingAttribute('question_code_prefix', App()->getConfig('question_code_prefix'));
-        $this->setOtherSettingAttribute('subquestion_code_prefix', App()->getConfig('subquestion_code_prefix'));
-        $this->setOtherSettingAttribute('answer_code_prefix', App()->getConfig('answer_code_prefix'));
     }
 
     /** @inheritdoc */
@@ -2591,12 +2587,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getOtherSettingAttributes()
     {
-        $otherSettings = json_decode(is_null($this->othersettings) ? '[]' : $this->othersettings, true) ?? [];
-        return [
-            'question_code_prefix' => $otherSettings['question_code_prefix'] ?? '',
-            'subquestion_code_prefix' => $otherSettings['subquestion_code_prefix'] ?? '',
-            'answer_code_prefix' => $otherSettings['answer_code_prefix'] ?? '',
-        ];
+        if ($this->othersettings === null) {
+            return [
+                'question_code_prefix' => Yii::app()->getConfig('question_code_prefix', ''),
+                'subquestion_code_prefix' => Yii::app()->getConfig('subquestion_code_prefix', ''),
+                'answer_code_prefix' => Yii::app()->getConfig('answer_code_prefix', '')
+            ];
+        }
+        return json_decode($this->othersettings, true) ?? [];
     }
 
     /**
@@ -2609,10 +2607,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * @param mixed $value The value to set for the attribute
      * @return void
      */
-    public function setOtherSettingAttribute($attribute, $value)
+    public function setOtherSetting($attribute, $value)
     {
-        $otherSettings = json_decode(is_null($this->othersettings) ? '[]' : $this->othersettings, true) ?? [];
-        $otherSettings[$attribute] = $value;
-        $this->othersettings = json_encode($otherSettings);
+        $othersettings = json_decode(is_null($this->othersettings) ? '[]' : $this->othersettings, true) ?? [];
+        $othersettings[$attribute] = $value;
+        $this->othersettings = json_encode($othersettings);
     }
 }
