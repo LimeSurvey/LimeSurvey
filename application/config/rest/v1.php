@@ -43,6 +43,7 @@ $rest = [
 
 return array_merge(
     $rest,
+    include_once __DIR__ . '/v1/survey-responses.php',
     include_once __DIR__ . '/v1/survey.php',
     include_once __DIR__ . '/v1/auth.php',
     include_once __DIR__ . '/v1/survey-group.php',
