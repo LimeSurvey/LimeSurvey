@@ -171,8 +171,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     private $sSurveyUrl;
 
-    protected $othersettings;
-
     /**
      * Set defaults
      * @inheritdoc

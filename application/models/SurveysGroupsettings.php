@@ -74,7 +74,6 @@ class SurveysGroupsettings extends LSActiveRecord
     public $showInherited = 1;
     public $active;
     public $additional_languages;
-    protected $othersettings;
 
     /* self[] used in self::getInstance() */
     private static $aSurveysGroupSettings = [];
