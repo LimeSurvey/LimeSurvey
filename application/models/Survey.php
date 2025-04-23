@@ -2585,7 +2585,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      *               - 'answer_code_prefix': The prefix for answer codes (string)
      *               If a specific prefix is not set, an empty string is returned for that key.
      */
-    public function getOtherSettingAttributes()
+    public function getOtherSettings()
     {
         if ($this->othersettings === null) {
             return [
@@ -2595,6 +2595,19 @@ class Survey extends LSActiveRecord implements PermissionInterface
             ];
         }
         return json_decode($this->othersettings, true) ?? [];
+    }
+
+    /**
+     * Get a value from othersettings
+     * 
+     * @param string $key The setting key to retrieve
+     * @param mixed $default Default value if setting doesn't exist
+     * @return mixed The setting value or default
+     */
+    public function getOtherSetting($key, $default = null)
+    {
+        $settings = $this->othersettings ? json_decode($this->othersettings, true) : [];
+        return isset($settings[$key]) ? $settings[$key] : $default;
     }
 
     /**

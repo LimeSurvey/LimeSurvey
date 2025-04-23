@@ -607,28 +607,4 @@ class SurveysGroupsettings extends LSActiveRecord
         $this->othersettings = json_encode($settings);
         return $this->save();
     }
-
-    /**
-     * Retrieves other setting attributes from the survey's othersettings field.
-     *
-     * This function decodes the JSON-encoded othersettings field and returns
-     * specific attributes related to question, subquestion, and answer code prefixes.
-     *
-     * @return array An associative array containing the following keys:
-     *               - 'question_code_prefix': The prefix for question codes (string)
-     *               - 'subquestion_code_prefix': The prefix for subquestion codes (string)
-     *               - 'answer_code_prefix': The prefix for answer codes (string)
-     *               If a specific prefix is not set, an empty string is returned for that key.
-     */
-    public function getOtherSettingAttributes()
-    {
-        if ($this->othersettings === null) {
-            return [
-                'question_code_prefix' => Yii::app()->getConfig('question_code_prefix', ''),
-                'subquestion_code_prefix' => Yii::app()->getConfig('subquestion_code_prefix', ''),
-                'answer_code_prefix' => Yii::app()->getConfig('answer_code_prefix', '')
-            ];
-        }
-        return json_decode($this->othersettings, true);
-    }
 }
