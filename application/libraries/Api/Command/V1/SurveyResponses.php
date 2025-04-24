@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\Libraries\Api\Command\V1;
 
+use DI\FactoryInterface;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
 use Survey;
 use LimeSurvey\Api\Command\{CommandInterface,
     Request\Request,
@@ -10,7 +12,6 @@ use LimeSurvey\Api\Command\{CommandInterface,
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurveyResponses;
 
-
 class SurveyResponses implements CommandInterface
 {
     use AuthPermissionTrait;
@@ -18,6 +19,7 @@ class SurveyResponses implements CommandInterface
     protected Survey $survey;
     protected TransformerOutputSurveyResponses $transformerOutputSurveyDetail;
     protected ResponseFactory $responseFactory;
+    protected FilterPatcher $responseFilterPatcher;
 
     /**
      * Constructor
@@ -27,13 +29,15 @@ class SurveyResponses implements CommandInterface
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        Survey $survey,
+        FactoryInterface $diFactory,
         TransformerOutputSurveyResponses $transformerOutputSurveyDetail,
+        FilterPatcher $responseFilterPatcher,
         ResponseFactory $responseFactory
     ) {
-        $this->survey = $survey;
+        $this->diFactory = $diFactory;
         $this->transformerOutputSurveyDetail = $transformerOutputSurveyDetail;
         $this->responseFactory = $responseFactory;
+        $this->responseFilterPatcher = $responseFilterPatcher;
     }
 
     /**
@@ -45,14 +49,52 @@ class SurveyResponses implements CommandInterface
     public function run(Request $request)
     {
         $surveyId = (string) $request->getData('_id');
-        $responses = \SurveyDynamic::model($surveyId);
+        $searchParams = (string) $request->getData('search', null);
+        $model = \SurveyDynamic::model($surveyId);
+
+        $criteria = new \LSDbCriteria();
+        $sort     = new \CSort();
 
 
-        $responses = $this->transformerOutputSurveyDetail
-            ->transform($responses);
+//        $searchParams = [
+//            "sort" => [
+//                "id" => 'asc',
+//            ],
+//            "search" => [
+//                [
+//                    "survey" => "132241",
+//                    "group" => "130",
+//                    "question" => "2110",
+//                    "operator" => "LIKE",
+//                    "value" => "Question#",
+//                    "type" => "text",
+//                ],
+//                [
+//                    "survey" => "132241",
+//                    "group" => "130",
+//                    "question" => "2111",
+//                    "operator" => "EQUAL",
+//                    "value" => "A001",
+//                    "type" => "option",
+//                ],
+//            ]
+//        ];
 
+
+        if ($searchParams) {
+            $this->responseFilterPatcher->apply($searchParams, $criteria, $sort);
+        }
+
+        $dataProvider = new \LSCActiveDataProvider($model, array(
+            'sort' => $sort,
+            'criteria' => $criteria,
+            'pagination' => [
+                'pageSize' => 3,
+                'currentPage' => 1,
+            ],
+        ));
 
         return $this->responseFactory
-            ->makeSuccess(['responses' => $responses]);
+            ->makeSuccess(['responses' => [$request->test(), $dataProvider->getData()]]);
     }
 }
