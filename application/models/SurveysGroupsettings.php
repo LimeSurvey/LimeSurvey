@@ -331,12 +331,6 @@ class SurveysGroupsettings extends LSActiveRecord
             if ($model === null) {
                 $instance = new SurveysGroupsettings();
                 $instance->optionAttributes = new stdClass();
-                $otherSettings = $model->othersettings ? json_decode($model->othersettings, true) : [];
-                foreach ($otherSettings as $key => $value) {
-                    $instance->oOptions->{$key} = $value;
-                    // You might want to add labels too if needed
-                    $instance->oOptionLabels->{$key} = $value;
-                }
             } else {
                 $instance = $model;
                 $instance->optionAttributes = array_keys($model->attributes);
