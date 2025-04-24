@@ -195,24 +195,23 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
     public function createNewUser()
     {
         // Do nothing if the user to be added is not LDAP type
-        if (flattenText(Yii::app()->request->getPost('user_type')) != 'LDAP') {
+        if (App()->request->getPost('user_type') != 'LDAP') {
             return;
         }
 
         $oEvent = $this->getEvent();
-
-        $this->ldapCreateNewUser($oEvent, flattenText(Yii::app()->request->getPost('new_user'), false, true));
+        $this->ldapCreateNewUser($oEvent, App()->request->getPost('new_user'));
     }
 
     /**
      * Create a LDAP user
      *
-     * @param Event $oEvent Either CreateNewUser event or dummy event.
-     * @param string $new_user
+     * @param Event $oEvent Either CreateNewUser event or newUserSession event.
+     * @param string $username
      * @param string $password
      * @return null|integer New user ID
      */
-    private function ldapCreateNewUser($oEvent, $new_user, $password = null)
+    private function ldapCreateNewUser($oEvent, $username, $password = null)
     {
         // Get configuration settings:
         $ldapmode = $this->get('ldapmode');
@@ -225,7 +224,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         $fullnameattribute = $this->get('fullnameattribute');
         $suffix             = $this->get('domainsuffix');
         $prefix             = $this->get('userprefix');
-
+        /* @var string $ldapescapeusername escaped user name, but leave original non escaped (we find it non escaped) */
+        $ldapescapeusername = ldap_escape($username, "", LDAP_ESCAPE_FILTER);
         // Try to connect
         $ldapconn = $this->createConnection();
         if (is_array($ldapconn)) {
@@ -238,7 +238,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         // Search email address and full name
         if (empty($ldapmode) || $ldapmode == 'simplebind') {
             // Use the user's account for LDAP search
-            $ldapbindsearch = @ldap_bind($ldapconn, $prefix . $new_user . $suffix, $password);
+            $ldapbindsearch = @ldap_bind($ldapconn, $prefix . $ldapescapeusername . $suffix, $password);
         } elseif (empty($binddn)) {
             // There is no account defined to do the LDAP search,
             // let's use anonymous bind instead
@@ -256,9 +256,9 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         }
         // Now prepare the search fitler
         if ($extrauserfilter != "") {
-            $usersearchfilter = "(&($searchuserattribute=$new_user)$extrauserfilter)";
+            $usersearchfilter = "(&($searchuserattribute=$ldapescapeusername)$extrauserfilter)";
         } else {
-            $usersearchfilter = "($searchuserattribute=$new_user)";
+            $usersearchfilter = "($searchuserattribute=$ldapescapeusername)";
         }
         // Search for the user
         $userentry = false;
@@ -301,9 +301,9 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 $status = $preCollectedUserArray['status'];
             }
         }
-        $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, $parentID, $new_email, null, $status);
+        $iNewUID = User::insertUser($username, $new_pass, $new_full_name, $parentID, $new_email, null, $status);
         if (!$iNewUID) {
-            $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER);
+            $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER); // Unsure ?
             $oEvent->set('errorMessageTitle', '');
             $oEvent->set('errorMessageBody', gT("Failed to add user"));
             return null;
@@ -474,7 +474,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             $this->setAuthFailure(self::ERROR_PASSWORD_INVALID); // Error shown : user or password invalid
             return;
         }
-
+        /* @var string $ldapescapeusername escaped user name, but leave original non escaped (we find it non escaped) */
+        $ldapescapeusername = ldap_escape($username, "", LDAP_ESCAPE_FILTER);
         // Get configuration settings:
         $suffix             = $this->get('domainsuffix');
         $prefix             = $this->get('userprefix');
@@ -495,7 +496,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         if (empty($ldapmode) || $ldapmode == 'simplebind') {
             // in simple bind mode we know how to construct the userDN from the username
-            $ldapbind = @ldap_bind($ldapconn, $prefix . $username . $suffix, $password);
+            $ldapbind = @ldap_bind($ldapconn, $prefix . $ldapescapeusername . $suffix, $password);
         } else {
             // in search and bind mode we first do a LDAP search from the username given
             // to foind the userDN and then we procced to the bind operation
@@ -514,9 +515,9 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             }
             // Now prepare the search fitler
             if ($extrauserfilter != "") {
-                $usersearchfilter = "(&($searchuserattribute=$username)$extrauserfilter)";
+                $usersearchfilter = "(&($searchuserattribute=$ldapescapeusername)$extrauserfilter)";
             } else {
-                $usersearchfilter = "($searchuserattribute=$username)";
+                $usersearchfilter = "($searchuserattribute=$ldapescapeusername)";
             }
             // Search for the user
             $userentry = false;
@@ -539,7 +540,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             // If specified, check group membership
             if ($groupsearchbase != '' && $groupsearchfilter != '') {
                 $keywords = array('$username', '$userdn');
-                $substitutions = array($username, ldap_escape($userdn, "", LDAP_ESCAPE_FILTER));
+                $substitutions = array($ldapescapeusername, ldap_escape($userdn, "", LDAP_ESCAPE_FILTER));
                 $filter = str_replace($keywords, $substitutions, $groupsearchfilter);
                 $groupsearchres = ldap_search($ldapconn, $groupsearchbase, $filter);
                 $grouprescount = ldap_count_entries($ldapconn, $groupsearchres);
