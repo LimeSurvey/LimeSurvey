@@ -299,10 +299,10 @@ class SurveyDeactivate
         $prow = $this->survey->find('sid = :sid', array(':sid' => $iSurveyID));
         if ($prow->savetimings == "Y") {
             $sOldTimingsTableName = $this->app->db->tablePrefix . "timings_{$iSurveyID}";
-            $sNewTimingsTableName = $this->app->db->tablePrefix . "old_timings_{$iSurveyID}_{$siddate}";
+            $sNewTimingsTableName = $this->app->db->tablePrefix . "old_timings_{$siddate}";
             $this->app->db->createCommand()->renameTable($sOldTimingsTableName, $sNewTimingsTableName);
             $aData['sNewTimingsTableName'] = $sNewTimingsTableName;
         }
-        $this->archiveTable($iSurveyID, $userID, "old_timings_{$iSurveyID}_{$DBDate}", "timings", $DBDate, '');
+        $this->archiveTable($iSurveyID, $userID, "old_timings_{$siddate}", "timings", $DBDate, '');
     }
 }

@@ -116,21 +116,21 @@ class SurveyActivate
                 $archives[$key] = $candidates[count($candidates) - 1];
             }
         }
-        if (is_array($archives) && isset($archives['survey']) && isset($archives['questions'])) {
+        if (is_array($archives) && isset($archives['responses']) && isset($archives['questions'])) {
             //Recover survey
             $qParts = explode("_", $archives['questions']);
             $qTimestamp = $qParts[count($qParts) - 1];
-            $sParts = explode("_", $archives['survey']);
+            $sParts = explode("_", $archives['responses']);
             $sTimestamp = $sParts[count($sParts) - 1];
             $dynamicColumns = getUnchangedColumns($surveyId, $sTimestamp, $qTimestamp);
-            recoverSurveyResponses($surveyId, $archives["survey"], $preserveIDs, $dynamicColumns);
+            recoverSurveyResponses($surveyId, $archives["responses"], $preserveIDs, $dynamicColumns);
             if (isset($archives["tokens"])) {
                 $tokenTable = $this->app->db->tablePrefix . "tokens_" . $surveyId;
                 createTableFromPattern($tokenTable, $archives["tokens"]);
                 copyFromOneTableToTheOther($archives["tokens"], $tokenTable);
             }
             if (isset($archives["timings"])) {
-                $timingsTable = $this->app->db->tablePrefix . "survey_" . $surveyId . "_timings";
+                $timingsTable = $this->app->db->tablePrefix . "timings_" . $surveyId;
                 copyFromOneTableToTheOther($archives["timings"], $timingsTable);
             }
             return true;

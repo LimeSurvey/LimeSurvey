@@ -1199,7 +1199,7 @@ function getTableArchivesAndTimestamps(int $sid)
                 FROM information_schema.tables t1
                 JOIN information_schema.tables t2
                 ON t1.TABLE_SCHEMA = t2.TABLE_SCHEMA AND
-                   t2.TABLE_NAME LIKE CONCAT('%old_survey_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
+                   t2.TABLE_NAME LIKE CONCAT('%old_responses_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
                 WHERE t1.TABLE_SCHEMA = DATABASE() AND
                       t1.TABLE_NAME LIKE '%old%' AND
                       t1.TABLE_NAME LIKE '%{$sid}%'
@@ -1212,7 +1212,7 @@ function getTableArchivesAndTimestamps(int $sid)
             FROM information_schema.tables t1
             JOIN information_schema.tables t2
             ON t1.TABLE_CATALOG = t2.TABLE_CATALOG AND
-               t2.TABLE_NAME LIKE CONCAT('%old_survey_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
+               t2.TABLE_NAME LIKE CONCAT('%old_responses_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
             WHERE t1.TABLE_CATALOG = current_database() AND
                   t1.TABLE_NAME LIKE '%old%' AND
                   t1.TABLE_NAME LIKE '%{$sid}%'
@@ -1232,7 +1232,7 @@ function getTableArchivesAndTimestamps(int $sid)
                 FROM information_schema.tables t1
                 JOIN information_schema.tables t2
                 ON t1.TABLE_CATALOG = t2.TABLE_CATALOG AND
-                   t2.TABLE_NAME LIKE CONCAT('%old_survey_{$sid}_', substring(t1.TABLE_NAME, len(t1.TABLE_NAME) - charindex('_', reverse(t1.TABLE_NAME)) + 2, 2000))
+                   t2.TABLE_NAME LIKE CONCAT('%old_responses_{$sid}_', substring(t1.TABLE_NAME, len(t1.TABLE_NAME) - charindex('_', reverse(t1.TABLE_NAME)) + 2, 2000))
                 WHERE t1.TABLE_CATALOG = db_name() AND
                       t1.TABLE_NAME LIKE '%old%' AND
                       t1.TABLE_NAME LIKE '%{$sid}%'
@@ -1455,7 +1455,7 @@ function polyfillSUBSTRING_INDEX($driver) {
                 COST 5;')->execute();
         break;
         case 'mssql':
-            case 'sqlsrv':
+        case 'sqlsrv':
                 Yii::app()->db->createCommand(
     <<<EOD
     IF OBJECT_ID('dbo.SUBSTRING_INDEX') IS NOT NULL
@@ -1508,9 +1508,9 @@ function generateTemporaryTableCreate(string $source, string $destination, int $
             CREATE TEMPORARY TABLE {$destination}
             SELECT *
             FROM (
-                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
-                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
-                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
+                SELECT CASE
+                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' THEN SUBSTRING(SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2)
+                       END AS qid,
                        temp.COLUMN_NAME
                 FROM information_schema.columns temp
                 WHERE temp.TABLE_SCHEMA = DATABASE() AND 
@@ -1524,9 +1524,9 @@ function generateTemporaryTableCreate(string $source, string $destination, int $
             AS
             SELECT *
             FROM (
-                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
-                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
-                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
+                SELECT CASE
+                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' THEN SUBSTRING(SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2)
+                       END AS qid,
                        temp.COLUMN_NAME
                 FROM information_schema.columns temp
                 WHERE temp.TABLE_CATALOG = current_database() AND 
@@ -1541,9 +1541,9 @@ function generateTemporaryTableCreate(string $source, string $destination, int $
             SELECT *
             INTO {$destination}
             FROM (
-                SELECT dbo.SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
-                       dbo.SUBSTRING_INDEX(SUBSTRING(temp.COLUMN_NAME, 2 + LEN(dbo.SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1)), 2000), 'X', 1) AS gid,
-                       SUBSTRING(temp.COLUMN_NAME, charindex('X', temp.COLUMN_NAME, (charindex('X', temp.COLUMN_NAME, 1))+1) + 1, 2000) AS qidsuffix,
+                SELECT CASE
+                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' THEN SUBSTRING(SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2)
+                       END AS qid,
                        temp.COLUMN_NAME
                 FROM information_schema.columns temp
                 WHERE temp.TABLE_CATALOG = db_name() AND
@@ -1591,12 +1591,12 @@ function generateTemporaryTableDrop(string $name, int $sid)
 function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
 {
     $sourceTables = [
-        Yii::app()->db->tablePrefix . "survey_" . $sid,
-        Yii::app()->db->tablePrefix . "survey_" . $sid,
-        Yii::app()->db->tablePrefix . "survey_" . $sid,
-        Yii::app()->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
-        Yii::app()->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
-        Yii::app()->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
+        Yii::app()->db->tablePrefix . "responses_" . $sid,
+        Yii::app()->db->tablePrefix . "responses_" . $sid,
+        Yii::app()->db->tablePrefix . "responses_" . $sid,
+        Yii::app()->db->tablePrefix . "old_responses_{$sid}_{$sTimestamp}",
+        Yii::app()->db->tablePrefix . "old_responses_{$sid}_{$sTimestamp}",
+        Yii::app()->db->tablePrefix . "old_responses_{$sid}_{$sTimestamp}",
     ];
     $destinationTables = [
         'new_s_c',
@@ -1617,144 +1617,42 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
         JOIN " . Yii::app()->db->tablePrefix . "questions new_q
         ON old_q.qid = new_q.qid AND old_q.type = new_q.type
         JOIN new_s_c
-        ON new_s_c.sid = new_q.sid AND
-           new_s_c.gid = new_q.gid AND
-           new_s_c.qidsuffix like concat(new_q.qid, '%')
+        ON new_s_c.qid = new_q.qid
         JOIN old_s_c
-        ON old_s_c.sid = old_q.sid AND
-           old_s_c.gid = old_q.gid AND
-           old_s_c.qidsuffix LIKE CONCAT(old_q.qid, '%') AND
-           old_s_c.qidsuffix = new_s_c.qidsuffix
-        LEFT JOIN new_parent1
-        ON new_s_c.sid = new_parent1.sid AND
-           new_s_c.gid = new_parent1.gid AND
-           new_s_c.qidsuffix <> new_parent1.qidsuffix AND
-           new_parent1.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
-        LEFT JOIN new_parent2
-        ON new_s_c.sid = new_parent2.sid AND
-           new_s_c.gid = new_parent2.gid AND
-           new_s_c.qidsuffix <> new_parent2.qidsuffix AND new_parent1.qidsuffix <> new_parent2.qidsuffix AND
-           new_parent2.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
-        LEFT JOIN old_parent1
-        ON old_s_c.sid = old_parent1.sid AND
-           old_s_c.gid = old_parent1.gid AND
-           old_s_c.qidsuffix <> old_parent1.qidsuffix AND
-           old_parent1.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
-        LEFT JOIN old_parent2
-           ON old_s_c.sid = old_parent2.sid AND
-              old_s_c.gid = old_parent2.gid AND
-              old_s_c.qidsuffix <> old_parent2.qidsuffix AND old_parent1.qidsuffix <> old_parent2.qidsuffix AND
-              old_parent2.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
-        WHERE (new_parent2.sid IS NULL) AND
-              (old_parent2.sid IS NULL) AND
-              (((new_parent1.sid IS NULL) AND (old_parent1.sid IS NULL)) OR
-               (
-                (new_parent1.sid = old_parent1.sid) AND
-                (new_parent1.gid = old_parent1.gid) AND
-                (new_parent1.qidsuffix = old_parent1.qidsuffix)
-               )
-              )
+        ON old_s_c.COLUMN_NAME = new_s_c.COLUMN_NAME
         ;
         "
         ;
         break;
         case 'pgsql':
-            $command = "
-            SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
-            FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
-            JOIN " . Yii::app()->db->tablePrefix . "questions new_q
-            ON old_q.qid = new_q.qid AND old_q.type = new_q.type
-            JOIN new_s_c
-            ON new_s_c.sid::text = new_q.sid::text AND
-               new_s_c.gid::text = new_q.gid::text AND
-               new_s_c.qidsuffix like concat(new_q.qid, '%')
-            JOIN old_s_c
-            ON old_s_c.sid::text = old_q.sid::text AND
-               old_s_c.gid::text = old_q.gid::text AND
-               old_s_c.qidsuffix LIKE CONCAT(old_q.qid, '%') AND
-               old_s_c.qidsuffix = new_s_c.qidsuffix
-            LEFT JOIN new_parent1
-            ON new_s_c.sid = new_parent1.sid AND
-               new_s_c.gid = new_parent1.gid AND
-               new_s_c.qidsuffix <> new_parent1.qidsuffix AND
-               new_parent1.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
-            LEFT JOIN new_parent2
-            ON new_s_c.sid = new_parent2.sid AND
-               new_s_c.gid = new_parent2.gid AND
-               new_s_c.qidsuffix <> new_parent2.qidsuffix AND new_parent1.qidsuffix <> new_parent2.qidsuffix AND
-               new_parent2.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
-            LEFT JOIN old_parent1
-            ON old_s_c.sid = old_parent1.sid AND
-               old_s_c.gid = old_parent1.gid AND
-               old_s_c.qidsuffix <> old_parent1.qidsuffix AND
-               old_parent1.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
-            LEFT JOIN old_parent2
-               ON old_s_c.sid = old_parent2.sid AND
-                  old_s_c.gid = old_parent2.gid AND
-                  old_s_c.qidsuffix <> old_parent2.qidsuffix AND old_parent1.qidsuffix <> old_parent2.qidsuffix AND
-                  old_parent2.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
-            WHERE (new_parent2.sid IS NULL) AND
-                  (old_parent2.sid IS NULL) AND
-                  (((new_parent1.sid IS NULL) AND (old_parent1.sid IS NULL)) OR
-                   (
-                    (new_parent1.sid = old_parent1.sid) AND
-                    (new_parent1.gid = old_parent1.gid) AND
-                    (new_parent1.qidsuffix = old_parent1.qidsuffix)
-                   )
-                  )
-            ;
-            "
-            ;
+        $command = "
+        SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
+        FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
+        JOIN " . Yii::app()->db->tablePrefix . "questions new_q
+        ON old_q.qid = new_q.qid AND old_q.type = new_q.type
+        JOIN new_s_c
+        ON new_s_c.qid = new_q.qid
+        JOIN old_s_c
+        ON old_s_c.COLUMN_NAME = new_s_c.COLUMN_NAME
+        ;
+        "
+        ;
         break;
         case 'mssql':
         case 'sqlsrv':
-            $command = "
-            SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
-                    FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
-                    JOIN " . Yii::app()->db->tablePrefix . "questions new_q
-                    ON old_q.qid = new_q.qid AND old_q.type = new_q.type
-                    JOIN new_s_c_{$sid} new_s_c
-                    ON new_s_c.sid = convert(nvarchar(255), new_q.sid) AND
-                       new_s_c.gid = convert(nvarchar(255), new_q.gid) AND
-                       new_s_c.qidsuffix like concat(new_q.qid, '%')
-                    JOIN old_s_c_{$sid} old_s_c
-                    ON old_s_c.sid = convert(nvarchar(255), old_q.sid) AND
-                       old_s_c.gid = convert(nvarchar(255), old_q.gid) AND
-                       old_s_c.qidsuffix LIKE CONCAT(old_q.qid, '%') AND
-                       old_s_c.qidsuffix = new_s_c.qidsuffix
-                    LEFT JOIN new_parent1_{$sid} new_parent1
-                    ON new_s_c.sid = new_parent1.sid AND
-                       new_s_c.gid = new_parent1.gid AND
-                       new_s_c.qidsuffix <> new_parent1.qidsuffix AND
-                       new_parent1.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
-                    LEFT JOIN new_parent2_{$sid} new_parent2
-                    ON new_s_c.sid = new_parent2.sid AND
-                       new_s_c.gid = new_parent2.gid AND
-                       new_s_c.qidsuffix <> new_parent2.qidsuffix AND new_parent1.qidsuffix <> new_parent2.qidsuffix AND
-                       new_parent2.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
-                    LEFT JOIN old_parent1_{$sid} old_parent1
-                    ON old_s_c.sid = old_parent1.sid AND
-                       old_s_c.gid = old_parent1.gid AND
-                       old_s_c.qidsuffix <> old_parent1.qidsuffix AND
-                       old_parent1.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
-                    LEFT JOIN old_parent2_{$sid} old_parent2
-                       ON old_s_c.sid = old_parent2.sid AND
-                          old_s_c.gid = old_parent2.gid AND
-                          old_s_c.qidsuffix <> old_parent2.qidsuffix AND old_parent1.qidsuffix <> old_parent2.qidsuffix AND
-                          old_parent2.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
-                    WHERE (new_parent2.sid IS NULL) AND
-                          (old_parent2.sid IS NULL) AND
-                          (((new_parent1.sid IS NULL) AND (old_parent1.sid IS NULL)) OR
-                           (
-                            (new_parent1.sid = old_parent1.sid) AND
-                            (new_parent1.gid = old_parent1.gid) AND
-                            (new_parent1.qidsuffix = old_parent1.qidsuffix)
-                           )
-                          )
-            ;            
-            "
-            ;
-            break;
+        $command = "
+        SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
+        FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
+        JOIN " . Yii::app()->db->tablePrefix . "questions new_q
+        ON old_q.qid = new_q.qid AND old_q.type = new_q.type
+        JOIN new_s_c
+        ON new_s_c.qid = new_q.qid
+        JOIN old_s_c
+        ON old_s_c.COLUMN_NAME = new_s_c.COLUMN_NAME
+        ;
+        "
+        ;
+        break;
     }
 
     $rawResults = Yii::app()->db->createCommand($command)->queryAll();
@@ -1822,7 +1720,7 @@ function getDeactivatedArchives($sid)
         (SELECT n, TABLE_NAME
         FROM information_schema.tables
         JOIN (
-            SELECT 'survey' AS n
+            SELECT 'responses' AS n
             UNION
             SELECT 'tokens' AS n
             UNION
@@ -1831,7 +1729,7 @@ function getDeactivatedArchives($sid)
             SELECT 'questions' AS n
         ) t
         ON TABLE_SCHEMA = DATABASE() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
-        ((n <> 'survey') OR (TABLE_NAME NOT LIKE '%timings%'))
+        ((n <> 'responses') OR (TABLE_NAME NOT LIKE '%timings%'))
         ORDER BY TABLE_NAME) t
         GROUP BY n;
         ";
@@ -1843,7 +1741,7 @@ function getDeactivatedArchives($sid)
         (SELECT n, TABLE_NAME
         FROM information_schema.tables
         JOIN (
-            SELECT 'survey' AS n
+            SELECT 'responses' AS n
             UNION
             SELECT 'tokens' AS n
             UNION
@@ -1852,7 +1750,7 @@ function getDeactivatedArchives($sid)
             SELECT 'questions' AS n
         ) t
         ON TABLE_CATALOG = current_database() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
-        ((n <> 'survey') OR (TABLE_NAME NOT LIKE '%timings%'))
+        ((n <> 'responses') OR (TABLE_NAME NOT LIKE '%timings%'))
         ORDER BY TABLE_NAME) t
         GROUP BY n;
             "
@@ -1866,7 +1764,7 @@ function getDeactivatedArchives($sid)
         (SELECT n, TABLE_NAME
         FROM information_schema.tables
         JOIN (
-            SELECT 'survey' AS n
+            SELECT 'responses' AS n
             UNION
             SELECT 'tokens' AS n
             UNION
@@ -1875,7 +1773,7 @@ function getDeactivatedArchives($sid)
             SELECT 'questions' AS n
         ) t
         ON TABLE_CATALOG = db_name() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
-        ((n <> 'survey') OR (TABLE_NAME NOT LIKE '%timings%'))
+        ((n <> 'responses') OR (TABLE_NAME NOT LIKE '%timings%'))
         ) t
         GROUP BY n;
         "
@@ -1956,7 +1854,7 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
     }
     $archivedResponses = new CDataProviderIterator(new CActiveDataProvider($pluginDynamicArchivedResponseModel), 500);
 
-    $tableName = "{{survey_$surveyId}}";
+    $tableName = "{{responses_$surveyId}}";
     $importedResponses = 0;
     $batchData = [];
     foreach ($archivedResponses as $archivedResponse) {
@@ -2021,13 +1919,13 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
         }
         if (count($batchData) % 500 === 0) {
             if ($preserveIDs) {
-                switchMSSQLIdentityInsert("survey_$surveyId", true);
+                switchMSSQLIdentityInsert("responses_$surveyId", true);
             }
             $builder = App()->db->getCommandBuilder();
             $command = $builder->createMultipleInsertCommand($tableName, $batchData);
             $importedResponses += $command->execute();
             if ($preserveIDs) {
-                switchMSSQLIdentityInsert("survey_$surveyId", false);
+                switchMSSQLIdentityInsert("responses_$surveyId", false);
             }
             $batchData = [];
         }
@@ -2037,13 +1935,13 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
 
     if (count($batchData)) {
         if ($preserveIDs) {
-            switchMSSQLIdentityInsert("survey_$surveyId", true);
+            switchMSSQLIdentityInsert("responses_$surveyId", true);
         }
         $builder = App()->db->getCommandBuilder();
         $command = $builder->createMultipleInsertCommand($tableName, $batchData);
         $importedResponses += $command->execute();
         if ($preserveIDs) {
-            switchMSSQLIdentityInsert("survey_$surveyId", false);
+            switchMSSQLIdentityInsert("responses_$surveyId", false);
         }
     }
     return $importedResponses;

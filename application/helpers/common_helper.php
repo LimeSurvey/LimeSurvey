@@ -2166,13 +2166,13 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
     foreach ($fields as $field) {
         if (!empty($field['gid'])) {
             // field for time spent on page
-            $fieldname = "{$field['sid']}X{$field['gid']}time";
+            $fieldname = "G{$field['gid']}time";
             if (!isset($fieldmap[$fieldname])) {
                 $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => "page_time", 'sid' => $surveyid, "gid" => $field['gid'], "group_name" => $field['group_name'], "qid" => '', 'aid' => '', 'suffix' => '', 'title' => 'groupTime' . $field['gid'], 'question' => gT('Group time') . ": " . $field['group_name']);
             }
 
             // field for time spent on answering a question
-            $fieldname = "{$field['sid']}X{$field['gid']}X{$field['qid']}time";
+            $fieldname = "Q{$field['qid']}time";
             if (!isset($fieldmap[$fieldname])) {
                 $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => "answer_time", 'sid' => $surveyid, "gid" => $field['gid'], "group_name" => $field['group_name'], "qid" => $field['qid'], 'aid' => '', 'suffix' => '', "title" => $field['title'] . 'Time', "question" => gT('Question time') . ": " . $field['title']);
             }
