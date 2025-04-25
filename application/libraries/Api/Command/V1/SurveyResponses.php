@@ -95,6 +95,6 @@ class SurveyResponses implements CommandInterface
         ));
 
         return $this->responseFactory
-            ->makeSuccess(['responses' => [$request->test(), $dataProvider->getData()]]);
+            ->makeSuccess(['responses' => $dataProvider->getData()]);
     }
 }
