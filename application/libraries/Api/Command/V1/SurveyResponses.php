@@ -17,25 +17,26 @@ class SurveyResponses implements CommandInterface
     use AuthPermissionTrait;
 
     protected Survey $survey;
-    protected TransformerOutputSurveyResponses $transformerOutputSurveyDetail;
+    protected Survey $diFactory;
     protected ResponseFactory $responseFactory;
     protected FilterPatcher $responseFilterPatcher;
+    protected TransformerOutputSurveyResponses $transformerOutputSurveyResponses;
 
     /**
      * Constructor
      *
      * @param Survey $survey
-     * @param TransformerOutputSurveyResponses $transformerOutputSurveyDetail
+     * @param TransformerOutputSurveyResponses $transformerOutputSurveyResponses
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        FactoryInterface $diFactory,
-        TransformerOutputSurveyResponses $transformerOutputSurveyDetail,
+        Survey $survey,
+        TransformerOutputSurveyResponses $transformerOutputSurveyResponses,
         FilterPatcher $responseFilterPatcher,
         ResponseFactory $responseFactory
     ) {
-        $this->diFactory = $diFactory;
-        $this->transformerOutputSurveyDetail = $transformerOutputSurveyDetail;
+        $this->survey = $survey;
+        $this->transformerOutputSurveyResponses = $transformerOutputSurveyResponses;
         $this->responseFactory = $responseFactory;
         $this->responseFilterPatcher = $responseFilterPatcher;
     }
@@ -56,10 +57,10 @@ class SurveyResponses implements CommandInterface
         $sort     = new \CSort();
 
 
-//        $searchParams = [
-//            "sort" => [
-//                "id" => 'asc',
-//            ],
+        $searchParams = [
+            "sort" => [
+                "id" => 'asc',
+            ],
 //            "search" => [
 //                [
 //                    "survey" => "132241",
@@ -78,7 +79,7 @@ class SurveyResponses implements CommandInterface
 //                    "type" => "option",
 //                ],
 //            ]
-//        ];
+        ];
 
 
         if ($searchParams) {
@@ -94,7 +95,9 @@ class SurveyResponses implements CommandInterface
             ],
         ));
 
+        $data = $this->transformerOutputSurveyResponses->transform($dataProvider);
+
         return $this->responseFactory
-            ->makeSuccess(['responses' => $dataProvider->getData()]);
+            ->makeSuccess(['responses' => $data]);
     }
 }
