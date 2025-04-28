@@ -124,7 +124,9 @@ class SurveyActivate
             $sTimestamp = $sParts[count($sParts) - 1];
             $dynamicColumns = getUnchangedColumns($surveyId, $sTimestamp, $qTimestamp);
             recoverSurveyResponses($surveyId, $archives["survey"], $preserveIDs, $dynamicColumns);
-            if (isset($archives["tokens"])) {
+            $survey = Survey::model()->findByPk($surveyId);
+            //If it's not open access mode, then we import the surveys from the archive if they exist
+            if (($survey->access_mode !== 'O') && isset($archives["tokens"])) {
                 $tokenTable = $this->app->db->tablePrefix . "tokens_" . $surveyId;
                 try {
                     createTableFromPattern($tokenTable, $archives["tokens"]);

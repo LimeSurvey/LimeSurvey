@@ -106,20 +106,22 @@ class SurveyAccessModeService
         $newTable = "old_tokens_" . $survey->sid . "_" . $date;
         $userID = $this->app->user->getId();
 
-        if ($archive) {
-            $surveyInfo = getSurveyInfo($survey->sid);
-            $this->app->db->createCommand()->renameTable("{{" . $oldTable . "}}", "{{" . $newTable . "}}");
-            $archivedTokenSettings = new ArchivedTableSettings();
-            $archivedTokenSettings->survey_id = $survey->sid;
-            $archivedTokenSettings->user_id = $userID;
-            $archivedTokenSettings->tbl_name = $newTable;
-            $archivedTokenSettings->tbl_type = 'token';
-            $archivedTokenSettings->created = $DBDate;
-            $archivedTokenSettings->properties = $surveyInfo['tokenencryptionoptions'];
-            $archivedTokenSettings->attributes = json_encode($surveyInfo['attributedescriptions']);
-            $archivedTokenSettings->save();
-        } else {
-            $this->app->db->createCommand()->dropTable("{{" . $oldTable . "}}");
+        if ($survey->active === 'Y') {
+            if ($archive) {
+                $surveyInfo = getSurveyInfo($survey->sid);
+                $this->app->db->createCommand()->renameTable("{{" . $oldTable . "}}", "{{" . $newTable . "}}");
+                $archivedTokenSettings = new ArchivedTableSettings();
+                $archivedTokenSettings->survey_id = $survey->sid;
+                $archivedTokenSettings->user_id = $userID;
+                $archivedTokenSettings->tbl_name = $newTable;
+                $archivedTokenSettings->tbl_type = 'token';
+                $archivedTokenSettings->created = $DBDate;
+                $archivedTokenSettings->properties = $surveyInfo['tokenencryptionoptions'];
+                $archivedTokenSettings->attributes = json_encode($surveyInfo['attributedescriptions']);
+                $archivedTokenSettings->save();
+            } else {
+                $this->app->db->createCommand()->dropTable("{{" . $oldTable . "}}");
+            }
         }
     }
 
