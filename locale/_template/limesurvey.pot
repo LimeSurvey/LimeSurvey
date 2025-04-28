@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-04-15 09:26:33+00:00\n"
+"POT-Creation-Date: 2025-04-28 13:04:17+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: application/controllers/AdminController.php:98
 #: application/controllers/UserManagementController.php:498
-#: application/controllers/UserManagementController.php:1220
+#: application/controllers/UserManagementController.php:1228
 #: application/controllers/admin/DataEntry.php:196
 #: application/controllers/admin/DataEntry.php:1798
 #: application/controllers/admin/DataEntry.php:1801
@@ -162,12 +162,12 @@ msgstr ""
 #: application/controllers/UserManagementController.php:871
 #: application/controllers/UserManagementController.php:973
 #: application/controllers/UserManagementController.php:1054
-#: application/controllers/UserManagementController.php:1131
-#: application/controllers/UserManagementController.php:1186
-#: application/controllers/UserManagementController.php:1246
-#: application/controllers/UserManagementController.php:1256
-#: application/controllers/UserManagementController.php:1294
-#: application/controllers/UserManagementController.php:1473
+#: application/controllers/UserManagementController.php:1139
+#: application/controllers/UserManagementController.php:1194
+#: application/controllers/UserManagementController.php:1254
+#: application/controllers/UserManagementController.php:1264
+#: application/controllers/UserManagementController.php:1302
+#: application/controllers/UserManagementController.php:1481
 #: application/controllers/UserRoleController.php:146
 #: application/controllers/UserRoleController.php:193
 #: application/controllers/UserRoleController.php:310
@@ -1069,7 +1069,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:2064
 #: application/controllers/SurveyAdministrationController.php:2161
 #: application/controllers/UserGroupController.php:396
-#: application/controllers/UserManagementController.php:1355
+#: application/controllers/UserManagementController.php:1363
 #: application/controllers/admin/ParticipantsAction.php:631
 #: application/controllers/admin/SurveymenuController.php:68
 #: application/controllers/admin/SurveymenuController.php:138
@@ -1207,7 +1207,7 @@ msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:1356
 #: application/controllers/SurveyAdministrationController.php:273
-#: application/controllers/UserManagementController.php:1077
+#: application/controllers/UserManagementController.php:1085
 #: application/controllers/UserRoleController.php:391
 msgid "Deleted"
 msgstr ""
@@ -1245,12 +1245,12 @@ msgstr ""
 #: application/controllers/ThemeOptionsController.php:209
 #: application/controllers/ThemeOptionsController.php:251
 #: application/controllers/UserManagementController.php:456
-#: application/controllers/UserManagementController.php:1071
-#: application/controllers/UserManagementController.php:1107
-#: application/controllers/UserManagementController.php:1163
-#: application/controllers/UserManagementController.php:1224
-#: application/controllers/UserManagementController.php:1272
-#: application/controllers/UserManagementController.php:1320
+#: application/controllers/UserManagementController.php:1078
+#: application/controllers/UserManagementController.php:1115
+#: application/controllers/UserManagementController.php:1171
+#: application/controllers/UserManagementController.php:1232
+#: application/controllers/UserManagementController.php:1280
+#: application/controllers/UserManagementController.php:1328
 #: application/controllers/UserRoleController.php:385
 #: application/extensions/admin/SearchBoxWidget/views/searchBox.php:24
 #: application/extensions/admin/SearchBoxWidget/views/searchBox.php:74
@@ -1274,8 +1274,8 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:301
 #: application/controllers/ThemeOptionsController.php:248
 #: application/controllers/ThemeOptionsController.php:257
-#: application/controllers/UserManagementController.php:1104
-#: application/controllers/UserManagementController.php:1113
+#: application/controllers/UserManagementController.php:1112
+#: application/controllers/UserManagementController.php:1121
 #: application/extensions/admin/grid/MassiveActionsWidget/views/_selected_items.php:31
 #: application/views/themeOptions/index.php:252
 msgid "Selected"
@@ -1416,7 +1416,7 @@ msgstr ""
 #: application/controllers/ResponsesController.php:201
 #: application/controllers/admin/DataEntry.php:568
 #: application/controllers/admin/Tokens.php:1791
-#: application/helpers/common_helper.php:2963
+#: application/helpers/common_helper.php:2984
 #: application/models/TemplateManifest.php:168 application/models/Token.php:102
 #: application/views/admin/token/exportdialog.php:17
 #: application/views/quotas/index.php:84
@@ -1571,7 +1571,7 @@ msgstr ""
 
 #: application/controllers/ResponsesController.php:187
 #: application/helpers/common_helper.php:1361
-#: application/helpers/common_helper.php:2933
+#: application/helpers/common_helper.php:2954
 #: application/models/SurveyLink.php:233 application/models/Token.php:96
 #: application/models/TokenDynamic.php:666
 #: application/views/admin/dataentry/caption_view.php:31
@@ -1580,7 +1580,7 @@ msgid "Access code"
 msgstr ""
 
 #: application/controllers/ResponsesController.php:188
-#: application/helpers/common_helper.php:2913
+#: application/helpers/common_helper.php:2934
 #: application/models/Participant.php:195
 #: application/models/ParticipantShare.php:238 application/models/Token.php:92
 #: application/models/TokenDynamic.php:636
@@ -1594,7 +1594,7 @@ msgid "First name"
 msgstr ""
 
 #: application/controllers/ResponsesController.php:189
-#: application/helpers/common_helper.php:2918
+#: application/helpers/common_helper.php:2939
 #: application/models/Participant.php:196
 #: application/models/ParticipantShare.php:233 application/models/Token.php:93
 #: application/models/TokenDynamic.php:643
@@ -3687,7 +3687,7 @@ msgstr ""
 
 #: application/controllers/UserManagementController.php:122
 #: application/controllers/UserManagementController.php:256
-#: application/controllers/UserManagementController.php:1343
+#: application/controllers/UserManagementController.php:1351
 msgid "User does not exist"
 msgstr ""
 
@@ -3727,12 +3727,12 @@ msgid "Status successfully updated"
 msgstr ""
 
 #: application/controllers/UserManagementController.php:456
-#: application/controllers/UserManagementController.php:1071
-#: application/controllers/UserManagementController.php:1107
-#: application/controllers/UserManagementController.php:1163
-#: application/controllers/UserManagementController.php:1224
-#: application/controllers/UserManagementController.php:1272
-#: application/controllers/UserManagementController.php:1320
+#: application/controllers/UserManagementController.php:1078
+#: application/controllers/UserManagementController.php:1115
+#: application/controllers/UserManagementController.php:1171
+#: application/controllers/UserManagementController.php:1232
+#: application/controllers/UserManagementController.php:1280
+#: application/controllers/UserManagementController.php:1328
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:17
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:43
 #: application/models/User.php:176 application/models/User.php:792
@@ -3741,12 +3741,12 @@ msgid "User ID"
 msgstr ""
 
 #: application/controllers/UserManagementController.php:456
-#: application/controllers/UserManagementController.php:1071
-#: application/controllers/UserManagementController.php:1107
-#: application/controllers/UserManagementController.php:1163
-#: application/controllers/UserManagementController.php:1224
-#: application/controllers/UserManagementController.php:1272
-#: application/controllers/UserManagementController.php:1320
+#: application/controllers/UserManagementController.php:1078
+#: application/controllers/UserManagementController.php:1115
+#: application/controllers/UserManagementController.php:1171
+#: application/controllers/UserManagementController.php:1232
+#: application/controllers/UserManagementController.php:1280
+#: application/controllers/UserManagementController.php:1328
 #: application/core/LsDefaultDataSets.php:2836
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:386
 #: application/core/plugins/Authdb/Authdb.php:142
@@ -3765,7 +3765,7 @@ msgid "Username"
 msgstr ""
 
 #: application/controllers/UserManagementController.php:460
-#: application/controllers/UserManagementController.php:1230
+#: application/controllers/UserManagementController.php:1238
 #: application/views/userManagement/partial/permissionsuccess.php:8
 #: application/views/userManagement/partial/success.php:4
 #: application/views/userRole/partials/success.php:2
@@ -3773,9 +3773,9 @@ msgid "Saved successfully"
 msgstr ""
 
 #: application/controllers/UserManagementController.php:482
-#: application/controllers/UserManagementController.php:1375
-#: application/controllers/UserManagementController.php:1464
-#: application/controllers/UserManagementController.php:1549
+#: application/controllers/UserManagementController.php:1383
+#: application/controllers/UserManagementController.php:1472
+#: application/controllers/UserManagementController.php:1557
 msgid "Your request is invalid."
 msgstr ""
 
@@ -3826,81 +3826,81 @@ msgstr ""
 msgid "Users imported successfully."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1067
+#: application/controllers/UserManagementController.php:1073
 msgid "You cannot delete yourself or a protected user."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1145
+#: application/controllers/UserManagementController.php:1153
 msgid "Error! Please change your password from your profile settings."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1151
+#: application/controllers/UserManagementController.php:1159
 msgid "Error! You do not have the permission to edit this user."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1158
+#: application/controllers/UserManagementController.php:1166
 msgid "Error: New password could not be sent to %s"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1169
+#: application/controllers/UserManagementController.php:1177
 msgid "Email successfully sent."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1200
+#: application/controllers/UserManagementController.php:1208
 msgid "You can not update your own permission."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1206
+#: application/controllers/UserManagementController.php:1214
 msgid "You are not allowed to assign permissions to this user."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1252
+#: application/controllers/UserManagementController.php:1260
 #: application/core/SurveyCommonAction.php:169
 #: application/models/QuestionGroup.php:182
 msgid "Group not found"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1268
+#: application/controllers/UserManagementController.php:1276
 msgid "User is already a member of the group."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1278
+#: application/controllers/UserManagementController.php:1286
 msgid "Usergroup updated"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1306
+#: application/controllers/UserManagementController.php:1314
 msgid "You are not allowed to update your own roles."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1312
+#: application/controllers/UserManagementController.php:1320
 msgid "You are not allowed to assign a role to this user."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1326
+#: application/controllers/UserManagementController.php:1334
 msgid "Role updated"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1504
+#: application/controllers/UserManagementController.php:1512
 msgid "User successfully created"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1534
+#: application/controllers/UserManagementController.php:1542
 msgid "Error: User was not created"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1555
+#: application/controllers/UserManagementController.php:1563
 msgid "You do not have permission for this action."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1566
+#: application/controllers/UserManagementController.php:1574
 msgid "A username was not supplied or the username is invalid."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1575
+#: application/controllers/UserManagementController.php:1583
 msgid "A user with this username already exists."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1582
+#: application/controllers/UserManagementController.php:1590
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:286
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:308
 #: application/core/plugins/Authdb/Authdb.php:79
@@ -3908,7 +3908,7 @@ msgstr ""
 msgid "Failed to add user"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1583
+#: application/controllers/UserManagementController.php:1591
 msgid "Plugin is not active"
 msgstr ""
 
@@ -10263,12 +10263,12 @@ msgstr ""
 msgid "Survey response %d"
 msgstr ""
 
-#: application/helpers/admin/htmleditor_helper.php:248
-#: application/helpers/admin/htmleditor_helper.php:261
+#: application/helpers/admin/htmleditor_helper.php:238
+#: application/helpers/admin/htmleditor_helper.php:251
 msgid "Start HTML editor in a popup window"
 msgstr ""
 
-#: application/helpers/admin/htmleditor_helper.php:285
+#: application/helpers/admin/htmleditor_helper.php:270
 #: tmp/runtime/twig_cache/a2/a21ad65d91769ea3f14909fe147c6656.php:124
 msgid "Open editor"
 msgstr ""
@@ -10981,7 +10981,7 @@ msgstr ""
 msgid "Question time"
 msgstr ""
 
-#: application/helpers/common_helper.php:2923
+#: application/helpers/common_helper.php:2944
 #: application/models/Participant.php:197
 #: application/models/ParticipantShare.php:243
 #: application/models/SavedControl.php:170 application/models/Token.php:94
@@ -10992,181 +10992,181 @@ msgstr ""
 msgid "Email address"
 msgstr ""
 
-#: application/helpers/common_helper.php:2928 application/models/Token.php:95
+#: application/helpers/common_helper.php:2949 application/models/Token.php:95
 #: application/models/TokenDynamic.php:658
 msgid "Email status"
 msgstr ""
 
-#: application/helpers/common_helper.php:2938 application/models/Token.php:97
+#: application/helpers/common_helper.php:2959 application/models/Token.php:97
 msgid "Language code"
 msgstr ""
 
-#: application/helpers/common_helper.php:2943 application/models/Token.php:99
+#: application/helpers/common_helper.php:2964 application/models/Token.php:99
 msgid "Invitation sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:2948 application/models/Token.php:100
+#: application/helpers/common_helper.php:2969 application/models/Token.php:100
 msgid "Last reminder sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:2953 application/models/Token.php:101
+#: application/helpers/common_helper.php:2974 application/models/Token.php:101
 msgid "Total numbers of sent reminders"
 msgstr ""
 
-#: application/helpers/common_helper.php:2958 application/models/Token.php:103
+#: application/helpers/common_helper.php:2979 application/models/Token.php:103
 #: application/models/TokenDynamic.php:711
 msgid "Uses left"
 msgstr ""
 
-#: application/helpers/common_helper.php:4333
+#: application/helpers/common_helper.php:4354
 msgid "SQL command failed: %s"
 msgstr ""
 
-#: application/helpers/common_helper.php:4537
+#: application/helpers/common_helper.php:4558
 msgid "ARMSCII-8 Armenian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4538
+#: application/helpers/common_helper.php:4559
 msgid "US ASCII"
 msgstr ""
 
-#: application/helpers/common_helper.php:4539
+#: application/helpers/common_helper.php:4560
 msgid "Big5 Traditional Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4540
+#: application/helpers/common_helper.php:4561
 msgid "Binary pseudo charset"
 msgstr ""
 
-#: application/helpers/common_helper.php:4541
+#: application/helpers/common_helper.php:4562
 msgid "Windows Central European (Windows-1250)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4542
+#: application/helpers/common_helper.php:4563
 msgid "Windows Cyrillic (Windows-1251)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4543
+#: application/helpers/common_helper.php:4564
 msgid "Windows Arabic (Windows-1256)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4544
+#: application/helpers/common_helper.php:4565
 msgid "Windows Baltic (Windows-1257)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4545
+#: application/helpers/common_helper.php:4566
 msgid "DOS West European (cp850)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4546
+#: application/helpers/common_helper.php:4567
 msgid "DOS Central European (cp852)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4547
+#: application/helpers/common_helper.php:4568
 msgid "DOS Cyrillic (cp866)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4548
+#: application/helpers/common_helper.php:4569
 msgid "Windows-31J - SJIS for Windows Japanese (cp932)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4549
+#: application/helpers/common_helper.php:4570
 msgid "DEC West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4550
+#: application/helpers/common_helper.php:4571
 msgid "UJIS for Windows Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4551
+#: application/helpers/common_helper.php:4572
 msgid "EUC-KR Korean"
 msgstr ""
 
-#: application/helpers/common_helper.php:4552
+#: application/helpers/common_helper.php:4573
 msgid "GB2312 Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4553
+#: application/helpers/common_helper.php:4574
 msgid "GBK Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4554
+#: application/helpers/common_helper.php:4575
 msgid "GEOSTD8 Georgian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4555
+#: application/helpers/common_helper.php:4576
 msgid "ISO 8859-7 Greek"
 msgstr ""
 
-#: application/helpers/common_helper.php:4556
+#: application/helpers/common_helper.php:4577
 msgid "ISO 8859-8 Hebrew"
 msgstr ""
 
-#: application/helpers/common_helper.php:4557
+#: application/helpers/common_helper.php:4578
 msgid "HP West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4558
+#: application/helpers/common_helper.php:4579
 msgid "DOS Kamenicky Czech-Slovak (cp895)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4559
+#: application/helpers/common_helper.php:4580
 msgid "KOI8-R Relcom Russian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4560
+#: application/helpers/common_helper.php:4581
 msgid "KOI8-U Ukrainian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4561
+#: application/helpers/common_helper.php:4582
 msgid "ISO 8859-1 West European (latin1)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4562
+#: application/helpers/common_helper.php:4583
 msgid "ISO 8859-2 Central European (latin2)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4563
+#: application/helpers/common_helper.php:4584
 msgid "ISO 8859-9 Turkish (latin5)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4564
+#: application/helpers/common_helper.php:4585
 msgid "ISO 8859-13 Baltic (latin7)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4565
+#: application/helpers/common_helper.php:4586
 msgid "Mac Central European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4566
+#: application/helpers/common_helper.php:4587
 msgid "Mac West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4567
+#: application/helpers/common_helper.php:4588
 msgid "Shift-JIS Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4568
+#: application/helpers/common_helper.php:4589
 msgid "7bit Swedish"
 msgstr ""
 
-#: application/helpers/common_helper.php:4569
+#: application/helpers/common_helper.php:4590
 msgid "TIS620 Thai"
 msgstr ""
 
-#: application/helpers/common_helper.php:4570
+#: application/helpers/common_helper.php:4591
 msgid "UCS-2 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:4571
+#: application/helpers/common_helper.php:4592
 msgid "EUC-JP Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4572
+#: application/helpers/common_helper.php:4593
 msgid "UTF-8 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:4576
+#: application/helpers/common_helper.php:4597
 msgid "(Automatic)"
 msgstr ""
 
