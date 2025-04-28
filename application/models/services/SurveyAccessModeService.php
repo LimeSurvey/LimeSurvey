@@ -8,7 +8,6 @@ use Token;
 use LimeExpressionManager;
 use LSYii_Application;
 use ArchivedTableSettings;
-
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException,
     NotFoundException,
@@ -33,8 +32,7 @@ class SurveyAccessModeService
         Permission $permission,
         Survey $survey,
         LSYii_Application $app
-    )
-    {
+    ) {
         $this->permission = $permission;
         $this->survey = $survey;
         $this->app = $app;
@@ -63,7 +61,7 @@ class SurveyAccessModeService
         ];
         if (($oldMode !== self::$ACCESS_TYPE_CLOSED) && ($newMode === self::$ACCESS_TYPE_CLOSED)) {
             $permissions['tokens'] = 'delete';
-        } else if (($oldMode === self::$ACCESS_TYPE_CLOSED) && ($newMode !== self::$ACCESS_TYPE_CLOSED)) {
+        } elseif (($oldMode === self::$ACCESS_TYPE_CLOSED) && ($newMode !== self::$ACCESS_TYPE_CLOSED)) {
             $permissions['tokens'] = 'create';
         }
         foreach ($permissions as $name => $perm) {
@@ -154,7 +152,7 @@ class SurveyAccessModeService
         $survey->access_mode = $accessMode;
         if ($oldAccessMode === self::$ACCESS_TYPE_OPEN) {
             $this->newTokenTable($survey);
-        } else if ($accessMode === self::$ACCESS_TYPE_OPEN) {
+        } elseif ($accessMode === self::$ACCESS_TYPE_OPEN) {
             $this->dropTokenTable($survey, $archive);
         }
         $survey->save();
