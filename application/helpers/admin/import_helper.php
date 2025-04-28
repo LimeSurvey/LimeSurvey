@@ -1631,7 +1631,7 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
         JOIN " . Yii::app()->db->tablePrefix . "questions new_q
         ON old_q.qid = new_q.qid AND old_q.type = new_q.type
         JOIN new_s_c
-        ON new_s_c.qid = new_q.qid
+        ON new_s_c.qid::text = new_q.qid::text
         JOIN old_s_c
         ON old_s_c.COLUMN_NAME = new_s_c.COLUMN_NAME
         ;
