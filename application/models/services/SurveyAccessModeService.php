@@ -51,12 +51,13 @@ class SurveyAccessModeService
     /**
      * Checks whether the issuer has the necessary permissions for the action
      * @param int $surveyID the id of the survey
-     * @param string $oldMode the access mode we intend to change
      * @param string $newMode the access mode we intend to set
      * @return bool whether all the permissions necessary are present
      */
-    protected function hasPermission(int $surveyID, string $oldMode, string $newMode)
+    public function hasPermission(int $surveyID, string $newMode)
     {
+        $survey = $this->survey->findByPk($surveyID);
+        $oldMode = $survey->access_mode;
         $permissions = [
             'surveysettings' => 'update'
         ];
@@ -145,7 +146,7 @@ class SurveyAccessModeService
                 'The access mode given is not supported'
             );
         }
-        if (!$this->hasPermission($surveyID, $oldAccessMode, $accessMode)) {
+        if (!$this->hasPermission($surveyID, $accessMode)) {
             throw new PermissionDeniedException(
                 'Access denied'
             );
