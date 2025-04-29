@@ -79,7 +79,6 @@ class SurveyAccessModeService
      */
     protected function newTokenTable(Survey $survey)
     {
-        $surveyInfo = getSurveyInfo($survey->sid);
         if ($survey->hasTokensTable) {
             return false; //Tokens table already exists, nothing to do here
         }
