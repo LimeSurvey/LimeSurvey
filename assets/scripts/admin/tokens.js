@@ -208,8 +208,14 @@ function validateNotEmptyTokenForm() {
     }
     var isFormEmpty = $('#email').val() == '' && $('#firstname').val() == '' && $('#lastname').val() == '';
     if (isFormEmpty) {
-        const modal = new bootstrap.Modal(document.getElementById('emptyTokenConfirmationModal'));
+        const modalElement = document.getElementById('emptyTokenConfirmationModal');
+        const modal = new bootstrap.Modal(modalElement);
+        modalElement.addEventListener('hidden.bs.modal', function () {
+            // Enable the Save and Close button
+            $("#save-and-close-button").removeClass("disabled");
+        });
         modal.show();
+        $('#ls-loading').hide();
         return false;
     }
     return true;
@@ -368,6 +374,7 @@ $(document).on('ready pjax:scriptcomplete', function(){
      * Confirm save empty token
      */
     $("#save-empty-token").off('click.token-save').on('click.token-save', function() {
+        $('#ls-loading').show();
         $('#edittoken').trigger('submit', {confirm_empty_save: true});
     });
 
