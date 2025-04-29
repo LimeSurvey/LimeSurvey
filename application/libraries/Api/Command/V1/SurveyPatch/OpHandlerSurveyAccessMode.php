@@ -41,7 +41,7 @@ class OpHandlerSurveyAccessMode implements OpHandlerInterface
         return ($op->getEntityType() === $this->entity) && ($op->getType()->getId() === OpTypeUpdate::ID);
     }
 
-    public function handle(OpInterface $op)
+    public function handle(OpInterface $op): void
     {
         $this->surveyAccessModeService->changeAccessMode((int)$op->getEntityId(), $op->getProps()['accessMode'], $op->getProps()['archive'] ?? true);
     }
@@ -51,7 +51,7 @@ class OpHandlerSurveyAccessMode implements OpHandlerInterface
         if (!($sid = intval($op->getEntityId()))) {
             throw new NotFoundException('sid is not a number');
         }
-        if (!$this->surveyAccessModeService->hasPermission((int)$sid, $op->getProps()['accessMode'])) {
+        if (!$this->surveyAccessModeService->hasPermission($sid, $op->getProps()['accessMode'])) {
             throw new PermissionDeniedException(
                 'Access denied'
             );
