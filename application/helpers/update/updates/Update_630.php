@@ -18,9 +18,4 @@ class Update_630 extends DatabaseUpdateBase
             $this->db->createCommand()->update("{{surveys}}", ["access_mode" => "C"], "sid in (" . implode(",", $sids) . ")");
         }
     }
-
-    public function down()
-    {
-        dropColumn('{{surveys}}', 'access_mode');
-    }
 }
