@@ -1215,7 +1215,7 @@ class LimeExpressionManager
                                                 $fsqs[] = $sgq . $fsq['csuffix'] . '.NAOK=="1"';
                                             }
                                         } else {
-                                            if ($fsq['sqsuffix'] == $sq['sqsuffix']) {
+                                            if (isset($fsq['sqsuffix']) && $fsq['sqsuffix'] == $sq['sqsuffix']) {
                                                 $fsqs[] = '!is_empty(' . $sgq . $fsq['csuffix'] . '.NAOK)';
                                             }
                                         }
