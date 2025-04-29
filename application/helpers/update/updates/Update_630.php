@@ -2,7 +2,8 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-class Update_630 extends DatabaseUpdateBase {
+class Update_630 extends DatabaseUpdateBase
+{
     public function up()
     {
         addColumn('{{surveys}}', 'access_mode', "string(1) DEFAULT 'O'");
