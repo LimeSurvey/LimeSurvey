@@ -78,6 +78,7 @@ class Plugin extends LSActiveRecord
             "UPDATE {{plugins}} SET load_error = 1, load_error_message = '%s' WHERE id = " . $this->id,
             addslashes($error['message'] . ' ' . $error['file'])
         );
+        Yii::log("Plugin {$this->name} ({$this->id}) deactivated with error '{$error['message']}'", CLogger::LEVEL_ERROR, 'application.model.plugin.setLoadError');
         return \Yii::app()->db->createCommand($sql)->execute();
     }
 
