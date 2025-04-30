@@ -5,6 +5,9 @@ namespace LimeSurvey\Helpers\Update;
 use CException;
 use Yii;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class Update_630 extends DatabaseUpdateBase
 {
     protected $scriptMapping;
@@ -251,7 +254,7 @@ class Update_630 extends DatabaseUpdateBase
     /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
     public function up()
     {
-        $leftSeparator = $rigtSeparator = "`";
+        $leftSeparator = $rightSeparator = "`";
         if (Yii::app()->db->getDriverName() === 'pgsql') {
             $leftSeparator = $rightSeparator = '"';
         } elseif (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv'])) {
