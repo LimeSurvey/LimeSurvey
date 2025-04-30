@@ -79,7 +79,7 @@ class Plugin extends LSActiveRecord
             addslashes($error['message'] . ' ' . $error['file'])
         );
         Yii::log(
-            "Plugin $this->name} ({$this->id}) deactivated with error '" . CHtml::encode($error['message']) . "' at file '" . CHtml::encode($error['file']) . "'",
+            "Plugin {$this->name} ({$this->id}) deactivated with error '" . CHtml::encode($error['message']) . "' at file '" . CHtml::encode($error['file']) . "'",
             CLogger::LEVEL_ERROR,
             'application.model.plugin.setLoadError'
         );
