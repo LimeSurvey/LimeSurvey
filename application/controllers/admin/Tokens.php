@@ -3088,7 +3088,7 @@ class Tokens extends SurveyCommonAction
                     foreach ($attachments[$type] as $attachment) {
                         if (!LimeMailer::attachmentExist($iSurveyId, $attachment, false)) {
                             $aData['warnings'][] = sprintf(
-                                gT("There a an issue with attachment with language %s. You can review it on %semail template%s."), 
+                                gT("There is an issue with an attachment for language %s. You can review it in the %semail template%s."),
                                 $sSurveyLanguage,
                                 "<a href='" . App()->createUrl("admin/emailtemplates", ["sa" => "index", "surveyid" => $iSurveyId]) . "'>",
                                 "</a>"
