@@ -233,7 +233,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
             }
         }
         $this->othersettings = '{"question_code_prefix":"I","subquestion_code_prefix":"I","answer_code_prefix":"I"}';
-        $this->othersettings = '{"question_code_prefix":"I","subquestion_code_prefix":"I","answer_code_prefix":"I"}';
     }
 
     /** @inheritdoc */
