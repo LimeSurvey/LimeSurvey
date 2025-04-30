@@ -80,11 +80,17 @@ class Plugin extends LSActiveRecord
             ':id' => $this->id
         ];
         Yii::log(
-            "Plugin {$this->name} ({$this->id}) deactivated with error " . htmlspecialchars($error['message'], ENT_COMPAT) . " at file " . htmlspecialchars($error['file'], ENT_COMPAT),
+            sprintf(
+                "Plugin %s (%s) deactivated with error “%s” at file %s",
+                $this->name,
+                $this->id,
+                $error['message'],
+                $error['file']
+            ),
             CLogger::LEVEL_ERROR,
             'application.model.plugin.setLoadError'
         );
-        return \Yii::app()->db->createCommand($sql)->execute();
+        return \Yii::app()->db->createCommand($sql)->bindValues($params)->execute();
     }
 
     /**
