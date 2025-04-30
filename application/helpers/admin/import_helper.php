@@ -1542,7 +1542,7 @@ function generateTemporaryTableCreate(string $source, string $destination, int $
             INTO {$destination}
             FROM (
                 SELECT CASE
-                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' THEN SUBSTRING(SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2)
+                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' THEN SUBSTRING(dbo.SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2, 3000)
                        END AS qid,
                        temp.COLUMN_NAME
                 FROM information_schema.columns temp
@@ -1592,19 +1592,11 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
 {
     $sourceTables = [
         Yii::app()->db->tablePrefix . "responses_" . $sid,
-        Yii::app()->db->tablePrefix . "responses_" . $sid,
-        Yii::app()->db->tablePrefix . "responses_" . $sid,
-        Yii::app()->db->tablePrefix . "old_responses_{$sid}_{$sTimestamp}",
-        Yii::app()->db->tablePrefix . "old_responses_{$sid}_{$sTimestamp}",
         Yii::app()->db->tablePrefix . "old_responses_{$sid}_{$sTimestamp}",
     ];
     $destinationTables = [
         'new_s_c',
-        'new_parent1',
-        'new_parent2',
         'old_s_c',
-        'old_parent1',
-        'old_parent2'
     ];
     Yii::app()->db->createCommand(implode("\n\n", generateTemporaryTableCreates($sourceTables, $destinationTables, $sid)))->execute();
     $command = "";
@@ -1645,9 +1637,9 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
         FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
         JOIN " . Yii::app()->db->tablePrefix . "questions new_q
         ON old_q.qid = new_q.qid AND old_q.type = new_q.type
-        JOIN new_s_c
+        JOIN new_s_c_{$sid} new_s_c
         ON new_s_c.qid = new_q.qid
-        JOIN old_s_c
+        JOIN old_s_c_{$sid} old_s_c
         ON old_s_c.COLUMN_NAME = new_s_c.COLUMN_NAME
         ;
         "
@@ -1843,9 +1835,9 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
     $targetSchema = SurveyDynamic::model($surveyId)->getTableSchema();
     $encryptedAttributes = Response::getEncryptedAttributes($surveyId);
     if ((App()->db->tablePrefix) && (strpos($archivedResponseTableName, App()->db->tablePrefix) === 0)) {
-        $tbl_name = str_replace('old_survey', 'old_tokens', substr($archivedResponseTableName, strlen(App()->db->tablePrefix)));
+        $tbl_name = str_replace('old_responses', 'old_tokens', substr($archivedResponseTableName, strlen(App()->db->tablePrefix)));
     } else {
-        $tbl_name = str_replace('old_survey', 'old_tokens', $archivedResponseTableName);
+        $tbl_name = str_replace('old_responses', 'old_tokens', $archivedResponseTableName);
     }
     $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name, 'tbl_type' => 'response']);
     $archivedEncryptedAttributes = [];

@@ -59,6 +59,16 @@ EOD
                 WHERE TABLE_CATALOG = current_database() AND
                       REGEXP_COUNT(TABLE_NAME, '^.*survey_[0-9]*(_[0-9]*)?$') > 0;
                 ";
+            case 'mssql':
+            case 'sqlsrv':
+                return "
+                SELECT TABLE_NAME AS old_name, REPLACE(TABLE_NAME, 'survey', 'responses') AS new_name
+                FROM information_schema.tables
+                WHERE TABLE_CATALOG = db_name() AND
+                      TABLE_NAME LIKE '%survey_%' AND
+                      TABLE_NAME NOT LIKE '%timings%' AND
+                      RIGHT(TABLE_NAME, 1) NOT IN ('s', 'u');
+                ";
             default: return "";
         }
     }
@@ -79,6 +89,14 @@ EOD
                 SELECT TABLE_NAME AS old_name, REPLACE(REPLACE(TABLE_NAME, '_timings', ''), 'survey', 'timings') AS new_name
                 FROM information_schema.tables
                 WHERE TABLE_CATALOG = current_database() AND
+                      TABLE_NAME LIKE '%timings%';
+                ";
+            case 'mssql':
+            case 'sqlsrv':
+                return "
+                SELECT TABLE_NAME AS old_name, REPLACE(REPLACE(TABLE_NAME, '_timings', ''), 'survey', 'timings') AS new_name
+                FROM information_schema.tables
+                WHERE TABLE_CATALOG = db_name() AND
                       TABLE_NAME LIKE '%timings%';
                 ";
             default: return "";
@@ -121,6 +139,19 @@ EOD
                 )
                 ORDER BY TABLE_NAME, COLUMN_NAME;
                 ";
+            case 'mssql':
+            case 'sqlsrv':
+                return "
+                SELECT TABLE_NAME, COLUMN_NAME
+                FROM information_schema.columns
+                WHERE TABLE_CATALOG = db_name() AND (
+                      (
+					      TABLE_NAME LIKE '%survey_[0-9]%' AND
+                          COLUMN_NAME LIKE '%X%'
+                      )
+                )
+                ORDER BY TABLE_NAME, COLUMN_NAME;
+                ";
             default: return "";
         }
     }
@@ -132,6 +163,50 @@ EOD
                 return "SHOW CREATE TABLE " . $tableName;
             case 'pgsql':
                 return "SELECT show_create_table('" . $tableName . "') AS \"Create Table\"";
+            case 'mssql':
+            case 'sqlsrv':
+                return "
+                SELECT
+                	'CREATE TABLE '  + SCHEMA_NAME(t.schema_id) + '.' + t.name + ' (' +
+                		STUFF ((
+                			SELECT ', [' + c2.name + '] ' + type_name(c2.user_type_id) + 
+							    CASE
+								    WHEN type_name(c2.user_type_id) = 'nvarchar' THEN ' (256)'
+									ELSE ''
+								END +
+                				CASE
+                					WHEN c2.is_nullable = 1 THEN ' NULL'
+                					ELSE ' NOT NULL'
+                				END + 
+                				CASE
+                					WHEN c2.column_id = 1 AND c2.is_identity = 1 THEN ' IDENTITY (1,1)'
+                					ELSE ''
+                				END +
+                				CASE
+                					WHEN pk.column_id IS NOT NULL THEN ' PRIMARY KEY'
+                					ELSE ''
+                				END
+                			FROM sys.columns c2
+                			LEFT JOIN (
+                				SELECT ic.object_id, ic.column_id, ic.index_column_id
+                				FROM sys.index_columns ic
+                				JOIN sys.indexes i ON 
+                						i.object_id  = ic.object_id
+                					AND i.index_id = ic.index_id
+                				WHERE i.is_primary_key = 1
+                			) pk ON 
+                					pk.object_id = c2.object_id
+                				AND pk.column_id = c2.column_id
+                			WHERE c2.object_id = t.object_id
+                			ORDER BY c2.column_id
+                			FOR XML PATH (''), TYPE
+                			).value('.', 'NVARCHAR(MAX)'), 1, 2, '') + 
+                		')' AS [Create Table]
+                FROM sys.tables t
+                JOIN sys.schemas s ON t.schema_id = s.schema_id
+                WHERE s.name = 'dbo' and t.name = '{$tableName}'
+                ORDER BY t.name;
+                ";
         }
     }
 
@@ -144,6 +219,12 @@ EOD
                 break;
             }
         }
+        switch (Yii::app()->db->getDriverName()) {
+            case 'mssql':
+            case 'sqlsrv':
+                $script["Create Table"] = str_replace("[id] int NOT NULL PRIMARY KEY", "[id] int IDENTITY(1, 1) PRIMARY KEY", $script["Create Table"]);
+            break;
+        }
         return $script;
     }
 
@@ -155,6 +236,9 @@ EOD
                 return "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = database() AND TABLE_NAME = '{$tableName}'";
             case 'pgsql':
                 return "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_CATALOG = current_database() AND TABLE_NAME = '{$tableName}'";
+            case 'mssql':
+            case 'sqlsrv':
+                return "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_CATALOG = db_name() AND TABLE_NAME = '{$tableName}'";
             default: return "";
         }
     }
@@ -165,6 +249,9 @@ EOD
         $leftSeparator = $rigtSeparator = "`";
         if (Yii::app()->db->getDriverName() === 'pgsql') {
             $leftSeparator = $rightSeparator = '"';
+        } else if (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv'])) {
+            $leftSeparator = "[";
+            $rightSeparator = "]";
         }
         $this->doPreparations();
         $this->scriptMapping = [
@@ -233,6 +320,12 @@ EOD
             }
         }
         foreach ($fieldMap as $TABLE_NAME => $fields) {
+            $preinsert = "";
+            $postinsert = "";
+            if (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv'])) {
+                $preinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} ON;";
+                $postinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} OFF;";
+            }
             $scripts[$TABLE_NAME]['CREATE'] = str_replace("{$TABLE_NAME}", "{$scripts[$TABLE_NAME]['new_name']}", $scripts[$TABLE_NAME]['CREATE']);
             foreach ($fields as $oldField => $newField) {
                 $scripts[$TABLE_NAME]['CREATE'] = str_replace("{$oldField}", "{$newField}", $scripts[$TABLE_NAME]['CREATE']);
@@ -257,10 +350,10 @@ EOD
             $scripts[$TABLE_NAME]['INSERT'] = "
                 INSERT INTO {$scripts[$TABLE_NAME]['new_name']}({$to})
                 SELECT {$from}
-                FROM {$TABLE_NAME}
+                FROM {$TABLE_NAME};
             ";
             $this->db->createCommand($scripts[$TABLE_NAME]['CREATE'])->execute();
-            $this->db->createCommand($scripts[$TABLE_NAME]['INSERT'])->execute();
+            $this->db->createCommand($preinsert . $scripts[$TABLE_NAME]['INSERT'] . $postinsert)->execute();
             $this->db->createCommand($scripts[$TABLE_NAME]['DROP'])->execute();
         }
     }
