@@ -34,7 +34,7 @@ class Update_630 extends DatabaseUpdateBase
                 ;
                 "
                 ;
-            break;
+                break;
         }
         foreach ($scripts as $script) {
             $this->db->createCommand($script)->execute();
