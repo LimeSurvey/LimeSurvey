@@ -74,12 +74,13 @@ class Plugin extends LSActiveRecord
         // NB: Don't use ActiveRecord here, since it will trigger events and
         // load the plugin system all over again.
         // TODO: Works on all SQL systems?
-        $sql = sprintf(
-            "UPDATE {{plugins}} SET load_error = 1, load_error_message = '%s' WHERE id = " . $this->id,
-            addslashes($error['message'] . ' ' . $error['file'])
-        );
+        $sql = "UPDATE {{plugins}} SET load_error = 1, load_error_message = :error_message WHERE id = :id";
+        $params = [
+            ':error_message' => $error['message'] . ' ' . $error['file'],
+            ':id' => $this->id
+        ];
         Yii::log(
-            "Plugin {$this->name} ({$this->id}) deactivated with error '" . CHtml::encode($error['message']) . "' at file '" . CHtml::encode($error['file']) . "'",
+            "Plugin {$this->name} ({$this->id}) deactivated with error " . htmlspecialchars($error['message'], ENT_COMPAT) . " at file " . htmlspecialchars($error['file'], ENT_COMPAT),
             CLogger::LEVEL_ERROR,
             'application.model.plugin.setLoadError'
         );
