@@ -59,7 +59,7 @@ class OpHandlerSurveyAccessMode implements OpHandlerInterface
      *            "accessMode": "D"
      *        }
      *   }
-     * 
+     *
      * Access mode can be:
      * - O: open access mode: no table, survey can be filled anonymously
      * - C: closed access mode: tokens table exists, survey can be filled with token
