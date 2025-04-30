@@ -3090,7 +3090,7 @@ class Tokens extends SurveyCommonAction
                             $aData['warnings'][] = sprintf(
                                 gT("There a an issue with attachment with language %s. You can review it on %semail template%s."), 
                                 $sSurveyLanguage,
-                                "<a href='" . App()->createUrl("admin/emailtemplates", ["sa" => "index", "surveyid" => $iSurveyId]) ."'>",
+                                "<a href='" . App()->createUrl("admin/emailtemplates", ["sa" => "index", "surveyid" => $iSurveyId]) . "'>",
                                 "</a>"
                             );
                             break;
