@@ -79,8 +79,8 @@ class SurveyAccessModeService
      */
     protected function newTokenTable(Survey $survey)
     {
-        if (($survey->active === 'Y') && ($survey->hasTokensTable)) {
-            return false; //Tokens table already exists, nothing to do here
+        if (($survey->active !== 'Y') || ($survey->hasTokensTable)) {
+            return false; //Tokens table already exists or the survey is not active, nothing to do here
         }
         $tokenencryptionoptions = $survey->getTokenEncryptionOptions();
         $tokenencryptionoptions['enabled'] = 'Y';

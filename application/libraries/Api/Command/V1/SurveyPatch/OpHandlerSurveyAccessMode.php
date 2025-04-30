@@ -36,11 +36,40 @@ class OpHandlerSurveyAccessMode implements OpHandlerInterface
         $this->entity = 'accessMode';
     }
 
+    /**
+     * Checks whether the operation can be handled
+     * @param \LimeSurvey\ObjectPatch\Op\OpInterface $op
+     * @return bool
+     */
     public function canHandle(OpInterface $op): bool
     {
         return ($op->getEntityType() === $this->entity) && ($op->getType()->getId() === OpTypeUpdate::ID);
     }
 
+    /**
+     * Handle survey access mode update.
+     *
+     *   Expects a patch structure like this:
+     *   {
+     *        "id": 571271,
+     *        "op": "update",
+     *        "entity": "accessMode",
+     *        "error": false,
+     *        "props": {
+     *            "accessMode": "D"
+     *        }
+     *   }
+     * 
+     * Access mode can be:
+     * - O: open access mode: no table, survey can be filled anonymously
+     * - C: closed access mode: tokens table exists, survey can be filled with token
+     * - D: dual access mode: tokens table exists, survey can be filled with token or anonymously
+     * - A: anyone with the link: tokens table exists, survey can be filled anonymously
+     * Optionally an archive parameter can be passed besides the accessMode parameter, which may be true or false, depending on whether we want to
+     * archive or remove the tokens table if switching to O
+     * @param \LimeSurvey\ObjectPatch\Op\OpInterface $op
+     * @return void
+     */
     public function handle(OpInterface $op): void
     {
         $this->surveyAccessModeService->changeAccessMode((int)$op->getEntityId(), $op->getProps()['accessMode'], $op->getProps()['archive'] ?? true);
