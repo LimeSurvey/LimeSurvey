@@ -53,63 +53,88 @@ class I18nMissing implements CommandInterface
                 ->makeError('Missing or invalid translation keys');
         }
 
-        $filename = '/helpers/newEditorTranslations.php';
+        $filename = '/helpers/editorTranslations.php';
         $absolutePath = App()->getBasePath() . $filename;
 
         $updatedKeys = [];
         $existingKeys = [];
+        $message = '';
         // fetching german to see what is already translated in the core app:
         App()->setLanguage('de');
         $transLateService = new TranslationMoToJson('de');
         $translations = $transLateService->translateMoToJson();
         if (!file_exists($absolutePath)) {
             // Create new file with header
-            $content = "<?php\n// Translation-source for new editor. \n// Updated on " . date('Y-m-d H:i:s') . "\n\n";
+            $content = "<?php\n// Translation-source for new editor. \n// Updated on "
+                . date('Y-m-d H:i:s') . "\n\n";
             file_put_contents($absolutePath, $content);
         }
 
-        // Read existing content
-        $content = file_get_contents($absolutePath);
+        try {
+            // Make the file writable
+            chmod($absolutePath, 0664);
 
-        foreach ($keys as $key) {
-            if (empty($key)) {
-                continue;
-            }
-            // check if key is also a key in array translations, then we can skip it as false positive
-            if (is_array($translations) && array_key_exists($key, $translations)) {
-                $existingKeys[] = $key;
-                continue;
+            // Read existing content
+            $content = file_get_contents($absolutePath);
+
+            foreach ($keys as $key) {
+                if (empty($key)) {
+                    continue;
+                }
+                if (
+                    is_array($translations)
+                    && array_key_exists(
+                        $key,
+                        $translations
+                    )
+                ) {
+                    $existingKeys[] = $key;
+                    continue;
+                }
+
+                $newLine = "gT('" . addslashes($key) . "');";
+
+                if (strpos($content, $newLine) === false) {
+                    $content = rtrim($content, "\n") . "\n" . $newLine;
+                    $updatedKeys[] = $key;
+                } else {
+                    $existingKeys[] = $key;
+                }
             }
 
-            $newLine = "gT('" . addslashes($key) . "');";
+            if (!empty($updatedKeys)) {
+                // Update the timestamp
+                $content = preg_replace(
+                    '/\/\/ Updated on .*/',
+                    '// Updated on ' . date('Y-m-d H:i:s'),
+                    $content
+                );
 
-            // Check if the key already exists
-            if (strpos($content, $newLine) === false) {
-                // Append new line to the file
-                $content = rtrim($content, "\n") . "\n" . $newLine;
-                $updatedKeys[] = $key;
-            } else {
-                $existingKeys[] = $key;
+                $success = file_put_contents($absolutePath, $content);
+                if ($success === false) {
+                    throw new \RuntimeException(
+                        "Failed to write to file: $absolutePath"
+                    );
+                }
             }
+        } catch (\Exception $e) {
+            // Clear the updated keys as they weren't actually saved
+            $updatedKeys = [];
+
+            // Add error message
+            $message = "Error: Failed to update translations. "
+                . $e->getMessage();
         }
 
         if (!empty($updatedKeys)) {
-            // Update the timestamp
-            $content = preg_replace(
-                '/\/\/ Updated on .*/',
-                '// Updated on ' . date('Y-m-d H:i:s'),
-                $content
-            );
-
-            file_put_contents($absolutePath, $content);
-        }
-
-        $message = '';
-        if (!empty($updatedKeys)) {
-            $message .= "Translation keys saved: " . implode(', ', $updatedKeys) . ". ";
+            $message .= "Translation keys saved: " . implode(', ', $updatedKeys)
+                . ". ";
         }
         if (!empty($existingKeys)) {
-            $message .= "Translation keys already exist: " . implode(', ', $existingKeys) . ".";
+            $message .= "Translation keys already exist: " . implode(
+                    ', ',
+                    $existingKeys
+                ) . ".";
         }
 
         return $this->responseFactory
