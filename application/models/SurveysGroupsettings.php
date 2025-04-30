@@ -68,8 +68,8 @@ class SurveysGroupsettings extends LSActiveRecord
     protected $optionAttributesChar     = array('anonymized', 'savetimings', 'datestamp', 'usecookie', 'allowregister', 'allowsave', 'autoredirect', 'allowprev', 'printanswers',
                                                 'ipaddr','ipanonymize', 'refurl', 'publicstatistics', 'publicgraphs', 'listpublic', 'htmlemail', 'sendconfirmation', 'tokenanswerspersistence',
                                                 'assessments', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'nokeyboard',
-                                                'alloweditaftercompletion');
-    protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto', 'othersettings');
+                                                'alloweditaftercompletion', 'othersettings');
+    protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto',);
 
     public $showInherited = 1;
     public $active;
@@ -491,10 +491,12 @@ class SurveysGroupsettings extends LSActiveRecord
             if (!($attribute === 'ipanonymize' && ( $dbversion < 412 ))) {
                 $this->$attribute = 'I';
             }
+            if ($attribute === 'othersettings') {
+                $this->$attribute = '{"question_code_prefix":"I","subquestion_code_prefix":"I","answer_code_prefix":"I"}';
+            }
         }
         foreach ($this->optionAttributesText as $attribute) {
             $this->$attribute = 'inherit';
-            $this->othersettings = 'inherit';
         }
     }
 
@@ -552,16 +554,19 @@ class SurveysGroupsettings extends LSActiveRecord
      */
     public function getOtherSettings()
     {
-        if (empty($this->otherSettings)) {
-            $this->otherSettings = array();
-            if (!empty($this->othersettings)) {
-                $this->otherSettings = json_decode($this->othersettings, true);
-                if (!is_array($this->otherSettings)) {
-                    $this->otherSettings = array();
-                }
-            }
+        /**
+         *  Check othersettings state
+         *  Empty string means no prefixies shoulld be used.
+         *  Null means default config value should be used.
+         * */
+        if ($this->othersettings === null) {
+            return [
+                'question_code_prefix' => Yii::app()->getConfig('question_code_prefix', ''),
+                'subquestion_code_prefix' => Yii::app()->getConfig('subquestion_code_prefix', ''),
+                'answer_code_prefix' => Yii::app()->getConfig('answer_code_prefix', '')
+            ];
         }
-        return $this->otherSettings;
+        return json_decode($this->othersettings, true) ?? [];
     }
     
     /**
@@ -580,24 +585,26 @@ class SurveysGroupsettings extends LSActiveRecord
      * @param mixed $default Default value if setting doesn't exist
      * @return mixed The setting value or default
      */
-    public function getOtherSetting($key, $default = null)
+    public function getOtherSetting($key, $default = '')
     {
-        $settings = $this->othersettings ? json_decode($this->othersettings, true) : [];
+        $settings = $this->getOtherSettings();
         return isset($settings[$key]) ? $settings[$key] : $default;
     }
 
     /**
-     * Set a value in othersettings
-     * 
-     * @param string $key The setting key to set
-     * @param mixed $value The value to set
-     * @return bool Success/failure
+     * Sets a specific attribute in the survey's other settings.
+     *
+     * This function updates or adds a single attribute in the survey's othersettings field.
+     * The othersettings field is a JSON-encoded string that stores various additional settings.
+     *
+     * @param string $attribute The name of the attribute to set
+     * @param mixed $value The value to set for the attribute
+     * @return void
      */
-    public function setOtherSetting($key, $value)
+    public function setOtherSetting($attribute, $value)
     {
-        $settings = $this->othersettings ? json_decode($this->othersettings, true) : [];
-        $settings[$key] = $value;
-        $this->othersettings = json_encode($settings);
-        return $this->save();
+        $othersettings = json_decode($this->othersettings, true) ?? [];
+        $othersettings[$attribute] = $value;
+        $this->othersettings = json_encode($othersettings);
     }
 }

@@ -232,6 +232,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 }
             }
         }
+        $this->othersettings = '{"question_code_prefix":"I","subquestion_code_prefix":"I","answer_code_prefix":"I"}';
+        $this->othersettings = '{"question_code_prefix":"I","subquestion_code_prefix":"I","answer_code_prefix":"I"}';
     }
 
     /** @inheritdoc */
@@ -2298,6 +2300,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
         // set Survey attributes to 'inherit' values
         foreach ($settings as $key => $value) {
             $this->$key = $value;
+            if ($key === 'othersettings') {
+                $this->$key = '{"question_code_prefix":"I","subquestion_code_prefix":"I","answer_code_prefix":"I"}';
+            }
         }
     }
 
@@ -2572,19 +2577,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Retrieves other setting attributes from the survey's othersettings field.
-     *
-     * This function decodes the JSON-encoded othersettings field and returns
-     * specific attributes related to question, subquestion, and answer code prefixes.
-     *
-     * @return array An associative array containing the following keys:
-     *               - 'question_code_prefix': The prefix for question codes (string)
-     *               - 'subquestion_code_prefix': The prefix for subquestion codes (string)
-     *               - 'answer_code_prefix': The prefix for answer codes (string)
-     *               If a specific prefix is not set, an empty string is returned for that key.
+     * Get other settings as array
+     * @return array
      */
     public function getOtherSettings()
     {
+        /**
+         *  Check othersettings state
+         *  Empty string means no prefixies shoulld be used.
+         *  Null means default config value should be used.
+         * */
         if ($this->othersettings === null) {
             return [
                 'question_code_prefix' => Yii::app()->getConfig('question_code_prefix', ''),
@@ -2602,7 +2604,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * @param mixed $default Default value if setting doesn't exist
      * @return mixed The setting value or default
      */
-    public function getOtherSetting($key, $default = null)
+    public function getOtherSetting($key, $default = '')
     {
         $settings = $this->othersettings ? json_decode($this->othersettings, true) : [];
         return isset($settings[$key]) ? $settings[$key] : $default;
@@ -2620,7 +2622,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function setOtherSetting($attribute, $value)
     {
-        $othersettings = json_decode(is_null($this->othersettings) ? '[]' : $this->othersettings, true) ?? [];
+        $othersettings = json_decode($this->othersettings, true) ?? [];
         $othersettings[$attribute] = $value;
         $this->othersettings = json_encode($othersettings);
     }
