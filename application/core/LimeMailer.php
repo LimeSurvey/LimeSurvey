@@ -1022,7 +1022,7 @@ class LimeMailer extends PHPMailer
     public static function attachmentExist($surveyId, $attachment, $throwError = null)
     {
         if (is_null($throwError)) {
-            $throwError = (Yii::app()->getConfig('debug') > 1 && Permission::model()->hasSurveyPermission($this->surveyId, 'surveylocale', 'update'));
+            $throwError = (Yii::app()->getConfig('debug') > 1 && Permission::model()->hasSurveyPermission($surveyId, 'surveylocale', 'update'));
         }
         if (App()->is_file(
             $attachment['url'],
