@@ -21,7 +21,17 @@
                         </p>
                     </div>
                 <?php endif; ?>
-
+                <?php if (count($warnings)): ?>
+                    <div class="alert alert-warning">
+                        <ul class='list-unstyled'>
+                        <?php foreach($warnings as $warning): ?>
+                            <li>
+                                <?= $warning ?>
+                            </li>
+                        <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
                 <div>
                     <?php echo CHtml::form(array("admin/tokens/sa/email/surveyid/{$oSurvey->sid}"), 'post', array('id'=>'sendinvitation', 'name'=>'sendinvitation', 'class'=>'')); ?>
                     <div class="row">
