@@ -1041,7 +1041,7 @@ class LimeMailer extends PHPMailer
             return true;
         }
         if ($throwError) {
-            throw new \CException(sprintf(gT("File not found: %s"), $aAttachment['url']));
+            throw new \CException(sprintf(gT("File not found: %s"), $attachment['url']));
         }
         return false;
     }
