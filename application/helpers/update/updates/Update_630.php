@@ -15,24 +15,24 @@ class Update_630 extends DatabaseUpdateBase
         switch (Yii::app()->db->getDriverName()) {
             case 'pgsql':
                 $scripts[] =
-<<<EOD
-CREATE OR REPLACE FUNCTION show_create_table(table_name text, join_char text = E'\n' ) 
-  RETURNS text AS 
-\$BODY\$
-SELECT 'CREATE TABLE ' || $1 || ' (' || $2 || '' || 
-    string_agg(column_list.column_expr, ', ' || $2 || '') || 
-    '' || $2 || ');'
-FROM (
-  SELECT '    "' || column_name || '" ' || data_type || 
-       coalesce('(' || character_maximum_length || ')', '') || 
-       case when is_nullable = 'YES' then '' else ' NOT NULL' end as column_expr
-  FROM information_schema.columns
-  WHERE table_schema = 'public' AND table_name = $1
-  ORDER BY ordinal_position) column_list;
-\$BODY\$
-  LANGUAGE SQL STABLE
-;
-EOD
+                "
+                CREATE OR REPLACE FUNCTION show_create_table(table_name text, join_char text = E'\n' ) 
+                  RETURNS text AS 
+                \$BODY\$
+                SELECT 'CREATE TABLE ' || $1 || ' (' || $2 || '' || 
+                    string_agg(column_list.column_expr, ', ' || $2 || '') || 
+                    '' || $2 || ');'
+                FROM (
+                  SELECT '    \"' || column_name || '\" ' || data_type || 
+                       coalesce('(' || character_maximum_length || ')', '') || 
+                       case when is_nullable = 'YES' then '' else ' NOT NULL' end as column_expr
+                  FROM information_schema.columns
+                  WHERE table_schema = 'public' AND table_name = $1
+                  ORDER BY ordinal_position) column_list;
+                \$BODY\$
+                  LANGUAGE SQL STABLE
+                ;
+                "
                 ;
             break;
         }
@@ -69,7 +69,8 @@ EOD
                       TABLE_NAME NOT LIKE '%timings%' AND
                       RIGHT(TABLE_NAME, 1) NOT IN ('s', 'u');
                 ";
-            default: return "";
+            default:
+                return "";
         }
     }
 
@@ -99,7 +100,8 @@ EOD
                 WHERE TABLE_CATALOG = db_name() AND
                       TABLE_NAME LIKE '%timings%';
                 ";
-            default: return "";
+            default:
+                return "";
         }
     }
 
@@ -152,11 +154,13 @@ EOD
                 )
                 ORDER BY TABLE_NAME, COLUMN_NAME;
                 ";
-            default: return "";
+            default:
+                return "";
         }
     }
 
-    public function showCreateTable(string $tableName) {
+    public function showCreateTable(string $tableName)
+    {
         switch (Yii::app()->db->getDriverName()) {
             case 'mysqli':
             case 'mysql':
@@ -216,14 +220,14 @@ EOD
             switch (Yii::app()->db->getDriverName()) {
                 case 'pgsql':
                     $script["Create Table"] = str_replace("\"id\" integer NOT NULL", "\"id\" serial PRIMARY KEY", $script["Create Table"]);
-                break;
+                    break;
             }
         }
         switch (Yii::app()->db->getDriverName()) {
             case 'mssql':
             case 'sqlsrv':
                 $script["Create Table"] = str_replace("[id] int NOT NULL PRIMARY KEY", "[id] int IDENTITY(1, 1) PRIMARY KEY", $script["Create Table"]);
-            break;
+                break;
         }
         return $script;
     }
@@ -239,7 +243,8 @@ EOD
             case 'mssql':
             case 'sqlsrv':
                 return "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_CATALOG = db_name() AND TABLE_NAME = '{$tableName}'";
-            default: return "";
+            default:
+                return "";
         }
     }
 
@@ -249,7 +254,7 @@ EOD
         $leftSeparator = $rigtSeparator = "`";
         if (Yii::app()->db->getDriverName() === 'pgsql') {
             $leftSeparator = $rightSeparator = '"';
-        } else if (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv'])) {
+        } elseif (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv'])) {
             $leftSeparator = "[";
             $rightSeparator = "]";
         }
