@@ -37,9 +37,11 @@ class SurveyThemeConfiguration
 
         $model = $this->turnAjaxmodeOffAsDefault($surveyId, $props['templateName']);
         $model->save();
-        $model->setOptionKeysToInherit();
+        $model->bUseMagicInherit = true;
+
+        $model->setOptions();
         $attributes = $model->attributes;
-        $oPreviousOptions = json_decode($attributes['options'], true);
+        $oPreviousOptions = $model->oOptions;
 
         foreach ($props as $key => $value) {
             if ($key === 'templateName') {
@@ -48,15 +50,15 @@ class SurveyThemeConfiguration
 
             // Process replacement for cssframework and font files references
             if ($key === 'cssframework' || $key === 'font') {
-                $oldFileValue = $this->getOptionAttributeDataValue($surveyId, $props['templateName'], $oPreviousOptions[$key], $key);
+                $oldFileValue = $this->getOptionAttributeDataValue($surveyId, $props['templateName'], $oPreviousOptions->$key, $key);
                 $newFileValue = $this->getOptionAttributeDataValue($surveyId, $props['templateName'], $value, $key);
 
                 $attributeKey = ($key === 'cssframework') ? 'files_css' : 'packages_to_load';
-
-                $attributes[$attributeKey] = str_replace($oldFileValue, $newFileValue, $attributes[$attributeKey]);
+                $attributeInherited = $model->__get($attributeKey);
+                $attributes[$attributeKey] = str_replace($oldFileValue, $newFileValue, $attributeInherited);
             }
 
-            $oPreviousOptions[$key] = $value;
+            $oPreviousOptions->$key = $value;
         }
 
         $sNewOptions = json_encode($oPreviousOptions);
@@ -164,19 +166,24 @@ class SurveyThemeConfiguration
      *
      * @param integer $iSurveyId
      * @param string $sTemplateName
-     * @param bool $bInherited should inherited theme option values be used?
      * @return array
      */
-    public function getSurveyThemeOptions($iSurveyId = 0, $sTemplateName = null, $bInherited = false): array
+    public function getSurveyThemeOptions($iSurveyId = 0, $sTemplateName = null): array
     {
-        $themeOptions = TemplateConfiguration::getThemeOptionsFromSurveyId($iSurveyId, $sTemplateName, $bInherited);
+        $oParentMainConfiguration = Template::getTemplateConfiguration($sTemplateName, null, null);
+        $oCurrentConfiguration = TemplateConfiguration::model()->getInstanceFromSurveyId($iSurveyId, $sTemplateName);
+        $oCurrentConfiguration->bUseMagicInherit = true;
+
+        $oCurrentConfiguration->oParentTemplate = $oParentMainConfiguration;
+        $oCurrentConfiguration->oParentTemplate->bUseMagicInherit = true;
+        $oCurrentConfiguration->setOptions();
+        $themeOptions = (array)$oCurrentConfiguration->oOptions;
 
         if (empty($themeOptions)) {
             return [];
         }
 
-        $options = $themeOptions[0]['config']['options'];
-        return $options;
+        return $themeOptions;
     }
 
      /**
@@ -253,8 +260,9 @@ class SurveyThemeConfiguration
      * @param string $optionType The type of option ('font' || 'cssframework')
      * @return string
      */
-    public function getOptionAttributeDataValue($iSurveyId = 0, $sTemplateName = null, $optionValue = '', $optionType = ''): string
+    protected function getOptionAttributeDataValue($iSurveyId = 0, $sTemplateName = null, $optionValue = '', $optionType = ''): string
     {
+        $lowercasedValue = strtolower($optionValue);
         $oTemplate = Template::model()->getInstance($sTemplateName, $iSurveyId);
 
         $aOptionAttributes = TemplateManifest::getOptionAttributes($oTemplate->path);
@@ -273,7 +281,8 @@ class SurveyThemeConfiguration
         $options = $dom->getElementsByTagName('option');
 
         foreach ($options as $option) {
-            if ($option->getAttribute('value') === $optionValue) {
+            $lowercasedAttributeValue = strtolower($option->getAttribute('value'));
+            if ($lowercasedAttributeValue === $lowercasedValue) {
                 return $option->getAttribute($attributeName);
             }
         }
