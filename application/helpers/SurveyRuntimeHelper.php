@@ -1578,6 +1578,7 @@ class SurveyRuntimeHelper
     private function showTokenOrCaptchaFormsIfNeeded()
     {
         $this->iSurveyid   = $this->aSurveyInfo['sid'];
+        $accessMode        = $this->aSurveyInfo['access_mode'];
         $preview           = $this->preview;
 
         // Template settings
@@ -1600,7 +1601,7 @@ class SurveyRuntimeHelper
          */
 
         $scenarios = array(
-            "tokenRequired"   => ($tokensexist == 1),
+            "tokenRequired"   => (($accessMode === 'C') || ($accessMode === 'D')),
             "captchaRequired" => (isCaptchaEnabled('surveyaccessscreen', $this->aSurveyInfo['usecaptcha']) && !isset($_SESSION['survey_' . $this->iSurveyid]['captcha_surveyaccessscreen']))
         );
 

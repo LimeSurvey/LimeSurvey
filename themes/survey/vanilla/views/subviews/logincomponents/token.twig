@@ -36,7 +36,13 @@
                     {% if aSurveyInfo.aForm.token == null %}
                         <div class='input-group'>
                             <input
-                                class='{{ aSurveyInfo.class.maincolformdivainput }} form-control' {{ aSurveyInfo.attr.maincolformdivainput }} >
+                                class='{{ aSurveyInfo.class.maincolformdivainput }} form-control' 
+                                {% if (aSurveyInfo.access_mode != 'D') %}
+                                    {{ aSurveyInfo.attr.maincolformdivainput }}
+                                {% else %}
+                                    id="token" name="token"
+                                {% endif %}
+                                 >
                             <button type="button" class="input-group-text ls-no-js-hidden" id="ls-toggle-token-show" data-passwordstate="hidden">
                                 <i class="fa fa-eye ls-password-hidden" aria-hidden="true"></i><span class="visually-hidden ls-password-hidden">gT("Show code")</span>
                                 <i class="fa fa-eye-slash d-none ls-password-shown" aria-hidden="true"></i><span class="visually-hidden d-none ls-password-shown">gT("Hide code")</span>

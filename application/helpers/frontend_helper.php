@@ -376,7 +376,11 @@ function submittokens($quotaexit = false)
     } else {
         $thissurvey = getSurveyInfo($surveyid);
     }
-    $clienttoken = $_SESSION['survey_' . $surveyid]['token'];
+    $clienttoken = $_SESSION['survey_' . $surveyid]['token'] ?? '';
+
+    if (($clienttoken === '') && ($thissurvey['access_mode'] !== 'C')) {
+        return; //optional
+    }
 
     // Shift the date due to global timeadjust setting
     $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
@@ -1274,7 +1278,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
         $FlashError = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutParticipants') / 60);
         $renderToken = 'main';
     } else {
-        if (!$subscenarios['tokenValid']) {
+        if ((!(($thissurvey['access_mode'] === 'D') && ($_SERVER['REQUEST_METHOD'] !== 'GET') && ((!isset($clienttoken) || $clienttoken == "")))) && (!$subscenarios['tokenValid'])) {
             //Check if there is a clienttoken set
             if ((!isset($clienttoken) || $clienttoken == "")) {
                 if (isset($thissurvey) && $thissurvey['allowregister'] == "Y") {
