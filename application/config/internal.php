@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -186,6 +188,15 @@ $internalConfig = array(
                     'levels' => 'trace, info, error, warning',
                     'logFile' => 'plugin.log',
                     'categories' => 'plugin.*'  // The category will be the name of the plugin
+                ),
+                // Plugin error happen, plugin was disable : send email using CLogRoute
+                'pluginError' => array(
+                    'class' => 'CEmailLogRoute', // https://www.yiiframework.com/doc/api/1.1/CEmailLogRoute
+                    'categories' => 'application.model.plugin.setLoadError', // A plugin was disable
+                    'subject' => '[ERROR] Plugin deactivated',
+                    'emails' => ['webmaster@example.org'],
+                    'sentFrom' => 'noreply@example.org',
+                    'enabled' => 0, // disable here
                 )
             )
         ),
