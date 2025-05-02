@@ -6,6 +6,8 @@ class Update_430 extends DatabaseUpdateBase
 {
     public function up()
     {
+        $result = $this->db->createCommand('SELECT name FROM {{plugins}} WHERE name = ' . $this->db->quoteValue('ComfortUpdateChecker'))->queryAll();
+        if (empty($result)) {
             $this->db->createCommand()->insert(
                 "{{plugins}}",
                 [
@@ -17,5 +19,6 @@ class Update_430 extends DatabaseUpdateBase
                     'load_error_message' => null
                 ]
             );
+        }
     }
 }
