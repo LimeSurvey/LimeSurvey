@@ -50,6 +50,7 @@ class PatcherSurvey extends Patcher
             OpHandlerSurveyStatus::class,
             OpHandlerImport::class,
             OpHandlerThemeSettings::class,
+            OpHandlerSurveyAccessMode::class,
         ];
 
         foreach ($classes as $class) {
