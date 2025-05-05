@@ -295,7 +295,7 @@ class SurveysGroupsController extends SurveyCommonAction
             // Get the current othersettings
             $currentOtherSettings = $oSurvey->othersettings ? json_decode($oSurvey->othersettings, true) : [];
 
-            // Add your new attributes to othersettings
+            // Add the new attributes to othersettings
             $newOtherSettings = [
                 'question_code_prefix' => Yii::app()->request->getPost('question_code_prefix', ''),
                 'subquestion_code_prefix' => Yii::app()->request->getPost('subquestion_code_prefix', ''),

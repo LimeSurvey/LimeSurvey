@@ -232,7 +232,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 }
             }
         }
-        $this->othersettings = '{"question_code_prefix":"I","subquestion_code_prefix":"I","answer_code_prefix":"I"}';
+        // Ready to add more settings here
+        $this->othersettings = json_encode(self::getDefaultOtherSettings());
     }
 
     /** @inheritdoc */
@@ -2300,7 +2301,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         foreach ($settings as $key => $value) {
             $this->$key = $value;
             if ($key === 'othersettings') {
-                $this->$key = '{"question_code_prefix":"I","subquestion_code_prefix":"I","answer_code_prefix":"I"}';
+                $this->$key = json_encode(self::getDefaultOtherSettings());
             }
         }
     }
@@ -2608,6 +2609,19 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
 
         return $othersettings;
+    }
+
+    /**
+     * Returns the default othersettings array with inherit values
+     * @return array
+     */
+    public static function getDefaultOtherSettings()
+    {
+        return [
+            'question_code_prefix' => 'I',
+            'subquestion_code_prefix' => 'I',
+            'answer_code_prefix' => 'I'
+        ];
     }
 
     /**
