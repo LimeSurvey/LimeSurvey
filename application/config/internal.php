@@ -189,10 +189,10 @@ $internalConfig = array(
                     'logFile' => 'plugin.log',
                     'categories' => 'plugin.*'  // The category will be the name of the plugin
                 ),
-                // Plugin error happen, plugin was disable : send email using CLogRoute
+                // Plugin error happens, plugin was disabled : send email using CLogRoute
                 'pluginError' => array(
                     'class' => 'CEmailLogRoute', // https://www.yiiframework.com/doc/api/1.1/CEmailLogRoute
-                    'categories' => 'application.model.plugin.setLoadError', // A plugin was disable
+                    'categories' => 'application.model.plugin.setLoadError', // A plugin was disabled
                     'subject' => '[ERROR] Plugin deactivated',
                     'emails' => ['webmaster@example.org'],
                     'sentFrom' => 'noreply@example.org',
