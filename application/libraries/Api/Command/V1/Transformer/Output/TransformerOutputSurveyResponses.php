@@ -87,8 +87,10 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
         foreach ($surveyResponse as $key => $value) {
             if (str_contains($key, 'X')) {
                 list($survey, $group, $question) = explode("X", $key);
+                $subq = substr($question, 0, strcspn($question, '_#')); // remove suffix
                 $responses[$question] = [
-                    "question" => intval($question),
+                    "key" => $key,
+                    "subq" => $subq,
                     "group" => intval($group),
                     "value" => $value
                 ];

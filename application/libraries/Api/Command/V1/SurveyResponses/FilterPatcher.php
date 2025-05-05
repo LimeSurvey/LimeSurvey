@@ -19,11 +19,9 @@ class FilterPatcher
     {
         if (!empty($filterParams['sort'])) {
             foreach ($filterParams['sort'] as $column => $order) {
-                foreach ($this->handlers as $handler) {
-                    $op = (new SortingHandler());
-                    if ($op->canHandle($order)) {
-                        $sort = $op->execute($column, $order);
-                    }
+                $op = (new SortingHandler());
+                if ($op->canHandle($order)) {
+                    $sort = $op->execute($column, $order);
                 }
             }
         }
