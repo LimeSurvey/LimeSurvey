@@ -2593,7 +2593,21 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'answer_code_prefix' => Yii::app()->getConfig('answer_code_prefix', '')
             ];
         }
-        return json_decode($this->othersettings, true) ?? [];
+
+        if ($othersettings = json_decode($this->othersettings, true)) {
+            foreach ($othersettings as $key => $value) {
+                if ($key === 'question_code_prefix' || $key ==='subquestion_code_prefix' || $key === 'answer_code_prefix') {
+                    if ($value === null || 'I' === $value) {
+                        $value = Yii::app()->getConfig($key, '');
+                    }
+                }
+                $othersettings[$key] = $value;
+            }
+        } else {
+            return [];
+        }
+
+        return $othersettings;
     }
 
     /**
