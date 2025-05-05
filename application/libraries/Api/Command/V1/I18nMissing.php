@@ -131,10 +131,7 @@ class I18nMissing implements CommandInterface
                 . ". ";
         }
         if (!empty($existingKeys)) {
-            $message .= "Translation keys already exist: " . implode(
-                    ', ',
-                    $existingKeys
-                ) . ".";
+            $message .= "Translation keys already exist: " . implode(', ', $existingKeys) . ".";
         }
 
         return $this->responseFactory
