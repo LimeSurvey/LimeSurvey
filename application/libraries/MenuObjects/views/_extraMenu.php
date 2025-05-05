@@ -16,11 +16,20 @@ foreach ($extraMenus as $menu): ?>
     if ($sectionFilter && $prependedFilter) : ?>
         <li class="dropdown nav-item">
             <?php
-            if ($menu->isDropDown()): ?>
+            if ($menu->isDropDown()){
+                if ($menu->isDropDownButton()) { ?>
+                <a href="#" class="nav-link " data-bs-toggle="dropdown" aria-expanded="false" role="button">
+                    <button type="button" class="btn btn-info btn-create" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                        <i class="ri-add-line"></i>
+                    </button>
+                </a>
+                <?php
+            } else { ?>
                 <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#">
                     <?= $menu->getLabel(); ?>
                     <span class="caret"></span>
                 </a>
+            <?php } ?>
                 <ul class="dropdown-menu" role="menu">
                     <?php
                     foreach ($menu->getMenuItems() as $menuItem): ?>
@@ -49,7 +58,7 @@ foreach ($extraMenus as $menu): ?>
                     endforeach; ?>
                 </ul>
             <?php
-            elseif ($menu->isButton()): ?>
+            }elseif ($menu->isButton()){ ?>
                 <?php
                 $menuButton = $menu;
                 /** @var MenuButton $menuButton */
@@ -66,15 +75,14 @@ foreach ($extraMenus as $menu): ?>
                     <?= $menuButton->getLabel(); ?>
                 </a>
             <?php
-            else: ?>
+            } else { ?>
                 <a href="<?= $menu->getHref(); ?>" class="nav-link">
                     <?php if ($menu->getIconClass()): ?>
                         <i class="<?= $menu->getIconClass(); ?>"></i>
                     <?php endif; ?>
                     <?= $menu->getLabel(); ?>
                 </a>
-            <?php
-            endif; ?>
+            <?php } ?>
         </li>
     <?php
     endif; ?>
