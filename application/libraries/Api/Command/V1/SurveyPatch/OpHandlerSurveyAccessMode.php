@@ -64,7 +64,6 @@ class OpHandlerSurveyAccessMode implements OpHandlerInterface
      * - O: open access mode: no table, survey can be filled anonymously
      * - C: closed access mode: tokens table exists, survey can be filled with token
      * - D: dual access mode: tokens table exists, survey can be filled with token or anonymously
-     * - A: anyone with the link: tokens table exists, survey can be filled anonymously
      * Optionally an archive parameter can be passed besides the accessMode parameter, which may be true or false, depending on whether we want to
      * archive or remove the tokens table if switching to O
      * @param \LimeSurvey\ObjectPatch\Op\OpInterface $op

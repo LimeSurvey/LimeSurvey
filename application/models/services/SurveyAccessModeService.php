@@ -24,7 +24,6 @@ class SurveyAccessModeService
     public static $ACCESS_TYPE_OPEN = 'O';
     public static $ACCESS_TYPE_CLOSED = 'C';
     public static $ACCESS_TYPE_DUAL = 'D';
-    public static $ACCESS_TYPE_ANYONE_WITH_LINK = 'A';
 
     protected static $supportedAccessModes = null;
 
@@ -41,7 +40,6 @@ class SurveyAccessModeService
                 self::$ACCESS_TYPE_OPEN,
                 self::$ACCESS_TYPE_CLOSED,
                 self::$ACCESS_TYPE_DUAL,
-                self::$ACCESS_TYPE_ANYONE_WITH_LINK
             ];
         }
     }

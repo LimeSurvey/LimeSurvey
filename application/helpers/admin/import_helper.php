@@ -13,6 +13,7 @@
 */
 
 use LimeSurvey\Helpers\questionHelper;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 /**
  * This function imports a LimeSurvey .lsg question group XML file
@@ -1349,7 +1350,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                     $aImportResults['importwarnings'] = array_merge($aImportResults['importwarnings'], $aImportResults['warnings']);
                     unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename);
                     $survey = Survey::model()->findByPk($aImportResults['newsid']);
-                    $survey->access_mode = 'C';
+                    $survey->access_mode = SurveyAccessModeService::$ACCESS_TYPE_CLOSED;
                     $survey->save();
                     break;
                 }

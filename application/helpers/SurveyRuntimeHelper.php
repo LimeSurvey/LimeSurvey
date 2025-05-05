@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\Quotas;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 /**
  * LimeSurvey
@@ -1601,7 +1602,7 @@ class SurveyRuntimeHelper
          */
 
         $scenarios = array(
-            "tokenRequired"   => (($accessMode === 'C') || ($accessMode === 'D')),
+            "tokenRequired"   => (($accessMode === SurveyAccessModeService::$ACCESS_TYPE_CLOSED) || ($accessMode === SurveyAccessModeService::$ACCESS_TYPE_DUAL)),
             "captchaRequired" => (isCaptchaEnabled('surveyaccessscreen', $this->aSurveyInfo['usecaptcha']) && !isset($_SESSION['survey_' . $this->iSurveyid]['captcha_surveyaccessscreen']))
         );
 

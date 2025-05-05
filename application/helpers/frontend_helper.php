@@ -19,6 +19,7 @@ if (!defined('BASEPATH')) {
 require_once(Yii::app()->basePath . '/libraries/MersenneTwister.php');
 
 use LimeSurvey\PluginManager\PluginEvent;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 function loadanswers()
 {
@@ -378,7 +379,7 @@ function submittokens($quotaexit = false)
     }
     $clienttoken = $_SESSION['survey_' . $surveyid]['token'] ?? '';
 
-    if (($clienttoken === '') && ($thissurvey['access_mode'] !== 'C')) {
+    if (($clienttoken === '') && ($thissurvey['access_mode'] !== SurveyAccessModeService::$ACCESS_TYPE_CLOSED)) {
         return; //optional
     }
 
@@ -1278,7 +1279,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
         $FlashError = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutParticipants') / 60);
         $renderToken = 'main';
     } else {
-        if ((!(($thissurvey['access_mode'] === 'D') && ($_SERVER['REQUEST_METHOD'] !== 'GET') && ((!isset($clienttoken) || $clienttoken == "")))) && (!$subscenarios['tokenValid'])) {
+        if ((!(($thissurvey['access_mode'] === SurveyAccessModeService::$ACCESS_TYPE_DUAL) && ($_SERVER['REQUEST_METHOD'] !== 'GET') && ((!isset($clienttoken) || $clienttoken == "")))) && (!$subscenarios['tokenValid'])) {
             //Check if there is a clienttoken set
             if ((!isset($clienttoken) || $clienttoken == "")) {
                 if (isset($thissurvey) && $thissurvey['allowregister'] == "Y") {
