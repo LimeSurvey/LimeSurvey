@@ -35,7 +35,7 @@
     <description/>
     <language><![CDATA[en]]></language>
     <randomization_group/>
-    <grelevance><![CDATA[Q651.NAOK=="Y"]]></grelevance>
+    <grelevance><![CDATA[Q01.NAOK=="Y"]]></grelevance>
    </row>
    <row>
     <gid><![CDATA[112]]></gid>
@@ -141,7 +141,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[Q651.NAOK=="Y"]]></relevance>
+    <relevance><![CDATA[Q01.NAOK=="Y"]]></relevance>
     <modulename/>
    </row>
    <row>
@@ -160,7 +160,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[Q652.NAOK=="Y"]]></relevance>
+    <relevance><![CDATA[Q02.NAOK=="Y"]]></relevance>
     <modulename/>
    </row>
    <row>
@@ -179,7 +179,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[Q653.NAOK == "Y"]]></relevance>
+    <relevance><![CDATA[G2Q01 == "Y"]]></relevance>
     <modulename/>
    </row>
    <row>
@@ -235,7 +235,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[Q651.NAOK == "Y"]]></relevance>
+    <relevance><![CDATA[Q01.NAOK == "Y"]]></relevance>
     <modulename/>
    </row>
    <row>
@@ -254,7 +254,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[Q651.NAOK == "Y"]]></relevance>
+    <relevance><![CDATA[Q01.NAOK == "Y"]]></relevance>
     <modulename/>
    </row>
    <row>
@@ -273,7 +273,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[Q651.NAOK == "Y"]]></relevance>
+    <relevance><![CDATA[Q01.NAOK == "Y"]]></relevance>
     <modulename/>
    </row>
   </rows>
@@ -362,7 +362,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[Q657.NAOK=="Y"]]></relevance>
+    <relevance><![CDATA[Q03=="Y"]]></relevance>
     <modulename/>
    </row>
    <row>
@@ -428,7 +428,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[!is_empty(Q660_S664.NAOK)]]></relevance>
+    <relevance><![CDATA[!is_empty(G3Q02_SQ001.NAOK)]]></relevance>
    </row>
   </rows>
  </subquestions>
