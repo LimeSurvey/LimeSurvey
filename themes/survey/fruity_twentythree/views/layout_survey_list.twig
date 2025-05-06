@@ -123,7 +123,7 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
                             <div class="row justify-content-center mb-3">
                                 <div
                                     id="{{ aSurveyInfo.id.surveylistrowjumbotron }}" {{ aSurveyInfo.attr.surveylistrowjumbotron }}>
-                                    <div class="img-fluid mx-auto d-block">
+                                    <div class="img-fluid mx-auto d-block" role="img" aria-label="{{gT("LimeSurvey Logo")}}">
                                         {{ include('./ls_logo_svg.twig') }}
                                     </div>
                                     <span class="text-center h3">{{ aSurveyInfo.sSiteName }}</span>
@@ -140,10 +140,10 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
                             <div class="row">
                                 <div
                                     class="{{ aSurveyInfo.class.surveylistrowdiva }} col-12" {{ aSurveyInfo.attr.surveylistrowdiva }}>
-                                    <div
-                                        class='{{ aSurveyInfo.class.surveylistrowdivadiv }} form-heading' {{ aSurveyInfo.attr.surveylistrowdivadiv }}>
+                                    <h2
+                                        class='{{ aSurveyInfo.class.surveylistrowdivadiv }} form-heading my-0' {{ aSurveyInfo.attr.surveylistrowdivadiv }}>
                                         {{ gT("The following surveys are available:") }}
-                                    </div>
+                                    </h2>
                                 </div>
                             </div>
 
