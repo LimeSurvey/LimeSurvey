@@ -1211,7 +1211,7 @@ class LimeExpressionManager
                                                 $fsqs[] = $sgq . $fsq['csuffix'] . '.NAOK=="1"';
                                             }
                                         } else {
-                                            if ($fsq['sqsuffix'] == $sq['sqsuffix']) {
+                                            if (isset($fsq['sqsuffix']) && $fsq['sqsuffix'] == $sq['sqsuffix']) {
                                                 $fsqs[] = '!is_empty(' . $sgq . $fsq['csuffix'] . '.NAOK)';
                                             }
                                         }
@@ -1573,8 +1573,25 @@ class LimeExpressionManager
                                     }
                                 }
 
+                                // If the input format does not include a time, the minimum date should either not
+                                // include a time or be 00:00.
+                                //
+                                // If this does not occur, and the minimum date has a time (Ex: 2025-04-29 15:30):
+                                // - The date selected by the date picker will be 00:00 (Ex: 2025-04-29 00:00).
+                                // - The minimum date will have a later time (Ex: 2025-04-29 15:30).
+                                // Due to the implementation of the date picker, it will allow 2025-04-29 to be
+                                // selected, but then this validation will fail.
+                                //
+                                // So, we adapt the validation as to consider the input format.
+                                //
+                                // An expression in the minimum date, such as "+6 days," resolves to a date that
+                                // has a time, such as 2025-04-29 15:30. That produces the issue.
+                                //
+                                // This doesn't happen with maximum date validation, since a date with a time of
+                                // 00:00 will always be less than or equal to the date resulting from the "+6 days"
+                                // expression.
                                 $sq_name = ($this->sgqaNaming) ? $sq['rowdivid'] . ".NAOK" : $sq['varName'] . ".NAOK";
-                                $sq_name = '(is_empty(' . $sq_name . ') || (' . $sq_name . ' >= date("Y-m-d H:i", strtotime(' . $date_min . ')) ))';
+                                $sq_name = '(is_empty(' . $sq_name . ') || (' . $sq_name . ' >= date(if(regexMatch("/00:00$/", ' . $sq_name . '), "Y-m-d", "Y-m-d H:i"), strtotime(' . $date_min . ')) ))';
                                 $subqValidSelector = '';
                                 break;
                             default:

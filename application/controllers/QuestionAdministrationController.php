@@ -1661,6 +1661,7 @@ class QuestionAdministrationController extends LSBaseController
         $surveyId = (int)Yii::app()->request->getParam('surveyId');
         $questionGroupId = (int)Yii::app()->request->getParam('questionGroupId');
         $questionIdToCopy = (int)Yii::app()->request->getParam('questionId');
+        $newGroupId = (int)Yii::app()->request->getParam('gid');
 
         //permission check ...
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'create')) {
@@ -1726,7 +1727,7 @@ class QuestionAdministrationController extends LSBaseController
             $copyQuestionValues = new \LimeSurvey\Datavalueobjects\CopyQuestionValues();
             $copyQuestionValues->setOSurvey($oSurvey);
             $copyQuestionValues->setQuestionCode($newTitle);
-            $copyQuestionValues->setQuestionGroupId((int)Yii::app()->request->getParam('gid'));
+            $copyQuestionValues->setQuestionGroupId($newGroupId);
             $copyQuestionValues->setQuestiontoCopy($oQuestion);
             if (!empty($copyQuestionTextValues)) {
                 $copyQuestionValues->setQuestionL10nData($copyQuestionTextValues);
@@ -1736,18 +1737,18 @@ class QuestionAdministrationController extends LSBaseController
                 $questionPosition = -1; //integer indicator for "end"
             }
             //first ensure that all questions for the group have a question_order>0 and possibly set to this state
-            Question::setQuestionOrderForGroup($questionGroupId);
+            Question::setQuestionOrderForGroup($newGroupId);
             switch ((int)$questionPosition) {
                 case -1: //at the end
-                    $newQuestionPosition = Question::getHighestQuestionOrderNumberInGroup($questionGroupId) + 1;
+                    $newQuestionPosition = Question::getHighestQuestionOrderNumberInGroup($newGroupId) + 1;
                     break;
                 case 0: //at beginning
                     //set all existing order numbers to +1, and the copied question to order number 1
-                    Question::increaseAllOrderNumbersForGroup($questionGroupId);
+                    Question::increaseAllOrderNumbersForGroup($newGroupId);
                     $newQuestionPosition = 1;
                     break;
                 default: //all other cases means after question X (the value coming from frontend is already correct)
-                    Question::increaseAllOrderNumbersForGroup($questionGroupId, $questionPosition);
+                    Question::increaseAllOrderNumbersForGroup($newGroupId, $questionPosition);
                     $newQuestionPosition = $questionPosition;
             }
             $copyQuestionValues->setQuestionPositionInGroup($newQuestionPosition);
@@ -2523,14 +2524,7 @@ class QuestionAdministrationController extends LSBaseController
                     'questionGroupName' => $questionTheme->group
                 );
             }
-            $imageName = $questionTheme->question_type;
-            if ($imageName == ":") {
-                $imageName = "COLON";
-            } elseif ($imageName == "|") {
-                $imageName = "PIPE";
-            } elseif ($imageName == "*") {
-                $imageName = "EQUATION";
-            }
+
             $questionThemeData = [];
             $questionThemeData['title'] = $questionTheme->title;
             $questionThemeData['name'] = $questionTheme->name;
@@ -2539,13 +2533,7 @@ class QuestionAdministrationController extends LSBaseController
                 <div class="col-12 currentImageContainer">
                 <img src="' . $questionTheme->image_path . '" />
                 </div>';
-            if ($imageName == 'S') {
-                $questionThemeData['detailpage'] = '
-                    <div class="col-12 currentImageContainer">
-                    <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '.png" />
-                    <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '2.png" />
-                    </div>';
-            }
+
             $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionThemeData;
         }
         return $aQuestionTypeGroups;

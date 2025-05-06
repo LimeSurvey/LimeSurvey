@@ -34,6 +34,19 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.13.0 (build 250415) to 6.13.1 (build 250428) April 28, 2025
+-Fixed issue #20061: Update error in PostgreSQL (#4245) (Gabriel Jenik)
+-Fixed issue #20060: If a user cannot be delete due to being forced superadmin no specific error is shown (Carsten Schmitz)
+-Fixed issue #20052: When copying survey absolute URLs in email templates are transformed to relative path (#4237) (Gabriel Jenik)
+-Fixed issue #19955: Link to PopUp in question type image radio (#4172) (Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Latvian by ioditis
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: Galician by Calidonia, Gronnd, isma.alvarez
+
+
 Changes from 6.12.4 (build 250408) to 6.13.0 (build 250415) April 15, 2025
 -New feature #18352: Set up 2FA with YubiKey (Gabriel Jenik)
 -Fixed issue: Typo in native language name for Hungarian (#4243) (Kiss-Kálmán Dániel)
