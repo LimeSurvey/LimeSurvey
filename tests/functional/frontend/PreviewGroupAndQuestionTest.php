@@ -213,7 +213,13 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
                 "Question preview force relevance broken"
             );
             /* Check filter is done */
-            $secondLineSGQA = "Q".$questions['G3Q02']->qid . "_S" . $questions["SQ002"]->qid;
+            $SQ002 = null;
+            foreach ($questions["SQ002"] as $item) {
+                if ($item->parent_qid == $questions['G3Q02']->qid) {
+                    $SQ002 = $item;
+                }
+            }
+            $secondLineSGQA = "Q".$questions['G3Q02']->qid . "_S" . $SQ002->qid;
             $this->assertTrue(
                 self::$webDriver->findElement(WebDriverBy::id('javatbd'.$secondLineSGQA))->isDisplayed(),
                 "Question preview force relevance broken"
@@ -238,7 +244,7 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
         $rawQuestions = \Question::model()->findAll(":sid = sid", [":sid" => self::$surveyId]);
         $questions = [];
         foreach ($rawQuestions as $rawQuestion) {
-            if ($rawQuestion->title === 'SQ001') {
+            if (in_array($rawQuestion->title, ['SQ001', 'SQ002'])) {
                 if (!isset($questions[$rawQuestion->title])) {
                     $questions[$rawQuestion->title] = [];
                 }
