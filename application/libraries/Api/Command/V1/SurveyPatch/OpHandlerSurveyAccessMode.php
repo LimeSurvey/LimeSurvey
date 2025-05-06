@@ -17,7 +17,6 @@ use LimeSurvey\Models\Services\Exception\{
     PermissionDeniedException
 };
 use LimeSurvey\Models\Services\SurveyAccessModeService;
-use Permission;
 
 class OpHandlerSurveyAccessMode implements OpHandlerInterface
 {
@@ -64,14 +63,14 @@ class OpHandlerSurveyAccessMode implements OpHandlerInterface
      * - O: open access mode: no table, survey can be filled anonymously
      * - C: closed access mode: tokens table exists, survey can be filled with token
      * - D: dual access mode: tokens table exists, survey can be filled with token or anonymously
-     * Optionally an archive parameter can be passed besides the accessMode parameter, which may be true or false, depending on whether we want to
-     * archive or remove the tokens table if switching to O
+     * Optionally an active parameter can be passed besides the accessMode parameter, which may be K (keep), D (Drop) or A (Archive), depending on
+     * what we intend with the tokens table if switching to O
      * @param \LimeSurvey\ObjectPatch\Op\OpInterface $op
      * @return void
      */
     public function handle(OpInterface $op): void
     {
-        $this->surveyAccessModeService->changeAccessMode((int)$op->getEntityId(), $op->getProps()['accessMode'], $op->getProps()['archive'] ?? true);
+        $this->surveyAccessModeService->changeAccessMode((int)$op->getEntityId(), $op->getProps()['accessMode'], $op->getProps()['action'] ?? 'K');
     }
 
     public function validateOperation(OpInterface $op): array

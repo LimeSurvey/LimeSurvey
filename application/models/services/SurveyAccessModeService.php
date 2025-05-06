@@ -25,7 +25,13 @@ class SurveyAccessModeService
     public static $ACCESS_TYPE_CLOSED = 'C';
     public static $ACCESS_TYPE_DUAL = 'D';
 
+    public static $ACTION_KEEP = 'K';
+    public static $ACTION_ARCHIVE = 'A';
+    public static $ACTION_DROP = 'D';
+
     protected static $supportedAccessModes = null;
+
+    protected static $supportedActions = null;
 
     public function __construct(
         Permission $permission,
@@ -40,6 +46,13 @@ class SurveyAccessModeService
                 self::$ACCESS_TYPE_OPEN,
                 self::$ACCESS_TYPE_CLOSED,
                 self::$ACCESS_TYPE_DUAL,
+            ];
+        }
+        if (!self::$supportedActions) {
+            self::$supportedActions = [
+                self::$ACTION_KEEP,
+                self::$ACTION_ARCHIVE,
+                self::$ACTION_DROP
             ];
         }
     }
@@ -91,10 +104,10 @@ class SurveyAccessModeService
     /**
      * Drops token table if it exists
      * @param \Survey $survey the survey whose participant table is to be dropped
-     * @param bool $archive whether we archive the tokens, or remove them
+     * @param string $action whether we archive the tokens, or remove them
      * @return void
      */
-    protected function dropTokenTable(Survey $survey, bool $archive = true)
+    protected function dropTokenTable(Survey $survey, string $action = 'K')
     {
         $datestamp = time();
         $date = date('YmdHis', $datestamp);
@@ -107,20 +120,29 @@ class SurveyAccessModeService
             return;
         }
 
-        if ($archive) {
-            $surveyInfo = getSurveyInfo($survey->sid);
-            $this->app->db->createCommand()->renameTable("{{" . $oldTable . "}}", "{{" . $newTable . "}}");
-            $archivedTokenSettings = new ArchivedTableSettings();
-            $archivedTokenSettings->survey_id = $survey->sid;
-            $archivedTokenSettings->user_id = $userID;
-            $archivedTokenSettings->tbl_name = $newTable;
-            $archivedTokenSettings->tbl_type = 'token';
-            $archivedTokenSettings->created = $DBDate;
-            $archivedTokenSettings->properties = $surveyInfo['tokenencryptionoptions'];
-            $archivedTokenSettings->attributes = json_encode($surveyInfo['attributedescriptions']);
-            $archivedTokenSettings->save();
-        } else {
-            $this->app->db->createCommand()->dropTable("{{" . $oldTable . "}}");
+        if ($survey->hasTokensTable) {
+            if (!in_array($action, self::$supportedActions)) {
+                $action = self::$ACTION_KEEP;
+            }
+            $tokenSample = Token::model($survey->sid)->find('1=1');
+            if ($tokenSample === null) {
+                $action = self::$ACTION_DROP;
+            }
+            if ($action === self::$ACTION_ARCHIVE) {
+                $surveyInfo = getSurveyInfo($survey->sid);
+                $this->app->db->createCommand()->renameTable("{{" . $oldTable . "}}", "{{" . $newTable . "}}");
+                $archivedTokenSettings = new ArchivedTableSettings();
+                $archivedTokenSettings->survey_id = $survey->sid;
+                $archivedTokenSettings->user_id = $userID;
+                $archivedTokenSettings->tbl_name = $newTable;
+                $archivedTokenSettings->tbl_type = 'token';
+                $archivedTokenSettings->created = $DBDate;
+                $archivedTokenSettings->properties = $surveyInfo['tokenencryptionoptions'];
+                $archivedTokenSettings->attributes = json_encode($surveyInfo['attributedescriptions']);
+                $archivedTokenSettings->save();
+            } elseif ($action === self::$ACTION_DROP) {
+                $this->app->db->createCommand()->dropTable("{{" . $oldTable . "}}");
+            } //If action is Keep, do nothing
         }
     }
 
@@ -128,12 +150,12 @@ class SurveyAccessModeService
      * Changes the access mode of the survey
      * @param int $surveyID the id of the survey whose access mode is to be changed
      * @param string $accessMode the access mode we desire to have
-     * @param bool $archive whether we intend to archive the tokens table or not
+     * @param string $action whether we intend to archive the tokens table or not
      * @throws \LimeSurvey\Models\Services\Exception\PersistErrorException
      * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
      * @return bool whether the change was done
      */
-    public function changeAccessMode(int $surveyID, string $accessMode, bool $archive = true)
+    public function changeAccessMode(int $surveyID, string $accessMode, string $action = 'K')
     {
         $survey = Survey::model()->findByPk($surveyID);
         $oldAccessMode = $survey->access_mode;
@@ -154,7 +176,7 @@ class SurveyAccessModeService
         if ($oldAccessMode === self::$ACCESS_TYPE_OPEN) {
             $this->newTokenTable($survey);
         } elseif ($accessMode === self::$ACCESS_TYPE_OPEN) {
-            $this->dropTokenTable($survey, $archive);
+            $this->dropTokenTable($survey, $action);
         }
         $survey->save();
         return true;
