@@ -4,6 +4,7 @@ namespace LimeSurvey\Api\Command\V1;
 
 use CHttpSession;
 use Survey;
+use Token;
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request,
@@ -62,6 +63,12 @@ class SurveyArchive implements CommandInterface
         require_once "application/helpers/admin/import_helper.php";
         $rawData = getTableArchivesAndTimestamps($surveyId);
         $data = [];
+        $hasTokens = false;
+        try {
+            $hasTokens = ($survey->isActive && (Token::model($survey->sid)->find('1=1') !== null));
+        } catch (\Exception $ex) {
+            //Tokens table exists, proceed
+        }
         for ($index = 0; $index < count($rawData); $index++) {
             $newData = ['newformat' => false];
             $split = explode(",", $rawData[$index]['tables']);
@@ -81,7 +88,16 @@ class SurveyArchive implements CommandInterface
             $newData['types'] = $types;
             $newData['count'] = $rawData[$index]['cnt'];
             $newData['timestamp'] = $rawData[$index]['timestamp'];
+            $newData['hastokens'] = $hasTokens;
             $data[] = $newData;
+        }
+        if ($survey->isActive) {
+            $data[] = [
+                'timestamp' => 0,
+                'count' => 0,
+                'types' => [],
+                'hastokens' => $hasTokens
+            ];
         }
         return $this->responseFactory->makeSuccess($data);
     }
