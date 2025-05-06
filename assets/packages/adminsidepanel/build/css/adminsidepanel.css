@@ -100,8 +100,7 @@
 
 .ls-ba .list-group {
   padding-right: 0;
-  -webkit-padding-start: 0;
-          padding-inline-start: 0;
+  padding-inline-start: 0;
 }
 .ls-ba .list-group > .list-group-item {
   padding-right: 0;

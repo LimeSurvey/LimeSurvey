@@ -11,6 +11,7 @@ Vue.config.devtools = true;
 
 Vue.use(PluginLog);
 
+
 Vue.component('loader-widget', Loader);
 
 Vue.mixin({

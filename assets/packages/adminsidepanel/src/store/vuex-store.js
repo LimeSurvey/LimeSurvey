@@ -14,6 +14,16 @@ Vue.use(Vuex);
 
 const getAppState = function (userid,surveyid) {
     const AppStateName = 'limesurveyadminsidepanel';
+
+    
+    for (let i = sessionStorage.length - 1; i >= 0; i--) {
+      const key = sessionStorage.key(i);
+
+      if (key && key.includes(AppStateName) && key !== AppStateName+'_'+userid+'_'+surveyid) {
+          sessionStorage.removeItem(key);
+      }
+    }
+  
     const vuexLocal = new VuexPersistence({
         key: AppStateName+'_'+userid+'_'+surveyid,
         storage: window.sessionStorage
