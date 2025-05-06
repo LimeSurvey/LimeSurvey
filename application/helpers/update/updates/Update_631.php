@@ -269,6 +269,9 @@ class Update_631 extends DatabaseUpdateBase
         ];
         $scripts = [];
         $responsesTables = $this->db->createCommand($this->scriptMapping['responses'])->queryAll();
+        if (!count($responsesTables)) {
+            return; //the script already ran
+        }
         foreach ($responsesTables as $responsesTable) {
             $scripts[$responsesTable['old_name']] = [
                 'new_name' => $responsesTable['new_name'],
