@@ -234,7 +234,7 @@ $(document).on('ready pjax:scriptcomplete', function(){
         initValidFromValidUntilPickers();
     }
 
-    var modal = $('#massive-actions-modal-edit-0');
+    var modal = $('#massive-actions-modal-token-grid-edit-0');
     if (modal.length) {
         modal.on('shown.bs.modal', function () {
             $('.yes-no-date-container').each(function(i,el){
