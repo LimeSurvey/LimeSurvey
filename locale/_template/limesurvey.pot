@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-04-30 15:15:36+00:00\n"
+"POT-Creation-Date: 2025-05-06 09:45:09+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -232,7 +232,7 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:1090
 #: application/controllers/QuestionAdministrationController.php:1219
 #: application/controllers/QuestionAdministrationController.php:1271
-#: application/controllers/QuestionAdministrationController.php:1688
+#: application/controllers/QuestionAdministrationController.php:1689
 #: application/controllers/QuestionGroupsAdministrationController.php:128
 #: application/controllers/QuestionGroupsAdministrationController.php:180
 #: application/controllers/QuestionGroupsAdministrationController.php:242
@@ -420,7 +420,7 @@ msgstr ""
 #: application/controllers/FailedEmailController.php:166
 #: application/controllers/QuestionAdministrationController.php:710
 #: application/controllers/QuestionAdministrationController.php:782
-#: application/controllers/QuestionAdministrationController.php:2595
+#: application/controllers/QuestionAdministrationController.php:2596
 #: application/controllers/ResponsesController.php:122
 #: application/controllers/ResponsesController.php:415
 #: application/controllers/ResponsesController.php:571
@@ -1090,10 +1090,10 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:135
 #: application/controllers/QuestionAdministrationController.php:280
 #: application/controllers/QuestionAdministrationController.php:1414
-#: application/controllers/QuestionAdministrationController.php:2600
-#: application/controllers/QuestionAdministrationController.php:2603
-#: application/controllers/QuestionAdministrationController.php:2606
-#: application/controllers/QuestionAdministrationController.php:2633
+#: application/controllers/QuestionAdministrationController.php:2601
+#: application/controllers/QuestionAdministrationController.php:2604
+#: application/controllers/QuestionAdministrationController.php:2607
+#: application/controllers/QuestionAdministrationController.php:2634
 #: application/controllers/admin/Export.php:80
 #: application/core/SurveyCommonAction.php:151
 #: application/helpers/export_helper.php:2203
@@ -1105,12 +1105,12 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:785
 #: application/controllers/QuestionAdministrationController.php:1619
 #: application/controllers/QuestionAdministrationController.php:1627
-#: application/controllers/QuestionAdministrationController.php:1823
-#: application/controllers/QuestionAdministrationController.php:1831
-#: application/controllers/QuestionAdministrationController.php:1865
-#: application/controllers/QuestionAdministrationController.php:1873
-#: application/controllers/QuestionAdministrationController.php:2590
-#: application/controllers/QuestionAdministrationController.php:2636
+#: application/controllers/QuestionAdministrationController.php:1824
+#: application/controllers/QuestionAdministrationController.php:1832
+#: application/controllers/QuestionAdministrationController.php:1866
+#: application/controllers/QuestionAdministrationController.php:1874
+#: application/controllers/QuestionAdministrationController.php:2591
+#: application/controllers/QuestionAdministrationController.php:2637
 #: application/controllers/SurveyAdministrationController.php:699
 #: application/controllers/SurveyAdministrationController.php:1211
 #: application/controllers/SurveyAdministrationController.php:1283
@@ -1281,48 +1281,48 @@ msgstr ""
 msgid "Selected"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1667
+#: application/controllers/QuestionAdministrationController.php:1668
 msgid "Access denied! You don't have permission to copy a question"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1677
+#: application/controllers/QuestionAdministrationController.php:1678
 #: application/libraries/PluginManager/LimesurveyApi.php:651
 msgid "Question does not exist."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1761
+#: application/controllers/QuestionAdministrationController.php:1762
 msgid "Saved copied question"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1774
+#: application/controllers/QuestionAdministrationController.php:1775
 msgid "Could not save copied question"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1984
+#: application/controllers/QuestionAdministrationController.php:1985
 msgid "The existing label set has assessment values assigned."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1984
+#: application/controllers/QuestionAdministrationController.php:1985
 msgid "If you replace the label set the existing asssessment values will be lost."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1987
+#: application/controllers/QuestionAdministrationController.php:1988
 msgid "The existing label set has different/more languages."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1987
+#: application/controllers/QuestionAdministrationController.php:1988
 msgid "If you replace the label set these translations will be lost."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1993
+#: application/controllers/QuestionAdministrationController.php:1994
 msgid "Do you really want to continue?"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1995
+#: application/controllers/QuestionAdministrationController.php:1996
 msgid "You are about to replace an existing label set with the current answer options."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1997
+#: application/controllers/QuestionAdministrationController.php:1998
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_change_survey_group.php:20
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_select_survey_theme.php:24
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:132
@@ -1332,13 +1332,13 @@ msgstr ""
 msgid "Continue?"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2212
+#: application/controllers/QuestionAdministrationController.php:2213
 #: application/views/admin/survey/Question/yesNo_defaultvalue_widget.php:67
 #: application/views/questionAdministration/editdefaultvalues.php:42
 msgid "(No default value)"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2212
+#: application/controllers/QuestionAdministrationController.php:2213
 msgid "Checked"
 msgstr ""
 
@@ -3507,7 +3507,7 @@ msgstr ""
 #: application/controllers/UploaderController.php:313
 #: application/controllers/UploaderController.php:331
 #: application/controllers/UploaderController.php:359
-#: application/helpers/remotecontrol/remotecontrol_handle.php:3579
+#: application/helpers/remotecontrol/remotecontrol_handle.php:3578
 msgid "The file has been successfully uploaded."
 msgstr ""
 
