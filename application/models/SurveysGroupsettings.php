@@ -368,8 +368,13 @@ class SurveysGroupsettings extends LSActiveRecord
         if ($oSurvey !== null || ($oSurvey === null && $iStep > 1)) {
             foreach ($instance->optionAttributes as $key => $attribute) {
                 if ($instance->shouldInherit($attribute)) {
-                    $instance->oOptions->{$attribute} = $model->$attribute;
-                    $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $model->$attribute);
+                    if($attribute === 'othersettings') {
+                        $attribute_value = $instance->getOtheSettingsInheritance($model->$attribute);
+                    } else {
+                        $attribute_value = $model->$attribute;
+                    }
+                    $instance->oOptions->{$attribute} = $attribute_value;
+                    $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $attribute_value);
                 }
             }
         }
@@ -545,6 +550,13 @@ class SurveysGroupsettings extends LSActiveRecord
             return true;
         }
 
+        if ($attribute === 'othersettings') {
+            $othersettings = json_decode($this->oOptions->{$attribute}, true);
+            if (in_array('I', $othersettings, true)) {
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -606,5 +618,20 @@ class SurveysGroupsettings extends LSActiveRecord
         $othersettings = json_decode($this->othersettings, true) ?? [];
         $othersettings[$attribute] = $value;
         $this->othersettings = json_encode($othersettings);
+    }
+
+    public function getOtheSettingsInheritance(String $inherited) {
+        $inherited = json_decode($inherited, true)?: [];
+        if (!isset($this->oOptions->{'othersettings'})) {
+            $othersettings = json_decode($this->othersettings, true)?: [];
+        } else {
+            $othersettings = json_decode($this->oOptions->{'othersettings'}, true)?: [];
+        }
+        foreach ($othersettings as $key => $value) {
+            if ($value === 'I') {
+                $othersettings[$key] = $inherited[$key]?? $value;
+            }
+        }
+        return json_encode($othersettings);    
     }
 }

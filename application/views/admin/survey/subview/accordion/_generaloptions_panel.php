@@ -354,11 +354,15 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             <div class="row">
                 <div class="col-12 col-lg-8 content-right">
                     <label class="form-label" for="subquestion_code_prefix"><?php eT("Subquestion code prefix:"); ?></label>
-                    <input class="form-control inherit-edit <?php echo($bShowInherited && $subquestion_code_prefix === 'I' ? 'd-none' : 'd-block'); ?>" type="text" size="50" id="subquestion_code_prefix" name="subquestion_code_prefix"
-                        value="<?php echo htmlspecialchars((string) $subquestion_code_prefix); ?>" data-inherit-value="I" data-saved-value="<?php echo htmlspecialchars((string) $subquestion_code_prefix); ?>"/>
-                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $subquestion_code_prefix === 'I' ? 'd-block' : 'd-none'); ?>" type='text' size='50'
-                        value="<?php echo htmlspecialchars((string) ($question_code_option['subquestion_code_prefix'] ?? '')); ?>" readonly/>
-                </div>
+                    <input class="form-control inherit-edit <?php echo($bShowInherited && $subquestion_code_prefix === 'I' ? 'd-none' : 'd-block'); ?>" 
+                        type="text" size="50" maxlength="5" pattern="[A-Za-z]{1,5}" 
+                        id="subquestion_code_prefix" name="subquestion_code_prefix"
+                        value="<?php echo htmlspecialchars((string) $subquestion_code_prefix); ?>" 
+                        data-inherit-value="I" data-saved-value="<?php echo htmlspecialchars((string) $subquestion_code_prefix); ?>" />
+                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $subquestion_code_prefix === 'I' ? 'd-block' : 'd-none'); ?>" 
+                        type='text' size='50' 
+                        value="<?php echo htmlspecialchars((string) ($question_code_option['subquestion_code_prefix'] ?? '')); ?>" 
+                        readonly />                </div>
                 <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'd-block' : 'd-none'); ?>">
                     <label class=" form-label content-center col-12" for='subquestion_code_prefix'><?php eT("Inherit:"); ?></label>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -380,11 +384,15 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             <div class="row">
                 <div class="col-12 col-lg-8 content-right">
                     <label class="form-label" for="answer_code_prefix"><?php eT("Answer code prefix:"); ?></label>
-                    <input class="form-control inherit-edit <?php echo($bShowInherited && $answer_code_prefix === 'I' ? 'd-none' : 'd-block'); ?>" type="text" size="50" id="answer_code_prefix" name="answer_code_prefix"
-                        value="<?php echo htmlspecialchars((string) $answer_code_prefix); ?>" data-inherit-value="I" data-saved-value="<?php echo htmlspecialchars((string) $answer_code_prefix); ?>"/>
-                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $answer_code_prefix === 'I' ? 'd-block' : 'd-none'); ?>" type='text' size='50'
-                        value="<?php echo htmlspecialchars((string) ($question_code_option['answer_code_prefix']  ?? '')); ?>" readonly/>
-                </div>
+                    <input class="form-control inherit-edit <?php echo($bShowInherited && $answer_code_prefix === 'I' ? 'd-none' : 'd-block'); ?>" 
+                        type="text" size="50" maxlength="3" pattern="[A-Za-z]{1,3}" 
+                        id="answer_code_prefix" name="answer_code_prefix"
+                        value="<?php echo htmlspecialchars((string) $answer_code_prefix); ?>" 
+                        data-inherit-value="I" data-saved-value="<?php echo htmlspecialchars((string) $answer_code_prefix); ?>" />
+                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $answer_code_prefix === 'I' ? 'd-block' : 'd-none'); ?>" 
+                        type='text' size='50'
+                        value="<?php echo htmlspecialchars((string) ($question_code_option['answer_code_prefix']  ?? '')); ?>" 
+                        readonly />                </div>
                 <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'd-block' : 'd-none'); ?>">
                     <label class=" form-label content-center col-12" for='answer_code_prefix'><?php eT("Inherit:"); ?></label>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [

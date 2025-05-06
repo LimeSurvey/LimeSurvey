@@ -2577,41 +2577,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Get other settings as array
-     * @return array
-     */
-    public function getOtherSettings()
-    {
-        /**
-         *  Check othersettings state
-         *  Empty string means no prefixies shoulld be used.
-         *  Null means default config value should be used.
-         * */
-        if ($this->othersettings === null) {
-            return [
-                'question_code_prefix' => Yii::app()->getConfig('question_code_prefix', ''),
-                'subquestion_code_prefix' => Yii::app()->getConfig('subquestion_code_prefix', ''),
-                'answer_code_prefix' => Yii::app()->getConfig('answer_code_prefix', '')
-            ];
-        }
-
-        if ($othersettings = json_decode($this->othersettings, true)) {
-            foreach ($othersettings as $key => $value) {
-                if ($key === 'question_code_prefix' || $key ==='subquestion_code_prefix' || $key === 'answer_code_prefix') {
-                    if ($value === null || 'I' === $value) {
-                        $value = Yii::app()->getConfig($key, '');
-                    }
-                }
-                $othersettings[$key] = $value;
-            }
-        } else {
-            return [];
-        }
-
-        return $othersettings;
-    }
-
-    /**
      * Returns the default othersettings array with inherit values
      * @return array
      */

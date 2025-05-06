@@ -1705,7 +1705,7 @@ class Question extends LSActiveRecord
     public static function getCodePrefix($prefixType, $surveyid)
     {
         $survey = Survey::model()->findByPk($surveyid);
-        $nonNumericalSettings = $survey->getOtherSettings();
+        $nonNumericalSettings = json_decode($survey->oOptions->othersettings, true);
         return $nonNumericalSettings[$prefixType] ?? '';
     }
 
