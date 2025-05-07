@@ -369,7 +369,7 @@ class SurveysGroupsettings extends LSActiveRecord
             foreach ($instance->optionAttributes as $key => $attribute) {
                 if ($instance->shouldInherit($attribute)) {
                     if($attribute === 'othersettings') {
-                        $attribute_value = $instance->getOtheSettingsInheritance($model->$attribute);
+                        $attribute_value = $instance->getOtherSettingsInheritance($model->$attribute);
                     } else {
                         $attribute_value = $model->$attribute;
                     }
@@ -620,7 +620,7 @@ class SurveysGroupsettings extends LSActiveRecord
         $this->othersettings = json_encode($othersettings);
     }
 
-    public function getOtheSettingsInheritance(String $inherited) {
+    public function getOtherSettingsInheritance(String $inherited) {
         $inherited = json_decode($inherited, true)?: [];
         if (!isset($this->oOptions->{'othersettings'})) {
             $othersettings = json_decode($this->othersettings, true)?: [];
