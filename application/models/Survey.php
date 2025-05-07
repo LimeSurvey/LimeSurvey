@@ -2591,7 +2591,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Get a value from othersettings
-     * 
+     *
      * @param string $key The setting key to retrieve
      * @param mixed $default Default value if setting doesn't exist
      * @return mixed The setting value or default

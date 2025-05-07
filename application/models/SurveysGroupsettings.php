@@ -368,7 +368,7 @@ class SurveysGroupsettings extends LSActiveRecord
         if ($oSurvey !== null || ($oSurvey === null && $iStep > 1)) {
             foreach ($instance->optionAttributes as $key => $attribute) {
                 if ($instance->shouldInherit($attribute)) {
-                    if($attribute === 'othersettings') {
+                    if ($attribute === 'othersettings') {
                         $attribute_value = $instance->getOtherSettingsInheritance($model->$attribute);
                     } else {
                         $attribute_value = $model->$attribute;
@@ -580,7 +580,7 @@ class SurveysGroupsettings extends LSActiveRecord
         }
         return json_decode($this->othersettings, true) ?? [];
     }
-    
+
     /**
      * Set other settings as array
      * @param array $settings
@@ -592,7 +592,7 @@ class SurveysGroupsettings extends LSActiveRecord
 
     /**
      * Get a value from othersettings
-     * 
+     *
      * @param string $key The setting key to retrieve
      * @param mixed $default Default value if setting doesn't exist
      * @return mixed The setting value or default
@@ -620,18 +620,19 @@ class SurveysGroupsettings extends LSActiveRecord
         $this->othersettings = json_encode($othersettings);
     }
 
-    public function getOtherSettingsInheritance(String $inherited) {
-        $inherited = json_decode($inherited, true)?: [];
+    public function getOtherSettingsInheritance(string $inherited)
+    {
+        $inherited = json_decode($inherited, true) ?: [];
         if (!isset($this->oOptions->{'othersettings'})) {
-            $othersettings = json_decode($this->othersettings, true)?: [];
+            $othersettings = json_decode($this->othersettings, true) ?: [];
         } else {
-            $othersettings = json_decode($this->oOptions->{'othersettings'}, true)?: [];
+            $othersettings = json_decode($this->oOptions->{'othersettings'}, true) ?: [];
         }
         foreach ($othersettings as $key => $value) {
             if ($value === 'I') {
-                $othersettings[$key] = $inherited[$key]?? $value;
+                $othersettings[$key] = $inherited[$key] ?? $value;
             }
         }
-        return json_encode($othersettings);    
+        return json_encode($othersettings);
     }
 }
