@@ -2683,7 +2683,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $results['answers']++;
             if (isset($oAnswerL10n)) {
                 $oAnswer = Answer::model()->findByAttributes(['qid' => $insertdata['qid'], 'code' => $insertdata['code'], 'scale_id' => $insertdata['scale_id']]);
-                $oAnswerL10n->aid = $oAnswer->aid;
+                if ($oAnswer) {
+                    $oAnswerL10n->aid = $oAnswer->aid;
+                }
                 $oAnswerL10n->save();
                 unset($oAnswerL10n);
             }
