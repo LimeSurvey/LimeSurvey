@@ -755,7 +755,8 @@ function populateDatabase($oDB)
             'questionindex' => "integer NULL DEFAULT '0'",
             'navigationdelay' => "integer NULL DEFAULT '0'",
             'nokeyboard' => "string(1) NULL DEFAULT 'N'",
-            'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'"
+            'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'",
+            'othersettings' => "mediumtext NULL",
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_groupsettings_pk}}', '{{surveys_groupsettings}}', ['gsid']);
