@@ -620,9 +620,9 @@ class SurveysGroupsettings extends LSActiveRecord
         $this->othersettings = json_encode($othersettings);
     }
 
-    public function getOtherSettingsInheritance(string $inherited)
+    public function getOtherSettingsInheritance(?string $inherited)
     {
-        $inherited = json_decode($inherited, true) ?: [];
+        $inherited = ($inherited !== null) ? json_decode($inherited, true) : [];
         if (!isset($this->oOptions->{'othersettings'})) {
             $othersettings = json_decode($this->othersettings, true) ?: [];
         } else {
