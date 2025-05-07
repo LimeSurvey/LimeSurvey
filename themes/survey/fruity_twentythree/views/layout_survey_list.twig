@@ -100,9 +100,9 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
 </div>
 
 {# Ajaxify cannot handle an element that is a direct child of body, so => create simple wrapper section #}
-<article>
+<article role="none">
 
-    <div id="{{ aSurveyInfo.id.dynamicreload }}">
+    <div id="{{ aSurveyInfo.id.dynamicreload }}" role="none">
         {% block body %}
             {# Bootstrap Navigation Bar: the top menu #}
             {% block nav_bar %}
@@ -112,10 +112,10 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
 
             {# Replace the content block #}
             {% block content %}
-                <div class="container-md">
+                <div class="container-md" role="none">
                     {{ registerTemplateCssFile('./css/survey-list.css') }}
 
-                    <div class="{{ aSurveyInfo.class.surveylistrow }} row"
+                    <main class="{{ aSurveyInfo.class.surveylistrow }} row"
                          id="{{ aSurveyInfo.id.surveylistrow }}" {{ aSurveyInfo.attr.surveylistrow }}>
                         <div class="col-12">
                             {# include the alert for no JavaScript #}
@@ -176,9 +176,9 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </main>
 
-                    <div id="{{ aSurveyInfo.id.surveylistfooter }}"
+                    <footer id="{{ aSurveyInfo.id.surveylistfooter }}"
                          class="{{ aSurveyInfo.class.surveylistfooter }}" {{ aSurveyInfo.attr.surveylistfooter }}>
                         <div
                             class="{{ aSurveyInfo.class.surveylistfootercont }}" {{ aSurveyInfo.attr.surveylistfootercont }}>
@@ -201,7 +201,7 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </footer>
                 </div>
             {% endblock %}
 
