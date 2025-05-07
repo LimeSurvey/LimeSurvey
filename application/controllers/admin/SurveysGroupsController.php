@@ -291,7 +291,6 @@ class SurveysGroupsController extends SurveyCommonAction
             isset($_POST['template']) || isset($_POST['showxquestions']) || isset($_POST['anonymized'])
             || isset($_POST['datestamp']) || isset($_POST['listpublic'])
         ) {
-
             // Get the current othersettings
             $currentOtherSettings = $oSurvey->othersettings ? json_decode($oSurvey->othersettings, true) : [];
 
