@@ -59,7 +59,7 @@ class TestBaseClassView extends TestBaseClassWeb
                 )
             );
         } catch (\Exception $e) {
-            //throw new Exception($e->getMessage());
+            throw new \Exception($e->getMessage());
             $screenshot = self::$webDriver->takeScreenshot();
             file_put_contents(self::$screenshotsFolder. '/'.$name.'.png', $screenshot);
         }
