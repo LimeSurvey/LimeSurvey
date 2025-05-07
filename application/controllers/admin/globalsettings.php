@@ -515,20 +515,20 @@ class GlobalSettings extends SurveyCommonAction
         if (!empty($_POST)) {
             // Get the current othersettings
             $currentOtherSettings = $oSurveyGroupSetting->othersettings ? json_decode($oSurveyGroupSetting->othersettings, true) : [];
-            
+
             // Add the new attributes to othersettings
             $newOtherSettings = [
                 'question_code_prefix' => Yii::app()->request->getPost('question_code_prefix', ''),
                 'subquestion_code_prefix' => Yii::app()->request->getPost('subquestion_code_prefix', ''),
                 'answer_code_prefix' => Yii::app()->request->getPost('answer_code_prefix', '')
             ];
-            
+
             // Merge with existing settings (preserving other values that might be there)
             $mergedOtherSettings = array_merge($currentOtherSettings, $newOtherSettings);
-            
+
             // Convert back to JSON
             $_POST['othersettings'] = json_encode($mergedOtherSettings);
-            
+
             // Now proceed with the normal save
             $oSurveyGroupSetting->attributes = $_POST;
             $oSurveyGroupSetting->gsid = 0;
