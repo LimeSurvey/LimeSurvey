@@ -86,11 +86,12 @@ class SurveyAccessModeService
     /**
      * Creates a token table for the survey if it does not already exist
      * @param \Survey $survey
+     * @param bool $forced
      * @return bool
      */
-    protected function newTokenTable(Survey $survey)
+    public function newTokenTable(Survey $survey, bool $forced = false)
     {
-        if (($survey->active !== 'Y') || ($survey->hasTokensTable)) {
+        if ((!$forced) && (($survey->active !== 'Y') || ($survey->hasTokensTable))) {
             return false; //Tokens table already exists or the survey is not active, nothing to do here
         }
         $tokenencryptionoptions = $survey->getTokenEncryptionOptions();

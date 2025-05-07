@@ -8,6 +8,7 @@ use LSYii_Application;
 use Permission;
 use Survey;
 use SurveyActivator;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 class SurveyActivate
 {
@@ -16,16 +17,20 @@ class SurveyActivate
     private SurveyActivator $surveyActivator;
     private LSYii_Application $app;
 
+    private SurveyAccessModeService $surveyAccessModeService;
+
     public function __construct(
         Survey $survey,
         Permission $permission,
         SurveyActivator $surveyActivator,
-        LSYii_Application $app
+        LSYii_Application $app,
+        SurveyAccessModeService $surveyAccessModeService
     ) {
         $this->survey = $survey;
         $this->permission = $permission;
         $this->surveyActivator = $surveyActivator;
         $this->app = $app;
+        $this->surveyAccessModeService = $surveyAccessModeService;
     }
 
     /**
@@ -80,6 +85,11 @@ class SurveyActivate
         if ($params['restore'] ?? false) {
             $result['restored'] = $this->restoreData($surveyId);
         }
+        if ($survey->access_mode !== $this->surveyAccessModeService::$ACCESS_TYPE_OPEN) {
+            if (!$survey->hasTokensTable) {
+                $this->surveyAccessModeService->newTokenTable($survey, true);
+            }
+        }
         return $result;
     }
 
@@ -116,6 +126,7 @@ class SurveyActivate
                 $archives[$key] = $candidates[count($candidates) - 1];
             }
         }
+        $survey = Survey::model()->findByPk($surveyId);
         if (is_array($archives) && isset($archives['survey']) && isset($archives['questions'])) {
             //Recover survey
             $qParts = explode("_", $archives['questions']);
@@ -124,18 +135,19 @@ class SurveyActivate
             $sTimestamp = $sParts[count($sParts) - 1];
             $dynamicColumns = getUnchangedColumns($surveyId, $sTimestamp, $qTimestamp);
             recoverSurveyResponses($surveyId, $archives["survey"], $preserveIDs, $dynamicColumns);
-            $survey = Survey::model()->findByPk($surveyId);
             //If it's not open access mode, then we import the surveys from the archive if they exist
-            if (($survey->access_mode !== 'O') && isset($archives["tokens"])) {
-                $tokenTable = $this->app->db->tablePrefix . "tokens_" . $surveyId;
-                try {
-                    createTableFromPattern($tokenTable, $archives["tokens"]);
-                } catch (\CDbException $ex) {
-                    if (strpos($ex->getMessage(), "Base table or view already exists") === false) {
-                        throw $ex;
+            if ($survey->access_mode !== SurveyAccessModeService::$ACCESS_TYPE_OPEN) {
+                if (isset($archives["tokens"])) {
+                    $tokenTable = $this->app->db->tablePrefix . "tokens_" . $surveyId;
+                    try {
+                        createTableFromPattern($tokenTable, $archives["tokens"]);
+                    } catch (\CDbException $ex) {
+                        if (strpos($ex->getMessage(), "Base table or view already exists") === false) {
+                            throw $ex;
+                        }
                     }
+                    copyFromOneTableToTheOther($archives["tokens"], $tokenTable);
                 }
-                copyFromOneTableToTheOther($archives["tokens"], $tokenTable);
             }
             if (isset($archives["timings"])) {
                 $timingsTable = $this->app->db->tablePrefix . "survey_" . $surveyId . "_timings";
