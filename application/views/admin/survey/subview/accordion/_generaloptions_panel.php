@@ -385,7 +385,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                 <div class="col-12 col-lg-8 content-right">
                     <label class="form-label" for="answer_code_prefix"><?php eT("Answer code prefix:"); ?></label>
                     <input class="form-control inherit-edit <?php echo($bShowInherited && $answer_code_prefix === 'I' ? 'd-none' : 'd-block'); ?>" 
-                        type="text" size="50" maxlength="3" pattern="[A-Za-z]{1,3}" 
+                        type="text" size="50" maxlength="2" pattern="[A-Za-z]{1,2}"
                         id="answer_code_prefix" name="answer_code_prefix"
                         value="<?php echo htmlspecialchars((string) $answer_code_prefix); ?>" 
                         data-inherit-value="I" data-saved-value="<?php echo htmlspecialchars((string) $answer_code_prefix); ?>" />
