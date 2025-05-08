@@ -580,7 +580,7 @@ class Tokens extends SurveyCommonAction
                 }
             } else {
                 $aResults['global']['result']  = false;
-                $aResults['global']['message'] = gT('No participant table found for this survey!');
+                $aResults['global']['message'] = gT('No participant list found for this survey!');
             }
         } else {
             $aResults['global']['result'] = false;
@@ -2803,7 +2803,7 @@ class Tokens extends SurveyCommonAction
 
         //The survey participants table already exist ?
         if ($survey->hasTokensTable) {
-            Yii::app()->session['flashmessage'] = gT("Participant table already exist for this survey.");
+            Yii::app()->session['flashmessage'] = gT("Participant list already exist for this survey.");
             $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
 
@@ -2828,7 +2828,7 @@ class Tokens extends SurveyCommonAction
             LimeExpressionManager::SetDirtyFlag(); // LimeExpressionManager needs to know about the new survey participants table
             $this->renderWrappedTemplate('token', array('message' => array(
                 'title' => gT("Survey participants"),
-                'message' => gT("A participant table has been created for this survey.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId\")<br /><br />\n"
+                'message' => gT("A participant list has been created for this survey.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId\")<br /><br />\n"
                     . "<input type='submit' class='btn btn-outline-secondary' value='"
                     . gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
             )), $aData);
@@ -2885,7 +2885,7 @@ class Tokens extends SurveyCommonAction
                         'token',
                         [
                             'message' => [
-                                'title'   => gT("Import old participant table"),
+                                'title'   => gT("Import old participant list"),
                                 'message' => gT("A survey participants table has been created for this survey and the old participants were imported.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId" . "\")<br /><br />\n"
                                     . "<input type='submit' class='btn btn-outline-secondary' value='"
                                     . gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
@@ -2906,7 +2906,7 @@ class Tokens extends SurveyCommonAction
                         'message' => [
                             'class' => 'message-box-error',
                             'title'   => gT("Import failed"),
-                            'message' => gT("There are no matching settings to start the restoration of the participant table.")
+                            'message' => gT("There are no matching settings to start the restoration of the participant list.")
                         ]
                     ],
                     $aData

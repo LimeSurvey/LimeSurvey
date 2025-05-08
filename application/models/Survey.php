@@ -1985,7 +1985,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Get all surveys that has participant table
+     * Get all surveys that has participant list
      * @return Survey[]
      */
     public static function getSurveysWithTokenTable()

@@ -333,7 +333,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
 
                 <?php
                 if (isset($redundanttokentables) && count($redundanttokentables) > 0) { ?>
-                    <li><?php eT("The following old participant tables exist and may be deleted if no longer required:"); ?>
+                    <li><?php eT("The following old participant lists exist and may be deleted if no longer required:"); ?>
                         <ul class='token-tables-list list-unstyled'>
                             <?php
                             foreach ($redundanttokentables as $tokentable) { ?>

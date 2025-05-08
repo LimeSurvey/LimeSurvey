@@ -6457,7 +6457,7 @@ msgid "%s cannot be left empty"
 msgstr ""
 
 #: application/controllers/admin/Tokens.php:583
-msgid "No participant table found for this survey!"
+msgid "No participant list found for this survey!"
 msgstr ""
 
 #: application/controllers/admin/Tokens.php:690
@@ -6821,7 +6821,7 @@ msgid "Survey participants have not been initialised for this survey."
 msgstr ""
 
 #: application/controllers/admin/Tokens.php:2806
-msgid "Participant table already exist for this survey."
+msgid "Participant list already exist for this survey."
 msgstr ""
 
 #: application/controllers/admin/Tokens.php:2830
@@ -6834,7 +6834,7 @@ msgid "Survey participants"
 msgstr ""
 
 #: application/controllers/admin/Tokens.php:2831
-msgid "A participant table has been created for this survey."
+msgid "A participant list has been created for this survey."
 msgstr ""
 
 #: application/controllers/admin/Tokens.php:2833
@@ -6865,7 +6865,7 @@ msgid "Continue"
 msgstr ""
 
 #: application/controllers/admin/Tokens.php:2888
-msgid "Import old participant table"
+msgid "Import old participant list"
 msgstr ""
 
 #: application/controllers/admin/Tokens.php:2889
@@ -6877,7 +6877,7 @@ msgid "Import failed"
 msgstr ""
 
 #: application/controllers/admin/Tokens.php:2909
-msgid "There are no matching settings to start the restoration of the participant table."
+msgid "There are no matching settings to start the restoration of the participant list."
 msgstr ""
 
 #: application/controllers/admin/Tokens.php:3193
@@ -17343,7 +17343,7 @@ msgid "The following old survey response tables exist and may be deleted if no l
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:336
-msgid "The following old participant tables exist and may be deleted if no longer required:"
+msgid "The following old participant lists exist and may be deleted if no longer required:"
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:354
@@ -19835,7 +19835,7 @@ msgid "Add the selected participant to survey.|Add the {n} selected participants
 msgstr ""
 
 #: application/views/admin/participants/modal_subviews/_addToSurvey.php:38
-msgid "Display survey participant table after addition?"
+msgid "Display survey participant list after addition?"
 msgstr ""
 
 #: application/views/admin/participants/modal_subviews/_deleteParticipant.php:4
@@ -24690,7 +24690,7 @@ msgid "The responses table has been renamed to: %s"
 msgstr ""
 
 #: application/views/surveyAdministration/afterDeactivateSurvey_view.php:21
-msgid "The participant table associated with this survey has been renamed to: %s "
+msgid "The participant list associated with this survey has been renamed to: %s "
 msgstr ""
 
 #: application/views/surveyAdministration/afterDeactivateSurvey_view.php:24
@@ -24726,7 +24726,7 @@ msgid "This survey is active and a responses table exists. If you delete this su
 msgstr ""
 
 #: application/views/surveyAdministration/deleteSurvey_view.php:29
-msgid "This survey has an associated participant table. If you delete this survey this participant table will be deleted. We recommend that you export or backup these participants before deleting this survey."
+msgid "This survey has an associated participant list. If you delete this survey this participant list will be deleted. We recommend that you export or backup these participants before deleting this survey."
 msgstr ""
 
 #: application/views/surveyAdministration/importSurveyResources_view.php:12
@@ -25141,7 +25141,7 @@ msgid "This survey allows public registration. A survey participants table must 
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_activation_feedback.php:40
-msgid "Initialize participant table"
+msgid "Initialize participant list"
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_activation_feedback.php:49

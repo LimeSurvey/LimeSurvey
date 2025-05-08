@@ -102,7 +102,7 @@ class SurveyAccessModeService
 
     /**
      * Drops token table if it exists
-     * @param \Survey $survey the survey whose participant table is to be dropped
+     * @param \Survey $survey the survey whose participant list is to be dropped
      * @param string $action whether we archive the tokens, or remove them
      * @return void
      */

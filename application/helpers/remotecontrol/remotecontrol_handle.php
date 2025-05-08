@@ -2981,7 +2981,7 @@ class remotecontrol_handle
     /**
      * Activate survey participants (RPC function)
      *
-     * Initialise the survey participant table of a survey where new participant tokens may be later added.
+     * Initialise the survey participant list of a survey where new participant tokens may be later added.
      *
      * @access public
      * @param string $sSessionKey Auth credentials
