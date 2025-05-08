@@ -1512,8 +1512,7 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
         'questionindex' => "integer NULL DEFAULT '0'",
         'navigationdelay' => "integer NULL DEFAULT '0'",
         'nokeyboard' => "string(1) NULL DEFAULT 'N'",
-        'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'",
-        'othersettings' => "MEDIUMTEXT NULL"
+        'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'"
     ));
     addPrimaryKey('surveys_groupsettings', array('gsid'));
 
@@ -1587,8 +1586,7 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
         "questionindex" => -1,
         "navigationdelay" => -1,
         "nokeyboard" => "I",
-        "alloweditaftercompletion" => "I",
-        "othersettings" => null
+        "alloweditaftercompletion" => "I"
     );
 
     $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes2);
