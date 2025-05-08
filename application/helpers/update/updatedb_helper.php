@@ -1588,6 +1588,7 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
         "navigationdelay" => -1,
         "nokeyboard" => "I",
         "alloweditaftercompletion" => "I",
+        "othersettings' => null"
     );
 
     $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes2);

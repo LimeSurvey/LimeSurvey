@@ -801,7 +801,8 @@ function populateDatabase($oDB)
             'questionindex' => '0',
             'navigationdelay' => '0',
             'nokeyboard' => 'N',
-            'alloweditaftercompletion' => 'N'
+            'alloweditaftercompletion' => 'N',
+            'othersettings' => null,
         );
         $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes1);
 
@@ -850,6 +851,7 @@ function populateDatabase($oDB)
                 "navigationdelay" => -1,
                 "nokeyboard" => "I",
                 "alloweditaftercompletion" => "I",
+                'othersettings' => null,
         );
         $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes2);
 
