@@ -1602,7 +1602,7 @@ class SurveyRuntimeHelper
          */
 
         $scenarios = array(
-            "tokenRequired"   => (($accessMode === SurveyAccessModeService::$ACCESS_TYPE_CLOSED) || ($accessMode === SurveyAccessModeService::$ACCESS_TYPE_DUAL)),
+            "tokenRequired"   => ($accessMode === SurveyAccessModeService::$ACCESS_TYPE_CLOSED),
             "captchaRequired" => (isCaptchaEnabled('surveyaccessscreen', $this->aSurveyInfo['usecaptcha']) && !isset($_SESSION['survey_' . $this->iSurveyid]['captcha_surveyaccessscreen']))
         );
 

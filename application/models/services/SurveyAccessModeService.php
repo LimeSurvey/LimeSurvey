@@ -23,7 +23,6 @@ class SurveyAccessModeService
 
     public static $ACCESS_TYPE_OPEN = 'O';
     public static $ACCESS_TYPE_CLOSED = 'C';
-    public static $ACCESS_TYPE_DUAL = 'D';
 
     public static $ACTION_KEEP = 'K';
     public static $ACTION_ARCHIVE = 'A';
@@ -45,7 +44,6 @@ class SurveyAccessModeService
             self::$supportedAccessModes = [
                 self::$ACCESS_TYPE_OPEN,
                 self::$ACCESS_TYPE_CLOSED,
-                self::$ACCESS_TYPE_DUAL,
             ];
         }
         if (!self::$supportedActions) {
