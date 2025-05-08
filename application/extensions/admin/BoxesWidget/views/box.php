@@ -55,7 +55,17 @@
                     <div class="box-widget-card-footer">
                         <div class="box-widget-card-footer-items">
                             <div class="box-widget-card-footer-response">
-                                <?php echo $item['survey']->countFullAnswers == 0 ? 'No' : $item['survey']->countFullAnswers ?> responses
+                                <?php
+                                if ($item['survey']->countFullAnswers == 0) {
+                                    $responsesInfo = gT('No responses');
+                                } else {
+                                    $responsesInfo = sprintf(
+                                        gT('%d responses'),
+                                        $item['survey']->countFullAnswers
+                                    );
+                                }
+                                echo $responsesInfo;
+                                ?>
                             </div>
                             <div class="icons">
                                 <?php if (

@@ -2345,7 +2345,7 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
 
-        if ((App()->getConfig("editorEnabled")) && isset(($aImportResults['newsid']))) {
+        if ((App()->getConfig("editorEnabled")) && isset($aImportResults['newsid'])) {
             if (!isset($oSurvey)) {
                 $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
             }
@@ -3417,7 +3417,7 @@ class SurveyAdministrationController extends LSBaseController
                 'iconAlter' => $state,
                 'state' => $survey->getState(),
                 'buttons' => $survey->getButtons(),
-                'link' => App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid . '?allowRedirect=1'),
+                'link' => App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid),
             ];
         }
 
