@@ -1585,7 +1585,13 @@ class SurveyAdministrationController extends LSBaseController
                 Yii::app()->session->remove('sNewSurveyTableName');
             }
 
+            if (!empty(Yii::app()->session->get('NewSIDDate'))) {
+                Yii::app()->session->remove('NewSIDDate');
+            }
+
             Yii::app()->session->add('sNewSurveyTableName', Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}");
+            Yii::app()->session->add('NewSIDDate', "{$iSurveyID}_{$date}");
+
             $aData['date'] = $date;
             $aData['dbprefix'] = Yii::app()->db->tablePrefix;
             $aData['sNewSurveyTableName'] = Yii::app()->session->get('sNewSurveyTableName');

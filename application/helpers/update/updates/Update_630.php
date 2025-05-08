@@ -6,36 +6,21 @@ class Update_630 extends DatabaseUpdateBase
 {
     public function up()
     {
-        addColumn('{{surveys}}', 'othersettings', 'mediumtext');
-        addColumn('{{surveys_groupsettings}}', 'othersettings', 'mediumtext');
-
-        $question_code_prefix = App()->getConfig("question_code_prefix");
-        $subquestion_code_prefix = App()->getConfig("subquestion_code_prefix");
-        $answer_code_prefix = App()->getConfig("answer_code_prefix");
-
-        $other_settings = [
-            'question_code_prefix' => $question_code_prefix,
-            'subquestion_code_prefix' => $subquestion_code_prefix,
-            'answer_code_prefix' => $answer_code_prefix
+        $updates = [
+            'browserdetect' => 'themes/question/browserdetect/survey/questions/answer/shortfreetext/assets/browserdetect.png',
+            'inputondemand' => 'themes/question/inputondemand/survey/questions/answer/multipleshorttext/assets/inputondemand.png',
+            'image_select-multiplechoice' => 'themes/question/image_select-multiplechoice/survey/questions/answer/multiplechoice/assets/image_select_multiplechoice.png',
+            'ranking_advanced' => 'themes/question/ranking_advanced/survey/questions/answer/ranking/assets/advanced_ranking.png',
+            'image_select-listradio' => 'themes/question/image_select-listradio/survey/questions/answer/listradio/assets/image_select_listradio.png',
         ];
 
-        $other_settings_json = json_encode($other_settings);
-
-        $this->db->createCommand()->update(
-            '{{surveys_groupsettings}}',
-            ['othersettings' => $other_settings_json],
-            'gsid = 0'
-        );
-        $other_settings_inherit = [
-            'question_code_prefix' => 'I',
-            'subquestion_code_prefix' => 'I',
-            'answer_code_prefix' => 'I'
-        ];
-        $other_settings_inherit_json = json_encode($other_settings_inherit);
-        $this->db->createCommand()->update(
-            '{{surveys_groupsettings}}',
-            ['othersettings' => $other_settings_inherit_json],
-            'gsid != 0 AND othersettings IS NULL'
-        );
+        foreach ($updates as $name => $imagePath) {
+            $this->db->createCommand()->update(
+                '{{question_themes}}',
+                ['image_path' => $imagePath],
+                'name = :name',
+                [':name' => $name]
+            );
+        }
     }
 }
