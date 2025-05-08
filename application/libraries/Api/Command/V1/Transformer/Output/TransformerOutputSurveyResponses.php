@@ -22,7 +22,8 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
                 'key' => 'submitDate',
                 'formatter' => ['dateTimeToJson' => true]
             ],
-            'startlanguage' => ['key' => 'language', 'type' => 'string']
+            'startlanguage' => ['key' => 'language', 'type' => 'string'],
+            'completed' => ['type' => 'int'],
         ]);
     }
 
@@ -76,6 +77,7 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
         }
 
         $surveyResponse = parent::transform($surveyResponse);
+        $surveyResponse['completed'] = !empty($surveyResponse['submitDate']);
         $surveyResponse['answers'] = $responses;
 
         return $surveyResponse;
