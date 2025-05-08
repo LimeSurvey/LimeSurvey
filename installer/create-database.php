@@ -677,8 +677,7 @@ function populateDatabase($oDB)
             'alloweditaftercompletion' => "string(1) DEFAULT 'N'",
             'googleanalyticsstyle' => "string(1) NULL",
             'googleanalyticsapikey' => "string(25) NULL",
-            'tokenencryptionoptions' => "text NULL",
-            'othersettings' => "mediumtext NULL",
+            'tokenencryptionoptions' => "text NULL"
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_pk}}', '{{surveys}}', 'sid');
@@ -755,8 +754,7 @@ function populateDatabase($oDB)
             'questionindex' => "integer NULL DEFAULT '0'",
             'navigationdelay' => "integer NULL DEFAULT '0'",
             'nokeyboard' => "string(1) NULL DEFAULT 'N'",
-            'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'",
-            'othersettings' => "mediumtext NULL",
+            'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'"
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_groupsettings_pk}}', '{{surveys_groupsettings}}', ['gsid']);
@@ -801,8 +799,7 @@ function populateDatabase($oDB)
             'questionindex' => '0',
             'navigationdelay' => '0',
             'nokeyboard' => 'N',
-            'alloweditaftercompletion' => 'N',
-            'othersettings' => null,
+            'alloweditaftercompletion' => 'N'
         );
         $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes1);
 
@@ -850,8 +847,7 @@ function populateDatabase($oDB)
                 "questionindex" => -1,
                 "navigationdelay" => -1,
                 "nokeyboard" => "I",
-                "alloweditaftercompletion" => "I",
-                'othersettings' => null,
+                "alloweditaftercompletion" => "I"
         );
         $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes2);
 
