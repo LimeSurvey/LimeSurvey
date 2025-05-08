@@ -2,37 +2,15 @@
 
 namespace LimeSurvey\Libraries\Api\Command\V1\Transformer\Output;
 
-use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputAnswer;
-use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputAnswerL10ns;
-use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputQuestion;
-use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputQuestionAttribute;
-use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputQuestionGroup;
-use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputQuestionGroupL10ns;
-use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputQuestionL10ns;
-use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputSurvey;
-use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputSurveyGroup;
-use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputSurveyMenuItems;
-use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputSurveyMenus;
-use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputSurveyOwner;
-use Survey;
-use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
+use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
-use SurveysGroups;
-use DI\FactoryInterface;
-use LimeSurvey\DI;
 
-//use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 
 /**
  * TransformerOutputSurveyDetail
  */
 class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
 {
-    private TransformerOutputQuestion $transformerQuestion;
-    private TransformerOutputQuestionL10ns $transformerQuestionL10ns;
-    private TransformerOutputQuestionAttribute $transformerQuestionAttribute;
-    private QuestionService $questionService;
-
     /**
      * Construct
      */
@@ -56,7 +34,7 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
      * @param ?mixed $data
      * @param ?mixed $options
      * @return ?mixed
-     * @throws \LimeSurvey\Api\Transformer\TransformerException
+     * @throws TransformerException
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function transform($data, $options = [])
@@ -87,11 +65,11 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
         foreach ($surveyResponse as $key => $value) {
             if (str_contains($key, 'X')) {
                 list($survey, $group, $question) = explode("X", $key);
-                $subq = substr($question, 0, strcspn($question, '_#')); // remove suffix
-                $responses[$question] = [
+                $responses[$key] = [
                     "key" => $key,
-                    "subq" => $subq,
-                    "group" => intval($group),
+                    "id" => $question,
+                    "gid" => $group,
+                    "sid" => $survey,
                     "value" => $value
                 ];
             }

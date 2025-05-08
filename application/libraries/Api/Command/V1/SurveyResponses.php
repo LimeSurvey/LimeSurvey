@@ -8,9 +8,7 @@ use Survey;
 use LimeSurvey\Api\Command\{CommandInterface,
     Request\Request,
     Response\Response,
-    Response\ResponseFactory,
-    V1\Transformer\Output\TransformerOutputQuestion,
-    V1\Transformer\Output\TransformerOutputQuestionGroup};
+    Response\ResponseFactory};
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurveyResponses;
 
@@ -22,8 +20,6 @@ class SurveyResponses implements CommandInterface
     protected ResponseFactory $responseFactory;
     protected FilterPatcher $responseFilterPatcher;
     protected TransformerOutputSurveyResponses $transformerOutputSurveyResponses;
-    private TransformerOutputQuestion $transformerQuestion;
-    private TransformerOutputQuestionGroup $transformerQuestionGroup;
 
     /**
      * Constructor
@@ -31,23 +27,17 @@ class SurveyResponses implements CommandInterface
      * @param Survey $survey
      * @param FilterPatcher $responseFilterPatcher
      * @param ResponseFactory $responseFactory
-     * @param TransformerOutputQuestion $transformerOutputQuestion
-     * @param TransformerOutputQuestionGroup $transformerOutputQuestionGroup
      * @param TransformerOutputSurveyResponses $transformerOutputSurveyResponses
      */
     public function __construct(
         Survey $survey,
         FilterPatcher $responseFilterPatcher,
         ResponseFactory $responseFactory,
-        TransformerOutputQuestion $transformerOutputQuestion,
-        TransformerOutputQuestionGroup $transformerOutputQuestionGroup,
         TransformerOutputSurveyResponses $transformerOutputSurveyResponses
     ) {
         $this->survey = $survey;
         $this->responseFactory = $responseFactory;
         $this->responseFilterPatcher = $responseFilterPatcher;
-        $this->transformerQuestion = $transformerOutputQuestion;
-        $this->transformerQuestionGroup = $transformerOutputQuestionGroup;
         $this->transformerOutputSurveyResponses = $transformerOutputSurveyResponses;
     }
 
@@ -62,7 +52,6 @@ class SurveyResponses implements CommandInterface
     {
         $this->getSurvey($request);
         $model = $this->getSurveyDynamicModel($request);
-        $questionGroups = $this->getSurveyGroup();
         [$criteria, $sort] = $this->buildCriteria($request);
         $pagination = $this->buildPagination($request);
 
@@ -72,69 +61,70 @@ class SurveyResponses implements CommandInterface
             'pagination' => $pagination,
         ));
 
-        $data = $this->transformerOutputSurveyResponses->transform($dataProvider);
-        $data['surveyGroup'] = $this->transformQuestionGroups($questionGroups);
+        $data['responses'] = $this->transformerOutputSurveyResponses->transform($dataProvider);
+        $data['surveyQuestions'] = $this->getQuestionFieldMap();
         $data['_meta'] = [
             'pagination' => [
-                'pageSize' => $pagination['pageSize'],
-                'currentPage' => $pagination['currentPage'],
-                'totalItems' => $dataProvider->getTotalItemCount(),
-                'totalPages' => ceil($dataProvider->getTotalItemCount() / $pagination['pageSize']),
+                'pageSize' => (int) $pagination['pageSize'],
+                'currentPage' => (int) $pagination['currentPage'] + 1,
+                'totalItems' => (int) $dataProvider->getTotalItemCount(),
+                'totalPages' => (int) ceil($dataProvider->getTotalItemCount() / $pagination['pageSize']),
             ],
             'filters' => $request->getData('search', []),
             'sort' => $request->getData('sort', []),
         ];
+        $data = $this->mapResponsesToQuestions($data);
 
         return $this->responseFactory
             ->makeSuccess(['responses' => $data]);
     }
 
-    public function transformQuestionGroups($data, $options = []): array
+    /**
+     * Maps survey responses to survey questions.
+     *
+     * @param array $data The survey responses and questions data.
+     * @return array
+     */
+    public function mapResponsesToQuestions($data)
     {
-        $options = $options ?? [];
-
-        $survey['questionGroups'] = $this->transformerQuestionGroup->transformAll(
-            $data,
-            $options
-        );
-
-        $groupLookup = $this->createCollectionLookup(
-            'gid',
-            $survey['questionGroups']
-        );
-
-        foreach ($data as $questionGroupModel) {
-            $group = &$groupLookup[$questionGroupModel->gid];
-
-            $group['questions'] = $this->transformerQuestion->transformAll(
-                $questionGroupModel->questions,
-                $options
-            );
-        }
-
-        return $survey;
-    }
-
-    private function createCollectionLookup($key, &$entityArray): array
-    {
-        $output = [];
-        foreach ($entityArray as &$entity) {
-            if (is_array($entity) && isset($entity[$key])) {
-                $output[$entity[$key]] = &$entity;
+        foreach ($data['responses'] as &$response) {
+            foreach ($response['answers'] as &$answer) {
+                $qid = $answer['key'];
+                if (isset($data["surveyQuestions"][$qid])) {
+                    $answer = array_merge($answer, $data["surveyQuestions"][$qid]);
+                }
             }
         }
-        return $output;
+        return $data;
     }
+
+
+    /**
+     * @param mixed $question
+     * @param mixed|null $subquestion
+     * @return string|array
+     */
+    private function getQuestionFieldMap()
+    {
+        //This function generates an array containing the fieldcode, and matching data in the same order as the responses table
+        $fieldMap = createFieldMap($this->survey, 'short', false, false);
+
+        return array_filter(array_map(function ($item) {
+            if (!empty($item['qid'])) {
+                return [
+                    'gid' => $item['gid'],
+                    'qid' => $item['qid'],
+                ];
+            }
+        }, $fieldMap));
+    }
+
 
     private function getSurvey($request): void
     {
         $this->survey = $this->survey->findByPk($this->getSurveyId($request));
     }
 
-    private function getSurveyGroup()
-    {
-        return $this->survey->groups ?? [];
-    }
 
     private function getSurveyId(Request $request): string
     {
@@ -142,6 +132,7 @@ class SurveyResponses implements CommandInterface
         if (!is_numeric($surveyId)) {
             throw new \InvalidArgumentException("Invalid survey ID");
         }
+
         return $surveyId;
     }
     private function getSurveyDynamicModel(Request $request): \SurveyDynamic
@@ -155,10 +146,10 @@ class SurveyResponses implements CommandInterface
         $sort = new \CSort();
         $criteria = new \LSDbCriteria();
 
-
         if ($searchParams) {
             $this->responseFilterPatcher->apply($searchParams, $criteria, $sort);
         }
+
         return [$criteria, $sort];
     }
     private function buildPagination(Request $request)
