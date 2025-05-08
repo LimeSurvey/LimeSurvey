@@ -1888,7 +1888,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             $columnsCount = (!$maxDbAnswer || intval($maxDbAnswer->value) < 1) ? $answersCount : intval($maxDbAnswer->value);
             $columnsCount = min($columnsCount, $answersCount); // Can not be upper than current answers #14899
             for ($i = 1; $i <= $columnsCount; $i++) {
-                $fieldname = "Q{$arow['qid']}_R{$arow['qid']}";
+                $fieldname = "Q{$arow['qid']}_R" . $answers[$i - 1]->aid;
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
