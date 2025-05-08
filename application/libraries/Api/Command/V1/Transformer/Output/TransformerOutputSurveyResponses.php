@@ -23,7 +23,6 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
                 'formatter' => ['dateTimeToJson' => true]
             ],
             'startlanguage' => ['key' => 'language', 'type' => 'string'],
-            'completed' => ['type' => 'int'],
         ]);
     }
 
