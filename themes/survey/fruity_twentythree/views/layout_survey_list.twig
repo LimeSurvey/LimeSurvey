@@ -100,7 +100,7 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
 </div>
 
 {# Ajaxify cannot handle an element that is a direct child of body, so => create simple wrapper section #}
-<article role="none">
+<div>
 
     <div id="{{ aSurveyInfo.id.dynamicreload }}" role="none">
         {% block body %}
@@ -185,7 +185,7 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
                             <div {{ aSurveyInfo.attr.surveylistfootercontp }} class="row">
                                 <div class="col-6 col-md-12">
                                     <a {{ aSurveyInfo.attr.surveylistfootercontpaa }}>
-                                        {{ image("./files/poweredby.png", "proudly powered by LimeSurvey Survey", {class: 'img-fluid'}) }}
+                                        {{ image("./files/poweredby.png", "proudly powered by LimeSurvey", {class: 'img-fluid'}) }}
                                     </a>
                                 </div>
                                 <div class="col-12 d-block d-sm-none d-md-block text-center">
@@ -220,7 +220,7 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
 
         {% endblock %}
     </div>
-</article>
+</div>
 {% block footer %}
     {{ include('./subviews/footer/footer.twig') }}
 {% endblock %}
