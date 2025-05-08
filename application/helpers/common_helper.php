@@ -997,9 +997,14 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
         return '';
     }
     $survey = Survey::model()->findByPk($iSurveyID);
+    $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $iSurveyID]);
+    $found = false;
+    foreach ($rawQuestions as $rawQuestion) {
+        $found = $found || (strpos($sFieldCode, "Q{$rawQuestion->qid}") === 0);
+    }
     //Fieldcode used to determine question, $sValue used to match against answer code
     //Returns NULL if question type does not suit
-    if (strpos($sFieldCode, "{$iSurveyID}X") === 0) {
+    if ($found) {
         //Only check if it looks like a real fieldcode
         $fieldmap = createFieldMap($survey, 'short', false, false, $sLanguage);
         if (isset($fieldmap[$sFieldCode])) {
