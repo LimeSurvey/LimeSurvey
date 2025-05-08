@@ -3770,21 +3770,10 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
 */
 function replaceExpressionCodes($iSurveyID, $aCodeMap)
 {
-    $keys = array_keys($aCodeMap);
-    usort($keys, function($a, $b) {
-        $left = count(explode("_", $a));
-        $right = count(explode("_", $b));
-        if ($left === $right) {
-            return strlen($a) > strlen($b) ? -1 : 1;
-        }
-        return ($left > $right) ? -1 : 1;
-    });
     $arQuestions = Question::model()->findAll("sid=:sid", array(':sid' => $iSurveyID));
     foreach ($arQuestions as $arQuestion) {
         $bModified = false;
-        foreach ($keys as $key) {
-            $sOldCode = $key;
-            $sNewCode = $aCodeMap[$key];
+        foreach ($aCodeMap as $sOldCode => $sNewCode) {
             // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
             if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode)) {
                 $sOldCode = preg_quote((string) $sOldCode, '~');
@@ -3798,50 +3787,20 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
         foreach ($arQuestion->questionl10ns as $arQuestionLS) {
             $bModified = false;
             foreach ($aCodeMap as $sOldCode => $sNewCode) {
-                foreach ($keys as $key) {
-                    $sOldCode = $key;
-                    $sNewCode = $aCodeMap[$key];
-                    // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
-                    if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode[0])) {
-                        if (preg_match('/^Q[0-9]*.*$/', $sOldCode)) {
-                            $text1 = $arQuestionLS->question;
-                            $text2 = $arQuestionLS->help;
-                            $arQuestionLS->question = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $arQuestionLS->question, -1, $iCount);
-                            $arQuestionLS->help = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $arQuestionLS->help, -1, $iCount);
-                            $bModified = $bModified || (($text1 !== $arQuestionLS->question) || ($text2 !== $arQuestionLS->help));
-                        } else {
-                            $sOldCode = preg_quote((string) $sOldCode, '~');
-                            // The following regex only matches the last occurrence of the old code within each pair of brackets, so we apply the replace recursively
-                            // to catch all occurrences.
-                            $arQuestionLS->question = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->question, -1, $iCount);
-                            $bModified = $bModified || $iCount;
-                            // Apply the replacement on question help text
-                            $arQuestionLS->help = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->help, -1, $iCount);
-                            $bModified = $bModified || $iCount;
-                        }
-                    }
+                // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
+                if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode[0])) {
+                    $sOldCode = preg_quote((string) $sOldCode, '~');
+                    // The following regex only matches the last occurrence of the old code within each pair of brackets, so we apply the replace recursively
+                    // to catch all occurrences.
+                    $arQuestionLS->question = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->question, -1, $iCount);
+                    $bModified = $bModified || $iCount;
+                    // Apply the replacement on question help text
+                    $arQuestionLS->help = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->help, -1, $iCount);
+                    $bModified = $bModified || $iCount;
                 }
             }
             if ($bModified) {
                 $arQuestionLS->save();
-            }
-            foreach ($arQuestion->answers as $answer) {
-                foreach ($answer->answerl10ns as $answerl10n) {
-                    $bModified = false;
-                    foreach ($keys as $key) {
-                        $sOldCode = $key;
-                        $sNewCode = $aCodeMap[$key];
-                        // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
-                        if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode)) {
-                            $sOldCode = preg_quote((string) $sOldCode, '~');
-                            $answerl10n->answer = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $answerl10n->answer, -1, $iCount);
-                            $bModified = $bModified || $iCount;
-                        }
-                    }
-                    if ($bModified) {
-                        $answerl10n->save();
-                    }
-                }
             }
         }
         // Also apply on question's default values
@@ -3852,15 +3811,13 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
             }
             foreach ($defaultValue->defaultvaluel10ns as $defaultValueL10n) {
                 $bModified = false;
-                foreach ($keys as $key) {
-                    $sOldCode = $key;
-                    $sNewCode = $aCodeMap[$key];
-                    // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
-                    if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode)) {
-                        $sOldCode = preg_quote((string) $sOldCode, '~');
-                        $defaultValueL10n->defaultvalue = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $defaultValueL10n->defaultvalue, -1, $iCount);
-                        $bModified = $bModified || $iCount;
+                foreach ($aCodeMap as $sOldCode => $sNewCode) {
+                    if (strlen((string) $sOldCode) <= 1 || is_numeric($sOldCode)) {
+                        continue;
                     }
+                    $sOldCode = preg_quote((string) $sOldCode, '~');
+                    $defaultValueL10n->defaultvalue = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $defaultValueL10n->defaultvalue, -1, $iCount);
+                    $bModified = $bModified || $iCount;
                 }
                 if ($bModified > 0) {
                     $defaultValueL10n->save();
@@ -3871,31 +3828,19 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
     $arGroups = QuestionGroup::model()->findAll("sid=:sid", array(':sid' => $iSurveyID));
     foreach ($arGroups as $arGroup) {
         $bModified = false;
-        foreach ($keys as $key) {
-            $sOldCode = $key;
-            $sNewCode = $aCodeMap[$key];
-            // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
-            if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode)) {
-                $sOldCode = preg_quote((string) $sOldCode, '~');
-                $arGroup->grelevance = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $arGroup->grelevance, -1, $iCount);
-                $bModified = $bModified || $iCount;
-            }
+        foreach ($aCodeMap as $sOldCode => $sNewCode) {
+            $sOldCode = preg_quote((string) $sOldCode, '~');
+            $arGroup->grelevance = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $arGroup->grelevance, -1, $iCount);
+            $bModified = $bModified || $iCount;
         }
         if ($bModified) {
             $arGroup->save();
         }
         foreach ($arGroup->questiongroupl10ns as $arQuestionGroupLS) {
-            $bModified = false;
-            foreach ($keys as $key) {
-                $sOldCode = $key;
-                $sNewCode = $aCodeMap[$key];
-                // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
-                if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode)) {
-                    $sOldCode = preg_quote((string) $sOldCode, '~');
-                    $arQuestionGroupLS->description = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $arQuestionGroupLS->description, -1, $iCount);
-                    $arQuestionGroupLS->group_name = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $arQuestionGroupLS->group_name, -1, $iCount);
-                    $bModified = $bModified || $iCount;
-                }
+            foreach ($aCodeMap as $sOldCode => $sNewCode) {
+                $sOldCode = preg_quote((string) $sOldCode, '~');
+                $arQuestionGroupLS->description = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionGroupLS->description, -1, $iCount);
+                $bModified = $bModified || $iCount;
             }
             if ($bModified) {
                 $arQuestionGroupLS->save();
@@ -3906,15 +3851,13 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
     $surveyLanguageSettings = SurveyLanguageSetting::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
     foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
         $bModified = false;
-        foreach ($keys as $key) {
-            $sOldCode = $key;
-            $sNewCode = $aCodeMap[$key];
-            // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
-            if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode)) {
-                $sOldCode = preg_quote((string) $sOldCode, '~');
-                $surveyLanguageSetting->surveyls_endtext = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $surveyLanguageSetting->surveyls_endtext, -1, $iCount);
-                $bModified = $bModified || $iCount;
+        foreach ($aCodeMap as $sOldCode => $sNewCode) {
+            if (strlen((string) $sOldCode) <= 1 || is_numeric($sOldCode)) {
+                continue;
             }
+            $sOldCode = preg_quote((string) $sOldCode, '~');
+            $surveyLanguageSetting->surveyls_endtext = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $surveyLanguageSetting->surveyls_endtext, -1, $iCount);
+            $bModified = $bModified || $iCount;
         }
         if ($bModified) {
             $surveyLanguageSetting->save();
