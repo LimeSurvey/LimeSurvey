@@ -64,7 +64,7 @@
                                     && ($item['survey']->getQuestionsCount() > 0)
     ) :
                                     ?>
-                                    <a href="<?= App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $item['survey']->sid) ?? '#' ?>"
+                                    <a href="<?= App()->createUrl("/surveyAdministration/view?iSurveyID=" . $item['survey']->sid) ?? '#' ?>"
                                        class="active"
                                        data-bs-toggle="tooltip"
                                        data-bs-original-title="<?= gT('Activate') ?>"
