@@ -165,10 +165,12 @@
     }
 }
 
-
+.side-menu-logo {
+    min-width: 365px;
+}
 .side-menu-logo a{
     color: black;
     font-size: 15px;
     font-weight: 800;
-    line-height: 24px
+    line-height: 24px;
 }
