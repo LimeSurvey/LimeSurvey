@@ -5,6 +5,7 @@ namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 use Survey;
 use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 use LimeSurvey\Models\Services\SurveyThemeConfiguration;
+use LimeSurvey\Models\Services\SurveyArchiveService;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 use SurveysGroups;
 
@@ -36,6 +37,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     private TransformerOutputSurveyOwner $transformerSurveyOwner;
     private QuestionService $questionService;
     private SurveyThemeConfiguration $surveyThemeConfiguration;
+    private SurveyArchiveService $surveyArchiveService;
     private TransformerOutputAnswerL10ns $transformerAnswerL10ns;
     private TransformerOutputSurveyMenus $transformerOutputSurveyMenus;
     private TransformerOutputSurveyMenuItems $transformerOutputSurveyMenuItems;
@@ -57,7 +59,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         TransformerOutputSurveyMenus $transformerOutputSurveyMenus,
         TransformerOutputSurveyMenuItems $transformerOutputSurveyMenuItems,
         QuestionService $questionService,
-        SurveyThemeConfiguration $surveyThemeConfiguration
+        SurveyThemeConfiguration $surveyThemeConfiguration,
+        SurveyArchiveService $surveyArchiveService
     ) {
         $this->transformerSurvey = $transformerOutputSurvey;
         $this->transformerSurveyGroup = $transformerOutputSurveyGroup;
@@ -73,6 +76,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $this->transformerOutputSurveyMenuItems = $transformerOutputSurveyMenuItems;
         $this->questionService = $questionService;
         $this->surveyThemeConfiguration = $surveyThemeConfiguration;
+        $this->surveyArchiveService = $surveyArchiveService;
     }
 
     /**
@@ -404,5 +408,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $templateConf = \TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
         $sTemplatePreview = $templateConf->getPreview(true);
         $sTemplatePreview = &$sTemplatePreview;
+        $before = $this->surveyArchiveService->getArhiveAlias($iSurveyId, 20250509114212);
+        $updated = $this->surveyArchiveService->updateArchiveAlias($iSurveyId, 20250509114212, 'new alias');
+        $after = $this->surveyArchiveService->getArhiveAlias($iSurveyId, 20250509114212);
     }
 }
