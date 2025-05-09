@@ -133,7 +133,6 @@ class Tokens extends SurveyCommonAction
             if ($filterForm) {
                 $model->setAttributes($filterForm, false);
             }
-    
         }
         $aData['model'] = $model;
 
@@ -2984,7 +2983,7 @@ class Tokens extends SurveyCommonAction
                     }
                     $aData['oldlist'] = $oldlist;
                 }
-    
+
                 $aData['tcount'] = $tcount;
                 $aData['databasetype'] = Yii::app()->db->getDriverName();
                 $aData['sidemenu']["token_menu"] = true;
