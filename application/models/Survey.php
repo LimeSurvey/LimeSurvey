@@ -1847,7 +1847,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $event = new PluginEvent('beforeSurveySearch');
         $event->set('criteria', $criteria);
         App()->getPluginManager()->dispatchEvent($event);
-        $criteria = $event->get('criteria');
+        $returnedCriteria = $event->get('criteria');
+        if ($returnedCriteria instanceof LSDbCriteria) {
+            $criteria = $returnedCriteria;
+        }
 
         // $criteria->addCondition("t.blabla == 'blub'");
         $dataProvider = new CActiveDataProvider('Survey', array(
