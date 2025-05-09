@@ -30,4 +30,7 @@ class SimpleSurveyValues
 
     /** @var string administrator email */
     public $adminEmail = 'inherit';
+
+    /** @var array other settings */
+    public $othersettings = [];
 }

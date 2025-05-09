@@ -357,7 +357,7 @@ class SurveyAdministrationController extends LSBaseController
                 $iGroupSequence++;
             }
             $sNewTitle = (($sSubAction == 'bygroup') ? ('G' . $iGroupSequence) : '') . "Q" .
-                str_pad($iQuestionNumber, 5, "0", STR_PAD_LEFT);
+                str_pad($iQuestionNumber, 3, "0", STR_PAD_LEFT);
             Question::model()->updateAll(array('title' => $sNewTitle), 'qid=:qid', array(':qid' => $oQuestion->qid));
             $iQuestionNumber++;
             $iGroupNumber = $oQuestion->gid;
@@ -2776,7 +2776,7 @@ class SurveyAdministrationController extends LSBaseController
         $oQuestion->sid = $iSurveyID;
         $oQuestion->gid = $iGroupID;
         $oQuestion->type = Question::QT_T_LONG_FREE_TEXT;
-        $oQuestion->title = 'Q00';
+        $oQuestion->title = Question::getCodePrefix('question_code_prefix', $iSurveyID) . '001';
         $oQuestion->mandatory = 'N';
         $oQuestion->relevance = '1';
         $oQuestion->question_order = 1;

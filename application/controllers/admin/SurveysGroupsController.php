@@ -291,6 +291,22 @@ class SurveysGroupsController extends SurveyCommonAction
             isset($_POST['template']) || isset($_POST['showxquestions']) || isset($_POST['anonymized'])
             || isset($_POST['datestamp']) || isset($_POST['listpublic'])
         ) {
+            // Get the current othersettings
+            $currentOtherSettings = $oSurvey->othersettings ? json_decode($oSurvey->othersettings, true) : [];
+
+            // Add the new attributes to othersettings
+            $newOtherSettings = [
+                'question_code_prefix' => Yii::app()->request->getPost('question_code_prefix', ''),
+                'subquestion_code_prefix' => Yii::app()->request->getPost('subquestion_code_prefix', ''),
+                'answer_code_prefix' => Yii::app()->request->getPost('answer_code_prefix', '')
+            ];
+
+            // Merge with existing settings (preserving other values that might be there)
+            $mergedOtherSettings = array_merge($currentOtherSettings, $newOtherSettings);
+
+            // Convert back to JSON
+            $_POST['othersettings'] = json_encode($mergedOtherSettings);
+
             $oSurvey->attributes = $_POST;
 
             if (isset($_POST['listpublic'])) {

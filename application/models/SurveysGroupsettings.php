@@ -50,6 +50,7 @@
  * @property string $nokeyboard
  * @property string $alloweditaftercompletion
  * @property string $ipanonymize
+ * @property string $othersettings
  */
 class SurveysGroupsettings extends LSActiveRecord
 {
@@ -67,7 +68,7 @@ class SurveysGroupsettings extends LSActiveRecord
     protected $optionAttributesChar     = array('anonymized', 'savetimings', 'datestamp', 'usecookie', 'allowregister', 'allowsave', 'autoredirect', 'allowprev', 'printanswers',
                                                 'ipaddr','ipanonymize', 'refurl', 'publicstatistics', 'publicgraphs', 'listpublic', 'htmlemail', 'sendconfirmation', 'tokenanswerspersistence',
                                                 'assessments', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'nokeyboard',
-                                                'alloweditaftercompletion');
+                                                'alloweditaftercompletion', 'othersettings');
     protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto');
 
     public $showInherited = 1;
@@ -101,7 +102,8 @@ class SurveysGroupsettings extends LSActiveRecord
             array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, nokeyboard, alloweditaftercompletion, ipanonymize', 'length', 'max' => 1),
             array('adminemail, bounce_email', 'length', 'max' => 255),
             array('template', 'length', 'max' => 100),
-            array('expires, startdate, datecreated, attributedescriptions, emailresponseto, emailnotificationto', 'safe'),
+            array('expires, startdate, datecreated, attributedescriptions, emailresponseto, emailnotificationto, othersettings', 'safe'),
+            array('othersettings', 'default', 'value' => '{}'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('gsid, owner_id, admin, expires, startdate, adminemail, anonymized, format,
@@ -110,7 +112,7 @@ class SurveysGroupsettings extends LSActiveRecord
 			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence,
 			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto,
 			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress,
-			questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on' => 'search'),
+			questionindex, navigationdelay, nokeyboard, alloweditaftercompletion, othersettings', 'safe', 'on' => 'search'),
         );
     }
 
@@ -187,6 +189,8 @@ class SurveysGroupsettings extends LSActiveRecord
             'navigationdelay' => 'Navigationdelay',
             'nokeyboard' => 'Nokeyboard',
             'alloweditaftercompletion' => 'Alloweditaftercompletion',
+            'ipanonymize' => 'Ipanonymize',
+            'othersettings' => 'Other settings',
         );
     }
 
@@ -253,6 +257,8 @@ class SurveysGroupsettings extends LSActiveRecord
         $criteria->compare('navigationdelay', $this->navigationdelay);
         $criteria->compare('nokeyboard', $this->nokeyboard, true);
         $criteria->compare('alloweditaftercompletion', $this->alloweditaftercompletion, true);
+        $criteria->compare('ipanonymize', $this->ipanonymize, true);
+        $criteria->compare('othersettings', $this->othersettings, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -362,8 +368,13 @@ class SurveysGroupsettings extends LSActiveRecord
         if ($oSurvey !== null || ($oSurvey === null && $iStep > 1)) {
             foreach ($instance->optionAttributes as $key => $attribute) {
                 if ($instance->shouldInherit($attribute)) {
-                    $instance->oOptions->{$attribute} = $model->$attribute;
-                    $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $model->$attribute);
+                    if ($attribute === 'othersettings') {
+                        $attribute_value = $instance->getOtherSettingsInheritance($model->$attribute);
+                    } else {
+                        $attribute_value = $model->$attribute;
+                    }
+                    $instance->oOptions->{$attribute} = $attribute_value;
+                    $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $attribute_value);
                 }
             }
         }
@@ -485,6 +496,9 @@ class SurveysGroupsettings extends LSActiveRecord
             if (!($attribute === 'ipanonymize' && ( $dbversion < 412 ))) {
                 $this->$attribute = 'I';
             }
+            if ($attribute === 'othersettings') {
+                $this->$attribute = '{"question_code_prefix":"I","subquestion_code_prefix":"I","answer_code_prefix":"I"}';
+            }
         }
         foreach ($this->optionAttributesText as $attribute) {
             $this->$attribute = 'inherit';
@@ -500,6 +514,7 @@ class SurveysGroupsettings extends LSActiveRecord
         $this->admin = substr((string) App()->getConfig('siteadminname'), 0, 50);
         $this->adminemail = substr((string) App()->getConfig('siteadminemail'), 0, 254);
         $this->template = Template::templateNameFilter(App()->getConfig('defaulttheme'));
+        $this->othersettings = '';
     }
 
     /**
@@ -535,6 +550,89 @@ class SurveysGroupsettings extends LSActiveRecord
             return true;
         }
 
+        if ($attribute === 'othersettings') {
+            $othersettings = json_decode($this->oOptions->{$attribute}, true);
+            if (in_array('I', $othersettings, true)) {
+                return true;
+            }
+        }
+
         return false;
+    }
+
+    /**
+     * Get other settings as array
+     * @return array
+     */
+    public function getOtherSettings()
+    {
+        /**
+         *  Check othersettings state
+         *  Empty string means no prefixies shoulld be used.
+         *  Null means default config value should be used.
+         * */
+        if ($this->othersettings === null) {
+            return [
+                'question_code_prefix' => Yii::app()->getConfig('question_code_prefix', ''),
+                'subquestion_code_prefix' => Yii::app()->getConfig('subquestion_code_prefix', ''),
+                'answer_code_prefix' => Yii::app()->getConfig('answer_code_prefix', '')
+            ];
+        }
+        return json_decode($this->othersettings, true) ?? [];
+    }
+
+    /**
+     * Set other settings as array
+     * @param array $settings
+     */
+    public function setOtherSettings($settings)
+    {
+        $this->othersettings = json_encode($settings);
+    }
+
+    /**
+     * Get a value from othersettings
+     *
+     * @param string $key The setting key to retrieve
+     * @param mixed $default Default value if setting doesn't exist
+     * @return mixed The setting value or default
+     */
+    public function getOtherSetting($key, $default = '')
+    {
+        $settings = $this->getOtherSettings();
+        return isset($settings[$key]) ? $settings[$key] : $default;
+    }
+
+    /**
+     * Sets a specific attribute in the survey's other settings.
+     *
+     * This function updates or adds a single attribute in the survey's othersettings field.
+     * The othersettings field is a JSON-encoded string that stores various additional settings.
+     *
+     * @param string $attribute The name of the attribute to set
+     * @param mixed $value The value to set for the attribute
+     * @return void
+     */
+    public function setOtherSetting($attribute, $value)
+    {
+        $othersettings = json_decode($this->othersettings, true) ?? [];
+        $othersettings[$attribute] = $value;
+        $this->othersettings = json_encode($othersettings);
+    }
+
+    public function getOtherSettingsInheritance(?string $inherited)
+    {
+        $inherited = ($inherited !== null) ? json_decode($inherited, true) : [];
+        if (!isset($this->oOptions->{'othersettings'})) {
+            $othersettings = json_decode($this->othersettings, true) ?: [];
+        } else {
+            $othersettings = json_decode($this->oOptions->{'othersettings'}, true) ?: [];
+        }
+        foreach ($othersettings as $key => $value) {
+            if ($value === 'I') {
+                $othersettings[$key] = $inherited[$key] ?? $value;
+            }
+        }
+        return json_encode($othersettings);
     }
 }
