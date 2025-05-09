@@ -142,7 +142,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
             echo eT("No survey participants found.");
         ?>
                 <input class="btn btn-large btn-block btn-outline-secondary" type='button' value='<?php eT("Add participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/" . $surveyid); ?>', '_top')" />
-                <div class="col-12 content-right">
+                <div class="col-12 content-right mt-4">
                     <div class="card card-primary">
                         <h2><?php eT("Restore options"); ?></h2>
                         <p class="text-info">
