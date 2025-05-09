@@ -85,7 +85,7 @@ class SurveyActivate
         if ($params['restore'] ?? false) {
             $result['restored'] = $this->restoreData($surveyId);
         }
-        if ($survey->access_mode !== $this->surveyAccessModeService::$ACCESS_TYPE_OPEN) {
+        if ($survey->access_mode !== SurveyAccessModeService::$ACCESS_TYPE_OPEN) {
             if (!$survey->hasTokensTable) {
                 $this->surveyAccessModeService->newTokenTable($survey, true);
             }
@@ -136,7 +136,7 @@ class SurveyActivate
             $dynamicColumns = getUnchangedColumns($surveyId, $sTimestamp, $qTimestamp);
             recoverSurveyResponses($surveyId, $archives["survey"], $preserveIDs, $dynamicColumns);
             //If it's not open access mode, then we import the surveys from the archive if they exist
-            if ($survey->access_mode !== $this->surveyAccessModeService::$ACCESS_TYPE_OPEN) {
+            if ($survey->access_mode !== SurveyAccessModeService::$ACCESS_TYPE_OPEN) {
                 if (isset($archives["tokens"])) {
                     $tokenTable = $this->app->db->tablePrefix . "tokens_" . $surveyId;
                     try {
