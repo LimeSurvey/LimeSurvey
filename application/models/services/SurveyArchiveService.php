@@ -25,7 +25,7 @@ class SurveyArchiveService
      * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
      * @return string
      */
-    public function getArhiveAlias($iSurveyID, $iTimestamp): string
+    public function getArchiveAlias($iSurveyID, $iTimestamp): string
     {
         $tbl_name = "old_survey_{$iSurveyID}_{$iTimestamp}";
         $archives = ArchivedTableSettings::getArchivesForTimestamp($iSurveyID, $iTimestamp);
