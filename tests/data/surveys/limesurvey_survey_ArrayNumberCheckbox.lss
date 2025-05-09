@@ -71,7 +71,7 @@
 
 <div id="countJs">count(self) : {count(self.NAOK)}</div>]]></question>
     <preg/>
-    <help><![CDATA[Check : Q11349_S11352_S11356 : !isempty : {! is_empty(Q11349_S11352_S11356.NAOK)} -  isempty: {is_empty(Q11349_S11352_S11356.NAOK)}]]></help>
+    <help><![CDATA[Check : question_SQ003_SX001 : !isempty : {! is_empty(question_SY003_SX001.NAOK)} -  isempty: {is_empty(question_SY003_SX001.NAOK)}]]></help>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[1]]></question_order>
@@ -117,7 +117,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-     <relevance><![CDATA[!is_empty(Q11349_S11352_S11362)]]></relevance>
+    <relevance><![CDATA[!is_empty(question_SY003_SX002)]]></relevance>
     <modulename/>
    </row>
    <row>
@@ -136,7 +136,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[!is_empty(Q11349_S11352_S11362)]]></relevance>
+    <relevance><![CDATA[!is_empty(question_SY003_SX002)]]></relevance>
     <modulename/>
    </row>
   </rows>
