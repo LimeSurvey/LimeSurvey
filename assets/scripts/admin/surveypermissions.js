@@ -3,6 +3,8 @@ var LS = LS || {
 };
 
 $(document).on('ready  pjax:scriptcomplete', function(){
+    wireAddUserGroupForm();
+
     $(':checkbox:not(:checked)[data-indeterminate=1]').prop('indeterminate', true)
 
     $(".surveysecurity").tablesorter({
@@ -139,3 +141,76 @@ function updateAllCheckboxes(){
         markAllSelector.prop('checked',false).removeClass('mixed');
     }
 }
+
+var startAddUserGroupSubmit = function () {
+    $('#SurveyPermissions-addusergroup-submit').append(
+        '<i class="ri-loader-2-fill remix-pulse SurveyPermissions-spinner"></i>'
+    ).prop('disabled', true);
+};
+
+var stopAddUserGroupSubmit = function () {
+    $('.SurveyPermissions-spinner').remove();
+    $('#SurveyPermissions-addusergroup-submit').prop('disabled', false);
+};
+
+var triggerPermissionsModalClose = function () {
+    $('#UserManagement-action-modal').find('.modal-content').empty();
+    $.fn.yiiGridView.update('gridPanel', {});
+    $('#UserManagement-action-modal').modal('hide');
+};
+
+var wireAddUserGroupForm = function () {
+    $('#SurveyPermissions-addusergroup-form').off('submit.addusergroup').on('submit.addusergroup', function (e) {
+        e.preventDefault();
+        addUserGroupToSurvey(this);
+    });
+};
+
+var addUserGroupToSurvey = function (form) {
+    startAddUserGroupSubmit();
+    var data = $(form).serializeArray();
+    $.ajax({
+        url: $(form).attr('action'),
+        data: data,
+        method: 'POST',
+        dataType: 'json',
+        success: function (result) {
+            stopAddUserGroupSubmit();
+            if (result.success === true) {
+                if (!result.hasOwnProperty('html')) {
+                    triggerPermissionsModalClose();
+                    window.LS.ajaxAlerts(result.message, 'success', {showCloseButton: true});
+                    if (result.hasOwnProperty('href')) {
+                        setTimeout(function() {
+                            const modalSize = result.hasOwnProperty('modalsize') ? result.modalsize : '';
+                            LS.UserManagement.openModal(result.href, modalSize);
+                        }, 500);
+                    }
+                    return;
+                }
+                $('#UserManagement-action-modal').find('.modal-content').html(result.html);
+                $('#exitForm').on('click.addusergroup', function (e) {
+                    e.preventDefault();
+                    $('#exitForm').off('click.addusergroup');
+                    triggerPermissionsModalClose();
+                });
+                return;
+            }
+            $("#usermanagement-modal-doalog").offset({ top: 10 });
+            //$('#UserManagement--errors').html(result.errors).removeClass('d-none').addClass('alert alert-danger');
+        },
+        error: function (request, status, error) {
+            if (request && request.responseJSON && request.responseJSON.message) {
+                $('#UserManagement--errors').html(
+                    LS.LsGlobalNotifier.createAlert(
+                        request.responseJSON.message,
+                        'danger',
+                        {showCloseButton: true, timeout: 10000}
+                    )
+                ).removeClass('d-none');
+            } else {
+                alert('An error occured while trying to save, please reload the page Code:1571926261195');
+            }
+        }
+    });
+};
