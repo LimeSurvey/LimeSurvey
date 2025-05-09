@@ -1188,6 +1188,9 @@ class LimeExpressionManager
                                 foreach ($cascadedAF as $_caf) {
                                     $sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
                                     $fqid = substr(explode("_", $sgq)[0], 1);
+                                    if (!isset($this->q2subqInfo[$fqid])) {
+                                        continue;
+                                    }
                                     if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING) {
                                         $rankables = [];
                                         foreach ($this->qans[$fqid] as $k => $v) {

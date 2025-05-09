@@ -137,7 +137,7 @@ SID : {SID}<br />GID : {GID}<br />GROUPNAME : {GROUPNAME}]]></description>
     <question_order><![CDATA[3]]></question_order>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[Q2379_S2387.NAOK == "Y"]]></relevance>
+    <relevance><![CDATA[G1Q00002_SQ001.NAOK == "Y"]]></relevance>
     <modulename/>
     <question_theme_name><![CDATA[shortfreetext]]></question_theme_name>
    </row>
