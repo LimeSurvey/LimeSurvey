@@ -1842,6 +1842,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
         // Permission
         $criteriaPerm = self::getPermissionCriteria();
         $criteria->mergeWith($criteriaPerm, 'AND');
+
+        // custom criteria from a plugin
+        $event = new PluginEvent('beforeSurveySearch');
+        $event->set('criteria', $criteria);
+        App()->getPluginManager()->dispatchEvent($event);
+        $criteria = $event->get('criteria');
+
         // $criteria->addCondition("t.blabla == 'blub'");
         $dataProvider = new CActiveDataProvider('Survey', array(
             'sort' => $sort,
