@@ -328,10 +328,17 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             <div class="row">
                 <div class="col-12 col-lg-8 content-right">
                     <label class="form-label" for="question_code_prefix"><?php eT("Question code prefix:"); ?></label>
-                    <input class="form-control inherit-edit <?php echo($bShowInherited && $question_code_prefix === 'I' ? 'd-none' : 'd-block'); ?>" type="text" size="50" id="question_code_prefix" name="question_code_prefix"
-                        value="<?php echo htmlspecialchars((string) $question_code_prefix); ?>" data-inherit-value="I" data-saved-value="<?php echo htmlspecialchars((string) $question_code_prefix); ?>"/>
-                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $question_code_prefix === 'I' ? 'd-block' : 'd-none'); ?>" type='text' size='50'
-                        value="<?php echo htmlspecialchars((string) ($question_code_option['question_code_prefix'] ?? '')); ?>" readonly/>
+                    <input class="form-control inherit-edit <?php echo($bShowInherited && $question_code_prefix === 'I' ? 'd-none' : 'd-block'); ?>"
+                           type="text" size="50" maxlength="17"
+                           pattern="[A-Za-z]{1,17}" id="question_code_prefix"
+                           name="question_code_prefix"
+                           value="<?php echo htmlspecialchars((string)$question_code_prefix); ?>"
+                           data-inherit-value="I"
+                           data-saved-value="<?php echo htmlspecialchars((string)$question_code_prefix); ?>"/>
+                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $question_code_prefix === 'I' ? 'd-block' : 'd-none'); ?>"
+                           type='text' size='50'
+                           value="<?php echo htmlspecialchars((string)($question_code_option['question_code_prefix'] ?? '')); ?>"
+                           readonly/>
                 </div>
                 <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'd-block' : 'd-none'); ?>">
                     <label class=" form-label content-center col-12" for='question_code_prefix'><?php eT("Inherit:"); ?></label>
