@@ -43,9 +43,12 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
         }
 
         $responses = [];
-        foreach ($data as $surveyResponse) {
-            $responses[] = $this->transformerResponseItem($surveyResponse);
+        if ($data !== null) {
+            foreach ($data as $surveyResponse) {
+                $responses[] = $this->transformerResponseItem($surveyResponse);
+            }
         }
+
 
         return $responses;
     }
