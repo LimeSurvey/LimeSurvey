@@ -4659,7 +4659,7 @@ function getIPAddress()
             // Single forward
             $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
         } else {
-        // Multitple forward
+        // Multiple forward
         // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
         // TODO: RFC7239 full implementation (https://datatracker.ietf.org/doc/html/rfc7239#section-5.2)
             $aForwarded = explode(',', (string) $_SERVER['HTTP_X_FORWARDED_FOR']);
