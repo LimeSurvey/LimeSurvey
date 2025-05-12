@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-05-06 09:45:09+00:00\n"
+"POT-Creation-Date: 2025-05-12 15:33:38+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9829,7 +9829,7 @@ msgid "Create survey"
 msgstr ""
 
 #: application/extensions/admin/BoxesWidget/views/box.php:70
-#: application/models/Plugin.php:359 application/models/Plugin.php:368
+#: application/models/Plugin.php:371 application/models/Plugin.php:380
 #: application/models/Survey.php:1554 application/models/User.php:615
 #: application/views/quotas/viewquotas_massive_selector.php:20
 #: application/views/userManagement/massiveAction/_updatestatus.php:6
@@ -14957,7 +14957,7 @@ msgstr ""
 msgid "Try again! Connection with database failed."
 msgstr ""
 
-#: application/models/LSActiveRecord.php:504
+#: application/models/LSActiveRecord.php:499
 #: application/views/responses/partial/responseListTable.php:202
 msgid "This field is encrypted and can only be searched by exact match. Please enter the exact value you are looking for."
 msgstr ""
@@ -15293,50 +15293,50 @@ msgstr ""
 msgid "Modified"
 msgstr ""
 
-#: application/models/Plugin.php:131
+#: application/models/Plugin.php:143
 msgid "Plugin load error: %s"
 msgstr ""
 
-#: application/models/Plugin.php:187
+#: application/models/Plugin.php:199
 msgid "Error: Could not get plugin description: %s"
 msgstr ""
 
-#: application/models/Plugin.php:210 application/models/Plugin.php:347
+#: application/models/Plugin.php:222 application/models/Plugin.php:359
 msgid "Attempt plugin reload"
 msgstr ""
 
-#: application/models/Plugin.php:247 application/models/Plugin.php:369
+#: application/models/Plugin.php:259 application/models/Plugin.php:381
 msgid "Activate plugin"
 msgstr ""
 
-#: application/models/Plugin.php:277 application/models/Plugin.php:388
+#: application/models/Plugin.php:289 application/models/Plugin.php:400
 msgid "Are you sure you want to deactivate this plugin?"
 msgstr ""
 
-#: application/models/Plugin.php:277 application/models/Plugin.php:387
+#: application/models/Plugin.php:289 application/models/Plugin.php:399
 msgid "Deactivate plugin"
 msgstr ""
 
-#: application/models/Plugin.php:307 application/models/Plugin.php:406
+#: application/models/Plugin.php:319 application/models/Plugin.php:418
 msgid "Are you sure you want to uninstall this plugin?"
 msgstr ""
 
-#: application/models/Plugin.php:307 application/models/Plugin.php:405
+#: application/models/Plugin.php:319 application/models/Plugin.php:417
 msgid "Uninstall plugin"
 msgstr ""
 
-#: application/models/Plugin.php:370
+#: application/models/Plugin.php:382
 msgid "Are you sure you want to activate this plugin?"
 msgstr ""
 
-#: application/models/Plugin.php:377 application/models/Plugin.php:386
+#: application/models/Plugin.php:389 application/models/Plugin.php:398
 #: application/models/User.php:604
 #: application/views/quotas/viewquotas_massive_selector.php:36
 #: application/views/userManagement/massiveAction/_updatestatus.php:7
 msgid "Deactivate"
 msgstr ""
 
-#: application/models/Plugin.php:395 application/models/Plugin.php:404
+#: application/models/Plugin.php:407 application/models/Plugin.php:416
 #: application/models/TemplateConfiguration.php:760
 #: application/models/TemplateConfiguration.php:770
 #: application/views/themeOptions/_selector.php:47
