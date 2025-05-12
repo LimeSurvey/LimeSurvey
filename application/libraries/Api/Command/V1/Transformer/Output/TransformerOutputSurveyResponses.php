@@ -29,7 +29,7 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
      *
      * @param ?mixed $data
      * @param ?mixed $options
-     * @return ?mixed
+     * @return array
      * @throws TransformerException
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
@@ -53,7 +53,7 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
      * Transforms survey menu items and puts them into the main survey menus,
      * organized by their unique names.
      * @param array $surveyResponse
-     * @return void
+     * @return array
      */
     private function transformerResponseItem($surveyResponse): array
     {
