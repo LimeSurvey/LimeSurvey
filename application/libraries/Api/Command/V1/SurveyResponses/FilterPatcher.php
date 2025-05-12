@@ -15,7 +15,10 @@ class FilterPatcher
         $this->registerHandlers();
     }
 
-    public function apply(array $filterParams, \LSDbCriteria &$criteria, \CSort &$sort)
+    /**
+     * @param-out \CSort $sort
+     */
+    public function apply(array $filterParams, \LSDbCriteria &$criteria, \CSort &$sort): void
     {
         if (!empty($filterParams['sort'])) {
             foreach ($filterParams['sort'] as $column => $order) {

@@ -61,13 +61,14 @@ class SurveyResponses implements CommandInterface
             'pagination' => $pagination,
         ));
 
+        $data = [];
         $data['responses'] = $this->transformerOutputSurveyResponses->transform($dataProvider);
         $data['surveyQuestions'] = $this->getQuestionFieldMap();
         $data['_meta'] = [
             'pagination' => [
                 'pageSize' => (int) $pagination['pageSize'],
                 'currentPage' => (int) $pagination['currentPage'] + 1,
-                'totalItems' => (int) $dataProvider->getTotalItemCount(),
+                'totalItems' => $dataProvider->getTotalItemCount(),
                 'totalPages' => (int) ceil($dataProvider->getTotalItemCount() / $pagination['pageSize']),
             ],
             'filters' => $request->getData('search', []),
@@ -120,9 +121,13 @@ class SurveyResponses implements CommandInterface
     }
 
 
-    private function getSurvey($request): void
+    private function getSurvey(Request $request): void
     {
-        $this->survey = $this->survey->findByPk($this->getSurveyId($request));
+        $survey = $this->survey->findByPk($this->getSurveyId($request));
+        if ($survey === null) {
+            throw new \RuntimeException('Survey not found');
+        }
+        $this->survey = $survey;
     }
 
 
@@ -152,7 +157,7 @@ class SurveyResponses implements CommandInterface
 
         return [$criteria, $sort];
     }
-    private function buildPagination(Request $request)
+    private function buildPagination(Request $request): array
     {
         return $request->getData('pagination', [
             'pageSize' => 15,

@@ -33,7 +33,7 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
      * @throws TransformerException
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    public function transform($data, $options = [])
+    public function transform($data = [], $options = []): array
     {
 //        if (!$data instanceof \SurveyDynamic) {
 //            return null;

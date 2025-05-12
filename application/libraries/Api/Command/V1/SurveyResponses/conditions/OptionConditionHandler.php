@@ -14,10 +14,10 @@ class OptionConditionHandler implements HandlerInterface
         return false;
     }
 
-    public function execute(string $key, array $params): object
+    public function execute(string $key, array $value): object
     {
-        $column = $params["survey"] . 'X' . $params["group"] . 'X' . $params["question"];
-        $value = $params["value"];
+        $column = $value["survey"] . 'X' . $value["group"] . 'X' . $value["question"];
+        $value = $value["value"];
         return new \CDbCriteria(array(
             'condition' => "$column = :match",
             'params'    => array(':match' => "$value")
