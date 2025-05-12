@@ -49,7 +49,11 @@ class RankingFilterHideShowTest extends TestBaseClassWeb
             $rankingQuestion = self::$webDriver->findElement(WebDriverBy::id('question'.$questions['Rank']->qid));
             $this->assertFalse($rankingQuestion->isDisplayed());
             /* Click on 1st multiple choice : this must show ranking question */
-            $checkboxSgqa = 'Q' .$questions['FILTER']->qid . '_S17602';
+            $question = \Question::model()->find("parent_qid = :parent_qid AND title = :title", [
+                ":parent_qid" => $questions['FILTER']->qid,
+                ":title" => 'SQ01'
+            ]);
+            $checkboxSgqa = 'Q' .$questions['FILTER']->qid . '_S' . $question->qid;
             $labelCheckbox = self::$webDriver->findElement(
                 WebDriverBy::cssSelector(
                     sprintf(

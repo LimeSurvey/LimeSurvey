@@ -1152,11 +1152,17 @@ class LimeExpressionManager
                     $subqs = $qinfo['subqs'];
                     if ($type == Question::QT_R_RANKING) {
                         $subqs = [];
+                        $rawAnswers = \Answer::model()->findAll("qid = :qid", [":qid" => $qinfo['qid']]);
+                        $answers = [];
+                        foreach ($rawAnswers as $rawAnswer) {
+                            $answers[$rawAnswer->code] = $rawAnswer;
+                        }
                         foreach ($this->qans[$qinfo['qid']] as $k => $v) {
                             $_code = explode('~', (string) $k);
                             $subqs[] = [
-                                'rowdivid' => $qinfo['sgqa'] . $_code[1],
+                                'rowdivid' => $qinfo['sgqa'] . "_R" . $answers[$_code[1]]->aid,
                                 'sqsuffix' => '_' . $_code[1],
+                                'code' => $_code[1]
                             ];
                         }
                     }
@@ -1208,14 +1214,14 @@ class LimeExpressionManager
                                         }
                                         if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING) {
                                             // we know the suffix exists
-                                            $fsqs[] = '(' . $sgq . $fsq['csuffix'] . ".NAOK == '" . (string)substr((string) $sq['sqsuffix'], 1) . "')";
+                                            $fsqs[] = '(' . $fsq['rowdivid'] . ".NAOK == '" . (string)substr((string) $sq['sqsuffix'], 1) . "')";
                                         } elseif ($this->q2subqInfo[$fqid]['type'] == Question::QT_COLON_ARRAY_NUMBERS && isset($this->qattr[$fqid]['multiflexible_checkbox']) && $this->qattr[$fqid]['multiflexible_checkbox'] == '1') {
                                             if ($fsq['sqsuffix'] == $sq['sqsuffix']) {
-                                                $fsqs[] = $sgq . $fsq['csuffix'] . '.NAOK=="1"';
+                                                $fsqs[] = $fsq['rowdivid'] . '.NAOK=="1"';
                                             }
                                         } else {
                                             if (isset($fsq['sqsuffix']) && $fsq['sqsuffix'] == $sq['sqsuffix']) {
-                                                $fsqs[] = '!is_empty(' . $sgq . $fsq['csuffix'] . '.NAOK)';
+                                                $fsqs[] = '!is_empty(' . $fsq['rowdivid'] . '.NAOK)';
                                             }
                                         }
                                     }
@@ -7258,8 +7264,10 @@ class LimeExpressionManager
                             $relParts[] = "    }\n";
                             break;
                         case Question::QT_R_RANKING:
-                            $listItem = substr((string) $sq['rowdivid'], strlen((string) $sq['sgqa']));
-                            $relParts[] = " $('#question{$arg['qid']} .select-list select').each(function(){ \n";
+                            $aid = substr((string) $sq['rowdivid'], 2 + strlen((string) $sq['sgqa']));
+                            $answer = \Answer::model()->find("aid = :aid", [":aid" => $aid]);
+                            $listItem = $answer->code;
+                            $relParts[] = " $('#questionQ{$arg['qid']} .select-list select').each(function(){ \n";
                             $relParts[] = "   if($(this).val()=='{$listItem}'){ \n";
                             $relParts[] = "     $(this).val('').trigger('change'); \n";
                             $relParts[] = "   }; \n";
