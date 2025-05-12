@@ -147,7 +147,7 @@ class SurveyPermissionsController extends LSBaseController
             return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
                 "data" => [
                     'success' => false,
-                    'message' => gT("No permission or survey does not exist."),
+                    'errors' => gT("No permission or survey does not exist."),
                 ]
             ]);
         }
@@ -162,7 +162,7 @@ class SurveyPermissionsController extends LSBaseController
             return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
                 "data" => [
                     'success' => false,
-                    'message' => gT("No users from group could be added."),
+                    'errors' => gT("No users from group could be added."),
                 ]
             ]);
         } else {

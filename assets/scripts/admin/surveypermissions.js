@@ -197,17 +197,16 @@ var addUserGroupToSurvey = function (form) {
                 return;
             }
             $("#usermanagement-modal-doalog").offset({ top: 10 });
-            //$('#UserManagement--errors').html(result.errors).removeClass('d-none').addClass('alert alert-danger');
+            window.LS.ajaxAlerts(result.errors, 'danger', {showCloseButton: true, timeout: 10000});
         },
         error: function (request, status, error) {
+            stopAddUserGroupSubmit();
             if (request && request.responseJSON && request.responseJSON.message) {
-                $('#UserManagement--errors').html(
-                    LS.LsGlobalNotifier.createAlert(
-                        request.responseJSON.message,
-                        'danger',
-                        {showCloseButton: true, timeout: 10000}
-                    )
-                ).removeClass('d-none');
+                window.LS.ajaxAlerts(
+                    request.responseJSON.message,
+                    'danger',
+                    {showCloseButton: true, timeout: 10000}
+                );
             } else {
                 alert('An error occured while trying to save, please reload the page Code:1571926261195');
             }
