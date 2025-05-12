@@ -5,10 +5,6 @@ namespace LimeSurvey\Libraries\Api\Command\V1\Transformer\Output;
 use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 
-
-/**
- * TransformerOutputSurveyDetail
- */
 class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
 {
     /**
