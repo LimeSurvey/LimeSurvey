@@ -38,8 +38,10 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
 //        if (!$data instanceof \SurveyDynamic) {
 //            return null;
 //        }
+        if ($data !== null) {
+            $data = $data->getData();
+        }
 
-        $data = $data->getData();
         $responses = [];
         foreach ($data as $surveyResponse) {
             $responses[] = $this->transformerResponseItem($surveyResponse);
