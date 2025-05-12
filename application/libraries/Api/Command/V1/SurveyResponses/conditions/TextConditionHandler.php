@@ -6,8 +6,6 @@ use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\HandlerInterface;
 
 class TextConditionHandler implements HandlerInterface
 {
-    private array $order = ['asc', 'desc'];
-
     public function canHandle(array $operation): bool
     {
         if (!empty($operation['type']) && $operation['type'] == 'text') {
