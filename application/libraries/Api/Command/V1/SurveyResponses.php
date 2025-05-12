@@ -159,9 +159,9 @@ class SurveyResponses implements CommandInterface
     }
     private function buildPagination(Request $request): array
     {
-        return $request->getData('pagination', [
+        return $request->getData('pagination') ?? [
             'pageSize' => 15,
             'currentPage' => 0,
-        ]);
+        ];
     }
 }
