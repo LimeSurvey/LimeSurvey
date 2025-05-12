@@ -365,47 +365,32 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
     /**
      * Action to delete a question group.
-     * Could be an ajaxRequest OR a redirect to list question groups
-     *
      * @access public
-     *
-     * @param boolean $asJson    Value of to Render as JSON
      *
      * @return void
      * @throws CHttpException if not authorized or invalid question group
      */
-    public function actionDelete(bool $asJson = false)
+    public function actionDelete()
     {
         if (!App()->getRequest()->isPostRequest) {
             throw new CHttpException(405, gT("Invalid action"));
         }
 
         $iGroupId = App()->getRequest()->getPost('gid');
+        $iGroupsDeleted = 0;
+        $iSurveyId = 0;
         if ($iGroupId === null) {
             throw new CHttpException(401, gT("Invalid question group id"));
         }
         $iGroupId = sanitize_int($iGroupId);
         $oQuestionGroup = QuestionGroup::model()->find("gid = :gid", array(":gid" => $iGroupId));
-        $iSurveyId = $oQuestionGroup->sid;
-        $questionGroupService = $this->getQuestionGroupServiceClass();
-        $iGroupsDeleted = $questionGroupService->deleteGroup($iGroupId, $iSurveyId);
-
-        //this is only important for massaction ... (do we have massaction for survey groups?)
-        if ($asJson !== false) {
-            $success = $iGroupsDeleted > 0;
-            $this->renderJSON(
-                [
-                    'success' => $success,
-                    'deletedGroups' => $iGroupsDeleted,
-                    'message' => ($success ? gT('The question group was deleted.') : gT('Group could not be deleted')),
-                    'redirect' => $this->createUrl(
-                        'questionAdministration/listQuestions/',
-                        ['surveyid' => $iSurveyId, 'activeTab' => 'groups']
-                    )
-
-                ]
+        if ($oQuestionGroup) {
+            $iSurveyId = $oQuestionGroup->sid;
+            $questionGroupService = $this->getQuestionGroupServiceClass();
+            $iGroupsDeleted = $questionGroupService->deleteGroup(
+                $iGroupId,
+                $iSurveyId
             );
-            return;
         }
 
         if ($iGroupsDeleted > 0) {
@@ -413,24 +398,32 @@ class QuestionGroupsAdministrationController extends LSBaseController
         } else {
             App()->setFlashMessage(gT('Group could not be deleted'), 'error');
         }
-
-        $survey = Survey::model()->findByPk($iSurveyId);
-        // Make sure we have the latest groups data
-        $survey->refresh();
-        $landOnSideMenuTab = App()->request->getPost('landOnSideMenuTab');
-        if ($landOnSideMenuTab == 'structure' && !empty($survey->groups)) {
-            $this->redirect(
-                App()->createUrl(
-                    'questionGroupsAdministration/view/',
-                    [
-                        'surveyid' => $iSurveyId,
-                        'gid' => $survey->groups[0]->gid,
-                        'landOnSideMenuTab' => 'structure'
-                    ]
-                )
-            );
+        if ($iSurveyId > 0) {
+            $survey = Survey::model()->findByPk($iSurveyId);
+            // Make sure we have the latest groups data
+            $survey->refresh();
+            $landOnSideMenuTab = App()->request->getPost('landOnSideMenuTab');
+            if ($landOnSideMenuTab == 'structure' && !empty($survey->groups)) {
+                $this->redirect(
+                    App()->createUrl(
+                        'questionGroupsAdministration/view/',
+                        [
+                            'surveyid' => $iSurveyId,
+                            'gid' => $survey->groups[0]->gid,
+                            'landOnSideMenuTab' => 'structure'
+                        ]
+                    )
+                );
+            } else {
+                $this->redirect(
+                    $this->createUrl(
+                        'questionAdministration/listQuestions',
+                        ['surveyid' => $iSurveyId, 'activeTab' => 'groups']
+                    )
+                );
+            }
         } else {
-            $this->redirect($this->createUrl('questionAdministration/listQuestions', ['surveyid' => $iSurveyId , 'activeTab' => 'groups']));
+            $this->redirect(App()->createUrl('admin'));
         }
     }
 
