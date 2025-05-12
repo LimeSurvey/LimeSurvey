@@ -14,11 +14,14 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
     {
         $this->setDataMap([
             'id' => ['type' => 'int'],
+            'startlanguage' => ['key' => 'language', 'type' => 'string'],
+            'seed' => ['key' => 'seed'],
             'submitdate' => [
                 'key' => 'submitDate',
                 'formatter' => ['dateTimeToJson' => true]
             ],
-            'startlanguage' => ['key' => 'language', 'type' => 'string'],
+            'startdate' => ['key' => 'startDate'],
+            'datestamp' => ['key' => 'dateStamp'],
         ]);
     }
 
@@ -35,9 +38,6 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
      */
     public function transform($data = [], $options = []): array
     {
-//        if (!$data instanceof \SurveyDynamic) {
-//            return null;
-//        }
         if ($data !== null) {
             $data = $data->getData();
         }
