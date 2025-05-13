@@ -365,20 +365,25 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
     /**
      * Action to delete a question group.
+     * Could be an ajaxRequest OR a redirect to list question groups
+     *
      * @access public
+     *
+     * @param boolean $asJson    Value of to Render as JSON
      *
      * @return void
      * @throws CHttpException if not authorized or invalid question group
      */
-    public function actionDelete()
+    public function actionDelete(bool $asJson = false)
     {
         if (!App()->getRequest()->isPostRequest) {
             throw new CHttpException(405, gT("Invalid action"));
         }
 
         $iGroupId = App()->getRequest()->getPost('gid');
+        $iSurveyId = sanitize_int(App()->getRequest()->getPost('surveyid', 0));
         $iGroupsDeleted = 0;
-        $iSurveyId = 0;
+
         if ($iGroupId === null) {
             throw new CHttpException(401, gT("Invalid question group id"));
         }
@@ -392,38 +397,49 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 $iSurveyId
             );
         }
+        if ($asJson !== false) {
+            $success = $iGroupsDeleted > 0;
+            $this->renderJSON(
+                [
+                    'success' => $success,
+                    'deletedGroups' => $iGroupsDeleted,
+                    'message' => ($success ? gT('The question group was deleted.') : gT('Group could not be deleted')),
+                    'redirect' => $this->createUrl(
+                        'questionAdministration/listQuestions/',
+                        ['surveyid' => $iSurveyId, 'activeTab' => 'groups']
+                    )
+
+                ]
+            );
+            return;
+        }
 
         if ($iGroupsDeleted > 0) {
             App()->setFlashMessage(gT('The question group was deleted.'));
         } else {
             App()->setFlashMessage(gT('Group could not be deleted'), 'error');
         }
-        if ($iSurveyId > 0) {
-            $survey = Survey::model()->findByPk($iSurveyId);
-            // Make sure we have the latest groups data
-            $survey->refresh();
-            $landOnSideMenuTab = App()->request->getPost('landOnSideMenuTab');
-            if ($landOnSideMenuTab == 'structure' && !empty($survey->groups)) {
-                $this->redirect(
-                    App()->createUrl(
-                        'questionGroupsAdministration/view/',
-                        [
-                            'surveyid' => $iSurveyId,
-                            'gid' => $survey->groups[0]->gid,
-                            'landOnSideMenuTab' => 'structure'
-                        ]
-                    )
-                );
-            } else {
-                $this->redirect(
-                    $this->createUrl(
-                        'questionAdministration/listQuestions',
-                        ['surveyid' => $iSurveyId, 'activeTab' => 'groups']
-                    )
-                );
-            }
+
+        $survey = Survey::model()->findByPk($iSurveyId);
+        $landOnSideMenuTab = App()->request->getPost('landOnSideMenuTab');
+        if ($landOnSideMenuTab == 'structure' && !empty($survey->groups)) {
+            $this->redirect(
+                App()->createUrl(
+                    'questionGroupsAdministration/view/',
+                    [
+                        'surveyid' => $iSurveyId,
+                        'gid' => $survey->groups[0]->gid,
+                        'landOnSideMenuTab' => 'structure'
+                    ]
+                )
+            );
         } else {
-            $this->redirect(App()->createUrl('admin'));
+            $this->redirect(
+                $this->createUrl(
+                    'questionAdministration/listQuestions',
+                    ['surveyid' => $iSurveyId, 'activeTab' => 'groups']
+                )
+            );
         }
     }
 
