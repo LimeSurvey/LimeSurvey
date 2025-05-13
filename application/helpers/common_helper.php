@@ -260,7 +260,7 @@ function convertGETtoPOST($url)
     $stack = explode('?', $url);
     $calledscript = array_shift($stack);
     $query = array_shift($stack);
-    $aqueryitems = explode('&', $query);
+    $aqueryitems = explode('&', (string) $query);
     $postArray = [];
     $getArray = [];
     foreach ($aqueryitems as $queryitem) {
@@ -295,7 +295,7 @@ function convertGETtoPOST($url)
 */
 function calculateTotalFileUploadUsage()
 {
-    $aRows = Survey::findAll();
+    $aRows = Survey::model()->findAll();
     $iTotalSize = 0.0;
     foreach ($aRows as $aRow) {
         $sFilesPath = Yii::app()->getConfig("uploaddir") . '/surveys/' . $aRow->sid . '/files';
@@ -449,7 +449,7 @@ function setupColumns($columns, $answer_count, $wrapperclass = "", $itemclass = 
         $column_style = 'ul';
     };
     if (!is_null($column_style) && $columns != 1) {
-// Add a global class for all column
+    // Add a global class for all column
         $wrapperclass .= " colstyle-{$column_style}";
     }
     if ($columns < 2) {
@@ -526,7 +526,7 @@ function setupColumns($columns, $answer_count, $wrapperclass = "", $itemclass = 
     };
 
     return $wrapper;
-};
+}
 
 function alternation($alternate = '', $type = 'col')
 {
@@ -574,7 +574,6 @@ function alternation($alternate = '', $type = 'col')
     return $alternate;
 }
 
-
 /**
 * longestString() returns the length of the longest string past to it.
 * @peram string $new_string
@@ -591,7 +590,7 @@ function longestString($new_string, $longest_length)
         $longest_length = strlen(trim(strip_tags((string) $new_string)));
     };
     return $longest_length;
-};
+}
 
 //FIXME rename and/or document this
 function getGroupList3($gid, $surveyid)
@@ -765,18 +764,33 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
         $thissurvey = $staticSurveyInfo[$surveyid][$languagecode];
     } else {
         $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+        $resultBaseLanguage = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $oSurvey->language));
         if (is_null($result)) {
             // When additional language was added, but not saved it does not exists
             // We should revert to the base language then
             $languagecode = $oSurvey->language;
-            $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+            $result = $resultBaseLanguage;
         }
         if ($result) {
             $aSurveyAtrributes = array_replace($result->survey->attributes, $aSurveyOptions);
             $thissurvey = array_merge($aSurveyAtrributes, $result->attributes);
             $thissurvey['name'] = $thissurvey['surveyls_title'];
+            if (($languagecode != $oSurvey->language) && empty($thissurvey['name']) || $thissurvey['name'] == '') {
+                $thissurvey['name'] = $resultBaseLanguage->surveyls_title;
+            }
             $thissurvey['description'] = $thissurvey['surveyls_description'];
+            if (($languagecode != $oSurvey->language) && empty($thissurvey['description']) || $thissurvey['description'] == '') {
+                $thissurvey['description'] = $resultBaseLanguage->surveyls_description;
+            }
             $thissurvey['welcome'] = $thissurvey['surveyls_welcometext'];
+            // if there is no welcome message for an additional language, we try to get it from the base language
+            if (($languagecode != $oSurvey->language) && empty($thissurvey['welcome']) || $thissurvey['welcome'] == '') {
+                $thissurvey['welcome'] = $resultBaseLanguage->surveyls_welcometext;
+            }
+            // if there is no end message for an additional language, we try to get it from the base language
+            if (($languagecode != $oSurvey->language) && empty($thissurvey['surveyls_endtext']) || $thissurvey['surveyls_endtext'] == '') {
+                $thissurvey['surveyls_endtext'] = $resultBaseLanguage->surveyls_endtext;
+            }
             $thissurvey['datasecurity_notice_label'] = $thissurvey['surveyls_policy_notice_label'];
             $thissurvey['datasecurity_error'] = $thissurvey['surveyls_policy_error'];
             $thissurvey['datasecurity_notice'] = $thissurvey['surveyls_policy_notice'];
@@ -943,17 +957,28 @@ function returnGlobal($stringname, $bRestrictToString = false)
 }
 
 
-function sendCacheHeaders()
+function sendSurveyHttpHeaders()
 {
     if (!headers_sent()) {
+        // Default headers für surveys
+        $headers = [
+                     'Cache-Control: no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0',
+                     'Pragma: no-cache',
+                     'Content-Type: text/html; charset=utf-8'
+                    ];
         if (Yii::app()->getConfig('x_frame_options', 'allow') == 'sameorigin') {
-            header('X-Frame-Options: SAMEORIGIN');
+            $headers[] = 'X-Frame-Options: SAMEORIGIN';
         }
-        header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"'); // this line lets IE7 run LimeSurvey in an iframe
-        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
-        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); // always modified
-        header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP/1.1
-        header('Content-Type: text/html; charset=utf-8');
+        // plugins can modify the
+        $event = new PluginEvent('beforeSurveyHttpHeaders');
+        $event->set('headers', $headers);
+        App()->getPluginManager()->dispatchEvent($event);
+        $headers = $event->get('headers', []);
+        if (is_array($headers)) {
+            foreach ($headers as $header) {
+                header($header);
+            }
+        }
     }
 }
 
@@ -1593,10 +1618,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     }
                     break;
             }
-        }
-        // For Multi flexi question types
-        elseif ($questionTypeMetaData[$arow['type']]['settings']->subquestions == 2 && $questionTypeMetaData[$arow['type']]['settings']->answerscales == 0) {
-            //MULTI FLEXI
+        } elseif ($questionTypeMetaData[$arow['type']]['settings']->subquestions == 2 && $questionTypeMetaData[$arow['type']]['settings']->answerscales == 0) {
+            // For Multi flexi question types
             $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
             //Now first process scale=1
             $answerset = array();
@@ -2642,17 +2665,38 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
     $iOldSurveyID = (int) $iOldSurveyID;
     $iNewSurveyID = (int) $iNewSurveyID; // To avoid injection of a /e regex modifier without having to check all execution paths
     if ($sType == 'survey') {
-        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
+        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_:])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
         if ($isLocalPath) {
-            $sReplace = Yii::app()->getConfig("uploaddir") . "/surveys/{$iNewSurveyID}/";
+            $sReplace = rtrim(App()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
+            return preg_replace('/' . $sPattern . '/u', $sReplace, $sString);
         } else {
-            $sReplace = Yii::app()->getConfig("publicurl") . "upload/surveys/{$iNewSurveyID}/";
+            // Make the replacement conditionaly.
+            // If the URL is absolute, make sure we keep it absolute.
+            // If it is relative, use the publicurl config (if the publicurl is absolute we assume it
+            // makes sense to make the urls absolute)
+            return preg_replace_callback('/' . $sPattern . '/u', function ($matches) use ($iNewSurveyID) {
+                $url = $matches[0];
+                $parsedUrl = parse_url($url);
+                $replacementUrl = "/upload/surveys/{$iNewSurveyID}/";
+                if (isset($parsedUrl['scheme']) && isset($parsedUrl['host'])) {
+                    return rtrim(App()->getPublicBaseUrl(true), "/") . $replacementUrl;
+                } else {
+                    return rtrim(App()->getConfig("publicurl"), '/') . $replacementUrl;
+                }
+            }, $sString);
         }
-        return preg_replace('/' . $sPattern . '/u', $sReplace, $sString);
     } elseif ($sType == 'label') {
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_])*(?=(\/upload))\/upload\/labels\/' . $iOldSurveyID . '\/)';
-        $sReplace = Yii::app()->getConfig("publicurl") . "upload/labels/{$iNewSurveyID}/";
-        return preg_replace("/" . $sPattern . "/u", $sReplace, $sString);
+        return preg_replace_callback('/' . $sPattern . '/u', function ($matches) use ($iNewSurveyID) {
+            $url = $matches[0];
+            $parsedUrl = parse_url($url);
+            $replacementUrl = "/upload/labels/{$iNewSurveyID}/";
+            if (isset($parsedUrl['scheme']) && isset($parsedUrl['host'])) {
+                return rtrim(App()->getPublicBaseUrl(true), "/") . $replacementUrl;
+            } else {
+                return rtrim(App()->getConfig("publicurl"), '/') . $replacementUrl;
+            }
+        }, $sString);
     } else // unknown type
     {
         return $sString;
@@ -3044,7 +3088,7 @@ function useFirebug()
     if (FIREBUG == true) {
         App()->getClientScript()->registerScriptFile('http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js');
     };
-};
+}
 
 /**
 * This is a convenience function for the coversion of datetime values
@@ -3196,7 +3240,7 @@ function SSLRedirect($enforceSSLMode)
         //ob_flush();
         Yii::app()->end();
     };
-};
+}
 
 /**
 * enforceSSLMode() $force_ssl is on or off, it checks if the current
@@ -3217,7 +3261,7 @@ function enforceSSLMode()
     if ($bForceSSL == 'on' && !$bSSLActive) {
         SSLRedirect('s');
     }
-};
+}
 
 
 /**
@@ -3664,13 +3708,17 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
 * cleanLanguagesFromSurvey() removes any languages from survey tables that are not in the passed list
 * @param string $sid - the currently selected survey
 * @param string $availlangs - space separated list of additional languages in survey
+* @param string|null $baselang - the base language to be used
 * @return void
 */
-function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = null)
+function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = '')
 {
     Yii::app()->loadHelper('database');
     $iSurveyID = (int) $iSurveyID;
-    $baselang = $baselang ?? Survey::model()->findByPk($iSurveyID)->language;
+    $baselang = sanitize_languagecode($baselang);
+    if (empty($baselang)) {
+        $baselang = Survey::model()->findByPk($iSurveyID)->language;
+    }
     $aLanguages = [];
     if (!empty($availlangs) && $availlangs != " ") {
         $availlangs = sanitize_languagecodeS($availlangs);
@@ -3727,6 +3775,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = null)
 function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
 {
     $sid = (int) $sid;
+    $baselang = sanitize_languagecode($baselang);
     if (empty($baselang)) {
         $baselang = Survey::model()->findByPk($sid)->language;
     }
@@ -4610,7 +4659,7 @@ function getIPAddress()
             // Single forward
             $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
         } else {
-        // Multitple forward
+        // Multiple forward
         // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
         // TODO: RFC7239 full implementation (https://datatracker.ietf.org/doc/html/rfc7239#section-5.2)
             $aForwarded = explode(',', (string) $_SERVER['HTTP_X_FORWARDED_FOR']);
@@ -4960,17 +5009,13 @@ function crypto_rand_secure($min, $max)
  */
 function isZipBomb($zip_filename)
 {
-    $totalSize = 0;
-    $zip = new ZipArchive();
-    if ($zip->open($zip_filename) === true) {
-        for ($i = 0; $i < $zip->numFiles; $i++) {
-            $fileStats = $zip->statIndex($i);
-            $totalSize += $fileStats['size'];
-        }
-
+    $isZipBomb = false;
+    $zip = new LimeSurvey\Zip();
+    if ($zip->open($zip_filename, 0, false) === true) {
+        $isZipBomb = $zip->isZipBomb();
         $zip->close();
     }
-    return ( $totalSize >  Yii::app()->getConfig('maximum_unzipped_size'));
+    return $isZipBomb;
 }
 
 /**

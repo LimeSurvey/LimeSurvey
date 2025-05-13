@@ -1,0 +1,174 @@
+.sidebar-left {
+    border-right: 1px #eeeeee solid;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    overflow-y: auto;
+    max-height: calc(100vh - 60px);
+}
+.sidebar {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    font-size: 0.8rem;
+    margin: 0;
+}
+.fill-current {
+    fill: currentColor;
+}
+.survey-structure, .survey-settings {
+    font-size: .8rem;
+}
+.sidebar-header.primary {
+    background-color: #eeeff7;
+}
+.sidebar-header {
+    margin-bottom: 16px;
+    padding: 12px 8px 12px 18px;
+    font-size: 13.68px;
+    font-weight: 600;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    height: 47.375px
+}
+.sidebar-header .btn-close-lime {
+    color: #1e1e1e;
+    font-size: .855em;
+    opacity: 1;
+}
+.bg-primary {
+    --bs-bg-opacity: 1;
+    background-color: rgba(129, 70, 246, var(--bs-bg-opacity)) !important;
+    /*background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
+    */
+}
+#left-sidebar .form-label {
+    color: #1e1e1e;
+    font-size: 1.25em;
+    font-weight: 500;
+    line-height: 16px;
+}
+#left-sidebar {
+    z-index: 1000;
+    top: 61px;
+}
+.topbar {
+    height: 60px;
+    box-shadow: none;
+    background-color: inherit;
+}
+.topbar.scroll-shadow {
+    box-shadow: 58px 1px 2px -2px gray;
+}
+.topbar.editor {
+    margin-left: 365px;
+}
+
+.btn-icon:before {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 19.2px;
+    text-align: start;
+}
+.ri-bar-chart-horizontal-line:before,
+.ri-settings-3-fill:before {
+    font-size: 20px;
+}
+.sidebar-row {
+    align-items: center;
+    color: #1e1e1e;
+    display: flex;
+    flex-direction: row;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -.21px;
+    line-height: 20px;
+    margin-bottom: 6px;
+    padding-right: 10px;
+}
+.sidebar-row-title .content-editable {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 170px;
+}
+.content-editor .content-editable {
+    word-break: break-word;
+}
+.disabled {
+    opacity: 0.5;
+}
+.sidebar-icons-item {
+    display: flex;
+    margin-top: 10px;
+    cursor: pointer;
+    width: 36px;
+}
+.sidebar-icons-item:first-child {
+    margin-top: 0;
+}
+.survey-settings-panel-item {
+    display: flex;
+    padding: 16px 24px;
+    cursor: pointer;
+    border-radius: 4px;
+    align-items: center;
+}
+.sidebar-icons-container {
+    padding: 8px;
+}
+.panels .side-panel {
+    padding: 8.3px 6.2px;
+}
+.panels {
+     padding-left: 2px;
+}
+.sidebar-container {
+    width: 350px;
+}
+.side-panel {
+    height: 100%;
+}
+.survey-structure {
+    overflow-y: auto;
+    width: 290px;
+}
+
+@media (max-width: 1200px) {
+    #ls-tools-button, #trigger_exportTypeSelector_button {
+        display: none;
+    }
+    .ls-breadcrumb{
+        width: 25%;
+    }
+    .ls-topbar-buttons {
+        text-align: right;
+    }
+}
+@media (max-width: 991.98px) {
+    .sidebar-container {
+        display: none;
+        width: 0;
+    }
+    #vue-apps-main-container {
+        justify-content: center;
+        padding: 10px;
+        margin: 0;
+    }
+    #in_survey_common {
+        padding: 0;
+    }
+    .ls-flex-column, .side-body {
+        margin: 0;
+    }
+    .ls-topbar-buttons.col-md-auto.text-end {
+        display: none;
+    }
+}
+
+
+.side-menu-logo a{
+    color: black;
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 24px
+}

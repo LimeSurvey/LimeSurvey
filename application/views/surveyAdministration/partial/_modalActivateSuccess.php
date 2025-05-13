@@ -13,7 +13,7 @@
             <?php
             App()->getController()->renderPartial(
                 '/layouts/partial_modals/modal_header',
-                ['modalTitle' => gt('Congrats! Your survey has been activated.')]
+                ['modalTitle' => gT('Congrats! Your survey has been activated.')]
             );
             ?>
 
@@ -21,13 +21,13 @@
                 <div class="row">
                     <p><?php et('Want to share your survey right away?');?></p>
                     <a href="<?php App()->getController()->createUrl('/surveyAdministration/view', ['surveyid' => $surveyId])?>">
-                        <?= gt('Sharing options ') ?><i class="ri-arrow-right-line"></i>
+                        <?= gT('Sharing options ') ?><i class="ri-arrow-right-line"></i>
                     </a>
                 </div>
                 <div class="row">
                     <p><?php et('Statistics and responses are now accessible.');?></p>
-                    <a href="<?php App()->getController()->createUrl('responses/browse', ['surveyid' => $surveyId])?>">
-                        <?= gt('See all responses and statistics') ?><i class="ri-arrow-right-line"></i>
+                    <a href="<?php App()->getController()->createUrl('responses/browse', ['surveyId' => $surveyId])?>">
+                        <?= gT('See all responses and statistics') ?><i class="ri-arrow-right-line"></i>
                     </a>
                 </div>
                 <div class="row">

@@ -4,13 +4,27 @@ namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
 use Survey;
 use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
+use LimeSurvey\Models\Services\SurveyThemeConfiguration;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
+use SurveysGroups;
 
 /**
  * TransformerOutputSurveyDetail
  */
 class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 {
+    /**
+     * All these values are inherited values. For inherted values the output has to be different.
+     */
+    const AFFECTED_INHERITED_SETTINGS = [
+        'admin', 'adminemail', 'alloweditaftercompletion', 'allowprev', 'allowsave', 'allowregister','anonymized',
+        'assessments', 'autoredirect', 'bounce_email', 'datestamp', 'emailnotificationto', 'emailresponseto',
+        'format', 'googleanalyticsapikey', 'htmlemail', 'ipaddr', 'ipanonymize', 'listpublic', 'navigationdelay',
+        'nokeyboard', 'printanswers', 'publicgraphs', 'publicstatistics', 'questionindex', 'refurl',
+        'savetimings', 'sendconfirmation', 'showgroupinfo', 'shownoanswer', 'showprogress', 'showqnumcode',
+        'showwelcome', 'showxquestions', 'template', 'tokenanswerspersistence', 'tokenlength', 'usecookie',
+    ];
+
     private TransformerOutputSurvey $transformerSurvey;
     private TransformerOutputSurveyGroup $transformerSurveyGroup;
     private TransformerOutputQuestionGroup $transformerQuestionGroup;
@@ -21,7 +35,10 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     private TransformerOutputAnswer $transformerAnswer;
     private TransformerOutputSurveyOwner $transformerSurveyOwner;
     private QuestionService $questionService;
+    private SurveyThemeConfiguration $surveyThemeConfiguration;
     private TransformerOutputAnswerL10ns $transformerAnswerL10ns;
+    private TransformerOutputSurveyMenus $transformerOutputSurveyMenus;
+    private TransformerOutputSurveyMenuItems $transformerOutputSurveyMenuItems;
 
     /**
      * Construct
@@ -37,7 +54,10 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         TransformerOutputAnswer $transformerOutputAnswer,
         TransformerOutputAnswerL10ns $transformerOutputAnswerL10ns,
         TransformerOutputSurveyOwner $transformerOutputSurveyOwner,
-        QuestionService $questionService
+        TransformerOutputSurveyMenus $transformerOutputSurveyMenus,
+        TransformerOutputSurveyMenuItems $transformerOutputSurveyMenuItems,
+        QuestionService $questionService,
+        SurveyThemeConfiguration $surveyThemeConfiguration
     ) {
         $this->transformerSurvey = $transformerOutputSurvey;
         $this->transformerSurveyGroup = $transformerOutputSurveyGroup;
@@ -49,7 +69,10 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $this->transformerAnswer = $transformerOutputAnswer;
         $this->transformerAnswerL10ns = $transformerOutputAnswerL10ns;
         $this->transformerSurveyOwner = $transformerOutputSurveyOwner;
+        $this->transformerOutputSurveyMenus = $transformerOutputSurveyMenus;
+        $this->transformerOutputSurveyMenuItems = $transformerOutputSurveyMenuItems;
         $this->questionService = $questionService;
+        $this->surveyThemeConfiguration = $surveyThemeConfiguration;
     }
 
     /**
@@ -78,11 +101,21 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['languages'] = $data->allLanguages;
         $survey['previewLink'] = App()->createUrl(
             "survey/index",
-            array('sid' => $data->sid, 'newtest' => "Y", 'lang' => $data->language)
+            array(
+                'sid' => $data->sid,
+                'newtest' => "Y",
+                'lang' => $data->language
+            )
         );
-        $survey['surveyGroup'] = $this->transformerSurveyGroup->transform($data->surveygroup);
-        $survey['owner'] = $this->transformerSurveyOwner->transform($data->owner);
-        $survey['ownerInherited'] = $this->transformerSurveyOwner->transform($data->oOptions->owner);
+        $survey['surveyGroup'] = $this->transformerSurveyGroup->transform(
+            $data->surveygroup
+        );
+        $survey['owner'] = $this->transformerSurveyOwner->transform(
+            $data->owner
+        );
+        $survey['ownerInherited'] = $this->transformerSurveyOwner->transform(
+            $data->oOptions->owner
+        );
 
         // transformAll() can apply required entity sort so we must retain the sort order going forward
         // - We use a lookup array later to access entities without needing to know their position in the collection
@@ -97,7 +130,6 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             'gid',
             $survey['questionGroups']
         );
-
 
         foreach ($data->groups as $questionGroupModel) {
             // Order of groups from the model relation may be different than from the transformed data
@@ -129,8 +161,51 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 $options
             );
         }
-        $survey['hasSurveyUpdatePermission'] = $data->hasPermission('surveycontent', 'update');
+        $survey['hasSurveyUpdatePermission'] = $data->hasPermission(
+            'surveycontent',
+            'update'
+        );
+
+        $surveyMenus = $this->transformerOutputSurveyMenus->transformAll(
+            $data->getSurveyMenus(),
+            $options
+        );
+        $survey['surveyMenus'] = $this->createCollectionLookup(
+            'name',
+            $surveyMenus
+        );
+        $this->transformSurveyMenuItems(
+            $survey['surveyMenus'],
+            $data->getSurveyMenus(),
+            $options
+        );
         $survey['googleAnalyticsApiKeySetting'] = $data->getGoogleanalyticsapikeysetting();
+        $survey['ownersList'] = array_map(function ($user) {
+            return ['value' => $user['uid'], 'label' => $user['user'] . ' - ' . $user['full_name']];
+        }, getUserList());
+
+        //todo: later this should be done with an separate endpoint or service
+        $survey['groupsList'] = SurveysGroups::getSurveyGroupsList();
+        if ($survey['active']) {
+            $survey['responsesTotal'] = (int)\SurveyDynamic::model(
+                $data->sid
+            )->count();
+            $survey['responsesCompleted'] = (int)\SurveyDynamic::model(
+                $data->sid
+            )->count('submitdate IS NOT NULL');
+            $survey['responsesIncomplete'] = $survey['responsesTotal']
+                - $survey['responsesCompleted'];
+        } else {
+            $survey['responsesTotal'] = 0;
+            $survey['responsesCompleted'] = 0;
+            $survey['responsesIncomplete'] = 0;
+        }
+        $survey['attributeDescriptions'] = $data->getDecodedAttributedescriptions();
+
+        $survey['themesettings'] = [];
+        $survey['themesettingattributes'] = [];
+        $survey['templatePreview'] = '';
+        $this->tranformThemeSettings($survey['themesettings'], $survey['themesettingattributes'], $survey['templatePreview'], $data['template'], $data->sid);
 
         return $survey;
     }
@@ -145,8 +220,11 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * @param ?array $options
      * @return void
      */
-    private function transformQuestions($questionLookup, $questions, $options = [])
-    {
+    private function transformQuestions(
+        $questionLookup,
+        $questions,
+        $options = []
+    ) {
         foreach ($questions as $questionModel) {
             // questions from the model relation may be different than from the transformed data
             // - so we use the lookup to get a reference to the required entity without needing to
@@ -209,8 +287,11 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * @param ?array $options
      * @return void
      */
-    private function transformAnswersL10n($answerLookup, $answers, $options = [])
-    {
+    private function transformAnswersL10n(
+        $answerLookup,
+        $answers,
+        $options = []
+    ) {
         foreach ($answers as $answerModel) {
             $answer = &$answerLookup[$answerModel->aid];
 
@@ -243,7 +324,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 
     /**
      * Some survey settings are inherited from the survey group, so we need to
-     * replace the inherited info ("I") with the real values.
+     * replace the inherited info ("I", "inherit" or "-1") with the real values.
      * This is a temporary solution until we display the inherit option
      * in the new UI.
      *
@@ -252,37 +333,76 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      */
     private function setInheritedBetaOptions(Survey $survey)
     {
-        $affectedSettings = [
-            'allowprev',
-            'showprogress',
-            'autoredirect',
-            'showwelcome',
-            'showxquestions',
-            'anonymized',
-            'alloweditaftercompletion',
-            'format',
-            'template',
-            'datestamp',
-            'ipaddr',
-            'ipanonymize',
-            'refurl',
-            'savetimings',
-            'assessments',
-            'allowsave',
-            'emailnotificationto',
-            'emailresponseto',
-            'googleanalyticsapikey',
-        ];
-        foreach ($affectedSettings as $setting) {
+        foreach (TransformerOutputSurveyDetail::AFFECTED_INHERITED_SETTINGS as $setting) {
+            $intBasedSettings = ['questionindex', 'navigationdelay'];
             if (
                 isset($survey->$setting)
-                && ($survey->$setting === 'I' || $survey->$setting === 'inherit')
+                && (
+                    $survey->$setting === 'I'
+                    || $survey->$setting === 'inherit'
+                    || (
+                        in_array(
+                            $setting,
+                            $intBasedSettings
+                        )
+                        && $survey->$setting == '-1'
+                    )
+                )
             ) {
-                if (isset($survey->oOptions->$setting)) {
+                if (property_exists($survey->oOptions, $setting)) {
                     $survey->$setting = $survey->oOptions->$setting;
                 }
             }
         }
         return $survey;
+    }
+
+    /**
+     * Transforms survey menu items and puts them into the main survey menus,
+     * organized by their unique names.
+     * @param array $menuLookup
+     * @param array $menus
+     * @param array $options
+     * @return void
+     */
+    private function transformSurveyMenuItems(
+        array $menuLookup,
+        array $menus,
+        array $options = []
+    ) {
+        foreach ($menus as $menuModel) {
+            $menu = &$menuLookup[$menuModel['name']];
+
+            $itemsLookup = $this->createCollectionLookup(
+                'name',
+                $menuModel['entries']
+            );
+            $menu['entries'] = $this->transformerOutputSurveyMenuItems->transformAll(
+                $itemsLookup,
+                $options
+            );
+        }
+    }
+
+    /**
+     * Prepares theme settings necessary values,
+     * @param-out array<array-key, mixed> $aThemeSettings
+     * @param-out array<mixed> $aThemesettingattributes
+     * @param-out string $sTemplatePreview
+     * @param string $sTemplateName
+     * @param integer $iSurveyId
+     * @return void
+     */
+    private function tranformThemeSettings(array &$aThemeSettings, array &$aThemesettingattributes, string &$sTemplatePreview, $sTemplateName, $iSurveyId = 0)
+    {
+        $aThemeSettings = $this->surveyThemeConfiguration->getSurveyThemeOptions($iSurveyId, $sTemplateName);
+        $aThemeSettings = &$aThemeSettings;
+
+        $aThemesettingattributes = $this->surveyThemeConfiguration->getSurveyThemeOptionsAttributes($iSurveyId, $sTemplateName);
+        $aThemesettingattributes = &$aThemesettingattributes;
+
+        $templateConf = \TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+        $sTemplatePreview = $templateConf->getPreview(true);
+        $sTemplatePreview = &$sTemplatePreview;
     }
 }

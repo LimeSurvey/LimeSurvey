@@ -148,7 +148,7 @@ class ConditionsAction extends SurveyCommonAction
         $p_csrctoken = returnGlobal('csrctoken');
         $p_prevquestionsgqa = returnGlobal('prevQuestionSGQA');
 
-        $p_canswers = null;
+        $p_canswers = [];
         if (is_array($request->getPost('canswers'))) {
             foreach ($request->getPost('canswers') as $key => $val) {
                 $p_canswers[$key] = preg_replace("/[^_.a-zA-Z0-9]@/", "", (string) $val);
@@ -702,6 +702,7 @@ class ConditionsAction extends SurveyCommonAction
         extract($args);
 
         $editSourceTab = $request->getPost('editSourceTab');
+        $editTargetTab = $request->getPost('editTargetTab');
 
         if (isset($p_cquestions) && $p_cquestions != '' && $editSourceTab == '#SRCPREVQUEST') {
             $conditionCfieldname = $p_cquestions;
@@ -717,7 +718,7 @@ class ConditionsAction extends SurveyCommonAction
             'method'     => $p_method
         );
 
-        if ($p_canswers) {
+        if ($editTargetTab == '#CANSWERSTAB') {
             $results = array();
 
             foreach ($p_canswers as $ca) {
@@ -753,7 +754,7 @@ class ConditionsAction extends SurveyCommonAction
             $request = Yii::app()->request;
 
             // Other conditions like constant, other question or token field
-            switch ($request->getPost('editTargetTab')) {
+            switch ($editTargetTab) {
                 case '#CONST':
                     $posted_condition_value = Yii::app()->request->getPost('ConditionConst', '');
                     break;
@@ -979,9 +980,11 @@ class ConditionsAction extends SurveyCommonAction
             $conditionCfieldname = $p_csrctoken;
         }
 
+        $editTargetTab = $request->getPost('editTargetTab');
+
         $results = array();
 
-        if ($p_canswers) {
+        if ($editTargetTab == '#CANSWERSTAB') {
             foreach ($p_canswers as $ca) {
                 // This is an Edit, there will only be ONE VALUE
                 $updated_data = array(
@@ -1004,7 +1007,7 @@ class ConditionsAction extends SurveyCommonAction
                 Yii::app()->setFlashMessage(gT('Could not update condition.'), 'error');
             }
         } else {
-            switch ($request->getPost('editTargetTab')) {
+            switch ($editTargetTab) {
                 case "#CONST":
                     $posted_condition_value = Yii::app()->request->getPost('ConditionConst', '');
                     break;

@@ -160,6 +160,7 @@ class Permission extends LSActiveRecord
             'export' => false,
             'title' => gT("Superadministrator"),
             'description' => gT("Unlimited administration permissions"),
+            'warning' => gT("This setting allows an admin to perform all actions. Please make sure to assign this only to trusted persons."),
             'img' => 'ri-star-fill',
         );
         $aPermissions['auth_db'] = array(
@@ -170,7 +171,7 @@ class Permission extends LSActiveRecord
             'export' => false,
             'title' => gT("Use internal database authentication"),
             'description' => gT("Use internal database authentication"),
-            'img' => 'usergroup',
+            'img' => 'ri-shield-keyhole-line',
         );
 
         /**
@@ -586,6 +587,13 @@ class Permission extends LSActiveRecord
                 ),
                 $bPermission
             );
+            /* get it by roles if exist */
+            $aRolesList = CHtml::listData(self::getUserRole($iUserID), 'ptid', 'ptid');
+            if ($aRolesList) {
+                /* Do it only for read and create : roles can remove permission */
+                $aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p'] = self::getPermissionByRoles($aRolesList, 'superadmin', 'read');
+                $aPermissionStatic[0]['global'][$iUserID]['superadmin']['create_p'] = self::getPermissionByRoles($aRolesList, 'superadmin', 'create');
+            }
         }
         /* If it's a superadmin Permission : get and return */
         if ($sPermission == 'superadmin') {
@@ -611,11 +619,6 @@ class Permission extends LSActiveRecord
         }
 
         /* Check in permission DB and static it */
-        // TODO: that should be the only way to get the permission,
-        // and it should be accessible from any object with relations :
-        // $obj->permissions->read or $obj->permissions->write, etc.
-        // relation :
-        // 'permissions' => array(self::HAS_ONE, 'Permission', array(), 'condition'=> 'entity_id='.{ENTITYID}.' && uid='.Yii::app()->user->id.' && entity="{ENTITY}" && permission="{PERMISSIONS}"', 'together' => true ),
         if (!isset($aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD])) {
             $query = $this->findByAttributes(array("entity_id" => $iEntityID, "uid" => $iUserID, "entity" => $sEntityName, "permission" => $sPermission));
             $bPermission = is_null($query) ? array() : $query->attributes;
@@ -680,8 +683,8 @@ class Permission extends LSActiveRecord
                 'data-bs-target'  => '#confirmation-modal',
                 'data-btnclass'   => 'btn-danger',
                 'type'            => 'submit',
-                'data-btntext'    => gt("Delete"),
-                'data-title'      => gt('Delete user survey permissions'),
+                'data-btntext'    => gT("Delete"),
+                'data-title'      => gT('Delete user survey permissions'),
                 'data-message'    => gT("Are you sure you want to delete this entry?"),
                 'data-post-url'   => App()->createUrl("surveyPermissions/deleteUserPermissions/"),
                 'data-post-datas' => json_encode(['surveyid' => $this->entity_id, 'userid' => $this->uid]),
@@ -799,6 +802,23 @@ class Permission extends LSActiveRecord
     }
 
     /**
+     * get permission by user roles
+     * @param integer[] $rolesIds array of roles id
+     * @param string $permission;
+     * @param string $crud
+     * @return boolean
+     */
+    public static function getPermissionByRoles($rolesIds, $permission, $crud = 'read')
+    {
+        $criteria = new CDbCriteria();
+        $criteria->compare("entity", "role");
+        $criteria->compare("permission", $permission);
+        $criteria->addInCondition('entity_id', $rolesIds);
+        $criteria->compare($crud . '_p', 1);
+        return boolval(self::model()->count($criteria));
+    }
+
+    /**
      * get the owner if of an entity if exist
      * @param integer $iEntityID the entity id
      * @param string $sEntityName string name (model)
@@ -863,6 +883,7 @@ class Permission extends LSActiveRecord
             'templates' => array(
                 'title' => gT("Themes"),
                 'description' => gT("Permission to create, view, update, delete, export and import themes"),
+                'warning' => gT("Update/import theme allows an admin to potentially use cross-site scripting using JavaScript. Please make sure to assign this only to trusted persons."),
                 'img' => ' ri-brush-fill',
             ),
             'labelsets' => array(
@@ -876,6 +897,7 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Settings & Plugins"),
                 'description' => gT("Permission to view and update global settings & plugins and to delete and import plugins"),
+                'warning' => gT("This permission allows an admin to change security relevant settings. Please make sure to assign this only to trusted persons."),
                 'img' => 'ri-earth-fill',
             ),
             'participantpanel' => array(

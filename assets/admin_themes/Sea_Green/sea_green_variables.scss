@@ -42,6 +42,7 @@ $theme-colors: (
     "warning":    $warning,
     "info":       $grape,
     "light":      $g-200,
+    "g-800":      $g-800,
     "dark":       $g-900,
     "black60":    $black60,
     "cancel":     $g-600, // replace with secondary
@@ -177,7 +178,7 @@ $table-hover-bg     : $g-200;
 $table-border-color : $g-400;
 
 // Main spacing
-$container-padding: 20px;
+$container-padding: 12px;
 
 // pagination
 @import "tables/pagination_varriables.scss";

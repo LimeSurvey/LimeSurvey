@@ -79,8 +79,8 @@
         <hideprivacyinfo type="buttons" category="Simple options" width="4" title="Hide privacy info" options="on|off" optionlabels="Yes|No">off</hideprivacyinfo>
         <crosshover type="buttons" category="Simple options" width="4" title="Cross-hover in matrix questions" options="on|off" optionlabels="Yes|No">off</crosshover>
         <showpopups type="buttons" category="Simple options" width="4" title="Show popups" options="1|0|-1" optionlabels="Popup|On page|No">1</showpopups>
-        <notables type="buttons" category="Simple options" width="4" title="Break tables" options="2|1|0" optionlabels="Always on|Small screens|Off">1</notables>
-        <showclearall type="buttons" category="Simple options" width="4" title="Show Clear All button" options="on|off" optionlabels="Yes|No">off</showclearall>
+        <notables type="buttons" category="Simple options" width="4" title="Wrap tables" options="2|1|0" optionlabels="Always on|Small screens|Off">1</notables>
+        <showclearall type="buttons" category="Simple options" width="4" title="Show 'Clear all' button" options="on|off" optionlabels="Yes|No">off</showclearall>
         <questionhelptextposition type="buttons" category="Simple options" width="4" title="Question help text position" options="top|bottom" optionlabels="Top|Bottom">top</questionhelptextposition>
         <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">enable</fixnumauto>
         <questionborder type="buttons" category="Simple options" width="4" title="Question borders" options="on|off" optionlabels="Yes|No">on</questionborder>
@@ -92,18 +92,18 @@
         <!--  When adding new items, please keep them ordered alphabetically -->
         <checkicon type="icon" category="Colors" width="4" title="Check icon">f00c
             <dropdownoptions>
-                <option value="f061"> <i class="fa fa-arrow-right"></i> Arrow right </option>
-                <option value="f069"> <i class="fa fa-asterisk"></i> Asterisk </option>
-                <option value="f00c"> <i class="fa fa-check"></i> Check </option>
-                <option value="f058"> <i class="fa fa-check-circle"></i> Check circle </option>
-                <option value="f14a"> <i class="fa fa-check-square"></i> Check square </option>
-                <option value="f138"> <i class="fa fa-chevron-circle-right"></i> Chevron circle right </option>
-                <option value="f111"> <i class="fa fa-circle"></i> Circle </option>
-                <option value="f067"> <i class="fa fa-plus"></i> Plus </option>
-                <option value="f1d0"> <i class="fa fa-resistance"></i> Resistance </option>
-                <option value="f0c8"> <i class="fa fa-square"></i> Square </option>
-                <option value="f005"> <i class="fa fa-star"></i> Star </option>
-                <option value="f00d"> <i class="fa fa-times"></i> Times </option>
+                <option value="f061"> Arrow right </option>
+                <option value="f069"> Asterisk </option>
+                <option value="f00c"> Check </option>
+                <option value="f058"> Check circle </option>
+                <option value="f14a"> Check square </option>
+                <option value="f138"> Chevron circle right </option>
+                <option value="f111"> Circle </option>
+                <option value="f067"> Plus </option>
+                <option value="f1d0"> Resistance </option>
+                <option value="f0c8"> Square </option>
+                <option value="f005"> Star </option>
+                <option value="f00d"> Times </option>
             </dropdownoptions>
         </checkicon>
         <!-- images -->
@@ -677,7 +677,7 @@
                 <option class="font-lucida_sans     " value="lucida_sans"     data-font-package="websafe" >Lucida Sans</option>
                 <option class="font-palatino        " value="palatino"        data-font-package="websafe" >Palatino Linotype</option>
                 <option class="font-times_new_roman " value="times_new_roman" data-font-package="websafe" >Times New Roman</option>
-                <option class="font-trebuchet       " value="trebuchet"       data-font-package="websafe" >Trebuchet</option>     
+                <option class="font-trebuchet       " value="trebuchet"       data-font-package="websafe" >Trebuchet</option>
             </optgroup>
             </dropdownoptions>
         </font>

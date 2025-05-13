@@ -35,7 +35,7 @@ class FormatterYnToBool implements FormatterInterface
      * Any other value will produce null.
      *
      * @param ?string $value
-     * @return ?boolean
+     * @return bool|string|null
      */
     protected function apply($value)
     {

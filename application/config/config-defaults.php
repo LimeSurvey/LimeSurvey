@@ -78,6 +78,7 @@ $config['timeadjust']                = 0; // Number of hours to adjust between y
 $config['maxdumpdbrecords']          = 500; // The maximum number of records that would be ouput in one go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
 $config['maxdbsizeforbackup']        = 0; // The maximum database size in MB that is backed up up by ComfortUpdate - 0 for no limit
 $config['allowexportalldb']          = 0; // Default 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported (use carefully)
+$config['maxDatabaseSizeForDump']    = 256; // Maximum database size in megabytes to be able to download without errors
 
 $config['deletenonvalues']           = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
@@ -95,7 +96,7 @@ $config['createsample']              = true;
 $config['customassetversionnumber']  = 1;        // Used to generate the path of tmp assets (see: LSYii_AssetManager::generatePath()  )
 
 // Please be very careful if you want to allow SVG files - there are several XSS dangerous security issues
-$config['allowedthemeimageformats'] = 'gif,ico,jpg,png'; // Image file types allowed to be uploaded in the themes section.
+$config['allowedthemeimageformats'] = 'gif,ico,jpg,jpeg,png'; // Image file types allowed to be uploaded in the themes section.
 $config['allowedthemeuploads'] = 'css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,lss,lsa,lsq,lsg'; // Other file types allowed to be uploaded in the themes section.
 $config['allowedfileuploads'] = [
     //Documents
@@ -111,7 +112,7 @@ $config['allowedfileuploads'] = [
 ];
 // NB: Allowing XML enables XSS, since XML can be an HTML page.
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
-$config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo,xsd';
+$config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo,xsd,lss,lsa,lsq,lsg';
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
 
@@ -685,6 +686,13 @@ $config['mysqlEngine'] = "MyISAM";
  */
 $config['defaultfixedtheme'] = 'vanilla';
 
+/**
+ * Use default site admin email (siteadminemail) for mailto link in error page
+ * Disable to shown only the administrator name. Default to avoid more spam on administration email.
+ * @var boolean
+ */
+$config['showEmailInError'] = false;
+
 // === Advanced Setup
 //The following url and dir locations do not need to be modified unless you have a non-standard
 //LimeSurvey installation. Do not change unless you know what you are doing.
@@ -820,16 +828,30 @@ $config['encryptionnonce'] = '';
 $config['encryptionsecretboxkey'] = '';
 
 $config['passwordValidationRules'] = array(
-    'min' => 4,
+    'min' => 8,
     'max' => 0,
     'lower' => 0,
-    'upper' => 0,
-    'numeric' => 0,
+    'upper' => 1,
+    'numeric' => 1,
     'symbol' => 0,
 );
 
 // Enable or disable single page application editor
 $config['editorEnabled'] = false;
+
+/**
+ * Default breadcrumb mode:
+ * short: Survey, Group and Question titles
+ * long: Survey, Group, Question titles plus IDs
+ */
+$config['defaultBreadcrumbMode'] = 'short';
+
+// Minimum delay between registration emails for the same token.
+// Must be a valid DateInterval string (ie: "15 minutes", "1 hour", "1 day").
+$config['registrationEmailDelay'] = '1 hour';
+
+// Participants token sanitizing rules as regex pattern
+$config['allowedcharacters_pattern_token'] = '/[^0-9a-zA-Z_\-~]/';
 
 return $config;
 //settings deleted

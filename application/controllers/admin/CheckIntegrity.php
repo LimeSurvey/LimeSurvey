@@ -51,7 +51,7 @@ class CheckIntegrity extends SurveyCommonAction
         $aData = $this->checkintegrity();
 
         $aData['topbar']['title'] = gT('Check data integrity');
-        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
 
         $this->renderWrappedTemplate('checkintegrity', 'check_view', $aData);
     }
@@ -767,8 +767,9 @@ class CheckIntegrity extends SurveyCommonAction
             }
         }
 
-        /*** Check for active survey participants tables with missing survey entry ***/
+        /*** Check for active survey participants tables with missing survey ***/
         $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{tokens}}\_%'))->queryColumn();
+        $sSurveyIDs = Yii::app()->db->createCommand("select sid from {{surveys}}")->queryColumn();
         foreach ($aResult as $aRow) {
             $sTableName = (string) substr((string) $aRow, strlen((string) $sDBPrefix));
             $aTableName = explode('_', $sTableName);

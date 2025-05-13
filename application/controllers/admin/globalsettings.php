@@ -120,7 +120,7 @@ class GlobalSettings extends SurveyCommonAction
                 'isCloseBtn' => true,
                 'isSaveAndCloseBtn' => true,
                 'isSaveBtn' => true,
-                'backUrl' => Yii::app()->createUrl('admin/index'),
+                'backUrl' => Yii::app()->createUrl('dashboard/view'),
                 'formIdSaveClose' => 'frmglobalsettings',
                 'formIdSave' => 'frmglobalsettings'
             ],
@@ -292,6 +292,7 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('javascriptdebugbcknd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugbcknd', false)));
         SettingGlobal::setSetting('javascriptdebugfrntnd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugfrntnd', false)));
         SettingGlobal::setSetting('maintenancemode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('maintenancemode', 'off')));
+        SettingGlobal::setSetting('defaultBreadcrumbMode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultBreadcrumbMode', 'short')));
 
         //security: for failed login attempts by user/admin
         SettingGlobal::setSetting('maxLoginAttempt', sanitize_int(Yii::app()->getRequest()->getPost('maxLoginAttempt', 3)));
@@ -420,6 +421,7 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('characterset', Yii::app()->getRequest()->getPost('characterset'));
         SettingGlobal::setSetting('sideMenuBehaviour', Yii::app()->getRequest()->getPost('sideMenuBehaviour', 'adaptive'));
         SettingGlobal::setSetting('overwritefiles', Yii::app()->getRequest()->getPost('overwritefiles') == '1' ? 'Y' : 'N');
+        SettingGlobal::setSetting('maxDatabaseSizeForDump', Yii::app()->getRequest()->getPost('global-settings-max-size-for-db-dump'));
         //Save user administration settings
         SettingGlobal::setSetting('sendadmincreationemail', App()->getRequest()->getPost('sendadmincreationemail'));
         SettingGlobal::setSetting('admincreationemailsubject', App()->getRequest()->getPost('admincreationemailsubject'));
@@ -544,7 +546,7 @@ class GlobalSettings extends SurveyCommonAction
         $aData['oSurvey'] = $oSurveyGroupSetting;
 
         if ($bRedirect && App()->request->getPost('saveandclose') !== null) {
-            $this->getController()->redirect($this->getController()->createUrl('admin/index'));
+            $this->getController()->redirect($this->getController()->createUrl('dashboard/view'));
         }
 
         Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
@@ -567,7 +569,7 @@ class GlobalSettings extends SurveyCommonAction
                 'isCloseBtn' => true,
                 'isSaveAndCloseBtn' => true,
                 'isSaveBtn' => true,
-                'backUrl' => Yii::app()->createUrl('admin/index'),
+                'backUrl' => Yii::app()->createUrl('dashboard/view'),
                 'formIdSaveClose' => 'frmglobalsettings',
                 'formIdSave' => 'frmglobalsettings'
             ],

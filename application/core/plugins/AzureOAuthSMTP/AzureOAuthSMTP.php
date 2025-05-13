@@ -15,6 +15,9 @@ class AzureOAuthSMTP extends SmtpOAuthPluginBase
     /** @inheritdoc */
     protected $credentialAttributes = ['clientId', 'clientSecret', 'tenantId'];
 
+    /** @inheritdoc */
+    protected $encryptedSettings = ['clientSecret'];
+
     protected $settings = [
         'help' => [
             'type' => 'info',

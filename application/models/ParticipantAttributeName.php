@@ -123,8 +123,8 @@ class ParticipantAttributeName extends LSActiveRecord
                 'data-bs-target' => "#confirmation-modal",
                 'data-title'     => gT("Delete this attribute"),
                 'data-btnclass'  => "btn-danger",
-                'data-btntext'   => gt("Delete"),
-                'data-message'   => gt('Do you really want to delete this attribute') . "?",
+                'data-btntext'   => gT("Delete"),
+                'data-message'   => gT('Do you really want to delete this attribute') . "?",
                 'data-onclick'   => 'deleteAttributeAjax(' . $this->attribute_id . ")",
             ]
         ];
@@ -629,9 +629,8 @@ class ParticipantAttributeName extends LSActiveRecord
                     ':attribute_id' => $data['attribute_id'])
             );
 
-        if (count($query) == 0) {
-            Yii::app()->db->createCommand()
-                        ->insert('{{participant_attribute}}', $data);
+        if (is_null($query)) {
+            Yii::app()->db->createCommand()->insert('{{participant_attribute}}', $data);
         } else {
             Yii::app()->db->createCommand()
                 ->update(

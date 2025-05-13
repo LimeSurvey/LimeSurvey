@@ -93,6 +93,11 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
         $this->assertSame('N', $result['encrypted'], 'The question should not be encrypted.');
         $this->assertEquals('2', $result['question_order'], 'The question order is not correct.');
+        // Checking L10n properties
+        $this->assertEquals('Dual scale question.', $result['question'], 'The question text is not correct.');
+        $this->assertIsArray($result['questionl10ns'], 'The questionl10ns are included');
+        $this->assertEquals('Dual scale question.', $result['questionl10ns']['question'], 'The question text is not correct inside questionl10ns.');
+
     }
 
     public function testGetDualQuestionPropertiesSpecificLanguage()
@@ -163,6 +168,10 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
         $this->assertSame('N', $result['encrypted'], 'The question should not be encrypted.');
         $this->assertEquals('2', $result['question_order'], 'The question order is not correct.');
+        // Checking L10n properties
+        $this->assertEquals('Pregunta de doble escala.', $result['question'], 'The question text is not correct.');
+        $this->assertIsArray($result['questionl10ns'], 'The questionl10ns are included');
+        $this->assertEquals('Pregunta de doble escala.', $result['questionl10ns']['question'], 'The question text is not correct inside questionl10ns.');
     }
 
     public function testGetArrayByColumnQuestionProperties()
@@ -333,6 +342,10 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
         $this->assertSame('N', $result['encrypted'], 'The question should not be encrypted.');
         $this->assertEquals('6', $result['question_order'], 'The question order is not correct.');
+        // Checking L10n properties
+        $this->assertEquals('List question', $result['question'], 'The question text is not correct.');
+        $this->assertIsArray($result['questionl10ns'], 'The questionl10ns are included');
+        $this->assertEquals('List question', $result['questionl10ns']['question'], 'The question text is not correct inside questionl10ns.');
     }
 
     public function testGetMultipleChoiceQuestionProperties()

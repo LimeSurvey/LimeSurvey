@@ -535,6 +535,9 @@ class Tokens extends SurveyCommonAction
                         if ($sCoreTokenField == 'language' && empty($value)) {
                             continue;
                         }
+                        if (($sCoreTokenField == 'sent' || $sCoreTokenField == 'remindersent' || $sCoreTokenField == 'completed') && empty($value)) {
+                            $value = 'N';
+                        }
                         $aData[$sCoreTokenField] = $value;
                     }
                 }
@@ -1688,7 +1691,8 @@ class Tokens extends SurveyCommonAction
 
                     unset($fieldsarray);
                 }
-
+                // Closes a still active SMTP connection if it exists
+                $mail->smtpClose();
                 $aViewUrls = array();
                 $aData['tokenoutput'] = $tokenoutput;
 
@@ -2129,9 +2133,11 @@ class Tokens extends SurveyCommonAction
                     $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
                     $sErrorMessage = ldap_error($ds);
-                    define("LDAP_OPT_DIAGNOSTIC_MESSAGE", 0x0032);
-                    if (ldap_get_option($ds, LDAP_OPT_DIAGNOSTIC_MESSAGE, $extended_error)) {
-                        $sErrorMessage .= ' - ' . $extended_error;
+                    /* Try to get more error @see https://github.com/adldap/adLDAP/pull/142 */
+                    if (defined('LDAP_OPT_DIAGNOSTIC_MESSAGE')) {
+                        if (ldap_get_option($ds, LDAP_OPT_DIAGNOSTIC_MESSAGE, $extended_error)) {
+                            $sErrorMessage .= ' - ' . $extended_error;
+                        }
                     }
                     $aData['sError'] = sprintf(gT("Can't bind to the LDAP directory. Error message: %s"), ldap_error($ds));
                     $this->renderWrappedTemplate('token', array('ldapform'), $aData);
@@ -2849,7 +2855,7 @@ class Tokens extends SurveyCommonAction
                 }
                 $attributedescriptions = $archivedTableSettings->attributes;
                 $attributedescriptionsOld = $aSurveyInfo['attributedescriptions'];
-                $attributedescriptionsArray = json_decode((string) $attributedescriptions, true);
+                $attributedescriptionsArray = json_decode((string) $attributedescriptions, true) ?? [];
                 foreach ($attributedescriptionsArray as $attributedescription) {
                     // if the encryption status is unknown
                     if ($attributedescription === 'unknown') {

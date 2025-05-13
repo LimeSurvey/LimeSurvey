@@ -24,12 +24,12 @@
             {% endif %}
             {% if sliderleft is not empty %}
                 <div class='col-6 slider-left'>
-                    {{ sliderleft }}
+                    {{ processString(sliderleft) }}
                 </div>
             {% endif %}
             {% if sliderright is not empty %}
                 <div class='col-6 slider-right text-end'>
-                    {{ sliderright }}
+                    {{ processString(sliderright) }}
                 </div>
             {% endif %}
         </div>

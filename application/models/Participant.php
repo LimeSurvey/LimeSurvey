@@ -196,7 +196,7 @@ class Participant extends LSActiveRecord
             'lastname' => gT('Last name') . $this->setEncryptedAttributeLabel(0, 'Participant', 'lastname'),
             'email' => gT('Email address') . $this->setEncryptedAttributeLabel(0, 'Participant', 'email'),
             'language' => gT('Language') . $this->setEncryptedAttributeLabel(0, 'Participant', 'language'),
-            'blacklisted' => gT('Blacklisted') . $this->setEncryptedAttributeLabel(0, 'Participant', 'blacklisted'),
+            'blacklisted' => gT('Blocklisted') . $this->setEncryptedAttributeLabel(0, 'Participant', 'blacklisted'),
             'owner_uid' => gT('Owner ID') . $this->setEncryptedAttributeLabel(0, 'Participant', 'owner_uid'),
             'surveyid' => gT('Active survey ID') . $this->setEncryptedAttributeLabel(0, 'Participant', 'surveyid'),
             'created' => gT('Created on') . $this->setEncryptedAttributeLabel(0, 'Participant', 'created')
@@ -473,7 +473,8 @@ class Participant extends LSActiveRecord
         }
 
         $criteria = new LSDbCriteria();
-        $criteria->join = 'LEFT JOIN {{users}} as owner on uid=owner_uid LEFT JOIN {{participant_shares}} AS shares ON t.participant_id = shares.participant_id AND (shares.share_uid = ' . Yii::app()->user->id . ' OR shares.share_uid = -1)';
+        $criteria->join = 'LEFT JOIN {{users}} as owner on uid=owner_uid ' .
+            'LEFT JOIN {{participant_shares}} AS shares ON t.participant_id = shares.participant_id AND (shares.share_uid = ' . Yii::app()->user->id . ' OR shares.share_uid = -1) ';
         $criteria->compare('t.participant_id', $this->participant_id, true, 'AND', true);
         $criteria->compare('t.firstname', $this->firstname, true, 'AND', true);
         $criteria->compare('t.lastname', $this->lastname, true, 'AND', true);
@@ -500,27 +501,16 @@ class Participant extends LSActiveRecord
             $attributeId = (int) substr($attributeId, 3);
 
             /** @var string Param name to bind in prepared statement */
-
-            $callParticipantAttributes = Yii::app()->db->createCommand()
-                ->selectDistinct('pa.participant_id')
-                ->from('{{participant_attribute}} AS pa');
-            // NB: Binding in andWhere() is not enough since the subquery is converted to string.
-            // See: https://forum.yiiframework.com/t/show-sql-generated-from-cdbcriteria/45021
-
+            $ParticipantAttributesCriteria = new LSDbCriteria();
+            $ParticipantAttributesCriteria->select = 'pa.participant_id';
+            $ParticipantAttributesCriteria->distinct = true;
+            $ParticipantAttributesCriteria->alias = 'pa';
+            $ParticipantAttributesCriteria->compare('attribute_id', $attributeId);
             // Use "LIKE" for text-box, equal for other types
-            if ($attributeType === 'TB') {
-                $bindKey = ':attribute_id' . $attributeId;
-                $callParticipantAttributes->where("attribute_id = " . $bindKey . " AND value LIKE '%" . $value . "%'", array($bindKey => $attributeId));
-                $criteria->params[$bindKey] = $attributeId;
-            } else {
-                /** @var string Param name to bind in prepared statement */
-                $bindKey = ':value' . $attributeId;
-                $callParticipantAttributes->where("attribute_id = '" . $attributeId . "' AND value = " . $bindKey, array($bindKey => $value));
-                // NB: Binding in andWhere() is not enough since the subquery is converted to string.
-                $criteria->params[$bindKey] = $value;
-            }
-
+            $ParticipantAttributesCriteria->compare('value', $value, $attributeType === 'TB');
+            $callParticipantAttributes = ParticipantAttribute::model()->getCommandBuilder()->createFindCommand(ParticipantAttribute::model()->getTableSchema(), $ParticipantAttributesCriteria);
             $criteria->addCondition('t.participant_id IN (' . $callParticipantAttributes->getText() . ')');
+            $criteria->params = array_merge($criteria->params, $ParticipantAttributesCriteria->params);
         }
 
         $DBCountActiveSurveys = SurveyLink::model()->tableName();
