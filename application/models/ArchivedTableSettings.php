@@ -119,7 +119,7 @@ class ArchivedTableSettings extends LSActiveRecord
      *
      * @param int $iSurveyID
      * @param int $iTimestamp archive timestamp
-     * @return ArchivedTableSettings[] 
+     * @return ArchivedTableSettings[]
      */
     public static function getArchivesForTimestamp($iSurveyId, $iTimestamp)
     {
