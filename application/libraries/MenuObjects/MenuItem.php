@@ -11,6 +11,8 @@ class MenuItem implements MenuItemInterface
     /** @var string */
     protected $href = "#";
     /** @var string */
+    protected $id = "";
+    /** @var string */
     protected $label = "Missing label";
     /** @var string */
     protected $iconClass = "";
@@ -32,6 +34,10 @@ class MenuItem implements MenuItemInterface
             $this->label = $options['label'];
         }
 
+        if (isset($options['id'])) {
+            $this->id = $options['id'];
+        }
+
         if (isset($options['href'])) {
             $this->href = $options['href'];
         }
@@ -47,6 +53,14 @@ class MenuItem implements MenuItemInterface
     public function getHref()
     {
         return $this->href;
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**

@@ -496,6 +496,21 @@ class SurveyAdministrationController extends LSBaseController
             }
             $overrideAdministrator = ($administrator != 'owner');
 
+            if((App()->getConfig("editorEnabled")) ) {
+                $userId = App()->user->id;
+                $currentUser = User::model()->findByPk($userId);
+                $currentUserLanguage = $currentUser->lang;
+                //we need the language short
+                if ($currentUserLanguage === 'auto') {
+                    $currentUserLanguage = Yii::app()->getConfig('defaultlang');
+                }
+
+                $simpleSurveyValues = new \LimeSurvey\Datavalueobjects\SimpleSurveyValues();
+                $simpleSurveyValues->title = gt('Untitled survey');
+                $simpleSurveyValues->surveyGroupId = 1;
+                $simpleSurveyValues->baseLanguage = $currentUserLanguage;
+            }
+
             $surveyCreator = new \LimeSurvey\Models\Services\CreateSurvey(new Survey(), new SurveyLanguageSetting());
             $newSurvey = $surveyCreator->createSimple(
                 $simpleSurveyValues,
@@ -514,35 +529,47 @@ class SurveyAdministrationController extends LSBaseController
             // This will force the generation of the entry for survey group
             TemplateConfiguration::checkAndcreateSurveyConfig($iNewSurveyid);
 
-            $createSample = SettingsUser::getUserSettingValue('createsample');
-            if ($createSample === null || $createSample === 'default') {
-                $createSample = Yii::app()->getConfig('createsample');
-            }
-
-            // Figure out destination
-            if ($createSample) {
-                $iNewGroupID = $this->createSampleGroup($iNewSurveyid);
-                $iNewQuestionID = $this->createSampleQuestion($iNewSurveyid, $iNewGroupID);
-
-                Yii::app()->setFlashMessage(gT("Your new survey was created. We also created a first question group and an example question for you."), 'info');
-                $redirecturl = $this->getSurveyAndSidemenueDirectionURL(
-                    $iNewSurveyid,
-                    $iNewGroupID,
-                    $iNewQuestionID,
-                    'structure'
-                );
-            } elseif (!$ownsPreviousSurveys) {
-                // SET create question and create question group as default view.
-                $redirecturl = $this->createUrl(
-                    'questionGroupsAdministration/add/',
-                    ['surveyid' => $iNewSurveyid]
-                );
+            if ((App()->getConfig("editorEnabled")) ) {
+                // make sure that the survey theme is fruity_twentythree
+                $fruityTemplate = Template::model()->findByAttributes(array('name' => 'fruity_twentythree'));
+                if ($fruityTemplate) {
+                    $newSurvey->template = $fruityTemplate->name;
+                }
+                // set the redirect url to new editor
+                $redirecturl = $this->createUrl("editorLink/index", ["route" => "survey/" . $iNewSurveyid]);
+                // create just a new example survey group (example question will be created in react)
+                $this->createSampleGroup($iNewSurveyid);
             } else {
-                $redirecturl = $this->createUrl(
-                    'surveyAdministration/view/',
-                    ['iSurveyID' => $iNewSurveyid]
-                );
-                Yii::app()->setFlashMessage(gT("Your new survey was created."), 'info');
+                $createSample = SettingsUser::getUserSettingValue('createsample');
+                if ($createSample === null || $createSample === 'default') {
+                    $createSample = Yii::app()->getConfig('createsample');
+                }
+
+                // Figure out destination
+                if ($createSample) {
+                    $iNewGroupID = $this->createSampleGroup($iNewSurveyid);
+                    $iNewQuestionID = $this->createSampleQuestion($iNewSurveyid, $iNewGroupID);
+
+                    Yii::app()->setFlashMessage(gT("Your new survey was created. We also created a first question group and an example question for you."), 'info');
+                    $redirecturl = $this->getSurveyAndSidemenueDirectionURL(
+                        $iNewSurveyid,
+                        $iNewGroupID,
+                        $iNewQuestionID,
+                        'structure'
+                    );
+                } elseif (!$ownsPreviousSurveys) {
+                    // SET create question and create question group as default view.
+                    $redirecturl = $this->createUrl(
+                        'questionGroupsAdministration/add/',
+                        ['surveyid' => $iNewSurveyid]
+                    );
+                } else {
+                    $redirecturl = $this->createUrl(
+                        'surveyAdministration/view/',
+                        ['iSurveyID' => $iNewSurveyid]
+                    );
+                    Yii::app()->setFlashMessage(gT("Your new survey was created."), 'info');
+                }
             }
 
             return Yii::app()->getController()->renderPartial(
@@ -550,6 +577,7 @@ class SurveyAdministrationController extends LSBaseController
                 array(
                     'data' => array(
                         'redirecturl' => $redirecturl,
+                        'newSurveyId' => $iNewSurveyid
                     )
                 ),
                 false,

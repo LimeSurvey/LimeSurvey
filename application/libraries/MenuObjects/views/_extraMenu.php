@@ -34,15 +34,20 @@ foreach ($extraMenus as $menu): ?>
                     <?php
                     foreach ($menu->getMenuItems() as $menuItem): ?>
                         <?php
-                        if ($menuItem->isDivider()): ?>
+                        if ($menuItem->isDivider()) { ?>
                             <li class="dropdown-divider"></li>
                         <?php
-                        elseif ($menuItem->isSmallText()): ?>
+                        } elseif ($menuItem->isSmallText()) { ?>
                             <li class="dropdown-header"><?= $menuItem->getLabel(); ?></li>
                         <?php
-                        else: ?>
+                        } else {
+                            $cssId = $menuItem->getId();
+                            if ($cssId !== '') {
+                                $cssId = 'id="' . $cssId . '"';
+                            }
+                            ?>
                             <li>
-                                <a href="<?= $menuItem->getHref(); ?>" class="dropdown-item">
+                                <a href="<?= $menuItem->getHref(); ?>" class="dropdown-item" <?= $cssId; ?> >
                                     <!-- Spit out icon if present -->
                                     <?php
                                     if ($menuItem->getIconClass() != ''): ?>
@@ -53,7 +58,7 @@ foreach ($extraMenus as $menu): ?>
                                 </a>
                             </li>
                         <?php
-                        endif; ?>
+                        } ?>
                     <?php
                     endforeach; ?>
                 </ul>
