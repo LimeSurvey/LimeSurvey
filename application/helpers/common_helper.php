@@ -2579,7 +2579,7 @@ function tableExists($sTableName)
 }
 
 // Returns false if the survey is anonymous,
-// and a survey participants table exists: in this case the completed field of a token
+// and a survey participants list exists: in this case the completed field of a token
 // will contain 'Y' instead of the submitted date to ensure privacy
 // Returns true otherwise
 function isTokenCompletedDatestamped($thesurvey)
@@ -2900,7 +2900,7 @@ function filterForAttributes(string $fieldname)
 }
 
 /**
-* Retrieves the attribute field names from the related survey participants table
+* Retrieves the attribute field names from the related survey participants list
 *
 * @param mixed $iSurveyID  The survey ID
 * @return array The fieldnames
@@ -2936,7 +2936,7 @@ function getParticipantAttributes($iSurveyID)
 
 
 /**
-* Retrieves the attribute names from the related survey participants table
+* Retrieves the attribute names from the related survey participants list
 *
 * @param mixed $surveyid  The survey ID
 * @param boolean $bOnlyAttributes Set this to true if you only want the fieldnames of the additional attribue fields - defaults to false
@@ -4659,7 +4659,7 @@ function getIPAddress()
             // Single forward
             $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
         } else {
-        // Multitple forward
+        // Multiple forward
         // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
         // TODO: RFC7239 full implementation (https://datatracker.ietf.org/doc/html/rfc7239#section-5.2)
             $aForwarded = explode(',', (string) $_SERVER['HTTP_X_FORWARDED_FOR']);

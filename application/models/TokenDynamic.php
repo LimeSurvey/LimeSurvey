@@ -123,7 +123,7 @@ class TokenDynamic extends LSActiveRecord
      * (some older tokens tables dont' get udated properly)
      *
      * This method should be moved to db update for 2.05 version so it runs only
-     * once per survey participants table / backup survey participants table
+     * once per survey participants list / backup survey participants list
      */
     public function checkColumns()
     {
