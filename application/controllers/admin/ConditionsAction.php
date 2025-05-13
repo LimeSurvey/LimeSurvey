@@ -43,7 +43,7 @@ class ConditionsAction extends SurveyCommonAction
     private $language;
 
     /**
-     * True if there exists a survey participants table for this survey
+     * True if there exists a survey participants list for this survey
      * @var boolean
      */
     private $tokenTableExists;
@@ -522,9 +522,9 @@ class ConditionsAction extends SurveyCommonAction
                                 $rightOperandType = 'tokenAttr';
                                 $aTokenAttrNames = $this->tokenFieldsAndNames;
                                 if ($this->tokenTableExists) {
-                                    $thisAttrName = HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])]['description']) . " [" . gT("From survey participants table") . "]";
+                                    $thisAttrName = HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])]['description']) . " [" . gT("From survey participants list") . "]";
                                 } else {
-                                    $thisAttrName = HTMLEscape($extractedTokenAttr[1]) . " [" . gT("Non-existing survey participants table") . "]";
+                                    $thisAttrName = HTMLEscape($extractedTokenAttr[1]) . " [" . gT("Non-existing survey participants list") . "]";
                                 }
                                 $data['target'] = $thisAttrName;
                             } elseif (isset($canswers)) {
@@ -2142,9 +2142,9 @@ class ConditionsAction extends SurveyCommonAction
         }
 
         if ($this->tokenTableExists) {
-            $thisAttrName .= " [" . gT("From survey participants table") . "]";
+            $thisAttrName .= " [" . gT("From survey participants list") . "]";
         } else {
-            $thisAttrName .= " [" . gT("Non-existing survey participants table") . "]";
+            $thisAttrName .= " [" . gT("Non-existing survey participants list") . "]";
         }
 
         return $thisAttrName;

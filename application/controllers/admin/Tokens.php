@@ -142,7 +142,7 @@ class Tokens extends SurveyCommonAction
 
         $aData['massiveAction'] = App()->getController()->renderPartial('/admin/token/massive_actions/_selector', $aData, true, false);
 
-        // CHECK TO SEE IF A Survey participants table EXISTS FOR THIS SURVEY
+        // CHECK TO SEE IF A Survey participants list EXISTS FOR THIS SURVEY
         $aData['surveyActivationFeedback'] = Yii::app()->request->getParam('surveyActivationFeedback', null);
         if (!$survey->hasTokensTable) {
             $this->newtokentable($iSurveyId);
@@ -163,7 +163,7 @@ class Tokens extends SurveyCommonAction
         $iSurveyId = (int) $iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
         if (!$survey->hasTokensTable) {
-            eT("No survey participants table.");
+            eT("No survey participants list.");
             return;
         }
         $thissurvey = getSurveyInfo($iSurveyId);
@@ -494,7 +494,7 @@ class Tokens extends SurveyCommonAction
         $aResults = array();
 
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')) {
-            // CHECK TO SEE IF A Survey participants table EXISTS FOR THIS SURVEY
+            // CHECK TO SEE IF A Survey participants list EXISTS FOR THIS SURVEY
             if (tableExists('{{tokens_' . $iSurveyId . '}}')) {
                 // First we create the array of fields to update
                 $aData = array();
@@ -1142,7 +1142,7 @@ class Tokens extends SurveyCommonAction
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
-        // CHECK TO SEE IF A Survey participants table EXISTS FOR THIS SURVEY
+        // CHECK TO SEE IF A Survey participants list EXISTS FOR THIS SURVEY
         $bTokenExists = $oSurvey->hasTokensTable;
         if (!$bTokenExists) {
             //If no tokens table exists
@@ -1255,7 +1255,7 @@ class Tokens extends SurveyCommonAction
         }
 
         Yii::app()->db->schema->getTable($oSurvey->tokensTableName, true); // Refresh schema cache just in case the table existed in the past
-        LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants tables have changed
+        LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants lists have changed
 
         Yii::app()->session['flashmessage'] = sprintf(gT("%s field(s) were successfully added."), $number2add);
         Yii::app()->getController()->redirect(array("/admin/tokens/sa/managetokenattributes/surveyid/$iSurveyId"));
@@ -1270,9 +1270,9 @@ class Tokens extends SurveyCommonAction
     {
         $iSurveyId = (int) $iSurveyId;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        // CHECK TO SEE IF A Survey participants table EXISTS FOR THIS SURVEY
+        // CHECK TO SEE IF A Survey participants list EXISTS FOR THIS SURVEY
         if (!$oSurvey->hasTokensTable) {
-            Yii::app()->session['flashmessage'] = gT("No survey participants table.");
+            Yii::app()->session['flashmessage'] = gT("No survey participants list.");
             $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update')) {
@@ -1762,7 +1762,7 @@ class Tokens extends SurveyCommonAction
         $aData['sidemenu']['state'] = false;
         $aData['showDownloadButton'] = true;
 
-        // CHECK TO SEE IF A Survey participants table EXISTS FOR THIS SURVEY
+        // CHECK TO SEE IF A Survey participants list EXISTS FOR THIS SURVEY
         $iSurveyId = (int) $iSurveyId;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'export')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
@@ -2616,7 +2616,7 @@ class Tokens extends SurveyCommonAction
         $aData['sidemenu']['state'] = false;
         $aData['backupTableName'] = $newtableDisplay;
         $this->renderWrappedTemplate('token', 'afterDeleteParticipantsTable', $aData);
-        LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants tables have changed
+        LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants lists have changed
     }
 
     /**
@@ -2801,7 +2801,7 @@ class Tokens extends SurveyCommonAction
             $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
 
-        //The survey participants table already exist ?
+        //The survey participants list already exist ?
         if ($survey->hasTokensTable) {
             Yii::app()->session['flashmessage'] = gT("Participant list already exist for this survey.");
             $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
@@ -2825,7 +2825,7 @@ class Tokens extends SurveyCommonAction
         if (Yii::app()->request->getPost('createtable') === "Y") {
             Survey::model()->updateByPk($iSurveyId, array('tokenencryptionoptions' => ls_json_encode($aTokenencryptionoptions)));
             Token::createTable($iSurveyId);
-            LimeExpressionManager::SetDirtyFlag(); // LimeExpressionManager needs to know about the new survey participants table
+            LimeExpressionManager::SetDirtyFlag(); // LimeExpressionManager needs to know about the new survey participants list
             $this->renderWrappedTemplate('token', array('message' => array(
                 'title' => gT("Survey participants"),
                 'message' => gT("A participant list has been created for this survey.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId\")<br /><br />\n"
@@ -2886,7 +2886,7 @@ class Tokens extends SurveyCommonAction
                         [
                             'message' => [
                                 'title'   => gT("Import old participant list"),
-                                'message' => gT("A survey participants table has been created for this survey and the old participants were imported.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId" . "\")<br /><br />\n"
+                                'message' => gT("A survey participants list has been created for this survey and the old participants were imported.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId" . "\")<br /><br />\n"
                                     . "<input type='submit' class='btn btn-outline-secondary' value='"
                                     . gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
                             ]
@@ -2898,7 +2898,7 @@ class Tokens extends SurveyCommonAction
                     return;
                 }
 
-                LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants tables have changed
+                LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants lists have changed
             } else {
                 $this->renderWrappedTemplate(
                     'token',

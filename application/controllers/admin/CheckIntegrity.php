@@ -67,7 +67,7 @@ class CheckIntegrity extends SurveyCommonAction
                 foreach ($aDelete['redundanttokentables'] as $aTokenTable) {
                     if (in_array($aTokenTable['table'], $oldsmultidelete)) {
                         Yii::app()->db->createCommand()->dropTable($aTokenTable['table']);
-                        $aData['messages'][] = sprintf(gT('Deleting survey participants table: %s'), $aTokenTable['table']);
+                        $aData['messages'][] = sprintf(gT('Deleting survey participants list: %s'), $aTokenTable['table']);
                     }
                 }
             }
@@ -80,7 +80,7 @@ class CheckIntegrity extends SurveyCommonAction
                 }
             }
             if (count($aData['messages']) == 0) {
-                $aData['messages'][] = gT('No old survey or survey participants table selected.');
+                $aData['messages'][] = gT('No old survey or survey participants list selected.');
             }
             $this->renderWrappedTemplate('checkintegrity', 'fix_view', $aData);
         }
@@ -191,7 +191,7 @@ class CheckIntegrity extends SurveyCommonAction
     {
         foreach ($tokenTables as $aTokenTable) {
             Yii::app()->db->createCommand()->dropTable($aTokenTable);
-            $aData['messages'][] = sprintf(gT('Deleting orphan survey participants table: %s'), $aTokenTable);
+            $aData['messages'][] = sprintf(gT('Deleting orphan survey participants list: %s'), $aTokenTable);
         }
         return $aData;
     }
@@ -767,7 +767,7 @@ class CheckIntegrity extends SurveyCommonAction
             }
         }
 
-        /*** Check for active survey participants tables with missing survey ***/
+        /*** Check for active survey participants lists with missing survey ***/
         $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{tokens}}\_%'))->queryColumn();
         $sSurveyIDs = Yii::app()->db->createCommand("select sid from {{surveys}}")->queryColumn();
         foreach ($aResult as $aRow) {
@@ -1180,7 +1180,7 @@ class CheckIntegrity extends SurveyCommonAction
         $aDelete['questionOrderDuplicates'] = $this->checkQuestionOrderDuplicates();
 
         /**********************************************************************/
-        /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT Survey participants tableS       */
+        /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT Survey participants listS       */
         /**********************************************************************/
         //1: Get distinct list of survey_link survey IDs, check if tokens
         //   table still exists for each one, and remove if not
@@ -1192,7 +1192,7 @@ class CheckIntegrity extends SurveyCommonAction
         /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT TOKEN ENTRIES      */
         /**********************************************************************/
         //1: For each survey_link, see if the matching entry still exists in
-        //   the survey participants table and remove if it doesn't.
+        //   the survey participants list and remove if it doesn't.
 
 
         /* Show a alert message is some fix is done */
