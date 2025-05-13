@@ -645,14 +645,9 @@ class Tokens extends SurveyCommonAction
         $request = App()->request;
         $subAction = $request->getPost('subaction');
         if ($subAction == 'inserttoken') {
-            if (!$survey->hasTokensTable) {
-                $tokenencryptionoptions = $survey->getTokenEncryptionOptions();
-                $tokenencryptionoptions['enabled'] = 'Y';
-                $survey->tokenencryptionoptions = ls_json_encode($tokenencryptionoptions);
-                Token::createTable($survey->sid);
-                LimeExpressionManager::setDirtyFlag();
-            }
-                // TODO: This part could be refactored into function like "insertToken()"
+            $this->verifyAndCreateTokenTable($survey);
+
+            // TODO: This part could be refactored into function like "insertToken()"
             Yii::import('application.libraries.Date_Time_Converter');
 
             // Fix up dates and match to database format
@@ -1001,13 +996,8 @@ class Tokens extends SurveyCommonAction
         );
 
         if (!empty($subaction) && $subaction == 'add') {
-            if (!$survey->hasTokensTable) {
-                $tokenencryptionoptions = $survey->getTokenEncryptionOptions();
-                $tokenencryptionoptions['enabled'] = 'Y';
-                $survey->tokenencryptionoptions = ls_json_encode($tokenencryptionoptions);
-                Token::createTable($survey->sid);
-                LimeExpressionManager::setDirtyFlag();
-            }
+            $this->verifyAndCreateTokenTable($survey);
+
             $message = '';
             $this->getController()->loadLibrary('Date_Time_Converter');
             $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
@@ -2224,13 +2214,8 @@ class Tokens extends SurveyCommonAction
         $aEncodings = aEncodingsArray();
 
         if (Yii::app()->request->isPostRequest) {
-            if (!$survey->hasTokensTable) {
-                $tokenencryptionoptions = $survey->getTokenEncryptionOptions();
-                $tokenencryptionoptions['enabled'] = 'Y';
-                $survey->tokenencryptionoptions = ls_json_encode($tokenencryptionoptions);
-                Token::createTable($survey->sid);
-                LimeExpressionManager::setDirtyFlag();
-            }
+            $this->verifyAndCreateTokenTable($survey);
+
             $sUploadCharset = Yii::app()->request->getPost('csvcharset');
             if (!array_key_exists($sUploadCharset, $aEncodings)) {
                 // Validate sUploadCharset
@@ -3271,5 +3256,23 @@ class Tokens extends SurveyCommonAction
         );
 
         return $aResult;
+    }
+
+    /**
+     * Verifies and creates token table if it didn't exist
+     * @param Survey $survey
+     * @return void
+     */
+    protected function verifyAndCreateTokenTable($survey)
+    {
+        if ($survey->hasTokensTable) {
+            return;
+        }
+
+        $tokenencryptionoptions = $survey->getTokenEncryptionOptions();
+        $tokenencryptionoptions['enabled'] = 'Y';
+        $survey->tokenencryptionoptions = ls_json_encode($tokenencryptionoptions);
+        Token::createTable($survey->sid);
+        LimeExpressionManager::setDirtyFlag();
     }
 }
