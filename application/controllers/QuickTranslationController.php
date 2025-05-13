@@ -440,6 +440,7 @@ class QuickTranslationController extends LSBaseController
             'es-MX' => 'es',
             'nb' => 'no',
             'nn' => 'no',
+            'hat' => 'ht',
         );
         $sBaselang = isset($replacements[$sBaselang]) ? $replacements[$sBaselang] : $sBaselang;
         $sTolang = isset($replacements[$sTolang]) ? $replacements[$sTolang] : $sTolang;
