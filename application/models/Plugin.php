@@ -79,18 +79,31 @@ class Plugin extends LSActiveRecord
             ':error_message' => $error['message'] . ' ' . $error['file'],
             ':id' => $this->id
         ];
+        $rowNumber = \Yii::app()->db->createCommand($sql)->bindValues($params)->execute();
+
+        $message = sprintf(
+            "Plugin %s (%s) deactivated with error “%s” at file %s",
+            $this->name,
+            $this->id,
+            $error['message'],
+            $error['file']
+        );
         Yii::log(
-            sprintf(
-                "Plugin %s (%s) deactivated with error “%s” at file %s",
-                $this->name,
-                $this->id,
-                $error['message'],
-                $error['file']
-            ),
+            $message,
             CLogger::LEVEL_ERROR,
             'application.model.plugin.setLoadError'
         );
-        return \Yii::app()->db->createCommand($sql)->bindValues($params)->execute();
+
+        $introduction = sprintf(gT("Plugin error on %s"), App()->getConfig('sitename'));
+        $mailer = new \LimeMailer();
+        $mailer->emailType = "pluginsetloaderror";
+        $mailer->isHtml(false);
+        $mailer->Subject = gT("[Error] Plugin deactivated on LimeSurvey", "unescaped");
+        $mailer->Body = $introduction . "\n" . $message;
+        $mailer->addAddress(App()->getConfig('siteadminemail'), App()->getConfig('siteadminname'));
+        $mailer->sendMessage();
+
+        return $rowNumber;
     }
 
     /**
