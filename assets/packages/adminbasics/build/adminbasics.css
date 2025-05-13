@@ -2379,13 +2379,13 @@ $color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $
   position: fixed;
 }
 
-/** For survey participants table */
+/** For survey participants list */
 .scrolling-wrapper {
   overflow-x: scroll;
   overflow-y: hidden;
 }
 
-/** Search criteria pop-up for survey participants table */
+/** Search criteria pop-up for survey participants list */
 #search {
   display: none;
   overflow-y: auto;

@@ -7,10 +7,10 @@
     <div class="row welcom survey-action">
         <div class="col-12 content-right">
             <div class="card card-primary">
-                <h3 class="lead"><?php eT('Survey participants table deleted'); ?></h3>
+                <h3 class="lead"><?php eT('Survey participants list deleted'); ?></h3>
                 <br /> <br />
                 <p>
-                    <?php eT('The survey participants table has been deleted and your survey has been switched back to open-access mode. Participants no longer require an access code to access the survey.'); ?>
+                    <?php eT('The survey participants list has been deleted and your survey has been switched back to open-access mode. Participants no longer require an access code to access the survey.'); ?>
                     <br /> <br />
                     <?php eT('A backup of this table has been made, which can only be accessed by your site administrator.'); ?>
                     <br />
