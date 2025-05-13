@@ -119,8 +119,8 @@ class WipeCommand extends CConsoleCommand
                 $actquery = "truncate table {{auditlog_log}}";
                 Yii::app()->db->createCommand($actquery)->execute();
             }
-            if (tableExists('{{twoFactorUsers}}')) {
-                $actquery = "truncate table {{twoFactorUsers}}";
+            if (tableExists('{{user_mfa_settings}}')) {
+                $actquery = "truncate table {{user_mfa_settings}}";
                 Yii::app()->db->createCommand($actquery)->execute();
             }            
             $actquery = "delete from {{settings_user}} where stg_name LIKE 'last_question'";

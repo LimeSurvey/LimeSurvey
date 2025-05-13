@@ -1040,14 +1040,14 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * Delete multiple users selected by massive action
+     * Deletes multiple users selected by massive action.
      *
-     * @return void|string
+     * @return void | string
      * @throws CException
-     * @throws CHttpException
      */
     public function actionDeleteMultiple()
     {
+        // Check if the user has permission to delete users
         if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
             return $this->renderPartial(
                 'partial/error',
@@ -1055,21 +1055,29 @@ class UserManagementController extends LSBaseController
             );
         }
 
+        // Get the selected users from the POST request
         $aUsers = json_decode(App()->request->getPost('sItems', ''));
         $aResults = [];
 
+        // Iterate over the selected users
         foreach ($aUsers as $user) {
             $aResults[$user]['title'] = '';
             $model = $this->loadModel($user);
             $aResults[$user]['title'] = $model->users_name;
+
+            // Delete the user and store the result
             $aResults[$user]['result'] = $this->deleteUser($user);
-            if (!$aResults[$user]['result'] && $user == Yii::app()->user->id) {
+
+            // If the user could not be deleted or it's the current user, add an error message
+            if (!$aResults[$user]['result'] || $user == Yii::app()->user->id) {
                 $aResults[$user]['error'] = gT("You cannot delete yourself or a protected user.");
             }
         }
 
+        // Define the labels for the table
         $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
 
+        // Render the results in a partial view
         Yii::app()->getController()->renderPartial(
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
             array(

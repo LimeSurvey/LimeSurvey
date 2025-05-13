@@ -32,8 +32,7 @@ class PatcherSurvey extends Patcher
         SurveyResponse $surveyResponse
     ) {
         $this->surveyResponse = $surveyResponse;
-
-        $opHandlers = [
+        $classes = [
             OpHandlerSurveyUpdate::class,
             OpHandlerLanguageSettingsUpdate::class,
             OpHandlerQuestionGroup::class,
@@ -49,13 +48,15 @@ class PatcherSurvey extends Patcher
             OpHandlerAnswerDelete::class,
             OpHandlerSubQuestion::class,
             OpHandlerSurveyStatus::class,
-            OpHandlerQuestionCondition::class
+            OpHandlerQuestionCondition::class,
+            OpHandlerImport::class,
+            OpHandlerThemeSettings::class,
         ];
 
-        foreach ($opHandlers as $opHandler) {
+        foreach ($classes as $class) {
             $this->addOpHandler(
                 $diContainer->get(
-                    $opHandler
+                    $class
                 )
             );
         }
