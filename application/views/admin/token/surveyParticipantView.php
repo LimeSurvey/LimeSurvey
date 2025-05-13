@@ -86,13 +86,13 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
             </div>
         </div>
     </div>
-    <h2 class="summary-title mt-4 pb-2 mb-3"><?php eT("All participants"); ?></h2>
+    <h2 class="summary-title mt-4 pb-2 mb-3"><?php $model && eT("All participants"); ?></h2>
     <div class='side-body'>
         <input type='hidden' id="dateFormatDetails" name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>' />
         <input type="hidden" id="locale" name="locale" value="<?= convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']) ?>" />
         <input type='hidden' name='rtl' value='<?php echo getLanguageRTL($_SESSION['adminlang']) ? '1' : '0'; ?>' />
         <?php
-        $this->widget('ext.AlertWidget.AlertWidget', [
+        $model && $this->widget('ext.AlertWidget.AlertWidget', [
             'tag'  => 'p',
             'text' => gT(
                 "You can use operators in the search filters (eg: >, <, >=, <=, = )"
@@ -113,7 +113,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
         <div class="row">
             <div class="content-right">
                 <?php
-                $this->widget('application.extensions.admin.grid.CLSGridView', [
+                $model && $this->widget('application.extensions.admin.grid.CLSGridView', [
                     'dataProvider'          => $model->search(),
                     'filter'                => $model,
                     'id'                    => 'token-grid',
@@ -138,6 +138,39 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
         </div>
 
         <?php
+        if ($tcount > 0 && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens','create'))):
+            echo eT("No survey participants found.");
+        ?>
+                <input class="btn btn-large btn-block btn-outline-secondary" type='button' value='<?php eT("Add participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/" . $surveyid); ?>', '_top')" />
+                <div class="col-12 content-right mt-4">
+                    <div class="card card-primary">
+                        <h2><?php eT("Restore options"); ?></h2>
+                        <p class="text-info">
+                            <?php eT("Please be aware that tables including encryption should not be restored if they have been created in LimeSurvey 4 before version 4.6.1")?>
+                        </p>
+                        <p class="lead text-success">
+                            <strong>
+                                <?php eT("The following old survey participants tables could be restored:"); ?>
+                            </strong>
+                        </p>
+                        <p>
+                            <?php echo CHtml::form(array("admin/tokens/sa/index/surveyid/{$oSurvey->sid}"), 'post'); ?>
+                                <select size='4' name='oldtable' required>
+                                    <?php
+                                        foreach ($oldlist as $ol) {
+                                            echo "<option>" . $ol . "</option>\n";
+                                        }
+                                    ?>
+                                </select><br /><br />
+                                <input type='submit' value='<?php eT("Restore"); ?>' class="btn btn-outline-secondary btn-lg"/>
+                                <input type='hidden' name='restoretable' value='Y' />
+                                <input type='hidden' name='sid' value='<?php echo $oSurvey->sid; ?>' />
+                            <?php echo CHtml::endForm() ?>
+                        </p>
+                    </div>
+                </div>
+        <?php endif;?>
+<?php
         // To update rows per page via ajax
         App()->getClientScript()->registerScript(
             "Tokens:neccesaryVars",
