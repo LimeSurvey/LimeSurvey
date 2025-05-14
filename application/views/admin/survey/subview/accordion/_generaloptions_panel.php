@@ -329,8 +329,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                 <div class="col-12 col-lg-8 content-right">
                     <label class="form-label" for="question_code_prefix"><?php eT("Question code prefix:"); ?></label>
                     <input class="form-control inherit-edit <?php echo($bShowInherited && $question_code_prefix === 'I' ? 'd-none' : 'd-block'); ?>"
-                           type="text" size="50" maxlength="17"
-                           pattern="[A-Za-z]{1,17}" id="question_code_prefix"
+                           type="text" size="50" id="question_code_prefix"
                            name="question_code_prefix"
                            value="<?php echo htmlspecialchars((string)$question_code_prefix); ?>"
                            data-inherit-value="I"
@@ -362,8 +361,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                 <div class="col-12 col-lg-8 content-right">
                     <label class="form-label" for="subquestion_code_prefix"><?php eT("Subquestion code prefix:"); ?></label>
                     <input class="form-control inherit-edit <?php echo($bShowInherited && $subquestion_code_prefix === 'I' ? 'd-none' : 'd-block'); ?>" 
-                        type="text" size="50" maxlength="5" pattern="[A-Za-z]{1,5}" 
-                        id="subquestion_code_prefix" name="subquestion_code_prefix"
+                        type="text" size="50" id="subquestion_code_prefix" name="subquestion_code_prefix"
                         value="<?php echo htmlspecialchars((string) $subquestion_code_prefix); ?>" 
                         data-inherit-value="I" data-saved-value="<?php echo htmlspecialchars((string) $subquestion_code_prefix); ?>" />
                     <input class="form-control inherit-readonly <?php echo($bShowInherited && $subquestion_code_prefix === 'I' ? 'd-block' : 'd-none'); ?>" 
@@ -392,8 +390,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                 <div class="col-12 col-lg-8 content-right">
                     <label class="form-label" for="answer_code_prefix"><?php eT("Answer code prefix:"); ?></label>
                     <input class="form-control inherit-edit <?php echo($bShowInherited && $answer_code_prefix === 'I' ? 'd-none' : 'd-block'); ?>" 
-                        type="text" size="50" maxlength="2" pattern="[A-Za-z]{1,2}"
-                        id="answer_code_prefix" name="answer_code_prefix"
+                        type="text" size="50" id="answer_code_prefix" name="answer_code_prefix"
                         value="<?php echo htmlspecialchars((string) $answer_code_prefix); ?>" 
                         data-inherit-value="I" data-saved-value="<?php echo htmlspecialchars((string) $answer_code_prefix); ?>" />
                     <input class="form-control inherit-readonly <?php echo($bShowInherited && $answer_code_prefix === 'I' ? 'd-block' : 'd-none'); ?>" 

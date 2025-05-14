@@ -356,7 +356,7 @@ class SurveyAdministrationController extends LSBaseController
                 $iGroupNumber = $oQuestion->gid;
                 $iGroupSequence++;
             }
-            $sNewTitle = (($sSubAction == 'bygroup') ? ('G' . $iGroupSequence) : '') . "Q" .
+            $sNewTitle = (($sSubAction == 'bygroup') ? ('G' . $iGroupSequence) : '') . $oQuestion::getCodePrefix('question_code_prefix', $iSurveyID) .
                 str_pad($iQuestionNumber, 3, "0", STR_PAD_LEFT);
             Question::model()->updateAll(array('title' => $sNewTitle), 'qid=:qid', array(':qid' => $oQuestion->qid));
             $iQuestionNumber++;
