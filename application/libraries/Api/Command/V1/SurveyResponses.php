@@ -146,7 +146,9 @@ class SurveyResponses implements CommandInterface
     }
     private function buildCriteria(Request $request): array
     {
-        $searchParams = $request->getData('search', null);
+        $searchParams = [];
+        $searchParams['search'] = $request->getData('search', null);
+        $searchParams['sort'] = $request->getData('sort', null);
 
         $sort = new \CSort();
         $criteria = new \LSDbCriteria();
