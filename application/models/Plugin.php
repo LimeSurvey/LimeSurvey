@@ -95,7 +95,7 @@ class Plugin extends LSActiveRecord
         );
 
         $body = sprintf(gT("Plugin error on %s"), App()->getConfig('sitename')) . "\n";
-        $body.= sprintf(
+        $body .= sprintf(
             gT("Plugin %s (%s) deactivated with error “%s” at file %s"),
             $this->name,
             $this->id,
@@ -108,8 +108,11 @@ class Plugin extends LSActiveRecord
         $mailer->Subject = gT("[Error] Plugin deactivated on LimeSurvey", "unescaped");
         $mailer->Body = $body;
         $mailer->addAddress(App()->getConfig('siteadminemail'), App()->getConfig('siteadminname'));
-        $mailer->sendMessage();
-
+        try {
+            $mailer->sendMessage();
+        } catch (\Exception $e) {
+            // Must be loggued by LimeMailer : it's an issue from LimeMailer
+        }
         return $rowNumber;
     }
 
