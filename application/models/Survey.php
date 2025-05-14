@@ -2624,16 +2624,15 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * Validates all other settings
      * @return boolean Whether all settings are valid
      */
-    public function checkOtherSettings() {
+    public function checkOtherSettings()
+    {
         $otherSettings = json_decode($this->othersettings, true) ?: [];
         $isValid = true;
-        
         foreach ($otherSettings as $attribute => $value) {
             if (!$this->checkOtherSetting($attribute, $value)) {
                 $isValid = false;
             }
         }
-        
         return $isValid;
     }
 
@@ -2643,7 +2642,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * @param mixed $value The setting value
      * @return boolean Whether the setting is valid
      */
-    public function checkOtherSetting($attribute, $value) {
+    public function checkOtherSetting($attribute, $value)
+    {
         $validationRules = [
             'question_code_prefix' => [
                 'pattern' => '/^$|^[A-Za-z][A-Za-z0-9]{0,14}$/',
@@ -2657,20 +2657,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'pattern' => '/^$|^[A-Za-z][A-Za-z0-9]{0,1}$/',
                 'message' => gT("Answer code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 2 characters.")
             ]
-        ];
-        
+        ];  
         // If this is not a setting we validate, return true
         if (!isset($validationRules[$attribute])) {
             return true;
-        }
-        
+        } 
         $rule = $validationRules[$attribute];
         $isValid = preg_match($rule['pattern'], $value);
-        
         if (!$isValid) {
             $this->addError($attribute, $rule['message']);
         }
-        
         return (bool)$isValid;
     }
 }
