@@ -529,6 +529,11 @@ class SurveyAdministrationController extends LSBaseController
             // This will force the generation of the entry for survey group
             TemplateConfiguration::checkAndcreateSurveyConfig($iNewSurveyid);
 
+            $createSample = SettingsUser::getUserSettingValue('createsample');
+            if ($createSample === null || $createSample === 'default') {
+                $createSample = Yii::app()->getConfig('createsample');
+            }
+
             if ((App()->getConfig("editorEnabled")) ) {
                 // make sure that the survey theme is fruity_twentythree
                 $fruityTemplate = Template::model()->findByAttributes(array('name' => 'fruity_twentythree'));
@@ -537,14 +542,12 @@ class SurveyAdministrationController extends LSBaseController
                 }
                 // set the redirect url to new editor
                 $redirecturl = $this->createUrl("editorLink/index", ["route" => "survey/" . $iNewSurveyid]);
-                // create just a new example survey group (example question will be created in react)
-                $this->createSampleGroup($iNewSurveyid);
-            } else {
-                $createSample = SettingsUser::getUserSettingValue('createsample');
-                if ($createSample === null || $createSample === 'default') {
-                    $createSample = Yii::app()->getConfig('createsample');
-                }
 
+                // create just a new example survey group (example question will be created in react)
+                if ($createSample) {
+                    $this->createSampleGroup($iNewSurveyid);
+                }
+            } else {
                 // Figure out destination
                 if ($createSample) {
                     $iNewGroupID = $this->createSampleGroup($iNewSurveyid);
