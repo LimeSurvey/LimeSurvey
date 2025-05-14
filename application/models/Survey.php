@@ -2657,11 +2657,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'pattern' => '/^$|^[A-Za-z][A-Za-z0-9]{0,1}$/',
                 'message' => gT("Answer code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 2 characters.")
             ]
-        ];  
+        ];
         // If this is not a setting we validate, return true
         if (!isset($validationRules[$attribute])) {
             return true;
-        } 
+        }
         $rule = $validationRules[$attribute];
         $isValid = preg_match($rule['pattern'], $value);
         if (!$isValid) {
