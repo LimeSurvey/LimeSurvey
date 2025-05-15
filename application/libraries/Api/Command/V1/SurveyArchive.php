@@ -46,7 +46,8 @@ class SurveyArchive implements CommandInterface
      * @param array $rawData
      * @return []
      */
-    protected function processData(Survey $survey, array $rawData) {
+    protected function processData(Survey $survey, array $rawData)
+    {
         try {
             $hasTokens = ($survey->isActive && (Token::model($survey->sid)->find('1=1') !== null));
         } catch (\Exception $ex) {
