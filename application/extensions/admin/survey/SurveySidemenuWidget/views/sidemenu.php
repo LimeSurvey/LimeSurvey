@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="sidebar-icons-item">
-                <div class="sidebar-icon" data-target="#survey-presentation-panel" onclick="window.location='<?php echo App()->createUrl('themeOptions/updateSurvey', array('surveyid' => $sid)); ?>'">
+                <div class="sidebar-icon" data-target="#survey-presentation-panel" onclick="window.location='<?php echo App()->createUrl('editorLink/index', ['route' => 'survey/' .  $sid . '/presentation/theme_options']); ?>'">
                     <div data-bs-toggle="tooltip"
                          title="<?php echo gT('Survey presentation'); ?>"
                          data-bs-offset="0, 20"
