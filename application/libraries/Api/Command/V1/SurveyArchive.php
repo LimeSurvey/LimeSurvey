@@ -47,6 +47,14 @@ class SurveyArchive implements CommandInterface
     public function run(Request $request)
     {
         $surveyId = (int)$request->getData('_id');
+        if (!$surveyId) {
+            $surveyId = (int)$_GET['id'];
+        }
+        $rawBaseTable = $_GET['basetable'] ?? 'survey';
+        if (!in_array($rawBaseTable, ['survey', 'tokens'])) {
+            throw new \Exception("Incorrect base table");
+        }
+        $baseTable = "old_{$rawBaseTable}";
         if ($response = $this->ensurePermissions($surveyId)) {
             return $response;
         }
@@ -61,7 +69,7 @@ class SurveyArchive implements CommandInterface
             );
         }
         require_once "application/helpers/admin/import_helper.php";
-        $rawData = getTableArchivesAndTimestamps($surveyId);
+        $rawData = getTableArchivesAndTimestamps($surveyId, $baseTable);
         $data = [];
         $hasTokens = false;
         try {
