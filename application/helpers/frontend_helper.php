@@ -420,7 +420,7 @@ function submittokens($quotaexit = false)
     if ($quotaexit == false) {
         $token->decrypt();
         if ($token && trim(strip_tags((string) $thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y") {
-            $sToAddress = validateEmailAddresses($token->email);
+            $sToAddress = LimeMailer::validateAddresses($token->email);
             if ($sToAddress) {
                 /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
                 $reData = array('thissurvey' => $thissurvey);
@@ -489,7 +489,7 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
 
     // create array of recipients for emailnotifications
     if (!empty($thissurvey['emailnotificationto']) && empty($emails)) {
-        $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailnotificationto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true));
+        $aRecipient = preg_split("/(,|;)/", LimeExpressionManager::ProcessStepString($thissurvey['emailnotificationto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true));
         foreach ($aRecipient as $sRecipient) {
             $sRecipient = trim($sRecipient);
             if ($mailer::validateAddress($sRecipient)) {
@@ -499,7 +499,7 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
     }
     // // create array of recipients for emailresponses
     if (!empty($thissurvey['emailresponseto']) && empty($emails)) {
-        $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailresponseto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true));
+        $aRecipient = preg_split("/(,|;)/", LimeExpressionManager::ProcessStepString($thissurvey['emailresponseto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true));
         foreach ($aRecipient as $sRecipient) {
             $sRecipient = trim($sRecipient);
             if ($mailer::validateAddress($sRecipient)) {
