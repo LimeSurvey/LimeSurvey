@@ -20,6 +20,7 @@ class FilterPatcher
      */
     public function apply(array $filterParams, \LSDbCriteria &$criteria, \CSort &$sort): void
     {
+        $sort->defaultOrder = "id ASC";
         if (!empty($filterParams['sort'])) {
             foreach ($filterParams['sort'] as $column => $order) {
                 $op = (new SortingHandler());

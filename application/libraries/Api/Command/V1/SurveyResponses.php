@@ -67,9 +67,9 @@ class SurveyResponses implements CommandInterface
         $data['_meta'] = [
             'pagination' => [
                 'pageSize' => (int) $pagination['pageSize'],
-                'currentPage' => (int) $pagination['currentPage'] + 1,
+                'currentPage' => (int) $pagination['currentPage'],
                 'totalItems' => $dataProvider->getTotalItemCount(),
-                'totalPages' => (int) ceil($dataProvider->getTotalItemCount() / $pagination['pageSize']),
+                'totalPages' => (int) ceil($dataProvider->getTotalItemCount() / $pagination['pageSize'] ?? 1 ),
             ],
             'filters' => $request->getData('filters', []),
             'sort' => $request->getData('sort', []),

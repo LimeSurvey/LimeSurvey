@@ -16,12 +16,13 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
             'id' => ['type' => 'int'],
             'startlanguage' => ['key' => 'language', 'type' => 'string'],
             'seed' => ['key' => 'seed'],
+            'lastpage' => ['key' => 'lastPage'],
             'submitdate' => [
                 'key' => 'submitDate',
                 'formatter' => ['dateTimeToJson' => true]
             ],
             'startdate' => ['key' => 'startDate'],
-            'datestamp' => ['key' => 'dateStamp'],
+            'datestamp' => ['key' => 'dateLastAction'],
         ]);
     }
 
