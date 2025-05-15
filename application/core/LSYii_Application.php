@@ -537,7 +537,8 @@ class LSYii_Application extends CWebApplication
         $route = ltrim($route, "/");
         $alias = explode("/", $route)[0];
         /* Remove all non printable see mantis #20090 */
-        $alias = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $alias);
+        /* @see https://stackoverflow.com/a/66587087 for regexp source */
+        $alias = preg_replace('/[^\PCc^\PCn^\PCs]/u','', $alias);
         if (empty($alias)) {
             return null;
         }
