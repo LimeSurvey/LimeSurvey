@@ -71,7 +71,7 @@ class SurveyResponses implements CommandInterface
                 'totalItems' => $dataProvider->getTotalItemCount(),
                 'totalPages' => (int) ceil($dataProvider->getTotalItemCount() / $pagination['pageSize']),
             ],
-            'filters' => $request->getData('search', []),
+            'filters' => $request->getData('filters', []),
             'sort' => $request->getData('sort', []),
         ];
         $data = $this->mapResponsesToQuestions($data);
@@ -147,7 +147,7 @@ class SurveyResponses implements CommandInterface
     private function buildCriteria(Request $request): array
     {
         $searchParams = [];
-        $searchParams['search'] = $request->getData('search', null);
+        $searchParams['filters'] = $request->getData('filters', null);
         $searchParams['sort'] = $request->getData('sort', null);
 
         $sort = new \CSort();
@@ -161,7 +161,7 @@ class SurveyResponses implements CommandInterface
     }
     private function buildPagination(Request $request): array
     {
-        return $request->getData('pagination') ?? [
+        return $request->getData('page') ?? [
             'pageSize' => 15,
             'currentPage' => 0,
         ];

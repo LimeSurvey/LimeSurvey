@@ -29,8 +29,8 @@ class FilterPatcher
             }
         }
 
-        if (!empty($filterParams['search'])) {
-            foreach ($filterParams['search'] as $filterParam) {
+        if (!empty($filterParams['filters'])) {
+            foreach ($filterParams['filters'] as $filterParam) {
                 foreach ($this->handlers as $handler) {
                     $op = (new $handler());
                     if ($op->canHandle($filterParam)) {
