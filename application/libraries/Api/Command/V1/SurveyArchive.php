@@ -46,13 +46,15 @@ class SurveyArchive implements CommandInterface
      * @param array $rawData
      * @return []
      */
-    protected function processData(Survey $survey, array $rawData)
+    protected function processData(Survey $survey, array $rawData): array
     {
+        $hasTokens = false;
         try {
             $hasTokens = ($survey->isActive && (Token::model($survey->sid)->find('1=1') !== null));
         } catch (\Exception $ex) {
             //Tokens table exists, proceed
         }
+        $data = [];
         for ($index = 0; $index < count($rawData); $index++) {
             $newData = ['newformat' => false];
             $split = explode(",", $rawData[$index]['tables']);
@@ -94,9 +96,9 @@ class SurveyArchive implements CommandInterface
     {
         $surveyId = (int)$request->getData('_id');
         if (!$surveyId) {
-            $surveyId = (int)$_GET['id'];
+            $surveyId = intval($_GET['id']);
         }
-        $rawBaseTable = $_GET['basetable'] ?? 'survey';
+        $rawBaseTable = (string)($_GET['basetable'] ?? 'survey');
         if (!in_array($rawBaseTable, ['survey', 'tokens'])) {
             throw new \Exception("Incorrect base table");
         }
