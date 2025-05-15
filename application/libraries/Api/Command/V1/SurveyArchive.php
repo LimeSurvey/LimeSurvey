@@ -44,7 +44,7 @@ class SurveyArchive implements CommandInterface
      * Processes data and returns aggregate summary of the archives
      * @param \Survey $survey
      * @param array $rawData
-     * @return []
+     * @return array
      */
     protected function processData(Survey $survey, array $rawData): array
     {
@@ -98,7 +98,7 @@ class SurveyArchive implements CommandInterface
         if (!$surveyId) {
             $surveyId = intval($_GET['id']);
         }
-        $rawBaseTable = (string)($_GET['basetable'] ?? 'survey');
+        $rawBaseTable = ($_GET['basetable'] ?? 'survey') . "";
         if (!in_array($rawBaseTable, ['survey', 'tokens'])) {
             throw new \Exception("Incorrect base table");
         }
