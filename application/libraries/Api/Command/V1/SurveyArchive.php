@@ -91,8 +91,6 @@ class SurveyArchive implements CommandInterface
     /**
      * Processes the request
      * @param \LimeSurvey\Api\Command\Request\Request $request
-     * @SuppressWarnings(PHPMD.PossiblyInvalidOperand)
-     * @SuppressWarnings(PHPMD.InvalidArgument)
      */
     public function run(Request $request)
     {
@@ -100,7 +98,7 @@ class SurveyArchive implements CommandInterface
         if (!$surveyId) {
             $surveyId = intval($_GET['id']);
         }
-        $rawBaseTable = ($_GET['basetable'] ?? 'survey') . "";
+        $rawBaseTable = (json_encode($_GET['basetable']) ?? 'survey');
         if (!in_array($rawBaseTable, ['survey', 'tokens'])) {
             throw new \Exception("Incorrect base table");
         }
