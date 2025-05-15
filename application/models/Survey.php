@@ -144,6 +144,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property SurveyLanguageSetting $defaultlanguage
  * @property SurveysGroups $surveygroup
  * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
+ * @property string $othersettings Other settings that don't require a searchabla database column and can be save here as a JSON
  * @method mixed active()
  */
 class Survey extends LSActiveRecord implements PermissionInterface
@@ -231,6 +232,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 }
             }
         }
+        // Ready to add more settings here
+        $this->othersettings = json_encode(self::getDefaultOtherSettings());
     }
 
     /** @inheritdoc */
@@ -562,6 +565,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('googleanalyticsapikey', 'match', 'pattern' => '/^[a-zA-Z\-\d]*$/',
                 'message' => gT('Google Analytics Tracking ID may only contain alphanumeric characters and hyphens.'),
             ),
+            array('othersettings', 'checkOtherSettings'),
         );
     }
 
@@ -2297,6 +2301,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
         // set Survey attributes to 'inherit' values
         foreach ($settings as $key => $value) {
             $this->$key = $value;
+            if ($key === 'othersettings') {
+                $this->$key = json_encode(self::getDefaultOtherSettings());
+            }
         }
     }
 
@@ -2568,5 +2575,98 @@ class Survey extends LSActiveRecord implements PermissionInterface
             return new DateTime($datetime);
         }
         return null;
+    }
+
+    /**
+     * Returns the default othersettings array with inherit values
+     * @return array
+     */
+    public static function getDefaultOtherSettings()
+    {
+        return [
+            'question_code_prefix' => 'I',
+            'subquestion_code_prefix' => 'I',
+            'answer_code_prefix' => 'I'
+        ];
+    }
+
+    /**
+     * Get a value from othersettings
+     *
+     * @param string $key The setting key to retrieve
+     * @param mixed $default Default value if setting doesn't exist
+     * @return mixed The setting value or default
+     */
+    public function getOtherSetting($key, $default = '')
+    {
+        $settings = $this->othersettings ? json_decode($this->othersettings, true) : [];
+        return isset($settings[$key]) ? $settings[$key] : $default;
+    }
+
+    /**
+     * Sets a specific attribute in the survey's other settings.
+     *
+     * This function updates or adds a single attribute in the survey's othersettings field.
+     * The othersettings field is a JSON-encoded string that stores various additional settings.
+     *
+     * @param string $attribute The name of the attribute to set
+     * @param mixed $value The value to set for the attribute
+     * @return void
+     */
+    public function setOtherSetting($attribute, $value)
+    {
+        $othersettings = json_decode($this->othersettings, true) ?? [];
+        $othersettings[$attribute] = $value;
+        $this->othersettings = json_encode($othersettings);
+    }
+
+    /**
+     * Validates all other settings
+     * @return boolean Whether all settings are valid
+     */
+    public function checkOtherSettings()
+    {
+        $otherSettings = json_decode($this->othersettings, true) ?: [];
+        $isValid = true;
+        foreach ($otherSettings as $attribute => $value) {
+            if (!$this->checkOtherSetting($attribute, $value)) {
+                $isValid = false;
+            }
+        }
+        return $isValid;
+    }
+
+    /**
+     * Validates a single other setting
+     * @param string $attribute The setting name
+     * @param mixed $value The setting value
+     * @return boolean Whether the setting is valid
+     */
+    public function checkOtherSetting($attribute, $value)
+    {
+        $validationRules = [
+            'question_code_prefix' => [
+                'pattern' => '/^$|^[A-Za-z][A-Za-z0-9]{0,14}$/',
+                'message' => gT("Question code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 15 characters.")
+            ],
+            'subquestion_code_prefix' => [
+                'pattern' => '/^$|^[A-Za-z][A-Za-z0-9]{0,4}$/',
+                'message' => gT("Subquestion code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 5 characters.")
+            ],
+            'answer_code_prefix' => [
+                'pattern' => '/^$|^[A-Za-z][A-Za-z0-9]{0,1}$/',
+                'message' => gT("Answer code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 2 characters.")
+            ]
+        ];
+        // If this is not a setting we validate, return true
+        if (!isset($validationRules[$attribute])) {
+            return true;
+        }
+        $rule = $validationRules[$attribute];
+        $isValid = preg_match($rule['pattern'], $value);
+        if (!$isValid) {
+            $this->addError($attribute, $rule['message']);
+        }
+        return (bool)$isValid;
     }
 }
