@@ -536,6 +536,8 @@ class LSYii_Application extends CWebApplication
     {
         $route = ltrim($route, "/");
         $alias = explode("/", $route)[0];
+        /* Remove all non printable see mantis #20090 */
+        $alias = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $alias);
         if (empty($alias)) {
             return null;
         }
