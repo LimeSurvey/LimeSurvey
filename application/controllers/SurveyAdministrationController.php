@@ -545,7 +545,8 @@ class SurveyAdministrationController extends LSBaseController
 
                 // create just a new example survey group (example question will be created in react)
                 if ($createSample) {
-                    $this->createSampleGroup($iNewSurveyid);
+                    $iNewGroupID =  $this->createSampleGroup($iNewSurveyid);
+                    $this->createSampleQuestion($iNewSurveyid, $iNewGroupID);
                 }
             } else {
                 // Figure out destination
