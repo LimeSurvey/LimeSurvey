@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-05-12 15:33:38+00:00\n"
+"POT-Creation-Date: 2025-05-16 10:34:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -387,7 +387,7 @@ msgstr ""
 
 #: application/controllers/AssessmentController.php:329
 #: application/core/LsDefaultDataSets.php:444
-#: application/models/Survey.php:2340
+#: application/models/Survey.php:2330
 #: application/models/TemplateManifest.php:174
 #: application/views/admin/survey/copySurvey_view.php:54
 #: application/views/assessment/assessments_view.php:14
@@ -791,7 +791,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:287
 #: application/controllers/SurveyAdministrationController.php:3242
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:12
-#: application/models/Survey.php:1596 application/models/SurveyLink.php:232
+#: application/models/Survey.php:1586 application/models/SurveyLink.php:232
 #: application/views/admin/token/massive_actions/_delete_results.php:10
 #: application/views/admin/token/massive_actions/_export_archive_results.php:12
 msgid "Survey ID"
@@ -936,7 +936,6 @@ msgstr ""
 #: application/views/userManagement/massiveAction/_updatepermissions.php:29
 #: application/views/userManagement/partial/editpermissions.php:18
 #: application/views/userRole/massiveAction/_updatepermissions.php:31
-#: application/views/userRole/partials/_permissions.php:28
 #: modules/admin/globalsettings/views/globalSettings_view.php:15
 msgid "General"
 msgstr ""
@@ -1053,9 +1052,9 @@ msgstr ""
 #: application/controllers/QuestionGroupsAdministrationController.php:221
 #: application/controllers/QuestionGroupsAdministrationController.php:287
 #: application/controllers/QuestionGroupsAdministrationController.php:356
-#: application/controllers/QuestionGroupsAdministrationController.php:585
-#: application/controllers/QuestionGroupsAdministrationController.php:589
-#: application/controllers/QuestionGroupsAdministrationController.php:674
+#: application/controllers/QuestionGroupsAdministrationController.php:594
+#: application/controllers/QuestionGroupsAdministrationController.php:598
+#: application/controllers/QuestionGroupsAdministrationController.php:683
 #: application/controllers/SmtpOAuthController.php:41
 #: application/controllers/SmtpOAuthController.php:91
 #: application/controllers/SurveyAdministrationController.php:378
@@ -1257,7 +1256,7 @@ msgstr ""
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:14
 #: application/models/FailedEmail.php:80 application/models/FailedEmail.php:145
-#: application/models/Notification.php:165 application/models/Survey.php:1603
+#: application/models/Notification.php:165 application/models/Survey.php:1593
 #: application/models/User.php:192 application/models/User.php:818
 #: application/views/admin/participants/massive_actions/_update_results.php:18
 #: application/views/admin/pluginmanager/index.php:87
@@ -1346,25 +1345,25 @@ msgstr ""
 msgid "Question group does not exists"
 msgstr ""
 
-#: application/controllers/QuestionGroupsAdministrationController.php:385
+#: application/controllers/QuestionGroupsAdministrationController.php:388
 msgid "Invalid question group id"
 msgstr ""
 
-#: application/controllers/QuestionGroupsAdministrationController.php:400
-#: application/controllers/QuestionGroupsAdministrationController.php:412
+#: application/controllers/QuestionGroupsAdministrationController.php:406
+#: application/controllers/QuestionGroupsAdministrationController.php:418
 msgid "The question group was deleted."
 msgstr ""
 
-#: application/controllers/QuestionGroupsAdministrationController.php:400
-#: application/controllers/QuestionGroupsAdministrationController.php:414
+#: application/controllers/QuestionGroupsAdministrationController.php:406
+#: application/controllers/QuestionGroupsAdministrationController.php:420
 msgid "Group could not be deleted"
 msgstr ""
 
-#: application/controllers/QuestionGroupsAdministrationController.php:653
+#: application/controllers/QuestionGroupsAdministrationController.php:662
 msgid "Question group successfully stored"
 msgstr ""
 
-#: application/controllers/QuestionGroupsAdministrationController.php:784
+#: application/controllers/QuestionGroupsAdministrationController.php:793
 #: application/controllers/SurveyAdministrationController.php:1969
 #: application/controllers/SurveyAdministrationController.php:3099
 #: application/views/admin/emailtemplates/emailtemplates_view.php:36
@@ -1638,7 +1637,7 @@ msgstr ""
 #: application/controllers/UploaderController.php:400
 #: application/controllers/admin/DataEntry.php:1047
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
-#: application/models/Notification.php:166 application/models/Survey.php:1611
+#: application/models/Notification.php:166 application/models/Survey.php:1601
 #: application/models/Surveymenu.php:345
 #: application/models/SurveymenuEntries.php:188
 #: application/models/SurveysGroups.php:98
@@ -1743,7 +1742,7 @@ msgstr ""
 #: application/extensions/admin/SearchBoxWidget/views/searchBox.php:95
 #: application/helpers/admin/export/HtmlWriter.php:72
 #: application/models/Assessment.php:149 application/models/Question.php:1090
-#: application/models/QuestionType.php:123 application/models/Survey.php:1644
+#: application/models/QuestionType.php:123 application/models/Survey.php:1634
 #: application/models/SurveysGroups.php:460
 #: application/views/assessment/assessments_edit.php:29
 msgid "Group"
@@ -1780,7 +1779,7 @@ msgstr ""
 #: application/models/ParticipantShare.php:272
 #: application/models/Permissiontemplates.php:271
 #: application/models/Question.php:1111 application/models/SavedControl.php:176
-#: application/models/Survey.php:1632 application/models/Surveymenu.php:427
+#: application/models/Survey.php:1622 application/models/Surveymenu.php:427
 #: application/models/SurveymenuEntries.php:196
 #: application/models/SurveymenuEntries.php:209
 #: application/models/SurveysGroups.php:181
@@ -6078,13 +6077,13 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:527
 #: application/core/LsDefaultDataSets.php:528
 #: application/core/LsDefaultDataSets.php:529
-#: application/extensions/admin/BoxesWidget/views/box.php:86
+#: application/extensions/admin/BoxesWidget/views/box.php:96
 #: application/helpers/questionHelper.php:408
 #: application/helpers/questionHelper.php:419
 #: application/helpers/questionHelper.php:430
 #: application/helpers/questionHelper.php:829
 #: application/helpers/userstatistics_helper.php:2582
-#: application/models/Survey.php:1564 application/models/Survey.php:2362
+#: application/models/Survey.php:1564 application/models/Survey.php:2352
 #: application/views/admin/export/statistics_user_view.php:18
 #: application/views/admin/export/statistics_view.php:23
 msgid "Statistics"
@@ -6158,7 +6157,7 @@ msgstr ""
 #: application/controllers/admin/globalsettings.php:560
 #: application/core/LsDefaultDataSets.php:838
 #: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:19
-#: application/models/Survey.php:2412 application/models/SurveysGroups.php:322
+#: application/models/Survey.php:2402 application/models/SurveysGroups.php:322
 #: application/models/SurveysGroups.php:471
 msgid "Survey settings"
 msgstr ""
@@ -6680,6 +6679,7 @@ msgstr ""
 #: application/views/admin/token/exportdialog.php:53
 #: application/views/admin/token/exportdialog.php:68
 #: application/views/responses/partial/responseListTable.php:134
+#: application/views/userRole/partials/_permissions.php:28
 msgid "All"
 msgstr ""
 
@@ -7286,7 +7286,7 @@ msgid "Open general survey settings"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:79
-#: application/core/LsDefaultDataSets.php:81 application/models/Survey.php:2396
+#: application/core/LsDefaultDataSets.php:81 application/models/Survey.php:2386
 #: tmp/runtime/twig_cache/4c/4c336f9f4acb0aa9474d899d1e971227.php:50
 msgid "Survey text elements"
 msgstr ""
@@ -7388,7 +7388,7 @@ msgid "Overview of questions and groups where you can add, edit and reorder them
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:332
-#: application/models/Survey.php:2417
+#: application/models/Survey.php:2407
 msgid "Participants"
 msgstr ""
 
@@ -7414,7 +7414,7 @@ msgid "Edit quotas"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:416
-#: application/models/Survey.php:2347
+#: application/models/Survey.php:2337
 #: application/views/admin/survey/copySurvey_view.php:55
 #: application/views/surveyAdministration/importSurvey_view.php:119
 msgid "Quotas"
@@ -7448,7 +7448,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:499
 #: application/core/LsDefaultDataSets.php:500
 #: application/core/LsDefaultDataSets.php:501
-#: application/models/Survey.php:1625 application/models/Survey.php:2352
+#: application/models/Survey.php:1615 application/models/Survey.php:2342
 #: application/views/admin/export/exportresult_panels/_responses.php:4
 #: application/views/admin/survey/surveybar_statistics.php:18
 #: application/views/admin/survey/surveybar_statistics.php:23
@@ -9828,7 +9828,15 @@ msgstr ""
 msgid "Create survey"
 msgstr ""
 
-#: application/extensions/admin/BoxesWidget/views/box.php:70
+#: application/extensions/admin/BoxesWidget/views/box.php:60
+msgid "No responses"
+msgstr ""
+
+#: application/extensions/admin/BoxesWidget/views/box.php:63
+msgid "%d responses"
+msgstr ""
+
+#: application/extensions/admin/BoxesWidget/views/box.php:80
 #: application/models/Plugin.php:371 application/models/Plugin.php:380
 #: application/models/Survey.php:1554 application/models/User.php:615
 #: application/views/quotas/viewquotas_massive_selector.php:20
@@ -9836,12 +9844,12 @@ msgstr ""
 msgid "Activate"
 msgstr ""
 
-#: application/extensions/admin/BoxesWidget/views/box.php:78
+#: application/extensions/admin/BoxesWidget/views/box.php:88
 #: application/models/Survey.php:1547
 msgid "Edit survey"
 msgstr ""
 
-#: application/extensions/admin/BoxesWidget/views/box.php:111
+#: application/extensions/admin/BoxesWidget/views/box.php:121
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:29
 #: application/views/responses/browsetimerow_view.php:22
 msgid "No surveys found."
@@ -10060,7 +10068,7 @@ msgstr ""
 #: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:62
 #: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:200
 #: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:222
-#: application/models/Survey.php:2425
+#: application/models/Survey.php:2415
 msgid "Quick translation"
 msgstr ""
 
@@ -10211,7 +10219,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:2593
 #: application/helpers/userstatistics_helper.php:2696
 #: application/helpers/userstatistics_helper.php:2795
-#: application/models/Survey.php:2372 application/models/Surveymenu.php:340
+#: application/models/Survey.php:2362 application/models/Surveymenu.php:340
 #: application/views/admin/participants/modal_subviews/_addToSurvey.php:22
 #: application/views/admin/super/quickmenu.php:6
 msgid "Survey"
@@ -11168,6 +11176,1190 @@ msgstr ""
 
 #: application/helpers/common_helper.php:4597
 msgid "(Automatic)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:4
+msgid "+ Add condition"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:5
+msgid "+ Create participant list"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:6
+msgid "+ Create password"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:7
+msgid "1st time limit display timer"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:8
+msgid "1st time limit message"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:9
+msgid "1st time limit message CSS style"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:10
+msgid "1st time limit warning"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:11
+msgid "1st time limit warning timer"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:12
+msgid "2nd time limit display timer"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:13
+msgid "2nd time limit message"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:14
+msgid "2nd time limit message CSS style"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:15
+msgid "2nd time limit warning"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:16
+msgid "2nd time limit warning timer"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:17
+msgid "Add subquestion"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:18
+msgid "Add text here..."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:19
+msgid "Add, delete or edit questions and modify survey structure."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:20
+msgid "Adjust questions or modify the survey structure"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:21
+msgid "After the survey was stopped, modifications to questions and settings are very limited."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:22
+msgid "Align text center"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:23
+msgid "Align text left"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:24
+msgid "Align text right"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:25
+msgid "All scenarios"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:26
+msgid "Allow searching of dropdown"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:27
+msgid "Alt text"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:28
+msgid "AND"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:29
+msgid "Answer column width"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:30
+msgid "answer option"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:31
+msgid "answer options"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:32
+msgid "Answer order"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:33
+msgid "Appearance"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:34
+msgid "Are you sure you want to delete scenario %s for this question?"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:35
+msgid "Array (Point choice)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:36
+msgid "Auto-delete false input for numbers only"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:37
+msgid "Back to classic editor"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:38
+msgid "Basic"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:39
+msgid "Basic admin notifications email address"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:40
+msgid "Block"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:41
+msgid "Button size"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:42
+msgid "bytes"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:43
+msgid "Cannot be accessed by participants anymore. Stops data collection and sets expiry date."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:44
+msgid "Cannot be accessed by participants anymore. Stops data collection."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:45
+msgid "Center position"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:46
+msgid "Change or upload your own background image (max. file size %s)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:47
+msgid "Change or upload your own logo image (max. file size %s)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:48
+msgid "Choose a question"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:49
+msgid "Choose an operator"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:50
+msgid "Choose file or drop image here"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:51
+msgid "Clear Default Values"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:52
+msgid "Click to login"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:53
+msgid "Click to logout"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:54
+msgid "Collapsible"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:55
+msgid "Coming soon"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:56
+msgid "Compare to answer of other question"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:57
+msgid "Condition already exists"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:58
+msgid "Condition applied successfully"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:59
+msgid "Condition code"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:60
+msgid "Condition deleted successfully"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:61
+msgid "Continue editing"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:62
+msgid "Copied !"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:63
+msgid "Copy and share this link with your survey participants."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:64
+msgid "Copy question code"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:65
+msgid "Crop"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:66
+msgid "Crop or resize"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:67
+msgid "Current responses and participant information are not available for analysis anymore."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:68
+msgid "Current responses and participant information will be kept and is still available for analysis."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:69
+msgid "Current selected entry"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:70
+msgid "Customize embed preview"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:71
+msgid "Date/Time Format"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:72
+msgid "Dates & Data"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:73
+msgid "Deactivate survey to edit"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:74
+msgid "Define the position of the help text"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:75
+msgid "Detailed admin notifications email address"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:76
+msgid "Display “clear all” button"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:77
+msgid "Display min and max value"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:78
+msgid "Display only if"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:79
+msgid "Display survey on your website or embed in your lead generation."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:80
+msgid "Display theme options"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:81
+msgid "Display tick on selected item"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:82
+msgid "Don't ask again"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:83
+msgid "Download QR code"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:84
+msgid "Drop image here"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:85
+msgid "Drop image here or click here to select a file"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:86
+msgid "Dropdown"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:87
+msgid "Duplicate group"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:88
+msgid "Duplicate question"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:89
+msgid "E-Mail address participant"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:90
+msgid "Edit as HTML"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:91
+msgid "Edit HTML"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:92
+msgid "Edit or copy large conditions"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:93
+msgid "Embed survey"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:94
+msgid "Enabled"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:95
+msgid "End date/time"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:96
+msgid "End screen"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:97
+msgid "End screen settings"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:98
+msgid "Enter expression..."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:99
+msgid "Enter here"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:100
+msgid "Enter regular expression"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:101
+msgid "Enter survey alias"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:102
+msgid "Enter your answer here"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:103
+msgid "Enter your answer here."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:104
+msgid "Enter your comment here"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:105
+msgid "Enter your comment here."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:106
+msgid "Enter your end message here."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:107
+msgid "Expiry message"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:108
+msgid "Expiry message display time"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:109
+msgid "Explore additional configuration options, more detailed features and settings."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:110
+msgid "Expression script"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:111
+msgid "Extra small"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:112
+msgid "F (Female)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:113
+msgid "Feedback survey"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:114
+msgid "Fields based on previous answers"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:115
+msgid "First name participant"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:116
+msgid "Fix automatically number value"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:117
+msgid "Fix height"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:118
+msgid "Fix width"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:119
+msgid "Font size"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:120
+msgid "Free value (constant)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:121
+msgid "Go back to classic editor"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:122
+msgid "Go back without saving"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:123
+msgid "Go to advanced options"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:124
+msgid "Group name and description"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:125
+msgid "Group settings"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:126
+msgid "Group title"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:127
+msgid "Header A"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:128
+msgid "Header B"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:129
+msgid "Help us with your feedback"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:130
+msgid "Hide information about anonymized tokens"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:131
+msgid "Horizontal scroll"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:132
+msgid "If you don't see surveys. then it means you are not logged in to the core app."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:133
+msgid "Image description"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:134
+msgid "Import an existing responses table again and start from where you left off."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:135
+msgid "Import archived responses in your new response table."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:136
+msgid "Import responses from a deactivated data set"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:137
+msgid "Initial value"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:138
+msgid "Keep aspect ratio"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:139
+msgid "Keep existing responses"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:140
+msgid "Keep them archived and create a new response table."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:141
+msgid "Label wrapper width"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:142
+msgid "Language specific display"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:143
+msgid "Languages and texts"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:144
+msgid "Large"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:145
+msgid "Last name participant"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:146
+msgid "Latest response table (%s responses)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:147
+msgid "Legal notice message"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:148
+msgid "LimeSurvey Editor"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:149
+msgid "LimeSurvey Image Editor"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:150
+msgid "List image select (Radio)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:151
+msgid "List with comment (Radio)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:152
+msgid "Loading survey..."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:153
+msgid "Loading translations..."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:154
+msgid "Login to the core app and then logout and login again."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:155
+msgid "Logo image"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:156
+msgid "Long text"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:157
+msgid "Longest entry"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:158
+msgid "M (Male)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:159
+msgid "Make sure you are logged in to the core app and then click the button below"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:160
+msgid "Mandatory validation info"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:161
+msgid "Map position"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:162
+msgid "Map/Browser detection"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:163
+msgid "Max characters"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:164
+msgid "Max date"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:165
+msgid "Max file size (KB)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:166
+msgid "Maximum number of buttons in a row"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:167
+msgid "Medium"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:168
+msgid "Min"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:169
+msgid "Min date"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:170
+msgid "Multiple choice buttons"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:171
+msgid "Multiple numerical inputs"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:172
+msgid "Multiple short texts"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:173
+msgid "My custom button"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:174
+msgid "Navigation delay"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:175
+msgid "Navigation delay duration (in seconds)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:176
+msgid "New logic"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:177
+msgid "No choices added yet"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:178
+msgid "no data available"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:179
+msgid "No responses yet."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:180
+msgid "Number"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:181
+msgid "On-screen keyboard"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:182
+msgid "One survey link, one password."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:183
+msgid "Only letters and numbers are allowed."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:184
+msgid "OpenStreetMap"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:185
+msgid "Optional help description"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:186
+msgid "or press %s"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:187
+msgid "Overlay"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:188
+msgid "Page break in printable view"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:189
+msgid "page doesn't exist"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:190
+msgid "Participant data"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:191
+msgid "Participant lists"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:192
+msgid "Password protected survey"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:193
+msgid "Please try again later!"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:194
+msgid "Polar Area"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:195
+msgid "Pop-Up"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:196
+msgid "Progress bar"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:197
+msgid "Public survey link"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:198
+msgid "publication & access panel."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:199
+msgid "Question group is empty."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:200
+msgid "Question ID group"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:201
+msgid "Question number"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:202
+msgid "Question number and code"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:203
+msgid "Question settings"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:204
+msgid "Questions and edits that were done in the meantime will be merged with your archived table as far as possible."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:205
+msgid "Radio"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:206
+msgid "Ranking & Rating"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:207
+msgid "Rating"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:208
+msgid "Rating items"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:209
+msgid "Reactivate"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:210
+msgid "Recently used"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:211
+msgid "Reference value"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:212
+msgid "Reopen the survey by changing or removing the expiration date in the "
+msgstr ""
+
+#: application/helpers/editorTranslations.php:213
+msgid "reset"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:214
+msgid "Resets the survey for a restart"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:215
+msgid "Resize"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:216
+msgid "Response rate"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:217
+msgid "Reverse"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:218
+msgid "Saved at %s"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:219
+msgid "Scenario save failed: %s"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:220
+msgid "Search for a question type"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:221
+msgid "See details"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:222
+msgid "Select answer option(s)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:223
+msgid "Select the language version of the survey you want to share."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:224
+msgid "Send basic admin notifications"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:225
+msgid "Send detailed admin notifications"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:226
+msgid "Set access code length"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:227
+msgid "Setup participant lists and invite participants via email."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:228
+msgid "Share on social media"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:229
+msgid "Share your survey and collect responses"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:230
+msgid "Short text"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:231
+msgid "Show “There are X questions in this survey.”"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:232
+msgid "Show handle"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:233
+msgid "Show in statistics"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:234
+msgid "Show number"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:235
+msgid "Show platform information"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:236
+msgid "Show welcome screen"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:237
+msgid "Show/Hide question codes"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:238
+msgid "Single choice"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:239
+msgid "Single choice buttons"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:240
+msgid "Slider direction"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:241
+msgid "Small"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:242
+msgid "Sorry, we encountered an issue while fetching the data."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:243
+msgid "Standard"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:244
+msgid "Start from scratch"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:245
+msgid "Start value"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:246
+msgid "Start with a brand new responses table without importing an existing one."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:247
+msgid "Stop / pause survey"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:248
+msgid "Stop your survey and still access your data for statistics"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:249
+msgid "Store answers encrypted"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:250
+msgid "Style for mandatory validation info"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:251
+msgid "Survey is not active"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:252
+msgid "Survey language"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:253
+msgid "Survey language version"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:254
+msgid "Survey link"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:255
+msgid "Text"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:256
+msgid "Thanks for helping us improve!"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:257
+msgid "Theme preview"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:258
+msgid "This image is not valid. Click here for more info."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:259
+msgid "This is a preview dropdown for selectable languages"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:260
+msgid "This question type isn’t supported in the new Editor yet, but your responses will still be collected. If you want to make edits you can switch to a simliar question type or edit it in the classic editor."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:261
+msgid "This survey is already stopped."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:262
+msgid "Unsaved changes"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:263
+msgid "Upgrade"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:264
+msgid "Upgrade plan"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:265
+msgid "Use initial value as answer"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:266
+msgid "View responses"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:267
+msgid "View sharing overview"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:268
+msgid "Visualization"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:269
+msgid "Waiting for changes to be saved..."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:270
+msgid "We would very much appreciate it if you could answer two quick questions about your experience with the new editor?"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:271
+msgid "Welcome description"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:272
+msgid "Welcome screen"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:273
+msgid "Welcome screen settings"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:274
+msgid "Welcome title"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:275
+msgid "What do you think so far?"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:276
+msgid "What do you want to do with the %sexisting%s Responses?"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:277
+msgid "What is your question group about?"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:278
+msgid "What's your question?"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:279
+msgid "When activated, you will not be able to add or delete questions, question groups, or sub-questions. However, you can still edit text."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:280
+msgid "When deactivated, responses will be archived. You will then be able to add or delete questions, question groups, and settings again."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:281
+msgid "When reactivated, you will not be able to add or delete questions, question groups, or sub-questions. However, you can still edit text."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:282
+msgid "When reactivating you can import your archived responses and continue collecting responses."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:283
+msgid "Widget"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:284
+msgid "Width of dropdown"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:285
+msgid "Without reorder"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:286
+msgid "Write your equation here."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:287
+msgid "Y (checked)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:288
+msgid "Yes, delete it"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:289
+msgid "You are about to go back without saving your changes on this scenario. Do you want to proceed?"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:290
+msgid "You are about to go back without saving your changes. Do you want to proceed?"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:291
+msgid "You are here!"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:292
+msgid "You can add texts or upload images"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:293
+msgid "You do not have permission"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:294
+msgid "You must have at least one question."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:295
+msgid "You want to stop your survey?"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:296
+msgid "You won't be able to revert this!"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:297
+msgid "Your feedback is important to us. Please take a minute to answer two quick questions."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:298
+msgid "Your question here"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:299
+msgid "Your survey has been deactivated"
 msgstr ""
 
 #: application/helpers/export_helper.php:1623
@@ -12245,7 +13437,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:3656
 #: application/helpers/qanda_helper.php:3694
 #: application/helpers/qanda_helper.php:3699
-#: application/models/Assessment.php:149 application/models/Survey.php:1677
+#: application/models/Assessment.php:149 application/models/Survey.php:1667
 #: application/views/admin/export/generatestats/_statisticsoutput_answer.php:55
 #: application/views/admin/export/generatestats/_statisticsoutput_gross_total.php:27
 #: application/views/assessment/assessments_edit.php:26
@@ -14852,7 +16044,7 @@ msgstr ""
 #: application/models/FailedEmail.php:157
 #: application/models/Notification.php:163
 #: application/models/Permissiontemplates.php:264
-#: application/models/Survey.php:1618
+#: application/models/Survey.php:1608
 msgid "Created"
 msgstr ""
 
@@ -15049,7 +16241,7 @@ msgstr ""
 msgid "Active surveys"
 msgstr ""
 
-#: application/models/Participant.php:351 application/models/Survey.php:1651
+#: application/models/Participant.php:351 application/models/Survey.php:1641
 #: application/models/SurveysGroups.php:101
 #: application/models/SurveysGroups.php:168
 #: application/models/UserGroup.php:307 application/models/UserGroup.php:415
@@ -15449,7 +16641,7 @@ msgstr ""
 msgid "Delete question group"
 msgstr ""
 
-#: application/models/QuestionGroup.php:443
+#: application/models/QuestionGroup.php:446
 msgid "You can not add a group if survey is active."
 msgstr ""
 
@@ -15796,12 +16988,12 @@ msgstr ""
 msgid "Add user"
 msgstr ""
 
-#: application/models/Survey.php:1658
+#: application/models/Survey.php:1648
 #: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:42
 msgid "Anonymized responses"
 msgstr ""
 
-#: application/models/Survey.php:1665
+#: application/models/Survey.php:1655
 #: application/models/SurveymenuEntries.php:198
 #: application/views/admin/labels/importlabelresources_view.php:18
 #: application/views/admin/themes/importuploaded_view.php:11
@@ -15809,7 +17001,7 @@ msgstr ""
 msgid "Partial"
 msgstr ""
 
-#: application/models/Survey.php:1671
+#: application/models/Survey.php:1661
 #: application/models/SurveysGroupsettings.php:446
 #: application/views/admin/globalsettings/_general.php:272
 #: application/views/admin/globalsettings/_general.php:290
@@ -15818,75 +17010,75 @@ msgstr ""
 msgid "Full"
 msgstr ""
 
-#: application/models/Survey.php:1683
+#: application/models/Survey.php:1673
 msgid "Closed group"
 msgstr ""
 
-#: application/models/Survey.php:2228
+#: application/models/Survey.php:2218
 msgid "Show policy"
 msgstr ""
 
-#: application/models/Survey.php:2341
+#: application/models/Survey.php:2331
 msgid "Permission to create, view, update, delete assessments rules for a survey"
 msgstr ""
 
-#: application/models/Survey.php:2348
+#: application/models/Survey.php:2338
 msgid "Permission to create, view, update, delete quota rules for a survey"
 msgstr ""
 
-#: application/models/Survey.php:2353
+#: application/models/Survey.php:2343
 msgid "Permission to create(data entry), view, update, delete, import, export responses"
 msgstr ""
 
-#: application/models/Survey.php:2363
+#: application/models/Survey.php:2353
 msgid "Permission to view statistics"
 msgstr ""
 
-#: application/models/Survey.php:2373
+#: application/models/Survey.php:2363
 msgid "Permission for survey access. Read permission is a requirement to give any further permission to a survey."
 msgstr ""
 
-#: application/models/Survey.php:2382
+#: application/models/Survey.php:2372
 msgid "Survey activation"
 msgstr ""
 
-#: application/models/Survey.php:2383
+#: application/models/Survey.php:2373
 msgid "Permission to activate, deactivate a survey"
 msgstr ""
 
-#: application/models/Survey.php:2387
+#: application/models/Survey.php:2377
 msgid "Survey content"
 msgstr ""
 
-#: application/models/Survey.php:2388
+#: application/models/Survey.php:2378
 msgid "Permission to create, view, update, delete, import, export the questions, groups, answers & conditions of a survey"
 msgstr ""
 
-#: application/models/Survey.php:2397
+#: application/models/Survey.php:2387
 msgid "Permission to view, update the survey text elements, e.g. survey title, survey description, welcome and end message"
 msgstr ""
 
-#: application/models/Survey.php:2403
+#: application/models/Survey.php:2393
 msgid "Survey security"
 msgstr ""
 
-#: application/models/Survey.php:2404
+#: application/models/Survey.php:2394
 msgid "Permission to modify survey security settings"
 msgstr ""
 
-#: application/models/Survey.php:2413
+#: application/models/Survey.php:2403
 msgid "Permission to view, update the survey settings including survey participants table creation"
 msgstr ""
 
-#: application/models/Survey.php:2417
+#: application/models/Survey.php:2407
 msgid "Permission to create, update, delete, import, export participants"
 msgstr ""
 
-#: application/models/Survey.php:2426
+#: application/models/Survey.php:2416
 msgid "Permission to view & update the translations using the quick-translation feature"
 msgstr ""
 
-#: application/models/Survey.php:2555
+#: application/models/Survey.php:2545
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:20
 msgid "Expiration date can't be lower than the start date"
 msgstr ""
