@@ -1349,9 +1349,6 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                     $aImportResults = array_merge_recursive($aTokenImportResults, $aImportResults);
                     $aImportResults['importwarnings'] = array_merge($aImportResults['importwarnings'], $aImportResults['warnings']);
                     unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename);
-                    $survey = Survey::model()->findByPk($aImportResults['newsid']);
-                    $survey->access_mode = SurveyAccessModeService::$ACCESS_TYPE_CLOSED;
-                    $survey->save();
                     break;
                 }
             }
