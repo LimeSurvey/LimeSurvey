@@ -1,6 +1,6 @@
 <?php
 // Translation-source for new editor.
-// Updated on 2025-04-29 11:49:47
+// Updated on 2025-05-16 10:17:49
 gT('+ Add condition');
 gT('+ Create participant list');
 gT('+ Create password');
