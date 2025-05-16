@@ -8544,6 +8544,10 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         $sqrelevant = ($_POST['relevance' . $rowdivid] == 1);
                         $_SESSION[$LEM->sessid]['relevanceStatus'][$rowdivid] = $sqrelevant;
                     }
+                    if ((!$sqrelevant) && (isset($_POST['relevance' . substr(explode("_", $rowdivid)[0], 1)]))) {
+                        $sqrelevant = ($_POST['relevance' . substr(explode("_", $rowdivid)[0], 1)] == 1);
+                        $_SESSION[$LEM->sessid]['relevanceStatus'][$rowdivid] = $sqrelevant;
+                    }
                 }
                 // Maybe set current relevance to 0 if count($sqrelevant) == 0 (hand have sq) , for 4.X
                 $type = $qinfo['info']['type'];
