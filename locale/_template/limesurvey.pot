@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-05-16 10:34:34+00:00\n"
+"POT-Creation-Date: 2025-05-16 14:06:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11179,15 +11179,15 @@ msgid "(Automatic)"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:4
-msgid "+ Add condition"
+msgid "%d answer options"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:5
-msgid "+ Create participant list"
+msgid "%s bytes"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:6
-msgid "+ Create password"
+msgid "1 answer option"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:7
@@ -11283,1082 +11283,1066 @@ msgid "Answer column width"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:30
-msgid "answer option"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:31
-msgid "answer options"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:32
 msgid "Answer order"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:33
+#: application/helpers/editorTranslations.php:31
 msgid "Appearance"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:34
+#: application/helpers/editorTranslations.php:32
 msgid "Are you sure you want to delete scenario %s for this question?"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:35
+#: application/helpers/editorTranslations.php:33
 msgid "Array (Point choice)"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:36
+#: application/helpers/editorTranslations.php:34
 msgid "Auto-delete false input for numbers only"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:37
+#: application/helpers/editorTranslations.php:35
 msgid "Back to classic editor"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:38
+#: application/helpers/editorTranslations.php:36
 msgid "Basic"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:39
+#: application/helpers/editorTranslations.php:37
 msgid "Basic admin notifications email address"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:40
+#: application/helpers/editorTranslations.php:38
 msgid "Block"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:41
+#: application/helpers/editorTranslations.php:39
 msgid "Button size"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:42
-msgid "bytes"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:43
+#: application/helpers/editorTranslations.php:40
 msgid "Cannot be accessed by participants anymore. Stops data collection and sets expiry date."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:44
+#: application/helpers/editorTranslations.php:41
 msgid "Cannot be accessed by participants anymore. Stops data collection."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:45
+#: application/helpers/editorTranslations.php:42
 msgid "Center position"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:46
+#: application/helpers/editorTranslations.php:43
 msgid "Change or upload your own background image (max. file size %s)"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:47
+#: application/helpers/editorTranslations.php:44
 msgid "Change or upload your own logo image (max. file size %s)"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:48
+#: application/helpers/editorTranslations.php:45
+msgid "Checked (Y)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:46
 msgid "Choose a question"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:49
+#: application/helpers/editorTranslations.php:47
 msgid "Choose an operator"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:50
+#: application/helpers/editorTranslations.php:48
 msgid "Choose file or drop image here"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:51
-msgid "Clear Default Values"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:52
+#: application/helpers/editorTranslations.php:49
 msgid "Click to login"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:53
+#: application/helpers/editorTranslations.php:50
 msgid "Click to logout"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:54
+#: application/helpers/editorTranslations.php:51
 msgid "Collapsible"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:55
+#: application/helpers/editorTranslations.php:52
 msgid "Coming soon"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:56
+#: application/helpers/editorTranslations.php:53
 msgid "Compare to answer of other question"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:57
+#: application/helpers/editorTranslations.php:54
 msgid "Condition already exists"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:58
+#: application/helpers/editorTranslations.php:55
 msgid "Condition applied successfully"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:59
+#: application/helpers/editorTranslations.php:56
 msgid "Condition code"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:60
+#: application/helpers/editorTranslations.php:57
 msgid "Condition deleted successfully"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:61
+#: application/helpers/editorTranslations.php:58
 msgid "Continue editing"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:62
-msgid "Copied !"
+#: application/helpers/editorTranslations.php:59
+msgid "Copied!"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:63
+#: application/helpers/editorTranslations.php:60
 msgid "Copy and share this link with your survey participants."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:64
+#: application/helpers/editorTranslations.php:61
 msgid "Copy question code"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:65
+#: application/helpers/editorTranslations.php:62
+msgid "Create participant list"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:63
+msgid "Create password"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:64
 msgid "Crop"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:66
+#: application/helpers/editorTranslations.php:65
 msgid "Crop or resize"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:67
+#: application/helpers/editorTranslations.php:66
 msgid "Current responses and participant information are not available for analysis anymore."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:68
+#: application/helpers/editorTranslations.php:67
 msgid "Current responses and participant information will be kept and is still available for analysis."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:69
+#: application/helpers/editorTranslations.php:68
 msgid "Current selected entry"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:70
+#: application/helpers/editorTranslations.php:69
 msgid "Customize embed preview"
 msgstr ""
 
+#: application/helpers/editorTranslations.php:70
+msgid "Dates & data"
+msgstr ""
+
 #: application/helpers/editorTranslations.php:71
-msgid "Date/Time Format"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:72
-msgid "Dates & Data"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:73
 msgid "Deactivate survey to edit"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:74
+#: application/helpers/editorTranslations.php:72
 msgid "Define the position of the help text"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:75
+#: application/helpers/editorTranslations.php:73
 msgid "Detailed admin notifications email address"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:76
-msgid "Display “clear all” button"
+#: application/helpers/editorTranslations.php:74
+msgid "Display “Clear all” button"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:77
+#: application/helpers/editorTranslations.php:75
 msgid "Display min and max value"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:78
+#: application/helpers/editorTranslations.php:76
 msgid "Display only if"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:79
+#: application/helpers/editorTranslations.php:77
 msgid "Display survey on your website or embed in your lead generation."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:80
+#: application/helpers/editorTranslations.php:78
 msgid "Display theme options"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:81
+#: application/helpers/editorTranslations.php:79
 msgid "Display tick on selected item"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:82
+#: application/helpers/editorTranslations.php:80
 msgid "Don't ask again"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:83
+#: application/helpers/editorTranslations.php:81
 msgid "Download QR code"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:84
+#: application/helpers/editorTranslations.php:82
 msgid "Drop image here"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:85
+#: application/helpers/editorTranslations.php:83
 msgid "Drop image here or click here to select a file"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:86
+#: application/helpers/editorTranslations.php:84
 msgid "Dropdown"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:87
+#: application/helpers/editorTranslations.php:85
 msgid "Duplicate group"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:88
+#: application/helpers/editorTranslations.php:86
 msgid "Duplicate question"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:89
-msgid "E-Mail address participant"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:90
+#: application/helpers/editorTranslations.php:87
 msgid "Edit as HTML"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:91
+#: application/helpers/editorTranslations.php:88
 msgid "Edit HTML"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:92
+#: application/helpers/editorTranslations.php:89
 msgid "Edit or copy large conditions"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:93
+#: application/helpers/editorTranslations.php:90
+msgid "Email address participant"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:91
 msgid "Embed survey"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:94
+#: application/helpers/editorTranslations.php:92
 msgid "Enabled"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:95
+#: application/helpers/editorTranslations.php:93
 msgid "End date/time"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:96
+#: application/helpers/editorTranslations.php:94
 msgid "End screen"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:97
+#: application/helpers/editorTranslations.php:95
 msgid "End screen settings"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:98
+#: application/helpers/editorTranslations.php:96
 msgid "Enter expression..."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:99
+#: application/helpers/editorTranslations.php:97
 msgid "Enter here"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:100
+#: application/helpers/editorTranslations.php:98
 msgid "Enter regular expression"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:101
+#: application/helpers/editorTranslations.php:99
 msgid "Enter survey alias"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:102
+#: application/helpers/editorTranslations.php:100
 msgid "Enter your answer here"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:103
+#: application/helpers/editorTranslations.php:101
 msgid "Enter your answer here."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:104
+#: application/helpers/editorTranslations.php:102
 msgid "Enter your comment here"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:105
+#: application/helpers/editorTranslations.php:103
 msgid "Enter your comment here."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:106
+#: application/helpers/editorTranslations.php:104
 msgid "Enter your end message here."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:107
+#: application/helpers/editorTranslations.php:105
 msgid "Expiry message"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:108
+#: application/helpers/editorTranslations.php:106
 msgid "Expiry message display time"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:109
+#: application/helpers/editorTranslations.php:107
 msgid "Explore additional configuration options, more detailed features and settings."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:110
+#: application/helpers/editorTranslations.php:108
 msgid "Expression script"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:111
+#: application/helpers/editorTranslations.php:109
 msgid "Extra small"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:112
-msgid "F (Female)"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:113
+#: application/helpers/editorTranslations.php:110
 msgid "Feedback survey"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:114
+#: application/helpers/editorTranslations.php:111
+msgid "Female (F)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:112
 msgid "Fields based on previous answers"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:115
+#: application/helpers/editorTranslations.php:113
 msgid "First name participant"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:116
+#: application/helpers/editorTranslations.php:114
 msgid "Fix automatically number value"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:117
+#: application/helpers/editorTranslations.php:115
 msgid "Fix height"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:118
+#: application/helpers/editorTranslations.php:116
 msgid "Fix width"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:119
+#: application/helpers/editorTranslations.php:117
 msgid "Font size"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:120
+#: application/helpers/editorTranslations.php:118
 msgid "Free value (constant)"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:121
+#: application/helpers/editorTranslations.php:119
 msgid "Go back to classic editor"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:122
+#: application/helpers/editorTranslations.php:120
 msgid "Go back without saving"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:123
+#: application/helpers/editorTranslations.php:121
 msgid "Go to advanced options"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:124
+#: application/helpers/editorTranslations.php:122
 msgid "Group name and description"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:125
+#: application/helpers/editorTranslations.php:123
 msgid "Group settings"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:126
+#: application/helpers/editorTranslations.php:124
 msgid "Group title"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:127
+#: application/helpers/editorTranslations.php:125
 msgid "Header A"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:128
+#: application/helpers/editorTranslations.php:126
 msgid "Header B"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:129
+#: application/helpers/editorTranslations.php:127
 msgid "Help us with your feedback"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:130
+#: application/helpers/editorTranslations.php:128
 msgid "Hide information about anonymized tokens"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:131
+#: application/helpers/editorTranslations.php:129
 msgid "Horizontal scroll"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:132
+#: application/helpers/editorTranslations.php:130
 msgid "If you don't see surveys. then it means you are not logged in to the core app."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:133
+#: application/helpers/editorTranslations.php:131
 msgid "Image description"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:134
+#: application/helpers/editorTranslations.php:132
 msgid "Import an existing responses table again and start from where you left off."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:135
+#: application/helpers/editorTranslations.php:133
 msgid "Import archived responses in your new response table."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:136
+#: application/helpers/editorTranslations.php:134
 msgid "Import responses from a deactivated data set"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:137
+#: application/helpers/editorTranslations.php:135
 msgid "Initial value"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:138
+#: application/helpers/editorTranslations.php:136
 msgid "Keep aspect ratio"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:139
+#: application/helpers/editorTranslations.php:137
 msgid "Keep existing responses"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:140
+#: application/helpers/editorTranslations.php:138
 msgid "Keep them archived and create a new response table."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:141
+#: application/helpers/editorTranslations.php:139
 msgid "Label wrapper width"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:142
+#: application/helpers/editorTranslations.php:140
 msgid "Language specific display"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:143
+#: application/helpers/editorTranslations.php:141
 msgid "Languages and texts"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:144
+#: application/helpers/editorTranslations.php:142
 msgid "Large"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:145
+#: application/helpers/editorTranslations.php:143
 msgid "Last name participant"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:146
+#: application/helpers/editorTranslations.php:144
 msgid "Latest response table (%s responses)"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:147
+#: application/helpers/editorTranslations.php:145
 msgid "Legal notice message"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:148
+#: application/helpers/editorTranslations.php:146
 msgid "LimeSurvey Editor"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:149
+#: application/helpers/editorTranslations.php:147
 msgid "LimeSurvey Image Editor"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:150
+#: application/helpers/editorTranslations.php:148
 msgid "List image select (Radio)"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:151
+#: application/helpers/editorTranslations.php:149
 msgid "List with comment (Radio)"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:152
+#: application/helpers/editorTranslations.php:150
 msgid "Loading survey..."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:153
+#: application/helpers/editorTranslations.php:151
 msgid "Loading translations..."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:154
+#: application/helpers/editorTranslations.php:152
 msgid "Login to the core app and then logout and login again."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:155
+#: application/helpers/editorTranslations.php:153
 msgid "Logo image"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:156
+#: application/helpers/editorTranslations.php:154
 msgid "Long text"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:157
+#: application/helpers/editorTranslations.php:155
 msgid "Longest entry"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:158
-msgid "M (Male)"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:159
+#: application/helpers/editorTranslations.php:156
 msgid "Make sure you are logged in to the core app and then click the button below"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:160
+#: application/helpers/editorTranslations.php:157
+msgid "Male (M)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:158
 msgid "Mandatory validation info"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:161
+#: application/helpers/editorTranslations.php:159
 msgid "Map position"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:162
-msgid "Map/Browser detection"
+#: application/helpers/editorTranslations.php:160
+msgid "Map/browser detection"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:163
+#: application/helpers/editorTranslations.php:161
 msgid "Max characters"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:164
+#: application/helpers/editorTranslations.php:162
 msgid "Max date"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:165
-msgid "Max file size (KB)"
+#: application/helpers/editorTranslations.php:163
+msgid "Max file size (kB)"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:166
+#: application/helpers/editorTranslations.php:164
 msgid "Maximum number of buttons in a row"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:167
+#: application/helpers/editorTranslations.php:165
 msgid "Medium"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:168
+#: application/helpers/editorTranslations.php:166
 msgid "Min"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:169
+#: application/helpers/editorTranslations.php:167
 msgid "Min date"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:170
+#: application/helpers/editorTranslations.php:168
 msgid "Multiple choice buttons"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:171
+#: application/helpers/editorTranslations.php:169
 msgid "Multiple numerical inputs"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:172
+#: application/helpers/editorTranslations.php:170
 msgid "Multiple short texts"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:173
+#: application/helpers/editorTranslations.php:171
 msgid "My custom button"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:174
+#: application/helpers/editorTranslations.php:172
 msgid "Navigation delay"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:175
+#: application/helpers/editorTranslations.php:173
 msgid "Navigation delay duration (in seconds)"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:176
+#: application/helpers/editorTranslations.php:174
 msgid "New logic"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:177
+#: application/helpers/editorTranslations.php:175
 msgid "No choices added yet"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:178
+#: application/helpers/editorTranslations.php:176
 msgid "no data available"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:179
+#: application/helpers/editorTranslations.php:177
 msgid "No responses yet."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:180
+#: application/helpers/editorTranslations.php:178
+msgid "Not checked"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:179
 msgid "Number"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:181
+#: application/helpers/editorTranslations.php:180
 msgid "On-screen keyboard"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:182
+#: application/helpers/editorTranslations.php:181
 msgid "One survey link, one password."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:183
+#: application/helpers/editorTranslations.php:182
 msgid "Only letters and numbers are allowed."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:184
+#: application/helpers/editorTranslations.php:183
 msgid "OpenStreetMap"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:185
+#: application/helpers/editorTranslations.php:184
 msgid "Optional help description"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:186
+#: application/helpers/editorTranslations.php:185
 msgid "or press %s"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:187
+#: application/helpers/editorTranslations.php:186
 msgid "Overlay"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:188
+#: application/helpers/editorTranslations.php:187
 msgid "Page break in printable view"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:189
-msgid "page doesn't exist"
+#: application/helpers/editorTranslations.php:188
+msgid "Page doesn't exist"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:190
+#: application/helpers/editorTranslations.php:189
 msgid "Participant data"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:191
+#: application/helpers/editorTranslations.php:190
 msgid "Participant lists"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:192
+#: application/helpers/editorTranslations.php:191
 msgid "Password protected survey"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:193
+#: application/helpers/editorTranslations.php:192
 msgid "Please try again later!"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:194
-msgid "Polar Area"
+#: application/helpers/editorTranslations.php:193
+msgid "Polar area"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:195
+#: application/helpers/editorTranslations.php:194
 msgid "Pop-Up"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:196
+#: application/helpers/editorTranslations.php:195
 msgid "Progress bar"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:197
+#: application/helpers/editorTranslations.php:196
 msgid "Public survey link"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:198
-msgid "publication & access panel."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:199
+#: application/helpers/editorTranslations.php:197
 msgid "Question group is empty."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:200
+#: application/helpers/editorTranslations.php:198
 msgid "Question ID group"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:201
+#: application/helpers/editorTranslations.php:199
 msgid "Question number"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:202
+#: application/helpers/editorTranslations.php:200
 msgid "Question number and code"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:203
+#: application/helpers/editorTranslations.php:201
 msgid "Question settings"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:204
+#: application/helpers/editorTranslations.php:202
 msgid "Questions and edits that were done in the meantime will be merged with your archived table as far as possible."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:205
+#: application/helpers/editorTranslations.php:203
 msgid "Radio"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:206
+#: application/helpers/editorTranslations.php:204
 msgid "Ranking & Rating"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:207
+#: application/helpers/editorTranslations.php:205
 msgid "Rating"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:208
+#: application/helpers/editorTranslations.php:206
 msgid "Rating items"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:209
+#: application/helpers/editorTranslations.php:207
 msgid "Reactivate"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:210
+#: application/helpers/editorTranslations.php:208
 msgid "Recently used"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:211
+#: application/helpers/editorTranslations.php:209
 msgid "Reference value"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:212
-msgid "Reopen the survey by changing or removing the expiration date in the "
+#: application/helpers/editorTranslations.php:210
+msgid "Reopen the survey by changing or removing the expiration date in the %sPublication & access panel%s"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:213
-msgid "reset"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:214
+#: application/helpers/editorTranslations.php:211
 msgid "Resets the survey for a restart"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:215
+#: application/helpers/editorTranslations.php:212
 msgid "Resize"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:216
+#: application/helpers/editorTranslations.php:213
 msgid "Response rate"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:217
+#: application/helpers/editorTranslations.php:214
 msgid "Reverse"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:218
+#: application/helpers/editorTranslations.php:215
 msgid "Saved at %s"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:219
+#: application/helpers/editorTranslations.php:216
 msgid "Scenario save failed: %s"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:220
+#: application/helpers/editorTranslations.php:217
 msgid "Search for a question type"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:221
+#: application/helpers/editorTranslations.php:218
 msgid "See details"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:222
+#: application/helpers/editorTranslations.php:219
 msgid "Select answer option(s)"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:223
+#: application/helpers/editorTranslations.php:220
 msgid "Select the language version of the survey you want to share."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:224
+#: application/helpers/editorTranslations.php:221
 msgid "Send basic admin notifications"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:225
+#: application/helpers/editorTranslations.php:222
 msgid "Send detailed admin notifications"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:226
+#: application/helpers/editorTranslations.php:223
 msgid "Set access code length"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:227
+#: application/helpers/editorTranslations.php:224
 msgid "Setup participant lists and invite participants via email."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:228
+#: application/helpers/editorTranslations.php:225
 msgid "Share on social media"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:229
+#: application/helpers/editorTranslations.php:226
 msgid "Share your survey and collect responses"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:230
+#: application/helpers/editorTranslations.php:227
 msgid "Short text"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:231
+#: application/helpers/editorTranslations.php:228
 msgid "Show “There are X questions in this survey.”"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:232
+#: application/helpers/editorTranslations.php:229
 msgid "Show handle"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:233
+#: application/helpers/editorTranslations.php:230
 msgid "Show in statistics"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:234
+#: application/helpers/editorTranslations.php:231
 msgid "Show number"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:235
+#: application/helpers/editorTranslations.php:232
 msgid "Show platform information"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:236
+#: application/helpers/editorTranslations.php:233
 msgid "Show welcome screen"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:237
-msgid "Show/Hide question codes"
+#: application/helpers/editorTranslations.php:234
+msgid "Show/hide question codes"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:238
+#: application/helpers/editorTranslations.php:235
 msgid "Single choice"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:239
+#: application/helpers/editorTranslations.php:236
 msgid "Single choice buttons"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:240
+#: application/helpers/editorTranslations.php:237
 msgid "Slider direction"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:241
+#: application/helpers/editorTranslations.php:238
 msgid "Small"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:242
+#: application/helpers/editorTranslations.php:239
 msgid "Sorry, we encountered an issue while fetching the data."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:243
+#: application/helpers/editorTranslations.php:240
 msgid "Standard"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:244
+#: application/helpers/editorTranslations.php:241
 msgid "Start from scratch"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:245
+#: application/helpers/editorTranslations.php:242
 msgid "Start value"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:246
+#: application/helpers/editorTranslations.php:243
 msgid "Start with a brand new responses table without importing an existing one."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:247
+#: application/helpers/editorTranslations.php:244
 msgid "Stop / pause survey"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:248
+#: application/helpers/editorTranslations.php:245
 msgid "Stop your survey and still access your data for statistics"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:249
+#: application/helpers/editorTranslations.php:246
 msgid "Store answers encrypted"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:250
+#: application/helpers/editorTranslations.php:247
 msgid "Style for mandatory validation info"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:251
+#: application/helpers/editorTranslations.php:248
 msgid "Survey is not active"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:252
+#: application/helpers/editorTranslations.php:249
 msgid "Survey language"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:253
+#: application/helpers/editorTranslations.php:250
 msgid "Survey language version"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:254
+#: application/helpers/editorTranslations.php:251
 msgid "Survey link"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:255
+#: application/helpers/editorTranslations.php:252
 msgid "Text"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:256
+#: application/helpers/editorTranslations.php:253
 msgid "Thanks for helping us improve!"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:257
+#: application/helpers/editorTranslations.php:254
 msgid "Theme preview"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:258
+#: application/helpers/editorTranslations.php:255
 msgid "This image is not valid. Click here for more info."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:259
+#: application/helpers/editorTranslations.php:256
 msgid "This is a preview dropdown for selectable languages"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:260
-msgid "This question type isn’t supported in the new Editor yet, but your responses will still be collected. If you want to make edits you can switch to a simliar question type or edit it in the classic editor."
+#: application/helpers/editorTranslations.php:257
+msgid "This question type isn’t supported in the new editor yet, but your responses will still be collected. If you want to make edits you can switch to a similar question type or edit it in the classic editor."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:261
+#: application/helpers/editorTranslations.php:258
 msgid "This survey is already stopped."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:262
+#: application/helpers/editorTranslations.php:259
 msgid "Unsaved changes"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:263
+#: application/helpers/editorTranslations.php:260
 msgid "Upgrade"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:264
+#: application/helpers/editorTranslations.php:261
 msgid "Upgrade plan"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:265
+#: application/helpers/editorTranslations.php:262
 msgid "Use initial value as answer"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:266
+#: application/helpers/editorTranslations.php:263
 msgid "View responses"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:267
+#: application/helpers/editorTranslations.php:264
 msgid "View sharing overview"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:268
+#: application/helpers/editorTranslations.php:265
 msgid "Visualization"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:269
+#: application/helpers/editorTranslations.php:266
 msgid "Waiting for changes to be saved..."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:270
+#: application/helpers/editorTranslations.php:267
 msgid "We would very much appreciate it if you could answer two quick questions about your experience with the new editor?"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:271
+#: application/helpers/editorTranslations.php:268
 msgid "Welcome description"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:272
+#: application/helpers/editorTranslations.php:269
 msgid "Welcome screen"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:273
+#: application/helpers/editorTranslations.php:270
 msgid "Welcome screen settings"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:274
+#: application/helpers/editorTranslations.php:271
 msgid "Welcome title"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:275
+#: application/helpers/editorTranslations.php:272
 msgid "What do you think so far?"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:276
+#: application/helpers/editorTranslations.php:273
 msgid "What do you want to do with the %sexisting%s Responses?"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:277
+#: application/helpers/editorTranslations.php:274
 msgid "What is your question group about?"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:278
+#: application/helpers/editorTranslations.php:275
 msgid "What's your question?"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:279
+#: application/helpers/editorTranslations.php:276
 msgid "When activated, you will not be able to add or delete questions, question groups, or sub-questions. However, you can still edit text."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:280
+#: application/helpers/editorTranslations.php:277
 msgid "When deactivated, responses will be archived. You will then be able to add or delete questions, question groups, and settings again."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:281
+#: application/helpers/editorTranslations.php:278
 msgid "When reactivated, you will not be able to add or delete questions, question groups, or sub-questions. However, you can still edit text."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:282
+#: application/helpers/editorTranslations.php:279
 msgid "When reactivating you can import your archived responses and continue collecting responses."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:283
+#: application/helpers/editorTranslations.php:280
 msgid "Widget"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:284
+#: application/helpers/editorTranslations.php:281
 msgid "Width of dropdown"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:285
+#: application/helpers/editorTranslations.php:282
 msgid "Without reorder"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:286
+#: application/helpers/editorTranslations.php:283
 msgid "Write your equation here."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:287
-msgid "Y (checked)"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:288
+#: application/helpers/editorTranslations.php:284
 msgid "Yes, delete it"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:289
+#: application/helpers/editorTranslations.php:285
 msgid "You are about to go back without saving your changes on this scenario. Do you want to proceed?"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:290
+#: application/helpers/editorTranslations.php:286
 msgid "You are about to go back without saving your changes. Do you want to proceed?"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:291
+#: application/helpers/editorTranslations.php:287
 msgid "You are here!"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:292
+#: application/helpers/editorTranslations.php:288
 msgid "You can add texts or upload images"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:293
+#: application/helpers/editorTranslations.php:289
 msgid "You do not have permission"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:294
+#: application/helpers/editorTranslations.php:290
 msgid "You must have at least one question."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:295
+#: application/helpers/editorTranslations.php:291
 msgid "You want to stop your survey?"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:296
+#: application/helpers/editorTranslations.php:292
 msgid "You won't be able to revert this!"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:297
+#: application/helpers/editorTranslations.php:293
 msgid "Your feedback is important to us. Please take a minute to answer two quick questions."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:298
+#: application/helpers/editorTranslations.php:294
 msgid "Your question here"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:299
+#: application/helpers/editorTranslations.php:295
 msgid "Your survey has been deactivated"
 msgstr ""
 
