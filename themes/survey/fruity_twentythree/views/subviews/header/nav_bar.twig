@@ -33,8 +33,8 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
                     aSurveyInfo.aQuestionIndex.bShow == true or
                     aSurveyInfo.alanguageChanger.show == true) %}
                     <button id="navbar-toggler" class="navbar-toggler" data-bs-toggle="dropdown"
-                        data-bs-auto-close="outside" aria-expanded="false">
-                        <span class="ri-more-fill"></span>
+                        data-bs-auto-close="outside" aria-expanded=false aria-haspopup="menu" aria-controls="main-dropdown">
+                        <span class="ri-more-fill"></span><span class="sr-only">{{ gT("Tools")}}</span>
                     </button>
                     <ul id="main-dropdown" class="dropdown-menu dropdown-menu-end" aria-labelledby="navbar-toggler">
                         {{ include('./subviews/navigation/language_changer_top_menu.twig') }}
