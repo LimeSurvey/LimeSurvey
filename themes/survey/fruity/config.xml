@@ -77,6 +77,7 @@
         <stickymatrixheaders type="buttons" category="Simple options" width="4" title="Sticky array headers" options="on|off" optionlabels="Yes|No">off</stickymatrixheaders>
         <greyoutselected type="buttons" category="Simple options" width="4" title="Dim answered array rows" options="on|off" optionlabels="Yes|No">off</greyoutselected>
         <hideprivacyinfo type="buttons" category="Simple options" width="4" title="Hide privacy info" options="on|off" optionlabels="Yes|No">off</hideprivacyinfo>
+        <showsurveypolicynoticeinregister type="buttons" category="Simple options" width="4" title="Show privacy policy when register" options="on|off" optionlabels="Yes|No">off</showsurveypolicynoticeinregister>
         <crosshover type="buttons" category="Simple options" width="4" title="Cross-hover in matrix questions" options="on|off" optionlabels="Yes|No">off</crosshover>
         <showpopups type="buttons" category="Simple options" width="4" title="Show popups" options="1|0|-1" optionlabels="Popup|On page|No">1</showpopups>
         <notables type="buttons" category="Simple options" width="4" title="Wrap tables" options="2|1|0" optionlabels="Always on|Small screens|Off">1</notables>
