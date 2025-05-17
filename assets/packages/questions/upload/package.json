@@ -32,6 +32,6 @@
     },
     "dependencies": {
         "lodash": "^4.17.4",
-        "rollup": "^2.6.1"
+        "rollup": "^2.79.2"
     }
 }
