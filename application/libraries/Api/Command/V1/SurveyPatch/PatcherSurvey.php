@@ -48,6 +48,7 @@ class PatcherSurvey extends Patcher
             OpHandlerAnswerDelete::class,
             OpHandlerSubQuestion::class,
             OpHandlerSurveyStatus::class,
+            OpHandlerQuestionCondition::class,
             OpHandlerImport::class,
             OpHandlerThemeSettings::class,
         ];

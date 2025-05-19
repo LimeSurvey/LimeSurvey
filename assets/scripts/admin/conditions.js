@@ -132,7 +132,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 	$('#quick-add-cquestions').change(p2.fun);
 
 	$('#csrctoken').change(function() {
-		$('#cqid').val(0);
+		//$('#cqid').val(0);
 	});
 	
 	// At editing, if cquestions is set, populate answers
