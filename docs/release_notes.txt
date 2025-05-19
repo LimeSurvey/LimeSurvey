@@ -34,6 +34,42 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.13.2 (build 250506) to 6.13.3 (build 250512) May 12, 2025
+-Fixed issue: If the database is using a different timezone than PHP the created/modified timestamps for certain records would differ (#4265) (Carsten Schmitz)
+-Fixed issue: Two type errors  (#4271) (Tim Willig)
+-Fixed issue #20080: Disable plugins without way to alert administrator (#4253) (Denis Chenu)
+-Fixed issue #20063: Loading spinner prevents modal button press when adding an empty participant (#4255) (Gabriel Jenik)
+-Fixed issue #19986: List with comment with Dropdown presentation set to On doesn't offer placeholder value (#4218) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Marathi by tibor.pacalat
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.13.1 (build 250428) to 6.13.2 (build 250506) May 6, 2025
+-Fixed issue: Ugly message when trying to backup DB on non-MySQL DB type (Carsten Schmitz)
+-Fixed issue #20085: Debug 2, PHP8.3 : unable to upload valid plugin (#4261) (Denis Chenu)
+-Fixed issue #20072: Unable to import some surveys with debug=1 (Carsten Schmitz)
+-Fixed issue #20071: Haitian Creole fails to quick translate (Carsten Schmitz)
+-Fixed issue #20065: [security] SQL injection in central participant management (#4247) (Denis Chenu)
+-Fixed issue #20064: Group order not set correctly when copying a question to a group such that subsequent copied questions end up in the wrong order (#4259) (Gabriel Jenik)
+-Fixed issue #20058: Can't retrieve a file uploaded with RC api (#4241) (Alain Lima)
+-Fixed issue #20057: Bulk setting the expiration date (#4256) (Gabriel Jenik)
+-Fixed issue #20017: Error selecting the first possible date in the calendar (#4252) (Gabriel Jenik)
+-Fixed issue #19769: Duplicate question type images (#4242) (HaroWana)
+-Fixed issue #19419: Batch editing in the participants table - "invitation sent","reminder sent" & "completed" fields are filled out unintentionally (#4248) (Gabriel Jenik)
+#Updated translation: Portuguese (Brazil) by c_schmitz, holch, samarta
+#Updated translation: Papiamento (Curaçao and Bonaire) by indigoblueconsult
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.13.0 (build 250415) to 6.13.1 (build 250428) April 28, 2025
 -Fixed issue #20061: Update error in PostgreSQL (#4245) (Gabriel Jenik)
 -Fixed issue #20060: If a user cannot be delete due to being forced superadmin no specific error is shown (Carsten Schmitz)
