@@ -29,6 +29,11 @@ class SurveyArchiveService
      */
     public function getTokenArchiveData(int $iSurveyID, int $iTimestamp, array $searchParams = []): array
     {
+        $tableName = '{{old_tokens_' . $iSurveyID . '_' . $iTimestamp . '}}';
+        if (!tableExists($tableName)) {
+            return [];
+        }
+
         return $this->getArchiveDataInternal(TokenDynamicArchive::class, $iSurveyID, $iTimestamp, $searchParams);
     }
 
@@ -42,6 +47,11 @@ class SurveyArchiveService
      */
     public function getResponseArchiveData(int $iSurveyID, int $iTimestamp, array $searchParams = []): array
     {
+        $tableName = '{{old_survey_' . $iSurveyID . '_' . $iTimestamp . '}}';
+        if (!tableExists($tableName)) {
+            return [];
+        }
+
         return $this->getArchiveDataInternal(SurveyDynamicArchive::class, $iSurveyID, $iTimestamp, $searchParams);
     }
 
