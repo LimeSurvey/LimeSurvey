@@ -54,7 +54,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         /** @var self $model */
-        $model = parent::model(__CLASS__);
+        $model = parent::model(get_called_class());
 
         //We need to refresh if we changed sid
         if ($refresh === true) {
@@ -579,7 +579,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * @return bool
      */
-    private function getbHaveToken()
+    protected function getbHaveToken()
     {
         if (!isset($this->bHaveToken)) {
             $this->bHaveToken = tableExists('tokens_' . self::$sid) && Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'read'); // Boolean : show (or not) the token;

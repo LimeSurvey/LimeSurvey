@@ -57,7 +57,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         TransformerOutputSurveyMenus $transformerOutputSurveyMenus,
         TransformerOutputSurveyMenuItems $transformerOutputSurveyMenuItems,
         QuestionService $questionService,
-        SurveyThemeConfiguration $surveyThemeConfiguration,
+        SurveyThemeConfiguration $surveyThemeConfiguration
     ) {
         $this->transformerSurvey = $transformerOutputSurvey;
         $this->transformerSurveyGroup = $transformerOutputSurveyGroup;
