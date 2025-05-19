@@ -126,7 +126,6 @@ class SurveyActivate
                 $archives[$key] = $candidates[count($candidates) - 1];
             }
         }
-        $survey = Survey::model()->findByPk($surveyId);
         if (is_array($archives) && isset($archives['survey']) && isset($archives['questions'])) {
             //Recover survey
             $qParts = explode("_", $archives['questions']);
