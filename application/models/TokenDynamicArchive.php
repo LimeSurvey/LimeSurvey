@@ -43,7 +43,6 @@
  */
 class TokenDynamicArchive extends TokenDynamic
 {
-
     /** @var int $timestamp */
     protected static $timestamp = 0;
 
