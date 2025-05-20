@@ -41,34 +41,20 @@ class SurveyArchive implements CommandInterface
     }
 
     /**
-     * Processes the request
-     * @param \LimeSurvey\Api\Command\Request\Request $request
+     * Processes data and returns aggregate summary of the archives
+     * @param \Survey $survey
+     * @param array $rawData
+     * @return array
      */
-    public function run(Request $request)
+    protected function processData(Survey $survey, array $rawData): array
     {
-        $surveyId = (int)$request->getData('_id');
-        if ($response = $this->ensurePermissions($surveyId)) {
-            return $response;
-        }
-        $survey = Survey::model()->findByPk($surveyId);
-        if (!$survey) {
-            return $this->responseFactory->makeErrorNotFound(
-                (new ResponseDataError(
-                    'SURVEY_NOT_FOUND',
-                    'Survey not found'
-                )
-                )->toArray()
-            );
-        }
-        require_once "application/helpers/admin/import_helper.php";
-        $rawData = getTableArchivesAndTimestamps($surveyId);
-        $data = [];
         $hasTokens = false;
         try {
             $hasTokens = ($survey->isActive && (Token::model($survey->sid)->find('1=1') !== null));
         } catch (\Exception $ex) {
             //Tokens table exists, proceed
         }
+        $data = [];
         for ($index = 0; $index < count($rawData); $index++) {
             $newData = ['newformat' => false];
             $split = explode(",", $rawData[$index]['tables']);
@@ -99,7 +85,39 @@ class SurveyArchive implements CommandInterface
                 'hastokens' => $hasTokens
             ];
         }
-        return $this->responseFactory->makeSuccess($data);
+        return $data;
+    }
+
+    /**
+     * Processes the request
+     * @param \LimeSurvey\Api\Command\Request\Request $request
+     */
+    public function run(Request $request)
+    {
+        $surveyId = (int)$request->getData('_id');
+        if (!$surveyId) {
+            $surveyId = intval($_GET['id']);
+        }
+        $rawBaseTable = (json_encode($_GET['basetable'] ?? 'survey'));
+        if (!in_array($rawBaseTable, ['survey', 'tokens'])) {
+            throw new \Exception("Incorrect base table");
+        }
+        $baseTable = "old_{$rawBaseTable}";
+        if ($response = $this->ensurePermissions($surveyId)) {
+            return $response;
+        }
+        $survey = Survey::model()->findByPk($surveyId);
+        if (!$survey) {
+            return $this->responseFactory->makeErrorNotFound(
+                (new ResponseDataError(
+                    'SURVEY_NOT_FOUND',
+                    'Survey not found'
+                )
+                )->toArray()
+            );
+        }
+        require_once "application/helpers/admin/import_helper.php";
+        return $this->responseFactory->makeSuccess($this->processData($survey, getTableArchivesAndTimestamps($surveyId, $baseTable)));
     }
 
     /**
