@@ -62,7 +62,11 @@ class VariableExpressionEndPluginTest extends TestBaseClassWeb
             $TextSGQA = "Q".$questions['TEXT']['qid'];
             $Text = self::$webDriver->findElement(WebDriverBy::id("answer".$TextSGQA));
             $Text->sendKeys(" updated");
-            $MultiTextSQ03SGQA = "Q".$questions['MULTI']['qid']."SQ03";
+            $multiTextQuestion = \Question::model()->find("parent_qid = :parent_qid AND title = :title", [
+                ":parent_qid" => $questions['MULTI']['qid'],
+                ":title" => 'SQ03'
+            ]);
+            $MultiTextSQ03SGQA = "Q".$questions['MULTI']['qid'] . "_S" . $multiTextQuestion->qid;
             $MultiTextSQ03 = self::$webDriver->findElement(WebDriverBy::id("answer".$MultiTextSQ03SGQA));
             $MultiTextSQ03->sendKeys("Sub question #3 updated");
              $checkMULTIquestion = self::$webDriver->findElement(WebDriverBy::id('MULTI-question'))->getText();
