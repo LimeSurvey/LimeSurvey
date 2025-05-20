@@ -2,13 +2,10 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
+use Permission;
 use LimeSurvey\Models\Services\{
     SurveyArchiveService
 };
-
-use CHttpSession;
-use Survey;
-use Token;
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request,
@@ -16,13 +13,10 @@ use LimeSurvey\Api\Command\{
     Response\ResponseFactory,
     ResponseData\ResponseDataError
 };
-use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
 class SurveyArchiveDetails implements CommandInterface
 {
-    use AuthPermissionTrait;
-
-    protected CHttpSession $session;
+    protected Permission $permission;
 
     protected ResponseFactory $responseFactory;
 
@@ -30,28 +24,17 @@ class SurveyArchiveDetails implements CommandInterface
 
     /**
      * Constructor
-     * @param \CHttpSession $session
      * @param \LimeSurvey\Api\Command\Response\ResponseFactory $responseFactory
      * @param SurveyArchiveService $surveyArchiveService
      */
     public function __construct(
-        CHttpSession $session,
+        Permission $permission,
         ResponseFactory $responseFactory,
         SurveyArchiveService $surveyArchiveService
     ) {
-        $this->session = $session;
         $this->responseFactory = $responseFactory;
         $this->surveyArchiveService = $surveyArchiveService;
-    }
-
-    /**
-     * Processes data and returns archive details
-     * @param array $rawData
-     * @return array
-     */
-    protected function processData(array $rawData): array
-    {
-        return $data;
+        $this->permission = $permission;
     }
 
     /**
@@ -106,23 +89,11 @@ class SurveyArchiveDetails implements CommandInterface
     /**
      * Ensure Permissions
      *
-     * @param string $authToken
      * @param int $surveyId
      * @return Response|false
      */
     private function ensurePermissions($surveyId)
     {
-        if (
-            !$this->hasSurveyPermission(
-                $surveyId,
-                'surveycontent',
-                'read'
-            )
-        ) {
-            return $this->responseFactory
-                ->makeErrorForbidden();
-        }
-
         if (!$surveyId) {
             return $this->responseFactory->makeErrorNotFound(
                 (new ResponseDataError(
@@ -131,6 +102,17 @@ class SurveyArchiveDetails implements CommandInterface
                 )
                 )->toArray()
             );
+        }
+
+        if (
+            !$this->permission->hasSurveyPermission(
+                $surveyId,
+                'surveycontent',
+                'read'
+            )
+        ) {
+            return $this->responseFactory
+                ->makeErrorForbidden();
         }
 
         return false;

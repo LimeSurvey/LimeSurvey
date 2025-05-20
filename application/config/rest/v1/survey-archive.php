@@ -2,7 +2,8 @@
 
 use LimeSurvey\Api\Command\V1\{
     SurveyArchive,
-    SurveyArchiveDetails
+    SurveyArchiveDetails,
+    SurveyArchiveDelete
 };
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactorySurveyArchive
@@ -73,6 +74,28 @@ $rest['v1/survey-archive-details/$id'] = [
             'success' => [
                 'code' => 200,
                 'description' => 'Archive data returned successfully',
+                'schema' => (Schema::create()),
+            ],
+            'not-found' => [
+                'code' => 404,
+                'description' => 'Archive not found',
+                'schema' => $errorSchema,
+            ]
+        ]
+    ],
+    'DELETE' => [
+        'tag' => 'survey',
+        'description' => 'Delete one or more archive tables by type for a given survey ID and timestamp',
+        'commandClass' => SurveyArchiveDelete::class,
+        'auth' => true,
+        'params' => [
+            'timestamp' => ['type' => 'int', 'required' => true],
+            'archiveTypes' => ['type' => 'array', 'required' => true],
+        ],
+        'responses' => [
+            'success' => [
+                'code' => 200,
+                'description' => 'Archive deleted successfully',
                 'schema' => (Schema::create()),
             ],
             'not-found' => [

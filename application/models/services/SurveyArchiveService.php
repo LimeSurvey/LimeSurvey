@@ -124,19 +124,24 @@ class SurveyArchiveService
         foreach ($ArchivesToDelete as $archiveType) {
             switch ($archiveType) {
                 case self::$Response_archive:
-                    $archiveTable = "old_survey_{$iSurveyID}_{$iTimestamp}";
+                    $archiveTableName = "old_survey_{$iSurveyID}_{$iTimestamp}";
                     break;
                 case self::$Tokens_archive:
-                    $archiveTable = "old_tokens_{$iSurveyID}_{$iTimestamp}";
+                    $archiveTableName = "old_tokens_{$iSurveyID}_{$iTimestamp}";
                     break;
                 case self::$Timings_archive:
-                    $archiveTable = "old_survey_{$iSurveyID}_timings_{$iTimestamp}";
+                    $archiveTableName = "old_survey_{$iSurveyID}_timings_{$iTimestamp}";
                     break;
                 default:
                     continue 2;
             }
 
-            $this->app->db->createCommand()->dropTable("{{" . $archiveTable . "}}");
+            $this->app->db->createCommand()->dropTable("{{" . $archiveTableName . "}}");
+
+            $archives = ArchivedTableSettings::getArchivesForTimestamp($iSurveyID, $iTimestamp, $archiveTableName);
+            foreach ($archives as $archive) {
+                $archive->delete();
+            }
         }
     }
 
