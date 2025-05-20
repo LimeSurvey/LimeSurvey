@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-05-20 08:26:09+00:00\n"
+"POT-Creation-Date: 2025-05-20 08:38:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16487,7 +16487,7 @@ msgid "Plugin %s (%s) deactivated with error “%s” at file %s"
 msgstr ""
 
 #: application/models/Plugin.php:108
-msgid "[Error] Plugin deactivated on LimeSurvey"
+msgid "[Error] Plugin deactivated in LimeSurvey"
 msgstr ""
 
 #: application/models/Plugin.php:166
