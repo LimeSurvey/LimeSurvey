@@ -351,7 +351,10 @@ class QuestionGroup extends LSActiveRecord
                 'data-btnclass'  => 'btn-danger',
                 'data-btntext'   => gT('Delete'),
                 'data-onclick'  => '(function() { ' . CHtml::encode(convertGETtoPOST(
-                    Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid" => $this->gid])
+                    App()->createUrl(
+                        "questionGroupsAdministration/delete/",
+                        ["gid" => $this->gid, "surveyid" => $this->sid]
+                    )
                 )) . '})'
             ]
         ];

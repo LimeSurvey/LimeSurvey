@@ -46,8 +46,8 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         parent::__construct($aFieldArray, $bRenderDirect);
         $this->setSubquestions();
 
-        $this->iNbCols = $this->setDefaultIfEmpty($this->getQuestionAttribute('display_columns'), 1);
-
+        $displayColumns = $this->setDefaultIfEmpty($this->getQuestionAttribute('display_columns'), 1);
+        $this->iNbCols = max(1, $displayColumns);
         $this->iColumnWidth = round(12 / $this->iNbCols);
         $this->iColumnWidth = ($this->iColumnWidth >= 1) ? $this->iColumnWidth : 1;
         $this->iColumnWidth = ($this->iColumnWidth <= 12) ? $this->iColumnWidth : 12;

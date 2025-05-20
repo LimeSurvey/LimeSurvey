@@ -1572,16 +1572,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 $this->active === "Y"
                 && $permissions['statistics_read'],
         ];
-        if (App()->getConfig('editorEnabled')) {
-            $editorSettings[] = ['url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid])];
-            $editorSettings[] = ['url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/generalsettings'])];
-            $editorSettings[] = [];
-            foreach ($editorSettings as $key => $editorSetting) {
-                if (isset($editorSetting['url'], $items[$key])) {
-                    $items[$key]['url'] = $editorSetting['url'];
-                }
-            }
-        }
 
         return App()->getController()->widget('ext.admin.grid.BarActionsWidget.BarActionsWidget', ['items' => $items], true);
     }

@@ -39,9 +39,8 @@ class OptinController extends LSYii_Controller
         $languageCode = Yii::app()->request->getQuery('langcode');
         $accessToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
 
-        //IF there is no survey ID, redirect back to the default public page
-        if (!$surveyId) {
-            $this->redirect(['/']);
+        if (!$surveyId || intval($surveyId) !== $surveyId || !$accessToken) {
+            throw new CHttpException(400, gT('Invalid request.'));
         }
 
         $survey = Survey::model()->findByPk($surveyId);

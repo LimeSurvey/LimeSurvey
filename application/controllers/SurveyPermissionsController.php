@@ -144,8 +144,12 @@ class SurveyPermissionsController extends LSBaseController
     {
         $surveyid = sanitize_int($surveyid);
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create')) {
-            Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
-            $this->redirect(Yii::app()->request->urlReferrer);
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors' => gT("No permission or survey does not exist."),
+                ]
+            ]);
         }
         $oSurvey = Survey::model()->findByPk($surveyid);
         $userGroupId = (int)Yii::app()->request->getPost('ugid');
@@ -155,16 +159,26 @@ class SurveyPermissionsController extends LSBaseController
         );
         $amountUsersAdded = $surveyPermissions->addUserGroupToSurveyPermissions($userGroupId);
         if ($amountUsersAdded == 0) {
-            Yii::app()->user->setFlash('error', gT("No users from group could be added."));
-            $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors' => gT("No users from group could be added."),
+                ]
+            ]);
         } else {
-            Yii::app()->user->setFlash('success', sprintf(gT("%s users from group were added."), $amountUsersAdded));
-            $this->redirect(array(
-                'surveyPermissions/settingsPermissions',
-                'surveyid' => $surveyid,
-                'action' => 'usergroup',
-                'id' => $userGroupId
-            ));
+            $data = [
+                'success' => true,
+                'message' => sprintf(gT("%s users from group were added."), $amountUsersAdded),
+                'href' => Yii::app()->getController()->createUrl('surveyPermissions/settingsPermissions', [
+                    'surveyid' => $surveyid,
+                    'action' => 'usergroup',
+                    'id' => $userGroupId
+                ]),
+                'modalsize' => 'modal-lg',
+            ];
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => $data
+            ]);
         }
     }
 
