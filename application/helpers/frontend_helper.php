@@ -489,23 +489,13 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
 
     // create array of recipients for emailnotifications
     if (!empty($thissurvey['emailnotificationto']) && empty($emails)) {
-        $aRecipient = preg_split("/(,|;)/", LimeExpressionManager::ProcessStepString($thissurvey['emailnotificationto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true));
-        foreach ($aRecipient as $sRecipient) {
-            $sRecipient = trim($sRecipient);
-            if ($mailer::validateAddress($sRecipient)) {
-                $aEmailNotificationTo[] = $sRecipient;
-            }
-        }
+        $recipients = LimeExpressionManager::ProcessStepString($thissurvey['emailnotificationto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true);
+        $aEmailNotificationTo = array_merge($aEmailNotificationTo, LimeMailer::validateAddresses($recipients));
     }
     // // create array of recipients for emailresponses
     if (!empty($thissurvey['emailresponseto']) && empty($emails)) {
-        $aRecipient = preg_split("/(,|;)/", LimeExpressionManager::ProcessStepString($thissurvey['emailresponseto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true));
-        foreach ($aRecipient as $sRecipient) {
-            $sRecipient = trim($sRecipient);
-            if ($mailer::validateAddress($sRecipient)) {
-                $aEmailResponseTo[] = $sRecipient;
-            }
-        }
+        $recipients = LimeExpressionManager::ProcessStepString($thissurvey['emailresponseto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true);
+        $aEmailResponseTo = array_merge($aEmailResponseTo, LimeMailer::validateAddresses($recipients));
     }
 
     if (count($aEmailNotificationTo) || count($aEmailResponseTo)) {

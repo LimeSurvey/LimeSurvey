@@ -1005,10 +1005,9 @@ class LimeMailer extends PHPMailer
 
     /**
      * Validate a list of email addresses - either as array or as comma or semicolon-limited text
-     * @return string List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
-     * @param string $aEmailAddressList  Email address to check
+     * @param string|string[] $aEmailAddressList  Email address to check
      * @param string|callable $patternselect Which pattern to use (default to static::$validator)
-     * @returns array
+     * @return string List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
      */
     public static function validateAddresses($aEmailAddressList, $patternselect = null)
     {
