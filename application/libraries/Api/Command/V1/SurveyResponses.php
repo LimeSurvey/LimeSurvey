@@ -115,6 +115,8 @@ class SurveyResponses implements CommandInterface
                 return [
                     'gid' => $item['gid'],
                     'qid' => $item['qid'],
+                    'aid' => $item['aid'] ?? null,
+                    'sqid' => $item['sqid'] ?? null,
                 ];
             }
         }, $fieldMap));
