@@ -496,7 +496,7 @@ class SurveyAdministrationController extends LSBaseController
             }
             $overrideAdministrator = ($administrator != 'owner');
 
-            if((App()->getConfig("editorEnabled")) ) {
+            if ((App()->getConfig("editorEnabled"))) {
                 $userId = App()->user->id;
                 $currentUser = User::model()->findByPk($userId);
                 $currentUserLanguage = $currentUser->lang;
@@ -534,7 +534,7 @@ class SurveyAdministrationController extends LSBaseController
                 $createSample = Yii::app()->getConfig('createsample');
             }
 
-            if ((App()->getConfig("editorEnabled")) ) {
+            if ((App()->getConfig("editorEnabled"))) {
                 // make sure that the survey theme is fruity_twentythree
                 $fruityTemplate = Template::model()->findByAttributes(array('name' => 'fruity_twentythree'));
                 if ($fruityTemplate) {
