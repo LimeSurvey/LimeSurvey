@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-05-16 14:06:54+00:00\n"
+"POT-Creation-Date: 2025-05-20 08:26:09+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -253,7 +253,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:2550
 #: application/controllers/SurveyAdministrationController.php:3238
 #: application/controllers/SurveyPermissionsController.php:74
-#: application/controllers/SurveyPermissionsController.php:220
+#: application/controllers/SurveyPermissionsController.php:234
 #: application/controllers/admin/EmailTemplates.php:92
 #: application/controllers/admin/Export.php:1192
 #: application/controllers/admin/Expressions.php:141
@@ -951,79 +951,84 @@ msgstr ""
 msgid "Questions"
 msgstr ""
 
-#: application/controllers/OptinController.php:68
-#: application/controllers/OptinController.php:121
-#: application/controllers/OptinController.php:191
-#: application/controllers/OptoutController.php:63
-#: application/controllers/OptoutController.php:113
+#: application/controllers/OptinController.php:43
+#: application/controllers/OptoutController.php:41
+msgid "Invalid request."
+msgstr ""
+
+#: application/controllers/OptinController.php:67
+#: application/controllers/OptinController.php:120
+#: application/controllers/OptinController.php:190
+#: application/controllers/OptoutController.php:62
+#: application/controllers/OptoutController.php:112
 msgid "You are not a participant of this survey."
 msgstr ""
 
-#: application/controllers/OptinController.php:71
-#: application/controllers/OptinController.php:138
-#: application/controllers/OptinController.php:198
+#: application/controllers/OptinController.php:70
+#: application/controllers/OptinController.php:137
+#: application/controllers/OptinController.php:197
 msgid "You are already a participant of this survey."
 msgstr ""
 
-#: application/controllers/OptinController.php:73
-#: application/controllers/OptinController.php:135
+#: application/controllers/OptinController.php:72
+#: application/controllers/OptinController.php:134
 msgid "Please confirm that you want to be added back to this survey by clicking the button below."
 msgstr ""
 
-#: application/controllers/OptinController.php:73
-#: application/controllers/OptinController.php:135
+#: application/controllers/OptinController.php:72
+#: application/controllers/OptinController.php:134
 msgid "After confirmation you may start receiving invitations and reminders for this survey."
 msgstr ""
 
-#: application/controllers/OptinController.php:130
+#: application/controllers/OptinController.php:129
 msgid "Removing yourself from the blocklist is currently disabled."
 msgstr ""
 
-#: application/controllers/OptinController.php:132
+#: application/controllers/OptinController.php:131
 msgid "Please confirm that you want to be added back to the central participants list for this site."
 msgstr ""
 
-#: application/controllers/OptinController.php:140
+#: application/controllers/OptinController.php:139
 msgid "You are already part of the central participants list for this site."
 msgstr ""
 
-#: application/controllers/OptinController.php:196
+#: application/controllers/OptinController.php:195
 msgid "You have been successfully added back to this survey."
 msgstr ""
 
-#: application/controllers/OptinController.php:200
+#: application/controllers/OptinController.php:199
 msgid "You have been already removed from this survey."
 msgstr ""
 
-#: application/controllers/OptoutController.php:66
-#: application/controllers/OptoutController.php:184
+#: application/controllers/OptoutController.php:65
+#: application/controllers/OptoutController.php:183
 msgid "You have already been removed from this survey."
 msgstr ""
 
-#: application/controllers/OptoutController.php:68
-#: application/controllers/OptoutController.php:124
+#: application/controllers/OptoutController.php:67
+#: application/controllers/OptoutController.php:123
 msgid "Please confirm that you want to opt out of this survey by clicking the button below."
 msgstr ""
 
-#: application/controllers/OptoutController.php:68
-#: application/controllers/OptoutController.php:124
+#: application/controllers/OptoutController.php:67
+#: application/controllers/OptoutController.php:123
 msgid "After confirmation you won't receive any invitations or reminders for this survey anymore."
 msgstr ""
 
-#: application/controllers/OptoutController.php:121
+#: application/controllers/OptoutController.php:120
 msgid "Please confirm that you want to be removed from the central participants list for this site."
 msgstr ""
 
-#: application/controllers/OptoutController.php:127
+#: application/controllers/OptoutController.php:126
 #: application/models/services/ParticipantBlacklistHandler.php:41
 msgid "You have already been removed from the central participants list for this site."
 msgstr ""
 
-#: application/controllers/OptoutController.php:177
+#: application/controllers/OptoutController.php:176
 msgid "You are not a participant in this survey."
 msgstr ""
 
-#: application/controllers/OptoutController.php:182
+#: application/controllers/OptoutController.php:181
 msgid "You have been successfully removed from this survey."
 msgstr ""
 
@@ -1826,9 +1831,9 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:122
 #: application/controllers/SurveyPermissionsController.php:61
 #: application/controllers/SurveyPermissionsController.php:116
-#: application/controllers/SurveyPermissionsController.php:147
-#: application/controllers/SurveyPermissionsController.php:185
-#: application/controllers/SurveyPermissionsController.php:247
+#: application/controllers/SurveyPermissionsController.php:150
+#: application/controllers/SurveyPermissionsController.php:199
+#: application/controllers/SurveyPermissionsController.php:261
 msgid "No permission or survey does not exist."
 msgstr ""
 
@@ -2363,7 +2368,7 @@ msgid "Error: Response table does not exist. Survey cannot be deactivated."
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:1683
-#: application/helpers/frontend_helper.php:1451
+#: application/helpers/frontend_helper.php:1462
 #: tmp/runtime/twig_cache/5e/5e159f4b6ff898b346e4e4ecaf355640.php:112
 #: tmp/runtime/twig_cache/7c/7c686e47a0981bfc10ec0486cb0f0705.php:113
 msgid "There are no questions in this survey."
@@ -2453,7 +2458,7 @@ msgstr ""
 #: application/controllers/admin/Themes.php:402
 #: application/core/SurveyCommonAction.php:1047
 #: application/helpers/SurveyRuntimeHelper.php:1468
-#: application/helpers/frontend_helper.php:2028
+#: application/helpers/frontend_helper.php:2039
 #: application/models/services/CopySurveyResources.php:68
 #: application/models/services/FilterImportedResources.php:69
 #: application/views/admin/participants/participantsPanel_view.php:19
@@ -3202,60 +3207,60 @@ msgstr ""
 msgid "User could not be added to survey permissions."
 msgstr ""
 
-#: application/controllers/SurveyPermissionsController.php:158
+#: application/controllers/SurveyPermissionsController.php:165
 msgid "No users from group could be added."
 msgstr ""
 
-#: application/controllers/SurveyPermissionsController.php:161
+#: application/controllers/SurveyPermissionsController.php:171
 msgid "%s users from group were added."
 msgstr ""
 
-#: application/controllers/SurveyPermissionsController.php:189
+#: application/controllers/SurveyPermissionsController.php:203
 msgid "Unknown action."
 msgstr ""
 
-#: application/controllers/SurveyPermissionsController.php:203
+#: application/controllers/SurveyPermissionsController.php:217
 msgid "Unknown user group."
 msgstr ""
 
-#: application/controllers/SurveyPermissionsController.php:211
+#: application/controllers/SurveyPermissionsController.php:225
 msgid "Unknown user."
 msgstr ""
 
-#: application/controllers/SurveyPermissionsController.php:263
+#: application/controllers/SurveyPermissionsController.php:277
 msgid "Successfully saved permissions for user."
 msgstr ""
 
-#: application/controllers/SurveyPermissionsController.php:265
+#: application/controllers/SurveyPermissionsController.php:279
 msgid "Error saving permissions for user."
 msgstr ""
 
-#: application/controllers/SurveyPermissionsController.php:271
+#: application/controllers/SurveyPermissionsController.php:285
 #: application/controllers/SurveysGroupsPermissionController.php:253
 msgid "You do not have permission to this user group."
 msgstr ""
 
-#: application/controllers/SurveyPermissionsController.php:275
+#: application/controllers/SurveyPermissionsController.php:289
 msgid "Successfully saved permissions for user group."
 msgstr ""
 
-#: application/controllers/SurveyPermissionsController.php:277
+#: application/controllers/SurveyPermissionsController.php:291
 msgid "Error saving permissions for user group."
 msgstr ""
 
-#: application/controllers/SurveyPermissionsController.php:281
+#: application/controllers/SurveyPermissionsController.php:295
 msgid "Unknown action. Error saving permissions."
 msgstr ""
 
-#: application/controllers/SurveyPermissionsController.php:296
+#: application/controllers/SurveyPermissionsController.php:310
 msgid "No permission to delete survey permissions from user."
 msgstr ""
 
-#: application/controllers/SurveyPermissionsController.php:306
+#: application/controllers/SurveyPermissionsController.php:320
 msgid "No survey permissions deleted."
 msgstr ""
 
-#: application/controllers/SurveyPermissionsController.php:308
+#: application/controllers/SurveyPermissionsController.php:322
 msgid "Survey permissions deleted."
 msgstr ""
 
@@ -7128,7 +7133,7 @@ msgid "The answer to the security question is incorrect."
 msgstr ""
 
 #: application/controllers/survey/SurveyIndex.php:464
-#: application/helpers/frontend_helper.php:1274
+#: application/helpers/frontend_helper.php:1285
 msgid "You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again."
 msgstr ""
 
@@ -9189,7 +9194,7 @@ msgid "Unexpected error in YubiCloud server."
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:104
-msgid "Server could not get requested number of syncs during before timeout"
+msgid "Server could not get the requested number of syncs before timeout."
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/helper/TFAYubikeyOtpHelper.php:107
@@ -9837,7 +9842,7 @@ msgid "%d responses"
 msgstr ""
 
 #: application/extensions/admin/BoxesWidget/views/box.php:80
-#: application/models/Plugin.php:371 application/models/Plugin.php:380
+#: application/models/Plugin.php:394 application/models/Plugin.php:403
 #: application/models/Survey.php:1554 application/models/User.php:615
 #: application/views/quotas/viewquotas_massive_selector.php:20
 #: application/views/userManagement/massiveAction/_updatestatus.php:6
@@ -13279,64 +13284,68 @@ msgstr ""
 msgid "Detailed admin notification could not be sent because of error: %s"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:732
-msgid "Did Not Save"
-msgstr ""
-
-#: application/helpers/frontend_helper.php:734
-msgid "An unexpected error has occurred and your responses cannot be saved."
-msgstr ""
-
-#: application/helpers/frontend_helper.php:738
-msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+#: application/helpers/frontend_helper.php:708
+msgid "Original error message could not be saved."
 msgstr ""
 
 #: application/helpers/frontend_helper.php:743
+msgid "Did Not Save"
+msgstr ""
+
+#: application/helpers/frontend_helper.php:745
+msgid "An unexpected error has occurred and your responses cannot be saved."
+msgstr ""
+
+#: application/helpers/frontend_helper.php:749
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr ""
+
+#: application/helpers/frontend_helper.php:754
 msgid "An error occurred saving a response to survey %s"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:744
+#: application/helpers/frontend_helper.php:755
 msgid "DATA TO BE ENTERED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:753
+#: application/helpers/frontend_helper.php:764
 msgid "SQL CODE THAT FAILED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:757
+#: application/helpers/frontend_helper.php:768
 msgid "ERROR MESSAGE"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:763
+#: application/helpers/frontend_helper.php:774
 msgid "Error saving results"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:769
+#: application/helpers/frontend_helper.php:780
 msgid "Try to submit again"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1287
+#: application/helpers/frontend_helper.php:1298
 msgid "The access code you have provided is either not valid, or has already been used."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1447
-#: application/helpers/frontend_helper.php:1472
+#: application/helpers/frontend_helper.php:1458
+#: application/helpers/frontend_helper.php:1483
 msgid "This survey cannot be tested or completed for the following reason(s):"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1455
+#: application/helpers/frontend_helper.php:1466
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2027
+#: application/helpers/frontend_helper.php:2038
 msgid "By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2029
+#: application/helpers/frontend_helper.php:2040
 msgid "View policy"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2030
+#: application/helpers/frontend_helper.php:2041
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
@@ -16469,50 +16478,62 @@ msgstr ""
 msgid "Modified"
 msgstr ""
 
-#: application/models/Plugin.php:143
+#: application/models/Plugin.php:97
+msgid "Plugin error on %s"
+msgstr ""
+
+#: application/models/Plugin.php:99
+msgid "Plugin %s (%s) deactivated with error “%s” at file %s"
+msgstr ""
+
+#: application/models/Plugin.php:108
+msgid "[Error] Plugin deactivated on LimeSurvey"
+msgstr ""
+
+#: application/models/Plugin.php:166
 msgid "Plugin load error: %s"
 msgstr ""
 
-#: application/models/Plugin.php:199
+#: application/models/Plugin.php:222
 msgid "Error: Could not get plugin description: %s"
 msgstr ""
 
-#: application/models/Plugin.php:222 application/models/Plugin.php:359
+#: application/models/Plugin.php:245 application/models/Plugin.php:382
 msgid "Attempt plugin reload"
 msgstr ""
 
-#: application/models/Plugin.php:259 application/models/Plugin.php:381
+#: application/models/Plugin.php:282 application/models/Plugin.php:404
 msgid "Activate plugin"
 msgstr ""
 
-#: application/models/Plugin.php:289 application/models/Plugin.php:400
+#: application/models/Plugin.php:312 application/models/Plugin.php:423
 msgid "Are you sure you want to deactivate this plugin?"
 msgstr ""
 
-#: application/models/Plugin.php:289 application/models/Plugin.php:399
+#: application/models/Plugin.php:312 application/models/Plugin.php:422
 msgid "Deactivate plugin"
 msgstr ""
 
-#: application/models/Plugin.php:319 application/models/Plugin.php:418
+#: application/models/Plugin.php:342 application/models/Plugin.php:441
 msgid "Are you sure you want to uninstall this plugin?"
 msgstr ""
 
-#: application/models/Plugin.php:319 application/models/Plugin.php:417
+#: application/models/Plugin.php:342 application/models/Plugin.php:440
 msgid "Uninstall plugin"
 msgstr ""
 
-#: application/models/Plugin.php:382
+#: application/models/Plugin.php:405
 msgid "Are you sure you want to activate this plugin?"
 msgstr ""
 
-#: application/models/Plugin.php:389 application/models/Plugin.php:398
+#: application/models/Plugin.php:412 application/models/Plugin.php:421
 #: application/models/User.php:604
 #: application/views/quotas/viewquotas_massive_selector.php:36
 #: application/views/userManagement/massiveAction/_updatestatus.php:7
 msgid "Deactivate"
 msgstr ""
 
-#: application/models/Plugin.php:407 application/models/Plugin.php:416
+#: application/models/Plugin.php:430 application/models/Plugin.php:439
 #: application/models/TemplateConfiguration.php:760
 #: application/models/TemplateConfiguration.php:770
 #: application/views/themeOptions/_selector.php:47
