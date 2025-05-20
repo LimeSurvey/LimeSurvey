@@ -5,6 +5,7 @@ namespace LimeSurvey\Models\Services;
 use LimeSurvey\Models\Services\Exception\NotFoundException;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use Permission;
+use LSYii_Application;
 use ArchivedTableSettings;
 use TokenDynamicArchive;
 use SurveyDynamicArchive;
@@ -13,10 +14,20 @@ class SurveyArchiveService
 {
     private Permission $permission;
 
+    protected LSYii_Application $app;
+
+    public static $Response_archive = 'RP';
+
+    public static $Tokens_archive = 'TK';
+
+    public static $Timings_archive = 'TM';
+
     public function __construct(
-        Permission $permission
+        Permission $permission,
+        LSYii_Application $app
     ) {
         $this->permission = $permission;
+        $this->app = $app;
     }
 
     /**
@@ -53,6 +64,58 @@ class SurveyArchiveService
         }
 
         return $this->getArchiveDataInternal(SurveyDynamicArchive::class, $iSurveyID, $iTimestamp, $searchParams);
+    }
+
+    /**
+     * Delete archive data
+     *
+     * @param int $iSurveyID
+     * @param int $iTimestamp
+     * @param array $ArchivesToDelete archive table types
+     * @throws PermissionDeniedException
+     * @return void
+     */
+    public function deleteArchiveData(int $iSurveyID, int $iTimestamp, array $ArchivesToDelete = []): void
+    {
+        $requiredPermissions = [];
+
+        foreach ($ArchivesToDelete as $archiveType) {
+            switch ($archiveType) {
+                case self::$Response_archive:
+                    $requiredPermissions['responses'] = 'delete';
+                    break;
+                case self::$Tokens_archive:
+                    $requiredPermissions['tokens'] = 'delete';
+                    break;
+                case self::$Timings_archive:
+                    $requiredPermissions['timings'] = 'delete';
+                    break;
+            }
+        }
+
+        foreach ($requiredPermissions as $permName => $permType) {
+            if (!$this->permission->hasSurveyPermission($iSurveyID, $permName, $permType)) {
+                throw new PermissionDeniedException('Permission denied for deleting archive data');
+            }
+        }
+
+        foreach ($ArchivesToDelete as $archiveType) {
+            switch ($archiveType) {
+                case self::$Response_archive:
+                    $archiveTable = "old_survey_{$iSurveyID}_{$iTimestamp}";
+                    break;
+                case self::$Tokens_archive:
+                    $archiveTable = "old_tokens_{$iSurveyID}_{$iTimestamp}";
+                    break;
+                case self::$Timings_archive:
+                    $archiveTable = "old_survey_{$iSurveyID}_timings_{$iTimestamp}";
+                    break;
+                default:
+                    continue 2;
+            }
+
+            $this->app->db->createCommand()->dropTable("{{" . $archiveTable . "}}");
+        }
     }
 
     /**
