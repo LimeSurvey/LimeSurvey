@@ -672,31 +672,42 @@ function getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bI
  */
 function saveFailedEmail(?int $id, ?string $recipient, int $surveyId, int $responseId, string $emailType, ?string $language, LimeMailer $mailer): bool
 {
-    $failedEmailModel = new FailedEmail();
     $errorMessage = $mailer->getError();
     $resendVars = json_encode($mailer->getResendEmailVars());
     if (isset($id)) {
-        $failedEmail = $failedEmailModel->findByPk($id);
+        $failedEmail = FailedEmail::model()->findByPk($id);
         if (isset($failedEmail)) {
             $failedEmail->surveyid = $surveyId;
             $failedEmail->error_message = $errorMessage;
             $failedEmail->status = 'SEND FAILED';
             $failedEmail->updated = date('Y-m-d H:i:s');
-            return $failedEmail->save(false);
         }
     }
-    $failedEmailModel->recipient = $recipient;
-    $failedEmailModel->surveyid = $surveyId;
-    $failedEmailModel->responseid = $responseId;
-    $failedEmailModel->email_type = $emailType;
-    $failedEmailModel->language = $language;
-    $failedEmailModel->error_message = $errorMessage;
-    $failedEmailModel->created = date('Y-m-d H:i:s');
-    $failedEmailModel->status = 'SEND FAILED';
-    $failedEmailModel->updated = date('Y-m-d H:i:s');
-    $failedEmailModel->resend_vars = $resendVars;
 
-    return $failedEmailModel->save(false);
+    if (!isset($failedEmail)) {
+        $failedEmail = new FailedEmail();
+        $failedEmail->recipient = $recipient;
+        $failedEmail->surveyid = $surveyId;
+        $failedEmail->responseid = $responseId;
+        $failedEmail->email_type = $emailType;
+        $failedEmail->language = $language;
+        $failedEmail->error_message = $errorMessage;
+        $failedEmail->created = date('Y-m-d H:i:s');
+        $failedEmail->status = 'SEND FAILED';
+        $failedEmail->updated = date('Y-m-d H:i:s');
+        $failedEmail->resend_vars = $resendVars;
+    }
+
+    try {
+        return $failedEmail->save(false);
+    } catch (\CDbException $e) {
+        // If there's an exception, it might be due to the error message, so we log it
+        // and try to save again with a generic error message
+        Yii::log("Error saving failed email: " . $e->getMessage(), CLogger::LEVEL_ERROR);
+        Yii::log("Original error message: " . $errorMessage, CLogger::LEVEL_ERROR);
+        $failedEmail->error_message = gT("Original error message could not be saved.");
+        return $failedEmail->save(false);
+    }
 }
 
 function failedEmailSuccess($id)
