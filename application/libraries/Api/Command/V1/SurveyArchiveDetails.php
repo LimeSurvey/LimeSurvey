@@ -1,0 +1,138 @@
+<?php
+
+namespace LimeSurvey\Api\Command\V1;
+
+use LimeSurvey\Models\Services\{
+    SurveyArchiveService
+};
+
+use CHttpSession;
+use Survey;
+use Token;
+use LimeSurvey\Api\Command\{
+    CommandInterface,
+    Request\Request,
+    Response\Response,
+    Response\ResponseFactory,
+    ResponseData\ResponseDataError
+};
+use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
+
+class SurveyArchiveDetails implements CommandInterface
+{
+    use AuthPermissionTrait;
+
+    protected CHttpSession $session;
+
+    protected ResponseFactory $responseFactory;
+
+    protected SurveyArchiveService $surveyArchiveService;
+
+    /**
+     * Constructor
+     * @param \CHttpSession $session
+     * @param \LimeSurvey\Api\Command\Response\ResponseFactory $responseFactory
+     * @param SurveyArchiveService $surveyArchiveService
+     */
+    public function __construct(
+        CHttpSession $session,
+        ResponseFactory $responseFactory,
+        SurveyArchiveService $surveyArchiveService
+    ) {
+        $this->session = $session;
+        $this->responseFactory = $responseFactory;
+        $this->surveyArchiveService = $surveyArchiveService;
+    }
+
+    /**
+     * Processes data and returns archive details
+     * @param array $rawData
+     * @return array
+     */
+    protected function processData(array $rawData): array
+    {
+        return $data;
+    }
+
+    /**
+     * Processes the request
+     * @param \LimeSurvey\Api\Command\Request\Request $request
+     */
+    public function run(Request $request)
+    {
+        $surveyId = (int) $request->getData('_id');
+
+        $timestamp = (int) $request->getData('timestamp');
+        if (!$timestamp) {
+            throw new \InvalidArgumentException("Missing required parameter: timestamp");
+        }
+
+        $archiveType = $request->getData('archiveType', '');
+        if (!in_array($archiveType, [SurveyArchiveService::$Response_archive, SurveyArchiveService::$Tokens_archive], true)) {
+            throw new \InvalidArgumentException("Invalid archive type");
+        }
+
+        if ($response = $this->ensurePermissions($surveyId)) {
+            return $response;
+        }
+
+        $searchParams = [
+            'filters' => $request->getData('filters', []),
+            'sort' => $request->getData('sort', []),
+            'page' => (int) $request->getData('page', 1),
+            'pageSize' => (int) $request->getData('pageSize', 10),
+        ];
+
+        switch ($archiveType) {
+            case SurveyArchiveService::$Response_archive:
+                $data = $this->surveyArchiveService->getResponseArchiveData($surveyId, $timestamp, $searchParams);
+                break;
+            case SurveyArchiveService::$Tokens_archive:
+                $data = $this->surveyArchiveService->getTokenArchiveData($surveyId, $timestamp, $searchParams);
+                break;
+            default:
+                throw new \InvalidArgumentException("Unsupported archive type");
+        }
+
+        $archiveAlias = $this->surveyArchiveService->getArchiveAlias($surveyId, $timestamp);
+
+        return $this->responseFactory->makeSuccess([
+            'archiveType' => $archiveType,
+            'archiveAlias' => $archiveAlias,
+            'result' => $data,
+        ]);    
+    }
+
+    /**
+     * Ensure Permissions
+     *
+     * @param string $authToken
+     * @param int $surveyId
+     * @return Response|false
+     */
+    private function ensurePermissions($surveyId)
+    {
+        if (
+            !$this->hasSurveyPermission(
+                $surveyId,
+                'surveycontent',
+                'read'
+            )
+        ) {
+            return $this->responseFactory
+                ->makeErrorForbidden();
+        }
+
+        if (!$surveyId) {
+            return $this->responseFactory->makeErrorNotFound(
+                (new ResponseDataError(
+                    'SURVEY_NOT_FOUND',
+                    'Survey not found'
+                )
+                )->toArray()
+            );
+        }
+
+        return false;
+    }
+}

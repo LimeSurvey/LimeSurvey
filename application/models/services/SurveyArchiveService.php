@@ -31,6 +31,28 @@ class SurveyArchiveService
     }
 
     /**
+     * Get the alias for an archive
+     *
+     * @param int $iSurveyID
+     * @param int $iTimestamp
+     * @throws NotFoundException
+     * @return string
+     */
+    public function getArchiveAlias(int $iSurveyID, int $iTimestamp): string
+    {
+        $tbl_name = "old_survey_{$iSurveyID}_{$iTimestamp}";
+        $archives = ArchivedTableSettings::getArchivesForTimestamp($iSurveyID, $iTimestamp);
+
+        foreach ($archives as $archive) {
+            if ($archive->tbl_name === $tbl_name) {
+                return $archive->archive_alias;
+            }
+        }
+
+        return 'Unknown archive';
+    }
+
+    /**
      * Get token archive data (participants)
      *
      * @param int $iSurveyID
@@ -175,28 +197,6 @@ class SurveyArchiveService
                 'totalPages' => $pagination->getPageCount(),
             ],
         ];
-    }
-
-    /**
-     * Get the alias for an archive
-     *
-     * @param int $iSurveyID
-     * @param int $iTimestamp
-     * @throws NotFoundException
-     * @return string
-     */
-    public function getArchiveAlias(int $iSurveyID, int $iTimestamp): string
-    {
-        $tbl_name = "old_survey_{$iSurveyID}_{$iTimestamp}";
-        $archives = ArchivedTableSettings::getArchivesForTimestamp($iSurveyID, $iTimestamp);
-
-        foreach ($archives as $archive) {
-            if ($archive->tbl_name === $tbl_name) {
-                return $archive->archive_alias;
-            }
-        }
-
-        throw new NotFoundException('No Alias found');
     }
 
     /**

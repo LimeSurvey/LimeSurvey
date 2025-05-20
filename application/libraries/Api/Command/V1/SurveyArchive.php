@@ -94,11 +94,12 @@ class SurveyArchive implements CommandInterface
      */
     public function run(Request $request)
     {
-        $surveyId = (int)$request->getData('_id');
         if (!$surveyId) {
             $surveyId = intval($_GET['id']);
         }
-        $rawBaseTable = (json_encode($_GET['basetable'] ?? 'survey'));
+        $rawBaseTable = array_key_exists('basetable', $_GET)
+        ? json_encode($_GET['basetable'])
+        : 'survey';
         if (!in_array($rawBaseTable, ['survey', 'tokens'])) {
             throw new \Exception("Incorrect base table");
         }
