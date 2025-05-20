@@ -46,7 +46,7 @@ foreach ($extraMenus as $menu): ?>
                                 $cssId = 'id="' . $cssId . '"';
                             }
                             ?>
-                            <li>
+                            <li class="create-menu-item">
                                 <a href="<?= $menuItem->getHref(); ?>" class="dropdown-item" <?= $cssId; ?> >
                                     <!-- Spit out icon if present -->
                                     <?php
