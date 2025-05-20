@@ -105,7 +105,7 @@ class Plugin extends LSActiveRecord
         $mailer = new \LimeMailer();
         $mailer->emailType = "pluginsetloaderror";
         $mailer->isHtml(false);
-        $mailer->Subject = gT("[Error] Plugin deactivated on LimeSurvey", "unescaped");
+        $mailer->Subject = gT("[Error] Plugin deactivated in LimeSurvey", "unescaped");
         $mailer->Body = $body;
         $mailer->addAddress(App()->getConfig('siteadminemail'), App()->getConfig('siteadminname'));
         try {
