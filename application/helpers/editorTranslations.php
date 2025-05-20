@@ -173,7 +173,7 @@ gT('Navigation delay');
 gT('Navigation delay duration (in seconds)');
 gT('New logic');
 gT('No choices added yet');
-gT('no data available');
+gT('No data available');
 gT('No responses yet.');
 gT('Not checked');
 gT('Number');
