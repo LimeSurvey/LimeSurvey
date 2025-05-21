@@ -94,6 +94,7 @@ class SurveyArchive implements CommandInterface
      */
     public function run(Request $request)
     {
+        $surveyId = (int)$request->getData('_id');
         if (!$surveyId) {
             $surveyId = intval($_GET['id']);
         }

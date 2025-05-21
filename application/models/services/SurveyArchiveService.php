@@ -53,6 +53,34 @@ class SurveyArchiveService
     }
 
     /**
+     * Update the alias for a specific archive
+     *
+     * @param int $iSurveyID
+     * @param int $iTimestamp
+     * @param string $newAlias
+     * @throws PermissionDeniedException
+     * @return bool
+     */
+    public function updateArchiveAlias(int $iSurveyID, int $iTimestamp, string $newAlias): bool
+    {
+        if (!$this->hasPermission($iSurveyID)) {
+            throw new PermissionDeniedException('Access denied');
+        }
+
+        $tbl_name = "old_survey_{$iSurveyID}_{$iTimestamp}";
+        $archives = ArchivedTableSettings::getArchivesForTimestamp($iSurveyID, $iTimestamp);
+
+        foreach ($archives as $archive) {
+            if ($archive->tbl_name === $tbl_name) {
+                $archive->archive_alias = $newAlias;
+                return $archive->save();
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Get token archive data (participants)
      *
      * @param int $iSurveyID
@@ -71,7 +99,7 @@ class SurveyArchiveService
     }
 
     /**
-     * Get response archive data (responses)
+     * Get responses archive data
      *
      * @param int $iSurveyID
      * @param int $iTimestamp
@@ -85,7 +113,13 @@ class SurveyArchiveService
             return [];
         }
 
-        return $this->getArchiveDataInternal(SurveyDynamicArchive::class, $iSurveyID, $iTimestamp, $searchParams);
+        $archivedResponsesData = $this->getArchiveDataInternal(SurveyDynamicArchive::class, $iSurveyID, $iTimestamp, $searchParams);
+
+        if (!empty($archivedResponsesData['data'])) {
+            $this->attachTimingsToResponses($archivedResponsesData, $iSurveyID, $iTimestamp);
+        }
+
+        return $archivedResponsesData;
     }
 
     /**
@@ -205,31 +239,43 @@ class SurveyArchiveService
     }
 
     /**
-     * Update the alias for a specific archive
+     * Attach timing data to the archived responses by reference
      *
+     * @param array &$archivedResponsesData
      * @param int $iSurveyID
      * @param int $iTimestamp
-     * @param string $newAlias
-     * @throws PermissionDeniedException
-     * @return bool
+     * @return void
      */
-    public function updateArchiveAlias(int $iSurveyID, int $iTimestamp, string $newAlias): bool
+    private function attachTimingsToResponses(array &$archivedResponsesData, int $iSurveyID, int $iTimestamp): void
     {
-        if (!$this->hasPermission($iSurveyID)) {
-            throw new PermissionDeniedException('Access denied');
+        $timingsTableName = "old_survey_{$iSurveyID}_timings_{$iTimestamp}";
+        if (!tableExists("{{{$timingsTableName}}}")) {
+            return;
         }
 
-        $tbl_name = "old_survey_{$iSurveyID}_{$iTimestamp}";
-        $archives = ArchivedTableSettings::getArchivesForTimestamp($iSurveyID, $iTimestamp);
-
-        foreach ($archives as $archive) {
-            if ($archive->tbl_name === $tbl_name) {
-                $archive->archive_alias = $newAlias;
-                return $archive->save();
-            }
+        $responseIds = array_column($archivedResponsesData['data'], 'id');
+        if (empty($responseIds)) {
+            return;
         }
 
-        return false;
+        $idList = implode(',', $responseIds);
+        $query = "SELECT * FROM {{{$timingsTableName}}} WHERE id IN ($idList)";
+        $timingsRaw = $this->app->db->createCommand($query)->queryAll();
+
+        $timings = [];
+        foreach ($timingsRaw as $row) {
+            $timings[$row['id']] = $row;
+        }
+
+        $dataWithTimings = [];
+        foreach ($archivedResponsesData['data'] as $responseModel) {
+            $id = $responseModel->id;
+            $responseAttributes = $responseModel->attributes;
+            $responseAttributes['timings'] = $timings[$id] ?? null;
+            $dataWithTimings[] = $responseAttributes;
+        }
+
+        $archivedResponsesData['data'] = $dataWithTimings;
     }
 
     /**
