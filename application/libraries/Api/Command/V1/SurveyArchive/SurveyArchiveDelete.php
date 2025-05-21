@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Command\V1;
+namespace LimeSurvey\Api\Command\V1\SurveyArchive;
 
 use Permission;
 use LimeSurvey\Models\Services\{
@@ -71,6 +71,16 @@ class SurveyArchiveDelete implements CommandInterface
      */
     private function ensurePermissions($surveyId)
     {
+        if (!$surveyId) {
+            return $this->responseFactory->makeErrorNotFound(
+                (new ResponseDataError(
+                    'SURVEY_NOT_FOUND',
+                    'Survey not found'
+                )
+                )->toArray()
+            );
+        }
+
         if (
             !$this->permission->hasSurveyPermission(
                 $surveyId,
@@ -80,16 +90,6 @@ class SurveyArchiveDelete implements CommandInterface
         ) {
             return $this->responseFactory
                 ->makeErrorForbidden();
-        }
-
-        if (!$surveyId) {
-            return $this->responseFactory->makeErrorNotFound(
-                (new ResponseDataError(
-                    'SURVEY_NOT_FOUND',
-                    'Survey not found'
-                )
-                )->toArray()
-            );
         }
 
         return false;

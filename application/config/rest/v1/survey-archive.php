@@ -1,9 +1,10 @@
 <?php
 
-use LimeSurvey\Api\Command\V1\{
-    SurveyArchive,
+use LimeSurvey\Api\Command\V1\SurveyArchive\{
+    SurveyArchivesList,
     SurveyArchiveDetails,
-    SurveyArchiveDelete
+    SurveyArchiveDelete,
+    SurveyArchiveAliasUpdate
 };
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactorySurveyArchive
@@ -16,7 +17,7 @@ $rest['v1/survey-archives/$id'] = [
     'GET' => [
         'tag' => 'survey',
         'description' => 'Survey archives',
-        'commandClass' => SurveyArchive::class,
+        'commandClass' => SurveyArchivesList::class,
         'auth' => true,
         'responses' => [
             'success' => [
@@ -38,7 +39,7 @@ $rest['v1/action/survey-archives/id/$id/basetable/$basetable'] = [
     'GET' => [
         'tag' => 'survey',
         'description' => 'Survey archives',
-        'commandClass' => SurveyArchive::class,
+        'commandClass' => SurveyArchivesList::class,
         'auth' => true,
         'responses' => [
             'success' => [
@@ -96,6 +97,24 @@ $rest['v1/survey-archive-details/$id'] = [
             'success' => [
                 'code' => 200,
                 'description' => 'Archive deleted successfully',
+                'schema' => (Schema::create()),
+            ],
+            'not-found' => [
+                'code' => 404,
+                'description' => 'Archive not found',
+                'schema' => $errorSchema,
+            ]
+        ]
+    ],
+    'PATCH' => [
+        'tag' => 'survey',
+        'description' => 'Update archive alias for a given survey ID and timestamp',
+        'commandClass' => SurveyArchiveAliasUpdate::class,
+        'auth' => true,
+        'responses' => [
+            'success' => [
+                'code' => 200,
+                'description' => 'Archive alias updated successfully',
                 'schema' => (Schema::create()),
             ],
             'not-found' => [

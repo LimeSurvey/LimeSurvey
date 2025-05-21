@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Command\V1;
+namespace LimeSurvey\Api\Command\V1\SurveyArchive;
 
 use Permission;
 use LimeSurvey\Models\Services\{

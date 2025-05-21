@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Command\V1;
+namespace LimeSurvey\Api\Command\V1\SurveyArchive;
 
 use CHttpSession;
 use Survey;
@@ -17,7 +17,7 @@ use LimeSurvey\Api\Command\{
 };
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
-class SurveyArchive implements CommandInterface
+class SurveyArchivesList implements CommandInterface
 {
     use AuthPermissionTrait;
 
