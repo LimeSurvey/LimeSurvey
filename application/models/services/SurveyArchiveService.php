@@ -42,7 +42,7 @@ class SurveyArchiveService
     {
         $tbl_name = "old_survey_{$iSurveyID}_{$iTimestamp}";
         $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $tbl_name);
-        if(!$archive) {
+        if (!$archive) {
             return 'Unknown archive';
         }
 
