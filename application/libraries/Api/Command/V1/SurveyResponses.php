@@ -151,12 +151,13 @@ class SurveyResponses implements CommandInterface
         $searchParams = [];
         $searchParams['filters'] = $request->getData('filters', null);
         $searchParams['sort'] = $request->getData('sort', null);
+        $dataMap = $this->transformerOutputSurveyResponses->getDataMap();
 
         $sort = new \CSort();
         $criteria = new \LSDbCriteria();
 
         if ($searchParams) {
-            $this->responseFilterPatcher->apply($searchParams, $criteria, $sort);
+            $this->responseFilterPatcher->apply($searchParams, $criteria, $sort, $dataMap);
         }
 
         return [$criteria, $sort];
