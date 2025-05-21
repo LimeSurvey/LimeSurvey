@@ -28,8 +28,9 @@ class FilterPatcher
         if (!empty($filterParams['sort'])) {
             foreach ($filterParams['sort'] as $column => $order) {
                 $op = (new SortingHandler());
+                $key = $this->findMapKeyByValue($column, $dataMap);
                 if ($op->canHandle($order)) {
-                    $sort = $op->execute($column, $order);
+                    $sort = $op->execute($key, $order);
                 }
             }
         }
