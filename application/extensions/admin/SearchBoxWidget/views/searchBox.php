@@ -41,14 +41,11 @@
                         </select>
                     </div>
                 </div>
-                <a href="<?= Yii::app()->createUrl('surveyAdministration/newSurvey') ?>" id="createSurvey" class="btn btn-outline-info survey-actionbar-button">
-                    <i class="ri-add-line"></i>
-                    <?= gT('Create survey') ?>
-                </a>
+
                 <div class="survey-actionbar-actions ms-auto">
                     <div class="survey-actionbar-item">
                         <?php if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
-                                $this->renderPartial('createSurveyButton', ['url' => Yii::app()->createUrl('surveyAdministration/newSurvey')]);
+                            $this->render('createSurveyButton', ['url' => Yii::app()->createUrl('surveyAdministration/newSurvey')]);
                         }?>
                     </div>
                 </div>
@@ -102,7 +99,7 @@
                 <div class="survey-actionbar-actions ms-auto">
                     <div class="survey-actionbar-item">
                         <?php if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
-                            $this->renderPartial('createSurveyButton', ['url' => Yii::app()->createUrl('surveyAdministration/newSurvey')]);
+                            $this->render('createSurveyButton', ['url' => Yii::app()->createUrl('surveyAdministration/newSurvey')]);
                         } ?>
                     </div>
                 </div>
