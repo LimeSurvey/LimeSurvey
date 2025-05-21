@@ -79,18 +79,41 @@ class Plugin extends LSActiveRecord
             ':error_message' => $error['message'] . ' ' . $error['file'],
             ':id' => $this->id
         ];
+        $rowNumber = \Yii::app()->db->createCommand($sql)->bindValues($params)->execute();
+
+        $message = sprintf(
+            "Plugin %s (%s) deactivated with error “%s” at file %s",
+            $this->name,
+            $this->id,
+            $error['message'],
+            $error['file']
+        );
         Yii::log(
-            sprintf(
-                "Plugin %s (%s) deactivated with error “%s” at file %s",
-                $this->name,
-                $this->id,
-                $error['message'],
-                $error['file']
-            ),
+            $message,
             CLogger::LEVEL_ERROR,
             'application.model.plugin.setLoadError'
         );
-        return \Yii::app()->db->createCommand($sql)->bindValues($params)->execute();
+
+        $body = sprintf(gT("Plugin error on %s"), App()->getConfig('sitename')) . "\n";
+        $body .= sprintf(
+            gT("Plugin %s (%s) deactivated with error “%s” at file %s"),
+            $this->name,
+            $this->id,
+            $error['message'],
+            $error['file']
+        );
+        $mailer = new \LimeMailer();
+        $mailer->emailType = "pluginsetloaderror";
+        $mailer->isHtml(false);
+        $mailer->Subject = gT("[Error] Plugin deactivated in LimeSurvey", "unescaped");
+        $mailer->Body = $body;
+        $mailer->addAddress(App()->getConfig('siteadminemail'), App()->getConfig('siteadminname'));
+        try {
+            $mailer->sendMessage();
+        } catch (\Exception $e) {
+            // Must be loggued by LimeMailer : it's an issue from LimeMailer
+        }
+        return $rowNumber;
     }
 
     /**
