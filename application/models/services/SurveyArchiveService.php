@@ -41,15 +41,13 @@ class SurveyArchiveService
     public function getArchiveAlias(int $iSurveyID, int $iTimestamp): string
     {
         $tbl_name = "old_survey_{$iSurveyID}_{$iTimestamp}";
-        $archives = ArchivedTableSettings::getArchivesForTimestamp($iSurveyID, $iTimestamp);
-
-        foreach ($archives as $archive) {
-            if ($archive->tbl_name === $tbl_name) {
-                return $archive->archive_alias;
-            }
+        $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $tbl_name);
+        if(!$archive) {
+            return 'Unknown archive';
         }
 
-        return 'Unknown archive';
+        $alias = $archive->archive_alias;
+        return $alias;
     }
 
     /**
@@ -68,13 +66,11 @@ class SurveyArchiveService
         }
 
         $tbl_name = "old_survey_{$iSurveyID}_{$iTimestamp}";
-        $archives = ArchivedTableSettings::getArchivesForTimestamp($iSurveyID, $iTimestamp);
+        $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $tbl_name);
 
-        foreach ($archives as $archive) {
-            if ($archive->tbl_name === $tbl_name) {
-                $archive->archive_alias = $newAlias;
-                return $archive->save();
-            }
+        if ($archive) {
+            $archive->archive_alias = $newAlias;
+            return $archive->save();
         }
 
         return false;
@@ -172,8 +168,8 @@ class SurveyArchiveService
 
             $this->app->db->createCommand()->dropTable("{{" . $archiveTableName . "}}");
 
-            $archives = ArchivedTableSettings::getArchivesForTimestamp($iSurveyID, $iTimestamp, $archiveTableName);
-            foreach ($archives as $archive) {
+            $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $tbl_name);
+            if ($archive) {
                 $archive->delete();
             }
         }
@@ -260,18 +256,18 @@ class SurveyArchiveService
 
         $idList = implode(',', $responseIds);
         $query = "SELECT * FROM {{{$timingsTableName}}} WHERE id IN ($idList)";
-        $timingsRaw = $this->app->db->createCommand($query)->queryAll();
+        $timingsData = $this->app->db->createCommand($query)->queryAll();
 
         $timings = [];
-        foreach ($timingsRaw as $row) {
-            $timings[$row['id']] = $row;
+        foreach ($timingsData as $timingRecord) {
+            $timings[$timingRecord['id']] = $timingRecord;
         }
 
         $dataWithTimings = [];
         foreach ($archivedResponsesData['data'] as $responseModel) {
-            $id = $responseModel->id;
+            $responseId = $responseModel->id;
             $responseAttributes = $responseModel->attributes;
-            $responseAttributes['timings'] = $timings[$id] ?? null;
+            $responseAttributes['timings'] = $timings[$responseId] ?? null;
             $dataWithTimings[] = $responseAttributes;
         }
 

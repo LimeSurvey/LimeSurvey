@@ -32,9 +32,9 @@ class SurveyArchiveDetails implements CommandInterface
         ResponseFactory $responseFactory,
         SurveyArchiveService $surveyArchiveService
     ) {
+        $this->permission = $permission;
         $this->responseFactory = $responseFactory;
         $this->surveyArchiveService = $surveyArchiveService;
-        $this->permission = $permission;
     }
 
     /**
@@ -77,11 +77,8 @@ class SurveyArchiveDetails implements CommandInterface
                 throw new \InvalidArgumentException("Unsupported archive type");
         }
 
-        $archiveAlias = $this->surveyArchiveService->getArchiveAlias($surveyId, $timestamp);
-
         return $this->responseFactory->makeSuccess([
             'archiveType' => $archiveType,
-            'archiveAlias' => $archiveAlias,
             'result' => $data,
         ]);    
     }
