@@ -16,8 +16,9 @@
 
             <!-- select state -->
             <p class="survey-actionbar-title"><?php eT('All surveys'); ?></p>
-            <?php if ($this->onlyfilter) : ?>
-                <div class="survey-actionbar-filters">
+
+            <div class="survey-actionbar-filters">
+                <?php if ($this->onlyfilter) { ?>
                     <div class="survey-actionbar-item">
                         <select name="active" id='survey_active' class="form-select survey-actionbar-formfield">
                             <option value="" <?= empty(App()->request->getQuery('active')) ? "selected" : '' ?>>
@@ -40,19 +41,8 @@
                             </option>
                         </select>
                     </div>
-                </div>
-
-                <div class="survey-actionbar-actions ms-auto">
-                    <div class="survey-actionbar-item">
-                        <?php if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
-                            $this->render('createSurveyButton', ['url' => Yii::app()->createUrl('surveyAdministration/newSurvey')]);
-                        }?>
-                    </div>
-                </div>
-
-            <?php else : ?>
-                <!-- select group -->
-                <div class="survey-actionbar-filters">
+                <?php } else { ?>
+                    <!-- select group -->
                     <div class="survey-actionbar-item search-bar">
                         <?= $form->textField($this->model, 'searched_value', ['class' => 'form-control survey-actionbar-formfield', 'placeholder' => 'Search', 'value' => App()->request->getQuery('Survey')['searched_value'] ?? '']) ?>
                         <i class="ri-search-line"></i>
@@ -83,7 +73,8 @@
                         <select name="gsid" id='survey_gsid' class="form-select survey-actionbar-formfield">
                             <option value=""><?= gT('Group') ?></option>
                             <?php foreach (SurveysGroups::getSurveyGroupsList() as $gsid => $group_title) : ?>
-                                <option value="<?= $gsid ?>" <?= (App()->request->getQuery('gsid') == $gsid) ? "selected" : "" ?>><?= CHtml::encode($group_title) ?></option>
+                                <option
+                                    value="<?= $gsid ?>" <?= (App()->request->getQuery('gsid') == $gsid) ? "selected" : "" ?>><?= CHtml::encode($group_title) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -94,21 +85,23 @@
                             <?= gT('Reset') ?>
                         </button>
                     </div>
-                </div>
+                <?php } ?>
+            </div>
 
-                <div class="survey-actionbar-actions ms-auto">
-                    <div class="survey-actionbar-item">
-                        <?php if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
-                            $this->render('createSurveyButton', ['url' => Yii::app()->createUrl('surveyAdministration/newSurvey')]);
-                        } ?>
-                    </div>
+            <div class="survey-actionbar-actions ms-auto">
+                <div class="survey-actionbar-item">
+                    <?php if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
+                        $this->render('createSurveyButton', ['url' => Yii::app()->createUrl('surveyAdministration/newSurvey')]);
+                    } ?>
                 </div>
-            <?php endif; ?>
+            </div>
 
             <?php if ($this->switch) : ?>
                 <div class="survey-actionbar-switch">
-                    <i class="view-switch ri-grid-fill survey-actionbar-item" data-action="box-widget" <?= $this->viewtype === 'box-widget' ? 'active' : '' ?>></i>
-                    <i class="view-switch ri-menu-line survey-actionbar-item" data-action="list-widget" <?= $this->viewtype === 'list-widget' ? 'active' : '' ?>></i>
+                    <i class="view-switch ri-grid-fill survey-actionbar-item"
+                       data-action="box-widget" <?= $this->viewtype === 'box-widget' ? 'active' : '' ?>></i>
+                    <i class="view-switch ri-menu-line survey-actionbar-item"
+                       data-action="list-widget" <?= $this->viewtype === 'list-widget' ? 'active' : '' ?>></i>
                 </div>
             <?php endif; ?>
 
