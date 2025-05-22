@@ -2,12 +2,10 @@
 
 namespace LimeSurvey\Api\Rest\V1\SchemaFactory;
 
-use LimeSurvey\Api\Rest\SchemaFactoryInterface;
-
 /**
  * Schema factory for personal settings patch
  */
-class SchemaFactoryPersonalSettingsPatch implements SchemaFactoryInterface
+class SchemaFactoryPersonalSettingsPatch
 {
     /**
      * Create the schema
