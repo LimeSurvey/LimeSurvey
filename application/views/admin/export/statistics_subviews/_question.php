@@ -1,4 +1,4 @@
-<?php $myfield = "{$flt[0]}"; $niceqtext=flattenText($flt[5]); ?>
+<?php $myfield = "Q{$flt[0]}"; $niceqtext=flattenText($flt[5]); ?>
 
 <?php
     // If boilerplate don't render anything
