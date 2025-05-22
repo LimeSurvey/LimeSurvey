@@ -1428,7 +1428,7 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                 if (!$isRoot) {
                     $length = strlen("{$sid}X{$gid}X{$qid}");
                     $hashPos = strpos($fieldName, '#');
-                    $code = substr($fieldName, $length, ($hashPos !== false) ? ($hashPos - $length) : null);
+                    $code = substr($fieldName, $length, ($hashPos !== false) ? ($hashPos - $length) : 2000);
                     $suffix = "_C{$code}";
                     foreach ($questions as $question) {
                         if ($question->title === $code) {

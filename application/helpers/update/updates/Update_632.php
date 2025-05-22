@@ -339,7 +339,7 @@ class Update_632 extends DatabaseUpdateBase
             }
             $scripts[$TABLE_NAME]['CREATE'] = str_replace("{$TABLE_NAME}", "{$scripts[$TABLE_NAME]['new_name']}", $scripts[$TABLE_NAME]['CREATE']);
             foreach ($fields as $oldField => $newField) {
-                $scripts[$TABLE_NAME]['CREATE'] = str_replace("{$oldField}", "{$newField}", $scripts[$TABLE_NAME]['CREATE']);
+                $scripts[$TABLE_NAME]['CREATE'] = str_replace($leftSeparator . "{$oldField}" . $rightSeparator, $leftSeparator . "{$newField}" . $rightSeparator, $scripts[$TABLE_NAME]['CREATE']);
             }
             $fromColumns = [];
             $toColumns = [];
