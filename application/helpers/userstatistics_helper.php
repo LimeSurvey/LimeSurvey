@@ -1355,11 +1355,11 @@ class userstatistics_helper
                         //handling for "other" field for list radio or list drowpdown
                         if ((($qtype == Question::QT_L_LIST || $qtype == Question::QT_EXCLAMATION_LIST_DROPDOWN) && $qother == Question::QT_Y_YES_NO_RADIO)) {
                             //add "other"
-                            $alist[] = array(gT("Other"), gT("Other"), $fielddata['fieldname'] . '_other');
+                            $alist[] = array(gT("Other"), gT("Other"), $fielddata['fieldname'] . '_Cother');
                         }
                         if ($qtype == Question::QT_O_LIST_WITH_COMMENT) {
                             //add "comment"
-                            $alist[] = array(gT("Comments"), gT("Comments"), $fielddata['fieldname'] . '_comment', 'is_comment');
+                            $alist[] = array(gT("Comments"), gT("Comments"), $fielddata['fieldname'] . '_Ccomment', 'is_comment');
                         }
                 }    //end switch question type
 
