@@ -53,7 +53,7 @@
 
 <?php
 // Do not offer old postgres survey participants lists for restore since these are having an issue with missing index
-if ($tcount > 0 && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens','create'))):
+if (isset($oldlist) && $tcount > 0 && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens','create'))):
 ?>
         <div class="col-12 content-right">
             <div class="card card-primary">
@@ -67,12 +67,15 @@ if ($tcount > 0 && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'sur
                     </strong>
                 </p>
                 <p>
-                    <?php echo CHtml::form(array("admin/tokens/sa/index/surveyid/{$oSurvey->sid}"), 'post'); ?>
+                    <?php echo CHtml::form(array("admin/tokens/sa/index/surveyid/{$oSurvey->sid}"), 'post');
+                    if (isset($oldlist)) {
+                    ?>
                         <select size='4' name='oldtable' required>
                             <?php
                                 foreach ($oldlist as $ol) {
                                     echo "<option>" . $ol . "</option>\n";
                                 }
+                            }
                             ?>
                         </select><br /><br />
                         <input type='submit' value='<?php eT("Restore"); ?>' class="btn btn-outline-secondary btn-lg"/>
