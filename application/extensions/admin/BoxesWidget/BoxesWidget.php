@@ -105,7 +105,8 @@ class BoxesWidget extends CWidget
                     'text' => gT('Create survey'),
                     'icon' => 'ri-add-line',
                     'colored' => true,
-                    'external' => false
+                    'external' => false,
+                    'id' => 'create-survey-box',
                 ];
             }
 

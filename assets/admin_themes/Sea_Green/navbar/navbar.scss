@@ -172,4 +172,14 @@
   }
 }
 
-
+.create-menu-item {
+  width: 222px;
+  padding: 4px;
+  margin-left: 12px;
+  margin-right: 12px;
+  &:hover {
+    border-color: #8146F6 !important;
+    border: 1px solid;
+    border-radius: 2px;
+  }
+}

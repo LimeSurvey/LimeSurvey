@@ -61,7 +61,7 @@
                 <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => true, 'prependedMenu' => true]); ?>
 
                 <!-- create survey -->
-                <li class="nav-item">
+                <li class="nav-item" id="create-survey-button">
                     <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" class="nav-link">
                         <button type="button" class="btn btn-info btn-create" data-bs-toggle="tooltip"
                                 data-bs-placement="bottom" title="<?= gT('Create survey') ?>">
