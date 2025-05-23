@@ -367,5 +367,17 @@ class Update_632 extends DatabaseUpdateBase
             $this->db->createCommand($preinsert . $scripts[$TABLE_NAME]['INSERT'] . $postinsert)->execute();
             $this->db->createCommand($scripts[$TABLE_NAME]['DROP'])->execute();
         }
+
+        $archivedSettings = \ArchivedTableSettings::model()->findAll();
+        foreach ($archivedSettings as $archivedSetting) {
+            if (strpos($archivedSetting->tbl_name, 'survey') !== false) {
+                if (strpos($archivedSetting->tbl_name, 'timings') !== false) {
+                    $archivedSetting->tbl_name = str_replace('survey', 'timings', str_replace('_timings', '', $archivedSetting->tbl_name));
+                } else {
+                    $archivedSetting->tbl_name = str_replace('survey', 'responses', $archivedSetting->tbl_name);
+                }
+                $archivedSetting->save();
+            }
+        }
     }
 }
