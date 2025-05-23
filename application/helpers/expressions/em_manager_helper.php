@@ -6363,6 +6363,8 @@ class LimeExpressionManager
             if (is_string($mandSoftPost)) {
                 $qmandViolation = false;
                 $mandatoryTip = '';
+                /* Set this question mandSoftForced */
+                $this->questionSeq2relevance[$questionSeq]['mandSoftForced'] = $qInfo['mandSoftForced'] = true;
             }
             /* New system mandSoft are an array with Y/N for each question in page */
             if (is_array($mandSoftPost)) {
@@ -6380,7 +6382,7 @@ class LimeExpressionManager
             }
         } else {
             /* If question are answered (or are not mandatory soft) : always set mandSoftForced to false */
-            $LEM->questionSeq2relevance[$questionSeq]['mandSoftForced'] = false;
+            $LEM->questionSeq2relevance[$questionSeq]['mandSoftForced'] = $qInfo['mandSoftForced'] = false;
         }
         /////////////////////////////////////////////////////////////
         // DETECT WHETHER QUESTION SHOULD BE FLAGGED AS UNANSWERED //
