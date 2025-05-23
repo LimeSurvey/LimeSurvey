@@ -1295,7 +1295,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
                 }
             } else {
                 //token was wrong
-                $errorMsg    = gT("The access code you have provided is either not valid, or has already been used.");
+                $errorMsg    = gT("The access code you have provided is incorrect.");
                 $FlashError .= $errorMsg;
                 $renderToken = 'main';
                 FailedLoginAttempt::model()->addAttempt(FailedLoginAttempt::TYPE_TOKEN);
