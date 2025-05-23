@@ -2651,7 +2651,7 @@ class Tokens extends SurveyCommonAction
     public function startfromscratch(int $iSurveyId)
     {
         $survey = Survey::model()->findByPk($iSurveyId);
-        if (Yii::app()->request->getPost('createtable') !== "Y")  {
+        if (Yii::app()->request->getPost('createtable') !== "Y") {
             $aData = [
                 'oSurvey' => $survey,
                 'iSurveyID' => $iSurveyId
