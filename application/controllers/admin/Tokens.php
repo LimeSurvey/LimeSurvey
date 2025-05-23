@@ -2644,6 +2644,30 @@ class Tokens extends SurveyCommonAction
     }
 
     /**
+     * Creates a token table if it did not exist
+     * @param int $iSurveyId
+     * @return void
+     */
+    public function startfromscratch(int $iSurveyId)
+    {
+        $survey = Survey::model()->findByPk($iSurveyId);
+        if (Yii::app()->request->getPost('createtable') !== "Y")  {
+            $aData = [
+                'oSurvey' => $survey,
+                'iSurveyID' => $iSurveyId
+            ];
+            if (Yii::app()->request->getPost('redirect') !== 'N') {
+                $this->renderWrappedTemplate('token', 'createParticipantsTable', $aData);
+            }
+        } else {
+            if (!$survey->hasTokensTable) {
+                $this->newtokentable($iSurveyId);
+            }
+            $this->getController()->redirect(["/admin/tokens/sa/index/surveyid/{$iSurveyId}"]);
+        }
+    }
+
+    /**
      * Bounce Settings Action.
      * @param int $iSurveyId
      * @return void
