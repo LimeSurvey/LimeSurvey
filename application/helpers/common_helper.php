@@ -4673,6 +4673,20 @@ function getRealIPAddress()
     if (!empty($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) !== false) {
         $sIPAddress = $_SERVER['REMOTE_ADDR'];
     }
+    // If there is a list of reverse proxy IP addresses, and the current IP address is in that list, we will
+    // look for the header that contains the client IP address.
+    if (!empty(Yii::app()->getConfig('reverseProxyIpAddresses'))) {
+        $reverseProxyIpAddresses = preg_split('/\n|,/', Yii::app()->getConfig('reverseProxyIpAddresses'));
+        if (in_array($sIPAddress, $reverseProxyIpAddresses)) {
+            $reverseProxyIpHeader = Yii::app()->getConfig('reverseProxyIpHeader');
+            if (empty($reverseProxyIpHeader)) {
+                $reverseProxyIpHeader = 'HTTP_X_FORWARDED_FOR';
+            }
+            if (isset($_SERVER[$reverseProxyIpHeader])) {
+                $sIPAddress = $_SERVER[$reverseProxyIpHeader];
+            }
+        }
+    }
     return $sIPAddress;
 }
 

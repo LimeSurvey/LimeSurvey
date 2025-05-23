@@ -133,6 +133,24 @@
                                                     . '<br/> '
                                                     . gT("If the link does not work and you turn on HTTPS, you will not be able to access and use your LimeSurvey application!"); ?></span>
             </div>
+
+            <div class="mb-3">
+                <label class="form-label" for='reverseProxyIpAddresses'><?php eT("Reverse proxy IP addresses:"); ?></label>
+                <textarea class="form-control" id='reverseProxyIpAddresses' name='reverseProxyIpAddresses'><?php echo htmlspecialchars((string) Yii::app()->getConfig('reverseProxyIpAddresses')); ?></textarea>
+                <span class='form-text'>
+                    <?php eT("If you are using a reverse proxy, you can enter the IP addresses of the reverse proxy here. Separate each IP address with a comma or a new line."); ?>
+                </span>
+            </div>
+
+            <div class="mb-3">
+                <label class=" form-label" for='reverseProxyIpHeader'><?php eT("Reverse proxy IP header:"); ?></label>
+                <div>
+                    <input class="form-control" type='text' size='50' id='reverseProxyIpHeader' name='reverseProxyIpHeader' value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('reverseProxyIpHeader')); ?>" />
+                </div>
+                <span class='form-text'>
+                    <?php eT("The name of the HTTP header that the reverse proxy uses to pass the client IP address."); ?>
+                </span>
+            </div>
         </div>
         <div class="clearfix"></div>
 
