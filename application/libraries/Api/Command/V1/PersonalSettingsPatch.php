@@ -4,27 +4,22 @@ namespace LimeSurvey\Api\Command\V1;
 
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Auth\AuthSession;
-use LimeSurvey\Api\Command\Request;
-use LimeSurvey\Api\Command\Response;
+use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Api\Command\Response\ResponseFactory;
+use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
 /**
  * Command to update personal settings
  */
 class PersonalSettingsPatch implements CommandInterface
 {
-    /**
-     * @var AuthSession
-     */
-    private $authSession;
+    use AuthPermissionTrait;
 
-    /**
-     * Constructor
-     * 
-     * @param AuthSession $authSession
-     */
-    public function __construct(AuthSession $authSession)
+    protected ResponseFactory $responseFactory;
+
+    public function __construct(ResponseFactory $responseFactory)
     {
-        $this->authSession = $authSession;
+        $this->responseFactory = $responseFactory;
     }
 
     /**
@@ -33,19 +28,20 @@ class PersonalSettingsPatch implements CommandInterface
      * @param Request $request
      * @return Response
      */
-    public function execute(Request $request): Response
+    public function run(Request $request)
     {
-        // Get the user ID from the auth session
-        $userId = $this->authSession->getUserId();
+        // Get the user IDs
+        $userId = $request->getData('_id');
         
         // Get the settings data from the request
-        $settingsData = $request->getBody();
+        $settingsData = $request->getData();
         
         // Update the user's personal settings
         $result = $this->updatePersonalSettings($userId, $settingsData);
         
         // Return a success response
-        return new Response([
+        return $this->responseFactory
+            ->makeSuccess([
             'status' => 'success',
             'message' => 'Personal settings updated successfully'
         ]);
