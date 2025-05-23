@@ -207,7 +207,7 @@ class InstallerController extends CController
         $aData['sessionWritable'] = $sessionWritable;
         if (!$sessionWritable) {
             // For recheck, try to set the value again
-            $session['saveCheck'] = 'save';
+            Yii::app()->session['saveCheck'] = 'save';
             $bProceed = false;
         }
 
