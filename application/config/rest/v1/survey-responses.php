@@ -18,12 +18,12 @@ $rest['v1/survey-responses/$id'] = [
         'tag' => 'survey',
         'description' => 'Survey responses',
         'commandClass' => SurveyResponses::class,
-        'auth' => false,
+        'auth' => true,
         'params' => [
-            'filters' => ['type' => 'int'],
-            'sort' => ['type' => 'int'],
-            'pageSize' => ['type' => 'int'],
-            'page' => ['type' => 'int']
+            'filters' => ['type' => 'array'],
+            'sort' => ['type' => 'array'],
+            'pageSize' => ['type' => 'array'],
+            'page' => ['type' => 'array']
         ],
         'responses' => [
             'success' => [
@@ -40,6 +40,30 @@ $rest['v1/survey-responses/$id'] = [
             'not-found' => [
                 'code' => 404,
                 'description' => 'Not Found',
+                'schema' => $errorSchema
+            ]
+        ]
+    ]
+];
+
+
+$rest['v1/survey-responses/$id'] = [
+    'DELETE' => [
+        'description' => 'Delete survey responses',
+        'commandClass' => \LimeSurvey\Libraries\Api\Command\V1\SurveyResponsesDelete::class,
+        'auth' => true,
+        'params' => [
+            'rid' => ['type' => 'array'],
+        ],
+        'bodyParams' => [],
+        'responses' => [
+            'success' => [
+                'code' => 200,
+                'description' => 'Success',
+            ],
+            'unauthorized' => [
+                'code' => 403,
+                'description' => 'Forbidden',
                 'schema' => $errorSchema
             ]
         ]
