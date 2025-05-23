@@ -154,12 +154,16 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                             </strong>
                         </p>
                         <p>
-                            <?php echo CHtml::form(array("admin/tokens/sa/index/surveyid/{$oSurvey->sid}"), 'post'); ?>
+                            <?php 
+                            echo CHtml::form(array("admin/tokens/sa/index/surveyid/{$oSurvey->sid}"), 'post');
+                            if (isset($oldlist)) {
+                            ?>
                                 <select size='4' name='oldtable' required>
                                     <?php
                                         foreach ($oldlist as $ol) {
                                             echo "<option>" . $ol . "</option>\n";
                                         }
+                                    }
                                     ?>
                                 </select><br /><br />
                                 <input type='submit' value='<?php eT("Restore"); ?>' class="btn btn-outline-secondary btn-lg"/>
