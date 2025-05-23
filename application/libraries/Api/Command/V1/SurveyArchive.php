@@ -102,7 +102,7 @@ class SurveyArchive implements CommandInterface
         if (!in_array($rawBaseTable, ['survey', 'tokens'])) {
             throw new \Exception("Incorrect base table");
         }
-        $baseTable = "old_{$rawBaseTable}";
+        $baseTable = "old_" . ((string)$rawBaseTable);
         if ($response = $this->ensurePermissions($surveyId)) {
             return $response;
         }
