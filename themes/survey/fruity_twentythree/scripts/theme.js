@@ -656,7 +656,6 @@ function activateLanguageChanger() {
     $('<input type="hidden" id="onsubmitbuttoninput" name="move" value="changelang" />').appendTo(limesurveyForm);
     limesurveyForm.submit();
   };
-  autoSizeSelect();
   $(document).on('click', 'a.ls-language-link', function () {
     var closestForm = $(this).closest('form');
     if (!closestForm.length) {
@@ -711,7 +710,6 @@ function activateLanguageChanger() {
     $(this).data("limesurvey-lastkey", null);
   });
   $('.form-change-lang [name="lang"]').on('change', function (event) {
-    autoSizeSelect();
     if ($(this).data("limesurvey-lastkey") == 38 || $(this).data("lastkey") == 40) {
       /* Last key is up or down : disable auto submit mantis #16024 */
       return;
