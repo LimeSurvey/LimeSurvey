@@ -138,7 +138,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
         </div>
 
         <?php
-        if ($tcount > 0 && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens','create'))):
+        if ((!$oSurvey->hasTokensTable) && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens','create'))):
             echo eT("No survey participants found.");
         ?>
                 <input class="btn btn-large btn-block btn-outline-secondary" type='button' value='<?php eT("Add participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/" . $surveyid); ?>', '_top')" />
@@ -154,15 +154,20 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                             </strong>
                         </p>
                         <p>
-                            <?php echo CHtml::form(array("admin/tokens/sa/index/surveyid/{$oSurvey->sid}"), 'post'); ?>
+                            <?php 
+                            echo CHtml::form(array("admin/tokens/sa/index/surveyid/{$oSurvey->sid}"), 'post');
+                            if (isset($oldlist)) {
+                            ?>
                                 <select size='4' name='oldtable' required>
                                     <?php
                                         foreach ($oldlist as $ol) {
                                             echo "<option>" . $ol . "</option>\n";
                                         }
+                                    }
                                     ?>
                                 </select><br /><br />
                                 <input type='submit' value='<?php eT("Restore"); ?>' class="btn btn-outline-secondary btn-lg"/>
+                                <input type="button" onclick="$.post('<?php echo Yii::app()->createUrl("admin/tokens/sa/startfromscratch/surveyId/" . $oSurvey->sid); ?>', { createtable: 'Y', redirect: 'N' }).done(function (data) { window.location.reload(); });" value="<?php eT("Start from scratch"); ?>" class="btn btn-outline-secondary btn-lg">
                                 <input type='hidden' name='restoretable' value='Y' />
                                 <input type='hidden' name='sid' value='<?php echo $oSurvey->sid; ?>' />
                             <?php echo CHtml::endForm() ?>

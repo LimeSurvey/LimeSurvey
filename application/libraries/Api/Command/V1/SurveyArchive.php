@@ -91,6 +91,7 @@ class SurveyArchive implements CommandInterface
     /**
      * Processes the request
      * @param \LimeSurvey\Api\Command\Request\Request $request
+     * @psalm-suppress PossiblyInvalidCast
      */
     public function run(Request $request)
     {
