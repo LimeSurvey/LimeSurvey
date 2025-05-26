@@ -496,6 +496,21 @@ class SurveyAdministrationController extends LSBaseController
             }
             $overrideAdministrator = ($administrator != 'owner');
 
+            if (Yii::app()->getConfig("editorEnabled")) {
+                $userId = App()->user->id;
+                $currentUser = User::model()->findByPk($userId);
+                $currentUserLanguage = $currentUser->lang;
+                //we need the language short
+                if ($currentUserLanguage === 'auto') {
+                    $currentUserLanguage = Yii::app()->getConfig('defaultlang');
+                }
+
+                $simpleSurveyValues = new \LimeSurvey\Datavalueobjects\SimpleSurveyValues();
+                $simpleSurveyValues->title = gt('Untitled survey');
+                $simpleSurveyValues->surveyGroupId = 1;
+                $simpleSurveyValues->baseLanguage = $currentUserLanguage;
+            }
+
             $surveyCreator = new \LimeSurvey\Models\Services\CreateSurvey(new Survey(), new SurveyLanguageSetting());
             $newSurvey = $surveyCreator->createSimple(
                 $simpleSurveyValues,
@@ -545,11 +560,14 @@ class SurveyAdministrationController extends LSBaseController
                 Yii::app()->setFlashMessage(gT("Your new survey was created."), 'info');
             }
 
+
             return Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',
                 array(
                     'data' => array(
                         'redirecturl' => $redirecturl,
+                        'newSurveyId' => $iNewSurveyid,
+                        'editorEnabled' => Yii::app()->getConfig('editorEnabled')
                     )
                 ),
                 false,
