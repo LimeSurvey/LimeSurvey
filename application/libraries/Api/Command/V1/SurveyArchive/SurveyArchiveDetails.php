@@ -80,7 +80,7 @@ class SurveyArchiveDetails implements CommandInterface
         return $this->responseFactory->makeSuccess([
             'archiveType' => $archiveType,
             'result' => $data,
-        ]);    
+        ]);
     }
 
     /**

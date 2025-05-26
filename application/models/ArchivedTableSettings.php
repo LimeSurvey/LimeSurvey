@@ -118,17 +118,20 @@ class ArchivedTableSettings extends LSActiveRecord
      * Returns instances of ArchivedTableSettings with the given survey ID and table name.
      *
      * @param int $iSurveyId
-     * @param string $tableName
+     * @param int $iTimestamp
+     * @param string $tableType
      * @return ArchivedTableSettings[]
      */
-    public static function getArchiveForTimestamp($iSurveyId, $tableName)
+    public static function getArchiveForTimestamp($iSurveyId, $iTimestamp, $sTableType = 'response')
     {
         $criteria = new CDbCriteria();
         $criteria->addCondition('survey_id = :survey_id');
-        $criteria->params['survey_id'] = $iSurveyId;
+        $criteria->addCondition('tbl_name LIKE :tbl_name');
+        $criteria->addCondition('tbl_type = :tbl_type');
 
-        $criteria->addCondition('tbl_name = :tbl_name');
-        $criteria->params['tbl_name'] = $tableName;
+        $criteria->params['survey_id'] = $iSurveyId;
+        $criteria->params['tbl_name'] = "%{$iTimestamp}";
+        $criteria->params['tbl_type'] = $sTableType;
 
         return self::model()->find($criteria);
     }

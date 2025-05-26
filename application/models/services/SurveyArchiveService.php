@@ -40,8 +40,7 @@ class SurveyArchiveService
      */
     public function getArchiveAlias(int $iSurveyID, int $iTimestamp): string
     {
-        $tbl_name = "old_survey_{$iSurveyID}_{$iTimestamp}";
-        $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $tbl_name);
+        $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp);
         if (!$archive) {
             return 'Unknown archive';
         }
@@ -65,8 +64,7 @@ class SurveyArchiveService
             throw new PermissionDeniedException('Access denied');
         }
 
-        $tbl_name = "old_survey_{$iSurveyID}_{$iTimestamp}";
-        $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $tbl_name);
+        $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp);
 
         if ($archive) {
             $archive->archive_alias = $newAlias;
@@ -131,6 +129,14 @@ class SurveyArchiveService
     {
         $requiredPermissions = [];
 
+        if (isEmpty($ArchivesToDelete)) {
+            $ArchivesToDelete = [
+                self::$Response_archive,
+                self::$Tokens_archive,
+                self::$Timings_archive,
+            ];
+        }
+
         foreach ($ArchivesToDelete as $archiveType) {
             switch ($archiveType) {
                 case self::$Response_archive:
@@ -154,22 +160,23 @@ class SurveyArchiveService
         foreach ($ArchivesToDelete as $archiveType) {
             switch ($archiveType) {
                 case self::$Response_archive:
-                    $archiveTableName = "old_survey_{$iSurveyID}_{$iTimestamp}";
+                    $sTableType = "response";
                     break;
                 case self::$Tokens_archive:
-                    $archiveTableName = "old_tokens_{$iSurveyID}_{$iTimestamp}";
+                    $sTableType = "token";
                     break;
                 case self::$Timings_archive:
-                    $archiveTableName = "old_survey_{$iSurveyID}_timings_{$iTimestamp}";
+                    $sTableType = "timings";
                     break;
                 default:
                     continue 2;
             }
 
-            $this->app->db->createCommand()->dropTable("{{" . $archiveTableName . "}}");
+            $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp, $sTableType);
+            $archiveTableName = $archive->tbl_name;
 
-            $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $tbl_name);
             if ($archive) {
+                $this->app->db->createCommand()->dropTable("{{" . $archiveTableName . "}}");
                 $archive->delete();
             }
         }
