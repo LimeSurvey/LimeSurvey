@@ -32,11 +32,7 @@
                         <div class='input-group ls-important-field'>
                             <input
                                 class='{{ aSurveyInfo.class.maincolformdivainput }} form-control' 
-                                {% if (aSurveyInfo.access_mode != 'D') %}
-                                    {{ aSurveyInfo.attr.maincolformdivainput }}
-                                {% else %}
-                                    id="token" name="token"
-                                {% endif %}
+                                {{ aSurveyInfo.attr.maincolformdivainput }}
                                 placeholder="{{ gT("Enter access code") }}"
                             >
                             <button type="button"  class="input-group-text ls-no-js-hidden" id="ls-toggle-token-show" data-passwordstate="hidden">

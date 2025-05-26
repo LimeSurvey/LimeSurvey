@@ -25,6 +25,20 @@ via survey configuration, at start page, when survey is completed, etc
             {{ gT('Load unfinished survey') }}
         </a>
     </li>
+    {% if aSurveyInfo.access_mode == "O" and aSurveyInfo.hastokenstable == true and not aSurveyInfo.filltoken %}
+    <!-- Fill token button -->
+    <li class="nav-item ls-no-js-hidden">
+        <a href="{{ aSurveyInfo.surveyUrl }}?newtest=Y&lang=en&filltoken=true"
+            class="nav-link ls-link-action">
+            {% if aSurveyInfo.allowregister == "Y" %}
+                {{ gT("Register") }}
+            {% else %}
+                {{ gT("Enter access code") }}
+            {% endif %}
+            {{ aSurveyInfo.move }}
+        </a>
+    </li>
+    {% endif %}
 {% endif %}
 
 {% if aSurveyInfo.aNavigator.save.show == "Y" %}

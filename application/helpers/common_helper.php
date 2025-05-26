@@ -811,6 +811,8 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             $thissurvey['attributedescriptions'] = $result->survey->tokenAttributes;
             $thissurvey['attributecaptions'] = $result->attributeCaptions;
             $thissurvey['googleanalyticsapikey'] = $oSurvey->getGoogleanalyticsapikey();
+            $thissurvey['hastokenstable'] = $oSurvey->hasTokensTable;
+            $thissurvey['filltoken'] = (Yii::app()->request->getParam('filltoken') === 'true');
             if (!isset($thissurvey['adminname'])) {
                 $thissurvey['adminname'] = Yii::app()->getConfig('siteadminemail');
             }

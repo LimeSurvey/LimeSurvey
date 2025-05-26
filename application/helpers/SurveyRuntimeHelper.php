@@ -1602,7 +1602,7 @@ class SurveyRuntimeHelper
          */
 
         $scenarios = array(
-            "tokenRequired"   => ($accessMode === SurveyAccessModeService::$ACCESS_TYPE_CLOSED),
+            "tokenRequired"   => ($accessMode === SurveyAccessModeService::$ACCESS_TYPE_CLOSED) || (Yii::app()->request->getParam('filltoken') === 'true'),
             "captchaRequired" => (isCaptchaEnabled('surveyaccessscreen', $this->aSurveyInfo['usecaptcha']) && !isset($_SESSION['survey_' . $this->iSurveyid]['captcha_surveyaccessscreen']))
         );
 
