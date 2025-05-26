@@ -43,11 +43,7 @@ $rest['v1/survey-responses/$id'] = [
                 'schema' => $errorSchema
             ]
         ]
-    ]
-];
-
-
-$rest['v1/survey-responses/$id'] = [
+    ],
     'DELETE' => [
         'description' => 'Delete survey responses',
         'commandClass' => \LimeSurvey\Libraries\Api\Command\V1\SurveyResponsesDelete::class,
