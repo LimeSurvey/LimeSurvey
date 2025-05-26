@@ -176,8 +176,8 @@ var AdvancedRankingQuestion = function (options) {
 
     fixChoiceListHeight = function() {
         //Keep the target field as big as the source field
-        var minHeight = $('#sortable-choice-' + questionId).height();
-        var minWidth = $('#sortable-choice-' + questionId).width();
+        var minHeight = $('#sortable-choice-' + questionId).actual('height');
+        var minWidth = $('#sortable-choice-' + questionId).actual('width');
         $('#sortable-choice-' + questionId).css('min-height', minHeight);
         $('#sortable-rank-' + questionId).css('min-height', minHeight);
         $('#sortable-choice-' + questionId).css('min-width', minWidth);
@@ -228,43 +228,10 @@ var AdvancedRankingQuestion = function (options) {
         });
     };
 
-    /**
-     * Observe visibility changes on the question element
-     *  fix height when there is conditional display logic.
-     */
-    var observeVisibilityChange = function() {
-
-        // Get the DOM element corresponding to the question using its ID
-        var target = document.getElementById('question' + questionId);
-        if (!target) return;
-
-        // Create a MutationObserver to watch for changes to the element's attributes
-        var observer = new MutationObserver(function(mutations) {
-
-            mutations.forEach(function(mutation) {
-                // We're only interested in attribute changes, specifically the "class" attribute
-                if ( mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                    // Check if the "hidden" class was removed (i.e., the element became visible)
-                    if (!target.classList.contains('hidden')) {
-                        fixChoiceListHeight();
-                    }
-                }
-            });
-
-        });
-
-        // Start observing the target element for changes to its class attribute
-        observer.observe(target, {
-            attributes: true, // Watch for attribute changes
-            attributeFilter: ['class'] // Only care about the "class" attribute
-        });
-    };
-
     return {
         init : function(){
             doDragDropRank();
             triggerEmRelevanceSortable();
-            observeVisibilityChange();
         }
     }
 
