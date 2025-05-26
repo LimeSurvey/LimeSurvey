@@ -230,6 +230,11 @@ class SurveyArchiveService
         $data = $dataProvider->getData();
         $pagination = $dataProvider->getPagination();
 
+        foreach ($data as $record) {
+            $token = $record->token;
+            $record->token = $model->decryptSingle($token);
+        }
+
         return [
             'data' => $data,
             'meta' => [
