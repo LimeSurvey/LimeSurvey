@@ -30,11 +30,25 @@ class PersonalSettings implements CommandInterface
      */
     public function run(Request $request)
     {
+        $userId = $request->getData('_id');
+        if (!$userId) {
+            return $this->responseFactory
+                ->makeError('No user ID provided');
+        }
+        try {
+            $answerOptionPrefix = \SettingsUser::getUserSettingValue('answeroptionprefix', $userId);
+            $subquestionPrefix = \SettingsUser::getUserSettingValue('subquestionprefix', $userId);
+            $showQuestionCodes = \SettingsUser::getUserSettingValue('showQuestionCodes', $userId);
+        } catch (\Exception $e) {
+            return $this->responseFactory
+                ->makeException($e);
+        }
+
         return $this->responseFactory
             ->makeSuccess([
-                'answeroptionprefix' => Yii::app()->getConfig('answeroptionprefix'),
-                'subquestionprefix' => Yii::app()->getConfig('subquestionprefix'),
-                'showQuestionCodes' => Yii::app()->getConfig('showQuestionCodes')
+                'answeroptionprefix' => $answerOptionPrefix,
+                'subquestionprefix' => $subquestionPrefix,
+                'showQuestionCodes' => $showQuestionCodes
             ]);
     }
 }
