@@ -245,8 +245,6 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
                         if (substr((string) $field['code'], -7) != 'comment' && substr((string) $field['code'], -5) != 'other') {
                             if ($row[$fieldno] == 'Y') {
                                 echo quoteSPSS('1', $q, $field);
-                            } elseif ($row[$fieldno] === '') {
-                                echo quoteSPSS($sEmptyAnswerValue, $q, $field);
                             } elseif (isset($row[$fieldno])) {
                                 echo quoteSPSS('0', $q, $field);
                             } else {
