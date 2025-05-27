@@ -23,11 +23,16 @@ jobs:
     strategy:
       matrix:
         # Specify what version of nodejs you want to test
-        nodeJS-versions: ['20.19.0']
+        nodeJS-versions: ['10.16.3']
     name: Build Frontend Packages
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
+
+      - name: Setup nodeJS
+        uses: actions/setup-node@v4
+        with:
+            node-version: 20
 
       - name: Run composer
         run: |
@@ -36,16 +41,6 @@ jobs:
       - name: Run yarn
         run: |
           yarn install
-
-      - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
-        run: |
-          # Update
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-          source ~/.nvm/nvm.sh
-
-          # Install Node.js
-          nvm install ${{ matrix.nodeJS-versions }}
-          nvm use ${{ matrix.nodeJS-versions }}
 
       - name: Install adminbasics
         run: |
@@ -74,21 +69,16 @@ jobs:
     strategy:
       matrix:
         # Specify what version of nodejs you want to test
-        nodeJS-versions: ['20.19.0']
+        nodeJS-versions: ['10.16.3']
     name: Run Frontend Tests
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
       
-      - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
-        run: |
-          # Update
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-          source ~/.nvm/nvm.sh
-
-          # Install Node.js
-          nvm install ${{ matrix.nodeJS-versions }}
-          nvm use ${{ matrix.nodeJS-versions }}
+      - name: Setup nodeJS
+        uses: actions/setup-node@v4
+        with:
+            node-version: 20
 
       - name: Install adminbasics
         run: |
@@ -105,3 +95,5 @@ jobs:
           cd ${{ github.workspace }}
           yarn --cwd ./assets/packages/adminbasics run test
         #  yarn --cwd ./assets/packages/adminsidepanel run test
+  
+    
