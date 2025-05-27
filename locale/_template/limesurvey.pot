@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-05-20 09:46:54+00:00\n"
+"POT-Creation-Date: 2025-05-27 11:59:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2368,7 +2368,7 @@ msgid "Error: Response table does not exist. Survey cannot be deactivated."
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:1683
-#: application/helpers/frontend_helper.php:1462
+#: application/helpers/frontend_helper.php:1452
 #: tmp/runtime/twig_cache/5e/5e159f4b6ff898b346e4e4ecaf355640.php:112
 #: tmp/runtime/twig_cache/7c/7c686e47a0981bfc10ec0486cb0f0705.php:113
 msgid "There are no questions in this survey."
@@ -2458,7 +2458,7 @@ msgstr ""
 #: application/controllers/admin/Themes.php:402
 #: application/core/SurveyCommonAction.php:1047
 #: application/helpers/SurveyRuntimeHelper.php:1468
-#: application/helpers/frontend_helper.php:2039
+#: application/helpers/frontend_helper.php:2029
 #: application/models/services/CopySurveyResources.php:68
 #: application/models/services/FilterImportedResources.php:69
 #: application/views/admin/participants/participantsPanel_view.php:19
@@ -7133,7 +7133,7 @@ msgid "The answer to the security question is incorrect."
 msgstr ""
 
 #: application/controllers/survey/SurveyIndex.php:464
-#: application/helpers/frontend_helper.php:1285
+#: application/helpers/frontend_helper.php:1275
 msgid "You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again."
 msgstr ""
 
@@ -9842,7 +9842,7 @@ msgid "%d responses"
 msgstr ""
 
 #: application/extensions/admin/BoxesWidget/views/box.php:80
-#: application/models/Plugin.php:394 application/models/Plugin.php:403
+#: application/models/Plugin.php:397 application/models/Plugin.php:406
 #: application/models/Survey.php:1554 application/models/User.php:615
 #: application/views/quotas/viewquotas_massive_selector.php:20
 #: application/views/userManagement/massiveAction/_updatestatus.php:6
@@ -13252,76 +13252,76 @@ msgstr ""
 msgid "Invalid access code"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:556
+#: application/helpers/frontend_helper.php:546
 msgid "Basic admin notification could not be sent because of error: %s"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:605
+#: application/helpers/frontend_helper.php:595
 msgid "Detailed admin notification could not be sent because of error: %s"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:708
+#: application/helpers/frontend_helper.php:698
 msgid "Original error message could not be saved."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:743
+#: application/helpers/frontend_helper.php:733
 msgid "Did Not Save"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:745
+#: application/helpers/frontend_helper.php:735
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:749
+#: application/helpers/frontend_helper.php:739
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:754
+#: application/helpers/frontend_helper.php:744
 msgid "An error occurred saving a response to survey %s"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:755
+#: application/helpers/frontend_helper.php:745
 msgid "DATA TO BE ENTERED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:764
+#: application/helpers/frontend_helper.php:754
 msgid "SQL CODE THAT FAILED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:768
+#: application/helpers/frontend_helper.php:758
 msgid "ERROR MESSAGE"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:774
+#: application/helpers/frontend_helper.php:764
 msgid "Error saving results"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:780
+#: application/helpers/frontend_helper.php:770
 msgid "Try to submit again"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1298
+#: application/helpers/frontend_helper.php:1288
 msgid "The access code you have provided is either not valid, or has already been used."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1458
-#: application/helpers/frontend_helper.php:1483
+#: application/helpers/frontend_helper.php:1448
+#: application/helpers/frontend_helper.php:1473
 msgid "This survey cannot be tested or completed for the following reason(s):"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1466
+#: application/helpers/frontend_helper.php:1456
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2038
+#: application/helpers/frontend_helper.php:2028
 msgid "By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2040
+#: application/helpers/frontend_helper.php:2030
 msgid "View policy"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2041
+#: application/helpers/frontend_helper.php:2031
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
@@ -16454,62 +16454,62 @@ msgstr ""
 msgid "Modified"
 msgstr ""
 
-#: application/models/Plugin.php:97
+#: application/models/Plugin.php:100
 msgid "Plugin error on %s"
 msgstr ""
 
-#: application/models/Plugin.php:99
+#: application/models/Plugin.php:102
 msgid "Plugin %s (%s) deactivated with error “%s” at file %s"
 msgstr ""
 
-#: application/models/Plugin.php:108
+#: application/models/Plugin.php:111
 msgid "[Error] Plugin deactivated in LimeSurvey"
 msgstr ""
 
-#: application/models/Plugin.php:166
+#: application/models/Plugin.php:169
 msgid "Plugin load error: %s"
 msgstr ""
 
-#: application/models/Plugin.php:222
+#: application/models/Plugin.php:225
 msgid "Error: Could not get plugin description: %s"
 msgstr ""
 
-#: application/models/Plugin.php:245 application/models/Plugin.php:382
+#: application/models/Plugin.php:248 application/models/Plugin.php:385
 msgid "Attempt plugin reload"
 msgstr ""
 
-#: application/models/Plugin.php:282 application/models/Plugin.php:404
+#: application/models/Plugin.php:285 application/models/Plugin.php:407
 msgid "Activate plugin"
 msgstr ""
 
-#: application/models/Plugin.php:312 application/models/Plugin.php:423
+#: application/models/Plugin.php:315 application/models/Plugin.php:426
 msgid "Are you sure you want to deactivate this plugin?"
 msgstr ""
 
-#: application/models/Plugin.php:312 application/models/Plugin.php:422
+#: application/models/Plugin.php:315 application/models/Plugin.php:425
 msgid "Deactivate plugin"
 msgstr ""
 
-#: application/models/Plugin.php:342 application/models/Plugin.php:441
+#: application/models/Plugin.php:345 application/models/Plugin.php:444
 msgid "Are you sure you want to uninstall this plugin?"
 msgstr ""
 
-#: application/models/Plugin.php:342 application/models/Plugin.php:440
+#: application/models/Plugin.php:345 application/models/Plugin.php:443
 msgid "Uninstall plugin"
 msgstr ""
 
-#: application/models/Plugin.php:405
+#: application/models/Plugin.php:408
 msgid "Are you sure you want to activate this plugin?"
 msgstr ""
 
-#: application/models/Plugin.php:412 application/models/Plugin.php:421
+#: application/models/Plugin.php:415 application/models/Plugin.php:424
 #: application/models/User.php:604
 #: application/views/quotas/viewquotas_massive_selector.php:36
 #: application/views/userManagement/massiveAction/_updatestatus.php:7
 msgid "Deactivate"
 msgstr ""
 
-#: application/models/Plugin.php:430 application/models/Plugin.php:439
+#: application/models/Plugin.php:433 application/models/Plugin.php:442
 #: application/models/TemplateConfiguration.php:760
 #: application/models/TemplateConfiguration.php:770
 #: application/views/themeOptions/_selector.php:47
