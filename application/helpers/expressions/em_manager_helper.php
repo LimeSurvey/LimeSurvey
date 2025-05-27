@@ -6354,6 +6354,7 @@ class LimeExpressionManager
                     break;
             }
         }
+        /* mandSoftForced management */
         if (
             $qmandViolation
             && $qInfo['mandatory'] == 'S'
@@ -6363,15 +6364,17 @@ class LimeExpressionManager
             if (is_string($mandSoftPost)) {
                 $qmandViolation = false;
                 $mandatoryTip = '';
-                /* Set this question mandSoftForced */
+                /* Set this question mandSoftForced : double assigment : in $LEM and $qInfo */
                 $this->questionSeq2relevance[$questionSeq]['mandSoftForced'] = $qInfo['mandSoftForced'] = true;
             }
             /* New system mandSoft are an array with Y/N for each question in page */
             if (is_array($mandSoftPost)) {
                 if (isset($mandSoftPost[$questionSeq])) {
-                    if ($mandSoftPost[$questionSeq] == "N") { // Currently, input are not shown after selection done. (no mandatiry violation)
+                    if ($mandSoftPost[$questionSeq] == "N") {
+                        // Currently, input are not shown after selection done. (no mandatory violation)
                         $this->questionSeq2relevance[$questionSeq]['mandSoftForced'] = $qInfo['mandSoftForced'] = false;
                     } else {
+                        /* Set this question mandSoftForced : double assigment : in $LEM and $qInfo */
                         $this->questionSeq2relevance[$questionSeq]['mandSoftForced'] = $qInfo['mandSoftForced'] = true;
                     }
                 }
@@ -6381,7 +6384,7 @@ class LimeExpressionManager
                 }
             }
         } else {
-            /* If question are answered (or are not mandatory soft) : always set mandSoftForced to false */
+            /* If question are answered (or are not mandatory soft) : always set mandSoftForced to false, in $LEM and $qInfo */
             $LEM->questionSeq2relevance[$questionSeq]['mandSoftForced'] = $qInfo['mandSoftForced'] = false;
         }
         /////////////////////////////////////////////////////////////
