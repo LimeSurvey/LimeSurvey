@@ -34,7 +34,7 @@ class PersonalSettingsPatch implements CommandInterface
         $userId = $request->getData('_id');
         
         // Get the settings data from the request
-        $settingsData = $request->getData();
+        $settingsData = ['showQuestionCodes' => $request->getData('showQuestionCodes', false),];
         
         // Update the user's personal settings
         $result = $this->updatePersonalSettings($userId, $settingsData);
@@ -74,7 +74,7 @@ class PersonalSettingsPatch implements CommandInterface
         }
         
         if (isset($settingsData['showQuestionCodes'])) {
-            $user->lang = $settingsData['showQuestionCodes'];
+            \SettingsUser::setUserSetting('showQuestionCodes', $settingsData['showQuestionCodes'] ? 1 : 0, $userId);
         }
         
         // Add more settings as needed
