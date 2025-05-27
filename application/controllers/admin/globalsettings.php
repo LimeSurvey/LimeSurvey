@@ -320,13 +320,6 @@ class GlobalSettings extends SurveyCommonAction
         }
 
         $warning = '';
-        $validatedReverseProxyIpAddresses = $this->validateIpAddresses(Yii::app()->getRequest()->getPost('reverseProxyIpAddresses'));
-        SettingGlobal::setSetting('reverseProxyIpAddresses', $validatedReverseProxyIpAddresses['valid']);
-        if (!empty($validatedReverseProxyIpAddresses['invalid'])) {
-            $warning .= sprintf(gT("Warning! Invalid IP addresses have been excluded from '%s' setting."), gT("Reverse proxy IP addresses")) . '<br/>';
-        }
-        SettingGlobal::setSetting('reverseProxyIpHeader', Yii::app()->getRequest()->getPost('reverseProxyIpHeader'));
-
         $validatedLoginIpWhitelistInput = $this->validateIpAddresses(Yii::app()->getRequest()->getPost('loginIpWhitelist'));
         SettingGlobal::setSetting('loginIpWhitelist', $validatedLoginIpWhitelistInput['valid']);
         if (!empty($validatedLoginIpWhitelistInput['invalid'])) {

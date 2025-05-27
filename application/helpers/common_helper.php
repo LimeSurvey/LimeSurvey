@@ -4676,7 +4676,7 @@ function getRealIPAddress()
     // If there is a list of reverse proxy IP addresses, and the current IP address is in that list, we will
     // look for the header that contains the client IP address.
     if (!empty(Yii::app()->getConfig('reverseProxyIpAddresses'))) {
-        $reverseProxyIpAddresses = preg_split('/\n|,/', Yii::app()->getConfig('reverseProxyIpAddresses'));
+        $reverseProxyIpAddresses = Yii::app()->getConfig('reverseProxyIpAddresses');
         if (in_array($sIPAddress, $reverseProxyIpAddresses)) {
             $reverseProxyIpHeader = Yii::app()->getConfig('reverseProxyIpHeader');
             if (empty($reverseProxyIpHeader)) {
