@@ -34,6 +34,24 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.14.0 (build 250520) to 6.14.1 (build 250527) May 27, 2025
+-Fixed issue: Plugin load error not sending email in console mode (Carsten Schmitz)
+-Fixed issue #20096: Confirmation email is not sent if multiple participants/email addresses are used, also applies to admin notifications (#4282) (Gabriel Jenik)
+-Fixed issue #20091: Optout/Optin broken (Carsten Schmitz)
+#Updated translation: Swahili by FredaM
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by holch, samarta, sergiobaiao, twilllig
+#Updated translation: Portuguese (Brazil) by holch, sergiobaiao, twilllig
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto, twilllig
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, twilllig
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.13.3 (build 250512) to 6.14.0 (build 250520) May 20, 2025
 +New feature #20080: Send an email when plugin was deactivated (#4275) (Denis Chenu)
 -Fixed issue: box shadow wrongly displayed in navbar-toggler (Patrick Teichmann)
