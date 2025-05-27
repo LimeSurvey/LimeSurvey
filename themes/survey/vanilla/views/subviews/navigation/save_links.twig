@@ -27,6 +27,20 @@ via survey configuration, at start page, when survey is completed, etc
     </li>
 {% endif %}
 
+{% if aSurveyInfo.access_mode == "O" and aSurveyInfo.hastokenstable == true and not aSurveyInfo.filltoken %}
+    <!-- Fill token button -->
+    <li class="nav-item ls-no-js-hidden">
+        <a href="{{ aSurveyInfo.surveyUrl }}?lang=en&filltoken=true"
+            class="nav-link ls-link-action">
+            {% if aSurveyInfo.allowregister == "Y" %}
+                {{ gT("Register") }}
+            {% else %}
+                {{ gT("Enter access code") }}
+            {% endif %}
+        </a>
+    </li>
+{% endif %}
+
 {% if aSurveyInfo.aNavigator.save.show == "Y" %}
     <!-- Resume later button -->
     <li class="nav-item ls-no-js-hidden">
@@ -51,16 +65,3 @@ via survey configuration, at start page, when survey is completed, etc
     </li>
 {% endif %}
 
-{% if aSurveyInfo.access_mode == "O" and aSurveyInfo.hastokenstable == true and not aSurveyInfo.filltoken %}
-    <!-- Fill token button -->
-    <li class="nav-item ls-no-js-hidden">
-        <a href="{{ aSurveyInfo.surveyUrl }}?newtest=Y&lang=en&filltoken=true"
-            class="nav-link ls-link-action">
-            {% if aSurveyInfo.allowregister == "Y" %}
-                {{ gT("Register") }}
-            {% else %}
-                {{ gT("Enter access code") }}
-            {% endif %}
-        </a>
-    </li>
-{% endif %}

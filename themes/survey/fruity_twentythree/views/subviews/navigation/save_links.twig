@@ -28,7 +28,7 @@ via survey configuration, at start page, when survey is completed, etc
     {% if aSurveyInfo.access_mode == "O" and aSurveyInfo.hastokenstable == true and not aSurveyInfo.filltoken %}
     <!-- Fill token button -->
     <li class="nav-item ls-no-js-hidden">
-        <a href="{{ aSurveyInfo.surveyUrl }}?newtest=Y&lang=en&filltoken=true"
+        <a href="{{ aSurveyInfo.surveyUrl }}?lang=en&filltoken=true"
             class="nav-link ls-link-action">
             {% if aSurveyInfo.allowregister == "Y" %}
                 {{ gT("Register") }}

@@ -42,7 +42,7 @@ class SurveyIndex extends CAction
         $move        = getMove();
 
         /* Newtest must be done bedore all other action */
-        if (isset($param['newtest']) && $param['newtest'] == "Y") {
+        if ((isset($param['newtest']) && $param['newtest'] == "Y")) {
             killSurveySession($surveyid);
             resetQuestionTimers($surveyid);
         }

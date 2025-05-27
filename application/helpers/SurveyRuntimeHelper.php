@@ -201,7 +201,7 @@ class SurveyRuntimeHelper
 
         ///////////////////////////////////////////////////////////
         // 1: We check if token and/or captcha form shouls be shown
-        if (!isset($_SESSION[$this->LEMsessid]['step'])) {
+        if ((!isset($_SESSION[$this->LEMsessid]['step'])) || (Yii::app()->request->getParam('filltoken') === 'true')) {
             $this->showTokenOrCaptchaFormsIfNeeded();
         }
         if (!$this->previewgrp && !$this->previewquestion) {
@@ -1697,6 +1697,12 @@ class SurveyRuntimeHelper
 
         if ($FlashError) {
             $aEnterErrors['flash'] = $FlashError;
+        } else {
+            if ((Yii::app()->request->getParam('filltoken') === 'true') && (Yii::app()->request->getPost('token', '') !== '') && isset($_SESSION[$this->LEMsessid]['srid'])) {
+                $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $_SESSION[$this->LEMsessid]['srid']]);
+                $oSurveyResponse->token = Yii::app()->request->getPost('token');
+                $oSurveyResponse->save();
+            }
         }
 
         $aEnterTokenData['aEnterErrors']    = $aEnterErrors;
