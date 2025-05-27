@@ -9,7 +9,7 @@ class SchemaFactoryPersonalSettingsPatch
 {
     /**
      * Create the schema
-     * 
+     *
      * @return array
      */
     public function make(): array

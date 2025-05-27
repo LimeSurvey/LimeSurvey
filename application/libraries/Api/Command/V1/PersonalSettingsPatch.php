@@ -24,7 +24,7 @@ class PersonalSettingsPatch implements CommandInterface
 
     /**
      * Execute the command
-     * 
+     *
      * @param Request $request
      * @return Response
      */
@@ -32,13 +32,13 @@ class PersonalSettingsPatch implements CommandInterface
     {
         // Get the user IDs
         $userId = $request->getData('_id');
-        
+
         // Get the settings data from the request
         $settingsData = ['showQuestionCodes' => $request->getData('showQuestionCodes', false),];
-        
+
         // Update the user's personal settings
         $result = $this->updatePersonalSettings($userId, $settingsData);
-        
+
         // Return a success response
         return $this->responseFactory
             ->makeSuccess([
@@ -49,7 +49,7 @@ class PersonalSettingsPatch implements CommandInterface
 
     /**
      * Update the personal settings for a user
-     * 
+     *
      * @param int $userId
      * @param array $settingsData
      * @return bool
@@ -58,27 +58,25 @@ class PersonalSettingsPatch implements CommandInterface
     {
         // Get the user model
         $user = \User::model()->findByPk($userId);
-        
+
         if (!$user) {
             throw new \Exception('User not found');
         }
-        
+
         // Update user settings based on the provided data
         // This is a simplified example - you'll need to adapt this to your actual settings structure
         if (isset($settingsData['answeroptionprefix'])) {
             $user->email = $settingsData['answeroptionprefix'];
         }
-        
+
         if (isset($settingsData['subquestionprefix'])) {
             $user->full_name = $settingsData['subquestionprefix'];
         }
-        
+
         if (isset($settingsData['showQuestionCodes'])) {
             \SettingsUser::setUserSetting('showQuestionCodes', $settingsData['showQuestionCodes'] ? 1 : 0, $userId);
         }
-        
-        // Add more settings as needed
-        
+
         // Save the changes
         return $user->save();
     }
