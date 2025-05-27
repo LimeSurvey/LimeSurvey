@@ -74,7 +74,7 @@ jobs:
     strategy:
       matrix:
         # Specify what version of nodejs you want to test
-        nodeJS-versions: ['10.16.3']
+        nodeJS-versions: ['20.19.0']
     name: Run Frontend Tests
     steps:
       - name: Checkout the code
