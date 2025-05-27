@@ -22,3 +22,6 @@
     {{ include('./subviews/survey/question.twig') }}
 </div>
 <!-- End of question  {{ aQuestion.qid  }}  -->
+<script>
+document.querySelector('[aria-labelledby="ls-question-text-{{ aQuestion.SGQ }}"] > table')?.removeAttribute('role');
+</script>
