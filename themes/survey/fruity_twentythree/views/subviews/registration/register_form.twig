@@ -20,7 +20,13 @@
     {{ C.Html.form(aSurveyInfo.sRegisterFormUrl,'post',({'id' : 'limesurvey', 'role' : 'form', 'class' : 'form'})) }}
 
     {{aSurveyInfo.registerform.hiddeninputs}}
-
+    {% if (aSurveyInfo.options.showsurveypolicynoticeinregister == 'on') %}
+        {% if (aSurveyInfo.showsurveypolicynotice == 1) %}
+            {{include('./subviews/privacy/privacy_text.twig')}}
+        {% elseif (aSurveyInfo.showsurveypolicynotice == 2) %}
+            {{include( './subviews/privacy/privacy_modal.twig')}}
+        {% endif %}
+    {% endif %}
     <div class='{{ aSurveyInfo.class.registerformcol }} col-12' {{ aSurveyInfo.attr.registerformcol }}>
         <div class="ls-js-hidden ">
             {{ include('./subviews/navigation/language_changer.twig') }}
