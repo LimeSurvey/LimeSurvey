@@ -166,7 +166,6 @@ class InstallerController extends CController
         if (strtolower((string) $_SERVER['REQUEST_METHOD']) == 'post') {
             $this->redirect(array('installer/precheck'));
         }
-        Yii::app()->session['saveCheck'] = 'save'; // Checked in next step
 
         $this->render('/installer/license_view', $aData);
     }
@@ -203,13 +202,7 @@ class InstallerController extends CController
 
         $bProceed = $oModel->hasMinimumRequirements;
 
-        $sessionWritable = (Yii::app()->session->get('saveCheck', null) === 'save');
-        $aData['sessionWritable'] = $sessionWritable;
-        if (!$sessionWritable) {
-            // For recheck, try to set the value again
-            Yii::app()->session['saveCheck'] = 'save';
-            $bProceed = false;
-        }
+        $aData['sessionWritable'] = $this->checkSessionIsWritable();
 
         // after all check, if flag value is true, show next button and sabe step2 status.
         if ($bProceed) {
@@ -1116,5 +1109,28 @@ class InstallerController extends CController
                 safeDie('You\'re missing default PHP extension ' . $extension);
             }
         }
+    }
+
+    /**
+     * Check if session is writable
+     * @return bool
+     */
+    private function checkSessionIsWritable()
+    {
+        // Set a value in the sesssion
+        Yii::app()->session['saveCheck'] = 'save';
+        // Close the session so we can start it again
+        session_write_close();
+        // When calling session_start, if there is a saved session, it will be loaded.
+        // If there is no saved session, it will create an empty one.
+        @session_start();
+        // If the value we set is not there, it means the session could not be restored,
+        // presumably because it was not writable in the first place.
+        $isWritable = (Yii::app()->session['saveCheck'] === 'save');
+        if (!$isWritable) {
+            // If the session could not be restored, we need to reinitialize the languages
+            $this->sessioncontrol();
+        }
+        return $isWritable;
     }
 }
