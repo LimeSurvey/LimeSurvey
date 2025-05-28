@@ -106,7 +106,9 @@
             <?php
             $message = gT("Each question has its own graph type defined in its advanced settings.") .
                 '<br>' .
-                gT("Using the chart type selector you can force the graph type for all selected questions.");
+                gT("Using the chart type selector you can force the graph type for all selected questions.") .
+                '<br>' .
+                gT("Only for HTML output.");
             $this->widget('ext.AlertWidget.AlertWidget', [
             'text' => $message,
             'type' => 'info',

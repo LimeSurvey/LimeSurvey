@@ -600,6 +600,15 @@ LS.Statistics2 = function () {
         };
         xhr.send(data);
     };
+
+    $('input[name=outputtype]').off('change').on('change', function () {
+        if ($('input[name=outputtype]:checked').val() != 'html') {
+            $('#charttype').prop('disabled', true);
+        } else {
+            $('#charttype').prop('disabled', false);
+        }
+    });
+    $('input[name=outputtype]').trigger('change');
 };
 
 var isWaiting = {};
