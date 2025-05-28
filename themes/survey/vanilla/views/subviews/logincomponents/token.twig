@@ -37,11 +37,7 @@
                         <div class='input-group'>
                             <input
                                 class='{{ aSurveyInfo.class.maincolformdivainput }} form-control' 
-                                {% if (aSurveyInfo.access_mode != 'D') %}
-                                    {{ aSurveyInfo.attr.maincolformdivainput }}
-                                {% else %}
-                                    id="token" name="token"
-                                {% endif %}
+                                {{ aSurveyInfo.attr.maincolformdivainput }}
                                  >
                             <button type="button" class="input-group-text ls-no-js-hidden" id="ls-toggle-token-show" data-passwordstate="hidden">
                                 <i class="fa fa-eye ls-password-hidden" aria-hidden="true"></i><span class="visually-hidden ls-password-hidden">gT("Show code")</span>

@@ -29,6 +29,11 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v4
 
+      - name: Setup nodeJS
+        uses: actions/setup-node@v4
+        with:
+            node-version: 20
+
       - name: Run composer
         run: |
           composer install -vvv
@@ -36,16 +41,6 @@ jobs:
       - name: Run yarn
         run: |
           yarn install
-
-      - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
-        run: |
-          # Update
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-          source ~/.nvm/nvm.sh
-
-          # Install Node.js
-          nvm install ${{ matrix.nodeJS-versions }}
-          nvm use ${{ matrix.nodeJS-versions }}
 
       - name: Install adminbasics
         run: |
@@ -80,15 +75,10 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v4
       
-      - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
-        run: |
-          # Update
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-          source ~/.nvm/nvm.sh
-
-          # Install Node.js
-          nvm install ${{ matrix.nodeJS-versions }}
-          nvm use ${{ matrix.nodeJS-versions }}
+      - name: Setup nodeJS
+        uses: actions/setup-node@v4
+        with:
+            node-version: 20
 
       - name: Install adminbasics
         run: |
