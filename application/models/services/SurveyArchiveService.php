@@ -231,8 +231,10 @@ class SurveyArchiveService
         $pagination = $dataProvider->getPagination();
 
         foreach ($data as $record) {
-            $token = $record->token;
-            $record->token = $model->decryptSingle($token);
+            if (isset($record->token)) {
+                $token = $record->token;
+                $record->token = $model->decryptSingle($token);
+            }
         }
 
         return [
