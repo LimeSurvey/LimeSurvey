@@ -560,6 +560,48 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
+     * New create survey process with default values.
+     * Includes to open new question editor (in cloud) when editor is activated by user.
+     *
+     * @return void
+     */
+    public function actionCreateSurvey()
+    {
+        if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
+            $userId = App()->user->id;
+            $currentUser = User::model()->findByPk($userId);
+            $currentUserLanguage = $currentUser->lang;
+            //we need the language short
+            if ($currentUserLanguage === 'auto') {
+                $currentUserLanguage = Yii::app()->getConfig('defaultlang');
+            }
+
+            $simpleSurveyValues = new \LimeSurvey\Datavalueobjects\SimpleSurveyValues();
+            $simpleSurveyValues->title = gt('Untitled survey');
+            $simpleSurveyValues->surveyGroupId = 1;
+            $simpleSurveyValues->baseLanguage = $currentUserLanguage;
+            $surveyCreator = new \LimeSurvey\Models\Services\CreateSurvey(new Survey(), new SurveyLanguageSetting());
+            $newSurvey = $surveyCreator->createSimple(
+                $simpleSurveyValues,
+                (int)Yii::app()->user->getId(),
+                Permission::model()
+            );
+            if ($newSurvey) {
+                $redirecturl = $this->createUrl(
+                    'surveyAdministration/view/',
+                    ['iSurveyID' => $newSurvey->sid]
+                );
+
+                $this->redirect($redirecturl);
+            } else {
+                Yii::app()->setFlashMessage(gT("Survey could not be created."), 'error');
+                $this->redirect(Yii::app()->request->urlReferrer);
+            }
+        }
+        $this->redirect(Yii::app()->request->urlReferrer);
+    }
+
+    /**
      * todo: what is this? why do we need it?
      *(it'S just an js-script alert window rendert here ...)
      *
