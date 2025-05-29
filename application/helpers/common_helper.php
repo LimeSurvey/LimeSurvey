@@ -2581,7 +2581,7 @@ function tableExists($sTableName)
 }
 
 // Returns false if the survey is anonymous,
-// and a survey participants list exists: in this case the completed field of a token
+// and a survey participant list exists: in this case the completed field of a token
 // will contain 'Y' instead of the submitted date to ensure privacy
 // Returns true otherwise
 function isTokenCompletedDatestamped($thesurvey)
@@ -2902,7 +2902,7 @@ function filterForAttributes(string $fieldname)
 }
 
 /**
-* Retrieves the attribute field names from the related survey participants list
+* Retrieves the attribute field names from the related survey participant list
 *
 * @param mixed $iSurveyID  The survey ID
 * @return array The fieldnames
@@ -2938,7 +2938,7 @@ function getParticipantAttributes($iSurveyID)
 
 
 /**
-* Retrieves the attribute names from the related survey participants list
+* Retrieves the attribute names from the related survey participant list
 *
 * @param mixed $surveyid  The survey ID
 * @param boolean $bOnlyAttributes Set this to true if you only want the fieldnames of the additional attribue fields - defaults to false

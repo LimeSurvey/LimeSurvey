@@ -7,7 +7,7 @@ if ($tokenexists) {
             [
                 'name' => 'delete-token-table',
                 'id' => 'delete-token-table',
-                'text' => gT('Delete participants list'),
+                'text' => gT('Delete participant list'),
                 'icon' => '',
                 'link' => Yii::App()->createUrl("admin/tokens/sa/kill/surveyid/$oSurvey->sid"),
                 'htmlOptions' => [

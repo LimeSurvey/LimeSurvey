@@ -1344,7 +1344,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                         $aImportResults = array_merge($aTokenCreateResults, $aImportResults);
                         $aTokenImportResults = XMLImportTokens(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename, $aImportResults['newsid']);
                     } else {
-                        $aTokenImportResults['warnings'][] = gT("Unable to create survey participants list");
+                        $aTokenImportResults['warnings'][] = gT("Unable to create survey participant list");
                     }
 
                     $aImportResults = array_merge_recursive($aTokenImportResults, $aImportResults);
@@ -3324,7 +3324,7 @@ function XMLImportTokens($sFullFilePath, $iSurveyID, $sCreateMissingAttributeFie
         foreach ($xml->tokens->fields->fieldname as $sFieldName) {
             $aXLMFieldNames[] = (string) $sFieldName;
         }
-        // Get a list of all fieldnames in the survey participants list
+        // Get a list of all fieldnames in the survey participant list
         $aTokenFieldNames = Yii::app()->db->getSchema()->getTable($survey->tokensTableName, true);
         $aTokenFieldNames = array_keys($aTokenFieldNames->columns);
         $aFieldsToCreate = array_diff($aXLMFieldNames, $aTokenFieldNames);

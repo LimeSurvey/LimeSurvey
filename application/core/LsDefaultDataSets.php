@@ -1718,7 +1718,7 @@ class LsDefaultDataSets
             array(
                 'teid' => 35,
                 'ordering' => 35,
-                'title' => gT('Activate survey participants list'),
+                'title' => gT('Activate survey participant list'),
                 'content' => gT("Here you can select to start your survey in closed access mode.") . "<br/>"
                 . gT("For our simple survey it is better to start in open access mode.") . "<br/>"
                 . gT("The closed access mode needs a participant list, which you may create by clicking on the menu entry 'Participants'.") . "<br/>"

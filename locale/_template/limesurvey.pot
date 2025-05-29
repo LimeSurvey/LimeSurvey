@@ -980,11 +980,11 @@ msgid "Removing yourself from the blocklist is currently disabled."
 msgstr ""
 
 #: application/controllers/OptinController.php:132
-msgid "Please confirm that you want to be added back to the central participants list for this site."
+msgid "Please confirm that you want to be added back to the central participant list for this site."
 msgstr ""
 
 #: application/controllers/OptinController.php:140
-msgid "You are already part of the central participants list for this site."
+msgid "You are already part of the central participant list for this site."
 msgstr ""
 
 #: application/controllers/OptinController.php:196
@@ -1011,12 +1011,12 @@ msgid "After confirmation you won't receive any invitations or reminders for thi
 msgstr ""
 
 #: application/controllers/OptoutController.php:121
-msgid "Please confirm that you want to be removed from the central participants list for this site."
+msgid "Please confirm that you want to be removed from the central participant list for this site."
 msgstr ""
 
 #: application/controllers/OptoutController.php:127
 #: application/models/services/ParticipantBlacklistHandler.php:41
-msgid "You have already been removed from the central participants list for this site."
+msgid "You have already been removed from the central participant list for this site."
 msgstr ""
 
 #: application/controllers/OptoutController.php:177
@@ -4028,7 +4028,7 @@ msgid "Check data integrity"
 msgstr ""
 
 #: application/controllers/admin/CheckIntegrity.php:70
-msgid "Deleting survey participants list: %s"
+msgid "Deleting survey participant list: %s"
 msgstr ""
 
 #: application/controllers/admin/CheckIntegrity.php:78
@@ -4036,11 +4036,11 @@ msgid "Deleting survey table: %s"
 msgstr ""
 
 #: application/controllers/admin/CheckIntegrity.php:83
-msgid "No old survey or survey participants list selected."
+msgid "No old survey or survey participant list selected."
 msgstr ""
 
 #: application/controllers/admin/CheckIntegrity.php:194
-msgid "Deleting orphan survey participants list: %s"
+msgid "Deleting orphan survey participant list: %s"
 msgstr ""
 
 #: application/controllers/admin/CheckIntegrity.php:210
@@ -4320,12 +4320,12 @@ msgstr ""
 
 #: application/controllers/admin/ConditionsAction.php:525
 #: application/controllers/admin/ConditionsAction.php:2145
-msgid "From survey participants list"
+msgid "From survey participant list"
 msgstr ""
 
 #: application/controllers/admin/ConditionsAction.php:527
 #: application/controllers/admin/ConditionsAction.php:2147
-msgid "Non-existing survey participants list"
+msgid "Non-existing survey participant list"
 msgstr ""
 
 #: application/controllers/admin/ConditionsAction.php:543
@@ -5554,7 +5554,7 @@ msgid "%s participant share was deleted|%s participant shares were deleted"
 msgstr ""
 
 #: application/controllers/admin/ParticipantsAction.php:2494
-msgid "%s participants have been copied to the central participants list"
+msgid "%s participants have been copied to the central participant list"
 msgstr ""
 
 #: application/controllers/admin/ParticipantsAction.php:2498
@@ -5567,7 +5567,7 @@ msgid "Attribute values for central participants have been updated from the surv
 msgstr ""
 
 #: application/controllers/admin/ParticipantsAction.php:2556
-msgid "%s participants have been copied to the survey survey participants list"
+msgid "%s participants have been copied to the survey participant list"
 msgstr ""
 
 #: application/controllers/admin/ParticipantsAction.php:2565
@@ -6397,7 +6397,7 @@ msgstr ""
 
 #: application/controllers/admin/Tokens.php:166
 #: application/controllers/admin/Tokens.php:1275
-msgid "No survey participants list."
+msgid "No survey participant list."
 msgstr ""
 
 #: application/controllers/admin/Tokens.php:178
@@ -6869,7 +6869,7 @@ msgid "Import old participant list"
 msgstr ""
 
 #: application/controllers/admin/Tokens.php:2889
-msgid "A survey participants list has been created for this survey and the old participants were imported."
+msgid "A survey participant list has been created for this survey and the old participants were imported."
 msgstr ""
 
 #: application/controllers/admin/Tokens.php:2911
@@ -8231,7 +8231,7 @@ msgid "Now click on \"Save & activate survey\""
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:1721
-msgid "Activate survey participants list"
+msgid "Activate survey participant list"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:1722
@@ -10351,7 +10351,7 @@ msgid "This is not a valid LimeSurvey LSA file."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:1287
-msgid "Unable to create survey participants list"
+msgid "Unable to create survey participant list"
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:1349
@@ -17051,7 +17051,7 @@ msgid "Permission to modify survey security settings"
 msgstr ""
 
 #: application/models/Survey.php:2413
-msgid "Permission to view, update the survey settings including survey participants list creation"
+msgid "Permission to view, update the survey settings including survey participant list creation"
 msgstr ""
 
 #: application/models/Survey.php:2407
@@ -18013,7 +18013,7 @@ msgid "No CPDB participant found."
 msgstr ""
 
 #: application/models/services/ParticipantBlacklistHandler.php:26
-msgid "You have been removed from the central participants list for this site."
+msgid "You have been removed from the central participant list for this site."
 msgstr ""
 
 #: application/models/services/ParticipantBlacklistHandler.php:35
@@ -18025,7 +18025,7 @@ msgid "You are not globally blocklisted on this site."
 msgstr ""
 
 #: application/models/services/ParticipantBlacklistHandler.php:60
-msgid "You have been added back to the central participants list for this site."
+msgid "You have been added back to the central participant list for this site."
 msgstr ""
 
 #: application/models/services/ParticipantBlacklistHandler.php:91
@@ -18486,11 +18486,11 @@ msgid "All old survey tables meet consistency standards."
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:264
-msgid "The following old survey participants lists should be deleted because they contain no records or their parent survey no longer exists:"
+msgid "The following old survey participant lists should be deleted because they contain no records or their parent survey no longer exists:"
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:274
-msgid "All old survey participants lists meet consistency standards."
+msgid "All old survey participant lists meet consistency standards."
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:281
@@ -20123,12 +20123,12 @@ msgstr ""
 
 #: application/views/admin/globalsettings/_overview.php:28
 #: modules/admin/globalsettings/views/_overview.php:48
-msgid "Active survey participants lists"
+msgid "Active survey participant lists"
 msgstr ""
 
 #: application/views/admin/globalsettings/_overview.php:31
 #: modules/admin/globalsettings/views/_overview.php:52
-msgid "Deactivated survey participants lists"
+msgid "Deactivated survey participant lists"
 msgstr ""
 
 #: application/views/admin/globalsettings/_overview.php:39
@@ -20762,7 +20762,7 @@ msgid "All the attributes are automatically mapped"
 msgstr ""
 
 #: application/views/admin/participants/attributeMap_view.php:16
-msgid "You have to pair it with one attribute of the survey participants list"
+msgid "You have to pair it with one attribute of the survey participant list"
 msgstr ""
 
 #: application/views/admin/participants/attributeMap_view.php:17
@@ -22390,7 +22390,7 @@ msgid "If you are using participants or notification emails you need to set an a
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:112
-msgid "If you set 'Yes' then no link will exist between survey participants list and survey responses table. You won't be able to identify responses by their access code."
+msgid "If you set 'Yes' then no link will exist between survey participant list and survey responses table. You won't be able to identify responses by their access code."
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:113
@@ -22402,7 +22402,7 @@ msgid "Cannot be changed"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:137
-msgid "With non-anonymized responses (and the survey participants list field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link) their previous answers will be reloaded."
+msgid "With non-anonymized responses (and the survey participant list field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link) their previous answers will be reloaded."
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:138
@@ -23223,11 +23223,11 @@ msgid "Add new survey participant"
 msgstr ""
 
 #: application/views/admin/token/afterDeleteParticipantsTable.php:10
-msgid "Survey participants list deleted"
+msgid "Survey participant list deleted"
 msgstr ""
 
 #: application/views/admin/token/afterDeleteParticipantsTable.php:13
-msgid "The survey participants list has been deleted and your survey has been switched back to open-access mode. Participants no longer require an access code to access the survey."
+msgid "The survey participant list has been deleted and your survey has been switched back to open-access mode. Participants no longer require an access code to access the survey."
 msgstr ""
 
 #: application/views/admin/token/afterDeleteParticipantsTable.php:15
@@ -23370,11 +23370,11 @@ msgid "Mandatory fields:"
 msgstr ""
 
 #: application/views/admin/token/deleteParticipantsTable.php:15
-msgid "Delete survey participants list"
+msgid "Delete survey participant list"
 msgstr ""
 
 #: application/views/admin/token/deleteParticipantsTable.php:17
-msgid "Deleting the participants list will switch the survey back to open-access mode."
+msgid "Deleting the participant list will switch the survey back to open-access mode."
 msgstr ""
 
 #: application/views/admin/token/deleteParticipantsTable.php:19
@@ -23608,7 +23608,7 @@ msgid "Add/delete survey participant attributes"
 msgstr ""
 
 #: application/views/admin/token/managetokenattributes.php:178
-msgid "There is {n} user attribute field in this survey participants list.|There are {n} user attribute fields in this survey participants list."
+msgid "There is {n} user attribute field in this survey participant list.|There are {n} user attribute fields in this survey participant list."
 msgstr ""
 
 #: application/views/admin/token/managetokenattributes.php:181
@@ -23750,7 +23750,7 @@ msgstr ""
 
 #: application/views/admin/token/tokenwarning.php:22
 #: application/views/surveyAdministration/surveyActivation/_activation_feedback.php:57
-msgid "You can switch back to open-access mode at any time. Navigate to Settings -> Survey participants and click on the red 'Delete participants list' button in the top bar."
+msgid "You can switch back to open-access mode at any time. Navigate to Settings -> Survey participants and click on the red 'Delete participant list' button in the top bar."
 msgstr ""
 
 #: application/views/admin/token/tokenwarning.php:31
@@ -23772,7 +23772,7 @@ msgid "Restore options"
 msgstr ""
 
 #: application/views/admin/token/tokenwarning.php:66
-msgid "The following old survey participants lists could be restored:"
+msgid "The following old survey participant lists could be restored:"
 msgstr ""
 
 #: application/views/admin/token/tokenwarning.php:78
@@ -26096,7 +26096,7 @@ msgid "View in CPDB"
 msgstr ""
 
 #: application/views/surveyAdministration/partial/topbar_tokens/rightSideButtons.php:9
-msgid "Delete participants list"
+msgid "Delete participant list"
 msgstr ""
 
 #: application/views/surveyAdministration/partial/topbar_tokens/rightSideButtons.php:29
@@ -26313,7 +26313,7 @@ msgid "The required directory for saving the uploaded files couldn't be created.
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_activation_feedback.php:34
-msgid "This survey allows public registration. A survey participants list must also be created."
+msgid "This survey allows public registration. A survey participant list must also be created."
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_activation_feedback.php:40

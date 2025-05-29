@@ -46,7 +46,7 @@ class SurveyObj
 
 
     /**
-     * When relevant holds the available fields from the survey participants list
+     * When relevant holds the available fields from the survey participant list
      *
      * @var array[fieldname][localised description]
      */

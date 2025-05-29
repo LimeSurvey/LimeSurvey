@@ -13,9 +13,9 @@
                 ['id' => 'startfromscratch', 'name' => 'startfromscratch']
             );
             ?>
-            <h3 class="lead"><?php eT('Create survey participants list'); ?></h3>
+            <h3 class="lead"><?php eT('Create survey participant list'); ?></h3>
             <p>
-                <?php eT('We are about to create a participants list. Do you intend to proceed?'); ?>
+                <?php eT('We are about to create a participant list. Do you intend to proceed?'); ?>
                 <br />
             </p>
             <a
