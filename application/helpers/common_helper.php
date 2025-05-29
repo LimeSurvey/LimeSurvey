@@ -5013,7 +5013,7 @@ function isZipBomb($zip_filename)
 {
     $isZipBomb = false;
     $zip = new LimeSurvey\Zip();
-    if ($zip->open($zip_filename, null, false) === true) {
+    if ($zip->open($zip_filename, 0, false) === true) {
         $isZipBomb = $zip->isZipBomb();
         $zip->close();
     }

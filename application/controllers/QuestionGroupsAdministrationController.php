@@ -381,16 +381,22 @@ class QuestionGroupsAdministrationController extends LSBaseController
         }
 
         $iGroupId = App()->getRequest()->getPost('gid');
+        $iSurveyId = sanitize_int(App()->getRequest()->getPost('surveyid', 0));
+        $iGroupsDeleted = 0;
+
         if ($iGroupId === null) {
             throw new CHttpException(401, gT("Invalid question group id"));
         }
         $iGroupId = sanitize_int($iGroupId);
         $oQuestionGroup = QuestionGroup::model()->find("gid = :gid", array(":gid" => $iGroupId));
-        $iSurveyId = $oQuestionGroup->sid;
-        $questionGroupService = $this->getQuestionGroupServiceClass();
-        $iGroupsDeleted = $questionGroupService->deleteGroup($iGroupId, $iSurveyId);
-
-        //this is only important for massaction ... (do we have massaction for survey groups?)
+        if ($oQuestionGroup) {
+            $iSurveyId = $oQuestionGroup->sid;
+            $questionGroupService = $this->getQuestionGroupServiceClass();
+            $iGroupsDeleted = $questionGroupService->deleteGroup(
+                $iGroupId,
+                $iSurveyId
+            );
+        }
         if ($asJson !== false) {
             $success = $iGroupsDeleted > 0;
             $this->renderJSON(
@@ -415,8 +421,6 @@ class QuestionGroupsAdministrationController extends LSBaseController
         }
 
         $survey = Survey::model()->findByPk($iSurveyId);
-        // Make sure we have the latest groups data
-        $survey->refresh();
         $landOnSideMenuTab = App()->request->getPost('landOnSideMenuTab');
         if ($landOnSideMenuTab == 'structure' && !empty($survey->groups)) {
             $this->redirect(
@@ -430,7 +434,12 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 )
             );
         } else {
-            $this->redirect($this->createUrl('questionAdministration/listQuestions', ['surveyid' => $iSurveyId , 'activeTab' => 'groups']));
+            $this->redirect(
+                $this->createUrl(
+                    'questionAdministration/listQuestions',
+                    ['surveyid' => $iSurveyId, 'activeTab' => 'groups']
+                )
+            );
         }
     }
 

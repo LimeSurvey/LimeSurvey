@@ -3520,12 +3520,11 @@ class remotecontrol_handle
             return array('status' => 'No permission');
         }
 
-        $tempdir = Yii::app()->getConfig("tempdir");
+		$sUploadDir = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/";
 
-        $sTempUploadDir = $tempdir . '/upload/';
-        if (!file_exists($sTempUploadDir)) {
-            if (!mkdir($sTempUploadDir)) {
-                return array('status' => 'Can not make temporary upload directory');
+        if (!file_exists($sUploadDir)) {
+            if (!mkdir($sUploadDir)) {
+                return array('status' => 'Can not make upload directory');
             }
         }
 
@@ -3554,8 +3553,8 @@ class remotecontrol_handle
         // This also accounts for BASE64 overhead
         $size = (0.001 * 3 * strlen($sFileContent)) / 4;
 
-        $randfilename = 'futmp_' . randomChars(15) . '_' . $pathinfo['extension'];
-        $randfileloc = $sTempUploadDir . $randfilename;
+        $randfilename = 'fu_' . randomChars(15) . '_' . $pathinfo['extension'];
+        $randfileloc = $sUploadDir . $randfilename;
 
         if ($size > $maxfilesize) {
             return array('status' => sprintf('Sorry, this file is too large. Only files up to %s KB are allowed.', $maxfilesize));
