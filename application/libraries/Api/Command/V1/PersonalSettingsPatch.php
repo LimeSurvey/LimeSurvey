@@ -39,6 +39,15 @@ class PersonalSettingsPatch implements CommandInterface
         // Update the user's personal settings
         $result = $this->updatePersonalSettings($userId, $settingsData);
 
+        if (!$result) {
+            return $this->responseFactory
+                ->makeError(
+                    'Error updating personal settings',
+                    400,
+                    'personal_settings_update_error'
+                );
+        }
+
         // Return a success response
         return $this->responseFactory
             ->makeSuccess([
