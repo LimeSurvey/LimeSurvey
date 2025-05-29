@@ -23,7 +23,7 @@ jobs:
     strategy:
       matrix:
         # Specify what version of nodejs you want to test
-        nodeJS-versions: ['10.16.3']
+        nodeJS-versions: ['20.x']  # Update from '10.16.3' to '20.x'
     name: Build Frontend Packages
     steps:
       - name: Checkout the code
@@ -32,10 +32,6 @@ jobs:
       - name: Run composer
         run: |
           composer install -vvv
-
-      - name: Run yarn
-        run: |
-          yarn install
 
       - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
         run: |
@@ -46,6 +42,10 @@ jobs:
           # Install Node.js
           nvm install ${{ matrix.nodeJS-versions }}
           nvm use ${{ matrix.nodeJS-versions }}
+
+      - name: Run yarn
+        run: |
+          yarn install
 
       - name: Install adminbasics
         run: |
@@ -74,7 +74,7 @@ jobs:
     strategy:
       matrix:
         # Specify what version of nodejs you want to test
-        nodeJS-versions: ['10.16.3']
+        nodeJS-versions: ['20.x']  # Update from '10.16.3' to '20.x'
     name: Run Frontend Tests
     steps:
       - name: Checkout the code
@@ -105,5 +105,3 @@ jobs:
           cd ${{ github.workspace }}
           yarn --cwd ./assets/packages/adminbasics run test
         #  yarn --cwd ./assets/packages/adminsidepanel run test
-  
-    
