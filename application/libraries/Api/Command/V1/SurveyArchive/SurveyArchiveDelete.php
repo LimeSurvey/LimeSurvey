@@ -48,16 +48,12 @@ class SurveyArchiveDelete implements CommandInterface
             throw new \InvalidArgumentException("Missing required parameter: timestamp");
         }
 
-        $archiveTypes = $request->getData('archiveTypes', []);
-        if (empty($archiveTypes)) {
-            throw new \InvalidArgumentException("Missing required parameter: archiveTypes");
-        }
-
         $surveyId = (int) $request->getData('_id');
         if ($response = $this->ensurePermissions($surveyId)) {
             return $response;
         }
 
+        $archiveTypes = $request->getData('archiveTypes', []);
         $this->surveyArchiveService->deleteArchiveData($surveyId, $timestamp, $archiveTypes);
 
         return $this->responseFactory->makeSuccess();

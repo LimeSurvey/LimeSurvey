@@ -129,7 +129,7 @@ class SurveyArchiveService
     {
         $requiredPermissions = [];
 
-        if (isEmpty($ArchivesToDelete)) {
+        if (empty($ArchivesToDelete)) {
             $ArchivesToDelete = [
                 self::$Response_archive,
                 self::$Tokens_archive,
@@ -233,7 +233,11 @@ class SurveyArchiveService
         foreach ($data as $record) {
             if (isset($record->token)) {
                 $token = $record->token;
-                $record->token = $model->decryptSingle($token);
+                try {
+                    $record->token = $model->decryptSingle($token);
+                } catch (\Exception $e) {
+                    // do nothing, just skip this record
+                }
             }
         }
 
