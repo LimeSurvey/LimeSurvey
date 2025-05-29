@@ -33,10 +33,6 @@ jobs:
         run: |
           composer install -vvv
 
-      - name: Run yarn
-        run: |
-          yarn install
-
       - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
         run: |
           # Update
@@ -46,6 +42,10 @@ jobs:
           # Install Node.js
           nvm install ${{ matrix.nodeJS-versions }}
           nvm use ${{ matrix.nodeJS-versions }}
+
+      - name: Run yarn
+        run: |
+          yarn install
 
       - name: Install adminbasics
         run: |
@@ -105,5 +105,3 @@ jobs:
           cd ${{ github.workspace }}
           yarn --cwd ./assets/packages/adminbasics run test
         #  yarn --cwd ./assets/packages/adminsidepanel run test
-  
-    
