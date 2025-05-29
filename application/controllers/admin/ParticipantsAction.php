@@ -2553,7 +2553,7 @@ class ParticipantsAction extends SurveyCommonAction
 
         // TODO: This code can't be reached
         echo "<p>";
-        printf(gT("%s participants have been copied to the survey survey participants list"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>");
+        printf(gT("%s participants have been copied to the survey participants list"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>");
         echo "</p>";
         if ($response['duplicate'] > 0) {
             echo "<p>";
