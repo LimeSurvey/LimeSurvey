@@ -73,8 +73,7 @@ class SurveyCondition
      */
     public function getQIDFromFieldName(string $copyc)
     {
-        list(,, $newqid) = explode("X", (string) $copyc);
-        return $newqid;
+        return substr(explode("_", $copyc)[0], 1);
     }
 
     /**
@@ -87,7 +86,8 @@ class SurveyCondition
      */
     public function getFieldName(int $sid, int $gid, int $qid, string $title = '')
     {
-        return $sid . self::X . $gid . self::X . $qid . $title;
+        $questions = [\Question::model()->findByPk($qid)];
+        return getFieldName("{{responses_{$sid}}}", $sid . self::X . $gid . self::X . $qid . $title, $questions, $sid, $gid);
     }
 
     /**
@@ -1520,7 +1520,7 @@ class SurveyCondition
                             if ($rows['method'] == 'RX') {
                                 $rightOperandType = 'regexp';
                                 $data['target'] = HTMLEscape($rows['value']);
-                            } elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]*)@$/', (string) $rows['value'], $matchedSGQA) > 0) {
+                            } elseif (preg_match('/^@(Q[0-9]+[^@]*)@$/', (string) $rows['value'], $matchedSGQA) > 0) {
                                 // SGQA
                                 $rightOperandType = 'prevQsgqa';
                                 $textfound = false;
