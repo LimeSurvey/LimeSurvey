@@ -154,6 +154,12 @@ class SurveysController extends LSYii_Controller
                 $message = gT('The above error occurred when the Web server was processing your request.');
                 break;
         }
+
+        // For CDbException, we clear the message in order to avoid showing sensitive information to the user.
+        if (isset($error['type']) && $error['type'] == 'CDbException') {
+            $error['message'] = "";
+        }
+
         $aError['type'] = $error['code'];
         $aError['error'] = $title;
         if (!empty($error['message'])) {
