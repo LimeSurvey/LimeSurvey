@@ -236,7 +236,7 @@ class SurveyLanguageSetting extends LSActiveRecord
      */
     public function getAttributeCaptions()
     {
-        $captions = @json_decode($this->surveyls_attributecaptions, true);
+        $captions = @json_decode((string) $this->surveyls_attributecaptions, true);
         return $captions !== false ? $captions : array();
     }
 
