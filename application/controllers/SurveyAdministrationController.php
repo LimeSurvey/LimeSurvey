@@ -394,10 +394,8 @@ class SurveyAdministrationController extends LSBaseController
         $aData['oSurvey'] = $survey;
         $aData['bShowAllOptions'] = true;
         $aData['bShowInherited'] = true;
-        $oSurveyOptions = $survey;
-        $oSurveyOptions->bShowRealOptionValues = false;
-        $oSurveyOptions->setOptions();
-        $aData['oSurveyOptions'] = $oSurveyOptions->oOptionLabels;
+        $survey->setOptions();
+        $aData['oSurveyOptions'] = $survey->parentEffectiveOptionLabels;
 
         $aData['optionsOnOff'] = array(
             'Y' => gT('On', 'unescaped'),
@@ -1919,8 +1917,6 @@ class SurveyAdministrationController extends LSBaseController
         if (empty($survey)) {
             throw new Exception('Found no survey with id ' . $iSurveyID);
         }
-
-        $survey->setOptionsFromDatabase();
 
         //Get all languages
         $grplangs = $survey->additionalLanguages;

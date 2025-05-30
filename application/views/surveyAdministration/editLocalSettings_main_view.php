@@ -7,7 +7,7 @@
  */
 
 $templateData['oSurvey']         = $oSurvey;
-$templateData['oSurveyOptions']  = $oSurvey->oOptionLabels;
+$templateData['oSurveyOptions']  = $oSurvey->parentEffectiveOptionLabels;
 $templateData['bShowInherited']  = $oSurvey->showInherited;
 $templateData['bShowAllOptions'] = true;
 $templateData['optionsOnOff']    = $optionsOnOff;

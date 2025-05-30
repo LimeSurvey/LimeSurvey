@@ -158,15 +158,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
     // used for twig files, same content as $oOptions, but in array format
     public $aOptions = array();
 
+    public $parentEffectiveOptions;
+    public $parentEffectiveOptionLabels;
+
     public $showInherited = 1;
 
     public $searched_value;
 
     public $showsurveypolicynotice = 0;
-
-    // Whether to show the option values of the survey or the inherited ones, if applicable.
-    public $bShowRealOptionValues = true;
-
 
     private $sSurveyUrl;
 
@@ -2264,19 +2263,28 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     public function setOptions($gsid = 1)
     {
-        $instance = SurveysGroupsettings::getInstance($gsid, $this, null, 1, $this->bShowRealOptionValues);
+        // Load effective options for the survey (ie. with the inherited values when applicable)
+        $instance = SurveysGroupsettings::getInstance($gsid, $this, null, 1, true);
         if ($instance) {
             $this->oOptions = $instance->oOptions;
             $this->oOptionLabels = $instance->oOptionLabels;
             $this->aOptions = (array) $instance->oOptions;
             $this->showInherited = $instance->showInherited;
         }
+        // Load effective options for the group (the values that would be inherited if a survey setting was set to inherit)
+        $parentSettings = SurveysGroupsettings::getInstance($gsid, null, null, 2);
+        if ($parentSettings) {
+            $this->parentEffectiveOptions = $parentSettings->oOptions;
+            $this->parentEffectiveOptionLabels = $parentSettings->oOptionLabels;
+        }
     }
 
+    /**
+     * @deprecated
+     */
     public function setOptionsFromDatabase()
     {
         // set real survey options with inheritance
-        $this->bShowRealOptionValues = false;
         $this->setOptions($this->gsid);
     }
 
