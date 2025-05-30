@@ -363,9 +363,86 @@ class Update_632 extends DatabaseUpdateBase
                 SELECT {$from}
                 FROM {$TABLE_NAME};
             ";
+            if (count($fieldMap[$TABLE_NAME]) && (strpos($TABLE_NAME, "survey") !== false) && (strpos($TABLE_NAME, "timing") === false)) {
+                $keys = array_keys($fieldMap[$TABLE_NAME]);
+                arsort($keys);
+                $names = [];
+                $parts = explode("_", $TABLE_NAME);
+                $index = count($parts) - ((strpos($TABLE_NAME, "old") === false) ? 1 : 2);
+                $sid = $parts[$index];
+                foreach ($keys as $oldName) {
+                    $names[$oldName] = $fieldMap[$TABLE_NAME][$oldName];
+                }
+                $rawAdditionalNames = [];
+                $questions = \Question::model()->findAll("sid = :sid", [
+                    ":sid" => $sid
+                ]);
+                $qids = [0];
+                foreach ($questions as $question) {
+                    $rawAdditionalNames["{$question->sid}X{$question->gid}X{$question->qid}"] = "Q{$question->qid}";
+                    $qids[] = $question->qid;
+                }
+                $additionalNameKeys = array_keys($rawAdditionalNames);
+                arsort($additionalNameKeys);
+                $additionalNames = [];
+                foreach ($additionalNameKeys as $additionalNameKey) {
+                    $additionalNames[$additionalNameKey] = $rawAdditionalNames[$additionalNameKey];
+                }
+                $conditions = \Condition::model()->findAll("qid in (" . implode(",", $qids) . ")");
+                foreach ($conditions as $condition) {
+                    $oldValue = $condition->value;
+                    $oldCFieldName = $condition->cfieldname;
+                    foreach ($names as $oldName => $newName) {
+                        $condition->value = str_replace($oldName, $newName, $condition->value);
+                        $condition->cfieldname = str_replace($oldName, $newName, $condition->cfieldname);
+                    }
+                    foreach ($additionalNames as $oldName => $newName) {
+                        $condition->value = str_replace($oldName, $newName, $condition->value);
+                        $condition->cfieldname = str_replace($oldName, $newName, $condition->cfieldname);
+                    }
+                    if (($condition->value !== $oldValue) || ($condition->cfieldname !== $oldCFieldName)) {
+                        $condition->save();
+                    }
+                }
+            }
             $this->db->createCommand($scripts[$TABLE_NAME]['CREATE'])->execute();
             $this->db->createCommand($preinsert . $scripts[$TABLE_NAME]['INSERT'] . $postinsert)->execute();
             $this->db->createCommand($scripts[$TABLE_NAME]['DROP'])->execute();
+        }
+
+        $passiveSurveys = \Survey::model()->findAll("active <> 'Y'");
+        foreach ($passiveSurveys as $passiveSurvey) {
+            $qids = [0];
+            $questions = \Question::model()->findAll("sid = :sid", [
+                ":sid" => $passiveSurvey->sid
+            ]);
+            $rawAdditionalNames = [];
+            foreach ($questions as $question) {
+                $rawAdditionalNames["{$question->sid}X{$question->gid}X{$question->qid}"] = "Q{$question->qid}";
+                $qids[] = $question->qid;
+            }
+            $additionalNameKeys = array_keys($rawAdditionalNames);
+            arsort($additionalNameKeys);
+            $additionalNames = [];
+            foreach ($additionalNameKeys as $additionalNameKey) {
+                $additionalNames[$additionalNameKey] = $rawAdditionalNames[$additionalNameKey];
+            }
+            $conditions = \Condition::model()->findAll("qid in (" . implode(",", $qids) . ")");
+            foreach ($conditions as $condition) {
+                $oldValue = $condition->value;
+                $oldCFieldName = $condition->cfieldname;
+                foreach ($names as $oldName => $newName) {
+                    $condition->value = str_replace($oldName, $newName, $condition->value);
+                    $condition->cfieldname = str_replace($oldName, $newName, $condition->cfieldname);
+                }
+                foreach ($additionalNames as $oldName => $newName) {
+                    $condition->value = str_replace($oldName, $newName, $condition->value);
+                    $condition->cfieldname = str_replace($oldName, $newName, $condition->cfieldname);
+                }
+                if (($condition->value !== $oldValue) || ($condition->cfieldname !== $oldCFieldName)) {
+                    $condition->save();
+                }
+            }
         }
 
         $archivedSettings = \ArchivedTableSettings::model()->findAll();
