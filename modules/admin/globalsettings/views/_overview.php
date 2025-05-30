@@ -45,11 +45,11 @@
             <td><?php echo $deactivatedsurveys; ?></td>
         </tr>
         <tr>
-            <th><?php eT("Active survey participants tables"); ?>:</th>
+            <th><?php eT("Active survey participant lists"); ?>:</th>
             <td><?php echo $activetokens; ?></td>
         </tr>
         <tr>
-            <th><?php eT("Deactivated survey participants tables"); ?>:</th>
+            <th><?php eT("Deactivated survey participant lists"); ?>:</th>
             <td><?php echo $deactivatedtokens; ?></td>
         </tr>
 

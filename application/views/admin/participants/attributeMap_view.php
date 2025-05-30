@@ -13,7 +13,7 @@
 
     /* SCRIPT TEXT */
     var attributesMappedText = "<?php eT("All the attributes are automatically mapped") ?>";
-    var mustPairAttributeText= "<?php eT("You have to pair it with one attribute of the survey participants table") ?>";
+    var mustPairAttributeText= "<?php eT("You have to pair it with one attribute of the survey participant list") ?>";
     var onlyOneAttributeMappedText="<?php eT("Only one central attribute is mapped with participant attribute") ?>";
     var cannotAcceptTokenAttributesText="<?php eT("This list cannot accept survey participant attributes.") ?>";
 
