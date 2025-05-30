@@ -70,7 +70,7 @@ class Tokens extends SurveyCommonAction
 
         // this data is for table
         if (($_POST['oldtable'] ?? null) && (($_POST['restoretable'] ?? null) === 'Y') && (!$survey->hasTokensTable)) {
-            $this->newtokentable($iSurveyId);
+            $this->newParticipantTable($iSurveyId);
         }
         Yii::import('application.libraries.Date_Time_Converter', true);
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
@@ -403,7 +403,7 @@ class Tokens extends SurveyCommonAction
         App()->clientScript->registerPackage('bootstrap-switch');
 
         if (!$survey->hasTokensTable) {
-            $this->newtokentable($iSurveyId);
+            $this->newParticipantTable($iSurveyId);
         }
 
         /* build JS variable to hide buttons forbidden for the current user */
@@ -634,7 +634,7 @@ class Tokens extends SurveyCommonAction
 
         /*if (!$survey->hasTokensTable) {
             // If no tokens table exists
-            $this->newtokentable($iSurveyId);
+            $this->newParticipantTable($iSurveyId);
         }*/
         App()->loadHelper("surveytranslator");
 
@@ -784,7 +784,7 @@ class Tokens extends SurveyCommonAction
 
         if (!$survey->hasTokensTable) {
             // If no tokens table exists
-            $this->newtokentable($iSurveyId);
+            $this->newParticipantTable($iSurveyId);
         }
 
         Yii::app()->loadHelper("surveytranslator");
@@ -937,7 +937,7 @@ class Tokens extends SurveyCommonAction
         }
         if (!$survey->hasTokensTable) {
             // If no tokens table exists
-            $this->newtokentable($iSurveyID);
+            $this->newParticipantTable($iSurveyID);
         }
 
         $beforeTokenDelete = new PluginEvent('beforeTokenDelete');
@@ -974,7 +974,7 @@ class Tokens extends SurveyCommonAction
 
         /*if (!$survey->hasTokensTable) {
             // If no tokens table exists
-            $this->newtokentable($iSurveyId);
+            $this->newParticipantTable($iSurveyId);
         }*/
         Yii::app()->loadHelper("surveytranslator");
 
@@ -1171,7 +1171,7 @@ class Tokens extends SurveyCommonAction
         $bTokenExists = $oSurvey->hasTokensTable;
         if (!$bTokenExists) {
             //If no tokens table exists
-            $this->newtokentable($iSurveyId);
+            $this->newParticipantTable($iSurveyId);
         }
         Yii::app()->loadHelper("surveytranslator");
 
@@ -1264,7 +1264,7 @@ class Tokens extends SurveyCommonAction
         }
         if (!$oSurvey->hasTokensTable) {
             // If no tokens table exists
-            $this->newtokentable($iSurveyId);
+            $this->newParticipantTable($iSurveyId);
         }
 
         $number2add = sanitize_int(Yii::app()->request->getPost('addnumber'), 1, 100);
@@ -1519,7 +1519,7 @@ class Tokens extends SurveyCommonAction
 
         if (!$survey->hasTokensTable) {
             // If no tokens table exists, redirect to create token page.
-            $this->newtokentable($iSurveyId);
+            $this->newParticipantTable($iSurveyId);
         }
 
         $aData['sidemenu']['state'] = false;
@@ -1795,7 +1795,7 @@ class Tokens extends SurveyCommonAction
         }
         if (!$survey->hasTokensTable) {
             // If no tokens table exists
-            $this->newtokentable($iSurveyId);
+            $this->newParticipantTable($iSurveyId);
         }
 
         if (!is_null(Yii::app()->request->getPost('submit'))) {
@@ -1922,7 +1922,7 @@ class Tokens extends SurveyCommonAction
         }
         if (!$survey->hasTokensTable) {
             // If no tokens table exists
-            $this->newtokentable($iSurveyId);
+            $this->newParticipantTable($iSurveyId);
         }
 
 
@@ -2192,7 +2192,7 @@ class Tokens extends SurveyCommonAction
         }
         /*if (!$survey->hasTokensTable) {
             // If no tokens table exists
-            $this->newtokentable($iSurveyId);
+            $this->newParticipantTable($iSurveyId);
         }*/
 
 
@@ -2540,7 +2540,7 @@ class Tokens extends SurveyCommonAction
         }
         if (!$survey->hasTokensTable) {
             // If no tokens table exists
-            $this->newtokentable($iSurveyId);
+            $this->newParticipantTable($iSurveyId);
         }
         $aData = array();
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
@@ -2599,7 +2599,7 @@ class Tokens extends SurveyCommonAction
         }
         if (!$survey->hasTokensTable) {
             // If no tokens table exists
-            $this->newtokentable($iSurveyId);
+            $this->newParticipantTable($iSurveyId);
         }
         $aData = array();
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
@@ -2664,7 +2664,7 @@ class Tokens extends SurveyCommonAction
             }
         } else {
             if (!$survey->hasTokensTable) {
-                $this->newtokentable($iSurveyId);
+                $this->newParticipantTable($iSurveyId);
             }
             $this->getController()->redirect(["/admin/tokens/sa/index/surveyid/{$iSurveyId}"]);
         }
@@ -2685,7 +2685,7 @@ class Tokens extends SurveyCommonAction
         }
         if (!$survey->hasTokensTable) {
             // If no tokens table exists
-            $this->newtokentable($iSurveyId);
+            $this->newParticipantTable($iSurveyId);
         }
         $aData['thissurvey'] = $aData['settings'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
@@ -2764,7 +2764,7 @@ class Tokens extends SurveyCommonAction
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         /*if (!$oSurvey->hasTokensTable) {
             // If no tokens table exists
-            $this->newtokentable($iSurveyId);
+            $this->newParticipantTable($iSurveyId);
         }*/
         Yii::app()->loadHelper("surveytranslator");
 
@@ -2860,7 +2860,7 @@ class Tokens extends SurveyCommonAction
      * @param int $iSurveyId
      * @return void
      */
-    private function newtokentable($iSurveyId)
+    private function newParticipantTable($iSurveyId)
     {
         $aSurveyInfo = getSurveyInfo($iSurveyId);
         $survey = Survey::model()->findByPk($iSurveyId);

@@ -3000,7 +3000,7 @@ class remotecontrol_handle
             return array('status' => 'Error: Invalid survey ID');
         }
         if (
-            /* Same test Tokens->newtokentable */
+            /* Same test Tokens->newParticipantTable */
             !Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') &&
             !Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create')
         ) {

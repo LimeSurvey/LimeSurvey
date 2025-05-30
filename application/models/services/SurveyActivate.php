@@ -87,7 +87,7 @@ class SurveyActivate
         }
         if ($survey->access_mode !== SurveyAccessModeService::$ACCESS_TYPE_OPEN) {
             if (!$survey->hasTokensTable) {
-                $this->surveyAccessModeService->newTokenTable($survey, true);
+                $this->surveyAccessModeService->newParticipantTable($survey, true);
             }
         }
         return $result;

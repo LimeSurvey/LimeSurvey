@@ -87,7 +87,7 @@ class SurveyAccessModeService
      * @param bool $forced
      * @return bool
      */
-    public function newTokenTable(Survey $survey, bool $forced = false)
+    public function newParticipantTable(Survey $survey, bool $forced = false)
     {
         if ((!$forced) && (($survey->active !== 'Y') || ($survey->hasTokensTable))) {
             return false; //Tokens table already exists or the survey is not active, nothing to do here
@@ -173,7 +173,7 @@ class SurveyAccessModeService
         }
         $survey->access_mode = $accessMode;
         if ($oldAccessMode === self::$ACCESS_TYPE_OPEN) {
-            $this->newTokenTable($survey);
+            $this->newParticipantTable($survey);
         } elseif ($accessMode === self::$ACCESS_TYPE_OPEN) {
             $this->dropTokenTable($survey, $action);
         }
