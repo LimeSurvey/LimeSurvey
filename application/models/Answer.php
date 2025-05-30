@@ -166,6 +166,9 @@ class Answer extends LSActiveRecord
             if (is_null($aAnswer)) {
                 return null;
             }
+            if (!isset($aAnswer->answerl10ns[$sLanguage])) {
+                return null;
+            }
             $answerCache[$qid][$code][$sLanguage][$iScaleID] = $aAnswer->answerl10ns[$sLanguage]->answer;
             return $answerCache[$qid][$code][$sLanguage][$iScaleID];
         }
