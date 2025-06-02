@@ -1081,7 +1081,7 @@ class Update_632 extends DatabaseUpdateBase
                 $conditions = Condition::model()->findAll("qid in (" . implode(",", $qids) . ")");
                 foreach ($conditions as $condition) {
                     $fields = ["cfieldname", "value"];
-                    if ($this->fixText($condition, $fields, $names) || $this->fixText($condition, $fields, $additionalNames) ) {
+                    if ($this->fixText($condition, $fields, $names) || $this->fixText($condition, $fields, $additionalNames)) {
                         $condition->save();
                     }
                 }
