@@ -150,10 +150,12 @@ class SurveyResponses implements CommandInterface
 
         return $surveyId;
     }
+
     private function getSurveyDynamicModel(Request $request): \SurveyDynamic
     {
         return \SurveyDynamic::model($this->getSurveyId($request));
     }
+
     private function buildCriteria(Request $request): array
     {
         $searchParams = [];
@@ -163,13 +165,11 @@ class SurveyResponses implements CommandInterface
 
         $sort = new \CSort();
         $criteria = new \LSDbCriteria();
-
-        if ($searchParams) {
-            $this->responseFilterPatcher->apply($searchParams, $criteria, $sort, $dataMap);
-        }
+        $this->responseFilterPatcher->apply($searchParams, $criteria, $sort, $dataMap);
 
         return [$criteria, $sort];
     }
+
     private function buildPagination(Request $request): array
     {
         $pagination = $request->getData('page');

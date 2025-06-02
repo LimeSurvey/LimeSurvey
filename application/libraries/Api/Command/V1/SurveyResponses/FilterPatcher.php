@@ -22,7 +22,7 @@ class FilterPatcher
     /**
      * @param-out \CSort $sort
      */
-    public function apply(array $filterParams, \LSDbCriteria &$criteria, \CSort &$sort, $dataMap = array()): void
+    public function apply(array $filterParams, \LSDbCriteria &$criteria, \CSort &$sort, array $dataMap = array()): void
     {
         $sort->defaultOrder = "id ASC";
         if (!empty($filterParams['sort'])) {
@@ -74,7 +74,7 @@ class FilterPatcher
         $this->handlers[] = $handler;
     }
 
-    private function findMapKeyByValue($targetValue, $dataMap)
+    private function findMapKeyByValue(string $targetValue, array $dataMap): string
     {
         foreach ($dataMap as $originalKey => $properties) {
             if (isset($properties['key']) && $properties['key'] === $targetValue) {

@@ -41,7 +41,7 @@ class DateRangeConditionHandler implements HandlerInterface
         );
     }
 
-    protected function parseRange(string $range)
+    protected function parseRange(string $range): array
     {
         $parts = explode('::', $range);
 
