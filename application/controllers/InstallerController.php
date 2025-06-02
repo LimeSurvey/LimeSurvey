@@ -202,7 +202,11 @@ class InstallerController extends CController
 
         $bProceed = $oModel->hasMinimumRequirements;
 
-        $aData['sessionWritable'] = $this->checkSessionIsWritable();
+        $sessionWritable = $this->checkSessionIsWritable();
+        $aData['sessionWritable'] = $sessionWritable;
+        if (!$sessionWritable) {
+            $bProceed = false;
+        }
 
         // after all check, if flag value is true, show next button and sabe step2 status.
         if ($bProceed) {
