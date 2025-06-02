@@ -75,7 +75,8 @@ class FilterPatcher
         $this->handlers[] = $handler;
     }
 
-    private function findMapKeyByValue($targetValue, $dataMap) {
+    private function findMapKeyByValue($targetValue, $dataMap)
+    {
         foreach ($dataMap as $originalKey => $properties) {
             if (isset($properties['key']) && $properties['key'] === $targetValue) {
                 return $originalKey;

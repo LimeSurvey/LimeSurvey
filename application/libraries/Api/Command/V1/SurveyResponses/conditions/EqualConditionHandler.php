@@ -16,9 +16,11 @@ class EqualConditionHandler implements HandlerInterface
 
     public function execute(string $key, string $value): object
     {
-        return new \CDbCriteria(array(
+        return new \CDbCriteria(
+            array(
             'condition' => "$key = :match",
             'params'    => array(':match' => "$value")
-        ));
+            )
+        );
     }
 }

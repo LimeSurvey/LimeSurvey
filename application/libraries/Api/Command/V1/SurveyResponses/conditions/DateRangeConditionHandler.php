@@ -19,24 +19,31 @@ class DateRangeConditionHandler implements HandlerInterface
         $range = $this->parseRange($value);
 
         if ($range['min'] == null) {
-            return new \CDbCriteria(array(
+            return new \CDbCriteria(
+                array(
                 'condition' => "`$key` <= :max",
                 'params'    => array(':max' => $range['max'])
-            ));
+                )
+            );
         }
         else if ($range['max'] == null) {
-            return new \CDbCriteria(array(
+            return new \CDbCriteria(
+                array(
                 'condition' => "`$key` >= :min",
                 'params'    => array(':min' => $range['min'])
-            ));
+                )
+            );
         }
-        return new \CDbCriteria(array(
+        return new \CDbCriteria(
+            array(
             'condition' => "`$key` >= :min AND `$key` <= :max",
             'params'    => array(':min' => $range['min'], ':max' => $range['max'])
-        ));
+            )
+        );
     }
 
-    function parseRange(string $range) {
+    function parseRange(string $range)
+    {
         $parts = explode('::', $range);
 
         $min = isset($parts[0]) && $parts[0] !== '' ? $parts[0]: null;

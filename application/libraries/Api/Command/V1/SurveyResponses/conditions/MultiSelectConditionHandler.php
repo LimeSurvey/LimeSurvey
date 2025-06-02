@@ -26,10 +26,12 @@ class MultiSelectConditionHandler implements HandlerInterface
             $params[$paramName] = "{$value}";
         }
 
-        return new \CDbCriteria(array(
+        return new \CDbCriteria(
+            array(
             'condition' => '(' . implode(' OR ', $conditions) . ')',
             'params'    => $params
-        ));
+            )
+        );
     }
 
 }

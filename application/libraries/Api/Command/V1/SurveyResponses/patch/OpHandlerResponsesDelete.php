@@ -20,7 +20,7 @@ use LimeSurvey\ObjectPatch\{
 
 class OpHandlerResponsesDelete implements OpHandlerInterface
 {
-//    use OpHandlerSurveyTrait;
+    //    use OpHandlerSurveyTrait;
     use OpHandlerValidationTrait;
 
     protected SurveyResponseService $surveyResponseService;
@@ -34,7 +34,7 @@ class OpHandlerResponsesDelete implements OpHandlerInterface
     /**
      * Checks if the operation is applicable for the given entity.
      *
-     * @param OpInterface $op
+     * @param  OpInterface $op
      * @return bool
      */
     public function canHandle(OpInterface $op): bool
@@ -53,7 +53,7 @@ class OpHandlerResponsesDelete implements OpHandlerInterface
      *      "id": 1
      * }
      *
-     * @param OpInterface $op
+     * @param  OpInterface $op
      * @throws \CDbException
      * @throws \CException
      * @throws PermissionDeniedException
@@ -69,7 +69,8 @@ class OpHandlerResponsesDelete implements OpHandlerInterface
 
     /**
      * Checks if patch is valid for this operation.
-     * @param OpInterface $op
+     *
+     * @param  OpInterface $op
      * @return array
      */
     public function validateOperation(OpInterface $op): array

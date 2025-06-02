@@ -24,9 +24,9 @@ class SurveyResponses implements CommandInterface
     /**
      * Constructor
      *
-     * @param Survey $survey
-     * @param FilterPatcher $responseFilterPatcher
-     * @param ResponseFactory $responseFactory
+     * @param Survey                           $survey
+     * @param FilterPatcher                    $responseFilterPatcher
+     * @param ResponseFactory                  $responseFactory
      * @param TransformerOutputSurveyResponses $transformerOutputSurveyResponses
      */
     public function __construct(
@@ -44,7 +44,7 @@ class SurveyResponses implements CommandInterface
     /**
      * Run survey detail command
      *
-     * @param Request $request
+     * @param  Request $request
      * @return Response
      * @throws TransformerException
      */
@@ -55,11 +55,13 @@ class SurveyResponses implements CommandInterface
         [$criteria, $sort] = $this->buildCriteria($request);
         $pagination = $this->buildPagination($request);
 
-        $dataProvider = new \LSCActiveDataProvider($model, array(
+        $dataProvider = new \LSCActiveDataProvider(
+            $model, array(
             'sort' => $sort,
             'criteria' => $criteria,
             'pagination' => $pagination,
-        ));
+            )
+        );
 
         $data = [];
         $data['responses'] = $this->transformerOutputSurveyResponses->transform($dataProvider);
@@ -69,7 +71,7 @@ class SurveyResponses implements CommandInterface
                 'pageSize' => (int) $pagination['pageSize'],
                 'currentPage' => (int) $pagination['currentPage'],
                 'totalItems' => $dataProvider->getTotalItemCount(),
-                'totalPages' => (int) ceil($dataProvider->getTotalItemCount() / $pagination['pageSize'] ?? 1 ),
+                'totalPages' => (int) ceil($dataProvider->getTotalItemCount() / $pagination['pageSize'] ?? 1)
             ],
             'filters' => $request->getData('filters', []),
             'sort' => $request->getData('sort', []),
@@ -83,7 +85,7 @@ class SurveyResponses implements CommandInterface
     /**
      * Maps survey responses to survey questions.
      *
-     * @param array $data The survey responses and questions data.
+     * @param  array $data The survey responses and questions data.
      * @return array
      */
     public function mapResponsesToQuestions($data)
@@ -101,8 +103,8 @@ class SurveyResponses implements CommandInterface
 
 
     /**
-     * @param mixed $question
-     * @param mixed|null $subquestion
+     * @param  mixed      $question
+     * @param  mixed|null $subquestion
      * @return string|array
      */
     private function getQuestionFieldMap()
@@ -110,16 +112,20 @@ class SurveyResponses implements CommandInterface
         //This function generates an array containing the fieldcode, and matching data in the same order as the responses table
         $fieldMap = createFieldMap($this->survey, 'short', false, false);
 
-        return array_filter(array_map(function ($item) {
-            if (!empty($item['qid'])) {
-                return [
-                    'gid' => $item['gid'],
-                    'qid' => $item['qid'],
-                    'aid' => $item['aid'] ?? null,
-                    'sqid' => $item['sqid'] ?? null,
-                ];
-            }
-        }, $fieldMap));
+        return array_filter(
+            array_map(
+                function ($item) {
+                    if (!empty($item['qid'])) {
+                        return [
+                        'gid' => $item['gid'],
+                        'qid' => $item['qid'],
+                        'aid' => $item['aid'] ?? null,
+                        'sqid' => $item['sqid'] ?? null,
+                        ];
+                    }
+                }, $fieldMap
+            )
+        );
     }
 
 
@@ -170,11 +176,12 @@ class SurveyResponses implements CommandInterface
             'currentPage' => 0,
         ];
 
-        if ($pagination){
+        if ($pagination) {
             $paginationRequiredKeys = ['currentPage', 'pageSize'];
 
-            if (isset($pagination['pageSize']) && (int) $pagination['pageSize'] == 0)
+            if (isset($pagination['pageSize']) && (int) $pagination['pageSize'] == 0) {
                 $pagination['pageSize'] = $paginationDefault['pageSize'];
+            }
 
             if (!empty(array_diff_key(array_flip($paginationRequiredKeys), $pagination))) {
                 return array_merge($paginationDefault, $pagination);

@@ -65,8 +65,8 @@ class PatcherSurveyResponses extends Patcher
     /**
      * Apply patch
      *
-     * @param ?mixed $patch
-     * @param ?array $context
+     * @param  ?mixed $patch
+     * @param  ?array $context
      * @return array
      * @throws ObjectPatchException
      * @throws OpHandlerException

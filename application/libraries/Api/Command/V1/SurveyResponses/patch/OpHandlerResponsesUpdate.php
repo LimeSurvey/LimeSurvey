@@ -32,7 +32,7 @@ class OpHandlerResponsesUpdate implements OpHandlerInterface
     /**
      * Checks if the operation is applicable for the given entity.
      *
-     * @param OpInterface $op
+     * @param  OpInterface $op
      * @return bool
      */
     public function canHandle(OpInterface $op): bool
@@ -52,7 +52,8 @@ class OpHandlerResponsesUpdate implements OpHandlerInterface
      *          "startlanguage": "ar"
      *      }
      * }
-     * @param OpInterface $op
+     *
+     * @param  OpInterface $op
      * @throws \CDbException
      * @throws \CException
      * @throws PermissionDeniedException
@@ -69,7 +70,8 @@ class OpHandlerResponsesUpdate implements OpHandlerInterface
 
     /**
      * Checks if patch is valid for this operation.
-     * @param OpInterface $op
+     *
+     * @param  OpInterface $op
      * @return array
      */
     public function validateOperation(OpInterface $op): array
