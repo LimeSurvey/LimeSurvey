@@ -19,7 +19,8 @@ class SurveyResponseService
 {
     protected CDbConnection $yiiDb;
 
-    public function __construct(CDbConnection $yiiDb) {
+    public function __construct(CDbConnection $yiiDb)
+    {
         $this->yiiDb = $yiiDb;
     }
 
