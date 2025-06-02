@@ -83,7 +83,7 @@ function strSplitUnicode($str, $l = 0)
 */
 function quoteSPSS($sText, $sQuoteChar, $aField)
 {
-    $sText = trim($sText);
+    $sText = trim((string) $sText);
     if ($sText == '') {
         return '';
     }
