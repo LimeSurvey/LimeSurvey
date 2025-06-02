@@ -13,7 +13,7 @@ class SortingHandler
         return in_array(strtolower($operation), $this->order);
     }
 
-    public function execute(string $column, string $order): object
+    public function execute(string $column, string $order): \CSort
     {
         $sort     = new \CSort();
         $sort->defaultOrder = "$column $order";
