@@ -920,7 +920,8 @@ class Update_632 extends DatabaseUpdateBase
      * @param mixed $replacements the mapping of old fieldnames and new fieldnames
      * @return bool whether the record has changed and is likely to be saved
      */
-    protected function fixText(LSActiveRecord &$record, $fields, $replacements) {
+    protected function fixText(LSActiveRecord &$record, $fields, $replacements)
+    {
         $changed = false;
         foreach ($fields as $field) {
             $original = $record->{$field};
