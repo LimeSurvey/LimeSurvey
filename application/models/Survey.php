@@ -1585,7 +1585,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             [
                 'header'            => gT('Survey ID'),
                 'name'              => 'survey_id',
-                'value'             => '$data->sid',
+                'value'             => 'CHtml::link($data->sid, Yii::app()->createUrl("surveyAdministration/view", ["surveyid" => $data->sid]))',
+                'type'              => 'raw',
                 'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
                 'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
             ],
@@ -1600,7 +1601,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             [
                 'header'            => gT('Title'),
                 'name'              => 'title',
-                'value'             => '$data->defaultlanguage->surveyls_title ?? null',
+                'value'             => 'isset($data->defaultlanguage) ? CHtml::link(flattenText($data->defaultlanguage->surveyls_title), Yii::app()->createUrl("surveyAdministration/view", ["surveyid" => $data->sid])) : ""',
+                'type'              => 'raw',
                 'htmlOptions'       => ['class' => 'has-link'],
                 'headerHtmlOptions' => ['class' => 'text-nowrap'],
             ],
