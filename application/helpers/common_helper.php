@@ -4682,7 +4682,7 @@ function getRealIPAddress()
             if (empty($reverseProxyIpHeader)) {
                 $reverseProxyIpHeader = 'HTTP_X_FORWARDED_FOR';
             }
-            if (isset($_SERVER[$reverseProxyIpHeader])) {
+            if (isset($_SERVER[$reverseProxyIpHeader]) && filter_var($_SERVER[$reverseProxyIpHeader], FILTER_VALIDATE_IP) !== false) {
                 $sIPAddress = $_SERVER[$reverseProxyIpHeader];
             }
         }
