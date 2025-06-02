@@ -44,22 +44,28 @@ $rest['v1/survey-responses/$id'] = [
             ]
         ]
     ],
-    'DELETE' => [
-        'description' => 'Delete survey responses',
-        'commandClass' => \LimeSurvey\Libraries\Api\Command\V1\SurveyResponsesDelete::class,
+    'PATCH' => [
+        'tag' => 'survey',
+        'description' => 'Survey responses patch',
+        'commandClass' => \LimeSurvey\Libraries\Api\Command\V1\SurveyResponsesPatch::class,
         'auth' => true,
         'params' => [
-            'rid' => ['type' => 'array'],
+            'patch' => ['type' => 'array'],
         ],
-        'bodyParams' => [],
+        'schema' => (Schema::create()),
         'responses' => [
             'success' => [
                 'code' => 200,
                 'description' => 'Success',
             ],
             'unauthorized' => [
-                'code' => 403,
-                'description' => 'Forbidden',
+                'code' => 401,
+                'description' => 'Unauthorized',
+                'schema' => $errorSchema
+            ],
+            'not-found' => [
+                'code' => 404,
+                'description' => 'Not Found',
                 'schema' => $errorSchema
             ]
         ]
