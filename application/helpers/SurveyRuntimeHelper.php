@@ -214,6 +214,12 @@ class SurveyRuntimeHelper
             $this->displayFirstPageIfNeeded();
             $this->saveAllIfNeeded();
             $this->saveSubmitIfNeeded();
+            if (isset($_SESSION[$this->LEMsessid]['filltoken']) && isset($_SESSION[$this->LEMsessid]['srid'])) {
+                $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $_SESSION[$this->LEMsessid]['srid']]);
+                $oSurveyResponse->token = $_SESSION[$this->LEMsessid]['filltoken'];
+                unset($_SESSION[$this->LEMsessid]['filltoken']);
+                $oSurveyResponse->save();
+            }
             // TODO: move somewhere else
             $this->setNotAnsweredAndNotValidated();
         } else {
@@ -1698,10 +1704,14 @@ class SurveyRuntimeHelper
         if ($FlashError) {
             $aEnterErrors['flash'] = $FlashError;
         } else {
-            if ((Yii::app()->request->getParam('filltoken') === 'true') && (Yii::app()->request->getPost('token', '') !== '') && isset($_SESSION[$this->LEMsessid]['srid'])) {
-                $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $_SESSION[$this->LEMsessid]['srid']]);
-                $oSurveyResponse->token = Yii::app()->request->getPost('token');
-                $oSurveyResponse->save();
+            if ((Yii::app()->request->getParam('filltoken') === 'true') && (Yii::app()->request->getPost('token', '') !== '')) {
+                if (isset($_SESSION[$this->LEMsessid]['srid'])) {
+                    $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $_SESSION[$this->LEMsessid]['srid']]);
+                    $oSurveyResponse->token = Yii::app()->request->getPost('token');
+                    $oSurveyResponse->save();
+                } else {
+                    $_SESSION[$this->LEMsessid]['filltoken'] = Yii::app()->request->getPost('token');
+                }
             }
         }
 
