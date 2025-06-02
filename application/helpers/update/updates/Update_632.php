@@ -1133,7 +1133,7 @@ class Update_632 extends DatabaseUpdateBase
                     }
                 }
                 $fields = ["cfieldname", "value"];
-                if ($this->fixText($condition, $fields, $newFields) || $this->fixText($condition, $fields, $additionalNames) ) {
+                if ($this->fixText($condition, $fields, $newFields) || $this->fixText($condition, $fields, $additionalNames)) {
                     $condition->save();
                 }
             }
