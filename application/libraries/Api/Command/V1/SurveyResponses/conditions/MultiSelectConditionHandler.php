@@ -33,5 +33,4 @@ class MultiSelectConditionHandler implements HandlerInterface
             )
         );
     }
-
 }

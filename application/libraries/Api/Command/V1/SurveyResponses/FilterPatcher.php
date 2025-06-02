@@ -67,7 +67,6 @@ class FilterPatcher
         $this->addHandler(RangeConditionHandler::class);
         $this->addHandler(DateRangeConditionHandler::class);
         $this->addHandler(MultiSelectConditionHandler::class);
-
     }
 
     public function addHandler(string $handler): void

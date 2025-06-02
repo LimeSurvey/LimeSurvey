@@ -56,10 +56,11 @@ class SurveyResponses implements CommandInterface
         $pagination = $this->buildPagination($request);
 
         $dataProvider = new \LSCActiveDataProvider(
-            $model, array(
-            'sort' => $sort,
-            'criteria' => $criteria,
-            'pagination' => $pagination,
+            $model,
+            array(
+                'sort' => $sort,
+                'criteria' => $criteria,
+                'pagination' => $pagination,
             )
         );
 
@@ -123,7 +124,8 @@ class SurveyResponses implements CommandInterface
                         'sqid' => $item['sqid'] ?? null,
                         ];
                     }
-                }, $fieldMap
+                },
+                $fieldMap
             )
         );
     }
