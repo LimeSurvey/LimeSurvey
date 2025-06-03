@@ -46,50 +46,52 @@ class SurveyResponses implements CommandInterface
      *
      * @param  Request $request
      * @return Response
-     * @throws TransformerException
      */
     public function run(Request $request)
     {
-        $this->getSurvey($request);
-        $model = $this->getSurveyDynamicModel($request);
-        [$criteria, $sort] = $this->buildCriteria($request);
-        $pagination = $this->buildPagination($request);
+        try {
+            $this->getSurvey($request);
+            $model = $this->getSurveyDynamicModel($request);
+            [$criteria, $sort] = $this->buildCriteria($request);
+            $pagination = $this->buildPagination($request);
 
-        $dataProvider = new \LSCActiveDataProvider(
-            $model,
-            array(
-                'sort' => $sort,
-                'criteria' => $criteria,
-                'pagination' => $pagination,
-            )
-        );
+            $dataProvider = new \LSCActiveDataProvider(
+                $model,
+                array(
+                    'sort' => $sort,
+                    'criteria' => $criteria,
+                    'pagination' => $pagination,
+                )
+            );
 
-        $data = [];
-        $data['responses'] = $this->transformerOutputSurveyResponses->transform($dataProvider);
-        $data['surveyQuestions'] = $this->getQuestionFieldMap();
-        $data['_meta'] = [
-            'pagination' => [
-                'pageSize' => (int) $pagination['pageSize'],
-                'currentPage' => (int) $pagination['currentPage'],
-                'totalItems' => $dataProvider->getTotalItemCount(),
-                'totalPages' => (int) ceil($dataProvider->getTotalItemCount() / $pagination['pageSize'] ?? 1)
-            ],
-            'filters' => $request->getData('filters', []),
-            'sort' => $request->getData('sort', []),
-        ];
-        $data = $this->mapResponsesToQuestions($data);
+            $data = [];
+            $data['responses'] = $this->transformerOutputSurveyResponses->transform($dataProvider);
+            $data['surveyQuestions'] = $this->getQuestionFieldMap();
+            $data['_meta'] = [
+                'pagination' => [
+                    'pageSize' => $pagination['pageSize'],
+                    'currentPage' => $pagination['currentPage'],
+                    'totalItems' => $dataProvider->getTotalItemCount(),
+                    'totalPages' => ceil($dataProvider->getTotalItemCount() / ($pagination['pageSize'] ?? 1))
+                ],
+                'filters' => $request->getData('filters', []),
+                'sort' => $request->getData('sort', []),
+            ];
+            $data = $this->mapResponsesToQuestions($data);
 
-        return $this->responseFactory
-            ->makeSuccess(['responses' => $data]);
+            return $this->responseFactory->makeSuccess(['responses' => $data]);
+        } catch (TransformerException $e) {
+            return $this->responseFactory->makeError('Transformation error');
+        }
     }
 
     /**
      * Maps survey responses to survey questions.
      *
-     * @param  array $data The survey responses and questions data.
+     * @param array $data
      * @return array
      */
-    public function mapResponsesToQuestions($data)
+    public function mapResponsesToQuestions(array $data): array
     {
         foreach ($data['responses'] as &$response) {
             foreach ($response['answers'] as &$answer) {
@@ -104,11 +106,9 @@ class SurveyResponses implements CommandInterface
 
 
     /**
-     * @param  mixed      $question
-     * @param  mixed|null $subquestion
      * @return string|array
      */
-    private function getQuestionFieldMap()
+    private function getQuestionFieldMap(): array|string
     {
         //This function generates an array containing the fieldcode, and matching data in the same order as the responses table
         $fieldMap = createFieldMap($this->survey, 'short', false, false);

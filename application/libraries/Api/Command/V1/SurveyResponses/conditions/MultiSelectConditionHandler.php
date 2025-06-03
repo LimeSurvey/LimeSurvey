@@ -16,21 +16,26 @@ class MultiSelectConditionHandler implements HandlerInterface
 
     public function execute(string $key, string $value): object
     {
-        $selectedValues = explode('|', $value);
+        $key = preg_replace('/[^a-zA-Z0-9_-]/', '', $key);
+        $key = App()->db->quoteColumnName($key);
+
+        $selectedValues = array_filter(array_map('trim', explode('|', $value)));
         $conditions = [];
         $params = [];
 
-        foreach ($selectedValues as $index => $value) {
+        foreach ($selectedValues as $index => $val) {
             $paramName = ":value{$index}";
             $conditions[] = "$key = {$paramName}";
-            $params[$paramName] = "{$value}";
+            $params[$paramName] = $val;
         }
 
-        return new \CDbCriteria(
-            array(
-            'condition' => '(' . implode(' OR ', $conditions) . ')',
-            'params'    => $params
-            )
-        );
+        $criteria = new \CDbCriteria();
+
+        if (!empty($conditions)) {
+            $criteria->condition = '(' . implode(' OR ', $conditions) . ')';
+            $criteria->params = $params;
+        }
+
+        return $criteria;
     }
 }

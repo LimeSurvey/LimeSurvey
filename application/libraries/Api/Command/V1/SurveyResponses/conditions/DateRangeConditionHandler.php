@@ -16,29 +16,28 @@ class DateRangeConditionHandler implements HandlerInterface
 
     public function execute(string $key, string $value): object
     {
+        $key = preg_replace('/[^a-zA-Z0-9_-]/', '', $key);
+        $key = App()->db->quoteColumnName($key);
+
         $range = $this->parseRange($value);
 
-        if ($range['min'] == null) {
-            return new \CDbCriteria(
-                array(
-                'condition' => "`$key` <= :max",
-                'params'    => array(':max' => $range['max'])
-                )
-            );
-        } elseif ($range['max'] == null) {
-            return new \CDbCriteria(
-                array(
-                'condition' => "`$key` >= :min",
-                'params'    => array(':min' => $range['min'])
-                )
-            );
+        $min = $this->validateDate($range['min']);
+        $max = $this->validateDate($range['max']);
+
+        $criteria = new \CDbCriteria();
+
+        if ($min === false) {
+            $criteria->condition = "$key <= :max";
+            $criteria->params = [':max' => $max];
+        } elseif ($max === false) {
+            $criteria->condition = "$key >= :min";
+            $criteria->params = [':min' => $min];
+        } else {
+            $criteria->condition = "$key >= :min AND $key <= :max";
+            $criteria->params = [':min' => $min, ':max' => $max];
         }
-        return new \CDbCriteria(
-            array(
-            'condition' => "`$key` >= :min AND `$key` <= :max",
-            'params'    => array(':min' => $range['min'], ':max' => $range['max'])
-            )
-        );
+
+        return $criteria;
     }
 
     protected function parseRange(string $range): array
@@ -49,5 +48,21 @@ class DateRangeConditionHandler implements HandlerInterface
         $max = isset($parts[1]) && $parts[1] !== '' ? $parts[1] : null;
 
         return ['min' => $min, 'max' => $max];
+    }
+
+    private function validateDate(?string $date): string|false
+    {
+        if ($date === null) {
+            return false;
+        }
+
+        $dt = \DateTime::createFromFormat('Y-m-d', $date);
+
+        // If input may contain time, use 'Y-m-d H:i:s' or other format accordingly
+        if ($dt && $dt->format('Y-m-d') === $date) {
+            return $date;
+        }
+
+        return false;
     }
 }

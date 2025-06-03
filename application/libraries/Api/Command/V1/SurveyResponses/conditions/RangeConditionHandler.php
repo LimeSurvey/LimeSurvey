@@ -16,29 +16,29 @@ class RangeConditionHandler implements HandlerInterface
 
     public function execute(string $key, string $value): object
     {
+        $key = preg_replace('/[^a-zA-Z0-9_-]/', '', $key);
+        $key = App()->db->quoteColumnName($key);
+
         $range = $this->parseRange($value);
 
-        if ($range['min'] == null) {
-            return new \CDbCriteria(
-                array(
-                'condition' => "CAST(`$key` AS UNSIGNED) <= :max",
-                'params'    => array(':max' => $range['max'])
-                )
-            );
-        } elseif ($range['max'] == null) {
-            return new \CDbCriteria(
-                array(
-                'condition' => "CAST(`$key` AS UNSIGNED) >= :min",
-                'params'    => array(':min' => $range['min'])
-                )
-            );
+        $min = isset($range['min']) && is_numeric($range['min']) ? (float)$range['min'] : null;
+        $max = isset($range['max']) && is_numeric($range['max']) ? (float)$range['max'] : null;
+
+
+        $criteria = new \CDbCriteria();
+
+        if ($min === null) {
+            $criteria->condition = "CAST($key AS UNSIGNED) <= :max";
+            $criteria->params = [':max' => $max];
+        } elseif ($max === null) {
+            $criteria->condition = "CAST($key AS UNSIGNED) >= :min";
+            $criteria->params = [':min' => $min];
+        } else {
+            $criteria->condition = "CAST($key AS UNSIGNED) >= :min AND CAST($key AS UNSIGNED) <= :max";
+            $criteria->params = [':min' => $min, ':max' => $max];
         }
-        return new \CDbCriteria(
-            array(
-            'condition' => "CAST(`$key` AS UNSIGNED) >= :min AND CAST(`$key` AS UNSIGNED) <= :max",
-            'params'    => array(':min' => $range['min'], ':max' => $range['max'])
-            )
-        );
+
+        return $criteria;
     }
 
     protected function parseRange(string $range): array

@@ -16,11 +16,12 @@ class EqualConditionHandler implements HandlerInterface
 
     public function execute(string $key, string $value): object
     {
-        return new \CDbCriteria(
-            array(
-            'condition' => "$key = :match",
-            'params'    => array(':match' => "$value")
-            )
-        );
+        $key = preg_replace('/[^a-zA-Z0-9_-]/', '', $key);
+        $key = App()->db->quoteColumnName($key);
+
+        $criteria = new \CDbCriteria();
+        $criteria->addColumnCondition([$key => $value]);
+
+        return $criteria;
     }
 }

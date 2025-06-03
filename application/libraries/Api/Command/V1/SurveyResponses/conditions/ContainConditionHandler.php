@@ -16,11 +16,13 @@ class ContainConditionHandler implements HandlerInterface
 
     public function execute(string $key, string $value): object
     {
-        return new \CDbCriteria(
-            array(
+        $key = preg_replace('/[^a-zA-Z0-9_-]/', '', $key);
+        $key = App()->db->quoteColumnName($key);
+        $value = trim($value);
+
+        return new \CDbCriteria([
             'condition' => "$key LIKE :match",
-            'params'    => array(':match' => "%$value%")
-            )
-        );
+            'params'    => [':match' => "%$value%"],
+        ]);
     }
 }
