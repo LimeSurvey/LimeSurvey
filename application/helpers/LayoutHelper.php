@@ -146,8 +146,6 @@ class LayoutHelper
             //new create process (including survey, survey group, import survey)
             $aData['extraMenus'][] = $this->getCreateMenu();
 
-           // $aData['extraMenus'] = ''; //todo extraMenu should work
-
             // Get notification menu
             $surveyId = $aData['surveyid'] ?? null;
             Yii::import('application.controllers.admin.NotificationController');
@@ -159,7 +157,7 @@ class LayoutHelper
     }
 
     /**
-     *
+     * Returns extra menu for the new create process (including survey, survey group, import survey)
      *
      * @return Menu
      */
@@ -177,6 +175,15 @@ class LayoutHelper
             'isDivider' => false,
             'isSmallText' => false,
             'label' => gT('Survey'),
+            'href' => \Yii::app()->createUrl('surveyAdministration/newSurvey'),
+            'iconClass' => 'ri-add-line',
+        ];
+        $menuItems[] = (new MenuItem($menuItemNewSurvey));
+
+        $menuItemNewSurvey = [
+            'isDivider' => false,
+            'isSmallText' => false,
+            'label' => gT('Survey (default values)'),
             'href' => \Yii::app()->createUrl('surveyAdministration/createSurvey'),
             'iconClass' => 'ri-add-line',
         ];
