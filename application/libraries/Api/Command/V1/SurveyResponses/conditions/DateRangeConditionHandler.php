@@ -50,7 +50,11 @@ class DateRangeConditionHandler implements HandlerInterface
         return ['min' => $min, 'max' => $max];
     }
 
-    private function validateDate(string $date): false|string
+    /**
+     * @param string $date
+     * @return string|false
+     */
+    private function validateDate(string $date)
     {
         $dt = \DateTime::createFromFormat('Y-m-d', $date);
 
