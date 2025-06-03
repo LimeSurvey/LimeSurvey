@@ -108,7 +108,7 @@ class SurveyResponses implements CommandInterface
     /**
      * @return string|array
      */
-    private function getQuestionFieldMap(): array|string
+    private function getQuestionFieldMap(): string
     {
         //This function generates an array containing the fieldcode, and matching data in the same order as the responses table
         $fieldMap = createFieldMap($this->survey, 'short', false, false);
