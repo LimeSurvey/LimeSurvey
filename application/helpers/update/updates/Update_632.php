@@ -643,7 +643,6 @@ class Update_632 extends DatabaseUpdateBase
             } else {
                 --$questionSeq; // didn't generate a valid $fieldmap entry, so decrement the question counter to ensure they are sequential
             }
-
         }
         App()->setLanguage($sOldLanguage);
 
