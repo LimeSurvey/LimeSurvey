@@ -106,7 +106,7 @@ class SurveyResponses implements CommandInterface
 
 
     /**
-     * @return string|array
+     * @return string
      */
     private function getQuestionFieldMap(): string
     {
