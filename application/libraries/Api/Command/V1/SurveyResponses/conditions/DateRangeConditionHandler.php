@@ -50,7 +50,7 @@ class DateRangeConditionHandler implements HandlerInterface
         return ['min' => $min, 'max' => $max];
     }
 
-    private function validateDate(?string $date): string|false
+    private function validateDate(string $date)
     {
         if ($date === null) {
             return false;
