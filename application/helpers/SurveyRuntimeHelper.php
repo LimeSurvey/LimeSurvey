@@ -490,7 +490,7 @@ class SurveyRuntimeHelper
                         'SGQ' => $qa[7],
                         'QUESTION_CODE' => $qa[0]['code'], // Always ?
                     ));
-
+                    $questionAttributes = QuestionAttribute::model()->getQuestionAttributes($qid);
                     // easier to understand for survey maker
                     $aGroup['aQuestions'][$qid]['qid']                  = $qa[4];
                     $aGroup['aQuestions'][$qid]['gid']                  = $qinfo['info']['gid'];
@@ -508,6 +508,7 @@ class SurveyRuntimeHelper
                     $aGroup['aQuestions'][$qid]['answer']               = $qa[1];
                     $aGroup['aQuestions'][$qid]['help']['show']         = (flattenText($lemQuestionInfo['info']['help'], true, true) != '');
                     $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], null, 3, 1, false, true, false);
+                    $aGroup['aQuestions'][$qid]['image']                 = is_array($questionAttributes) && array_key_exists('image', $questionAttributes) ? $questionAttributes['image'] : [];
                     $aGroup['aQuestions'][$qid] = $this->doBeforeQuestionRenderEvent($aGroup['aQuestions'][$qid]);
                     LimeExpressionManager::updateReplacementFields(array(
                         'QID' => null,

@@ -1,24 +1,32 @@
-{#
-    LimeSurvey
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
-    All rights reserved.
-    License: GNU/GPL License v2 or later, see LICENSE.php
-    LimeSurvey is free software. This version may have been modified pursuant
-    to the GNU General Public License, and as distributed it includes or
-    is derivative of works licensed under the GNU General Public License or
-    other free or open source software licenses.
-    See COPYRIGHT.php for copyright notices and details.
+<!-- Question {{ aQuestion.qid }}  -->
+{% set hasImage = aQuestion.image['image_path'] is defined and aQuestion.image['image_path'] %}
+{% set imageAlign = aQuestion.image['image_align'] is defined ? aQuestion.image['image_align'] : 'left' %}
 
-
-
-    (¯`·._.·(¯`·._.· Question Container  ·._.·´¯)·._.·´¯)
-
-    The div containing the question is one of tag that could often change from a template to another
-    Different classes, options, etc
-    So we separate it
-#}
-<!-- Question {{ aQuestion.qid  }}  -->
 <div {{ aQuestion.attributes }} class="row {{ aQuestion.class }} {{ aQuestion.input_error_class }} {{ aSurveyInfo.class.questioncontainer }}" {{ aSurveyInfo.attr.questioncontainer }}>
-    {{ include('./subviews/survey/question.twig') }}
+    {% if hasImage %}
+        {% if imageAlign == 'center' %}
+            <div class="position-relative w-100">
+                <div class="question-image-container w-100">
+                    {{ include('./subviews/survey/question_subviews/question_image.twig') }}
+                </div>
+                <div class="question-content-container position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center">
+                    <div class="bg-dark bg-opacity-50 p-3 w-100">
+                        {{ include('./subviews/survey/question.twig') }}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="d-flex flex-wrap {% if imageAlign == 'right' %}flex-row-reverse{% endif %}">
+                <div class="question-image-container col-12 col-md-4">
+                    {{ include('./subviews/survey/question_subviews/question_image.twig') }}
+                </div>
+                <div class="question-content-container col-12 col-md-8">
+                    {{ include('./subviews/survey/question.twig') }}
+                </div>
+            </div>
+        {% endif %}
+    {% else %}
+        {{ include('./subviews/survey/question.twig') }}
+    {% endif %}
 </div>
-<!-- End of question  {{ aQuestion.qid  }}  -->
+<!-- End of question {{ aQuestion.qid }} -->
