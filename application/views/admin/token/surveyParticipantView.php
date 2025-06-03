@@ -142,6 +142,9 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
             echo eT("No survey participants found.");
         ?>
                 <input class="btn btn-large btn-block btn-outline-secondary" type='button' value='<?php eT("Add participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/" . $surveyid); ?>', '_top')" />
+                <?php
+                if (isset($oldlist)) {
+                ?>
                 <div class="col-12 content-right mt-4">
                     <div class="card card-primary">
                         <h2><?php eT("Restore options"); ?></h2>
@@ -156,14 +159,12 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                         <p>
                             <?php 
                             echo CHtml::form(array("admin/tokens/sa/index/surveyid/{$oSurvey->sid}"), 'post');
-                            if (isset($oldlist)) {
                             ?>
                                 <select size='4' name='oldtable' required>
                                     <?php
                                         foreach ($oldlist as $ol) {
                                             echo "<option>" . $ol . "</option>\n";
                                         }
-                                    }
                                     ?>
                                 </select><br /><br />
                                 <input type='submit' value='<?php eT("Restore"); ?>' class="btn btn-outline-secondary btn-lg"/>
@@ -174,8 +175,11 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                         </p>
                     </div>
                 </div>
+                <?php
+                }
+                ?>
         <?php endif;?>
-<?php
+    <?php
         // To update rows per page via ajax
         App()->getClientScript()->registerScript(
             "Tokens:neccesaryVars",
