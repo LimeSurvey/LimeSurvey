@@ -19,17 +19,18 @@ class Update_632 extends DatabaseUpdateBase
 {
     protected $scriptMapping;
 
-/**
-* This function generates an array containing the fieldcode, and matching data in the same order as the activate script
-*
-* @param Survey $survey Survey ActiveRecord model
-* @param string $style 'short' (default) or 'full' - full creates extra information like default values
-* @param ?boolean $force_refresh - Forces to really refresh the array, not just take the session copy
-* @param bool|int $questionid Limit to a certain qid only (for question preview) - default is false
-* @param string $sLanguage The language to use
-* @param array $aDuplicateQIDs
-* @return array
-*/
+    /**
+     * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
+     *
+     * @param Survey $survey Survey ActiveRecord model
+     * @param string $style 'short' (default) or 'full' - full creates extra information like default values
+     * @param ?boolean $force_refresh - Forces to really refresh the array, not just take the session copy
+     * @param bool|int $questionid Limit to a certain qid only (for question preview) - default is false
+     * @param string $sLanguage The language to use
+     * @param array $aDuplicateQIDs
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @return array
+     */
     protected function createOldFieldMap($survey, $style = 'short', $force_refresh = false, $questionid = false, $sLanguage = '', &$aDuplicateQIDs = array())
     {
 
@@ -643,9 +644,6 @@ class Update_632 extends DatabaseUpdateBase
                 --$questionSeq; // didn't generate a valid $fieldmap entry, so decrement the question counter to ensure they are sequential
             }
 
-            if (isset($fieldmap[$fieldname]['typename'])) {
-                $fieldmap[$fieldname]['typename'] = $typename[$fieldname] = $arow['typename'];
-            }
         }
         App()->setLanguage($sOldLanguage);
 
