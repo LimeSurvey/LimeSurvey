@@ -77,13 +77,13 @@ function strSplitUnicode($str, $l = 0)
 /**
 * Quotes a string with surrounding quotes and masking inside quotes by doubling them
 *
-* @param string $sText Text to quote
+* @param string|null $sText Text to quote
 * @param string $sQuoteChar The quote character (Use ' for SPSS and " for R)
 * @param string $aField General field information from SPSSFieldmap
 */
 function quoteSPSS($sText, $sQuoteChar, $aField)
 {
-    $sText = trim($sText);
+    $sText = trim((string) $sText);
     if ($sText == '') {
         return '';
     }
