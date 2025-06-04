@@ -3,11 +3,10 @@
 namespace LimeSurvey\Api\Command\V1;
 
 use LimeSurvey\Api\Command\CommandInterface;
-use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\ResponseFactory;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
-use LimeSurvey\Api\Command\Response\Status;
+use LimeSurvey\Api\Command\Response\Response;
 
 /**
  * Command to update personal settings
@@ -27,7 +26,7 @@ class PersonalSettingsPatch implements CommandInterface
      * Execute the command
      *
      * @param Request $request
-     * @return Status
+     * @return Response
      */
     public function run(Request $request)
     {
