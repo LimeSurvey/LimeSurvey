@@ -33,7 +33,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.nodeJS-versions }}
-          cache: 'yarn'
 
       - name: Run composer
         run: |
