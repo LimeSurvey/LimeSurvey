@@ -1090,6 +1090,12 @@ class Update_632 extends DatabaseUpdateBase
                         $localizedQuestion->save();
                     }
                 }
+                foreach ($questions as $question) {
+                    $fields = ["title", "relevance"];
+                    if ($this->fixText($question, $fields, $names) || $this->fixText($question, $fields, $additionalNames)) {
+                        $question->save();
+                    }
+                }
             }
         }
 
@@ -1147,6 +1153,12 @@ class Update_632 extends DatabaseUpdateBase
                 $fields = ["question", "script"];
                 if ($this->fixText($localizedQuestion, $fields, $newFields) || $this->fixText($localizedQuestion, $fields, $additionalNames)) {
                     $localizedQuestion->save();
+                }
+            }
+            foreach ($questions as $question) {
+                $fields = ["title", "relevance"];
+                if ($this->fixText($question, $fields, $newFields) || $this->fixText($question, $fields, $additionalNames)) {
+                    $question->save();
                 }
             }
         }
