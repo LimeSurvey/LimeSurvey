@@ -34,6 +34,109 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.14.0 (build 250520) to 6.14.1 (build 250527) May 27, 2025
+-Fixed issue: Plugin load error not sending email in console mode (Carsten Schmitz)
+-Fixed issue #20096: Confirmation email is not sent if multiple participants/email addresses are used, also applies to admin notifications (#4282) (Gabriel Jenik)
+-Fixed issue #20091: Optout/Optin broken (Carsten Schmitz)
+#Updated translation: Swahili by FredaM
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by holch, samarta, sergiobaiao, twilllig
+#Updated translation: Portuguese (Brazil) by holch, sergiobaiao, twilllig
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto, twilllig
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, twilllig
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.13.3 (build 250512) to 6.14.0 (build 250520) May 20, 2025
++New feature #20080: Send an email when plugin was deactivated (#4275) (Denis Chenu)
+-Fixed issue: box shadow wrongly displayed in navbar-toggler (Patrick Teichmann)
+-Fixed issue #41554: Internal server error (500) division by zero fix for RenderMultipleChoice (#4283) (Rami Shenouda)
+-Fixed issue #20097: SQL Error when saving failed email notification (#4281) (Gabriel Jenik)
+-Fixed issue #20091: Eternal redirections (#4277) (Denis Chenu)
+-Fixed issue #20090: Return 1st existing surey with specific link (#4276) (Denis Chenu)
+-Fixed issue #20087: Modal content not shown inside a modal but as a page itself with no style (#4270) (Gabriel Jenik)
+-Fixed issue #20086: English text string makes no sense, can't be translated (#4280) (Gabriel Jenik)
+#Updated translation: Vietnamese by twilllig
+#Updated translation: Ukrainian by twilllig
+#Updated translation: Turkish by twilllig
+#Updated translation: Thai by twilllig
+#Updated translation: Tagalog by twilllig
+#Updated translation: Swedish by twilllig
+#Updated translation: Swahili by FredaM
+#Updated translation: Spanish (Spain) by twilllig
+#Updated translation: Spanish (Mexican) by twilllig
+#Updated translation: Slovak by c_schmitz, jelen1, twilllig
+#Updated translation: Russian by twilllig
+#Updated translation: Romanian by twilllig
+#Updated translation: Portuguese (Portugal) by twilllig
+#Updated translation: Portuguese (Brazil) by c_schmitz, holch, rhnascimento, twilllig
+#Updated translation: Polish by elissa, twilllig
+#Updated translation: Norwegian (Bokmål) by twilllig
+#Updated translation: Mongolian by twilllig
+#Updated translation: Malay by twilllig
+#Updated translation: Korean by twilllig
+#Updated translation: Japanese by twilllig, d_inoue
+#Updated translation: Italian by twilllig, drsi.staff, lfanfoni, luciano.parrilla
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Indonesian by twilllig
+#Updated translation: Hungarian by twilllig
+#Updated translation: Hindi by twilllig
+#Updated translation: German by c_schmitz, twilllig
+#Updated translation: German (Informal) by c_schmitz, twilllig
+#Updated translation: French (France) by twilllig
+#Updated translation: Finnish by twilllig, Jmantysalo
+#Updated translation: Dutch by twilllig
+#Updated translation: Danish by twilllig
+#Updated translation: Czech by c_schmitz, jelen1, twilllig
+#Updated translation: Czech (Informal) by jelen1, slansky, twilllig
+#Updated translation: Croatian by twilllig
+#Updated translation: Chinese (Taiwan) (Traditional) by twilllig
+#Updated translation: Chinese (Simplified) by twilllig
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Arabic by twilllig
+
+
+Changes from 6.13.2 (build 250506) to 6.13.3 (build 250512) May 12, 2025
+-Fixed issue: If the database is using a different timezone than PHP the created/modified timestamps for certain records would differ (#4265) (Carsten Schmitz)
+-Fixed issue: Two type errors  (#4271) (Tim Willig)
+-Fixed issue #20080: Disable plugins without way to alert administrator (#4253) (Denis Chenu)
+-Fixed issue #20063: Loading spinner prevents modal button press when adding an empty participant (#4255) (Gabriel Jenik)
+-Fixed issue #19986: List with comment with Dropdown presentation set to On doesn't offer placeholder value (#4218) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Marathi by tibor.pacalat
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.13.1 (build 250428) to 6.13.2 (build 250506) May 6, 2025
+-Fixed issue: Ugly message when trying to backup DB on non-MySQL DB type (Carsten Schmitz)
+-Fixed issue #20085: Debug 2, PHP8.3 : unable to upload valid plugin (#4261) (Denis Chenu)
+-Fixed issue #20072: Unable to import some surveys with debug=1 (Carsten Schmitz)
+-Fixed issue #20071: Haitian Creole fails to quick translate (Carsten Schmitz)
+-Fixed issue #20065: [security] SQL injection in central participant management (#4247) (Denis Chenu)
+-Fixed issue #20064: Group order not set correctly when copying a question to a group such that subsequent copied questions end up in the wrong order (#4259) (Gabriel Jenik)
+-Fixed issue #20058: Can't retrieve a file uploaded with RC api (#4241) (Alain Lima)
+-Fixed issue #20057: Bulk setting the expiration date (#4256) (Gabriel Jenik)
+-Fixed issue #20017: Error selecting the first possible date in the calendar (#4252) (Gabriel Jenik)
+-Fixed issue #19769: Duplicate question type images (#4242) (HaroWana)
+-Fixed issue #19419: Batch editing in the participants table - "invitation sent","reminder sent" & "completed" fields are filled out unintentionally (#4248) (Gabriel Jenik)
+#Updated translation: Portuguese (Brazil) by c_schmitz, holch, samarta
+#Updated translation: Papiamento (Curaçao and Bonaire) by indigoblueconsult
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.13.0 (build 250415) to 6.13.1 (build 250428) April 28, 2025
 -Fixed issue #20061: Update error in PostgreSQL (#4245) (Gabriel Jenik)
 -Fixed issue #20060: If a user cannot be delete due to being forced superadmin no specific error is shown (Carsten Schmitz)

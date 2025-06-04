@@ -170,7 +170,7 @@ class OpHandlerSubQuestion implements OpHandlerInterface
         $questionId = $op->getEntityId();
         $question = $this->questionService->getQuestionBySidAndQid(
             $surveyId,
-            $questionId
+            (int)$questionId
         );
         $this->subQuestionsService->save(
             $question,

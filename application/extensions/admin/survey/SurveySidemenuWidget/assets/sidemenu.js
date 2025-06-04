@@ -16,16 +16,17 @@ $('.sidebar-icon').on('click', function (e) {
 
 
 $(document).on('ready  pjax:scriptcomplete', function(){
-    $('#breadcrumb-container').hide()
-    $(".ls-breadcrumb").append($(".side-menu-logo"));
-
+    $('.ls-breadcrumb').hide()
+    $('.topbar.editor .container-fluid .row').prepend($('.side-menu-logo'));
 });
 $(window).on("load scroll", function () {
     if ($(window).scrollTop() > 61) {
-        $(".ls-breadcrumb .side-menu-logo").removeClass('d-none');
+        $('.side-menu-logo').removeClass('d-none');
+        $('.topbar.editor').addClass('ms-0');
         // $(".topbar").css("background-color", "white");
     } else {
-        $(".ls-breadcrumb .side-menu-logo").addClass('d-none');
+        $('.side-menu-logo').addClass('d-none');
+        $('.topbar.editor').removeClass('ms-0');
         // $(".topbar").css("background-color", "inherit");
     }
 });
