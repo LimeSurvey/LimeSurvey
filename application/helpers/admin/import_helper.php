@@ -13,6 +13,7 @@
 */
 
 use LimeSurvey\Helpers\questionHelper;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 /**
  * This function imports a LimeSurvey .lsg question group XML file
@@ -1197,9 +1198,10 @@ function finalizeSurveyImportFile($newsid, $baselang)
 /**
  * Returns the tables which
  * @param int $sid
+ * @param string $baseTable
  * @return array
  */
-function getTableArchivesAndTimestamps(int $sid)
+function getTableArchivesAndTimestamps(int $sid, string $baseTable = 'old_survey')
 {
     switch (Yii::app()->db->getDriverName()) {
         case 'mysqli':
@@ -1209,7 +1211,7 @@ function getTableArchivesAndTimestamps(int $sid)
                 FROM information_schema.tables t1
                 JOIN information_schema.tables t2
                 ON t1.TABLE_SCHEMA = t2.TABLE_SCHEMA AND
-                   t2.TABLE_NAME LIKE CONCAT('%old_survey_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
+                   t2.TABLE_NAME LIKE CONCAT('%{$baseTable}_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
                 WHERE t1.TABLE_SCHEMA = DATABASE() AND
                       t1.TABLE_NAME LIKE '%old%' AND
                       t1.TABLE_NAME LIKE '%{$sid}%'
@@ -1222,7 +1224,7 @@ function getTableArchivesAndTimestamps(int $sid)
             FROM information_schema.tables t1
             JOIN information_schema.tables t2
             ON t1.TABLE_CATALOG = t2.TABLE_CATALOG AND
-               t2.TABLE_NAME LIKE CONCAT('%old_survey_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
+               t2.TABLE_NAME LIKE CONCAT('%{$baseTable}_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
             WHERE t1.TABLE_CATALOG = current_database() AND
                   t1.TABLE_NAME LIKE '%old%' AND
                   t1.TABLE_NAME LIKE '%{$sid}%'
@@ -1242,7 +1244,7 @@ function getTableArchivesAndTimestamps(int $sid)
                 FROM information_schema.tables t1
                 JOIN information_schema.tables t2
                 ON t1.TABLE_CATALOG = t2.TABLE_CATALOG AND
-                   t2.TABLE_NAME LIKE CONCAT('%old_survey_{$sid}_', substring(t1.TABLE_NAME, len(t1.TABLE_NAME) - charindex('_', reverse(t1.TABLE_NAME)) + 2, 2000))
+                   t2.TABLE_NAME LIKE CONCAT('%{$baseTable}_{$sid}_', substring(t1.TABLE_NAME, len(t1.TABLE_NAME) - charindex('_', reverse(t1.TABLE_NAME)) + 2, 2000))
                 WHERE t1.TABLE_CATALOG = db_name() AND
                       t1.TABLE_NAME LIKE '%old%' AND
                       t1.TABLE_NAME LIKE '%{$sid}%'
@@ -1342,7 +1344,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                         $aImportResults = array_merge($aTokenCreateResults, $aImportResults);
                         $aTokenImportResults = XMLImportTokens(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename, $aImportResults['newsid']);
                     } else {
-                        $aTokenImportResults['warnings'][] = gT("Unable to create survey participants table");
+                        $aTokenImportResults['warnings'][] = gT("Unable to create survey participant list");
                     }
 
                     $aImportResults = array_merge_recursive($aTokenImportResults, $aImportResults);
@@ -2783,7 +2785,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $results['answers']++;
             if (isset($oAnswerL10n)) {
                 $oAnswer = Answer::model()->findByAttributes(['qid' => $insertdata['qid'], 'code' => $insertdata['code'], 'scale_id' => $insertdata['scale_id']]);
-                $oAnswerL10n->aid = $oAnswer->aid;
+                if (isset($oAnswer->aid)) {
+                    $oAnswerL10n->aid = $oAnswer->aid;
+                }
                 $oAnswerL10n->save();
                 unset($oAnswerL10n);
             }
@@ -3320,7 +3324,7 @@ function XMLImportTokens($sFullFilePath, $iSurveyID, $sCreateMissingAttributeFie
         foreach ($xml->tokens->fields->fieldname as $sFieldName) {
             $aXLMFieldNames[] = (string) $sFieldName;
         }
-        // Get a list of all fieldnames in the survey participants table
+        // Get a list of all fieldnames in the survey participant list
         $aTokenFieldNames = Yii::app()->db->getSchema()->getTable($survey->tokensTableName, true);
         $aTokenFieldNames = array_keys($aTokenFieldNames->columns);
         $aFieldsToCreate = array_diff($aXLMFieldNames, $aTokenFieldNames);

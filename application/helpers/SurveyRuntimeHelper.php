@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\Quotas;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 /**
  * LimeSurvey
@@ -200,7 +201,7 @@ class SurveyRuntimeHelper
 
         ///////////////////////////////////////////////////////////
         // 1: We check if token and/or captcha form shouls be shown
-        if (!isset($_SESSION[$this->LEMsessid]['step'])) {
+        if ((!isset($_SESSION[$this->LEMsessid]['step'])) || (Yii::app()->request->getParam('filltoken') === 'true')) {
             $this->showTokenOrCaptchaFormsIfNeeded();
         }
         if (!$this->previewgrp && !$this->previewquestion) {
@@ -213,6 +214,12 @@ class SurveyRuntimeHelper
             $this->displayFirstPageIfNeeded();
             $this->saveAllIfNeeded();
             $this->saveSubmitIfNeeded();
+            if (isset($_SESSION[$this->LEMsessid]['filltoken']) && isset($_SESSION[$this->LEMsessid]['srid'])) {
+                $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $_SESSION[$this->LEMsessid]['srid']]);
+                $oSurveyResponse->token = $_SESSION[$this->LEMsessid]['filltoken'];
+                unset($_SESSION[$this->LEMsessid]['filltoken']);
+                $oSurveyResponse->save();
+            }
             // TODO: move somewhere else
             $this->setNotAnsweredAndNotValidated();
         } else {
@@ -1578,6 +1585,7 @@ class SurveyRuntimeHelper
     private function showTokenOrCaptchaFormsIfNeeded()
     {
         $this->iSurveyid   = $this->aSurveyInfo['sid'];
+        $accessMode        = $this->aSurveyInfo['access_mode'];
         $preview           = $this->preview;
 
         // Template settings
@@ -1600,7 +1608,7 @@ class SurveyRuntimeHelper
          */
 
         $scenarios = array(
-            "tokenRequired"   => ($tokensexist == 1),
+            "tokenRequired"   => ($this->aSurveyInfo['active'] === 'Y') && (($accessMode === SurveyAccessModeService::$ACCESS_TYPE_CLOSED) || (Yii::app()->request->getParam('filltoken') === 'true')),
             "captchaRequired" => (isCaptchaEnabled('surveyaccessscreen', $this->aSurveyInfo['usecaptcha']) && !isset($_SESSION['survey_' . $this->iSurveyid]['captcha_surveyaccessscreen']))
         );
 
@@ -1695,6 +1703,16 @@ class SurveyRuntimeHelper
 
         if ($FlashError) {
             $aEnterErrors['flash'] = $FlashError;
+        } else {
+            if ((Yii::app()->request->getParam('filltoken') === 'true') && (Yii::app()->request->getPost('token', '') !== '')) {
+                if (isset($_SESSION[$this->LEMsessid]['srid'])) {
+                    $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $_SESSION[$this->LEMsessid]['srid']]);
+                    $oSurveyResponse->token = Yii::app()->request->getPost('token');
+                    $oSurveyResponse->save();
+                } else {
+                    $_SESSION[$this->LEMsessid]['filltoken'] = Yii::app()->request->getPost('token');
+                }
+            }
         }
 
         $aEnterTokenData['aEnterErrors']    = $aEnterErrors;
