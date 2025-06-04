@@ -7,6 +7,7 @@ use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\ResponseFactory;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
+use LimeSurvey\Api\Command\Response\Status;
 
 /**
  * Command to update personal settings
@@ -26,45 +27,53 @@ class PersonalSettingsPatch implements CommandInterface
      * Execute the command
      *
      * @param Request $request
-     * @return Response
+     * @return Status
      */
     public function run(Request $request)
     {
         // Get the user IDs
         $userId = $request->getData('_id');
 
+        // Validate that userId is not null
+        if ($userId === null) {
+            return $this->responseFactory
+                ->makeError('User ID is required');
+        }
+
         // Get the settings data from the request
         $settingsData = ['showQuestionCodes' => $request->getData('showQuestionCodes', false),];
 
         // Update the user's personal settings
-        $result = $this->updatePersonalSettings($userId, $settingsData);
+        try {
+            $result = $this->updatePersonalSettings($userId, $settingsData);
 
-        if (!$result) {
+            if (!$result) {
+                return $this->responseFactory
+                    ->makeError('Error updating personal settings');
+            }
+
+            // Return a success response
             return $this->responseFactory
-                ->makeError(
-                    'Error updating personal settings',
-                    400,
-                    'personal_settings_update_error'
-                );
+                ->makeSuccess([
+                'status' => 'success',
+                'message' => 'Personal settings updated successfully'
+            ]);
+        } catch (\Exception $e) {
+            return $this->responseFactory
+                ->makeError($e->getMessage());
         }
-
-        // Return a success response
-        return $this->responseFactory
-            ->makeSuccess([
-            'status' => 'success',
-            'message' => 'Personal settings updated successfully'
-        ]);
     }
 
     /**
      * Update the personal settings for a user
      *
-     * @param int $userId
+     * @param int $userId User ID (must not be null)
      * @param array $settingsData
      * @return bool
+     * @throws \Exception If user not found
      */
-    private function updatePersonalSettings($userId, $settingsData)
-    {
+    private function updatePersonalSettings(int $userId, array $settingsData)
+        {
         // Get the user model
         $user = \User::model()->findByPk($userId);
 
