@@ -587,6 +587,10 @@ class SurveyAdministrationController extends LSBaseController
                 Permission::model()
             );
             if ($newSurvey) {
+                //create examlpe group and example question
+                $iNewGroupID = $this->createSampleGroup($newSurvey->sid);
+                $this->createSampleQuestion($newSurvey->sid, $iNewGroupID);
+
                 $redirecturl = $this->createUrl(
                     'surveyAdministration/view/',
                     ['iSurveyID' => $newSurvey->sid]
@@ -2811,7 +2815,7 @@ class SurveyAdministrationController extends LSBaseController
         $oQuestion = new Question();
         $oQuestion->sid = $iSurveyID;
         $oQuestion->gid = $iGroupID;
-        $oQuestion->type = Question::QT_T_LONG_FREE_TEXT;
+        $oQuestion->type = Question::QT_M_MULTIPLE_CHOICE;
         $oQuestion->title = 'Q00';
         $oQuestion->mandatory = 'N';
         $oQuestion->relevance = '1';
