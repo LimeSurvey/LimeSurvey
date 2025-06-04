@@ -175,15 +175,6 @@ class LayoutHelper
             'isDivider' => false,
             'isSmallText' => false,
             'label' => gT('Survey'),
-            'href' => \Yii::app()->createUrl('surveyAdministration/newSurvey'),
-            'iconClass' => 'ri-add-line',
-        ];
-        $menuItems[] = (new MenuItem($menuItemNewSurvey));
-
-        $menuItemNewSurvey = [
-            'isDivider' => false,
-            'isSmallText' => false,
-            'label' => gT('Survey (default values)'),
             'href' => \Yii::app()->createUrl('surveyAdministration/createSurvey'),
             'iconClass' => 'ri-add-line',
         ];
