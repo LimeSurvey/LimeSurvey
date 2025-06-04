@@ -11,6 +11,7 @@ use LSActiveRecord;
 use Condition;
 use Survey;
 use ArchivedTableSettings;
+use QuestionL10n;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -1082,6 +1083,13 @@ class Update_632 extends DatabaseUpdateBase
                         $condition->save();
                     }
                 }
+                $localizedQuestions = QuestionL10n::model()->findAll("qid in (" . implode(",", $qids) . ")");
+                foreach ($localizedQuestions as $localizedQuestion) {
+                    $fields = ["question", "script"];
+                    if ($this->fixText($localizedQuestion, $fields, $names) || $this->fixText($localizedQuestion, $fields, $additionalNames)) {
+                        $localizedQuestion->save();
+                    }
+                }
             }
         }
 
@@ -1102,36 +1110,43 @@ class Update_632 extends DatabaseUpdateBase
             foreach ($additionalNameKeys as $additionalNameKey) {
                 $additionalNames[$additionalNameKey] = $rawAdditionalNames[$additionalNameKey];
             }
-            $conditions = Condition::model()->findAll("qid in (" . implode(",", $qids) . ")");
-            foreach ($conditions as $condition) {
-                $oldFields = array_keys($this->createOldFieldMap($passiveSurvey));
-                $newFields = [];
-                foreach ($oldFields as $oldField) {
-                    if (strpos($oldField, "X") !== false) {
-                        $split = explode("X", $oldField);
-                        $sid = $split[0];
-                        $gid = $split[1];
-                        $qids = [];
-                        $position = 0;
-                        if (count($split) > 2) {
-                            while (($position < strlen($split[2])) && ctype_digit($split[2][$position])) {
-                                $qids [] = (count($qids) ? ($qids[count($qids) - 1] . $split[2][$position]) : $split[2][$position]);
-                                $position++;
-                            }
-                            $commaSeparatedQIDs = implode(",", $qids);
-                            $questions = Question::model()->findAll([
-                                'condition' => "sid = {$sid} and gid = {$gid} and (qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
-                            ]);
+            $oldFields = array_keys($this->createOldFieldMap($passiveSurvey));
+            $newFields = [];
+            foreach ($oldFields as $oldField) {
+                if (strpos($oldField, "X") !== false) {
+                    $split = explode("X", $oldField);
+                    $sid = $split[0];
+                    $gid = $split[1];
+                    $tempqids = [];
+                    $position = 0;
+                    if (count($split) > 2) {
+                        while (($position < strlen($split[2])) && ctype_digit($split[2][$position])) {
+                            $tempqids [] = (count($tempqids) ? ($tempqids[count($tempqids) - 1] . $split[2][$position]) : $split[2][$position]);
+                            $position++;
                         }
-                        $prefix = Yii::app()->db->tablePrefix ?? "";
-                        if (count($questions)) {
-                            $newFields[$oldField] = getFieldName($prefix . "survey_" . $passiveSurvey->sid, $oldField, $questions, (int)$sid, (int)$gid);
-                        }
+                        $commaSeparatedQIDs = implode(",", $tempqids);
+                        $questions = Question::model()->findAll([
+                            'condition' => "sid = {$sid} and gid = {$gid} and (qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
+                        ]);
+                    }
+                    $prefix = Yii::app()->db->tablePrefix ?? "";
+                    if (count($questions)) {
+                        $newFields[$oldField] = getFieldName($prefix . "survey_" . $passiveSurvey->sid, $oldField, $questions, (int)$sid, (int)$gid);
                     }
                 }
+            }
+            $conditions = Condition::model()->findAll("qid in (" . implode(",", $qids) . ")");
+            foreach ($conditions as $condition) {
                 $fields = ["cfieldname", "value"];
                 if ($this->fixText($condition, $fields, $newFields) || $this->fixText($condition, $fields, $additionalNames)) {
                     $condition->save();
+                }
+            }
+            $localizedQuestions = QuestionL10n::model()->findAll("qid in (" . implode(",", $qids) . ")");
+            foreach ($localizedQuestions as $localizedQuestion) {
+                $fields = ["question", "script"];
+                if ($this->fixText($localizedQuestion, $fields, $newFields) || $this->fixText($localizedQuestion, $fields, $additionalNames)) {
+                    $localizedQuestion->save();
                 }
             }
         }
