@@ -1,30 +1,9 @@
 <!-- Question {{ aQuestion.qid }}  -->
 {% set hasImage = aQuestion.image['image_path'] is defined and aQuestion.image['image_path'] %}
-{% set imageAlign = aQuestion.image['image_align'] is defined ? aQuestion.image['image_align'] : 'left' %}
 
 <div {{ aQuestion.attributes }} class="row {{ aQuestion.class }} {{ aQuestion.input_error_class }} {{ aSurveyInfo.class.questioncontainer }}" {{ aSurveyInfo.attr.questioncontainer }}>
     {% if hasImage %}
-        {% if imageAlign == 'center' %}
-            <div class="position-relative w-100">
-                <div class="question-image-container w-100">
-                    {{ include('./subviews/survey/question_subviews/question_image.twig') }}
-                </div>
-                <div class="question-content-container position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center">
-                    <div class="bg-dark bg-opacity-50 p-3 w-100">
-                        {{ include('./subviews/survey/question.twig') }}
-                    </div>
-                </div>
-            </div>
-        {% else %}
-            <div class="d-flex flex-wrap {% if imageAlign == 'right' %}flex-row-reverse{% endif %}">
-                <div class="question-image-container col-12 col-md-4">
-                    {{ include('./subviews/survey/question_subviews/question_image.twig') }}
-                </div>
-                <div class="question-content-container col-12 col-md-8">
-                    {{ include('./subviews/survey/question.twig') }}
-                </div>
-            </div>
-        {% endif %}
+        {{ include('./subviews/survey/question_subviews/question_image_container.twig') }}
     {% else %}
         {{ include('./subviews/survey/question.twig') }}
     {% endif %}
