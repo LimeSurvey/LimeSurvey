@@ -24,18 +24,20 @@ $(document).on('click','[data-action="deletelabelset"]',function(event){
 });
 
 $(document).on('ready  pjax:scriptcomplete', function(){
-    $('#btnDumpLabelSets').click(function(){
-        if ($('#labelsets > option:selected').size()==0) {
-            alert(strSelectLabelset);
-            return false;
-        } else {
-            return true;
-        }
-    });
-
-    // Use window focus trick to ensure loading spinner is hidden after export
     $('#exportlabelset').on('submit', function(){
-        $(window).one('focus', function(){ $('#ls-loading').hide(); });
+        $('#ls-loading').show();
+        const token = $(this).find('input[name="export_token"]').val();
+        const pollUrl = 'index.php?r=admin/export&sa=exportstatus&token=' + encodeURIComponent(token);
+        const interval = setInterval(() => {
+            $.get(pollUrl, function (data) {
+                if (data.done) {
+                    clearInterval(interval);
+                    $('#ls-loading').hide();
+                }
+            }).fail(() => {
+                console.warn('Failed to poll export status');
+            });
+        }, 1000);
     });
 
 
