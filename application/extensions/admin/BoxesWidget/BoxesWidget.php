@@ -95,30 +95,32 @@ class BoxesWidget extends CWidget
                 }
             }
         }
-        $enableLoadMoreBtn = !empty($boxes);
 
-        if (empty($boxes)) {
-            if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
-                $boxes[] = [
-                    'type' => self::TYPE_LINK,
-                    'link' => App()->createUrl('/surveyAdministration/newSurvey/'),
-                    'text' => gT('Create survey'),
-                    'icon' => 'ri-add-line',
-                    'colored' => true,
-                    'external' => false
-                ];
-            }
+        $createSurveyBox = [];
+        $createSurveyGroupBox = [];
+        if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
+            $createSurveyBox = $this->getCreateSurveyBox();
+        }
+        if (Permission::model()->hasGlobalPermission('surveysgroups', 'create')) {
+            $createSurveyGroupBox = $this->getCreateSurveyGroupBox();
+        }
 
-            if (Permission::model()->hasGlobalPermission('surveysgroups', 'create')) {
-                $boxes[] = [
-                    'type' => self::TYPE_LINK,
-                    'link' => App()->createUrl('/admin/surveysgroups/sa/create/'),
-                    'text' => gT('Create survey group'),
-                    'icon' => 'ri-add-line',
-                    'colored' => false,
-                    'external' => false
-                ];
-            }
+        switch (Survey::model()->count()) {
+            case 0:
+                if (!empty($createSurveyBox) ) {
+                    $boxes[] = $createSurveyBox;
+                }
+                if (!empty($createSurveyGroupBox) ) {
+                    $boxes[] = $createSurveyGroupBox;
+                }
+                $boxes = array_merge($boxes, $this->getPlaceholders(2 ));
+                break;
+            case 1:
+                if (!empty($createSurveyGroupBox) ) {
+                    $boxes[] = $createSurveyGroupBox;
+                }
+                break;
+            default:
         }
 
         $this->render('boxes', [
@@ -126,5 +128,61 @@ class BoxesWidget extends CWidget
             'limit' => $this->limit,
             'itemsCount' => $itemsCount
         ]);
+    }
+
+    /**
+     * Function that returns the create survey box
+     * @return array
+     */
+    private function getCreateSurveyBox()
+    {
+        return [
+            'type' => self::TYPE_LINK,
+            'link' => App()->createUrl('/surveyAdministration/newSurvey/'),
+            'text' => gT('Create survey'),
+            'icon' => 'ri-add-line',
+            'colored' => true,
+            'external' => false
+        ];
+    }
+
+    /**
+     * Function that returns the create survey group box
+     *
+     * @return array
+     */
+    private function getCreateSurveyGroupBox()
+    {
+        return [
+            'type' => self::TYPE_LINK,
+            'link' => App()->createUrl('/admin/surveysgroups/sa/create/'),
+            'text' => gT('Create survey group'),
+            'icon' => 'ri-add-line',
+            'colored' => false,
+            'external' => false
+        ];
+    }
+
+
+    /**
+     * Function that returns placeholders for the boxes
+     *
+     * @param int $amount
+     * @return array
+     */
+    private function getPlaceholders($amount)
+    {
+        $placeholders = [];
+        for($i = 0; $i < $amount; $i++){
+            $placeholders[] = [
+                'type' => self::TYPE_LINK,
+                'link' => '#',
+                'text' => '',
+                'icon' => '',
+                'colored' => false,
+                'external' => false
+            ];
+        }
+        return $placeholders;
     }
 }
