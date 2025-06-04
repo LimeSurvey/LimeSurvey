@@ -891,14 +891,13 @@ class Export extends SurveyCommonAction
         $xml->endDocument();
         if ($token = Yii::app()->request->getPost('export_token')) {
             Yii::app()->session[$token] = true;
-            session_write_close();
         }
         Yii::app()->end();
     }
 
     public function exportstatus($token)
     {
-        $done = isset(Yii::app()->session[$token]) && Yii::app()->session[$token] === true;
+        $done = boolval(Yii::app()->session[$token]);
 
         header('Content-Type: application/json');
         echo CJSON::encode(['done' => $done]);
