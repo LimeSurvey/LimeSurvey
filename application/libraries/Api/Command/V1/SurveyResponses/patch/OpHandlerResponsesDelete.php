@@ -7,20 +7,16 @@ use LimeSurvey\Models\Services\Exception\PersistErrorException;
 use LimeSurvey\Models\Services\Exception\QuestionHasConditionsException;
 use LimeSurvey\Models\Services\SurveyResponseService;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
-    OpHandlerSurveyTrait,
     OpHandlerValidationTrait
 };
-use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
-    OpHandler\OpHandlerException,
     OpHandler\OpHandlerInterface,
     OpType\OpTypeDelete
 };
 
 class OpHandlerResponsesDelete implements OpHandlerInterface
 {
-    //    use OpHandlerSurveyTrait;
     use OpHandlerValidationTrait;
 
     protected SurveyResponseService $surveyResponseService;
@@ -32,8 +28,6 @@ class OpHandlerResponsesDelete implements OpHandlerInterface
     }
 
     /**
-     * Checks if the operation is applicable for the given entity.
-     *
      * @param  OpInterface $op
      * @return bool
      */
@@ -44,8 +38,6 @@ class OpHandlerResponsesDelete implements OpHandlerInterface
     }
 
     /**
-     * Handle question delete operation.
-     *
      * Expects a patch structure like this:
      * {
      *      "entity": "response",

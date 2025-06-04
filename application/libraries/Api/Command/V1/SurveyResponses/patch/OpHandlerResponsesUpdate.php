@@ -7,14 +7,10 @@ use LimeSurvey\Models\Services\Exception\PersistErrorException;
 use LimeSurvey\Models\Services\Exception\QuestionHasConditionsException;
 use LimeSurvey\Models\Services\SurveyResponseService;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
-    OpHandlerSurveyTrait,
     OpHandlerValidationTrait
 };
-use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\{Op\OpInterface,
-    OpHandler\OpHandlerException,
     OpHandler\OpHandlerInterface,
-    OpType\OpTypeDelete,
     OpType\OpTypeUpdate};
 
 class OpHandlerResponsesUpdate implements OpHandlerInterface
@@ -30,8 +26,6 @@ class OpHandlerResponsesUpdate implements OpHandlerInterface
     }
 
     /**
-     * Checks if the operation is applicable for the given entity.
-     *
      * @param  OpInterface $op
      * @return bool
      */

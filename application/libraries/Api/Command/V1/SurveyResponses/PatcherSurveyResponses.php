@@ -2,36 +2,11 @@
 
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Response\{ExceptionErrorItem,
-    ExceptionErrors,
-    SurveyResponse,
-    TempIdMapItem,
-    TempIdMapping,
-    ValidationErrors};
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerAnswer;
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerAnswerDelete;
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerLanguageSettingsUpdate;
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionAttributeUpdate;
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionCreate;
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionDelete;
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionGroup;
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionGroupL10n;
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionGroupReorder;
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionL10nUpdate;
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionUpdate;
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSubQuestion;
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSubquestionDelete;
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSurveyStatus;
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSurveyUpdate;
-use LimeSurvey\Api\Transformer\TransformerException;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\SurveyResponse;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\patch\OpHandlerResponsesDelete;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\patch\OpHandlerResponsesFileDelete;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\patch\OpHandlerResponsesUpdate;
-use LimeSurvey\Models\Services\Exception\NotFoundException;
-use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
-use LimeSurvey\Models\Services\Exception\PersistErrorException;
-use LimeSurvey\Models\Services\Exception\QuestionHasConditionsException;
-use LimeSurvey\Models\Services\SurveyResponseService;
-use LimeSurvey\ObjectPatch\{ObjectPatchException, Op\OpInterface, Op\OpStandard, OpHandler\OpHandlerException, Patcher};
+use LimeSurvey\ObjectPatch\{ObjectPatchException, Op\OpStandard, OpHandler\OpHandlerException, Patcher};
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -58,6 +33,12 @@ class PatcherSurveyResponses extends Patcher
         $this->addOpHandler(
             $diContainer->get(
                 OpHandlerResponsesUpdate::class
+            )
+        );
+
+        $this->addOpHandler(
+            $diContainer->get(
+                OpHandlerResponsesFileDelete::class
             )
         );
     }

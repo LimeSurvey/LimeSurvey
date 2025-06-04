@@ -25,8 +25,6 @@ class SurveyResponseService
     }
 
     /**
-     * Function responsible for deleting a question.
-     *
      * @param $surveyId
      * @param $rid
      * @return void
@@ -76,9 +74,6 @@ class SurveyResponseService
     }
 
     /**
-     * Function responsible for deleting an answer from a question.
-     * It also deletes all languages for this answer.
-     *
      * @param int $surveyId
      * @param $responseId
      * @param $responseData
@@ -115,5 +110,33 @@ class SurveyResponseService
             $transaction->rollback();
             throw $e;
         }
+    }
+
+    /**
+     * @param $surveyId
+     * @param $rid
+     * @return void
+     * @throws NotFoundException
+     * @throws PersistErrorException
+     */
+    public function deleteAttachments($surveyId, $rid): void
+    {
+        try {
+            $responseModel = \Response::model($surveyId);
+        } catch (\Exception $e) {
+            throw new NotFoundException('Survey not found');
+        }
+
+        $response = $responseModel->findByPk($rid);
+
+        if (!$response) {
+            throw new NotFoundException('Response not found');
+        }
+
+        [$success, $errors] = $response->deleteFilesAndFilename();
+        if (!$success) {
+            throw new PersistErrorException('Could not delete response file');
+        }
+
     }
 }

@@ -1,10 +1,9 @@
 <?php
 
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses;
-
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponsesPatch;
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
-    SchemaFactoryError,
-    SchemaFactorySurveyDetail,
+    SchemaFactoryError
 };
 
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
@@ -47,7 +46,7 @@ $rest['v1/survey-responses/$id'] = [
     'PATCH' => [
         'tag' => 'survey',
         'description' => 'Survey responses patch',
-        'commandClass' => \LimeSurvey\Libraries\Api\Command\V1\SurveyResponsesPatch::class,
+        'commandClass' => SurveyResponsesPatch::class,
         'auth' => true,
         'params' => [
             'patch' => ['type' => 'array'],
