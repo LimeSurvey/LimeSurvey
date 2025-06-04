@@ -73,7 +73,7 @@ class PersonalSettingsPatch implements CommandInterface
      * @throws \Exception If user not found
      */
     private function updatePersonalSettings(int $userId, array $settingsData)
-        {
+    {
         // Get the user model
         $user = \User::model()->findByPk($userId);
 
