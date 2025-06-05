@@ -160,7 +160,7 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                 <input id="ls-previous" class="btn btn-outline-secondary" type="button" value="<?php eT('Previous'); ?>" onclick="window.open('<?php echo $this->createUrl("installer/license"); ?>', '_top')" />
             </div>
             <div class="col-lg-4">
-                <input id="ls-check-again" class="btn btn-outline-secondary" type="button" value="<?php eT('Check again'); ?>" onclick="window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
+                <input id="ls-check-again" class="btn btn-outline-secondary" type="button" value="<?php eT('Check again'); ?>" onclick="window.open('<?php echo $this->createUrl("installer/precheckprepare"); ?>', '_top')" />
             </div>
             <div class="col-lg-4">
 
