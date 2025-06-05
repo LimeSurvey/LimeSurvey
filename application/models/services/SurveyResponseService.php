@@ -137,6 +137,5 @@ class SurveyResponseService
         if (!$success) {
             throw new PersistErrorException('Could not delete response file');
         }
-
     }
 }
