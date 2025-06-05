@@ -184,8 +184,12 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                 $classes = [
                                     'form-select',
                                     'selector_option_value_field',
-                                    'selector_radio_childfield',
                                 ];
+                                $parentDataAttribute = "";
+                                if (!empty($attribute['parent'])) {
+                                    $classes[] = 'selector_radio_childfield';
+                                    $parentDataAttribute = 'data-parent="' . $attribute['parent'] . '"';
+                                }
                                 if ($category === 'Images') {
                                     $classes[] = 'selector_image_selector';
                                 }
@@ -206,7 +210,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                 ?>
 
                                 <div class="col-12">
-                                    <select class="<?= $classValue ?>" data-parent="<?= $attribute['parent'] ?>"
+                                    <select class="<?= $classValue ?>" <?= $parentDataAttribute ?>
                                             data-inheritvalue="<?= ($attributeKey === 'font' && isset($sPackagesToLoad) ? htmlspecialchars($sPackagesToLoad) : $sParentOption) ?>"
                                             id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>">
                                         <?php if ($bInherit) : ?>
