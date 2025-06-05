@@ -133,7 +133,7 @@ class SurveyResponseService
             throw new NotFoundException('Response not found');
         }
 
-        [$success, $errors] = $response->deleteFilesAndFilename();
+        [$success] = $response->deleteFilesAndFilename();
         if (!$success) {
             throw new PersistErrorException('Could not delete response file');
         }
