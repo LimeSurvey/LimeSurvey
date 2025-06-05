@@ -23,7 +23,7 @@ jobs:
     strategy:
       matrix:
         # Specify what version of nodejs you want to test
-        nodeJS-versions: ['20.19.2']  # Use '20' instead of '20.x'
+        nodeJS-versions: ['20.19.2']
     name: Build Frontend Packages
     steps:
       - name: Checkout the code
