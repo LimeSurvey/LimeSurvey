@@ -103,7 +103,11 @@ class QuestionAttributeHelper
         foreach ($attributes as $key => $attribute) {
             if ($attribute['i18n'] == false) {
                 if (isset($attributeValues[$attribute['name']][''])) {
-                    $attributes[$key]['value'] = $attributeValues[$attribute['name']][''];
+                    $value = $attributeValues[$attribute['name']][''];
+                    if ($key === 'image') {
+                        $value = $this->decodeImageAttributes($value);
+                    }
+                    $attributes[$key]['value'] = $value;
                 } else {
                     $attributes[$key]['value'] = $attribute['default'];
                 }
@@ -299,5 +303,11 @@ class QuestionAttributeHelper
             }
         }
         return $defaultValues;
+    }
+
+    private function decodeImageAttributes($jsonString)
+    {
+        $decoded = json_decode($jsonString, true);
+        return !$decoded ? $jsonString : $decoded;
     }
 }
