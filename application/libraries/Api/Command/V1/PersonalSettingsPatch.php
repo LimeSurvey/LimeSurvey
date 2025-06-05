@@ -81,7 +81,6 @@ class PersonalSettingsPatch implements CommandInterface
         }
 
         // Update user settings based on the provided data
-        // This is a simplified example - you'll need to adapt this to your actual settings structure
         if (isset($settingsData['answeroptionprefix'])) {
             $user->email = $settingsData['answeroptionprefix'];
         }
