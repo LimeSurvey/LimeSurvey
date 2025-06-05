@@ -66,6 +66,10 @@ class InstallerController extends CController
                 $this->stepViewLicense();
                 break;
 
+            case 'precheckprepare':
+                $this->stepPreInstallationCheckPrepare();
+                break;
+
             case 'precheck':
                 $this->stepPreInstallationCheck();
                 break;
@@ -164,7 +168,7 @@ class InstallerController extends CController
         $aData['progressValue'] = 15;
 
         if (strtolower((string) $_SERVER['REQUEST_METHOD']) == 'post') {
-            $this->redirect(array('installer/precheck'));
+            $this->redirect(array('installer/precheckprepare'));
         }
         Yii::app()->session['saveCheck'] = 'save'; // Checked in next step
 
@@ -183,10 +187,34 @@ class InstallerController extends CController
     }
 
     /**
+     * Prepare pre-installation check
+     * This step is used to set the session variables that is used in the next step.
+     */
+    private function stepPreInstallationCheckPrepare()
+    {
+        // Unset the cookie if present
+        setcookie("LS_PRECHECK_SHOWN", "", time() - 3600, "/");
+
+        // Set the value to check in the next step
+        Yii::app()->session['saveCheck'] = 'save';
+
+        // Redirect to the next step
+        $this->redirect(array('installer/precheck'));
+    }
+
+    /**
      * check a few writing permissions and optional settings
      */
     private function stepPreInstallationCheck()
     {
+        // If the LS_PRECHECK_SHOWN cookie is set, we don't come from the precheckprepare step,
+        // so we redirect to the precheckprepare step in order to set the session variables.
+        if (isset($_COOKIE['LS_PRECHECK_SHOWN'])) {
+            $this->redirect(array('installer/precheckprepare'));
+        }
+        // Set the LS_PRECHECK_SHOWN cookie so we can detect refreshes
+        setcookie("LS_PRECHECK_SHOWN", "1", 0, "/");
+
         $oModel = new InstallerConfigForm();
         //usual data required by view
         $aData = [];
@@ -206,8 +234,6 @@ class InstallerController extends CController
         $sessionWritable = (Yii::app()->session->get('saveCheck', null) === 'save');
         $aData['sessionWritable'] = $sessionWritable;
         if (!$sessionWritable) {
-            // For recheck, try to set the value again
-            $session['saveCheck'] = 'save';
             $bProceed = false;
         }
 
