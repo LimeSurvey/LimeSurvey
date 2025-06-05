@@ -29,7 +29,6 @@ class SchemaFactoryPersonalSettingsPatch
                     'type' => 'boolean',
                     'description' => 'Show question codes preference'
                 ]
-                // Add more properties as needed
             ],
             'additionalProperties' => false
         ];
