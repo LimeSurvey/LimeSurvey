@@ -889,8 +889,22 @@ class Export extends SurveyCommonAction
 
         $xml->endElement(); // close columns
         $xml->endDocument();
+        if ($token = Yii::app()->request->getPost('export_token')) {
+            Yii::app()->session[$token] = true;
+            session_write_close();
+        }
         Yii::app()->end();
     }
+
+    public function exportstatus($token)
+    {
+        $done = isset(Yii::app()->session[$token]) && Yii::app()->session[$token] === true;
+
+        header('Content-Type: application/json');
+        echo CJSON::encode(['done' => $done]);
+        Yii::app()->end();
+    }
+
 
     /**
      * Export multiple surveys structure. Called via ajax from surveys list massive action
