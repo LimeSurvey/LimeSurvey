@@ -33,7 +33,7 @@
                 <!-- Submit -->
                 <div class="mt-3 mb-3 col-4">
                     <div>
-                        <input type='submit' id="import-submit" class="btn btn-primary col-6" value='<?php eT("Import survey"); ?>' />
+                        <input type='submit' id="import-submit" class="btn btn-primary w-auto" value='<?php eT("Import survey"); ?>' />
                     </div>
                 </div>
 
