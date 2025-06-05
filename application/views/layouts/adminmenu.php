@@ -5,6 +5,7 @@
  * @var $sitename
  * @var $activesurveyscount
  * @var $dataForConfigMenu
+ * @var array $extraMenus   //menu items fetched from plugins
  */
 ?>
 
@@ -60,7 +61,7 @@
                 <!-- Prepended extra menus from plugins -->
                 <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => true, 'prependedMenu' => true]); ?>
 
-                <!-- create survey -->
+                <!--
                 <li class="nav-item">
                     <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" class="nav-link">
                         <button type="button" class="btn btn-info btn-create" data-bs-toggle="tooltip"
@@ -69,6 +70,8 @@
                         </button>
                     </a>
                 </li>
+                -->
+
                 <!-- Surveys menus -->
 
                 <li
