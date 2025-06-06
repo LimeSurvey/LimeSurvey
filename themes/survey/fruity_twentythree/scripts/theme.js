@@ -892,7 +892,7 @@ function activateSoftMandatory() {
   $('#mandatory-soft-alert-box-modal').on('click', function (ev) {
     ev.preventDefault();
     var $form = $('#limesurvey');
-    $form.append('<input type="hidden" name="mandSoft" value="' + $(this).data('movenext') + '" />');
+    $form.find(".ls-mandSoft-checkbox").prop('checked',true);
     $form.find('#ls-button-submit').trigger('click');
     $("#bootstrap-alert-box-modal").modal('hide');
   });
