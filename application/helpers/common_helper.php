@@ -2576,32 +2576,29 @@ function isTokenCompletedDatestamped($thesurvey)
 }
 
 /**
-* example usage
-* $date = "2006-12-31 21:00";
-* $timezone = "America/New_York"; // target timezone
+* Function to shift a date/time from one timezone to another.
 *
-* echo dateShift($date, "Y-m-d H:i:s", $timezone);
-*
-* will output: 2007-01-01 04:00:00 (adjusted to New York timezone)
-*
-* @param string $date
-* @param string $dformat
-* @param string $timezone
-* @return string
+* @param string $date The input date 
+* @param string $toDateFormat Output format
+* @param string $toTimezone Ouput time zone, if null, uses the global setting for display timezone
+* @param string $fromTimezone Input time zone, if not given, uses UTC
+* @return string The shifted date in the target timezone and format
 */
-function dateShift($date, $dformat, $timezone = null)
+function dateShift($date, $toDateFormat, $toTimezone = null, $fromTimezone = 'UTC')
 {
-    if (!$timezone) {
-        $timezone = Yii::app()->getConfig('displayTimezone') ;
-        if (empty($timezone)) {
+    if (!$toTimezone) {
+        $toTimezone = Yii::app()->getConfig('displayTimezone') ;
+        if (empty($toTimezone)) {
             // get default timezone
-            $timezone = date_default_timezone_get();
+            return $date;
         }
     }
-    $datetime = new DateTime($date);
-    $datetime->setTimezone(new DateTimeZone($timezone));
-    return $datetime->format($dformat);
+    $datetime = new DateTime($date, $fromTimezone);
+
+    $datetime->setTimezone(new DateTimeZone($toTimezone));
+    return $datetime->format($toDateFormat);
 }
+
 
 function convertTimezoneDiffToHours(){
     $desiredTimezone = new DateTimeZone(Yii::app()->getConfig('displayTimezone'));

@@ -143,9 +143,9 @@ abstract class LSYii_Controller extends CController
 
         //SET LOCAL TIME
         $displayTimezone = Yii::app()->getConfig("displayTimezone");
-        // if the time zone is empty or does not exist, use the default system time zone
+        // if the time zone is empty or does not exist, use UTC
         if (empty($displayTimezone) || !in_array($displayTimezone, timezone_identifiers_list())) {
-            Yii::app()->setConfig("displayTimezone", date_default_timezone_get());
+            Yii::app()->setConfig("displayTimezone", "UTC");
         }
 
         /* Set the default language, other controller can update if wanted */
