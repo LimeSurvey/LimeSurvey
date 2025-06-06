@@ -73,7 +73,7 @@ $config['printanswershonorsconditions'] = 1; // If set to 1, only relevant answe
 $config['repeatheadings']            = '25'; // The number of answers to show before repeating the headings in array (flexible) questions. Set to 0 to turn this feature off
 $config['minrepeatheadings']         = 3; // The minimum number of remaining answers that are required before repeating the headings in array (flexible) questions.
 $config['defaultlang']               = 'en'; // The default language to use - the available languages are the directory names in the /locale dir - for example de = German
-$config['timeadjust']                = 0; // Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
+$config['displayTimezone']           = ''; // Timezone (for example 'Europe/Berlin') which is used to displayed any date/time information in the application - if empty defaults to UTC
 
 $config['maxdumpdbrecords']          = 500; // The maximum number of records that would be ouput in one go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
 $config['maxdbsizeforbackup']        = 0; // The maximum database size in MB that is backed up up by ComfortUpdate - 0 means that the default will be determined by the ComfortUpdate server (currently 50 MB)

@@ -204,7 +204,9 @@ class LimeExpressionManager
      * 'surveyls_dateformat' => // the index of the language specific date format -- e.g. 1
      * 'tablename' => // the name of the table storing the survey data, if active -- e.g. lime_survey_38612
      * 'target' => // the path for uploading files -- e.g. '/temp/files/'
-     * 'timeadjust' => // the time offset -- e.g. 0
+     * 'timeadjust' => // The time zone offset in hours -- e.g. 0
+     * 'displayTimezone' => // The timezone -- e.g. 'Europe/Berlin'
+     *
      * 'tempdir' => // the temporary directory for uploading files -- e.g. '/temp/'
      * );
      *
@@ -4616,6 +4618,7 @@ class LimeExpressionManager
         $LEM->surveyOptions['tablename_timings'] = ($survey->isSaveTimings ? $survey->timingsTableName : '');
         $LEM->surveyOptions['target'] = (isset($aSurveyOptions['target']) ? $aSurveyOptions['target'] : '/temp/files/');
         $LEM->surveyOptions['timeadjust'] = (isset($aSurveyOptions['timeadjust']) ? $aSurveyOptions['timeadjust'] : 0);
+        $LEM->surveyOptions['displayTimezone'] = (isset($aSurveyOptions['displayTimezone']) ? $aSurveyOptions['displayTimezone'] : date_default_timezone_get());
         $LEM->surveyOptions['tempdir'] = (isset($aSurveyOptions['tempdir']) ? $aSurveyOptions['tempdir'] : '/temp/');
         $LEM->surveyOptions['token'] = (isset($aSurveyOptions['token']) ? $aSurveyOptions['token'] : null);
         $LEM->debugLevel = $debugLevel;
@@ -5086,7 +5089,7 @@ class LimeExpressionManager
         }
 
         if (!isset($_SESSION[$this->sessid]['srid'])) {// Create the response line, and fill Session with primaryKey
-            $_SESSION[$this->sessid]['datestamp'] = dateShift((string)date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+            $_SESSION[$this->sessid]['datestamp'] = dateShift((string)date("Y-m-d H:i:s"), "Y-m-d H:i:s");
             // Create initial insert row for this record
             $sdata = [
                 "startlanguage" => $this->surveyOptions['startlanguage']
@@ -5172,7 +5175,7 @@ class LimeExpressionManager
             $aResponseAttributes['lastpage'] = $thisstep;
 
             if ($this->surveyOptions['datestamp'] && isset($_SESSION[$this->sessid]['datestamp'])) {
-                $_SESSION[$this->sessid]['datestamp'] = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+                $_SESSION[$this->sessid]['datestamp'] = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s");
                 $aResponseAttributes['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
             }
             if ($this->surveyOptions['ipaddr']) {
@@ -5284,7 +5287,7 @@ class LimeExpressionManager
                     if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion)) {
                         /* Less update : just do what you need to to */
                         if ($this->surveyOptions['datestamp']) {
-                            $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+                            $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s");
                         } else {
                             $submitdate = date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
                         }
