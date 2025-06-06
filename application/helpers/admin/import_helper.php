@@ -2873,7 +2873,33 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
 
             if (!empty($insertdata['cfieldname'])) {
-                $insertdata['cfieldname'] = $aQuestionsMapping[$insertdata['cfieldname']];
+                if (!isset($aQuestionsMapping[$insertdata['cfieldname']])) {
+                    $parts = explode('X', $insertdata['cfieldname']);
+                    $qid = null;
+                    $idCandidate = $parts[2];
+                    $search = true;
+                    $knownFieldName = null;
+                    $theQ = null;
+                    while ($search && strlen($idCandidate)) {
+                        foreach ($aQuestionsMapping as $key => $value) {
+                            if (($key === "Q{$idCandidate}") || (strpos($key, "Q{$idCandidate}_") !== false)) {
+                                $qid = substr(explode("_", $value)[0], 1);
+                                $theQ = Question::model()->findByPk($qid);
+                                $theQuestions = Question::model()->findAll(['condition' => "sid = {$theQ->sid} and gid = {$theQ->gid} and {$theQ->qid} in (qid, parent_qid)"]);
+                                $knownFieldName = "{$theQ->sid}X{$theQ->gid}X{$theQ->qid}" . substr($parts[2], strlen($idCandidate));
+                                $search = false;
+                            }
+                        }
+                        if ($search) {
+                            $idCandidate = substr($idCandidate, 0, strlen($idCandidate) - 1);
+                        }
+                    }
+                    if ($qid) {
+                        $insertdata['cfieldname'] = getFieldName(Yii::app()->db->tablePrefix . "responses_" . $theQ->sid, $knownFieldName, $theQuestions, $theQ->sid, $theQ->gid);
+                    }
+                } else {
+                    $insertdata['cfieldname'] = $aQuestionsMapping[$insertdata['cfieldname']];
+                }
             }
             // Now process the value and replace @sgqa@ codes
             if (preg_match("/^@(.*)@$/", (string) $insertdata["value"], $cfieldnameInCondValue)) {
