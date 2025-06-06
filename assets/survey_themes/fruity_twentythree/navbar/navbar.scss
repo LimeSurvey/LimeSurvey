@@ -104,14 +104,17 @@ Responsive navbar-brand image CSS
 
 #survey-nav {
     &.navbar {
-        box-shadow: none;
+        box-shadow : none;
     }
     .navbar-toggler {
-        border: none;
-        padding-right: 0;
-        line-height: $line-height-20;
+        border        : none;
+        padding-right : 0;
+        line-height   : $line-height-20;
         .ri-more-fill {
-            font-size: $font-size-xl * 1.125;
+            font-size : $font-size-xl * 1.125;
+        }
+        &:focus {
+            box-shadow : none;
         }
     }
 

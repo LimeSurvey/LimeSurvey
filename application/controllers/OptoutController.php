@@ -37,9 +37,8 @@ class OptoutController extends LSYii_Controller
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
 
-        //IF there is no survey ID, redirect back to the default public page
-        if (!$iSurveyID) {
-            $this->redirect(array('/'));
+        if (!filter_var($iSurveyID, FILTER_VALIDATE_INT) || !$sToken) {
+            throw new CHttpException(400, gT('Invalid request.'));
         }
 
         $oSurvey = Survey::model()->findByPk($iSurveyID);

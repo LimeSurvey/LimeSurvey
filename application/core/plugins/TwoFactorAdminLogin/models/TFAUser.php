@@ -120,6 +120,7 @@ class TFAUser extends User
             [
                 "name"   => 'hasAuthSet',
                 "header" => gT("2FA enabled"),
+                "value"  => '$data->hasAuthSet==1?gT("Yes"):gT("No")',
                 "filter" => TbHtml::dropDownList('userkeys_secretKey', Yii::app()->request->getParam('userkeys_secretKey'), [
                     ''  => '',
                     '1' => gT('Yes'),
@@ -129,6 +130,7 @@ class TFAUser extends User
             [
                 "name"   => 'userkeys.authType',
                 "header" => gT("2FA method"),
+                "value"  => '$data->hasAuthSet==1 ? TFAUserKey::$authTypeOptions[$data->userkeys->authType] : ""',
                 "filter" => TbHtml::dropDownList('userkeys_authType', Yii::app()->request->getParam('userkeys_authType'), array_merge(['' => ''], TFAUserKey::$authTypeOptions)),
             ],
             [

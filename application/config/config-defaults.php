@@ -76,7 +76,7 @@ $config['defaultlang']               = 'en'; // The default language to use - th
 $config['displayTimezone']           = ''; // Timezone (for example 'Europe/Berlin') which is used to displayed any date/time information in the application - if empty defaults to the system timezone
 
 $config['maxdumpdbrecords']          = 500; // The maximum number of records that would be ouput in one go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
-$config['maxdbsizeforbackup']        = 0; // The maximum database size in MB that is backed up up by ComfortUpdate - 0 for no limit
+$config['maxdbsizeforbackup']        = 0; // The maximum database size in MB that is backed up up by ComfortUpdate - 0 means that the default will be determined by the ComfortUpdate server (currently 50 MB)
 $config['allowexportalldb']          = 0; // Default 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported (use carefully)
 $config['maxDatabaseSizeForDump']    = 256; // Maximum database size in megabytes to be able to download without errors
 
@@ -838,6 +838,17 @@ $config['passwordValidationRules'] = array(
 
 // Enable or disable single page application editor
 $config['editorEnabled'] = false;
+
+/**
+ * Default breadcrumb mode:
+ * short: Survey, Group and Question titles
+ * long: Survey, Group, Question titles plus IDs
+ */
+$config['defaultBreadcrumbMode'] = 'short';
+
+// Minimum delay between registration emails for the same token.
+// Must be a valid DateInterval string (ie: "15 minutes", "1 hour", "1 day").
+$config['registrationEmailDelay'] = '1 hour';
 
 // Participants token sanitizing rules as regex pattern
 $config['allowedcharacters_pattern_token'] = '/[^0-9a-zA-Z_\-~]/';

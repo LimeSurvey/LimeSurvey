@@ -40,7 +40,8 @@ class Dumpdb extends SurveyCommonAction
         }
 
         if (!in_array(Yii::app()->db->getDriverName(), array('mysql', 'mysqli'))) {
-            die(sprintf(gT('This feature is only available for MySQL databases. Your database type is %s.'), Yii::app()->db->getDriverName()));
+            Yii::app()->setFlashMessage(sprintf(gT('The integrated DB backup feature is only available for MySQL databases. Your database type is "%s".'), Yii::app()->db->getDriverName()), 'error');
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin"));
         }
         if (Yii::app()->getConfig('demoMode')) {
             Yii::app()->setFlashMessage(gT('This function cannot be executed because demo mode is active.'), 'error');

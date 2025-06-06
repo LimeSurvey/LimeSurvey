@@ -77,13 +77,13 @@ function strSplitUnicode($str, $l = 0)
 /**
 * Quotes a string with surrounding quotes and masking inside quotes by doubling them
 *
-* @param string $sText Text to quote
+* @param string|null $sText Text to quote
 * @param string $sQuoteChar The quote character (Use ' for SPSS and " for R)
 * @param string $aField General field information from SPSSFieldmap
 */
 function quoteSPSS($sText, $sQuoteChar, $aField)
 {
-    $sText = trim($sText);
+    $sText = trim((string) $sText);
     if ($sText == '') {
         return '';
     }
@@ -245,8 +245,6 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
                         if (substr((string) $field['code'], -7) != 'comment' && substr((string) $field['code'], -5) != 'other') {
                             if ($row[$fieldno] == 'Y') {
                                 echo quoteSPSS('1', $q, $field);
-                            } elseif ($row[$fieldno] === '') {
-                                echo quoteSPSS($sEmptyAnswerValue, $q, $field);
                             } elseif (isset($row[$fieldno])) {
                                 echo quoteSPSS('0', $q, $field);
                             } else {
@@ -2746,12 +2744,12 @@ function tsvSurveyExport($surveyid)
         $defaultvalues_data = array();
     }
     // insert translations to defaultvalues_datas
+    $defaultvalues_datas = [];
     if (array_key_exists('defaultvalue_l10ns', $xmlData)) {
         $defaultvalues_l10ns_data = $xmlData['defaultvalue_l10ns']['rows']['row'];
         if (!array_key_exists('0', $defaultvalues_l10ns_data)) {
             $defaultvalues_l10ns_data = array($defaultvalues_l10ns_data);
         }
-        $defaultvalues_datas = [];
         foreach ($defaultvalues_l10ns_data as $defaultvalue_l10ns_key => $defaultvalue_l10ns_data) {
             foreach ($defaultvalues_data as $defaultvalue_key => $defaultvalue_data) {
                 if ($defaultvalue_l10ns_data['dvid'] === $defaultvalue_data['dvid']) {
@@ -2764,9 +2762,9 @@ function tsvSurveyExport($surveyid)
             }
         }
     }
-        unset($defaultvalues_data);
-        unset($defaultvalues_l10ns_data);
-        $defaultvalues = array();
+    unset($defaultvalues_data);
+    unset($defaultvalues_l10ns_data);
+    $defaultvalues = array();
     foreach ($defaultvalues_datas as $key => $defaultvalue) {
         if ($defaultvalue['sqid'] > 0) {
             $defaultvalues[$defaultvalue['language']][$defaultvalue['sqid']] = $defaultvalue['defaultvalue'];
@@ -2834,11 +2832,15 @@ function tsvSurveyExport($surveyid)
         }
 
         // subquestions data
+        $subquestions_data = [];
         if (array_key_exists('subquestions', $xmlData)) {
+            if (isset($xmlData['subquestions']['rows']['row']['qid'])) {
+                // Only one subquestion then one row : set as array like we have multiple rows
+                $xmlData['subquestions']['rows']['row'] = [$xmlData['subquestions']['rows']['row']];
+            }
             foreach ($xmlData['subquestions']['rows']['row'] as $subquestion) {
                 $subquestions_data[$subquestion['qid']] = $subquestion;
             }
-
             foreach ($xmlData['question_l10ns']['rows']['row'] as $subquestion_l10ns) {
                 if (array_key_exists($subquestion_l10ns['qid'], $subquestions_data)) {
                     if ($subquestion_l10ns['language'] === $language) {
@@ -2849,8 +2851,6 @@ function tsvSurveyExport($surveyid)
                     }
                 }
             }
-        } else {
-            $subquestions_data = array();
         }
 
         // answers data

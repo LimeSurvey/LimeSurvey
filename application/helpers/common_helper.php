@@ -2665,17 +2665,38 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
     $iOldSurveyID = (int) $iOldSurveyID;
     $iNewSurveyID = (int) $iNewSurveyID; // To avoid injection of a /e regex modifier without having to check all execution paths
     if ($sType == 'survey') {
-        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
+        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_:])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
         if ($isLocalPath) {
             $sReplace = rtrim(App()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
+            return preg_replace('/' . $sPattern . '/u', $sReplace, $sString);
         } else {
-            $sReplace = rtrim(App()->getConfig("publicurl"), "/") . "/upload/surveys/{$iNewSurveyID}/";
+            // Make the replacement conditionaly.
+            // If the URL is absolute, make sure we keep it absolute.
+            // If it is relative, use the publicurl config (if the publicurl is absolute we assume it
+            // makes sense to make the urls absolute)
+            return preg_replace_callback('/' . $sPattern . '/u', function ($matches) use ($iNewSurveyID) {
+                $url = $matches[0];
+                $parsedUrl = parse_url($url);
+                $replacementUrl = "/upload/surveys/{$iNewSurveyID}/";
+                if (isset($parsedUrl['scheme']) && isset($parsedUrl['host'])) {
+                    return rtrim(App()->getPublicBaseUrl(true), "/") . $replacementUrl;
+                } else {
+                    return rtrim(App()->getConfig("publicurl"), '/') . $replacementUrl;
+                }
+            }, $sString);
         }
-        return preg_replace('/' . $sPattern . '/u', $sReplace, $sString);
     } elseif ($sType == 'label') {
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_])*(?=(\/upload))\/upload\/labels\/' . $iOldSurveyID . '\/)';
-        $sReplace =  rtrim(App()->getConfig("publicurl"), "/") . "/upload/labels/{$iNewSurveyID}/";
-        return preg_replace("/" . $sPattern . "/u", $sReplace, $sString);
+        return preg_replace_callback('/' . $sPattern . '/u', function ($matches) use ($iNewSurveyID) {
+            $url = $matches[0];
+            $parsedUrl = parse_url($url);
+            $replacementUrl = "/upload/labels/{$iNewSurveyID}/";
+            if (isset($parsedUrl['scheme']) && isset($parsedUrl['host'])) {
+                return rtrim(App()->getPublicBaseUrl(true), "/") . $replacementUrl;
+            } else {
+                return rtrim(App()->getConfig("publicurl"), '/') . $replacementUrl;
+            }
+        }, $sString);
     } else // unknown type
     {
         return $sString;
@@ -3258,8 +3279,12 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
     $survey = Survey::model()->findByPk($iSurveyID);
     $aFieldMap = createFieldMap($survey, 'full', false, false, $sLanguageCode);
 
-    //Get response data
+    // Get response data
     $idrow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id' => $iResponseID));
+    // If response data not found, throw an exception
+    if (!$idrow) {
+        throw new CHttpException(401, gT("Response data not found."));
+    }
     $idrow->decryptBeforeOutput();
 
     // Create array of non-null values - those are the relevant ones
@@ -4638,7 +4663,7 @@ function getIPAddress()
             // Single forward
             $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
         } else {
-        // Multitple forward
+        // Multiple forward
         // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
         // TODO: RFC7239 full implementation (https://datatracker.ietf.org/doc/html/rfc7239#section-5.2)
             $aForwarded = explode(',', (string) $_SERVER['HTTP_X_FORWARDED_FOR']);
@@ -4996,7 +5021,7 @@ function isZipBomb($zip_filename)
 {
     $isZipBomb = false;
     $zip = new LimeSurvey\Zip();
-    if ($zip->open($zip_filename, null, false) === true) {
+    if ($zip->open($zip_filename, 0, false) === true) {
         $isZipBomb = $zip->isZipBomb();
         $zip->close();
     }

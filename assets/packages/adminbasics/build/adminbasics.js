@@ -19323,8 +19323,8 @@
 	            if ($form.data('isvuecomponent') == true) {
 	              LS.EventBus.$emit('componentFormSubmit', button);
 	            } else {
-	              $form.find('[type="submit"]').first().trigger('click');
 	              displayLoadingState(this);
+	              $form.find('[type="submit"]').first().trigger('click');
 	            }
 	          },
 	          on: 'click'

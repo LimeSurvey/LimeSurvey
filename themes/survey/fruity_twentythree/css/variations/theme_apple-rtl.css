@@ -12062,6 +12062,9 @@ Responsive navbar-brand image CSS
 #survey-nav .navbar-toggler .ri-more-fill {
   font-size: 1.92375rem;
 }
+#survey-nav .navbar-toggler:focus {
+  box-shadow: none;
+}
 #survey-nav #main-dropdown {
   min-width: 250px;
   overflow-y: auto;
@@ -13180,10 +13183,10 @@ li.radio-item {
   display: inline-block;
   position: relative;
   overflow: hidden;
-  width: 20px;
-  height: 20px;
-  line-height: 21px;
-  text-indent: 21px;
+  width: 26px;
+  height: 26px;
+  line-height: 30px;
+  text-indent: 30px;
 }
 
 /* no margin on label : no margin after and before too */
@@ -13191,9 +13194,20 @@ li.radio-item {
   margin-right: 0;
 }
 
+/* Get some space for focus */
+.radio-item label.ls-label-xs-visibility::before {
+  right: 3px;
+  top: 3px;
+}
+
 .radio-item label.ls-label-xs-visibility::after {
   margin-right: 2px;
   padding-right: 0;
+}
+
+.radio-item label.ls-label-xs-visibility::after {
+  right: 6px;
+  top: 6px;
 }
 
 /* Hide the other content inside visually-hidden */
@@ -13295,7 +13309,7 @@ table.ls-answers .radio-item .ls-label-xs-visibility {
 Max width before this PARTICULAR table gets nasty
 For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)
 */
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
   .ls-answers td.radio-item {
     padding: 4px;
   }
@@ -13351,8 +13365,12 @@ input[type=radio] .styled:checked + label::after {
   background-color: #14AE5C;
 }
 
-.checkbox-item input[type=radio]:focus + label::before {
+.radio-item input[type=radio]:focus + label::before {
   outline: none;
+}
+
+.radio-item input[type=radio]:focus-visible + label::before {
+  box-shadow: 0 0 0 3px rgba(66, 0, 255, 0.2);
 }
 
 .radio-item input[type=radio]:checked + label {
@@ -13410,7 +13428,7 @@ table > tbody > tr > td.ddprefix {
  * (Both in portrait mode.)
  * We don't have to collapse tables on pads.
  */
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
   table.ls-answers tbody {
     padding: 0 1em 0 1em;
   }
@@ -13609,10 +13627,10 @@ table > tbody > tr > td.ddprefix {
   display: inline-block;
   position: relative;
   overflow: hidden;
-  width: 24px;
-  height: 24px;
-  line-height: 21px;
-  text-indent: 21px;
+  width: 30px;
+  height: 30px;
+  line-height: 34px;
+  text-indent: 34px;
 }
 
 .checkbox-item label::before {
@@ -13628,12 +13646,25 @@ table > tbody > tr > td.ddprefix {
   transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
 }
 
+/* Get some space for focus */
+.checkbox-item label.ls-label-xs-visibility::before {
+  right: 3px;
+  top: 3px;
+}
+
 .checkbox-item label::after {
   display: inline-block;
   position: absolute;
   right: 2px;
   top: 2px;
   margin-right: -20px;
+}
+
+/* focus an reset line-height */
+.checkbox-item label.ls-label-xs-visibility::after {
+  right: 5px;
+  top: 5px;
+  line-height: 20px;
 }
 
 .checkbox-item input[type=checkbox]:checked + label::after,
@@ -13777,6 +13808,10 @@ input[type=checkbox]:checked:after,
 
 .checkbox-item input[type=checkbox]:focus + label::before {
   outline: none;
+}
+
+.checkbox-item input[type=checkbox]:focus-visible + label::before {
+  box-shadow: 0 0 0 3px rgba(66, 0, 255, 0.2);
 }
 
 .tempus-dominus-widget {
@@ -15391,7 +15426,7 @@ body .imageselect-listitem label::after {
 Max width before this PARTICULAR table gets nasty
 For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)
 */
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
   table.ls-answers, table.ls-answers thead, table.ls-answers tbody, table.ls-answers th, table.ls-answers td, table.ls-answers tr {
     display: block;
   }

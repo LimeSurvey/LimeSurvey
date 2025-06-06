@@ -45,6 +45,9 @@ class RegisterController extends LSYii_Controller
      */
     private $sMailMessage;
 
+    /** @var bool Whether to send the registration email or not */
+    private $sendRegistrationEmail;
+
     public function actions()
     {
         return array(
@@ -112,6 +115,8 @@ class RegisterController extends LSYii_Controller
             Yii::app()->setLanguage($sLanguage);
         }
 
+        $this->sendRegistrationEmail = true;
+
         $event = new PluginEvent('beforeRegister');
         $event->set('surveyid', $iSurveyId);
         $event->set('lang', $sLanguage);
@@ -130,7 +135,7 @@ class RegisterController extends LSYii_Controller
         if (empty($this->aRegisterErrors) && $iTokenId && $this->sMessage === null) {
             $directLogin = $event->get('directLogin', false);
             if ($directLogin == true) {
-                if ($event->get('sendRegistrationEmail', false)) {
+                if ($event->get('sendRegistrationEmail', false) && $this->sendRegistrationEmail) {
                     self::sendRegistrationEmail($iSurveyId, $iTokenId);
                 }
                 $oToken = Token::model($iSurveyId)->findByPk($iTokenId)->decrypt();
@@ -138,7 +143,9 @@ class RegisterController extends LSYii_Controller
                 Yii::app()->getController()->redirect($redirectUrl);
                 Yii::app()->end();
             }
-            self::sendRegistrationEmail($iSurveyId, $iTokenId);
+            if ($this->sendRegistrationEmail) {
+                self::sendRegistrationEmail($iSurveyId, $iTokenId);
+            }
             self::display($iSurveyId, $iTokenId, 'register_success');
             Yii::app()->end();
         }
@@ -280,6 +287,13 @@ class RegisterController extends LSYii_Controller
         $aSurveyInfo = getSurveyInfo($iSurveyId, $sLanguage);
 
         $oToken = Token::model($iSurveyId)->findByPk($iTokenId)->decrypt(); // Reload the token (needed if just created)
+        // Make sure enough time has passed since the last email was sent
+        $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+        $delay = Yii::app()->getConfig('registrationEmailDelay');
+        if (!empty($oToken->sent) && $oToken->sent != "N" && dateShift($oToken->sent, "Y-m-d H:i", $delay) > $now) {
+            return false;
+        }
+
         $mailer = new \LimeMailer();
         $mailer->setSurvey($iSurveyId);
         $mailer->setToken($oToken->token);
@@ -292,8 +306,7 @@ class RegisterController extends LSYii_Controller
         $aMessage = array();
         $aMessage['mail-thanks'] = gT("Thank you for registering to participate in this survey.");
         if ($mailerSent) {
-            $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i");
-            Token::model($iSurveyId)->updateByPk($iTokenId, array('sent' => $today));
+            Token::model($iSurveyId)->updateByPk($iTokenId, array('sent' => $now));
             $aMessage['mail-message'] = $this->sMailMessage;
         } else {
             $aMessage['mail-message-error'] = gT("You are registered but an error happened when trying to send the email - please contact the survey administrator.");
@@ -333,6 +346,12 @@ class RegisterController extends LSYii_Controller
                 $this->aRegisterErrors[] = gT("This email address is already registered but email to that adress could not be delivered.");
             } else {
                 $this->sMailMessage = gT("The address you have entered is already registered. An email has been sent to this address with a link that gives you access to the survey.");
+                $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+                $delay = Yii::app()->getConfig('registrationEmailDelay');
+                if (!empty($oToken->sent) && $oToken->sent != "N" && dateShift($oToken->sent, "Y-m-d H:i", $delay) > $now) {
+                    $this->sMailMessage = gT("The address you have entered is already registered. An email has already been sent previously. A new email will not be sent yet. Please try again later.");
+                    $this->sendRegistrationEmail = false;
+                }
                 return $oToken->tid;
             }
         } else {

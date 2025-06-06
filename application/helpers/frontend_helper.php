@@ -420,7 +420,7 @@ function submittokens($quotaexit = false)
     if ($quotaexit == false) {
         $token->decrypt();
         if ($token && trim(strip_tags((string) $thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y") {
-            $sToAddress = validateEmailAddresses($token->email);
+            $sToAddress = LimeMailer::validateAddresses($token->email);
             if ($sToAddress) {
                 /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
                 $reData = array('thissurvey' => $thissurvey);
@@ -489,23 +489,13 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
 
     // create array of recipients for emailnotifications
     if (!empty($thissurvey['emailnotificationto']) && empty($emails)) {
-        $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailnotificationto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true));
-        foreach ($aRecipient as $sRecipient) {
-            $sRecipient = trim($sRecipient);
-            if ($mailer::validateAddress($sRecipient)) {
-                $aEmailNotificationTo[] = $sRecipient;
-            }
-        }
+        $recipients = LimeExpressionManager::ProcessStepString($thissurvey['emailnotificationto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true);
+        $aEmailNotificationTo = array_merge($aEmailNotificationTo, LimeMailer::validateAddresses($recipients));
     }
     // // create array of recipients for emailresponses
     if (!empty($thissurvey['emailresponseto']) && empty($emails)) {
-        $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailresponseto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true));
-        foreach ($aRecipient as $sRecipient) {
-            $sRecipient = trim($sRecipient);
-            if ($mailer::validateAddress($sRecipient)) {
-                $aEmailResponseTo[] = $sRecipient;
-            }
-        }
+        $recipients = LimeExpressionManager::ProcessStepString($thissurvey['emailresponseto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true);
+        $aEmailResponseTo = array_merge($aEmailResponseTo, LimeMailer::validateAddresses($recipients));
     }
 
     if (count($aEmailNotificationTo) || count($aEmailResponseTo)) {
@@ -672,31 +662,42 @@ function getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bI
  */
 function saveFailedEmail(?int $id, ?string $recipient, int $surveyId, int $responseId, string $emailType, ?string $language, LimeMailer $mailer): bool
 {
-    $failedEmailModel = new FailedEmail();
     $errorMessage = $mailer->getError();
     $resendVars = json_encode($mailer->getResendEmailVars());
     if (isset($id)) {
-        $failedEmail = $failedEmailModel->findByPk($id);
+        $failedEmail = FailedEmail::model()->findByPk($id);
         if (isset($failedEmail)) {
             $failedEmail->surveyid = $surveyId;
             $failedEmail->error_message = $errorMessage;
             $failedEmail->status = 'SEND FAILED';
             $failedEmail->updated = date('Y-m-d H:i:s');
-            return $failedEmail->save(false);
         }
     }
-    $failedEmailModel->recipient = $recipient;
-    $failedEmailModel->surveyid = $surveyId;
-    $failedEmailModel->responseid = $responseId;
-    $failedEmailModel->email_type = $emailType;
-    $failedEmailModel->language = $language;
-    $failedEmailModel->error_message = $errorMessage;
-    $failedEmailModel->created = date('Y-m-d H:i:s');
-    $failedEmailModel->status = 'SEND FAILED';
-    $failedEmailModel->updated = date('Y-m-d H:i:s');
-    $failedEmailModel->resend_vars = $resendVars;
 
-    return $failedEmailModel->save(false);
+    if (!isset($failedEmail)) {
+        $failedEmail = new FailedEmail();
+        $failedEmail->recipient = $recipient;
+        $failedEmail->surveyid = $surveyId;
+        $failedEmail->responseid = $responseId;
+        $failedEmail->email_type = $emailType;
+        $failedEmail->language = $language;
+        $failedEmail->error_message = $errorMessage;
+        $failedEmail->created = date('Y-m-d H:i:s');
+        $failedEmail->status = 'SEND FAILED';
+        $failedEmail->updated = date('Y-m-d H:i:s');
+        $failedEmail->resend_vars = $resendVars;
+    }
+
+    try {
+        return $failedEmail->save(false);
+    } catch (\CDbException $e) {
+        // If there's an exception, it might be due to the error message, so we log it
+        // and try to save again with a generic error message
+        Yii::log("Error saving failed email: " . $e->getMessage(), CLogger::LEVEL_ERROR);
+        Yii::log("Original error message: " . $errorMessage, CLogger::LEVEL_ERROR);
+        $failedEmail->error_message = gT("Original error message could not be saved.");
+        return $failedEmail->save(false);
+    }
 }
 
 function failedEmailSuccess($id)
@@ -1871,7 +1872,7 @@ function display_first_page($thissurvey, $aSurveyInfo)
     $thissurvey                 = $aSurveyInfo;
     $thissurvey['aNavigator']   = getNavigatorDatas();
     LimeExpressionManager::StartProcessingPage();
-    LimeExpressionManager::StartProcessingGroup(-1, false, $surveyid, true); // start on welcome page
+    LimeExpressionManager::StartProcessingGroup(-1, false, $surveyid); // start on welcome page
 
     // WHY HERE ?????
     $_SESSION['survey_' . $surveyid]['LEMpostKey'] = mt_rand();
