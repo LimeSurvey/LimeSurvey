@@ -1859,8 +1859,8 @@ class LimeExpressionManager
                         // Unset all checkboxes and hidden values for this question (irregardless of whether they are array filtered)
                         $eosaJS = "if (" . $relevanceJS . ") {\n";
                         $eosaJS .= "  $('#question" . $questionNum . " [type=checkbox]').prop('checked',false);\n";
-                        $eosaJS .= "  $('#java" . $qinfo['sgqa'] . "other').val('');\n";
-                        $eosaJS .= "  $('#answer" . $qinfo['sgqa'] . "other').val('');\n";
+                        $eosaJS .= "  $('#java" . $qinfo['sgqa'] . "_Cother').val('');\n";
+                        $eosaJS .= "  $('#answer" . $qinfo['sgqa'] . "_Cother').val('');\n";
                         $eosaJS .= "  $('[id^=java" . $qinfo['sgqa'] . "]').val('');\n";
                         $eosaJS .= "  $('#answer" . $eoVarName . "').prop('checked',true);\n";
                         $eosaJS .= "  $('#java" . $eoVarName . "').val('Y');\n";
@@ -2596,10 +2596,10 @@ class LimeExpressionManager
                     switch ($type) {
                         case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
                         case Question::QT_L_LIST: //LIST drop-down/radio-button list
-                            $eqn = "(" . $sgqa . ".NAOK!='-oth-' || (" . $sgqa . ".NAOK=='-oth-' && !is_empty(trim(" . $sgqa . "other.NAOK))))";
+                            $eqn = "(" . $sgqa . ".NAOK!='-oth-' || (" . $sgqa . ".NAOK=='-oth-' && !is_empty(trim(" . $sgqa . "_Cother.NAOK))))";
                             break;
                         case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments
-                            $eqn = "(is_empty(trim(" . $sgqa . "other.NAOK)) || (!is_empty(trim(" . $sgqa . "other.NAOK)) && !is_empty(trim(" . $sgqa . "othercomment.NAOK))))";
+                            $eqn = "(is_empty(trim(" . $sgqa . "_Cother.NAOK)) || (!is_empty(trim(" . $sgqa . "_Cother.NAOK)) && !is_empty(trim(" . $sgqa . "_Cothercomment.NAOK))))";
                             break;
                         default:
                             break;
@@ -2633,7 +2633,7 @@ class LimeExpressionManager
                         case Question::QT_L_LIST: //LIST drop-down/radio-button list
                         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice
                         case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with
-                            $eqn = "(is_empty(trim(" . $sgqa . "other.NAOK)) ||is_numeric(" . $sgqa . "other.NAOK))";
+                            $eqn = "(is_empty(trim(" . $sgqa . "_Cother.NAOK)) ||is_numeric(" . $sgqa . "_Cother.NAOK))";
                             break;
                         default:
                             break;

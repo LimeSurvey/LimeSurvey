@@ -3744,7 +3744,7 @@ function do_array_texts($ia)
     foreach ($aSubquestionsX as $oSubquestion) {
         $labelans[$oSubquestion->qid] = [
             'label' => $oSubquestion->questionl10ns[$sSurveyLanguage]->question,
-            'title' => $oSubquestion->questionl10ns[$sSurveyLanguage]->title
+            'title' => $oSubquestion->title
         ];
         $labelans2[$oSubquestion->title] = $oSubquestion->questionl10ns[$sSurveyLanguage]->question;
     }
@@ -4336,7 +4336,7 @@ function do_arraycolumns($ia)
     foreach ($aAnswers as $lrow) {
         $labelans[] = $lrow->answerl10ns[$sSurveyLanguage]->answer;
         $labelcode[] = $lrow['code'];
-        $labels[] = array("answer" => $lrow->answerl10ns[$sSurveyLanguage]->answer, "code" => $lrow['code']);
+        $labels[] = array("answer" => $lrow->answerl10ns[$sSurveyLanguage]->answer, "code" => $lrow['code'], "aid" => $lrow->aid);
     }
 
     $inputnames = [];
@@ -4391,7 +4391,7 @@ function do_arraycolumns($ia)
 
             $iAnswerCount = count($answers);
             for ($_i = 0; $_i < $iAnswerCount; ++$_i) {
-                $myfname = $ia[1] . "_S" . $answers[$_i]->qid;
+                $myfname = $ia[1] . "_S" . $aQuestions[$_i]->qid;
                 /* Check the Sub Q mandatory violation */
                 if (($ia[6] == 'Y' || $ia[6] == 'S') && in_array($myfname, $aMandatoryViolationSubQ)) {
                     $aData['aQuestions'][$_i]['errormandatory'] = true;
@@ -4408,7 +4408,10 @@ function do_arraycolumns($ia)
 
                 // create the html ids for the table rows, which are
                 // the answer options for this question type
-                $aData['labels'][$labelIdx]['myfname'] = $ia[1] . "_S" . $ansrow['qid'];
+                $aData['labels'][$labelIdx]['myfname'] = $ia[1];
+                if (isset($ansrow['aid'])) {
+                    $aData['labels'][$labelIdx]['myfname'] .= "_S" . $ansrow['aid'];
+                }
 
                 // AnswerCode
                 foreach ($anscode as $j => $ld) {
