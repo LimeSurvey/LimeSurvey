@@ -104,7 +104,7 @@
         </brandlogofile>
         <!-- fonts -->
         <!--  When adding new items, please keep them ordered alphabetically -->
-        <font type="dropdown" category="Fonts" width="12" title="Fonts" parent="font">
+        <font type="dropdown" category="Fonts" width="12" title="Fonts">
             ibm-sans
             <dropdownoptions>
                 <optgroup label="User browser">
@@ -133,7 +133,7 @@
                 </optgroup>
             </dropdownoptions>
         </font>
-        <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">Apple
+        <cssframework type="dropdown" category="Simple options" width="12" title="Variations">Apple
             <dropdownoptions>
                 <optgroup>
                     <option data-value="css/variations/theme_apple.css" value="apple">Apple</option>
