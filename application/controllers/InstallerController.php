@@ -192,8 +192,13 @@ class InstallerController extends CController
      */
     private function stepPreInstallationCheckPrepare()
     {
-        // Unset the cookie if present
+        // Unset the LS_PRECHECK_SHOWN cookie if present
+        // It is used in the next step to check if the request comes from this step or not.
         setcookie("LS_PRECHECK_SHOWN", "", time() - 3600, "/");
+
+        // Set the LS_COOKIES_ALLOWED cookie
+        // It is used for checking if cookies are enabled
+        setcookie("LS_COOKIES_ALLOWED", "1", time() + 3600, "/");
 
         // Set the value to check in the next step
         Yii::app()->session['saveCheck'] = 'save';
@@ -236,6 +241,8 @@ class InstallerController extends CController
         if (!$sessionWritable) {
             $bProceed = false;
         }
+
+        $aData['cookiesAllowed'] = !empty($_COOKIE['LS_COOKIES_ALLOWED']);
 
         // after all check, if flag value is true, show next button and sabe step2 status.
         if ($bProceed) {

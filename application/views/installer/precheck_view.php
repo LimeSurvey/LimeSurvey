@@ -13,6 +13,11 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
         <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
     <div class="col-lg-9">
+        <?php if (empty($next) && empty($cookiesAllowed)): ?>
+            <div class="alert alert-warning" role="alert">
+                <?= gT("Cookies seem to be disabled. Please use the \"Check again\" button instead of refreshing the page."); ?>
+            </div>
+        <?php endif; ?>
         <h2><?php echo $title; ?></h2>
         <p><?php echo $descp; ?></p>
         <legend><?php eT("Minimum requirements"); ?></legend>

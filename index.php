@@ -152,6 +152,8 @@ require_once __DIR__ . '/vendor/autoload.php';
 *
 */
 
+ini_set("session.save_path", "sarasa");
+
 require_once BASEPATH . 'yii' . EXT;
 require_once APPPATH . 'core/LSYii_Application' . EXT;
 
