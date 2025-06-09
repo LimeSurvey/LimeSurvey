@@ -20,7 +20,7 @@
 
 <!-- Group Name -->
 {% if aGroup.showgroupinfo == 'N' or aGroup.showgroupinfo == 'B' %}
-    <div class="{{ aSurveyInfo.class.grouptitle }}" {{ aSurveyInfo.attr.grouptitle }}>
+    <h1 class="{{ aSurveyInfo.class.grouptitle }}" {{ aSurveyInfo.attr.grouptitle }}>
         {{ processString(aGroup.name) }}
-    </div>
+    </h1>
 {% endif %}
