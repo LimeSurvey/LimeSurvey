@@ -4,6 +4,7 @@ namespace LimeSurvey\Models\Services;
 
 use LimeSurvey\Models\Services\Exception\NotFoundException;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
+use Survey;
 use Permission;
 use LSYii_Application;
 use ArchivedTableSettings;
@@ -12,6 +13,8 @@ use SurveyDynamicArchive;
 
 class SurveyArchiveService
 {
+    private Survey $survey;
+
     private Permission $permission;
 
     protected LSYii_Application $app;
@@ -23,9 +26,11 @@ class SurveyArchiveService
     public static $Timings_archive = 'TM';
 
     public function __construct(
+        Survey $survey,
         Permission $permission,
         LSYii_Application $app
     ) {
+        $this->survey = $survey;
         $this->permission = $permission;
         $this->app = $app;
     }
@@ -111,6 +116,7 @@ class SurveyArchiveService
 
         if (!empty($archivedResponsesData['data'])) {
             $this->attachTimingsToResponses($archivedResponsesData, $iSurveyID, $iTimestamp);
+            $this->attachQuestionTitlesToResponses($archivedResponsesData, $iSurveyID);
         }
 
         return $archivedResponsesData;
@@ -291,6 +297,59 @@ class SurveyArchiveService
 
         $archivedResponsesData['data'] = $dataWithTimings;
     }
+
+    /**
+     * Attach question titles and group titles to the archived responses.
+     *
+     * @param array $archivedResponsesData Array of archived survey responses.
+     * @param int $iSurveyID.
+     *
+     * @return void
+     */
+    protected function attachQuestionTitlesToResponses(array &$archivedResponsesData, int $iSurveyID): void
+{
+    $survey = $this->survey->findByPk($iSurveyID);
+    $fieldMap = createFieldMap($survey, 'full', false, false);
+    $dataWithTitles = [];
+
+    foreach ($archivedResponsesData['data'] as $response) {
+        $fieldDetails = [];
+
+        foreach ($response as $fieldName => $value) {
+            if (!isset($fieldMap[$fieldName])) {
+                continue;
+            }
+
+            $fieldMeta = $fieldMap[$fieldName];
+
+            if (empty($fieldMeta['sid']) || empty($fieldMeta['gid']) || empty($fieldMeta['qid'])) {
+                continue;
+            }
+
+            if (!empty($fieldMeta['sqid'])) {
+                $sub1 = $fieldMeta['subquestion1'] ?? '';
+                $sub2 = $fieldMeta['subquestion2'] ?? '';
+                $questionTitle = "{$sub1} - {$sub2}";
+            } else {
+                $question = $fieldMeta['question'] ?? '';
+                $questionTitle = $question;
+            }
+
+            $questionTitle .= ' (' . ($fieldMeta['title'] ?? '') . ')';
+            $fieldDetails[$fieldName] = [
+                'groupTitle' => $fieldMeta['group_name'] ?? '',
+                'questionTitle' => $questionTitle,
+            ];
+        }
+
+        $response['fieldDetails'] = $fieldDetails;
+        $dataWithTitles[] = $response;
+    }
+
+    $archivedResponsesData['data'] = $dataWithTitles;
+}
+
+
 
     /**
      * Check if user has permission to update archive
