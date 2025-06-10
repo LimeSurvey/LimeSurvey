@@ -334,6 +334,24 @@ echo $oQuestionSelector->getModal();
                                 </div>
                             </div>
                         </div>
+                        <!-- Show question codes (only in New LimeSurvey Editor) -->
+                        <div class="col-12 col-lg-6">
+                            <div class="mb-3">
+                                <?php echo TbHtml::label(gT("Show question codes (only in new LimeSurvey Editor):"), 'showQuestionCodes', ['class' => " form-label"]); ?>
+                                <div>
+                                    <?php
+                                    $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => 'showQuestionCodes',
+                                        'checkedOption' => $aUserSettings['showQuestionCodes'] ?? 0,
+                                        'selectOptions' =>    [
+                                            '1' => gT("Yes", 'unescaped'),
+                                            '0' => gT("No", 'unescaped'),
+                                        ],
+                                        'htmlOptions' => []
+                                    ]); ?>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Show script field in question editor -->
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">
