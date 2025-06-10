@@ -13,8 +13,6 @@ class SchemaFactoryPersonalSettings
             ->description('Personal Settings')
             ->type(Schema::TYPE_OBJECT)
             ->properties(
-                Schema::string('answeroptionprefix')->default('A'),
-                Schema::string('subquestionprefix')->default('SQ'),
                 Schema::boolean('showQuestionCodes')->default(false)
             );
     }

@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\Api\Rest\V1\SchemaFactory;
 
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
+
 /**
  * Schema factory for personal settings patch
  */
@@ -10,27 +12,17 @@ class SchemaFactoryPersonalSettingsPatch
     /**
      * Create the schema
      *
-     * @return array
+     * @return Schema
      */
-    public function make(): array
+    public function make(): Schema
     {
-        return [
-            'type' => 'object',
-            'properties' => [
-                'answeroptionprefix' => [
-                    'type' => 'string',
-                    'description' => 'Answer option prefix'
-                ],
-                'subquestionprefix' => [
-                    'type' => 'string',
-                    'description' => 'Subequestion prefix'
-                ],
-                'showQuestionCodes' => [
-                    'type' => 'boolean',
-                    'description' => 'Show question codes preference'
-                ]
-            ],
-            'additionalProperties' => false
-        ];
+        return Schema::create()
+            ->title('Personal Settings Patch')
+            ->description('Personal Settings Patch')
+            ->type(Schema::TYPE_OBJECT)
+            ->properties(
+                Schema::boolean('showQuestionCodes')
+                    ->description('Show question codes preference')
+            );
     }
 }

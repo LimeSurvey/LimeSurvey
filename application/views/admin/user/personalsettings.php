@@ -337,7 +337,7 @@ echo $oQuestionSelector->getModal();
                         <!-- Show question codes (only in New LimeSurvey Editor) -->
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Show question codes (only in New LimeSurvey Editor):"), 'showQuestionCodes', ['class' => " form-label"]); ?>
+                                <?php echo TbHtml::label(gT("Show question codes (only in new LimeSurvey Editor):"), 'showQuestionCodes', ['class' => " form-label"]); ?>
                                 <div>
                                     <?php
                                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [

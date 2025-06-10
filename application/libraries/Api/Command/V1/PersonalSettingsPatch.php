@@ -65,35 +65,22 @@ class PersonalSettingsPatch implements CommandInterface
 
     /**
      * Update the personal settings for a user
+     * As of now only showQuestionCodes setting is possible
      *
      * @param int $userId User ID (must not be null)
      * @param array $settingsData
-     * @return bool
-     * @throws \Exception If user not found
+     * @return boolean
      */
     private function updatePersonalSettings(int $userId, array $settingsData)
     {
-        // Get the user model
-        $user = \User::model()->findByPk($userId);
-
-        if (!$user) {
-            throw new \Exception('User not found');
-        }
-
-        // Update user settings based on the provided data
-        if (isset($settingsData['answeroptionprefix'])) {
-            $user->email = $settingsData['answeroptionprefix'];
-        }
-
-        if (isset($settingsData['subquestionprefix'])) {
-            $user->full_name = $settingsData['subquestionprefix'];
-        }
-
+        $result = false;
         if (isset($settingsData['showQuestionCodes'])) {
-            \SettingsUser::setUserSetting('showQuestionCodes', $settingsData['showQuestionCodes'] ? 1 : 0, $userId);
+            $result = \SettingsUser::setUserSetting(
+                'showQuestionCodes',
+                $settingsData['showQuestionCodes'] ? 1 : 0,
+                $userId
+            );
         }
-
-        // Save the changes
-        return $user->save();
+        return $result;
     }
 }

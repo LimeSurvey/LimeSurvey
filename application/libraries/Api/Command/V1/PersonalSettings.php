@@ -36,9 +36,7 @@ class PersonalSettings implements CommandInterface
                 ->makeError('No user ID provided');
         }
         try {
-            $answerOptionPrefix = \SettingsUser::getUserSettingValue('answeroptionprefix', $userId);
-            $subquestionPrefix = \SettingsUser::getUserSettingValue('subquestionprefix', $userId);
-            $showQuestionCodes = \SettingsUser::getUserSettingValue('showQuestionCodes', $userId);
+            $showQuestionCodes = \SettingsUser::getUserSettingValue('showQuestionCodes', $userId, null, null, 0);
         } catch (\Exception $e) {
             return $this->responseFactory
                 ->makeException($e);
@@ -46,9 +44,7 @@ class PersonalSettings implements CommandInterface
 
         return $this->responseFactory
             ->makeSuccess([
-                'answeroptionprefix' => $answerOptionPrefix,
-                'subquestionprefix' => $subquestionPrefix,
-                'showQuestionCodes' => $showQuestionCodes
+                'showQuestionCodes' => $showQuestionCodes == 1
             ]);
     }
 }

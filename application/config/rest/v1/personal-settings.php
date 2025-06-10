@@ -6,17 +6,20 @@ use LimeSurvey\Api\Command\V1\{
 };
 
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
+    SchemaFactoryError,
     SchemaFactoryPersonalSettings,
-    SchemaFactoryPersonalSettingsPatch
-};
+    SchemaFactoryPersonalSettingsPatch};
+
+$errorSchema = (new SchemaFactoryError())->make();
+$personalSettingsPatchSchema = (new SchemaFactoryPersonalSettingsPatch)->make();
 
 $rest = [];
 
-$rest['v1/personal-settings'] = [
+$rest['v1/personal-settings/$id'] = [
     'GET' => [
         'description' => 'Personal Settings',
         'commandClass' => PersonalSettings::class,
-        'params' => [],
+        'auth' => true,
         'responses' => [
             'success' => [
                 'code' => 200,
@@ -29,18 +32,26 @@ $rest['v1/personal-settings'] = [
     'PATCH' => [
         'description' => 'Update personal settings',
         'commandClass' => PersonalSettingsPatch::class,
-        'params' => [],
+        'auth' => true,
         'example' => __DIR__. '/example/personal-settings-patch.json',
-        'content' => [
-            'application/json' => [
-                'schema' => (new SchemaFactoryPersonalSettingsPatch)->make()
-            ]
-        ],
+        'schema' => $personalSettingsPatchSchema,
         'responses' => [
             'success' => [
                 'code' => 200,
                 'description' => 'Success',
-                'content' => null
+                'examples' => null,
+                'content' => null,
+                'schema' => null
+            ],
+            'unauthorized' => [
+                'code' => 401,
+                'description' => 'Unauthorized',
+                'schema' => $errorSchema
+            ],
+            'not-found' => [
+                'code' => 404,
+                'description' => 'Not Found',
+                'schema' => $errorSchema
             ]
         ]
     ]

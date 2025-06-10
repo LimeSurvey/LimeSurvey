@@ -1,5 +1,3 @@
 {
-    "answeroptionprefix": "A",
-    "subquestionprefix": "SQ",
-    "showQuestionCodes": "false"
+    "showQuestionCodes": true
   }
