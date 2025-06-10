@@ -620,7 +620,7 @@ class DataEntry extends SurveyCommonAction
             }
 
             $results1['id'] = "";
-            $results1['datestamp'] = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+            $results1['datestamp'] = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i");
             $results1['ipaddr'] = $saver['ip'];
             $results[] = $results1;
         }
@@ -1667,7 +1667,7 @@ class DataEntry extends SurveyCommonAction
                     }
                     if (empty($thisvalue)) {
                         if (Survey::model()->findByPk($surveyid)->isDateStamp) {
-                            $oResponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
+                            $oResponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i");
                         } else {
                             $oResponse->$fieldname = date("Y-m-d\TH:i", (int) mktime(0, 0, 0, 1, 1, 1980));
                         }
@@ -1678,7 +1678,7 @@ class DataEntry extends SurveyCommonAction
                 case 'startdate':
                 case 'datestamp':
                     if (empty($thisvalue)) {
-                        $oResponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
+                        $oResponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i");
                         break;
                     }
                     $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
@@ -1688,7 +1688,7 @@ class DataEntry extends SurveyCommonAction
                     } else {
                         Yii::app()->setFlashMessage(sprintf(gT("Invalid datetime %s value for %s"), htmlentities((string) $thisvalue), $fieldname), 'warning');
                         /* We get here : we need a valid value : NOT NULL in db or completed != "N" */
-                        $oResponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
+                        $oResponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i");
                     }
                     break;
                 default:
@@ -1825,7 +1825,7 @@ class DataEntry extends SurveyCommonAction
                 }
                 if (isset($_POST['closerecord'])) {
                     if ($survey->isDateStamp) {
-                        $_POST['submitdate'] = dateShift((string) date("Y-m-d H:i"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+                        $_POST['submitdate'] = dateShift((string) date("Y-m-d H:i"), "Y-m-d H:i");
                     } else {
                         $_POST['submitdate'] = date("Y-m-d H:i", (int) mktime(0, 0, 0, 1, 1, 1980));
                     }
@@ -1952,7 +1952,7 @@ class DataEntry extends SurveyCommonAction
                     $arSaveControl->refurl = (string) getenv("HTTP_REFERER");
                     $arSaveControl->saved_thisstep = '0';
                     $arSaveControl->status = 'S';
-                    $arSaveControl->saved_date = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", "'" . Yii::app()->getConfig('timeadjust'));
+                    $arSaveControl->saved_date = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i");
                     $arSaveControl->save();
                     if ($arSaveControl->save()) {
                         $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation email. Please make sure to save your password, since we will not be able to retrieve it for you."));

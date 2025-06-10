@@ -142,13 +142,12 @@ abstract class LSYii_Controller extends CController
         }
 
         //SET LOCAL TIME
-        $timeadjust = Yii::app()->getConfig("timeadjust");
-        if (substr((string) $timeadjust, 0, 1) != '-' && substr((string) $timeadjust, 0, 1) != '+') {
-            $timeadjust = '+' . $timeadjust;
+        $displayTimezone = Yii::app()->getConfig("displayTimezone");
+        // if the time zone is empty or does not exist, use UTC
+        if (empty($displayTimezone) || !in_array($displayTimezone, timezone_identifiers_list())) {
+            Yii::app()->setConfig("displayTimezone", "UTC");
         }
-        if (strpos((string) $timeadjust, 'hours') === false && strpos((string) $timeadjust, 'minutes') === false && strpos((string) $timeadjust, 'days') === false) {
-            Yii::app()->setConfig("timeadjust", $timeadjust . ' hours');
-        }
+
         /* Set the default language, other controller can update if wanted */
         Yii::app()->setLanguage(Yii::app()->getConfig("defaultlang"));
     }

@@ -378,8 +378,8 @@ function submittokens($quotaexit = false)
     }
     $clienttoken = $_SESSION['survey_' . $surveyid]['token'];
 
-    // Shift the date due to global timeadjust setting
-    $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+    // Shift the date due to global timezone setting
+    $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i");
 
     // check how many uses the token has left
     $token = Token::model($surveyid)->findByAttributes(array('token' => $clienttoken));

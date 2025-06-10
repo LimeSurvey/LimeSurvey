@@ -53,7 +53,7 @@ function _outputDBDescription($sDbName, $bAllowExportAllDb)
     if (!$bAllowExportAllDb) {
         $sOutput = '-- Only prefixed tables with: ' . Yii::app()->db->tablePrefix . "\n";
     }
-    $sOutput .= '-- Date of Dump: ' . dateShift(date('d-M-Y'), 'd-M-Y', Yii::app()->getConfig('timeadjust')) . "\n";
+    $sOutput .= '-- Date of Dump: ' . dateShift(date('d-M-Y'), 'd-M-Y') . "\n";
     $sOutput .= '--' . "\n";
     return $sOutput;
 }
