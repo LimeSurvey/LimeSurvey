@@ -326,19 +326,18 @@ class SurveyArchiveService
                 continue;
             }
 
+            $subQuestionTitle = '';
             if (!empty($fieldMeta['sqid'])) {
                 $sub1 = $fieldMeta['subquestion1'] ?? '';
                 $sub2 = $fieldMeta['subquestion2'] ?? '';
-                $questionTitle = "{$sub1} - {$sub2}";
-            } else {
-                $question = $fieldMeta['question'] ?? '';
-                $questionTitle = $question;
+                $subQuestionTitle = "{$sub1} - {$sub2}";
             }
 
-            $questionTitle .= ' (' . ($fieldMeta['title'] ?? '') . ')';
             $fieldDetails[$fieldName] = [
                 'groupTitle' => $fieldMeta['group_name'] ?? '',
-                'questionTitle' => $questionTitle,
+                'questionTitle' => $fieldMeta['question'] ?? '',
+                'subQuestionTitle' => $subQuestionTitle,
+                'questionCode' => $fieldMeta['title'] ?? '',
             ];
         }
 
