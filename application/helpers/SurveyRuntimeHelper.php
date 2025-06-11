@@ -210,6 +210,9 @@ class SurveyRuntimeHelper
             if (EmCacheHelper::useCache()) {
                 $this->aSurveyInfo['emcache'] = true;
             }
+            if (intval($_SESSION[$this->LEMsessid]['filltoken'] ?? 0)) {
+                $this->aSurveyInfo['filltoken'] = true;
+            }
             $this->checkQuotas(); // check quotas (then the process will stop here)
             $this->displayFirstPageIfNeeded();
             $this->saveAllIfNeeded();
