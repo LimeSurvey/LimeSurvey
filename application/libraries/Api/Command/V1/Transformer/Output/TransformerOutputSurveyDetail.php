@@ -23,7 +23,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         'format', 'googleanalyticsapikey', 'htmlemail', 'ipaddr', 'ipanonymize', 'listpublic', 'navigationdelay',
         'nokeyboard', 'printanswers', 'publicgraphs', 'publicstatistics', 'questionindex', 'refurl',
         'savetimings', 'sendconfirmation', 'showgroupinfo', 'shownoanswer', 'showprogress', 'showqnumcode',
-        'showwelcome', 'showxquestions', 'template', 'tokenanswerspersistence', 'tokenlength', 'usecookie',
+        'showwelcome', 'showxquestions', 'template', 'tokenanswerspersistence', 'tokenlength', 'usecookie', 'othersettings',
     ];
 
     private TransformerOutputSurvey $transformerSurvey;
@@ -344,6 +344,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     {
         foreach (TransformerOutputSurveyDetail::AFFECTED_INHERITED_SETTINGS as $setting) {
             $intBasedSettings = ['questionindex', 'navigationdelay'];
+            $otherSetting = 'othersettings';
             if (
                 isset($survey->$setting)
                 && (
@@ -361,8 +362,50 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 if (property_exists($survey->oOptions, $setting)) {
                     $survey->$setting = $survey->oOptions->$setting;
                 }
+            } elseif ($setting === $otherSetting) {
+                // convert other settings to array and check each one for 'I'
+                $survey = $this->setInheritedOtherSettings(
+                    $survey,
+                    $otherSetting
+                );
             }
         }
+        return $survey;
+    }
+
+    /**
+     * Processes inherited settings in the 'othersettings' property of a Survey
+     *
+     * This function handles the inheritance of settings from parent survey groups.
+     * It replaces any setting with value 'I' (indicating inheritance) with the
+     * corresponding value from the parent survey group's settings.
+     *
+     * @param Survey $survey The survey object to process
+     * @param string $otherSetting The name of the setting property to process (typically 'othersettings')
+     * @return Survey The modified survey object with inherited settings resolved
+     */
+    private function setInheritedOtherSettings(
+        Survey $survey,
+        string $otherSetting
+    ) {
+        $otherSettingsArray = $survey->getOtherSettingsPrefixArray();
+        $decodedParentSettings = new \stdClass();
+        if (property_exists($survey->oOptions, $otherSetting)) {
+            $decodedParentSettings = json_decode(
+                $survey->oOptions->$otherSetting
+            );
+        }
+        foreach ($otherSettingsArray as $otherSettingKey => $otherSettingValue) {
+            if ($otherSettingValue === 'I') {
+                if (property_exists($decodedParentSettings, $otherSettingKey)) {
+                    $otherSettingsArray[$otherSettingKey] = $decodedParentSettings->$otherSettingKey;
+                }
+            } else {
+                $otherSettingsArray[$otherSettingKey] = $otherSettingValue;
+            }
+        }
+        $survey->$otherSetting = json_encode($otherSettingsArray);
+
         return $survey;
     }
 
