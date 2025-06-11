@@ -17963,6 +17963,12 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   border: solid #6E748C 3px;
   color: #6E748C;
 }
+.box-widget .box-widget-card.card-placeholder {
+  cursor: default;
+  background-color: #fff;
+  box-shadow: none;
+  border: none;
+}
 .box-widget .box-widget-loadmore {
   width: 100%;
   text-align: center;
