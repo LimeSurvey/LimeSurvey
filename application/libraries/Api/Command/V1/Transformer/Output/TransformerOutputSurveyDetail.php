@@ -397,7 +397,13 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         }
         foreach ($otherSettingsArray as $otherSettingKey => $otherSettingValue) {
             if ($otherSettingValue === 'I') {
-                if (property_exists($decodedParentSettings, $otherSettingKey)) {
+                if (
+                    is_object($decodedParentSettings)
+                    && property_exists(
+                        $decodedParentSettings,
+                        $otherSettingKey
+                    )
+                ) {
                     $otherSettingsArray[$otherSettingKey] = $decodedParentSettings->$otherSettingKey;
                 }
             }
