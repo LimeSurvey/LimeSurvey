@@ -41,7 +41,7 @@ foreach ($extraMenus as $menu): ?>
                             <li class="dropdown-header"><?= $menuItem->getLabel(); ?></li>
                         <?php
                         else: ?>
-                            <li class="create-menu-item">
+                            <li class="create-menu-item ms-3 me-3">
                                 <a href="<?= $menuItem->getHref(); ?>" class="dropdown-item">
                                     <!-- Spit out icon if present -->
                                     <?php

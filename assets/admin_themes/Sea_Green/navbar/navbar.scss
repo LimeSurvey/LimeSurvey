@@ -174,8 +174,7 @@
 
 .create-menu-item {
   width: 222px;
-  margin-left: 12px;
-  margin-right: 12px;
+  border: 1px solid $white;
   &:hover {
     border-color: $grape !important;
     border: 1px solid;

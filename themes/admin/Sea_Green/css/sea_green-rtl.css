@@ -17664,6 +17664,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   width: 222px;
   margin-right: 12px;
   margin-left: 12px;
+  border: 1px solid #fff;
 }
 .create-menu-item:hover {
   border-color: #8146F6 !important;
