@@ -34,6 +34,28 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.14.1 (build 250527) to 6.14.2 (build 250610) June 10, 2025
+-Fixed issue: Error message 'Invalid call to a member function decryptBeforeOutput() on null' (Carsten Schmitz)
+-Fixed issue #20132: With debug=2 I am getting an error when exporting responses to SPSS (#4310) (Gabriel Jenik)
+-Fixed issue #20129: Dump when accessing 2FA Admin screen, with DEBUG enabled (#4308) (Gabriel Jenik)
+-Fixed issue #20127: Dump when browsing responses, with DEBUG enabled (#4307) (Gabriel Jenik)
+-Fixed issue #20120: Advanced ranking height and width are set to 0 wh… (#4290) (fsay.php)
+-Fixed issue #20112: Soft mandatory questions treated as mandatory whe… (#4287) (Denis Chenu)
+-Fixed issue #20107: Statistics PDF export with Pie Charts not working (#4298) (Gabriel Jenik)
+-Fixed issue #20091: Optin broken (Carsten Schmitz)
+-Fixed issue #20047: Unable to open survey on new tab in Survey listing (#4313) (Gabriel Jenik)
+-Fixed issue #20034: Exceeding the number of maximum access code validation attempts (#4301) (Gabriel Jenik)
+-Fixed issue #20020: SPSS export - multiple answers question (#4297) (Gabriel Jenik)
+#Updated translation: Swahili by FredaM
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue
+#Updated translation: Hungarian by kkd, PFerenc
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Dutch by Han, twilllig
+#Updated translation: Dutch (Informal) by Han, twilllig
+
+
 Changes from 6.14.0 (build 250520) to 6.14.1 (build 250527) May 27, 2025
 -Fixed issue: Plugin load error not sending email in console mode (Carsten Schmitz)
 -Fixed issue #20096: Confirmation email is not sent if multiple participants/email addresses are used, also applies to admin notifications (#4282) (Gabriel Jenik)
