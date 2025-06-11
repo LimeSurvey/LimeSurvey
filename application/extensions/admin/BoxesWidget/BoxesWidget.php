@@ -18,6 +18,7 @@ class BoxesWidget extends CWidget
     const TYPE_PRODUCT = 0;
     const TYPE_PRODUCT_GROUP = 1;
     const TYPE_LINK = 2;
+    const TYPE_PLACEHOLDER = 3;
     public array $items = [];
     public int $limit = 5;
     public bool $searchBox = true;
@@ -175,7 +176,7 @@ class BoxesWidget extends CWidget
         $placeholders = [];
         for($i = 0; $i < $amount; $i++){
             $placeholders[] = [
-                'type' => self::TYPE_LINK,
+                'type' => self::TYPE_PLACEHOLDER,
                 'link' => '#',
                 'text' => '',
                 'icon' => '',
