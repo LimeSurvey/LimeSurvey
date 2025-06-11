@@ -330,7 +330,9 @@ class SurveyArchiveService
             if (!empty($fieldMeta['sqid'])) {
                 $sub1 = $fieldMeta['subquestion1'] ?? '';
                 $sub2 = $fieldMeta['subquestion2'] ?? '';
-                $subQuestionTitle = "{$sub1} - {$sub2}";
+                if(!empty($sub1) && !empty($sub2)) {
+                    $subQuestionTitle =  "{$sub1} - {$sub2}";
+                }
             }
 
             $fieldDetails[$fieldName] = [
