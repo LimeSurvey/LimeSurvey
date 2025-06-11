@@ -11,6 +11,12 @@ class Menu implements MenuInterface
     protected $isDropDown = false;
 
     /**
+     * If true, render this menu as a dropdown button.
+     * @var bool
+     */
+    protected $isDropDownButton = false;
+
+    /**
      * @var string
      */
     protected $label = "Missing label";
@@ -64,6 +70,10 @@ class Menu implements MenuInterface
             $this->isDropDown = $options['isDropDown'];
         }
 
+        if (isset($options['isDropDownButton'])) {
+            $this->isDropDownButton = $options['isDropDownButton'];
+        }
+
         if (isset($options['label'])) {
             $this->label = $options['label'];
         }
@@ -103,6 +113,14 @@ class Menu implements MenuInterface
     public function isDropDown()
     {
         return $this->isDropDown;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDropDownButton()
+    {
+        return $this->isDropDownButton;
     }
 
     /**
