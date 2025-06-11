@@ -400,8 +400,6 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 if (property_exists($decodedParentSettings, $otherSettingKey)) {
                     $otherSettingsArray[$otherSettingKey] = $decodedParentSettings->$otherSettingKey;
                 }
-            } else {
-                $otherSettingsArray[$otherSettingKey] = $otherSettingValue;
             }
         }
         $survey->$otherSetting = json_encode($otherSettingsArray);
