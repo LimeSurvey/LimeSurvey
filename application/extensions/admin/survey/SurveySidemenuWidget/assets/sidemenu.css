@@ -60,6 +60,9 @@
 .topbar.scroll-shadow {
     box-shadow: 58px 1px 2px -2px gray;
 }
+.topbar.editor {
+    margin-left: 365px;
+}
 
 .btn-icon:before {
     font-size: 24px;
@@ -162,10 +165,12 @@
     }
 }
 
-
+.side-menu-logo {
+    min-width: 365px;
+}
 .side-menu-logo a{
     color: black;
     font-size: 15px;
     font-weight: 800;
-    line-height: 24px
+    line-height: 24px;
 }

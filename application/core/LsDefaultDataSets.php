@@ -857,7 +857,7 @@ class LsDefaultDataSets
             'desc'       => gT('View dashboard'),
             'page'       => 'welcome',
             'usergroup'  => '-1',
-            'buttontext' => gt('View dashboard')
+            'buttontext' => gT('View dashboard')
         ];
         $returnArray[] = [
             'position'   => '2',
@@ -867,7 +867,7 @@ class LsDefaultDataSets
             'desc'       => gT('Edit global settings'),
             'page'       => 'welcome',
             'usergroup'  => '-2',
-            'buttontext' => gt('View global settings')
+            'buttontext' => gT('View global settings')
         ];
         $returnArray[] = [
             'position'   => '3',
@@ -877,7 +877,7 @@ class LsDefaultDataSets
             'desc'       => gT('The themes functionality allows you to edit survey-, admin- or question themes.'),
             'page'       => 'welcome',
             'usergroup'  => '-2',
-            'buttontext' => gt('Edit themes')
+            'buttontext' => gT('Edit themes')
         ];
         $returnArray[] = [
             'position'   => '4',
@@ -887,7 +887,7 @@ class LsDefaultDataSets
             'desc'       => gT('The user management allows you to add additional users to your survey administration.'),
             'page'       => 'welcome',
             'usergroup'  => '-2',
-            'buttontext' => gt('Manage administrators')
+            'buttontext' => gT('Manage administrators')
         ];
         $returnArray[] = [
             'position'   => '5',
@@ -897,7 +897,7 @@ class LsDefaultDataSets
             'desc'       => gT('Plugins can be used to add custom features'),
             'page'       => 'welcome',
             'usergroup'  => '-2',
-            'buttontext' => gt('Manage plugins')
+            'buttontext' => gT('Manage plugins')
         ];
 
         App()->setLanguage($sOldLanguage);
@@ -1819,9 +1819,8 @@ class LsDefaultDataSets
             ['stg_name' => 'editorPreset', 'stg_value' => 'wysiwyg'],
             ['stg_name' => 'showScriptEdit', 'stg_value' => '1'],
             ['stg_name' => 'noViewMode', 'stg_value' => '0'],
-            ['stg_name' => 'answeroptionprefix', 'stg_value' => 'AO'],
-            ['stg_name' => 'subquestionprefix', 'stg_value' => 'SQ'],
             ['stg_name' => 'lock_organizer', 'stg_value' => '0'],
+            ['stg_name' => 'breadcrumbMode', 'stg_value' => 'default'],
         ];
     }
 
@@ -2626,7 +2625,7 @@ class LsDefaultDataSets
                 "name" => "browserdetect",
                 "visible" => "Y",
                 "xml_path" => "themes/question/browserdetect/survey/questions/answer/shortfreetext",
-                "image_path" => "/assets/images/screenshots/S.png",
+                "image_path" => "themes/question/browserdetect/survey/questions/answer/shortfreetext/assets/browserdetect.png",
                 "title" => "Browser detection",
                 "creation_date" => "2017-07-09 00:00:00",
                 "author" => "LimeSurvey GmbH",
@@ -2650,7 +2649,7 @@ class LsDefaultDataSets
                 "name" => "image_select-listradio",
                 "visible" => "Y",
                 "xml_path" => "themes/question/image_select-listradio/survey/questions/answer/listradio",
-                "image_path" => "/assets/images/screenshots/L.png",
+                "image_path" => "themes/question/image_select-listradio/survey/questions/answer/listradio/assets/image_select_listradio.png",
                 "title" => "Image select list (Radio)",
                 "creation_date" => "1970-01-01 01:00:00",
                 "author" => "LimeSurvey GmbH",
@@ -2674,7 +2673,7 @@ class LsDefaultDataSets
                 "name" => "image_select-multiplechoice",
                 "visible" => "Y",
                 "xml_path" => "themes/question/image_select-multiplechoice/survey/questions/answer/multiplechoice",
-                "image_path" => "/assets/images/screenshots/M.png",
+                "image_path" => "themes/question/image_select-multiplechoice/survey/questions/answer/multiplechoice/assets/image_select_multiplechoice.png",
                 "title" => "Image select multiple choice",
                 "creation_date" => "1970-01-01 01:00:00",
                 "author" => "LimeSurvey GmbH",
@@ -2698,7 +2697,7 @@ class LsDefaultDataSets
                 "name" => "inputondemand",
                 "visible" => "Y",
                 "xml_path" => "themes/question/inputondemand/survey/questions/answer/multipleshorttext",
-                "image_path" => "/assets/images/screenshots/Q.png",
+                "image_path" => "themes/question/inputondemand/survey/questions/answer/multipleshorttext/assets/inputondemand.png",
                 "title" => "Input on demand",
                 "creation_date" => "2019-10-04 00:00:00",
                 "author" => "LimeSurvey GmbH",
@@ -2722,7 +2721,7 @@ class LsDefaultDataSets
                 "name" => "ranking_advanced",
                 "visible" => "Y",
                 "xml_path" => "themes/question/ranking_advanced/survey/questions/answer/ranking",
-                "image_path" => "/assets/images/screenshots/R.png",
+                "image_path" => "themes/question/ranking_advanced/survey/questions/answer/ranking/assets/advanced_ranking.png",
                 "title" => "Ranking advanced",
                 "creation_date" => "1970-01-01 01:00:00",
                 "author" => "LimeSurvey GmbH",
@@ -2806,16 +2805,16 @@ class LsDefaultDataSets
             gT("Fruity fonts"),
             gT("Fruity variations"),
             gT("I confirm"), // Used in optin/optout and not picked up due to bug #19411,
-            gt("Show link to legal notice in survey:"),
-            gt("Show link to data policy in survey:"),
-            gt("Survey legal notice:"),
-            gt("Legal notice"),
-            gt("Show 'Clear all' button"),
-            gt("Wrap tables"),
-            gt("Variations"),
-            gt("Colors"),
-            gt("Animations"),
-            gt("Fonts")
+            gT("Show link to legal notice in survey:"),
+            gT("Show link to data policy in survey:"),
+            gT("Survey legal notice:"),
+            gT("Legal notice"),
+            gT("Show 'Clear all' button"),
+            gT("Wrap tables"),
+            gT("Variations"),
+            gT("Colors"),
+            gT("Animations"),
+            gT("Fonts")
         ];
     }
 
@@ -2834,7 +2833,7 @@ class LsDefaultDataSets
         $template .= "<p></p><p>" . gT("You can use now the following credentials to log in:") . "</p>";
         $template .= "<p><strong>" . gT("Username") . "</strong>: {USERNAME}</p>";
         //don't send password anymore, just send a link for the new admin to generate their own password
-        //$template .= "<p><strong>" . gt("Password") . "</strong>: {PASSWORD}</p>";
+        //$template .= "<p><strong>" . gT("Password") . "</strong>: {PASSWORD}</p>";
         $template .= '<p><a href="{LOGINURL}">' . gT("Click here to set your password") . '</a></p>';
         $template .= "<p>" . gT("If you have any questions regarding this email, please do not hesitate to contact the site administrator at") . " {SITEADMINEMAIL}.</p><p> </p>";
         $template .= "<p>" . gT("Thank you") . "!</p>";

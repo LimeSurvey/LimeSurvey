@@ -133,11 +133,15 @@ class SurveySidemenuWidget extends WhSelect2
             ),
             'presentation' => array(
                 [
+                    'name' => 'theme_options',
+                    'route' => 'editorLink/index',
+                    'params' =>  array('route' => 'survey/' . $this->sid . '/presentation/theme_options'),
+                ],
+                [
                     'name' => 'presentation',
                     'route' => 'editorLink/index',
                     'params' =>  array('route' => 'survey/' . $this->sid . '/presentation/presentation'),
                 ],
-                [ 'name' => 'theme_options' ],
             )
         );
 

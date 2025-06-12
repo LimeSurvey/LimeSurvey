@@ -932,7 +932,7 @@ class remotecontrol_handle
             if (!isset($oSurvey)) {
                 return array('status' => 'Error: Invalid survey ID');
             }
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read')) {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read')) {
                 $aBasicDestinationFields = SurveyLanguageSetting::model()->tableSchema->columnNames;
                 if (!empty($aSurveyLocaleSettings)) {
                     $aSurveyLocaleSettings = array_intersect($aSurveyLocaleSettings, $aBasicDestinationFields);
@@ -941,7 +941,7 @@ class remotecontrol_handle
                 }
 
                 if ($sLang == null || !array_key_exists($sLang, getLanguageDataRestricted())) {
-                                    $sLang = $oSurvey->language;
+                    $sLang = $oSurvey->language;
                 }
 
 
@@ -949,7 +949,7 @@ class remotecontrol_handle
                 $aResult = array();
 
                 if (empty($aSurveyLocaleSettings)) {
-                                    return array('status' => 'No valid Data');
+                    return array('status' => 'No valid Data');
                 }
 
                 foreach ($aSurveyLocaleSettings as $sPropertyName) {
@@ -958,10 +958,10 @@ class remotecontrol_handle
                 }
                 return $aResult;
             } else {
-                            return array('status' => 'No permission');
+                return array('status' => 'No permission');
             }
         } else {
-                    return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY);
         }
     }
 
@@ -1163,10 +1163,10 @@ class remotecontrol_handle
             $sImportData = (string) $sImportData;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                            return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID');
             }
 
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'import')) {
                 if ($oSurvey->isActive) {
                     return array('status' => 'Error:Survey is active and not editable');
                 }
@@ -1230,10 +1230,10 @@ class remotecontrol_handle
                     return (int) $aImportResults['newgid'];
                 }
             } else {
-                            return array('status' => 'No permission');
+                return array('status' => 'No permission');
             }
         } else {
-                    return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY);
         }
     }
 
@@ -1248,6 +1248,9 @@ class remotecontrol_handle
     public function get_response_ids($sSessionKey, $iSurveyID, $sToken)
     {
         if ($this->_checkSessionKey($sSessionKey)) {
+            if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')) {
+                return array('status' => 'No permission');
+            }
             $iSurveyID = (int) $iSurveyID;
             $responses = SurveyDynamic::model($iSurveyID)->findAllByAttributes(array('token' => $sToken));
             $result = array();
@@ -1348,7 +1351,7 @@ class remotecontrol_handle
             if (is_null($oGroup)) {
                 return array('status' => 'Error: Invalid group ID');
             }
-            if (Permission::model()->hasSurveyPermission($oGroup->sid, 'survey', 'update')) {
+            if (Permission::model()->hasSurveyPermission($oGroup->sid, 'surveycontent', 'update')) {
                 $aResult = array();
                 // Remove fields that may not be modified
                 unset($aGroupData['sid']);
@@ -1686,10 +1689,8 @@ class remotecontrol_handle
             if (!isset($oQuestion)) {
                 return array('status' => 'Error: Invalid questionid');
             }
-
             $iSurveyID = $oQuestion->sid;
-
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
                 if (empty($sLanguage)) {
                     $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
                 }
@@ -1885,23 +1886,23 @@ class remotecontrol_handle
             $iQuestionID = (int) $iQuestionID;
             $oQuestion = Question::model()->with('questionl10ns')->findByAttributes(array('qid' => $iQuestionID));
             if (is_null($oQuestion)) {
-                            return array('status' => 'Error: Invalid group ID');
+                return array('status' => 'Error: Invalid group ID');
             }
 
             $iSurveyID = $oQuestion->sid;
 
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
                 if (is_null($sLanguage)) {
-                                    $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
+                    $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
                 }
 
                 if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
-                                    return array('status' => 'Error: Invalid language');
+                    return array('status' => 'Error: Invalid language');
                 }
 
                 $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
                 if (!isset($oQuestion)) {
-                                    return array('status' => 'Error: Invalid questionid');
+                    return array('status' => 'Error: Invalid questionid');
                 }
 
                 // Backwards compatibility for L10n data
@@ -2007,10 +2008,10 @@ class remotecontrol_handle
                 }
                 return $aResult;
             } else {
-                            return array('status' => 'No permission');
+                return array('status' => 'No permission');
             }
         } else {
-                    return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY);
         }
     }
 
@@ -2304,6 +2305,7 @@ class remotecontrol_handle
      * Return the IDs and properties of survey participants (RPC function)
      *
      * If $bUnused is true, user will get the list of uncompleted tokens (token_return functionality).
+     * If $bUnused is omitted or false, user will get the list of all tokens.
      * Parameters iStart and iLimit are used to limit the number of results of this call.
      * Starting with version 4.3.0 it is not possible anymore to query for several IDs just using
      * an array of values - instead you have use the 'IN' operator.
@@ -3518,12 +3520,11 @@ class remotecontrol_handle
             return array('status' => 'No permission');
         }
 
-        $tempdir = Yii::app()->getConfig("tempdir");
+		$sUploadDir = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/";
 
-        $sTempUploadDir = $tempdir . '/upload/';
-        if (!file_exists($sTempUploadDir)) {
-            if (!mkdir($sTempUploadDir)) {
-                return array('status' => 'Can not make temporary upload directory');
+        if (!file_exists($sUploadDir)) {
+            if (!mkdir($sUploadDir)) {
+                return array('status' => 'Can not make upload directory');
             }
         }
 
@@ -3552,8 +3553,8 @@ class remotecontrol_handle
         // This also accounts for BASE64 overhead
         $size = (0.001 * 3 * strlen($sFileContent)) / 4;
 
-        $randfilename = 'futmp_' . randomChars(15) . '_' . $pathinfo['extension'];
-        $randfileloc = $sTempUploadDir . $randfilename;
+        $randfilename = 'fu_' . randomChars(15) . '_' . $pathinfo['extension'];
+        $randfileloc = $sUploadDir . $randfilename;
 
         if ($size > $maxfilesize) {
             return array('status' => sprintf('Sorry, this file is too large. Only files up to %s KB are allowed.', $maxfilesize));
@@ -3636,10 +3637,10 @@ class remotecontrol_handle
                 }
             }
             /* fix some specific option (GUI use 1 and 2, but default for remote control are set to Y and N before) */
-            if (!empty($oFormattingOptions->convertY) && empty($oFormattingOptions->yValue)) {
+            if (!empty($oFormattingOptions->convertY) && !isset($oFormattingOptions->yValue)) {
                 $oFormattingOptions->yValue = 'Y';
             }
-            if (!empty($oFormattingOptions->convertN) && empty($oFormattingOptions->nValue)) {
+            if (!empty($oFormattingOptions->convertN) && !isset($oFormattingOptions->nValue)) {
                 $oFormattingOptions->nValue = 'N';
             }
         }

@@ -167,33 +167,32 @@ class SurveyAdministrationController extends LSBaseController
         $aData['sid'] = $iSurveyID; //frontend need this to render topbar for the view
 
         // Last survey visited
-        $userId = App()->user->getId();
-        SettingGlobal::setSetting('last_survey_' . $userId, $iSurveyID);
+        SettingsUser::setUserSetting('last_survey', $iSurveyID);
 
         $aData['sidemenu']["survey_menu"] = true;
 
         // We get the last question visited by user for this survey
-        // TODO: getGlobalSetting() DEPRECATED
-        $lastquestion = getGlobalSetting('last_question_' . $userId . '_' . $iSurveyID);
-
-        // TODO: getGlobalSetting() DEPRECATED
-        $lastquestiongroup = getGlobalSetting('last_question_' . $userId . '_' . $iSurveyID . '_gid');
-
-        if ($lastquestion != null && $lastquestiongroup != null) {
-            $aData['showLastQuestion'] = true;
-            $iQid = $lastquestion;
-            $iGid = $lastquestiongroup;
-            $qrrow = Question::model()->findByAttributes(array('qid' => $iQid, 'gid' => $iGid, 'sid' => $iSurveyID));
-
-            $aData['last_question_name'] = $qrrow['title'];
-            if (!empty($qrrow->questionl10ns[$baselang]['question'])) {
-                $aData['last_question_name'] .= ' : ' . $qrrow->questionl10ns[$baselang]['question'];
+        // 2025-02-19 seem not used , we are inside survey
+        $aData['showLastQuestion'] = false;
+        $lastquestionID = SettingsUser::getUserSetting('last_question', $iSurveyID, 'Survey');
+        if ($lastquestionID) {
+            $question = Question::model()->findByPk(intval($lastquestionID));
+            if ($question) {
+                $survey = Survey::model()->findByPk($question->sid);
+                $baselang = $survey->language;
+                $aData['last_question_name'] = $question['title'];
+                if (!empty($question->questionl10ns[$baselang]['question'])) {
+                    $aData['last_question_name'] .= ' : ' . $question->questionl10ns[$baselang]['question'];
+                }
+                $aData['last_question_link'] = $this->createUrl(
+                    "questionAdministration/view",
+                    [
+                        'surveyid' => $question->sid,
+                        'gid' => $question->gid,
+                        'qid' => $question->qid
+                    ]
+                );
             }
-
-            $aData['last_question_link'] =
-                $this->createUrl("questionEditor/view/surveyid/$iSurveyID/gid/$iGid/qid/$iQid");
-        } else {
-            $aData['showLastQuestion'] = false;
         }
         $aData['templateapiversion'] = Template::model()->getTemplateConfiguration(null, $iSurveyID)->getApiVersion();
 
@@ -357,8 +356,8 @@ class SurveyAdministrationController extends LSBaseController
                 $iGroupNumber = $oQuestion->gid;
                 $iGroupSequence++;
             }
-            $sNewTitle = (($sSubAction == 'bygroup') ? ('G' . $iGroupSequence) : '') . "Q" .
-                str_pad($iQuestionNumber, 5, "0", STR_PAD_LEFT);
+            $sNewTitle = (($sSubAction == 'bygroup') ? ('G' . $iGroupSequence) : '') . $oQuestion::getCodePrefix('question_code_prefix', $iSurveyID) .
+                str_pad($iQuestionNumber, 3, "0", STR_PAD_LEFT);
             Question::model()->updateAll(array('title' => $sNewTitle), 'qid=:qid', array(':qid' => $oQuestion->qid));
             $iQuestionNumber++;
             $iGroupNumber = $oQuestion->gid;
@@ -899,11 +898,8 @@ class SurveyAdministrationController extends LSBaseController
 
         $survey = Survey::model()->findByPk($iSurveyID);
         $baselang = $survey->language;
-        $setting_entry = 'last_question_' . Yii::app()->user->getId() . '_' . $iSurveyID;
-        $lastquestion = getGlobalSetting($setting_entry);
-        $setting_entry = 'last_question_' . Yii::app()->user->getId() . '_' . $iSurveyID . '_gid';
-        $lastquestiongroup = getGlobalSetting($setting_entry);
-
+        $lastquestionID = SettingsUser::getUserSetting('last_question', $iSurveyID, 'Survey');
+        $lastquestiongroupID = SettingsUser::getUserSetting('last_group', $iSurveyID, 'Survey');
         $aGroups = QuestionGroup::model()->findAllByAttributes(
             array('sid' => $iSurveyID),
             array('order' => 'group_order ASC')
@@ -963,8 +959,8 @@ class SurveyAdministrationController extends LSBaseController
                                 'id' => '',
                                 'label' => gT("Delete group"),
                                 'icon' => 'ri-delete-bin-fill text-danger',
-                                'dataTitle' => gt('Delete group'),
-                                'dataBtnText' => gt('Delete'),
+                                'dataTitle' => gT('Delete group'),
+                                'dataBtnText' => gT('Delete'),
                                 'dataOnclick' => '(function() { ' .  convertGETtoPOST(
                                     Yii::app()->createUrl(
                                         "questionGroupsAdministration/delete/",
@@ -983,9 +979,9 @@ class SurveyAdministrationController extends LSBaseController
                                 'id' => '',
                                 'label' => gT("Delete group"),
                                 'icon' => 'ri-delete-bin-fill text-danger',
-                                'dataTitle' => gt('Delete group'),
+                                'dataTitle' => gT('Delete group'),
                                 'disabled' => true,
-                                'title' => gt("Impossible to delete this group because there is at least one question having a condition on its content", 'unescaped')
+                                'title' => gT("Impossible to delete this group because there is at least one question having a condition on its content", 'unescaped')
                             ];
                         }
                     } else {
@@ -994,9 +990,9 @@ class SurveyAdministrationController extends LSBaseController
                             'id' => '',
                             'label' => gT("Delete group"),
                             'icon' => 'ri-delete-bin-fill text-danger',
-                            'dataTitle' => gt('Delete group'),
+                            'dataTitle' => gT('Delete group'),
                             'disabled' => true,
-                            'title' => gt("It is not possible to add/delete groups if the survey is active.", 'unescaped')
+                            'title' => gT("It is not possible to add/delete groups if the survey is active.", 'unescaped')
                         ];
                     }
                 }
@@ -1089,8 +1085,8 @@ class SurveyAdministrationController extends LSBaseController
                                     'id' => '',
                                     'label' => gT("Delete question"),
                                     'icon' => 'ri-delete-bin-fill text-danger',
-                                    'dataTitle' => gt('Delete this question'),
-                                    'dataBtnText' => gt('Delete'),
+                                    'dataTitle' => gT('Delete this question'),
+                                    'dataBtnText' => gT('Delete'),
                                     'dataOnclick' => '(function() { ' .  convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $question->qid, "redirectTo" => "groupoverview"])) . '})',
                                     'dataMessage' => gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?", 'unescaped')
                                 ];
@@ -1100,9 +1096,9 @@ class SurveyAdministrationController extends LSBaseController
                                 'id' => '',
                                 'label' => gT("Delete question"),
                                 'icon' => 'ri-delete-bin-fill text-danger',
-                                'dataTitle' => gt('Delete this question'),
+                                'dataTitle' => gT('Delete this question'),
                                 'disabled' => true,
-                                'title' => gt("You can not delete a question if the survey is active.", 'unescaped'),
+                                'title' => gT("You can not delete a question if the survey is active.", 'unescaped'),
                             ];
                         }
 
@@ -1120,8 +1116,8 @@ class SurveyAdministrationController extends LSBaseController
                 'data' => array(
                     'groups' => $aGroupViewable,
                     'settings' => array(
-                        'lastquestion' => $lastquestion,
-                        'lastquestiongroup' => $lastquestiongroup,
+                        'lastquestion' => $lastquestionID,
+                        'lastquestiongroup' => $lastquestiongroupID,
                     ),
                 )
             ),
@@ -1589,7 +1585,13 @@ class SurveyAdministrationController extends LSBaseController
                 Yii::app()->session->remove('sNewSurveyTableName');
             }
 
+            if (!empty(Yii::app()->session->get('NewSIDDate'))) {
+                Yii::app()->session->remove('NewSIDDate');
+            }
+
             Yii::app()->session->add('sNewSurveyTableName', Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}");
+            Yii::app()->session->add('NewSIDDate', "{$iSurveyID}_{$date}");
+
             $aData['date'] = $date;
             $aData['dbprefix'] = Yii::app()->db->tablePrefix;
             $aData['sNewSurveyTableName'] = Yii::app()->session->get('sNewSurveyTableName');
@@ -2349,7 +2351,7 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
 
-        if ((App()->getConfig("editorEnabled")) && isset(($aImportResults['newsid']))) {
+        if ((App()->getConfig("editorEnabled")) && isset($aImportResults['newsid'])) {
             if (!isset($oSurvey)) {
                 $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
             }
@@ -2774,7 +2776,7 @@ class SurveyAdministrationController extends LSBaseController
         $oQuestion->sid = $iSurveyID;
         $oQuestion->gid = $iGroupID;
         $oQuestion->type = Question::QT_T_LONG_FREE_TEXT;
-        $oQuestion->title = 'Q00';
+        $oQuestion->title = Question::getCodePrefix('question_code_prefix', $iSurveyID) . '001';
         $oQuestion->mandatory = 'N';
         $oQuestion->relevance = '1';
         $oQuestion->question_order = 1;
@@ -3367,7 +3369,7 @@ class SurveyAdministrationController extends LSBaseController
         $redirectUrl = ['surveyAdministration/rendersidemenulink/', 'surveyid' => $surveyId, 'subaction' => 'panelintegration'];
         $paramId = Yii::app()->request->getPost('urlParamId');
         if (empty($paramId)) {
-            throw new CHttpException(400, gt('Invalid request'));
+            throw new CHttpException(400, gT('Invalid request'));
         }
 
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveysettings', 'update')) {
@@ -3421,7 +3423,7 @@ class SurveyAdministrationController extends LSBaseController
                 'iconAlter' => $state,
                 'state' => $survey->getState(),
                 'buttons' => $survey->getButtons(),
-                'link' => App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid . '?allowRedirect=1'),
+                'link' => App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid),
             ];
         }
 

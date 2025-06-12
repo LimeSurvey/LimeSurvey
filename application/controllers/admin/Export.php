@@ -157,7 +157,7 @@ class Export extends SurveyCommonAction
             $aFieldsOptions = array();
             foreach ($aFieldMap as $sFieldName => $fieldinfo) {
                 $sCode = viewHelper::getFieldCode($fieldinfo);
-                $aFields[$sFieldName] = $sCode . ' - ' . htmlspecialchars((string) ellipsize(html_entity_decode((string) viewHelper::getFieldText($fieldinfo)), 40, .6, '...'));
+                $aFields[$sFieldName] = $sCode . ' - ' . (string) ellipsize(html_entity_decode((string) viewHelper::getFieldText($fieldinfo)), 40, .6, '...');
                 $aFieldsOptions[$sFieldName] = array('title' => viewHelper::getFieldText($fieldinfo), 'data-fieldname' => $fieldinfo['fieldname'], 'data-emcode' => viewHelper::getFieldCode($fieldinfo, array('LEMcompat' => true))); // No need to filter title : Yii do it (remove all tag)
             }
 
@@ -777,13 +777,20 @@ class Export extends SurveyCommonAction
      */
     public function resources()
     {
+
         switch (Yii::app()->request->getParam('export')) {
             case 'survey':
                 $iSurveyID = sanitize_int(Yii::app()->getRequest()->getParam('surveyid'));
+                if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
+                    throw new CHttpException(403, gT('You are not allowed to access this resource.'));
+                }
                 $resourcesdir = 'surveys/' . $iSurveyID;
                 $zipfilename = "resources-survey-$iSurveyID.zip";
                 break;
             case 'label':
+                if (!Permission::model()->hasGlobalPermission('labelsets', 'export')) {
+                    throw new CHttpException(403, gT('You are not allowed to access this resource.'));
+                }
                 $lid = sanitize_int(Yii::app()->getRequest()->getParam('lid'));
                 $resourcesdir = 'labels/' . $lid;
                 $zipfilename = "resources-labelset-$lid.zip";
@@ -823,7 +830,7 @@ class Export extends SurveyCommonAction
                 unlink($zipfilepath);
                 Yii::app()->end();
             } else {
-                throw new Exception("Error : Zip file not created");
+                throw new Exception(gT("Error: There are no files to download."));
             }
         }
     }
@@ -834,7 +841,7 @@ class Export extends SurveyCommonAction
     public function dumplabel()
     {
         if (!Permission::model()->hasGlobalPermission('labelsets', 'export')) {
-            safeDie('No permission.');
+            throw new CHttpException(403, gT('You are not allowed to access this resource.'));
         }
         $lid = sanitize_int(Yii::app()->request->getParam('lid'));
         // DUMP THE RELATED DATA FOR A SINGLE QUESTION INTO A SQL FILE FOR IMPORTING LATER ON OR

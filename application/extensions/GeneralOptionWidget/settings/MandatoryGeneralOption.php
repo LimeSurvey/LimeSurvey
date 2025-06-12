@@ -22,9 +22,9 @@ class MandatoryGeneralOption extends GeneralOption
             [
                 'classes' => [],
                 'options' => [
-                    new SwitchOption(gt('On'), 'Y'),
-                    new SwitchOption(gt('Soft'), 'S'),
-                    new SwitchOption(gt('Off'), 'N')
+                    new SwitchOption(gT('On'), 'Y'),
+                    new SwitchOption(gT('Soft'), 'S'),
+                    new SwitchOption(gT('Off'), 'N')
                 ]
             ]
         );

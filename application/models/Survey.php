@@ -144,6 +144,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property SurveyLanguageSetting $defaultlanguage
  * @property SurveysGroups $surveygroup
  * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
+ * @property string $othersettings Other settings that don't require a searchabla database column and can be save here as a JSON
  * @method mixed active()
  */
 class Survey extends LSActiveRecord implements PermissionInterface
@@ -231,6 +232,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 }
             }
         }
+        // Ready to add more settings here
+        $this->othersettings = json_encode(self::getDefaultOtherSettings());
     }
 
     /** @inheritdoc */
@@ -270,35 +273,25 @@ class Survey extends LSActiveRecord implements PermissionInterface
             /* Remove User/global settings part : need Question and QuestionGroup*/
             // Settings specific for this survey
             $oCriteria = new CDbCriteria();
-            $oCriteria->compare('stg_name', 'last_%', true, 'AND', false);
-            $oCriteria->compare('stg_value', $this->sid, false, 'AND');
-            SettingGlobal::model()->deleteAll($oCriteria);
+            $oCriteria->compare('stg_name', 'last_survey');
+            $oCriteria->compare('stg_value', $this->sid);
+            SettingsUser::model()->deleteAll($oCriteria);
             // Settings specific for this survey, 2nd part
             $oCriteria = new CDbCriteria();
-            $oCriteria->compare('stg_name', 'last_%' . $this->sid . '%', true, 'AND', false);
-            SettingGlobal::model()->deleteAll($oCriteria);
-            // All Group id from this survey for ALL users
-            $aGroupId = CHtml::listData(QuestionGroup::model()->findAll(array('select' => 'gid', 'condition' => 'sid=:sid', 'params' => array(':sid' => $this->sid))), 'gid', 'gid');
-            $oCriteria = new CDbCriteria();
-            $oCriteria->compare('stg_name', 'last_question_gid_%', true, 'AND', false);
-            // pgsql need casting, unsure for mssql
-            if (Yii::app()->db->getDriverName() == 'pgsql') {
-                $oCriteria->addInCondition('CAST(stg_value as ' . App()->db->schema->getColumnType("integer") . ')', $aGroupId);
-            } else {
-                //mysql App()->db->schema->getColumnType("integer") give int(11), mssql seems to have issue if cast alpha to numeric
-                $oCriteria->addInCondition('stg_value', $aGroupId);
-            }
-            SettingGlobal::model()->deleteAll($oCriteria);
+            $oCriteria->compare('entity_id', $this->sid);
+            $oCriteria->compare('entity', 'Survey');
+            SettingsUser::model()->deleteAll($oCriteria);
             // All Question id from this survey for ALL users
             $aQuestionId = CHtml::listData(Question::model()->findAll(array('select' => 'qid', 'condition' => 'sid=:sid', 'params' => array(':sid' => $this->sid))), 'qid', 'qid');
             $oCriteria = new CDbCriteria();
-            $oCriteria->compare('stg_name', 'last_question_%', true, 'OR', false);
+            $oCriteria->compare('stg_name', 'last_question');
             if (Yii::app()->db->getDriverName() == 'pgsql') {
+                // Still needed ? : CHtml::listData return only existing qid as integer
                 $oCriteria->addInCondition('CAST(NULLIF(stg_value, \'\') AS ' . App()->db->schema->getColumnType("integer") . ')', $aQuestionId);
             } else {
                 $oCriteria->addInCondition('stg_value', $aQuestionId);
             }
-            SettingGlobal::model()->deleteAll($oCriteria);
+            SettingsUser::model()->deleteAll($oCriteria);
 
             $oQuestions = Question::model()->findAllByAttributes(array('sid' => $this->sid));
             foreach ($oQuestions as $aQuestion) {
@@ -365,10 +358,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
         } elseif (isset($this->languagesettings[$this->language])) {
             return $this->languagesettings[$this->language];
         } else {
-            $errorString = 'Survey language not found - looked for ' . App()->language;
+            $searchedLanguages = App()->language;
             if ($this->language != App()->language) {
-                $errorString .= ' and ' . $this->language;
+                $searchedLanguages .= ',' . $this->language;
             }
+            $errorString = sprintf(gT('Survey language settings (%s) not found. Please run the integrity check from the main menu.'), $searchedLanguages);
             throw new Exception($errorString);
         }
     }
@@ -571,6 +565,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('googleanalyticsapikey', 'match', 'pattern' => '/^[a-zA-Z\-\d]*$/',
                 'message' => gT('Google Analytics Tracking ID may only contain alphanumeric characters and hyphens.'),
             ),
+            array('othersettings', 'checkOtherSettings'),
         );
     }
 
@@ -1588,16 +1583,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 $this->active === "Y"
                 && $permissions['statistics_read'],
         ];
-        if (App()->getConfig('editorEnabled')) {
-            $editorSettings[] = ['url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid])];
-            $editorSettings[] = ['url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/generalsettings'])];
-            $editorSettings[] = [];
-            foreach ($editorSettings as $key => $editorSetting) {
-                if (isset($editorSetting['url'], $items[$key])) {
-                    $items[$key]['url'] = $editorSetting['url'];
-                }
-            }
-        }
 
         return App()->getController()->widget('ext.admin.grid.BarActionsWidget.BarActionsWidget', ['items' => $items], true);
     }
@@ -2317,6 +2302,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
         // set Survey attributes to 'inherit' values
         foreach ($settings as $key => $value) {
             $this->$key = $value;
+            if ($key === 'othersettings') {
+                $this->$key = json_encode(self::getDefaultOtherSettings());
+            }
         }
     }
 
@@ -2590,4 +2578,96 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return null;
     }
 
+    /**
+     * Returns the default othersettings array with inherit values
+     * @return array
+     */
+    public static function getDefaultOtherSettings()
+    {
+        return [
+            'question_code_prefix' => 'I',
+            'subquestion_code_prefix' => 'I',
+            'answer_code_prefix' => 'I'
+        ];
+    }
+
+    /**
+     * Get a value from othersettings
+     *
+     * @param string $key The setting key to retrieve
+     * @param mixed $default Default value if setting doesn't exist
+     * @return mixed The setting value or default
+     */
+    public function getOtherSetting($key, $default = '')
+    {
+        $settings = $this->othersettings ? json_decode($this->othersettings, true) : [];
+        return isset($settings[$key]) ? $settings[$key] : $default;
+    }
+
+    /**
+     * Sets a specific attribute in the survey's other settings.
+     *
+     * This function updates or adds a single attribute in the survey's othersettings field.
+     * The othersettings field is a JSON-encoded string that stores various additional settings.
+     *
+     * @param string $attribute The name of the attribute to set
+     * @param mixed $value The value to set for the attribute
+     * @return void
+     */
+    public function setOtherSetting($attribute, $value)
+    {
+        $othersettings = json_decode($this->othersettings, true) ?? [];
+        $othersettings[$attribute] = $value;
+        $this->othersettings = json_encode($othersettings);
+    }
+
+    /**
+     * Validates all other settings
+     * @return boolean Whether all settings are valid
+     */
+    public function checkOtherSettings()
+    {
+        $otherSettings = json_decode($this->othersettings, true) ?: [];
+        $isValid = true;
+        foreach ($otherSettings as $attribute => $value) {
+            if (!$this->checkOtherSetting($attribute, $value)) {
+                $isValid = false;
+            }
+        }
+        return $isValid;
+    }
+
+    /**
+     * Validates a single other setting
+     * @param string $attribute The setting name
+     * @param mixed $value The setting value
+     * @return boolean Whether the setting is valid
+     */
+    public function checkOtherSetting($attribute, $value)
+    {
+        $validationRules = [
+            'question_code_prefix' => [
+                'pattern' => '/^$|^[A-Za-z][A-Za-z0-9]{0,14}$/',
+                'message' => gT("Question code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 15 characters.")
+            ],
+            'subquestion_code_prefix' => [
+                'pattern' => '/^$|^[A-Za-z][A-Za-z0-9]{0,4}$/',
+                'message' => gT("Subquestion code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 5 characters.")
+            ],
+            'answer_code_prefix' => [
+                'pattern' => '/^$|^[A-Za-z][A-Za-z0-9]{0,1}$/',
+                'message' => gT("Answer code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 2 characters.")
+            ]
+        ];
+        // If this is not a setting we validate, return true
+        if (!isset($validationRules[$attribute])) {
+            return true;
+        }
+        $rule = $validationRules[$attribute];
+        $isValid = preg_match($rule['pattern'], $value);
+        if (!$isValid) {
+            $this->addError($attribute, $rule['message']);
+        }
+        return (bool)$isValid;
+    }
 }

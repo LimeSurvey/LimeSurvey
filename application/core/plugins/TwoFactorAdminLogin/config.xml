@@ -4,10 +4,10 @@
         <name>TwoFactorAdminLogin</name>
         <type>plugin</type>
         <creationDate>2019-03-10</creationDate>
-        <lastUpdate>2021-03-25</lastUpdate>
+        <lastUpdate>2025-03-14</lastUpdate>
         <author>LimeSurvey GmbH</author>
         <authorUrl>https://www.limesurvey.org</authorUrl>
-        <version>1.2.5</version>
+        <version>1.3.0</version>
         <license>GNU General Public License version 2 or later</license>
         <description><![CDATA[Use a TOTP based 2 factor authentication on logging in into the admin portal.]]></description>
         <supportUrl>https://www.limesurvey.org</supportUrl>

@@ -292,6 +292,7 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('javascriptdebugbcknd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugbcknd', false)));
         SettingGlobal::setSetting('javascriptdebugfrntnd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugfrntnd', false)));
         SettingGlobal::setSetting('maintenancemode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('maintenancemode', 'off')));
+        SettingGlobal::setSetting('defaultBreadcrumbMode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultBreadcrumbMode', 'short')));
 
         //security: for failed login attempts by user/admin
         SettingGlobal::setSetting('maxLoginAttempt', sanitize_int(Yii::app()->getRequest()->getPost('maxLoginAttempt', 3)));
@@ -305,8 +306,6 @@ class GlobalSettings extends SurveyCommonAction
         if (Permission::model()->hasGlobalPermission('superadmin', 'delete')) {
             SettingGlobal::setSetting('allow_unstable_extension_update', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('allow_unstable_extension_update', false)));
         }
-
-        SettingGlobal::setSetting('createsample', Yii::app()->getRequest()->getPost('createsample'));
 
         if (!Yii::app()->getConfig('demoMode')) {
             $sTemplate = Yii::app()->getRequest()->getPost("defaulttheme");
@@ -514,6 +513,23 @@ class GlobalSettings extends SurveyCommonAction
         $sPartial = Yii::app()->request->getParam('partial', '_generaloptions_panel');
 
         if (!empty($_POST)) {
+            // Get the current othersettings
+            $currentOtherSettings = $oSurveyGroupSetting->othersettings ? json_decode($oSurveyGroupSetting->othersettings, true) : [];
+
+            // Add the new attributes to othersettings
+            $newOtherSettings = [
+                'question_code_prefix' => Yii::app()->request->getPost('question_code_prefix', ''),
+                'subquestion_code_prefix' => Yii::app()->request->getPost('subquestion_code_prefix', ''),
+                'answer_code_prefix' => Yii::app()->request->getPost('answer_code_prefix', '')
+            ];
+
+            // Merge with existing settings (preserving other values that might be there)
+            $mergedOtherSettings = array_merge($currentOtherSettings, $newOtherSettings);
+
+            // Convert back to JSON
+            $_POST['othersettings'] = json_encode($mergedOtherSettings);
+
+            // Now proceed with the normal save
             $oSurveyGroupSetting->attributes = $_POST;
             $oSurveyGroupSetting->gsid = 0;
             $oSurveyGroupSetting->usecaptcha = Survey::saveTranscribeCaptchaOptions();

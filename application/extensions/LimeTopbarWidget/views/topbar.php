@@ -5,19 +5,20 @@
 
 ?>
 
-<div class="topbar sticky-top" id="pjax-content">
+<div class="topbar sticky-top <?php if ($editorEnabled) echo 'editor'; ?>" id="pjax-content">
     <div class="container-fluid">
         <div class="row">
             <!-- Title or breadcrumb -->
-            <div class="ls-breadcrumb col-xl-4 col-xxl-3">
+            <div class="ls-breadcrumb col-12">
                 <h1 class="align-items-center d-flex">
-                <?php
-                    if ($titleBackLink !== null) {
-                        echo '<a class="h1" href="'.$titleBackLink.'">
-                        <i class="ri-arrow-left-s-line"></i></a>' ;
-                    }
-                ?>
-                <?= $leftSide ?></h1>
+                    <?php
+                        if ($titleBackLink !== null) {
+                            echo '<a class="h1" href="'.$titleBackLink.'">
+                            <i class="ri-arrow-left-s-line"></i></a>' ;
+                        }
+                    ?>
+                    <?= $leftSide ?>
+                </h1>
             </div>
 
             <!-- middle part with buttons -->
