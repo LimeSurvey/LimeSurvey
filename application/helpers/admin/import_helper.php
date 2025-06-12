@@ -2120,6 +2120,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     $results['importwarnings'] = array();
     $results['theme_options_original_data'] = '';
     $results['theme_options_differences'] = array();
+    $results['access_mode'] = SurveyAccessModeService::$ACCESS_TYPE_OPEN;
     $sTemplateName = '';
 
     /** @var bool Indicates if the email templates have attachments with untranslated URLs or not */
@@ -2147,6 +2148,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             if ($key == 'template') {
                 $sTemplateName = (string)$value;
+            }
+            if ($key == 'access_mode') {
+                $results['access_mode'] = (string)$value;
             }
             $insertdata[(string) $key] = (string) $value;
         }

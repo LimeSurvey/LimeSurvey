@@ -21,6 +21,8 @@ class SurveyAccessModeService
     protected Survey $survey;
     protected LSYii_Application $app;
 
+    protected bool $test;
+
     public static $ACCESS_TYPE_OPEN = 'O';
     public static $ACCESS_TYPE_CLOSED = 'C';
 
@@ -35,11 +37,13 @@ class SurveyAccessModeService
     public function __construct(
         Permission $permission,
         Survey $survey,
-        LSYii_Application $app
+        LSYii_Application $app,
+        bool $test = false
     ) {
         $this->permission = $permission;
         $this->survey = $survey;
         $this->app = $app;
+        $this->test = $test;
         if (!self::$supportedAccessModes) {
             self::$supportedAccessModes = [
                 self::$ACCESS_TYPE_OPEN,
@@ -166,7 +170,7 @@ class SurveyAccessModeService
                 'The access mode given is not supported'
             );
         }
-        if (!$this->hasPermission($surveyID, $accessMode)) {
+        if ((!$this->test) && (!$this->hasPermission($surveyID, $accessMode))) {
             throw new PermissionDeniedException(
                 'Access denied'
             );
