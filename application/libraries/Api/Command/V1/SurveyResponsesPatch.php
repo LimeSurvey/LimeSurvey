@@ -40,7 +40,7 @@ class SurveyResponsesPatch implements CommandInterface
     public function run(Request $request)
     {
         $id = (string) $request->getData('_id');
-        $patch = $request->getData('_content');
+        $patch = $request->getData('patch');
 
         $patcher = $this->diFactory->make(
             PatcherSurveyResponses::class
