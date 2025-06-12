@@ -71,6 +71,9 @@ class Plugin extends LSActiveRecord
      */
     public function setLoadError(array $error)
     {
+        if (!function_exists('gT')) {
+            \Yii::app()->loadHelper('common');
+        }
         // NB: Don't use ActiveRecord here, since it will trigger events and
         // load the plugin system all over again.
         // TODO: Works on all SQL systems?
