@@ -3264,8 +3264,12 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
     $survey = Survey::model()->findByPk($iSurveyID);
     $aFieldMap = createFieldMap($survey, 'full', false, false, $sLanguageCode);
 
-    //Get response data
+    // Get response data
     $idrow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id' => $iResponseID));
+    // If response data not found, throw an exception
+    if (!$idrow) {
+        throw new CHttpException(401, gT("Response data not found."));
+    }
     $idrow->decryptBeforeOutput();
 
     // Create array of non-null values - those are the relevant ones
@@ -4672,6 +4676,20 @@ function getRealIPAddress()
     $sIPAddress = '127.0.0.1';
     if (!empty($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) !== false) {
         $sIPAddress = $_SERVER['REMOTE_ADDR'];
+    }
+    // If there is a list of reverse proxy IP addresses, and the current IP address is in that list, we will
+    // look for the header that contains the client IP address.
+    if (!empty(Yii::app()->getConfig('reverseProxyIpAddresses'))) {
+        $reverseProxyIpAddresses = Yii::app()->getConfig('reverseProxyIpAddresses');
+        if (in_array($sIPAddress, $reverseProxyIpAddresses)) {
+            $reverseProxyIpHeader = Yii::app()->getConfig('reverseProxyIpHeader');
+            if (empty($reverseProxyIpHeader)) {
+                $reverseProxyIpHeader = 'HTTP_X_FORWARDED_FOR';
+            }
+            if (isset($_SERVER[$reverseProxyIpHeader]) && filter_var($_SERVER[$reverseProxyIpHeader], FILTER_VALIDATE_IP) !== false) {
+                $sIPAddress = $_SERVER[$reverseProxyIpHeader];
+            }
+        }
     }
     return $sIPAddress;
 }
