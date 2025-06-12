@@ -78,6 +78,8 @@
         <hideprivacyinfo type="buttons" category="Simple options" width="4" title="Hide privacy info" options="on|off"
                          optionlabels="Yes|No">off
         </hideprivacyinfo>
+        <showsurveypolicynoticeinregister type="buttons" category="Simple options" width="4" title="Show privacy policy when register" options="on|off" optionlabels="Yes|No">off</showsurveypolicynoticeinregister>
+
         <showpopups type="buttons" category="Simple options" width="4" title="Show popups" options="1|0|-1"
                     optionlabels="Popup|On page|No">1
         </showpopups>
