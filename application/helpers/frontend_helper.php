@@ -19,6 +19,7 @@ if (!defined('BASEPATH')) {
 require_once(Yii::app()->basePath . '/libraries/MersenneTwister.php');
 
 use LimeSurvey\PluginManager\PluginEvent;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 function loadanswers()
 {
@@ -376,7 +377,11 @@ function submittokens($quotaexit = false)
     } else {
         $thissurvey = getSurveyInfo($surveyid);
     }
-    $clienttoken = $_SESSION['survey_' . $surveyid]['token'];
+    $clienttoken = $_SESSION['survey_' . $surveyid]['token'] ?? '';
+
+    if (($clienttoken === '') && ($thissurvey['access_mode'] !== SurveyAccessModeService::$ACCESS_TYPE_CLOSED)) {
+        return; //optional
+    }
 
     // Shift the date due to global timeadjust setting
     $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));

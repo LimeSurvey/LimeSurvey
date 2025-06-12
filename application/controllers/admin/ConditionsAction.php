@@ -43,7 +43,7 @@ class ConditionsAction extends SurveyCommonAction
     private $language;
 
     /**
-     * True if there exists a survey participants table for this survey
+     * True if there exists a survey participant list for this survey
      * @var boolean
      */
     private $tokenTableExists;
