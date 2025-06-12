@@ -508,32 +508,4 @@ class LSActiveRecord extends CActiveRecord
             }
         }
     }
-
-    public function updateSurveyLastModifiedDate($event)
-    {
-        $models = ['Survey', 'SurveyLanguageSetting', 'Participant', 'Permission', 'Question', 'QuestionGroup'];
-        if (!in_array(get_class($event->sender), $models)) {
-            return;
-        }
-
-        $sid = null;
-        // Try to get survey ID from the event sender if it exists.
-        if (isset($event->sender->sid)) {
-            $sid = $event->sender->sid;
-        } elseif (isset($event->sender->surveyls_survey_id)) {
-            $sid = $event->sender->surveyls_survey_id;
-        } elseif (isset($event->sender->entity_id) && $event->sender->entity == 'survey') {
-            $sid = $event->sender->entity_id;
-        }
-
-        if ($sid) {
-            Survey::model()->updateLastModifiedDate($sid);
-        }
-    }
-
-    public function onAfterSave($event)
-    {
-        $this->updateSurveyLastModifiedDate($event);
-        parent::onAfterSave($event);
-    }
 }

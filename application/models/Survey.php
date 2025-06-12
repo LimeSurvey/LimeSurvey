@@ -1423,8 +1423,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getLastModifiedDate()
     {
-        $date = $this->lastModified > $this->creationdate ?
+        $date = $this->lastModified > $this->datecreated ?
             $this->lastModified : $this->creationdate;
+
         return self::shiftedDateTime($date)->format('d.m.Y');
     }
 
@@ -2589,18 +2590,4 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return null;
     }
 
-    /**
-     * Update last modified date
-     * @param int $sid survey id
-     */
-    public function updateLastModifiedDate($sid)
-    {
-        App()->db->createCommand()->update(
-            '{{surveys}}',
-            array(
-                'lastModified' => date('Y-m-d H:i:s'),
-            ),
-            "sid=" . $sid
-        );
-    }
 }
