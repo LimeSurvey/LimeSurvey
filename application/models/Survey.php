@@ -2605,7 +2605,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function setOtherSetting($attribute, $value)
     {
-        $othersettings = json_decode($this->othersettings, true) ?? [];
+        $othersettings = json_decode($this->othersettings ?? '', true) ?? [];
         $othersettings[$attribute] = $value;
         $this->othersettings = json_encode($othersettings);
     }
@@ -2658,5 +2658,29 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $this->addError($attribute, $rule['message']);
         }
         return (bool)$isValid;
+    }
+
+    /**
+     * Retrieves prefix othersettings as an associative array.
+     *
+     * This method collects all the survey's othersettings (prefixes for question codes,
+     * subquestion codes, and answer codes) and returns them as an array.
+     *
+     * @return array An associative array containing the other settings with keys:
+     *               'question_code_prefix', 'subquestion_code_prefix', and 'answer_code_prefix'
+     */
+    public function getOtherSettingsPrefixArray()
+    {
+        $otherSettings['question_code_prefix'] = $this->getOtherSetting(
+            'question_code_prefix'
+        );
+        $otherSettings['subquestion_code_prefix'] = $this->getOtherSetting(
+            'subquestion_code_prefix'
+        );
+        $otherSettings['answer_code_prefix'] = $this->getOtherSetting(
+            'answer_code_prefix'
+        );
+
+        return $otherSettings;
     }
 }
