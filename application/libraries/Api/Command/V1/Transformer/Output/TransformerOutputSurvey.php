@@ -257,7 +257,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
      */
     private function addOtherSettings($survey)
     {
-        $otherSettingsObj = json_decode($survey['othersettings']);
+        $otherSettingsObj = json_decode($survey['othersettings'] ?? '');
         $prefixProps = [
             'question_code_prefix',
             'subquestion_code_prefix',

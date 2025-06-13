@@ -2605,7 +2605,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function setOtherSetting($attribute, $value)
     {
-        $othersettings = json_decode($this->othersettings, true) ?? [];
+        $othersettings = json_decode($this->othersettings ?? '', true) ?? [];
         $othersettings[$attribute] = $value;
         $this->othersettings = json_encode($othersettings);
     }
