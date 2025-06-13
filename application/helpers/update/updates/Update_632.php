@@ -19,9 +19,20 @@ class Update_632 extends DatabaseUpdateBase
 
     private function getTriggers(): array
     {
-        $triggers = [];
+        return [
+            $this->getAnswersTrigger(),
+            $this->getGroupL10nsTrigger(),
+            $this->getGroupsTrigger(),
+            $this->getQuestionL10nsTrigger(),
+            $this->getQuestionsTrigger(),
+            $this->getSurveysTrigger(),
+            $this->getSurveyLanguageSettingsTrigger(),
+        ];
+    }
 
-        $triggers[] = <<<SQL
+    private function getAnswersTrigger(): string
+    {
+        return <<<SQL
 CREATE TRIGGER `lime_answers_last_modified` BEFORE UPDATE ON `lime_answers`
 FOR EACH ROW BEGIN
     DECLARE survey_id INT;
@@ -35,8 +46,11 @@ FOR EACH ROW BEGIN
     WHERE lime_surveys.sid = survey_id;
 END;
 SQL;
+    }
 
-        $triggers[] = <<<SQL
+    private function getGroupL10nsTrigger(): string
+    {
+        return <<<SQL
 CREATE TRIGGER `lime_group_l10ns_last_modified` BEFORE UPDATE ON `lime_group_l10ns`
 FOR EACH ROW BEGIN
     DECLARE survey_id INT;
@@ -50,15 +64,21 @@ FOR EACH ROW BEGIN
     WHERE lime_surveys.sid = survey_id;
 END;
 SQL;
+    }
 
-        $triggers[] = <<<SQL
+    private function getGroupsTrigger(): string
+    {
+        return <<<SQL
 CREATE TRIGGER `lime_groups_last_modified` BEFORE UPDATE ON `lime_groups`
 FOR EACH ROW BEGIN
     UPDATE lime_surveys SET lastModified = NOW() WHERE lime_surveys.sid = NEW.sid;
 END;
 SQL;
+    }
 
-        $triggers[] = <<<SQL
+    private function getQuestionL10nsTrigger(): string
+    {
+        return <<<SQL
 CREATE TRIGGER `lime_question_l10ns_last_modified` BEFORE UPDATE ON `lime_question_l10ns`
 FOR EACH ROW BEGIN
     DECLARE survey_id INT;
@@ -72,29 +92,35 @@ FOR EACH ROW BEGIN
     WHERE lime_surveys.sid = survey_id;
 END;
 SQL;
+    }
 
-        $triggers[] = <<<SQL
+    private function getQuestionsTrigger(): string
+    {
+        return <<<SQL
 CREATE TRIGGER `lime_questions_last_modified` BEFORE UPDATE ON `lime_questions`
 FOR EACH ROW BEGIN
     UPDATE lime_surveys SET lastModified = NOW() WHERE lime_surveys.sid = NEW.sid;
 END;
 SQL;
+    }
 
-        $triggers[] = <<<SQL
+    private function getSurveysTrigger(): string
+    {
+        return <<<SQL
 CREATE TRIGGER `lime_surveys_last_modified` BEFORE UPDATE ON `lime_surveys`
 FOR EACH ROW BEGIN
     SET NEW.lastModified = NOW();
 END;
 SQL;
+    }
 
-
-        $triggers[] = <<<SQL
+    private function getSurveyLanguageSettingsTrigger(): string
+    {
+        return <<<SQL
 CREATE TRIGGER `lime_surveys_languagesettings_last_modified` BEFORE UPDATE ON `lime_surveys_languagesettings`
- FOR EACH ROW BEGIN
+FOR EACH ROW BEGIN
     UPDATE lime_surveys SET lastModified = NOW() WHERE lime_surveys.sid = NEW.surveyls_survey_id;
-END
+END;
 SQL;
-
-        return $triggers;
     }
 }
