@@ -195,7 +195,7 @@ class SurveyArchiveService
      * @param int $iTimestamp
      * @param array $searchParams
      * @throws InvalidArgumentException
-     * 
+     *
      * @return array
      */
     private function getArchiveDataInternal(string $modelClass, int $iSurveyID, int $iTimestamp, array $searchParams): array
@@ -308,48 +308,48 @@ class SurveyArchiveService
      * @return void
      */
     protected function attachQuestionTitlesToResponses(array &$archivedResponsesData, int $iSurveyID): void
-{
-    $survey = $this->survey->findByPk($iSurveyID);
-    $fieldMap = createFieldMap($survey, 'full', false, false);
-    $dataWithTitles = [];
-
-    foreach ($archivedResponsesData['data'] as $response) {
-        $fieldDetails = [];
-
-        foreach ($response as $fieldName => $value) {
-            if (!isset($fieldMap[$fieldName])) {
-                continue;
-            }
-
-            $fieldMeta = $fieldMap[$fieldName];
-
-            if (empty($fieldMeta['sid']) || empty($fieldMeta['gid']) || empty($fieldMeta['qid'])) {
-                continue;
-            }
-
-            $subQuestionTitle = '';
-            if (!empty($fieldMeta['sqid'])) {
-                $sub1 = $fieldMeta['subquestion1'] ?? '';
-                $sub2 = $fieldMeta['subquestion2'] ?? '';
-                if(!empty($sub1) && !empty($sub2)) {
-                    $subQuestionTitle =  "{$sub1} - {$sub2}";
+    {
+        $survey = $this->survey->findByPk($iSurveyID);
+        $fieldMap = createFieldMap($survey, 'full', false, false);
+        $dataWithTitles = [];
+    
+        foreach ($archivedResponsesData['data'] as $response) {
+            $fieldDetails = [];
+        
+            foreach ($response as $fieldName => $value) {
+                if (!isset($fieldMap[$fieldName])) {
+                    continue;
                 }
+            
+                $fieldMeta = $fieldMap[$fieldName];
+            
+                if (empty($fieldMeta['sid']) || empty($fieldMeta['gid']) || empty($fieldMeta['qid'])) {
+                    continue;
+                }
+            
+                $subQuestionTitle = '';
+                if (!empty($fieldMeta['sqid'])) {
+                    $sub1 = $fieldMeta['subquestion1'] ?? '';
+                    $sub2 = $fieldMeta['subquestion2'] ?? '';
+                    if(!empty($sub1) && !empty($sub2)) {
+                        $subQuestionTitle =  "{$sub1} - {$sub2}";
+                    }
+                }
+            
+                $fieldDetails[$fieldName] = [
+                    'groupTitle' => $fieldMeta['group_name'] ?? '',
+                    'questionTitle' => $fieldMeta['question'] ?? '',
+                    'subQuestionTitle' => $subQuestionTitle,
+                    'questionCode' => $fieldMeta['title'] ?? '',
+                ];
             }
-
-            $fieldDetails[$fieldName] = [
-                'groupTitle' => $fieldMeta['group_name'] ?? '',
-                'questionTitle' => $fieldMeta['question'] ?? '',
-                'subQuestionTitle' => $subQuestionTitle,
-                'questionCode' => $fieldMeta['title'] ?? '',
-            ];
+        
+            $response['fieldDetails'] = $fieldDetails;
+            $dataWithTitles[] = $response;
         }
-
-        $response['fieldDetails'] = $fieldDetails;
-        $dataWithTitles[] = $response;
+    
+        $archivedResponsesData['data'] = $dataWithTitles;
     }
-
-    $archivedResponsesData['data'] = $dataWithTitles;
-}
 
 
 
