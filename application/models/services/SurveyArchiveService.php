@@ -40,7 +40,6 @@ class SurveyArchiveService
      *
      * @param int $iSurveyID
      * @param int $iTimestamp
-     * @throws NotFoundException
      * @return string
      */
     public function getArchiveAlias(int $iSurveyID, int $iTimestamp): string
@@ -195,6 +194,8 @@ class SurveyArchiveService
      * @param int $iSurveyID
      * @param int $iTimestamp
      * @param array $searchParams
+     * @throws InvalidArgumentException
+     * 
      * @return array
      */
     private function getArchiveDataInternal(string $modelClass, int $iSurveyID, int $iTimestamp, array $searchParams): array

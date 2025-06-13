@@ -58,9 +58,13 @@ class SurveyArchiveAliasUpdate implements CommandInterface
             return $response;
         }
 
-        $this->surveyArchiveService->updateArchiveAlias($surveyId, $timestamp, $alias);
+        try {
+            $this->surveyArchiveService->updateArchiveAlias($surveyId, $timestamp, $alias);
+        } catch (\Exception $e) { 
+            return $this->responseFactory->makeException($e);
+        }
 
-        return $this->responseFactory->makeSuccess();
+        return $this->responseFactory->makeSuccessNoContent();
     }
 
     /**
