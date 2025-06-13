@@ -23,12 +23,19 @@ class SurveyAccessModeService
 
     protected bool $test;
 
+    protected string $tokenTableAction;
+
     public static $ACCESS_TYPE_OPEN = 'O';
     public static $ACCESS_TYPE_CLOSED = 'C';
 
     public static $ACTION_KEEP = 'K';
     public static $ACTION_ARCHIVE = 'A';
     public static $ACTION_DROP = 'D';
+
+    public static $TOKEN_TABLE_CREATED = 'CREATED';
+    public static $TOKEN_TABLE_DROPPED = 'DROPPED';
+    public static $TOKEN_TABLE_ARCHIVED = 'ARCHIVED';
+    public static $TOKEN_TABLE_NO_ACTION = 'NO ACTION';
 
     protected static $supportedAccessModes = null;
 
@@ -57,6 +64,16 @@ class SurveyAccessModeService
                 self::$ACTION_DROP
             ];
         }
+        $this->tokenTableAction = self::$TOKEN_TABLE_NO_ACTION;
+    }
+
+    /**
+     * Returns the latest token table action
+     * @return string
+     */
+    public function getTokenTableAction()
+    {
+        return $this->tokenTableAction;
     }
 
     /**
@@ -101,6 +118,7 @@ class SurveyAccessModeService
         $survey->tokenencryptionoptions = ls_json_encode($tokenencryptionoptions);
         Token::createTable($survey->sid);
         LimeExpressionManager::setDirtyFlag();
+        $this->tokenTableAction = self::$TOKEN_TABLE_CREATED;
         return true;
     }
 
@@ -143,8 +161,10 @@ class SurveyAccessModeService
                 $archivedTokenSettings->properties = $surveyInfo['tokenencryptionoptions'];
                 $archivedTokenSettings->attributes = json_encode($surveyInfo['attributedescriptions']);
                 $archivedTokenSettings->save();
+                $this->tokenTableAction = self::$TOKEN_TABLE_ARCHIVED;
             } elseif ($action === self::$ACTION_DROP) {
                 $this->app->db->createCommand()->dropTable("{{" . $oldTable . "}}");
+                $this->tokenTableAction = self::$TOKEN_TABLE_DROPPED;
             } //If action is Keep, do nothing
         }
     }
@@ -160,6 +180,7 @@ class SurveyAccessModeService
      */
     public function changeAccessMode(int $surveyID, string $accessMode, string $action = 'K')
     {
+        $this->tokenTableAction = self::$TOKEN_TABLE_NO_ACTION;
         $survey = Survey::model()->findByPk($surveyID);
         $oldAccessMode = $survey->access_mode;
         if ($oldAccessMode === $accessMode) {
