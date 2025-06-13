@@ -65,4 +65,15 @@ class AccessModeChangeTest extends TestBaseClass
         $this->assertTrue($this->getSurvey()->access_mode === SurveyAccessModeService::$ACCESS_TYPE_CLOSED);
         $this->assertTrue($this->surveyAccessModeService->getTokenTableAction() === SurveyAccessModeService::$TOKEN_TABLE_NO_ACTION);
     }
+
+    public function testAccessModeChangeClosedToOpenKeepingTokensTable()
+    {
+        $result = $this->importTheFile('access_modes_553745.lsa');
+        $this->assertTrue($result['access_mode'] === SurveyAccessModeService::$ACCESS_TYPE_CLOSED);
+        $this->assertTrue($this->getSurvey()->hasTokensTable);
+        $this->surveyAccessModeService->changeAccessMode($this->getSurvey()->sid, SurveyAccessModeService::$ACCESS_TYPE_OPEN);
+        $this->getSurvey()->refresh();
+        $this->assertTrue($this->getSurvey()->access_mode === SurveyAccessModeService::$ACCESS_TYPE_OPEN);
+        $this->assertTrue($this->surveyAccessModeService->getTokenTableAction() === SurveyAccessModeService::$TOKEN_TABLE_NO_ACTION);
+    }
 }
