@@ -55,12 +55,35 @@ var A11yHandles = exports.A11yHandles = function A11yHandles() {
       }
     });
   };
+  var initLiveRegion = function initLiveRegion() {
+    var LiveRegion = document.createElement('div');
+    LiveRegion.id = 'live-region';
+    LiveRegion.classList.add('sr-only');
+    LiveRegion.setAttribute('aria-live', 'polite');
+    LiveRegion.setAttribute('role', 'status');
+    document.body.appendChild(LiveRegion);
+  };
+  var timeout;
+  var liveAnnounce = function liveAnnounce(message) {
+    var liveRegion = document.getElementById('live-region');
+    clearTimeout(timeout);
+    liveRegion.innerHTML = '';
+    timeout = setTimeout(function () {
+      liveRegion.innerHTML = '<p>' + message + '</p>';
+    }, 500);
+  };
   return {
-    handleTooltip: handleTooltip
+    handleTooltip: handleTooltip,
+    initLiveRegion: initLiveRegion,
+    liveAnnounce: liveAnnounce
   };
 };
 $(document).on('ready pjax:scriptcomplete', function () {
   A11yHandles().handleTooltip();
+  A11yHandles().initLiveRegion();
+});
+$(document).on('classChangeError', function (event) {
+  A11yHandles().liveAnnounce(event.target.textContent.trim());
 });
 
 },{}],3:[function(require,module,exports){
