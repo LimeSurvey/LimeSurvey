@@ -85,6 +85,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
 $(document).on('classChangeError', function (event) {
   A11yHandles().liveAnnounce(event.target.textContent.trim());
 });
+$(document).on('classChangeGood', function (event) {
+  A11yHandles().liveAnnounce(event.target.textContent.trim());
+});
 
 },{}],3:[function(require,module,exports){
 "use strict";
