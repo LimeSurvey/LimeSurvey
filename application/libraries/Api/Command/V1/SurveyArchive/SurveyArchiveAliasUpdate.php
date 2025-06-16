@@ -60,7 +60,7 @@ class SurveyArchiveAliasUpdate implements CommandInterface
 
         try {
             $this->surveyArchiveService->updateArchiveAlias($surveyId, $timestamp, $alias);
-        } catch (\Exception $e) { 
+        } catch (\Exception $e) {
             return $this->responseFactory->makeException($e);
         }
 
