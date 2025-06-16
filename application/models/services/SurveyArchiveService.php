@@ -312,30 +312,30 @@ class SurveyArchiveService
         $survey = $this->survey->findByPk($iSurveyID);
         $fieldMap = createFieldMap($survey, 'full', false, false);
         $dataWithTitles = [];
-    
+
         foreach ($archivedResponsesData['data'] as $response) {
             $fieldDetails = [];
-        
+
             foreach ($response as $fieldName => $value) {
                 if (!isset($fieldMap[$fieldName])) {
                     continue;
                 }
-            
+
                 $fieldMeta = $fieldMap[$fieldName];
-            
+
                 if (empty($fieldMeta['sid']) || empty($fieldMeta['gid']) || empty($fieldMeta['qid'])) {
                     continue;
                 }
-            
+
                 $subQuestionTitle = '';
                 if (!empty($fieldMeta['sqid'])) {
                     $sub1 = $fieldMeta['subquestion1'] ?? '';
                     $sub2 = $fieldMeta['subquestion2'] ?? '';
-                    if(!empty($sub1) && !empty($sub2)) {
+                    if (!empty($sub1) && !empty($sub2)) {
                         $subQuestionTitle =  "{$sub1} - {$sub2}";
                     }
                 }
-            
+
                 $fieldDetails[$fieldName] = [
                     'groupTitle' => $fieldMeta['group_name'] ?? '',
                     'questionTitle' => $fieldMeta['question'] ?? '',
@@ -343,11 +343,11 @@ class SurveyArchiveService
                     'questionCode' => $fieldMeta['title'] ?? '',
                 ];
             }
-        
+
             $response['fieldDetails'] = $fieldDetails;
             $dataWithTitles[] = $response;
         }
-    
+
         $archivedResponsesData['data'] = $dataWithTitles;
     }
 
