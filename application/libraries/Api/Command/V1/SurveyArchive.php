@@ -129,7 +129,7 @@ class SurveyArchive implements CommandInterface
             $tokenResult = getTableArchivesAndTimestamps($surveyId, 'old_tokens');
             foreach ($tokenResult as $item) {
                 $found = false;
-                for ($index = 0; (!$found) & ($index < count($result)); $index++) {
+                for ($index = 0; (!$found) && ($index < count($result)); $index++) {
                     if ($result[$index]['timestamp'] === $item['timestamp']) {
                         $found = true;
                     }
