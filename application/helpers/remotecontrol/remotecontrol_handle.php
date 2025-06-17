@@ -808,7 +808,7 @@ class remotecontrol_handle
      *
      * @access public
      * @param string $sSessionKey Auth credentials
-     * @param integer $iSurveyID ID of the Survey for which a survey participants table will be created
+     * @param integer $iSurveyID ID of the Survey for which a survey participant list will be created
      * @param string $sLanguage  A valid language shortcut to add to the current Survey. If the language already exists no error will be given.
      * @return array Status=>OK when successful, otherwise the error description
      */
@@ -867,7 +867,7 @@ class remotecontrol_handle
      *
      * @access public
      * @param string $sSessionKey Auth credentials
-     * @param integer $iSurveyID ID of the Survey for which a survey participants table will be created
+     * @param integer $iSurveyID ID of the Survey for which a survey participant list will be created
      * @param string $sLanguage A valid language shortcut to delete from the current Survey. If the language does not exist in that Survey no error will be given.
      * @return array Status=>OK when successful, otherwise the error description
      */
@@ -2051,7 +2051,7 @@ class remotecontrol_handle
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create')) {
             if (!Yii::app()->db->schema->getTable($oSurvey->tokensTableName)) {
-                            return array('status' => 'No survey participants table');
+                            return array('status' => 'No survey participant list');
             }
             $aDestinationFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
             foreach ($aParticipantData as &$aParticipant) {
@@ -2073,7 +2073,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Delete multiple participants from the survey participants table (RPC function)
+     * Delete multiple participants from the survey participant list (RPC function)
      *
      * Returns the id of the deleted token
      *
@@ -2094,7 +2094,7 @@ class remotecontrol_handle
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete')) {
                 if (!tableExists("{{tokens_$iSurveyID}}")) {
-                                    return array('status' => 'Error: No survey participants table');
+                                    return array('status' => 'Error: No survey participant list');
                 }
 
                 $aResult = array();
@@ -2145,7 +2145,7 @@ class remotecontrol_handle
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read')) {
                 if (!tableExists("{{tokens_$iSurveyID}}")) {
-                                    return array('status' => 'Error: No survey participants table');
+                                    return array('status' => 'Error: No survey participant list');
                 }
 
                 if (is_array($aTokenQueryProperties)) {
@@ -2207,7 +2207,7 @@ class remotecontrol_handle
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
                 if (!tableExists("{{tokens_$iSurveyID}}")) {
-                                    return array('status' => 'Error: No survey participants table');
+                                    return array('status' => 'Error: No survey participant list');
                 }
 
                 if (is_array($aTokenQueryProperties)) {
@@ -2347,7 +2347,7 @@ class remotecontrol_handle
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read')) {
                 if (!tableExists("{{tokens_$iSurveyID}}")) {
-                    return array('status' => 'Error: No survey participants table');
+                    return array('status' => 'Error: No survey participant list');
                 }
 
                 /** @var CDbCriteria mixed> Criteria used in final query below. */
@@ -2981,11 +2981,11 @@ class remotecontrol_handle
     /**
      * Activate survey participants (RPC function)
      *
-     * Initialise the survey participant table of a survey where new participant tokens may be later added.
+     * Initialise the survey participant list of a survey where new participant tokens may be later added.
      *
      * @access public
      * @param string $sSessionKey Auth credentials
-     * @param integer $iSurveyID ID of the Survey where a survey participants table will be created for
+     * @param integer $iSurveyID ID of the Survey where a survey participant list will be created for
      * @param array $aAttributeFields  An array of integer describing any additional attribute fields
      * @return array Status=>OK when successful, otherwise the error description
      */
@@ -3000,7 +3000,7 @@ class remotecontrol_handle
             return array('status' => 'Error: Invalid survey ID');
         }
         if (
-            /* Same test Tokens->newtokentable */
+            /* Same test Tokens->newParticipantTable */
             !Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') &&
             !Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create')
         ) {
@@ -3017,7 +3017,7 @@ class remotecontrol_handle
         if (Token::createTable($iSurveyID, $aAttributeFields)) {
             return array('status' => 'OK');
         } else {
-            return array('status' => 'Survey participants table could not be created');
+            return array('status' => 'Survey participant list could not be created');
         }
 
     }
@@ -3056,7 +3056,7 @@ class remotecontrol_handle
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
             if (!tableExists("{{tokens_$iSurveyID}}")) {
-                return array('status' => 'Error: No survey participants table');
+                return array('status' => 'Error: No survey participant list');
             }
 
             $command = new CDbCriteria();
@@ -3151,7 +3151,7 @@ class remotecontrol_handle
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
             if (!tableExists("{{tokens_$iSurveyID}}")) {
-                return array('status' => 'Error: No survey participants table');
+                return array('status' => 'Error: No survey participant list');
             }
 
             $iMaxEmails = (int) Yii::app()->getConfig("maxemails");
@@ -3226,7 +3226,7 @@ class remotecontrol_handle
             $timeadjust = Yii::app()->getConfig("timeadjust");
 
             if (!tableExists("{{tokens_$iSurveyID}}")) {
-                            return array('status' => 'Error: No survey participants table');
+                            return array('status' => 'Error: No survey participant list');
             }
 
             $SQLemailstatuscondition = "emailstatus = 'OK'";

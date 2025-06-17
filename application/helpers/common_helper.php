@@ -811,6 +811,8 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             $thissurvey['attributedescriptions'] = $result->survey->tokenAttributes;
             $thissurvey['attributecaptions'] = $result->attributeCaptions;
             $thissurvey['googleanalyticsapikey'] = $oSurvey->getGoogleanalyticsapikey();
+            $thissurvey['hastokenstable'] = $oSurvey->hasTokensTable;
+            $thissurvey['filltoken'] = (Yii::app()->request->getParam('filltoken') === 'true');
             if (!isset($thissurvey['adminname'])) {
                 $thissurvey['adminname'] = Yii::app()->getConfig('siteadminemail');
             }
@@ -2579,7 +2581,7 @@ function tableExists($sTableName)
 }
 
 // Returns false if the survey is anonymous,
-// and a survey participants table exists: in this case the completed field of a token
+// and a survey participant list exists: in this case the completed field of a token
 // will contain 'Y' instead of the submitted date to ensure privacy
 // Returns true otherwise
 function isTokenCompletedDatestamped($thesurvey)
@@ -2900,7 +2902,7 @@ function filterForAttributes(string $fieldname)
 }
 
 /**
-* Retrieves the attribute field names from the related survey participants table
+* Retrieves the attribute field names from the related survey participant list
 *
 * @param mixed $iSurveyID  The survey ID
 * @return array The fieldnames
@@ -2936,7 +2938,7 @@ function getParticipantAttributes($iSurveyID)
 
 
 /**
-* Retrieves the attribute names from the related survey participants table
+* Retrieves the attribute names from the related survey participant list
 *
 * @param mixed $surveyid  The survey ID
 * @param boolean $bOnlyAttributes Set this to true if you only want the fieldnames of the additional attribue fields - defaults to false

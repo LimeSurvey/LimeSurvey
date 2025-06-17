@@ -35,7 +35,7 @@
         <div class="row ls-space margin top-10 bottom-10">
             <div class='mb-3'>
                 <label class='form-label col-md-4'>
-                    <?php eT('Display survey participant table after addition?'); ?>
+                    <?php eT('Display survey participant list after addition?'); ?>
                 </label>
                 <div class='col-md-8'>
                     <?php App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
