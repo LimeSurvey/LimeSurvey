@@ -194,7 +194,7 @@ class SurveyArchiveService
      * @param int $iSurveyID
      * @param int $iTimestamp
      * @param array $searchParams
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      *
      * @return array
      */
