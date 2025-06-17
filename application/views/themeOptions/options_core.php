@@ -127,6 +127,14 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                     if ($attributeKey === 'ajaxmode') {
                         continue;
                     }
+                    // Check if the option has a parent option. For example, the 'brandlogofile' option (dropdown)
+                    // has 'brandlogo' (Yes/No) as parent option, because it is only enabled when the parent option
+                    // is set to 'Yes'.
+                    $hasParent = !empty($attribute['parent']);
+                    $parentDataAttribute = "";
+                    if ($hasParent) {
+                        $parentDataAttribute = 'data-parent="' . $attribute['parent'] . '"';
+                    }
                     ?>
                     <?php if (array_key_exists('category', $attribute) && $category === $attribute['category']) : ?>
                         <div class="col-<?= $attribute['width'] ?>">
@@ -184,8 +192,10 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                 $classes = [
                                     'form-select',
                                     'selector_option_value_field',
-                                    'selector_radio_childfield',
                                 ];
+                                if ($hasParent) {
+                                    $classes[] = 'selector_radio_childfield';
+                                }
                                 if ($category === 'Images') {
                                     $classes[] = 'selector_image_selector';
                                 }
@@ -206,7 +216,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                 ?>
 
                                 <div class="col-12">
-                                    <select class="<?= $classValue ?>" data-parent="<?= $attribute['parent'] ?>"
+                                    <select class="<?= $classValue ?>" <?= $parentDataAttribute ?>
                                             data-inheritvalue="<?= ($attributeKey === 'font' && isset($sPackagesToLoad) ? htmlspecialchars($sPackagesToLoad) : $sParentOption) ?>"
                                             id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>">
                                         <?php if ($bInherit) : ?>
@@ -240,7 +250,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                 <div class="col-12">
                                     <?php // Fields linked to a parent option (Yes/No switch) need a class and data-parent attribute ?>
                                     <select class="form-select selector_option_value_field selector_option_value_field selector_image_selector"
-                                            data-parent="<?= $attribute['parent'] ?>"
+                                            <?= $parentDataAttribute ?>
                                             data-inheritvalue="<?= $sParentOption ?>"
                                             id="simple_edit_options_<?= $attributeKey ?>"
                                             name="<?= $attributeKey ?>">
@@ -260,7 +270,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                 </div>
                             <?php elseif ($attribute['type'] === 'icon') : ?>
                                 <div class="col-12 input-group">
-                                    <select class="selector_option_value_field form-select simple_edit_options_checkicon" data-parent="<?= $attribute['parent'] ?>"
+                                    <select class="selector_option_value_field form-select simple_edit_options_checkicon" <?= $parentDataAttribute ?>
                                             id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>">
                                         <?php if ($bInherit) : ?>
                                             <option value="inherit"><?= gT("Inherit") ?>[<?= gT("inherited value:") ?> <?= ($sParentOption ?? '') ?>]</option>
@@ -277,14 +287,14 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                 </div>
                             <?php elseif ($attribute['type'] === 'text') : ?>
                                 <div class="col-12">
-                                    <input type="text" class="form-control selector-text-input selector_text_option_value_field" data-parent="<?= $attribute['parent'] ?>"
+                                    <input type="text" class="form-control selector-text-input selector_text_option_value_field" <?= $parentDataAttribute ?>
                                            id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>"
                                            title="<?= gT("inherited value:") ?> <?= CHtml::encode($sParentOption) ?>"/>
                                 </div>
                             <?php elseif ($attribute['type'] === 'textarea') : ?>
                                 <div class="col-12">
                                     <textarea
-                                        class="form-control selector-text-input selector_text_option_value_field" data-parent="<?= $attribute['parent'] ?>"
+                                        class="form-control selector-text-input selector_text_option_value_field" <?= $parentDataAttribute ?>
                                         id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>"
                                         rows="<?= (int)$attribute['rows'] ?>"
                                         title="<?= gT("inherited value:") . CHtml::encode($sParentOption) ?>"
@@ -294,7 +304,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                             <?php elseif ($attribute['type'] === 'duration') : ?>
                                 <div class="col-12">
                                     <input type="text" class="form-control selector-numerical-input selector_text_option_value_field selector_radio_childfield"
-                                           data-parent="<?= $attribute['parent'] ?>" id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>"
+                                           <?= $parentDataAttribute ?> id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>"
                                            title="<?= gT("inherited value:") ?> <?= $sParentOption ?>"/>
                                 </div>
                             <?php endif; ?>
