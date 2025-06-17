@@ -856,5 +856,14 @@ $config['registrationEmailDelay'] = '1 hour';
 // Participants token sanitizing rules as regex pattern
 $config['allowedcharacters_pattern_token'] = '/[^0-9a-zA-Z_\-~]/';
 
+// List of reverse proxy IP addresses
+// If the instance is behind a reverse proxy, the IP addresses of the reverse proxy should be listed in this setting
+// in order to be able to detect the real client IP address. Works together with "reverseProxyIpHeader" setting.
+$config['reverseProxyIpAddresses'] = [];
+
+// Name of the header that contains the client IP address in case the instance is behind a reverse proxy.
+// Works together with "reverseProxyIpAddresses" setting.
+$config['reverseProxyIpHeader'] = 'HTTP_X_FORWARDED_FOR';
+
 return $config;
 //settings deleted
