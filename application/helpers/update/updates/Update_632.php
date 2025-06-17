@@ -22,7 +22,19 @@ class Update_632 extends DatabaseUpdateBase
     private function getPostgresTriggers(): array
     {
         return [
-            <<<SQL
+            $this->triggerAnswers(),
+            $this->triggerGroupL10ns(),
+            $this->triggerGroups(),
+            $this->triggerQuestionL10ns(),
+            $this->triggerQuestions(),
+            $this->triggerSurveys(),
+            $this->triggerLanguageSettings(),
+        ];
+    }
+
+    private function triggerAnswers(): string
+    {
+        return <<<SQL
 CREATE OR REPLACE FUNCTION update_survey_last_modified_from_answers()
 RETURNS TRIGGER AS \$\$
 DECLARE
@@ -40,9 +52,12 @@ CREATE TRIGGER lime_answers_last_modified
 BEFORE UPDATE ON lime_answers
 FOR EACH ROW
 EXECUTE FUNCTION update_survey_last_modified_from_answers();
-SQL,
+SQL;
+    }
 
-            <<<SQL
+    private function triggerGroupL10ns(): string
+    {
+        return <<<SQL
 CREATE OR REPLACE FUNCTION update_survey_last_modified_from_group_l10ns()
 RETURNS TRIGGER AS \$\$
 DECLARE
@@ -60,9 +75,12 @@ CREATE TRIGGER lime_group_l10ns_last_modified
 BEFORE UPDATE ON lime_group_l10ns
 FOR EACH ROW
 EXECUTE FUNCTION update_survey_last_modified_from_group_l10ns();
-SQL,
+SQL;
+    }
 
-            <<<SQL
+    private function triggerGroups(): string
+    {
+        return <<<SQL
 CREATE OR REPLACE FUNCTION update_survey_last_modified_from_groups()
 RETURNS TRIGGER AS \$\$
 BEGIN
@@ -75,9 +93,12 @@ CREATE TRIGGER lime_groups_last_modified
 BEFORE UPDATE ON lime_groups
 FOR EACH ROW
 EXECUTE FUNCTION update_survey_last_modified_from_groups();
-SQL,
+SQL;
+    }
 
-            <<<SQL
+    private function triggerQuestionL10ns(): string
+    {
+        return <<<SQL
 CREATE OR REPLACE FUNCTION update_survey_last_modified_from_question_l10ns()
 RETURNS TRIGGER AS \$\$
 DECLARE
@@ -95,9 +116,12 @@ CREATE TRIGGER lime_question_l10ns_last_modified
 BEFORE UPDATE ON lime_question_l10ns
 FOR EACH ROW
 EXECUTE FUNCTION update_survey_last_modified_from_question_l10ns();
-SQL,
+SQL;
+    }
 
-            <<<SQL
+    private function triggerQuestions(): string
+    {
+        return <<<SQL
 CREATE OR REPLACE FUNCTION update_survey_last_modified_from_questions()
 RETURNS TRIGGER AS \$\$
 BEGIN
@@ -110,9 +134,12 @@ CREATE TRIGGER lime_questions_last_modified
 BEFORE UPDATE ON lime_questions
 FOR EACH ROW
 EXECUTE FUNCTION update_survey_last_modified_from_questions();
-SQL,
+SQL;
+    }
 
-            <<<SQL
+    private function triggerSurveys(): string
+    {
+        return <<<SQL
 CREATE OR REPLACE FUNCTION update_last_modified()
 RETURNS TRIGGER AS \$\$
 BEGIN
@@ -125,9 +152,12 @@ CREATE TRIGGER lime_surveys_last_modified
 BEFORE UPDATE ON lime_surveys
 FOR EACH ROW
 EXECUTE FUNCTION update_last_modified();
-SQL,
+SQL;
+    }
 
-            <<<SQL
+    private function triggerLanguageSettings(): string
+    {
+        return <<<SQL
 CREATE OR REPLACE FUNCTION update_survey_last_modified()
 RETURNS TRIGGER AS \$\$
 BEGIN
@@ -140,8 +170,7 @@ CREATE TRIGGER lime_surveys_languagesettings_last_modified
 BEFORE UPDATE ON lime_surveys_languagesettings
 FOR EACH ROW
 EXECUTE FUNCTION update_survey_last_modified();
-SQL,
-        ];
+SQL;
     }
 
     private function getMySqlTriggers(): array
