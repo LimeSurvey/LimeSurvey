@@ -103,7 +103,7 @@ class SurveyActivate
      * @return bool
      * @throws CException
      */
-    public function restoreData(int $surveyId, $timestamp = null, $preserveIDs = false, $archiveType): bool
+    public function restoreData(int $surveyId, $timestamp = null, $preserveIDs = false, $archiveType = 'all'): bool
     {
         require_once "application/helpers/admin/import_helper.php";
         $deactivatedArchives = getDeactivatedArchives($surveyId);
@@ -128,7 +128,6 @@ class SurveyActivate
             }
         }
         if (is_array($archives) && isset($archives['survey']) && isset($archives['questions'])) {
-
             $shouldImportResponses = $archiveType === 'all' || $archiveType === 'RP';
             if ($shouldImportResponses) {
                 //Recover survey
