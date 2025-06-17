@@ -261,7 +261,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
 
                 <?php
                 if (isset($orphantokentables)) { ?>
-                    <li><?php eT("The following old survey participants lists should be deleted because they contain no records or their parent survey no longer exists:"); ?>
+                    <li><?php eT("The following old survey participant lists should be deleted because they contain no records or their parent survey no longer exists:"); ?>
                         <ul class="list-unstyled">
                             <?php
                             foreach ($orphantokentables as $tokentable) { ?>
@@ -271,7 +271,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     </li>
                     <?php
                 } else { ?>
-                    <li><?php eT("All old survey participants lists meet consistency standards."); ?></li><?php
+                    <li><?php eT("All old survey participant lists meet consistency standards."); ?></li><?php
                 } ?>
             </ul>
 

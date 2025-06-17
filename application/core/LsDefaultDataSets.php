@@ -1718,7 +1718,7 @@ class LsDefaultDataSets
             array(
                 'teid' => 35,
                 'ordering' => 35,
-                'title' => gT('Activate survey participants list'),
+                'title' => gT('Activate survey participant list'),
                 'content' => gT("Here you can select to start your survey in closed access mode.") . "<br/>"
                 . gT("For our simple survey it is better to start in open access mode.") . "<br/>"
                 . gT("The closed access mode needs a participant list, which you may create by clicking on the menu entry 'Participants'.") . "<br/>"
@@ -1819,8 +1819,6 @@ class LsDefaultDataSets
             ['stg_name' => 'editorPreset', 'stg_value' => 'wysiwyg'],
             ['stg_name' => 'showScriptEdit', 'stg_value' => '1'],
             ['stg_name' => 'noViewMode', 'stg_value' => '0'],
-            ['stg_name' => 'answeroptionprefix', 'stg_value' => 'AO'],
-            ['stg_name' => 'subquestionprefix', 'stg_value' => 'SQ'],
             ['stg_name' => 'lock_organizer', 'stg_value' => '0'],
             ['stg_name' => 'breadcrumbMode', 'stg_value' => 'default'],
         ];
@@ -2627,7 +2625,7 @@ class LsDefaultDataSets
                 "name" => "browserdetect",
                 "visible" => "Y",
                 "xml_path" => "themes/question/browserdetect/survey/questions/answer/shortfreetext",
-                "image_path" => "/assets/images/screenshots/S.png",
+                "image_path" => "themes/question/browserdetect/survey/questions/answer/shortfreetext/assets/browserdetect.png",
                 "title" => "Browser detection",
                 "creation_date" => "2017-07-09 00:00:00",
                 "author" => "LimeSurvey GmbH",
@@ -2651,7 +2649,7 @@ class LsDefaultDataSets
                 "name" => "image_select-listradio",
                 "visible" => "Y",
                 "xml_path" => "themes/question/image_select-listradio/survey/questions/answer/listradio",
-                "image_path" => "/assets/images/screenshots/L.png",
+                "image_path" => "themes/question/image_select-listradio/survey/questions/answer/listradio/assets/image_select_listradio.png",
                 "title" => "Image select list (Radio)",
                 "creation_date" => "1970-01-01 01:00:00",
                 "author" => "LimeSurvey GmbH",
@@ -2675,7 +2673,7 @@ class LsDefaultDataSets
                 "name" => "image_select-multiplechoice",
                 "visible" => "Y",
                 "xml_path" => "themes/question/image_select-multiplechoice/survey/questions/answer/multiplechoice",
-                "image_path" => "/assets/images/screenshots/M.png",
+                "image_path" => "themes/question/image_select-multiplechoice/survey/questions/answer/multiplechoice/assets/image_select_multiplechoice.png",
                 "title" => "Image select multiple choice",
                 "creation_date" => "1970-01-01 01:00:00",
                 "author" => "LimeSurvey GmbH",
@@ -2699,7 +2697,7 @@ class LsDefaultDataSets
                 "name" => "inputondemand",
                 "visible" => "Y",
                 "xml_path" => "themes/question/inputondemand/survey/questions/answer/multipleshorttext",
-                "image_path" => "/assets/images/screenshots/Q.png",
+                "image_path" => "themes/question/inputondemand/survey/questions/answer/multipleshorttext/assets/inputondemand.png",
                 "title" => "Input on demand",
                 "creation_date" => "2019-10-04 00:00:00",
                 "author" => "LimeSurvey GmbH",
@@ -2723,7 +2721,7 @@ class LsDefaultDataSets
                 "name" => "ranking_advanced",
                 "visible" => "Y",
                 "xml_path" => "themes/question/ranking_advanced/survey/questions/answer/ranking",
-                "image_path" => "/assets/images/screenshots/R.png",
+                "image_path" => "themes/question/ranking_advanced/survey/questions/answer/ranking/assets/advanced_ranking.png",
                 "title" => "Ranking advanced",
                 "creation_date" => "1970-01-01 01:00:00",
                 "author" => "LimeSurvey GmbH",

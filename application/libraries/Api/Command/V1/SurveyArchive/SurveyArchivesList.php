@@ -103,6 +103,7 @@ class SurveyArchivesList implements CommandInterface
     /**
      * Processes the request
      * @param \LimeSurvey\Api\Command\Request\Request $request
+     * @psalm-suppress PossiblyInvalidCast
      */
     public function run(Request $request)
     {
@@ -110,13 +111,15 @@ class SurveyArchivesList implements CommandInterface
         if (!$surveyId) {
             $surveyId = intval($_GET['id']);
         }
-        $rawBaseTable = array_key_exists('basetable', $_GET)
-        ? json_encode($_GET['basetable'])
-        : 'survey';
-        if (!in_array($rawBaseTable, ['survey', 'tokens'])) {
+        $rawBaseTable = $_GET['basetable'] ?? 'survey';
+        if (!in_array($rawBaseTable, ['survey', 'tokens', 'all'])) {
             throw new \Exception("Incorrect base table");
         }
-        $baseTable = "old_{$rawBaseTable}";
+        if ($rawBaseTable !== 'all') {
+            $baseTable = "old_{$rawBaseTable}";
+        } else {
+            $baseTable = 'all';
+        }
         if ($response = $this->ensurePermissions($surveyId)) {
             return $response;
         }
@@ -131,7 +134,24 @@ class SurveyArchivesList implements CommandInterface
             );
         }
         require_once "application/helpers/admin/import_helper.php";
-        return $this->responseFactory->makeSuccess($this->processData($survey, getTableArchivesAndTimestamps($surveyId, $baseTable)));
+        if ($baseTable !== 'all') {
+            $result = getTableArchivesAndTimestamps($surveyId, $baseTable);
+        } else {
+            $result = getTableArchivesAndTimestamps($surveyId);
+            $tokenResult = getTableArchivesAndTimestamps($surveyId, 'old_tokens');
+            foreach ($tokenResult as $item) {
+                $found = false;
+                for ($index = 0; (!$found) && ($index < count($result)); $index++) {
+                    if ($result[$index]['timestamp'] === $item['timestamp']) {
+                        $found = true;
+                    }
+                }
+                if (!$found) {
+                    $result[] = $item;
+                }
+            }
+        }
+        return $this->responseFactory->makeSuccess($this->processData($survey, $result));
     }
 
     /**

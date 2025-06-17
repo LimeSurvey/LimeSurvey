@@ -87,7 +87,7 @@ class SurveyActivate
         }
         if ($survey->access_mode !== SurveyAccessModeService::$ACCESS_TYPE_OPEN) {
             if (!$survey->hasTokensTable) {
-                $this->surveyAccessModeService->newTokenTable($survey, true);
+                $this->surveyAccessModeService->newParticipantTable($survey, true);
             }
         }
         return $result;
@@ -150,11 +150,11 @@ class SurveyActivate
                         throw $ex;
                     }
                 }
-                copyFromOneTableToTheOther($archives["tokens"], $tokenTable);
+                copyFromOneTableToTheOther($archives["tokens"], $tokenTable, $preserveIDs);
             }
             if (isset($archives["timings"])) {
                 $timingsTable = $this->app->db->tablePrefix . "survey_" . $surveyId . "_timings";
-                copyFromOneTableToTheOther($archives["timings"], $timingsTable);
+                copyFromOneTableToTheOther($archives["timings"], $timingsTable, $preserveIDs);
             }
             return true;
         } else {

@@ -331,7 +331,7 @@ abstract class Writer implements IWriter
                             break;
                     }
                 } else {
-//Survey participants list value
+//Survey participant list value
                     $elementArray[] = $value;
                 }
             }

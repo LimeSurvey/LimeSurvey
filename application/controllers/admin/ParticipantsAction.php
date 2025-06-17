@@ -443,7 +443,7 @@ class ParticipantsAction extends SurveyCommonAction
         if ($selectoption == 'po') {
             $deletedParticipants = Participant::model()->deleteParticipants($participantIds, !$deletePermission);
         } elseif ($selectoption == 'ptt') {
-            // Deletes from central and survey participants list
+            // Deletes from central and survey participant list
             $deletedParticipants = Participant::model()->deleteParticipantToken($participantIds);
         } elseif ($selectoption == 'ptta') {
             // Deletes from central , token and assosiated responses as well
@@ -2491,7 +2491,7 @@ class ParticipantsAction extends SurveyCommonAction
         $response = Participant::model()->copyToCentral((int) Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);
 
         echo "<p>";
-        printf(gT("%s participants have been copied to the central participants list"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>&nbsp;");
+        printf(gT("%s participants have been copied to the central participant list"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>&nbsp;");
         echo "</p>";
         if ($response['duplicate'] > 0) {
             echo "<p>";
@@ -2553,7 +2553,7 @@ class ParticipantsAction extends SurveyCommonAction
 
         // TODO: This code can't be reached
         echo "<p>";
-        printf(gT("%s participants have been copied to the survey survey participants list"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>");
+        printf(gT("%s participants have been copied to the survey participant list"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>");
         echo "</p>";
         if ($response['duplicate'] > 0) {
             echo "<p>";
