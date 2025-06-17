@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-06-10 07:57:35+00:00\n"
+"POT-Creation-Date: 2025-06-17 14:11:26+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2886,9 +2886,9 @@ msgstr ""
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:330
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:236
 #: application/views/themeOptions/options_core.php:5
-#: application/views/themeOptions/options_core.php:227
-#: application/views/themeOptions/options_core.php:255
-#: application/views/themeOptions/options_core.php:266
+#: application/views/themeOptions/options_core.php:237
+#: application/views/themeOptions/options_core.php:265
+#: application/views/themeOptions/options_core.php:276
 msgid "Inherit"
 msgstr ""
 
@@ -6135,7 +6135,7 @@ msgid "Something went wrong! Are the survey menus properly restored?"
 msgstr ""
 
 #: application/controllers/admin/SurveysGroupsController.php:90
-#: application/extensions/admin/BoxesWidget/BoxesWidget.php:116
+#: application/extensions/admin/BoxesWidget/BoxesWidget.php:160
 #: application/extensions/admin/SearchBoxWidget/views/searchBox.php:58
 #: application/extensions/admin/SearchBoxWidget/views/searchBox.php:123
 #: application/views/surveyAdministration/partial/topbarBtns/leftSideButtons.php:9
@@ -8362,7 +8362,7 @@ msgid "Brandlogo file"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2776
-#: application/views/themeOptions/options_core.php:308
+#: application/views/themeOptions/options_core.php:318
 msgid "Preview image"
 msgstr ""
 
@@ -9824,7 +9824,7 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: application/extensions/admin/BoxesWidget/BoxesWidget.php:105
+#: application/extensions/admin/BoxesWidget/BoxesWidget.php:143
 #: application/extensions/admin/SearchBoxWidget/views/searchBox.php:50
 #: application/extensions/admin/SearchBoxWidget/views/searchBox.php:115
 #: application/views/dashboard/welcome.php:20
@@ -9854,7 +9854,7 @@ msgstr ""
 msgid "Edit survey"
 msgstr ""
 
-#: application/extensions/admin/BoxesWidget/views/box.php:121
+#: application/extensions/admin/BoxesWidget/views/box.php:124
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:29
 #: application/views/responses/browsetimerow_view.php:22
 msgid "No surveys found."
@@ -17111,7 +17111,7 @@ msgstr ""
 msgid "Edit this survey participant"
 msgstr ""
 
-#: application/models/SurveyLanguageSetting.php:334
+#: application/models/SurveyLanguageSetting.php:337
 msgid "Alias must be unique"
 msgstr ""
 
@@ -20887,7 +20887,7 @@ msgstr ""
 #: application/views/admin/token/csvupload.php:137
 #: application/views/admin/token/ldapform.php:83
 #: application/views/themeOptions/advanced.php:25
-#: application/views/themeOptions/options_core.php:330
+#: application/views/themeOptions/options_core.php:340
 #: tmp/runtime/twig_cache/36/3617f66c5bc7f6201de45ef509259593.php:165
 msgid "Upload"
 msgstr ""
@@ -26453,7 +26453,7 @@ msgid "Don't touch the values below unless you know what you're doing."
 msgstr ""
 
 #: application/views/themeOptions/advanced.php:17
-#: application/views/themeOptions/options_core.php:322
+#: application/views/themeOptions/options_core.php:332
 msgid "Upload an image (maximum size: %d MB):"
 msgstr ""
 
@@ -26584,12 +26584,12 @@ msgid "Visible inside the Question Selector"
 msgstr ""
 
 #: application/views/themeOptions/options_core.php:5
-#: application/views/themeOptions/options_core.php:227
-#: application/views/themeOptions/options_core.php:255
-#: application/views/themeOptions/options_core.php:266
-#: application/views/themeOptions/options_core.php:282
-#: application/views/themeOptions/options_core.php:290
-#: application/views/themeOptions/options_core.php:298
+#: application/views/themeOptions/options_core.php:237
+#: application/views/themeOptions/options_core.php:265
+#: application/views/themeOptions/options_core.php:276
+#: application/views/themeOptions/options_core.php:292
+#: application/views/themeOptions/options_core.php:300
+#: application/views/themeOptions/options_core.php:308
 msgid "inherited value:"
 msgstr ""
 
