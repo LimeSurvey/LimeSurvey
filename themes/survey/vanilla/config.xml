@@ -73,7 +73,7 @@
         <brandlogofile type="dropdown" category="Images" width="6" title="Logo file" parent="brandlogo">./files/logo.png</brandlogofile>
         <!-- fonts -->
         <!--  When adding new items, please keep fonts ordered alphabetically -->
-        <font type="dropdown" category="Fonts" width="12" title="Fonts" parent="font">noto
+        <font type="dropdown" category="Fonts" width="12" title="Fonts">noto
             <dropdownoptions>
             <optgroup  label="User browser">
                 <option class="font-arial           " value="arial"           data-font-package="websafe" >Arial</option>
