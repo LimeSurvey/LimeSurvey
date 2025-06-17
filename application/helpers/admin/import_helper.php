@@ -1907,10 +1907,11 @@ function getDeactivatedArchives($sid)
  *
  * @param string $source
  * @param string $destination
+ * @param bool $preserveIDs
  * @return integer number of rows affected by the execution.
  * @throws CDbException execution failed
  */
-function copyFromOneTableToTheOther($source, $destination)
+function copyFromOneTableToTheOther($source, $destination, $preserveIDs = false)
 {
     $customFilter = [
         'mysql' => 'a.TABLE_SCHEMA = b.TABLE_SCHEMA and a.TABLE_SCHEMA = DATABASE()',
@@ -1928,8 +1929,10 @@ function copyFromOneTableToTheOther($source, $destination)
            a.TABLE_NAME = '" . $destination . "' and
            b.TABLE_NAME = '" . $source . "' and
            a.COLUMN_NAME = b.COLUMN_NAME
-        where a.COLUMN_NAME not in ('id', 'tid')
     ";
+    if (!$preserveIDs) {
+        $command .= " where a.COLUMN_NAME not in ('id', 'tid')";
+    }
     $rawResults = Yii::app()->db->createCommand($command)->queryAll();
     $columns = [];
     foreach ($rawResults as $rawResult) {
