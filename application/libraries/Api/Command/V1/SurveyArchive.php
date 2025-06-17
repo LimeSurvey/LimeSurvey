@@ -100,10 +100,14 @@ class SurveyArchive implements CommandInterface
             $surveyId = intval($_GET['id']);
         }
         $rawBaseTable = $_GET['basetable'] ?? 'survey';
-        if (!in_array($rawBaseTable, ['survey', 'tokens'])) {
+        if (!in_array($rawBaseTable, ['survey', 'tokens', 'all'])) {
             throw new \Exception("Incorrect base table");
         }
-        $baseTable = "old_{$rawBaseTable}";
+        if ($rawBaseTable !== 'all') {
+            $baseTable = "old_{$rawBaseTable}";
+        } else {
+            $baseTable = 'all';
+        }
         if ($response = $this->ensurePermissions($surveyId)) {
             return $response;
         }
@@ -118,7 +122,24 @@ class SurveyArchive implements CommandInterface
             );
         }
         require_once "application/helpers/admin/import_helper.php";
-        return $this->responseFactory->makeSuccess($this->processData($survey, getTableArchivesAndTimestamps($surveyId, $baseTable)));
+        if ($baseTable !== 'all') {
+            $result = getTableArchivesAndTimestamps($surveyId, $baseTable);
+        } else {
+            $result = getTableArchivesAndTimestamps($surveyId);
+            $tokenResult = getTableArchivesAndTimestamps($surveyId, 'old_tokens');
+            foreach ($tokenResult as $item) {
+                $found = false;
+                for ($index = 0; (!$found) && ($index < count($result)); $index++) {
+                    if ($result[$index]['timestamp'] === $item['timestamp']) {
+                        $found = true;
+                    }
+                }
+                if (!$found) {
+                    $result[] = $item;
+                }
+            }
+        }
+        return $this->responseFactory->makeSuccess($this->processData($survey, $result));
     }
 
     /**
