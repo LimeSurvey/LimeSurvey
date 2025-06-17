@@ -209,8 +209,6 @@ class SurveyArchiveService
 
         $criteria = new \LSDbCriteria();
         $sort     = new \CSort();
-
-
         $filters = $searchParams['filters'] ?? [];
         $sortBy = $searchParams['sort'] ?? null;
         $page = (int)($searchParams['page'] ?? 1);
@@ -233,7 +231,6 @@ class SurveyArchiveService
                 'currentPage' => max(0, $page - 1),
             ],
         ]);
-
         $data = $dataProvider->getData();
         $pagination = $dataProvider->getPagination();
 
