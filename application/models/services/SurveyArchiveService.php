@@ -44,13 +44,24 @@ class SurveyArchiveService
      */
     public function getArchiveAlias(int $iSurveyID, int $iTimestamp): string
     {
-        $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp);
-        if (!$archive) {
+        $responseArchive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp);
+        $tokenArchive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp, 'token');
+        if($iTimestamp === 20250616075405) {
+            $test = "test";
+        }
+        if (!$responseArchive && !$tokenArchive) {
             return 'Unknown archive';
         }
 
-        $alias = $archive->archive_alias;
-        return $alias;
+        $responseAlias = $responseArchive->archive_alias ?? null;
+        $tokenAlias = $tokenArchive->archive_alias ?? null;
+        foreach ([$responseAlias, $tokenAlias] as $alias) {
+            if (!is_null($alias) && $alias !== '') {
+                return $alias;
+            }
+        }
+
+        return '';
     }
 
     /**
@@ -68,14 +79,22 @@ class SurveyArchiveService
             throw new PermissionDeniedException('Access denied');
         }
 
-        $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp);
+        $responseArchive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp);
+        $tokenArchive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp, 'token');
 
-        if ($archive) {
-            $archive->archive_alias = $newAlias;
-            return $archive->save();
+        $success = false;
+
+        if ($responseArchive) {
+            $responseArchive->archive_alias = $sanitizedAlias;
+            $success = $responseArchive->save();
         }
 
-        return false;
+        if ($tokenArchive) {
+            $tokenArchive->archive_alias = $sanitizedAlias;
+            $success = $tokenArchive->save() || $success;
+        }
+
+        return $success;
     }
 
     /**

@@ -53,7 +53,7 @@ class SurveyArchiveDelete implements CommandInterface
             return $response;
         }
 
-        $archiveTypes = $request->getData('archiveTypes', []);
+        $archiveTypes = $request->getData('archiveTypes') ?? [];
 
         try {
             $this->surveyArchiveService->deleteArchiveData($surveyId, $timestamp, $archiveTypes);
