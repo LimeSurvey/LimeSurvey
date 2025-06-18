@@ -1536,7 +1536,10 @@ function quexml_set_default_value(&$element, $iResponseID, $qid, $iSurveyID, $fi
             // prepare and decrypt data
             $oResponse = Response::model($iSurveyID)->findByPk($iResponseID);
             $oResponse->decrypt();
-            $value = $oResponse->$colname;
+	    $value = $oResponse->$colname;
+	    if ($value === null) {
+		    $value = "";
+	    }
             $element->setAttribute("defaultValue", $value);
         }
     }
@@ -1778,7 +1781,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
 
         foreach ($Rows as $RowQ) {
             // placeholder substitution
-            $RowQ['question'] = templatereplace($RowQ['question'], $RowQReplacements);
+            $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'],$RowQReplacements,3,true);
             $sectionInfo = $dom->createElement("sectionInfo");
             $position = $dom->createElement("position", "before");
             $text = $dom->createElement("text", QueXMLCleanup($RowQ['question']));
@@ -1802,13 +1805,12 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
             $type = $RowQ['type'];
             $qid = $RowQ['qid'];
 
-            // placeholder substitution
-            $RowQ['question'] = templatereplace($RowQ['question'], $RowQReplacements);
+	    // placeholder substitution
+            $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'],$RowQReplacements,3,true);
             $other = false;
             if ($RowQ['other'] == 'Y') {
                 $other = true;
             }
-
             $sgq = $RowQ['title'];
 
             //if this is a multi-flexi style question, create multiple questions
@@ -2018,7 +2020,6 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
 
         $questionnaire->appendChild($section);
     }
-
 
     $dom->appendChild($questionnaire);
 
