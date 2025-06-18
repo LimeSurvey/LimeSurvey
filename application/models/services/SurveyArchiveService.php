@@ -46,9 +46,7 @@ class SurveyArchiveService
     {
         $responseArchive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp);
         $tokenArchive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp, 'token');
-        if($iTimestamp === 20250616075405) {
-            $test = "test";
-        }
+
         if (!$responseArchive && !$tokenArchive) {
             return 'Unknown archive';
         }
@@ -82,6 +80,7 @@ class SurveyArchiveService
         $responseArchive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp);
         $tokenArchive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp, 'token');
 
+        $sanitizedAlias = sanitize_ldap_string($newAlias);
         $success = false;
 
         if ($responseArchive) {
