@@ -178,9 +178,8 @@ class SurveyArchiveService
             }
 
             $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp, $sTableType);
-            $archiveTableName = $archive->tbl_name;
-
             if ($archive) {
+                $archiveTableName = $archive->tbl_name;
                 $this->app->db->createCommand()->dropTable("{{" . $archiveTableName . "}}");
                 $archive->delete();
             }

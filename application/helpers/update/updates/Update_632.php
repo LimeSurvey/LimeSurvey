@@ -6,6 +6,7 @@ class Update_632 extends DatabaseUpdateBase
 {
     public function up()
     {
+        addColumn('{{archived_table_settings}}', 'archive_alias', "string(255) DEFAULT ''");
         $columnNames = \Yii::app()->db->schema->getTable('{{surveys}}')->columnNames;
         if (!in_array('access_mode', $columnNames)) {
             addColumn('{{surveys}}', 'access_mode', "string(1) DEFAULT 'O'");

@@ -6,7 +6,6 @@ class Update_631 extends DatabaseUpdateBase
 {
     public function up()
     {
-        addColumn('{{archived_table_settings}}', 'archive_alias', "string(255) DEFAULT ''");
         addColumn('{{surveys}}', 'othersettings', 'mediumtext');
         addColumn('{{surveys_groupsettings}}', 'othersettings', 'mediumtext');
 
