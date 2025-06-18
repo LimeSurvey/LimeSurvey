@@ -307,9 +307,9 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                     </div>
 
                     <label class="col-md-3 form-label" for='massedit_validfrom'><?php eT("Valid from"); ?>:</label>
-                    <div class="col-md-8 has-feedback">
+                    <div class="col-md-8 has-feedback date-picker-container">
                         <div id="massedit_validfrom_datetimepicker" class="input-group date">
-                            <input class="YesNoDatePicker form-control action_datepickerUpdateHiddenField" id="massedit_validfrom" type="text" value="lskeep" name="validfrom_date" data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm" data-locale="<?php echo $locale ?>" disabled>
+                            <input class="DatePicker form-control action_datepickerUpdateHiddenField" id="massedit_validfrom" type="text" value="" name="validfrom_date" data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm" data-locale="<?php echo $locale ?>" disabled>
                             <span class="input-group-text"><span class="ri-calendar-2-fill"></span></span>
                         </div>
                         <input id="sbmtvalid" type="hidden" name="validfrom" value="lskeep" class="custom-data selector_submitField" />
@@ -324,9 +324,9 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                         </label>
                     </div>
                     <label class="col-md-3 form-label" for='massedit_validuntil'><?php eT('Until:'); ?></label>
-                    <div class="col-md-8 has-feedback">
+                    <div class="col-md-8 has-feedback date-picker-container">
                         <div id="massedit_validuntil_datetimepicker" class="input-group date">
-                            <input class="YesNoDatePicker form-control action_datepickerUpdateHiddenField" id="massedit_validuntil" type="text" value="lskeep" name="validuntil_date" data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm" data-locale="<?php echo $locale ?>" disabled>
+                            <input class="DatePicker form-control action_datepickerUpdateHiddenField" id="massedit_validuntil" type="text" value="lskeep" name="validuntil_date" data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm" data-locale="<?php echo $locale ?>" disabled>
                             <span class="input-group-text"><span class="ri-calendar-2-fill"></span></span>
                         </div>
                         <input id="sbmtvalid" type="hidden" name="validuntil" value="lskeep" class="custom-data selector_submitField" />
