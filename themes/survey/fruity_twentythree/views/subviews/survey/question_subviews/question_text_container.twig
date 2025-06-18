@@ -20,6 +20,6 @@
 #}
 
 <!-- Question text -->
-<div class="{{ aSurveyInfo.class.questiontitlecontainer }}  col-12 " {{ aSurveyInfo.attr.questiontitlecontainer }} >
+<div id="question-text-container-{{ aQuestion.SGQ }}" class="{{ aSurveyInfo.class.questiontitlecontainer }}  col-12 " {{ aSurveyInfo.attr.questiontitlecontainer }} >
     {{ include('./subviews/survey/question_subviews/question_text_content.twig') }}
 </div>
