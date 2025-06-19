@@ -151,7 +151,6 @@ class SurveyArchiveService
     public function deleteArchiveData(int $iSurveyID, int $iTimestamp, array $ArchivesToDelete = []): void
     {
         $requiredPermissions = [];
-
         if (empty($ArchivesToDelete)) {
             $ArchivesToDelete = [
                 self::$Response_archive,
@@ -159,7 +158,6 @@ class SurveyArchiveService
                 self::$Timings_archive,
             ];
         }
-
         foreach ($ArchivesToDelete as $archiveType) {
             switch ($archiveType) {
                 case self::$Response_archive:
@@ -173,13 +171,11 @@ class SurveyArchiveService
                     break;
             }
         }
-
         foreach ($requiredPermissions as $permName => $permType) {
             if (!$this->permission->hasSurveyPermission($iSurveyID, $permName, $permType)) {
                 throw new PermissionDeniedException('Permission denied for deleting archive data');
             }
         }
-
         foreach ($ArchivesToDelete as $archiveType) {
             switch ($archiveType) {
                 case self::$Response_archive:
@@ -194,11 +190,14 @@ class SurveyArchiveService
                 default:
                     continue 2;
             }
-
             $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp, $sTableType);
             if ($archive) {
                 $archiveTableName = $archive->tbl_name;
                 $this->app->db->createCommand()->dropTable("{{" . $archiveTableName . "}}");
+                if ($archiveType === self::$Response_archive) { // delete question types table when deleting responses
+                    $questionTypesTableName = str_replace('survey', 'questions',$archiveTableName);
+                    $this->app->db->createCommand()->dropTable("{{" . $questionTypesTableName . "}}");
+                }
                 $archive->delete();
             }
         }
