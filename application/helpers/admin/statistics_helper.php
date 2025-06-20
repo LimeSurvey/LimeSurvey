@@ -4225,7 +4225,7 @@ class statistics_helper
             }
             // Avoid bad sortmethod parameter (mantis #20145)
             $sortmethod = strtoupper($sortmethod);
-            if (!in_array($sortmethod, ['ASC', 'DESC'])) {
+            if ($sortmethod && !in_array($sortmethod, ['ASC', 'DESC'])) {
                 $sortmethod = "";
             }
             $search['order'] = $sortby . ' ' . $sortmethod;
