@@ -356,9 +356,9 @@ class SurveyArchiveService
                     'questionCode' => $fieldMeta['title'] ?? '',
                 ];
             }
-
-            $response['fieldDetails'] = $fieldDetails;
-            $dataWithTitles[] = $response;
+            $responseAttributes = $response->attributes;
+            $responseAttributes['fieldDetails'] = $fieldDetails;
+            $dataWithTitles[] = $responseAttributes;
         }
 
         $archivedResponsesData['data'] = $dataWithTitles;
