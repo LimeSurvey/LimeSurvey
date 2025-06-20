@@ -26,6 +26,8 @@ class SchemaFactorySurveyArchive
                 Schema::integer('count')->default(0),
                 Schema::integer('newformat'),
                 Schema::array('types'),
+                Schema::boolean('hastokens'),
+                Schema::string('alias'),
                 $schemaSurveyDefaultLanguage,
                 ...$properties
             );

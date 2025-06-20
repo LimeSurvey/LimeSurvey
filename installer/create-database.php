@@ -678,6 +678,7 @@ function populateDatabase($oDB)
             'googleanalyticsstyle' => "string(1) NULL",
             'googleanalyticsapikey' => "string(25) NULL",
             'tokenencryptionoptions' => "text NULL",
+            'access_mode' => "string(1) DEFAULT 'O'",
             'othersettings' => 'mediumtext'
         ), $options);
 
@@ -1151,6 +1152,7 @@ function populateDatabase($oDB)
             'created' => "datetime NOT NULL",
             'properties' => "text NOT NULL",
             'attributes' => "text NULL",
+            'archive_alias' => "string(255) DEFAULT ''"
         ], $options);
 
         // language tables: sourcemessage + message and constraint

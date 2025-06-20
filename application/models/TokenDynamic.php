@@ -64,7 +64,7 @@ class TokenDynamic extends LSActiveRecord
         }
 
         /** @var self $model */
-        $model = parent::model(__CLASS__);
+        $model = parent::model(get_called_class());
 
         //We need to refresh if we changed sid
         if ($refresh === true) {
@@ -123,7 +123,7 @@ class TokenDynamic extends LSActiveRecord
      * (some older tokens tables dont' get udated properly)
      *
      * This method should be moved to db update for 2.05 version so it runs only
-     * once per survey participants table / backup survey participants table
+     * once per survey participant list / backup survey participant list
      */
     public function checkColumns()
     {
