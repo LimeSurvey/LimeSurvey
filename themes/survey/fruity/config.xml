@@ -664,7 +664,7 @@
         <radioanimationduration type="duration" category="Animations" width="2" title="Duration" parent="animateradio">500</radioanimationduration>
         <!-- fonts -->
         <!--  When adding new items, please keep them ordered alphabetically -->
-         <font type="dropdown" category="Fonts" width="12" title="Fonts" parent="font">noto
+         <font type="dropdown" category="Fonts" width="12" title="Fonts">noto
             <dropdownoptions>
                 <optgroup  label="User browser">
                 <option class="font-arial           " value="arial"           data-font-package="websafe" >Arial</option>
@@ -681,7 +681,7 @@
             </optgroup>
             </dropdownoptions>
         </font>
-        <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">Sea Green
+        <cssframework type="dropdown" category="Simple options" width="12" title="Variations">Sea Green
             <dropdownoptions>
                 <optgroup>
                     <option value="css/variations/sea_green.css">Sea Green</option>

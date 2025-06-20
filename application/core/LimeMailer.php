@@ -1004,17 +1004,16 @@ class LimeMailer extends PHPMailer
     }
 
     /**
-    * Validate an list of email addresses - either as array or as semicolon-limited text
-    * @return string List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
-    * @param string $aEmailAddressList  Email address to check
-    * @param string|callable $patternselect Which pattern to use (default to static::$validator)
-    * @returns array
-    */
+     * Validate a list of email addresses - either as array or as comma or semicolon-limited text
+     * @param string|string[] $aEmailAddressList  Email address to check
+     * @param string|callable $patternselect Which pattern to use (default to static::$validator)
+     * @return string[]|false List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
+     */
     public static function validateAddresses($aEmailAddressList, $patternselect = null)
     {
         $aOutList = [];
         if (!is_array($aEmailAddressList)) {
-            $aEmailAddressList = explode(';', $aEmailAddressList);
+            $aEmailAddressList = preg_split("/(,|;)/", (string) $aEmailAddressList);
         }
 
         foreach ($aEmailAddressList as $sEmailAddress) {

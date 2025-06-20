@@ -113,6 +113,9 @@
                     <?= $item['text'] ?>
                 </div>
             </div>
+        <?php elseif ($item['type'] == BoxesWidget::TYPE_PLACEHOLDER) : ?>
+            <div class="box-widget-card card-link card-placeholder d-inline-block">
+            </div>
         <?php endif; ?>
     <?php endforeach; ?>
 <?php else : ?>

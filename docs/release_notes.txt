@@ -34,6 +34,95 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.14.1 (build 250527) to 6.14.2 (build 250610) June 10, 2025
+-Fixed issue: Error message 'Invalid call to a member function decryptBeforeOutput() on null' (Carsten Schmitz)
+-Fixed issue #20132: With debug=2 I am getting an error when exporting responses to SPSS (#4310) (Gabriel Jenik)
+-Fixed issue #20129: Dump when accessing 2FA Admin screen, with DEBUG enabled (#4308) (Gabriel Jenik)
+-Fixed issue #20127: Dump when browsing responses, with DEBUG enabled (#4307) (Gabriel Jenik)
+-Fixed issue #20120: Advanced ranking height and width are set to 0 wh… (#4290) (fsay.php)
+-Fixed issue #20112: Soft mandatory questions treated as mandatory whe… (#4287) (Denis Chenu)
+-Fixed issue #20107: Statistics PDF export with Pie Charts not working (#4298) (Gabriel Jenik)
+-Fixed issue #20091: Optin broken (Carsten Schmitz)
+-Fixed issue #20047: Unable to open survey on new tab in Survey listing (#4313) (Gabriel Jenik)
+-Fixed issue #20034: Exceeding the number of maximum access code validation attempts (#4301) (Gabriel Jenik)
+-Fixed issue #20020: SPSS export - multiple answers question (#4297) (Gabriel Jenik)
+#Updated translation: Swahili by FredaM
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue
+#Updated translation: Hungarian by kkd, PFerenc
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Dutch by Han, twilllig
+#Updated translation: Dutch (Informal) by Han, twilllig
+
+
+Changes from 6.14.0 (build 250520) to 6.14.1 (build 250527) May 27, 2025
+-Fixed issue: Plugin load error not sending email in console mode (Carsten Schmitz)
+-Fixed issue #20096: Confirmation email is not sent if multiple participants/email addresses are used, also applies to admin notifications (#4282) (Gabriel Jenik)
+-Fixed issue #20091: Optout/Optin broken (Carsten Schmitz)
+#Updated translation: Swahili by FredaM
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by holch, samarta, sergiobaiao, twilllig
+#Updated translation: Portuguese (Brazil) by holch, sergiobaiao, twilllig
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto, twilllig
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, twilllig
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.13.3 (build 250512) to 6.14.0 (build 250520) May 20, 2025
++New feature #20080: Send an email when plugin was deactivated (#4275) (Denis Chenu)
+-Fixed issue: box shadow wrongly displayed in navbar-toggler (Patrick Teichmann)
+-Fixed issue #41554: Internal server error (500) division by zero fix for RenderMultipleChoice (#4283) (Rami Shenouda)
+-Fixed issue #20097: SQL Error when saving failed email notification (#4281) (Gabriel Jenik)
+-Fixed issue #20091: Eternal redirections (#4277) (Denis Chenu)
+-Fixed issue #20090: Return 1st existing surey with specific link (#4276) (Denis Chenu)
+-Fixed issue #20087: Modal content not shown inside a modal but as a page itself with no style (#4270) (Gabriel Jenik)
+-Fixed issue #20086: English text string makes no sense, can't be translated (#4280) (Gabriel Jenik)
+#Updated translation: Vietnamese by twilllig
+#Updated translation: Ukrainian by twilllig
+#Updated translation: Turkish by twilllig
+#Updated translation: Thai by twilllig
+#Updated translation: Tagalog by twilllig
+#Updated translation: Swedish by twilllig
+#Updated translation: Swahili by FredaM
+#Updated translation: Spanish (Spain) by twilllig
+#Updated translation: Spanish (Mexican) by twilllig
+#Updated translation: Slovak by c_schmitz, jelen1, twilllig
+#Updated translation: Russian by twilllig
+#Updated translation: Romanian by twilllig
+#Updated translation: Portuguese (Portugal) by twilllig
+#Updated translation: Portuguese (Brazil) by c_schmitz, holch, rhnascimento, twilllig
+#Updated translation: Polish by elissa, twilllig
+#Updated translation: Norwegian (Bokmål) by twilllig
+#Updated translation: Mongolian by twilllig
+#Updated translation: Malay by twilllig
+#Updated translation: Korean by twilllig
+#Updated translation: Japanese by twilllig, d_inoue
+#Updated translation: Italian by twilllig, drsi.staff, lfanfoni, luciano.parrilla
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Indonesian by twilllig
+#Updated translation: Hungarian by twilllig
+#Updated translation: Hindi by twilllig
+#Updated translation: German by c_schmitz, twilllig
+#Updated translation: German (Informal) by c_schmitz, twilllig
+#Updated translation: French (France) by twilllig
+#Updated translation: Finnish by twilllig, Jmantysalo
+#Updated translation: Dutch by twilllig
+#Updated translation: Danish by twilllig
+#Updated translation: Czech by c_schmitz, jelen1, twilllig
+#Updated translation: Czech (Informal) by jelen1, slansky, twilllig
+#Updated translation: Croatian by twilllig
+#Updated translation: Chinese (Taiwan) (Traditional) by twilllig
+#Updated translation: Chinese (Simplified) by twilllig
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Arabic by twilllig
+
+
 Changes from 6.13.2 (build 250506) to 6.13.3 (build 250512) May 12, 2025
 -Fixed issue: If the database is using a different timezone than PHP the created/modified timestamps for certain records would differ (#4265) (Carsten Schmitz)
 -Fixed issue: Two type errors  (#4271) (Tim Willig)
