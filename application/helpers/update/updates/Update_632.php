@@ -43,16 +43,7 @@ class Update_632 extends DatabaseUpdateBase
     private function triggerAnswers($dbType): string
     {
         $prefix = App()->db->tablePrefix;
-        if ($dbType == 'mysql') {
-            return <<<SQL
-CREATE TRIGGER `answers_last_modified` BEFORE UPDATE ON {$prefix}answers
-FOR EACH ROW BEGIN
-    DECLARE survey_id INT;
-    SELECT sid INTO survey_id FROM {$prefix}questions WHERE {$prefix}questions.qid = NEW.qid;
-    UPDATE {$prefix}surveys SET lastModified = NOW() WHERE {$prefix}surveys.sid = survey_id;
-END;
-SQL;
-        } elseif ($dbType == 'mssql' || $dbType == 'sqlsrv') {
+        if ($dbType == 'mssql' || $dbType == 'sqlsrv') {
             return <<<SQL
 CREATE TRIGGER answers_last_modified
 ON [{$prefix}answers]
@@ -92,21 +83,21 @@ FOR EACH ROW
 EXECUTE FUNCTION update_survey_last_modified_from_answers();
 SQL;
         }
+
+        return <<<SQL
+CREATE TRIGGER `answers_last_modified` BEFORE UPDATE ON {$prefix}answers
+FOR EACH ROW BEGIN
+    DECLARE survey_id INT;
+    SELECT sid INTO survey_id FROM {$prefix}questions WHERE {$prefix}questions.qid = NEW.qid;
+    UPDATE {$prefix}surveys SET lastModified = NOW() WHERE {$prefix}surveys.sid = survey_id;
+END;
+SQL;
     }
 
     private function triggerGroupL10ns($dbType): string
     {
         $prefix = App()->db->tablePrefix;
-        if ($dbType == 'mysql') {
-            return <<<SQL
-CREATE TRIGGER `group_l10ns_last_modified` BEFORE UPDATE ON {$prefix}group_l10ns
-FOR EACH ROW BEGIN
-    DECLARE survey_id INT;
-    SELECT sid INTO survey_id FROM {$prefix}groups WHERE {$prefix}groups.gid = NEW.gid;
-    UPDATE {$prefix}surveys SET lastModified = NOW() WHERE {$prefix}surveys.sid = survey_id;
-END;
-SQL;
-        } elseif ($dbType == 'mssql' || $dbType == 'sqlsrv') {
+        if ($dbType == 'mssql' || $dbType == 'sqlsrv') {
             return <<<SQL
             CREATE TRIGGER group_l10ns_last_modified
 ON [{$prefix}group_l10ns]
@@ -143,19 +134,21 @@ FOR EACH ROW
 EXECUTE FUNCTION update_survey_last_modified_from_group_l10ns();
 SQL;
         }
+
+        return <<<SQL
+CREATE TRIGGER `group_l10ns_last_modified` BEFORE UPDATE ON {$prefix}group_l10ns
+FOR EACH ROW BEGIN
+    DECLARE survey_id INT;
+    SELECT sid INTO survey_id FROM {$prefix}groups WHERE {$prefix}groups.gid = NEW.gid;
+    UPDATE {$prefix}surveys SET lastModified = NOW() WHERE {$prefix}surveys.sid = survey_id;
+END;
+SQL;
     }
 
     private function triggerGroups($dbType): string
     {
         $prefix = App()->db->tablePrefix;
-        if ($dbType == 'mysql') {
-            return  <<<SQL
-CREATE TRIGGER `groups_last_modified` BEFORE UPDATE ON {$prefix}groups
-FOR EACH ROW BEGIN
-    UPDATE {$prefix}surveys SET lastModified = NOW() WHERE {$prefix}surveys.sid = NEW.sid;
-END;
-SQL;
-        } elseif ($dbType == 'mssql' || $dbType == 'sqlsrv') {
+        if ($dbType == 'mssql' || $dbType == 'sqlsrv') {
             return  <<<SQL
 CREATE TRIGGER groups_last_modified
 ON [{$prefix}groups]
@@ -186,21 +179,19 @@ FOR EACH ROW
 EXECUTE FUNCTION update_survey_last_modified_from_groups();
 SQL;
         }
+
+        return  <<<SQL
+CREATE TRIGGER `groups_last_modified` BEFORE UPDATE ON {$prefix}groups
+FOR EACH ROW BEGIN
+    UPDATE {$prefix}surveys SET lastModified = NOW() WHERE {$prefix}surveys.sid = NEW.sid;
+END;
+SQL;
     }
 
     private function triggerQuestionL10ns($dbType): string
     {
         $prefix = App()->db->tablePrefix;
-        if ($dbType == 'mysql') {
-            return  <<<SQL
-CREATE TRIGGER `question_l10ns_last_modified` BEFORE UPDATE ON {$prefix}question_l10ns
-FOR EACH ROW BEGIN
-    DECLARE survey_id INT;
-    SELECT sid INTO survey_id FROM {$prefix}questions WHERE {$prefix}questions.qid = NEW.qid;
-    UPDATE surveys SET lastModified = NOW() WHERE {$prefix}surveys.sid = survey_id;
-END;
-SQL;
-        } elseif ($dbType == 'mssql' || $dbType == 'sqlsrv') {
+        if ($dbType == 'mssql' || $dbType == 'sqlsrv') {
             return  <<<SQL
 CREATE TRIGGER question_l10ns_last_modified
 ON [{$prefix}question_l10ns]
@@ -238,19 +229,21 @@ FOR EACH ROW
 EXECUTE FUNCTION update_survey_last_modified_from_question_l10ns();
 SQL;
         }
+
+        return  <<<SQL
+CREATE TRIGGER `question_l10ns_last_modified` BEFORE UPDATE ON {$prefix}question_l10ns
+FOR EACH ROW BEGIN
+    DECLARE survey_id INT;
+    SELECT sid INTO survey_id FROM {$prefix}questions WHERE {$prefix}questions.qid = NEW.qid;
+    UPDATE surveys SET lastModified = NOW() WHERE {$prefix}surveys.sid = survey_id;
+END;
+SQL;
     }
 
     private function triggerQuestions($dbType): string
     {
         $prefix = App()->db->tablePrefix;
-        if ($dbType == 'mysql') {
-            return  <<<SQL
-CREATE TRIGGER `questions_last_modified` BEFORE UPDATE ON {$prefix}questions
-FOR EACH ROW BEGIN
-    UPDATE {$prefix}surveys SET lastModified = NOW() WHERE {$prefix}surveys.sid = NEW.sid;
-END;
-SQL;
-        } elseif ($dbType == 'mssql' || $dbType == 'sqlsrv') {
+        if ($dbType == 'mssql' || $dbType == 'sqlsrv') {
             return  <<<SQL
 CREATE TRIGGER questions_last_modified
 ON [{$prefix}questions]
@@ -282,19 +275,19 @@ FOR EACH ROW
 EXECUTE FUNCTION update_survey_last_modified_from_questions();
 SQL;
         }
+
+        return  <<<SQL
+CREATE TRIGGER `questions_last_modified` BEFORE UPDATE ON {$prefix}questions
+FOR EACH ROW BEGIN
+    UPDATE {$prefix}surveys SET lastModified = NOW() WHERE {$prefix}surveys.sid = NEW.sid;
+END;
+SQL;
     }
 
     private function triggerSurveys($dbType): string
     {
         $prefix = App()->db->tablePrefix;
-        if ($dbType == 'mysql') {
-            return  <<<SQL
-CREATE TRIGGER {$prefix}surveys_last_modified BEFORE UPDATE ON {$prefix}surveys
-FOR EACH ROW BEGIN
-    SET NEW.lastModified = NOW();
-END;
-SQL;
-        } elseif ($dbType == 'mssql' || $dbType == 'sqlsrv') {
+        if ($dbType == 'mssql' || $dbType == 'sqlsrv') {
             return  <<<SQL
 CREATE TRIGGER [{$prefix}surveys_last_modified]
 ON [{$prefix}surveys]
@@ -327,19 +320,19 @@ FOR EACH ROW
 EXECUTE FUNCTION update_last_modified();
 SQL;
         }
+
+        return  <<<SQL
+CREATE TRIGGER {$prefix}surveys_last_modified BEFORE UPDATE ON {$prefix}surveys
+FOR EACH ROW BEGIN
+    SET NEW.lastModified = NOW();
+END;
+SQL;
     }
 
     private function triggerLanguageSettings($dbType): string
     {
         $prefix = App()->db->tablePrefix;
-        if ($dbType == 'mysql') {
-            return  <<<SQL
-CREATE TRIGGER `surveys_languagesettings_last_modified` BEFORE UPDATE ON {$prefix}surveys_languagesettings
-FOR EACH ROW BEGIN
-    UPDATE {$prefix}surveys SET lastModified = NOW() WHERE {$prefix}surveys.sid = NEW.surveyls_survey_id;
-END;
-SQL;
-        } elseif ($dbType == 'mssql' || $dbType == 'sqlsrv') {
+        if ($dbType == 'mssql' || $dbType == 'sqlsrv') {
             return  <<<SQL
 CREATE TRIGGER surveys_languagesettings_last_modified
 ON [{$prefix}surveys_languagesettings]
@@ -370,5 +363,12 @@ FOR EACH ROW
 EXECUTE FUNCTION update_survey_last_modified();
 SQL;
         }
+
+        return  <<<SQL
+CREATE TRIGGER `surveys_languagesettings_last_modified` BEFORE UPDATE ON {$prefix}surveys_languagesettings
+FOR EACH ROW BEGIN
+    UPDATE {$prefix}surveys SET lastModified = NOW() WHERE {$prefix}surveys.sid = NEW.surveyls_survey_id;
+END;
+SQL;
     }
 }
