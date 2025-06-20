@@ -10,14 +10,14 @@ class Update_632 extends DatabaseUpdateBase
     public function up()
     {
         switch ($this->db->driverName) {
-            case 'mysql':
-            case 'mssql':
-            case 'sqlsrv':
-                addColumn('{{surveys}}', 'lastModified', 'datetime DEFAULT current_timestamp');
-                break;
-            case 'pgsql':
-                addColumn('{{surveys}}', 'lastModified', 'timestamp current_timestamp');
-                break;
+        case 'mysql':
+        case 'mssql':
+        case 'sqlsrv':
+            addColumn('{{surveys}}', 'lastModified', 'datetime DEFAULT current_timestamp');
+            break;
+        case 'pgsql':
+            addColumn('{{surveys}}', 'lastModified', 'timestamp current_timestamp');
+            break;
         }
 
         foreach ($this->getTriggers() as $trigger) {
@@ -54,8 +54,7 @@ FOR EACH ROW BEGIN
 END;
 SQL;
         }
-        elseif ($dbType == 'mssql' || $dbType =='sqlsrv')
-        {
+        elseif ($dbType == 'mssql' || $dbType =='sqlsrv') {
             return <<<SQL
 CREATE TRIGGER answers_last_modified
 ON [{$prefix}answers]
@@ -75,8 +74,7 @@ BEGIN
 END;
 SQL;
         }
-        elseif ($dbType == 'pgsql')
-        {
+        elseif ($dbType == 'pgsql') {
             return <<<SQL
 CREATE OR REPLACE FUNCTION update_survey_last_modified_from_answers()
 RETURNS TRIGGER AS \$\$
@@ -112,8 +110,7 @@ FOR EACH ROW BEGIN
 END;
 SQL;
         }
-        elseif ($dbType == 'mssql' || $dbType =='sqlsrv')
-        {
+        elseif ($dbType == 'mssql' || $dbType =='sqlsrv') {
             return <<<SQL
             CREATE TRIGGER group_l10ns_last_modified
 ON [{$prefix}group_l10ns]
@@ -130,8 +127,7 @@ BEGIN
 END;
 SQL;
         }
-        elseif ($dbType == 'pgsql')
-        {
+        elseif ($dbType == 'pgsql') {
             return  <<<SQL
 CREATE OR REPLACE FUNCTION update_survey_last_modified_from_group_l10ns()
 RETURNS TRIGGER AS \$\$
@@ -165,8 +161,7 @@ FOR EACH ROW BEGIN
 END;
 SQL;
         }
-        elseif ($dbType == 'mssql' || $dbType =='sqlsrv')
-        {
+        elseif ($dbType == 'mssql' || $dbType =='sqlsrv') {
             return  <<<SQL
 CREATE TRIGGER groups_last_modified
 ON [{$prefix}groups]
@@ -182,8 +177,7 @@ BEGIN
 END;
 SQL;
         }
-        elseif ($dbType == 'pgsql')
-        {
+        elseif ($dbType == 'pgsql') {
             return  <<<SQL
 CREATE OR REPLACE FUNCTION update_survey_last_modified_from_groups()
 RETURNS TRIGGER AS \$\$
@@ -214,8 +208,7 @@ FOR EACH ROW BEGIN
 END;
 SQL;
         }
-        elseif ($dbType == 'mssql' || $dbType =='sqlsrv')
-        {
+        elseif ($dbType == 'mssql' || $dbType =='sqlsrv') {
             return  <<<SQL
 CREATE TRIGGER question_l10ns_last_modified
 ON [{$prefix}question_l10ns]
@@ -234,8 +227,7 @@ END;
 SQL;
 
         }
-        elseif ($dbType == 'pgsql')
-        {
+        elseif ($dbType == 'pgsql') {
             return  <<<SQL
 CREATE OR REPLACE FUNCTION update_survey_last_modified_from_question_l10ns()
 RETURNS TRIGGER AS \$\$
@@ -269,8 +261,7 @@ FOR EACH ROW BEGIN
 END;
 SQL;
         }
-        elseif ($dbType == 'mssql' || $dbType =='sqlsrv')
-        {
+        elseif ($dbType == 'mssql' || $dbType =='sqlsrv') {
             return  <<<SQL
 CREATE TRIGGER questions_last_modified
 ON [{$prefix}questions]
@@ -287,8 +278,7 @@ END;
 
 SQL;
         }
-        elseif ($dbType == 'pgsql')
-        {
+        elseif ($dbType == 'pgsql') {
             return  <<<SQL
 CREATE OR REPLACE FUNCTION update_survey_last_modified_from_questions()
 RETURNS TRIGGER AS \$\$
@@ -317,8 +307,7 @@ FOR EACH ROW BEGIN
 END;
 SQL;
         }
-        elseif ($dbType == 'mssql' || $dbType =='sqlsrv')
-        {
+        elseif ($dbType == 'mssql' || $dbType =='sqlsrv') {
             return  <<<SQL
 CREATE TRIGGER [{$prefix}surveys_last_modified]
 ON [{$prefix}surveys]
@@ -336,8 +325,7 @@ END;
 
 SQL;
         }
-        elseif ($dbType == 'pgsql')
-        {
+        elseif ($dbType == 'pgsql') {
             return  <<<SQL
 CREATE OR REPLACE FUNCTION update_last_modified()
 RETURNS TRIGGER AS \$\$
@@ -366,8 +354,7 @@ FOR EACH ROW BEGIN
 END;
 SQL;
         }
-        elseif ($dbType == 'mssql' || $dbType =='sqlsrv')
-        {
+        elseif ($dbType == 'mssql' || $dbType =='sqlsrv') {
             return  <<<SQL
 CREATE TRIGGER surveys_languagesettings_last_modified
 ON [{$prefix}surveys_languagesettings]
@@ -383,8 +370,7 @@ BEGIN
 END;
 SQL;
         }
-        elseif ($dbType == 'pgsql')
-        {
+        elseif ($dbType == 'pgsql') {
             return  <<<SQL
 CREATE OR REPLACE FUNCTION update_survey_last_modified()
 RETURNS TRIGGER AS \$\$
