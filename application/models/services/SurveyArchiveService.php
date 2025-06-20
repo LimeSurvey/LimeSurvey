@@ -250,19 +250,16 @@ class SurveyArchiveService
         $data = $dataProvider->getData();
         $pagination = $dataProvider->getPagination();
 
+        $dataArray = [];
         foreach ($data as $record) {
-            if (isset($record->token)) {
-                $token = $record->token;
-                try {
-                    $record->token = $model->decryptSingle($token);
-                } catch (\Exception $e) {
-                    // do nothing, just skip this record
-                }
+            if (method_exists($modelClass, 'decrypt')) {
+                $record->decrypt();
             }
+            $dataArray[] = $record->attributes;
         }
 
         return [
-            'data' => $data,
+            'data' => $dataArray,
             'meta' => [
                 'currentPage' => $pagination->getCurrentPage() + 1,
                 'pageSize' => $pagination->getPageSize(),
@@ -302,11 +299,10 @@ class SurveyArchiveService
         }
 
         $dataWithTimings = [];
-        foreach ($archivedResponsesData['data'] as $responseModel) {
-            $responseId = $responseModel->id;
-            $responseAttributes = $responseModel->attributes;
-            $responseAttributes['timings'] = $timings[$responseId] ?? null;
-            $dataWithTimings[] = $responseAttributes;
+        foreach ($archivedResponsesData['data'] as $response) {
+            $responseId = $response['id'];
+            $response['timings'] = $timings[$responseId] ?? null;
+            $dataWithTimings[] = $response;
         }
 
         $archivedResponsesData['data'] = $dataWithTimings;
@@ -356,9 +352,8 @@ class SurveyArchiveService
                     'questionCode' => $fieldMeta['title'] ?? '',
                 ];
             }
-            $responseAttributes = $response->attributes;
-            $responseAttributes['fieldDetails'] = $fieldDetails;
-            $dataWithTitles[] = $responseAttributes;
+            $response['fieldDetails'] = $fieldDetails;
+            $dataWithTitles[] = $response;
         }
 
         $archivedResponsesData['data'] = $dataWithTitles;
