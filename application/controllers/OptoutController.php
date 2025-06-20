@@ -37,7 +37,7 @@ class OptoutController extends LSYii_Controller
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
 
-        if (!$iSurveyID || intval($iSurveyID) !== $iSurveyID || !$sToken) {
+        if (!filter_var($iSurveyID, FILTER_VALIDATE_INT) || !$sToken) {
             throw new CHttpException(400, gT('Invalid request.'));
         }
 

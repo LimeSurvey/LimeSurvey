@@ -425,7 +425,7 @@ function submittokens($quotaexit = false)
     if ($quotaexit == false) {
         $token->decrypt();
         if ($token && trim(strip_tags((string) $thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y") {
-            $sToAddress = validateEmailAddresses($token->email);
+            $sToAddress = LimeMailer::validateAddresses($token->email);
             if ($sToAddress) {
                 /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
                 $reData = array('thissurvey' => $thissurvey);
@@ -494,23 +494,13 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
 
     // create array of recipients for emailnotifications
     if (!empty($thissurvey['emailnotificationto']) && empty($emails)) {
-        $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailnotificationto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true));
-        foreach ($aRecipient as $sRecipient) {
-            $sRecipient = trim($sRecipient);
-            if ($mailer::validateAddress($sRecipient)) {
-                $aEmailNotificationTo[] = $sRecipient;
-            }
-        }
+        $recipients = LimeExpressionManager::ProcessStepString($thissurvey['emailnotificationto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true);
+        $aEmailNotificationTo = array_merge($aEmailNotificationTo, LimeMailer::validateAddresses($recipients));
     }
     // // create array of recipients for emailresponses
     if (!empty($thissurvey['emailresponseto']) && empty($emails)) {
-        $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailresponseto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true));
-        foreach ($aRecipient as $sRecipient) {
-            $sRecipient = trim($sRecipient);
-            if ($mailer::validateAddress($sRecipient)) {
-                $aEmailResponseTo[] = $sRecipient;
-            }
-        }
+        $recipients = LimeExpressionManager::ProcessStepString($thissurvey['emailresponseto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true);
+        $aEmailResponseTo = array_merge($aEmailResponseTo, LimeMailer::validateAddresses($recipients));
     }
 
     if (count($aEmailNotificationTo) || count($aEmailResponseTo)) {
@@ -1887,7 +1877,7 @@ function display_first_page($thissurvey, $aSurveyInfo)
     $thissurvey                 = $aSurveyInfo;
     $thissurvey['aNavigator']   = getNavigatorDatas();
     LimeExpressionManager::StartProcessingPage();
-    LimeExpressionManager::StartProcessingGroup(-1, false, $surveyid, true); // start on welcome page
+    LimeExpressionManager::StartProcessingGroup(-1, false, $surveyid); // start on welcome page
 
     // WHY HERE ?????
     $_SESSION['survey_' . $surveyid]['LEMpostKey'] = mt_rand();

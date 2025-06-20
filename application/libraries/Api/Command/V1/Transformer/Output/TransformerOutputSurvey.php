@@ -166,7 +166,8 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             ],
             'template' => true,
             'format' => true,
-            'access_mode' => 'access_mode'
+            'access_mode' => 'access_mode',
+            'othersettings' => true,
         ]);
     }
 
@@ -188,6 +189,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
         $survey['showQNumCode'] = $this->convertShowQNumCode(
             $data['showqnumcode']
         );
+        $survey = $this->addOtherSettings($survey);
         return $this->transformUseCaptcha($survey);
     }
 
@@ -240,6 +242,36 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
         $survey['useCaptchaAccess'] = ($threeValues['surveyAccess'] == 'Y');
         $survey['useCaptchaRegistration'] = ($threeValues['registration'] == 'Y');
         $survey['useCaptchaSaveLoad'] = ($threeValues['saveAndLoad'] == 'Y');
+
+        return $survey;
+    }
+
+    /**
+     * Extracts code prefix settings from the othersettings JSON field and adds them to the survey array.
+     *
+     * This function parses the othersettings JSON string from the survey array and extracts
+     * specific prefix settings for questions, subquestions, and answers. These settings are then
+     * added as separate keys to the survey array for easier access.
+     *
+     * @param array $survey The survey array containing the othersettings JSON string
+     * @return array The modified survey array with extracted prefix settings
+     */
+    private function addOtherSettings($survey)
+    {
+        $otherSettingsObj = json_decode($survey['othersettings'] ?? '');
+        $prefixProps = [
+            'question_code_prefix',
+            'subquestion_code_prefix',
+            'answer_code_prefix'
+        ];
+        if (is_object($otherSettingsObj)) {
+            foreach ($prefixProps as $prop) {
+                $survey[$prop] = property_exists(
+                    $otherSettingsObj,
+                    $prop
+                ) ? $otherSettingsObj->$prop : '';
+            }
+        }
 
         return $survey;
     }

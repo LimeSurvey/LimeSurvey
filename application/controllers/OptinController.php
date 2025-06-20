@@ -39,7 +39,7 @@ class OptinController extends LSYii_Controller
         $languageCode = Yii::app()->request->getQuery('langcode');
         $accessToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
 
-        if (!$surveyId || intval($surveyId) !== $surveyId || !$accessToken) {
+        if (!filter_var($surveyId, FILTER_VALIDATE_INT) || !$accessToken) {
             throw new CHttpException(400, gT('Invalid request.'));
         }
 
