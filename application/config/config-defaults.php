@@ -862,5 +862,10 @@ $config['reverseProxyIpAddresses'] = [];
 // Works together with "reverseProxyIpAddresses" setting.
 $config['reverseProxyIpHeader'] = 'HTTP_X_FORWARDED_FOR';
 
+// Allow unserialize token attribute when import or read survey object
+// Since LimeSurvey 3 : token attributes data are saved as JSON, if you use older survey file and need get token attibutes, you muts allow this settigs
+// Warning : Unserialization can result in code being loaded and executed due to object instantiation and autoloading, and a malicious user may be able to exploit this. 
+$config['allow_unserialize_attributedescriptions'] = false;
+
 return $config;
 //settings deleted
