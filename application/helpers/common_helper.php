@@ -4838,7 +4838,7 @@ function decodeTokenAttributes(string $tokenAttributeData)
         if (!App()->getConfig('allow_unserialize_attributedescriptions')) {
             return array();
         }
-        // minimal broken securisation, mantis issue #
+        // minimal broken securisation, mantis issue #20144
         $sSerialType = getSerialClass($tokenAttributeData);
         if ($sSerialType == 'array') {
             $aReturnData = unserialize($tokenAttributeData, ["allowed_classes" => false]) ?? [];
