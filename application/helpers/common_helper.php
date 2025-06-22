@@ -4835,7 +4835,7 @@ function decodeTokenAttributes(string $tokenAttributeData)
         return array();
     }
     if (substr($tokenAttributeData, 0, 1) != '{' && substr($tokenAttributeData, 0, 1) != '[') {
-        if (App()->getConfig('allow_unserialize_attributedescriptions')) {
+        if (!App()->getConfig('allow_unserialize_attributedescriptions')) {
             return array();
         }
         // minimal broken securisation, mantis issue #
