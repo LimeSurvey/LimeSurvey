@@ -46,6 +46,11 @@ class SideMenuActiveItemMapper extends WhSelect2
                     App()->createUrl("admin/tokens/sa/managetokenattributes/surveyid/$this->surveyid"),
                     App()->createUrl("admin/tokens/sa/exportdialog/surveyid/$this->surveyid")
                 ]
+            ],
+            'responses'=> [
+                'urls' => [
+                    App()->createUrl("responses/browse?surveyId=$this->surveyid")
+                ]
             ]
         );
     }
