@@ -519,7 +519,7 @@ class Statistics extends SurveyCommonAction
         // Break for sortmethod bad parameter (mantis #20145)
         $sortmethod = strtoupper($sortmethod);
         if ($sortmethod && !in_array($sortmethod, ['ASC', 'DESC'])) {
-            throw new CHttpException(400, gT("Invalid sortmethod parameters."));
+            throw new CHttpException(400, gT("Invalid request."));
         }
         Yii::app()->loadHelper('admin/statistics');
         $helper = new statistics_helper();
