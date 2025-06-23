@@ -6,12 +6,10 @@ class Update_632 extends DatabaseUpdateBase
 {
     public function up()
     {
-        $this->db->createCommand()->update(
-            '{{surveymenu_entries}}',
-            [
-                'menu_link' => 'admin/statistics/sa/simpleStatistics/',
-            ],
-            'name=\'statistics\''
-        );
+
+        //updating the default value for datestamp
+        //surveys_groupsettings datestamp should be 'Y'
+        \alterColumn('{{surveys_groupsettings}}', 'datestamp', 'string(1)', false, 'Y');
+        \alterColumn('{{surveys}}', 'datestamp', 'string(1)', false, 'Y');
     }
 }

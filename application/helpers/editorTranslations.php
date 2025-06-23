@@ -1,6 +1,6 @@
 <?php
 // Translation-source for new editor.
-// Updated on 2025-05-16 13:28:10
+// Updated on 2025-06-23 07:48:17
 gT('%d answer options');
 gT('%s bytes');
 gT('1 answer option');
@@ -287,3 +287,15 @@ gT('You won\'t be able to revert this!');
 gT('Your feedback is important to us. Please take a minute to answer two quick questions.');
 gT('Your question here');
 gT('Your survey has been deactivated');
+gT('Analyze');
+gT('Date/time format');
+gT('Navigate');
+gT('Workspace');
+gT('Add image');
+gT('Alignment');
+gT('Brightness');
+gT('Radius');
+gT('Rotate');
+gT('Saving...');
+gT('Unable to save image settings. Please try again.');
+gT('Zoom');
