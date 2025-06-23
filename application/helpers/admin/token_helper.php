@@ -69,13 +69,13 @@ function emailTokens($iSurveyID, $aResultTokens, $sType, $continueOnError = fals
             $warnings = null;
             $oToken = Token::model($iSurveyID)->findByPk($aTokenRow['tid']);
             if ($sType == 'invite' || $sType == 'register') {
-                $oToken->sent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+                $oToken->sent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i");
                 if (!$oToken->save(true, ['sent'])) {
                     $warnings = $oToken->getErrors();
                 }
             }
             if ($sType == 'remind') {
-                $oToken->remindersent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+                $oToken->remindersent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i");
                 $oToken->remindercount++;
                 if (!$oToken->save(true, ['remindersent', 'remindercount'])) {
                     $warnings = $oToken->getErrors();

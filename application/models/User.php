@@ -144,7 +144,7 @@ class User extends LSActiveRecord
         $notExpiredScope = array(
             'condition' => "expires > :now OR expires IS NULL",
             'params' => array(
-                'now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
+                'now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s"),
             )
         );
 

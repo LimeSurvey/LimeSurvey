@@ -167,13 +167,11 @@ class TopbarConfiguration
         $canactivate = $sumcount > 0 && $hasSurveyActivationPermission;
         $expired = $oSurvey->expires != '' && ($oSurvey->expires < dateShift(
             date("Y-m-d H:i:s"),
-            "Y-m-d H:i",
-            Yii::app()->getConfig('timeadjust')
+            "Y-m-d H:i"
         ));
         $notstarted = ($oSurvey->startdate != '') && ($oSurvey->startdate > dateShift(
             date("Y-m-d H:i:s"),
-            "Y-m-d H:i",
-            Yii::app()->getConfig('timeadjust')
+            "Y-m-d H:i"
         ));
 
         if (!$isActive) {
