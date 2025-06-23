@@ -34,6 +34,20 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.14.2 (build 250610) to 6.14.3 (build 250617) June 17, 2025
+-Fixed issue #20128: json_decode() error in SurveyLanguageSetting.php for PHP 8.3 (#4305) (Gabriel Jenik)
+-Fixed issue #19171: Unable to use dropdown in config.xml with core options (#4316) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han, twilllig
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.14.1 (build 250527) to 6.14.2 (build 250610) June 10, 2025
 -Fixed issue: Error message 'Invalid call to a member function decryptBeforeOutput() on null' (Carsten Schmitz)
 -Fixed issue #20132: With debug=2 I am getting an error when exporting responses to SPSS (#4310) (Gabriel Jenik)
