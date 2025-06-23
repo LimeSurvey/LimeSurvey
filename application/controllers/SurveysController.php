@@ -157,7 +157,7 @@ class SurveysController extends LSYii_Controller
 
         // For CDbException, we clear the message in order to avoid showing sensitive information to the user.
         // This method is not usually executed when debug is enabled, but check anyway to be sure to only
-        // suppress the error is debug is disabled.
+        // suppress the error if debug is disabled.
         if (!YII_DEBUG && isset($error['type']) && $error['type'] == 'CDbException') {
             $error['message'] = gT('Database error!');
         }
