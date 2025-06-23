@@ -319,6 +319,98 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             $themeConf = TemplateConfiguration::getInstanceFromTemplateName(($oSurvey->template === 'inherit') ? $oSurveyOptions->template : $oSurvey->template);
             $inheritedThemeName = $oSurvey->oOptions->template;
         ?>
+
+        <!-- Non-Numerical settings -->
+        <div class="mb-3">
+            <?php // Switch for creation/editing ?>
+            <?php $question_code_prefix = $oSurvey->getOtherSetting('question_code_prefix')?? ''; ?>
+            <?php $question_code_option = json_decode($oSurveyOptions->othersettings, true); ?>
+            <div class="row">
+                <div class="col-12 col-lg-8 content-right">
+                    <label class="form-label" for="question_code_prefix"><?php eT("Question code prefix:"); ?></label>
+                    <input class="form-control inherit-edit <?php echo($bShowInherited && $question_code_prefix === 'I' ? 'd-none' : 'd-block'); ?>"
+                           type="text" size="50" id="question_code_prefix"
+                           name="question_code_prefix"
+                           value="<?php echo htmlspecialchars((string)$question_code_prefix); ?>"
+                           data-inherit-value="I"
+                           data-saved-value="<?php echo htmlspecialchars((string)$question_code_prefix); ?>"/>
+                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $question_code_prefix === 'I' ? 'd-block' : 'd-none'); ?>"
+                           type='text' size='50'
+                           value="<?php echo htmlspecialchars((string)($question_code_option['question_code_prefix'] ?? '')); ?>"
+                           readonly/>
+                </div>
+                <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'd-block' : 'd-none'); ?>">
+                    <label class=" form-label content-center col-12" for='question_code_prefix'><?php eT("Inherit:"); ?></label>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'question_code_prefixbutton',
+                        'checkedOption' => ($bShowInherited && $question_code_prefix === 'I' ? 'Y' : 'N'),
+                        'selectOptions' => $optionsOnOff,
+                        'htmlOptions'   => [
+                            'class' => 'text-option-inherit'
+                        ]
+                    ]); ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <?php // Switch for creation/editing ?>
+            <?php $subquestion_code_prefix = $oSurvey->getOtherSetting('subquestion_code_prefix')?? ''; ?>
+            <?php $subquestion_code_option = json_decode($oSurveyOptions->othersettings, true); ?>
+            <div class="row">
+                <div class="col-12 col-lg-8 content-right">
+                    <label class="form-label" for="subquestion_code_prefix"><?php eT("Subquestion code prefix:"); ?></label>
+                    <input class="form-control inherit-edit <?php echo($bShowInherited && $subquestion_code_prefix === 'I' ? 'd-none' : 'd-block'); ?>" 
+                        type="text" size="50" id="subquestion_code_prefix" name="subquestion_code_prefix"
+                        value="<?php echo htmlspecialchars((string) $subquestion_code_prefix); ?>" 
+                        data-inherit-value="I" data-saved-value="<?php echo htmlspecialchars((string) $subquestion_code_prefix); ?>" />
+                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $subquestion_code_prefix === 'I' ? 'd-block' : 'd-none'); ?>" 
+                        type='text' size='50' 
+                        value="<?php echo htmlspecialchars((string) ($question_code_option['subquestion_code_prefix'] ?? '')); ?>" 
+                        readonly />                </div>
+                <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'd-block' : 'd-none'); ?>">
+                    <label class=" form-label content-center col-12" for='subquestion_code_prefix'><?php eT("Inherit:"); ?></label>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'subquestion_code_prefixbutton',
+                        'checkedOption' => ($bShowInherited && $subquestion_code_prefix === 'I' ? 'Y' : 'N'),
+                        'selectOptions' => $optionsOnOff,
+                        'htmlOptions'   => [
+                            'class' => 'text-option-inherit'
+                        ]
+                    ]); ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <?php // Switch for creation/editing ?>
+            <?php $answer_code_prefix = $oSurvey->getOtherSetting('answer_code_prefix')?? ''; ?>
+            <?php $answer_code_option = json_decode($oSurveyOptions->othersettings, true); ?>
+            <div class="row">
+                <div class="col-12 col-lg-8 content-right">
+                    <label class="form-label" for="answer_code_prefix"><?php eT("Answer code prefix:"); ?></label>
+                    <input class="form-control inherit-edit <?php echo($bShowInherited && $answer_code_prefix === 'I' ? 'd-none' : 'd-block'); ?>" 
+                        type="text" size="50" id="answer_code_prefix" name="answer_code_prefix"
+                        value="<?php echo htmlspecialchars((string) $answer_code_prefix); ?>" 
+                        data-inherit-value="I" data-saved-value="<?php echo htmlspecialchars((string) $answer_code_prefix); ?>" />
+                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $answer_code_prefix === 'I' ? 'd-block' : 'd-none'); ?>" 
+                        type='text' size='50'
+                        value="<?php echo htmlspecialchars((string) ($question_code_option['answer_code_prefix']  ?? '')); ?>" 
+                        readonly />                </div>
+                <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'd-block' : 'd-none'); ?>">
+                    <label class=" form-label content-center col-12" for='answer_code_prefix'><?php eT("Inherit:"); ?></label>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'answer_code_prefixbutton',
+                        'checkedOption' => ($bShowInherited && $answer_code_prefix === 'I' ? 'Y' : 'N'),
+                        'selectOptions' => $optionsOnOff,
+                        'htmlOptions'   => [
+                            'class' => 'text-option-inherit'
+                        ]
+                    ]); ?>
+                </div>
+            </div>
+        </div>
+
         <!-- Theme -->
         <div class="mb-3" >
             <label class=" form-label" for='template'><?php eT("Theme:"); ?></label>

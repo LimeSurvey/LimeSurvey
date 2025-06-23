@@ -369,7 +369,10 @@ class Database extends SurveyCommonAction
             'format' => $request->getPost('format'),
             'owner_id' => $request->getPost('owner_id'),
             'gsid' => $request->getPost('gsid'),
-            'template' => $request->getPost('template')
+            'template' => $request->getPost('template'),
+            'answer_code_prefix' => $request->getPost('answer_code_prefix'),
+            'subquestion_code_prefix' => $request->getPost('subquestion_code_prefix'),
+            'question_code_prefix' => $request->getPost('question_code_prefix'),
         ];
         try {
             $surveyUpdater->update(

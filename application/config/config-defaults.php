@@ -80,6 +80,9 @@ $config['maxdbsizeforbackup']        = 0; // The maximum database size in MB tha
 $config['allowexportalldb']          = 0; // Default 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported (use carefully)
 $config['maxDatabaseSizeForDump']    = 256; // Maximum database size in megabytes to be able to download without errors
 
+$config['question_code_prefix']      = 'Q';  // Optional. Can be empty. If set, MUST START with a letter and NOT EXCEED 15 characters.
+$config['subquestion_code_prefix']   = 'SQ'; // Optional. Can be empty. If set, MUST START with a letter and NOT EXCEED 5 characters.
+$config['answer_code_prefix']        = 'A';  // Optional. Can be empty. If set, MUST START with a letter and NOT EXCEED 2 characters.
 $config['deletenonvalues']           = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
 $config['shownoanswer']              = 2; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = overridden by survey settings )
