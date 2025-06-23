@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-06-23 12:06:04+00:00\n"
+"POT-Creation-Date: 2025-06-23 13:26:26+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -526,7 +526,7 @@ msgstr ""
 msgid "Could not delete Box"
 msgstr ""
 
-#: application/controllers/InstallerController.php:136
+#: application/controllers/InstallerController.php:140
 #: application/controllers/SurveyAdministrationController.php:3066
 #: application/models/TemplateManifest.php:166
 #: application/views/admin/update/updater/_progress.php:11
@@ -535,134 +535,134 @@ msgstr ""
 msgid "Welcome"
 msgstr ""
 
-#: application/controllers/InstallerController.php:137
+#: application/controllers/InstallerController.php:141
 msgid "Welcome to the LimeSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey."
 msgstr ""
 
-#: application/controllers/InstallerController.php:161
+#: application/controllers/InstallerController.php:165
 #: application/views/installer/sidebar_view.php:16
 msgid "License"
 msgstr ""
 
-#: application/controllers/InstallerController.php:162
+#: application/controllers/InstallerController.php:166
 msgid "GNU General Public License:"
 msgstr ""
 
-#: application/controllers/InstallerController.php:194
+#: application/controllers/InstallerController.php:227
 #: application/views/admin/update/updater/_progress.php:16
 #: application/views/installer/sidebar_view.php:19
 msgid "Pre-installation check"
 msgstr ""
 
-#: application/controllers/InstallerController.php:195
+#: application/controllers/InstallerController.php:228
 msgid "Pre-installation check for LimeSurvey "
 msgstr ""
 
-#: application/controllers/InstallerController.php:231
-#: application/controllers/InstallerController.php:366
-#: application/controllers/InstallerController.php:403
-#: application/controllers/InstallerController.php:429
-#: application/controllers/InstallerController.php:478
+#: application/controllers/InstallerController.php:264
+#: application/controllers/InstallerController.php:399
+#: application/controllers/InstallerController.php:436
+#: application/controllers/InstallerController.php:462
+#: application/controllers/InstallerController.php:511
 #: application/views/installer/dbconfig_view.php:59
 msgid "Database configuration"
 msgstr ""
 
-#: application/controllers/InstallerController.php:232
-#: application/controllers/InstallerController.php:367
-#: application/controllers/InstallerController.php:404
-#: application/controllers/InstallerController.php:430
-#: application/controllers/InstallerController.php:479
+#: application/controllers/InstallerController.php:265
+#: application/controllers/InstallerController.php:400
+#: application/controllers/InstallerController.php:437
+#: application/controllers/InstallerController.php:463
+#: application/controllers/InstallerController.php:512
 msgid "Please enter the database settings you want to use for LimeSurvey:"
 msgstr ""
 
-#: application/controllers/InstallerController.php:282
+#: application/controllers/InstallerController.php:315
 msgid "The database you specified does already exist."
 msgstr ""
 
-#: application/controllers/InstallerController.php:289
+#: application/controllers/InstallerController.php:322
 msgid "The database exists and contains LimeSurvey tables."
 msgstr ""
 
-#: application/controllers/InstallerController.php:290
+#: application/controllers/InstallerController.php:323
 msgid "You'll be redirected to the database update or (if your database is already up to date) to the administration login in 5 seconds. If not, please click %shere%s."
 msgstr ""
 
-#: application/controllers/InstallerController.php:303
-#: application/controllers/InstallerController.php:304
-#: application/controllers/InstallerController.php:394
-#: application/controllers/InstallerController.php:395
+#: application/controllers/InstallerController.php:336
+#: application/controllers/InstallerController.php:337
+#: application/controllers/InstallerController.php:427
+#: application/controllers/InstallerController.php:428
 #: application/views/installer/sidebar_view.php:25
 msgid "Database settings"
 msgstr ""
 
-#: application/controllers/InstallerController.php:322
+#: application/controllers/InstallerController.php:355
 msgid "Create database"
 msgstr ""
 
-#: application/controllers/InstallerController.php:331
+#: application/controllers/InstallerController.php:364
 msgid "A database named \"%s\" already exists."
 msgstr ""
 
-#: application/controllers/InstallerController.php:332
+#: application/controllers/InstallerController.php:365
 msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr ""
 
-#: application/controllers/InstallerController.php:336
-#: application/controllers/InstallerController.php:390
+#: application/controllers/InstallerController.php:369
+#: application/controllers/InstallerController.php:423
 msgid "Populate database"
 msgstr ""
 
-#: application/controllers/InstallerController.php:340
+#: application/controllers/InstallerController.php:373
 msgid "Please <a href=\"%s\">log in</a>."
 msgstr ""
 
-#: application/controllers/InstallerController.php:383
+#: application/controllers/InstallerController.php:416
 msgid "Database has been created"
 msgstr ""
 
-#: application/controllers/InstallerController.php:387
+#: application/controllers/InstallerController.php:420
 msgid "Please continue with populating the database."
 msgstr ""
 
-#: application/controllers/InstallerController.php:400
+#: application/controllers/InstallerController.php:433
 msgid "Try again! Creation of database failed."
 msgstr ""
 
-#: application/controllers/InstallerController.php:437
+#: application/controllers/InstallerController.php:470
 msgid "Database %s has been successfully populated."
 msgstr ""
 
-#: application/controllers/InstallerController.php:440
+#: application/controllers/InstallerController.php:473
 msgid "There were errors when trying to populate the database:"
 msgstr ""
 
-#: application/controllers/InstallerController.php:466
+#: application/controllers/InstallerController.php:499
 #: application/views/installer/sidebar_view.php:28
 msgid "Administrator settings"
 msgstr ""
 
-#: application/controllers/InstallerController.php:467
+#: application/controllers/InstallerController.php:500
 msgid "Further settings for application administrator"
 msgstr ""
 
-#: application/controllers/InstallerController.php:540
+#: application/controllers/InstallerController.php:573
 msgid "Success!"
 msgstr ""
 
-#: application/controllers/InstallerController.php:541
+#: application/controllers/InstallerController.php:574
 msgid "LimeSurvey has been installed successfully."
 msgstr ""
 
-#: application/controllers/InstallerController.php:548
+#: application/controllers/InstallerController.php:581
 msgid "The password you have chosen at the optional settings step."
 msgstr ""
 
-#: application/controllers/InstallerController.php:1005
+#: application/controllers/InstallerController.php:1038
 #: application/core/LSSodium.php:214 application/core/LSSodiumOld.php:189
 msgid "Configuration directory is not writable"
 msgstr ""
 
-#: application/controllers/InstallerController.php:1006
+#: application/controllers/InstallerController.php:1039
 msgid "You will be redirected in about 5 secs. If not, click <a href=\"%s\">here</a>."
 msgstr ""
 
@@ -3327,6 +3327,11 @@ msgstr ""
 
 #: application/controllers/SurveysController.php:154
 msgid "The above error occurred when the Web server was processing your request."
+msgstr ""
+
+#: application/controllers/SurveysController.php:162
+#: application/views/admin/update/updater/_error.php:18
+msgid "Database error!"
 msgstr ""
 
 #: application/controllers/SurveysGroupsPermissionController.php:158
@@ -7675,7 +7680,7 @@ msgstr ""
 #: application/views/installer/dbconfig_view.php:111
 #: application/views/installer/license_view.php:16
 #: application/views/installer/populatedb_view.php:20
-#: application/views/installer/precheck_view.php:160
+#: application/views/installer/precheck_view.php:165
 #: application/views/survey/system/actionButton/movePrevious.php:11
 #: tmp/runtime/twig_cache/19/1909fc02c777f6e6377bf68319bb1a56.php:138
 #: tmp/runtime/twig_cache/1c/1c0c3b20f28a47c6b9fe517a0094391c.php:80
@@ -7687,7 +7692,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:1116
 #: application/views/installer/dbconfig_view.php:116
 #: application/views/installer/optconfig_view.php:88
-#: application/views/installer/precheck_view.php:168
+#: application/views/installer/precheck_view.php:173
 #: application/views/quotas/newanswer_view.php:34
 #: application/views/quotas/newanswertwo_view.php:51
 #: application/views/survey/system/actionButton/moveNext.php:11
@@ -18611,7 +18616,7 @@ msgstr ""
 #: application/views/admin/checkintegrity/fix_view.php:51
 #: application/views/admin/update/updater/steps/_check_local_errors.php:176
 #: application/views/admin/update/updater/steps/_fileSystem.php:42
-#: application/views/installer/precheck_view.php:163
+#: application/views/installer/precheck_view.php:168
 msgid "Check again"
 msgstr ""
 
@@ -18777,8 +18782,8 @@ msgid "Before"
 msgstr ""
 
 #: application/views/admin/conditions/includes/navigator.php:16
-#: application/views/installer/precheck_view.php:25
-#: application/views/installer/precheck_view.php:119
+#: application/views/installer/precheck_view.php:30
+#: application/views/installer/precheck_view.php:124
 msgid "Current"
 msgstr ""
 
@@ -21604,7 +21609,7 @@ msgid "Operating system"
 msgstr ""
 
 #: application/views/admin/super/footer.php:12
-#: application/views/installer/precheck_view.php:30
+#: application/views/installer/precheck_view.php:35
 msgid "PHP version"
 msgstr ""
 
@@ -24083,10 +24088,6 @@ msgstr ""
 msgid "We couldn't reach the server or the server didn't provide any answer. Please try again in few minutes."
 msgstr ""
 
-#: application/views/admin/update/updater/_error.php:18
-msgid "Database error!"
-msgstr ""
-
 #: application/views/admin/update/updater/_error.php:19
 msgid "ComfortUpdate encountered an error while trying to get data from your database."
 msgstr ""
@@ -25005,109 +25006,113 @@ msgid "Database creation"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:18
+msgid "Cookies seem to be disabled. Please use the \"Check again\" button instead of refreshing the page."
+msgstr ""
+
+#: application/views/installer/precheck_view.php:23
 msgid "Minimum requirements"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:24
+#: application/views/installer/precheck_view.php:29
 #: application/views/surveyAdministration/tabCopy_view.php:17
 #: application/views/surveyAdministration/tabCopy_view.php:24
 #: application/views/surveyAdministration/tabCreate_view.php:69
 msgid "Required"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:36
+#: application/views/installer/precheck_view.php:41
 msgid "Outdated"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:41
+#: application/views/installer/precheck_view.php:46
 msgid "Minimum memory available"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:45
+#: application/views/installer/precheck_view.php:50
 msgid "Unlimited"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:47
+#: application/views/installer/precheck_view.php:52
 msgid "Too low"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:52
+#: application/views/installer/precheck_view.php:57
 msgid "PHP PDO driver library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:53
+#: application/views/installer/precheck_view.php:58
 msgid "At least one installed"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:56
+#: application/views/installer/precheck_view.php:61
 msgid "None found"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:63
+#: application/views/installer/precheck_view.php:68
 msgid "PHP mbstring library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:68
+#: application/views/installer/precheck_view.php:73
 msgid "PHP fileinfo library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:73
+#: application/views/installer/precheck_view.php:78
 msgid "PHP zlib library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:78
+#: application/views/installer/precheck_view.php:83
 msgid "PHP zip library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:84
+#: application/views/installer/precheck_view.php:89
 msgid "PHP/PECL JSON library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:89
 #: application/views/installer/precheck_view.php:94
 #: application/views/installer/precheck_view.php:99
+#: application/views/installer/precheck_view.php:104
 msgid "directory"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:90
 #: application/views/installer/precheck_view.php:95
 #: application/views/installer/precheck_view.php:100
+#: application/views/installer/precheck_view.php:105
 msgid "Found & writable"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:104
+#: application/views/installer/precheck_view.php:109
 msgid "Session writable"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:113
+#: application/views/installer/precheck_view.php:118
 msgid "Optional modules"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:118
+#: application/views/installer/precheck_view.php:123
 msgid "Recommended"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:124
+#: application/views/installer/precheck_view.php:129
 msgid "PHP GD library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:128
+#: application/views/installer/precheck_view.php:133
 msgid "The GD extension found doesn't support JPEG"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:135
+#: application/views/installer/precheck_view.php:140
 msgid "PHP Intl library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:140
+#: application/views/installer/precheck_view.php:145
 msgid "PHP LDAP library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:145
+#: application/views/installer/precheck_view.php:150
 msgid "PHP imap library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:151
+#: application/views/installer/precheck_view.php:156
 msgid "PHP Sodium library [data encryption]"
 msgstr ""
 
