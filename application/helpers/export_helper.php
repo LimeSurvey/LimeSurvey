@@ -1537,7 +1537,7 @@ function quexml_set_default_value(&$element, $iResponseID, $qid, $iSurveyID, $fi
             $oResponse = Response::model($iSurveyID)->findByPk($iResponseID);
             $oResponse->decrypt();
             $value = $oResponse->$colname;
-            if ($value === null)
+            if ($value === null) {
                 $value = "";
             }
             $element->setAttribute("defaultValue", $value);
