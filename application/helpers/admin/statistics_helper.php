@@ -1483,15 +1483,17 @@ class statistics_helper
         $sDatabaseType = Yii::app()->db->getDriverName();
         $astatdata = array();
         $sColumnName = null;
-        /* show non completed */
-        $noncompleted = App()->getRequest()->getPost('noncompleted');
+        /* show non completed (no way to set in simple result) */
+        $noncompleted = App()->getRequest()->getParam('noncompleted');
         //loop though the array which contains all answer data
         $ColumnName_RM = array();
 
         $responseModel = SurveyDynamic::model($surveyid);
 
         foreach ($outputs['alist'] as $al) {
-
+            if ($noncompleted > 1 &&$al[0] === '') {
+                continue;
+            }
             if (isset($al[2]) && $al[2]) {
                 //handling for "other" option
                 if ($al[0] == gT("Other")) {
@@ -2222,6 +2224,9 @@ class statistics_helper
         $responseModel = SurveyDynamic::model($surveyid);
 
         foreach ($outputs['alist'] as $al) {
+            if ($noncompleted > 1 &&$al[0] === '') {
+                continue;
+            }
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
             if (isset($al[2]) && $al[2]) {
                 //handling for "other" option
@@ -2271,7 +2276,6 @@ class statistics_helper
                     $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al[2])." = '$encryptedValue'";
                 }
             }    //end if -> alist set
-
             else {
                 if ($al[0] != "") {
                     //get more data
@@ -2318,7 +2322,6 @@ class statistics_helper
 
             //check for any "sql" that has been passed from another script
             if (!empty($sql)) {$query .= " AND $sql"; }
-
             //get data
             try {
                 $row = Yii::app()->db->createCommand($query)->queryScalar();
@@ -2326,18 +2329,14 @@ class statistics_helper
                 $row = 0;
                 Yii::app()->setFlashMessage('Faulty query: '.htmlspecialchars($query), 'error');
             }
-
             //store temporarily value of answer count of question type '5' and 'A'.
             $tempcount = -1; //count can't be less han zero
-
             //increase counter
             $TotalCompleted += $row;
-
             //"no answer" handling
             if ($al[0] === "") {
                 $fname = gT("No answer");
             }
-
             //"other" handling
             //"Answer" means that we show an option to list answer to "other" text field
             elseif (($al[0] === gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === "O" && $al[0] === gT("Comments")) || $outputs['qtype'] === "P") && count($al) > 2) {
@@ -2514,8 +2513,7 @@ class statistics_helper
                 //answer text
                 $fname = "$al[1] ($al[0])";
             }
-
-            //are there some results to play with?
+             //are there some results to play with?
             if ($results > 0) {
                 //calculate percentage
                 $gdata[] = ($row / $results) * 100;
@@ -2591,7 +2589,6 @@ class statistics_helper
                 $lblPercent[$flatLabel] = $lbl[$flatLabel];
             }
         }    //end foreach -> loop through answer data
-
         //no filtering of incomplete answers and NO multiple option questions
         //if ((incompleteAnsFilterState() != "complete") and ($outputs['qtype'] != "M") and ($outputs['qtype'] != "P"))
         //error_log("TIBO ".print_r($showaggregated_indice_table,true));
@@ -2600,10 +2597,9 @@ class statistics_helper
             //if (isset($_POST[''noncompleted']) and ($_POST['noncompleted'] == 1) && (isset(Yii::app()->getConfig('showaggregateddata')) && Yii::app()->getConfig('showaggregateddata') == 0))
             // TIBO: TODO WE MUST SKIP THE FOLLOWING SECTION FOR TYPE A and 5 when
             // showaggreagated data is set and set to 1
-            if ($noncompleted == 1) {
+            if ($noncompleted) {
                 //counter
                 $i = 0;
-
                 while (isset($gdata[$i])) {
                     if (isset($showaggregated_indice_table[$i]) && $showaggregated_indice_table[$i] == "aggregated") {
                         // do nothing, we don't rewrite aggregated results
@@ -2615,7 +2611,6 @@ class statistics_helper
                             $gdata[$i] = $TotalCompleted !== 0 ? ($grawdata[$i] / $TotalCompleted) * 100 : 0;
                         }
                     }
-
                     //increase counter
                     $i++;
                 }    //end while (data available)
@@ -4206,7 +4201,7 @@ class statistics_helper
         } elseif (incompleteAnsFilterState() == "complete") {
             $search['condition'] .= " AND submitdate is not null";
         }
-
+        $noncompleted = App()->getRequest()->getPost('noncompleted');
         //Look for any selects/filters set in the original statistics query, and apply them to the column listing
         if (isset(Yii::app()->session['statistics_selects_' . $surveyid]) && is_array(Yii::app()->session['statistics_selects_' . $surveyid])) {
             foreach (Yii::app()->session['statistics_selects_' . $surveyid] as $sql) {
