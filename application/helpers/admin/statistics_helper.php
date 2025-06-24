@@ -2224,7 +2224,7 @@ class statistics_helper
         $responseModel = SurveyDynamic::model($surveyid);
 
         foreach ($outputs['alist'] as $al) {
-            if ($noncompleted > 1 &&$al[0] === '') {
+            if ($noncompleted > 1 && $al[0] === '') {
                 continue;
             }
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
@@ -2254,6 +2254,9 @@ class statistics_helper
                 * Q = Multiple short text
                 */
                 elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
+                    if ($noncompleted > 1 && $al[0] === 'NoAnswer') {
+                        continue;
+                    }
                     $sDatabaseType = Yii::app()->db->getDriverName();
 
                     //free text answers
