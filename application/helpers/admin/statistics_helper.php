@@ -1483,7 +1483,8 @@ class statistics_helper
         $sDatabaseType = Yii::app()->db->getDriverName();
         $astatdata = array();
         $sColumnName = null;
-
+        /* show non completed */
+        $noncompleted = App()->getRequest()->getPost('noncompleted');
         //loop though the array which contains all answer data
         $ColumnName_RM = array();
 
@@ -1711,7 +1712,7 @@ class statistics_helper
             //if (isset($_POST[''noncompleted']) and ($_POST['noncompleted'] == 1) && (isset(Yii::app()->getConfig('showaggregateddata')) && Yii::app()->getConfig('showaggregateddata') == 0))
             // TIBO: TODO WE MUST SKIP THE FOLLOWING SECTION FOR TYPE A and 5 when
             // showaggreagated data is set and set to 1
-            if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == 1)) {
+            if ($noncompleted == 1) {
                 //counter
                 $i = 0;
 
@@ -1745,7 +1746,7 @@ class statistics_helper
                 $criteria->addCondition("submitdate IS NOT NULL");
             }
             $multiNotDisplayed = SurveyDynamic::model($surveyid)->count($criteria);
-            if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == 1)) {
+            if ($noncompleted == 1) {
                 //counter
                 $i = 0;
                 while (isset($gdata[$i])) {
@@ -2168,7 +2169,7 @@ class statistics_helper
         $TotalIncomplete    = 0;
 
         $sColumnName = null;
-
+        $noncompleted = App()->getRequest()->getPost('noncompleted');
         if ($usegraph == 1 && $outputType != 'html') {
             //for creating graphs we need some more scripts which are included here
             require_once(APPPATH . '/../vendor/pchart/pChart.class.php');
@@ -2599,7 +2600,7 @@ class statistics_helper
             //if (isset($_POST[''noncompleted']) and ($_POST['noncompleted'] == 1) && (isset(Yii::app()->getConfig('showaggregateddata')) && Yii::app()->getConfig('showaggregateddata') == 0))
             // TIBO: TODO WE MUST SKIP THE FOLLOWING SECTION FOR TYPE A and 5 when
             // showaggreagated data is set and set to 1
-            if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == 1)) {
+            if ($noncompleted == 1) {
                 //counter
                 $i = 0;
 
@@ -2687,7 +2688,7 @@ class statistics_helper
                 $criteria->addCondition("submitdate IS NOT NULL");
             }
             $multiNotDisplayed = SurveyDynamic::model($surveyid)->count($criteria);
-            if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == 1)) {
+            if ($noncompleted == 1) {
                 //counter
                 $i = 0;
                 while (isset($gdata[$i])) {
@@ -3379,7 +3380,7 @@ class statistics_helper
                 $iMaxLabelLength = 0;
 
                 // add "Not completed or Not displayed" label if missing
-                if (isset($_POST['noncompleted']) && $_POST['noncompleted'] == 0 && count($labels) > count($aGraphLabels)) {
+                if (!is_null($noncompleted) && $noncompleted == 0 && count($labels) > count($aGraphLabels)) {
                     $aGraphLabels[] = gT("Not completed or Not displayed");
                 }
 
