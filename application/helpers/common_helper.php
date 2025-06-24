@@ -764,18 +764,33 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
         $thissurvey = $staticSurveyInfo[$surveyid][$languagecode];
     } else {
         $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+        $resultBaseLanguage = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $oSurvey->language));
         if (is_null($result)) {
             // When additional language was added, but not saved it does not exists
             // We should revert to the base language then
             $languagecode = $oSurvey->language;
-            $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+            $result = $resultBaseLanguage;
         }
         if ($result) {
             $aSurveyAtrributes = array_replace($result->survey->attributes, $aSurveyOptions);
             $thissurvey = array_merge($aSurveyAtrributes, $result->attributes);
             $thissurvey['name'] = $thissurvey['surveyls_title'];
+            if (($languagecode != $oSurvey->language) && empty($thissurvey['name']) || $thissurvey['name'] == '') {
+                $thissurvey['name'] = $resultBaseLanguage->surveyls_title;
+            }
             $thissurvey['description'] = $thissurvey['surveyls_description'];
+            if (($languagecode != $oSurvey->language) && empty($thissurvey['description']) || $thissurvey['description'] == '') {
+                $thissurvey['description'] = $resultBaseLanguage->surveyls_description;
+            }
             $thissurvey['welcome'] = $thissurvey['surveyls_welcometext'];
+            // if there is no welcome message for an additional language, we try to get it from the base language
+            if (($languagecode != $oSurvey->language) && empty($thissurvey['welcome']) || $thissurvey['welcome'] == '') {
+                $thissurvey['welcome'] = $resultBaseLanguage->surveyls_welcometext;
+            }
+            // if there is no end message for an additional language, we try to get it from the base language
+            if (($languagecode != $oSurvey->language) && empty($thissurvey['surveyls_endtext']) || $thissurvey['surveyls_endtext'] == '') {
+                $thissurvey['surveyls_endtext'] = $resultBaseLanguage->surveyls_endtext;
+            }
             $thissurvey['datasecurity_notice_label'] = $thissurvey['surveyls_policy_notice_label'];
             $thissurvey['datasecurity_error'] = $thissurvey['surveyls_policy_error'];
             $thissurvey['datasecurity_notice'] = $thissurvey['surveyls_policy_notice'];
@@ -4835,16 +4850,19 @@ function decodeTokenAttributes(string $tokenAttributeData)
         return array();
     }
     if (substr($tokenAttributeData, 0, 1) != '{' && substr($tokenAttributeData, 0, 1) != '[') {
+        if (!App()->getConfig('allow_unserialize_attributedescriptions')) {
+            return array();
+        }
+        // minimal broken securisation, mantis issue #20144
         $sSerialType = getSerialClass($tokenAttributeData);
         if ($sSerialType == 'array') {
-// Safe to decode
-            $aReturnData = unserialize($tokenAttributeData) ?? [];
+            $aReturnData = unserialize($tokenAttributeData, ["allowed_classes" => false]) ?? [];
         } else {
-// Something else, might be unsafe
+            // Something else, sure it's unsafe
             return array();
         }
     } else {
-            $aReturnData = json_decode($tokenAttributeData, true) ?? [];
+        $aReturnData = json_decode($tokenAttributeData, true) ?? [];
     }
     if ($aReturnData === false || $aReturnData === null) {
         return array();
