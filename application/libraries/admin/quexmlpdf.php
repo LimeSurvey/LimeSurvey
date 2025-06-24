@@ -1871,9 +1871,9 @@ class quexmlpdf extends pdf
         }
 
         if ($number > 26) {
-            return chr((($number - 1) / 26) + 64) . chr((($number - 1) % 26) + 65);
+            return chr((int) (($number - 1) / 26) + 64) . chr((int) (($number - 1) % 26) + 65);
         } else {
-            return chr($number + 64);
+            return chr((int) ($number + 64));
         }
     }
 
