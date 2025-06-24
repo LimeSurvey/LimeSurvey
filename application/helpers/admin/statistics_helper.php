@@ -2618,7 +2618,6 @@ class statistics_helper
                     $i++;
                 }    //end while (data available)
             }    //end if -> noncompleted checked
-
             //noncompleted is NOT checked
             else {
                 //calculate total number of incompleted records
@@ -2686,7 +2685,7 @@ class statistics_helper
                 $criteria->addCondition("submitdate IS NOT NULL");
             }
             $multiNotDisplayed = SurveyDynamic::model($surveyid)->count($criteria);
-            if ($noncompleted == 1) {
+            if ($noncompleted) {
                 //counter
                 $i = 0;
                 while (isset($gdata[$i])) {
