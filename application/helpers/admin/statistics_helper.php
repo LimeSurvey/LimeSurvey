@@ -1485,6 +1485,7 @@ class statistics_helper
         $sColumnName = null;
         /* show non completed (no way to set in simple result) */
         $noncompleted = App()->getRequest()->getParam('noncompleted');
+
         //loop though the array which contains all answer data
         $ColumnName_RM = array();
 
@@ -1516,8 +1517,9 @@ class statistics_helper
                 * Q = Multiple short text
                 */
                 elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
-                    $sDatabaseType = Yii::app()->db->getDriverName();
-
+                    if ($noncompleted > 1 && $al[0] === 'NoAnswer') {
+                        continue;
+                    }
                     //free text answers
                     if ($al[0] == "Answer") {
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
@@ -1546,7 +1548,6 @@ class statistics_helper
             else {
                 if ($al[0] != "") {
                     //get more data
-                    $sDatabaseType = Yii::app()->db->getDriverName();
                     if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
                         // mssql cannot compare text blobs so we have to cast here
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE cast(".Yii::app()->db->quoteColumnName($rt)." as varchar)= '$al[0]'";
@@ -1714,7 +1715,7 @@ class statistics_helper
             //if (isset($_POST[''noncompleted']) and ($_POST['noncompleted'] == 1) && (isset(Yii::app()->getConfig('showaggregateddata')) && Yii::app()->getConfig('showaggregateddata') == 0))
             // TIBO: TODO WE MUST SKIP THE FOLLOWING SECTION FOR TYPE A and 5 when
             // showaggreagated data is set and set to 1
-            if ($noncompleted == 1) {
+            if ($noncompleted) {
                 //counter
                 $i = 0;
 
@@ -1740,7 +1741,25 @@ class statistics_helper
         if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
             $criteria = new CDbCriteria();
             foreach ($outputs['alist'] as $al) {
-                $criteria->addCondition(Yii::app()->db->quoteColumnName($al[2]) . " IS NULL");
+                $quotedColumnName = App()->db->quoteColumnName($al[2]);
+                if ($noncompleted > 1 ) {
+                    // database can use blob due to encryption
+                    switch ($sDatabaseType) {
+                        case 'mssql':
+                        case 'sqlsrv':
+                        case 'dblib':
+                            $condition = $quotedColumnName . " IS NULL OR CAST(" . $quotedColumnName ." as varchar) = ''";
+                            break;
+                        case 'pgsql':
+                        case 'mysql':
+                        default:
+                            $condition = $quotedColumnName . " IS NULL OR " . $quotedColumnName ." = ''";
+                            break;
+                    }
+                } else {
+                    $condition = $quotedColumnName . " IS NULL";
+                }
+                $criteria->addCondition($condition);
             }
             if (incompleteAnsFilterState() == "incomplete") {
                 $criteria->addCondition("submitdate IS NULL");
@@ -1748,7 +1767,7 @@ class statistics_helper
                 $criteria->addCondition("submitdate IS NOT NULL");
             }
             $multiNotDisplayed = SurveyDynamic::model($surveyid)->count($criteria);
-            if ($noncompleted == 1) {
+            if ($noncompleted) {
                 //counter
                 $i = 0;
                 while (isset($gdata[$i])) {
