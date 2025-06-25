@@ -514,7 +514,10 @@ class SurveysGroupsettings extends LSActiveRecord
         $this->admin = substr((string) App()->getConfig('siteadminname'), 0, 50);
         $this->adminemail = substr((string) App()->getConfig('siteadminemail'), 0, 254);
         $this->template = Template::templateNameFilter(App()->getConfig('defaulttheme'));
-        $this->othersettings = '';
+        if (App()->getConfig("DBVersion") >= 631) {
+            /* avoid  Creation of dynamic property is deprecated */
+            $this->othersettings = '';
+        }
     }
 
     /**
