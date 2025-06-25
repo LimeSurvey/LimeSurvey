@@ -1492,7 +1492,7 @@ class statistics_helper
         $responseModel = SurveyDynamic::model($surveyid);
 
         foreach ($outputs['alist'] as $al) {
-            if ($noncompleted > 1 &&$al[0] === '') {
+            if ($noncompleted > 1 && $al[0] === '') {
                 continue;
             }
             if (isset($al[2]) && $al[2]) {
