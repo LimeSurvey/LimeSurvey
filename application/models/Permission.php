@@ -794,16 +794,12 @@ class Permission extends LSActiveRecord
      * get the connected user role
      * @param integer $iUserID user id
      * @return array of UserInPermissionrole records
-     * @throws Exception
      */
     public static function getUserRole($iUserID)
     {
-        if (App()->getConfig("DBVersion") < 495) {
-            /* No expires column before 495 */
-            return array(
-                'active' => [],
-                'notexpired' => [],
-            );
+        if (App()->getConfig("DBVersion") < 419) {
+            /* No UserInPermissionrole column before 495 */
+            return [];
         }
         return UserInPermissionrole::model()->getRoleForUser($iUserID);
     }
