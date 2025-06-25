@@ -2677,7 +2677,25 @@ class statistics_helper
         if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
             $criteria = new CDbCriteria();
             foreach ($outputs['alist'] as $al) {
-                $criteria->addCondition(Yii::app()->db->quoteColumnName($al[2]) . " IS NULL");
+                $quotedColumnName = App()->db->quoteColumnName($al[2]);
+                if ($noncompleted > 1 ) {
+                    // database can use blob due to encryption
+                    switch ($sDatabaseType) {
+                        case 'mssql':
+                        case 'sqlsrv':
+                        case 'dblib':
+                            $condition = $quotedColumnName . " IS NULL OR CAST(" . $quotedColumnName ." as varchar) = ''";
+                            break;
+                        case 'pgsql':
+                        case 'mysql':
+                        default:
+                            $condition = $quotedColumnName . " IS NULL OR " . $quotedColumnName ." = ''";
+                            break;
+                    }
+                } else {
+                    $condition = $quotedColumnName . " IS NULL";
+                }
+                $criteria->addCondition($condition);
             }
             if (incompleteAnsFilterState() == "incomplete") {
                 $criteria->addCondition("submitdate IS NULL");
