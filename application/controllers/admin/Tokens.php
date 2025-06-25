@@ -2874,7 +2874,7 @@ class Tokens extends SurveyCommonAction
 
         //The survey participant list already exist ?
         if ($survey->hasTokensTable) {
-            if ((returnGlobal('restoretable') === "Y" && Yii::app()->request->getPost('oldtable')) ) {
+            if ((returnGlobal('restoretable') === "Y" && Yii::app()->request->getPost('oldtable'))) {
                 require_once "application/helpers/admin/import_helper.php";
                 $source = Yii::app()->db->tablePrefix . Yii::app()->request->getPost('oldtable');
                 $destination = Yii::app()->db->tablePrefix . "tokens_" . (int)$iSurveyId;
