@@ -2643,11 +2643,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
             ],
             'subquestion_code_prefix' => [
                 'pattern' => '/^$|^[A-Za-z0-9]{0,4}$/',
-                'message' => gT("Subquestion code prefix must start with a letter and can only contain alphanumeric characters. Length is 0 to 5 characters.")
+                'message' => gT("Subquestion code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 5 characters.")
             ],
             'answer_code_prefix' => [
                 'pattern' => '/^$|^[A-Za-z0-9]{0,1}$/',
-                'message' => gT("Answer code prefix must start with a letter and can only contain alphanumeric characters. Length is 0 to 2 characters.")
+                'message' => gT("Answer code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 2 characters.")
             ]
         ];
         // If this is not a setting we validate, return true
