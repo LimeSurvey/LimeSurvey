@@ -11,7 +11,6 @@ class Update_634 extends DatabaseUpdateBase
             'subquestion_code_prefix' => 'I',
             'answer_code_prefix' => 'I'
         ];
-        $other_settings_inherit_json = json_encode($other_settings_inherit);
 
         // Get all surveys with non-null othersettings
         $surveys = $this->db->createCommand()
@@ -24,7 +23,7 @@ class Update_634 extends DatabaseUpdateBase
             $settings = $survey['othersettings'];
 
             if ($settings === null) {
-                $this->updateSettings($other_settings_inherit_json, $survey);
+                $this->updateSettings($other_settings_inherit, $survey);
                 continue;
             }
 
