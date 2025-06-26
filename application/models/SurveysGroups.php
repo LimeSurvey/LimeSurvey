@@ -17,6 +17,7 @@
  * @property integer $created_by
  * @property object $parentgroup
  * @property boolean $hasSurveys
+ * @property string $othersettings
  */
 class SurveysGroups extends LSActiveRecord implements PermissionInterface
 {
