@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-06-23 13:34:16+00:00\n"
+"POT-Creation-Date: 2025-06-26 09:29:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -658,12 +658,12 @@ msgstr ""
 msgid "The password you have chosen at the optional settings step."
 msgstr ""
 
-#: application/controllers/InstallerController.php:1038
+#: application/controllers/InstallerController.php:1043
 #: application/core/LSSodium.php:214 application/core/LSSodiumOld.php:189
 msgid "Configuration directory is not writable"
 msgstr ""
 
-#: application/controllers/InstallerController.php:1039
+#: application/controllers/InstallerController.php:1044
 msgid "You will be redirected in about 5 secs. If not, click <a href=\"%s\">here</a>."
 msgstr ""
 
@@ -15761,7 +15761,7 @@ msgid "Plugin error"
 msgstr ""
 
 #: application/libraries/PluginManager/PluginBase.php:520
-#: application/models/InstallerConfigForm.php:468
+#: application/models/InstallerConfigForm.php:470
 #: application/views/admin/checkintegrity/check_view.php:23
 #: application/views/admin/checkintegrity/check_view.php:72
 #: application/views/admin/checkintegrity/check_view.php:87
@@ -16084,23 +16084,23 @@ msgstr ""
 msgid "If your database is shared, recommended prefix is \"lime_\" else you can leave this setting blank."
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:289
+#: application/models/InstallerConfigForm.php:291
 msgid "The database engine type must be set for MySQL"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:295
+#: application/models/InstallerConfigForm.php:297
 msgid "Could not determine the database engine version. Please check your credentials."
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:307
+#: application/models/InstallerConfigForm.php:309
 msgid "You need to enable large_file_prefix setting in your database configuration in order to use InnoDB engine for LimeSurvey!"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:310
+#: application/models/InstallerConfigForm.php:312
 msgid "Your database configuration needs to have innodb_file_format and innodb_file_format_max set to use the Barracuda format in order to use InnoDB engine for LimeSurvey!"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:467
+#: application/models/InstallerConfigForm.php:469
 msgid "Try again! Connection with database failed."
 msgstr ""
 
@@ -18780,7 +18780,7 @@ msgstr ""
 
 #: application/views/admin/conditions/includes/navigator.php:16
 #: application/views/installer/precheck_view.php:30
-#: application/views/installer/precheck_view.php:124
+#: application/views/installer/precheck_view.php:135
 msgid "Current"
 msgstr ""
 
@@ -25066,35 +25066,35 @@ msgid "PHP/PECL JSON library"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:94
-#: application/views/installer/precheck_view.php:99
-#: application/views/installer/precheck_view.php:104
-msgid "directory"
-msgstr ""
-
-#: application/views/installer/precheck_view.php:95
-#: application/views/installer/precheck_view.php:100
-#: application/views/installer/precheck_view.php:105
-msgid "Found & writable"
-msgstr ""
-
-#: application/views/installer/precheck_view.php:109
-msgid "Session writable"
-msgstr ""
-
-#: application/views/installer/precheck_view.php:118
-msgid "Optional modules"
-msgstr ""
-
-#: application/views/installer/precheck_view.php:123
-msgid "Recommended"
-msgstr ""
-
-#: application/views/installer/precheck_view.php:129
 msgid "PHP GD library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:133
+#: application/views/installer/precheck_view.php:98
 msgid "The GD extension found doesn't support JPEG"
+msgstr ""
+
+#: application/views/installer/precheck_view.php:105
+#: application/views/installer/precheck_view.php:110
+#: application/views/installer/precheck_view.php:115
+msgid "directory"
+msgstr ""
+
+#: application/views/installer/precheck_view.php:106
+#: application/views/installer/precheck_view.php:111
+#: application/views/installer/precheck_view.php:116
+msgid "Found & writable"
+msgstr ""
+
+#: application/views/installer/precheck_view.php:120
+msgid "Session writable"
+msgstr ""
+
+#: application/views/installer/precheck_view.php:129
+msgid "Optional modules"
+msgstr ""
+
+#: application/views/installer/precheck_view.php:134
+msgid "Recommended"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:140
