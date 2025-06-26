@@ -43,7 +43,7 @@ class Update_634 extends DatabaseUpdateBase
         }
     }
 
-    function updateSettings($settings, $survey)
+    private function updateSettings($settings, $survey)
     {
         $this->db->createCommand()->update(
             '{{surveys}}',
