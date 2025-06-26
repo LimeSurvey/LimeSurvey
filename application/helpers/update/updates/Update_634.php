@@ -28,6 +28,10 @@ class Update_634 extends DatabaseUpdateBase
             }
 
             $settings = json_decode($settings, true);
+            if (!is_array($settings)) {
+                $this->updateSettings($other_settings_inherit, $survey);
+                continue;
+            }
 
             // Check and update empty prefix values
             foreach (['question_code_prefix', 'subquestion_code_prefix', 'answer_code_prefix'] as $prefixKey) {
