@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-06-26 09:29:35+00:00\n"
+"POT-Creation-Date: 2025-06-26 15:35:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7159,6 +7159,18 @@ msgstr ""
 
 #: application/core/LSYii_NonFormulaValidator.php:34
 msgid "The value cannot start with =, +, -, @, TAB, or Carriage Return."
+msgstr ""
+
+#: application/core/LSYii_OtherSettingsValidator.php:48
+msgid "Question code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 15 characters."
+msgstr ""
+
+#: application/core/LSYii_OtherSettingsValidator.php:52
+msgid "Subquestion code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 5 characters."
+msgstr ""
+
+#: application/core/LSYii_OtherSettingsValidator.php:56
+msgid "Answer code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 2 characters."
 msgstr ""
 
 #: application/core/LSYii_ShortUrlValidator.php:45
@@ -17048,18 +17060,6 @@ msgstr ""
 #: application/models/Survey.php:2554
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:20
 msgid "Expiration date can't be lower than the start date"
-msgstr ""
-
-#: application/models/Survey.php:2642
-msgid "Question code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 15 characters."
-msgstr ""
-
-#: application/models/Survey.php:2646
-msgid "Subquestion code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 5 characters."
-msgstr ""
-
-#: application/models/Survey.php:2650
-msgid "Answer code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 2 characters."
 msgstr ""
 
 #: application/models/SurveyDynamic.php:299
