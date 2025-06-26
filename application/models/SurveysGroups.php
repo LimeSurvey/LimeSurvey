@@ -17,7 +17,6 @@
  * @property integer $created_by
  * @property object $parentgroup
  * @property boolean $hasSurveys
- * @property string $othersettings
  */
 class SurveysGroups extends LSActiveRecord implements PermissionInterface
 {
@@ -72,7 +71,6 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
             // @todo Please remove those attributes that should not be searched.
             array('gsid, name, title, description, owner_id, parent_id, created, modified, created_by', 'safe', 'on' => 'search'),
             array('name', 'unsafe' , 'on' => ['update']),
-            array('othersettings', 'LSYii_OtherSettingsValidator')
         );
     }
 
