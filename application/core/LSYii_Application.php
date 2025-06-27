@@ -341,11 +341,11 @@ class LSYii_Application extends CWebApplication
     /**
      * Get the pluginManager
      *
-     * @return \LimeSurvey\PluginManager\PluginManager
+     * @return PluginManager
      */
-    public function getPluginManager(): \LimeSurvey\PluginManager\PluginManager
+    public function getPluginManager()
     {
-        /** @var \LimeSurvey\PluginManager\PluginManager $pluginManager */
+        /** @var PluginManager $pluginManager */
         $pluginManager = $this->getComponent('pluginManager');
         return $pluginManager;
     }
@@ -403,7 +403,7 @@ class LSYii_Application extends CWebApplication
      */
     public function onException($event)
     {
-        (new AppErrorHandler())->onException($this->dbVersion, $event);
+        (new AppErrorHandler)->onException($this->dbVersion, $event);
     }
 
     /**
@@ -414,7 +414,7 @@ class LSYii_Application extends CWebApplication
      */
     public function onError($event)
     {
-        (new AppErrorHandler())->onError($this->dbVersion, $event);
+        (new AppErrorHandler)->onError($this->dbVersion, $event);
     }
 
     /**
@@ -514,7 +514,7 @@ class LSYii_Application extends CWebApplication
      * @inheritdoc
      * Special handling for SEO friendly URLs
      */
-    public function createController($route, $owner = null)
+    public function createController($route, $owner=null)
     {
         $controller = parent::createController($route, $owner);
 
@@ -594,5 +594,4 @@ class LSYii_Application extends CWebApplication
             'lifetime' => $lifetime
         ]);
     }
-
 }

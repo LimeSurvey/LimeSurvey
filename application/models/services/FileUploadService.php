@@ -35,68 +35,52 @@ class FileUploadService
 
         $surveyId = $this->convertSurveyIdWhenUniqUploadDir($surveyId);
         $destinationDir = $this->getSurveyUploadDirectory($surveyId);
-
-        $validationError = $this->validateFileUpload($surveyId, $fileInfoArray, $destinationDir);
+        $this->uploadValidator->setPost(['surveyId' => $surveyId]);
+        $this->uploadValidator->setFiles($fileInfoArray);
+        $validationError = $this->uploadValidator->getError('file');
         if ($validationError !== null) {
             $returnedData['uploadResultMessage'] = $validationError;
             return $returnedData;
-        }
-
-        $returnedData = $this->saveFileInDirectory(
-            $fileInfoArray['file'],
-            $destinationDir
-        );
-
-        $baseUrl = $this->rTrimPathSeparators(App()->getBaseUrl(true));
-        $returnedData['uploaded']['filePath'] = $this->convertFullIntoRelativePath(
-            $returnedData['debug'][2]
-        );
-        $returnedData['uploaded']['fileUrl'] = $baseUrl . '/'
-            . $returnedData['debug'][2];
-        $returnedData['uploaded']['previewPath'] = $this->getPreviewPath(
-            $returnedData['uploaded']['filePath']
-        );
-        $returnedData['uploaded']['previewUrl'] = $baseUrl . '/'
-            . $returnedData['uploaded']['filePath'];
-        unset($returnedData['debug']);
-        $returnedData['allFilesInDir'] = $this->getFilesPathsFromDirectory(
-            $destinationDir,
-            $surveyId
-        );
-
-        return $returnedData;
-    }
-
-
-    /**
-     * @param int|string $surveyId
-     * @param array $fileInfoArray
-     * @param string $destinationDir
-     * @return null|string
-     */
-    private function validateFileUpload($surveyId, array $fileInfoArray, $destinationDir)
-    {
-        $this->uploadValidator->setPost(['surveyId' => $surveyId]);
-        $this->uploadValidator->setFiles($fileInfoArray);
-        $error = $this->uploadValidator->getError('file');
-        if ($error != null) {
-            return $error;
         }
 
         $checkImage = LSYii_ImageValidator::validateImage(
             $fileInfoArray['file']
         );
         if ($checkImage['check'] === false) {
-            return $checkImage['uploadresult'];
+            $returnedData['uploadResultMessage'] = $checkImage['uploadresult'];
+            return $returnedData;
         }
 
         if (!is_writeable($destinationDir)) {
-            return gT(
+            $returnedData['uploadResultMessage'] = gT(
                 "Could not save file"
+            );
+        } else {
+            $returnedData = $this->saveFileInDirectory(
+                $fileInfoArray['file'],
+                $destinationDir
             );
         }
 
-        return null;
+        if ($validationError === null) {
+            $returnedData['uploaded']['filePath'] = $this->convertFullIntoRelativePath(
+                $returnedData['debug'][2]
+            );
+            $returnedData['uploaded']['fileUrl'] = App()->getBaseUrl(true)
+                . $returnedData['debug'][2];
+            $returnedData['uploaded']['previewPath'] = $this->getPreviewPath(
+                $returnedData['uploaded']['filePath']
+            );
+            $returnedData['uploaded']['previewUrl'] = App()->getBaseUrl(true)
+                . $returnedData['uploaded']['filePath'];
+            unset($returnedData['debug']);
+            $returnedData['allFilesInDir'] = $this->getFilesPathsFromDirectory(
+                $destinationDir,
+                $surveyId
+            );
+        }
+
+        return $returnedData;
     }
 
     /**
@@ -110,13 +94,9 @@ class FileUploadService
         $surveyId,
         string $directoryName = 'images'
     ) {
-        $surveyDir = $this->buildUrlPath([
-            App()->getConfig(
-                'uploaddir'
-            ),
-            'surveys',
-            $surveyId
-        ]);
+        $surveyDir = App()->getConfig(
+            'uploaddir'
+        ) . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId;
         if (!is_dir($surveyDir)) {
             @mkdir($surveyDir);
         }
@@ -124,7 +104,7 @@ class FileUploadService
             @mkdir($surveyDir . DIRECTORY_SEPARATOR . $directoryName);
         }
 
-        return $this->rTrimPathSeparators($surveyDir . DIRECTORY_SEPARATOR . $directoryName);
+        return $surveyDir . DIRECTORY_SEPARATOR . $directoryName . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -155,7 +135,7 @@ class FileUploadService
                 $destinationDir
             );
         }
-        $fullFilePath = $destinationDir . DIRECTORY_SEPARATOR . $fileName;
+        $fullFilePath = $destinationDir . $fileName;
         $debugInfoArray[] = $destinationDir;
         $debugInfoArray[] = $fileName;
         $debugInfoArray[] = $fullFilePath;
@@ -221,7 +201,7 @@ class FileUploadService
     private function isDuplicateFile(array $fileInfoArray, $path)
     {
         $newFilePath = $fileInfoArray['tmp_name'];
-        $existingFilePath = $path . DIRECTORY_SEPARATOR . $fileInfoArray['name'];
+        $existingFilePath = $path . $fileInfoArray['name'];
 
         // Check if a file with the same name exists
         if (!file_exists($existingFilePath)) {
@@ -300,16 +280,17 @@ class FileUploadService
         string $directory,
         int $surveyId
     ) {
-        $baseUrl = $this->rTrimPathSeparators(App()->getBaseUrl(true));
+        $filesOutput = [];
         $relativePath = $this->convertFullIntoRelativePath($directory);
         $files = $this->getFilesFromDirectory($directory, $surveyId);
         foreach ($files as $i => $file) {
-            $filesOutput[$i]['filePath'] = $relativePath . DIRECTORY_SEPARATOR . $file;
-            $filesOutput[$i]['fileUrl'] = $baseUrl . '/' .  $relativePath . '/' . $file;
+            $filesOutput[$i]['filePath'] = $relativePath . $file;
+            $filesOutput[$i]['fileUrl'] = App()->getBaseUrl(true) . $filesOutput[$i]['filePath'];
             $filesOutput[$i]['previewPath'] = $this->getPreviewPath(
-                $relativePath . '/' . $file
+                $filesOutput[$i]['filePath']
             );
-            $filesOutput[$i]['previewUrl'] = $baseUrl . '/' . $relativePath . '/' . $file;
+            $filesOutput[$i]['previewUrl'] = App()->getBaseUrl(true) .
+                $filesOutput[$i]['filePath'];
         }
 
         return $filesOutput;
@@ -323,33 +304,10 @@ class FileUploadService
      */
     private function convertFullIntoRelativePath(string $filePath)
     {
-        return $this->rTrimPathSeparators(
-            substr($filePath, strlen($this->getUploadPath()))
-        );
-    }
-
-    private function getUploadPath()
-    {
-        return $this->rTrimPathSeparators(
-            dirname(App()->getConfig(
-                'uploaddir'
-            ))
-        );
-    }
-
-    private function rTrimPathSeparators($path)
-    {
-        return rtrim($path, '/\\');
-    }
-
-    private function buildUrlPath($parts)
-    {
-        return implode(
-            '/',
-            array_map(function ($part) {
-                return $this->rTrimPathSeparators($part);
-            }, $parts)
-        );
+        $uploadDirPath = dirname(App()->getConfig(
+            'uploaddir'
+        ));
+        return substr($filePath, strlen($uploadDirPath));
     }
 
     /**

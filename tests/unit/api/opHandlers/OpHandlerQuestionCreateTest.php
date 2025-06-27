@@ -5,7 +5,9 @@ namespace ls\tests\unit\api\opHandlers;
 use LimeSurvey\DI;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionCreate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAggregate;
-use LimeSurvey\ObjectPatch\{Op\OpStandard, OpHandler\OpHandlerException};
+use LimeSurvey\ObjectPatch\{
+    Op\OpStandard,
+};
 use ls\tests\TestBaseClass;
 use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
 
@@ -72,7 +74,7 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
      * @param array $props
      * @param string $type
      * @return OpStandard
-     * @throws \LimeSurvey\ObjectPatch\ObjectPatchException
+     * @throws \LimeSurvey\ObjectPatch\OpHandlerException
      */
     private function getOp(array $props, string $type = 'create')
     {
@@ -98,7 +100,7 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
                 'title'               => 'G01Q01',
                 'type'                => '1',
                 'question_theme_name' => 'arrays\/dualscale',
-                'gid'                 => 50,
+                'gid'                 => '50',
                 'mandatory'           => false
             ],
             'questionL10n' => [

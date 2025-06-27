@@ -16,7 +16,6 @@ class SurveyResponse
     protected TempIdMapping $tempIdMapping;
     protected ValidationErrors $validationErrors;
     protected ExceptionErrors $exceptionErrors;
-    protected array $additional = [];
 
     /**
      * @param TempIdMapping $tempIdMapping
@@ -41,7 +40,6 @@ class SurveyResponse
     {
         $this->extractTempIdMapping($response);
         $this->extractValidationErrors($response);
-        $this->extractAdditional($response);
         if ($this->isValidOperation) {
             $this->incrementOperationsApplied();
         }
@@ -105,20 +103,6 @@ class SurveyResponse
     }
 
     /**
-     * Extracts additional fields
-     * @param array $handleResponse
-     * @return void
-     */
-    public function extractAdditional(array $handleResponse)
-    {
-        if (array_key_exists('additional', $handleResponse)) {
-            $this->additional = [
-                'extras' => $handleResponse['additional']
-            ];
-        }
-    }
-
-    /**
      * @return array
      */
     public function buildResponseObject(): array
@@ -129,8 +113,7 @@ class SurveyResponse
             ],
             $this->tempIdMapping->getMappingResponseObject(),
             $this->validationErrors->getValidationErrorsObject(),
-            $this->exceptionErrors->getExceptionErrorsObject(),
-            $this->additional
+            $this->exceptionErrors->getExceptionErrorsObject()
         );
     }
 }

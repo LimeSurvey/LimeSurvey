@@ -316,6 +316,35 @@ echo $oQuestionSelector->getModal();
                                 </div>
                             </div>
                         </div>
+                        <!-- Basic non numerical part of answer options -->
+                        <div class="col-12 col-lg-6">
+                            <div class="mb-3">
+                                <?php echo TbHtml::label(gT("Non-Numerical answer option prefix:"), 'answeroptionprefix', ['class' => " form-label"]); ?>
+                                <?php echo TbHtml::textField(
+                                    'answeroptionprefix',
+                                    ($aUserSettings['answeroptionprefix'] ?? 'AO'),
+                                    [
+                                        'class'   => "form-control",
+                                        'pattern' => "[A-Za-z]{0,3}"
+                                    ]
+                                ); ?>
+                            </div>
+                        </div>
+                        <!-- Basic non numerical part of subquestions -->
+                        <div class="col-12 col-lg-6">
+                            <div class="mb-3">
+                                <?php echo TbHtml::label(gT("Non-Numerical subquestions prefix:"), 'subquestionprefix', ['class' => " form-label"]); ?>
+                                <?php echo TbHtml::textField(
+                                    'subquestionprefix',
+                                    ($aUserSettings['subquestionprefix'] ?? 'SQ'),
+                                    [
+                                        'class'   => "form-control",
+                                        'pattern' => "[A-Za-z]{0,3}"
+                                    ]
+                                );
+                                ?>
+                            </div>
+                        </div>
                         <div class="col-12 col-lg-6">
                             <!-- Breadcrumb mode -->
                             <div class="mb-3">

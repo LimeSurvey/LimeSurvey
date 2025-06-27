@@ -8,9 +8,6 @@ use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
 
 class Patcher
 {
-    /**
-     * @var OpHandlerInterface[] Operation handlers to apply operations to entities.
-     */
     private $opHandlers = [];
 
     /**
