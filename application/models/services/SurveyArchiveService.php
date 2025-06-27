@@ -209,9 +209,9 @@ class SurveyArchiveService
      * @param int $iSurveyID
      * @param int $iTimestamp
      * @param string $archiveType
-     * @return string
+     * @return bool
      */
-    public function doesArchiveExists(int $iSurveyID, int $iTimestamp, string $archiveType): string
+    public function doesArchiveExists(int $iSurveyID, int $iTimestamp, string $archiveType): bool
     {
 
         $archiveTypeString = $archiveType === self::$Tokens_archive ? 'token' : 'response';
@@ -406,8 +406,6 @@ class SurveyArchiveService
         $oRecordSet->select('*');
         $oRecordSet->order('tid');
 
-        // $csvContent = chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF'));
-        // $csvContent .= implode(',', $headerColumns) . "\n";
         echo implode(',', $headerColumns) . "\n";
         flush();
 
@@ -454,15 +452,11 @@ class SurveyArchiveService
                     $csvRow[] = '"' . $escapedValue . '"';
                 }
 
-                // $csvContent .= implode(',', $csvRow) . "\n";
                 echo implode(',', $csvRow) . "\n";
             }
             flush();
         }
-        // return $csvContent;
     }
-
-
 
     /**
      * Check if user has permission to update archive
