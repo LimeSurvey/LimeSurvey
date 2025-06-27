@@ -118,10 +118,15 @@ class SurveyResponses implements CommandInterface
                 function ($item) {
                     if (!empty($item['qid'])) {
                         return [
-                        'gid' => $item['gid'],
-                        'qid' => $item['qid'],
-                        'aid' => $item['aid'] ?? null,
-                        'sqid' => $item['sqid'] ?? null,
+                            'gid' => $item['gid'],
+                            'qid' => $item['qid'],
+                            'aid' => $item['aid'] ?? null,
+                            'sqid' => $item['sqid'] ?? null,
+                            'scaleid' => $item['scale_id'] ?? null,
+                            'all_aids' => $this->getAllAnswers(
+                                $item['scale_id'],
+                                $item['qid']
+                            )
                         ];
                     }
                 },
@@ -193,5 +198,10 @@ class SurveyResponses implements CommandInterface
         }
 
         return $paginationDefault;
+    }
+
+    private function getAllAnswers($questionID, $scaleId) {
+        $answer = Answer::model()->findAll("qid='{$questionID}' and scale_id={$scaleId}");
+        return 666;
     }
 }
