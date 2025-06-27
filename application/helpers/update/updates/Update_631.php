@@ -37,10 +37,5 @@ class Update_631 extends DatabaseUpdateBase
             ['othersettings' => $other_settings_inherit_json],
             'gsid != 0 AND othersettings IS NULL'
         );
-        $this->db->createCommand()->update(
-            '{{surveys}}',
-            ['othersettings' => $other_settings_inherit_json],
-            'othersettings IS NULL'
-        );
     }
 }
