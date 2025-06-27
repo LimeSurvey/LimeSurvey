@@ -116,4 +116,18 @@ class ResponseFactory
             $status
         );
     }
+
+    /**
+     * @param mixed $data
+     * @param Status $status
+     * @param callable $streamHandler
+     */
+    public function streamResponse($data, callable $streamHandler): Response
+    {
+        return new Response(
+            $data,
+            new StatusSuccess(),
+            $streamHandler,
+        );
+    }
 }

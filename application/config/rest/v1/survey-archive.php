@@ -4,7 +4,8 @@ use LimeSurvey\Api\Command\V1\SurveyArchive\{
     SurveyArchivesList,
     SurveyArchiveDetails,
     SurveyArchiveDelete,
-    SurveyArchiveAliasUpdate
+    SurveyArchiveAliasUpdate,
+    SurveyArchiveExport
 };
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactorySurveyArchive
@@ -124,6 +125,31 @@ $rest['v1/survey-archive-details/$id'] = [
             ]
         ]
     ]
+];
+
+$rest['v1/survey-archive-export/$id'] = [
+    'GET' => [
+        'tag' => 'survey',
+        'description' => 'Export token or response archive data',
+        'commandClass' => SurveyArchiveExport::class,
+        'auth' => true,
+        'params' => [
+            'timestamp' => ['type' => 'int'],
+            'archiveType' => ['type' => 'string'],
+        ],
+        'responses' => [
+            'success' => [
+                'code' => 200,
+                'description' => 'Archive exported successfully',
+                'schema' => (Schema::create()),
+            ],
+            'not-found' => [
+                'code' => 404,
+                'description' => 'Archive not found',
+                'schema' => $errorSchema,
+            ]
+        ]
+    ],
 ];
 
 return $rest;

@@ -195,12 +195,37 @@ class SurveyArchiveService
                 $archiveTableName = $archive->tbl_name;
                 $this->app->db->createCommand()->dropTable("{{" . $archiveTableName . "}}");
                 if ($archiveType === self::$Response_archive) { // delete question types table when deleting responses
-                    $questionTypesTableName = str_replace('survey', 'questions',$archiveTableName);
+                    $questionTypesTableName = str_replace('survey', 'questions', $archiveTableName);
                     $this->app->db->createCommand()->dropTable("{{" . $questionTypesTableName . "}}");
                 }
                 $archive->delete();
             }
         }
+    }
+
+    /**
+     * verifies if an archive exists
+     *
+     * @param int $iSurveyID
+     * @param int $iTimestamp
+     * @param string $archiveType
+     * @return string
+     */
+    public function doesArchiveExists(int $iSurveyID, int $iTimestamp, string $archiveType): string
+    {
+
+        $archiveTypeString = $archiveType === self::$Tokens_archive ? 'token' : 'response';
+        $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp, $archiveTypeString);
+        if (!$archive) {
+            return false;
+        }
+
+        $tableName = $archive->tbl_name;
+        if (!tableExists("{{{$tableName}}}")) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -357,6 +382,84 @@ class SurveyArchiveService
         }
 
         $archivedResponsesData['data'] = $dataWithTitles;
+    }
+
+    /**
+     * Exports tokens archive as a stream
+     * 
+     * @param int $iSurveyID
+     * @param int $iTimestamp
+     * @return void
+     */
+    function exportTokensAsStream(int $iSurveyID, int $iTimestamp)
+    {
+
+        echo chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF'));
+
+        $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp, 'token');
+        $tableName = $archive->tbl_name;
+       
+        $oRecordSet = $this->app->db->createCommand()->from("{{" . $tableName . "}}");
+        $schema = $this->app->db->getSchema();
+        $table = $schema->getTable("{{" . $tableName . "}}");
+        $headerColumns = array_keys($table->columns);
+        $oRecordSet->select('*');
+        $oRecordSet->order('tid');
+
+        // $csvContent = chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF'));
+        // $csvContent .= implode(',', $headerColumns) . "\n";
+        echo implode(',', $headerColumns) . "\n";
+        flush();
+
+        $countQuery = clone $oRecordSet;
+        $countQuery->select('COUNT(tid)');
+        $totalRows = $countQuery->queryScalar();
+
+        $maxRows = 1000;
+        $maxPages = ceil($totalRows / $maxRows);
+
+        TokenDynamicArchive::setTimestamp($iTimestamp);
+        $token = TokenDynamicArchive::model($iSurveyID);
+        $tokenAttributes = array_keys($token->getAttributes());
+
+        for ($i = 0; $i < $maxPages; $i++) {
+            $offset = $i * $maxRows;
+            $batchQuery = clone $oRecordSet;
+            $batchQuery->limit($maxRows, $offset);
+            $results = $batchQuery->queryAll();
+
+            foreach ($results as $tokenValue) {
+                foreach ($tokenValue as $key => $value) {
+                    if (in_array($key, $tokenAttributes)) {
+                        $token->$key = $value;
+                    }
+                }
+
+                $token->decrypt();
+                $decryptedRow = $token->attributes;
+
+                if (!empty($decryptedRow['validfrom'])) {
+                    $datetimeobj = new Date_Time_Converter($decryptedRow['validfrom'], "Y-m-d H:i:s");
+                    $decryptedRow['validfrom'] = $datetimeobj->convert('Y-m-d H:i');
+                }
+                if (!empty($decryptedRow['validuntil'])) {
+                    $datetimeobj = new Date_Time_Converter($decryptedRow['validuntil'], "Y-m-d H:i:s");
+                    $decryptedRow['validuntil'] = $datetimeobj->convert('Y-m-d H:i');
+                }
+
+                $csvRow = [];
+                foreach ($headerColumns as $column) {
+                    $value = isset($decryptedRow[$column]) ? $decryptedRow[$column] : '';
+                    $escapedValue = str_replace('"', '""', trim((string) $value));
+                    $csvRow[] = '"' . $escapedValue . '"';
+                }
+
+                // $csvContent .= implode(',', $csvRow) . "\n";
+                echo implode(',', $csvRow) . "\n";
+            }
+            flush();
+        }
+        // return $csvContent;
     }
 
 
