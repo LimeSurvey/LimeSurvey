@@ -1866,8 +1866,8 @@ class quexmlpdf extends pdf
      */
     public function numberToLetter($number)
     {
-        if ($number < 1) {
-            $number = 1;
+        if (empty($number)) {
+            return "A";
         }
 
         if ($number > 26) {
