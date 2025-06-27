@@ -25,6 +25,10 @@ $rest = [
                 'name' => 'Site Settings',
                 'description' => 'Site Settings',
             ],
+            'version-info' => [
+                'name' => 'Version Info',
+                'description' => 'Version Info',
+            ],
             'user' => [
                 'name' => 'User',
                 'description' => 'User',
@@ -45,4 +49,5 @@ return array_merge(
     include_once __DIR__ . '/v1/user.php',
     include_once __DIR__ . '/v1/site-settings.php',
     include_once __DIR__ . '/v1/file-upload.php',
+    include_once __DIR__ . '/v1/version-info.php',
 );
