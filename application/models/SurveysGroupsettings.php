@@ -103,7 +103,7 @@ class SurveysGroupsettings extends LSActiveRecord
             array('adminemail, bounce_email', 'length', 'max' => 255),
             array('template', 'length', 'max' => 100),
             array('expires, startdate, datecreated, attributedescriptions, emailresponseto, emailnotificationto, othersettings', 'safe'),
-            array('othersettings', 'LSYii_OtherSettingsValidator'),
+            array('othersettings', 'default', 'value' => '{}'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('gsid, owner_id, admin, expires, startdate, adminemail, anonymized, format,
