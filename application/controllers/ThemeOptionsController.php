@@ -721,7 +721,7 @@ class ThemeOptionsController extends LSBaseController
                 SurveyThemeConfiguration::class
             );
         } catch (Exception $e) {
-            App()->user->setFlash(gT('Error'), $e->getMessage());
+            App()->user->setFlash(gT('error'), $e->getMessage());
         }
         $data = $surveyThemeService->updateCommon($model, $sid, $gsid);
         App()->clientScript->registerPackage('bootstrap-switch');
