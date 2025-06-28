@@ -20,12 +20,13 @@
 
 <!-- Group Name -->
 {% if aGroup.showgroupinfo == 'N' or aGroup.showgroupinfo == 'B' %}
+{% if aSurveyInfo.format != 'A' %}
     <h1 class="{{ aSurveyInfo.class.grouptitle }}" {{ aSurveyInfo.attr.grouptitle }}>
         {{ processString(aGroup.name) }}
     </h1>
+    {% else %}
+    <h2 class="{{ aSurveyInfo.class.grouptitle }}" {{ aSurveyInfo.attr.grouptitle }}>
+        {{ processString(aGroup.name) }}
+    </h2>
+    {% endif %}
 {% endif %}
-
-<script>
-    document.title = "{{ processString(aGroup.name) }} | " + document.title;
-</script>
-
