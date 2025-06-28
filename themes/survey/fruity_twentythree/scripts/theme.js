@@ -42,52 +42,36 @@ window.bootstrap = Bootstrap;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.A11yHandles = void 0;
-var A11yHandles = exports.A11yHandles = function A11yHandles() {
-  var handleTooltip = function handleTooltip() {
-    document.body.addEventListener('keydown', function (e) {
-      if (e.key == 'Escape') {
-        console.log('Escape key pressed');
-        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (tooltipTriggerEl) {
-          var tooltip = bootstrap.Tooltip.getInstance(tooltipTriggerEl);
-          tooltip.hide();
-        });
-      }
-    });
-  };
-  var initLiveRegion = function initLiveRegion() {
+exports["default"] = void 0;
+var timeout;
+var A11yHandles = {
+  initLiveRegion: function initLiveRegion() {
     var LiveRegion = document.createElement('div');
     LiveRegion.id = 'live-region';
     LiveRegion.classList.add('sr-only');
     LiveRegion.setAttribute('aria-live', 'polite');
     LiveRegion.setAttribute('role', 'status');
     document.body.appendChild(LiveRegion);
-  };
-  var timeout;
-  var liveAnnounce = function liveAnnounce(message) {
+  },
+  liveAnnounce: function liveAnnounce(message) {
     var liveRegion = document.getElementById('live-region');
     clearTimeout(timeout);
     liveRegion.innerHTML = '';
     timeout = setTimeout(function () {
       liveRegion.innerHTML = '<p>' + message + '</p>';
     }, 500);
-  };
-  return {
-    handleTooltip: handleTooltip,
-    initLiveRegion: initLiveRegion,
-    liveAnnounce: liveAnnounce
-  };
+  }
 };
 $(document).on('ready pjax:scriptcomplete', function () {
-  A11yHandles().handleTooltip();
-  A11yHandles().initLiveRegion();
+  A11yHandles.initLiveRegion();
 });
 $(document).on('classChangeError', function (event) {
-  A11yHandles().liveAnnounce(event.target.textContent.trim());
+  A11yHandles.liveAnnounce(event.target.textContent.trim());
 });
 $(document).on('classChangeGood', function (event) {
-  A11yHandles().liveAnnounce(event.target.textContent.trim());
+  A11yHandles.liveAnnounce(event.target.textContent.trim());
 });
+var _default = exports["default"] = A11yHandles;
 
 },{}],3:[function(require,module,exports){
 "use strict";
@@ -1109,7 +1093,7 @@ var _old_core_theme = _interopRequireDefault(require("./core/old_core_theme.js")
 var _array = _interopRequireDefault(require("./questiontypes/array/array.js"));
 var _navbar = _interopRequireDefault(require("./navbar/navbar.js"));
 var _video = _interopRequireDefault(require("./video/video.js"));
-var _a11yHandles = require("./a11y-handles/a11y-handles.js");
+var _a11yHandles = _interopRequireDefault(require("./a11y-handles/a11y-handles.js"));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 function _interopRequireWildcard(e, t) { if ("function" == typeof WeakMap) var r = new WeakMap(), n = new WeakMap(); return (_interopRequireWildcard = function _interopRequireWildcard(e, t) { if (!t && e && e.__esModule) return e; var o, i, f = { __proto__: null, "default": e }; if (null === e || "object" != _typeof(e) && "function" != typeof e) return f; if (o = t ? n : r) { if (o.has(e)) return o.get(e); o.set(e, f); } for (var _t in e) "default" !== _t && {}.hasOwnProperty.call(e, _t) && ((i = (o = Object.defineProperty) && Object.getOwnPropertyDescriptor(e, _t)) && (i.get || i.set) ? o(f, _t, i) : f[_t] = e[_t]); return f; })(e, t); }
 
