@@ -39,12 +39,8 @@ window.bootstrap = Bootstrap;
 },{"../../../node_modules/bootstrap/dist/js/bootstrap.esm.js":12}],2:[function(require,module,exports){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.A11yHandles = void 0;
-var A11yHandles = exports.A11yHandles = function A11yHandles() {
-  var handleTooltip = function handleTooltip() {
+var A11yHandles = {
+  handleTooltip: function handleTooltip() {
     document.body.addEventListener('keydown', function (e) {
       if (e.key == 'Escape') {
         console.log('Escape key pressed');
@@ -54,13 +50,18 @@ var A11yHandles = exports.A11yHandles = function A11yHandles() {
         });
       }
     });
-  };
-  return {
-    handleTooltip: handleTooltip
-  };
+  },
+  handleTitle: function handleTitle() {
+    var existingTitle = document.title;
+    var heading = document.querySelector('h1.group-title');
+    if (heading) {
+      document.title = existingTitle + ' - ' + heading.textContent;
+    }
+  }
 };
 $(document).on('ready pjax:scriptcomplete', function () {
-  A11yHandles().handleTooltip();
+  A11yHandles.handleTooltip();
+  A11yHandles.handleTitle();
 });
 
 },{}],3:[function(require,module,exports){
