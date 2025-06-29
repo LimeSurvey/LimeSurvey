@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_634 extends DatabaseUpdateBase
 {
-    private string $prefix;
+    protected string $prefix;
 
     protected string $fieldName;
 
@@ -50,40 +50,84 @@ class Update_634 extends DatabaseUpdateBase
     {
         if ($dbType == 'mssql' || $dbType == 'sqlsrv') {
             return <<<SQL
-CREATE TRIGGER answers_last_modified_update
-ON [{$this->prefix}answers]
-AFTER UPDATE AS
-BEGIN
+CREATE TRIGGER answers_last_modified ON [{$this->prefix}answers]
+AFTER UPDATE AS BEGIN
     UPDATE s SET s.[{$this->fieldName}] = GETDATE()
     FROM [{$this->prefix}surveys] s
-    INNER JOIN [{$this->prefix}questions] q ON s.sid = q.sid
-    WHERE NEW.qid = q.qid;
+    INNER JOIN {$this->prefix}questions q ON s.sid = q.sid
+    INNER JOIN inserted i ON q.qid = i.qid;
+END;
+
+CREATE TRIGGER answers_last_modified_update ON [{$this->prefix}answers]
+AFTER INSERT AS BEGIN
+    UPDATE s SET s.[{$this->fieldName}] = GETDATE()
+    FROM [{$this->prefix}surveys] s
+    INNER JOIN {$this->prefix}questions q ON s.sid = q.sid
+    INNER JOIN inserted i ON q.qid = i.qid;
+END;
+
+CREATE TRIGGER answers_last_modified_delete ON [{$this->prefix}answers]
+AFTER DELETE AS BEGIN
+    UPDATE s SET s.[{$this->fieldName}] = GETDATE()
+    FROM [{$this->prefix}surveys] s
+    INNER JOIN {$this->prefix}questions q ON s.sid = q.sid
+    INNER JOIN deleted i ON q.qid = i.qid;
 END;
 SQL;
         } elseif ($dbType == 'pgsql') {
             return <<<SQL
 CREATE OR REPLACE FUNCTION answers_last_modified()
-RETURNS TRIGGER AS $$
-BEGIN
-    UPDATE {$this->prefix}surveys s SET "[{$this->fieldName}]" = NOW()
+RETURNS TRIGGER AS $$ BEGIN
+    UPDATE {$this->prefix}surveys s SET {$this->fieldName} = NOW()
     FROM {$this->prefix}questions q
     WHERE q.qid = NEW.qid AND q.sid = s.sid;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
-
-CREATE TRIGGER answers_last_modified
-BEFORE UPDATE ON {$this->prefix}answers
+CREATE TRIGGER answers_last_modified AFTER UPDATE ON {$this->prefix}answers
 FOR EACH ROW EXECUTE FUNCTION answers_last_modified();
+
+CREATE OR REPLACE FUNCTION answers_last_modified_insert()
+RETURNS TRIGGER AS $$ BEGIN
+    UPDATE {$this->prefix}surveys s SET {$this->fieldName} = NOW()
+    FROM {$this->prefix}questions q
+    WHERE q.qid = NEW.qid AND q.sid = s.sid;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER answers_last_modified_insert AFTER INSERT ON {$this->prefix}answers
+FOR EACH ROW EXECUTE FUNCTION answers_last_modified_insert();
+
+CREATE OR REPLACE FUNCTION answers_last_modified_delete()
+RETURNS TRIGGER AS $$ BEGIN
+    UPDATE {$this->prefix}surveys s SET {$this->fieldName} = NOW()
+    FROM {$this->prefix}questions q
+    WHERE q.qid = OLD.qid AND q.sid = s.sid;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER answers_last_modified_delete BEFORE DELETE ON {$this->prefix}answers
+FOR EACH ROW EXECUTE FUNCTION answers_last_modified_delete();
 SQL;
         }
 
         return <<<SQL
-CREATE TRIGGER `answers_last_modified` 
-BEFORE UPDATE ON {$this->prefix}answers
+CREATE TRIGGER `answers_last_modified` AFTER UPDATE ON {$this->prefix}answers
 FOR EACH ROW BEGIN
     UPDATE {$this->prefix}surveys s JOIN {$this->prefix}questions q ON q.sid = s.sid
-    SET s.[{$this->fieldName}] = NOW() WHERE q.qid = NEW.qid;
+    SET s.{$this->fieldName} = NOW() WHERE q.qid = NEW.qid;
+END
+
+CREATE TRIGGER `answers_last_modified_insert` AFTER INSERT ON {$this->prefix}answers
+FOR EACH ROW BEGIN
+    UPDATE {$this->prefix}surveys s JOIN {$this->prefix}questions q ON q.sid = s.sid
+    SET s.{$this->fieldName} = NOW() WHERE q.qid = NEW.qid;
+END
+
+CREATE TRIGGER `answers_last_modified_delete` BEFORE DELETE ON {$this->prefix}answers
+FOR EACH ROW BEGIN
+    UPDATE {$this->prefix}surveys s JOIN {$this->prefix}questions q ON q.sid = s.sid
+    SET s.{$this->fieldName} = NOW() WHERE q.qid = OLD.qid;
 END
 SQL;
     }
@@ -96,35 +140,88 @@ CREATE TRIGGER group_l10ns_last_modified
 ON [{$this->prefix}group_l10ns]
 AFTER UPDATE AS
 BEGIN
-    UPDATE s SET s.[{$this->fieldName}] = GETDATE()
+    UPDATE s SET s.{$this->fieldName} = GETDATE()
     FROM [{$this->prefix}surveys] s
     JOIN [{$this->prefix}groups] g ON s.sid = g.sid
     JOIN inserted i ON g.gid = i.gid;
+END;
+
+CREATE TRIGGER group_l10ns_last_modified_insert
+ON [{$this->prefix}group_l10ns]
+AFTER INSERT AS
+BEGIN
+    UPDATE s SET s.{$this->fieldName} = GETDATE()
+    FROM [{$this->prefix}surveys] s
+    JOIN [{$this->prefix}groups] g ON s.sid = g.sid
+    JOIN inserted i ON g.gid = i.gid;
+END;
+
+CREATE TRIGGER group_l10ns_last_modified_delete
+ON [{$this->prefix}group_l10ns]
+BEFORE DELETE AS
+BEGIN
+    UPDATE s SET s.{$this->fieldName} = GETDATE()
+    FROM [{$this->prefix}surveys] s
+    JOIN [{$this->prefix}groups] g ON s.sid = g.sid
+    JOIN deleted i ON g.gid = i.gid;
 END;
 SQL;
         } elseif ($dbType == 'pgsql') {
             return  <<<SQL
 CREATE OR REPLACE FUNCTION group_l10ns_last_modified()
-RETURNS TRIGGER AS $$
-BEGIN
-    UPDATE {$this->prefix}surveys s SET "[{$this->fieldName}]" = NOW()
+RETURNS TRIGGER AS $$ BEGIN
+    UPDATE {$this->prefix}surveys s SET {$this->fieldName} = NOW()
     FROM {$this->prefix}groups g WHERE g.gid = NEW.gid AND g.sid = s.sid;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
-
-CREATE TRIGGER group_l10ns_last_modified
-BEFORE UPDATE ON {$this->prefix}group_l10ns
+CREATE TRIGGER group_l10ns_last_modified AFTER UPDATE ON {$this->prefix}group_l10ns
 FOR EACH ROW EXECUTE FUNCTION group_l10ns_last_modified();
+
+
+CREATE OR REPLACE FUNCTION group_l10ns_last_modified_insert()
+RETURNS TRIGGER AS $$ BEGIN
+    UPDATE {$this->prefix}surveys s SET {$this->fieldName} = NOW()
+    FROM {$this->prefix}groups g WHERE g.gid = NEW.gid AND g.sid = s.sid;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER group_l10ns_last_modified_insert AFTER INSERT ON {$this->prefix}group_l10ns
+FOR EACH ROW EXECUTE FUNCTION group_l10ns_last_modified_insert();
+
+
+CREATE OR REPLACE FUNCTION group_l10ns_last_modified_delete()
+RETURNS TRIGGER AS $$ BEGIN
+    UPDATE {$this->prefix}surveys s SET {$this->fieldName} = NOW()
+    FROM {$this->prefix}groups g WHERE g.gid = OLD.gid AND g.sid = s.sid;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER group_l10ns_last_modified_delete BEFORE DELETE ON {$this->prefix}group_l10ns
+FOR EACH ROW EXECUTE FUNCTION group_l10ns_last_modified_delete();
 SQL;
         }
 
         return <<<SQL
 CREATE TRIGGER `group_l10ns_last_modified`
-BEFORE UPDATE ON {$this->prefix}group_l10ns
+AFTER UPDATE ON {$this->prefix}group_l10ns
 FOR EACH ROW BEGIN
     UPDATE {$this->prefix}surveys s JOIN {$this->prefix}groups g ON g.sid = s.sid
-    SET s.[{$this->fieldName}] = NOW() WHERE g.gid = NEW.gid;
+    SET s.{$this->fieldName} = NOW() WHERE g.gid = NEW.gid;
+END
+
+CREATE TRIGGER `group_l10ns_last_modified_insert`
+AFTER INSERT ON {$this->prefix}group_l10ns
+FOR EACH ROW BEGIN
+    UPDATE {$this->prefix}surveys s JOIN {$this->prefix}groups g ON g.sid = s.sid
+    SET s.{$this->fieldName} = NOW() WHERE g.gid = NEW.gid;
+END
+
+CREATE TRIGGER `group_l10ns_last_modified_delete`
+BEFORE DELETE ON {$this->prefix}group_l10ns
+FOR EACH ROW BEGIN
+    UPDATE {$this->prefix}surveys s JOIN {$this->prefix}groups g ON g.sid = s.sid
+    SET s.{$this->fieldName} = NOW() WHERE g.gid = OLD.gid;
 END
 SQL;
     }
@@ -133,38 +230,80 @@ SQL;
     {
         if ($dbType == 'mssql' || $dbType == 'sqlsrv') {
             return  <<<SQL
-CREATE TRIGGER groups_last_modified
-ON [{$this->prefix}groups]
-AFTER UPDATE AS
-BEGIN
+CREATE TRIGGER groups_last_modified ON [{$this->prefix}groups]
+AFTER UPDATE AS BEGIN
     UPDATE s SET s.[{$this->fieldName}] = GETDATE()
     FROM [{$this->prefix}surveys] s
     JOIN inserted i ON s.sid = i.sid;
 END;
+
+CREATE TRIGGER groups_last_modified_insert ON [{$this->prefix}groups]
+AFTER INSERT AS BEGIN
+    UPDATE s SET s.[{$this->fieldName}] = GETDATE()
+    FROM [{$this->prefix}surveys] s
+    JOIN inserted i ON s.sid = i.sid;
+END;
+
+CREATE TRIGGER groups_last_modified_delete ON [{$this->prefix}groups]
+AFTER DELETE AS BEGIN
+    UPDATE s SET s.[{$this->fieldName}] = GETDATE()
+    FROM [{$this->prefix}surveys] s
+    JOIN deleted i ON s.sid = i.sid;
+END;
+
 SQL;
         } elseif ($dbType == 'pgsql') {
             return  <<<SQL
 CREATE OR REPLACE FUNCTION groups_last_modified()
 RETURNS TRIGGER AS $$
 BEGIN
-    UPDATE {$this->prefix}surveys SET "[{$this->fieldName}]" = NOW() WHERE sid = NEW.sid;
+    UPDATE {$this->prefix}surveys SET {$this->fieldName} = NOW() WHERE sid = NEW.sid;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
-
-CREATE TRIGGER groups_last_modified
-BEFORE UPDATE ON {$this->prefix}groups
+CREATE TRIGGER groups_last_modified AFTER UPDATE ON {$this->prefix}groups
 FOR EACH ROW EXECUTE FUNCTION groups_last_modified();
+
+CREATE OR REPLACE FUNCTION groups_last_modified_insert()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE {$this->prefix}surveys SET {$this->fieldName} = NOW() WHERE sid = NEW.sid;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER groups_last_modified_insert AFTER INSERT ON {$this->prefix}groups
+FOR EACH ROW EXECUTE FUNCTION groups_last_modified_insert();
+
+CREATE OR REPLACE FUNCTION groups_last_modified_delete()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE {$this->prefix}surveys SET {$this->fieldName} = NOW() WHERE sid = OLD.sid;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER groups_last_modified_delete BEFORE DELETE ON {$this->prefix}groups
+FOR EACH ROW EXECUTE FUNCTION groups_last_modified_delete();
 SQL;
         }
 
         return  <<<SQL
-CREATE TRIGGER `groups_last_modified`
-BEFORE UPDATE ON {$this->prefix}groups
+CREATE TRIGGER `groups_last_modified` AFTER UPDATE ON {$this->prefix}groups
 FOR EACH ROW BEGIN
-    UPDATE {$this->prefix}surveys SET [{$this->fieldName}] = NOW() 
+    UPDATE {$this->prefix}surveys SET {$this->fieldName} = NOW() 
     WHERE {$this->prefix}surveys.sid = NEW.sid;
 END;
+
+CREATE TRIGGER `groups_last_modified_insert` AFTER INSERT ON {$this->prefix}groups
+ FOR EACH ROW BEGIN
+    UPDATE {$this->prefix}surveys SET {$this->fieldName} = NOW() 
+    WHERE {$this->prefix}surveys.sid = NEW.sid;
+END
+ 
+CREATE TRIGGER `groups_last_modified_delete` BEFORE DELETE ON {$this->prefix}groups
+ FOR EACH ROW BEGIN
+    UPDATE {$this->prefix}surveys SET {$this->fieldName} = NOW() 
+    WHERE {$this->prefix}surveys.sid = OLD.sid;
+END
 SQL;
     }
 
@@ -182,6 +321,26 @@ BEGIN
     JOIN inserted i ON q.qid = i.qid;
 END;
 
+CREATE TRIGGER question_l10ns_last_modified_insert
+ON [{$this->prefix}question_l10ns]
+AFTER INSERT AS
+BEGIN
+    UPDATE s SET s.[{$this->fieldName}] = GETDATE()
+    FROM [{$this->prefix}surveys] s
+    JOIN [{$this->prefix}questions] q ON s.sid = q.sid
+    JOIN inserted i ON q.qid = i.qid;
+END;
+
+CREATE TRIGGER question_l10ns_last_modified_delete
+ON [{$this->prefix}question_l10ns]
+AFTER DELETE AS
+BEGIN
+    UPDATE s SET s.[{$this->fieldName}] = GETDATE()
+    FROM [{$this->prefix}surveys] s
+    JOIN [{$this->prefix}questions] q ON s.sid = q.sid
+    JOIN deleted i ON q.qid = i.qid;
+END;
+
 SQL;
         } elseif ($dbType == 'pgsql') {
             return  <<<SQL
@@ -193,10 +352,33 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
-
 CREATE TRIGGER question_l10ns_last_modified
-BEFORE UPDATE ON {$this->prefix}question_l10ns
+AFTER UPDATE ON {$this->prefix}question_l10ns
 FOR EACH ROW EXECUTE FUNCTION question_l10ns_last_modified();
+
+CREATE OR REPLACE FUNCTION question_l10ns_last_modified_insert()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE {$this->prefix}surveys s SET "[{$this->fieldName}]" = NOW()
+    FROM {$this->prefix}questions q WHERE q.qid = NEW.qid AND s.sid = q.sid;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER question_l10ns_last_modified_insert
+AFTER INSERT ON {$this->prefix}question_l10ns
+FOR EACH ROW EXECUTE FUNCTION question_l10ns_last_modified_insert();
+
+CREATE OR REPLACE FUNCTION question_l10ns_last_modified_delete()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE {$this->prefix}surveys s SET "[{$this->fieldName}]" = NOW()
+    FROM {$this->prefix}questions q WHERE q.qid = OLD.qid AND s.sid = q.sid;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER question_l10ns_last_modified_delete
+BEFORE DELETE ON {$this->prefix}question_l10ns
+FOR EACH ROW EXECUTE FUNCTION question_l10ns_last_modified_delete();
 SQL;
         }
 
@@ -205,7 +387,21 @@ CREATE TRIGGER `question_l10ns_last_modified`
 BEFORE UPDATE ON {$this->prefix}question_l10ns
 FOR EACH ROW BEGIN
     UPDATE {$this->prefix}surveys s JOIN {$this->prefix}questions q ON q.sid = s.sid
-    SET s.[{$this->fieldName}] = NOW() WHERE q.qid = NEW.qid;
+    SET s.{$this->fieldName} = NOW() WHERE q.qid = NEW.qid;
+END
+
+CREATE TRIGGER `question_l10ns_last_modified_delete`
+BEFORE DELETE ON {$this->prefix}question_l10ns
+FOR EACH ROW BEGIN
+    UPDATE {$this->prefix}surveys s JOIN {$this->prefix}questions q ON q.sid = s.sid
+    SET s.{$this->fieldName} = NOW() WHERE q.qid = OLD.qid;
+END
+
+CREATE TRIGGER `question_l10ns_last_modified_insert`
+AFTER INSERT ON {$this->prefix}question_l10ns
+FOR EACH ROW BEGIN
+    UPDATE {$this->prefix}surveys s JOIN {$this->prefix}questions q ON q.sid = s.sid
+    SET s.{$this->fieldName} = NOW() WHERE q.qid = NEW.qid;
 END
 SQL;
     }
@@ -223,29 +419,79 @@ BEGIN
     JOIN inserted i ON s.sid = i.sid;
 END;
 
+CREATE TRIGGER questions_last_modified_insert
+ON [{$this->prefix}questions]
+AFTER INSERT AS
+BEGIN
+    UPDATE s SET s.[{$this->fieldName}] = GETDATE()
+    FROM [{$this->prefix}surveys] s
+    JOIN inserted i ON s.sid = i.sid;
+END;
+
+CREATE TRIGGER questions_last_modified_delete
+ON [{$this->prefix}questions]
+AFTER DELETE AS
+BEGIN
+    UPDATE s SET s.[{$this->fieldName}] = GETDATE()
+    FROM [{$this->prefix}surveys] s
+    JOIN deleted i ON s.sid = i.sid;
+END;
+
 SQL;
         } elseif ($dbType == 'pgsql') {
             return  <<<SQL
 CREATE OR REPLACE FUNCTION questions_last_modified()
-RETURNS TRIGGER AS $$
-BEGIN
+RETURNS TRIGGER AS $$ BEGIN
     UPDATE {$this->prefix}surveys SET "[{$this->fieldName}]" = NOW() WHERE sid = NEW.sid;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
-
-CREATE TRIGGER questions_last_modified
-BEFORE UPDATE ON {$this->prefix}questions
+CREATE TRIGGER questions_last_modified 
+AFTER UPDATE ON {$this->prefix}questions
 FOR EACH ROW EXECUTE FUNCTION questions_last_modified();
+
+CREATE OR REPLACE FUNCTION questions_last_modified_insert()
+RETURNS TRIGGER AS $$ BEGIN
+    UPDATE {$this->prefix}surveys SET "[{$this->fieldName}]" = NOW() WHERE sid = NEW.sid;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER questions_last_modified_insert 
+AFTER INSERT ON {$this->prefix}questions
+FOR EACH ROW EXECUTE FUNCTION questions_last_modified_insert();
+
+CREATE OR REPLACE FUNCTION questions_last_modified_delete()
+RETURNS TRIGGER AS $$ BEGIN
+    UPDATE {$this->prefix}surveys SET "[{$this->fieldName}]" = NOW() WHERE sid = OLD.sid;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER questions_last_modified_delete 
+BEFORE DELETE ON {$this->prefix}questions
+FOR EACH ROW EXECUTE FUNCTION questions_last_modified_delete();
 SQL;
         }
 
         return  <<<SQL
 CREATE TRIGGER `questions_last_modified`
-BEFORE UPDATE ON {$this->prefix}questions
+AFTER UPDATE ON {$this->prefix}questions
 FOR EACH ROW BEGIN
     UPDATE {$this->prefix}surveys SET [{$this->fieldName}] = NOW() 
     WHERE {$this->prefix}surveys.sid = NEW.sid;
+END;
+
+CREATE TRIGGER `questions_last_modified_insert`
+AFTER INSERT ON {$this->prefix}questions
+FOR EACH ROW BEGIN
+    UPDATE {$this->prefix}surveys SET [{$this->fieldName}] = NOW() 
+    WHERE {$this->prefix}surveys.sid = NEW.sid;
+END;
+
+CREATE TRIGGER `questions_last_modified_delete`
+BEFORE DELETE ON {$this->prefix}questions
+FOR EACH ROW BEGIN
+    UPDATE {$this->prefix}surveys SET [{$this->fieldName}] = NOW() 
+    WHERE {$this->prefix}surveys.sid = OLD.sid;
 END;
 SQL;
     }
@@ -262,20 +508,19 @@ BEGIN
     FROM [{$this->prefix}surveys] s
     JOIN inserted i ON s.sid = i.sid;
 END;
-
 SQL;
         } elseif ($dbType == 'pgsql') {
             return  <<<SQL
 CREATE OR REPLACE FUNCTION surveys_last_modified()
 RETURNS TRIGGER AS $$
 BEGIN
-    NEW."[{$this->fieldName}]" := NOW();
+    NEW.{$this->fieldName} := NOW();
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER surveys_last_modified
-BEFORE UPDATE ON {$this->prefix}surveys
+AFTER UPDATE ON {$this->prefix}surveys
 FOR EACH ROW EXECUTE FUNCTION surveys_last_modified();
 SQL;
         }
@@ -284,7 +529,7 @@ SQL;
 CREATE TRIGGER surveys_last_modified
 BEFORE UPDATE ON {$this->prefix}surveys
 FOR EACH ROW BEGIN
-    SET NEW.[{$this->fieldName}] = NOW();
+    SET NEW.{$this->fieldName} = NOW();
 END;
 SQL;
     }
@@ -295,37 +540,87 @@ SQL;
             return  <<<SQL
 CREATE TRIGGER languagesettings_last_modified
 ON [{$this->prefix}surveys_languagesettings]
-AFTER UPDATE AS
-BEGIN
+AFTER UPDATE AS BEGIN
     UPDATE s SET s.[{$this->fieldName}] = GETDATE()
     FROM [{$this->prefix}surveys] s
     JOIN inserted i ON s.sid = i.surveyls_survey_id;
+END;
+
+CREATE TRIGGER languagesettings_last_modified_insert
+ON {$this->prefix}surveys_languagesettings
+AFTER INSERT AS BEGIN
+    UPDATE s SET s.[{$this->fieldName}] = GETDATE()
+    FROM {$this->prefix}surveys s
+    JOIN inserted i ON s.sid = i.surveyls_survey_id;
+END;
+
+ALTER TRIGGER languagesettings_last_modified_delete
+ON {$this->prefix}surveys_languagesettings
+After DELETE AS BEGIN
+    UPDATE s SET s.[{$this->fieldName}] = GETDATE()
+    FROM {$this->prefix}surveys s
+    JOIN deleted i ON s.sid = i.surveyls_survey_id;
 END;
 SQL;
         } elseif ($dbType == 'pgsql') {
             return  <<<SQL
 CREATE OR REPLACE FUNCTION languagesettings_last_modified()
-RETURNS TRIGGER AS $$
-BEGIN
-    UPDATE {$this->prefix}surveys SET "[{$this->fieldName}]" = NOW() 
+RETURNS TRIGGER AS $$ BEGIN
+    UPDATE {$this->prefix}surveys SET {$this->fieldName} = NOW() 
     WHERE sid = NEW.surveyls_survey_id;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
-
 CREATE TRIGGER languagesettings_last_modified
-BEFORE UPDATE ON {$this->prefix}surveys_languagesettings
+AFTER UPDATE ON {$this->prefix}surveys_languagesettings
 FOR EACH ROW EXECUTE FUNCTION languagesettings_last_modified();
+
+CREATE OR REPLACE FUNCTION languagesettings_last_modified_insert()
+RETURNS TRIGGER AS $$ BEGIN
+    UPDATE {$this->prefix}surveys SET {$this->fieldName} = NOW() 
+    WHERE sid = NEW.surveyls_survey_id;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER languagesettings_last_modified_insert
+AFTER INSERT ON {$this->prefix}surveys_languagesettings
+FOR EACH ROW EXECUTE FUNCTION languagesettings_last_modified_insert();
+
+CREATE OR REPLACE FUNCTION languagesettings_last_modified_delete()
+RETURNS TRIGGER AS $$ BEGIN
+    UPDATE {$this->prefix}surveys SET {$this->fieldName} = NOW() 
+    WHERE sid = OLD.surveyls_survey_id;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER languagesettings_last_modified_delete
+BEFORE DELETE ON {$this->prefix}surveys_languagesettings
+FOR EACH ROW EXECUTE FUNCTION languagesettings_last_modified_delete();
 SQL;
         }
 
         return  <<<SQL
 CREATE TRIGGER `languagesettings_last_modified`
-BEFORE UPDATE ON {$this->prefix}surveys_languagesettings
+AFTER UPDATE ON {$this->prefix}surveys_languagesettings
 FOR EACH ROW BEGIN
-    UPDATE {$this->prefix}surveys SET [{$this->fieldName}] = NOW() 
+    UPDATE {$this->prefix}surveys SET {$this->fieldName} = NOW() 
     WHERE {$this->prefix}surveys.sid = NEW.surveyls_survey_id;
 END;
+
+CREATE TRIGGER languagesettings_last_modified_insert
+AFTER INSERT ON {$this->prefix}surveys_languagesettings
+FOR EACH ROW BEGIN
+    UPDATE {$this->prefix}surveys SET {$this->fieldName} = NOW() 
+    WHERE {$this->prefix}surveys.sid = NEW.surveyls_survey_id;
+END
+
+CREATE TRIGGER languagesettings_last_modified_delete
+BEFORE DELETE ON {$this->prefix}surveys_languagesettings
+FOR EACH ROW BEGIN
+    UPDATE {$this->prefix}surveys SET {$this->fieldName} = NOW() 
+    WHERE {$this->prefix}surveys.sid = OLD.surveyls_survey_id;
+END
+
 SQL;
     }
 }
