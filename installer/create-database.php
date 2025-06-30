@@ -678,7 +678,7 @@ function populateDatabase($oDB)
             'googleanalyticsstyle' => "string(1) NULL",
             'googleanalyticsapikey' => "string(25) NULL",
             'tokenencryptionoptions' => "text NULL",
-            'lastModified' => "datetime",
+            'lastmodified' => "datetime",
             'othersettings' => 'mediumtext'
         ), $options);
 
