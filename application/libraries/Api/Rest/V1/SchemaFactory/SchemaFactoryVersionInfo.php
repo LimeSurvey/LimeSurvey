@@ -15,6 +15,7 @@ class SchemaFactoryVersionInfo
             ->properties(
                 Schema::string('dbVersion')->default(null),
                 Schema::string('assetsVersionNumber')->default(null),
+                Schema::boolean('needsDbUpdate')->default(null),
             );
     }
 }

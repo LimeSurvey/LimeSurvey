@@ -36,10 +36,13 @@ class VersionInfo implements CommandInterface
      */
     public function run(Request $request)
     {
+        $installationDBVersion = (int) App()->getConfig('DBVersion');
+        $dBVersion = App()->getConfig('dbversionnumber');
         return $this->responseFactory
             ->makeSuccess([
-                'dbVersion' => App()->getConfig('dbversionnumber'),
+                'dbVersion' => $dBVersion,
                 'assetsVersionNumber' => App()->getConfig('assetsversionnumber'),
+                'needsDbUpdate' => (int) $installationDBVersion < $dBVersion,
             ]);
     }
 }
