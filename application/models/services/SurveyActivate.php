@@ -100,10 +100,11 @@ class SurveyActivate
      * @param int|null $timestamp
      * @param bool $preserveIDs
      * @param string $archiveType 'all' | 'RP' | 'TK'
+     * @param bool $useFallback
      * @return bool
      * @throws CException
      */
-    public function restoreData(int $surveyId, $timestamp = null, $preserveIDs = false, $archiveType = 'all'): bool
+    public function restoreData(int $surveyId, $timestamp = null, $preserveIDs = false, $archiveType = 'all', $useFallback = true): bool
     {
         require_once "application/helpers/admin/import_helper.php";
         $deactivatedArchives = getDeactivatedArchives($surveyId);
@@ -123,7 +124,7 @@ class SurveyActivate
                     }
                 }
             }
-            if (!$found) {
+            if (!$found && $useFallback) {
                 $archives[$key] = $candidates[count($candidates) - 1];
             }
         }
