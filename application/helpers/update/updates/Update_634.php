@@ -349,12 +349,11 @@ SQL;
     private function triggerQuestionL10ns($dbType): string
     {
         if ($dbType == 'mssql' || $dbType == 'sqlsrv') {
-            $this->triggerQuestionL10nsMssql();
+            return $this->triggerQuestionL10nsMssql();
         } elseif ($dbType == 'pgsql') {
-            $this->triggerQuestionL10nsPgsql();
+            return $this->triggerQuestionL10nsPgsql();
         }
-        $this->triggerQuestionL10nsMysql();
-
+        return $this->triggerQuestionL10nsMysql();
     }
 
     private function triggerQuestionL10nsMssql(): string
