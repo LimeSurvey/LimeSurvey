@@ -34,9 +34,6 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
-Changes from 6.15.1 (build 250626) to 6.15.2 (build 250628) June 28, 2025
-Fixed issue #20155: Error saving survey settings
-
 Changes from 6.15.0 (build 250623) to 6.15.1 (build 250626) June 26, 2025
 -Fixed issue: GD should be a required library (Carsten Schmitz)
 -Fixed issue #20149: Improve update script to set inheritance by default (marticos)
