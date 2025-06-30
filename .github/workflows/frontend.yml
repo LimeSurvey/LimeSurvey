@@ -14,6 +14,9 @@ on:
       - 'feature/**'
       - 'zoho/**'
 
+permissions:
+  contents: read
+
 jobs:
   job_build_packages:
     runs-on: ubuntu-22.04 # ubuntu runner hosted by Github
