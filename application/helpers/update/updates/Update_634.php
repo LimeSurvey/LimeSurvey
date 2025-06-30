@@ -24,16 +24,16 @@ class Update_634 extends DatabaseUpdateBase
         $this->prefix = App()->db->tablePrefix;
         $this->fieldName = 'lastmodified';
 
-//        switch ($this->db->driverName) {
-//            case 'mysql':
-//            case 'mssql':
-//            case 'sqlsrv':
-//                addColumn('{{surveys}}', $this->fieldName, 'datetime DEFAULT current_timestamp');
-//                break;
-//            case 'pgsql':
-//                addColumn('{{surveys}}', $this->fieldName, 'timestamp DEFAULT current_timestamp');
-//                break;
-//        }
+        switch ($this->db->driverName) {
+            case 'mysql':
+            case 'mssql':
+            case 'sqlsrv':
+                addColumn('{{surveys}}', $this->fieldName, 'datetime DEFAULT current_timestamp');
+                break;
+            case 'pgsql':
+                addColumn('{{surveys}}', $this->fieldName, 'timestamp DEFAULT current_timestamp');
+                break;
+        }
 
         foreach ($this->getTriggers() as $trigger) {
             $this->db->createCommand($trigger)->execute();
