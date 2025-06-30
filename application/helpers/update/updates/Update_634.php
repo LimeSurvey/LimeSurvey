@@ -24,16 +24,16 @@ class Update_634 extends DatabaseUpdateBase
         $this->prefix = App()->db->tablePrefix;
         $this->fieldName = 'lastmodified';
 
-        switch ($this->db->driverName) {
-            case 'mysql':
-            case 'mssql':
-            case 'sqlsrv':
-                addColumn('{{surveys}}', $this->fieldName, 'datetime DEFAULT current_timestamp');
-                break;
-            case 'pgsql':
-                addColumn('{{surveys}}', $this->fieldName, 'timestamp DEFAULT current_timestamp');
-                break;
-        }
+//        switch ($this->db->driverName) {
+//            case 'mysql':
+//            case 'mssql':
+//            case 'sqlsrv':
+//                addColumn('{{surveys}}', $this->fieldName, 'datetime DEFAULT current_timestamp');
+//                break;
+//            case 'pgsql':
+//                addColumn('{{surveys}}', $this->fieldName, 'timestamp DEFAULT current_timestamp');
+//                break;
+//        }
 
         foreach ($this->getTriggers() as $trigger) {
             $this->db->createCommand($trigger)->execute();
@@ -43,7 +43,7 @@ class Update_634 extends DatabaseUpdateBase
     private function getTriggers(): array
     {
         $dbType = $this->db->driverName;
-        return [
+        return call_user_func_array('array_merge', [
             AnswersTriggerBuilder::build($dbType, $this->prefix, $this->fieldName),
             GroupL10nsTriggerBuilder::build($dbType, $this->prefix, $this->fieldName),
             GroupsTriggerBuilder::build($dbType, $this->prefix, $this->fieldName),
@@ -51,6 +51,6 @@ class Update_634 extends DatabaseUpdateBase
             QuestionL10nsTriggerBuilder::build($dbType, $this->prefix, $this->fieldName),
             QuestionsTriggerBuilder::build($dbType, $this->prefix, $this->fieldName),
             SurveysTriggerBuilder::build($dbType, $this->prefix, $this->fieldName),
-        ];
+        ]);
     }
 }
