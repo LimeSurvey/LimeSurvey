@@ -42,7 +42,7 @@ class VersionInfo implements CommandInterface
             ->makeSuccess([
                 'dbVersion' => $dBVersion,
                 'assetsVersionNumber' => App()->getConfig('assetsversionnumber'),
-                'needsDbUpdate' => (int) $installationDBVersion < $dBVersion,
+                'needsDbUpdate' => $installationDBVersion < $dBVersion,
             ]);
     }
 }
