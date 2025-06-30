@@ -108,7 +108,7 @@ function checkDbEngine(){
 
         <div class="row">
             <div class="col-lg-4" >
-                <input id="ls-previous" class="btn btn-outline-secondary" type="button" value="<?php eT("Previous"); ?>" onclick="window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
+                <input id="ls-previous" class="btn btn-outline-secondary" type="button" value="<?php eT("Previous"); ?>" onclick="window.open('<?php echo $this->createUrl("installer/precheckprepare"); ?>', '_top')" />
             </div>
             <div class="col-lg-4" style="text-align: center;">
             </div>

@@ -565,7 +565,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('googleanalyticsapikey', 'match', 'pattern' => '/^[a-zA-Z\-\d]*$/',
                 'message' => gT('Google Analytics Tracking ID may only contain alphanumeric characters and hyphens.'),
             ),
-            array('othersettings', 'checkOtherSettings'),
+            array('othersettings', 'LSYii_OtherSettingsValidator'),
         );
     }
 

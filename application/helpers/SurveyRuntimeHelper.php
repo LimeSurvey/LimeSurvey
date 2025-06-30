@@ -911,7 +911,7 @@ class SurveyRuntimeHelper
      */
     private function setPrevStep()
     {
-        if (isset($this->sMove)) {
+        if (isset($this->sMove) && $this->sMove !== "") {
             if (!in_array($this->sMove, array("clearall", "changelang", "saveall", "reload"))) {
                 $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$this->LEMsessid]['step'];
             } else {
