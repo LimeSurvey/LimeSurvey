@@ -49,7 +49,16 @@ class Update_634 extends DatabaseUpdateBase
     private function triggerAnswers($dbType): string
     {
         if ($dbType == 'mssql' || $dbType == 'sqlsrv') {
-            return <<<SQL
+            return $this->triggerAnswerMssql();
+        } elseif ($dbType == 'pgsql') {
+            return $this->triggerAnswerPgsql();
+        }
+        return $this->triggerAnswerMysql();
+    }
+
+    private function triggerAnswerMssql(): string
+    {
+        return <<<SQL
 CREATE TRIGGER answers_last_modified ON [{$this->prefix}answers]
 AFTER UPDATE AS BEGIN
     UPDATE s SET s.[{$this->fieldName}] = GETDATE()
@@ -74,8 +83,11 @@ AFTER DELETE AS BEGIN
     INNER JOIN deleted i ON q.qid = i.qid;
 END;
 SQL;
-        } elseif ($dbType == 'pgsql') {
-            return <<<SQL
+    }
+
+    private function triggerAnswerPgsql(): string
+    {
+        return <<<SQL
 CREATE OR REPLACE FUNCTION answers_last_modified()
 RETURNS TRIGGER AS $$ BEGIN
     UPDATE {$this->prefix}surveys s SET {$this->fieldName} = NOW()
@@ -109,8 +121,10 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER answers_last_modified_delete BEFORE DELETE ON {$this->prefix}answers
 FOR EACH ROW EXECUTE FUNCTION answers_last_modified_delete();
 SQL;
-        }
+    }
 
+    private function triggerAnswerMysql(): string
+    {
         return <<<SQL
 CREATE TRIGGER `answers_last_modified` AFTER UPDATE ON {$this->prefix}answers
 FOR EACH ROW BEGIN
@@ -135,7 +149,16 @@ SQL;
     private function triggerGroupL10ns($dbType): string
     {
         if ($dbType == 'mssql' || $dbType == 'sqlsrv') {
-            return <<<SQL
+            return $this->triggerGroupL10nsMssql();
+        } elseif ($dbType == 'pgsql') {
+            return $this->triggerGroupL10nsPgsql();
+        }
+        return $this->triggerGroupL10nsMysql();
+    }
+
+    private function triggerGroupL10nsMssql(): string
+    {
+        return <<<SQL
 CREATE TRIGGER group_l10ns_last_modified
 ON [{$this->prefix}group_l10ns]
 AFTER UPDATE AS
@@ -166,8 +189,10 @@ BEGIN
     JOIN deleted i ON g.gid = i.gid;
 END;
 SQL;
-        } elseif ($dbType == 'pgsql') {
-            return  <<<SQL
+    }
+    private function triggerGroupL10nsPgsql(): string
+    {
+        return  <<<SQL
 CREATE OR REPLACE FUNCTION group_l10ns_last_modified()
 RETURNS TRIGGER AS $$ BEGIN
     UPDATE {$this->prefix}surveys s SET {$this->fieldName} = NOW()
@@ -200,8 +225,9 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER group_l10ns_last_modified_delete BEFORE DELETE ON {$this->prefix}group_l10ns
 FOR EACH ROW EXECUTE FUNCTION group_l10ns_last_modified_delete();
 SQL;
-        }
-
+    }
+    private function triggerGroupL10nsMysql(): string
+    {
         return <<<SQL
 CREATE TRIGGER `group_l10ns_last_modified`
 AFTER UPDATE ON {$this->prefix}group_l10ns
@@ -226,10 +252,20 @@ END
 SQL;
     }
 
+
     private function triggerGroups($dbType): string
     {
         if ($dbType == 'mssql' || $dbType == 'sqlsrv') {
-            return  <<<SQL
+            return  $this->triggerGroupsMssql();
+        } elseif ($dbType == 'pgsql') {
+            return  $this->triggerGroupsPgsql();
+        }
+        return  $this->triggerGroupsMysql();
+    }
+
+    private function triggerGroupsMssql(): string
+    {
+        return  <<<SQL
 CREATE TRIGGER groups_last_modified ON [{$this->prefix}groups]
 AFTER UPDATE AS BEGIN
     UPDATE s SET s.[{$this->fieldName}] = GETDATE()
@@ -252,8 +288,10 @@ AFTER DELETE AS BEGIN
 END;
 
 SQL;
-        } elseif ($dbType == 'pgsql') {
-            return  <<<SQL
+    }
+    private function triggerGroupsPgsql(): string
+    {
+        return  <<<SQL
 CREATE OR REPLACE FUNCTION groups_last_modified()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -284,8 +322,9 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER groups_last_modified_delete BEFORE DELETE ON {$this->prefix}groups
 FOR EACH ROW EXECUTE FUNCTION groups_last_modified_delete();
 SQL;
-        }
-
+    }
+    private function triggerGroupsMysql(): string
+    {
         return  <<<SQL
 CREATE TRIGGER `groups_last_modified` AFTER UPDATE ON {$this->prefix}groups
 FOR EACH ROW BEGIN
@@ -310,7 +349,17 @@ SQL;
     private function triggerQuestionL10ns($dbType): string
     {
         if ($dbType == 'mssql' || $dbType == 'sqlsrv') {
-            return  <<<SQL
+            $this->triggerQuestionL10nsMssql();
+        } elseif ($dbType == 'pgsql') {
+            $this->triggerQuestionL10nsPgsql();
+        }
+        $this->triggerQuestionL10nsMysql();
+
+    }
+
+    private function triggerQuestionL10nsMssql(): string
+    {
+        return  <<<SQL
 CREATE TRIGGER question_l10ns_last_modified
 ON [{$this->prefix}question_l10ns]
 AFTER UPDATE AS
@@ -342,8 +391,10 @@ BEGIN
 END;
 
 SQL;
-        } elseif ($dbType == 'pgsql') {
-            return  <<<SQL
+    }
+    private function triggerQuestionL10nsPgsql(): string
+    {
+        return  <<<SQL
 CREATE OR REPLACE FUNCTION question_l10ns_last_modified()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -380,8 +431,9 @@ CREATE TRIGGER question_l10ns_last_modified_delete
 BEFORE DELETE ON {$this->prefix}question_l10ns
 FOR EACH ROW EXECUTE FUNCTION question_l10ns_last_modified_delete();
 SQL;
-        }
-
+    }
+    private function triggerQuestionL10nsMysql(): string
+    {
         return  <<<SQL
 CREATE TRIGGER `question_l10ns_last_modified`
 BEFORE UPDATE ON {$this->prefix}question_l10ns
@@ -409,7 +461,16 @@ SQL;
     private function triggerQuestions($dbType): string
     {
         if ($dbType == 'mssql' || $dbType == 'sqlsrv') {
-            return  <<<SQL
+            return $this->triggerQuestionsMssql();
+        } elseif ($dbType == 'pgsql') {
+            return $this->triggerQuestionsPgsql();
+        }
+        return $this->triggerQuestionsMysql();
+    }
+
+    private function triggerQuestionsMssql(): string
+    {
+        return  <<<SQL
 CREATE TRIGGER questions_last_modified
 ON [{$this->prefix}questions]
 AFTER UPDATE AS
@@ -438,8 +499,10 @@ BEGIN
 END;
 
 SQL;
-        } elseif ($dbType == 'pgsql') {
-            return  <<<SQL
+    }
+    private function triggerQuestionsPgsql(): string
+    {
+        return  <<<SQL
 CREATE OR REPLACE FUNCTION questions_last_modified()
 RETURNS TRIGGER AS $$ BEGIN
     UPDATE {$this->prefix}surveys SET "[{$this->fieldName}]" = NOW() WHERE sid = NEW.sid;
@@ -470,8 +533,9 @@ CREATE TRIGGER questions_last_modified_delete
 BEFORE DELETE ON {$this->prefix}questions
 FOR EACH ROW EXECUTE FUNCTION questions_last_modified_delete();
 SQL;
-        }
-
+    }
+    private function triggerQuestionsMysql(): string
+    {
         return  <<<SQL
 CREATE TRIGGER `questions_last_modified`
 AFTER UPDATE ON {$this->prefix}questions
@@ -499,7 +563,16 @@ SQL;
     private function triggerSurveys($dbType): string
     {
         if ($dbType == 'mssql' || $dbType == 'sqlsrv') {
-            return  <<<SQL
+            return $this->triggerSurveysMssql();
+        } elseif ($dbType == 'pgsql') {
+            return $this->triggerSurveysPgsql();
+        }
+        return $this->triggerSurveysMysql();
+    }
+
+    private function triggerSurveysMssql(): string
+    {
+        return  <<<SQL
 CREATE TRIGGER surveys_last_modified
 ON [{$this->prefix}surveys]
 AFTER UPDATE AS
@@ -509,8 +582,10 @@ BEGIN
     JOIN inserted i ON s.sid = i.sid;
 END;
 SQL;
-        } elseif ($dbType == 'pgsql') {
-            return  <<<SQL
+    }
+    private function triggerSurveysPgsql(): string
+    {
+        return  <<<SQL
 CREATE OR REPLACE FUNCTION surveys_last_modified()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -523,8 +598,9 @@ CREATE TRIGGER surveys_last_modified
 AFTER UPDATE ON {$this->prefix}surveys
 FOR EACH ROW EXECUTE FUNCTION surveys_last_modified();
 SQL;
-        }
-
+    }
+    private function triggerSurveysMysql(): string
+    {
         return  <<<SQL
 CREATE TRIGGER surveys_last_modified
 BEFORE UPDATE ON {$this->prefix}surveys
@@ -537,7 +613,16 @@ SQL;
     private function triggerLanguageSettings($dbType): string
     {
         if ($dbType == 'mssql' || $dbType == 'sqlsrv') {
-            return  <<<SQL
+            return $this->triggerLanguageSettingsMssql();
+        } elseif ($dbType == 'pgsql') {
+            return $this->triggerLanguageSettingsPgsql();
+        }
+        return $this->triggerLanguageSettingsMysql();
+    }
+
+    private function triggerLanguageSettingsMssql(): string
+    {
+        return  <<<SQL
 CREATE TRIGGER languagesettings_last_modified
 ON [{$this->prefix}surveys_languagesettings]
 AFTER UPDATE AS BEGIN
@@ -562,8 +647,10 @@ After DELETE AS BEGIN
     JOIN deleted i ON s.sid = i.surveyls_survey_id;
 END;
 SQL;
-        } elseif ($dbType == 'pgsql') {
-            return  <<<SQL
+    }
+    private function triggerLanguageSettingsPgsql(): string
+    {
+        return  <<<SQL
 CREATE OR REPLACE FUNCTION languagesettings_last_modified()
 RETURNS TRIGGER AS $$ BEGIN
     UPDATE {$this->prefix}surveys SET {$this->fieldName} = NOW() 
@@ -597,8 +684,9 @@ CREATE TRIGGER languagesettings_last_modified_delete
 BEFORE DELETE ON {$this->prefix}surveys_languagesettings
 FOR EACH ROW EXECUTE FUNCTION languagesettings_last_modified_delete();
 SQL;
-        }
-
+    }
+    private function triggerLanguageSettingsMysql(): string
+    {
         return  <<<SQL
 CREATE TRIGGER `languagesettings_last_modified`
 AFTER UPDATE ON {$this->prefix}surveys_languagesettings
