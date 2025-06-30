@@ -53,5 +53,4 @@ class Update_634 extends DatabaseUpdateBase
             SurveysTriggerBuilder::build($dbType, $this->prefix, $this->fieldName),
         ];
     }
-
 }
