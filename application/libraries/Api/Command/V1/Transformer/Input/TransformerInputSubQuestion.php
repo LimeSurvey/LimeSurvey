@@ -15,6 +15,7 @@ class TransformerInputSubQuestion extends Transformer
         $dataMap['type']['required'] = false;
         $dataMap['title'] = ['key' => 'code', 'required' => 'create'];
         $dataMap['qid'] = ['required' => 'update'];
+        $dataMap['gid'] = ['type' => 'int'];
         $dataMap['tempId'] = true;
         $dataMap['l10ns'] = [
             'key' => 'subquestionl10n',
