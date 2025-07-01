@@ -464,7 +464,7 @@ class SurveyArchiveService
 
         $tableName = 'survey_' . $iSurveyID;
         if ($iTimestamp) {
-            $tableName .= 'old_' . $tableName . '_' . $iTimestamp;
+            $tableName = 'old_' . $tableName . '_' . $iTimestamp;
         }
 
         $oRecordSet = $this->app->db->createCommand()->from("{{" . $tableName . "}}");
