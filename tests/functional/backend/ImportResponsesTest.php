@@ -2,10 +2,9 @@
 
 namespace ls\tests;
 
-use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverExpectedCondition;
 use LimeSurvey\Models\Services\SurveyActivate;
 use LimeSurvey\Models\Services\SurveyDeactivate;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 class ImportResponsesTest extends TestBaseClass
 {
@@ -46,7 +45,12 @@ class ImportResponsesTest extends TestBaseClass
                 $survey,
                 $permission,
                 new \SurveyActivator($survey),
-                App()
+                App(),
+                new SurveyAccessModeService(
+                    $permission,
+                    $survey,
+                    App()
+                )
             );
             $surveyActivator->activate($survey->sid, ['restore' => true], true);
             $responses2 = App()->db->createCommand($query)->queryAll();
