@@ -530,7 +530,7 @@ class LsDefaultDataSets
                 '',
                 'remix',
                 '',
-                'admin/statistics/sa/index/',
+                'admin/statistics/sa/simpleStatistics/',
                 '',
                 '',
                 '',
