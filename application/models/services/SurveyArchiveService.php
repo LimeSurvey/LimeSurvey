@@ -458,6 +458,50 @@ class SurveyArchiveService
         }
     }
 
+    public function exportResponsesAsStream(int $iSurveyID, int $iTimestamp = 0, int $maxRows = 1000)
+    {
+        echo chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF'));
+
+        $tableName = 'survey_' . $iSurveyID;
+        if ($iTimestamp) {
+            $tableName .= 'old_' . $tableName . '_' . $iTimestamp;
+        }
+
+        $oRecordSet = $this->app->db->createCommand()->from("{{" . $tableName . "}}");
+
+        $schema = $this->app->db->getSchema();
+        $table = $schema->getTable("{{" . $tableName . "}}");
+        $headerColumns = array_keys($table->columns);
+        $oRecordSet->select('*');
+
+        $countQuery = clone $oRecordSet;
+        $countQuery->select('COUNT(id)');
+        $totalRows = $countQuery->queryScalar();
+
+        $oRecordSet->order('id');
+        echo implode(',', $headerColumns) . "\n";
+        flush();
+
+        $maxPages = ceil($totalRows / $maxRows);
+
+        $csvRow = [];
+        for ($i = 0; $i < $maxPages; $i++) {
+            $offset = $i * $maxRows;
+            $batchQuery = clone $oRecordSet;
+            $batchQuery->limit($maxRows, $offset);
+            $results = $batchQuery->queryAll();
+
+            foreach ($results as $record) {
+                foreach ($headerColumns as $headerColumn) {
+                    $csvRow []= '"' . $record[$headerColumn] . '"';
+                }
+            }
+
+            echo implode(',', $csvRow) . "\n";
+        }
+        flush();
+    }
+
     /**
      * Check if user has permission to update archive
      *
