@@ -21,7 +21,7 @@ class SurveysTriggerBuilder {
             <<<SQL
                 CREATE TRIGGER surveys_last_modified
                 ON [{$prefix}surveys]
-                AFTER UPDATE AS
+                BEFORE UPDATE AS
                 BEGIN
                     UPDATE s SET s.[{$fieldName}] = GETDATE()
                     FROM [{$prefix}surveys] s
@@ -44,7 +44,7 @@ class SurveysTriggerBuilder {
                 $$ LANGUAGE plpgsql;
                 
                 CREATE TRIGGER surveys_last_modified
-                AFTER UPDATE ON {$prefix}surveys
+                BEFORE UPDATE ON {$prefix}surveys
                 FOR EACH ROW EXECUTE FUNCTION surveys_last_modified();
             SQL
         ];
