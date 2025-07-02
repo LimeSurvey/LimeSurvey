@@ -68,9 +68,14 @@ class SurveyArchiveExport implements CommandInterface
         $typePart = $archiveType === SurveyArchiveService::$Tokens_archive ? 'participants' : 'responses';
         $fileName = "survey_{$surveyId}_{$typePart}_{$timestamp}.csv";
         $contentType = 'Content-Type: text/csv; charset=utf-8';
-        // TODO: adjust for when archiveType is responses
-        $streamHandler = function () use ($surveyId, $timestamp, $tableName) {
-            $this->surveyArchiveService->exportTokensAsStream($surveyId, $timestamp);
+        $streamHandler = function () use ($surveyId, $timestamp, $archiveType) {
+            if ($archiveType === SurveyArchiveService::$Tokens_archive) {
+                $this->surveyArchiveService->exportTokensAsStream($surveyId, $timestamp);
+            } elseif ($archiveType === SurveyArchiveService::$Response_archive) {
+                $this->surveyArchiveService->exportResponsesAsStream($surveyId, $timestamp);
+            } else {
+                throw new \InvalidArgumentException("Unsupported archive type: $archiveType");
+            }
         };
 
         return $this->responseFactory->streamResponse(

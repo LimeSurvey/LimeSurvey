@@ -484,7 +484,6 @@ class SurveyArchiveService
 
         $maxPages = ceil($totalRows / $maxRows);
 
-        $csvRow = [];
         for ($i = 0; $i < $maxPages; $i++) {
             $offset = $i * $maxRows;
             $batchQuery = clone $oRecordSet;
@@ -492,14 +491,15 @@ class SurveyArchiveService
             $results = $batchQuery->queryAll();
 
             foreach ($results as $record) {
+                $csvRow = [];
                 foreach ($headerColumns as $headerColumn) {
-                    $csvRow []= '"' . $record[$headerColumn] . '"';
+                    $csvRow[] = '"' . $record[$headerColumn] . '"';
                 }
+                echo implode(',', $csvRow) . "\n";
             }
 
-            echo implode(',', $csvRow) . "\n";
+            flush();
         }
-        flush();
     }
 
     /**
