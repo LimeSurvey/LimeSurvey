@@ -11,6 +11,9 @@ use ArchivedTableSettings;
 use TokenDynamicArchive;
 use SurveyDynamicArchive;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class SurveyArchiveService
 {
     private Survey $survey;
@@ -389,6 +392,9 @@ class SurveyArchiveService
      *
      * @param int $iSurveyID
      * @param int $iTimestamp
+     *
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     *
      * @return void
      */
     public function exportTokensAsStream(int $iSurveyID, int $iTimestamp)
