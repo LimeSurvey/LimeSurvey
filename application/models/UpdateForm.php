@@ -645,7 +645,7 @@ class UpdateForm extends CFormModel
 
     /**
      * Return the total size of the current database in MB
-     * @return string
+     * @return int
      */
     private function getDbTotalSize()
     {
@@ -657,7 +657,7 @@ class UpdateForm extends CFormModel
             $size += $row["Data_length"] + $row["Index_length"];
         }
 
-        $dbSize = number_format($size / (1024 * 1024), 2);
+        $dbSize = (int)number_format($size / (1024 * 1024), 2);
 
         return $dbSize;
     }
