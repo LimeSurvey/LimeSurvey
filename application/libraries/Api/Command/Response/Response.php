@@ -62,7 +62,7 @@ class Response
      */
     public function streamResponse(): void
     {
-        if ($this->isStream()) {
+        if ($this->isStream() && $this->streamHandler !== null) {
             $data = $this->getData();
             call_user_func($this->streamHandler, $data);
         }

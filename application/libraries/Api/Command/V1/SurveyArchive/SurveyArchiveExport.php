@@ -53,7 +53,11 @@ class SurveyArchiveExport implements CommandInterface
             return $response;
         }
 
-        $archiveType = $request->getData('archiveType');
+        $archiveType = $request->getData('archiveType') ?? null;
+        if ($archiveType === null) {
+            throw new \InvalidArgumentException("Missing required parameter: archiveType");
+        }
+
         $archiveExists = $this->surveyArchiveService->doesArchiveExists($surveyId, $timestamp, $archiveType);
         if (!$archiveExists) {
             return $this->responseFactory->makeErrorNotFound(
@@ -68,7 +72,7 @@ class SurveyArchiveExport implements CommandInterface
         $typePart = $archiveType === SurveyArchiveService::$Tokens_archive ? 'participants' : 'responses';
         $fileName = "survey_{$surveyId}_{$typePart}_{$timestamp}.csv";
         $contentType = 'Content-Type: text/csv; charset=utf-8';
-        $streamHandler = function () use ($surveyId, $timestamp, $archiveType) {
+        $streamHandler = function () use ($surveyId, $timestamp, $archiveType): void {
             if ($archiveType === SurveyArchiveService::$Tokens_archive) {
                 $this->surveyArchiveService->exportTokensAsStream($surveyId, $timestamp);
             } elseif ($archiveType === SurveyArchiveService::$Response_archive) {
