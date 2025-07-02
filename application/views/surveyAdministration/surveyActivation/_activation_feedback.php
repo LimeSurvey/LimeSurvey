@@ -31,13 +31,13 @@
 
                     <?php if ($allowregister && !tableExists('tokens_' . $iSurveyID)) : ?>
                         <p>
-                            <?php eT("This survey allows public registration. A survey participants table must also be created."); ?>
+                            <?php eT("This survey allows public registration. A survey participant list must also be created."); ?>
                             <br/>
                             <br/>
                             <input
                                 type="submit"
                                 class="btn btn-outline-secondary btn-lg limebutton"
-                                value="<?php eT("Initialize participant table"); ?>"
+                                value="<?php eT("Initialize participant list"); ?>"
                                 onclick='<?php echo $onclickAction; ?>'
                             />
                         </p>
@@ -54,7 +54,7 @@
                                 <?php eT("In closed-access mode, only those who are invited (and have an access code) can access the survey. You can activate the closed access mode now or later."); ?>
                                 <br/>
                                 <br/>
-                                <?php eT("You can switch back to open-access mode at any time. Navigate to Settings -> Survey participants and click on the red 'Delete participants table' button in the top bar."); ?>
+                                <?php eT("You can switch back to open-access mode at any time. Navigate to Settings -> Survey participants and click on the red 'Delete participant list' button in the top bar."); ?>
                                 <br/>
                                 <br/>
                                 <input

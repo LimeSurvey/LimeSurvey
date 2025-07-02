@@ -745,7 +745,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * This function returns any valid mappings from the survey participants tables to the CPDB
+     * This function returns any valid mappings from the survey participant lists to the CPDB
      * in the form of an array [<cpdb_attribute_id>=><participant_table_attribute_name>]
      *
      * @return array Array of mappings
@@ -792,7 +792,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
 
     /**
-     * Returns true in a survey participants table exists for survey
+     * Returns true in a survey participant list exists for survey
      * @return boolean
      */
     public function getHasTokensTable()
@@ -1993,7 +1993,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Get all surveys that has participant table
+     * Get all surveys that has participant list
      * @return Survey[]
      */
     public static function getSurveysWithTokenTable()
@@ -2421,7 +2421,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey settings"),
-                'description' => gT("Permission to view, update the survey settings including survey participants table creation"),
+                'description' => gT("Permission to view, update the survey settings including survey participant list creation"),
                 'img' => ' ri-settings-5-fill',
             ),
             'tokens' => array(
