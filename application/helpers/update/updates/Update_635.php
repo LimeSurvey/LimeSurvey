@@ -12,6 +12,10 @@ use LimeSurvey\Helpers\Update\triggers\SurveysTriggerBuilder;
 
 class Update_635 extends DatabaseUpdateBase
 {
+    protected string $prefix;
+
+    protected string $fieldName;
+
     public function up()
     {
         $this->prefix = App()->db->tablePrefix;
