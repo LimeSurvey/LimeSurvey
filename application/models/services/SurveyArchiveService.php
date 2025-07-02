@@ -341,7 +341,7 @@ class SurveyArchiveService
      *
      * @return void
      */
-    protected function attachQuestionTitlesToResponses(array &$archivedResponsesData, int $iSurveyID): void
+    private function attachQuestionTitlesToResponses(array &$archivedResponsesData, int $iSurveyID): void
     {
         $survey = $this->survey->findByPk($iSurveyID);
         $fieldMap = createFieldMap($survey, 'full', false, false);
@@ -386,19 +386,19 @@ class SurveyArchiveService
 
     /**
      * Exports tokens archive as a stream
-     * 
+     *
      * @param int $iSurveyID
      * @param int $iTimestamp
      * @return void
      */
-    function exportTokensAsStream(int $iSurveyID, int $iTimestamp)
+    public function exportTokensAsStream(int $iSurveyID, int $iTimestamp)
     {
 
         echo chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF'));
 
         $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp, 'token');
         $tableName = $archive->tbl_name;
-       
+
         $oRecordSet = $this->app->db->createCommand()->from("{{" . $tableName . "}}");
         $schema = $this->app->db->getSchema();
         $table = $schema->getTable("{{" . $tableName . "}}");
@@ -508,7 +508,7 @@ class SurveyArchiveService
      * @param int $iSurveyID
      * @return bool
      */
-    protected function hasPermission(int $iSurveyID): bool
+    private function hasPermission(int $iSurveyID): bool
     {
         return $this->permission->hasSurveyPermission($iSurveyID, 'surveysettings', 'update');
     }
