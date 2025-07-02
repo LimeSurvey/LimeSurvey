@@ -4835,16 +4835,19 @@ function decodeTokenAttributes(string $tokenAttributeData)
         return array();
     }
     if (substr($tokenAttributeData, 0, 1) != '{' && substr($tokenAttributeData, 0, 1) != '[') {
+        if (!App()->getConfig('allow_unserialize_attributedescriptions')) {
+            return array();
+        }
+        // minimal broken securisation, mantis issue #20144
         $sSerialType = getSerialClass($tokenAttributeData);
         if ($sSerialType == 'array') {
-// Safe to decode
-            $aReturnData = unserialize($tokenAttributeData) ?? [];
+            $aReturnData = unserialize($tokenAttributeData, ["allowed_classes" => false]) ?? [];
         } else {
-// Something else, might be unsafe
+            // Something else, sure it's unsafe
             return array();
         }
     } else {
-            $aReturnData = json_decode($tokenAttributeData, true) ?? [];
+        $aReturnData = json_decode($tokenAttributeData, true) ?? [];
     }
     if ($aReturnData === false || $aReturnData === null) {
         return array();

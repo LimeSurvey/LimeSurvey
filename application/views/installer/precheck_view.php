@@ -13,6 +13,11 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
         <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
     <div class="col-lg-9">
+        <?php if (empty($next) && empty($cookiesAllowed)): ?>
+            <div class="alert alert-warning" role="alert">
+                <?= gT("Cookies seem to be disabled. Please use the \"Check again\" button instead of refreshing the page."); ?>
+            </div>
+        <?php endif; ?>
         <h2><?php echo $title; ?></h2>
         <p><?php echo $descp; ?></p>
         <legend><?php eT("Minimum requirements"); ?></legend>
@@ -86,6 +91,17 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                        <td><?= $model->isPhpJsonPresent ? $iconOk : $iconFail ?></td>
                 </tr>
                 <tr>
+                        <td><?php eT("PHP GD library"); ?></td>
+                        <td><span class='ri-check-fill text-success'></span></td>
+                        <td>
+                        <?php if ($model->isPhpGdPresent): ?>
+                        <?= $model->phpGdHasJpegSupport ? $iconOk : $iconFail . '<br/>' . gT("The GD extension found doesn't support JPEG") ?>
+                        <?php else: ?>
+                            <?= $iconFail ?>
+                        <?php endif; ?>
+               </td>
+
+                <tr>
                        <td>/application/config <?php eT("directory"); ?></td>
                        <td><?php eT("Found & writable"); ?></td>
                        <td><?= $model->isConfigDirWriteable ? $iconOk : $iconFail ?></td>
@@ -121,17 +137,6 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
         </thead>
         <tbody>
         <tr>
-               <td><?php eT("PHP GD library"); ?></td>
-               <td><span class='ri-check-fill text-success'></span></td>
-               <td>
-                    <?php if ($model->isPhpGdPresent): ?>
-                        <?= $model->phpGdHasJpegSupport ? $iconOk : $iconFail . '<br/>' . gT("The GD extension found doesn't support JPEG") ?>
-                    <?php else: ?>
-                        <?= $iconFail ?>
-                    <?php endif; ?>
-               </td>
-        </tr>
-        <tr>
                <td><?php eT("PHP Intl library"); ?></td>
                <td><span class='ri-check-fill text-success' alt="Check"></span></td>
                <td><?= $model->isCollatorPresent ? $iconOk : $iconFail ?></td>
@@ -160,7 +165,7 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                 <input id="ls-previous" class="btn btn-outline-secondary" type="button" value="<?php eT('Previous'); ?>" onclick="window.open('<?php echo $this->createUrl("installer/license"); ?>', '_top')" />
             </div>
             <div class="col-lg-4">
-                <input id="ls-check-again" class="btn btn-outline-secondary" type="button" value="<?php eT('Check again'); ?>" onclick="window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
+                <input id="ls-check-again" class="btn btn-outline-secondary" type="button" value="<?php eT('Check again'); ?>" onclick="window.open('<?php echo $this->createUrl("installer/precheckprepare"); ?>', '_top')" />
             </div>
             <div class="col-lg-4">
 

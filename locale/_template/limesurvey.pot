@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-06-10 07:57:35+00:00\n"
+"POT-Creation-Date: 2025-06-28 07:34:13+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -525,7 +525,7 @@ msgstr ""
 msgid "Could not delete Box"
 msgstr ""
 
-#: application/controllers/InstallerController.php:136
+#: application/controllers/InstallerController.php:140
 #: application/controllers/SurveyAdministrationController.php:3060
 #: application/models/TemplateManifest.php:166
 #: application/views/admin/update/updater/_progress.php:11
@@ -534,134 +534,134 @@ msgstr ""
 msgid "Welcome"
 msgstr ""
 
-#: application/controllers/InstallerController.php:137
+#: application/controllers/InstallerController.php:141
 msgid "Welcome to the LimeSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey."
 msgstr ""
 
-#: application/controllers/InstallerController.php:161
+#: application/controllers/InstallerController.php:165
 #: application/views/installer/sidebar_view.php:16
 msgid "License"
 msgstr ""
 
-#: application/controllers/InstallerController.php:162
+#: application/controllers/InstallerController.php:166
 msgid "GNU General Public License:"
 msgstr ""
 
-#: application/controllers/InstallerController.php:194
+#: application/controllers/InstallerController.php:227
 #: application/views/admin/update/updater/_progress.php:16
 #: application/views/installer/sidebar_view.php:19
 msgid "Pre-installation check"
 msgstr ""
 
-#: application/controllers/InstallerController.php:195
+#: application/controllers/InstallerController.php:228
 msgid "Pre-installation check for LimeSurvey "
 msgstr ""
 
-#: application/controllers/InstallerController.php:231
-#: application/controllers/InstallerController.php:366
-#: application/controllers/InstallerController.php:403
-#: application/controllers/InstallerController.php:429
-#: application/controllers/InstallerController.php:478
+#: application/controllers/InstallerController.php:264
+#: application/controllers/InstallerController.php:399
+#: application/controllers/InstallerController.php:436
+#: application/controllers/InstallerController.php:462
+#: application/controllers/InstallerController.php:511
 #: application/views/installer/dbconfig_view.php:59
 msgid "Database configuration"
 msgstr ""
 
-#: application/controllers/InstallerController.php:232
-#: application/controllers/InstallerController.php:367
-#: application/controllers/InstallerController.php:404
-#: application/controllers/InstallerController.php:430
-#: application/controllers/InstallerController.php:479
+#: application/controllers/InstallerController.php:265
+#: application/controllers/InstallerController.php:400
+#: application/controllers/InstallerController.php:437
+#: application/controllers/InstallerController.php:463
+#: application/controllers/InstallerController.php:512
 msgid "Please enter the database settings you want to use for LimeSurvey:"
 msgstr ""
 
-#: application/controllers/InstallerController.php:282
+#: application/controllers/InstallerController.php:315
 msgid "The database you specified does already exist."
 msgstr ""
 
-#: application/controllers/InstallerController.php:289
+#: application/controllers/InstallerController.php:322
 msgid "The database exists and contains LimeSurvey tables."
 msgstr ""
 
-#: application/controllers/InstallerController.php:290
+#: application/controllers/InstallerController.php:323
 msgid "You'll be redirected to the database update or (if your database is already up to date) to the administration login in 5 seconds. If not, please click %shere%s."
 msgstr ""
 
-#: application/controllers/InstallerController.php:303
-#: application/controllers/InstallerController.php:304
-#: application/controllers/InstallerController.php:394
-#: application/controllers/InstallerController.php:395
+#: application/controllers/InstallerController.php:336
+#: application/controllers/InstallerController.php:337
+#: application/controllers/InstallerController.php:427
+#: application/controllers/InstallerController.php:428
 #: application/views/installer/sidebar_view.php:25
 msgid "Database settings"
 msgstr ""
 
-#: application/controllers/InstallerController.php:322
+#: application/controllers/InstallerController.php:355
 msgid "Create database"
 msgstr ""
 
-#: application/controllers/InstallerController.php:331
+#: application/controllers/InstallerController.php:364
 msgid "A database named \"%s\" already exists."
 msgstr ""
 
-#: application/controllers/InstallerController.php:332
+#: application/controllers/InstallerController.php:365
 msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr ""
 
-#: application/controllers/InstallerController.php:336
-#: application/controllers/InstallerController.php:390
+#: application/controllers/InstallerController.php:369
+#: application/controllers/InstallerController.php:423
 msgid "Populate database"
 msgstr ""
 
-#: application/controllers/InstallerController.php:340
+#: application/controllers/InstallerController.php:373
 msgid "Please <a href=\"%s\">log in</a>."
 msgstr ""
 
-#: application/controllers/InstallerController.php:383
+#: application/controllers/InstallerController.php:416
 msgid "Database has been created"
 msgstr ""
 
-#: application/controllers/InstallerController.php:387
+#: application/controllers/InstallerController.php:420
 msgid "Please continue with populating the database."
 msgstr ""
 
-#: application/controllers/InstallerController.php:400
+#: application/controllers/InstallerController.php:433
 msgid "Try again! Creation of database failed."
 msgstr ""
 
-#: application/controllers/InstallerController.php:437
+#: application/controllers/InstallerController.php:470
 msgid "Database %s has been successfully populated."
 msgstr ""
 
-#: application/controllers/InstallerController.php:440
+#: application/controllers/InstallerController.php:473
 msgid "There were errors when trying to populate the database:"
 msgstr ""
 
-#: application/controllers/InstallerController.php:466
+#: application/controllers/InstallerController.php:499
 #: application/views/installer/sidebar_view.php:28
 msgid "Administrator settings"
 msgstr ""
 
-#: application/controllers/InstallerController.php:467
+#: application/controllers/InstallerController.php:500
 msgid "Further settings for application administrator"
 msgstr ""
 
-#: application/controllers/InstallerController.php:540
+#: application/controllers/InstallerController.php:573
 msgid "Success!"
 msgstr ""
 
-#: application/controllers/InstallerController.php:541
+#: application/controllers/InstallerController.php:574
 msgid "LimeSurvey has been installed successfully."
 msgstr ""
 
-#: application/controllers/InstallerController.php:548
+#: application/controllers/InstallerController.php:581
 msgid "The password you have chosen at the optional settings step."
 msgstr ""
 
-#: application/controllers/InstallerController.php:1005
+#: application/controllers/InstallerController.php:1043
 #: application/core/LSSodium.php:214 application/core/LSSodiumOld.php:189
 msgid "Configuration directory is not writable"
 msgstr ""
 
-#: application/controllers/InstallerController.php:1006
+#: application/controllers/InstallerController.php:1044
 msgid "You will be redirected in about 5 secs. If not, click <a href=\"%s\">here</a>."
 msgstr ""
 
@@ -2886,9 +2886,9 @@ msgstr ""
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:330
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:236
 #: application/views/themeOptions/options_core.php:5
-#: application/views/themeOptions/options_core.php:227
-#: application/views/themeOptions/options_core.php:255
-#: application/views/themeOptions/options_core.php:266
+#: application/views/themeOptions/options_core.php:237
+#: application/views/themeOptions/options_core.php:265
+#: application/views/themeOptions/options_core.php:276
 msgid "Inherit"
 msgstr ""
 
@@ -3326,6 +3326,11 @@ msgstr ""
 
 #: application/controllers/SurveysController.php:154
 msgid "The above error occurred when the Web server was processing your request."
+msgstr ""
+
+#: application/controllers/SurveysController.php:162
+#: application/views/admin/update/updater/_error.php:18
+msgid "Database error!"
 msgstr ""
 
 #: application/controllers/SurveysGroupsPermissionController.php:158
@@ -6135,7 +6140,7 @@ msgid "Something went wrong! Are the survey menus properly restored?"
 msgstr ""
 
 #: application/controllers/admin/SurveysGroupsController.php:90
-#: application/extensions/admin/BoxesWidget/BoxesWidget.php:116
+#: application/extensions/admin/BoxesWidget/BoxesWidget.php:160
 #: application/extensions/admin/SearchBoxWidget/views/searchBox.php:58
 #: application/extensions/admin/SearchBoxWidget/views/searchBox.php:123
 #: application/views/surveyAdministration/partial/topbarBtns/leftSideButtons.php:9
@@ -7759,7 +7764,7 @@ msgstr ""
 #: application/views/installer/dbconfig_view.php:111
 #: application/views/installer/license_view.php:16
 #: application/views/installer/populatedb_view.php:20
-#: application/views/installer/precheck_view.php:160
+#: application/views/installer/precheck_view.php:165
 #: application/views/survey/system/actionButton/movePrevious.php:11
 #: tmp/runtime/twig_cache/19/1909fc02c777f6e6377bf68319bb1a56.php:138
 #: tmp/runtime/twig_cache/1c/1c0c3b20f28a47c6b9fe517a0094391c.php:80
@@ -7771,7 +7776,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:1116
 #: application/views/installer/dbconfig_view.php:116
 #: application/views/installer/optconfig_view.php:88
-#: application/views/installer/precheck_view.php:168
+#: application/views/installer/precheck_view.php:173
 #: application/views/quotas/newanswer_view.php:34
 #: application/views/quotas/newanswertwo_view.php:51
 #: application/views/survey/system/actionButton/moveNext.php:11
@@ -8362,7 +8367,7 @@ msgid "Brandlogo file"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2776
-#: application/views/themeOptions/options_core.php:308
+#: application/views/themeOptions/options_core.php:318
 msgid "Preview image"
 msgstr ""
 
@@ -9824,7 +9829,7 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: application/extensions/admin/BoxesWidget/BoxesWidget.php:105
+#: application/extensions/admin/BoxesWidget/BoxesWidget.php:143
 #: application/extensions/admin/SearchBoxWidget/views/searchBox.php:50
 #: application/extensions/admin/SearchBoxWidget/views/searchBox.php:115
 #: application/views/dashboard/welcome.php:20
@@ -9854,7 +9859,7 @@ msgstr ""
 msgid "Edit survey"
 msgstr ""
 
-#: application/extensions/admin/BoxesWidget/views/box.php:121
+#: application/extensions/admin/BoxesWidget/views/box.php:124
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:29
 #: application/views/responses/browsetimerow_view.php:22
 msgid "No surveys found."
@@ -13032,23 +13037,23 @@ msgstr ""
 msgid "Please rank all items."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6693
+#: application/helpers/expressions/em_manager_helper.php:6695
 msgid "Error in default value : %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8598
+#: application/helpers/expressions/em_manager_helper.php:8600
 msgid "Date %s is invalid, please review your answer."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9122
+#: application/helpers/expressions/em_manager_helper.php:9124
 msgid "Invalid question - probably missing subquestions or language-specific settings for language %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9130
+#: application/helpers/expressions/em_manager_helper.php:9132
 msgid "Logic File for Survey # "
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9143
+#: application/helpers/expressions/em_manager_helper.php:9145
 #: application/models/Box.php:60
 #: application/models/services/QuickTranslation.php:499
 #: application/views/admin/pluginmanager/overview.php:18
@@ -13066,13 +13071,13 @@ msgstr ""
 msgid "Description:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9154
+#: application/helpers/expressions/em_manager_helper.php:9156
 #: application/views/admin/survey/editLocalSettings_view.php:132
 #: tmp/runtime/twig_cache/4c/4c336f9f4acb0aa9474d899d1e971227.php:88
 msgid "Welcome:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9165
+#: application/helpers/expressions/em_manager_helper.php:9167
 #: application/models/services/QuickTranslation.php:501
 #: application/views/admin/survey/editLocalSettings_view.php:144
 #: application/views/admin/survey/editLocalSettings_view.php:153
@@ -13080,146 +13085,146 @@ msgstr ""
 msgid "End message:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9176
+#: application/helpers/expressions/em_manager_helper.php:9178
 #: application/views/admin/survey/editLocalSettings_view.php:162
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:231
 #: tmp/runtime/twig_cache/48/48a83c4c562fdda73f7227d87dde7802.php:129
 msgid "End URL:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9187
+#: application/helpers/expressions/em_manager_helper.php:9189
 msgid "Privacy policy notice:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9198
+#: application/helpers/expressions/em_manager_helper.php:9200
 msgid "Privacy policy error:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9209
+#: application/helpers/expressions/em_manager_helper.php:9211
 msgid "Privacy policy label:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9215
+#: application/helpers/expressions/em_manager_helper.php:9217
 msgid "Name [ID]"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9216
+#: application/helpers/expressions/em_manager_helper.php:9218
 msgid "Condition [Validation] (Default value)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9217
+#: application/helpers/expressions/em_manager_helper.php:9219
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9264
+#: application/helpers/expressions/em_manager_helper.php:9266
 msgid "This group has at least 1 error."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9301
-#: application/helpers/expressions/em_manager_helper.php:9535
+#: application/helpers/expressions/em_manager_helper.php:9303
+#: application/helpers/expressions/em_manager_helper.php:9537
 msgid "Default:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9323
+#: application/helpers/expressions/em_manager_helper.php:9325
 #: application/views/questionAdministration/summary.php:62
 #: application/views/questionAdministration/textElements.php:84
 msgid "Help:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9325
+#: application/helpers/expressions/em_manager_helper.php:9327
 msgid "Tip:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9340
+#: application/helpers/expressions/em_manager_helper.php:9342
 msgid "Question attribute"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9340
+#: application/helpers/expressions/em_manager_helper.php:9342
 msgid "Value"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9439
+#: application/helpers/expressions/em_manager_helper.php:9441
 msgid "This variable name has already been used."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9448
+#: application/helpers/expressions/em_manager_helper.php:9450
 msgid "Starting in 2.05, variable names should only contain letters and numbers; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9603
+#: application/helpers/expressions/em_manager_helper.php:9605
 msgid "This question has at least {n} error.|This question has at least {n} errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9632
+#: application/helpers/expressions/em_manager_helper.php:9634
 msgid "Question ID %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9662
+#: application/helpers/expressions/em_manager_helper.php:9664
 msgid "{n} question contains warnings that need to be verified.|{n} questions contain warnings that need to be verified."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9670
+#: application/helpers/expressions/em_manager_helper.php:9672
 msgid "{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9676
+#: application/helpers/expressions/em_manager_helper.php:9678
 msgid "There are expressions with syntax errors in this survey."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9679
+#: application/helpers/expressions/em_manager_helper.php:9681
 msgid "There are expressions with syntax errors in this group."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9682
+#: application/helpers/expressions/em_manager_helper.php:9684
 msgid "There are expressions with syntax errors in this question."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9685
+#: application/helpers/expressions/em_manager_helper.php:9687
 msgid "There are expressions with syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9697
+#: application/helpers/expressions/em_manager_helper.php:9699
 msgid "No syntax errors detected in this survey."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9700
+#: application/helpers/expressions/em_manager_helper.php:9702
 msgid "This group, by itself, does not contain any syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9703
+#: application/helpers/expressions/em_manager_helper.php:9705
 msgid "This question, by itself, does not contain any syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9877
-#: application/helpers/expressions/em_manager_helper.php:9886
-#: application/helpers/expressions/em_manager_helper.php:9891
-#: application/helpers/expressions/em_manager_helper.php:9900
-#: application/helpers/expressions/em_manager_helper.php:9907
-#: application/helpers/expressions/em_manager_helper.php:9913
-#: application/helpers/expressions/em_manager_helper.php:9919
-#: application/helpers/expressions/em_manager_helper.php:9925
-#: application/helpers/expressions/em_manager_helper.php:9937
-#: application/helpers/expressions/em_manager_helper.php:9943
-#: application/helpers/expressions/em_manager_helper.php:9950
-#: application/helpers/expressions/em_manager_helper.php:9965
-#: application/helpers/expressions/em_manager_helper.php:9971
-#: application/helpers/expressions/em_manager_helper.php:9984
-#: application/helpers/expressions/em_manager_helper.php:9993
-#: application/helpers/expressions/em_manager_helper.php:10008
-#: application/helpers/expressions/em_manager_helper.php:10018
+#: application/helpers/expressions/em_manager_helper.php:9879
+#: application/helpers/expressions/em_manager_helper.php:9888
+#: application/helpers/expressions/em_manager_helper.php:9893
+#: application/helpers/expressions/em_manager_helper.php:9902
+#: application/helpers/expressions/em_manager_helper.php:9909
+#: application/helpers/expressions/em_manager_helper.php:9915
+#: application/helpers/expressions/em_manager_helper.php:9921
+#: application/helpers/expressions/em_manager_helper.php:9927
+#: application/helpers/expressions/em_manager_helper.php:9939
+#: application/helpers/expressions/em_manager_helper.php:9945
+#: application/helpers/expressions/em_manager_helper.php:9952
+#: application/helpers/expressions/em_manager_helper.php:9967
+#: application/helpers/expressions/em_manager_helper.php:9973
+#: application/helpers/expressions/em_manager_helper.php:9986
+#: application/helpers/expressions/em_manager_helper.php:9995
+#: application/helpers/expressions/em_manager_helper.php:10010
+#: application/helpers/expressions/em_manager_helper.php:10020
 msgid "%s is an invalid value for this question"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9978
+#: application/helpers/expressions/em_manager_helper.php:9980
 msgid "This question only accepts 30 digits including 10 decimals."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10123
-#: application/helpers/expressions/em_manager_helper.php:10129
+#: application/helpers/expressions/em_manager_helper.php:10125
+#: application/helpers/expressions/em_manager_helper.php:10131
 msgid "Due to a technical problem, your response could not be saved. Please contact the survey administrator %s (%s) about this problem. You will not be able to proceed with this survey."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10134
+#: application/helpers/expressions/em_manager_helper.php:10136
 msgid "Due to a technical problem, your response could not be saved. You will not be able to proceed with this survey."
 msgstr ""
 
@@ -15779,7 +15784,7 @@ msgid "Plugin error"
 msgstr ""
 
 #: application/libraries/PluginManager/PluginBase.php:520
-#: application/models/InstallerConfigForm.php:468
+#: application/models/InstallerConfigForm.php:470
 #: application/views/admin/checkintegrity/check_view.php:23
 #: application/views/admin/checkintegrity/check_view.php:72
 #: application/views/admin/checkintegrity/check_view.php:87
@@ -16102,23 +16107,23 @@ msgstr ""
 msgid "If your database is shared, recommended prefix is \"lime_\" else you can leave this setting blank."
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:289
+#: application/models/InstallerConfigForm.php:291
 msgid "The database engine type must be set for MySQL"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:295
+#: application/models/InstallerConfigForm.php:297
 msgid "Could not determine the database engine version. Please check your credentials."
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:307
+#: application/models/InstallerConfigForm.php:309
 msgid "You need to enable large_file_prefix setting in your database configuration in order to use InnoDB engine for LimeSurvey!"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:310
+#: application/models/InstallerConfigForm.php:312
 msgid "Your database configuration needs to have innodb_file_format and innodb_file_format_max set to use the Barracuda format in order to use InnoDB engine for LimeSurvey!"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:467
+#: application/models/InstallerConfigForm.php:469
 msgid "Try again! Connection with database failed."
 msgstr ""
 
@@ -17111,7 +17116,7 @@ msgstr ""
 msgid "Edit this survey participant"
 msgstr ""
 
-#: application/models/SurveyLanguageSetting.php:334
+#: application/models/SurveyLanguageSetting.php:337
 msgid "Alias must be unique"
 msgstr ""
 
@@ -18538,7 +18543,7 @@ msgstr ""
 #: application/views/admin/checkintegrity/fix_view.php:51
 #: application/views/admin/update/updater/steps/_check_local_errors.php:176
 #: application/views/admin/update/updater/steps/_fileSystem.php:42
-#: application/views/installer/precheck_view.php:163
+#: application/views/installer/precheck_view.php:168
 msgid "Check again"
 msgstr ""
 
@@ -18704,8 +18709,8 @@ msgid "Before"
 msgstr ""
 
 #: application/views/admin/conditions/includes/navigator.php:16
-#: application/views/installer/precheck_view.php:25
-#: application/views/installer/precheck_view.php:119
+#: application/views/installer/precheck_view.php:30
+#: application/views/installer/precheck_view.php:135
 msgid "Current"
 msgstr ""
 
@@ -20887,7 +20892,7 @@ msgstr ""
 #: application/views/admin/token/csvupload.php:137
 #: application/views/admin/token/ldapform.php:83
 #: application/views/themeOptions/advanced.php:25
-#: application/views/themeOptions/options_core.php:330
+#: application/views/themeOptions/options_core.php:340
 #: tmp/runtime/twig_cache/36/3617f66c5bc7f6201de45ef509259593.php:165
 msgid "Upload"
 msgstr ""
@@ -21531,7 +21536,7 @@ msgid "Operating system"
 msgstr ""
 
 #: application/views/admin/super/footer.php:12
-#: application/views/installer/precheck_view.php:30
+#: application/views/installer/precheck_view.php:35
 msgid "PHP version"
 msgstr ""
 
@@ -23995,10 +24000,6 @@ msgstr ""
 msgid "We couldn't reach the server or the server didn't provide any answer. Please try again in few minutes."
 msgstr ""
 
-#: application/views/admin/update/updater/_error.php:18
-msgid "Database error!"
-msgstr ""
-
 #: application/views/admin/update/updater/_error.php:19
 msgid "ComfortUpdate encountered an error while trying to get data from your database."
 msgstr ""
@@ -24925,109 +24926,113 @@ msgid "Database creation"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:18
+msgid "Cookies seem to be disabled. Please use the \"Check again\" button instead of refreshing the page."
+msgstr ""
+
+#: application/views/installer/precheck_view.php:23
 msgid "Minimum requirements"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:24
+#: application/views/installer/precheck_view.php:29
 #: application/views/surveyAdministration/tabCopy_view.php:17
 #: application/views/surveyAdministration/tabCopy_view.php:24
 #: application/views/surveyAdministration/tabCreate_view.php:69
 msgid "Required"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:36
+#: application/views/installer/precheck_view.php:41
 msgid "Outdated"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:41
+#: application/views/installer/precheck_view.php:46
 msgid "Minimum memory available"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:45
+#: application/views/installer/precheck_view.php:50
 msgid "Unlimited"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:47
+#: application/views/installer/precheck_view.php:52
 msgid "Too low"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:52
+#: application/views/installer/precheck_view.php:57
 msgid "PHP PDO driver library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:53
+#: application/views/installer/precheck_view.php:58
 msgid "At least one installed"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:56
+#: application/views/installer/precheck_view.php:61
 msgid "None found"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:63
+#: application/views/installer/precheck_view.php:68
 msgid "PHP mbstring library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:68
+#: application/views/installer/precheck_view.php:73
 msgid "PHP fileinfo library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:73
+#: application/views/installer/precheck_view.php:78
 msgid "PHP zlib library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:78
+#: application/views/installer/precheck_view.php:83
 msgid "PHP zip library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:84
+#: application/views/installer/precheck_view.php:89
 msgid "PHP/PECL JSON library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:89
 #: application/views/installer/precheck_view.php:94
-#: application/views/installer/precheck_view.php:99
-msgid "directory"
-msgstr ""
-
-#: application/views/installer/precheck_view.php:90
-#: application/views/installer/precheck_view.php:95
-#: application/views/installer/precheck_view.php:100
-msgid "Found & writable"
-msgstr ""
-
-#: application/views/installer/precheck_view.php:104
-msgid "Session writable"
-msgstr ""
-
-#: application/views/installer/precheck_view.php:113
-msgid "Optional modules"
-msgstr ""
-
-#: application/views/installer/precheck_view.php:118
-msgid "Recommended"
-msgstr ""
-
-#: application/views/installer/precheck_view.php:124
 msgid "PHP GD library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:128
+#: application/views/installer/precheck_view.php:98
 msgid "The GD extension found doesn't support JPEG"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:135
-msgid "PHP Intl library"
+#: application/views/installer/precheck_view.php:105
+#: application/views/installer/precheck_view.php:110
+#: application/views/installer/precheck_view.php:115
+msgid "directory"
+msgstr ""
+
+#: application/views/installer/precheck_view.php:106
+#: application/views/installer/precheck_view.php:111
+#: application/views/installer/precheck_view.php:116
+msgid "Found & writable"
+msgstr ""
+
+#: application/views/installer/precheck_view.php:120
+msgid "Session writable"
+msgstr ""
+
+#: application/views/installer/precheck_view.php:129
+msgid "Optional modules"
+msgstr ""
+
+#: application/views/installer/precheck_view.php:134
+msgid "Recommended"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:140
-msgid "PHP LDAP library"
+msgid "PHP Intl library"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:145
+msgid "PHP LDAP library"
+msgstr ""
+
+#: application/views/installer/precheck_view.php:150
 msgid "PHP imap library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:151
+#: application/views/installer/precheck_view.php:156
 msgid "PHP Sodium library [data encryption]"
 msgstr ""
 
@@ -26453,7 +26458,7 @@ msgid "Don't touch the values below unless you know what you're doing."
 msgstr ""
 
 #: application/views/themeOptions/advanced.php:17
-#: application/views/themeOptions/options_core.php:322
+#: application/views/themeOptions/options_core.php:332
 msgid "Upload an image (maximum size: %d MB):"
 msgstr ""
 
@@ -26584,12 +26589,12 @@ msgid "Visible inside the Question Selector"
 msgstr ""
 
 #: application/views/themeOptions/options_core.php:5
-#: application/views/themeOptions/options_core.php:227
-#: application/views/themeOptions/options_core.php:255
-#: application/views/themeOptions/options_core.php:266
-#: application/views/themeOptions/options_core.php:282
-#: application/views/themeOptions/options_core.php:290
-#: application/views/themeOptions/options_core.php:298
+#: application/views/themeOptions/options_core.php:237
+#: application/views/themeOptions/options_core.php:265
+#: application/views/themeOptions/options_core.php:276
+#: application/views/themeOptions/options_core.php:292
+#: application/views/themeOptions/options_core.php:300
+#: application/views/themeOptions/options_core.php:308
 msgid "inherited value:"
 msgstr ""
 
