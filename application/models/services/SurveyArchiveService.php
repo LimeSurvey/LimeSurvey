@@ -443,11 +443,11 @@ class SurveyArchiveService
                 $decryptedRow = $token->attributes;
 
                 if (!empty($decryptedRow['validfrom'])) {
-                    $datetimeobj = new Date_Time_Converter($decryptedRow['validfrom'], "Y-m-d H:i:s");
+                    $datetimeobj = new \Date_Time_Converter($decryptedRow['validfrom'], "Y-m-d H:i:s");
                     $decryptedRow['validfrom'] = $datetimeobj->convert('Y-m-d H:i');
                 }
                 if (!empty($decryptedRow['validuntil'])) {
-                    $datetimeobj = new Date_Time_Converter($decryptedRow['validuntil'], "Y-m-d H:i:s");
+                    $datetimeobj = new \Date_Time_Converter($decryptedRow['validuntil'], "Y-m-d H:i:s");
                     $decryptedRow['validuntil'] = $datetimeobj->convert('Y-m-d H:i');
                 }
 
