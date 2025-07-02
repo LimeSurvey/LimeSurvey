@@ -91,6 +91,17 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                        <td><?= $model->isPhpJsonPresent ? $iconOk : $iconFail ?></td>
                 </tr>
                 <tr>
+                        <td><?php eT("PHP GD library"); ?></td>
+                        <td><span class='ri-check-fill text-success'></span></td>
+                        <td>
+                        <?php if ($model->isPhpGdPresent): ?>
+                        <?= $model->phpGdHasJpegSupport ? $iconOk : $iconFail . '<br/>' . gT("The GD extension found doesn't support JPEG") ?>
+                        <?php else: ?>
+                            <?= $iconFail ?>
+                        <?php endif; ?>
+               </td>
+
+                <tr>
                        <td>/application/config <?php eT("directory"); ?></td>
                        <td><?php eT("Found & writable"); ?></td>
                        <td><?= $model->isConfigDirWriteable ? $iconOk : $iconFail ?></td>
@@ -125,17 +136,6 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
             </tr>
         </thead>
         <tbody>
-        <tr>
-               <td><?php eT("PHP GD library"); ?></td>
-               <td><span class='ri-check-fill text-success'></span></td>
-               <td>
-                    <?php if ($model->isPhpGdPresent): ?>
-                        <?= $model->phpGdHasJpegSupport ? $iconOk : $iconFail . '<br/>' . gT("The GD extension found doesn't support JPEG") ?>
-                    <?php else: ?>
-                        <?= $iconFail ?>
-                    <?php endif; ?>
-               </td>
-        </tr>
         <tr>
                <td><?php eT("PHP Intl library"); ?></td>
                <td><span class='ri-check-fill text-success' alt="Check"></span></td>

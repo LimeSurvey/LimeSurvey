@@ -150,13 +150,4 @@ class SurveyAggregateService
     {
         return $this->surveyDeactivate->deactivate($surveyId, $input);
     }
-
-    /**
-     * Marks a survey as expired
-     * @param mixed $surveyId
-     */
-    public function expire($surveyId)
-    {
-        return $this->surveyDeactivate->expire($surveyId);
-    }
 }

@@ -31,9 +31,6 @@ function fixNumbering($iQuestionID, $iSurveyID)
     $iNewQID = $iMaxQID + 1;
 
     // Not sure we can do this in MSSQL ?
-    /**
-     * TODO: No the QA in the answer column creation can still be duplicate in the current definition of SGQA example of ranking which can be QA code shorttext 11 (qid=11) and ranking 11 ( qid=1 + answer1=1)
-     */
     $sQuery = "UPDATE {{questions}} SET qid=$iNewQID WHERE qid=$iQuestionID";
     Yii::app()->db->createCommand($sQuery)->query();
     // Update subquestions

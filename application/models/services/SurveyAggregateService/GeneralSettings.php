@@ -285,8 +285,7 @@ class GeneralSettings
             'bounce_email' => [],
             'gsid' => ['default' => 1],
             'format' => [],
-            'template' => [],
-            'othersettings' => ['canUpdate' => $surveyNotActive]
+            'template' => []
         ];
     }
 
@@ -326,13 +325,6 @@ class GeneralSettings
                     break;
                 }
             }
-        }
-
-        // Other settins doesn't have it's own key in the array input
-        // Must be updated earlier
-        if ($field == 'othersettings') {
-            // Update othersettings
-            $this->updateOtherSettings($input, $survey);
         }
 
         if (
@@ -442,14 +434,6 @@ class GeneralSettings
         }
 
         return $meta;
-    }
-
-    private function updateOtherSettings($input, Survey $survey)
-    {
-        // Update other settings, only two for now
-        $survey->setOtherSetting("question_code_prefix", $input['question_code_prefix'] ?? '');
-        $survey->setOtherSetting("subquestion_code_prefix", $input['subquestion_code_prefix'] ?? '');
-        $survey->setOtherSetting("answer_code_prefix", $input['answer_code_prefix'] ?? '');
     }
 
     private function getAdditionalLanguagesArray($input, Survey $survey)

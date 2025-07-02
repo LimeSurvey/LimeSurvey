@@ -4,16 +4,14 @@ use LimeSurvey\Api\Command\V1\{
     SurveyList,
     SurveyDetail,
     SurveyPatch,
-    SurveyTemplate,
-    SurveyArchive
+    SurveyTemplate
 };
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactoryError,
     SchemaFactorySurveyList,
     SchemaFactorySurveyDetail,
     SchemaFactorySurveyPatch,
-    SchemaFactorySurveyTemplate,
-    SchemaFactorySurveyArchive
+    SchemaFactorySurveyTemplate
 };
 
 $errorSchema = (new SchemaFactoryError())->make();
@@ -142,28 +140,6 @@ $rest['v1/survey-template/$id'] = [
             ]
         ]
     ],
-];
-
-$rest['v1/survey-archives/$id'] = [
-    'GET' => [
-        'tag' => 'survey',
-        'description' => 'Survey archives',
-        'commandClass' => SurveyArchive::class,
-        'auth' => true,
-        'responses' => [
-            'success' => [
-                'code' => 200,
-                'description' => 'Success',
-                'content' => null,
-                'schema' => (new SchemaFactorySurveyArchive())->make()
-            ],
-            'not-found' => [
-                'code' => 404,
-                'description' => 'Not Found',
-                'schema' => $errorSchema
-            ]
-        ]
-    ]
 ];
 
 return $rest;

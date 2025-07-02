@@ -6,9 +6,4 @@ $(document).on('ready pjax:scriptcomplete', function () {
             document.querySelector(".topbar").classList.remove("scroll-shadow");
         }
     });
-
-    // topbar should not have editor class when left sidebar is closed
-    if ($('#left-sidebar').is(':visible') == false) {
-        $('.topbar').removeClass('editor')
-    }
 });

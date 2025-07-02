@@ -777,6 +777,11 @@ class InstallerController extends CController
                     $bProceed = false;
         }
 
+        if (!$this->checkPHPFunctionOrClass('gd_info', $aData['gdPresent'])) {
+            $bProceed = false;
+        }
+
+
         // ** file and directory permissions checking **
 
         // config directory
@@ -1141,7 +1146,7 @@ class InstallerController extends CController
             'ctype',
             'session',
             'hash',
-            'pdo'
+            'pdo',
         );
 
         foreach ($extensions as $extension) {
