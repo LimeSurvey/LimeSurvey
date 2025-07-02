@@ -44,6 +44,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $ipanonymize Whether id addresses should be anonymized (Y/N)
  * @property string $refurl Save referrer URL: (Y/N)
  * @property string $datecreated Date survey was created  as SQL datetime (YYYY-MM-DD hh:mm:ss)
+ * @property string $lastmodified Date survey was last modified  as SQL datetime (YYYY-MM-DD hh:mm:ss)
  * @property string $publicstatistics Public statistics: (Y/N)
  * @property string $publicgraphs Show graphs in public statistics: (Y/N)
  * @property string $listpublic List survey publicly: (Y/N)
@@ -1423,6 +1424,17 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Use the creation date for old entries when the last modified date is unavailable
+     */
+    public function getLastModifiedDate()
+    {
+        $date = $this->lastmodified > $this->datecreated ?
+            $this->lastmodified : $this->creationdate;
+
+        return self::shiftedDateTime($date)->format('d.m.Y');
+    }
+
+    /**
      * @return int|string
      */
     public function getCountFullAnswers()
@@ -1620,9 +1632,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'headerHtmlOptions' => ['class' => 'text-nowrap'],
             ],
             [
-                'header'            => gT('Created'),
-                'name'              => 'creation_date',
-                'value'             => '$data->creationdate',
+                'header'            => gT('Last modified'),
+                'name'              => 'last modified',
+                'value'             => '$data->lastModifiedDate',
                 'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
                 'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
             ],
