@@ -4,6 +4,7 @@ namespace LimeSurvey\Api\Command\V1;
 
 use CHttpSession;
 use Survey;
+use Token;
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request,
@@ -40,27 +41,19 @@ class SurveyArchive implements CommandInterface
     }
 
     /**
-     * Processes the request
-     * @param \LimeSurvey\Api\Command\Request\Request $request
+     * Processes data and returns aggregate summary of the archives
+     * @param \Survey $survey
+     * @param array $rawData
+     * @return array
      */
-    public function run(Request $request)
+    protected function processData(Survey $survey, array $rawData): array
     {
-        $surveyId = (int)$request->getData('_id');
-        if ($response = $this->ensurePermissions($surveyId)) {
-            return $response;
+        $hasTokens = false;
+        try {
+            $hasTokens = ($survey->isActive && (Token::model($survey->sid)->find('1=1') !== null));
+        } catch (\Exception $ex) {
+            //Tokens table exists, proceed
         }
-        $survey = Survey::model()->findByPk($surveyId);
-        if (!$survey) {
-            return $this->responseFactory->makeErrorNotFound(
-                (new ResponseDataError(
-                    'SURVEY_NOT_FOUND',
-                    'Survey not found'
-                )
-                )->toArray()
-            );
-        }
-        require_once "application/helpers/admin/import_helper.php";
-        $rawData = getTableArchivesAndTimestamps($surveyId);
         $data = [];
         for ($index = 0; $index < count($rawData); $index++) {
             $newData = ['newformat' => false];
@@ -81,9 +74,72 @@ class SurveyArchive implements CommandInterface
             $newData['types'] = $types;
             $newData['count'] = $rawData[$index]['cnt'];
             $newData['timestamp'] = $rawData[$index]['timestamp'];
+            $newData['hastokens'] = $hasTokens;
             $data[] = $newData;
         }
-        return $this->responseFactory->makeSuccess($data);
+        if ($survey->isActive) {
+            $data[] = [
+                'timestamp' => 0,
+                'count' => 0,
+                'types' => [],
+                'hastokens' => $hasTokens
+            ];
+        }
+        return $data;
+    }
+
+    /**
+     * Processes the request
+     * @param \LimeSurvey\Api\Command\Request\Request $request
+     * @psalm-suppress PossiblyInvalidCast
+     */
+    public function run(Request $request)
+    {
+        $surveyId = (int)$request->getData('_id');
+        if (!$surveyId) {
+            $surveyId = intval($_GET['id']);
+        }
+        $rawBaseTable = $_GET['basetable'] ?? 'survey';
+        if (!in_array($rawBaseTable, ['survey', 'tokens', 'all'])) {
+            throw new \Exception("Incorrect base table");
+        }
+        if ($rawBaseTable !== 'all') {
+            $baseTable = "old_{$rawBaseTable}";
+        } else {
+            $baseTable = 'all';
+        }
+        if ($response = $this->ensurePermissions($surveyId)) {
+            return $response;
+        }
+        $survey = Survey::model()->findByPk($surveyId);
+        if (!$survey) {
+            return $this->responseFactory->makeErrorNotFound(
+                (new ResponseDataError(
+                    'SURVEY_NOT_FOUND',
+                    'Survey not found'
+                )
+                )->toArray()
+            );
+        }
+        require_once "application/helpers/admin/import_helper.php";
+        if ($baseTable !== 'all') {
+            $result = getTableArchivesAndTimestamps($surveyId, $baseTable);
+        } else {
+            $result = getTableArchivesAndTimestamps($surveyId);
+            $tokenResult = getTableArchivesAndTimestamps($surveyId, 'old_tokens');
+            foreach ($tokenResult as $item) {
+                $found = false;
+                for ($index = 0; (!$found) && ($index < count($result)); $index++) {
+                    if ($result[$index]['timestamp'] === $item['timestamp']) {
+                        $found = true;
+                    }
+                }
+                if (!$found) {
+                    $result[] = $item;
+                }
+            }
+        }
+        return $this->responseFactory->makeSuccess($this->processData($survey, $result));
     }
 
     /**

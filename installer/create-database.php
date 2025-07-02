@@ -678,6 +678,8 @@ function populateDatabase($oDB)
             'googleanalyticsstyle' => "string(1) NULL",
             'googleanalyticsapikey' => "string(25) NULL",
             'tokenencryptionoptions' => "text NULL",
+            'lastmodified' => "datetime",
+            'access_mode' => "string(1) DEFAULT 'O'",
             'othersettings' => 'mediumtext'
         ), $options);
 

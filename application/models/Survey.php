@@ -44,6 +44,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $ipanonymize Whether id addresses should be anonymized (Y/N)
  * @property string $refurl Save referrer URL: (Y/N)
  * @property string $datecreated Date survey was created  as SQL datetime (YYYY-MM-DD hh:mm:ss)
+ * @property string $lastmodified Date survey was last modified  as SQL datetime (YYYY-MM-DD hh:mm:ss)
  * @property string $publicstatistics Public statistics: (Y/N)
  * @property string $publicgraphs Show graphs in public statistics: (Y/N)
  * @property string $listpublic List survey publicly: (Y/N)
@@ -744,7 +745,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * This function returns any valid mappings from the survey participants tables to the CPDB
+     * This function returns any valid mappings from the survey participant lists to the CPDB
      * in the form of an array [<cpdb_attribute_id>=><participant_table_attribute_name>]
      *
      * @return array Array of mappings
@@ -791,7 +792,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
 
     /**
-     * Returns true in a survey participants table exists for survey
+     * Returns true in a survey participant list exists for survey
      * @return boolean
      */
     public function getHasTokensTable()
@@ -1414,6 +1415,17 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Use the creation date for old entries when the last modified date is unavailable
+     */
+    public function getLastModifiedDate()
+    {
+        $date = $this->lastmodified > $this->datecreated ?
+            $this->lastmodified : $this->creationdate;
+
+        return self::shiftedDateTime($date)->format('d.m.Y');
+    }
+
+    /**
      * @return int|string
      */
     public function getCountFullAnswers()
@@ -1611,9 +1623,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'headerHtmlOptions' => ['class' => 'text-nowrap'],
             ],
             [
-                'header'            => gT('Created'),
-                'name'              => 'creation_date',
-                'value'             => '$data->creationdate',
+                'header'            => gT('Last modified'),
+                'name'              => 'last modified',
+                'value'             => '$data->lastModifiedDate',
                 'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
                 'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
             ],
@@ -1981,7 +1993,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Get all surveys that has participant table
+     * Get all surveys that has participant list
      * @return Survey[]
      */
     public static function getSurveysWithTokenTable()
@@ -2409,7 +2421,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey settings"),
-                'description' => gT("Permission to view, update the survey settings including survey participants table creation"),
+                'description' => gT("Permission to view, update the survey settings including survey participant list creation"),
                 'img' => ' ri-settings-5-fill',
             ),
             'tokens' => array(
