@@ -6,6 +6,9 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
 class SchemaFactorySurveyResponses
 {
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
     public function make(): Schema
     {
         // Define the answer schema with example
