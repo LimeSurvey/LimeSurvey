@@ -215,10 +215,10 @@ class SurveyResponses implements CommandInterface
 
             if (
                 !empty(
-                array_diff_key(
+                    array_diff_key(
                     array_flip($paginationRequiredKeys),
                     $pagination
-                )
+                    )
                 )
             ) {
                 return array_merge($paginationDefault, $pagination);
