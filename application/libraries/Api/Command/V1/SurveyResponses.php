@@ -241,8 +241,9 @@ class SurveyResponses implements CommandInterface
         $surveyId = $this->survey->sid;
         if (!isset($answersCache[$surveyId])) {
             // Get all questions for this survey
+            /** @var \Question[] $questions */
             $questions = $this->survey->questions;
-            $questionIds = array_map(function ($q) {
+            $questionIds = array_map(function (\Question $q): int {
                 return $q->qid;
             }, $questions);
 
