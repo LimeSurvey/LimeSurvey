@@ -15004,6 +15004,11 @@ html, body {
 .form-change-lang #language-changer-select:focus-visible {
   outline: none;
 }
+.form-change-lang #language-changer-select:focus {
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 4px;
+}
 .form-change-lang .ls-language-changer-item {
   display: none;
 }
