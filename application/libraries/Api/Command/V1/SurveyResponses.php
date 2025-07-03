@@ -216,8 +216,8 @@ class SurveyResponses implements CommandInterface
             if (
                 !empty(
                     array_diff_key(
-                    array_flip($paginationRequiredKeys),
-                    $pagination
+                        array_flip($paginationRequiredKeys),
+                        $pagination
                     )
                 )
             ) {
