@@ -5,10 +5,12 @@ namespace LimeSurvey\Libraries\Api\Command\V1;
 use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
 use Survey;
+use Answer;
 use LimeSurvey\Api\Command\{CommandInterface,
     Request\Request,
     Response\Response,
-    Response\ResponseFactory};
+    Response\ResponseFactory
+};
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurveyResponses;
 
@@ -17,6 +19,7 @@ class SurveyResponses implements CommandInterface
     use AuthPermissionTrait;
 
     protected Survey $survey;
+    protected Answer $answerModel;
     protected ResponseFactory $responseFactory;
     protected FilterPatcher $responseFilterPatcher;
     protected TransformerOutputSurveyResponses $transformerOutputSurveyResponses;
@@ -24,18 +27,20 @@ class SurveyResponses implements CommandInterface
     /**
      * Constructor
      *
-     * @param Survey                           $survey
-     * @param FilterPatcher                    $responseFilterPatcher
-     * @param ResponseFactory                  $responseFactory
+     * @param Survey $survey
+     * @param FilterPatcher $responseFilterPatcher
+     * @param ResponseFactory $responseFactory
      * @param TransformerOutputSurveyResponses $transformerOutputSurveyResponses
      */
     public function __construct(
         Survey $survey,
+        Answer $answerModel,
         FilterPatcher $responseFilterPatcher,
         ResponseFactory $responseFactory,
         TransformerOutputSurveyResponses $transformerOutputSurveyResponses
     ) {
         $this->survey = $survey;
+        $this->answerModel = $answerModel;
         $this->responseFactory = $responseFactory;
         $this->responseFilterPatcher = $responseFilterPatcher;
         $this->transformerOutputSurveyResponses = $transformerOutputSurveyResponses;
@@ -44,7 +49,7 @@ class SurveyResponses implements CommandInterface
     /**
      * Run survey detail command
      *
-     * @param  Request $request
+     * @param Request $request
      * @return Response
      */
     public function run(Request $request)
@@ -65,14 +70,19 @@ class SurveyResponses implements CommandInterface
             );
 
             $data = [];
-            $data['responses'] = $this->transformerOutputSurveyResponses->transform($dataProvider);
+            $data['responses'] = $this->transformerOutputSurveyResponses->transform(
+                $dataProvider
+            );
             $data['surveyQuestions'] = $this->getQuestionFieldMap();
             $data['_meta'] = [
                 'pagination' => [
                     'pageSize' => $pagination['pageSize'],
                     'currentPage' => $pagination['currentPage'],
                     'totalItems' => $dataProvider->getTotalItemCount(),
-                    'totalPages' => ceil($dataProvider->getTotalItemCount() / ($pagination['pageSize'] ?? 1))
+                    'totalPages' => ceil(
+                        $dataProvider->getTotalItemCount()
+                        / ($pagination['pageSize'] ?? 1)
+                    )
                 ],
                 'filters' => $request->getData('filters', []),
                 'sort' => $request->getData('sort', []),
@@ -97,13 +107,23 @@ class SurveyResponses implements CommandInterface
             foreach ($response['answers'] as &$answer) {
                 $qid = $answer['key'];
                 if (isset($data["surveyQuestions"][$qid])) {
-                    $answer = array_merge($answer, $data["surveyQuestions"][$qid]);
+                    $answer = array_merge(
+                        $answer,
+                        $data["surveyQuestions"][$qid]
+                    );
+                    $answer['actual_aid'] = $this->getActualAid(
+                        $answer['qid'],
+                        array_key_exists(
+                            'scale_id',
+                            $answer
+                        ) ? $answer['scale_id'] : 0,
+                        $answer['value'],
+                    );
                 }
             }
         }
         return $data;
     }
-
 
     /**
      * @return array
@@ -123,18 +143,14 @@ class SurveyResponses implements CommandInterface
                             'aid' => $item['aid'] ?? null,
                             'sqid' => $item['sqid'] ?? null,
                             'scaleid' => $item['scale_id'] ?? null,
-                            'all_aids' => $this->getAllAnswers(
-                                $item['scale_id'],
-                                $item['qid']
-                            )
                         ];
                     }
+                    return null; // Explicit return for when condition is false
                 },
                 $fieldMap
             )
         );
     }
-
 
     private function getSurvey(Request $request): void
     {
@@ -145,10 +161,9 @@ class SurveyResponses implements CommandInterface
         $this->survey = $survey;
     }
 
-
     private function getSurveyId(Request $request): string
     {
-        $surveyId = (string) $request->getData('_id');
+        $surveyId = (string)$request->getData('_id');
         if (!is_numeric($surveyId)) {
             throw new \InvalidArgumentException("Invalid survey ID");
         }
@@ -170,7 +185,12 @@ class SurveyResponses implements CommandInterface
 
         $sort = new \CSort();
         $criteria = new \LSDbCriteria();
-        $this->responseFilterPatcher->apply($searchParams, $criteria, $sort, $dataMap);
+        $this->responseFilterPatcher->apply(
+            $searchParams,
+            $criteria,
+            $sort,
+            $dataMap
+        );
 
         return [$criteria, $sort];
     }
@@ -186,11 +206,21 @@ class SurveyResponses implements CommandInterface
         if ($pagination) {
             $paginationRequiredKeys = ['currentPage', 'pageSize'];
 
-            if (isset($pagination['pageSize']) && (int) $pagination['pageSize'] == 0) {
+            if (
+                isset($pagination['pageSize'])
+                && (int)$pagination['pageSize'] == 0
+            ) {
                 $pagination['pageSize'] = $paginationDefault['pageSize'];
             }
 
-            if (!empty(array_diff_key(array_flip($paginationRequiredKeys), $pagination))) {
+            if (
+                !empty(
+                array_diff_key(
+                    array_flip($paginationRequiredKeys),
+                    $pagination
+                )
+                )
+            ) {
                 return array_merge($paginationDefault, $pagination);
             }
 
@@ -200,8 +230,48 @@ class SurveyResponses implements CommandInterface
         return $paginationDefault;
     }
 
-    private function getAllAnswers($questionID, $scaleId) {
-        $answer = Answer::model()->findAll("qid='{$questionID}' and scale_id={$scaleId}");
-        return 666;
+    /**
+     * Gets all answers for the survey questions and caches them for later use
+     *
+     * @return array Answers indexed by qid, scale_id, and code
+     */
+    private function getAllSurveyAnswers()
+    {
+        static $answersCache = [];
+        $surveyId = $this->survey->sid;
+        if (!isset($answersCache[$surveyId])) {
+            // Get all questions for this survey
+            $questions = $this->survey->questions;
+            $questionIds = array_map(function ($q) {
+                return $q->qid;
+            }, $questions);
+
+            // Fetch all answers for these questions in a single query
+            $answers = $this->answerModel->findAll(
+                'qid IN (' . implode(',', $questionIds) . ')'
+            );
+
+            // Index answers by qid, scale_id, and code for fast lookup
+            $answersCache[$surveyId] = [];
+            foreach ($answers as $answer) {
+                $answersCache[$surveyId][$answer->qid][$answer->scale_id][$answer->code] = $answer->aid;
+            }
+        }
+
+        return $answersCache[$surveyId];
+    }
+
+    /**
+     * Gets the actual answer ID efficiently using the cached answers
+     *
+     * @param int $questionID The question ID
+     * @param int $scaleId The scale ID
+     * @param string $value The answer code
+     * @return int|null The answer ID or null if not found
+     */
+    private function getActualAid($questionID, $scaleId, $value)
+    {
+        $allAnswers = $this->getAllSurveyAnswers();
+        return $allAnswers[$questionID][$scaleId][$value] ?? null;
     }
 }
