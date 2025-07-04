@@ -133,21 +133,6 @@ class User extends LSActiveRecord
     /** @inheritdoc */
     public function scopes()
     {
-        $userStatusType = \Yii::app()->db->schema->getTable('{{users}}')->columns['user_status']->dbType;
-        $activeScope = array(
-            'condition' => 'user_status = :active',
-            'params' => array(
-                'active' => $userStatusType == 'boolean' ? 'TRUE' :  '1',
-            )
-        );
-
-        $notExpiredScope = array(
-            'condition' => "expires > :now OR expires IS NULL",
-            'params' => array(
-                'now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
-            )
-        );
-
         if (App()->getConfig("DBVersion") < 495) {
             /* No expires column before 495 */
             return array(
@@ -155,7 +140,12 @@ class User extends LSActiveRecord
                 'notexpired' => [],
             );
         }
-
+        $notExpiredScope = array(
+            'condition' => "expires > :now OR expires IS NULL",
+            'params' => array(
+                'now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
+            )
+        );
         if (App()->getConfig("DBVersion") < 619) {
             /* No user_status column before 619 */
             return array(
@@ -163,7 +153,13 @@ class User extends LSActiveRecord
                 'notexpired' => $notExpiredScope
             );
         }
-
+        $userStatusType = \Yii::app()->db->schema->getTable('{{users}}')->columns['user_status']->dbType;
+        $activeScope = array(
+            'condition' => 'user_status = :active',
+            'params' => array(
+                'active' => $userStatusType == 'boolean' ? 'TRUE' :  '1',
+            )
+        );
         return array(
             'active' => $activeScope,
             'notexpired' => $notExpiredScope
