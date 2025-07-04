@@ -301,7 +301,6 @@ class TemplateConfiguration extends TemplateConfig
         $criteria = new CDbCriteria();
         $criteria->addCondition('sid=:sid');
         $criteria->params = array('sid' => $iSurveyId);
-
         $oTemplateConfigurations = self::model()->findAll($criteria);
 
         if ($bInherited) { // inherited values
@@ -1247,7 +1246,7 @@ class TemplateConfiguration extends TemplateConfig
      * Also triggers inheritence checks
      * @return void
      */
-    public function setOptions()
+    protected function setOptions()
     {
         $this->oOptions = new stdClass();
         if (!empty($this->options)) {

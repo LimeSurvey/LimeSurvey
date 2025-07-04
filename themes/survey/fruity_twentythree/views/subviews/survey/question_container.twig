@@ -18,7 +18,7 @@
     So we separate it
 #}
 <!-- Question {{ aQuestion.qid  }}  -->
-<div {{ aQuestion.attributes }} class="row {{ aQuestion.class }} {{ aQuestion.input_error_class }} {{ aSurveyInfo.class.questioncontainer }}" {{ aSurveyInfo.attr.questioncontainer }}>
+<div role="group" aria-labelledby="question-text-container-{{ aQuestion.SGQ }}" {{ aQuestion.attributes }} class="row {{ aQuestion.class }} {{ aQuestion.input_error_class }} {{ aSurveyInfo.class.questioncontainer }}" {{ aSurveyInfo.attr.questioncontainer }}>
     {{ include('./subviews/survey/question.twig') }}
 </div>
 <!-- End of question  {{ aQuestion.qid  }}  -->

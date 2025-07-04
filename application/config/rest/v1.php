@@ -25,9 +25,9 @@ $rest = [
                 'name' => 'Site Settings',
                 'description' => 'Site Settings',
             ],
-            'i18n' => [
-                'name' => 'I18n',
-                'description' => 'Translations',
+            'version-info' => [
+                'name' => 'Version Info',
+                'description' => 'Version Info',
             ],
             'user' => [
                 'name' => 'User',
@@ -48,6 +48,6 @@ return array_merge(
     include_once __DIR__ . '/v1/survey-group.php',
     include_once __DIR__ . '/v1/user.php',
     include_once __DIR__ . '/v1/site-settings.php',
-    include_once __DIR__ . '/v1/i18n.php',
     include_once __DIR__ . '/v1/file-upload.php',
+    include_once __DIR__ . '/v1/version-info.php',
 );
