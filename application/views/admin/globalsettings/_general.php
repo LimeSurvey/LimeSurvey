@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This view generate the 'general' tab inside global settings.
  *
@@ -75,14 +76,14 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             </label>
             <div class="col-12">
                 <select class="form-select" name="admintheme" id="admintheme">
-                    <?php foreach ($aListOfThemeObjects as $templatename => $templateconfig): ?>
+                    <?php foreach ($aListOfThemeObjects as $templatename => $templateconfig) : ?>
                         <option value='<?php echo CHtml::encode($templatename); ?>' <?php echo ($thisadmintheme == $templatename) ? "selected='selected'" : "" ?> >
                             <?php echo CHtml::encode($templateconfig->metadata->name); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
             </div>
-            <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')): ?>
+            <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) : ?>
                 <div class="col-12 form-label ">
                     <span class="hint">
                     <?php eT("You can add your custom themes in upload/admintheme"); ?>
@@ -91,26 +92,35 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             <?php endif; ?>
         </div>
 
-        <!-- Time difference -->
+        <!-- Time zone selector -->
         <div class="mb-3">
-            <label class="col-12 form-label" for='timeadjust'>
-                <?php eT("Time difference (in hours):"); ?>
+            <label class="col-12 form-label" for='displayTimezone'>
+                <?php eT("Default display time zone:"); ?>
             </label>
             <div class="col-md-4">
-                    <span>
-                        <input class="form-control" type='text' id='timeadjust' name='timeadjust'
-                               value="<?php echo htmlspecialchars((string) (str_replace(array('+', ' hours', ' minutes'), array('', '', ''), (string) getGlobalSetting('timeadjust')) / 60)); ?>"/>
-                    </span>
-            </div>
-            <div class="col-md-8">
-                <?php echo gT("Server time:") . ' ' . convertDateTimeFormat(date('Y-m-d H:i:s'), 'Y-m-d H:i:s', $dateformatdata['phpdate'] . ' H:i')
-                    . "<br>"
-                    . gT("Corrected time:") . ' '
-                    . convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')), 'Y-m-d H:i:s', $dateformatdata['phpdate'] . ' H:i'); ?>
+                <span>
+                    <select class="form-select" name="displayTimezone" id="displayTimezone">
+                    <?php // show a select box with all available time zones
+                    $displayTimezone = App()->getConfig('displayTimezone');
+                    foreach (DateTimeZone::listIdentifiers() as $timezone) {
+                        echo "<option value='" . $timezone . "'";
+                        if ($displayTimezone == $timezone) {
+                            echo " selected='selected'";
+                        }
+                        echo ">" . $timezone . "</option>";
+                    } ?>
+                    </select>                  
+                </span>
+            </div>                
+            <div class="col-12 form-label ">
+                <span class="hint">
+                <?php echo sprintf(gT("Server time zone: %s"), date_default_timezone_get());?>  
+                </span>
             </div>
         </div>
 
-        <?php if (isset(Yii::app()->session->connectionID)): ?>
+        <?php if (isset(Yii::app()->session->connectionID)) :
+            ?>
             <div class="mb-3">
                 <label class="col-12 form-label" for='iSessionExpirationTime'>
                     <?php eT("Session lifetime for surveys (seconds):"); ?>
@@ -166,11 +176,11 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             </label>
             <div class='col-12'>
                 <select class='form-select' name='characterset' id='characterset'>
-                    <?php foreach ($aEncodings as $code => $charset): ?>
+                    <?php foreach ($aEncodings as $code => $charset) : ?>
                         <option value='<?php echo $code; ?>'
-                            <?php if (array_key_exists($thischaracterset, $aEncodings) && $code == $thischaracterset): ?>
+                            <?php if (array_key_exists($thischaracterset, $aEncodings) && $code == $thischaracterset) : ?>
                                 selected='selected'
-                            <?php elseif (!array_key_exists($thischaracterset, $aEncodings) && $code == "auto"): ?>
+                            <?php elseif (!array_key_exists($thischaracterset, $aEncodings) && $code == "auto") : ?>
                                 selected='selected'
                             <?php endif; ?>
                         >
@@ -189,8 +199,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             <label class="col-12 form-label" for="maintenancemode" title="<?php echo gT('Maintenance modes:
 Off
 Soft lock - participants are able to finish started surveys, no new participants are allowed
-Full lock - none of participants are allowed to take survey, even if they already started to take it'
-            ); ?> ">
+Full lock - none of participants are allowed to take survey, even if they already started to take it'); ?> ">
                 <?php eT("Maintenance mode:"); ?>
             </label>
             <div class="col-12">
@@ -214,7 +223,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             <div class="col-12">
                 <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa" => "refreshAssets")); ?>"
                    class="btn btn-outline-dark btn-large">
-                   	<?php eT("Clear now"); ?>
+                    <?php eT("Clear now"); ?>
                 </a>
             </div>
         </div>
@@ -226,7 +235,8 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
             </label>
             <div class="col-12">
-                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
+                <?php $this->widget(
+                    'ext.ButtonGroupWidget.ButtonGroupWidget',
                     [
                         'name'          => 'defaulthtmleditormode',
                         'checkedOption' => $thisdefaulthtmleditormode,
@@ -235,7 +245,8 @@ Full lock - none of participants are allowed to take survey, even if they alread
                             "popup"  => gT("Popup", 'unescaped'),
                             "none"   => gT("HTML source", 'unescaped')
                         ]
-                    ]); ?>
+                    ]
+                ); ?>
             </div>
         </div>
 
@@ -349,7 +360,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         </div>
 
         <!-- Allow unstable extension updates (only visible for super admin)-->
-        <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')): ?>
+        <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) : ?>
             <div class="mb-3">
                 <label class="col-12 form-label" for='allow_unstable_extension_update'>
                     <?php eT('Allow unstable extension updates:'); ?>
@@ -383,7 +394,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
 </div>
 </div>
 
-<?php if (Yii::app()->getConfig("demoMode") == true): ?>
+<?php if (Yii::app()->getConfig("demoMode") == true) : ?>
     <p>
         <?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?>
     </p>

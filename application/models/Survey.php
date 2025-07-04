@@ -399,7 +399,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function expire($surveyId = null)
     {
-        $dateTime = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
+        $dateTime = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s");
         $dateTime = dateShift($dateTime, "Y-m-d H:i:s", '-1 minute');
 
         $model = $this;
@@ -477,13 +477,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return array(
             'active' => array('condition' => "active = 'Y'"),
             'open' => array('condition' => '(startdate <= :now1 OR startdate IS NULL) AND (expires >= :now2 OR expires IS NULL)', 'params' => array(
-                ':now1' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
-                ':now2' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))
+                ':now1' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s"),
+                ':now2' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s")
             )
             ),
             'registration' => array('condition' => "allowregister = 'Y' AND startdate > :now3 AND (expires < :now4 OR expires IS NULL)", 'params' => array(
-                ':now3' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
-                ':now4' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))
+                ':now3' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s"),
+                ':now4' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s")
             ))
         );
     }
@@ -2556,7 +2556,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     private static function shiftedDateTime($datetime)
     {
         if (is_string($datetime) && strtotime($datetime)) {
-            $datetime = dateShift($datetime, "Y-m-d H:i:s", strval(Yii::app()->getConfig('timeadjust')));
+            $datetime = dateShift($datetime, "Y-m-d H:i:s");
             return new DateTime($datetime);
         }
         return null;

@@ -172,7 +172,7 @@ class UploaderController extends SurveyController
             if ($_FILES['uploadfile']['error'] == 1 || $_FILES['uploadfile']['error'] == 2) {
                 $return = array(
                     "success" => false,
-                    "msg" => sprintf(gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
+                    "msg" => sprintf(gT("Sorry, this file is too large. Only files up to %s KB are allowed."), $maxfilesize)
                 );
                 //header('Content-Type: application/json');
                 echo ls_json_encode($return);

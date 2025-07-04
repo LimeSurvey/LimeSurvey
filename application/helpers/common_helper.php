@@ -104,7 +104,6 @@ function quoteText($sText, $sEscapeMode = 'html')
 function getSurveyList($bReturnArray = false)
 {
     static $cached = null;
-    $timeadjust = getGlobalSetting('timeadjust');
     App()->setLanguage((Yii::app()->session['adminlang'] ?? 'en'));
     $surveynames = array();
 
@@ -150,7 +149,7 @@ function getSurveyList($bReturnArray = false)
                 $inactivesurveys .= " class='mysurvey emphasis inactivesurvey'";
             }
             $inactivesurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
-        } elseif ($sv['expires'] != '' && $sv['expires'] < dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) {
+        } elseif ($sv['expires'] != '' && $sv['expires'] < dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i:s")) {
             $expiredsurveys .= "<option ";
             if (Yii::app()->user->getId() == $sv['owner_id']) {
                 $expiredsurveys .= " class='mysurvey emphasis expiredsurvey'";
@@ -2577,24 +2576,37 @@ function isTokenCompletedDatestamped($thesurvey)
 }
 
 /**
-* example usage
-* $date = "2006-12-31 21:00";
-* $shift "+6 hours"; // could be days, weeks... see function strtotime() for usage
+* Function to shift a date/time from one timezone to another.
 *
-* echo sql_date_shift($date, "Y-m-d H:i:s", $shift);
-*
-* will output: 2007-01-01 03:00:00
-*
-* @param string $date
-* @param string $dformat
-* @param string $shift
-* @return string
+* @param string $date The input date 
+* @param string $toDateFormat Output format
+* @param string $toTimezone Ouput time zone, if null, uses the global setting for display timezone
+* @param string $fromTimezone Input time zone, if not given, uses UTC
+* @return string The shifted date in the target timezone and format
 */
-function dateShift($date, $dformat, string $shift)
+function dateShift($date, $toDateFormat, $toTimezone = null, $fromTimezone = 'UTC')
 {
-    return date($dformat, strtotime($shift, strtotime($date)));
+    if (!$toTimezone) {
+        $toTimezone = Yii::app()->getConfig('displayTimezone') ;
+        if (empty($toTimezone)) {
+            // get default timezone
+            return $date;
+        }
+    }
+    $datetime = new DateTime($date, $fromTimezone);
+
+    $datetime->setTimezone(new DateTimeZone($toTimezone));
+    return $datetime->format($toDateFormat);
 }
 
+
+function convertTimezoneDiffToHours(){
+    $desiredTimezone = new DateTimeZone(Yii::app()->getConfig('displayTimezone'));
+    // Get the current time in the desired timezone
+    $currentDateTime = new DateTime('now', date_default_timezone_get());
+    // Get the offset in hours from UTC
+    $hoursOffset = $desiredTimezone->getOffset($currentDateTime) / 3600;
+}
 
 // getBounceEmail: returns email used to receive error notifications
 function getBounceEmail($surveyid)
@@ -4818,6 +4830,12 @@ function convertPHPSizeToBytes($sSize)
     return (int) $iValue;
 }
 
+
+/**
+ * Get the maximum allowed file upload size in bytes
+ *
+ * @return int The maximum allowed file upload size in bytes
+ **/
 function getMaximumFileUploadSize()
 {
     return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));

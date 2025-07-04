@@ -853,7 +853,7 @@ class TemplateManifest extends TemplateConfiguration
      */
     public static function changeDateInDOM($oNewManifest, $sDate = '')
     {
-        $sDate = (empty($sDate)) ? dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust")) : $sDate;
+        $sDate = (empty($sDate)) ? dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i") : $sDate;
         $oConfig = $oNewManifest->getElementsByTagName('config')->item(0);
         $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
         if ($ometadata->getElementsByTagName('creationDate')) {

@@ -459,7 +459,7 @@ class UpdateForm extends CFormModel
             }
         }
 
-        $basefilename = dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . '_' . md5(uniqid(rand(), true));
+        $basefilename = dateShift(date("Y-m-d H:i:s"), "Y-m-d") . '_' . md5(uniqid(rand(), true));
         $archive = new LimeSurvey\Zip();
         $archive->open($this->tempdir . DIRECTORY_SEPARATOR . 'LimeSurvey_files_backup_' . $basefilename . '.zip', ZipArchive::CREATE);
         $success = false;
@@ -670,8 +670,8 @@ class UpdateForm extends CFormModel
     {
         Yii::app()->loadHelper("admin/backupdb");
         $backupDb = new stdClass();
-        $basefilename = dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . '_' . md5(uniqid(rand(), true));
-        $baseSqlFileName = "backup_db_" . randomChars(20) . "_" . dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . ".sql";
+        $basefilename = dateShift(date("Y-m-d H:i:s"), "Y-m-d") . '_' . md5(uniqid(rand(), true));
+        $baseSqlFileName = "backup_db_" . randomChars(20) . "_" . dateShift(date("Y-m-d H:i:s"), "Y-m-d") . ".sql";
         $sfilename = $this->tempdir . DIRECTORY_SEPARATOR . $baseSqlFileName;
         $dfilename = $this->tempdir . DIRECTORY_SEPARATOR . "LimeSurvey_database_backup_" . $basefilename . ".zip";
         outputDatabase('', false, $sfilename);
