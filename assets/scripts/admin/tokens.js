@@ -66,10 +66,6 @@ Tokens = {
      DatePicker: function (el) {
          var $elDate = el.querySelector('.DatePicker'), // date time picker element
              $elHiddenInput = el.querySelector('.selector_submitField'); // input form
-         console.ls.log('tokenform', {
-             $elDate: $elDate,
-             $elHiddenInput: $elHiddenInput
-         });
 
          // Generate the date time picker
          initDatePicker($elDate);
