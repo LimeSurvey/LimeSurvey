@@ -126,7 +126,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                     </div>
                     <!-- Submit -->
                     <div class="pt-3">
-                        <input id="create-survey-submit" type='submit' class="btn btn-primary col-6" value='<?php eT("Create survey"); ?>' />
+                        <input id="create-survey-submit" type='submit' class="btn btn-primary w-auto" value='<?php eT("Create survey"); ?>' />
                     </div>
                 </div>
 
