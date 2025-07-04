@@ -133,7 +133,7 @@ class TestHelper extends TestCase
             throw new Exception('Found no survey with id ' . $surveyId);
         }
         $survey->anonymized = '';
-        $survey->datestamp = '';
+        $survey->datestamp = 'Y';
         $survey->ipaddr = '';
         $survey->refurl = '';
         $survey->savetimings = '';

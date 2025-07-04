@@ -44,6 +44,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $ipanonymize Whether id addresses should be anonymized (Y/N)
  * @property string $refurl Save referrer URL: (Y/N)
  * @property string $datecreated Date survey was created  as SQL datetime (YYYY-MM-DD hh:mm:ss)
+ * @property string $lastmodified Date survey was last modified  as SQL datetime (YYYY-MM-DD hh:mm:ss)
  * @property string $publicstatistics Public statistics: (Y/N)
  * @property string $publicgraphs Show graphs in public statistics: (Y/N)
  * @property string $listpublic List survey publicly: (Y/N)
@@ -565,7 +566,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('googleanalyticsapikey', 'match', 'pattern' => '/^[a-zA-Z\-\d]*$/',
                 'message' => gT('Google Analytics Tracking ID may only contain alphanumeric characters and hyphens.'),
             ),
-            array('othersettings', 'checkOtherSettings'),
+            array('othersettings', 'LSYii_OtherSettingsValidator'),
         );
     }
 
@@ -744,7 +745,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * This function returns any valid mappings from the survey participants tables to the CPDB
+     * This function returns any valid mappings from the survey participant lists to the CPDB
      * in the form of an array [<cpdb_attribute_id>=><participant_table_attribute_name>]
      *
      * @return array Array of mappings
@@ -791,7 +792,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
 
     /**
-     * Returns true in a survey participants table exists for survey
+     * Returns true in a survey participant list exists for survey
      * @return boolean
      */
     public function getHasTokensTable()
@@ -1414,6 +1415,17 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Use the creation date for old entries when the last modified date is unavailable
+     */
+    public function getLastModifiedDate()
+    {
+        $date = $this->lastmodified > $this->datecreated ?
+            $this->lastmodified : $this->creationdate;
+
+        return self::shiftedDateTime($date)->format('d.m.Y');
+    }
+
+    /**
      * @return int|string
      */
     public function getCountFullAnswers()
@@ -1589,7 +1601,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             [
                 'header'            => gT('Survey ID'),
                 'name'              => 'survey_id',
-                'value'             => '$data->sid',
+                'value'             => 'CHtml::link($data->sid, Yii::app()->createUrl("surveyAdministration/view", ["surveyid" => $data->sid]))',
+                'type'              => 'raw',
                 'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
                 'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
             ],
@@ -1604,14 +1617,15 @@ class Survey extends LSActiveRecord implements PermissionInterface
             [
                 'header'            => gT('Title'),
                 'name'              => 'title',
-                'value'             => '$data->defaultlanguage->surveyls_title ?? null',
+                'value'             => 'isset($data->defaultlanguage) ? CHtml::link(flattenText($data->defaultlanguage->surveyls_title), Yii::app()->createUrl("surveyAdministration/view", ["surveyid" => $data->sid])) : ""',
+                'type'              => 'raw',
                 'htmlOptions'       => ['class' => 'has-link'],
                 'headerHtmlOptions' => ['class' => 'text-nowrap'],
             ],
             [
-                'header'            => gT('Created'),
-                'name'              => 'creation_date',
-                'value'             => '$data->creationdate',
+                'header'            => gT('Last modified'),
+                'name'              => 'last modified',
+                'value'             => '$data->lastModifiedDate',
                 'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
                 'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
             ],
@@ -1979,7 +1993,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Get all surveys that has participant table
+     * Get all surveys that has participant list
      * @return Survey[]
      */
     public static function getSurveysWithTokenTable()
@@ -2407,7 +2421,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey settings"),
-                'description' => gT("Permission to view, update the survey settings including survey participants table creation"),
+                'description' => gT("Permission to view, update the survey settings including survey participant list creation"),
                 'img' => ' ri-settings-5-fill',
             ),
             'tokens' => array(
@@ -2605,58 +2619,32 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function setOtherSetting($attribute, $value)
     {
-        $othersettings = json_decode($this->othersettings, true) ?? [];
+        $othersettings = json_decode($this->othersettings ?? '', true) ?? [];
         $othersettings[$attribute] = $value;
         $this->othersettings = json_encode($othersettings);
     }
 
     /**
-     * Validates all other settings
-     * @return boolean Whether all settings are valid
+     * Retrieves prefix othersettings as an associative array.
+     *
+     * This method collects all the survey's othersettings (prefixes for question codes,
+     * subquestion codes, and answer codes) and returns them as an array.
+     *
+     * @return array An associative array containing the other settings with keys:
+     *               'question_code_prefix', 'subquestion_code_prefix', and 'answer_code_prefix'
      */
-    public function checkOtherSettings()
+    public function getOtherSettingsPrefixArray()
     {
-        $otherSettings = json_decode($this->othersettings, true) ?: [];
-        $isValid = true;
-        foreach ($otherSettings as $attribute => $value) {
-            if (!$this->checkOtherSetting($attribute, $value)) {
-                $isValid = false;
-            }
-        }
-        return $isValid;
-    }
+        $otherSettings['question_code_prefix'] = $this->getOtherSetting(
+            'question_code_prefix'
+        );
+        $otherSettings['subquestion_code_prefix'] = $this->getOtherSetting(
+            'subquestion_code_prefix'
+        );
+        $otherSettings['answer_code_prefix'] = $this->getOtherSetting(
+            'answer_code_prefix'
+        );
 
-    /**
-     * Validates a single other setting
-     * @param string $attribute The setting name
-     * @param mixed $value The setting value
-     * @return boolean Whether the setting is valid
-     */
-    public function checkOtherSetting($attribute, $value)
-    {
-        $validationRules = [
-            'question_code_prefix' => [
-                'pattern' => '/^$|^[A-Za-z][A-Za-z0-9]{0,14}$/',
-                'message' => gT("Question code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 15 characters.")
-            ],
-            'subquestion_code_prefix' => [
-                'pattern' => '/^$|^[A-Za-z][A-Za-z0-9]{0,4}$/',
-                'message' => gT("Subquestion code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 5 characters.")
-            ],
-            'answer_code_prefix' => [
-                'pattern' => '/^$|^[A-Za-z][A-Za-z0-9]{0,1}$/',
-                'message' => gT("Answer code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 2 characters.")
-            ]
-        ];
-        // If this is not a setting we validate, return true
-        if (!isset($validationRules[$attribute])) {
-            return true;
-        }
-        $rule = $validationRules[$attribute];
-        $isValid = preg_match($rule['pattern'], $value);
-        if (!$isValid) {
-            $this->addError($attribute, $rule['message']);
-        }
-        return (bool)$isValid;
+        return $otherSettings;
     }
 }

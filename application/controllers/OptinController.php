@@ -39,7 +39,7 @@ class OptinController extends LSYii_Controller
         $languageCode = Yii::app()->request->getQuery('langcode');
         $accessToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
 
-        if (!$surveyId || intval($surveyId) !== $surveyId || !$accessToken) {
+        if (!filter_var($surveyId, FILTER_VALIDATE_INT) || !$accessToken) {
             throw new CHttpException(400, gT('Invalid request.'));
         }
 
@@ -128,7 +128,7 @@ class OptinController extends LSYii_Controller
             if (!Yii::app()->getConfig('allowunblacklist') == "Y") {
                 $message = gT('Removing yourself from the blocklist is currently disabled.');
             } elseif ($isBlacklisted) {
-                $message = gT('Please confirm that you want to be added back to the central participants list for this site.');
+                $message = gT('Please confirm that you want to be added back to the central participant list for this site.');
                 $link = Yii::app()->createUrl('optin/addtokens', ['surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken, 'global' => true]);
             } elseif ($optedOutFromSurvey) {
                 $message = gT('Please confirm that you want to be added back to this survey by clicking the button below.') . '<br>' . gT("After confirmation you may start receiving invitations and reminders for this survey.");
@@ -136,7 +136,7 @@ class OptinController extends LSYii_Controller
             } elseif (empty($participant)) {
                 $message = gT('You are already a participant of this survey.');
             } else {
-                $message = gT('You are already part of the central participants list for this site.');
+                $message = gT('You are already part of the central participant list for this site.');
             }
 
             $tokenAttributes = $token->getAttributes();

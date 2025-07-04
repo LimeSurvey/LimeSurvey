@@ -168,14 +168,14 @@ class SurveyDynamic extends LSActiveRecord
         $alias = $this->getTableAlias();
 
         $newCriteria->join = "LEFT JOIN " . $this->survey->tokensTableName . " timings ON $alias.id = timings.id";
-        $newCriteria->select = 'timings.*'; // Otherwise we don't get records from the survey participants table
+        $newCriteria->select = 'timings.*'; // Otherwise we don't get records from the survey participants list
         $newCriteria->mergeWith($criteria);
 
         return $newCriteria;
     }
 
     /**
-     * Return criteria updated with the ones needed for including results from the survey participants table
+     * Return criteria updated with the ones needed for including results from the survey participant list
      *
      * @param string $condition
      * @return CDbCriteria
@@ -203,7 +203,7 @@ class SurveyDynamic extends LSActiveRecord
         $aTokenFields = Yii::app()->db->schema->getTable($this->survey->tokensTableName)->getColumnNames();
         $aTokenFields = array_diff($aTokenFields, array('token'));
 
-        $newCriteria->select = $aTokenFields; // Otherwise we don't get records from the survey participants table
+        $newCriteria->select = $aTokenFields; // Otherwise we don't get records from the survey participant list
         $newCriteria->mergeWith($criteria);
 
         return $newCriteria;
@@ -678,7 +678,7 @@ class SurveyDynamic extends LSActiveRecord
             '*',
         );
 
-        // Join the survey participants table and filter tokens if needed
+        // Join the survey participant list and filter tokens if needed
         if ($this->bHaveToken && $this->survey->anonymized != 'Y') {
             $this->joinWithToken($criteria, $sort);
         }

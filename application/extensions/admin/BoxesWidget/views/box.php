@@ -46,7 +46,7 @@
                     </div>
                     <div class="box-widget-card-text">
                         <div class="box-widget-card-date">
-                            <?= $item['survey']->creationdate ?>
+                            <?= $item['survey']->getLastModifiedDate() ?>
                         </div>
                         <div class="box-widget-card-status">
                             <?= $item['survey']->getRunning() ?>
@@ -112,6 +112,9 @@
                     <i class="<?= $item['icon'] ?>"></i>
                     <?= $item['text'] ?>
                 </div>
+            </div>
+        <?php elseif ($item['type'] == BoxesWidget::TYPE_PLACEHOLDER) : ?>
+            <div class="box-widget-card card-link card-placeholder d-inline-block">
             </div>
         <?php endif; ?>
     <?php endforeach; ?>
