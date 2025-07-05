@@ -32,46 +32,38 @@
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 var Bootstrap = _interopRequireWildcard(require("../../../node_modules/bootstrap/dist/js/bootstrap.esm.js"));
-function _interopRequireWildcard(e, t) { if ("function" == typeof WeakMap) var r = new WeakMap(), n = new WeakMap(); return (_interopRequireWildcard = function _interopRequireWildcard(e, t) { if (!t && e && e.__esModule) return e; var o, i, f = { __proto__: null, "default": e }; if (null === e || "object" != _typeof(e) && "function" != typeof e) return f; if (o = t ? n : r) { if (o.has(e)) return o.get(e); o.set(e, f); } for (var _t in e) "default" !== _t && {}.hasOwnProperty.call(e, _t) && ((i = (o = Object.defineProperty) && Object.getOwnPropertyDescriptor(e, _t)) && (i.get || i.set) ? o(f, _t, i) : f[_t] = e[_t]); return f; })(e, t); }
+function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
 // register to global scope
 window.bootstrap = Bootstrap;
 
 },{"../../../node_modules/bootstrap/dist/js/bootstrap.esm.js":12}],2:[function(require,module,exports){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-var timeout;
 var A11yHandles = {
-  initLiveRegion: function initLiveRegion() {
-    var LiveRegion = document.createElement('div');
-    LiveRegion.id = 'live-region';
-    LiveRegion.classList.add('sr-only');
-    LiveRegion.setAttribute('aria-live', 'polite');
-    LiveRegion.setAttribute('role', 'status');
-    document.body.appendChild(LiveRegion);
+  handleTooltip: function handleTooltip() {
+    document.body.addEventListener('keydown', function (e) {
+      if (e.key == 'Escape') {
+        console.log('Escape key pressed');
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (tooltipTriggerEl) {
+          var tooltip = bootstrap.Tooltip.getInstance(tooltipTriggerEl);
+          tooltip.hide();
+        });
+      }
+    });
   },
-  liveAnnounce: function liveAnnounce(message) {
-    var liveRegion = document.getElementById('live-region');
-    clearTimeout(timeout);
-    liveRegion.innerHTML = '';
-    timeout = setTimeout(function () {
-      liveRegion.innerHTML = '<p>' + message + '</p>';
-    }, 500);
+  handleTitle: function handleTitle() {
+    var existingTitle = document.title;
+    var heading = document.querySelector('h1.group-title');
+    if (heading) {
+      document.title = existingTitle + ' - ' + heading.textContent;
+    }
   }
 };
 $(document).on('ready pjax:scriptcomplete', function () {
-  A11yHandles.initLiveRegion();
+  A11yHandles.handleTooltip();
+  A11yHandles.handleTitle();
 });
-$(document).on('classChangeError', function (event) {
-  A11yHandles.liveAnnounce(event.target.textContent.trim());
-});
-$(document).on('classChangeGood', function (event) {
-  A11yHandles.liveAnnounce(event.target.textContent.trim());
-});
-var _default = exports["default"] = A11yHandles;
 
 },{}],3:[function(require,module,exports){
 "use strict";
@@ -930,7 +922,7 @@ function activateSoftMandatory() {
   $('#mandatory-soft-alert-box-modal').on('click', function (ev) {
     ev.preventDefault();
     var $form = $('#limesurvey');
-    $form.append('<input type="hidden" name="mandSoft" value="' + $(this).data('movenext') + '" />');
+    $form.find(".ls-mandSoft-checkbox").prop('checked', true);
     $form.find('#ls-button-submit').trigger('click');
     $("#bootstrap-alert-box-modal").modal('hide');
   });
@@ -1093,9 +1085,10 @@ var _old_core_theme = _interopRequireDefault(require("./core/old_core_theme.js")
 var _array = _interopRequireDefault(require("./questiontypes/array/array.js"));
 var _navbar = _interopRequireDefault(require("./navbar/navbar.js"));
 var _video = _interopRequireDefault(require("./video/video.js"));
-var _a11yHandles = _interopRequireDefault(require("./a11y-handles/a11y-handles.js"));
+var _a11yHandles = require("./a11y-handles/a11y-handles.js");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
-function _interopRequireWildcard(e, t) { if ("function" == typeof WeakMap) var r = new WeakMap(), n = new WeakMap(); return (_interopRequireWildcard = function _interopRequireWildcard(e, t) { if (!t && e && e.__esModule) return e; var o, i, f = { __proto__: null, "default": e }; if (null === e || "object" != _typeof(e) && "function" != typeof e) return f; if (o = t ? n : r) { if (o.has(e)) return o.get(e); o.set(e, f); } for (var _t in e) "default" !== _t && {}.hasOwnProperty.call(e, _t) && ((i = (o = Object.defineProperty) && Object.getOwnPropertyDescriptor(e, _t)) && (i.get || i.set) ? o(f, _t, i) : f[_t] = e[_t]); return f; })(e, t); }
+function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
 
 },{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"./a11y-handles/a11y-handles.js":2,"./core/old_core_theme.js":3,"./navbar/navbar.js":6,"./questiontypes/array/array.js":7,"./theme_js_disclaimer.js":8,"./video/video.js":10}],10:[function(require,module,exports){
 "use strict";
@@ -2740,8 +2733,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Tooltip = exports.Toast = exports.Tab = exports.ScrollSpy = exports.Popover = exports.Offcanvas = exports.Modal = exports.Dropdown = exports.Collapse = exports.Carousel = exports.Button = exports.Alert = void 0;
 var Popper = _interopRequireWildcard(require("@popperjs/core"));
-function _interopRequireWildcard(e, t) { if ("function" == typeof WeakMap) var r = new WeakMap(), n = new WeakMap(); return (_interopRequireWildcard = function _interopRequireWildcard(e, t) { if (!t && e && e.__esModule) return e; var o, i, f = { __proto__: null, "default": e }; if (null === e || "object" != _typeof(e) && "function" != typeof e) return f; if (o = t ? n : r) { if (o.has(e)) return o.get(e); o.set(e, f); } for (var _t in e) "default" !== _t && {}.hasOwnProperty.call(e, _t) && ((i = (o = Object.defineProperty) && Object.getOwnPropertyDescriptor(e, _t)) && (i.get || i.set) ? o(f, _t, i) : f[_t] = e[_t]); return f; })(e, t); }
-function _superPropGet(t, o, e, r) { var p = _get(_getPrototypeOf(1 & r ? t.prototype : t), o, e); return 2 & r && "function" == typeof p ? function (t) { return p.apply(e, t); } : p; }
+function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
+function _superPropGet(t, e, o, r) { var p = _get(_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
 function _get() { return _get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = _superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, _get.apply(null, arguments); }
 function _superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = _getPrototypeOf(t));); return t; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -4382,7 +4376,7 @@ var Collapse = exports.Collapse = /*#__PURE__*/function (_BaseComponent4) {
   }, {
     key: "hide",
     value: function hide() {
-      var _this0 = this;
+      var _this10 = this;
       if (this._isTransitioning || !this._isShown()) {
         return;
       }
@@ -4405,10 +4399,10 @@ var Collapse = exports.Collapse = /*#__PURE__*/function (_BaseComponent4) {
       }
       this._isTransitioning = true;
       var complete = function complete() {
-        _this0._isTransitioning = false;
-        _this0._element.classList.remove(CLASS_NAME_COLLAPSING);
-        _this0._element.classList.add(CLASS_NAME_COLLAPSE);
-        EventHandler.trigger(_this0._element, EVENT_HIDDEN$5);
+        _this10._isTransitioning = false;
+        _this10._element.classList.remove(CLASS_NAME_COLLAPSING);
+        _this10._element.classList.add(CLASS_NAME_COLLAPSE);
+        EventHandler.trigger(_this10._element, EVENT_HIDDEN$5);
       };
       this._element.style[dimension] = '';
       this._queueCallback(complete, this._element, true);
@@ -4437,7 +4431,7 @@ var Collapse = exports.Collapse = /*#__PURE__*/function (_BaseComponent4) {
   }, {
     key: "_initializeChildren",
     value: function _initializeChildren() {
-      var _this1 = this;
+      var _this11 = this;
       if (!this._config.parent) {
         return;
       }
@@ -4447,7 +4441,7 @@ var Collapse = exports.Collapse = /*#__PURE__*/function (_BaseComponent4) {
       }).forEach(function (element) {
         var selected = getElementFromSelector(element);
         if (selected) {
-          _this1._addAriaAndCollapsedClass([element], _this1._isShown(selected));
+          _this11._addAriaAndCollapsedClass([element], _this11._isShown(selected));
         }
       });
     }
@@ -4591,14 +4585,14 @@ var DefaultType$8 = {
  */
 var Dropdown = exports.Dropdown = /*#__PURE__*/function (_BaseComponent5) {
   function Dropdown(element, config) {
-    var _this10;
+    var _this12;
     _classCallCheck(this, Dropdown);
-    _this10 = _callSuper(this, Dropdown, [element]);
-    _this10._popper = null;
-    _this10._config = _this10._getConfig(config);
-    _this10._menu = _this10._getMenuElement();
-    _this10._inNavbar = _this10._detectNavbar();
-    return _this10;
+    _this12 = _callSuper(this, Dropdown, [element]);
+    _this12._popper = null;
+    _this12._config = _this12._getConfig(config);
+    _this12._menu = _this12._getMenuElement();
+    _this12._inNavbar = _this12._detectNavbar();
+    return _this12;
   } // Getters
   _inherits(Dropdown, _BaseComponent5);
   return _createClass(Dropdown, [{
@@ -4766,7 +4760,7 @@ var Dropdown = exports.Dropdown = /*#__PURE__*/function (_BaseComponent5) {
   }, {
     key: "_getOffset",
     value: function _getOffset() {
-      var _this11 = this;
+      var _this13 = this;
       var offset = this._config.offset;
       if (typeof offset === 'string') {
         return offset.split(',').map(function (val) {
@@ -4775,7 +4769,7 @@ var Dropdown = exports.Dropdown = /*#__PURE__*/function (_BaseComponent5) {
       }
       if (typeof offset === 'function') {
         return function (popperData) {
-          return offset(popperData, _this11._element);
+          return offset(popperData, _this13._element);
         };
       }
       return offset;
@@ -4997,13 +4991,13 @@ var ScrollBarHelper = /*#__PURE__*/function () {
   }, {
     key: "_setElementAttributes",
     value: function _setElementAttributes(selector, styleProp, callback) {
-      var _this12 = this;
+      var _this14 = this;
       var scrollbarWidth = this.getWidth();
       var manipulationCallBack = function manipulationCallBack(element) {
-        if (element !== _this12._element && window.innerWidth > element.clientWidth + scrollbarWidth) {
+        if (element !== _this14._element && window.innerWidth > element.clientWidth + scrollbarWidth) {
           return;
         }
-        _this12._saveInitialAttribute(element, styleProp);
+        _this14._saveInitialAttribute(element, styleProp);
         var calculatedValue = window.getComputedStyle(element)[styleProp];
         element.style[styleProp] = "".concat(callback(Number.parseFloat(calculatedValue)), "px");
       };
@@ -5107,14 +5101,14 @@ var Backdrop = /*#__PURE__*/function () {
   }, {
     key: "hide",
     value: function hide(callback) {
-      var _this13 = this;
+      var _this15 = this;
       if (!this._config.isVisible) {
         execute(callback);
         return;
       }
       this._getElement().classList.remove(CLASS_NAME_SHOW$5);
       this._emulateAnimation(function () {
-        _this13.dispose();
+        _this15.dispose();
         execute(callback);
       });
     } // Private
@@ -5143,13 +5137,13 @@ var Backdrop = /*#__PURE__*/function () {
   }, {
     key: "_append",
     value: function _append() {
-      var _this14 = this;
+      var _this16 = this;
       if (this._isAppended) {
         return;
       }
       this._config.rootElement.append(this._getElement());
       EventHandler.on(this._getElement(), EVENT_MOUSEDOWN, function () {
-        execute(_this14._config.clickCallback);
+        execute(_this16._config.clickCallback);
       });
       this._isAppended = true;
     }
@@ -5203,7 +5197,7 @@ var FocusTrap = /*#__PURE__*/function () {
   return _createClass(FocusTrap, [{
     key: "activate",
     value: function activate() {
-      var _this15 = this;
+      var _this17 = this;
       var _this$_config = this._config,
         trapElement = _this$_config.trapElement,
         autofocus = _this$_config.autofocus;
@@ -5216,10 +5210,10 @@ var FocusTrap = /*#__PURE__*/function () {
       EventHandler.off(document, EVENT_KEY$7); // guard against infinite focus loop
 
       EventHandler.on(document, EVENT_FOCUSIN$1, function (event) {
-        return _this15._handleFocusin(event);
+        return _this17._handleFocusin(event);
       });
       EventHandler.on(document, EVENT_KEYDOWN_TAB, function (event) {
-        return _this15._handleKeydown(event);
+        return _this17._handleKeydown(event);
       });
       this._isActive = true;
     }
@@ -5318,18 +5312,18 @@ var SELECTOR_DATA_TOGGLE$2 = '[data-bs-toggle="modal"]';
  */
 var Modal = exports.Modal = /*#__PURE__*/function (_BaseComponent6) {
   function Modal(element, config) {
-    var _this16;
+    var _this18;
     _classCallCheck(this, Modal);
-    _this16 = _callSuper(this, Modal, [element]);
-    _this16._config = _this16._getConfig(config);
-    _this16._dialog = SelectorEngine.findOne(SELECTOR_DIALOG, _this16._element);
-    _this16._backdrop = _this16._initializeBackDrop();
-    _this16._focustrap = _this16._initializeFocusTrap();
-    _this16._isShown = false;
-    _this16._ignoreBackdropClick = false;
-    _this16._isTransitioning = false;
-    _this16._scrollBar = new ScrollBarHelper();
-    return _this16;
+    _this18 = _callSuper(this, Modal, [element]);
+    _this18._config = _this18._getConfig(config);
+    _this18._dialog = SelectorEngine.findOne(SELECTOR_DIALOG, _this18._element);
+    _this18._backdrop = _this18._initializeBackDrop();
+    _this18._focustrap = _this18._initializeFocusTrap();
+    _this18._isShown = false;
+    _this18._ignoreBackdropClick = false;
+    _this18._isTransitioning = false;
+    _this18._scrollBar = new ScrollBarHelper();
+    return _this18;
   } // Getters
   _inherits(Modal, _BaseComponent6);
   return _createClass(Modal, [{
@@ -5343,7 +5337,7 @@ var Modal = exports.Modal = /*#__PURE__*/function (_BaseComponent6) {
   }, {
     key: "show",
     value: function show(relatedTarget) {
-      var _this17 = this;
+      var _this19 = this;
       if (this._isShown || this._isTransitioning) {
         return;
       }
@@ -5363,20 +5357,20 @@ var Modal = exports.Modal = /*#__PURE__*/function (_BaseComponent6) {
       this._setEscapeEvent();
       this._setResizeEvent();
       EventHandler.on(this._dialog, EVENT_MOUSEDOWN_DISMISS, function () {
-        EventHandler.one(_this17._element, EVENT_MOUSEUP_DISMISS, function (event) {
-          if (event.target === _this17._element) {
-            _this17._ignoreBackdropClick = true;
+        EventHandler.one(_this19._element, EVENT_MOUSEUP_DISMISS, function (event) {
+          if (event.target === _this19._element) {
+            _this19._ignoreBackdropClick = true;
           }
         });
       });
       this._showBackdrop(function () {
-        return _this17._showElement(relatedTarget);
+        return _this19._showElement(relatedTarget);
       });
     }
   }, {
     key: "hide",
     value: function hide() {
-      var _this18 = this;
+      var _this20 = this;
       if (!this._isShown || this._isTransitioning) {
         return;
       }
@@ -5396,7 +5390,7 @@ var Modal = exports.Modal = /*#__PURE__*/function (_BaseComponent6) {
       EventHandler.off(this._element, EVENT_CLICK_DISMISS);
       EventHandler.off(this._dialog, EVENT_MOUSEDOWN_DISMISS);
       this._queueCallback(function () {
-        return _this18._hideModal();
+        return _this20._hideModal();
       }, this._element, isAnimated);
     }
   }, {
@@ -5440,7 +5434,7 @@ var Modal = exports.Modal = /*#__PURE__*/function (_BaseComponent6) {
   }, {
     key: "_showElement",
     value: function _showElement(relatedTarget) {
-      var _this19 = this;
+      var _this21 = this;
       var isAnimated = this._isAnimated();
       var modalBody = SelectorEngine.findOne(SELECTOR_MODAL_BODY, this._dialog);
       if (!this._element.parentNode || this._element.parentNode.nodeType !== Node.ELEMENT_NODE) {
@@ -5460,11 +5454,11 @@ var Modal = exports.Modal = /*#__PURE__*/function (_BaseComponent6) {
       }
       this._element.classList.add(CLASS_NAME_SHOW$4);
       var transitionComplete = function transitionComplete() {
-        if (_this19._config.focus) {
-          _this19._focustrap.activate();
+        if (_this21._config.focus) {
+          _this21._focustrap.activate();
         }
-        _this19._isTransitioning = false;
-        EventHandler.trigger(_this19._element, EVENT_SHOWN$3, {
+        _this21._isTransitioning = false;
+        EventHandler.trigger(_this21._element, EVENT_SHOWN$3, {
           relatedTarget: relatedTarget
         });
       };
@@ -5473,14 +5467,14 @@ var Modal = exports.Modal = /*#__PURE__*/function (_BaseComponent6) {
   }, {
     key: "_setEscapeEvent",
     value: function _setEscapeEvent() {
-      var _this20 = this;
+      var _this22 = this;
       if (this._isShown) {
         EventHandler.on(this._element, EVENT_KEYDOWN_DISMISS$1, function (event) {
-          if (_this20._config.keyboard && event.key === ESCAPE_KEY$1) {
+          if (_this22._config.keyboard && event.key === ESCAPE_KEY$1) {
             event.preventDefault();
-            _this20.hide();
-          } else if (!_this20._config.keyboard && event.key === ESCAPE_KEY$1) {
-            _this20._triggerBackdropTransition();
+            _this22.hide();
+          } else if (!_this22._config.keyboard && event.key === ESCAPE_KEY$1) {
+            _this22._triggerBackdropTransition();
           }
         });
       } else {
@@ -5490,10 +5484,10 @@ var Modal = exports.Modal = /*#__PURE__*/function (_BaseComponent6) {
   }, {
     key: "_setResizeEvent",
     value: function _setResizeEvent() {
-      var _this21 = this;
+      var _this23 = this;
       if (this._isShown) {
         EventHandler.on(window, EVENT_RESIZE, function () {
-          return _this21._adjustDialog();
+          return _this23._adjustDialog();
         });
       } else {
         EventHandler.off(window, EVENT_RESIZE);
@@ -5502,7 +5496,7 @@ var Modal = exports.Modal = /*#__PURE__*/function (_BaseComponent6) {
   }, {
     key: "_hideModal",
     value: function _hideModal() {
-      var _this22 = this;
+      var _this24 = this;
       this._element.style.display = 'none';
       this._element.setAttribute('aria-hidden', true);
       this._element.removeAttribute('aria-modal');
@@ -5510,27 +5504,27 @@ var Modal = exports.Modal = /*#__PURE__*/function (_BaseComponent6) {
       this._isTransitioning = false;
       this._backdrop.hide(function () {
         document.body.classList.remove(CLASS_NAME_OPEN);
-        _this22._resetAdjustments();
-        _this22._scrollBar.reset();
-        EventHandler.trigger(_this22._element, EVENT_HIDDEN$3);
+        _this24._resetAdjustments();
+        _this24._scrollBar.reset();
+        EventHandler.trigger(_this24._element, EVENT_HIDDEN$3);
       });
     }
   }, {
     key: "_showBackdrop",
     value: function _showBackdrop(callback) {
-      var _this23 = this;
+      var _this25 = this;
       EventHandler.on(this._element, EVENT_CLICK_DISMISS, function (event) {
-        if (_this23._ignoreBackdropClick) {
-          _this23._ignoreBackdropClick = false;
+        if (_this25._ignoreBackdropClick) {
+          _this25._ignoreBackdropClick = false;
           return;
         }
         if (event.target !== event.currentTarget) {
           return;
         }
-        if (_this23._config.backdrop === true) {
-          _this23.hide();
-        } else if (_this23._config.backdrop === 'static') {
-          _this23._triggerBackdropTransition();
+        if (_this25._config.backdrop === true) {
+          _this25.hide();
+        } else if (_this25._config.backdrop === 'static') {
+          _this25._triggerBackdropTransition();
         }
       });
       this._backdrop.show(callback);
@@ -5543,7 +5537,7 @@ var Modal = exports.Modal = /*#__PURE__*/function (_BaseComponent6) {
   }, {
     key: "_triggerBackdropTransition",
     value: function _triggerBackdropTransition() {
-      var _this24 = this;
+      var _this26 = this;
       var hideEvent = EventHandler.trigger(this._element, EVENT_HIDE_PREVENTED);
       if (hideEvent.defaultPrevented) {
         return;
@@ -5564,9 +5558,9 @@ var Modal = exports.Modal = /*#__PURE__*/function (_BaseComponent6) {
       this._queueCallback(function () {
         classList.remove(CLASS_NAME_STATIC);
         if (!isModalOverflowing) {
-          _this24._queueCallback(function () {
+          _this26._queueCallback(function () {
             style.overflowY = '';
-          }, _this24._dialog);
+          }, _this26._dialog);
         }
       }, this._dialog);
       this._element.focus();
@@ -5624,7 +5618,7 @@ var Modal = exports.Modal = /*#__PURE__*/function (_BaseComponent6) {
  * ------------------------------------------------------------------------
  */
 EventHandler.on(document, EVENT_CLICK_DATA_API$2, SELECTOR_DATA_TOGGLE$2, function (event) {
-  var _this25 = this;
+  var _this27 = this;
   var target = getElementFromSelector(this);
   if (['A', 'AREA'].includes(this.tagName)) {
     event.preventDefault();
@@ -5635,8 +5629,8 @@ EventHandler.on(document, EVENT_CLICK_DATA_API$2, SELECTOR_DATA_TOGGLE$2, functi
       return;
     }
     EventHandler.one(target, EVENT_HIDDEN$3, function () {
-      if (isVisible(_this25)) {
-        _this25.focus();
+      if (isVisible(_this27)) {
+        _this27.focus();
       }
     });
   }); // avoid conflict when clicking moddal toggler while another one is open
@@ -5703,15 +5697,15 @@ var SELECTOR_DATA_TOGGLE$1 = '[data-bs-toggle="offcanvas"]';
  */
 var Offcanvas = exports.Offcanvas = /*#__PURE__*/function (_BaseComponent7) {
   function Offcanvas(element, config) {
-    var _this26;
+    var _this28;
     _classCallCheck(this, Offcanvas);
-    _this26 = _callSuper(this, Offcanvas, [element]);
-    _this26._config = _this26._getConfig(config);
-    _this26._isShown = false;
-    _this26._backdrop = _this26._initializeBackDrop();
-    _this26._focustrap = _this26._initializeFocusTrap();
-    _this26._addEventListeners();
-    return _this26;
+    _this28 = _callSuper(this, Offcanvas, [element]);
+    _this28._config = _this28._getConfig(config);
+    _this28._isShown = false;
+    _this28._backdrop = _this28._initializeBackDrop();
+    _this28._focustrap = _this28._initializeFocusTrap();
+    _this28._addEventListeners();
+    return _this28;
   } // Getters
   _inherits(Offcanvas, _BaseComponent7);
   return _createClass(Offcanvas, [{
@@ -5725,7 +5719,7 @@ var Offcanvas = exports.Offcanvas = /*#__PURE__*/function (_BaseComponent7) {
   }, {
     key: "show",
     value: function show(relatedTarget) {
-      var _this27 = this;
+      var _this29 = this;
       if (this._isShown) {
         return;
       }
@@ -5746,10 +5740,10 @@ var Offcanvas = exports.Offcanvas = /*#__PURE__*/function (_BaseComponent7) {
       this._element.setAttribute('role', 'dialog');
       this._element.classList.add(CLASS_NAME_SHOW$3);
       var completeCallBack = function completeCallBack() {
-        if (!_this27._config.scroll) {
-          _this27._focustrap.activate();
+        if (!_this29._config.scroll) {
+          _this29._focustrap.activate();
         }
-        EventHandler.trigger(_this27._element, EVENT_SHOWN$2, {
+        EventHandler.trigger(_this29._element, EVENT_SHOWN$2, {
           relatedTarget: relatedTarget
         });
       };
@@ -5758,7 +5752,7 @@ var Offcanvas = exports.Offcanvas = /*#__PURE__*/function (_BaseComponent7) {
   }, {
     key: "hide",
     value: function hide() {
-      var _this28 = this;
+      var _this30 = this;
       if (!this._isShown) {
         return;
       }
@@ -5772,14 +5766,14 @@ var Offcanvas = exports.Offcanvas = /*#__PURE__*/function (_BaseComponent7) {
       this._element.classList.remove(CLASS_NAME_SHOW$3);
       this._backdrop.hide();
       var completeCallback = function completeCallback() {
-        _this28._element.setAttribute('aria-hidden', true);
-        _this28._element.removeAttribute('aria-modal');
-        _this28._element.removeAttribute('role');
-        _this28._element.style.visibility = 'hidden';
-        if (!_this28._config.scroll) {
+        _this30._element.setAttribute('aria-hidden', true);
+        _this30._element.removeAttribute('aria-modal');
+        _this30._element.removeAttribute('role');
+        _this30._element.style.visibility = 'hidden';
+        if (!_this30._config.scroll) {
           new ScrollBarHelper().reset();
         }
-        EventHandler.trigger(_this28._element, EVENT_HIDDEN$2);
+        EventHandler.trigger(_this30._element, EVENT_HIDDEN$2);
       };
       this._queueCallback(completeCallback, this._element, true);
     }
@@ -5800,14 +5794,14 @@ var Offcanvas = exports.Offcanvas = /*#__PURE__*/function (_BaseComponent7) {
   }, {
     key: "_initializeBackDrop",
     value: function _initializeBackDrop() {
-      var _this29 = this;
+      var _this31 = this;
       return new Backdrop({
         className: CLASS_NAME_BACKDROP,
         isVisible: this._config.backdrop,
         isAnimated: true,
         rootElement: this._element.parentNode,
         clickCallback: function clickCallback() {
-          return _this29.hide();
+          return _this31.hide();
         }
       });
     }
@@ -5821,10 +5815,10 @@ var Offcanvas = exports.Offcanvas = /*#__PURE__*/function (_BaseComponent7) {
   }, {
     key: "_addEventListeners",
     value: function _addEventListeners() {
-      var _this30 = this;
+      var _this32 = this;
       EventHandler.on(this._element, EVENT_KEYDOWN_DISMISS, function (event) {
-        if (_this30._config.keyboard && event.key === ESCAPE_KEY) {
-          _this30.hide();
+        if (_this32._config.keyboard && event.key === ESCAPE_KEY) {
+          _this32.hide();
         }
       });
     } // Static
@@ -5860,7 +5854,7 @@ var Offcanvas = exports.Offcanvas = /*#__PURE__*/function (_BaseComponent7) {
  * ------------------------------------------------------------------------
  */
 EventHandler.on(document, EVENT_CLICK_DATA_API$1, SELECTOR_DATA_TOGGLE$1, function (event) {
-  var _this31 = this;
+  var _this33 = this;
   var target = getElementFromSelector(this);
   if (['A', 'AREA'].includes(this.tagName)) {
     event.preventDefault();
@@ -5870,8 +5864,8 @@ EventHandler.on(document, EVENT_CLICK_DATA_API$1, SELECTOR_DATA_TOGGLE$1, functi
   }
   EventHandler.one(target, EVENT_HIDDEN$2, function () {
     // focus on trigger when it is closed
-    if (isVisible(_this31)) {
-      _this31.focus();
+    if (isVisible(_this33)) {
+      _this33.focus();
     }
   }); // avoid conflict when clicking a toggler of an offcanvas, while another is open
 
@@ -6096,23 +6090,23 @@ var TRIGGER_MANUAL = 'manual';
  */
 var Tooltip = exports.Tooltip = /*#__PURE__*/function (_BaseComponent8) {
   function Tooltip(element, config) {
-    var _this32;
+    var _this34;
     _classCallCheck(this, Tooltip);
     if (typeof Popper === 'undefined') {
       throw new TypeError('Bootstrap\'s tooltips require Popper (https://popper.js.org)');
     }
-    _this32 = _callSuper(this, Tooltip, [element]); // private
+    _this34 = _callSuper(this, Tooltip, [element]); // private
 
-    _this32._isEnabled = true;
-    _this32._timeout = 0;
-    _this32._hoverState = '';
-    _this32._activeTrigger = {};
-    _this32._popper = null; // Protected
+    _this34._isEnabled = true;
+    _this34._timeout = 0;
+    _this34._hoverState = '';
+    _this34._activeTrigger = {};
+    _this34._popper = null; // Protected
 
-    _this32._config = _this32._getConfig(config);
-    _this32.tip = null;
-    _this32._setListeners();
-    return _this32;
+    _this34._config = _this34._getConfig(config);
+    _this34.tip = null;
+    _this34._setListeners();
+    return _this34;
   } // Getters
   _inherits(Tooltip, _BaseComponent8);
   return _createClass(Tooltip, [{
@@ -6169,7 +6163,7 @@ var Tooltip = exports.Tooltip = /*#__PURE__*/function (_BaseComponent8) {
   }, {
     key: "show",
     value: function show() {
-      var _this33 = this;
+      var _this35 = this;
       if (this._element.style.display === 'none') {
         throw new Error('Please use show on visible elements');
       }
@@ -6227,11 +6221,11 @@ var Tooltip = exports.Tooltip = /*#__PURE__*/function (_BaseComponent8) {
         });
       }
       var complete = function complete() {
-        var prevHoverState = _this33._hoverState;
-        _this33._hoverState = null;
-        EventHandler.trigger(_this33._element, _this33.constructor.Event.SHOWN);
+        var prevHoverState = _this35._hoverState;
+        _this35._hoverState = null;
+        EventHandler.trigger(_this35._element, _this35.constructor.Event.SHOWN);
         if (prevHoverState === HOVER_STATE_OUT) {
-          _this33._leave(null, _this33);
+          _this35._leave(null, _this35);
         }
       };
       var isAnimated = this.tip.classList.contains(CLASS_NAME_FADE$2);
@@ -6240,22 +6234,22 @@ var Tooltip = exports.Tooltip = /*#__PURE__*/function (_BaseComponent8) {
   }, {
     key: "hide",
     value: function hide() {
-      var _this34 = this;
+      var _this36 = this;
       if (!this._popper) {
         return;
       }
       var tip = this.getTipElement();
       var complete = function complete() {
-        if (_this34._isWithActiveTrigger()) {
+        if (_this36._isWithActiveTrigger()) {
           return;
         }
-        if (_this34._hoverState !== HOVER_STATE_SHOW) {
+        if (_this36._hoverState !== HOVER_STATE_SHOW) {
           tip.remove();
         }
-        _this34._cleanTipClass();
-        _this34._element.removeAttribute('aria-describedby');
-        EventHandler.trigger(_this34._element, _this34.constructor.Event.HIDDEN);
-        _this34._disposePopper();
+        _this36._cleanTipClass();
+        _this36._element.removeAttribute('aria-describedby');
+        EventHandler.trigger(_this36._element, _this36.constructor.Event.HIDDEN);
+        _this36._disposePopper();
       };
       var hideEvent = EventHandler.trigger(this._element, this.constructor.Event.HIDE);
       if (hideEvent.defaultPrevented) {
@@ -6265,8 +6259,8 @@ var Tooltip = exports.Tooltip = /*#__PURE__*/function (_BaseComponent8) {
       // empty mouseover listeners we added for iOS support
 
       if ('ontouchstart' in document.documentElement) {
-        var _ref0;
-        (_ref0 = []).concat.apply(_ref0, _toConsumableArray(document.body.children)).forEach(function (element) {
+        var _ref10;
+        (_ref10 = []).concat.apply(_ref10, _toConsumableArray(document.body.children)).forEach(function (element) {
           return EventHandler.off(element, 'mouseover', noop);
         });
       }
@@ -6372,7 +6366,7 @@ var Tooltip = exports.Tooltip = /*#__PURE__*/function (_BaseComponent8) {
   }, {
     key: "_getOffset",
     value: function _getOffset() {
-      var _this35 = this;
+      var _this37 = this;
       var offset = this._config.offset;
       if (typeof offset === 'string') {
         return offset.split(',').map(function (val) {
@@ -6381,7 +6375,7 @@ var Tooltip = exports.Tooltip = /*#__PURE__*/function (_BaseComponent8) {
       }
       if (typeof offset === 'function') {
         return function (popperData) {
-          return offset(popperData, _this35._element);
+          return offset(popperData, _this37._element);
         };
       }
       return offset;
@@ -6394,7 +6388,7 @@ var Tooltip = exports.Tooltip = /*#__PURE__*/function (_BaseComponent8) {
   }, {
     key: "_getPopperConfig",
     value: function _getPopperConfig(attachment) {
-      var _this36 = this;
+      var _this38 = this;
       var defaultBsPopperConfig = {
         placement: attachment,
         modifiers: [{
@@ -6422,12 +6416,12 @@ var Tooltip = exports.Tooltip = /*#__PURE__*/function (_BaseComponent8) {
           enabled: true,
           phase: 'afterWrite',
           fn: function fn(data) {
-            return _this36._handlePopperPlacementChange(data);
+            return _this38._handlePopperPlacementChange(data);
           }
         }],
         onFirstUpdate: function onFirstUpdate(data) {
           if (data.options.placement !== data.placement) {
-            _this36._handlePopperPlacementChange(data);
+            _this38._handlePopperPlacementChange(data);
           }
         }
       };
@@ -6446,27 +6440,27 @@ var Tooltip = exports.Tooltip = /*#__PURE__*/function (_BaseComponent8) {
   }, {
     key: "_setListeners",
     value: function _setListeners() {
-      var _this37 = this;
+      var _this39 = this;
       var triggers = this._config.trigger.split(' ');
       triggers.forEach(function (trigger) {
         if (trigger === 'click') {
-          EventHandler.on(_this37._element, _this37.constructor.Event.CLICK, _this37._config.selector, function (event) {
-            return _this37.toggle(event);
+          EventHandler.on(_this39._element, _this39.constructor.Event.CLICK, _this39._config.selector, function (event) {
+            return _this39.toggle(event);
           });
         } else if (trigger !== TRIGGER_MANUAL) {
-          var eventIn = trigger === TRIGGER_HOVER ? _this37.constructor.Event.MOUSEENTER : _this37.constructor.Event.FOCUSIN;
-          var eventOut = trigger === TRIGGER_HOVER ? _this37.constructor.Event.MOUSELEAVE : _this37.constructor.Event.FOCUSOUT;
-          EventHandler.on(_this37._element, eventIn, _this37._config.selector, function (event) {
-            return _this37._enter(event);
+          var eventIn = trigger === TRIGGER_HOVER ? _this39.constructor.Event.MOUSEENTER : _this39.constructor.Event.FOCUSIN;
+          var eventOut = trigger === TRIGGER_HOVER ? _this39.constructor.Event.MOUSELEAVE : _this39.constructor.Event.FOCUSOUT;
+          EventHandler.on(_this39._element, eventIn, _this39._config.selector, function (event) {
+            return _this39._enter(event);
           });
-          EventHandler.on(_this37._element, eventOut, _this37._config.selector, function (event) {
-            return _this37._leave(event);
+          EventHandler.on(_this39._element, eventOut, _this39._config.selector, function (event) {
+            return _this39._leave(event);
           });
         }
       });
       this._hideModalHandler = function () {
-        if (_this37._element) {
-          _this37.hide();
+        if (_this39._element) {
+          _this39.hide();
         }
       };
       EventHandler.on(this._element.closest(SELECTOR_MODAL), EVENT_MODAL_HIDE, this._hideModalHandler);
@@ -6839,21 +6833,21 @@ var METHOD_POSITION = 'position';
  */
 var ScrollSpy = exports.ScrollSpy = /*#__PURE__*/function (_BaseComponent9) {
   function ScrollSpy(element, config) {
-    var _this38;
+    var _this40;
     _classCallCheck(this, ScrollSpy);
-    _this38 = _callSuper(this, ScrollSpy, [element]);
-    _this38._scrollElement = _this38._element.tagName === 'BODY' ? window : _this38._element;
-    _this38._config = _this38._getConfig(config);
-    _this38._offsets = [];
-    _this38._targets = [];
-    _this38._activeTarget = null;
-    _this38._scrollHeight = 0;
-    EventHandler.on(_this38._scrollElement, EVENT_SCROLL, function () {
-      return _this38._process();
+    _this40 = _callSuper(this, ScrollSpy, [element]);
+    _this40._scrollElement = _this40._element.tagName === 'BODY' ? window : _this40._element;
+    _this40._config = _this40._getConfig(config);
+    _this40._offsets = [];
+    _this40._targets = [];
+    _this40._activeTarget = null;
+    _this40._scrollHeight = 0;
+    EventHandler.on(_this40._scrollElement, EVENT_SCROLL, function () {
+      return _this40._process();
     });
-    _this38.refresh();
-    _this38._process();
-    return _this38;
+    _this40.refresh();
+    _this40._process();
+    return _this40;
   } // Getters
   _inherits(ScrollSpy, _BaseComponent9);
   return _createClass(ScrollSpy, [{
@@ -6862,7 +6856,7 @@ var ScrollSpy = exports.ScrollSpy = /*#__PURE__*/function (_BaseComponent9) {
     // Public
 
     function refresh() {
-      var _this39 = this;
+      var _this41 = this;
       var autoMethod = this._scrollElement === this._scrollElement.window ? METHOD_OFFSET : METHOD_POSITION;
       var offsetMethod = this._config.method === 'auto' ? autoMethod : this._config.method;
       var offsetBase = offsetMethod === METHOD_POSITION ? this._getScrollTop() : 0;
@@ -6885,8 +6879,8 @@ var ScrollSpy = exports.ScrollSpy = /*#__PURE__*/function (_BaseComponent9) {
       }).sort(function (a, b) {
         return a[0] - b[0];
       }).forEach(function (item) {
-        _this39._offsets.push(item[0]);
-        _this39._targets.push(item[1]);
+        _this41._offsets.push(item[0]);
+        _this41._targets.push(item[1]);
       });
     }
   }, {
@@ -7068,19 +7062,19 @@ var SELECTOR_DROPDOWN_ACTIVE_CHILD = ':scope > .dropdown-menu .active';
  * Class Definition
  * ------------------------------------------------------------------------
  */
-var Tab = exports.Tab = /*#__PURE__*/function (_BaseComponent0) {
+var Tab = exports.Tab = /*#__PURE__*/function (_BaseComponent10) {
   function Tab() {
     _classCallCheck(this, Tab);
     return _callSuper(this, Tab, arguments);
   }
-  _inherits(Tab, _BaseComponent0);
+  _inherits(Tab, _BaseComponent10);
   return _createClass(Tab, [{
     key: "show",
     value:
     // Public
 
     function show() {
-      var _this40 = this;
+      var _this42 = this;
       if (this._element.parentNode && this._element.parentNode.nodeType === Node.ELEMENT_NODE && this._element.classList.contains(CLASS_NAME_ACTIVE)) {
         return;
       }
@@ -7104,9 +7098,9 @@ var Tab = exports.Tab = /*#__PURE__*/function (_BaseComponent0) {
       this._activate(this._element, listElement);
       var complete = function complete() {
         EventHandler.trigger(previous, EVENT_HIDDEN$1, {
-          relatedTarget: _this40._element
+          relatedTarget: _this42._element
         });
-        EventHandler.trigger(_this40._element, EVENT_SHOWN$1, {
+        EventHandler.trigger(_this42._element, EVENT_SHOWN$1, {
           relatedTarget: previous
         });
       };
@@ -7119,12 +7113,12 @@ var Tab = exports.Tab = /*#__PURE__*/function (_BaseComponent0) {
   }, {
     key: "_activate",
     value: function _activate(element, container, callback) {
-      var _this41 = this;
+      var _this43 = this;
       var activeElements = container && (container.nodeName === 'UL' || container.nodeName === 'OL') ? SelectorEngine.find(SELECTOR_ACTIVE_UL, container) : SelectorEngine.children(container, SELECTOR_ACTIVE);
       var active = activeElements[0];
       var isTransitioning = callback && active && active.classList.contains(CLASS_NAME_FADE$1);
       var complete = function complete() {
-        return _this41._transitionComplete(element, active, callback);
+        return _this43._transitionComplete(element, active, callback);
       };
       if (active && isTransitioning) {
         active.classList.remove(CLASS_NAME_SHOW$1);
@@ -7260,26 +7254,26 @@ var Default = {
  * Class Definition
  * ------------------------------------------------------------------------
  */
-var Toast = exports.Toast = /*#__PURE__*/function (_BaseComponent1) {
+var Toast = exports.Toast = /*#__PURE__*/function (_BaseComponent11) {
   function Toast(element, config) {
-    var _this42;
+    var _this44;
     _classCallCheck(this, Toast);
-    _this42 = _callSuper(this, Toast, [element]);
-    _this42._config = _this42._getConfig(config);
-    _this42._timeout = null;
-    _this42._hasMouseInteraction = false;
-    _this42._hasKeyboardInteraction = false;
-    _this42._setListeners();
-    return _this42;
+    _this44 = _callSuper(this, Toast, [element]);
+    _this44._config = _this44._getConfig(config);
+    _this44._timeout = null;
+    _this44._hasMouseInteraction = false;
+    _this44._hasKeyboardInteraction = false;
+    _this44._setListeners();
+    return _this44;
   } // Getters
-  _inherits(Toast, _BaseComponent1);
+  _inherits(Toast, _BaseComponent11);
   return _createClass(Toast, [{
     key: "show",
     value:
     // Public
 
     function show() {
-      var _this43 = this;
+      var _this45 = this;
       var showEvent = EventHandler.trigger(this._element, EVENT_SHOW);
       if (showEvent.defaultPrevented) {
         return;
@@ -7289,9 +7283,9 @@ var Toast = exports.Toast = /*#__PURE__*/function (_BaseComponent1) {
         this._element.classList.add(CLASS_NAME_FADE);
       }
       var complete = function complete() {
-        _this43._element.classList.remove(CLASS_NAME_SHOWING);
-        EventHandler.trigger(_this43._element, EVENT_SHOWN);
-        _this43._maybeScheduleHide();
+        _this45._element.classList.remove(CLASS_NAME_SHOWING);
+        EventHandler.trigger(_this45._element, EVENT_SHOWN);
+        _this45._maybeScheduleHide();
       };
       this._element.classList.remove(CLASS_NAME_HIDE); // @deprecated
 
@@ -7303,7 +7297,7 @@ var Toast = exports.Toast = /*#__PURE__*/function (_BaseComponent1) {
   }, {
     key: "hide",
     value: function hide() {
-      var _this44 = this;
+      var _this46 = this;
       if (!this._element.classList.contains(CLASS_NAME_SHOW)) {
         return;
       }
@@ -7312,11 +7306,11 @@ var Toast = exports.Toast = /*#__PURE__*/function (_BaseComponent1) {
         return;
       }
       var complete = function complete() {
-        _this44._element.classList.add(CLASS_NAME_HIDE); // @deprecated
+        _this46._element.classList.add(CLASS_NAME_HIDE); // @deprecated
 
-        _this44._element.classList.remove(CLASS_NAME_SHOWING);
-        _this44._element.classList.remove(CLASS_NAME_SHOW);
-        EventHandler.trigger(_this44._element, EVENT_HIDDEN);
+        _this46._element.classList.remove(CLASS_NAME_SHOWING);
+        _this46._element.classList.remove(CLASS_NAME_SHOW);
+        EventHandler.trigger(_this46._element, EVENT_HIDDEN);
       };
       this._element.classList.add(CLASS_NAME_SHOWING);
       this._queueCallback(complete, this._element, this._config.animation);
@@ -7340,7 +7334,7 @@ var Toast = exports.Toast = /*#__PURE__*/function (_BaseComponent1) {
   }, {
     key: "_maybeScheduleHide",
     value: function _maybeScheduleHide() {
-      var _this45 = this;
+      var _this47 = this;
       if (!this._config.autohide) {
         return;
       }
@@ -7348,7 +7342,7 @@ var Toast = exports.Toast = /*#__PURE__*/function (_BaseComponent1) {
         return;
       }
       this._timeout = setTimeout(function () {
-        _this45.hide();
+        _this47.hide();
       }, this._config.delay);
     }
   }, {
@@ -7377,18 +7371,18 @@ var Toast = exports.Toast = /*#__PURE__*/function (_BaseComponent1) {
   }, {
     key: "_setListeners",
     value: function _setListeners() {
-      var _this46 = this;
+      var _this48 = this;
       EventHandler.on(this._element, EVENT_MOUSEOVER, function (event) {
-        return _this46._onInteraction(event, true);
+        return _this48._onInteraction(event, true);
       });
       EventHandler.on(this._element, EVENT_MOUSEOUT, function (event) {
-        return _this46._onInteraction(event, false);
+        return _this48._onInteraction(event, false);
       });
       EventHandler.on(this._element, EVENT_FOCUSIN, function (event) {
-        return _this46._onInteraction(event, true);
+        return _this48._onInteraction(event, true);
       });
       EventHandler.on(this._element, EVENT_FOCUSOUT, function (event) {
-        return _this46._onInteraction(event, false);
+        return _this48._onInteraction(event, false);
       });
     }
   }, {
