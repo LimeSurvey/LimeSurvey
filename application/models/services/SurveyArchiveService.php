@@ -22,11 +22,17 @@ class SurveyArchiveService
 
     protected LSYii_Application $app;
 
-    public static $Response_archive = 'RP';
+    public static $Response_archive = 'response';
 
-    public static $Tokens_archive = 'TK';
+    public static $Tokens_archive = 'token';
 
-    public static $Timings_archive = 'TM';
+    public static $Timings_archive = 'timings';
+
+    private static $tableNameMap = [
+        'response' => 'old_survey_%d_%d',
+        'token'    => 'old_tokens_%d_%d',
+        'timings'  => 'old_survey_%d_timings_%d',
+    ];
 
     public function __construct(
         Survey $survey,
@@ -39,6 +45,20 @@ class SurveyArchiveService
     }
 
     /**
+     * Builds the archive table name for the given type.
+     *
+     * @param string $archiveType
+     * @param int $sid
+     * @param int $timestamp
+     *
+     * @return string
+     */
+    public static function buildArchiveTableName(string $archiveType, int $sid, int $timestamp): string
+    {
+        return sprintf(self::$tableNameMap[$archiveType], $sid, $timestamp);
+    }
+
+    /**
      * Get the alias for an archive
      *
      * @param int $iSurveyID
@@ -48,7 +68,7 @@ class SurveyArchiveService
     public function getArchiveAlias(int $iSurveyID, int $iTimestamp): string
     {
         $responseArchive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp);
-        $tokenArchive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp, 'token');
+        $tokenArchive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp, self::$Tokens_archive);
 
         if (!$responseArchive && !$tokenArchive) {
             return 'Unknown archive';
@@ -81,7 +101,7 @@ class SurveyArchiveService
         }
 
         $responseArchive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp);
-        $tokenArchive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp, 'token');
+        $tokenArchive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp, self::$Tokens_archive);
 
         $sanitizedAlias = sanitize_ldap_string($newAlias);
         $success = false;
@@ -109,8 +129,7 @@ class SurveyArchiveService
      */
     public function getTokenArchiveData(int $iSurveyID, int $iTimestamp, array $searchParams = []): array
     {
-        $tableName = '{{old_tokens_' . $iSurveyID . '_' . $iTimestamp . '}}';
-        if (!tableExists($tableName)) {
+        if (!$this->doesArchiveExists($iSurveyID, $iTimestamp, self::$Tokens_archive)) {
             return [];
         }
 
@@ -127,8 +146,7 @@ class SurveyArchiveService
      */
     public function getResponseArchiveData(int $iSurveyID, int $iTimestamp, array $searchParams = []): array
     {
-        $tableName = '{{old_survey_' . $iSurveyID . '_' . $iTimestamp . '}}';
-        if (!tableExists($tableName)) {
+        if (!$this->doesArchiveExists($iSurveyID, $iTimestamp, self::$Response_archive)) {
             return [];
         }
 
@@ -153,49 +171,34 @@ class SurveyArchiveService
      */
     public function deleteArchiveData(int $iSurveyID, int $iTimestamp, array $ArchivesToDelete = []): void
     {
-        $requiredPermissions = [];
         if (empty($ArchivesToDelete)) {
-            $ArchivesToDelete = [
-                self::$Response_archive,
-                self::$Tokens_archive,
-                self::$Timings_archive,
-            ];
+            $ArchivesToDelete = [self::$Response_archive, self::$Tokens_archive, self::$Timings_archive];
         }
+
+        $permissionMap = [
+            self::$Response_archive => 'responses',
+            self::$Tokens_archive   => 'tokens',
+            self::$Timings_archive => 'timings',
+        ];
+        $requiredPermissions = [];
+
         foreach ($ArchivesToDelete as $archiveType) {
-            switch ($archiveType) {
-                case self::$Response_archive:
-                    $requiredPermissions['responses'] = 'delete';
-                    break;
-                case self::$Tokens_archive:
-                    $requiredPermissions['tokens'] = 'delete';
-                    break;
-                case self::$Timings_archive:
-                    $requiredPermissions['timings'] = 'delete';
-                    break;
+            if (!isset($permissionMap[$archiveType])) {
+                throw new \InvalidArgumentException("Unknown archive type: $archiveType");
             }
+            $requiredPermissions[$permissionMap[$archiveType]] = 'delete';
         }
+
         foreach ($requiredPermissions as $permName => $permType) {
             if (!$this->permission->hasSurveyPermission($iSurveyID, $permName, $permType)) {
                 throw new PermissionDeniedException('Permission denied for deleting archive data');
             }
         }
+
         foreach ($ArchivesToDelete as $archiveType) {
-            switch ($archiveType) {
-                case self::$Response_archive:
-                    $sTableType = "response";
-                    break;
-                case self::$Tokens_archive:
-                    $sTableType = "token";
-                    break;
-                case self::$Timings_archive:
-                    $sTableType = "timings";
-                    break;
-                default:
-                    continue 2;
-            }
-            $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp, $sTableType);
+            $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp, $archiveType);
             if ($archive) {
-                $archiveTableName = $archive->tbl_name;
+                $archiveTableName = self::buildArchiveTableName($archiveType, $iSurveyID, $iTimestamp);
                 $this->app->db->createCommand()->dropTable("{{" . $archiveTableName . "}}");
                 if ($archiveType === self::$Response_archive) { // delete question types table when deleting responses
                     $questionTypesTableName = str_replace('survey', 'questions', $archiveTableName);
@@ -216,14 +219,7 @@ class SurveyArchiveService
      */
     public function doesArchiveExists(int $iSurveyID, int $iTimestamp, string $archiveType): bool
     {
-
-        $archiveTypeString = $archiveType === self::$Tokens_archive ? 'token' : 'response';
-        $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp, $archiveTypeString);
-        if (!$archive) {
-            return false;
-        }
-
-        $tableName = $archive->tbl_name;
+        $tableName = self::buildArchiveTableName($archiveType, $iSurveyID, $iTimestamp);
         if (!tableExists("{{{$tableName}}}")) {
             return false;
         }
@@ -307,7 +303,7 @@ class SurveyArchiveService
      */
     private function attachTimingsToResponses(array &$archivedResponsesData, int $iSurveyID, int $iTimestamp): void
     {
-        $timingsTableName = "old_survey_{$iSurveyID}_timings_{$iTimestamp}";
+        $timingsTableName = self::buildArchiveTableName(self::$Timings_archive, $iSurveyID, $iTimestamp);
         if (!tableExists("{{{$timingsTableName}}}")) {
             return;
         }
@@ -402,8 +398,7 @@ class SurveyArchiveService
 
         echo chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF'));
 
-        $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp, 'token');
-        $tableName = $archive->tbl_name;
+        $tableName = self::buildArchiveTableName(self::$Tokens_archive, $iSurveyID, $iTimestamp);
 
         $oRecordSet = $this->app->db->createCommand()->from("{{" . $tableName . "}}");
         $schema = $this->app->db->getSchema();
@@ -468,11 +463,7 @@ class SurveyArchiveService
     {
         echo chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF'));
 
-        $tableName = 'survey_' . $iSurveyID;
-        if ($iTimestamp) {
-            $tableName = 'old_' . $tableName . '_' . $iTimestamp;
-        }
-
+        $tableName = self::buildArchiveTableName(self::$Response_archive, $iSurveyID, $iTimestamp);
         $oRecordSet = $this->app->db->createCommand()->from("{{" . $tableName . "}}");
 
         $schema = $this->app->db->getSchema();

@@ -69,17 +69,28 @@ class SurveyArchiveExport implements CommandInterface
             );
         }
 
-        $typePart = $archiveType === SurveyArchiveService::$Tokens_archive ? 'participants' : 'responses';
+        $typePartMap = [
+            SurveyArchiveService::$Tokens_archive   => 'participants',
+            SurveyArchiveService::$Response_archive => 'responses',
+        ];
+
+        $streamHandlerMap = [
+            SurveyArchiveService::$Tokens_archive   => 'exportTokensAsStream',
+            SurveyArchiveService::$Response_archive => 'exportResponsesAsStream',
+        ];
+
+        if (!isset($typePartMap[$archiveType], $streamHandlerMap[$archiveType])) {
+            throw new \InvalidArgumentException("Unsupported archive type: $archiveType");
+        }
+
+        $typePart = $typePartMap[$archiveType];
+        $method = $streamHandlerMap[$archiveType];
+
         $fileName = "survey_{$surveyId}_{$typePart}_{$timestamp}.csv";
         $contentType = 'Content-Type: text/csv; charset=utf-8';
-        $streamHandler = function () use ($surveyId, $timestamp, $archiveType): void {
-            if ($archiveType === SurveyArchiveService::$Tokens_archive) {
-                $this->surveyArchiveService->exportTokensAsStream($surveyId, $timestamp);
-            } elseif ($archiveType === SurveyArchiveService::$Response_archive) {
-                $this->surveyArchiveService->exportResponsesAsStream($surveyId, $timestamp);
-            } else {
-                throw new \InvalidArgumentException("Unsupported archive type: $archiveType");
-            }
+
+        $streamHandler = function () use ($surveyId, $timestamp, $method) {
+            $this->surveyArchiveService->$method($surveyId, $timestamp);
         };
 
         return $this->responseFactory->streamResponse(

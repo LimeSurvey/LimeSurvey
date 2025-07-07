@@ -66,16 +66,17 @@ class SurveyArchiveDetails implements CommandInterface
             'pageSize' => (int) $request->getData('pageSize', 10),
         ];
 
-        switch ($archiveType) {
-            case SurveyArchiveService::$Response_archive:
-                $data = $this->surveyArchiveService->getResponseArchiveData($surveyId, $timestamp, $searchParams);
-                break;
-            case SurveyArchiveService::$Tokens_archive:
-                $data = $this->surveyArchiveService->getTokenArchiveData($surveyId, $timestamp, $searchParams);
-                break;
-            default:
-                throw new \InvalidArgumentException("Unsupported archive type");
+        $archiveTypeMap = [
+            SurveyArchiveService::$Response_archive => 'getResponseArchiveData',
+            SurveyArchiveService::$Tokens_archive   => 'getTokenArchiveData',
+        ];
+
+        if (!isset($archiveTypeMap[$archiveType])) {
+            throw new \InvalidArgumentException("Unsupported archive type: $archiveType");
         }
+
+        $method = $archiveTypeMap[$archiveType];
+        $data = $this->surveyArchiveService->$method($surveyId, $timestamp, $searchParams);
 
         return $this->responseFactory->makeSuccess([
             'archiveType' => $archiveType,
