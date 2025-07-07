@@ -30,6 +30,8 @@
                     <br/>
                     <input type='submit' id='btnDumpLabelSets' value='<?php eT('Export selected label sets'); ?>' class="d-none"/>
                     <input type='hidden' name='action' value='dumplabel'/>
+                    <?php $exportToken = 'labelExport_' . uniqid(mt_rand(), true); ?>
+                    <input type="hidden" name="export_token" value="<?php echo CHtml::encode($exportToken); ?>">
                 </p>
             </div>
             <?php echo CHtml::endForm() ?>
