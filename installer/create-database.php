@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Helpers\Update\triggers\TriggersManager;
+
 /**
  * @param $oDB DbConnection
  *
@@ -1202,6 +1204,9 @@ function populateDatabase($oDB)
                 'resend_vars' => "mediumtext NOT NULL"
             ]
         );
+
+        $triggersManager = new TriggersManager($oDB);
+        $triggersManager->execute();
 
         // Set database version
         $oDB->createCommand()->insert("{{settings_global}}", ['stg_name' => 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
