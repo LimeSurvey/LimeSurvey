@@ -34,6 +34,59 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.15.1 (build 250626) to 6.15.2 (build 250628) June 28, 2025
+Fixed issue #20155: Error saving survey settings
+
+Changes from 6.15.0 (build 250623) to 6.15.1 (build 250626) June 26, 2025
+-Fixed issue: GD should be a required library (Carsten Schmitz)
+-Fixed issue #20149: Improve update script to set inheritance by default (marticos)
+-Fixed issue #20149: Fix regex for question, subquestion and answer codes validation (marticos)
+-Fixed issue #20149: Add Othersettings validation class to handle proper values (marticos)
+-Fixed issue #20118: User creation : use enter key in form close dialog without create user (#4341) 
+-Fixed issue #20117: Better error return in get_site_settings (#4330) (Denis Chenu)
+-Fixed issue #20055: Missing save confirmation with validation errors 
+#Updated translation: Tamil by lucas_encuesta.biz
+#Updated translation: Slovenian by a11y.si, Grimpy, ixtlan-team-zvem, junoslukan, pur3bolt
+#Updated translation: Slovak by jelen1
+#Updated translation: Russian by ddrmoscow, dr1yll, olly, s.gorbatov
+#Updated translation: Japanese by d_inoue
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Arabic by c_schmitz
+
+
+Changes from 6.14.3 (build 250617) to 6.15.0 (build 250623) June 23, 2025
++New feature #QE-903: Easier response import which handles changed question types better (#4216) (lajosarpad)
+-Fixed issue #QE-1505: Survey title and survey description should also use the base language as default, when missing in other languages (#4240) (Patricia Stell)
+-Fixed issue #20144: [security] Unsafe unserialize leads to remote code execution (#4329) (Denis Chenu)
+-Fixed issue #20098: Sensitive information exposed to public in session errors (#4309) (Gabriel Jenik)
+-Fixed issue #20083: Pre-Installation check - Session writable re-check is impossible (#4315) (Gabriel Jenik)
+-Fixed issue #20070: Enabling custom twig extension goes to 500 if HelloWorld extension is present (#4319) (Gabriel Jenik)
+-Fixed issue #18229: Faulty message on numeric questions (#4273) (Denis Chenu)
+#Updated translation: Portuguese (Brazil) by holch
+#Updated translation: Italian by drsi.staff, lfanfoni, twilllig
+#Updated translation: Italian (Informal) by lfanfoni, twilllig
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+
+
+Changes from 6.14.2 (build 250610) to 6.14.3 (build 250617) June 17, 2025
+-Fixed issue #20128: json_decode() error in SurveyLanguageSetting.php for PHP 8.3 (#4305) (Gabriel Jenik)
+-Fixed issue #19171: Unable to use dropdown in config.xml with core options (#4316) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han, twilllig
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.14.1 (build 250527) to 6.14.2 (build 250610) June 10, 2025
 -Fixed issue: Error message 'Invalid call to a member function decryptBeforeOutput() on null' (Carsten Schmitz)
 -Fixed issue #20132: With debug=2 I am getting an error when exporting responses to SPSS (#4310) (Gabriel Jenik)

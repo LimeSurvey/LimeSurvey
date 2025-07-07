@@ -1,0 +1,6 @@
+<div class="position-relative overflow-hidden p-2 {% if imageAlign == 'center' %}h-auto object-fit-cover{% endif %}">
+    <img class="img-fluid w-100"
+         src="{{ aQuestion.image.image_path }}"
+         alt="{{ aQuestion.image.image_alt_text }}"
+         style="{{ aQuestion.image.image_styles }}">
+</div>

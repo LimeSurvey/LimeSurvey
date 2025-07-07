@@ -128,7 +128,7 @@ class remotecontrol_handle
                     return array('status' => 'Invalid setting');
                 }
             } else {
-                return array('status' => 'Invalid setting');
+                return array('status' => 'No permission');
             }
         } else {
             return array('status' => self::INVALID_SESSION_KEY);

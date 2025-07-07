@@ -6,20 +6,10 @@ class Update_632 extends DatabaseUpdateBase
 {
     public function up()
     {
-        addColumn('{{archived_table_settings}}', 'archive_alias', "string(255) DEFAULT ''");
-        $columnNames = \Yii::app()->db->schema->getTable('{{surveys}}')->columnNames;
-        if (!in_array('access_mode', $columnNames)) {
-            addColumn('{{surveys}}', 'access_mode', "string(1) DEFAULT 'O'");
-            $sids = [];
-            foreach (dbGetTablesLike('%token%') as $table) {
-                if (strpos($table, "old") === false) {
-                    $split = explode("_", $table);
-                    $sids[] = $split[count($split) - 1];
-                }
-            }
-            if (count($sids)) {
-                $this->db->createCommand()->update("{{surveys}}", ["access_mode" => "C"], "sid in (" . implode(",", $sids) . ")");
-            }
-        }
+
+        //updating the default value for datestamp
+        //surveys_groupsettings datestamp should be 'Y'
+        \alterColumn('{{surveys_groupsettings}}', 'datestamp', 'string(1)', false, 'Y');
+        \alterColumn('{{surveys}}', 'datestamp', 'string(1)', false, 'Y');
     }
 }
