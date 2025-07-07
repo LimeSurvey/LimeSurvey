@@ -48,11 +48,11 @@ class LSYii_OtherSettingsValidator extends CValidator
                 'message' => gT("Question code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 15 characters.")
             ],
             'subquestion_code_prefix' => [
-                'pattern' => '/^$|^[A-Za-z0-9]{0,4}$/',
+                'pattern' => '/^$|^[A-Za-z0-9]{0,5}$/',
                 'message' => gT("Subquestion code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 5 characters.")
             ],
             'answer_code_prefix' => [
-                'pattern' => '/^$|^[A-Za-z0-9]{0,1}$/',
+                'pattern' => '/^$|^[A-Za-z0-9]{0,2}$/',
                 'message' => gT("Answer code prefix must start with a letter and can only contain alphanumeric characters. Maximum length is 2 characters.")
             ]
         ];
