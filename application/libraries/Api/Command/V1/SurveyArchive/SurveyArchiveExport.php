@@ -89,7 +89,7 @@ class SurveyArchiveExport implements CommandInterface
         $fileName = "survey_{$surveyId}_{$typePart}_{$timestamp}.csv";
         $contentType = 'Content-Type: text/csv; charset=utf-8';
 
-        $streamHandler = function () use ($surveyId, $timestamp, $method) {
+        $streamHandler = function () use ($surveyId, $timestamp, $method): void {
             $this->surveyArchiveService->$method($surveyId, $timestamp);
         };
 
