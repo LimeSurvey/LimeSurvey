@@ -312,7 +312,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                             <input class="DatePicker form-control action_datepickerUpdateHiddenField" id="massedit_validfrom" type="text" value="" name="validfrom_date" data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm" data-locale="<?php echo $locale ?>" disabled>
                             <span class="input-group-text"><span class="ri-calendar-2-fill"></span></span>
                         </div>
-                        <input id="sbmtvalid" type="hidden" name="validfrom" value="lskeep" class="custom-data selector_submitField" />
+                        <input id="sbmtvalidfrom" type="hidden" name="validfrom" value="lskeep" class="custom-data selector_submitField" />
                     </div>
                 </div>
 
@@ -329,7 +329,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                             <input class="DatePicker form-control action_datepickerUpdateHiddenField" id="massedit_validuntil" type="text" value="lskeep" name="validuntil_date" data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm" data-locale="<?php echo $locale ?>" disabled>
                             <span class="input-group-text"><span class="ri-calendar-2-fill"></span></span>
                         </div>
-                        <input id="sbmtvalid" type="hidden" name="validuntil" value="lskeep" class="custom-data selector_submitField" />
+                        <input id="sbmtvaliduntil" type="hidden" name="validuntil" value="lskeep" class="custom-data selector_submitField" />
                     </div>
                 </div>
 
