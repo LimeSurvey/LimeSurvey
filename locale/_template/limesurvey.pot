@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-07-07 13:39:02+00:00\n"
+"POT-Creation-Date: 2025-07-08 07:09:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -27585,8 +27585,4 @@ msgstr ""
 #: tmp/runtime/twig_cache/ee/eeaeaf0c82fe10357afb8099ab10b2cf.php:90
 #: tmp/runtime/twig_cache/fc/fc57d53f987f13b5510f65e260d77627.php:90
 msgid "default"
-msgstr ""
-
-#: tmp/runtime/twig_cache/f3/f3fe5d07f3e9407988a66257a0d2006e.php:61
-msgid "%s%%"
 msgstr ""
