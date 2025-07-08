@@ -1379,7 +1379,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             $fieldmap["token"]['group_name'] = "";
         }
     }
-    if ($prow['datestamp'] == "Y") {
+    if ($survey->aOptions['datestamp'] != "N") {
         $fieldmap["startdate"] = array("fieldname" => "startdate",
         'type' => "startdate",
         'sid' => $surveyid,
