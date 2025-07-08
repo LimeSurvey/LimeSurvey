@@ -23,7 +23,7 @@ class LanguageChangerTest extends TestBaseClassWeb
         self::importSurvey($surveyFile);
 
         // Activate survey.
-        self::$testHelper->activateSurvey(self::$surveyId);
+        self::$testHelper->activateSurvey(self::$surveyId, 'N');
     }
 
     /**

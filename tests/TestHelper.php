@@ -126,16 +126,17 @@ class TestHelper extends TestCase
 
     /**
      * @param int $surveyId
+     * @param string $activateSurvey
      * @return void
      */
-    public function activateSurvey($surveyId)
+    public function activateSurvey($surveyId, $activateSurvey = 'N')
     {
         $survey = \Survey::model()->findByPk($surveyId);
         if (empty($survey)) {
             throw new Exception('Found no survey with id ' . $surveyId);
         }
         $survey->anonymized = '';
-        $survey->datestamp = 'Y';
+        $survey->datestamp = $activateSurvey;
         $survey->ipaddr = '';
         $survey->refurl = '';
         $survey->savetimings = '';
