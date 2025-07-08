@@ -402,7 +402,7 @@ abstract class Token extends Dynamic
     public function relations()
     {
         $result = array(
-            'responses' => array(self::HAS_MANY, 'Response_' . $this->dynamicId, array('token' => 'token')),
+            'responses' => array(self::HAS_MANY, 'Responses_' . $this->dynamicId, array('token' => 'token')),
             'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}"),
             'surveylink' => array(self::BELONGS_TO, 'SurveyLink', array('participant_id' => 'participant_id'), 'on' => "survey_id = {$this->dynamicId}")
         );

@@ -20,7 +20,7 @@ Redesigned 7/25/2006 - swales
 
 How it used to work
 -------------------
-1. The old save method would save answers to the "survey_x" table only when the submit button was clicked.
+1. The old save method would save answers to the "responses_x" table only when the submit button was clicked.
 2. If "allow saves" was turned on then answers were temporarily recorded in the "saved" table.
 
 Why change this feature?
@@ -34,16 +34,16 @@ Benefits
 Partial survey answers are saved (provided at least Next/Prev/Last/Submit/Save so far clicked at least once).
 
 Details.
-1. The answers are saved in the "survey_x" table only.  The "saved" table is no longer used.
-2. The "saved_control" table has new column (srid) that points to the "survey_x" record it corresponds to.
+1. The answers are saved in the "responses_x" table only.  The "saved" table is no longer used.
+2. The "saved_control" table has new column (srid) that points to the "responses_x" record it corresponds to.
 3. Answer are saved every time you move between pages (Next,Prev,Last,Submit, or Save so far).
 4. Only the fields modified on the page are updated. A new hidden field "modfields" store which fields have changed. - REVERTED
 5. Answered are reloaded from the database after the save so that if some other answers were modified by someone else
 the updates would be picked up for the current page.  There is still an issue if two people modify the same
 answer at the same time.. the 'last one to save' wins.
-6. The survey_x datestamp field is updated every time the record is updated.
+6. The responses_x datestamp field is updated every time the record is updated.
 7. Template can now contain {DATESTAMP} to show the last modified date/time.
-8. A new field 'submitdate' has been added to the survey_x table and is written when the submit button is clicked.
+8. A new field 'submitdate' has been added to the responses_x table and is written when the submit button is clicked.
 9. Save So Far now displays on Submit page. This allows the user one last chance to create a saved_control record so they
 can return later.
 
@@ -70,8 +70,8 @@ class Save
     {
         //Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
         //~ global $errormsg, $thissurvey, $surveyid, $clienttoken, $thisstep;
-        $thisstep    = $_SESSION['survey_' . $iSurveyId]['step'] ?? 0;
-        $clienttoken = $_SESSION['survey_' . $iSurveyId]['token'] ?? '';
+        $thisstep    = $_SESSION['responses_' . $iSurveyId]['step'] ?? 0;
+        $clienttoken = $_SESSION['responses_' . $iSurveyId]['token'] ?? '';
 
         $aSaveForm['aErrors'] = $this->aSaveErrors;
         $this->launchSaveFormEvent($iSurveyId);
@@ -100,7 +100,7 @@ class Save
         //This data will be saved to the "saved_control" table with one row per response.
         // - a unique "saved_id" value (autoincremented)
         // - the "sid" for this survey
-        // - the "srid" for the survey_x row id
+        // - the "srid" for the responses_x row id
         // - "saved_thisstep" which is the step the user is up to in this survey
         // - "saved_ip" which is the ip address of the submitter
         // - "saved_date" which is the date ofthe saved response
@@ -148,27 +148,27 @@ class Save
         if (isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha'])) {
             if (
                 !Yii::app()->request->getPost('loadsecurity')
-                || !isset($_SESSION['survey_' . $surveyid]['secanswer'])
-                || Yii::app()->request->getPost('loadsecurity') != $_SESSION['survey_' . $surveyid]['secanswer']
+                || !isset($_SESSION['responses_' . $surveyid]['secanswer'])
+                || Yii::app()->request->getPost('loadsecurity') != $_SESSION['responses_' . $surveyid]['secanswer']
             ) {
                 $this->aSaveErrors[] = gT("The answer to the security question is incorrect.");
             }
         }
         $this->launchSaveFormEvent($surveyid, 'validate');
         if (empty($this->aSaveErrors)) {
-            //INSERT BLANK RECORD INTO "survey_x" if one doesn't already exist
-            if (!isset($_SESSION['survey_' . $surveyid]['srid'])) {
+            //INSERT BLANK RECORD INTO "responses_x" if one doesn't already exist
+            if (!isset($_SESSION['responses_' . $surveyid]['srid'])) {
                 $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
                 $sdata = array(
                     "datestamp"     => $today,
                     "ipaddr"        => getIPAddress(),
-                    "startlanguage" => $_SESSION['survey_' . $surveyid]['s_lang'],
-                    "refurl"        => ($_SESSION['survey_' . $surveyid]['refurl'] ?? getenv('HTTP_REFERER'))
+                    "startlanguage" => $_SESSION['responses_' . $surveyid]['s_lang'],
+                    "refurl"        => ($_SESSION['responses_' . $surveyid]['refurl'] ?? getenv('HTTP_REFERER'))
                 );
 
                 if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata)) {
                     $srid = getLastInsertID($survey->responsesTableName);
-                    $_SESSION['survey_' . $surveyid]['srid'] = $srid;
+                    $_SESSION['responses_' . $surveyid]['srid'] = $srid;
                 } else {
                     // TODO: $this->aSaveErrors
                     $this->aSaveErrors[] = "Unable to insert record into survey table.";
@@ -178,7 +178,7 @@ class Save
             //CREATE ENTRY INTO "saved_control"
             $saved_control                 = new SavedControl();
             $saved_control->sid            = $surveyid;
-            $saved_control->srid           = $_SESSION['survey_' . $surveyid]['srid'];
+            $saved_control->srid           = $_SESSION['responses_' . $surveyid]['srid'];
             $saved_control->identifier     = $this->saveData['identifier'];
             $saved_control->access_code    = password_hash($this->saveData['clearpassword'], PASSWORD_DEFAULT);
             $saved_control->email          = $this->saveData['email'];
@@ -187,22 +187,22 @@ class Save
             $saved_control->status         = 'S';
             $saved_control->saved_date     = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
 
-            if (isset($_SESSION['survey_' . $surveyid]['refurl'])) {
-                $saved_control->refurl = $_SESSION['survey_' . $surveyid]['refurl'];
+            if (isset($_SESSION['responses_' . $surveyid]['refurl'])) {
+                $saved_control->refurl = $_SESSION['responses_' . $surveyid]['refurl'];
             } else {
                 $saved_control->refurl = getenv("HTTP_REFERER");
             }
 
             if ($saved_control->save()) {
                 $scid = getLastInsertID('{{saved_control}}');
-                $_SESSION['survey_' . $surveyid]['scid'] = $scid;
+                $_SESSION['responses_' . $surveyid]['scid'] = $scid;
             } else {
                 // TODO: $this->aSaveErrors
                 $this->aSaveErrors[] = "Unable to insert record into saved_control table.";
             }
 
-            $_SESSION['survey_' . $surveyid]['holdname'] = $this->saveData['identifier']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
-            $_SESSION['survey_' . $surveyid]['holdpass'] = $this->saveData['clearpassword']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
+            $_SESSION['responses_' . $surveyid]['holdname'] = $this->saveData['identifier']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
+            $_SESSION['responses_' . $surveyid]['holdpass'] = $this->saveData['clearpassword']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
 
             //Email if needed
             if ($this->saveData['email'] && validateEmailAddress($this->saveData['email'])) {
@@ -244,7 +244,7 @@ class Save
     /**
      * This functions saves the answer time for question/group and whole survey.
      * [ It compares current time with the time in $_POST['start_time'] ]
-     * The times are saved in table: {prefix}{surveytable}_timings
+     * The times are saved in table: {prefix}_timings
      * @return void
      */
     function set_answer_time()
@@ -266,7 +266,7 @@ class Save
 //we show the whole survey on one page - we don't have to save time for group/question
             $query = "UPDATE " . $survey->timingsTableName . " SET "
             . "interviewtime = (CASE WHEN interviewtime IS NULL THEN 0 ELSE interviewtime END) + " . $passedTime
-            . " WHERE id = " . $_SESSION['survey_' . $thissurvey['sid']]['srid'];
+            . " WHERE id = " . $_SESSION['responses_' . $thissurvey['sid']]['srid'];
         } else {
             $aColumnNames = SurveyTimingDynamic::model($thissurvey['sid'])->getTableSchema()->columnNames;
             $setField .= "time";
@@ -277,7 +277,7 @@ class Save
             $query = "UPDATE " . $survey->timingsTableName . " SET "
             . "interviewtime =  (CASE WHEN interviewtime IS NULL THEN 0 ELSE interviewtime END) + " . $passedTime . ","
             . $setField . " =  (CASE WHEN $setField IS NULL THEN 0 ELSE $setField END) + " . $passedTime
-            . " WHERE id = " . $_SESSION['survey_' . $thissurvey['sid']]['srid'];
+            . " WHERE id = " . $_SESSION['responses_' . $thissurvey['sid']]['srid'];
         }
         Yii::app()->db->createCommand($query)->execute();
     }

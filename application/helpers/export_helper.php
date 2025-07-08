@@ -616,7 +616,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
                 $ftype = $fielddata['type'];
                 $fsid = $fielddata['sid'];
                 $fgid = $fielddata['gid'];
-                $code = mb_substr((string) $fielddata['fieldname'], strlen($fsid . "X" . $fgid . "X" . $qid));
+                $code = mb_substr((string) $fielddata['fieldname'], strlen("Q" . $qid));
                 $varlabel = $fielddata['question'];
                 if (isset($fielddata['scale'])) {
                     $varlabel = "[{$fielddata['scale']}] " . $varlabel;
@@ -1328,7 +1328,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
             $category->appendChild($label);
             $category->appendChild($value);
 
-            $st = QueXMLSkipTo($qid, 'Y', " AND c.cfieldname LIKE '+$iSurveyID" . "X" . $Row['gid'] . "X" . $qid . $Row['title'] . "' ");
+            $st = QueXMLSkipTo($qid, 'Y', " AND c.cfieldname LIKE Q" . $qid . '_S' . $Row['qid'] . "' ");
             if ($st !== false) {
                 $quexml_skipto = $dom->createElement("skipTo", $st);
                 $category->appendChild($quexml_skipto);
@@ -1343,9 +1343,9 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
                 $contingentQuestion->appendChild($text);
                 $contingentQuestion->appendChild($length);
                 $contingentQuestion->appendChild($format);
-                $contingentQuestion->setAttribute("varName", $varname . "_" . QueXMLCleanUp($Row['title']) . 'comment');
+                $contingentQuestion->setAttribute("varName", $varname . "_" . QueXMLCleanUp($Row['qid']) . '_Ccomment');
 
-                quexml_set_default_value($contingentQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, $Row['title'] . "comment");
+                quexml_set_default_value($contingentQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, $Row['qid'] . "_Ccomment");
 
                 $category->appendChild($contingentQuestion);
             }
@@ -1356,14 +1356,14 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
             $response->appendChild(QueXMLCreateFree($free['f'], $free['len'], $Row->questionl10ns[$quexmllang]->question));
         }
 
-        $response->setAttribute("varName", $varname . "_" . QueXMLCleanup($Row['title']));
+        $response->setAttribute("varName", $varname . "_" . QueXMLCleanup($Row['qid']));
 
         if ($scale_id == false) {
             //if regular multiple choice question
             quexml_set_default_value($response, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, false, true);
         } else {
             //if array multi style question
-            $dvname = substr((string) $varname, stripos((string) $varname, "_") + 1) . "_" . $Row['title'];
+            $dvname = substr((string) $varname, stripos((string) $varname, "_") + 1) . "_" . $Row['qid'];
             quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap, $dvname);
         }
 
@@ -1807,7 +1807,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                 $other = true;
             }
 
-            $sgq = $RowQ['title'];
+            $sgq = $RowQ['qid'];
 
             //if this is a multi-flexi style question, create multiple questions
             if ($type == Question::QT_COLON_ARRAY_NUMBERS || $type == Question::QT_SEMICOLON_ARRAY_TEXT) {
@@ -1826,17 +1826,17 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         //get multiflexible_checkbox - if set then each box is a checkbox (single fixed response)
                         $mcb = quexml_get_lengthth($qid, 'multiflexible_checkbox', -1);
                         if ($mcb != -1) {
-                                                    quexml_create_multi($question, $qid, $sgq . "_" . $SRow['title'], $iResponseID, $fieldmap, 1);
+                                                    quexml_create_multi($question, $qid, $sgq . "_S" . $SRow['qid'], $iResponseID, $fieldmap, 1);
                         } else {
                             //get multiflexible_max and maximum_chars - if set then make boxes of max of these widths
                             $mcm = max(quexml_get_lengthth($qid, 'maximum_chars', 1), strlen((string) quexml_get_lengthth($qid, 'multiflexible_max', 1)));
-                            quexml_create_multi($question, $qid, $sgq . "_" . $SRow['title'], $iResponseID, $fieldmap, 1, array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
+                            quexml_create_multi($question, $qid, $sgq . "_S" . $SRow['qid'], $iResponseID, $fieldmap, 1, array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
                         }
                     } elseif ($type == Question::QT_SEMICOLON_ARRAY_TEXT) {
                         //multi-flexi array text
 
                         //foreach question where scale_id = 1 this is a textbox
-                        quexml_create_multi($question, $qid, $sgq . "_" . $SRow['title'], $iResponseID, $fieldmap, 1, array('f' => 'text', 'len' => quexml_get_lengthth($qid, 'maximum_chars', 10), 'lab' => ''));
+                        quexml_create_multi($question, $qid, $sgq . "_S" . $SRow['qid'], $iResponseID, $fieldmap, 1, array('f' => 'text', 'len' => quexml_get_lengthth($qid, 'maximum_chars', 10), 'lab' => ''));
                     }
                     $section->appendChild($question);
                 }
@@ -1915,7 +1915,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
 
                         $response2 = $dom->createElement("response");
                         quexml_set_default_value($response2, $iResponseID, $qid, $iSurveyID, $fieldmap, "comment");
-                        $response2->setAttribute("varName", QueXMLCleanup($sgq) . "_comment");
+                        $response2->setAttribute("varName", QueXMLCleanup($sgq) . "_Ccomment");
                         $response2->appendChild(QueXMLCreateFree("longtext", "40", ""));
 
                         $question->appendChild($response);
@@ -2312,8 +2312,8 @@ function tokensExport($iSurveyID)
     $sTokenLanguage = App()->request->getPost('tokenlanguage');
 
     $oSurvey = Survey::model()->findByPk($iSurveyID);
-    $bIsNotAnonymous = ($oSurvey->anonymized == 'N' && $oSurvey->active == 'Y'); // db table exist (survey_$iSurveyID) ?
-    $bIsDateStamped = ($oSurvey->datestamp == 'Y' && $oSurvey->active == 'Y'); // db table exist (survey_$iSurveyID) ?
+    $bIsNotAnonymous = ($oSurvey->anonymized == 'N' && $oSurvey->active == 'Y'); // db table exist (responses_$iSurveyID) ?
+    $bIsDateStamped = ($oSurvey->datestamp == 'Y' && $oSurvey->active == 'Y'); // db table exist (responses_$iSurveyID) ?
     $attrfieldnames = getAttributeFieldNames($iSurveyID);
 
     $oRecordSet = Yii::app()->db->createCommand()->from("{{tokens_$iSurveyID}} lt");
@@ -2339,12 +2339,12 @@ function tokensExport($iSurveyID)
     } elseif ($iTokenStatus == 2) {
         $oRecordSet->andWhere("lt.completed='N'");
         if ($bIsNotAnonymous) {
-            $oRecordSet->leftJoin("{{survey_$iSurveyID}} ls", 'lt.token=ls.token');
+            $oRecordSet->leftJoin("{{responses_$iSurveyID}} ls", 'lt.token=ls.token');
             $oRecordSet->select("lt.*, ls.id");
         }
     }
     if ($iTokenStatus == 3 && $bIsNotAnonymous) {
-        $oRecordSet->leftJoin("{{survey_$iSurveyID}} ls", 'lt.token=ls.token');
+        $oRecordSet->leftJoin("{{responses_$iSurveyID}} ls", 'lt.token=ls.token');
         $oRecordSet->andWhere("lt.completed='N'");
         $oRecordSet->andWhere("ls.id IS NULL");
         $oRecordSet->select("lt.*, ls.id");
@@ -2357,7 +2357,7 @@ function tokensExport($iSurveyID)
             $sAttributes = '';
         }
         $oRecordSet->selectDistinct('lt.tid, lt.firstname, lt.lastname, lt.email, lt.emailstatus, lt.token, lt.language, lt.sent, lt.remindersent, lt.remindercount, lt.completed, lt.usesleft, lt.validfrom, lt.validuntil' . $sAttributes . ($bIsDateStamped ? ', MAX(ls.startdate) as started' : ''));
-        $oRecordSet->join("{{survey_$iSurveyID}} ls", 'lt.token=ls.token');
+        $oRecordSet->join("{{responses_$iSurveyID}} ls", 'lt.token=ls.token');
         $oRecordSet->andWhere("ls.submitdate IS NULL");
         $oRecordSet->andWhere("lt.completed='N'");
         if ($bIsDateStamped) {
@@ -2513,7 +2513,8 @@ function CPDBExport($data, $filename)
 function stringSize(string $sColumn)
 {
     // Find the sid
-    $iSurveyId = substr($sColumn, 0, strpos($sColumn, 'X'));
+    $qid = substr(explode("_", $sColumn)[0], 1);
+    $sid = Question::model()->findByPk($qid)->sid;
     switch (Yii::app()->db->driverName) {
         case 'sqlsrv':
         case 'dblib':
@@ -2525,7 +2526,7 @@ function stringSize(string $sColumn)
     }
     $lengthReal = Yii::app()->db->createCommand()
     ->select("MAX({$lengthWord}(" . Yii::app()->db->quoteColumnName($sColumn) . "))")
-    ->from("{{survey_" . $iSurveyId . "}}")
+    ->from("{{responses_" . $sid . "}}")
     ->where(Yii::app()->db->quoteColumnName($sColumn) . " IS NOT NULL ")
     ->queryScalar();
     // PSPP didn't accept A0 then min value to 1, see bug #13008
@@ -2546,12 +2547,12 @@ function numericSize(string $sColumn, $decimal = false)
     $sColumn = Yii::app()->db->quoteColumnName($sColumn);
     /* Find the max len of integer part for positive value*/
     $maxInteger = Yii::app()->db
-    ->createCommand("SELECT MAX($sColumn) FROM {{survey_" . $iSurveyId . "}}")
+    ->createCommand("SELECT MAX($sColumn) FROM {{responses_" . $iSurveyId . "}}")
     ->queryScalar();
     $integerMaxLen = strlen(intval($maxInteger));
     /* Find the max len of integer part for negative value including minus when export (adding 1 to lenght) */
     $minInteger = Yii::app()->db
-    ->createCommand("SELECT MIN($sColumn) FROM {{survey_" . $iSurveyId . "}}")
+    ->createCommand("SELECT MIN($sColumn) FROM {{responses_" . $iSurveyId . "}}")
     ->queryScalar();
     $integerMinLen = strlen(intval($minInteger));
     /* Get size of integer part */
@@ -2565,7 +2566,7 @@ function numericSize(string $sColumn, $decimal = false)
             $castedColumnString = "CAST($sColumn as text)";
         }
         $maxDecimal = Yii::app()->db
-        ->createCommand("SELECT MAX(REVERSE(RIGHT($castedColumnString, 10))) FROM {{survey_" . $iSurveyId . "}}")
+        ->createCommand("SELECT MAX(REVERSE(RIGHT($castedColumnString, 10))) FROM {{responses_" . $iSurveyId . "}}")
         ->queryScalar();
     } else {
         /* Didn't work with text, when datatype are updated to text, but in such case : there are no good solution, except return string …*/
@@ -2577,7 +2578,7 @@ function numericSize(string $sColumn, $decimal = false)
         if (Yii::app()->db->driverName == 'pgsql') {
             $maxDecimal = Yii::app()->db
             ->createCommand("SELECT MAX(CAST(nullif(split_part($castedColumnString, '.', 2),'') as integer))
-			    FROM {{survey_" . $iSurveyId . "}}")
+			    FROM {{responses_" . $iSurveyId . "}}")
             ->queryScalar();
     /* mssql */
         } elseif (Yii::app()->db->driverName == 'mssql') {
@@ -2586,7 +2587,7 @@ function numericSize(string $sColumn, $decimal = false)
 			     WHEN charindex('.',$castedColumnString) > 0 THEN
                              CAST(SUBSTRING($castedColumnString ,charindex('.',$castedColumnString)+1 , Datalength($castedColumnString)-charindex('.',$castedColumnString) ) AS INT)
                              ELSE null END)
-			    FROM {{survey_" . $iSurveyId . "}}")
+			    FROM {{responses_" . $iSurveyId . "}}")
             ->queryScalar();
         /* mysql */
         } else {
@@ -2594,7 +2595,7 @@ function numericSize(string $sColumn, $decimal = false)
             ->createCommand("SELECT MAX(CASE
                              WHEN INSTR($castedColumnString, '.') THEN CAST(SUBSTRING_INDEX($castedColumnString, '.', -1) as UNSIGNED)
 			     ELSE NULL END)
-			     FROM {{survey_" . $iSurveyId . "}}")
+			     FROM {{responses_" . $iSurveyId . "}}")
             ->queryScalar();
         }
     }
