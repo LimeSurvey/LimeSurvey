@@ -166,7 +166,8 @@ class SurveyActivator
                     break;
                 case "startdate":
                 case "datestamp":
-                    $aTableDefinition[$aRow['fieldname']] = "datetime NOT NULL";
+                    $type = ((Yii::app()->db->driverName == 'pgsql') ? 'timestamp' : 'datetime');
+                    $aTableDefinition[$aRow['fieldname']] = $type . " NOT NULL DEFAULT CURRENT_TIMESTAMP";
                     break;
                 case "submitdate":
                     $aTableDefinition[$aRow['fieldname']] = "datetime";
