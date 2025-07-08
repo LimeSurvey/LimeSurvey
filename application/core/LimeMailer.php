@@ -336,10 +336,18 @@ class LimeMailer extends PHPMailer
     }
 
     /**
-     * set the rawSubject and rawBody according to type
-     * See if must throw error without
-     * @param string|null $emailType set the rawSubject and rawBody at same time
-     * @param string|null $language forced language
+     * Sets the email type and raw content for a survey email.
+     *
+     * This function sets the email type, determines the appropriate language,
+     * and retrieves the raw subject and body content for the specified email type
+     * from the survey language settings.
+     *
+     * @param string $emailType The type of email (e.g., 'invite', 'remind', 'register', etc.)
+     * @param string|null $language The language code for the email content. If null, it will use the token's language or the survey's default language.
+     *
+     * @throws \CException If the survey ID is not set
+     *
+     * @return void
      */
     public function setTypeWithRaw($emailType, $language = null)
     {
@@ -371,7 +379,7 @@ class LimeMailer extends PHPMailer
         $attributeSubject = "{$emailColumns[$emailType]}_subj";
         $this->rawSubject = $oSurveyLanguageSetting->{$attributeSubject};
         $this->rawBody = $oSurveyLanguageSetting->{$emailColumns[$emailType]};
-        /* Attahcment can be done here, but relevance must be tested just before send … */
+        $this->addCustomHeader("X-messagetype", $emailType);
     }
     /**
      * @inheritdoc
