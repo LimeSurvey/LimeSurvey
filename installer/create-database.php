@@ -680,7 +680,6 @@ function populateDatabase($oDB)
             'tokenencryptionoptions' => "text NULL",
             'lastmodified' => "datetime",
             'access_mode' => "string(1) DEFAULT 'O'",
-            'othersettings' => 'mediumtext'
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_pk}}', '{{surveys}}', 'sid');
@@ -757,20 +756,11 @@ function populateDatabase($oDB)
             'questionindex' => "integer NULL DEFAULT '0'",
             'navigationdelay' => "integer NULL DEFAULT '0'",
             'nokeyboard' => "string(1) NULL DEFAULT 'N'",
-            'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'",
-            'othersettings' => "mediumtext"
+            'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'"
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_groupsettings_pk}}', '{{surveys_groupsettings}}', ['gsid']);
 
-        $question_code_prefix = App()->getConfig("question_code_prefix");
-        $subquestion_code_prefix = App()->getConfig("subquestion_code_prefix");
-        $answer_code_prefix = App()->getConfig("answer_code_prefix");
-        $otherSettingsFromConfig = json_encode([
-            'question_code_prefix' => $question_code_prefix,
-            'subquestion_code_prefix' => $subquestion_code_prefix,
-            'answer_code_prefix' => $answer_code_prefix
-        ]);
         // insert settings for global level
         $attributes1 = array(
             'gsid' => '0',
@@ -811,16 +801,10 @@ function populateDatabase($oDB)
             'questionindex' => '0',
             'navigationdelay' => '0',
             'nokeyboard' => 'N',
-            'alloweditaftercompletion' => 'N',
-            'othersettings' => $otherSettingsFromConfig
+            'alloweditaftercompletion' => 'N'
         );
         $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes1);
 
-        $otherSettings = json_encode([
-            'question_code_prefix' => 'I',
-            'subquestion_code_prefix' => 'I',
-            'answer_code_prefix' => 'I'
-        ]);
         // insert settings for default survey group
         $attributes2 =  array(
                 "gsid" => 1,
@@ -866,7 +850,6 @@ function populateDatabase($oDB)
                 "navigationdelay" => -1,
                 "nokeyboard" => "I",
                 "alloweditaftercompletion" => "I",
-                "othersettings" => $otherSettings
         );
         $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes2);
 
