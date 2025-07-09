@@ -12,8 +12,7 @@
 #}
 
 <!-- answer_row -->
-<tr id="javatbd{{ myfname }}" class="answers-list radio-list {% if odd %} ls-odd{% else %} ls-even{% endif %}{%
- if error %} ls-error-mandatory has-error{% endif %}">
+<tr id="javatbd{{ myfname }}" class="answers-list radio-list {% if odd %} ls-odd{% else %} ls-even{% endif %}{% if error %} ls-error-mandatory has-error{% endif %}" role="radiogroup"  aria-labelledby="answertext{{ myfname }}">
     <th id="answertext{{ myfname }}" class="answertext control-label{% if answerwidth==0 %} visually-hidden{% endif %}">
         {{ processString(answertext) }}
         
