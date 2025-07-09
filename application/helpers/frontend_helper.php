@@ -1864,7 +1864,7 @@ function getReferringUrl()
 
 /**
 * Shows the welcome page, used in group by group and question by question mode
-* @param mixed $thissurvey unused
+* @param mixed $thissurvey unused, reset to aSurveyInfo at start of function
 * @param array $aSurveyInfo
 */
 function display_first_page($thissurvey, $aSurveyInfo)
