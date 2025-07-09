@@ -69,8 +69,9 @@ class SurveyActivate
                 'savetimings'
             ];
             foreach ($fields as $field) {
-                $fieldvalue = $this->app->request->getPost($field, $params[$field] ?? null);
-                if ($fieldvalue !== null) {
+                $survey->{$field} = $survey->aOptions[$field];
+                $postfieldvalue = $this->app->request->getPost($field, null);
+                if ($postfieldvalue !== null) {
                     $survey->{$field} = $this->app->request->getPost($field, $params[$field] ?? null);
                 }
             }
