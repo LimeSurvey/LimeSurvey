@@ -1864,6 +1864,8 @@ function getReferringUrl()
 
 /**
 * Shows the welcome page, used in group by group and question by question mode
+* @param mixed $thissurvey unused
+* @param array $aSurveyInfo
 */
 function display_first_page($thissurvey, $aSurveyInfo)
 {
@@ -1872,7 +1874,7 @@ function display_first_page($thissurvey, $aSurveyInfo)
     $thissurvey                 = $aSurveyInfo;
     $thissurvey['aNavigator']   = getNavigatorDatas();
     LimeExpressionManager::StartProcessingPage();
-    LimeExpressionManager::StartProcessingGroup(-1, false, $surveyid); // start on welcome page
+    LimeExpressionManager::StartProcessingGroup(-1, $thissurvey['anonymized'] != "Y", $surveyid); // start on welcome page
 
     // WHY HERE ?????
     $_SESSION['survey_' . $surveyid]['LEMpostKey'] = mt_rand();
