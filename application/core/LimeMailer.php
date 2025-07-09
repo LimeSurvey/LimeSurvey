@@ -379,7 +379,6 @@ class LimeMailer extends PHPMailer
         $attributeSubject = "{$emailColumns[$emailType]}_subj";
         $this->rawSubject = $oSurveyLanguageSetting->{$attributeSubject};
         $this->rawBody = $oSurveyLanguageSetting->{$emailColumns[$emailType]};
-        $this->addCustomHeader("X-messagetype", $emailType);
     }
     /**
      * @inheritdoc
@@ -635,7 +634,7 @@ class LimeMailer extends PHPMailer
             $this->setError(gT('Email was not sent because demo-mode is activated.'));
             return false;
         }
-
+        $this->addCustomHeader("X-messagetype", $this->emailType);
         // If the email method is set to "Plugin", we need to dispatch an event to that specific plugin
         // so it can perform it's logic without depending on the more generic "beforeEmail" event.
         if (Yii::app()->getConfig('emailmethod') == self::MethodPlugin) {
