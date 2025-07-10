@@ -2513,7 +2513,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
 
         // If short url is not preferred or no alias is found, return a traditional URL
-        $urlParams = array_merge($params, ['sid' => $this->sid, 'lang' => $language]);
+        $urlParams = array_merge($params, ['sid' => $this->sid, 'lang' => $language, 'newtest' => 'Y']);
         $url = App()->createPublicUrl('survey/index', $urlParams);
 
         return $url;
