@@ -261,7 +261,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
 
                 <?php
                 if (isset($orphantokentables)) { ?>
-                    <li><?php eT("The following old survey participants tables should be deleted because they contain no records or their parent survey no longer exists:"); ?>
+                    <li><?php eT("The following old survey participant lists should be deleted because they contain no records or their parent survey no longer exists:"); ?>
                         <ul class="list-unstyled">
                             <?php
                             foreach ($orphantokentables as $tokentable) { ?>
@@ -271,7 +271,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     </li>
                     <?php
                 } else { ?>
-                    <li><?php eT("All old survey participants tables meet consistency standards."); ?></li><?php
+                    <li><?php eT("All old survey participant lists meet consistency standards."); ?></li><?php
                 } ?>
             </ul>
 
@@ -333,7 +333,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
 
                 <?php
                 if (isset($redundanttokentables) && count($redundanttokentables) > 0) { ?>
-                    <li><?php eT("The following old participant tables exist and may be deleted if no longer required:"); ?>
+                    <li><?php eT("The following old participant lists exist and may be deleted if no longer required:"); ?>
                         <ul class='token-tables-list list-unstyled'>
                             <?php
                             foreach ($redundanttokentables as $tokentable) { ?>

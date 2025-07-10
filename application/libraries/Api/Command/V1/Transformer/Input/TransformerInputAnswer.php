@@ -10,7 +10,7 @@ class TransformerInputAnswer extends Transformer
         TransformerInputAnswerL10ns $transformerInputAnswerL10ns
     ) {
         $this->setDataMap([
-            'aid' => ['type' => 'int', 'required' => 'update'],
+            'aid' => ['required' => 'update'], // can be a string temp id or an int
             'qid' => ['type' => 'int'],
             'oldCode' => 'oldcode',
             'code' => [
