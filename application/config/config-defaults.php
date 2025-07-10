@@ -853,5 +853,20 @@ $config['registrationEmailDelay'] = '1 hour';
 // Participants token sanitizing rules as regex pattern
 $config['allowedcharacters_pattern_token'] = '/[^0-9a-zA-Z_\-~]/';
 
+// List of reverse proxy IP addresses
+// If the instance is behind a reverse proxy, the IP addresses of the reverse proxy should be listed in this setting
+// in order to be able to detect the real client IP address. Works together with "reverseProxyIpHeader" setting.
+$config['reverseProxyIpAddresses'] = [];
+
+// Name of the header that contains the client IP address in case the instance is behind a reverse proxy.
+// Works together with "reverseProxyIpAddresses" setting.
+$config['reverseProxyIpHeader'] = 'HTTP_X_FORWARDED_FOR';
+
+// Allow unserializing (with PHP unserialize function) token attributes when importing or reading a survey object
+// Since LimeSurvey 3, token attributes data is saved as JSON. If you use an older survey file and need to get token attributes, you must enable this setting.
+// Warning: Unserialization can result in code being loaded and executed due to object instantiation and autoloading, and a malicious user may be able to exploit this.
+// @see https://www.php.net/unserialize
+$config['allow_unserialize_attributedescriptions'] = false;
+
 return $config;
 //settings deleted
