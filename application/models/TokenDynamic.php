@@ -64,7 +64,7 @@ class TokenDynamic extends LSActiveRecord
         }
 
         /** @var self $model */
-        $model = parent::model(__CLASS__);
+        $model = parent::model(get_called_class());
 
         //We need to refresh if we changed sid
         if ($refresh === true) {

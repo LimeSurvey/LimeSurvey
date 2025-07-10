@@ -1,10 +1,13 @@
 <?php
 
-namespace LimeSurvey\Api\Command\V1;
+namespace LimeSurvey\Api\Command\V1\SurveyArchive;
 
 use CHttpSession;
 use Survey;
 use Token;
+use LimeSurvey\Models\Services\{
+    SurveyArchiveService
+};
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request,
@@ -14,7 +17,7 @@ use LimeSurvey\Api\Command\{
 };
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
-class SurveyArchive implements CommandInterface
+class SurveyArchivesList implements CommandInterface
 {
     use AuthPermissionTrait;
 
@@ -23,6 +26,8 @@ class SurveyArchive implements CommandInterface
     protected ResponseFactory $responseFactory;
 
     protected Survey $survey;
+
+    protected SurveyArchiveService $surveyArchiveService;
 
     /**
      * Constructor
@@ -33,11 +38,13 @@ class SurveyArchive implements CommandInterface
     public function __construct(
         CHttpSession $session,
         ResponseFactory $responseFactory,
-        Survey $survey
+        Survey $survey,
+        SurveyArchiveService $surveyArchiveService
     ) {
         $this->session = $session;
         $this->responseFactory = $responseFactory;
         $this->survey = $survey;
+        $this->surveyArchiveService = $surveyArchiveService;
     }
 
     /**
@@ -71,10 +78,14 @@ class SurveyArchive implements CommandInterface
                     $types[] = 'survey';
                 }
             }
+
+            $timestamp = $rawData[$index]['timestamp'];
+            $alias = $this->surveyArchiveService->getArchiveAlias($survey->sid, $timestamp);
             $newData['types'] = $types;
             $newData['count'] = $rawData[$index]['cnt'];
-            $newData['timestamp'] = $rawData[$index]['timestamp'];
+            $newData['timestamp'] = $timestamp;
             $newData['hastokens'] = $hasTokens;
+            $newData['alias'] = $alias;
             $data[] = $newData;
         }
         if ($survey->isActive) {
@@ -82,7 +93,8 @@ class SurveyArchive implements CommandInterface
                 'timestamp' => 0,
                 'count' => 0,
                 'types' => [],
-                'hastokens' => $hasTokens
+                'hastokens' => $hasTokens,
+                'alias' => ''
             ];
         }
         return $data;

@@ -12,6 +12,7 @@
  * @property string $created
  * @property string $properties JSON encoded settings, ['unknown'] if encryption status is unknown
  * @property string $attributes JSON encoded additional attributes
+ * @property string $archive_alias
  */
 class ArchivedTableSettings extends LSActiveRecord
 {
@@ -35,6 +36,7 @@ class ArchivedTableSettings extends LSActiveRecord
             ['survey_id, user_id', 'numerical', 'integerOnly' => true],
             ['tbl_name', 'length', 'max' => 255],
             ['tbl_type', 'length', 'max' => 10],
+            ['archive_alias', 'length', 'max' => 255],
             // The following rule is used by search().
             ['id, survey_id, user_id, tbl_name, tbl_type, created, properties', 'safe', 'on' => 'search'],
         ];
@@ -110,5 +112,27 @@ class ArchivedTableSettings extends LSActiveRecord
     public static function model($className = __CLASS__): ArchivedTableSettings
     {
         return parent::model($className);
+    }
+
+    /**
+     * Returns instances of ArchivedTableSettings with the given survey ID and table name.
+     *
+     * @param int $iSurveyId
+     * @param int $iTimestamp
+     * @param string $tableType
+     * @return ArchivedTableSettings|null
+     */
+    public static function getArchiveForTimestamp($iSurveyId, $iTimestamp, $sTableType = 'response')
+    {
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('survey_id = :survey_id');
+        $criteria->addCondition('tbl_name LIKE :tbl_name');
+        $criteria->addCondition('tbl_type = :tbl_type');
+
+        $criteria->params['survey_id'] = $iSurveyId;
+        $criteria->params['tbl_name'] = "%{$iTimestamp}";
+        $criteria->params['tbl_type'] = $sTableType;
+
+        return self::model()->find($criteria);
     }
 }

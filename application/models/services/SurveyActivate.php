@@ -9,6 +9,7 @@ use Permission;
 use Survey;
 use SurveyActivator;
 use LimeSurvey\Models\Services\SurveyAccessModeService;
+use LimeSurvey\Models\Services\SurveyArchiveService;
 
 class SurveyActivate
 {
@@ -100,10 +101,12 @@ class SurveyActivate
      * @param int $surveyId
      * @param int|null $timestamp
      * @param bool $preserveIDs
+     * @param string $archiveType 'all' | 'response' | 'token'
+     * @param bool $useFallback
      * @return bool
      * @throws CException
      */
-    public function restoreData(int $surveyId, $timestamp = null, $preserveIDs = false): bool
+    public function restoreData(int $surveyId, $timestamp = null, $preserveIDs = false, $archiveType = 'all', $useFallback = true): bool
     {
         require_once "application/helpers/admin/import_helper.php";
         $deactivatedArchives = getDeactivatedArchives($surveyId);
@@ -123,20 +126,25 @@ class SurveyActivate
                     }
                 }
             }
-            if (!$found) {
+            if (!$found && $useFallback) {
                 $archives[$key] = $candidates[count($candidates) - 1];
             }
         }
         if (is_array($archives) && isset($archives['survey']) && isset($archives['questions'])) {
-            //Recover survey
-            $qParts = explode("_", $archives['questions']);
-            $qTimestamp = $qParts[count($qParts) - 1];
-            $sParts = explode("_", $archives['survey']);
-            $sTimestamp = $sParts[count($sParts) - 1];
-            $dynamicColumns = getUnchangedColumns($surveyId, $sTimestamp, $qTimestamp);
-            recoverSurveyResponses($surveyId, $archives["survey"], $preserveIDs, $dynamicColumns);
-            //If it's not open access mode, then we import the surveys from the archive if they exist
-            if (isset($archives["tokens"])) {
+            $shouldImportResponses = $archiveType === 'all' || $archiveType === SurveyArchiveService::$Response_archive;
+            if ($shouldImportResponses) {
+                //Recover survey
+                $qParts = explode("_", $archives['questions']);
+                $qTimestamp = $qParts[count($qParts) - 1];
+                $sParts = explode("_", $archives['survey']);
+                $sTimestamp = $sParts[count($sParts) - 1];
+                $dynamicColumns = getUnchangedColumns($surveyId, $sTimestamp, $qTimestamp);
+                recoverSurveyResponses($surveyId, $archives["survey"], $preserveIDs, $dynamicColumns);
+            }
+
+            $shouldImportTokens = $archiveType === 'all' || $archiveType === SurveyArchiveService::$Tokens_archive;
+            if (isset($archives["tokens"]) && $shouldImportTokens) {
+                //If it's not open access mode, then we import the surveys from the archive if they exist
                 $tokenTable = $this->app->db->tablePrefix . "tokens_" . $surveyId;
                 try {
                     createTableFromPattern($tokenTable, $archives["tokens"]);
