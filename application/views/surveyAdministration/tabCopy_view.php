@@ -35,7 +35,6 @@
                 <div class="mt-3">
                     <input type='submit' class='btn btn-primary col-6' value='<?php eT("Copy survey"); ?>' />
                     <?php if (isset($surveyid)) echo '<input type="hidden" name="sid" value="' . $surveyid . '" />'; ?>
-                    <input type='hidden' name='action' value='copysurvey' />
                 </div>
             </div>
 
