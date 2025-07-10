@@ -1939,7 +1939,7 @@ function copyFromOneTableToTheOther($source, $destination, $preserveIDs = false)
         $columns[] = Yii::app()->db->quoteColumnName($rawResult['cname']);
     }
     $timings = count($columns) ? Yii::app()->db->createCommand("INSERT INTO " . Yii::app()->db->quoteTableName($destination) . "(" . implode(",", $columns) . ") SELECT " . implode(",", $columns) . " FROM " . Yii::app()->db->quoteTableName($source))->execute() : 0;
-    if (!(($preserveIDs) || (strpos($destination, 'timings') === false))) {
+    if ((!$preserveIDs) && (strpos($destination, 'timings') !== false)) {
         $oldResponsesTable = str_replace('_timings', '', $source);
         $command = "
             SELECT t1.id as rid, t2.id as tid
