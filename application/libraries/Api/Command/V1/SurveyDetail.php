@@ -78,7 +78,8 @@ class SurveyDetail implements CommandInterface
                 'groups.questions.subquestions',
                 'groups.questions.subquestions.questionl10ns',
                 'groups.questions.subquestions.questionattributes',
-                'groups.questions.subquestions.answers'
+                'groups.questions.subquestions.answers',
+                'groups.questions.conditions'
             )->findByPk($surveyId);
 
         if (!$surveyModel) {
