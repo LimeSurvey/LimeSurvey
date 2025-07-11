@@ -85,7 +85,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             // Open menu by clicking the "+" sign in top bar
             $link = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::id('btn-create')
+                    WebDriverBy::class('btn-create')
                 )
             );
             $link->click();
