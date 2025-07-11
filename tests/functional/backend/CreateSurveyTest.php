@@ -109,36 +109,6 @@ class CreateSurveyTest extends TestBaseClassWeb
                 ->findAll();
 
             $this->assertCount(1, $survey);
-
-            /**
-             *  OLD....Button is now in a menu..
-             *
-
-            // Click on big "Create survey" button.
-            $link = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::className('btn-create')
-                )
-            );
-            $link->click();
-
-            // Fill in title.
-            $titleInput = self::$webDriver->findElement(WebDriverBy::id('surveyTitle'));
-            $nr = rand(1, 100000);
-            $title = 'test survey ' . $nr;
-            $titleInput->clear()->sendKeys($title);
-
-            // Click save.
-            $save = self::$webDriver->findElement(WebDriverBy::id('create-survey-submit'));
-            $save->click();
-
-            sleep(1);
-
-            // Make sure survey was saved in database.
-            $survey = \Survey::model()
-                ->with(['defaultlanguage' => ['condition' => 'surveyls_title=' . \Yii::app()->db->quoteValue($title)]])
-                ->findAll();
-            $this->assertCount(1, $survey); **/
         } catch (\Throwable $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
