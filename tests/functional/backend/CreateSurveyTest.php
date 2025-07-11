@@ -82,6 +82,38 @@ class CreateSurveyTest extends TestBaseClassWeb
 
             sleep(1);
 
+            // Open menu by clicking the "+" sign in top bar
+            $link = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('btn-create')
+                )
+            );
+            $link->click();
+
+            //click on "Survey" to create a new survey with default values
+            // Open menu by clicking the "+" sign in top bar
+            $link = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('create-survey-link')
+                )
+            );
+            $link->click();
+
+            sleep(3); //wait until survey is created
+
+            //title is set to a default value
+            $title = 'Untitled survey';
+
+            $survey = \Survey::model()
+                ->with(['defaultlanguage' => ['condition' => 'surveyls_title=' . \Yii::app()->db->quoteValue($title)]])
+                ->findAll();
+
+            $this->assertCount(1, $survey);
+
+            /**
+             *  OLD....Button is now in a menu..
+             *
+
             // Click on big "Create survey" button.
             $link = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
@@ -106,7 +138,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             $survey = \Survey::model()
                 ->with(['defaultlanguage' => ['condition' => 'surveyls_title=' . \Yii::app()->db->quoteValue($title)]])
                 ->findAll();
-            $this->assertCount(1, $survey);
+            $this->assertCount(1, $survey); **/
         } catch (\Throwable $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(

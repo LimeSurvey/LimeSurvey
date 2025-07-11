@@ -177,6 +177,7 @@ class LayoutHelper
             'label' => gT('Survey'),
             'href' => \Yii::app()->createUrl('surveyAdministration/createSurvey'),
             'iconClass' => 'ri-add-line',
+            'id' => 'create-survey-link',
         ];
         $menuItems[] = (new MenuItem($menuItemNewSurvey));
 

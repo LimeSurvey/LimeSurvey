@@ -42,7 +42,11 @@ foreach ($extraMenus as $menu): ?>
                         <?php
                         else: ?>
                             <li class="create-menu-item ms-3 me-3">
-                                <a href="<?= $menuItem->getHref(); ?>" class="dropdown-item">
+                                <a href="<?= $menuItem->getHref(); ?>" class="dropdown-item"
+                                    <?php if ($menuItem->getId() !== null) {
+                                        echo 'id="'. $menuItem->getId(). '"';
+                                    }?>
+                                >
                                     <!-- Spit out icon if present -->
                                     <?php
                                     if ($menuItem->getIconClass() != ''): ?>
