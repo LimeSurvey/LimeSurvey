@@ -25,9 +25,12 @@ class AjaxAlertController extends LSBaseController
     {
         $request = Yii::app()->request;
         $customOptions = $request->getPost('customOptions', []);
-
         $translatedOptions = [];
-        $translatedOptions['text'] = CHtml::encode($request->getPost('message', 'message'));
+        if (empty($customOptions['useHtml'])) {
+            $translatedOptions['text'] = CHtml::encode($request->getPost('message', 'message'));
+        } else {
+            $translatedOptions['text'] = viewHelper::purified($request->getPost('message', 'message'));
+        }
         $translatedOptions['type'] = sanitize_alphanumeric($request->getPost('alertType', 'success'));
         $knownOptions = ['tag', 'isFilled', 'showIcon', 'showCloseButton', 'timeout'];
         foreach ($knownOptions as $knownOption) {

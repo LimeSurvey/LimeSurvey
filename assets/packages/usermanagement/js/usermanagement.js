@@ -99,7 +99,7 @@ var UserManagement = function () {
                         $('#UserManagement-action-modal').find('.modal-content').html(result.html);
                         if (!result.hasOwnProperty('html')) {
                             triggerModalClose();
-                            window.LS.ajaxAlerts(result.message, 'success', {showCloseButton: true});
+                            window.LS.ajaxAlerts(result.message, 'success', {showCloseButton: true, useHtml: true, showIcon: true});
                             if (result.hasOwnProperty('href')) {
                                 setTimeout(function() {
                                     const modalSize = result.hasOwnProperty('modalsize') ? result.modalsize : '';
