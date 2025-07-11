@@ -167,7 +167,7 @@ class SurveyTemplate implements CommandInterface
         curl_setopt(
             $ch,
             CURLOPT_URL,
-            $root . "/{$surveyId}?newtest=Y&lang={$language}&popuppreview=true"
+            $root . "/{$surveyId}?newtest=Y&lang={$language}&popuppreview=" . \Yii::app()->request->getPost('popuppreview', 'true')
         );
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
