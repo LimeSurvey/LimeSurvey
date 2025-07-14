@@ -103,7 +103,7 @@ class SurveyTemplate implements CommandInterface
         }
         $result = $this->getTemplateData($surveyId, $language);
         return $this->responseFactory->makeSuccess(
-            array_merge($response, $result)
+            array_merge($response, ['template' => $result])
         );
     }
 
@@ -145,7 +145,7 @@ class SurveyTemplate implements CommandInterface
      *
      * @param int $surveyId
      * @param string $language
-     * @return []|Response
+     * @return Response|bool|string
      */
     private function getTemplateData($surveyId, $language)
     {
@@ -158,8 +158,6 @@ class SurveyTemplate implements CommandInterface
         . '=' . $this->session->getSessionID() . '; path=/';
         $this->session->close();
 
-        $isPreview = \Yii::app()->request->getPost('popuppreview', 'true');
-
         $ch = curl_init();
         $root = (
             !empty($_SERVER['HTTPS'])
@@ -169,25 +167,14 @@ class SurveyTemplate implements CommandInterface
         curl_setopt(
             $ch,
             CURLOPT_URL,
-            $root . "/{$surveyId}?newtest=Y&lang={$language}&popuppreview=" . $isPreview
+            $root . "/{$surveyId}?newtest=Y&lang={$language}&popuppreview=" . \Yii::app()->request->getPost('popuppreview', 'true')
         );
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_COOKIE, $strCookie);
-        if ($isPreview !== 'true') {
-            curl_setopt($ch, CURLOPT_HEADER, 1);
-        }
         $result = curl_exec($ch);
-        $response = [];
-        if ($isPreview === 'true') {
-            $response['template'] = $result;
-        } else {
-            $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-            $response['header'] = substr($result, 0, $header_size);
-            $response['template'] = substr($result, $header_size);
-        }
         if (curl_errno($ch)) {
             return $this->responseFactory->makeErrorNotFound(
                 (new ResponseDataError(
@@ -198,6 +185,6 @@ class SurveyTemplate implements CommandInterface
             );
         }
         curl_close(($ch));
-        return $response;
+        return $result;
     }
 }
