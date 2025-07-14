@@ -74,6 +74,7 @@ class SurveyTemplate implements CommandInterface
     public function run(Request $request)
     {
         $surveyId = (int)$request->getData('_id');
+        $isPreview = (\Yii::app()->request->getPost('popuppreview', 'true') === 'true');
 
         if ($response = $this->ensurePermissions($surveyId)) {
             return $response;
@@ -101,7 +102,7 @@ class SurveyTemplate implements CommandInterface
             $response['title'] = $languageSettings->surveyls_title;
             $response['subtitle'] = $languageSettings->surveyls_description;
         }
-        $result = $this->getTemplateData($surveyId, $language);
+        $result = ($isPreview ? $this->getTemplateData($surveyId, $language) : $this->getTemplateStructure($surveyId, $language));
         return $this->responseFactory->makeSuccess(
             array_merge($response, ['template' => $result])
         );
@@ -186,5 +187,21 @@ class SurveyTemplate implements CommandInterface
         }
         curl_close(($ch));
         return $result;
+    }
+
+    /**
+     * Gets the template structure by survey id and language
+     * @param mixed $surveyId
+     * @param mixed $language
+     * @return string
+     */
+    private function getTemplateStructure($surveyId, $language) {
+        $root = (
+            !empty($_SERVER['HTTPS'])
+            ? 'https'
+            : 'http'
+        ) . '://' . ($_SERVER['HTTP_HOST'] ?? '');
+        $url = $root . "/{$surveyId}?newtest=Y&lang={$language}";
+        return "<iframe width=\"1024\" height=\"768\" src=\"{$url}\">";
     }
 }
