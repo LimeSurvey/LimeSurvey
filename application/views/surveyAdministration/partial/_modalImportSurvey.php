@@ -1,9 +1,5 @@
 <?php
 
-/** @var Survey $oSurvey */
-/** @var bool|array $failedcheck */
-/** @var bool|array $failedgroupcheck */
-/** @var array $aSurveysettings */
 ?>
 
 <div id="importSurvey_modal" class="modal fade" role="dialog">
@@ -19,7 +15,7 @@
             );
             ?>
 
-            <div class="modal-body" id="modal-body-activate">
+            <div class="modal-body" id="modal-body-import-survey">
                 <?php
                 echo CHtml::form(array('surveyAdministration/import'),
                     'post', array(
@@ -33,7 +29,7 @@
                 <div class="row">
 
                     <!-- Select file -->
-                    <div class="mb-3 col-4">
+                    <div class="mb-3">
                         <label class='form-label ' for='the_file'>
                             <?php printf(gT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024); ?>
                         </label>
@@ -42,7 +38,6 @@
                         </div>
                     </div>
 
-                    <!-- Convert resource links and INSERTANS fields? -->
                     <div class='mb-3'>
                         <input id="yttranslinksfields" name="translinksfields" type="hidden" value="0">
                         <input id="translinksfields" name="translinksfields" type="checkbox" value="1" checked>
@@ -56,8 +51,8 @@
                         </div>
                     </div>
                 </div>
+                <?php CHtml::endForm();?>
             </div>
-
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>

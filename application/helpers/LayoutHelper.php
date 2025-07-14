@@ -194,7 +194,9 @@ class LayoutHelper
             'isDivider' => false,
             'isSmallText' => false,
             'label' => gT('Import survey'),
-            'href' => \Yii::app()->createUrl('surveyAdministration/newSurvey'),
+            'href' => '',
+            'isModal' => true,
+            'modalId' => 'importSurvey_modal',
             'iconClass' => 'ri-upload-line',
         ];
         $menuItems[] = (new MenuItem($menuItemNewSurvey));
