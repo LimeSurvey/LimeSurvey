@@ -43,18 +43,12 @@
                         <input id="translinksfields" name="translinksfields" type="checkbox" value="1" checked>
                         <label class='form-label ' for='translinksfields'><?php eT("Convert resource links and expression fields?"); ?> </label>
                     </div>
-
-                    <!-- Submit -->
-                    <div class="mt-3 mb-3 col-4">
-                        <div>
-                            <input type='submit' id="import-submit" class="btn btn-primary col-6" value='<?php eT("Import survey"); ?>' />
-                        </div>
-                    </div>
                 </div>
                 <?php CHtml::endForm();?>
             </div>
 
             <div class="modal-footer">
+                <!-- <input type='submit' id="import-submit" class="btn btn-primary col-6" value='<?php eT("Import survey"); ?>' /> -->
                 <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
 
                 <button id="saveactivateBtn" type="button" class="btn btn-info" >
