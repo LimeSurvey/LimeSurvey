@@ -29,6 +29,8 @@ class SurveyTemplate implements CommandInterface
 
     protected Survey $survey;
     protected SurveyLanguageSetting $surveyLanguageSetting;
+    /** @psalm-suppress UndefinedClass */ 
+    /** @psalm-suppress PropertyNotSetInConstructor */ 
     protected BaseEmbed $embed;
 
     /**
@@ -70,6 +72,7 @@ class SurveyTemplate implements CommandInterface
      *     "subtitle": "What should we eat for lunch?"
      * }
      *
+     * @psalm-suppress UndefinedClass
      * @param Request $request
      * @return Response
      */
