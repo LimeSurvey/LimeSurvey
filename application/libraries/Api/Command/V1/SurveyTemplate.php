@@ -206,7 +206,8 @@ class SurveyTemplate implements CommandInterface
      * @param mixed $language
      * @return string
      */
-    private function getSrc($surveyId, $language) {
+    private function getSrc($surveyId, $language)
+    {
         $root = (
             !empty($_SERVER['HTTPS'])
             ? 'https'
