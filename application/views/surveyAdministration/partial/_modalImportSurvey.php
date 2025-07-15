@@ -3,7 +3,7 @@
 ?>
 
 <div id="importSurvey_modal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog import-modal">
         <!-- Modal content-->
         <div class="modal-content">
             <?php
@@ -26,11 +26,25 @@
             <div class="modal-body" id="modal-body-import-survey">
                 <div class="row">
                     <div class="mb-3">
-                        <label class='form-label ' for='the_file'>
+                        <label class='form-label ' >
                             <?php printf(gT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024); ?>
                         </label>
-                        <div>
-                            <input id='the_file' name="the_file" class="form-control" type="file" accept='.lss,.lsa,.tsv,.txt' onchange="$('#import-submit').attr('disabled', false).attr('data-bs-toggle', false);" required />
+
+                        <div class="upload-container">
+                            <label><b><?php eT("Select or drop a file here"); ?></b></label>
+                            <label for="the_file" class="upload-label">
+                                <span class="ri-upload-line">&nbsp;</span>
+                                <div class="upload-text"><?php et('Drop file here'); ?></div>
+                                <input
+                                    type="file"
+                                    id="the_file"
+                                    name="the_file"
+                                    class="form-control upload-input"
+                                    accept='.lss,.lsa,.tsv,.txt'
+                                    onchange="$('#import-submit').attr('disabled', false).attr('data-bs-toggle', false);"
+                                    required
+                                />
+                            </label>
                         </div>
                     </div>
                     <div class='mb-3'>
@@ -42,7 +56,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
-                <input type='submit' id="import-submit" class="btn btn-info col-6" value='<?php eT("Import survey"); ?>' />
+                <input type='submit' id="import-submit" class="btn btn-info col-2" value='<?php eT("Import survey"); ?>' />
             </div>
             </form>
         </div>
