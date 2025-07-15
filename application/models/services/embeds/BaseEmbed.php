@@ -2,7 +2,8 @@
 
 namespace LimeSurvey\Models\Services;
 
-abstract class BaseEmbed {
+abstract class BaseEmbed
+{
     protected $width;
     protected $height;
     protected $src;
@@ -77,7 +78,7 @@ abstract class BaseEmbed {
      * @param string $placeholder a text placeholder with a default value which will be replaced with the inner structure
      * @return string
      */
-    protected abstract function getWrapper(string $placeholder = "PLACEHOLDER");
+    abstract protected function getWrapper(string $placeholder = "PLACEHOLDER");
 
     /**
      * Returns the inner structure
