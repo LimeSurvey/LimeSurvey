@@ -7,8 +7,8 @@ use LimeSurvey\Api\Command\{CommandInterface,
     Request\Request,
     Response\Response,
     Response\ResponseFactory,
-    V1\AuthTokenSimple,
-    V1\Transformer\Output\TransformerOutputUserPermissions};
+    V1\AuthTokenSimple};
+use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputUserPermissions;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
 class UserPermission implements CommandInterface
