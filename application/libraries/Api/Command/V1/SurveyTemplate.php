@@ -29,8 +29,10 @@ class SurveyTemplate implements CommandInterface
 
     protected Survey $survey;
     protected SurveyLanguageSetting $surveyLanguageSetting;
-    /** @psalm-suppress UndefinedClass */
-    /** @psalm-suppress PropertyNotSetInConstructor */
+    /**
+     * @psalm-suppress UndefinedClass
+     * @psalm-suppress PropertyNotSetInConstructor
+    */
     protected BaseEmbed $embed;
 
     /**
