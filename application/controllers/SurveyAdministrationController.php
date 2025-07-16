@@ -1841,12 +1841,13 @@ class SurveyAdministrationController extends LSBaseController
                     'Y' => 'O',
                     'N' => 'C'
                 ];
+                $mode = ($modes[$openAccessMode] ?? 'O');
                 $surveyAccessModeService = new SurveyAccessModeService(
                     Permission::model(),
                     Survey::model(),
                     Yii::app(),
                 );
-                $surveyAccessModeService->changeAccessMode($surveyId, $modes[$openAccessMode]);
+                $surveyAccessModeService->changeAccessMode($surveyId, $mode);
                 switch ($openAccessMode) {
                     case 'Y': //show a modal or give feedback on another page
                         $this->redirect([
