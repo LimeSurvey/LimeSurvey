@@ -17662,8 +17662,6 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 .create-menu-item {
   width: 222px;
-  margin-right: 12px;
-  margin-left: 12px;
   border: 1px solid #fff;
 }
 .create-menu-item:hover {
@@ -18808,6 +18806,48 @@ input[type=number] {
 .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--selected, .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option[aria-selected=true]:not(.select2-results__option--highlighted) {
   color: #fff;
   background-color: var(--bs-primary);
+}
+
+.upload-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0px;
+}
+
+.upload-label {
+  width: 704px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed;
+  border-color: #D3D5DA;
+  border-radius: 8px;
+  background-color: #fff;
+  padding: 40px;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  text-align: center;
+  height: 150px;
+}
+
+.upload-label:hover {
+  border-color: #9094A7; /* Gray-600 */
+}
+
+.upload-text {
+  color: #4a5568;
+  font-size: 16px;
+}
+
+.upload-input {
+  display: none;
+}
+
+.import-modal {
+  max-width: 807px !important;
 }
 
 .welcome #lime-logo {
@@ -20071,4 +20111,11 @@ table [class^=ri-], table [class*=" ri-"] {
 
 .ls-card-grid .ls-card-grid__description {
   padding-right: 8px;
+}
+
+input[type=checkbox]:checked:after,
+.checkbox input[type=checkbox]:checked:after,
+.checkbox-inline input[type=checkbox]:checked:after {
+  background-color: #000;
+  border-color: #000;
 }
