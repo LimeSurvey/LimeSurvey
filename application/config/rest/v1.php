@@ -50,12 +50,5 @@ return array_merge(
     include_once __DIR__ . '/v1/site-settings.php',
     include_once __DIR__ . '/v1/i18n.php',
     include_once __DIR__ . '/v1/file-upload.php',
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-    include_once __DIR__ . '/v1/version-info.php',
-=======
     include_once __DIR__ . '/v1/permissions.php',
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 );
