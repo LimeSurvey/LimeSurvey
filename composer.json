@@ -32,7 +32,7 @@
             ],
 			"LimeSurvey\\Models\\Services\\": [
 			    "application/models/services",
-				"application/models/services/embeds"
+			    "application/models/services/embeds"
 			],
 			"LimeSurvey\\Datavalueobjects\\": "application/datavalueobjects",
 			"LimeSurvey\\Exceptions\\": "application/exceptions",
