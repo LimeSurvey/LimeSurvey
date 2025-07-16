@@ -4,6 +4,7 @@ use LimeSurvey\Models\Services\CopySurveyResources;
 use LimeSurvey\Models\Services\FileUploadService;
 use LimeSurvey\Models\Services\FilterImportedResources;
 use LimeSurvey\Models\Services\GroupHelper;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 /**
  * Class SurveyAdministrationController
@@ -1836,6 +1837,16 @@ class SurveyAdministrationController extends LSBaseController
 
             $openAccessMode = Yii::app()->request->getPost('openAccessMode', null);
             if ($openAccessMode !== null) {
+                $modes = [
+                    'Y' => 'O',
+                    'N' => 'C'
+                ];
+                $surveyAccessModeService = new SurveyAccessModeService(
+                    Permission::model(),
+                    Survey::model(),
+                    Yii::app(),
+                );
+                $surveyAccessModeService->changeAccessMode($surveyId, $modes[$openAccessMode]);
                 switch ($openAccessMode) {
                     case 'Y': //show a modal or give feedback on another page
                         $this->redirect([
