@@ -46,7 +46,7 @@ class SurveyTemplate implements CommandInterface
         ResponseFactory $responseFactory,
         CHttpSession $session,
         Survey $survey,
-        SurveyLanguageSetting $surveyLanguageSetting,
+        SurveyLanguageSetting $surveyLanguageSetting
     ) {
         $this->responseFactory = $responseFactory;
         $this->session = $session;
