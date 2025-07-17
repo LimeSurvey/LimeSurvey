@@ -13,8 +13,8 @@ class StandardEmbed extends BaseEmbed
          */
         protected function getWrapper(string $placeholder = "PLACEHOLDER")
         {
-            $width = (($this->embedOptions['width'] ?? $this->defaultWidth));
-            $height = (($this->embedOptions['height'] ?? $this->defaultHeight));
+            $width = ($this->embedOptions['width'] ?? $this->defaultWidth);
+            $height = ($this->embedOptions['height'] ?? $this->defaultHeight);
 
             return "<div style='width:{$width};height:{$height};border:1px solid red;'>{$placeholder}</div>";
         }
