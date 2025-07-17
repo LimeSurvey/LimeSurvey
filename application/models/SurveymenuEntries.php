@@ -334,7 +334,7 @@ class SurveymenuEntries extends LSActiveRecord
                 'data-menuentryid' => $this->id,
             ],
             'iconClass'        => 'ri-delete-bin-fill text-danger',
-            'enabledCondition' => $permission_settings_update
+            'enabledCondition' => $permission_settings_update && $this->created_by != 0
         ];
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
@@ -491,7 +491,7 @@ class SurveymenuEntries extends LSActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
 
         //Don't show main menu when not superadmin
         if (Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -596,5 +596,13 @@ class SurveymenuEntries extends LSActiveRecord
         /** @var self $model */
         $model = parent::model($className);
         return $model;
+    }
+
+
+    public function delete()
+    {
+        if ($this->created_by != 0) {
+            parent::delete();
+        }
     }
 }

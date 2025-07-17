@@ -22,9 +22,9 @@ class ValidationErrorItem
     public string $entity;
 
     /**
-     * @var string|null the id of that operation
+     * @var mixed the id of that operation
      */
-    public ?string $id;
+    public $id;
 
     /**
      * @var string the name of the op of that operation

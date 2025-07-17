@@ -112,6 +112,7 @@ class SurveyDynamic extends LSActiveRecord
      * @access public
      * @param array $data
      * @return boolean
+     * @deprecated Use setAttributes() and encryptSave()
      */
     public function insertRecords($data)
     {
@@ -167,14 +168,14 @@ class SurveyDynamic extends LSActiveRecord
         $alias = $this->getTableAlias();
 
         $newCriteria->join = "LEFT JOIN " . $this->survey->tokensTableName . " survey_timings ON $alias.id = survey_timings.id";
-        $newCriteria->select = 'survey_timings.*'; // Otherwise we don't get records from the survey participants table
+        $newCriteria->select = 'survey_timings.*'; // Otherwise we don't get records from the survey participant list
         $newCriteria->mergeWith($criteria);
 
         return $newCriteria;
     }
 
     /**
-     * Return criteria updated with the ones needed for including results from the survey participants table
+     * Return criteria updated with the ones needed for including results from the survey participant list
      *
      * @param string $condition
      * @return CDbCriteria
@@ -202,7 +203,7 @@ class SurveyDynamic extends LSActiveRecord
         $aTokenFields = Yii::app()->db->schema->getTable($this->survey->tokensTableName)->getColumnNames();
         $aTokenFields = array_diff($aTokenFields, array('token'));
 
-        $newCriteria->select = $aTokenFields; // Otherwise we don't get records from the survey participants table
+        $newCriteria->select = $aTokenFields; // Otherwise we don't get records from the survey participant list
         $newCriteria->mergeWith($criteria);
 
         return $newCriteria;
@@ -337,11 +338,11 @@ class SurveyDynamic extends LSActiveRecord
                 'data-bs-toggle' => "modal",
                 'data-bs-target' => "#confirmation-modal",
                 'data-btnclass'  => 'btn-danger',
-                'data-title'     => gt('Delete all response files'),
-                'data-btntext'   => gt('Delete'),
+                'data-title'     => gT('Delete all response files'),
+                'data-btntext'   => gT('Delete'),
                 'data-post-url'  => App()->createUrl("responses/deleteAttachments"),
                 'data-post-datas' => json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]),
-                'data-message'   => gt("Do you want to delete all files of this response?"),
+                'data-message'   => gT("Do you want to delete all files of this response?"),
             ]
         ];
 
@@ -353,11 +354,11 @@ class SurveyDynamic extends LSActiveRecord
                 'data-bs-toggle' => "modal",
                 'data-bs-target' => "#confirmation-modal",
                 'data-btnclass'  => 'btn-danger',
-                'data-title'     => gt('Delete this response'),
-                'data-btntext'   => gt('Delete'),
+                'data-title'     => gT('Delete this response'),
+                'data-btntext'   => gT('Delete'),
                 'data-post-url'  => App()->createUrl("responses/deleteSingle"),
                 'data-post-datas' => json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]),
-                'data-message'   => gt("Do you want to delete this response?") . '<br/>' .
+                'data-message'   => gT("Do you want to delete this response?") . '<br/>' .
                     gT("Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it."),
             ]
         ];
@@ -677,7 +678,7 @@ class SurveyDynamic extends LSActiveRecord
             '*',
         );
 
-        // Join the survey participants table and filter tokens if needed
+        // Join the survey participant list and filter tokens if needed
         if ($this->bHaveToken && $this->survey->anonymized != 'Y') {
             $this->joinWithToken($criteria, $sort);
         }

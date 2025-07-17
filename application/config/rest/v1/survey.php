@@ -4,14 +4,16 @@ use LimeSurvey\Api\Command\V1\{
     SurveyList,
     SurveyDetail,
     SurveyPatch,
-    SurveyTemplate
+    SurveyTemplate,
+    SurveyArchive
 };
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactoryError,
     SchemaFactorySurveyList,
     SchemaFactorySurveyDetail,
     SchemaFactorySurveyPatch,
-    SchemaFactorySurveyTemplate
+    SchemaFactorySurveyTemplate,
+    SchemaFactorySurveyArchive
 };
 
 $errorSchema = (new SchemaFactoryError())->make();
@@ -24,7 +26,7 @@ $rest['v1/survey'] = [
     'GET' => [
         'description' => 'Survey list',
         'commandClass' => SurveyList::class,
-        'auth' => 'session',
+        'auth' => true,
         'params' => [
             'pageSize' => ['type' => 'int'],
             'page' => ['type' => 'int']
@@ -50,7 +52,7 @@ $rest['v1/survey-detail/$id'] = [
         'tag' => 'survey',
         'description' => 'Survey detail',
         'commandClass' => SurveyDetail::class,
-        'auth' => 'session',
+        'auth' => true,
         'responses' => [
             'success' => [
                 'code' => 200,
@@ -74,7 +76,7 @@ $rest['v1/survey-detail/$id'] = [
         'tag' => 'survey',
         'description' => 'Survey update via RFC 6902 based patch',
         'commandClass' => SurveyPatch::class,
-        'auth' => 'session',
+        'auth' => true,
         'example' => __DIR__ . '/example/survey-patch-all.json',
         'schema' => $surveyPatchSchema,
         'responses' => [
@@ -104,7 +106,7 @@ $rest['v1/survey-template/$id'] = [
         'tag' => 'survey',
         'description' => 'Survey template',
         'commandClass' => SurveyTemplate::class,
-        'auth' => 'session',
+        'auth' => true,
         'responses' => [
             'success' => [
                 'code' => 200,
@@ -123,7 +125,7 @@ $rest['v1/survey-template/$id'] = [
         'tag' => 'survey',
         'description' => 'Survey template',
         'commandClass' => SurveyTemplate::class,
-        'auth' => 'session',
+        'auth' => true,
         'example' => __DIR__ . '/example/survey-post-template.json',
         'schema' => $surveyTemplateSchema,
         'responses' => [
@@ -140,6 +142,50 @@ $rest['v1/survey-template/$id'] = [
             ]
         ]
     ],
+];
+
+$rest['v1/survey-archives/$id'] = [
+    'GET' => [
+        'tag' => 'survey',
+        'description' => 'Survey archives',
+        'commandClass' => SurveyArchive::class,
+        'auth' => true,
+        'responses' => [
+            'success' => [
+                'code' => 200,
+                'description' => 'Success',
+                'content' => null,
+                'schema' => (new SchemaFactorySurveyArchive())->make()
+            ],
+            'not-found' => [
+                'code' => 404,
+                'description' => 'Not Found',
+                'schema' => $errorSchema
+            ]
+        ]
+    ]
+];
+
+$rest['v1/action/survey-archives/id/$id/basetable/$basetable'] = [
+    'GET' => [
+        'tag' => 'survey',
+        'description' => 'Survey archives',
+        'commandClass' => SurveyArchive::class,
+        'auth' => true,
+        'responses' => [
+            'success' => [
+                'code' => 200,
+                'description' => 'Success',
+                'content' => null,
+                'schema' => (new SchemaFactorySurveyArchive())->make()
+            ],
+            'not-found' => [
+                'code' => 404,
+                'description' => 'Not Found',
+                'schema' => $errorSchema
+            ]
+        ]
+    ]
 ];
 
 return $rest;

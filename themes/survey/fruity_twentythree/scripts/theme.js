@@ -37,7 +37,35 @@ function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; 
 // register to global scope
 window.bootstrap = Bootstrap;
 
-},{"../../../node_modules/bootstrap/dist/js/bootstrap.esm.js":11}],2:[function(require,module,exports){
+},{"../../../node_modules/bootstrap/dist/js/bootstrap.esm.js":12}],2:[function(require,module,exports){
+"use strict";
+
+var A11yHandles = {
+  handleTooltip: function handleTooltip() {
+    document.body.addEventListener('keydown', function (e) {
+      if (e.key == 'Escape') {
+        console.log('Escape key pressed');
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (tooltipTriggerEl) {
+          var tooltip = bootstrap.Tooltip.getInstance(tooltipTriggerEl);
+          tooltip.hide();
+        });
+      }
+    });
+  },
+  handleTitle: function handleTitle() {
+    var existingTitle = document.title;
+    var heading = document.querySelector('h1.group-title');
+    if (heading) {
+      document.title = existingTitle + ' - ' + heading.textContent;
+    }
+  }
+};
+$(document).on('ready pjax:scriptcomplete', function () {
+  A11yHandles.handleTooltip();
+  A11yHandles.handleTitle();
+});
+
+},{}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -45,7 +73,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ThemeScripts = void 0;
 var _old_template_core_class = _interopRequireDefault(require("./old_template_core_class.js"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 /**
  * The general Template closure.
  * This is to capsule eventual errors inside of the template function, so the general script all run as the should
@@ -268,7 +296,7 @@ var ThemeScripts = exports.ThemeScripts = function ThemeScripts() {
 // register to global scope
 window.ThemeScripts = ThemeScripts;
 
-},{"./old_template_core_class.js":3}],3:[function(require,module,exports){
+},{"./old_template_core_class.js":4}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -450,7 +478,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   window.templateCore.triggerEmClassChangeTemplate();
 });
 
-},{"./old_template_core_pre.js":4}],4:[function(require,module,exports){
+},{"./old_template_core_pre.js":5}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -894,7 +922,7 @@ function activateSoftMandatory() {
   $('#mandatory-soft-alert-box-modal').on('click', function (ev) {
     ev.preventDefault();
     var $form = $('#limesurvey');
-    $form.append('<input type="hidden" name="mandSoft" value="' + $(this).data('movenext') + '" />');
+    $form.find(".ls-mandSoft-checkbox").prop('checked', true);
     $form.find('#ls-button-submit').trigger('click');
     $("#bootstrap-alert-box-modal").modal('hide');
   });
@@ -949,7 +977,7 @@ window.updateMandatoryErrorClass = updateMandatoryErrorClass;
 window.activateSoftMandatory = activateSoftMandatory;
 window.resetQuestionTimers = resetQuestionTimers;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -984,7 +1012,7 @@ var NavbarScripts = exports.NavbarScripts = function NavbarScripts() {
 // register to global scope
 window.NavbarScripts = NavbarScripts;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1015,7 +1043,7 @@ var ArrayScripts = exports.ArrayScripts = function ArrayScripts() {
 // register to global scope
 window.ArrayScripts = ArrayScripts;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /*
     LimeSurvey
     Copyright (C) 2007-2023
@@ -1047,7 +1075,7 @@ window.ArrayScripts = ArrayScripts;
 */
 "use strict";
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -1057,20 +1085,21 @@ var _old_core_theme = _interopRequireDefault(require("./core/old_core_theme.js")
 var _array = _interopRequireDefault(require("./questiontypes/array/array.js"));
 var _navbar = _interopRequireDefault(require("./navbar/navbar.js"));
 var _video = _interopRequireDefault(require("./video/video.js"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _a11yHandles = require("./a11y-handles/a11y-handles.js");
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
 
-},{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"./core/old_core_theme.js":2,"./navbar/navbar.js":5,"./questiontypes/array/array.js":6,"./theme_js_disclaimer.js":7,"./video/video.js":9}],9:[function(require,module,exports){
+},{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"./a11y-handles/a11y-handles.js":2,"./core/old_core_theme.js":3,"./navbar/navbar.js":6,"./questiontypes/array/array.js":7,"./theme_js_disclaimer.js":8,"./video/video.js":10}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Video = void 0;
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 var Video = exports.Video = function Video() {
   var fixVideoHeight = function fixVideoHeight() {
     $(document).on('ready pjax:scriptcomplete', function () {
@@ -1098,7 +1127,7 @@ var Video = exports.Video = function Video() {
 window.video = new Video();
 video.fixVideoHeight();
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
  * @popperjs/core v2.11.8 - MIT License
  */
@@ -2696,7 +2725,7 @@ exports.popperGenerator = popperGenerator;
 exports.popperOffsets = popperOffsets$1;
 exports.preventOverflow = preventOverflow$1;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2706,33 +2735,34 @@ exports.Tooltip = exports.Toast = exports.Tab = exports.ScrollSpy = exports.Popo
 var Popper = _interopRequireWildcard(require("@popperjs/core"));
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
-function _get() { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get.bind(); } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return _get.apply(this, arguments); }
-function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+function _superPropGet(t, e, o, r) { var p = _get(_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
+function _get() { return _get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = _superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, _get.apply(null, arguments); }
+function _superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = _getPrototypeOf(t));); return t; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
 function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _possibleConstructorReturn(t, e) { if (e && ("object" == _typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
+function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
+function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
+function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); } /*!
   * Bootstrap v5.1.3 (https://getbootstrap.com/)
   * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
@@ -2865,7 +2895,7 @@ var isDisabled = function isDisabled(element) {
   }
   return element.hasAttribute('disabled') && element.getAttribute('disabled') !== 'false';
 };
-var findShadowRoot = function findShadowRoot(element) {
+var _findShadowRoot = function findShadowRoot(element) {
   if (!document.documentElement.attachShadow) {
     return null;
   } // Can find the shadow root otherwise it'll return the document
@@ -2881,7 +2911,7 @@ var findShadowRoot = function findShadowRoot(element) {
   if (!element.parentNode) {
     return null;
   }
-  return findShadowRoot(element.parentNode);
+  return _findShadowRoot(element.parentNode);
 };
 var noop = function noop() {};
 /**
@@ -2955,16 +2985,16 @@ var executeAfterTransition = function executeAfterTransition(callback, transitio
   var durationPadding = 5;
   var emulatedDuration = getTransitionDurationFromElement(transitionElement) + durationPadding;
   var called = false;
-  var handler = function handler(_ref) {
+  var _handler = function handler(_ref) {
     var target = _ref.target;
     if (target !== transitionElement) {
       return;
     }
     called = true;
-    transitionElement.removeEventListener(TRANSITION_END, handler);
+    transitionElement.removeEventListener(TRANSITION_END, _handler);
     execute(callback);
   };
-  transitionElement.addEventListener(TRANSITION_END, handler);
+  transitionElement.addEventListener(TRANSITION_END, _handler);
   setTimeout(function () {
     if (!called) {
       triggerTransitionEnd(transitionElement);
@@ -4626,7 +4656,7 @@ var Dropdown = exports.Dropdown = /*#__PURE__*/function (_BaseComponent5) {
       if (this._popper) {
         this._popper.destroy();
       }
-      _get(_getPrototypeOf(Dropdown.prototype), "dispose", this).call(this);
+      _superPropGet(Dropdown, "dispose", this, 3)([]);
     }
   }, {
     key: "update",
@@ -5371,7 +5401,7 @@ var Modal = exports.Modal = /*#__PURE__*/function (_BaseComponent6) {
       });
       this._backdrop.dispose();
       this._focustrap.deactivate();
-      _get(_getPrototypeOf(Modal.prototype), "dispose", this).call(this);
+      _superPropGet(Modal, "dispose", this, 3)([]);
     }
   }, {
     key: "handleUpdate",
@@ -5752,7 +5782,7 @@ var Offcanvas = exports.Offcanvas = /*#__PURE__*/function (_BaseComponent7) {
     value: function dispose() {
       this._backdrop.dispose();
       this._focustrap.deactivate();
-      _get(_getPrototypeOf(Offcanvas.prototype), "dispose", this).call(this);
+      _superPropGet(Offcanvas, "dispose", this, 3)([]);
     } // Private
   }, {
     key: "_getConfig",
@@ -6128,7 +6158,7 @@ var Tooltip = exports.Tooltip = /*#__PURE__*/function (_BaseComponent8) {
         this.tip.remove();
       }
       this._disposePopper();
-      _get(_getPrototypeOf(Tooltip.prototype), "dispose", this).call(this);
+      _superPropGet(Tooltip, "dispose", this, 3)([]);
     }
   }, {
     key: "show",
@@ -6141,7 +6171,7 @@ var Tooltip = exports.Tooltip = /*#__PURE__*/function (_BaseComponent8) {
         return;
       }
       var showEvent = EventHandler.trigger(this._element, this.constructor.Event.SHOW);
-      var shadowRoot = findShadowRoot(this._element);
+      var shadowRoot = _findShadowRoot(this._element);
       var isInTheDom = shadowRoot === null ? this._element.ownerDocument.documentElement.contains(this._element) : shadowRoot.contains(this._element);
       if (showEvent.defaultPrevented || !isInTheDom) {
         return;
@@ -6857,7 +6887,7 @@ var ScrollSpy = exports.ScrollSpy = /*#__PURE__*/function (_BaseComponent9) {
     key: "dispose",
     value: function dispose() {
       EventHandler.off(this._scrollElement, EVENT_KEY$2);
-      _get(_getPrototypeOf(ScrollSpy.prototype), "dispose", this).call(this);
+      _superPropGet(ScrollSpy, "dispose", this, 3)([]);
     } // Private
   }, {
     key: "_getConfig",
@@ -7292,7 +7322,7 @@ var Toast = exports.Toast = /*#__PURE__*/function (_BaseComponent11) {
       if (this._element.classList.contains(CLASS_NAME_SHOW)) {
         this._element.classList.remove(CLASS_NAME_SHOW);
       }
-      _get(_getPrototypeOf(Toast.prototype), "dispose", this).call(this);
+      _superPropGet(Toast, "dispose", this, 3)([]);
     } // Private
   }, {
     key: "_getConfig",
@@ -7401,4 +7431,4 @@ enableDismissTrigger(Toast);
 
 defineJQueryPlugin(Toast);
 
-},{"@popperjs/core":10}]},{},[8]);
+},{"@popperjs/core":11}]},{},[9]);

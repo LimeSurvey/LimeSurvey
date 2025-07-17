@@ -45,7 +45,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         parent::__construct($aFieldArray, $bRenderDirect);
         $this->setSubquestions();
 
-        $this->iNbCols = $this->setDefaultIfEmpty($this->getQuestionAttribute('display_columns'), "");
+        $this->iNbCols = intval($this->setDefaultIfEmpty($this->getQuestionAttribute('display_columns'), ""));
 
         if ($this->iNbCols) {
             $this->sCoreClasses .= " multiple-list nbcol-{$this->iNbCols}";

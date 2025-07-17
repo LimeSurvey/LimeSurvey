@@ -35,13 +35,13 @@ var AqlHighlightRules = function () {
                 token: "comment",
                 regex: "//.*$"
             }, {
-                token: "string",
+                token: "string", // " string
                 regex: '".*?"'
             }, {
-                token: "string",
+                token: "string", // ' string
                 regex: "'.*?'"
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // float
                 regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
             }, {
                 token: keywordMapper,

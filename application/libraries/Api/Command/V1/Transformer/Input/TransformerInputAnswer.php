@@ -10,7 +10,7 @@ class TransformerInputAnswer extends Transformer
         TransformerInputAnswerL10ns $transformerInputAnswerL10ns
     ) {
         $this->setDataMap([
-            'aid' => ['type' => 'int', 'required' => 'update'],
+            'aid' => ['required' => 'update'], // can be a string temp id or an int
             'qid' => ['type' => 'int'],
             'oldCode' => 'oldcode',
             'code' => [
@@ -25,7 +25,7 @@ class TransformerInputAnswer extends Transformer
                 'numerical'
             ],
             'scaleId' => ['key' => 'scale_id', 'type' => 'int', 'numerical'],
-            'tempId' => ['required' => 'create'],
+            'tempId' => true,
             'l10ns' => [
                 'key' => 'answeroptionl10n',
                 'collection' => true,
@@ -47,7 +47,8 @@ class TransformerInputAnswer extends Transformer
             $index = array_key_exists(
                 'aid',
                 $answer
-            ) ? $answer['aid'] : $index;
+            ) && (int)$answer['aid'] > 0
+                ? (int)$answer['aid'] : (int)$index;
             $output[$index][$scaleId] = $answer;
         }
         return $output;

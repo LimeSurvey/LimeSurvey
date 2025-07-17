@@ -22,10 +22,10 @@ class UserManagementController extends LSBaseController
             array(
                 'allow',
                 'actions' => array(
-                    'index', 'addEditUser', 'applyEdit', 'addDummyUser',
-                    'runAddDummyUser', 'addRole', 'batchAddGroup', 'batchApplyRoles', 'batchPermissions',
+                    'index', 'addEditUser', 'applyEdit',
+                    'addRole', 'batchAddGroup', 'batchApplyRoles', 'batchPermissions',
                     'batchSendAndResetLoginData', 'deleteConfirm',  'deleteMultiple', 'exportUser', 'importUser',
-                    'renderSelectedItems', 'renderUserImport', 'runAddDummyUser', 'saveRole', 'saveThemePermissions',
+                    'renderSelectedItems', 'renderUserImport', 'saveRole', 'saveThemePermissions',
                     'takeOwnership', 'userPermissions', 'userTemplatePermissions', 'viewUser'
                 ),
                 'users' => array('@'), //only login users
@@ -40,7 +40,7 @@ class UserManagementController extends LSBaseController
     public function filters()
     {
         return [
-            'postOnly + applyEdit, runAddDummyUser, deleteUser, userActivateDeactivate,'
+            'postOnly + applyEdit, deleteUser, userActivateDeactivate,'
             . ' batchStatus, saveUserPermissions, saveThemePermissions, saveRole, importUsers, deleteMultiple,'
             . ' batchSendAndResetLoginData, batchPermissions, batchAddGroup, batchApplyRoles,'
             . ' TakeOwnership'
@@ -82,7 +82,7 @@ class UserManagementController extends LSBaseController
 
 
         $aData['topbar']['title'] = gT('User management');
-        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
 
         //this is really important, so we have the aData also before rendering the content
@@ -151,7 +151,7 @@ class UserManagementController extends LSBaseController
             $aUser['full_name'] = flattenText($aUser['full_name'], false, true);
         }
 
-        $passwordTest = Yii::app()->request->getParam('password_repeat', false);
+        $passwordTest = Yii::app()->request->getParam('password_repeat', '');
 
         if (!empty($passwordTest)) {
             if ($passwordTest !== $aUser['password']) {
@@ -160,17 +160,11 @@ class UserManagementController extends LSBaseController
                     'errors' => gT('Passwords do not match'),
                 ]]);
             }
-
-            $oPasswordTestEvent = new PluginEvent('checkPasswordRequirement');
-            $oPasswordTestEvent->set('password', $passwordTest);
-            $oPasswordTestEvent->set('passwordOk', true);
-            $oPasswordTestEvent->set('passwordError', '');
-            Yii::app()->getPluginManager()->dispatchEvent($oPasswordTestEvent);
-
-            if (!$oPasswordTestEvent->get('passwordOk')) {
+            $user = new User();
+            if ($passwordError = $user->checkPasswordStrength($passwordTest)) {
                 return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                     'success' => false,
-                    'errors' => gT('Passwords does not fulfill minimum requirement:') . '<br/>' . $oPasswordTestEvent->get('passwordError'),
+                    'errors' => gT('Passwords does not fulfill minimum requirement:') . '<br/>' . $passwordError,
                 ]]);
             }
         }
@@ -233,60 +227,6 @@ class UserManagementController extends LSBaseController
             ]);
         }
     }
-
-    /**
-     * Opens the modal to add dummy users
-     *
-     * @throws CException
-     */
-    public function actionAddDummyUser()
-    {
-        return $this->renderPartial('partial/adddummyuser', []);
-    }
-
-    /**
-     * Creates a batch of dummy users
-     *
-     * @return string | JSON
-     * @throws CException
-     */
-    public function actionRunAddDummyUser()
-    {
-        if (!Permission::model()->hasGlobalPermission('users', 'create')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
-        }
-        $times = App()->request->getPost('times', 5);
-        $minPwLength = \LimeSurvey\Models\Services\PasswordManagement::MIN_PASSWORD_LENGTH;
-        $passwordSize = (int) App()->request->getPost('passwordsize', $minPwLength);
-        $prefix = flattenText(App()->request->getPost('prefix', 'randuser_'));
-        $email = App()->request->getPost('email', User::model()->findByPk(App()->user->id)->email);
-
-        $randomUsers = [];
-
-        for (; $times > 0; $times--) {
-            $name = $this->getRandomUsername($prefix);
-            $password = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword($passwordSize);
-            $oUser = new User();
-            $oUser->users_name = $name;
-            $oUser->full_name = $name;
-            $oUser->email = $email;
-            $oUser->parent_id = App()->user->id;
-            $oUser->created = date('Y-m-d H:i:s');
-            $oUser->modified = date('Y-m-d H:i:s');
-            $oUser->password = password_hash($password, PASSWORD_DEFAULT);
-            $save = $oUser->save();
-            $randomUsers[] = ['username' => $name, 'password' => $password, 'save' => $save];
-        }
-
-        return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
-            'success' => true,
-            'html' => $this->renderPartial('partial/createdrandoms', ['randomUsers' => $randomUsers, 'filename' => $prefix], true),
-        ]]);
-    }
-
 
     /**
      * Deletes a user after  confirmation
@@ -457,29 +397,33 @@ class UserManagementController extends LSBaseController
      */
     public function actionUserActivateDeactivate()
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
+        // See User_>getManagementButtons for permission
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $userId = sanitize_int(Yii::app()->request->getParam('userid'));
-        // One can never deactivate the superadmin. Button should already be disabled in JS.
-        if ($userId === 1) {
-            throw new CHttpException(403, gT("You do not have permission to access this page."));
-        }
         $action = Yii::app()->request->getParam('action');
         $oUser = User::model()->findByPk($userId);
 
         if ($oUser == null) {
             throw new CHttpException(404, gT("Invalid user ID"));
-        } else {
-            if ($oUser->setActivationStatus($action)) {
-                return $this->renderPartial('/admin/super/_renderJson', [
-                    'data' => [
-                        'success' => true,
-                        'message' => gT('Status successfully updated')
-                    ]
-                ]);
-            };
         }
+        if (Permission::model()->getUserId() == $userId) { // canEdit allow user to update himself
+            throw new CHttpException(403, gT("You can not update this user."));
+        }
+        if (!$oUser->canEdit()) {
+            throw new CHttpException(403, gT("You can not update this user."));
+        }
+
+        if ($oUser->setActivationStatus($action)) {
+            return $this->renderPartial('/admin/super/_renderJson', [
+                'data' => [
+                    'success' => true,
+                    'message' => gT('Status successfully updated')
+                ]
+            ]);
+        };
+        /* activationstatus is not OK */
         return $this->renderPartial('/admin/super/_renderJson', [
             'data' => [
                 'success' => false
@@ -618,7 +562,18 @@ class UserManagementController extends LSBaseController
             return $oUGMap->group->name;
         }, UserInGroup::model()->findAllByAttributes(['uid' => $oUser->uid]));
 
-        return $this->renderPartial('partial/showuser', ['usergroups' => $userGroups, 'oUser' => $oUser]);
+        if (App()->getRequest()->getIsAjaxRequest()) {
+            return $this->renderPartial('partial/showuser', [
+                'usergroups' => $userGroups,
+                'oUser' => $oUser,
+                'ajax' => true
+            ]);
+        }
+        return $this->render('partial/showuser', [
+            'usergroups' => $userGroups,
+            'oUser' => $oUser,
+            'ajax' => false
+        ]);
     }
 
     /**
@@ -1085,14 +1040,14 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * Delete multiple users selected by massive action
+     * Deletes multiple users selected by massive action.
      *
-     * @return void|string
+     * @return void | string
      * @throws CException
-     * @throws CHttpException
      */
     public function actionDeleteMultiple()
     {
+        // Check if the user has permission to delete users
         if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
             return $this->renderPartial(
                 'partial/error',
@@ -1100,21 +1055,29 @@ class UserManagementController extends LSBaseController
             );
         }
 
+        // Get the selected users from the POST request
         $aUsers = json_decode(App()->request->getPost('sItems', ''));
         $aResults = [];
 
+        // Iterate over the selected users
         foreach ($aUsers as $user) {
             $aResults[$user]['title'] = '';
             $model = $this->loadModel($user);
             $aResults[$user]['title'] = $model->users_name;
+
+            // Delete the user and store the result
             $aResults[$user]['result'] = $this->deleteUser($user);
-            if (!$aResults[$user]['result'] && $user == Yii::app()->user->id) {
+
+            // If the user could not be deleted or it's the current user, add an error message
+            if (!$aResults[$user]['result'] || $user == Yii::app()->user->id) {
                 $aResults[$user]['error'] = gT("You cannot delete yourself or a protected user.");
             }
         }
 
+        // Define the labels for the table
         $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
 
+        // Render the results in a partial view
         Yii::app()->getController()->renderPartial(
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
             array(

@@ -49,7 +49,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 {
     /**
      * If you add a new database version add any critical database version numbers to this array. See link
-     * @link https://manual.limesurvey.org/Database_versioning for explanations
+     * @link https://www.limesurvey.org/manual/Database_versioning for explanations
      * @var array $aCriticalDBVersions An array of cricital database version.
      */
     $aCriticalDBVersions = array(310, 400, 450, 600);
@@ -2494,7 +2494,7 @@ function upgradeTokens145()
 {
     $aTables = dbGetTablesLike("tokens%");
     foreach ($aTables as $sTable) {
-        addColumn($sTable, 'usesleft', "integer NOT NULL default 1");
+        addColumn($sTable, 'usesleft', "integer NOT NULL DEFAULT 1");
         Yii::app()->getDb()->createCommand()->update($sTable, array('usesleft' => '0'), "completed<>'N'");
     }
 }
@@ -2807,7 +2807,7 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull = true, $sDefau
             }
             $oDB->createCommand()->alterColumn($sTable, $sColumn, $sType);
             if ($sDefault != 'NULL') {
-                $oDB->createCommand("ALTER TABLE {$sTable} ADD default '{$sDefault}' FOR [{$sColumn}];")->execute();
+                $oDB->createCommand("ALTER TABLE {$sTable} ADD DEFAULT '{$sDefault}' FOR [{$sColumn}];")->execute();
             }
             break;
         case 'pgsql':

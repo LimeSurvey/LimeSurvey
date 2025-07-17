@@ -6,9 +6,9 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSurveyUpdate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
 use LimeSurvey\DI;
 use LimeSurvey\ObjectPatch\{
+    ObjectPatchException,
     Op\OpStandard,
-    OpHandler\OpHandlerException
-};
+    OpHandler\OpHandlerException};
 use ls\tests\TestBaseClass;
 use ls\tests\unit\services\SurveyAggregateService\GeneralSettings\GeneralSettingsMockSetFactory;
 
@@ -17,18 +17,6 @@ use ls\tests\unit\services\SurveyAggregateService\GeneralSettings\GeneralSetting
  */
 class OpHandlerSurveyUpdateTest extends TestBaseClass
 {
-    /**
-     * @testdox throws exception if no values are provided
-     */
-    public function testSurveyUpdateThrowsNoValuesException()
-    {
-        $this->expectException(
-            OpHandlerException::class
-        );
-        $op = $this->getOp($this->getPropsNoValues());
-        $this->getOpHandler()->handle($op);
-    }
-
     /**
      * @testdox can handle update operation
      */
@@ -62,21 +50,39 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
     }
 
     /**
+     * @testdox validation hits on missing survey ID in context
+     */
+    public function testOpValidationError()
+    {
+        $op = $this->getOp(
+            $this->getPropsValid(),
+            'update',
+            []
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+    }
+
+    /**
      * @param array $props
      * @param string $type
+     * @param array $context
      * @return OpStandard
-     * @throws \LimeSurvey\ObjectPatch\OpHandlerException
+     * @throws ObjectPatchException
      */
-    private function getOp($props = [], $type = 'update')
-    {
+    private function getOp(
+        $props = [],
+        $type = 'update',
+        $context = ['id' => 123456]
+    ) {
         return OpStandard::factory(
             'survey',
             $type,
             12345,
             $props,
-            [
-                'id' => 123456,
-            ]
+            $context
         );
     }
 
@@ -99,7 +105,7 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
         return [
             'expires' => '2020-01-01 00:00',
             'ipanonymize' => true,
-            'ownerId'  => 'OWNER',
+            'ownerId' => 'OWNER',
         ];
     }
 

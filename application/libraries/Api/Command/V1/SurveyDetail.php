@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
+use Permission;
 use Survey;
 use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputSurveyDetail;
 use LimeSurvey\Api\Command\{
@@ -11,7 +12,6 @@ use LimeSurvey\Api\Command\{
     ResponseData\ResponseDataError,
     Response\ResponseFactory
 };
-use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
 class SurveyDetail implements CommandInterface
@@ -19,28 +19,28 @@ class SurveyDetail implements CommandInterface
     use AuthPermissionTrait;
 
     protected Survey $survey;
-    protected AuthSession $authSession;
     protected TransformerOutputSurveyDetail $transformerOutputSurveyDetail;
     protected ResponseFactory $responseFactory;
+    protected Permission $permission;
 
     /**
      * Constructor
      *
      * @param Survey $survey
-     * @param AuthSession $authSession
-     * @param TransformerOutputSurvey $transformerOutputSurvey
+     * @param TransformerOutputSurveyDetail $transformerOutputSurveyDetail
      * @param ResponseFactory $responseFactory
+     * @param Permission $permission
      */
     public function __construct(
         Survey $survey,
-        AuthSession $authSession,
         TransformerOutputSurveyDetail $transformerOutputSurveyDetail,
-        ResponseFactory $responseFactory
+        ResponseFactory $responseFactory,
+        Permission $permission
     ) {
         $this->survey = $survey;
-        $this->authSession = $authSession;
         $this->transformerOutputSurveyDetail = $transformerOutputSurveyDetail;
         $this->responseFactory = $responseFactory;
+        $this->permission = $permission;
     }
 
     /**
@@ -51,13 +51,13 @@ class SurveyDetail implements CommandInterface
      */
     public function run(Request $request)
     {
-        $sessionKey = (string) $request->getData('sessionKey');
         $surveyId = (string) $request->getData('_id');
-
-        if (
-            !$this->authSession
-                ->checkKey($sessionKey)
-        ) {
+        $hasPermission = $this->permission->hasSurveyPermission(
+            (int)$surveyId,
+            'survey',
+            'read'
+        );
+        if (!$hasPermission) {
             return $this->responseFactory
                 ->makeErrorUnauthorised();
         }
@@ -78,7 +78,8 @@ class SurveyDetail implements CommandInterface
                 'groups.questions.subquestions',
                 'groups.questions.subquestions.questionl10ns',
                 'groups.questions.subquestions.questionattributes',
-                'groups.questions.subquestions.answers'
+                'groups.questions.subquestions.answers',
+                'groups.questions.conditions'
             )->findByPk($surveyId);
 
         if (!$surveyModel) {

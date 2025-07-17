@@ -17,6 +17,7 @@ $thismaintenancemode             = !empty(getGlobalSetting('maintenancemode')) ?
 $thisdefaultquestionselectormode = getGlobalSetting('defaultquestionselectormode');
 $thisdefaultthemeteeditormode    = getGlobalSetting('defaultthemeteeditormode');
 $dateformatdata                  = getDateFormatData(Yii::app()->session['dateformat']);
+$defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode');
 ?>
 
 <div class="container">
@@ -288,6 +289,24 @@ Full lock - none of participants are allowed to take survey, even if they alread
                     'selectOptions' => [
                         "default" => gT("Full", 'unescaped'),
                         "none"    => gT("Simple", 'unescaped')
+                    ]
+                ]); ?>
+            </div>
+        </div>
+
+        <!-- Default breadcrumb mode -->
+        <div class="mb-3">
+            <label class="col-12 form-label" for='defaultBreadcrumbMode'>
+                <?php eT("Default breadcrumb mode:");
+                echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
+            </label>
+            <div class="col-12">
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'defaultBreadcrumbMode',
+                    'checkedOption' => $defaultBreadcrumbMode,
+                    'selectOptions' => [
+                        "short" => gT("Short", 'unescaped'),
+                        "long"  => gT("Long", 'unescaped')
                     ]
                 ]); ?>
             </div>

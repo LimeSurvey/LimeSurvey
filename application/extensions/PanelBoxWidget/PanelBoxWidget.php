@@ -96,22 +96,20 @@ class PanelBoxWidget extends CWidget
         $boxes = self::getBoxes();
         $boxcount = 0;
         $bIsRowOpened = false;
-                $this->render('row_header', array(
-                    'orientation' => $this->getOrientationClass(),
-                    'containerclass' => ($this->boxesincontainer ? 'container' : '')
-                ));
+        $this->render('row_header', [
+            'orientation'    => $this->getOrientationClass(),
+            'containerclass' => ($this->boxesincontainer ? 'container' : '')
+        ]);
         foreach ($boxes as $box) {
-
-             $this->controller->widget('ext.PanelBoxWidget.PanelBoxWidget', array(
-                 'display' => 'singlebox',
-                 'fromDb' => true,
-                 'dbPosition' => $box->position,
-                 'offset' => '',
-                 'boxesbyrow' => $this->boxesbyrow
-             ));
-
+            $this->controller->widget('ext.PanelBoxWidget.PanelBoxWidget', [
+                'display'    => 'singlebox',
+                'fromDb'     => true,
+                'dbPosition' => $box->position,
+                'offset'     => '',
+                'boxesbyrow' => $this->boxesbyrow
+            ]);
         }
-            $this->render('row_footer');
+        $this->render('row_footer');
     }
 
     protected function canSeeBox($box = '')

@@ -86,7 +86,7 @@ class SurveysController extends LSYii_Controller
             // TODO: Remove? It seems this can never happen because it's already caught by LSYii_Application::onException() (see commit c792c2e).
             $this->spitOutJsonError($error, $oException);
         } elseif ($error) {
-            $this->spitOutHtmlError($error, $request->getParam('sid', $request->getParam('surveyid')));
+            $this->spitOutHtmlError($error, (int) $request->getParam('sid', $request->getParam('surveyid')));
         } else {
             throw new CHttpException(404, 'Page not found.');
         }
@@ -154,6 +154,14 @@ class SurveysController extends LSYii_Controller
                 $message = gT('The above error occurred when the Web server was processing your request.');
                 break;
         }
+
+        // For CDbException, we clear the message in order to avoid showing sensitive information to the user.
+        // This method is not usually executed when debug is enabled, but check anyway to be sure to only
+        // suppress the error if debug is disabled.
+        if (!YII_DEBUG && isset($error['type']) && $error['type'] == 'CDbException') {
+            $error['message'] = gT('Database error!');
+        }
+
         $aError['type'] = $error['code'];
         $aError['error'] = $title;
         if (!empty($error['message'])) {

@@ -16,15 +16,23 @@ on:
 
 jobs:
   job_build_packages:
-    runs-on: ubuntu-20.04 # ubuntu runner hosted by Github
+    runs-on: ubuntu-22.04 # ubuntu runner hosted by Github
+    concurrency: 
+      group: ${{ github.ref_name }}-frontend # Groups by branch and job name 
+      cancel-in-progress: true # Cancel in-progress jobs if a new job is triggered     
     strategy:
       matrix:
         # Specify what version of nodejs you want to test
-        nodeJS-versions: ['10.16.3']
+        nodeJS-versions: ['20.19.0']
     name: Build Frontend Packages
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
+      - name: Setup nodeJS
+        uses: actions/setup-node@v4
+        with:
+            node-version: 20
 
       - name: Run composer
         run: |
@@ -33,16 +41,6 @@ jobs:
       - name: Run yarn
         run: |
           yarn install
-
-      - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
-        run: |
-          # Update
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-          source ~/.nvm/nvm.sh
-
-          # Install Node.js
-          nvm install ${{ matrix.nodeJS-versions }}
-          nvm use ${{ matrix.nodeJS-versions }}
 
       - name: Install adminbasics
         run: |
@@ -67,25 +65,20 @@ jobs:
     
   job_run_tests:
     needs: [job_build_packages]
-    runs-on: ubuntu-20.04 # ubuntu runner hosted by Github
+    runs-on: ubuntu-22.04 # ubuntu runner hosted by Github
     strategy:
       matrix:
         # Specify what version of nodejs you want to test
-        nodeJS-versions: ['10.16.3']
+        nodeJS-versions: ['20.19.0']
     name: Run Frontend Tests
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       
-      - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
-        run: |
-          # Update
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-          source ~/.nvm/nvm.sh
-
-          # Install Node.js
-          nvm install ${{ matrix.nodeJS-versions }}
-          nvm use ${{ matrix.nodeJS-versions }}
+      - name: Setup nodeJS
+        uses: actions/setup-node@v4
+        with:
+            node-version: 20
 
       - name: Install adminbasics
         run: |

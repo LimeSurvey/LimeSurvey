@@ -177,7 +177,7 @@ class PrintanswersController extends LSYii_Controller
             header("Cache-Control: must-revalidate, no-store, no-cache"); // Don't store in cache because it is sensitive data
 
             $sExportFileName = sanitize_filename($sSurveyName);
-            $oPDF->Output($sExportFileName . "-" . $iSurveyID . ".pdf", "D");
+            $oPDF->write_out($sExportFileName . "-" . $iSurveyID . ".pdf");
             LimeExpressionManager::FinishProcessingGroup();
             LimeExpressionManager::FinishProcessingPage();
         } elseif ($sExportType == 'quexmlpdf') {
@@ -200,7 +200,7 @@ class PrintanswersController extends LSYii_Controller
             $quexmlpdf->create($quexmlpdf->createqueXML($quexml));
 
             $sExportFileName = sanitize_filename($sSurveyName);
-            $quexmlpdf->Output($sExportFileName . "-" . $iSurveyID . "-queXML.pdf", 'D');
+            $quexmlpdf->write_out($sExportFileName . "-" . $iSurveyID . "-queXML.pdf");
         }
     }
 }

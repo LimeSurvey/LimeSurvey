@@ -97,7 +97,6 @@ var UserManagement = function () {
                     {
                         $('#UserManagement--modalform').off('submit.USERMANAGERMODAL');
                         $('#UserManagement-action-modal').find('.modal-content').html(result.html);
-                        wireExportDummyUser();
                         if (!result.hasOwnProperty('html')) {
                             triggerModalClose();
                             window.LS.ajaxAlerts(result.message, 'success', {showCloseButton: true});
@@ -140,26 +139,6 @@ var UserManagement = function () {
             $('#exitForm').off('click.AUMMODAL');
             triggerModalClose();
         });
-    };
-
-    var wireExportDummyUser = function () {
-        $('#exportUsers').on('click', function (e) {
-            e.preventDefault();
-            var users = $('#exportUsers').data('users');
-            var csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += 'users_name;password' + "\r\n";
-            $.each(users, function (i, user) {
-                csvContent += user.username + ';' + user.password + "\r\n";
-            });
-            var encodedUri = encodeURI(csvContent);
-            var link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("class", 'd-none');
-            link.setAttribute("download", "addedUsers_" + moment().format('YYMMDDHHmm') + ".csv");
-            link.innerHTML = "Click Here to download";
-            document.body.appendChild(link); // Required for FF
-            link.click();
-        })
     };
 
     var wireTemplatePermissions = function () {
@@ -395,6 +374,7 @@ var UserManagement = function () {
         wirePermissions: wirePermissions,
         wireMassPermissions: wireMassPermissions,
         wireForm: wireForm,
+        openModal: openModal,
     };
 };
 

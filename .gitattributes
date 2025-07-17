@@ -3,6 +3,7 @@
 # exclude build/devel/test files from export to zip/tarball
 .bowerrc                export-ignore
 buildVueComponents.js   export-ignore
+gulpfile.js             export-ignore
 composer.json           export-ignore
 CONTRIBUTING.md         export-ignore
 .editorconfig           export-ignore
@@ -15,7 +16,9 @@ package.json            export-ignore
 phpci.yml               export-ignore
 phpcs.ruleset.xml       export-ignore
 phpunit.xml             export-ignore
-palm.xml                export-ignore
+psalm.xml               export-ignore
+psalm-all.xml           export-ignore
+psalm-strict.xml        export-ignore
 tests                   export-ignore
 yarn.lock               export-ignore
 vendor/khaled.alshamaa/ar-php/examples export-ignore

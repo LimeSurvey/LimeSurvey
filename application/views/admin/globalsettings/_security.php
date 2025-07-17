@@ -140,7 +140,7 @@
         <div class="col-6">
 
             <div class="">
-                <h3><?= gt('Brute-force protection for administration'); ?></h3>
+                <h3><?= gT('Brute-force protection for administration'); ?></h3>
 
                 <div class="mb-3">
                     <label class="form-label" for='loginIpWhitelist'>
@@ -177,7 +177,7 @@
 
         <!-- Brute-force for participant -->
         <div class="col-6">
-            <h3><?= gt('Brute-force protection for survey participation') ?></h3>
+            <h3><?= gT('Brute-force protection for survey participation') ?></h3>
 
             <div class="mb-3">
                 <label class="form-label" for='tokenIpWhitelist'>
