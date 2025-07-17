@@ -4,8 +4,8 @@ namespace LimeSurvey\Models\Services\embeds;
 
 abstract class BaseEmbed
 {
-    protected $defaultWidth = '100%';
-    protected $defaultHeight = '100%';
+    protected $fullWidth = '100%';
+    protected $fullHeight = '100%';
 
     protected $embedOptions;
     protected $src;
@@ -80,7 +80,7 @@ abstract class BaseEmbed
     {
         return $this->structure ?
             $this->structure :
-            "<iframe style='width:{$this->defaultWidth};height:{$this->defaultHeight};' src=\"{$this->src}\">"
+            "<iframe style='width:{$this->fullWidth};height:{$this->fullHeight};' src=\"{$this->src}\">"
         ;
     }
 
