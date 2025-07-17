@@ -82,8 +82,8 @@ class SurveyTemplate implements CommandInterface
     {
         $surveyId = (int) $request->getData('_id');
         $isPreview = ($request->getData('popuppreview', 'true') === 'true');
-        $embedType = $request->getData('embed', BaseEmbed::EMBED_STRUCTURE_STANDARD);
-        $embedOptions = $request->getData('embedOptions', []);
+        $embedType = $request->getData('embed') ?? BaseEmbed::EMBED_STRUCTURE_STANDARD;
+        $embedOptions = $request->getData('embedOptions') ?? [];
 
         $this->embed = BaseEmbed::instantiate($embedType)
                         ->setEmbedOptions($embedOptions);
