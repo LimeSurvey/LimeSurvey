@@ -61,7 +61,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
 
                 ?>
 
-                <div class="col-4">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="surveyTitle"><?= gT('Survey title:') ?></label>
                         <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" required="required" maxlength="200">

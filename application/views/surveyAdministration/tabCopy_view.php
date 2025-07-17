@@ -7,7 +7,7 @@
     <div class="grow-10 ls-space padding left-10 right-10">
         <!-- copy survey form -->
         <?php echo CHtml::form(array('surveyAdministration/copy'), 'post', array('id'=>'copysurveyform', 'name'=>'copysurveyform', 'class'=>'form30 row')); ?>
-            <div class="col-4">
+            <div class="col-md-4">
                 <!-- Select survey -->
                 <label for='copysurveylist' class=" form-label"><?php  eT("Select survey to copy:"); ?> </label>
                 <select id='copysurveylist' name='copysurveylist' required="required" class="form-select activate-search">
