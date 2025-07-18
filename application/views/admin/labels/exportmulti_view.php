@@ -32,6 +32,7 @@
                     <input type='hidden' name='action' value='dumplabel'/>
                     <?php $exportToken = 'labelExport_' . uniqid(mt_rand(), true); ?>
                     <input type="hidden" name="export_token" value="<?php echo CHtml::encode($exportToken); ?>">
+                    <input type="hidden" name="url" value="<?php echo CHtml::encode(Yii::app()->createUrl('admin/export', ['sa' => 'exportstatus', 'token' => ''])); ?>"/>
                 </p>
             </div>
             <?php echo CHtml::endForm() ?>
@@ -55,6 +56,9 @@
             isSelected = true;
             return isSelected;
         });
+
+        if ($('#labelsets option:selected').length === 0)
+            isSelected = false;
 
         if (isSelected) {
             saveButton.removeAttribute('disabled');

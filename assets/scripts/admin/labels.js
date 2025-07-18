@@ -27,7 +27,8 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $('#exportlabelset').on('submit', function(){
         $('#ls-loading').show();
         const token = $(this).find('input[name="export_token"]').val();
-        const pollUrl = 'index.php?r=admin/export&sa=exportstatus&token=' + encodeURIComponent(token);
+        const pollUrl = $(this).find('input[name="url"]').val() + encodeURIComponent(token);
+
         const interval = setInterval(() => {
             $.get(pollUrl, function (data) {
                 if (data.done) {
