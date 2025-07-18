@@ -61,7 +61,8 @@
                 <!-- Prepended extra menus from plugins -->
                 <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => true, 'prependedMenu' => true]); ?>
 
-                <!-- Render the modal for importing a survey-->
+                <!-- Render the modal for importing a survey -->
+                <?php App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'importSurveyFileUpload.js', LSYii_ClientScript::POS_BEGIN); ?>
                 <?php $this->renderPartial("/surveyAdministration/partial/_modalImportSurvey", []);?>
 
                 <li
