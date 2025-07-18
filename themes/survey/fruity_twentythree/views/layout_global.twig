@@ -74,7 +74,7 @@
     {{ include('./subviews/header/head.twig') }}
     {% endblock %}
     <body class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} data-thememode="{{ aSurveyInfo.options.thememode ? aSurveyInfo.options.thememode : 'light' }}">
-
+        {{ dump(aSurveyInfo) }}
         {# Notice if emcache is on or off, used by tests. #}
         {% if aSurveyInfo.emcache %}
             <span style="display: none;" id="__emcache_debug" value="on"></span>
