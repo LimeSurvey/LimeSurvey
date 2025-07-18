@@ -32,7 +32,7 @@
 
                         <div class="upload-container">
                             <label><b><?php eT("Select or drop a file here"); ?></b></label>
-                            <label for="the_file" class="upload-label">
+                            <label for="the_file" class="upload-label" id="drop_zone">
                                 <span class="ri-upload-line">&nbsp;</span>
                                 <div class="upload-text"><?php et('Drop file here'); ?></div>
                                 <input
@@ -62,4 +62,30 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById("drop_zone").addEventListener("drop", dropHandler);
+
+    function dropHandler(ev) {
+        // Prevent default behavior (Prevent file from being opened)
+        ev.preventDefault();
+        console.log("File(s) dropped");
+
+        if (ev.dataTransfer.items) {
+            // Use DataTransferItemList interface to access the file(s)
+            [...ev.dataTransfer.items].forEach((item, i) => {
+                // If dropped items aren't files, reject them
+                if (item.kind === "file") {
+                    const file = item.getAsFile();
+                    console.log(`… file[${i}].name = ${file.name}`);
+                }
+            });
+        } else {
+            // Use DataTransfer interface to access the file(s)
+            [...ev.dataTransfer.files].forEach((file, i) => {
+                console.log(`… file[${i}].name = ${file.name}`);
+            });
+        }
+    }
+</script>
 
