@@ -4,6 +4,7 @@ namespace LimeSurvey\Libraries\Api\Command\V1;
 
 use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
+use Permission;
 use Survey;
 use Answer;
 use LimeSurvey\Api\Command\{CommandInterface,
@@ -20,6 +21,7 @@ class SurveyResponses implements CommandInterface
 
     protected Survey $survey;
     protected Answer $answerModel;
+    protected Permission $permission;
     protected ResponseFactory $responseFactory;
     protected FilterPatcher $responseFilterPatcher;
     protected TransformerOutputSurveyResponses $transformerOutputSurveyResponses;
@@ -35,12 +37,14 @@ class SurveyResponses implements CommandInterface
     public function __construct(
         Survey $survey,
         Answer $answerModel,
+        Permission $permission,
         FilterPatcher $responseFilterPatcher,
         ResponseFactory $responseFactory,
         TransformerOutputSurveyResponses $transformerOutputSurveyResponses
     ) {
         $this->survey = $survey;
         $this->answerModel = $answerModel;
+        $this->permission = $permission;
         $this->responseFactory = $responseFactory;
         $this->responseFilterPatcher = $responseFilterPatcher;
         $this->transformerOutputSurveyResponses = $transformerOutputSurveyResponses;
@@ -55,6 +59,12 @@ class SurveyResponses implements CommandInterface
     public function run(Request $request)
     {
         try {
+            $surveyId = $this->getSurveyId($request);
+            if (!$this->permission->hasSurveyPermission($surveyId, 'responses')) {
+                return $this->responseFactory
+                    ->makeErrorUnauthorised();
+            }
+
             $this->getSurvey($request);
             $model = $this->getSurveyDynamicModel($request);
             [$criteria, $sort] = $this->buildCriteria($request);
