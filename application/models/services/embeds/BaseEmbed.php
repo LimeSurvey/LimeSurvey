@@ -1,13 +1,16 @@
 <?php
 
-namespace LimeSurvey\Models\Services;
+namespace LimeSurvey\Models\Services\embeds;
 
 abstract class BaseEmbed
 {
-    protected $width;
-    protected $height;
+    protected $fullWidth = '100%';
+    protected $fullHeight = '100%';
+
+    protected $embedOptions;
     protected $src;
     protected $structure;
+
     public const EMBED_STRUCTURE_STANDARD = "Standard";
     protected static $supportedEmbeds = null;
     protected bool $wrapper = true;
@@ -25,7 +28,7 @@ abstract class BaseEmbed
                 self::EMBED_STRUCTURE_STANDARD
             ];
         }
-        $embed = "LimeSurvey\\Models\\Services\\{$key}Embed";
+        $embed = "LimeSurvey\\Models\\Services\\embeds\\{$key}Embed";
         if (in_array($key, self::$supportedEmbeds)) {
             return new $embed();
         } else {
@@ -34,24 +37,13 @@ abstract class BaseEmbed
     }
 
     /**
-     * Sets the width of the inner content and returns the instance
-     * @param int $width
+     * Sets embed options (for wrapper) and returns the instance
+     * @param array $options
      * @return static
      */
-    public function setWidth(int $width)
+    public function setEmbedOptions(array $options)
     {
-        $this->width = $width;
-        return $this;
-    }
-
-    /**
-     * Sets the height of the inner content and returns the instance
-     * @param int $height
-     * @return static
-     */
-    public function setHeight(int $height)
-    {
-        $this->height = $height;
+        $this->embedOptions = $options;
         return $this;
     }
 
@@ -99,7 +91,7 @@ abstract class BaseEmbed
     {
         return $this->structure ?
             $this->structure :
-            "<iframe style='width:{$this->width}px;height:{$this->height}px;' src=\"{$this->src}\">"
+            "<iframe style='width:{$this->fullWidth};height:{$this->fullHeight};' src=\"{$this->src}\">"
         ;
     }
 

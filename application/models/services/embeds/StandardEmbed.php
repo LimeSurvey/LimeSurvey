@@ -1,8 +1,8 @@
 <?php
 
-namespace LimeSurvey\Models\Services;
+namespace LimeSurvey\Models\Services\embeds;
 
-use LimeSurvey\Models\Services\BaseEmbed;
+use LimeSurvey\Models\Services\embeds\BaseEmbed;
 
 class StandardEmbed extends BaseEmbed
 {
@@ -13,8 +13,8 @@ class StandardEmbed extends BaseEmbed
      */
     protected function getWrapper(string $placeholder = "PLACEHOLDER")
     {
-        $width = ($this->width + 20) . "px";
-        $height = ($this->height + 20) . "px";
-        return "<div style='width:{$width};height:{$height};border:1px solid red;'>sometext{$placeholder}</div>";
+        $width = ($this->embedOptions['width'] ?? $this->fullWidth);
+        $height = ($this->embedOptions['height'] ?? $this->fullHeight);
+        return "<div style='width:{$width};height:{$height};border:1px solid red;'>{$placeholder}</div>";
     }
 }

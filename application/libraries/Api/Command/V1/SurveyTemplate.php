@@ -13,7 +13,7 @@ use LimeSurvey\Api\Command\{
     ResponseData\ResponseDataError
 };
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
-use LimeSurvey\Models\Services\BaseEmbed;
+use LimeSurvey\Models\Services\embeds\BaseEmbed;
 
 /**
  * Survey Template
@@ -87,10 +87,10 @@ class SurveyTemplate implements CommandInterface
         $this->surveyId = (int)$request->getData('_id');
         $this->isPreview = (\Yii::app()->request->getPost('popuppreview', 'true') === 'true');
         $this->js = (\Yii::app()->request->getPost('js', 'false') === 'true');
-        $this->embed = BaseEmbed::instantiate(\Yii::app()->request->getPost('embed', 'Standard'))
-            ->setWidth((int)\Yii::app()->request->getPost('width', 1024))
-            ->setHeight((int)\Yii::app()->request->getPost('height', 768))
-        ;
+        $embedType = $request->getData('embed') ?? BaseEmbed::EMBED_STRUCTURE_STANDARD;
+        $embedOptions = $request->getData('embedOptions') ?? [];
+        $this->embed = BaseEmbed::instantiate($embedType)
+                        ->setEmbedOptions($embedOptions);
 
         if ($response = $this->ensurePermissions()) {
             return $response;
