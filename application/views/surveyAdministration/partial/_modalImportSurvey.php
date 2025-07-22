@@ -41,7 +41,7 @@
                                     name="the_file"
                                     class="form-control upload-input"
                                     accept='.lss,.lsa,.tsv,.txt'
-                                    onchange="onInputFieldChange()"
+                                    onchange="$('#import-submit').attr('disabled', false).attr('data-bs-toggle', false);"
                                     required
                                 />
                             </label>

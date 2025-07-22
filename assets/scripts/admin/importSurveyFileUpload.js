@@ -3,6 +3,13 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     const fileInput = document.getElementById('drop_zone');
     const inputField = document.getElementById('the_file');
 
+    inputField.onchange = function() {
+        let textField = document.getElementById('file-upload-text');
+        if(inputField.files.length > 0) {
+            //collect all file names from the input field and show them in the drop_zone
+            textField.textContent = Array.from(inputField.files, file => file.name).join('\n');
+        }
+    };
     function dropHandler(ev) {
         // Prevent default behavior (Prevent file from being opened)
         ev.preventDefault();
@@ -13,7 +20,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         if (ev.dataTransfer.items) {
             [...ev.dataTransfer.items].forEach((item, i) => {
                 // If dropped items aren't files, reject them
-                if (item.kind === 'file') {
+                if ((item.kind === 'file')) {
                     const file = item.getAsFile();
                     fileNames += file.name + '\n';
                 }
@@ -23,7 +30,6 @@ $(document).on('ready  pjax:scriptcomplete', function(){
                 fileNames += file.name + '\n';
             });
         }
-
         if(fileNames.trim() !== ''){
             textField.textContent = fileNames;
         }
@@ -35,13 +41,5 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     fileInput.addEventListener('drop', (event ) => {
         dropHandler(event);
     });
-
-    function onInputFieldChange() {
-        let textField = document.getElementById('file-upload-text');
-        if(inputField.files.length > 0) {
-            //collect all file names from the input field and show them in the drop_zone
-            textField.textContent = Array.from(inputField.files, file => file.name).join("\n");
-        }
-    }
 
 });

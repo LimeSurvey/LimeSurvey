@@ -18843,7 +18843,7 @@ input[type=number] {
 }
 
 .upload-input {
-  display: none;
+  visibility: hidden;
 }
 
 .import-modal {
