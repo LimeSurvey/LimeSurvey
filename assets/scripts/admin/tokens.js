@@ -62,6 +62,18 @@ Tokens = {
                  $elHiddenInput.value = 'N';
              }
          });
+     },
+     DatePicker: function (el) {
+         var $elDate = el.querySelector('.DatePicker'), // date time picker element
+             $elHiddenInput = el.querySelector('.selector_submitField'); // input form
+
+         // Generate the date time picker
+         initDatePicker($elDate);
+
+         // When user change date
+         $elDate.addEventListener('change', function (e) {
+             $elHiddenInput.value = $elDate.value;
+         });
      }
  };
 
@@ -249,6 +261,10 @@ $(document).on('ready pjax:scriptcomplete', function(){
 
             $('.yes-no-container').each(function(i,el){
                 Tokens.YesNo(el);
+            });
+
+            $('.date-picker-container').each(function(i,el){
+                Tokens.DatePicker(el);
             });
         });
     }
