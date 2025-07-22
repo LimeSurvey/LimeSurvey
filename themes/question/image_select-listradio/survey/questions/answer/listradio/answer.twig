@@ -1,0 +1,25 @@
+{#
+/**
+ * List Radio Html
+ *
+ * @var $name
+ * @var $value
+ */
+#}
+
+<!-- List Radio -->
+
+<!-- answer -->
+{{ sTimer }}
+<ul class="imageselect-list {{ coreClass }} list-unstyled {% if iNbCols > 1 %} ls-column-count-{{iNbCols}}{% endif %}" role="radiogroup" aria-labelledby="ls-question-text-{{ name }}"{% if iNbCols > 1 %} data-column-count={{iNbCols}}{% endif %}>
+    {# rows/answer_row.php #}
+    {{ sRows }}
+</ul>
+{# Value for expression manager javascript (use id) ; no need to submit #}
+{{ C.Html.hiddenField("java"~name,value,({
+    'id' : "java"~name,
+    'disabled' : true,
+}))
+}}
+<!-- end of answer -->
+ 
