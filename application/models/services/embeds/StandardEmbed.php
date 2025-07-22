@@ -15,6 +15,6 @@ class StandardEmbed extends BaseEmbed
     {
         $width = ($this->width + 20) . "px";
         $height = ($this->height + 20) . "px";
-        return "<div style='width:{$width};height:{$height};border:1px solid red;'>haythem{$placeholder}</div>";
+        return "<div style='width:{$width};height:{$height};border:1px solid red;'>sometext{$placeholder}</div>";
     }
 }
