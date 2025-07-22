@@ -64,7 +64,7 @@ class GeneralSettingsMockSetFactory
 
         $mockSet->surveyAccessModeService = ($init && isset($init->surveyAccessModeService))
         ? $init->surveyAccessModeService
-        : $this->getMockSurveyAccessModeService($mockSet->surveyAccessModeService);
+        : $this->getMockSurveyAccessModeService();
 
         return $mockSet;
     }
@@ -156,7 +156,7 @@ class GeneralSettingsMockSetFactory
         return $mockModelUser;
     }
 
-    private function getMockSurveyAccessModeService(SurveyAccessModeService $surveyAccessModeService): SurveyAccessModeService
+    private function getMockSurveyAccessModeService(): SurveyAccessModeService
     {
         $mockSurveyAccessModeService = Mockery::mock(SurveyAccessModeService::class)
             ->makePartial();
