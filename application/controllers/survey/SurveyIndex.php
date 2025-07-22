@@ -179,9 +179,9 @@ class SurveyIndex extends CAction
         }
 
         // If the session was already initiated before accessing the survey with a token,
-        // force the session to be rebuilt to take the token into account.
+        // add it to the session to be taken into account.
         if (empty($_SESSION['survey_' . $surveyid]['token']) && $token) {
-            buildsurveysession($surveyid);
+            $_SESSION['survey_' . $surveyid]['token'] = $token;
         }
 
         $this->loadLimesurveyLang($surveyid);
