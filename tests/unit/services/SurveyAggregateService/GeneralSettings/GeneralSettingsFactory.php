@@ -25,7 +25,8 @@ class GeneralSettingsFactory
             $mockSet->session,
             $mockSet->pluginManager,
             $mockSet->languageConsistency,
-            $mockSet->modelUser
+            $mockSet->modelUser,
+            $mockSet->surveyAccessModeService
         );
     }
 }
