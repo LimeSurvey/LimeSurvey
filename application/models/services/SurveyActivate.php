@@ -86,10 +86,13 @@ class SurveyActivate
         if ($params['restore'] ?? false) {
             $result['restored'] = $this->restoreData($surveyId);
         }
-        if ($survey->access_mode !== SurveyAccessModeService::$ACCESS_TYPE_OPEN) {
-            if (!$survey->hasTokensTable) {
-                $this->surveyAccessModeService->newParticipantTable($survey, true);
-            }
+
+        $publicRegistrationAllowed = $survey->getIsAllowRegister();
+        $isOpenAccessMode = $survey->access_mode === SurveyAccessModeService::$ACCESS_TYPE_OPEN;
+        $shouldEnsureTokensTable = ($publicRegistrationAllowed && $isOpenAccessMode) || !$isOpenAccessMode;
+
+        if ($shouldEnsureTokensTable && !$survey->hasTokensTable) {
+            $this->surveyAccessModeService->newParticipantTable($survey, true);
         }
         return $result;
     }
