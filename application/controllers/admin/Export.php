@@ -698,7 +698,7 @@ class Export extends SurveyCommonAction
                 }
                 if ($vvVersion == 2) {
                     $fieldcode = viewHelper::getFieldCode($fielddata, array("LEMcompat" => true));
-                    $fieldcode = ($fieldcode) ? $fieldcode : $field; // $fieldcode is empty for token if there are no survey participants table
+                    $fieldcode = ($fieldcode) ? $fieldcode : $field; // $fieldcode is empty for token if there are no survey participant list
                 } else {
                     $fieldcode = $field;
                 }

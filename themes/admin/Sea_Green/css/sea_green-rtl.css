@@ -12966,7 +12966,7 @@ $color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $
   padding-left: 4px;
 }
 
-/** Search criteria pop-up for survey participants table */
+/** Search criteria pop-up for survey participant list */
 #search {
   display: none;
   overflow-y: auto;
@@ -17658,6 +17658,19 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   text-decoration: none;
   color: #fff;
   background-color: var(--bs-primary);
+}
+
+.create-menu-item {
+  width: 222px;
+  margin-right: 12px;
+  margin-left: 12px;
+  border: 1px solid #fff;
+}
+.create-menu-item:hover {
+  border-color: #8146F6 !important;
+  border: 1px solid;
+  border-radius: 2px;
+  background-color: #fff !important;
 }
 
 .card .card-header {
