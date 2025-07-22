@@ -181,7 +181,7 @@ class GeneralSettings
             );
 
             $saved = $survey->save();
-            if(array_key_exists('allowregister', $input)) {
+            if (array_key_exists('allowregister', $input)) {
                 $this->ensureTokensTableExistance($survey);
             }
 
@@ -658,7 +658,7 @@ class GeneralSettings
         $publicRegistrationAllowed = $survey->getIsAllowRegister();
         $hasTokensTable = $survey->hasTokensTable;
 
-        if($isSurveyActive && $isOpenAccessMode && $publicRegistrationAllowed && !$hasTokensTable) {
+        if ($isSurveyActive && $isOpenAccessMode && $publicRegistrationAllowed && !$hasTokensTable) {
             $this->surveyAccessModeService->newParticipantTable($survey, true);
         }
     }
