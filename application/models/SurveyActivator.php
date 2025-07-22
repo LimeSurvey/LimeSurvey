@@ -488,6 +488,6 @@ class SurveyActivator
      */
     public function isCloseAccessMode()
     {
-        return $this->survey->isAllowRegister || tableExists('tokens_' . $this->survey->sid);
+        return $this->survey->access_mode === 'C';
     }
 }
