@@ -32,16 +32,23 @@
 
                         <div class="upload-container">
                             <label><b><?php eT("Select or drop a file here"); ?></b></label>
-                            <label for="the_file" class="upload-label" id="drop_zone">
+                            <label for="fileUpload" class="upload-label" id="drop_zone">
                                 <span class="ri-upload-line">&nbsp;</span>
                                 <div class="upload-text" id="file-upload-text"><?php et('Drop file here'); ?></div>
                                 <input
                                     type="file"
-                                    id="the_file"
+                                    id="fileUpload"
                                     name="the_file"
                                     class="form-control upload-input"
                                     accept='.lss,.lsa,.tsv,.txt'
-                                    onchange="$('#import-submit').attr('disabled', false).attr('data-bs-toggle', false);"
+                                    required
+                                />
+                                <input
+                                    type="hidden"
+                                    id="dropFile"
+                                    name="dropFile"
+                                    class="form-control"
+                                    accept='.lss,.lsa,.tsv,.txt'
                                     required
                                 />
                             </label>
@@ -50,7 +57,11 @@
                     <div class='mb-3'>
                         <input id="yttranslinksfields" name="translinksfields" type="hidden" value="0">
                         <input id="translinksfields" name="translinksfields" type="checkbox" value="1" checked>
-                        <label class='form-label ' for='translinksfields'><?php eT("Convert resource links and expression fields?"); ?> </label>
+                        <label
+                            class='form-label '
+                            for='translinksfields'>
+                            <?php eT("Convert resource links and expression fields?"); ?>
+                        </label>
                     </div>
                 </div>
             </div>
