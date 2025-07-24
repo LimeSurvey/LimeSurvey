@@ -69,7 +69,7 @@ class Tokens extends SurveyCommonAction
         );
 
         // this data is for table
-        if (($_POST['oldtable'] ?? null) && (($_POST['restoretable'] ?? null) === 'Y') && (!$survey->hasTokensTable)) {
+        if (($_POST['oldtable'] ?? null) && (($_POST['restoretable'] ?? null) === 'Y') && (!$survey->hasTokens())) {
             $this->newParticipantTable($iSurveyId);
         }
         Yii::import('application.libraries.Date_Time_Converter', true);
@@ -2874,7 +2874,15 @@ class Tokens extends SurveyCommonAction
 
         //The survey participant list already exist ?
         if ($survey->hasTokensTable) {
-            Yii::app()->session['flashmessage'] = gT("Participant list already exist for this survey.");
+            if ((returnGlobal('restoretable') === "Y" && Yii::app()->request->getPost('oldtable'))) {
+                require_once "application/helpers/admin/import_helper.php";
+                $source = Yii::app()->db->tablePrefix . Yii::app()->request->getPost('oldtable');
+                $destination = Yii::app()->db->tablePrefix . "tokens_" . (int)$iSurveyId;
+                copyFromOneTableToTheOther($source, $destination, $preserveIDs = false);
+                Yii::app()->session['flashmessage'] = gT("Participant list was successfully imported.");
+            } else {
+                Yii::app()->session['flashmessage'] = gT("Participant list already exist for this survey.");
+            }
             $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
 

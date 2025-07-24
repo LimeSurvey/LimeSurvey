@@ -798,6 +798,15 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Returns true if the survey has participants
+     * @return boolean
+     */
+    public function hasTokens()
+    {
+        return $this->getHasTokensTable() && (TokenDynamic::model($this->sid)->find('1=1') !== null);
+    }
+
+    /**
      * Wheteher the survey responses (data) table exists in DB
      * @return boolean
      */
