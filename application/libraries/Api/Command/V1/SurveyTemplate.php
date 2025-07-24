@@ -333,6 +333,7 @@ class SurveyTemplate implements CommandInterface
             <script>
             const url = '{$url}';
             const referer = window.location.protocol + '//' + window.location.host + '/';
+            document.documentElement.className = 'js';
             async function sendRequest(params) {
                 const response = await fetch(url, {
                     method: 'POST',
@@ -357,21 +358,6 @@ class SurveyTemplate implements CommandInterface
                 });
                 response.text().then(function(result) {
                     let json = JSON.parse(result);
-                    let root = document.getElementById('limesurvey-{$additional['container_id']}')
-                    root.innerHTML = json.template;
-                    let form = root.querySelector(\"[id='limesurvey']\");
-                    form.action = url;
-                    let submit = form.querySelector(\"#ls-button-submit\");
-                    let namedElements = form.querySelectorAll(\"[name]\");
-                    for (let named of namedElements) {
-                        named.name = \"LSEMBED-\" + named.name;
-                    }
-                    form.innerHTML += json.hiddenInputs;
-                    let wrapper = form.querySelectorAll(\".clearall-saveall-wrapper\");
-                    for (let w of wrapper) {
-                        w.remove();
-                    }
-                    //form.innerHTML += json.head;
                     let splitHead = json.head.split('SEPARATOR');
                     let addToHead = \"\";
                     let scripts = [];
@@ -383,28 +369,74 @@ class SurveyTemplate implements CommandInterface
                             div.innerHTML = splitHead[index];
                             let original = div.firstChild;
                             let final = document.createElement('script');
-                            final.src = original.src;
+                            if (original.src) {
+                                let src = original.src;
+                                if (src.indexOf(referer) === 0) {
+                                    src = src.replace(referer, \"{$this->getRootUrl()}/\");
+                                }
+                                final.src = src;
+                            }
                             final.innerHTML = original.innerHTML;
-                            final.class = original.class;
+                            final.className = \"limesurvey-script\";
                             scripts.push(final);
                         }
                     }
                     document.head.innerHTML += addToHead;
-                    for (let script of scripts) {
-                        document.head.appendChild(script);
+                    let i = 0;
+                    while ((i < scripts.length) && (!scripts[i].src)) {
+                        document.head.appendChild(scripts[i++]);
                     }
-                    form.addEventListener('submit', function(event) {
-                        event.preventDefault();
-                        let additional = ['popuppreview=false'];
+                    let firstSrc = -1;
+                    while (scripts[i].src && (i < scripts.length)) {
+                        let script = scripts[i];
+                        let j = i;
+                        if (script.src) {
+                            if (firstSrc === -1) {
+                                firstSrc = i;
+                            }
+                            script.addEventListener('load', function() {
+                                while ((++j < scripts.length) && (!scripts[j].src)) {
+                                    document.head.appendChild(scripts[j]);
+                                }
+                                if (j < scripts.length) {
+                                    document.head.appendChild(scripts[j]);
+                                } else {
+                                    loadForm();
+                                }
+                            });
+                        }
+                        i++;
+                    }
+                    document.head.appendChild(scripts[firstSrc]);
+                    function loadForm() {
+                        let root = document.getElementById('limesurvey-{$additional['container_id']}')
+                        root.innerHTML = json.template;
+                        let form = root.querySelector(\"[id='limesurvey']\");
+                        form.action = url;
+                        let submit = form.querySelector(\"#ls-button-submit\");
                         let namedElements = form.querySelectorAll(\"[name]\");
                         for (let named of namedElements) {
-                            additional.push(named.name + '=' + named.value);
+                            named.name = \"LSEMBED-\" + named.name;
                         }
-                        additional = additional.join('&');
-                        sendRequest(additional);
+                        form.innerHTML += json.hiddenInputs;
+                        let wrapper = form.querySelectorAll(\".clearall-saveall-wrapper\");
+                        for (let w of wrapper) {
+                            w.remove();
+                        }
+                        window.dispatchEvent(new CustomEvent(\"load\"));
+                        document.dispatchEvent(new CustomEvent(\"load\"));
+                        form.addEventListener('submit', function(event) {
+                            event.preventDefault();
+                            let additional = ['popuppreview=false'];
+                            let namedElements = form.querySelectorAll(\"[name]\");
+                            for (let named of namedElements) {
+                                additional.push(named.name + '=' + named.value);
+                            }
+                            additional = additional.join('&');
+                            sendRequest(additional);
+                        });}
                     });
-                });
-            }
+                }
             sendRequest(" . json_encode($additional) . ");
             </script>
         ";
