@@ -85,8 +85,8 @@ class SurveyTemplate implements CommandInterface
     public function run(Request $request)
     {
         $this->surveyId = (int)$request->getData('_id');
-        $this->isPreview = (\Yii::app()->request->getPost('popuppreview', 'true') === 'true');
-        $this->js = (\Yii::app()->request->getPost('js', 'false') === 'true');
+        $this->isPreview = (\Yii::app()->request->getParam('popuppreview', 'true') === 'true');
+        $this->js = (\Yii::app()->request->getParam('js', 'false') === 'true');
         $embedType = $request->getData('embed') ?? BaseEmbed::EMBED_STRUCTURE_STANDARD;
         $embedOptions = $request->getData('embedOptions') ?? [];
         $this->embed = BaseEmbed::instantiate($embedType)
@@ -334,7 +334,9 @@ class SurveyTemplate implements CommandInterface
             const url = '{$url}';
             const referer = window.location.protocol + '//' + window.location.host + '/';
             document.documentElement.className = 'js';
+            let pageNumber = 0;
             async function sendRequest(params) {
+                pageNumber++;
                 const response = await fetch(url, {
                     method: 'POST',
                     body: new URLSearchParams(params),
@@ -358,6 +360,32 @@ class SurveyTemplate implements CommandInterface
                 });
                 response.text().then(function(result) {
                     let json = JSON.parse(result);
+                    let root = document.getElementById('limesurvey-{$additional['container_id']}')
+                    root.innerHTML = json.template;
+                    let form = root.querySelector(\"[id='limesurvey']\");
+                    form.action = url;
+                    let submit = form.querySelector(\"#ls-button-submit\");
+                    let namedElements = form.querySelectorAll(\"[name]\");
+                    for (let named of namedElements) {
+                        named.name = \"LSEMBED-\" + named.name;
+                    }
+                    form.innerHTML += json.hiddenInputs;
+                    let wrapper = form.querySelectorAll(\".clearall-saveall-wrapper\");
+                    for (let w of wrapper) {
+                        w.remove();
+                    }
+                    window.dispatchEvent(new CustomEvent(\"load\"));
+                    document.dispatchEvent(new CustomEvent(\"load\"));
+                    form.addEventListener('submit', function(event) {
+                        event.preventDefault();
+                        let additional = ['popuppreview=false'];
+                        let namedElements = form.querySelectorAll(\"[name]\");
+                        for (let named of namedElements) {
+                            additional.push(named.name + '=' + named.value);
+                        }
+                        additional = additional.join('&');
+                        sendRequest(additional);
+                    });
                     let splitHead = json.head.split('SEPARATOR');
                     let addToHead = \"\";
                     let scripts = [];
@@ -370,7 +398,7 @@ class SurveyTemplate implements CommandInterface
                             let original = div.firstChild;
                             let final = document.createElement('script');
                             if (original.src) {
-                                let src = original.src;
+                                let src = original.src + \"?v=\" + pageNumber;
                                 if (src.indexOf(referer) === 0) {
                                     src = src.replace(referer, \"{$this->getRootUrl()}/\");
                                 }
@@ -408,33 +436,6 @@ class SurveyTemplate implements CommandInterface
                         i++;
                     }
                     document.head.appendChild(scripts[firstSrc]);
-                    function loadForm() {
-                        let root = document.getElementById('limesurvey-{$additional['container_id']}')
-                        root.innerHTML = json.template;
-                        let form = root.querySelector(\"[id='limesurvey']\");
-                        form.action = url;
-                        let submit = form.querySelector(\"#ls-button-submit\");
-                        let namedElements = form.querySelectorAll(\"[name]\");
-                        for (let named of namedElements) {
-                            named.name = \"LSEMBED-\" + named.name;
-                        }
-                        form.innerHTML += json.hiddenInputs;
-                        let wrapper = form.querySelectorAll(\".clearall-saveall-wrapper\");
-                        for (let w of wrapper) {
-                            w.remove();
-                        }
-                        window.dispatchEvent(new CustomEvent(\"load\"));
-                        document.dispatchEvent(new CustomEvent(\"load\"));
-                        form.addEventListener('submit', function(event) {
-                            event.preventDefault();
-                            let additional = ['popuppreview=false'];
-                            let namedElements = form.querySelectorAll(\"[name]\");
-                            for (let named of namedElements) {
-                                additional.push(named.name + '=' + named.value);
-                            }
-                            additional = additional.join('&');
-                            sendRequest(additional);
-                        });}
                     });
                 }
             sendRequest(" . json_encode($additional) . ");
