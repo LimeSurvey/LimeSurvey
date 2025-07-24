@@ -23,10 +23,14 @@ class RendererBasic implements RendererInterface
      */
     public function returnResponse(Response $response)
     {
-        $this->renderJSON(
-            $response->getData(),
-            $this->getHttpResponseCode($response->getStatus())
-        );
+        if ($response->isStream()) {
+            $this->streamResponse($response);
+        } else {
+            $this->renderJSON(
+                $response->getData(),
+                $this->getHttpResponseCode($response->getStatus())
+            );
+        }
     }
 
     /**
@@ -61,10 +65,7 @@ class RendererBasic implements RendererInterface
      */
     protected function renderJSON($data, $responseCode = 200)
     {
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Headers: Authorization, *');
-        header('Access-Control-Allow-Methods: *');
-        http_response_code($responseCode);
+        $this->sendStandardHeaders($responseCode);
 
         if ($data !== null) {
             header('Content-type: application/json');
@@ -79,6 +80,50 @@ class RendererBasic implements RendererInterface
             }
         }
         $app->end();
+    }
+
+    /**
+     * Stream response to client.
+     *
+     * @param Response $response
+     * @return void
+     */
+    public function streamResponse(Response $response)
+    {
+        $data = $response->getData();
+        $fileName = $data['fileName'];
+        $contentType = $data['contentType'];
+
+        $this->sendStandardHeaders($this->getHttpResponseCode($response->getStatus()));
+        header($contentType);
+        header("Content-Disposition: attachment; filename=\"$fileName\"");
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Access-Control-Expose-Headers: Content-Disposition');
+
+        $response->streamResponse();
+
+        /** @var LSYii_Application */
+        $app = Yii::app();
+        foreach ($app->log->routes as $route) {
+            if ($route instanceof CWebLogRoute) {
+                $route->enabled = false; // disable any weblogroutes
+            }
+        }
+        $app->end();
+    }
+
+    /**
+     * Send standard CORS and status headers.
+     *
+     * @param int $responseCode
+     * @return void
+     */
+    protected function sendStandardHeaders(int $responseCode = 200): void
+    {
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Authorization, *');
+        header('Access-Control-Allow-Methods: *');
+        http_response_code($responseCode);
     }
 
     /**

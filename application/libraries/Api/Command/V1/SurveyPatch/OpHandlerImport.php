@@ -57,7 +57,9 @@ class OpHandlerImport implements OpHandlerInterface
      *             "id": 809,
      *             "props": {
      *                 "timestamp": 20250303173908,
-     *                 "preserveIDs": true
+     *                 "preserveIDs": true,
+     *                 "archiveType": "RP",
+     *                 "useFallback": true,
      *             }
      *         }
      *     ]
@@ -66,7 +68,15 @@ class OpHandlerImport implements OpHandlerInterface
      */
     public function handle(OpInterface $op)
     {
-        $this->surveyActivate->restoreData((int)$op->getEntityId(), $op->getProps()['timestamp'] ? intval($op->getProps()['timestamp']) : null, ($op->getProps()['preserveIDs'] ?? false) == "true");
+        $entityId = (int)$op->getEntityId();
+        $props = $op->getProps();
+
+        $timestamp = isset($props['timestamp']) ? (int)$props['timestamp'] : null;
+        $preserveIDs = ($props['preserveIDs'] ?? false) == "true";
+        $archiveType = $props['archiveType'] ?? 'all';
+        $useFallback = $props['useFallback'] ?? true;
+
+        $this->surveyActivate->restoreData($entityId, $timestamp, $preserveIDs, $archiveType, $useFallback);
     }
 
     /**
