@@ -16,44 +16,34 @@ $(document).on('ready  pjax:scriptcomplete', function(){
      * Append file name to text field.
      */
     function changeTextAfterFileIsChanged(filename){
-        textField.textContent += filename + ('\n');
+        textField.textContent = filename + ('\n');
     }
 
-    inputFieldFile.onchange = function () {
-        changeTextAfterFileIsChanged('test output textfield...');
-    };
-
-
+    inputFieldFile.addEventListener('change', function(event) {
+        const files = event.target.files; // This is a FileList object
+        for (const file of files) {
+            console.log('File name:', file.name);
+            changeTextAfterFileIsChanged(file.name);
+            //console.log('File size:', file.size);
+            //console.log('File type:', file.type);
+        }
+    });
 
     function dropHandler(ev) {
         // Prevent default behavior (Prevent file from being opened)
         ev.preventDefault();
         //show file name(s), instead of default text when dropping or adding files to the drop_zone
-        let textField = document.getElementById('file-upload-text');
-        let fileNames = '';
+        const droppedFiles = event.dataTransfer.files;
 
-        if (ev.dataTransfer.items) {
-            [...ev.dataTransfer.items].forEach((item, i) => {
-                // If dropped items aren't files, reject them
-                if ((item.kind === 'file')) {
-                    const file = item.getAsFile();
-                    fileNames += file.name + '\n';
-                    //todo: assign the file to hidden input field
-                    //let reader = new FileReader();
-                    //let outputFileUrl = reader.readAsDataURL(file);
-                    //inputField.value = outputFileUrl;
-                }
-            });
-        } else {
-            [...ev.dataTransfer.files].forEach((file, i) => {
-                fileNames += file.name + '\n';
-            });
-        }
-        if(fileNames.trim() !== ''){
-            textField.textContent = fileNames;
+        // Create a new DataTransfer object to simulate file input
+        const dataTransfer = new DataTransfer();
+        for (const file of droppedFiles) {
+            dataTransfer.items.add(file);
         }
 
-        // put file to the input field
+        // Assign files to the hidden input
+        inputFieldDropFile.files = dataTransfer.files;
+
     }
 
     //to prevent to just open file content in new tab
