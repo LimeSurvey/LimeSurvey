@@ -89,7 +89,7 @@ class SurveyActivate
 
         $publicRegistrationAllowed = $survey->getIsAllowRegister();
         $isOpenAccessMode = $survey->access_mode === SurveyAccessModeService::$ACCESS_TYPE_OPEN;
-        $shouldEnsureTokensTable = ($publicRegistrationAllowed && $isOpenAccessMode) || !$isOpenAccessMode;
+        $shouldEnsureTokensTable = $publicRegistrationAllowed || !$isOpenAccessMode;
 
         if ($shouldEnsureTokensTable && !$survey->hasTokensTable) {
             $this->surveyAccessModeService->newParticipantTable($survey, true);
