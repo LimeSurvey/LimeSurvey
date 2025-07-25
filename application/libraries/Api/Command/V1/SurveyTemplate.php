@@ -240,10 +240,11 @@ class SurveyTemplate implements CommandInterface
     }
 
     /**
-     * Gets the survey result
+     * Returns the survey results
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @psalm-suppress PossiblyInvalidCast
      * @param mixed $language
-     * @return array{form: bool|string, head: string, hiddenInputs: string|array{form: string, head: string, hiddenInputs: string, beginScripts: string, bottomScripts: string}}
+     * @return array{beginScripts: string, bottomScripts: string, form: bool|string, head: string, hiddenInputs: string|array{beginScripts: string, bottomScripts: string, form: string, head: string, hiddenInputs: string}}
      */
     private function getSurveyResult($language)
     {
