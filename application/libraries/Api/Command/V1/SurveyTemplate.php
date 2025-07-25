@@ -128,6 +128,8 @@ class SurveyTemplate implements CommandInterface
             $this->embed->setStructure($surveyResult['form']);
             $response['hiddenInputs'] = $surveyResult['hiddenInputs'];
             $response['head'] = $surveyResult['head'];
+            $response['beginScripts'] = $surveyResult['beginScripts'];
+            $response['bottomScripts'] = $surveyResult['bottomScripts'];
         }
         return $this->responseFactory->makeSuccess(
             array_merge($response, ['template' => $this->embed->render()])
@@ -262,7 +264,7 @@ class SurveyTemplate implements CommandInterface
                     $cookies []= "<input type='hidden' name='LSSESSION-{$key}' value='{$val}'>";
                 }
             }
-                $hiddenInputs = implode(" ", $cookies);
+            $hiddenInputs = implode(" ", $cookies);
         } else {
             $sessionCookies = [];
             $parameters = [];
@@ -290,18 +292,30 @@ class SurveyTemplate implements CommandInterface
         foreach ($forms as $f) {
             $form = $dom->saveHTML($f);
         }
-        $LSHead = "";
-        \Yii::app()->getClientScript()->renderHead($LSHead);
         $h = [];
         $heads = $xpath->query("//head/*");
         foreach ($heads as $head) {
             $h []= $dom->saveHTML($head);
         }
         $h = implode("SEPARATOR", $h);
+        $bes = [];
+        $beginScripts = $xpath->query("//div[@id='beginScripts']/*");
+        foreach ($beginScripts as $beginScript) {
+            $bes []= $dom->saveHTML($beginScript);
+        }
+        $bes = implode("SEPARATOR", $bes);
+        $bos = [];
+        $bottomScripts = $xpath->query("//div[@id='bottomScripts']/*");
+        foreach ($bottomScripts as $bottomScript) {
+            $bos []= $dom->saveHTML($bottomScript);
+        }
+        $bos = implode("SEPARATOR", $bos);
         return [
             'form' => $form,
             'hiddenInputs' => $hiddenInputs,
-            'head' => $h
+            'head' => $h,
+            'beginScripts' => $bes,
+            'bottomScripts' => $bos
         ];
     }
 
@@ -328,13 +342,76 @@ class SurveyTemplate implements CommandInterface
             $additionalParameters []= $k . "=" . $v;
         }
         $url = $this->getRootUrl() . self::ENDPOINT . $this->surveyId;
-        return "<div id='limesurvey-{$additional['container_id']}'></div>" .
+        return "
+            <div id='beginScripts' class='script-container'></div>
+            <div id='limesurvey-{$additional['container_id']}'></div>
+            <div id='bottomScripts' class='script-container'></div>
+        " .
         "
             <script>
             const url = '{$url}';
             const referer = window.location.protocol + '//' + window.location.host + '/';
             document.documentElement.className = 'js';
             let pageNumber = 0;
+            function addScripts(scheduledScripts, level) {
+                const {initialScripts, container} = scheduledScripts[level];
+                let addToHead = \"\";
+                let scripts = [];
+                for (let index = 0; index < initialScripts.length; index++) {
+                    if (initialScripts[index].indexOf(\"<script\") < 0) {
+                        addToHead += initialScripts[index];
+                    } else {
+                        let div = document.createElement('div');
+                        div.innerHTML = initialScripts[index];
+                        let original = div.firstChild;
+                        let final = document.createElement('script');
+                        if (original.src) {
+                            let src = original.src + \"?v=\" + pageNumber;
+                            if (src.indexOf(referer) === 0) {
+                                src = src.replace(referer, \"{$this->getRootUrl()}/\");
+                            }
+                            final.src = src;
+                        }
+                        final.innerHTML = original.innerHTML;
+                        final.className = \"limesurvey-script\";
+                        scripts.push(final);
+                    }
+                }
+                if (addToHead) {
+                    container.innerHTML += addToHead;
+                }
+                let i = 0;
+                while ((i < scripts.length) && (!scripts[i].src)) {
+                    container.appendChild(scripts[i++]);
+                }
+                let firstSrc = -1;
+                while (scripts[i].src && (i < scripts.length)) {
+                    let script = scripts[i];
+                    let j = i;
+                    if (script.src) {
+                        if (firstSrc === -1) {
+                            firstSrc = i;
+                        }
+                        script.addEventListener('load', function() {
+                            while ((++j < scripts.length) && (!scripts[j].src)) {
+                                container.appendChild(scripts[j]);
+                            }
+                            if (j < scripts.length) {
+                                container.appendChild(scripts[j]);
+                            } else {
+                                if (++level === scheduledScripts.length) {
+                                    window.dispatchEvent(new CustomEvent(\"load\"));
+                                    document.dispatchEvent(new CustomEvent(\"load\"));
+                                } else {
+                                    addScripts(scheduledScripts, level);
+                                }
+                            }
+                        });
+                    }
+                    i++;
+                }
+                container.appendChild(scripts[firstSrc]);
+            }
             async function sendRequest(params) {
                 pageNumber++;
                 const response = await fetch(url, {
@@ -374,8 +451,6 @@ class SurveyTemplate implements CommandInterface
                     for (let w of wrapper) {
                         w.remove();
                     }
-                    window.dispatchEvent(new CustomEvent(\"load\"));
-                    document.dispatchEvent(new CustomEvent(\"load\"));
                     form.addEventListener('submit', function(event) {
                         event.preventDefault();
                         let additional = ['popuppreview=false'];
@@ -386,58 +461,26 @@ class SurveyTemplate implements CommandInterface
                         additional = additional.join('&');
                         sendRequest(additional);
                     });
-                    let splitHead = json.head.split('SEPARATOR');
-                    let addToHead = \"\";
-                    let scripts = [];
-                    for (let index = 0; index < splitHead.length; index++) {
-                        if (splitHead[index].indexOf(\"<script\") < 0) {
-                            addToHead += splitHead[index];
-                        } else {
-                            let div = document.createElement('div');
-                            div.innerHTML = splitHead[index];
-                            let original = div.firstChild;
-                            let final = document.createElement('script');
-                            if (original.src) {
-                                let src = original.src + \"?v=\" + pageNumber;
-                                if (src.indexOf(referer) === 0) {
-                                    src = src.replace(referer, \"{$this->getRootUrl()}/\");
-                                }
-                                final.src = src;
-                            }
-                            final.innerHTML = original.innerHTML;
-                            final.className = \"limesurvey-script\";
-                            scripts.push(final);
+                    let splitHead = [...document.querySelectorAll(\"form#limesurvey script\")].map(item => item.outerHTML).concat(json.head.split('SEPARATOR'));
+                    let splitBegin = json.beginScripts.split('SEPARATOR');
+                    let splitBottom = json.bottomScripts.split('SEPARATOR');
+                    let scheduledScripts = [
+                        {
+                            container: document.head,
+                            initialScripts: splitHead
+                        },
+                        {
+                            container: document.getElementById('beginScripts'),
+                            initialScripts: splitBegin
+                        },
+                        {
+                            container: document.getElementById('bottomScripts'),
+                            initialScripts: splitBottom
                         }
-                    }
-                    document.head.innerHTML += addToHead;
-                    let i = 0;
-                    while ((i < scripts.length) && (!scripts[i].src)) {
-                        document.head.appendChild(scripts[i++]);
-                    }
-                    let firstSrc = -1;
-                    while (scripts[i].src && (i < scripts.length)) {
-                        let script = scripts[i];
-                        let j = i;
-                        if (script.src) {
-                            if (firstSrc === -1) {
-                                firstSrc = i;
-                            }
-                            script.addEventListener('load', function() {
-                                while ((++j < scripts.length) && (!scripts[j].src)) {
-                                    document.head.appendChild(scripts[j]);
-                                }
-                                if (j < scripts.length) {
-                                    document.head.appendChild(scripts[j]);
-                                } else {
-                                    loadForm();
-                                }
-                            });
-                        }
-                        i++;
-                    }
-                    document.head.appendChild(scripts[firstSrc]);
-                    });
-                }
+                    ];
+                    addScripts(scheduledScripts, 0);
+                });
+            }
             sendRequest(" . json_encode($additional) . ");
             </script>
         ";
