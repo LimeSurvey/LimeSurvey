@@ -29,9 +29,9 @@ class SurveyTemplate implements CommandInterface
 
     protected Survey $survey;
     protected SurveyLanguageSetting $surveyLanguageSetting;
-    protected int $surveyId;
-    protected bool $isPreview;
-    protected bool $js;
+    protected int $surveyId = -1;
+    protected bool $isPreview = true;
+    protected bool $js = false;
     const ENDPOINT = "/index.php/rest/v1/survey-template/";
     /**
      * @psalm-suppress UndefinedClass
@@ -85,8 +85,8 @@ class SurveyTemplate implements CommandInterface
     public function run(Request $request)
     {
         $this->surveyId = (int)$request->getData('_id');
-        $this->isPreview = (\Yii::app()->request->getParam('popuppreview', 'true') === 'true');
-        $this->js = (\Yii::app()->request->getParam('js', 'false') === 'true');
+        $this->isPreview = $this->isPreview && (\Yii::app()->request->getParam('popuppreview', 'true') === 'true');
+        $this->js = $this->js || (\Yii::app()->request->getParam('js', 'false') === 'true');
         $embedType = $request->getData('embed') ?? BaseEmbed::EMBED_STRUCTURE_STANDARD;
         $embedOptions = $request->getData('embedOptions') ?? [];
         $this->embed = BaseEmbed::instantiate($embedType)
@@ -243,7 +243,7 @@ class SurveyTemplate implements CommandInterface
      * Gets the survey result
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @param mixed $language
-     * @return array{form: bool|string, head: string, hiddenInputs: string|array{form: string, head: string, hiddenInputs: string}}
+     * @return array{form: bool|string, head: string, hiddenInputs: string|array{form: string, head: string, hiddenInputs: string, beginScripts: string, bottomScripts: string}}
      */
     private function getSurveyResult($language)
     {
@@ -254,7 +254,7 @@ class SurveyTemplate implements CommandInterface
             exec($curl, $output, $result_code);
             $result = implode("\n", $output);
             $headerEnd = strpos($result, "<!DOCTYPE");
-            $headerCookies = explode(';', substr($result, 0, $headerEnd));
+            $headerCookies = explode(';', substr($result, 0, (int)$headerEnd));
             $cookies = [];
             foreach ($headerCookies as $hc) {
                 $prefix = "Set-Cookie: ";
@@ -271,11 +271,13 @@ class SurveyTemplate implements CommandInterface
             $parameters = [];
             $cookies = [];
             foreach ($_POST as $key => $value) {
-                if (strpos($key, "LSSESSION-") === 0) {
-                    $sessionCookies[] = substr($key, strlen("LSSESSION-")) . "=" . $value;
-                    $cookies[] = "<input type='hidden' name='{$key}' value='{$value}'>";
-                } elseif (strpos($key, "LSEMBED-") === 0) {
-                    $parameters[] = substr($key, strlen("LSEMBED-")) . "=" . $value;
+                $k = (string) $key;
+                $text = (string) $value;
+                if (strpos($k, "LSSESSION-") === 0) {
+                    $sessionCookies[] = substr($k, strlen("LSSESSION-")) . "=" . $text;
+                    $cookies[] = "<input type='hidden' name='{$k}' value='{$text}'>";
+                } elseif (strpos($k, "LSEMBED-") === 0) {
+                    $parameters[] = substr($k, strlen("LSEMBED-")) . "=" . $text;
                 }
             }
             $hiddenInputs = implode(" ", $cookies);
@@ -285,9 +287,11 @@ class SurveyTemplate implements CommandInterface
             exec($curl, $output, $result_code);
             $result = implode("\n", $output);
         }
-        $dom = new \DomDocument();
-        @$dom->loadHTML(substr($result, $headerEnd ?? 0));
-        $xpath = new \DomXPath($dom);
+        $dom = new \DOMDocument();
+        $headerPart = substr($result, $headerEnd ?? 0);
+        $nonEmpty = $headerPart . ' ';
+        @$dom->loadHTML($nonEmpty);
+        $xpath = new \DOMXPath($dom);
         $forms = $xpath->query("//*[@id='limesurvey']");
         $form = substr($result, $headerEnd ?? 0);
         foreach ($forms as $f) {
