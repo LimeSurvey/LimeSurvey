@@ -241,6 +241,7 @@ class SurveyTemplate implements CommandInterface
 
     /**
      * Gets the survey result
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @param mixed $language
      * @return array{form: bool|string, head: string, hiddenInputs: string|array{form: string, head: string, hiddenInputs: string}}
      */
@@ -319,6 +320,12 @@ class SurveyTemplate implements CommandInterface
         ];
     }
 
+    /**
+     * Gets the javascript that does the goodies
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @param mixed $properties
+     * @return string
+     */
     private function getJavascript($properties = null)
     {
         $additional = [
