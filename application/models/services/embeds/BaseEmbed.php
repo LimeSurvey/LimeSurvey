@@ -78,7 +78,8 @@ abstract class BaseEmbed
      * @param bool $wrapper
      * @return static
      */
-    public function displayWrapper($wrapper) {
+    public function displayWrapper($wrapper)
+    {
         $this->wrapper = $wrapper;
         return $this;
     }
