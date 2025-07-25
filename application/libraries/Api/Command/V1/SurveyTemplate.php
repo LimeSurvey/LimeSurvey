@@ -261,7 +261,7 @@ class SurveyTemplate implements CommandInterface
                 if ($prefixPosition !== false) {
                     $cookie = substr($hc, $prefixPosition + strlen($prefix));
                     list($key, $val) = explode("=", $cookie);
-                    $cookies []= "<input type='hidden' name='LSSESSION-{$key}' value='{$val}'>";
+                    $cookies[] = "<input type='hidden' name='LSSESSION-{$key}' value='{$val}'>";
                 }
             }
             $hiddenInputs = implode(" ", $cookies);
@@ -271,10 +271,10 @@ class SurveyTemplate implements CommandInterface
             $cookies = [];
             foreach ($_POST as $key => $value) {
                 if (strpos($key, "LSSESSION-") === 0) {
-                    $sessionCookies []= substr($key, strlen("LSSESSION-")) ."=" . $value;
-                    $cookies []= "<input type='hidden' name='{$key}' value='{$value}'>";
+                    $sessionCookies[] = substr($key, strlen("LSSESSION-")) . "=" . $value;
+                    $cookies[] = "<input type='hidden' name='{$key}' value='{$value}'>";
                 } else if (strpos($key, "LSEMBED-") === 0) {
-                    $parameters []= substr($key, strlen("LSEMBED-")) . "=" . $value;
+                    $parameters[] = substr($key, strlen("LSEMBED-")) . "=" . $value;
                 }
             }
             $hiddenInputs = implode(" ", $cookies);
@@ -295,19 +295,19 @@ class SurveyTemplate implements CommandInterface
         $h = [];
         $heads = $xpath->query("//head/*");
         foreach ($heads as $head) {
-            $h []= $dom->saveHTML($head);
+            $h[] = $dom->saveHTML($head);
         }
         $h = implode("SEPARATOR", $h);
         $bes = [];
         $beginScripts = $xpath->query("//div[@id='beginScripts']/*");
         foreach ($beginScripts as $beginScript) {
-            $bes []= $dom->saveHTML($beginScript);
+            $bes[] = $dom->saveHTML($beginScript);
         }
         $bes = implode("SEPARATOR", $bes);
         $bos = [];
         $bottomScripts = $xpath->query("//div[@id='bottomScripts']/*");
         foreach ($bottomScripts as $bottomScript) {
-            $bos []= $dom->saveHTML($bottomScript);
+            $bos[] = $dom->saveHTML($bottomScript);
         }
         $bos = implode("SEPARATOR", $bos);
         return [
@@ -339,7 +339,7 @@ class SurveyTemplate implements CommandInterface
         }
         $additionalParameters = [];
         foreach ($additional as $k => $v) {
-            $additionalParameters []= $k . "=" . $v;
+            $additionalParameters[] = $k . "=" . $v;
         }
         $url = $this->getRootUrl() . self::ENDPOINT . $this->surveyId;
         return "
