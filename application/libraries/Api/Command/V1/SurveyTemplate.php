@@ -13,6 +13,7 @@ use LimeSurvey\Api\Command\{
     ResponseData\ResponseDataError
 };
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
+use LimeSurvey\Models\Services\embeds\BaseEmbed;
 
 /**
  * Survey Template
@@ -28,6 +29,15 @@ class SurveyTemplate implements CommandInterface
 
     protected Survey $survey;
     protected SurveyLanguageSetting $surveyLanguageSetting;
+    protected int $surveyId = -1;
+    protected bool $isPreview = true;
+    protected bool $js = false;
+    const ENDPOINT = "/index.php/rest/v1/survey-template/";
+    /**
+     * @psalm-suppress UndefinedClass
+     * @psalm-suppress PropertyNotSetInConstructor
+    */
+    protected BaseEmbed $embed;
 
     /**
      * Constructor
@@ -68,18 +78,25 @@ class SurveyTemplate implements CommandInterface
      *     "subtitle": "What should we eat for lunch?"
      * }
      *
+     * @psalm-suppress UndefinedClass
      * @param Request $request
      * @return Response
      */
     public function run(Request $request)
     {
-        $surveyId = (int)$request->getData('_id');
+        $this->surveyId = (int)$request->getData('_id');
+        $this->isPreview = $this->isPreview && (\Yii::app()->request->getParam('popuppreview', 'true') === 'true');
+        $this->js = $this->js || (\Yii::app()->request->getParam('js', 'false') === 'true');
+        $embedType = $request->getData('embed') ?? BaseEmbed::EMBED_STRUCTURE_STANDARD;
+        $embedOptions = $request->getData('embedOptions') ?? [];
+        $this->embed = BaseEmbed::instantiate($embedType)
+                        ->setEmbedOptions($embedOptions);
 
-        if ($response = $this->ensurePermissions($surveyId)) {
+        if ($response = $this->ensurePermissions()) {
             return $response;
         }
 
-        $survey = $this->survey->findByPk($surveyId);
+        $survey = $this->survey->findByPk($this->surveyId);
         if (!$survey) {
             return $this->responseFactory->makeErrorNotFound(
                 (new ResponseDataError(
@@ -93,7 +110,7 @@ class SurveyTemplate implements CommandInterface
         $languageSettings = $this
             ->surveyLanguageSetting
             ->find('surveyls_survey_id = :sid and surveyls_language = :language', [
-                ':sid'      => $surveyId,
+                ':sid'      => $this->surveyId,
                 ':language' => $language
             ]);
         $response = [];
@@ -101,9 +118,21 @@ class SurveyTemplate implements CommandInterface
             $response['title'] = $languageSettings->surveyls_title;
             $response['subtitle'] = $languageSettings->surveyls_description;
         }
-        $result = $this->getTemplateData($surveyId, $language);
+        if ($this->js) {
+            $this->embed->displayWrapper(false)->setStructure($this->getJavascript());
+        } elseif ($this->isPreview) {
+            $result = $this->getTemplateData($language);
+            $this->embed->setStructure($result);
+        } else {
+            $surveyResult = $this->getSurveyResult($language);
+            $this->embed->setStructure($surveyResult['form']);
+            $response['hiddenInputs'] = $surveyResult['hiddenInputs'];
+            $response['head'] = $surveyResult['head'];
+            $response['beginScripts'] = $surveyResult['beginScripts'];
+            $response['bottomScripts'] = $surveyResult['bottomScripts'];
+        }
         return $this->responseFactory->makeSuccess(
-            array_merge($response, ['template' => $result])
+            array_merge($response, ['template' => $this->embed->render()])
         );
     }
 
@@ -111,14 +140,13 @@ class SurveyTemplate implements CommandInterface
      * Ensure Permissions
      *
      * @param string $authToken
-     * @param int $surveyId
      * @return Response|false
      */
-    private function ensurePermissions($surveyId)
+    private function ensurePermissions()
     {
         if (
             !$this->hasSurveyPermission(
-                $surveyId,
+                $this->surveyId,
                 'surveycontent',
                 'read'
             )
@@ -127,7 +155,7 @@ class SurveyTemplate implements CommandInterface
                 ->makeErrorForbidden();
         }
 
-        if (!$surveyId) {
+        if (!$this->surveyId) {
             return $this->responseFactory->makeErrorNotFound(
                 (new ResponseDataError(
                     'SURVEY_NOT_FOUND',
@@ -143,11 +171,10 @@ class SurveyTemplate implements CommandInterface
     /**
      * Get template data
      *
-     * @param int $surveyId
      * @param string $language
      * @return Response|bool|string
      */
-    private function getTemplateData($surveyId, $language)
+    private function getTemplateData($language)
     {
         // @todo This shouldnt require a HTTP request we should be able to
         // - render survey content internally. To handle this correctly
@@ -167,7 +194,7 @@ class SurveyTemplate implements CommandInterface
         curl_setopt(
             $ch,
             CURLOPT_URL,
-            $root . "/{$surveyId}?newtest=Y&lang={$language}&popuppreview=true"
+            $root . "/{$this->surveyId}?newtest=Y&lang={$language}&popuppreview=true"
         );
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -186,5 +213,288 @@ class SurveyTemplate implements CommandInterface
         }
         curl_close(($ch));
         return $result;
+    }
+
+    /**
+     * Returns the root URL
+     * @return string
+     */
+    private function getRootUrl()
+    {
+        return (
+            !empty($_SERVER['HTTPS'])
+            ? 'https'
+            : 'http'
+        ) . '://' . ($_SERVER['HTTP_HOST'] ?? '');
+    }
+
+    /**
+     * Gets the source by survey id and language
+     * @param mixed $language
+     * @return string
+     */
+    private function getSrc($language)
+    {
+        $root = $this->getRootUrl();
+        return $root . "/index.php/{$this->surveyId}?lang={$language}";
+    }
+
+    /**
+     * Returns the survey results
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @psalm-suppress PossiblyInvalidCast
+     * @param mixed $language
+     * @return array{beginScripts: string, bottomScripts: string, form: bool|string, head: string, hiddenInputs: string|array{beginScripts: string, bottomScripts: string, form: string, head: string, hiddenInputs: string}}
+     */
+    private function getSurveyResult($language)
+    {
+        $LEMPostKey = \Yii::app()->request->getPost('LSEMBED-LEMpostKey', false);
+        $form = "";
+        if (!$LEMPostKey) {
+            $curl = "curl -Ss -D - '{$this->getSrc($language)}' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' -H 'Accept-Language: en-US,en;q=0.9' -H 'Connection: keep-alive' -H 'Sec-Fetch-Dest: document' -H 'Sec-Fetch-Mode: navigate' -H 'Sec-Fetch-Site: none' -H 'Sec-Fetch-User: ?1' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36' -H 'sec-ch-ua: \"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\"' -H 'sec-ch-ua-mobile: ?0' -H 'sec-ch-ua-platform: \"Linux\"' --insecure";
+            exec($curl, $output, $result_code);
+            $result = implode("\n", $output);
+            $headerEnd = strpos($result, "<!DOCTYPE");
+            $headerCookies = explode(';', substr($result, 0, (int)$headerEnd));
+            $cookies = [];
+            foreach ($headerCookies as $hc) {
+                $prefix = "Set-Cookie: ";
+                $prefixPosition = strpos($hc, $prefix);
+                if ($prefixPosition !== false) {
+                    $cookie = substr($hc, $prefixPosition + strlen($prefix));
+                    list($key, $val) = explode("=", $cookie);
+                    $cookies[] = "<input type='hidden' name='LSSESSION-{$key}' value='{$val}'>";
+                }
+            }
+            $hiddenInputs = implode(" ", $cookies);
+        } else {
+            $sessionCookies = [];
+            $parameters = [];
+            $cookies = [];
+            foreach ($_POST as $key => $value) {
+                $k = (string) $key;
+                $text = (string) $value;
+                if (strpos($k, "LSSESSION-") === 0) {
+                    $sessionCookies[] = substr($k, strlen("LSSESSION-")) . "=" . $text;
+                    $cookies[] = "<input type='hidden' name='{$k}' value='{$text}'>";
+                } elseif (strpos($k, "LSEMBED-") === 0) {
+                    $parameters[] = substr($k, strlen("LSEMBED-")) . "=" . $text;
+                }
+            }
+            $hiddenInputs = implode(" ", $cookies);
+            $sc = implode("; ", $sessionCookies);
+            $p = implode("&", $parameters);
+            $curl = str_replace("==", "%3D%3D", "curl '{$this->getSrc($language)}' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' -H 'Accept-Language: en-US,en;q=0.9' -H 'Cache-Control: max-age=0' -H 'Connection: keep-alive' -H 'Content-Type: application/x-www-form-urlencoded' -b '{$sc}' -H 'Origin: {$this->getRootUrl()}' -H 'Referer: {$this->getSrc($language)}' -H 'Sec-Fetch-Dest: document' -H 'Sec-Fetch-Mode: navigate' -H 'Sec-Fetch-Site: same-origin' -H 'Sec-Fetch-User: ?1' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36' -H 'sec-ch-ua: \"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\"' -H 'sec-ch-ua-mobile: ?0' -H 'sec-ch-ua-platform: \"Linux\"' --data-raw '{$p}' --insecure");
+            exec($curl, $output, $result_code);
+            $result = implode("\n", $output);
+        }
+        $dom = new \DOMDocument();
+        $headerPart = substr($result, $headerEnd ?? 0);
+        $nonEmpty = $headerPart . ' ';
+        @$dom->loadHTML($nonEmpty);
+        $xpath = new \DOMXPath($dom);
+        $forms = $xpath->query("//*[@id='limesurvey']");
+        $form = substr($result, $headerEnd ?? 0);
+        foreach ($forms as $f) {
+            $form = $dom->saveHTML($f);
+        }
+        $h = [];
+        $heads = $xpath->query("//head/*");
+        foreach ($heads as $head) {
+            $h[] = $dom->saveHTML($head);
+        }
+        $h = implode("SEPARATOR", $h);
+        $bes = [];
+        $beginScripts = $xpath->query("//div[@id='beginScripts']/*");
+        foreach ($beginScripts as $beginScript) {
+            $bes[] = $dom->saveHTML($beginScript);
+        }
+        $bes = implode("SEPARATOR", $bes);
+        $bos = [];
+        $bottomScripts = $xpath->query("//div[@id='bottomScripts']/*");
+        foreach ($bottomScripts as $bottomScript) {
+            $bos[] = $dom->saveHTML($bottomScript);
+        }
+        $bos = implode("SEPARATOR", $bos);
+        return [
+            'form' => $form,
+            'hiddenInputs' => $hiddenInputs,
+            'head' => $h,
+            'beginScripts' => $bes,
+            'bottomScripts' => $bos
+        ];
+    }
+
+    /**
+     * Gets the javascript that does the goodies
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @param mixed $properties
+     * @return string
+     */
+    private function getJavascript($properties = null)
+    {
+        $additional = [
+            'popuppreview' => false,
+            'js' => 'false'
+        ];
+        /**
+         * Expected properties
+         * - container id
+         */
+        if (is_array($properties)) {
+            foreach ($properties as $k => $v) {
+                $additional[$k] = $v;
+            }
+        }
+        if (!isset($additional['container_id'])) {
+            $additional['container_id'] = '1';
+        }
+        $additionalParameters = [];
+        foreach ($additional as $k => $v) {
+            $additionalParameters[] = $k . "=" . $v;
+        }
+        $url = $this->getRootUrl() . self::ENDPOINT . $this->surveyId;
+        return "
+            <div id='beginScripts' class='script-container'></div>
+            <div id='limesurvey-{$additional['container_id']}'></div>
+            <div id='bottomScripts' class='script-container'></div>
+        " .
+        "
+            <script>
+            const url = '{$url}';
+            const referer = window.location.protocol + '//' + window.location.host + '/';
+            document.documentElement.className = 'js';
+            let pageNumber = 0;
+            function addScripts(scheduledScripts, level) {
+                const {initialScripts, container} = scheduledScripts[level];
+                let addToHead = \"\";
+                let scripts = [];
+                for (let index = 0; index < initialScripts.length; index++) {
+                    if (initialScripts[index].indexOf(\"<script\") < 0) {
+                        addToHead += initialScripts[index];
+                    } else {
+                        let div = document.createElement('div');
+                        div.innerHTML = initialScripts[index];
+                        let original = div.firstChild;
+                        let final = document.createElement('script');
+                        if (original.src) {
+                            let src = original.src + \"?v=\" + pageNumber;
+                            if (src.indexOf(referer) === 0) {
+                                src = src.replace(referer, \"{$this->getRootUrl()}/\");
+                            }
+                            final.src = src;
+                        }
+                        final.innerHTML = original.innerHTML;
+                        final.className = \"limesurvey-script\";
+                        scripts.push(final);
+                    }
+                }
+                if (addToHead) {
+                    container.innerHTML += addToHead;
+                }
+                let i = 0;
+                while ((i < scripts.length) && (!scripts[i].src)) {
+                    container.appendChild(scripts[i++]);
+                }
+                let firstSrc = -1;
+                while (scripts[i].src && (i < scripts.length)) {
+                    let script = scripts[i];
+                    let j = i;
+                    if (script.src) {
+                        if (firstSrc === -1) {
+                            firstSrc = i;
+                        }
+                        script.addEventListener('load', function() {
+                            while ((++j < scripts.length) && (!scripts[j].src)) {
+                                container.appendChild(scripts[j]);
+                            }
+                            if (j < scripts.length) {
+                                container.appendChild(scripts[j]);
+                            } else {
+                                if (++level === scheduledScripts.length) {
+                                    window.dispatchEvent(new CustomEvent(\"load\"));
+                                    document.dispatchEvent(new CustomEvent(\"load\"));
+                                } else {
+                                    addScripts(scheduledScripts, level);
+                                }
+                            }
+                        });
+                    }
+                    i++;
+                }
+                container.appendChild(scripts[firstSrc]);
+            }
+            async function sendRequest(params) {
+                pageNumber++;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: new URLSearchParams(params),
+                    headers: {
+                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+                            'Accept-Language': 'en-US,en;q=0.9',
+                            'Cache-Control': 'max-age=0',
+                            'Connection': 'keep-alive',
+                            'Referer': referer,
+                            'Sec-Fetch-Dest': 'document',
+                            'Sec-Fetch-Mode': 'navigate',
+                            'Sec-Fetch-Site': 'same-origin',
+                            'Sec-Fetch-User': '?1',
+                            'Upgrade-Insecure-Requests': '1',
+                            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
+                            'sec-ch-ua': '\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\"',
+                            'sec-ch-ua-mobile': '?0',
+                            'sec-ch-ua-platform': '\"Linux\"',
+                            
+                    }
+                });
+                response.text().then(function(result) {
+                    let json = JSON.parse(result);
+                    let root = document.getElementById('limesurvey-{$additional['container_id']}')
+                    root.innerHTML = json.template;
+                    let form = root.querySelector(\"[id='limesurvey']\");
+                    form.action = url;
+                    let submit = form.querySelector(\"#ls-button-submit\");
+                    let namedElements = form.querySelectorAll(\"[name]\");
+                    for (let named of namedElements) {
+                        named.name = \"LSEMBED-\" + named.name;
+                    }
+                    form.innerHTML += json.hiddenInputs;
+                    let wrapper = form.querySelectorAll(\".clearall-saveall-wrapper\");
+                    for (let w of wrapper) {
+                        w.remove();
+                    }
+                    form.addEventListener('submit', function(event) {
+                        event.preventDefault();
+                        let additional = ['popuppreview=false'];
+                        let namedElements = form.querySelectorAll(\"[name]\");
+                        for (let named of namedElements) {
+                            additional.push(named.name + '=' + named.value);
+                        }
+                        additional = additional.join('&');
+                        sendRequest(additional);
+                    });
+                    let splitHead = [...document.querySelectorAll(\"form#limesurvey script\")].map(item => item.outerHTML).concat(json.head.split('SEPARATOR'));
+                    let splitBegin = json.beginScripts.split('SEPARATOR');
+                    let splitBottom = json.bottomScripts.split('SEPARATOR');
+                    let scheduledScripts = [
+                        {
+                            container: document.head,
+                            initialScripts: splitHead
+                        },
+                        {
+                            container: document.getElementById('beginScripts'),
+                            initialScripts: splitBegin
+                        },
+                        {
+                            container: document.getElementById('bottomScripts'),
+                            initialScripts: splitBottom
+                        }
+                    ];
+                    addScripts(scheduledScripts, 0);
+                });
+            }
+            sendRequest(" . json_encode($additional) . ");
+            </script>
+        ";
     }
 }

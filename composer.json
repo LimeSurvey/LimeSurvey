@@ -30,7 +30,10 @@
                 "application/helpers/update",
                 "application/helpers/update/updates"
             ],
-			"LimeSurvey\\Models\\Services\\": "application/models/services",
+			"LimeSurvey\\Models\\Services\\": [
+			    "application/models/services",
+			    "application/models/services/embeds"
+			],
 			"LimeSurvey\\Datavalueobjects\\": "application/datavalueobjects",
 			"LimeSurvey\\Exceptions\\": "application/exceptions",
 			"LimeSurvey\\": "application/libraries",
