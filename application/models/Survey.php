@@ -1509,9 +1509,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'enabledCondition' => $permissions['survey_update'],
         ];
         $dropdownItems[] = [
+            'linkId' => 'openCopyModal',
             'title' => gT('Copy'),
-            'url' => App()->createUrl("/surveyAdministration/newSurvey#copy"),
-
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-bs-target' => "#copySurvey_modal"
+            ],
             'enabledCondition' => $permissions['survey_update'],
         ];
         $dropdownItems[] = [
