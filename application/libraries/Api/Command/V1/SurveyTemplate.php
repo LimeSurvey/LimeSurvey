@@ -273,7 +273,7 @@ class SurveyTemplate implements CommandInterface
                 if (strpos($key, "LSSESSION-") === 0) {
                     $sessionCookies[] = substr($key, strlen("LSSESSION-")) . "=" . $value;
                     $cookies[] = "<input type='hidden' name='{$key}' value='{$value}'>";
-                } else if (strpos($key, "LSEMBED-") === 0) {
+                } elseif (strpos($key, "LSEMBED-") === 0) {
                     $parameters[] = substr($key, strlen("LSEMBED-")) . "=" . $value;
                 }
             }
