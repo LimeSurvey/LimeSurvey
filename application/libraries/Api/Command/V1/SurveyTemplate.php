@@ -131,7 +131,6 @@ class SurveyTemplate implements CommandInterface
             $response['head'] = $surveyResult['head'];
             $response['beginScripts'] = $surveyResult['beginScripts'];
             $response['bottomScripts'] = $surveyResult['bottomScripts'];
-            $response['curl'] = $surveyResult['curl'];
         }
         return $this->responseFactory->makeSuccess(
             array_merge($response, ['template' => $this->embed->render()])
@@ -321,7 +320,6 @@ class SurveyTemplate implements CommandInterface
             'head' => $h,
             'beginScripts' => $bes,
             'bottomScripts' => $bos,
-            'curl' => $curl
         ];
     }
 
