@@ -32,6 +32,7 @@ class SurveyTemplate implements CommandInterface
     protected int $surveyId = -1;
     protected bool $isPreview = true;
     protected bool $js = false;
+    protected string $language = "en";
     const ENDPOINT = "/index.php/rest/v1/survey-template/";
     /**
      * @psalm-suppress UndefinedClass
@@ -106,12 +107,12 @@ class SurveyTemplate implements CommandInterface
                 )->toArray()
             );
         }
-        $language = (($request->getData('language') ?? $survey->language) ?? 'en');
+        $this->language = ((\Yii::app()->request->getParam('lang') ?? $survey->language) ?? 'en');
         $languageSettings = $this
             ->surveyLanguageSetting
             ->find('surveyls_survey_id = :sid and surveyls_language = :language', [
                 ':sid'      => $this->surveyId,
-                ':language' => $language
+                ':language' => $this->language
             ]);
         $response = [];
         if ($languageSettings) {
@@ -121,15 +122,16 @@ class SurveyTemplate implements CommandInterface
         if ($this->js) {
             $this->embed->setStructure($this->getJavascript());
         } elseif ($this->isPreview) {
-            $result = $this->getTemplateData($language);
+            $result = $this->getTemplateData();
             $this->embed->displayWrapper(true)->setStructure($result);
         } else {
-            $surveyResult = $this->getSurveyResult($language);
+            $surveyResult = $this->getSurveyResult();
             $this->embed->setStructure($surveyResult['form']);
             $response['hiddenInputs'] = $surveyResult['hiddenInputs'];
             $response['head'] = $surveyResult['head'];
             $response['beginScripts'] = $surveyResult['beginScripts'];
             $response['bottomScripts'] = $surveyResult['bottomScripts'];
+            $response['curl'] = $surveyResult['curl'];
         }
         return $this->responseFactory->makeSuccess(
             array_merge($response, ['template' => $this->embed->render()])
@@ -171,10 +173,9 @@ class SurveyTemplate implements CommandInterface
     /**
      * Get template data
      *
-     * @param string $language
      * @return Response|bool|string
      */
-    private function getTemplateData($language)
+    private function getTemplateData()
     {
         // @todo This shouldnt require a HTTP request we should be able to
         // - render survey content internally. To handle this correctly
@@ -194,7 +195,7 @@ class SurveyTemplate implements CommandInterface
         curl_setopt(
             $ch,
             CURLOPT_URL,
-            $root . "/{$this->surveyId}?newtest=Y&lang={$language}&popuppreview=true"
+            $root . "/{$this->surveyId}?newtest=Y&lang={$this->language}&popuppreview=true"
         );
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -230,28 +231,26 @@ class SurveyTemplate implements CommandInterface
 
     /**
      * Gets the source by survey id and language
-     * @param mixed $language
      * @return string
      */
-    private function getSrc($language)
+    private function getSrc()
     {
         $root = $this->getRootUrl();
-        return $root . "/index.php/{$this->surveyId}?lang={$language}";
+        return $root . "/index.php/{$this->surveyId}?lang={$this->language}";
     }
 
     /**
      * Returns the survey results
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @psalm-suppress PossiblyInvalidCast
-     * @param mixed $language
      * @return array{beginScripts: string, bottomScripts: string, form: bool|string, head: string, hiddenInputs: string|array{beginScripts: string, bottomScripts: string, form: string, head: string, hiddenInputs: string}}
      */
-    private function getSurveyResult($language)
+    private function getSurveyResult()
     {
         $LEMPostKey = \Yii::app()->request->getPost('LSEMBED-LEMpostKey', false);
         $form = "";
         if (!$LEMPostKey) {
-            $curl = "curl -Ss -D - '{$this->getSrc($language)}' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' -H 'Accept-Language: en-US,en;q=0.9' -H 'Connection: keep-alive' -H 'Sec-Fetch-Dest: document' -H 'Sec-Fetch-Mode: navigate' -H 'Sec-Fetch-Site: none' -H 'Sec-Fetch-User: ?1' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36' -H 'sec-ch-ua: \"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\"' -H 'sec-ch-ua-mobile: ?0' -H 'sec-ch-ua-platform: \"Linux\"' --insecure";
+            $curl = "curl -Ss -D - '{$this->getSrc()}' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' -H 'Accept-Language: en-US,en;q=0.9' -H 'Connection: keep-alive' -H 'Sec-Fetch-Dest: document' -H 'Sec-Fetch-Mode: navigate' -H 'Sec-Fetch-Site: none' -H 'Sec-Fetch-User: ?1' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36' -H 'sec-ch-ua: \"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\"' -H 'sec-ch-ua-mobile: ?0' -H 'sec-ch-ua-platform: \"Linux\"' --insecure";
             exec($curl, $output, $result_code);
             $result = implode("\n", $output);
             $headerEnd = strpos($result, "<!DOCTYPE");
@@ -284,7 +283,7 @@ class SurveyTemplate implements CommandInterface
             $hiddenInputs = implode(" ", $cookies);
             $sc = implode("; ", $sessionCookies);
             $p = implode("&", $parameters);
-            $curl = str_replace("==", "%3D%3D", "curl '{$this->getSrc($language)}' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' -H 'Accept-Language: en-US,en;q=0.9' -H 'Cache-Control: max-age=0' -H 'Connection: keep-alive' -H 'Content-Type: application/x-www-form-urlencoded' -b '{$sc}' -H 'Origin: {$this->getRootUrl()}' -H 'Referer: {$this->getSrc($language)}' -H 'Sec-Fetch-Dest: document' -H 'Sec-Fetch-Mode: navigate' -H 'Sec-Fetch-Site: same-origin' -H 'Sec-Fetch-User: ?1' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36' -H 'sec-ch-ua: \"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\"' -H 'sec-ch-ua-mobile: ?0' -H 'sec-ch-ua-platform: \"Linux\"' --data-raw '{$p}' --insecure");
+            $curl = str_replace("==", "%3D%3D", "curl '{$this->getSrc()}' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' -H 'Accept-Language: en-US,en;q=0.9' -H 'Cache-Control: max-age=0' -H 'Connection: keep-alive' -H 'Content-Type: application/x-www-form-urlencoded' -b '{$sc}' -H 'Origin: {$this->getRootUrl()}' -H 'Referer: {$this->getSrc()}' -H 'Sec-Fetch-Dest: document' -H 'Sec-Fetch-Mode: navigate' -H 'Sec-Fetch-Site: same-origin' -H 'Sec-Fetch-User: ?1' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36' -H 'sec-ch-ua: \"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\"' -H 'sec-ch-ua-mobile: ?0' -H 'sec-ch-ua-platform: \"Linux\"' --data-raw '{$p}' --insecure");
             exec($curl, $output, $result_code);
             $result = implode("\n", $output);
         }
@@ -321,7 +320,8 @@ class SurveyTemplate implements CommandInterface
             'hiddenInputs' => $hiddenInputs,
             'head' => $h,
             'beginScripts' => $bes,
-            'bottomScripts' => $bos
+            'bottomScripts' => $bos,
+            'curl' => $curl
         ];
     }
 
@@ -353,7 +353,7 @@ class SurveyTemplate implements CommandInterface
         foreach ($additional as $k => $v) {
             $additionalParameters[] = $k . "=" . $v;
         }
-        $url = $this->getRootUrl() . self::ENDPOINT . $this->surveyId;
+        $url = $this->getRootUrl() . self::ENDPOINT . $this->surveyId . "?lang={$this->language}";
         return "
             <div id='beginScripts' class='script-container'></div>
             <div id='limesurvey-{$additional['container_id']}'></div>
