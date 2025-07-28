@@ -119,10 +119,10 @@ class SurveyTemplate implements CommandInterface
             $response['subtitle'] = $languageSettings->surveyls_description;
         }
         if ($this->js) {
-            $this->embed->displayWrapper(false)->setStructure($this->getJavascript());
+            $this->embed->setStructure($this->getJavascript());
         } elseif ($this->isPreview) {
             $result = $this->getTemplateData($language);
-            $this->embed->setStructure($result);
+            $this->embed->displayWrapper(true)->setStructure($result);
         } else {
             $surveyResult = $this->getSurveyResult($language);
             $this->embed->setStructure($surveyResult['form']);

@@ -103,6 +103,6 @@ abstract class BaseEmbed
      */
     public function render(string $placeholder = "PLACEHOLDER")
     {
-        return $this->wrapper ? $this->getStructure() : str_replace($placeholder, $this->getStructure(), $this->getWrapper($placeholder));
+        return $this->wrapper ? str_replace($placeholder, $this->getStructure(), $this->getWrapper($placeholder)) : $this->getStructure();
     }
 }

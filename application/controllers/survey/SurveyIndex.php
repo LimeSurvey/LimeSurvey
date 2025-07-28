@@ -97,7 +97,7 @@ class SurveyIndex extends CAction
         $canPreviewSurvey = $this->canUserPreviewSurvey($surveyid);
 
         if ($redata['popuppreview'] && !$canPreviewSurvey) {
-            $message = gT("We are sorry but you don't have permissions to do this.", 'unescaped');
+            $message = gT(json_encode([$redata['popuppreview'], !$canPreviewSurvey]), 'unescaped');
             if (Permission::model()->getUserId()) {
                 throw new CHttpException(403, $message);
             }
