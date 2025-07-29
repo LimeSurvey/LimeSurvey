@@ -1806,9 +1806,9 @@ function copyFromOneTableToTheOther($source, $destination, $preserveIDs = false)
         from information_schema.columns a
         join information_schema.columns b
         on {$filter} and
-           a.TABLE_NAME = '" . $destination . "' and
-           b.TABLE_NAME = '" . $source . "' and
-           a.COLUMN_NAME = b.COLUMN_NAME
+          a.TABLE_NAME = '" . $destination . "' and
+          b.TABLE_NAME = '" . $source . "' and
+          a.COLUMN_NAME = b.COLUMN_NAME
     ";
     if (!$preserveIDs) {
         $command .= " where a.COLUMN_NAME not in ('id', 'tid')";
@@ -1818,7 +1818,40 @@ function copyFromOneTableToTheOther($source, $destination, $preserveIDs = false)
     foreach ($rawResults as $rawResult) {
         $columns[] = Yii::app()->db->quoteColumnName($rawResult['cname']);
     }
-    return count($columns) ? Yii::app()->db->createCommand("INSERT INTO " . Yii::app()->db->quoteTableName($destination) . "(" . implode(",", $columns) . ") SELECT " . implode(",", $columns) . " FROM " . Yii::app()->db->quoteTableName($source))->execute() : 0;
+    $timings = count($columns) ? Yii::app()->db->createCommand("INSERT INTO " . Yii::app()->db->quoteTableName($destination) . "(" . implode(",", $columns) . ") SELECT " . implode(",", $columns) . " FROM " . Yii::app()->db->quoteTableName($source))->execute() : 0;
+    if ((!$preserveIDs) && (strpos($destination, 'timings') !== false)) {
+        $oldResponsesTable = str_replace('_timings', '', $source);
+        $command = "
+            SELECT t1.id as rid, t2.id as tid
+            FROM {$oldResponsesTable} t1
+            LEFT JOIN {$source} t2
+            ON t1.id = t2.id
+            order by t1.id
+        ";
+        $newResponsesTable = str_replace('_timings', '', $destination);
+        $rawResults = Yii::app()->db->createCommand($command)->queryAll();
+        $offset = 0;
+        foreach ($rawResults as $rawResult) {
+            if (intval($rawResult['tid']) > 0) {
+                $responseidresult = Yii::app()->db->createCommand()
+                ->select('id ')
+                ->from($newResponsesTable)
+                ->limit(1, $offset)
+                ->query()
+                ->readAll();
+                $newID = $responseidresult[0]['id'];
+                $oldID = $offset + 1;
+                $command = "
+                    UPDATE {$destination}
+                    SET id = {$newID}
+                    WHERE id = {$oldID}
+                ";
+                Yii::app()->db->createCommand($command)->execute();
+            }
+            $offset++;
+        }
+    }
+    return $timings;
 }
 
 /**

@@ -46,7 +46,7 @@
                     </div>
                     <div class="box-widget-card-text">
                         <div class="box-widget-card-date">
-                            <?= $item['survey']->getLastModifiedDate() ?>
+                            <?= $item['survey']->creationdate ?>
                         </div>
                         <div class="box-widget-card-status">
                             <?= $item['survey']->getRunning() ?>
