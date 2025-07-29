@@ -176,6 +176,12 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                     </div>
                 </div>
                 <?php
+                } else if (($oSurvey->access_mode === 'C') || $oSurvey->getIsAllowRegister()) {
+                    echo CHtml::form(array("admin/tokens/sa/index/surveyid/{$oSurvey->sid}"), 'post', ['style' => 'display: contents;']);
+                    ?>
+                    <input type="button" onclick="$.post('<?php echo Yii::app()->createUrl("admin/tokens/sa/startfromscratch/surveyId/" . $oSurvey->sid); ?>', { createtable: 'Y', redirect: 'N' }).done(function (data) { window.location.reload(); });" value="<?php eT("Start from scratch"); ?>" class="btn btn-outline-secondary">
+                    <?php
+                    echo CHtml::endForm();
                 }
                 ?>
         <?php endif;?>
