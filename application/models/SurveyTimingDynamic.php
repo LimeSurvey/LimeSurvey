@@ -99,7 +99,7 @@ class SurveyTimingDynamic extends LSActiveRecord
                 ->queryRow();
             if ($queryAvg['count']) {
                 $statistics['avgmin'] = (int) ($queryAvg['avg'] / 60);
-                $statistics['avgsec'] = $queryAvg['avg'] % 60;
+                $statistics['avgsec'] = ((int)$queryAvg['avg']) % 60;
                 $statistics['count'] = $queryAvg['count'];
                 $queryAll = Yii::app()->db->createCommand()
                     ->select("interviewtime")
