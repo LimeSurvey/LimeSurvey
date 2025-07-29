@@ -42,7 +42,7 @@
             <!-- @todo : move htmlblock at the good place -->
             <ul id="sortable-choice-{{qId}}" class="sortable-choice sortable-list list-group">
                 {% for ansrow in  answers %}
-                    <li id="javatbd{{rankingName}}{{ansrow.code}}" class="ls-choice list-group-item answer-item sortable-item grabable sortable-enable" data-value="{{ansrow.code}}">
+                    <li id="javatbd{{rankingName}}_R{{ansrow.aid}}" class="ls-choice list-group-item answer-item sortable-item grabable sortable-enable" data-value="{{ansrow.code}}">
                         {{ processString(ansrow.answer) }}
                         <span class="grabable selector__dragHandle d-none float-end">
                             <svg class="" width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">

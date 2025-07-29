@@ -542,21 +542,11 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 continue;
             }
 
-            list($oldcsid, $oldcgid, $oldqidanscode) = explode("X", (string) $insertdata["cfieldname"], 3);
-
-            if ($oldcgid != $oldgid) {
-                // this means that the condition is in another group (so it should not have to be been exported -> skip it
-                continue;
-            }
+            $oldqidanscode = $insertdata["cfieldname"];
 
             unset($insertdata["cid"]);
 
-            // recreate the cfieldname with the new IDs
-            if (preg_match("/^\+/", $oldcsid)) {
-                $newcfieldname = '+' . $iNewSID . "X" . $newgid . "X" . $insertdata["cqid"] . substr($oldqidanscode, strlen((string) $iOldQID));
-            } else {
-                $newcfieldname = $iNewSID . "X" . $newgid . "X" . $insertdata["cqid"] . substr($oldqidanscode, strlen((string) $iOldQID));
-            }
+            $newcfieldname = $oldqidanscode;
 
             $insertdata["cfieldname"] = $newcfieldname;
             if (trim((string) $insertdata["method"]) == '') {
@@ -1356,7 +1346,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             // Step 4 - import the timings file - if exists
             Yii::app()->db->schema->refresh();
             foreach ($files as $filename) {
-                if (pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lsi' && tableExists("survey_{$aImportResults['newsid']}_timings")) {
+                if (pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lsi' && tableExists("timings_{$aImportResults['newsid']}")) {
                     $aTimingsImportResults = XMLImportTimings(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename, $aImportResults['newsid'], $aImportResults['FieldReMap']);
                     $aImportResults = array_merge($aTimingsImportResults, $aImportResults);
                     unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename);
@@ -1467,7 +1457,7 @@ function polyfillSUBSTRING_INDEX($driver) {
                 COST 5;')->execute();
         break;
         case 'mssql':
-            case 'sqlsrv':
+        case 'sqlsrv':
                 Yii::app()->db->createCommand(
     <<<EOD
     IF OBJECT_ID('dbo.SUBSTRING_INDEX') IS NOT NULL
@@ -1520,9 +1510,9 @@ function generateTemporaryTableCreate(string $source, string $destination, int $
             CREATE TEMPORARY TABLE {$destination}
             SELECT *
             FROM (
-                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
-                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
-                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
+                SELECT CASE
+                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' THEN SUBSTRING(SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2)
+                       END AS qid,
                        temp.COLUMN_NAME
                 FROM information_schema.columns temp
                 WHERE temp.TABLE_SCHEMA = DATABASE() AND 
@@ -1536,9 +1526,9 @@ function generateTemporaryTableCreate(string $source, string $destination, int $
             AS
             SELECT *
             FROM (
-                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
-                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
-                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
+                SELECT CASE
+                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' THEN SUBSTRING(SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2)
+                       END AS qid,
                        temp.COLUMN_NAME
                 FROM information_schema.columns temp
                 WHERE temp.TABLE_CATALOG = current_database() AND 
@@ -1553,9 +1543,9 @@ function generateTemporaryTableCreate(string $source, string $destination, int $
             SELECT *
             INTO {$destination}
             FROM (
-                SELECT dbo.SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
-                       dbo.SUBSTRING_INDEX(SUBSTRING(temp.COLUMN_NAME, 2 + LEN(dbo.SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1)), 2000), 'X', 1) AS gid,
-                       SUBSTRING(temp.COLUMN_NAME, charindex('X', temp.COLUMN_NAME, (charindex('X', temp.COLUMN_NAME, 1))+1) + 1, 2000) AS qidsuffix,
+                SELECT CASE
+                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' THEN SUBSTRING(dbo.SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2, 3000)
+                       END AS qid,
                        temp.COLUMN_NAME
                 FROM information_schema.columns temp
                 WHERE temp.TABLE_CATALOG = db_name() AND
@@ -1603,20 +1593,12 @@ function generateTemporaryTableDrop(string $name, int $sid)
 function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
 {
     $sourceTables = [
-        Yii::app()->db->tablePrefix . "survey_" . $sid,
-        Yii::app()->db->tablePrefix . "survey_" . $sid,
-        Yii::app()->db->tablePrefix . "survey_" . $sid,
-        Yii::app()->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
-        Yii::app()->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
-        Yii::app()->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
+        Yii::app()->db->tablePrefix . "responses_" . $sid,
+        Yii::app()->db->tablePrefix . "old_responses_{$sid}_{$sTimestamp}",
     ];
     $destinationTables = [
         'new_s_c',
-        'new_parent1',
-        'new_parent2',
         'old_s_c',
-        'old_parent1',
-        'old_parent2'
     ];
     Yii::app()->db->createCommand(implode("\n\n", generateTemporaryTableCreates($sourceTables, $destinationTables, $sid)))->execute();
     $command = "";
@@ -1629,144 +1611,42 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
         JOIN " . Yii::app()->db->tablePrefix . "questions new_q
         ON old_q.qid = new_q.qid AND old_q.type = new_q.type
         JOIN new_s_c
-        ON new_s_c.sid = new_q.sid AND
-           new_s_c.gid = new_q.gid AND
-           new_s_c.qidsuffix like concat(new_q.qid, '%')
+        ON new_s_c.qid = new_q.qid
         JOIN old_s_c
-        ON old_s_c.sid = old_q.sid AND
-           old_s_c.gid = old_q.gid AND
-           old_s_c.qidsuffix LIKE CONCAT(old_q.qid, '%') AND
-           old_s_c.qidsuffix = new_s_c.qidsuffix
-        LEFT JOIN new_parent1
-        ON new_s_c.sid = new_parent1.sid AND
-           new_s_c.gid = new_parent1.gid AND
-           new_s_c.qidsuffix <> new_parent1.qidsuffix AND
-           new_parent1.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
-        LEFT JOIN new_parent2
-        ON new_s_c.sid = new_parent2.sid AND
-           new_s_c.gid = new_parent2.gid AND
-           new_s_c.qidsuffix <> new_parent2.qidsuffix AND new_parent1.qidsuffix <> new_parent2.qidsuffix AND
-           new_parent2.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
-        LEFT JOIN old_parent1
-        ON old_s_c.sid = old_parent1.sid AND
-           old_s_c.gid = old_parent1.gid AND
-           old_s_c.qidsuffix <> old_parent1.qidsuffix AND
-           old_parent1.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
-        LEFT JOIN old_parent2
-           ON old_s_c.sid = old_parent2.sid AND
-              old_s_c.gid = old_parent2.gid AND
-              old_s_c.qidsuffix <> old_parent2.qidsuffix AND old_parent1.qidsuffix <> old_parent2.qidsuffix AND
-              old_parent2.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
-        WHERE (new_parent2.sid IS NULL) AND
-              (old_parent2.sid IS NULL) AND
-              (((new_parent1.sid IS NULL) AND (old_parent1.sid IS NULL)) OR
-               (
-                (new_parent1.sid = old_parent1.sid) AND
-                (new_parent1.gid = old_parent1.gid) AND
-                (new_parent1.qidsuffix = old_parent1.qidsuffix)
-               )
-              )
+        ON old_s_c.COLUMN_NAME = new_s_c.COLUMN_NAME
         ;
         "
         ;
         break;
         case 'pgsql':
-            $command = "
-            SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
-            FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
-            JOIN " . Yii::app()->db->tablePrefix . "questions new_q
-            ON old_q.qid = new_q.qid AND old_q.type = new_q.type
-            JOIN new_s_c
-            ON new_s_c.sid::text = new_q.sid::text AND
-               new_s_c.gid::text = new_q.gid::text AND
-               new_s_c.qidsuffix like concat(new_q.qid, '%')
-            JOIN old_s_c
-            ON old_s_c.sid::text = old_q.sid::text AND
-               old_s_c.gid::text = old_q.gid::text AND
-               old_s_c.qidsuffix LIKE CONCAT(old_q.qid, '%') AND
-               old_s_c.qidsuffix = new_s_c.qidsuffix
-            LEFT JOIN new_parent1
-            ON new_s_c.sid = new_parent1.sid AND
-               new_s_c.gid = new_parent1.gid AND
-               new_s_c.qidsuffix <> new_parent1.qidsuffix AND
-               new_parent1.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
-            LEFT JOIN new_parent2
-            ON new_s_c.sid = new_parent2.sid AND
-               new_s_c.gid = new_parent2.gid AND
-               new_s_c.qidsuffix <> new_parent2.qidsuffix AND new_parent1.qidsuffix <> new_parent2.qidsuffix AND
-               new_parent2.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
-            LEFT JOIN old_parent1
-            ON old_s_c.sid = old_parent1.sid AND
-               old_s_c.gid = old_parent1.gid AND
-               old_s_c.qidsuffix <> old_parent1.qidsuffix AND
-               old_parent1.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
-            LEFT JOIN old_parent2
-               ON old_s_c.sid = old_parent2.sid AND
-                  old_s_c.gid = old_parent2.gid AND
-                  old_s_c.qidsuffix <> old_parent2.qidsuffix AND old_parent1.qidsuffix <> old_parent2.qidsuffix AND
-                  old_parent2.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
-            WHERE (new_parent2.sid IS NULL) AND
-                  (old_parent2.sid IS NULL) AND
-                  (((new_parent1.sid IS NULL) AND (old_parent1.sid IS NULL)) OR
-                   (
-                    (new_parent1.sid = old_parent1.sid) AND
-                    (new_parent1.gid = old_parent1.gid) AND
-                    (new_parent1.qidsuffix = old_parent1.qidsuffix)
-                   )
-                  )
-            ;
-            "
-            ;
+        $command = "
+        SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
+        FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
+        JOIN " . Yii::app()->db->tablePrefix . "questions new_q
+        ON old_q.qid = new_q.qid AND old_q.type = new_q.type
+        JOIN new_s_c
+        ON new_s_c.qid::text = new_q.qid::text
+        JOIN old_s_c
+        ON old_s_c.COLUMN_NAME = new_s_c.COLUMN_NAME
+        ;
+        "
+        ;
         break;
         case 'mssql':
         case 'sqlsrv':
-            $command = "
-            SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
-                    FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
-                    JOIN " . Yii::app()->db->tablePrefix . "questions new_q
-                    ON old_q.qid = new_q.qid AND old_q.type = new_q.type
-                    JOIN new_s_c_{$sid} new_s_c
-                    ON new_s_c.sid = convert(nvarchar(255), new_q.sid) AND
-                       new_s_c.gid = convert(nvarchar(255), new_q.gid) AND
-                       new_s_c.qidsuffix like concat(new_q.qid, '%')
-                    JOIN old_s_c_{$sid} old_s_c
-                    ON old_s_c.sid = convert(nvarchar(255), old_q.sid) AND
-                       old_s_c.gid = convert(nvarchar(255), old_q.gid) AND
-                       old_s_c.qidsuffix LIKE CONCAT(old_q.qid, '%') AND
-                       old_s_c.qidsuffix = new_s_c.qidsuffix
-                    LEFT JOIN new_parent1_{$sid} new_parent1
-                    ON new_s_c.sid = new_parent1.sid AND
-                       new_s_c.gid = new_parent1.gid AND
-                       new_s_c.qidsuffix <> new_parent1.qidsuffix AND
-                       new_parent1.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
-                    LEFT JOIN new_parent2_{$sid} new_parent2
-                    ON new_s_c.sid = new_parent2.sid AND
-                       new_s_c.gid = new_parent2.gid AND
-                       new_s_c.qidsuffix <> new_parent2.qidsuffix AND new_parent1.qidsuffix <> new_parent2.qidsuffix AND
-                       new_parent2.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
-                    LEFT JOIN old_parent1_{$sid} old_parent1
-                    ON old_s_c.sid = old_parent1.sid AND
-                       old_s_c.gid = old_parent1.gid AND
-                       old_s_c.qidsuffix <> old_parent1.qidsuffix AND
-                       old_parent1.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
-                    LEFT JOIN old_parent2_{$sid} old_parent2
-                       ON old_s_c.sid = old_parent2.sid AND
-                          old_s_c.gid = old_parent2.gid AND
-                          old_s_c.qidsuffix <> old_parent2.qidsuffix AND old_parent1.qidsuffix <> old_parent2.qidsuffix AND
-                          old_parent2.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
-                    WHERE (new_parent2.sid IS NULL) AND
-                          (old_parent2.sid IS NULL) AND
-                          (((new_parent1.sid IS NULL) AND (old_parent1.sid IS NULL)) OR
-                           (
-                            (new_parent1.sid = old_parent1.sid) AND
-                            (new_parent1.gid = old_parent1.gid) AND
-                            (new_parent1.qidsuffix = old_parent1.qidsuffix)
-                           )
-                          )
-            ;            
-            "
-            ;
-            break;
+        $command = "
+        SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
+        FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
+        JOIN " . Yii::app()->db->tablePrefix . "questions new_q
+        ON old_q.qid = new_q.qid AND old_q.type = new_q.type
+        JOIN new_s_c_{$sid} new_s_c
+        ON new_s_c.qid = new_q.qid
+        JOIN old_s_c_{$sid} old_s_c
+        ON old_s_c.COLUMN_NAME = new_s_c.COLUMN_NAME
+        ;
+        "
+        ;
+        break;
     }
 
     $rawResults = Yii::app()->db->createCommand($command)->queryAll();
@@ -1834,7 +1714,7 @@ function getDeactivatedArchives($sid)
         (SELECT n, TABLE_NAME
         FROM information_schema.tables
         JOIN (
-            SELECT 'survey' AS n
+            SELECT 'responses' AS n
             UNION
             SELECT 'tokens' AS n
             UNION
@@ -1843,7 +1723,7 @@ function getDeactivatedArchives($sid)
             SELECT 'questions' AS n
         ) t
         ON TABLE_SCHEMA = DATABASE() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
-        ((n <> 'survey') OR (TABLE_NAME NOT LIKE '%timings%'))
+        ((n <> 'responses') OR (TABLE_NAME NOT LIKE '%timings%'))
         ORDER BY TABLE_NAME) t
         GROUP BY n;
         ";
@@ -1855,7 +1735,7 @@ function getDeactivatedArchives($sid)
         (SELECT n, TABLE_NAME
         FROM information_schema.tables
         JOIN (
-            SELECT 'survey' AS n
+            SELECT 'responses' AS n
             UNION
             SELECT 'tokens' AS n
             UNION
@@ -1864,7 +1744,7 @@ function getDeactivatedArchives($sid)
             SELECT 'questions' AS n
         ) t
         ON TABLE_CATALOG = current_database() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
-        ((n <> 'survey') OR (TABLE_NAME NOT LIKE '%timings%'))
+        ((n <> 'responses') OR (TABLE_NAME NOT LIKE '%timings%'))
         ORDER BY TABLE_NAME) t
         GROUP BY n;
             "
@@ -1878,7 +1758,7 @@ function getDeactivatedArchives($sid)
         (SELECT n, TABLE_NAME
         FROM information_schema.tables
         JOIN (
-            SELECT 'survey' AS n
+            SELECT 'responses' AS n
             UNION
             SELECT 'tokens' AS n
             UNION
@@ -1887,7 +1767,7 @@ function getDeactivatedArchives($sid)
             SELECT 'questions' AS n
         ) t
         ON TABLE_CATALOG = db_name() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
-        ((n <> 'survey') OR (TABLE_NAME NOT LIKE '%timings%'))
+        ((n <> 'responses') OR (TABLE_NAME NOT LIKE '%timings%'))
         ) t
         GROUP BY n;
         "
@@ -1993,9 +1873,9 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
     $targetSchema = SurveyDynamic::model($surveyId)->getTableSchema();
     $encryptedAttributes = Response::getEncryptedAttributes($surveyId);
     if ((App()->db->tablePrefix) && (strpos($archivedResponseTableName, App()->db->tablePrefix) === 0)) {
-        $tbl_name = str_replace('old_survey', 'old_tokens', substr($archivedResponseTableName, strlen(App()->db->tablePrefix)));
+        $tbl_name = str_replace('old_responses', 'old_tokens', substr($archivedResponseTableName, strlen(App()->db->tablePrefix)));
     } else {
-        $tbl_name = str_replace('old_survey', 'old_tokens', $archivedResponseTableName);
+        $tbl_name = str_replace('old_responses', 'old_tokens', $archivedResponseTableName);
     }
     $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name, 'tbl_type' => 'response']);
     $archivedEncryptedAttributes = [];
@@ -2004,7 +1884,7 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
     }
     $archivedResponses = new CDataProviderIterator(new CActiveDataProvider($pluginDynamicArchivedResponseModel), 500);
 
-    $tableName = "{{survey_$surveyId}}";
+    $tableName = "{{responses_$surveyId}}";
     $importedResponses = 0;
     $batchData = [];
     foreach ($archivedResponses as $archivedResponse) {
@@ -2069,13 +1949,13 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
         }
         if (count($batchData) % 500 === 0) {
             if ($preserveIDs) {
-                switchMSSQLIdentityInsert("survey_$surveyId", true);
+                switchMSSQLIdentityInsert("responses_$surveyId", true);
             }
             $builder = App()->db->getCommandBuilder();
             $command = $builder->createMultipleInsertCommand($tableName, $batchData);
             $importedResponses += $command->execute();
             if ($preserveIDs) {
-                switchMSSQLIdentityInsert("survey_$surveyId", false);
+                switchMSSQLIdentityInsert("responses_$surveyId", false);
             }
             $batchData = [];
         }
@@ -2085,13 +1965,13 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
 
     if (count($batchData)) {
         if ($preserveIDs) {
-            switchMSSQLIdentityInsert("survey_$surveyId", true);
+            switchMSSQLIdentityInsert("responses_$surveyId", true);
         }
         $builder = App()->db->getCommandBuilder();
         $command = $builder->createMultipleInsertCommand($tableName, $batchData);
         $importedResponses += $command->execute();
         if ($preserveIDs) {
-            switchMSSQLIdentityInsert("survey_$surveyId", false);
+            switchMSSQLIdentityInsert("responses_$surveyId", false);
         }
     }
     return $importedResponses;
@@ -2494,6 +2374,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     // We have to run the question table data two times - first to find all main questions
     // then for subquestions (because we need to determine the new qids for the main questions first)
     $aQuestionsMapping = array(); // collect all old and new question codes for replacement
+    $oldQIDGIDMap = [];
     /** @var Question[] */
     $importedQuestions = [];
     if (isset($xml->questions)) {
@@ -2521,6 +2402,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $insertdata['sid'] = $iNewSID;
             $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
             $iOldQID = $insertdata['qid']; // save the old qid
+            $oldQIDGIDMap[$iOldQID] = $iOldGID;
             unset($insertdata['qid']);
 
             // now translate any links
@@ -2604,7 +2486,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
 
             // question codes in format "38612X105X3011" are collected for replacing
-            $aQuestionsMapping[$iOldSID . 'X' . $iOldGID . 'X' . $iOldQID] = $iNewSID . 'X' . $oQuestion->gid . 'X' . $oQuestion->qid;
+            $aQuestionsMapping['Q' . $iOldQID] = 'Q' . $oQuestion->qid;
         }
     }
 
@@ -2633,6 +2515,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $insertdata['sid'] = $iNewSID;
             $insertdata['gid'] = $aGIDReplacements[(int) $insertdata['gid']];
             $iOldQID = (int) $insertdata['qid'];
+            $iOldParentQID = $insertdata['parent_qid'];
+            $oldQIDGIDMap[$iOldGID] = $iOldQID;
             unset($insertdata['qid']); // save the old qid
             $insertdata['parent_qid'] = $aQIDReplacements[(int) $insertdata['parent_qid']]; // remap the parent_qid
             if (!isset($insertdata['help'])) {
@@ -2698,6 +2582,20 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $importedSubQuestions[$aQIDReplacements[$iOldQID]] = $oQuestion;
             }
 
+            if (($scaleID = intval($insertdata['scale_id'])) > 0) {
+                $keys = array_keys($aQuestionsMapping);
+                foreach ($keys as $key) {
+                    if (strpos($aQuestionsMapping[$key], "Q" . $insertdata['parent_qid'] . "_") === 0) {
+                        $parts = explode("_", $aQuestionsMapping[$key]);
+                        if (count($parts) === $scaleID + 1) {
+                            $aQuestionsMapping[$key . "_S" . $iOldQID] = $aQuestionsMapping[$key] . "_S" . $oQuestion->qid;
+                        }
+                    }
+                }
+            } else {
+                $aQuestionsMapping['Q' . array_search($insertdata['parent_qid'], $aQIDReplacements) . '_S' . $iOldQID] = 'Q' . $oQuestion->parent_qid . '_S' . $oQuestion->qid;
+            }
+
             // If translate links is disabled, check for old links.
             // We only do it here if the XML doesn't have a question_l10ns section.
             if (!$bTranslateInsertansTags && !isset($xml->question_l10ns->rows->row)) {
@@ -2743,7 +2641,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
 
             // question codes in format "38612X105X3011" are collected for replacing
-            $aQuestionsMapping[$iOldSID . 'X' . $iOldGID . 'X' . $iOldQID . $oQuestion->title] = $iNewSID . 'X' . $oQuestion->gid . 'X' . $oQuestion->qid . $oQuestion->title;
+            if (!empty($oQuestion->parentqid)) {
+                $aQuestionsMapping['Q' . array_search($oQuestion->parent_qid, $aQIDReplacements) . '_S' . $iOldQID] = 'Q' . $oQuestion->parent_qid . '_S' . $oQuestion->qid;
+            }
             $oQuestionL10n = new QuestionL10n();
             $oQuestionL10n->setAttributes($insertdata, false);
             $oQuestionL10n->save();
@@ -2825,7 +2725,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $results['answers']++;
             if (isset($oAnswerL10n)) {
                 $oAnswer = Answer::model()->findByAttributes(['qid' => $insertdata['qid'], 'code' => $insertdata['code'], 'scale_id' => $insertdata['scale_id']]);
-                if (isset($oAnswer->aid)) {
+                if ($oAnswer && isset($oAnswer->aid)) {
                     $oAnswerL10n->aid = $oAnswer->aid;
                 }
                 $oAnswerL10n->save();
@@ -2966,6 +2866,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         }
     }
 
+
     // Import defaultvalues ------------------------------------------------------
     importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results);
 
@@ -2990,16 +2891,15 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 // a problem with this answer record -> don't consider
                 continue;
             }
-            if ($insertdata['cqid'] != 0) {
+            if (($insertdata['cqid'] != 0) && (!(is_array($insertdata['cqid']) && empty($insertdata['cqid'])))) {
                 if (isset($aQIDReplacements[$insertdata['cqid']])) {
                     $oldcqid = $insertdata['cqid']; //Save for cfield transformation
+                    $oldcgid = $oldQIDGIDMap[$oldcqid];
                     $insertdata['cqid'] = $aQIDReplacements[$insertdata['cqid']]; // remap the qid
                 } else {
                     // a problem with this answer record -> don't consider
                     continue;
                 }
-
-                list($oldcsid, $oldcgid, $oldqidanscode) = explode("X", (string) $insertdata["cfieldname"], 3);
 
                 // replace the gid for the new one in the cfieldname(if there is no new gid in the $aGIDReplacements array it means that this condition is orphan -> error, skip this record)
                 if (!isset($aGIDReplacements[$oldcgid])) {
@@ -3010,21 +2910,39 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             unset($insertdata["cid"]);
 
             // recreate the cfieldname with the new IDs
-            if ($insertdata['cqid'] != 0) {
-                if (preg_match("/^\+/", $oldcsid)) {
-                    $newcfieldname = '+' . $iNewSID . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] . substr($oldqidanscode, strlen((string) $oldcqid));
-                } else {
-                    $newcfieldname = $iNewSID . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] . substr($oldqidanscode, strlen((string) $oldcqid));
-                }
-            } else {
-                // The cfieldname is a not a previous question cfield but a {XXXX} replacement field
-                $newcfieldname = $insertdata["cfieldname"];
-            }
-            $insertdata["cfieldname"] = $newcfieldname;
             if (trim((string) $insertdata["method"]) == '') {
                 $insertdata["method"] = '==';
             }
 
+            if (!empty($insertdata['cfieldname'])) {
+                if (!isset($aQuestionsMapping[$insertdata['cfieldname']])) {
+                    $parts = explode('X', $insertdata['cfieldname']);
+                    $qid = null;
+                    $idCandidate = $parts[2];
+                    $search = true;
+                    $knownFieldName = null;
+                    $theQ = null;
+                    while ($search && strlen($idCandidate)) {
+                        foreach ($aQuestionsMapping as $key => $value) {
+                            if (($key === "Q{$idCandidate}") || (strpos($key, "Q{$idCandidate}_") !== false)) {
+                                $qid = substr(explode("_", $value)[0], 1);
+                                $theQ = Question::model()->findByPk($qid);
+                                $theQuestions = Question::model()->findAll(['condition' => "sid = {$theQ->sid} and gid = {$theQ->gid} and {$theQ->qid} in (qid, parent_qid)"]);
+                                $knownFieldName = "{$theQ->sid}X{$theQ->gid}X{$theQ->qid}" . substr($parts[2], strlen($idCandidate));
+                                $search = false;
+                            }
+                        }
+                        if ($search) {
+                            $idCandidate = substr($idCandidate, 0, strlen($idCandidate) - 1);
+                        }
+                    }
+                    if ($qid) {
+                        $insertdata['cfieldname'] = getFieldName(Yii::app()->db->tablePrefix . "responses_" . $theQ->sid, $knownFieldName, $theQuestions, $theQ->sid, $theQ->gid);
+                    }
+                } else {
+                    $insertdata['cfieldname'] = $aQuestionsMapping[$insertdata['cfieldname']];
+                }
+            }
             // Now process the value and replace @sgqa@ codes
             if (preg_match("/^@(.*)@$/", (string) $insertdata["value"], $cfieldnameInCondValue)) {
                 if (isset($aOldNewFieldmap[$cfieldnameInCondValue[1]])) {
@@ -3415,7 +3333,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
     Yii::app()->loadHelper('database');
     $survey = Survey::model()->findByPk($iSurveyID);
 
-    switchMSSQLIdentityInsert('survey_' . $iSurveyID, true);
+    switchMSSQLIdentityInsert('responses_' . $iSurveyID, true);
     $results = [];
     $results['responses'] = 0;
 
@@ -3482,7 +3400,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
         }
         $oXMLReader->close();
 
-        switchMSSQLIdentityInsert('survey_' . $iSurveyID, false);
+        switchMSSQLIdentityInsert('responses_' . $iSurveyID, false);
         if (Yii::app()->db->getDriverName() == 'pgsql') {
             try {
                 Yii::app()->db->createCommand("SELECT pg_catalog.setval(pg_get_serial_sequence('" . $survey->responsesTableName . "', 'id'), (SELECT MAX(id) FROM " . $survey->responsesTableName . "))")->execute();
@@ -3720,7 +3638,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
             $oTransaction = Yii::app()->db->beginTransaction();
             try {
                 if (isset($oSurvey->id) && !is_null($oSurvey->id)) {
-                    switchMSSQLIdentityInsert('survey_' . $iSurveyId, true);
+                    switchMSSQLIdentityInsert('responses_' . $iSurveyId, true);
                     $bSwitched = true;
                 }
                 if ($oSurvey->encryptSave()) {
@@ -3741,7 +3659,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                     $aResponsesError[] = $aResponses[$iIdResponsesKey];
                 }
                 if (isset($bSwitched) && $bSwitched == true) {
-                    switchMSSQLIdentityInsert('survey_' . $iSurveyId, false);
+                    switchMSSQLIdentityInsert('responses_' . $iSurveyId, false);
                     $bSwitched = false;
                 }
             } catch (Exception $oException) {
@@ -3757,10 +3675,10 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     // mysql dot need fix, but what for mssql ?
     // Do a model function for this can be a good idea (see activate_helper/activateSurvey)
     if (Yii::app()->db->driverName == 'pgsql') {
-        $sSequenceName = Yii::app()->db->getSchema()->getTable("{{survey_{$iSurveyId}}}")->sequenceName;
+        $sSequenceName = Yii::app()->db->getSchema()->getTable("{{responses_{$iSurveyId}}}")->sequenceName;
         $iActualSerial = Yii::app()->db->createCommand("SELECT last_value FROM  {$sSequenceName}")->queryScalar();
         if ($iActualSerial < $iMaxId) {
-            $sQuery = "SELECT setval(pg_get_serial_sequence('{{survey_{$iSurveyId}}}', 'id'),{$iMaxId},false);";
+            $sQuery = "SELECT setval(pg_get_serial_sequence('{{responses_{$iSurveyId}}}', 'id'),{$iMaxId},false);";
             try {
                 Yii::app()->db->createCommand($sQuery)->execute();
             } catch (Exception $oException) {
@@ -3820,7 +3738,7 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
     if (!isset($xml->timings->rows)) {
         return $results;
     }
-    switchMSSQLIdentityInsert('survey_' . $iSurveyID . '_timings', true);
+    switchMSSQLIdentityInsert('timings_' . $iSurveyID, true);
     foreach ($xml->timings->rows->row as $row) {
         $insertdata = array();
 
@@ -3840,7 +3758,7 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 
         $results['responses']++;
     }
-    switchMSSQLIdentityInsert('survey_' . $iSurveyID . '_timings', false);
+    switchMSSQLIdentityInsert('timings_' . $iSurveyID, false);
     return $results;
 }
 

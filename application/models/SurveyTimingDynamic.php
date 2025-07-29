@@ -78,7 +78,7 @@ class SurveyTimingDynamic extends LSActiveRecord
     /** @inheritdoc */
     public function tableName()
     {
-        return '{{survey_' . intval(self::$sid) . '_timings}}';
+        return '{{timings_' . intval(self::$sid) . '}}';
     }
 
     /**
@@ -94,7 +94,7 @@ class SurveyTimingDynamic extends LSActiveRecord
             $queryAvg = Yii::app()->db->createCommand()
                 ->select("AVG(interviewtime) AS avg, COUNT(*) as count")
                 ->from($this->tableName() . " t")
-                ->join("{{survey_{$sid}}} s", "t.id = s.id")
+                ->join("{{responses_{$sid}}} s", "t.id = s.id")
                 ->where("s.submitdate IS NOT NULL")
                 ->queryRow();
             if ($queryAvg['count']) {
@@ -104,7 +104,7 @@ class SurveyTimingDynamic extends LSActiveRecord
                 $queryAll = Yii::app()->db->createCommand()
                     ->select("interviewtime")
                     ->from($this->tableName() . " t")
-                    ->join("{{survey_{$sid}}} s", "t.id = s.id")
+                    ->join("{{responses_{$sid}}} s", "t.id = s.id")
                     ->where("s.submitdate IS NOT NULL")
                     ->order("t.interviewtime")
                     ->queryAll();
@@ -172,7 +172,7 @@ class SurveyTimingDynamic extends LSActiveRecord
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
         $oCriteria = new CdbCriteria();
-        $oCriteria->join = "INNER JOIN {{survey_{$iSurveyID}}} s ON t.id=s.id";
+        $oCriteria->join = "INNER JOIN {{responses_{$iSurveyID}}} s ON t.id=s.id";
         $oCriteria->condition = 'submitdate IS NOT NULL';
         $oCriteria->order = "s.id " . (Yii::app()->request->getParam('order') == 'desc' ? 'desc' : 'asc');
         //$oCriteria->offset = $start;
