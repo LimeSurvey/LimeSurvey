@@ -34,6 +34,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.15.4 (build 250710) to 6.15.5 (build 250724) July 24, 2025
+-Fixed issue: Applied a11y instruction that is not programmatically associated and other accessibility fixes (#4322) (Anblik Audit Team)
+-Fixed issue #CT-1333: Ensured that the old activate screen sets the access mode in the new manner (#4366) (lajosarpad)
+-Fixed issue #20183: Fixed the closed and opened access mode appearance (#4370) (lajosarpad)
+-Fixed issue #20180: Double escaping bug (#4374) (Gabriel Jenik)
+-Fixed issue #20159: Modal content not shown inside a modal but as a page itself with no style (#4360) (Gabriel Jenik)
+-Fixed issue #20037: Equation screen for subquestions - Wrong toggle, open/close reacts on every field (#4368) (Gabriel Jenik)
+-Fixed issue #19894: Calling "__tostring" method on a SimpleXMLElement (#4369) (Gabriel Jenik)
+#Updated translation: Slovak by brcino, jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Luxembourgish by yvilug
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.15.3 (build 250708) to 6.15.4 (build 250710) July 10, 2025
 +New feature: Email type header is added to any sent emails to better identify bounced emails (Carsten Schmitz)
 +New feature #QE-1454: question with image (#4314) (Tim Willig)
