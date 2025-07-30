@@ -83,7 +83,7 @@ class TFAYubikeyOtpHelper
 
             switch ($status) {
                 case 'BAD_OTP':
-                    $this->setLastError(gT("The OTP is invalid format."));
+                    $this->setLastError(gT("The OTP has an invalid format."));
                     break;
                 case 'BAD_SIGNATURE':
                     $this->setLastError(gT("The HMAC signature verification failed."));
@@ -92,19 +92,19 @@ class TFAYubikeyOtpHelper
                     $this->setLastError(gT("The request lacks a parameter."));
                     break;
                 case 'NO_SUCH_CLIENT':
-                    $this->setLastError(gT("The request id does not exist."));
+                    $this->setLastError(gT("The request ID does not exist."));
                     break;
                 case 'OPERATION_NOT_ALLOWED':
-                    $this->setLastError(gT("The request id is not allowed to verify OTPs."));
+                    $this->setLastError(gT("The request ID is not allowed to verify OTPs."));
                     break;
                 case 'BACKEND_ERROR':
-                    $this->setLastError(gT("Unexpected error in YubiClud server."));
+                    $this->setLastError(gT("Unexpected error in YubiCloud server."));
                     break;
                 case 'NOT_ENOUGH_ANSWERS':
-                    $this->setLastError(gT("Server could not get requested number of syncs during before timeout"));
+                    $this->setLastError(gT("Server could not get the requested number of syncs before timeout."));
                     break;
                 case 'REPLAYED_REQUEST':
-                    $this->setLastError(gT("Server has seen the OTP/Nonce combination before"));
+                    $this->setLastError(gT("Server has seen the OTP/nonce combination before"));
                     break;
                 case 'REPLAYED_OTP':
                     // We should only get here if $this->allowReplayedOtp is false.

@@ -76,7 +76,7 @@ $config['defaultlang']               = 'en'; // The default language to use - th
 $config['timeadjust']                = 0; // Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
 
 $config['maxdumpdbrecords']          = 500; // The maximum number of records that would be ouput in one go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
-$config['maxdbsizeforbackup']        = 0; // The maximum database size in MB that is backed up up by ComfortUpdate - 0 for no limit
+$config['maxdbsizeforbackup']        = 0; // The maximum database size in MB that is backed up up by ComfortUpdate - 0 means that the default will be determined by the ComfortUpdate server (currently 50 MB)
 $config['allowexportalldb']          = 0; // Default 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported (use carefully)
 $config['maxDatabaseSizeForDump']    = 256; // Maximum database size in megabytes to be able to download without errors
 
@@ -852,6 +852,21 @@ $config['registrationEmailDelay'] = '1 hour';
 
 // Participants token sanitizing rules as regex pattern
 $config['allowedcharacters_pattern_token'] = '/[^0-9a-zA-Z_\-~]/';
+
+// List of reverse proxy IP addresses
+// If the instance is behind a reverse proxy, the IP addresses of the reverse proxy should be listed in this setting
+// in order to be able to detect the real client IP address. Works together with "reverseProxyIpHeader" setting.
+$config['reverseProxyIpAddresses'] = [];
+
+// Name of the header that contains the client IP address in case the instance is behind a reverse proxy.
+// Works together with "reverseProxyIpAddresses" setting.
+$config['reverseProxyIpHeader'] = 'HTTP_X_FORWARDED_FOR';
+
+// Allow unserializing (with PHP unserialize function) token attributes when importing or reading a survey object
+// Since LimeSurvey 3, token attributes data is saved as JSON. If you use an older survey file and need to get token attributes, you must enable this setting.
+// Warning: Unserialization can result in code being loaded and executed due to object instantiation and autoloading, and a malicious user may be able to exploit this.
+// @see https://www.php.net/unserialize
+$config['allow_unserialize_attributedescriptions'] = false;
 
 return $config;
 //settings deleted

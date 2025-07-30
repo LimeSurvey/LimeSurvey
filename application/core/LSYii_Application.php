@@ -341,11 +341,11 @@ class LSYii_Application extends CWebApplication
     /**
      * Get the pluginManager
      *
-     * @return PluginManager
+     * @return \LimeSurvey\PluginManager\PluginManager
      */
-    public function getPluginManager()
+    public function getPluginManager(): \LimeSurvey\PluginManager\PluginManager
     {
-        /** @var PluginManager $pluginManager */
+        /** @var \LimeSurvey\PluginManager\PluginManager $pluginManager */
         $pluginManager = $this->getComponent('pluginManager');
         return $pluginManager;
     }
@@ -403,7 +403,7 @@ class LSYii_Application extends CWebApplication
      */
     public function onException($event)
     {
-        (new AppErrorHandler)->onException($this->dbVersion, $event);
+        (new AppErrorHandler())->onException($this->dbVersion, $event);
     }
 
     /**
@@ -414,7 +414,7 @@ class LSYii_Application extends CWebApplication
      */
     public function onError($event)
     {
-        (new AppErrorHandler)->onError($this->dbVersion, $event);
+        (new AppErrorHandler())->onError($this->dbVersion, $event);
     }
 
     /**
@@ -514,7 +514,7 @@ class LSYii_Application extends CWebApplication
      * @inheritdoc
      * Special handling for SEO friendly URLs
      */
-    public function createController($route, $owner=null)
+    public function createController($route, $owner = null)
     {
         $controller = parent::createController($route, $owner);
 
@@ -536,6 +536,9 @@ class LSYii_Application extends CWebApplication
     {
         $route = ltrim($route, "/");
         $alias = explode("/", $route)[0];
+        /* Remove all non printable see mantis #20090 */
+        /* @see https://stackoverflow.com/a/66587087 for regexp source */
+        $alias = preg_replace('/[^\PCc^\PCn^\PCs]/u','', $alias);
         if (empty($alias)) {
             return null;
         }
@@ -591,4 +594,5 @@ class LSYii_Application extends CWebApplication
             'lifetime' => $lifetime
         ]);
     }
+
 }

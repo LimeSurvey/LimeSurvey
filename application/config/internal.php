@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -186,7 +188,7 @@ $internalConfig = array(
                     'levels' => 'trace, info, error, warning',
                     'logFile' => 'plugin.log',
                     'categories' => 'plugin.*'  // The category will be the name of the plugin
-                )
+                ),
             )
         ),
         'cache' => array(
@@ -360,6 +362,8 @@ $internalConfig = array(
                     'Survey'                            =>  array("getAllLanguages", "localizedtitle"),
                     'LSHttpRequest'                     =>  array("getParam"),
                     'LSCaptcha'                          =>  array("renderOut"),
+                    'TemplateConfiguration'             =>  array("__toString"),
+                    'SimpleXMLElement'                  =>  array("__toString"),
                 ),
                 'properties' =>  array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),

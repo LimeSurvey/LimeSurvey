@@ -37,7 +37,35 @@ function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; 
 // register to global scope
 window.bootstrap = Bootstrap;
 
-},{"../../../node_modules/bootstrap/dist/js/bootstrap.esm.js":11}],2:[function(require,module,exports){
+},{"../../../node_modules/bootstrap/dist/js/bootstrap.esm.js":12}],2:[function(require,module,exports){
+"use strict";
+
+var A11yHandles = {
+  handleTooltip: function handleTooltip() {
+    document.body.addEventListener('keydown', function (e) {
+      if (e.key == 'Escape') {
+        console.log('Escape key pressed');
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (tooltipTriggerEl) {
+          var tooltip = bootstrap.Tooltip.getInstance(tooltipTriggerEl);
+          tooltip.hide();
+        });
+      }
+    });
+  },
+  handleTitle: function handleTitle() {
+    var existingTitle = document.title;
+    var heading = document.querySelector('h1.group-title');
+    if (heading) {
+      document.title = existingTitle + ' - ' + heading.textContent;
+    }
+  }
+};
+$(document).on('ready pjax:scriptcomplete', function () {
+  A11yHandles.handleTooltip();
+  A11yHandles.handleTitle();
+});
+
+},{}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -268,7 +296,7 @@ var ThemeScripts = exports.ThemeScripts = function ThemeScripts() {
 // register to global scope
 window.ThemeScripts = ThemeScripts;
 
-},{"./old_template_core_class.js":3}],3:[function(require,module,exports){
+},{"./old_template_core_class.js":4}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -450,7 +478,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   window.templateCore.triggerEmClassChangeTemplate();
 });
 
-},{"./old_template_core_pre.js":4}],4:[function(require,module,exports){
+},{"./old_template_core_pre.js":5}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -894,7 +922,7 @@ function activateSoftMandatory() {
   $('#mandatory-soft-alert-box-modal').on('click', function (ev) {
     ev.preventDefault();
     var $form = $('#limesurvey');
-    $form.append('<input type="hidden" name="mandSoft" value="' + $(this).data('movenext') + '" />');
+    $form.find(".ls-mandSoft-checkbox").prop('checked', true);
     $form.find('#ls-button-submit').trigger('click');
     $("#bootstrap-alert-box-modal").modal('hide');
   });
@@ -949,7 +977,7 @@ window.updateMandatoryErrorClass = updateMandatoryErrorClass;
 window.activateSoftMandatory = activateSoftMandatory;
 window.resetQuestionTimers = resetQuestionTimers;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -984,7 +1012,7 @@ var NavbarScripts = exports.NavbarScripts = function NavbarScripts() {
 // register to global scope
 window.NavbarScripts = NavbarScripts;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1015,7 +1043,7 @@ var ArrayScripts = exports.ArrayScripts = function ArrayScripts() {
 // register to global scope
 window.ArrayScripts = ArrayScripts;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /*
     LimeSurvey
     Copyright (C) 2007-2023
@@ -1047,7 +1075,7 @@ window.ArrayScripts = ArrayScripts;
 */
 "use strict";
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -1057,11 +1085,12 @@ var _old_core_theme = _interopRequireDefault(require("./core/old_core_theme.js")
 var _array = _interopRequireDefault(require("./questiontypes/array/array.js"));
 var _navbar = _interopRequireDefault(require("./navbar/navbar.js"));
 var _video = _interopRequireDefault(require("./video/video.js"));
+var _a11yHandles = require("./a11y-handles/a11y-handles.js");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
 
-},{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"./core/old_core_theme.js":2,"./navbar/navbar.js":5,"./questiontypes/array/array.js":6,"./theme_js_disclaimer.js":7,"./video/video.js":9}],9:[function(require,module,exports){
+},{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"./a11y-handles/a11y-handles.js":2,"./core/old_core_theme.js":3,"./navbar/navbar.js":6,"./questiontypes/array/array.js":7,"./theme_js_disclaimer.js":8,"./video/video.js":10}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1098,7 +1127,7 @@ var Video = exports.Video = function Video() {
 window.video = new Video();
 video.fixVideoHeight();
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
  * @popperjs/core v2.11.8 - MIT License
  */
@@ -2696,7 +2725,7 @@ exports.popperGenerator = popperGenerator;
 exports.popperOffsets = popperOffsets$1;
 exports.preventOverflow = preventOverflow$1;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2706,7 +2735,7 @@ exports.Tooltip = exports.Toast = exports.Tab = exports.ScrollSpy = exports.Popo
 var Popper = _interopRequireWildcard(require("@popperjs/core"));
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
-function _superPropGet(t, o, e, r) { var p = _get(_getPrototypeOf(1 & r ? t.prototype : t), o, e); return 2 & r && "function" == typeof p ? function (t) { return p.apply(e, t); } : p; }
+function _superPropGet(t, e, o, r) { var p = _get(_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
 function _get() { return _get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = _superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, _get.apply(null, arguments); }
 function _superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = _getPrototypeOf(t));); return t; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -7402,4 +7431,4 @@ enableDismissTrigger(Toast);
 
 defineJQueryPlugin(Toast);
 
-},{"@popperjs/core":10}]},{},[8]);
+},{"@popperjs/core":11}]},{},[9]);

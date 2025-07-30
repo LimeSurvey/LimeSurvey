@@ -2471,7 +2471,7 @@ textarea.form-control-lg {
 .form-floating > .form-control::placeholder {
   color: transparent;
 }
-.form-floating > .form-control:not(:-moz-placeholder-shown) {
+.form-floating > .form-control:not(:-moz-placeholder) {
   padding-top: 1.625rem;
   padding-bottom: 0.625rem;
 }
@@ -2487,7 +2487,7 @@ textarea.form-control-lg {
   padding-top: 1.625rem;
   padding-bottom: 0.625rem;
 }
-.form-floating > .form-control:not(:-moz-placeholder-shown) ~ label {
+.form-floating > .form-control:not(:-moz-placeholder) ~ label {
   opacity: 0.65;
   transform: scale(0.85) translateY(-0.5rem) translateX(-0.15rem);
 }
@@ -12062,6 +12062,9 @@ Responsive navbar-brand image CSS
 #survey-nav .navbar-toggler .ri-more-fill {
   font-size: 1.92375rem;
 }
+#survey-nav .navbar-toggler:focus {
+  box-shadow: none;
+}
 #survey-nav #main-dropdown {
   min-width: 250px;
   overflow-y: auto;
@@ -15000,6 +15003,11 @@ html, body {
 }
 .form-change-lang #language-changer-select:focus-visible {
   outline: none;
+}
+.form-change-lang #language-changer-select:focus {
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 4px;
 }
 .form-change-lang .ls-language-changer-item {
   display: none;

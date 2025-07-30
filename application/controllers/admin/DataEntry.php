@@ -361,8 +361,7 @@ class DataEntry extends SurveyCommonAction
             $responseErrors = [];
             $sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
             /* @var boolean preserveIDs */
-            $preserveIDs = boolval(App()->getRequest()->getPost('preserveIDs'));
-
+            $preserveIDs = (bool)App()->getRequest()->getPost('preserveIDs');
             foreach ($sourceResponses as $sourceResponse) {
                 $iOldID = $sourceResponse->id;
                 // Using plugindynamic model because I dont trust surveydynamic.
