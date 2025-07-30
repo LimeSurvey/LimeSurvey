@@ -590,14 +590,16 @@ class SurveyAdministrationController extends LSBaseController
             if ($newSurvey) {
                 //create examlpe group and example question
                 $iNewGroupID = $this->createSampleGroup($newSurvey->sid);
-                $this->createSampleQuestion($newSurvey->sid, $iNewGroupID);
+                $iNewQuestionID = $this->createSampleQuestion($newSurvey->sid, $iNewGroupID);
 
-                $redirecturl = $this->createUrl(
-                    'surveyAdministration/view/',
-                    ['iSurveyID' => $newSurvey->sid]
+                Yii::app()->setFlashMessage(gT("Your new survey was created. We also created a first question group and an example question for you."), 'info');
+                $redirectUrl = $this->getSurveyAndSidemenueDirectionURL(
+                    $newSurvey->sid,
+                    $iNewGroupID,
+                    $iNewQuestionID,
+                    'structure'
                 );
-
-                $this->redirect($redirecturl);
+                $this->redirect($redirectUrl);
             } else {
                 Yii::app()->setFlashMessage(gT("Survey could not be created."), 'error');
                 $this->redirect(Yii::app()->request->urlReferrer);
