@@ -1437,6 +1437,7 @@ class TemplateManifest extends TemplateConfiguration
                 $aOptions['optionAttributes'][$key]['rows'] = !empty($option['rows']) ? (string)$option['rows'] : '4';
                 $aOptions['optionAttributes'][$key]['options'] = !empty($option['options']) ? (string)$option['options'] : '';
                 $aOptions['optionAttributes'][$key]['optionlabels'] = !empty($option['optionlabels']) ? (string)$option['optionlabels'] : '';
+                $aOptions['optionAttributes'][$key]['optionimages'] = !empty($option['optionimages']) ? (string)$option['optionimages'] : '';
                 $aOptions['optionAttributes'][$key]['parent'] = !empty($option['parent']) ? (string)$option['parent'] : '';
 
                 if (!empty($option->dropdownoptions)) {

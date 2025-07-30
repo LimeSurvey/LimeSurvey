@@ -17050,6 +17050,22 @@ body {
   margin-bottom: 4px;
 }
 
+.btn.cornerradius_0::before {
+  content: url(../images/cornerradius_0.svg);
+}
+
+.btn.cornerradius_4::before {
+  content: url(../images/cornerradius_4.svg);
+}
+
+.btn.cornerradius_20::before {
+  content: url(../images/cornerradius_20.svg);
+}
+
+.btn.cornerradius_20::before svg path {
+  stroke: red;
+}
+
 /*
  * btn-xs was removed from Bootstrap 4.
  * @see https://stackoverflow.com/questions/33911049/btn-xs-no-longer-a-valid-option-in-bootstrap-4
@@ -17662,8 +17678,6 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 .create-menu-item {
   width: 222px;
-  margin-right: 12px;
-  margin-left: 12px;
   border: 1px solid #fff;
 }
 .create-menu-item:hover {

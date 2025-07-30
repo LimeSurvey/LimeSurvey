@@ -145,29 +145,39 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                 <?php
                                 $optionsValues = !empty($attribute['options']) ? explode('|', $attribute['options']) : [];
                                 $optionLabels = !empty($attribute['optionlabels']) ? explode('|', $attribute['optionlabels']) : [];
+                                // images are loaded through a css class injection
+                                $optionImages = !empty($attribute['optionimages']) ? explode('|', $attribute['optionimages']) : [];
                                 $options = array_combine($optionsValues, $optionLabels);
+                                foreach ($optionsValues as $optionKey => $optionSettings) {
+                                    $imageClass = $optionImages[$optionKey] ?? '';
+                                    $options[$optionSettings] = [
+                                        'value' => $optionLabels[$optionKey],
+                                        'image' => $imageClass,
+                                    ];
+                                }
                                 if ($bInherit && isset($sParentOption)) {
-                                    $options['inherit'] = $sParentOption . " ᴵ";
+                                    $options['inherit']['value'] = $sParentOption . " ᴵ";
+                                    $options['inherit']['image'] = $options[$sParentOption]['image'] . " ᴵ";
                                 }
                                 if ($bInherit && isset($sParentOption)) {
                                     if (is_numeric($sParentOption) && array_key_exists($sParentOption, $options)) {
-                                        $sParentLabelOption = $options[$sParentOption];
-                                        $options['inherit'] = gT($sParentLabelOption) . " ᴵ";
+                                        $sParentLabelOption = $options[$sParentOption]['value'];
+                                        $options['inherit']['value'] = gT($sParentLabelOption) . " ᴵ";
                                     } else {
-                                        $sParentOption = !empty($options[$sParentOption]) ? gT($options[$sParentOption]) : '';
-                                        $options['inherit'] = $sParentOption . " ᴵ";
+                                        $sParentOption = !empty($options[$sParentOption]['value']) ? gT($options[$sParentOption]['value']) : '';
+                                        $options['inherit']['value'] = $sParentOption . " ᴵ";
                                     }
                                 }
                                 ?>
                                 <!-- buttons type -->
                                 <div class="col-12">
                                     <div class="btn-group" role="group">
-                                        <?php foreach ($options as $optionKey => $optionValue) : ?>
+                                        <?php foreach ($options as $optionKey => $optionSettings) : ?>
                                             <?php $id = $attributeKey . "_" . $optionKey; ?>
                                             <input id="<?= $id ?>" type="radio" name="<?= $attributeKey ?>" value="<?= $optionKey ?>"
                                                    class="btn-check selector_option_radio_field simple_edit_options_<?= $attributeKey ?>"/>
-                                            <label for="<?= $id ?>" class="btn btn-outline-secondary">
-                                                <?= gT($optionValue) ?>
+                                            <label for="<?= $id ?>" class="btn btn-outline-secondary <?= $optionSettings['image'] ?>">
+                                                <?= gT($optionSettings['value']) ?>
                                             </label>
                                         <?php endforeach; ?>
                                     </div>
