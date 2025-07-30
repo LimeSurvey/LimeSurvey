@@ -174,8 +174,19 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
             // Switch to German tab.
             self::$webDriver->executeScript("window.scrollTo(0, 0);");  // Scroll to top because otherwise the tabs may be hidden under the topbar
             sleep(2);
-            $germanTab = self::$webDriver->findElement(WebDriverBy::partialLinkText('German'));
+            // Make sure the language tabs are visible and click on German tab
+            $germanTab = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::partialLinkText('German')
+                )
+            );
             $germanTab->click();
+
+            // Wait a moment for tab content to load
+            sleep(1);
+
+            // Ensure the German input field is visible before interacting with it
+            self::$webDriver->executeScript("document.getElementById('group_name_de').scrollIntoView(true);");
 
             // Edit group name in German
             $groupNameGerman = self::$webDriver->wait(10)->until(WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::id('group_name_de')));
