@@ -13,7 +13,6 @@
                     'name' => 'importsurvey',
                     'class' => '',
                     'enctype' => 'multipart/form-data',
-                    'onsubmit' => 'return window.LS.validatefilename(this,"' . gT('Please select a file to import!', 'js') . '");'
                 )
             ); ?>
             <?php
@@ -29,7 +28,6 @@
                         <label class='form-label ' >
                             <?php printf(gT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024); ?>
                         </label>
-
                         <div class="upload-container">
                             <label><b><?php eT("Select or drop a file here"); ?></b></label>
                             <label for="fileUpload" class="upload-label" id="drop_zone">
@@ -41,15 +39,7 @@
                                     name="the_file"
                                     class="form-control upload-input"
                                     accept='.lss,.lsa,.tsv,.txt'
-                                    required
-                                />
-                                <input
-                                    type="hidden"
-                                    id="dropFile"
-                                    name="dropFile"
-                                    class="form-control"
-                                    accept='.lss,.lsa,.tsv,.txt'
-                                    required
+                                    onchange="$('#import-submit').attr('disabled', false).attr('data-bs-toggle', false);"
                                 />
                             </label>
                         </div>

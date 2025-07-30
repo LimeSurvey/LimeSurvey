@@ -3,9 +3,6 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     //full area where files can be dragged and dropped
     const dropZone = document.getElementById('drop_zone');
 
-    //the hidden input field for dropped files
-    const inputFieldDropFile = document.getElementById('dropFile');
-
     //the normal way to upload files for importing a survey
     const inputFieldFile = document.getElementById('fileUpload');
 
@@ -22,10 +19,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     inputFieldFile.addEventListener('change', function(event) {
         const files = event.target.files; // This is a FileList object
         for (const file of files) {
-            console.log('File name:', file.name);
             changeTextAfterFileIsChanged(file.name);
-            //console.log('File size:', file.size);
-            //console.log('File type:', file.type);
         }
     });
 
@@ -39,11 +33,9 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         const dataTransfer = new DataTransfer();
         for (const file of droppedFiles) {
             dataTransfer.items.add(file);
+            changeTextAfterFileIsChanged(file.name);
         }
-
-        // Assign files to the hidden input
-        inputFieldDropFile.files = dataTransfer.files;
-
+        inputFieldFile.files = dataTransfer.files;
     }
 
     //to prevent to just open file content in new tab
@@ -53,6 +45,18 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 
     dropZone.addEventListener('drop', (event ) => {
         dropHandler(event);
+    });
+
+    $('#import-submit').on('submit', function() {
+        //Check input fields are filled
+        //check file ending
+        if(inputFieldFile.files.length === 0 && inputFieldDropFile.files.length === 0) {
+            textField.textContent = 'No file selected';
+            return false;
+        }
+
+        // submit form here
+        return true;
     });
 
 });
