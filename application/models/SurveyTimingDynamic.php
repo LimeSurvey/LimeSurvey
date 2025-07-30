@@ -117,7 +117,7 @@ class SurveyTimingDynamic extends LSActiveRecord
                 }
                 $statistics['median'] = $median;
                 $statistics['allmin'] = (int) ($median / 60);
-                $statistics['allsec'] = $median % 60;
+                $statistics['allsec'] = ((int)$median) % 60;
             } else {
                 $statistics['count'] = 0;
             }
