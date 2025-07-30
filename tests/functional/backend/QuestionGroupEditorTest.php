@@ -94,6 +94,7 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
             $germanTab->click();
 
             // Edit group name in German
+            sleep(2);
             $groupNameGerman = self::$webDriver->wait(10)->until(WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::id('group_name_de')));
             $groupNameGerman->clear()->sendKeys("German name");
 
