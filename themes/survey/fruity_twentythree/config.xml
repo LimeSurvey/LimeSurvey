@@ -75,6 +75,7 @@
     <!-- for animations, see https://daneden.github.io/animate.css/ -->
     <!-- for checkbox icons, use the Unicode of the charcter (eg: http://fontawesome.io/icon/check/ is f00c ) -->
     <options>
+        <!-- simple options -->
         <hideprivacyinfo type="buttons" category="Simple options" width="4" title="Hide privacy info" options="on|off"
                          optionlabels="Yes|No">off
         </hideprivacyinfo>
@@ -90,6 +91,29 @@
         <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value"
                     options="enable|partial|disable" optionlabels="Yes|For expression|No">enable
         </fixnumauto>
+        <cornerradius type="buttons" category="Simple options" width="4" title="Corner radius" options="1|2|3" optionlabels=""
+        <!-- colors -->
+        <bodybackgroundcolor type="colorpicker" category="Colors" width="4" title="Background color" options="on|off" optionlabels="Yes|No">#ffffff</bodybackgroundcolor>
+        <fontcolor type="colorpicker" category="Colors" width="4" title="Font color" options="on|off" optionlabels="Yes|No">#444444</fontcolor>
+        <questionbackgroundcolor type="colorpicker" category="Colors" width="4" title="Question background color" options="on|off" optionlabels="Yes|No">#ffffff</questionbackgroundcolor>
+        <checkicon type="icon" category="Colors" width="4" title="Check icon">f00c
+            <!--  When adding new items, please keep them ordered alphabetically -->
+            <dropdownoptions>
+                <option value="f061"> Arrow right </option>
+                <option value="f069"> Asterisk </option>
+                <option value="f00c"> Check </option>
+                <option value="f058"> Check circle </option>
+                <option value="f14a"> Check square </option>
+                <option value="f138"> Chevron circle right </option>
+                <option value="f111"> Circle </option>
+                <option value="f067"> Plus </option>
+                <option value="f1d0"> Resistance </option>
+                <option value="f0c8"> Square </option>
+                <option value="f005"> Star </option>
+                <option value="f00d"> Times </option>
+            </dropdownoptions>
+        </checkicon>
+
         <!-- images -->
         <backgroundimage type="buttons" category="Images" width="4" title="Background image" options="on|off"
                          optionlabels="Yes|No">off
