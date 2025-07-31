@@ -87,6 +87,7 @@ class QuestionThemeTest extends TestBaseClassWeb
     public function testSelectQuestionThemeInQuestionEditor()
     {
         try {
+
             // Import survey with one group and question
             $surveyFile = self::$surveysFolder . '/limesurvey_survey_193959_testSelectQuestionThemeInEditor.lss';
             self::importSurvey($surveyFile);
@@ -104,69 +105,32 @@ class QuestionThemeTest extends TestBaseClassWeb
             );
             $web->get($url);
 
-            // Hide breadcrumb
-            self::$webDriver->executeScript("document.querySelector('.title-bar-breadcrumb').style.display = 'none';");
-            sleep(1);
-
-            // Wait for the button to be present in the DOM
-            $button = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::id('trigger_questionTypeSelector_button')
-                )
-            );
-
-            // Make sure it's visible and scroll it into view
-            self::$webDriver->executeScript("document.getElementById('trigger_questionTypeSelector_button').scrollIntoView(false);");
-            sleep(1);
+            $button = $web->findById('questionEditorButton');
             $button->click();
-            sleep(1);
 
-            // Scroll to top to make sure the question type groups are visible
-            self::$webDriver->executeScript("window.scrollTo(0, 0);");
-            sleep(1);
+            // Select question theme
+            $button = $web->findById('trigger_questionTypeSelector_button');
+            $button->click();
 
-            // Find the Mask questions group and ensure it's visible before clicking
-            $group = $web->findElement(WebDriverBy::xpath("//button[contains(@class, 'accordion-button') and contains(text(),'Mask questions')]"));
-            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", [$group]);
-            sleep(1);
+            $group = $web->findElement(WebDriverBy::xpath("//*[contains(text(),'Mask questions')]"));
             $group->click();
-            sleep(1);
 
-            // Find and click the Range Slider option
-            $question = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::partialLinkText('Range Slider')
-                )
-            );
-            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", [$question]);
-            sleep(1);
+            $question = $web->findByPartialLinkText('Range Slider');
             $question->click();
 
-            // Click the select button
-            $button = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::id('selector__select-this-questionTypeSelector')
-                )
-            );
-            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", [$button]);
-            sleep(1);
+            $button = $web->findById('selector__select-this-questionTypeSelector');
             $button->click();
             sleep(1);
 
-            // Scroll to the bottom to find the Custom options section
             self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
             sleep(2);
 
-            // Click on the Custom options collapse button
             $button = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::id('button-collapse-Custom_options')
                 )
             );
-            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", [$button]);
-            sleep(1);
             $button->click();
-            sleep(1);
 
             // Check that all custom attributes are displayed
             $themeDir = \Yii::app()->getConfig('userquestionthemerootdir') . '/Range-Slider';
@@ -194,20 +158,16 @@ class QuestionThemeTest extends TestBaseClassWeb
             }
             $this->assertEquals(16, $found, 'Found exactly 10 customer options');
 
-            // Add values to custom attributes - ensure inputs are visible
+            // Add values to custom attributes
             $name = 'advancedSettings[custom options][range_slider_min]';
             $input = $web->findByName($name);
-            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", [$input]);
             $input->clear()->sendKeys('1');
 
             $name = 'advancedSettings[custom options][range_slider_max]';
             $input = $web->findByName($name);
-            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", [$input]);
             $input->clear()->sendKeys('10');
 
-            // Scroll to top for the save button
             self::$webDriver->executeScript('window.scrollTo(0,0);');
-            sleep(1);
 
             // Save question
             $button = self::$webDriver->wait(10)->until(
@@ -215,10 +175,8 @@ class QuestionThemeTest extends TestBaseClassWeb
                     WebDriverBy::cssSelector('#save-button-create-question')
                 )
             );
-            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", [$button]);
-            sleep(1);
             $button->click();
-            sleep(2);
+            sleep(1);
 
             // Check database
             $rangeSliderMin = QuestionAttribute::model()->findByAttributes(
