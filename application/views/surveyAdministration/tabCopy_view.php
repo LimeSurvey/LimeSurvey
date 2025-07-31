@@ -7,7 +7,7 @@
     <div class="grow-10 ls-space padding left-10 right-10">
         <!-- copy survey form -->
         <?php echo CHtml::form(array('surveyAdministration/copy'), 'post', array('id'=>'copysurveyform', 'name'=>'copysurveyform', 'class'=>'form30 row')); ?>
-            <div class="col-4">
+            <div class="col-md-4">
                 <!-- Select survey -->
                 <label for='copysurveylist' class=" form-label"><?php  eT("Select survey to copy:"); ?> </label>
                 <select id='copysurveylist' name='copysurveylist' required="required" class="form-select activate-search">
@@ -33,7 +33,7 @@
                             <?= gT("If the new survey ID is already used, a random one will be assigned."); ?> </span>
                 <!-- Submit -->
                 <div class="mt-3">
-                    <input type='submit' class='btn btn-primary col-6' value='<?php eT("Copy survey"); ?>' />
+                    <input type='submit' class='btn btn-primary w-auto' value='<?php eT("Copy survey"); ?>' />
                     <?php if (isset($surveyid)) echo '<input type="hidden" name="sid" value="' . $surveyid . '" />'; ?>
                 </div>
             </div>

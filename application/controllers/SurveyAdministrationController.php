@@ -2911,7 +2911,7 @@ class SurveyAdministrationController extends LSBaseController
         $oQuestion = new Question();
         $oQuestion->sid = $iSurveyID;
         $oQuestion->gid = $iGroupID;
-        $oQuestion->type = Question::QT_M_MULTIPLE_CHOICE;
+        $oQuestion->type = Question::QT_T_LONG_FREE_TEXT;
         $oQuestion->title = 'Q00';
         $oQuestion->mandatory = 'N';
         $oQuestion->relevance = '1';
