@@ -2329,7 +2329,6 @@ class SurveyAdministrationController extends LSBaseController
 
         if (!$aData['bFailed'] && isset($aImportResults)) {
             $aData['aImportResults'] = $aImportResults;
-            //todo: why do we need the action in the view file here? $aData['action'] = $action;
             if (isset($aImportResults['newsid'])) {
                 // Set link pointing to survey administration overview. This link will be updated if the survey has groups
                 $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $aImportResults['newsid']]);
@@ -2430,7 +2429,6 @@ class SurveyAdministrationController extends LSBaseController
 
         if (!$aData['bFailed'] && isset($aImportResults)) {
             $aData['aImportResults'] = $aImportResults;
-            // todo: check where in the following view this is necessary $aData['action'] = $action;
             if (isset($aImportResults['newsid'])) {
                 // Set link pointing to survey administration overview. This link will be updated if the survey has groups
                 $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $aImportResults['newsid']]);
