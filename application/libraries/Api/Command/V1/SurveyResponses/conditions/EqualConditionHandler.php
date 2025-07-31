@@ -14,14 +14,31 @@ class EqualConditionHandler implements HandlerInterface
         return false;
     }
 
-    public function execute(string $key, string $value): object
+    public function execute(string|array $key, string $value): object
     {
-        $key = preg_replace('/[^a-zA-Z0-9_-]/', '', $key);
-        $key = App()->db->quoteColumnName($key);
-
         $criteria = new \CDbCriteria();
-        $criteria->addColumnCondition([$key => $value]);
+
+        if (is_array($key)) {
+            $conditions = [];
+
+            foreach ($key as $rawKey) {
+                $sanitizedKey = preg_replace('/[^a-zA-Z0-9_-]/', '', $rawKey);
+                $quotedKey = App()->db->quoteColumnName($sanitizedKey);
+                $conditions[] = "$quotedKey = :value";
+            }
+
+            $criteria->condition = implode(' OR ', $conditions);
+            $criteria->params = [':value' => $value];
+
+            return $criteria;
+        }
+
+        $sanitizedKey = preg_replace('/[^a-zA-Z0-9_-]/', '', $key);
+        $quotedKey = App()->db->quoteColumnName($sanitizedKey);
+
+        $criteria->addColumnCondition([$quotedKey => $value]);
 
         return $criteria;
     }
+
 }

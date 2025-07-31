@@ -6,6 +6,7 @@ use GuzzleHttp\HandlerStack;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\EqualConditionHandler;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\ContainConditionHandler;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\MultiSelectConditionHandler;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\NullConditionHandler;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\RangeConditionHandler;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\DateRangeConditionHandler;
 
@@ -13,6 +14,7 @@ class FilterPatcher
 {
     private array $handlers = [];
     private array $filtersRequiredKeys = ['key', 'filterMethod', 'value'];
+    private array $sortAllowedKeys = ['id', 'submitDate'];
 
     public function __construct()
     {
@@ -26,7 +28,9 @@ class FilterPatcher
     {
         $sort->defaultOrder = "id ASC";
         if (!empty($filterParams['sort'])) {
-            foreach ($filterParams['sort'] as $column => $order) {
+            $sortParams = array_intersect_key($filterParams['sort'], array_flip($this->sortAllowedKeys));
+
+            foreach ($sortParams as $column => $order) {
                 $op = (new SortingHandler());
                 $key = $this->findMapKeyByValue($column, $dataMap);
                 if ($op->canHandle($order)) {
@@ -49,9 +53,24 @@ class FilterPatcher
                 foreach ($this->handlers as $handler) {
                     $op = (new $handler());
                     $filterType = $filterParam['filterMethod'];
-                    $key = $this->findMapKeyByValue($filterParam['key'], $dataMap);
                     if ($op->canHandle($filterType)) {
-                        $new_criteria = $op->execute($key, $filterParam['value']);
+                        $key = is_string($filterParam['key'])
+                            ? $this->findMapKeyByValue($filterParam['key'], $dataMap)
+                            : $filterParam['key'];
+                        $value = $filterParam['value'];
+
+                        // special case since 'completed' is returned in the responses and calculated on the fly,
+                        if ($key === 'completed') {
+                            $key = 'submitDate';
+                            $value = 'IS' . ($value === 'true' ? ' NOT ' : ' ') . 'NULL';
+                        }
+
+                        // check for null values
+                        $new_criteria = (new NullConditionHandler())->execute($key, $value);
+                        if (!$new_criteria->condition) {
+                            $new_criteria = $op->execute($key, $value);
+                        }
+
                         $criteria->mergeWith($new_criteria);
                     }
                 }

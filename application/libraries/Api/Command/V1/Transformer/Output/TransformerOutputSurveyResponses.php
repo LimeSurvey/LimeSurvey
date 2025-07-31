@@ -39,10 +39,6 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
      */
     public function transform($data = [], $options = []): array
     {
-        if ($data !== null) {
-            $data = $data->getData();
-        }
-
         $responses = [];
         if ($data !== null) {
             foreach ($data as $surveyResponse) {

@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Libraries\Api\Command\V1;
 
+use CDbException;
 use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
 use Permission;
@@ -69,19 +70,26 @@ class SurveyResponses implements CommandInterface
             $model = $this->getSurveyDynamicModel($request);
             [$criteria, $sort] = $this->buildCriteria($request);
             $pagination = $this->buildPagination($request);
+                $dataProvider = new \LSCActiveDataProvider(
+                    $model,
+                    array(
+                        'sort' => $sort,
+                        'criteria' => $criteria,
+                        'pagination' => $pagination,
+                    )
+                );
 
-            $dataProvider = new \LSCActiveDataProvider(
-                $model,
-                array(
-                    'sort' => $sort,
-                    'criteria' => $criteria,
-                    'pagination' => $pagination,
-                )
-            );
+            try {
+                $result = $dataProvider->getData();
+            } catch (CDbException $e) {
+                // Since questions keys are column, if there's an invalid key sent,
+                // an exception will be thrown which will result in an error 500.
+                throw new TransformerException();
+            }
 
             $data = [];
             $data['responses'] = $this->transformerOutputSurveyResponses->transform(
-                $dataProvider
+                $result
             );
             $data['surveyQuestions'] = $this->getQuestionFieldMap();
             $data['_meta'] = [
@@ -101,7 +109,7 @@ class SurveyResponses implements CommandInterface
 
             return $this->responseFactory->makeSuccess(['responses' => $data]);
         } catch (TransformerException $e) {
-            return $this->responseFactory->makeError('Transformation error');
+            return $this->responseFactory->makeError('Invalid key sent');
         }
     }
 
@@ -192,7 +200,6 @@ class SurveyResponses implements CommandInterface
         $searchParams['filters'] = $request->getData('filters', null);
         $searchParams['sort'] = $request->getData('sort', null);
         $dataMap = $this->transformerOutputSurveyResponses->getDataMap();
-
         $sort = new \CSort();
         $criteria = new \LSDbCriteria();
         $this->responseFilterPatcher->apply(

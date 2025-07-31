@@ -17,7 +17,7 @@ $responsesPatchSchema = (new SchemaFactorySurveyResponsesPatch())->make();
 $rest = [];
 
 $rest['v1/survey-responses/$id'] = [
-    'GET' => [
+    'POST' => [
         'tag' => 'survey',
         'description' => 'Survey responses',
         'commandClass' => SurveyResponses::class,
