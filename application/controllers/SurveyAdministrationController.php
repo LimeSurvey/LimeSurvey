@@ -2291,7 +2291,8 @@ class SurveyAdministrationController extends LSBaseController
                 $copysurveydata,
                 $sNewSurveyName,
                 sanitize_int(App()->request->getParam('copysurveyid'), '1', '999999'),
-                $translateLinks);
+                $translateLinks
+            );
             if (isset($aExcludes['conditions'])) {
                 Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $aImportResults['newsid']);
                 QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $aImportResults['newsid']);
