@@ -2290,10 +2290,7 @@ class SurveyAdministrationController extends LSBaseController
                 '',
                 $copysurveydata,
                 $sNewSurveyName,
-                sanitize_int(App()->request->getParam('copysurveyid'),
-                    '1',
-                    '999999'
-                ),
+                sanitize_int(App()->request->getParam('copysurveyid'), '1', '999999'),
                 $translateLinks);
             if (isset($aExcludes['conditions'])) {
                 Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $aImportResults['newsid']);
@@ -2469,7 +2466,6 @@ class SurveyAdministrationController extends LSBaseController
         }
         $this->aData = $aData;
         $this->render('importSurvey_view', $this->aData);
-
     }
 
 
@@ -2591,7 +2587,8 @@ class SurveyAdministrationController extends LSBaseController
      * @param array $aGrouplist
      * @return void
      */
-    private function resetExpressionManager($oSurvey, $aGrouplist) {
+    private function resetExpressionManager($oSurvey, $aGrouplist)
+    {
         LimeExpressionManager::SetDirtyFlag();
         LimeExpressionManager::singleton();
         // Why this @ !
