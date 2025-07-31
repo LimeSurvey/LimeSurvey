@@ -96,7 +96,7 @@ class SurveyIndex extends CAction
 
         $canPreviewSurvey = $this->canUserPreviewSurvey($surveyid);
 
-        if ($redata['popuppreview'] && !$canPreviewSurvey) {
+        if ($redata['popuppreview'] && !$canPreviewSurvey && (Yii::app()->getConfig('authTemplates', false))) {
             $message = gT("We are sorry but you don't have permissions to do this.", 'unescaped');
             if (Permission::model()->getUserId()) {
                 throw new CHttpException(403, $message);
