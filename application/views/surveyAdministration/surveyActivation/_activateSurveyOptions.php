@@ -48,6 +48,7 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
                 <?php
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'anonymized',
+                    'id' => 'activate_anonymized',
                     'checkedOption' => $aSurveysettings['anonymized'],
                     'selectOptions' => $optionsOnOff
                 ]);
