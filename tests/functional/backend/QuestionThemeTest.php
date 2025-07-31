@@ -104,10 +104,20 @@ class QuestionThemeTest extends TestBaseClassWeb
             );
             $web->get($url);
 
-            // Hide breadcrumb and click the button
+            // Hide breadcrumb
             self::$webDriver->executeScript("document.querySelector('.title-bar-breadcrumb').style.display = 'none';");
             sleep(1);
-            $button = self::$webDriver->findElement(WebDriverBy::id('trigger_questionTypeSelector_button'));
+
+            // Wait for the button to be present in the DOM
+            $button = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::id('trigger_questionTypeSelector_button')
+                )
+            );
+
+            // Make sure it's visible and scroll it into view
+            self::$webDriver->executeScript("document.getElementById('trigger_questionTypeSelector_button').scrollIntoView(false);");
+            sleep(1);
             $button->click();
             sleep(1);
 
