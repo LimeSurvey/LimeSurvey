@@ -106,11 +106,15 @@ class QuestionThemeTest extends TestBaseClassWeb
 
             // Wait for and click the question editor button
             $button = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::id('questionEditorButton')
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::id('trigger_questionTypeSelector_button')
                 )
             );
-            $button->click();
+            // Scroll down a bit to avoid the breadcrumb
+            self::$webDriver->executeScript("window.scrollBy(0, 100);");
+            sleep(1);
+            // Use JavaScript click instead of WebDriver click
+            self::$webDriver->executeScript("arguments[0].click();", [$button]);
             sleep(1);
 
             // Select question theme - ensure button is clickable
