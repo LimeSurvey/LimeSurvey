@@ -104,28 +104,12 @@ class QuestionThemeTest extends TestBaseClassWeb
             );
             $web->get($url);
 
-            // Wait for and click the question editor button
-            $button = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::id('trigger_questionTypeSelector_button')
-                )
-            );
-            // Scroll down a bit to avoid the breadcrumb
-            self::$webDriver->executeScript("window.scrollBy(0, 100);");
+            // Hide breadcrumb and click the button
+            self::$webDriver->executeScript("document.querySelector('.title-bar-breadcrumb').style.display = 'none';");
             sleep(1);
-            // Use JavaScript click instead of WebDriver click
-            self::$webDriver->executeScript("arguments[0].click();", [$button]);
-            sleep(1);
-
-            // Select question theme - ensure button is clickable
-            $button = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::id('trigger_questionTypeSelector_button')
-                )
-            );
-            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", [$button]);
-            sleep(1);
+            $button = self::$webDriver->findElement(WebDriverBy::id('trigger_questionTypeSelector_button'));
             $button->click();
+            sleep(1);
 
             // Scroll to top to make sure the question type groups are visible
             self::$webDriver->executeScript("window.scrollTo(0, 0);");
