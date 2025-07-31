@@ -119,7 +119,7 @@ class QuestionThemeTest extends TestBaseClassWeb
                     WebDriverBy::id('trigger_questionTypeSelector_button')
                 )
             );
-            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", $button);
+            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", [$button]);
             sleep(1);
             $button->click();
 
@@ -129,7 +129,7 @@ class QuestionThemeTest extends TestBaseClassWeb
 
             // Find the Mask questions group and ensure it's visible before clicking
             $group = $web->findElement(WebDriverBy::xpath("//button[contains(@class, 'accordion-button') and contains(text(),'Mask questions')]"));
-            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", $group);
+            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", [$group]);
             sleep(1);
             $group->click();
             sleep(1);
@@ -140,7 +140,7 @@ class QuestionThemeTest extends TestBaseClassWeb
                     WebDriverBy::partialLinkText('Range Slider')
                 )
             );
-            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", $question);
+            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", [$question]);
             sleep(1);
             $question->click();
 
@@ -150,7 +150,7 @@ class QuestionThemeTest extends TestBaseClassWeb
                     WebDriverBy::id('selector__select-this-questionTypeSelector')
                 )
             );
-            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", $button);
+            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", [$button]);
             sleep(1);
             $button->click();
             sleep(1);
@@ -165,7 +165,7 @@ class QuestionThemeTest extends TestBaseClassWeb
                     WebDriverBy::id('button-collapse-Custom_options')
                 )
             );
-            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", $button);
+            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", [$button]);
             sleep(1);
             $button->click();
             sleep(1);
@@ -199,12 +199,12 @@ class QuestionThemeTest extends TestBaseClassWeb
             // Add values to custom attributes - ensure inputs are visible
             $name = 'advancedSettings[custom options][range_slider_min]';
             $input = $web->findByName($name);
-            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", $input);
+            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", [$input]);
             $input->clear()->sendKeys('1');
 
             $name = 'advancedSettings[custom options][range_slider_max]';
             $input = $web->findByName($name);
-            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", $input);
+            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", [$input]);
             $input->clear()->sendKeys('10');
 
             // Scroll to top for the save button
@@ -217,7 +217,7 @@ class QuestionThemeTest extends TestBaseClassWeb
                     WebDriverBy::cssSelector('#save-button-create-question')
                 )
             );
-            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", $button);
+            self::$webDriver->executeScript("arguments[0].scrollIntoView(true);", [$button]);
             sleep(1);
             $button->click();
             sleep(2);
