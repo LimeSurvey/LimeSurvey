@@ -18835,25 +18835,20 @@ input[type=number] {
   width: 100%;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 0px;
 }
 
 .upload-label {
-  width: 704px;
-  height: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border: 2px dashed;
   border-color: #D3D5DA;
-  border-radius: 8px;
+  border-radius: 4px;
   background-color: #fff;
-  padding: 40px;
   cursor: pointer;
   transition: border-color 0.3s;
   text-align: center;
-  height: 150px;
 }
 
 .upload-label:hover {
@@ -18861,16 +18856,12 @@ input[type=number] {
 }
 
 .upload-text {
-  color: #4a5568;
-  font-size: 16px;
+  color: #1E1E1E;
+  font-weight: 400;
 }
 
 .upload-input {
   visibility: hidden;
-}
-
-.import-modal {
-  max-width: 807px !important;
 }
 
 .welcome #lime-logo {

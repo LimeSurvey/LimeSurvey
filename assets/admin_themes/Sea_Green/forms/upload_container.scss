@@ -2,25 +2,20 @@
   width: 100%;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 0px;
 }
 
 .upload-label {
-  width: 704px;
-  height: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border: 2px dashed;
   border-color: $g-400;
-  border-radius: 8px;
+  border-radius: $border-radius;
   background-color: $white;
-  padding: 40px;
   cursor: pointer;
   transition: border-color 0.3s;
   text-align: center;
-  height: 150px;
 }
 
 .upload-label:hover {
@@ -28,14 +23,10 @@
 }
 
 .upload-text {
-  color: #4a5568;
-  font-size: 16px;
+  color: $g-900;
+  font-weight: $font-weight-normal;
 }
 
 .upload-input {
   visibility: hidden;
-}
-
-.import-modal{
-  max-width: 807px !important;
 }

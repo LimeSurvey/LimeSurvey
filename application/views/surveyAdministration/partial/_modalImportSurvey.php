@@ -3,7 +3,7 @@
 ?>
 
 <div id="importSurvey_modal" class="modal fade" role="dialog">
-    <div class="modal-dialog import-modal">
+    <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <?php
@@ -26,7 +26,10 @@
                 <div class="row">
                     <div class="mb-3">
                         <label class='form-label ' >
-                            <?php printf(gT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                            <?php printf(gT(
+                                "Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"),
+                                getMaximumFileUploadSize() / 1024 / 1024
+                            ); ?>
                         </label>
                         <div class="upload-container">
                             <label><b><?php eT("Select or drop a file here"); ?></b></label>
@@ -57,7 +60,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
-                <input type='submit' id="import-submit" class="btn btn-info col-2" value='<?php eT("Import survey"); ?>' />
+                <input type='submit' id="import-submit" class="btn btn-info col-3" value='<?php eT("Import survey"); ?>' />
             </div>
             </form>
         </div>
