@@ -91,7 +91,7 @@
         <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value"
                     options="enable|partial|disable" optionlabels="Yes|For expression|No">enable
         </fixnumauto>
-        <cornerradius type="buttons" category="Simple options" width="4" title="Corner radius" options="1|2|3" optionlabels="0px|4px|20px" optionimages="cornerradius_0|cornerradius_4|cornerradius_20">1</cornerradius>
+        <cornerradius type="buttons" category="Simple options" width="4" title="Corner radius" options="1|2|3" optionlabels="0px|4px|20px" optionimages="cornerradius_0.svg|cornerradius_4.svg|cornerradius_20.svg">1</cornerradius>
         <!-- colors -->
         <bodybackgroundcolor type="colorpicker" category="Colors" width="4" title="Background color" options="on|off" optionlabels="Yes|No">#ffffff</bodybackgroundcolor>
         <fontcolor type="colorpicker" category="Colors" width="4" title="Font color" options="on|off" optionlabels="Yes|No">#444444</fontcolor>
