@@ -2835,19 +2835,82 @@ class SurveyAdministrationController extends LSBaseController
         $oQuestion = new Question();
         $oQuestion->sid = $iSurveyID;
         $oQuestion->gid = $iGroupID;
-        $oQuestion->type = Question::QT_T_LONG_FREE_TEXT;
+        $oQuestion->type = Question::QT_M_MULTIPLE_CHOICE;
         $oQuestion->title = 'Q00';
         $oQuestion->mandatory = 'N';
         $oQuestion->relevance = '1';
         $oQuestion->question_order = 1;
         $oQuestion->save();
+
         $oQuestionLS = new QuestionL10n();
         $oQuestionLS->question = '';
         $oQuestionLS->help = '';
         $oQuestionLS->language = $sLanguage;
         $oQuestionLS->qid = $oQuestion->qid;
         $oQuestionLS->save();
+
+        $editorEnabled = App()->getConfig('editorEnabled') ?? false;
+        if ($editorEnabled) {
+            $this->createSampleSubquestion(
+                1,
+                $iSurveyID,
+                $iGroupID,
+                $oQuestion->qid,
+                $sLanguage,
+                gT('Option A')
+            );
+            $this->createSampleSubquestion(
+                2,
+                $iSurveyID,
+                $iGroupID,
+                $oQuestion->qid,
+                $sLanguage,
+                gT('Option B')
+            );
+        }
+
         return $oQuestion->qid;
+    }
+
+    /**
+     * Creates a sample subquestion for a parent question in a survey
+     *
+     * This method creates a new subquestion with the specified parameters and saves it to the database.
+     * It also creates the corresponding localization entry for the subquestion.
+     *
+     * @param int $number The sequence number for the subquestion, used for ordering and title generation
+     * @param int $surveyId The ID of the survey to which this subquestion belongs
+     * @param int $groupId The ID of the question group to which this subquestion belongs
+     * @param int $questionId The ID of the parent question to which this subquestion is attached
+     * @param string $language The language code for the subquestion's text
+     * @param string $text The actual text content of the subquestion
+     *
+     * @return void
+     */
+    private function createSampleSubquestion(
+        int $number,
+        int $surveyId,
+        int $groupId,
+        int $questionId,
+        string $language,
+        string $text
+    ) {
+        $subQuestion = new Question();
+        $subQuestion->parent_qid = $questionId;
+        $subQuestion->sid = $surveyId;
+        $subQuestion->gid = $groupId;
+        $subQuestion->type = Question::QT_T_LONG_FREE_TEXT;
+        $subQuestion->title = 'SQ00' . $number;
+        $subQuestion->question_order = $number;
+        $subQuestion->relevance = 1;
+        $subQuestion->save();
+
+        $subQuestionL10n = new QuestionL10n();
+        $subQuestionL10n->question = $text;
+        $subQuestionL10n->help = '';
+        $subQuestionL10n->language = $language;
+        $subQuestionL10n->qid = $subQuestion->qid;
+        $subQuestionL10n->save();
     }
 
     /**
