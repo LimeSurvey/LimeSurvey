@@ -592,7 +592,7 @@ class SurveyAdministrationController extends LSBaseController
                 $iNewGroupID = $this->createSampleGroup($newSurvey->sid);
                 $iNewQuestionID = $this->createSampleQuestion($newSurvey->sid, $iNewGroupID);
 
-                Yii::app()->setFlashMessage(gT("Your new survey was created. We also created a first question group and an example question for you."), 'info');
+                App()->setFlashMessage(gT("Your new survey was created. We also created a first question group and an example question for you."), 'info');
                 $redirectUrl = $this->getSurveyAndSidemenueDirectionURL(
                     $newSurvey->sid,
                     $iNewGroupID,
@@ -601,10 +601,11 @@ class SurveyAdministrationController extends LSBaseController
                 );
                 $this->redirect($redirectUrl);
             } else {
-                Yii::app()->setFlashMessage(gT("Survey could not be created."), 'error');
+                App()->setFlashMessage(gT("Survey could not be created."), 'error');
                 $this->redirect(Yii::app()->request->urlReferrer);
             }
         }
+        App()->setFlashMessage(gT('Access denied'), 'error');
         $this->redirect(Yii::app()->request->urlReferrer);
     }
 
@@ -2850,7 +2851,7 @@ class SurveyAdministrationController extends LSBaseController
         $oQuestionLS->save();
 
         $editorEnabled = App()->getConfig('editorEnabled') ?? false;
-        if ($editorEnabled) {
+        if (!$editorEnabled) {
             $this->createSampleSubquestion(
                 1,
                 $iSurveyID,
