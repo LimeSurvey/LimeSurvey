@@ -604,9 +604,10 @@ class SurveyAdministrationController extends LSBaseController
                 App()->setFlashMessage(gT("Survey could not be created."), 'error');
                 $this->redirect(Yii::app()->request->urlReferrer);
             }
+        } else {
+            App()->setFlashMessage(gT('Access denied'), 'error');
+            $this->redirect(Yii::app()->request->urlReferrer);
         }
-        App()->setFlashMessage(gT('Access denied'), 'error');
-        $this->redirect(Yii::app()->request->urlReferrer);
     }
 
     /**
