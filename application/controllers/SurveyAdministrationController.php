@@ -2215,6 +2215,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @access public
      * @return void
+     * @throws CException
      */
     public function actionCopy()
     {
@@ -2239,7 +2240,6 @@ class SurveyAdministrationController extends LSBaseController
 
         // Start treatment and messagebox
         $aData['bFailed'] = false;
-        $sFullFilepath = '';
         $aExcludes = array();
         if (Yii::app()->request->getPost('copysurveyexcludequotas') == "1") {
             $aExcludes['quotas'] = true;
