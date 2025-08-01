@@ -2221,15 +2221,15 @@ class SurveyAdministrationController extends LSBaseController
     {
         //everybody who has permission to create surveys
         if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(Yii::app()->request->urlReferrer);
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
         }
 
         $iSurveyID = sanitize_int(App()->request->getPost('copysurveylist'));
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(Yii::app()->request->urlReferrer);
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
         }
 
         $aData = [];
@@ -2241,27 +2241,27 @@ class SurveyAdministrationController extends LSBaseController
         // Start treatment and messagebox
         $aData['bFailed'] = false;
         $aExcludes = array();
-        if (Yii::app()->request->getPost('copysurveyexcludequotas') == "1") {
+        if (App()->request->getPost('copysurveyexcludequotas') == "1") {
             $aExcludes['quotas'] = true;
         }
 
-        if (Yii::app()->request->getPost('copysurveyexcludepermissions') == "1") {
+        if (App()->request->getPost('copysurveyexcludepermissions') == "1") {
             $aExcludes['permissions'] = true;
         }
 
-        if (Yii::app()->request->getPost('copysurveyexcludeanswers') == "1") {
+        if (App()->request->getPost('copysurveyexcludeanswers') == "1") {
             $aExcludes['answers'] = true;
         }
 
-        if (Yii::app()->request->getPost('copysurveyresetconditions') == "1") {
+        if (App()->request->getPost('copysurveyresetconditions') == "1") {
             $aExcludes['conditions'] = true;
         }
 
-        if (Yii::app()->request->getPost('copysurveyresetstartenddate') == "1") {
+        if (App()->request->getPost('copysurveyresetstartenddate') == "1") {
             $aExcludes['dates'] = true;
         }
 
-        if (Yii::app()->request->getPost('copysurveyresetresponsestartid') == "1") {
+        if (App()->request->getPost('copysurveyresetresponsestartid') == "1") {
             $aExcludes['reset_response_id'] = true;
         }
 
@@ -2272,19 +2272,19 @@ class SurveyAdministrationController extends LSBaseController
             $aData['sErrorMessage'] = gT("Invalid survey ID");
             $aData['bFailed'] = true;
         } else {
-            Yii::app()->loadHelper('export');
+            App()->loadHelper('export');
             $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
-            if (empty(Yii::app()->request->getPost('copysurveyname'))) {
+            if (empty(App()->request->getPost('copysurveyname'))) {
                 $sourceSurvey = Survey::model()->findByPk($iSurveyID);
                 $sNewSurveyName = $sourceSurvey->currentLanguageSettings->surveyls_title;
             } else {
-                $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
+                $sNewSurveyName = App()->request->getPost('copysurveyname');
             }
         }
 
-        Yii::app()->loadHelper('admin/import');
+        App()->loadHelper('admin/import');
         if (!$aData['bFailed']) {
-            $copyResources = Yii::app()->request->getPost('copysurveytranslinksfields') == '1';
+            $copyResources = App()->request->getPost('copysurveytranslinksfields') == '1';
             $translateLinks = $copyResources;
             $aImportResults = XMLImportSurvey(
                 '',
@@ -2372,8 +2372,8 @@ class SurveyAdministrationController extends LSBaseController
     {
         //everybody who has permission to create surveys
         if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(Yii::app()->request->urlReferrer);
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
         }
 
         $aData = [];
@@ -2390,7 +2390,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $aData['bFailed'] = false;
 
-        $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(30) . '.' . $sExtension;
+        $sFullFilepath = App()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(30) . '.' . $sExtension;
         if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
             $aData['sErrorMessage'] = sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024) . '<br>';
             $aData['bFailed'] = true;
@@ -2402,10 +2402,10 @@ class SurveyAdministrationController extends LSBaseController
             $aData['bFailed'] = true;
         }
 
-        Yii::app()->loadHelper('admin/import');
+        App()->loadHelper('admin/import');
 
         if (!$aData['bFailed']) {
-            $aImportResults = importSurveyFile($sFullFilepath, (Yii::app()->request->getPost('translinksfields') == '1'));
+            $aImportResults = importSurveyFile($sFullFilepath, (App()->request->getPost('translinksfields') == '1'));
             if (is_null($aImportResults)) {
                 $aImportResults = array(
                     'error' => gT("Unknown error while reading the file, no survey created.")
