@@ -50,7 +50,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $('#import-submit').on('submit', function() {
         //Check input fields are filled
         //check file ending
-        if(inputFieldFile.files.length === 0 && inputFieldDropFile.files.length === 0) {
+        if (inputFieldFile.files.length === 0) {
             textField.textContent = 'No file selected';
             return false;
         }

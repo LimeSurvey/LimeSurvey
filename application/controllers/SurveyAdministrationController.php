@@ -2221,14 +2221,14 @@ class SurveyAdministrationController extends LSBaseController
     {
         //everybody who has permission to create surveys
         if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
-            Yii::app()->user->setFlash('error', gT("Access denied -- **surveys--create** "));
+            Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
 
         $iSurveyID = sanitize_int(App()->request->getPost('copysurveylist'));
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
-            Yii::app()->user->setFlash('error', gT("Access denied **surveycontent export**"));
+            Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
 
