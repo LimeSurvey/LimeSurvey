@@ -47,11 +47,11 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         dropHandler(event);
     });
 
-    $('#import-submit').on('submit', function() {
+    $('#importsurvey').on('submit', function() {
         //Check input fields are filled
         //check file ending
         if (inputFieldFile.files.length === 0) {
-            textField.textContent = 'No file selected';
+            textField.textContent = $('#importsurvey').data('error-file-required');
             return false;
         }
 

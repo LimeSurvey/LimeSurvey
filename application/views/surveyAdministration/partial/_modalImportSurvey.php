@@ -13,6 +13,7 @@
                     'name' => 'importsurvey',
                     'class' => '',
                     'enctype' => 'multipart/form-data',
+                    'data-error-file-required' => gT('No file selected'),
                 )
             ); ?>
             <?php
