@@ -32,7 +32,8 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         // Create a new DataTransfer object to simulate file input
         const dataTransfer = new DataTransfer();
         for (const file of droppedFiles) {
-            dataTransfer.items.add(file);            changeTextAfterFileIsChanged(file.name);
+            dataTransfer.items.add(file);
+            changeTextAfterFileIsChanged(file.name);
         }
         inputFieldFile.files = dataTransfer.files;
     }
