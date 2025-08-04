@@ -132,9 +132,9 @@ class SurveyResponses implements CommandInterface
                     $answer['actual_aid'] = $this->getActualAid(
                         $answer['qid'],
                         array_key_exists(
-                            'scale_id',
+                            'scaleid',
                             $answer
-                        ) ? $answer['scale_id'] : 0,
+                        ) ? $answer['scaleid'] : 0,
                         $answer['value'],
                     );
                 }
