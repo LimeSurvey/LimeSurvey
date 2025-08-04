@@ -23,17 +23,16 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         }
     });
 
-    function dropHandler(ev) {
+    function dropHandler(event) {
         // Prevent default behavior (Prevent file from being opened)
-        ev.preventDefault();
+        event.preventDefault();
         //show file name(s), instead of default text when dropping or adding files to the drop_zone
         const droppedFiles = event.dataTransfer.files;
 
         // Create a new DataTransfer object to simulate file input
         const dataTransfer = new DataTransfer();
         for (const file of droppedFiles) {
-            dataTransfer.items.add(file);
-            changeTextAfterFileIsChanged(file.name);
+            dataTransfer.items.add(file);            changeTextAfterFileIsChanged(file.name);
         }
         inputFieldFile.files = dataTransfer.files;
     }
