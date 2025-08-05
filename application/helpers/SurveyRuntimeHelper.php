@@ -217,10 +217,16 @@ class SurveyRuntimeHelper
             $this->displayFirstPageIfNeeded();
             $this->saveAllIfNeeded();
             $this->saveSubmitIfNeeded();
-            if (isset($_SESSION[$this->LEMsessid]['filltoken']) && isset($_SESSION[$this->LEMsessid]['srid'])) {
+            $tokenValue = ($_SESSION[$this->LEMsessid]['filltoken'] ?? ($_SESSION[$this->LEMsessid]['token'] ?? ''));
+            if ($tokenValue && isset($_SESSION[$this->LEMsessid]['srid'])) {
                 $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $_SESSION[$this->LEMsessid]['srid']]);
-                $oSurveyResponse->token = $_SESSION[$this->LEMsessid]['filltoken'];
-                unset($_SESSION[$this->LEMsessid]['filltoken']);
+                $oSurveyResponse->token = $tokenValue;
+                if (isset($_SESSION[$this->LEMsessid]['filltoken'])) {
+                    unset($_SESSION[$this->LEMsessid]['filltoken']);
+                }
+                if (isset($_SESSION[$this->LEMsessid]['token'])) {
+                    unset($_SESSION[$this->LEMsessid]['token']);
+                }
                 $oSurveyResponse->save();
                 $survey = Survey::model()->findByPk($surveyid);
                 if ($survey->getHasTokensTable()) {
