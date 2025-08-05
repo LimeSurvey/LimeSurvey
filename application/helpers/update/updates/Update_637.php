@@ -13,6 +13,7 @@ use Survey;
 use ArchivedTableSettings;
 use QuestionL10n;
 use SurveyLanguageSetting;
+use QuotaLanguageSetting;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -1078,30 +1079,37 @@ class Update_637 extends DatabaseUpdateBase
                     $additionalNames[$additionalNameKey] = $rawAdditionalNames[$additionalNameKey];
                 }
                 $conditions = Condition::model()->findAll("qid in (" . implode(",", $qids) . ")");
+                $fields = ["cfieldname", "value"];
                 foreach ($conditions as $condition) {
-                    $fields = ["cfieldname", "value"];
                     if ($this->fixText($condition, $fields, $names) || $this->fixText($condition, $fields, $additionalNames)) {
                         $condition->save();
                     }
                 }
                 $localizedQuestions = QuestionL10n::model()->findAll("qid in (" . implode(",", $qids) . ")");
+                $fields = ["question", "script"];
                 foreach ($localizedQuestions as $localizedQuestion) {
-                    $fields = ["question", "script"];
                     if ($this->fixText($localizedQuestion, $fields, $names) || $this->fixText($localizedQuestion, $fields, $additionalNames)) {
                         $localizedQuestion->save();
                     }
                 }
+                $fields = ["title", "relevance"];
                 foreach ($questions as $question) {
-                    $fields = ["title", "relevance"];
                     if ($this->fixText($question, $fields, $names) || $this->fixText($question, $fields, $additionalNames)) {
                         $question->save();
                     }
                 }
                 $surveyLanguageSettings = SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $sid);
+                $fields = ['surveyls_urldescription', 'surveyls_url'];
                 foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
-                    $fields = ['surveyls_urldescription', 'surveyls_url'];
                     if ($this->fixText($surveyLanguageSetting, $fields, $names) || $this->fixText($surveyLanguageSetting, $fields, $additionalNames)) {
                         $surveyLanguageSetting->save();
+                    }
+                }
+                $fields = ['quotals_url', 'quotals_urldescrip'];
+                $quotaLanguageSettings = QuotaLanguageSetting::model()->with('quota', array('condition' => 'sid=' . $sid))->together()->findAll();
+                foreach ($quotaLanguageSettings as $quotaLanguageSetting) {
+                    if ($this->fixText($quotaLanguageSetting, $fields, $names) || $this->fixText($quotaLanguageSetting, $fields, $additionalNames)) {
+                        $quotaLanguageSetting->save();
                     }
                 }
             }
@@ -1174,6 +1182,12 @@ class Update_637 extends DatabaseUpdateBase
                 $fields = ['surveyls_urldescription', 'surveyls_url'];
                 if ($this->fixText($surveyLanguageSetting, $fields, $names, true) || $this->fixText($surveyLanguageSetting, $fields, $additionalNames, true)) {
                     $surveyLanguageSetting->save();
+                }
+            }
+            $quotaLanguageSettings = QuotaLanguageSetting::model()->with('quota', array('condition' => 'sid=' . $sid))->together()->findAll();
+            foreach ($quotaLanguageSettings as $quotaLanguageSetting) {
+                if ($this->fixText($quotaLanguageSetting, $fields, $names) || $this->fixText($quotaLanguageSetting, $fields, $additionalNames)) {
+                    $quotaLanguageSetting->save();
                 }
             }
         }
