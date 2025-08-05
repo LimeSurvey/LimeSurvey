@@ -14,7 +14,7 @@ class EqualConditionHandler implements HandlerInterface
         return false;
     }
 
-    public function execute(string|array $key, string $value): object
+    public function execute($key, $value): object
     {
         $criteria = new \CDbCriteria();
 

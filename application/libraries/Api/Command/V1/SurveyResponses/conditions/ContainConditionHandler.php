@@ -20,7 +20,7 @@ class ContainConditionHandler implements HandlerInterface
      * @param string $value
      * @return \CDbCriteria
      */
-    public function execute(string|array $key, string $value): object
+    public function execute($key, $value): object
     {
         $value = trim($value);
         $criteria = new \CDbCriteria();

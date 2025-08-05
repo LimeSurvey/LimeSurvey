@@ -14,16 +14,19 @@ class MultiSelectConditionHandler implements HandlerInterface
         return false;
     }
 
-    public function execute(string $key, string $value): object
+    public function execute($key, $value): object
     {
         $key = preg_replace('/[^a-zA-Z0-9_-]/', '', $key);
         $key = App()->db->quoteColumnName($key);
 
-        $selectedValues = array_filter(array_map('trim', explode('|', $value)));
+        if (!is_array($value)) {
+            $value = [$value];
+        }
+
         $conditions = [];
         $params = [];
 
-        foreach ($selectedValues as $index => $val) {
+        foreach ($value as $index => $val) {
             $paramName = ":value{$index}";
             $conditions[] = "$key = {$paramName}";
             $params[$paramName] = $val;

@@ -11,14 +11,21 @@ class NullConditionHandler implements HandlerInterface
         return true;
     }
 
-    public function execute(string $key, string $value): object
+    public function execute($key, $value): object
     {
         $criteria = new \CDbCriteria();
-        $match = match (strtoupper($value)) {
-            'NULL', 'IS NULL' => "$key IS NULL",
-            'IS NOT NULL' => "$key IS NOT NULL",
-            default => null,
-        };
+        $upper = strtoupper($value);
+        switch ($upper) {
+            case 'NULL':
+            case 'IS NULL':
+                $match = "$key IS NULL";
+                break;
+            case 'IS NOT NULL':
+                $match = "$key IS NOT NULL";
+                break;
+            default:
+                $match = null;
+        }
 
         if (!empty($match)) {
             $criteria->condition = $match;
