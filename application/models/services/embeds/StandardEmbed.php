@@ -15,6 +15,8 @@ class StandardEmbed extends BaseEmbed
     {
         $width = ($this->embedOptions['width'] ?? $this->fullWidth);
         $height = ($this->embedOptions['height'] ?? $this->fullHeight);
-        return "<div style='width:{$width};height:{$height};border:1px solid red;'>{$placeholder}</div>";
+        $style = "width: {$width}; height: {$height}; border: 1px solid #6E748C; border-radius: 4px;";
+
+        return "<div style='{$style}'>{$placeholder}</div>";
     }
 }
