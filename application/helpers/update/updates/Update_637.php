@@ -12,6 +12,7 @@ use Condition;
 use Survey;
 use ArchivedTableSettings;
 use QuestionL10n;
+use SurveyLanguageSetting;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -1096,6 +1097,13 @@ class Update_637 extends DatabaseUpdateBase
                         $question->save();
                     }
                 }
+                $surveyLanguageSettings = SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $sid);
+                foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
+                    $fields = ['surveyls_urldescription', 'surveyls_url'];
+                    if ($this->fixText($surveyLanguageSetting, $fields, $names) || $this->fixText($surveyLanguageSetting, $fields, $additionalNames)) {
+                        $surveyLanguageSetting->save();
+                    }
+                }
             }
         }
 
@@ -1131,13 +1139,13 @@ class Update_637 extends DatabaseUpdateBase
                             $position++;
                         }
                         $commaSeparatedQIDs = implode(",", $tempqids);
-                        $questions = Question::model()->findAll([
+                        $questionsTemp = Question::model()->findAll([
                             'condition' => "sid = {$sid} and gid = {$gid} and (qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
                         ]);
                     }
                     $prefix = Yii::app()->db->tablePrefix ?? "";
-                    if (count($questions)) {
-                        $newFields[$oldField] = getFieldName($prefix . "survey_" . $passiveSurvey->sid, $oldField, $questions, (int)$sid, (int)$gid);
+                    if (count($questionsTemp)) {
+                        $newFields[$oldField] = getFieldName($prefix . "survey_" . $passiveSurvey->sid, $oldField, $questionsTemp, (int)$sid, (int)$gid);
                     }
                 }
             }
@@ -1159,6 +1167,13 @@ class Update_637 extends DatabaseUpdateBase
                 $fields = ["title", "relevance"];
                 if ($this->fixText($question, $fields, $newFields) || $this->fixText($question, $fields, $additionalNames)) {
                     $question->save();
+                }
+            }
+            $surveyLanguageSettings = SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $sid);
+            foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
+                $fields = ['surveyls_urldescription', 'surveyls_url'];
+                if ($this->fixText($surveyLanguageSetting, $fields, $names, true) || $this->fixText($surveyLanguageSetting, $fields, $additionalNames, true)) {
+                    $surveyLanguageSetting->save();
                 }
             }
         }
