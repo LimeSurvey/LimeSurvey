@@ -3677,7 +3677,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
     $sql = "SELECT g.gid, language, group_name, description from $quotedGroups g
     join {{group_l10ns}} l on g.gid=l.gid
-    WHERE sid=" . $newsid . " AND description REGEXP '%Q[0-9]+%' OR group_name LIKE '%Q[0-9]+%'";
+    WHERE sid=" . $newsid . " AND description REGEXP 'Q[0-9]+' OR group_name LIKE 'Q[0-9]+'";
     $res = Yii::app()->db->createCommand($sql)->query();
 
     //while ($qentry = $res->FetchRow())
