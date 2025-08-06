@@ -170,16 +170,40 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {void}
    */
   function bindExpandRelevanceEquation() {
-    $('.relevance').off('click').on('click', () => {
+    $('.relevance').off('focus').on('focus', (event) => {
+      if (event.relatedTarget && $(event.relatedTarget).hasClass('relevance')) {
+        // Don't do anything when moving between relevance fields.
+        return;
+      }
+      if ($('#rel-eq-th').hasClass('col-lg-4')) {
+        // If already expanded, do not expand again.
+        return;
+      }
       $('#rel-eq-th').toggleClass('col-lg-1 col-lg-4', 'fast');
-      $('.relevance').data('toggle', '').tooltip('destroy');
-      $('.relevance').off('click');
+      $('.relevance').tooltip('dispose');
     });
+    $('.relevance').off('blur').on('blur', (event) => {
+      if (event.relatedTarget && $(event.relatedTarget).hasClass('relevance')) {
+        // Don't do anything when moving between relevance fields.
+        return;
+      }
+      if ($('#rel-eq-th').hasClass('col-lg-1')) {
+        // If already collapsed, do not collapse again.
+        return;
+      }
+      $('#rel-eq-th').toggleClass('col-lg-1 col-lg-4', 'fast');
+      LS.doToolTip();
+      //$('.relevance').each((index, element) => {
+      //  bootstrap.Tooltip.getOrCreateInstance(element);
+      //});
+    });
+    LS.doToolTip();
   }
 
   function bindSubQuestionEvents() {
     $('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
     $('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
+    bindExpandRelevanceEquation();
   }
 
   function bindAnswerEvents() {
@@ -240,26 +264,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
       url: $dataInput.data('url'),
       data: datas,
     });
-  }
-  /**
-   * @return {boolean} true if relevance equation field is expanded
-   */
-  function relevanceIsExpanded() {
-    return $('#rel-eq-th').hasClass('col-lg-4');
-  }
-
-  /**
-   * Bind click to expand relevance equation
-   * if not already expanded.
-   *
-   * @return {void}
-   */
-  function bindClickIfNotExpanded() {
-    if (!relevanceIsExpanded()) {
-      bindExpandRelevanceEquation();
-      // Activate tooltip
-      LS.doToolTip();
-    }
   }
 
   /**
@@ -1181,7 +1185,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $('.answertable tbody').sortable('refresh');
         updateRowProperties();
         $('#quickaddModal').modal('hide');
-        bindClickIfNotExpanded();
+        bindExpandRelevanceEquation();
       },
       function () {
         /* $('#quickadd').dialog('close'); */
@@ -1189,7 +1193,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $('.answertable tbody').sortable('refresh');
         updateRowProperties();
         $('#quickaddModal').modal('hide');
-        bindClickIfNotExpanded();
+        bindExpandRelevanceEquation();
 
         // Unbind and bind events.
         $(`.answer`).off('focus');
