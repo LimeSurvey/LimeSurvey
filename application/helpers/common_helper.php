@@ -3710,7 +3710,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     # translate 'question' and 'help' INSERTANS tags in questions
     $sql = "SELECT l.id, question, help from {{questions}} q
     join {{question_l10ns}} l on q.qid=l.qid
-    WHERE sid=" . $newsid . " AND (question LIKE '%{$oldsid}X%' OR help LIKE '%{$oldsid}X%')";
+    WHERE sid=" . $newsid . " AND (question REGEXP 'Q[0-9]+' OR help LIKE 'Q[0-9]+')";
     $result = Yii::app()->db->createCommand($sql)->query();
     $aResultData = $result->readAll();
     foreach ($aResultData as $qentry) {
