@@ -4217,10 +4217,15 @@ class statistics_helper
             } else {
                 $sortby = Yii::app()->db->quoteColumnName($sortby);
             }
-
+            //Converts text sorting into numerical sorting
             if ($sorttype == 'N') {
                 $sortby = "($sortby * 1)";
-            } //Converts text sorting into numerical sorting
+            }
+            // Avoid bad sortmethod parameter (mantis #20145)
+            $sortmethod = strtoupper($sortmethod);
+            if ($sortmethod && !in_array($sortmethod, ['ASC', 'DESC'])) {
+                $sortmethod = "";
+            }
             $search['order'] = $sortby . ' ' . $sortmethod;
         }
         $results = SurveyDynamic::model($surveyid)->findAll($search);
