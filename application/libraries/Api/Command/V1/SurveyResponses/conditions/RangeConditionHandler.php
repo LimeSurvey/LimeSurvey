@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions;
 
+use http\Exception\InvalidArgumentException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\HandlerInterface;
 
 class RangeConditionHandler implements HandlerInterface
@@ -41,12 +42,18 @@ class RangeConditionHandler implements HandlerInterface
         return $criteria;
     }
 
-    protected function parseRange(string $range): array
+    protected function parseRange($range): array
     {
-        $parts = explode('::', $range);
+        if (count($range) > 2) {
+            throw new InvalidArgumentException("Invalid range sent.");
+        }
 
-        $min = isset($parts[0]) && $parts[0] !== '' ? floatval($parts[0]) : null;
-        $max = isset($parts[1]) && $parts[1] !== '' ? floatval($parts[1]) : null;
+        $min = isset($range[0]) && $range[0] !== '' ? $range[0] : null;
+        $max = isset($range[1]) && $range[1] !== '' ? $range[1] : null;
+
+        if ($min === null && $max === null) {
+            throw new InvalidArgumentException("Missing min and max array values.");
+        }
 
         return ['min' => $min, 'max' => $max];
     }

@@ -62,7 +62,6 @@ class FilterPatcher
                         // special case since 'completed' is returned in the responses and calculated on the fly,
                         if ($key === 'completed') {
                             $key = 'submitDate';
-                            $value = 'IS' . ($value === 'true' ? ' NOT ' : ' ') . 'NULL';
                         }
 
                         // check for null values
