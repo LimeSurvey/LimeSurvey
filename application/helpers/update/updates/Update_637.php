@@ -652,9 +652,9 @@ class Update_637 extends DatabaseUpdateBase
 
         if ($questionid === false) {
             // If the fieldmap was randomized, the master will contain the proper order.  Copy that fieldmap with the new language settings.
-            if (isset(Yii::app()->session['survey_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'])) {
-                $masterFieldmap = Yii::app()->session['survey_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'];
-                $mfieldmap = Yii::app()->session['survey_' . $surveyid][$masterFieldmap];
+            if (isset(Yii::app()->session['responses_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'])) {
+                $masterFieldmap = Yii::app()->session['responses_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'];
+                $mfieldmap = Yii::app()->session['responses_' . $surveyid][$masterFieldmap];
                 foreach ($mfieldmap as $fieldname => $mf) {
                     if (isset($fieldmap[$fieldname])) {
                         // This array holds the keys of translatable attributes
