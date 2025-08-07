@@ -332,7 +332,9 @@ class SurveyTemplate implements CommandInterface
      */
     private function getJavascript($properties = null)
     {
-        $containerId = $properties['container_id'] ?? '1';
+        $containerId = is_array($properties) && isset($properties['container_id'])
+        ? $properties['container_id']
+        : '1';
         $lang = $this->language;
         $surveyId = $this->surveyId;
         $rootUrl = $this->getRootUrl();
