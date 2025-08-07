@@ -1118,13 +1118,11 @@ class Update_637 extends DatabaseUpdateBase
                     }
                 }
                 $fields = ['description', 'group_name'];
-                foreach ($gids as $gid) {
-                    if ($gid != 0) {
-                        $group = QuestionGroupl10n::model()->find("gid=" . $gid);
-                        if ($this->fixText($group, $fields, $names) || $this->fixText($group, $fields, $additionalNames)) {
-                            echo $group->gid;
-                            $group->save();
-                        }
+                $model = QuestionGroupL10n::model();
+                $groups = $model->resetScope()->findAll("gid in (" . implode(",", $gids) . ")");
+                foreach ($groups as $group) {
+                    if ($this->fixText($group, $fields, $names) || $this->fixText($group, $fields, $additionalNames)) {
+                        $group->save();
                     }
                 }
             }
@@ -1169,10 +1167,10 @@ class Update_637 extends DatabaseUpdateBase
                         $questionsTemp = Question::model()->findAll([
                             'condition' => "sid = {$sid} and gid = {$gid} and (qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
                         ]);
-                    }
-                    $prefix = Yii::app()->db->tablePrefix ?? "";
-                    if (count($questionsTemp)) {
-                        $newFields[$oldField] = getFieldName($prefix . "survey_" . $passiveSurvey->sid, $oldField, $questionsTemp, (int)$sid, (int)$gid);
+                        $prefix = Yii::app()->db->tablePrefix ?? "";
+                        if (count($questionsTemp)) {
+                            $newFields[$oldField] = getFieldName($prefix . "survey_" . $passiveSurvey->sid, $oldField, $questionsTemp, (int)$sid, (int)$gid);
+                        }
                     }
                 }
             }
@@ -1211,12 +1209,11 @@ class Update_637 extends DatabaseUpdateBase
                 }
             }
             $fields = ['description', 'group_name'];
-            foreach ($gids as $gid) {
-                if ($gid != 0) {
-                    $group = QuestionGroupl10n::model()->find("gid=" . $gid);
-                    if ($this->fixText($group, $fields, $names) || $this->fixText($group, $fields, $additionalNames)) {
-                        $group->save();
-                    }
+            $model = QuestionGroupL10n::model();
+            $groups = $model->resetScope()->findAll("gid in (" . implode(",", $gids) . ")");
+            foreach ($groups as $group) {
+                if ($this->fixText($group, $fields, $names) || $this->fixText($group, $fields, $additionalNames)) {
+                    $group->save();
                 }
             }
         }
