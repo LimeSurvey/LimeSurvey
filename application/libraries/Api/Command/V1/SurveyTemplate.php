@@ -348,5 +348,4 @@ class SurveyTemplate implements CommandInterface
     ></script>
     HTML;
     }
-
 }
