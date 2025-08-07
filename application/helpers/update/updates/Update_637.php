@@ -1118,7 +1118,7 @@ class Update_637 extends DatabaseUpdateBase
                     }
                 }
                 $fields = ['description', 'group_name'];
-                $model = QuestionGroupL10n::model();
+                $model = new QuestionGroupL10n();
                 $groups = $model->resetScope()->findAll("gid in (" . implode(",", $gids) . ")");
                 foreach ($groups as $group) {
                     if ($this->fixText($group, $fields, $names) || $this->fixText($group, $fields, $additionalNames)) {
@@ -1209,7 +1209,7 @@ class Update_637 extends DatabaseUpdateBase
                 }
             }
             $fields = ['description', 'group_name'];
-            $model = QuestionGroupL10n::model();
+            $model = new QuestionGroupL10n();
             $groups = $model->resetScope()->findAll("gid in (" . implode(",", $gids) . ")");
             foreach ($groups as $group) {
                 if ($this->fixText($group, $fields, $names) || $this->fixText($group, $fields, $additionalNames)) {
