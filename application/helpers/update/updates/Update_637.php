@@ -1074,7 +1074,7 @@ class Update_637 extends DatabaseUpdateBase
                     $rawAdditionalNames["{$question->sid}X{$question->gid}X{$question->qid}"] = "Q{$question->qid}";
                     $qids[] = $question->qid;
                     if (!in_array($question->gid, $gids)) {
-                        $gids[] = $question->gid;
+                        $gids[] = (int)$question->gid;
                     }
                 }
                 $additionalNameKeys = array_keys($rawAdditionalNames);
@@ -1140,7 +1140,7 @@ class Update_637 extends DatabaseUpdateBase
                 $rawAdditionalNames["{$question->sid}X{$question->gid}X{$question->qid}"] = "Q{$question->qid}";
                 $qids[] = $question->qid;
                 if (!in_array($question->gid, $gids)) {
-                    $gids[] = $question->gid;
+                    $gids[] = (int)$question->gid;
                 }
             }
             $additionalNameKeys = array_keys($rawAdditionalNames);
