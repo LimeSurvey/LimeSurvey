@@ -332,169 +332,21 @@ class SurveyTemplate implements CommandInterface
      */
     private function getJavascript($properties = null)
     {
-        $additional = [
-            'popuppreview' => false,
-            'js' => 'false'
-        ];
-        /**
-         * Expected properties
-         * - container id
-         */
-        if (is_array($properties)) {
-            foreach ($properties as $k => $v) {
-                $additional[$k] = $v;
-            }
-        }
-        if (!isset($additional['container_id'])) {
-            $additional['container_id'] = '1';
-        }
-        $additionalParameters = [];
-        foreach ($additional as $k => $v) {
-            $additionalParameters[] = $k . "=" . $v;
-        }
-        $url = $this->getRootUrl() . self::ENDPOINT . $this->surveyId . "?lang={$this->language}";
-        return "
-            <div id='beginScripts' class='script-container'></div>
-            <div id='limesurvey-{$additional['container_id']}'></div>
-            <div id='bottomScripts' class='script-container'></div>
-        " .
-        "
-            <script>
-            const url = '{$url}';
-            const referer = window.location.protocol + '//' + window.location.host + '/';
-            document.documentElement.className = 'js';
-            let pageNumber = 0;
-            function addScripts(scheduledScripts, level) {
-                const {initialScripts, container} = scheduledScripts[level];
-                let addToHead = \"\";
-                let scripts = [];
-                for (let index = 0; index < initialScripts.length; index++) {
-                    if (initialScripts[index].indexOf(\"<script\") < 0) {
-                        initialScripts[index] = initialScripts[index].replace('href=\"/', 'href=\"{$this->getRootUrl()}/');
-                        addToHead += initialScripts[index];
-                    } else {
-                        let div = document.createElement('div');
-                        div.innerHTML = initialScripts[index];
-                        let original = div.firstChild;
-                        let final = document.createElement('script');
-                        if (original.src) {
-                            let src = original.src + \"?v=\" + pageNumber;
-                            if (src.indexOf(referer) === 0) {
-                                src = src.replace(referer, \"{$this->getRootUrl()}/\");
-                            }
-                            final.src = src;
-                        }
-                        final.innerHTML = original.innerHTML;
-                        final.className = \"limesurvey-script\";
-                        scripts.push(final);
-                    }
-                }
-                if (addToHead) {
-                    container.innerHTML += addToHead;
-                }
-                let i = 0;
-                while ((i < scripts.length) && (!scripts[i].src)) {
-                    container.appendChild(scripts[i++]);
-                }
-                let firstSrc = -1;
-                while (scripts[i].src && (i < scripts.length)) {
-                    let script = scripts[i];
-                    let j = i;
-                    if (script.src) {
-                        if (firstSrc === -1) {
-                            firstSrc = i;
-                        }
-                        script.addEventListener('load', function() {
-                            while ((++j < scripts.length) && (!scripts[j].src)) {
-                                container.appendChild(scripts[j]);
-                            }
-                            if (j < scripts.length) {
-                                container.appendChild(scripts[j]);
-                            } else {
-                                if (++level === scheduledScripts.length) {
-                                    window.dispatchEvent(new CustomEvent(\"load\"));
-                                    document.dispatchEvent(new CustomEvent(\"load\"));
-                                } else {
-                                    addScripts(scheduledScripts, level);
-                                }
-                            }
-                        });
-                    }
-                    i++;
-                }
-                container.appendChild(scripts[firstSrc]);
-            }
-            async function sendRequest(params) {
-                pageNumber++;
-                const response = await fetch(url, {
-                    method: 'POST',
-                    body: new URLSearchParams(params),
-                    headers: {
-                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-                            'Accept-Language': 'en-US,en;q=0.9',
-                            'Cache-Control': 'max-age=0',
-                            'Connection': 'keep-alive',
-                            'Referer': referer,
-                            'Sec-Fetch-Dest': 'document',
-                            'Sec-Fetch-Mode': 'navigate',
-                            'Sec-Fetch-Site': 'same-origin',
-                            'Sec-Fetch-User': '?1',
-                            'Upgrade-Insecure-Requests': '1',
-                            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
-                            'sec-ch-ua': '\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\"',
-                            'sec-ch-ua-mobile': '?0',
-                            'sec-ch-ua-platform': '\"Linux\"',
-                            
-                    }
-                });
-                response.text().then(function(result) {
-                    let json = JSON.parse(result);
-                    let root = document.getElementById('limesurvey-{$additional['container_id']}')
-                    root.innerHTML = json.template;
-                    let form = root.querySelector(\"[id='limesurvey']\");
-                    form.action = url;
-                    let submit = form.querySelector(\"#ls-button-submit\");
-                    let namedElements = form.querySelectorAll(\"[name]\");
-                    for (let named of namedElements) {
-                        named.name = \"LSEMBED-\" + named.name;
-                    }
-                    form.innerHTML += json.hiddenInputs;
-                    let wrapper = form.querySelectorAll(\".clearall-saveall-wrapper\");
-                    for (let w of wrapper) {
-                        w.remove();
-                    }
-                    form.addEventListener('submit', function(event) {
-                        event.preventDefault();
-                        let additional = ['popuppreview=false'];
-                        let namedElements = form.querySelectorAll(\"[name]\");
-                        for (let named of namedElements) {
-                            additional.push(named.name + '=' + named.value);
-                        }
-                        additional = additional.join('&');
-                        sendRequest(additional);
-                    });
-                    let splitHead = [...document.querySelectorAll(\"form#limesurvey script\")].map(item => item.outerHTML).concat(json.head.split('SEPARATOR'));
-                    let splitBegin = json.beginScripts.split('SEPARATOR');
-                    let splitBottom = json.bottomScripts.split('SEPARATOR');
-                    let scheduledScripts = [
-                        {
-                            container: document.head,
-                            initialScripts: splitHead
-                        },
-                        {
-                            container: document.getElementById('beginScripts'),
-                            initialScripts: splitBegin
-                        },
-                        {
-                            container: document.getElementById('bottomScripts'),
-                            initialScripts: splitBottom
-                        }
-                    ];
-                    addScripts(scheduledScripts, 0);
-                });
-            }
-            sendRequest(" . json_encode($additional) . ");
-            </script>
-        ";
+        $containerId = isset($properties['container_id']) ? $properties['container_id'] : '1';
+        $lang = $this->language ?? 'en';
+        $surveyId = $this->surveyId;
+        $rootUrl = $this->getRootUrl();
+        $embedScriptUrl = $rootUrl . '/assets/scripts/survey-embed.js';
+
+        return <<<HTML
+    <script
+        src="{$embedScriptUrl}"
+        data-survey-id="{$surveyId}"
+        data-lang="{$lang}"
+        data-container-id="{$containerId}"
+        data-root-url="{$rootUrl}"
+    ></script>
+    HTML;
     }
+
 }
