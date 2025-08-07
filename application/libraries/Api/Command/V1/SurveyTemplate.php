@@ -332,8 +332,8 @@ class SurveyTemplate implements CommandInterface
      */
     private function getJavascript($properties = null)
     {
-        $containerId = isset($properties['container_id']) ? $properties['container_id'] : '1';
-        $lang = $this->language ?? 'en';
+        $containerId = $properties['container_id'] ?? '1';
+        $lang = $this->language;
         $surveyId = $this->surveyId;
         $rootUrl = $this->getRootUrl();
         $embedScriptUrl = $rootUrl . '/assets/scripts/survey-embed.js';
