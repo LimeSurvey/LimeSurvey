@@ -14,6 +14,8 @@ class MenuItem implements MenuItemInterface
     protected $label = "Missing label";
     /** @var string */
     protected $iconClass = "";
+    /** @var string */
+    protected $id = null;
 
     /**
      * @param array $options
@@ -39,6 +41,10 @@ class MenuItem implements MenuItemInterface
         if (isset($options['iconClass'])) {
             $this->iconClass = $options['iconClass'];
         }
+
+        if (isset($options['id'])) {
+            $this->id = $options['id'];
+        }
     }
 
     /**
@@ -47,6 +53,14 @@ class MenuItem implements MenuItemInterface
     public function getHref()
     {
         return $this->href;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**

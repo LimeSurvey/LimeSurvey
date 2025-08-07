@@ -4,6 +4,7 @@ use LimeSurvey\Models\Services\CopySurveyResources;
 use LimeSurvey\Models\Services\FileUploadService;
 use LimeSurvey\Models\Services\FilterImportedResources;
 use LimeSurvey\Models\Services\GroupHelper;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 /**
  * Class SurveyAdministrationController
@@ -555,6 +556,52 @@ class SurveyAdministrationController extends LSBaseController
                 false,
                 false
             );
+        }
+        $this->redirect(Yii::app()->request->urlReferrer);
+    }
+
+    /**
+     * New create survey process with default values.
+     * Includes to open new question editor (in cloud) when editor is activated by user.
+     *
+     * @return void
+     */
+    public function actionCreateSurvey()
+    {
+        if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
+            $userId = App()->user->id;
+            $currentUser = User::model()->findByPk($userId);
+            $currentUserLanguage = $currentUser->lang;
+            //we need the language short
+            if ($currentUserLanguage === 'auto') {
+                $currentUserLanguage = Yii::app()->getConfig('defaultlang');
+            }
+
+            $simpleSurveyValues = new \LimeSurvey\Datavalueobjects\SimpleSurveyValues();
+            $simpleSurveyValues->title = gt('Untitled survey');
+            $simpleSurveyValues->surveyGroupId = 1;
+            $simpleSurveyValues->baseLanguage = $currentUserLanguage;
+            $surveyCreator = new \LimeSurvey\Models\Services\CreateSurvey(new Survey(), new SurveyLanguageSetting());
+            $newSurvey = $surveyCreator->createSimple(
+                $simpleSurveyValues,
+                (int)Yii::app()->user->getId(),
+                Permission::model()
+            );
+            if ($newSurvey) {
+                //create examlpe group and example question
+                $iNewGroupID = $this->createSampleGroup($newSurvey->sid);
+                $this->createSampleQuestion($newSurvey->sid, $iNewGroupID);
+
+                $redirecturl = $this->createUrl(
+                    'surveyAdministration/view/',
+                    ['iSurveyID' => $newSurvey->sid]
+                );
+
+                $this->redirect($redirecturl);
+            } else {
+                Yii::app()->setFlashMessage(gT("Survey could not be created."), 'error');
+                $this->redirect(Yii::app()->request->urlReferrer);
+            }
         }
         $this->redirect(Yii::app()->request->urlReferrer);
     }
@@ -1790,6 +1837,17 @@ class SurveyAdministrationController extends LSBaseController
 
             $openAccessMode = Yii::app()->request->getPost('openAccessMode', null);
             if ($openAccessMode !== null) {
+                $modes = [
+                    'Y' => 'O',
+                    'N' => 'C'
+                ];
+                $mode = ($modes[$openAccessMode] ?? 'O');
+                $surveyAccessModeService = new SurveyAccessModeService(
+                    Permission::model(),
+                    Survey::model(),
+                    Yii::app(),
+                );
+                $surveyAccessModeService->changeAccessMode($surveyId, $mode);
                 switch ($openAccessMode) {
                     case 'Y': //show a modal or give feedback on another page
                         $this->redirect([

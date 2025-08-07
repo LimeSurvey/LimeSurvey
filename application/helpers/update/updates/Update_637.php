@@ -12,6 +12,9 @@ use Condition;
 use Survey;
 use ArchivedTableSettings;
 use QuestionL10n;
+use SurveyLanguageSetting;
+use QuotaLanguageSetting;
+use QuestionGroupL10n;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -649,9 +652,9 @@ class Update_637 extends DatabaseUpdateBase
 
         if ($questionid === false) {
             // If the fieldmap was randomized, the master will contain the proper order.  Copy that fieldmap with the new language settings.
-            if (isset(Yii::app()->session['survey_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'])) {
-                $masterFieldmap = Yii::app()->session['survey_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'];
-                $mfieldmap = Yii::app()->session['survey_' . $surveyid][$masterFieldmap];
+            if (isset(Yii::app()->session['responses_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'])) {
+                $masterFieldmap = Yii::app()->session['responses_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'];
+                $mfieldmap = Yii::app()->session['responses_' . $surveyid][$masterFieldmap];
                 foreach ($mfieldmap as $fieldname => $mf) {
                     if (isset($fieldmap[$fieldname])) {
                         // This array holds the keys of translatable attributes
@@ -1066,9 +1069,13 @@ class Update_637 extends DatabaseUpdateBase
                     ":sid" => $sid
                 ]);
                 $qids = [0];
+                $gids = [0];
                 foreach ($questions as $question) {
                     $rawAdditionalNames["{$question->sid}X{$question->gid}X{$question->qid}"] = "Q{$question->qid}";
                     $qids[] = $question->qid;
+                    if (!in_array($question->gid, $gids)) {
+                        $gids[] = (int)$question->gid;
+                    }
                 }
                 $additionalNameKeys = array_keys($rawAdditionalNames);
                 arsort($additionalNameKeys);
@@ -1077,23 +1084,45 @@ class Update_637 extends DatabaseUpdateBase
                     $additionalNames[$additionalNameKey] = $rawAdditionalNames[$additionalNameKey];
                 }
                 $conditions = Condition::model()->findAll("qid in (" . implode(",", $qids) . ")");
+                $fields = ["cfieldname", "value"];
                 foreach ($conditions as $condition) {
-                    $fields = ["cfieldname", "value"];
                     if ($this->fixText($condition, $fields, $names) || $this->fixText($condition, $fields, $additionalNames)) {
                         $condition->save();
                     }
                 }
                 $localizedQuestions = QuestionL10n::model()->findAll("qid in (" . implode(",", $qids) . ")");
+                $fields = ["question", "script"];
                 foreach ($localizedQuestions as $localizedQuestion) {
-                    $fields = ["question", "script"];
                     if ($this->fixText($localizedQuestion, $fields, $names) || $this->fixText($localizedQuestion, $fields, $additionalNames)) {
                         $localizedQuestion->save();
                     }
                 }
+                $fields = ["title", "relevance"];
                 foreach ($questions as $question) {
-                    $fields = ["title", "relevance"];
                     if ($this->fixText($question, $fields, $names) || $this->fixText($question, $fields, $additionalNames)) {
                         $question->save();
+                    }
+                }
+                $surveyLanguageSettings = SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $sid);
+                $fields = ['surveyls_urldescription', 'surveyls_url'];
+                foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
+                    if ($this->fixText($surveyLanguageSetting, $fields, $names) || $this->fixText($surveyLanguageSetting, $fields, $additionalNames)) {
+                        $surveyLanguageSetting->save();
+                    }
+                }
+                $fields = ['quotals_url', 'quotals_urldescrip'];
+                $quotaLanguageSettings = QuotaLanguageSetting::model()->with('quota', array('condition' => 'sid=' . $sid))->together()->findAll();
+                foreach ($quotaLanguageSettings as $quotaLanguageSetting) {
+                    if ($this->fixText($quotaLanguageSetting, $fields, $names) || $this->fixText($quotaLanguageSetting, $fields, $additionalNames)) {
+                        $quotaLanguageSetting->save();
+                    }
+                }
+                $fields = ['description', 'group_name'];
+                $model = QuestionGroupL10n::model();
+                $groups = $model->resetScope()->findAll("gid in (" . implode(",", $gids) . ")");
+                foreach ($groups as $group) {
+                    if ($this->fixText($group, $fields, $names) || $this->fixText($group, $fields, $additionalNames)) {
+                        $group->save();
                     }
                 }
             }
@@ -1102,6 +1131,7 @@ class Update_637 extends DatabaseUpdateBase
         $passiveSurveys = Survey::model()->findAll("active <> 'Y'");
         foreach ($passiveSurveys as $passiveSurvey) {
             $qids = [0];
+            $gids = [0];
             $questions = Question::model()->findAll("sid = :sid", [
                 ":sid" => $passiveSurvey->sid
             ]);
@@ -1109,6 +1139,9 @@ class Update_637 extends DatabaseUpdateBase
             foreach ($questions as $question) {
                 $rawAdditionalNames["{$question->sid}X{$question->gid}X{$question->qid}"] = "Q{$question->qid}";
                 $qids[] = $question->qid;
+                if (!in_array($question->gid, $gids)) {
+                    $gids[] = (int)$question->gid;
+                }
             }
             $additionalNameKeys = array_keys($rawAdditionalNames);
             arsort($additionalNameKeys);
@@ -1131,34 +1164,56 @@ class Update_637 extends DatabaseUpdateBase
                             $position++;
                         }
                         $commaSeparatedQIDs = implode(",", $tempqids);
-                        $questions = Question::model()->findAll([
+                        $questionsTemp = Question::model()->findAll([
                             'condition' => "sid = {$sid} and gid = {$gid} and (qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
                         ]);
-                    }
-                    $prefix = Yii::app()->db->tablePrefix ?? "";
-                    if (count($questions)) {
-                        $newFields[$oldField] = getFieldName($prefix . "survey_" . $passiveSurvey->sid, $oldField, $questions, (int)$sid, (int)$gid);
+                        $prefix = Yii::app()->db->tablePrefix ?? "";
+                        if (count($questionsTemp)) {
+                            $newFields[$oldField] = getFieldName($prefix . "survey_" . $passiveSurvey->sid, $oldField, $questionsTemp, (int)$sid, (int)$gid);
+                        }
                     }
                 }
             }
             $conditions = Condition::model()->findAll("qid in (" . implode(",", $qids) . ")");
+            $fields = ["cfieldname", "value"];
             foreach ($conditions as $condition) {
-                $fields = ["cfieldname", "value"];
                 if ($this->fixText($condition, $fields, $newFields) || $this->fixText($condition, $fields, $additionalNames)) {
                     $condition->save();
                 }
             }
             $localizedQuestions = QuestionL10n::model()->findAll("qid in (" . implode(",", $qids) . ")");
+            $fields = ["question", "script"];
             foreach ($localizedQuestions as $localizedQuestion) {
-                $fields = ["question", "script"];
                 if ($this->fixText($localizedQuestion, $fields, $newFields) || $this->fixText($localizedQuestion, $fields, $additionalNames)) {
                     $localizedQuestion->save();
                 }
             }
+            $fields = ["title", "relevance"];
             foreach ($questions as $question) {
-                $fields = ["title", "relevance"];
                 if ($this->fixText($question, $fields, $newFields) || $this->fixText($question, $fields, $additionalNames)) {
                     $question->save();
+                }
+            }
+            $surveyLanguageSettings = SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $sid);
+            $fields = ['surveyls_urldescription', 'surveyls_url'];
+            foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
+                if ($this->fixText($surveyLanguageSetting, $fields, $names) || $this->fixText($surveyLanguageSetting, $fields, $additionalNames)) {
+                    $surveyLanguageSetting->save();
+                }
+            }
+            $fields = ['quotals_url', 'quotals_urldescrip'];
+            $quotaLanguageSettings = QuotaLanguageSetting::model()->with('quota', array('condition' => 'sid=' . $sid))->together()->findAll();
+            foreach ($quotaLanguageSettings as $quotaLanguageSetting) {
+                if ($this->fixText($quotaLanguageSetting, $fields, $names) || $this->fixText($quotaLanguageSetting, $fields, $additionalNames)) {
+                    $quotaLanguageSetting->save();
+                }
+            }
+            $fields = ['description', 'group_name'];
+            $model = QuestionGroupL10n::model();
+            $groups = $model->resetScope()->findAll("gid in (" . implode(",", $gids) . ")");
+            foreach ($groups as $group) {
+                if ($this->fixText($group, $fields, $names) || $this->fixText($group, $fields, $additionalNames)) {
+                    $group->save();
                 }
             }
         }
