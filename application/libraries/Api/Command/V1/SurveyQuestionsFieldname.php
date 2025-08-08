@@ -40,13 +40,18 @@ class SurveyQuestionsFieldname implements CommandInterface
     {
         $surveyId = (string) $request->getData('_id');
 
+
         if (!$this->permission->hasSurveyPermission($surveyId, 'fieldnames')) {
             return $this->responseFactory->makeErrorUnauthorised();
         }
 
-        $surveyLanguage = Survey::model()->findByPk($surveyId)->language;
         $survey = Survey::model()->findByPk($surveyId);
 
+        if ($survey === null) {
+            return $this->responseFactory->makeErrorNotFound();
+        }
+
+        $surveyLanguage = $survey->language;
         $fullFieldMap = createFieldMap($survey, 'full', true, false, $surveyLanguage);
 
         $questionsFieldMap = [];
