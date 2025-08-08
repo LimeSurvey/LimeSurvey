@@ -516,7 +516,7 @@ class SurveyCommonAction extends CAction
         $menuItemHeader = [
             'isDivider' => false,
             'isSmallText' => true,
-            'label' => 'Create new',
+            'label' => gT('Create new'),
             'href' => '#',
             'iconClass' => 'ri-add-line',
         ];
