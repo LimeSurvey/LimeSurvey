@@ -1740,7 +1740,11 @@ class SurveyAdministrationController extends LSBaseController
             $error = gT("There are no questions in this survey.");
         }
         $checkFailed = (isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck) || !empty($error);
-        $footerButton = '';
+        $footerButton = $this->renderPartial(
+            '/surveyAdministration/surveyActivation/_activateFooterBtns',
+            [],
+            true
+        );
         if ($checkFailed) {
             //survey can not be activated
             $html = $this->renderPartial(
