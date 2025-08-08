@@ -76,7 +76,16 @@ class SurveyQuestionsFieldname implements CommandInterface
 
         foreach ($questionsFieldMap as $questionId => $questionFields) {
             foreach ($questionFields as $field) {
-                $structuredFieldnames[$questionId][$field['fieldname']] = $field;
+                $structuredFieldnames[$questionId][$field['fieldname']] = [
+                    'fieldname' => $field['fieldname'],
+                    'sid'       => $field['sid'],
+                    'gid'       => $field['gid'],
+                    'qid'       => $field['qid'],
+                    'sqid'      => $field['sqid'] ?? null,
+                    'aid'       => $field['aid'],
+                    'title'     => $field['title'],
+                    'scale_id'  => $field['scale_id'] ?? null,
+                ];
             }
         }
 
