@@ -10,7 +10,7 @@
         <div class="">
             <!-- tab import survey -->
             <!-- import form -->
-            <?php echo CHtml::form(array('surveyAdministration/copy'), 'post', array('id' => 'importsurvey', 'name' => 'importsurvey', 'class' => '', 'enctype' => 'multipart/form-data', 'onsubmit' => 'return window.LS.validatefilename(this,"' . gT('Please select a file to import!', 'js') . '");')); ?>
+            <?php echo CHtml::form(array('surveyAdministration/import'), 'post', array('id' => 'importsurvey', 'name' => 'importsurvey', 'class' => '', 'enctype' => 'multipart/form-data', 'onsubmit' => 'return window.LS.validatefilename(this,"' . gT('Please select a file to import!', 'js') . '");')); ?>
             <div class="row">
 
                 <!-- Select file -->
