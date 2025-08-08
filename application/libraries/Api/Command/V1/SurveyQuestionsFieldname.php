@@ -11,8 +11,6 @@ use Survey;
 
 class SurveyQuestionsFieldname implements CommandInterface
 {
-    protected Survey $survey;
-
     protected Permission $permission;
 
     protected LSYii_Application $app;
