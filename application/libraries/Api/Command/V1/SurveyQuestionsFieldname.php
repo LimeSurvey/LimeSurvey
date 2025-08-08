@@ -52,14 +52,17 @@ class SurveyQuestionsFieldname implements CommandInterface
         $questionsFieldMap = [];
 
         foreach ($fullFieldMap as $fieldCode => $fieldMeta) {
-            if (strpos($fieldCode, 'Q') !== 0)
+            if (strpos($fieldCode, 'Q') !== 0) {
                 continue;
+            }
 
-            if (strpos($fieldMeta['fieldname'], 'comment') !== false)
+            if (strpos($fieldMeta['fieldname'], 'comment') !== false) {
                 continue;
+            }
 
-            if (strpos($fieldMeta['fieldname'], 'filecount') !== false)
+            if (strpos($fieldMeta['fieldname'], 'filecount') !== false) {
                 continue;
+            }
 
             $questionsFieldMap[$fieldMeta['qid']][] = $fieldMeta;
         }

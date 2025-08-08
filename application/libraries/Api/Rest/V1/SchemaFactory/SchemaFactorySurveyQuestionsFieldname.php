@@ -10,11 +10,11 @@ class SchemaFactorySurveyQuestionsFieldname
     {
         $questionItemSchema = Schema::object()
             ->properties(
+                Schema::string('fieldname'),
                 Schema::integer('sid'),
                 Schema::integer('gid'),
                 Schema::integer('qid'),
                 Schema::integer('sqid')->nullable(),
-                Schema::string('fieldname'),
                 Schema::string('aid')->nullable(),
                 Schema::string('title'),
                 Schema::integer('scale_id')->nullable(),
