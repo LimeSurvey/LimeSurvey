@@ -45,14 +45,6 @@ class UserPermission implements CommandInterface
      */
     public function run(Request $request)
     {
-        if (
-            !$this->permission->hasGlobalPermission('superadmin')
-            || !$this->permission->hasGlobalPermission('users', 'update')
-        ) {
-            return $this->responseFactory
-                ->makeErrorForbidden();
-        }
-
         $userId = App()->user->getId();
 
         $permissions = $this->permission->getPermissions($userId);
