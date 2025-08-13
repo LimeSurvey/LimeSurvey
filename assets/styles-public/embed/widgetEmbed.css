@@ -1,0 +1,68 @@
+#limesurvey-container {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
+    z-index: 1;
+    background: #fff;
+    width: 450px;
+    height: 600px;
+    border: 1px solid #828282;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 16px;
+    overflow-y: scroll;
+}
+
+#limesurvey-container.side-right {
+    right: -100%;
+}
+
+#limesurvey-container.side-left {
+    left: -100%;
+}
+
+@media (max-width: 768px) {
+    #limesurvey-container.fullscreen-mobile {
+        width: 100% !important;
+        height: 100% !important;
+        top: 0 !important;
+        transform: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+}
+
+#limesurvey-embed-button {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #14AE5C;
+    color: white;
+    writing-mode: vertical-lr;
+    text-orientation: mixed;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1;
+    border-radius: 4px 4px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+#limesurvey-embed-button.side-right {
+    right: 0;
+}
+
+#limesurvey-embed-button.side-left {
+    left: 0;
+}
+
+#limesurvey-embed-button .icon {
+    display: inline-flex;
+    transform: rotate(-90deg);
+}

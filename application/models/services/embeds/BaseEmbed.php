@@ -12,6 +12,7 @@ abstract class BaseEmbed
     protected $structure;
 
     public const EMBED_STRUCTURE_STANDARD = "Standard";
+    public const EMBED_STRUCTURE_WIDGET = "Widget";
     protected static $supportedEmbeds = null;
     protected bool $wrapper = true;
 
@@ -25,7 +26,8 @@ abstract class BaseEmbed
     {
         if (!self::$supportedEmbeds) {
             self::$supportedEmbeds = [
-                self::EMBED_STRUCTURE_STANDARD
+                self::EMBED_STRUCTURE_STANDARD,
+                self::EMBED_STRUCTURE_WIDGET
             ];
         }
         $embed = "LimeSurvey\\Models\\Services\\embeds\\{$key}Embed";
@@ -104,5 +106,18 @@ abstract class BaseEmbed
     public function render(string $placeholder = "PLACEHOLDER")
     {
         return $this->wrapper ? str_replace($placeholder, $this->getStructure(), $this->getWrapper($placeholder)) : $this->getStructure();
+    }
+
+    /**
+     * Returns the assets root URL
+     * @return string
+     */
+    protected function getAssetsRootUrl()
+    {
+        return (
+            !empty($_SERVER['HTTPS'])
+            ? 'https'
+            : 'http'
+        ) . '://' . ($_SERVER['HTTP_HOST'] ?? '') . '/assets';
     }
 }

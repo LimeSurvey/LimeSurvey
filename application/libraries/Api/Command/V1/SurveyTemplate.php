@@ -89,8 +89,8 @@ class SurveyTemplate implements CommandInterface
         $this->isPreview = $this->isPreview && (\Yii::app()->request->getParam('popuppreview', 'true') === 'true');
         $this->js = $this->js || (\Yii::app()->request->getParam('js', 'false') === 'true');
         $target = \Yii::app()->request->getParam('target', 'marketing');
-        $embedType = $request->getData('embed') ?? BaseEmbed::EMBED_STRUCTURE_STANDARD;
-        $embedOptions = $request->getData('embedOptions') ?? [];
+        $embedType = \Yii::app()->request->getParam('embed', BaseEmbed::EMBED_STRUCTURE_STANDARD);
+        $embedOptions = \Yii::app()->request->getParam('embedOptions', []);
         $this->embed = BaseEmbed::instantiate($embedType)
                         ->setEmbedOptions($embedOptions);
 
