@@ -16,7 +16,6 @@ class WidgetEmbed extends BaseEmbed
         $side = $this->embedOptions['widgetPosition'] ?? 'right';
         $buttonText = $this->embedOptions['widgetTitle'] ?? 'Feedback survey';
         $fullscreenmobileEnabled = $this->embedOptions['fullscreenmobile'] === 'on' ?? false;
-        
         $arrow = $side === "right" ? "<" : ">";
         $cssUrl = $this->getAssetsRootUrl() . '/styles-public/embed/widgetEmbed.css';
 
