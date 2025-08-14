@@ -16,22 +16,22 @@ class WidgetEmbed extends BaseEmbed
         $side = $this->embedOptions['widgetPosition'] ?? 'right';
         $buttonText = $this->embedOptions['widgetTitle'] ?? 'Feedback survey';
         $fullscreenmobileEnabled = $this->embedOptions['fullscreenmobile'] == 'on' ?? false;
-
-        $arrow = $side === "right" ? "<" : ">";
+        
+        $isRightSide = $side === "right" ? 1 : 0;
+        $arrow = $isRightSide ? "<" : ">";
         $cssUrl = $this->getAssetsRootUrl() . '/styles-public/embed/widgetEmbed.css';
 
-        $sideClasses = "side-{$side}";
-        $containerClasses = $sideClasses;
+        $classes = "side-{$side}";
         if ($fullscreenmobileEnabled) {
-            $containerClasses .= " fullscreen-mobile";
+            $classes .= " fullscreen-mobile";
         }
 
         return <<<HTML
         <link rel="stylesheet" href="{$cssUrl}">
-        <div id="limesurvey-container" class="{$containerClasses}">
+        <div id="limesurvey-container" class="{$classes}">
             {$placeholder}
         </div>
-        <div id="limesurvey-embed-button" class="{$sideClasses}">
+        <div id="limesurvey-embed-button" class="{$classes}">
             <span class="text">{$buttonText}</span>
             <span class="icon">{$arrow}</span>
         </div>
@@ -45,18 +45,30 @@ class WidgetEmbed extends BaseEmbed
         
             button.addEventListener('click', function(){
                 const containerWidth = container.getBoundingClientRect().width;
+                const buttonWidth = button.getBoundingClientRect().width;
                 const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+                let isMobileViewport = false;
                 let buttonSlideDifference = 1;
                 if (viewportWidth <= 768) {
-                    buttonSlideDifference =  button.getBoundingClientRect().width;
+                    isMobileViewport = true;
+                    buttonSlideDifference =  buttonWidth;
                 }
                 if (isOpen) {
                     container.style.{$side} = -containerWidth + 'px';
                     button.style.{$side} = '0';
+                    button.classList.remove('open');
                     icon.innerHTML = '{$arrow}';
                 } else {
+                    if (isMobileViewport) {
+                        if ({$isRightSide}) {
+                            container.style.paddingLeft = buttonWidth + 'px';
+                        } else {
+                            container.style.paddingRight = buttonWidth + 'px';
+                        }
+                    }
                     container.style.{$side} = '0';
                     button.style.{$side} = (containerWidth - buttonSlideDifference) + 'px';
+                    button.classList.add('open');
                     icon.innerHTML = 'x';
                 }
                 isOpen = !isOpen;
