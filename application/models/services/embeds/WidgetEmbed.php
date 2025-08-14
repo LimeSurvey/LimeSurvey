@@ -51,13 +51,13 @@ class WidgetEmbed extends BaseEmbed
                     buttonSlideDifference =  button.getBoundingClientRect().width;
                 }
                 if (isOpen) {
-                    container.style.{$side} = '-100%';
+                    container.style.{$side} = -containerWidth + 'px';
                     button.style.{$side} = '0';
                     icon.innerHTML = '{$arrow}';
                 } else {
                     container.style.{$side} = '0';
                     button.style.{$side} = (containerWidth - buttonSlideDifference) + 'px';
-                    icon.innerHTML = `x`;
+                    icon.innerHTML = 'x';
                 }
                 isOpen = !isOpen;
             });
