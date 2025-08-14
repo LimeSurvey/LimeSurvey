@@ -7,9 +7,8 @@
     background: #fff;
     width: 450px;
     height: 600px;
-    border: 1px solid #828282;
+    border: 1px dashed #8146F6;
     border-radius: 4px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     padding: 16px;
     overflow-y: scroll;
 }

@@ -12,62 +12,57 @@ class WidgetEmbed extends BaseEmbed
      * @return string
      */
     protected function getWrapper(string $placeholder = "PLACEHOLDER")
-{
-    $width = $this->embedOptions['width'] ?? $this->fullWidth;
-    $height = $this->embedOptions['height'] ?? $this->fullHeight;
-    $side = $this->embedOptions['widgetPosition'] ?? 'right';
-    $buttonText = $this->embedOptions['widgetTitle'] ?? 'Feedback survey';
-    $fullscreenmobileEnabled = $this->embedOptions['fullscreenmobile'] == 'on' ?? false;
+    {
+        $side = $this->embedOptions['widgetPosition'] ?? 'right';
+        $buttonText = $this->embedOptions['widgetTitle'] ?? 'Feedback survey';
+        $fullscreenmobileEnabled = $this->embedOptions['fullscreenmobile'] == 'on' ?? false;
 
-    $arrow = $side === "right" ? "<" : ">";
-    $cssUrl = $this->getAssetsRootUrl() . '/styles-public/embed/widgetEmbed.css';
+        $arrow = $side === "right" ? "<" : ">";
+        $cssUrl = $this->getAssetsRootUrl() . '/styles-public/embed/widgetEmbed.css';
 
-    $sideClasses = "side-{$side}";
-    $containerClasses = $sideClasses;
-    if ($fullscreenmobileEnabled) {
-        $containerClasses .= " fullscreen-mobile";
+        $sideClasses = "side-{$side}";
+        $containerClasses = $sideClasses;
+        if ($fullscreenmobileEnabled) {
+            $containerClasses .= " fullscreen-mobile";
+        }
+
+        return <<<HTML
+        <link rel="stylesheet" href="{$cssUrl}">
+        <div id="limesurvey-container" class="{$containerClasses}">
+            {$placeholder}
+        </div>
+        <div id="limesurvey-embed-button" class="{$sideClasses}">
+            <span class="text">{$buttonText}</span>
+            <span class="icon">{$arrow}</span>
+        </div>
+        <script data-ls-interaction>
+        (function(){
+            const root = window.__LS_SHADOW_ROOT__ || document;
+            var container = root.getElementById('limesurvey-container');
+            var button = root.getElementById('limesurvey-embed-button');
+            var icon = button.querySelector('.icon');
+            var isOpen = false;
+        
+            button.addEventListener('click', function(){
+                const containerWidth = container.getBoundingClientRect().width;
+                const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+                let buttonSlideDifference = 0;
+                if (viewportWidth <= 768) {
+                    buttonSlideDifference =  button.getBoundingClientRect().width;
+                }
+                if (isOpen) {
+                    container.style.{$side} = '-100%';
+                    button.style.{$side} = '0';
+                    icon.innerHTML = '{$arrow}';
+                } else {
+                    container.style.{$side} = '0';
+                    button.style.{$side} = (containerWidth - buttonSlideDifference) + 'px';
+                    icon.innerHTML = `x`;
+                }
+                isOpen = !isOpen;
+            });
+        })();
+        </script>
+        HTML;
     }
-
-    return <<<HTML
-<link rel="stylesheet" href="{$cssUrl}">
-<div id="limesurvey-container" class="{$containerClasses}">
-    {$placeholder}
-</div>
-<div id="limesurvey-embed-button" class="{$sideClasses}">
-    <span class="text">{$buttonText}</span>
-    <span class="icon">{$arrow}</span>
-</div>
-<script data-ls-interaction>
-(function(){
-    const root = window.__LS_SHADOW_ROOT__ || document;
-    var container = root.getElementById('limesurvey-container');
-    var button = root.getElementById('limesurvey-embed-button');
-    var icon = button.querySelector('.icon');
-    var isOpen = false;
-
-        button.addEventListener('click', function(){
-            const containerWidth = container.getBoundingClientRect().width;
-            const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
-            let buttonSlideDifference = 0;
-            console.log(containerWidth);
-            
-            if (viewportWidth <= 768) {
-                buttonSlideDifference =  button.getBoundingClientRect().width;
-            }
-
-            if (isOpen) {
-                container.style.{$side} = '-100%';
-                button.style.{$side} = '0';
-                icon.innerHTML = '{$arrow}';
-            } else {
-                container.style.{$side} = '0';
-                button.style.{$side} = (containerWidth - buttonSlideDifference) + 'px';
-                icon.innerHTML = `x`;
-            }
-            isOpen = !isOpen;
-        });
-})();
-</script>
-HTML;
-}
 }
