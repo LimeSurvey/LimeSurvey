@@ -86,7 +86,7 @@ class SurveyCondition
      */
     public function getFieldName(int $sid, int $gid, int $qid, string $title = '')
     {
-        $questions = [\Question::model()->findByPk($qid)];
+        $questions = $title ? \Question::model()->findAll($qid . ' IN (qid, parent_qid)') : [\Question::model()->findByPk($qid)];
         return getFieldName("{{responses_{$sid}}}", $sid . self::X . $gid . self::X . $qid . $title, $questions, $sid, $gid);
     }
 
