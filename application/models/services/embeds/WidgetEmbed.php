@@ -15,10 +15,9 @@ class WidgetEmbed extends BaseEmbed
     {
         $side = $this->embedOptions['widgetPosition'] ?? 'right';
         $buttonText = $this->embedOptions['widgetTitle'] ?? 'Feedback survey';
-        $fullscreenmobileEnabled = $this->embedOptions['fullscreenmobile'] == 'on' ?? false;
+        $fullscreenmobileEnabled = $this->embedOptions['fullscreenmobile'] === 'on' ?? false;
         
-        $isRightSide = $side === "right" ? 1 : 0;
-        $arrow = $isRightSide ? "<" : ">";
+        $arrow = $side === "right" ? "<" : ">";
         $cssUrl = $this->getAssetsRootUrl() . '/styles-public/embed/widgetEmbed.css';
 
         $classes = "side-{$side}";
@@ -44,31 +43,13 @@ class WidgetEmbed extends BaseEmbed
             var isOpen = false;
         
             button.addEventListener('click', function(){
-                const containerWidth = container.getBoundingClientRect().width;
-                const buttonWidth = button.getBoundingClientRect().width;
-                const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
-                let isMobileViewport = false;
-                let buttonSlideDifference = 1;
-                if (viewportWidth <= 768) {
-                    isMobileViewport = true;
-                    buttonSlideDifference =  buttonWidth;
-                }
                 if (isOpen) {
-                    container.style.{$side} = -containerWidth + 'px';
-                    button.style.{$side} = '0';
                     button.classList.remove('open');
+                    container.classList.remove('open');
                     icon.innerHTML = '{$arrow}';
                 } else {
-                    if (isMobileViewport) {
-                        if ({$isRightSide}) {
-                            container.style.paddingLeft = buttonWidth + 'px';
-                        } else {
-                            container.style.paddingRight = buttonWidth + 'px';
-                        }
-                    }
-                    container.style.{$side} = '0';
-                    button.style.{$side} = (containerWidth - buttonSlideDifference) + 'px';
                     button.classList.add('open');
+                    container.classList.add('open');
                     icon.innerHTML = 'x';
                 }
                 isOpen = !isOpen;
