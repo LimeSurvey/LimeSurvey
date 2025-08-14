@@ -2,7 +2,7 @@
     position: fixed;
     top: 50%;
     transform: translateY(-50%);
-    transition: all 0.3s ease;
+    transition: all 0.2s ease-in-out;
     z-index: 1;
     background: #fff;
     width: 450px;
@@ -10,7 +10,7 @@
     border: 1px dashed #8146F6;
     border-radius: 4px;
     padding: 16px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 #limesurvey-container.side-right {
@@ -50,7 +50,7 @@
     justify-content: center;
     font-weight: bold;
     gap: 10px;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease-in-out;
 }
 
 #limesurvey-embed-button.side-right {
