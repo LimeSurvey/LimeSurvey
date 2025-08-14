@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions;
 
-use http\Exception\InvalidArgumentException;
+use InvalidArgumentException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\HandlerInterface;
 
 class DateRangeConditionHandler implements HandlerInterface
@@ -27,15 +27,17 @@ class DateRangeConditionHandler implements HandlerInterface
 
         $criteria = new \CDbCriteria();
 
+        $keyStripped = preg_replace('/[^a-zA-Z0-9_]/', '', $key);
+
         if ($min === false) {
-            $criteria->condition = "$key <= :max";
-            $criteria->params = [':max' => $max];
+            $criteria->condition = "$key <= :{$keyStripped}Max";
+            $criteria->params = [":{$keyStripped}Max" => $max];
         } elseif ($max === false) {
-            $criteria->condition = "$key >= :min";
-            $criteria->params = [':min' => $min];
+            $criteria->condition = "$key >= :{$keyStripped}Min";
+            $criteria->params = [":{$keyStripped}Min" => $min];
         } else {
-            $criteria->condition = "$key >= :min AND $key <= :max";
-            $criteria->params = [':min' => $min, ':max' => $max];
+            $criteria->condition = "$key >= :{$keyStripped}Min AND $key <= :{$keyStripped}Max";
+            $criteria->params = [":{$keyStripped}Min" => $min, ":{$keyStripped}Max" => $max];
         }
 
         return $criteria;

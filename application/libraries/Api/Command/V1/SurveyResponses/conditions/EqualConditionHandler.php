@@ -40,5 +40,4 @@ class EqualConditionHandler implements HandlerInterface
 
         return $criteria;
     }
-
 }

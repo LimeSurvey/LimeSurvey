@@ -8,7 +8,7 @@ class ContainConditionHandler implements HandlerInterface
 {
     public function canHandle(string $operation): bool
     {
-        if ($operation == 'contain') {
+        if (strtolower($operation) == 'contain') {
             return true;
         }
         return false;

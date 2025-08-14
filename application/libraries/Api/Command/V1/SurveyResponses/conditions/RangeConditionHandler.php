@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions;
 
-use http\Exception\InvalidArgumentException;
+use InvalidArgumentException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\HandlerInterface;
 
 class RangeConditionHandler implements HandlerInterface
@@ -28,17 +28,20 @@ class RangeConditionHandler implements HandlerInterface
 
         $criteria = new \CDbCriteria();
 
-        if ($min === null) {
-            $criteria->condition = "CAST($key AS UNSIGNED) <= :max";
-            $criteria->params = [':max' => $max];
-        } elseif ($max === null) {
-            $criteria->condition = "CAST($key AS UNSIGNED) >= :min";
-            $criteria->params = [':min' => $min];
-        } else {
-            $criteria->condition = "CAST($key AS UNSIGNED) >= :min AND CAST($key AS UNSIGNED) <= :max";
-            $criteria->params = [':min' => $min, ':max' => $max];
-        }
+        // Do another more strict strip, to allow only letters and numbers
+        // so that we don't have :`id`Max in parameter
+        $keyStripped = preg_replace('/[^a-zA-Z0-9_]/', '', $key);
 
+        if ($min === null) {
+            $criteria->condition = "CAST($key AS UNSIGNED) <= :{$keyStripped}Max";
+            $criteria->params = [":{$keyStripped}Max" => $max];
+        } elseif ($max === null) {
+            $criteria->condition = "CAST($key AS UNSIGNED) >= :{$keyStripped}Min";
+            $criteria->params = [":{$keyStripped}Min" => $min];
+        } else {
+            $criteria->condition = "CAST($key AS UNSIGNED) >= :{$keyStripped}Min AND CAST($key AS UNSIGNED) <= :{$keyStripped}Max";
+            $criteria->params = [":{$keyStripped}Min" => $min, ":{$keyStripped}Max" => $max];
+        }
         return $criteria;
     }
 
