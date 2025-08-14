@@ -46,7 +46,7 @@ class WidgetEmbed extends BaseEmbed
             button.addEventListener('click', function(){
                 const containerWidth = container.getBoundingClientRect().width;
                 const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
-                let buttonSlideDifference = 0;
+                let buttonSlideDifference = 1;
                 if (viewportWidth <= 768) {
                     buttonSlideDifference =  button.getBoundingClientRect().width;
                 }

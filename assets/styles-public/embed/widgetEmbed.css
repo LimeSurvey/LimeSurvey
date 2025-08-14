@@ -40,11 +40,9 @@
     background-color: #14AE5C;
     color: white;
     writing-mode: vertical-lr;
-    text-orientation: mixed;
     padding: 10px;
     cursor: pointer;
     z-index: 1;
-    border-radius: 4px 4px 0 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -55,10 +53,12 @@
 
 #limesurvey-embed-button.side-right {
     right: 0;
+    border-radius: 4px 0 0 4px;
 }
 
 #limesurvey-embed-button.side-left {
     left: 0;
+    border-radius: 0 4px 4px 0;
 }
 
 #limesurvey-embed-button .icon {
