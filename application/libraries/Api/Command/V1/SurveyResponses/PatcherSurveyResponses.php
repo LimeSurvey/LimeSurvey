@@ -15,6 +15,12 @@ class PatcherSurveyResponses extends Patcher
 {
     protected SurveyResponse $surveyResponse;
 
+    private array $handlers = [
+        OpHandlerResponsesDelete::class,
+        OpHandlerResponsesUpdate::class,
+        OpHandlerResponsesFileDelete::class,
+    ];
+
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -24,23 +30,12 @@ class PatcherSurveyResponses extends Patcher
         SurveyResponse $surveyResponse
     ) {
         $this->surveyResponse = $surveyResponse;
-        $this->addOpHandler(
-            $diContainer->get(
-                OpHandlerResponsesDelete::class
-            )
-        );
 
-        $this->addOpHandler(
-            $diContainer->get(
-                OpHandlerResponsesUpdate::class
-            )
-        );
-
-        $this->addOpHandler(
-            $diContainer->get(
-                OpHandlerResponsesFileDelete::class
-            )
-        );
+        foreach ($this->handlers as $handler) {
+            $this->addOpHandler(
+                $diContainer->get($handler)
+            );
+        }
     }
 
     /**

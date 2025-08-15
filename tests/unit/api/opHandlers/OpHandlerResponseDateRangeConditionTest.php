@@ -31,7 +31,7 @@ class OpHandlerResponseDateRangeConditionTest extends TestCase
         $criteria = $handler->execute('created_at', ['2024-07-01', '2024-07-31']);
 
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
-        $this->assertSame('`created_at` >= :created_atMin AND `created_at` <= :created_atMax', $criteria->condition);
+        $this->assertSame('`created_at` BETWEEN :created_atMin AND :created_atMax', $criteria->condition);
         $this->assertSame(
             [
                 ':created_atMin' => '2024-07-01 00:00:00',
@@ -124,8 +124,7 @@ class OpHandlerResponseDateRangeConditionTest extends TestCase
         $criteria = $handler->execute('created_at`; DROP  table--', ['2024-06-01', '2024-06-02']);
 
         $this->assertStringNotContainsString(';', $criteria->condition);
-        $this->assertStringContainsString('`created_atDROPtable--` >= :created_atDROPtableMin', $criteria->condition);
-        $this->assertStringContainsString('`created_atDROPtable--` <= :created_atDROPtableMax', $criteria->condition);
+        $this->assertSame('`created_atDROPtable--` BETWEEN :created_atDROPtableMin AND :created_atDROPtableMax', $criteria->condition);
 
         $this->assertSame(
             [

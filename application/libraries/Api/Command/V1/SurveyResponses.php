@@ -31,6 +31,8 @@ class SurveyResponses implements CommandInterface
      * Constructor
      *
      * @param Survey $survey
+     * @param Answer $answerModel
+     * @param Permission $permission
      * @param FilterPatcher $responseFilterPatcher
      * @param ResponseFactory $responseFactory
      * @param TransformerOutputSurveyResponses $transformerOutputSurveyResponses

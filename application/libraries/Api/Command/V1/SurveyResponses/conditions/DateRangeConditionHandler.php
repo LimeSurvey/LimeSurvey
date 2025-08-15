@@ -7,6 +7,8 @@ use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\HandlerInterface;
 
 class DateRangeConditionHandler implements HandlerInterface
 {
+    use ConditionHandlerHelperTrait;
+
     public function canHandle(string $operation): bool
     {
         if (strtolower($operation) == 'date-range') {
@@ -17,8 +19,7 @@ class DateRangeConditionHandler implements HandlerInterface
 
     public function execute($key, $value): object
     {
-        $key = preg_replace('/[^a-zA-Z0-9_-]/', '', $key);
-        $key = App()->db->quoteColumnName($key);
+        $key = $this->sanitizeKey($key);
 
         $range = $this->parseRange($value);
 
@@ -27,7 +28,7 @@ class DateRangeConditionHandler implements HandlerInterface
 
         $criteria = new \CDbCriteria();
 
-        $keyStripped = preg_replace('/[^a-zA-Z0-9_]/', '', $key);
+        $keyStripped = $this->stripKey($key);
 
         if ($min === false) {
             $criteria->condition = "$key <= :{$keyStripped}Max";
@@ -36,7 +37,7 @@ class DateRangeConditionHandler implements HandlerInterface
             $criteria->condition = "$key >= :{$keyStripped}Min";
             $criteria->params = [":{$keyStripped}Min" => $min];
         } else {
-            $criteria->condition = "$key >= :{$keyStripped}Min AND $key <= :{$keyStripped}Max";
+            $criteria->condition = "$key BETWEEN :{$keyStripped}Min AND :{$keyStripped}Max";
             $criteria->params = [":{$keyStripped}Min" => $min, ":{$keyStripped}Max" => $max];
         }
 
@@ -60,7 +61,8 @@ class DateRangeConditionHandler implements HandlerInterface
     }
 
     /**
-     * @param string $date
+     * @param string|null $date
+     * @param bool $max
      * @return string|false
      */
     private function validateDate(?string $date, $max = false)

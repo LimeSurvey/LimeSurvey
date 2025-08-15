@@ -6,6 +6,8 @@ use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\HandlerInterface;
 
 class EqualConditionHandler implements HandlerInterface
 {
+    use ConditionHandlerHelperTrait;
+
     public function canHandle(string $operation): bool
     {
         if (strtolower($operation) == 'equal') {
@@ -22,8 +24,7 @@ class EqualConditionHandler implements HandlerInterface
             $conditions = [];
 
             foreach ($key as $rawKey) {
-                $sanitizedKey = preg_replace('/[^a-zA-Z0-9_-]/', '', $rawKey);
-                $quotedKey = App()->db->quoteColumnName($sanitizedKey);
+                $quotedKey = $this->sanitizeKey($rawKey);
                 $conditions[] = "$quotedKey = :value";
             }
 
@@ -33,8 +34,7 @@ class EqualConditionHandler implements HandlerInterface
             return $criteria;
         }
 
-        $sanitizedKey = preg_replace('/[^a-zA-Z0-9_-]/', '', $key);
-        $quotedKey = App()->db->quoteColumnName($sanitizedKey);
+        $quotedKey = $this->sanitizeKey($key);
 
         $criteria->addColumnCondition([$quotedKey => $value]);
 

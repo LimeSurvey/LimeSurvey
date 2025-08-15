@@ -32,8 +32,7 @@ class OpHandlerResponseRangeConditionTest extends TestCase
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
 
         // Condition should cast and use both Min and Max placeholders
-        $this->assertStringContainsString('CAST(`id` AS UNSIGNED) >= :idMin', $criteria->condition);
-        $this->assertStringContainsString('CAST(`id` AS UNSIGNED) <= :idMax', $criteria->condition);
+        $this->assertSame('CAST(`id` AS UNSIGNED) BETWEEN :idMin AND :idMax', $criteria->condition);
 
         $this->assertSame(
             [':idMin' => 10.0, ':idMax' => 25.0],
@@ -78,9 +77,7 @@ class OpHandlerResponseRangeConditionTest extends TestCase
 
         $this->assertStringNotContainsString(';', $criteria->condition);
 
-        $this->assertStringContainsString('`idDROPTABLEresponses--`', $criteria->condition);
-        $this->assertStringContainsString('>= :idDROPTABLEresponsesMin', $criteria->condition);
-        $this->assertStringContainsString('<= :idDROPTABLEresponsesMax', $criteria->condition);
+        $this->assertSame('CAST(`idDROPTABLEresponses--` AS UNSIGNED) BETWEEN :idDROPTABLEresponsesMin AND :idDROPTABLEresponsesMax', $criteria->condition);
 
         $this->assertArrayHasKey(':idDROPTABLEresponsesMin', $criteria->params);
         $this->assertArrayHasKey(':idDROPTABLEresponsesMax', $criteria->params);

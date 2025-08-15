@@ -2,9 +2,7 @@
 
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses;
 
-use GuzzleHttp\HandlerStack;
-
-class SortingHandler
+class SortingHandler implements HandlerInterface
 {
     private array $order = ['asc', 'desc'];
 
@@ -13,7 +11,12 @@ class SortingHandler
         return in_array(strtolower($operation), $this->order);
     }
 
-    public function execute(string $column, string $order): \CSort
+    /**
+     * @param string $column
+     * @param string $order
+     * @return \CSort
+     */
+    public function execute($column, $order): \CSort
     {
         $sort     = new \CSort();
         $sort->defaultOrder = "$column $order";

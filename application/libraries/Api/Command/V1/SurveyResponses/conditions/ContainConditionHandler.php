@@ -2,10 +2,13 @@
 
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions;
 
+use CDbCriteria;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\HandlerInterface;
 
 class ContainConditionHandler implements HandlerInterface
 {
+    use ConditionHandlerHelperTrait;
+
     public function canHandle(string $operation): bool
     {
         if (strtolower($operation) == 'contain') {
@@ -17,21 +20,20 @@ class ContainConditionHandler implements HandlerInterface
     /**
      * Builds criteria for either one or multiple keys.
      * @param string|array $key
-     * @param string $value
+     * @param string|array $value
      * @return \CDbCriteria
      */
     public function execute($key, $value): object
     {
         $value = trim($value);
-        $criteria = new \CDbCriteria();
+        $criteria = new CDbCriteria();
 
         if (is_array($key)) {
             $conditions = [];
             $params = [];
 
             foreach ($key as $index => $rawKey) {
-                $sanitizedKey = preg_replace('/[^a-zA-Z0-9_-]/', '', $rawKey);
-                $quotedKey = App()->db->quoteColumnName($sanitizedKey);
+                $quotedKey = $this->sanitizeKey($rawKey);
                 $paramName = ":match$index";
 
                 $conditions[] = "$quotedKey LIKE $paramName";
@@ -43,9 +45,7 @@ class ContainConditionHandler implements HandlerInterface
 
             return $criteria;
         }
-
-        $sanitizedKey = preg_replace('/[^a-zA-Z0-9_-]/', '', $key);
-        $quotedKey = App()->db->quoteColumnName($sanitizedKey);
+        $quotedKey = $this->sanitizeKey($key);
 
         $criteria->condition = "$quotedKey LIKE :match";
         $criteria->params = [':match' => "%$value%"];

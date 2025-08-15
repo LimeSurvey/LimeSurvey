@@ -50,8 +50,14 @@ class FilterPatcher
                 if (!empty(array_diff_key(array_flip($this->filtersRequiredKeys), $filterParam))) {
                     continue;
                 }
+
                 foreach ($this->handlers as $handler) {
                     $op = (new $handler());
+
+                    if (!$op instanceof HandlerInterface) {
+                        throw new \InvalidArgumentException('Handler must implement HandlerInterface.');
+                    }
+
                     $filterType = $filterParam['filterMethod'];
                     if ($op->canHandle($filterType)) {
                         $key = is_string($filterParam['key'])
@@ -79,7 +85,6 @@ class FilterPatcher
 
     public function registerHandlers(): void
     {
-        //$this->addHandler(SortingHandler::class);
         $this->addHandler(EqualConditionHandler::class);
         $this->addHandler(ContainConditionHandler::class);
         $this->addHandler(RangeConditionHandler::class);

@@ -32,7 +32,7 @@ class OpHandlerResponseMultiSelectConditionTest extends TestCase
         $criteria = $handler->execute('status', 'active');
 
         // Condition
-        $this->assertSame('(`status` = :value0)', $criteria->condition);
+        $this->assertSame('`status` IN (:value0)', $criteria->condition);
         // Params
         $this->assertSame([':value0' => 'active'], $criteria->params);
     }
@@ -44,7 +44,7 @@ class OpHandlerResponseMultiSelectConditionTest extends TestCase
         $criteria = $handler->execute('category', ['A', 'B', 'C']);
 
         $this->assertSame(
-            '(`category` = :value0 OR `category` = :value1 OR `category` = :value2)',
+            '`category` IN (:value0, :value1, :value2)',
             $criteria->condition
         );
         $this->assertSame(
@@ -59,7 +59,7 @@ class OpHandlerResponseMultiSelectConditionTest extends TestCase
 
         $criteria = $handler->execute('sta`tus; DROP TABLE users--', 'ok');
 
-        $this->assertSame('(`statusDROPTABLEusers--` = :value0)', $criteria->condition);
+        $this->assertSame('`statusDROPTABLEusers--` IN (:value0)', $criteria->condition);
         $this->assertSame([':value0' => 'ok'], $criteria->params);
     }
 
