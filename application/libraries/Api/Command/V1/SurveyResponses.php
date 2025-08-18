@@ -121,7 +121,7 @@ class SurveyResponses implements CommandInterface
      * @param array $data
      * @return array
      */
-    public function mapResponsesToQuestions(array $data): array
+    protected function mapResponsesToQuestions(array $data): array
     {
         foreach ($data['responses'] as &$response) {
             foreach ($response['answers'] as &$answer) {
@@ -145,7 +145,7 @@ class SurveyResponses implements CommandInterface
     /**
      * @return array
      */
-    private function getQuestionFieldMap(): array
+    protected function getQuestionFieldMap(): array
     {
         //This function generates an array containing the fieldcode, and matching data in the same order as the responses table
         $fieldMap = createFieldMap($this->survey, 'short', false, false);
@@ -169,7 +169,7 @@ class SurveyResponses implements CommandInterface
         );
     }
 
-    private function getSurvey(Request $request): void
+    protected function getSurvey(Request $request): void
     {
         $survey = $this->survey->findByPk($this->getSurveyId($request));
         if ($survey === null) {
@@ -178,7 +178,7 @@ class SurveyResponses implements CommandInterface
         $this->survey = $survey;
     }
 
-    private function getSurveyId(Request $request): string
+    protected function getSurveyId(Request $request): string
     {
         $surveyId = (string)$request->getData('_id');
         if (!is_numeric($surveyId)) {
@@ -188,12 +188,12 @@ class SurveyResponses implements CommandInterface
         return $surveyId;
     }
 
-    private function getSurveyDynamicModel(Request $request): \SurveyDynamic
+    protected function getSurveyDynamicModel(Request $request): \SurveyDynamic
     {
         return \SurveyDynamic::model($this->getSurveyId($request));
     }
 
-    private function buildCriteria(Request $request): array
+    protected function buildCriteria(Request $request): array
     {
         $searchParams = [];
         $searchParams['filters'] = $request->getData('filters', null);
@@ -211,7 +211,7 @@ class SurveyResponses implements CommandInterface
         return [$criteria, $sort];
     }
 
-    private function buildPagination(Request $request): array
+    protected function buildPagination(Request $request): array
     {
         $pagination = $request->getData('page');
         $paginationDefault = [
@@ -251,7 +251,7 @@ class SurveyResponses implements CommandInterface
      *
      * @return array Answers indexed by qid, scale_id, and code
      */
-    private function getAllSurveyAnswers()
+    protected function getAllSurveyAnswers()
     {
         static $answersCache = [];
         $surveyId = $this->survey->sid;
@@ -287,7 +287,7 @@ class SurveyResponses implements CommandInterface
      * @param string $value The answer code
      * @return int|null The answer ID or null if not found
      */
-    private function getActualAid($questionID, $scaleId, $value)
+    protected function getActualAid($questionID, $scaleId, $value)
     {
         $allAnswers = $this->getAllSurveyAnswers();
         return $allAnswers[$questionID][$scaleId][$value] ?? null;
