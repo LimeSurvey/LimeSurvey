@@ -39,7 +39,7 @@ class SurveyResponseService
     public function deleteResponse($surveyId, $rid): void
     {
         if (!$this->permission->hasSurveyPermission($surveyId, 'responses', 'delete')) {
-            throw new NotFoundException('Survey not found');
+            throw new PermissionDeniedException('Not enough permission for this action.');
         }
 
         try {
@@ -92,7 +92,7 @@ class SurveyResponseService
     public function updateResponse($surveyId, $responseId, $responseData): void
     {
         if (!$this->permission->hasSurveyPermission($surveyId, 'responses', 'update')) {
-            throw new NotFoundException('Survey not found');
+            throw new PermissionDeniedException('Not enough permission for this action.');
         }
 
         $responseModel = \Response::model($surveyId);
@@ -134,7 +134,7 @@ class SurveyResponseService
     public function deleteAttachments($surveyId, $rid): void
     {
         if (!$this->permission->hasSurveyPermission($surveyId, 'responses', 'update')) {
-            throw new NotFoundException('Survey not found');
+            throw new PermissionDeniedException('Not enough permission for this action.');
         }
 
         try {
