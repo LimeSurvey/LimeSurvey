@@ -11,6 +11,7 @@ use LimeSurvey\Models\Services\{Exception\NotFoundException,
     Exception\QuestionHasConditionsException,
     QuestionAggregateService\DeleteService,
     QuestionAggregateService\SaveService};
+use Permission;
 
 /**
  * Question Aggregate Delete Service
@@ -19,9 +20,12 @@ class SurveyResponseService
 {
     protected CDbConnection $yiiDb;
 
-    public function __construct(CDbConnection $yiiDb)
+    protected Permission $permission;
+
+    public function __construct(CDbConnection $yiiDb, Permission $permission)
     {
         $this->yiiDb = $yiiDb;
+        $this->permission = $permission;
     }
 
     /**
@@ -34,6 +38,10 @@ class SurveyResponseService
      */
     public function deleteResponse($surveyId, $rid): void
     {
+        if (!$this->permission->hasSurveyPermission($surveyId, 'responses', 'delete')) {
+            throw new NotFoundException('Survey not found');
+        }
+
         try {
             $responseModel = \Response::model($surveyId);
         } catch (\Exception $e) {
@@ -83,6 +91,10 @@ class SurveyResponseService
      */
     public function updateResponse($surveyId, $responseId, $responseData): void
     {
+        if (!$this->permission->hasSurveyPermission($surveyId, 'responses', 'update')) {
+            throw new NotFoundException('Survey not found');
+        }
+
         $responseModel = \Response::model($surveyId);
         $response = $responseModel->findByPk($responseId);
 
@@ -121,6 +133,10 @@ class SurveyResponseService
      */
     public function deleteAttachments($surveyId, $rid): void
     {
+        if (!$this->permission->hasSurveyPermission($surveyId, 'responses', 'update')) {
+            throw new NotFoundException('Survey not found');
+        }
+
         try {
             $responseModel = \Response::model($surveyId);
         } catch (\Exception $e) {
