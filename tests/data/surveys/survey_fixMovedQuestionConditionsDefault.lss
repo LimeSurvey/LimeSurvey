@@ -98,7 +98,7 @@
     <cid><![CDATA[2]]></cid>
     <qid><![CDATA[5]]></qid>
     <cqid><![CDATA[4]]></cqid>
-    <cfieldname><![CDATA[265486X4X4]]></cfieldname>
+    <cfieldname><![CDATA[Q4]]></cfieldname>
     <method><![CDATA[==]]></method>
     <value><![CDATA[ ]]></value>
     <scenario><![CDATA[1]]></scenario>
@@ -107,7 +107,7 @@
     <cid><![CDATA[3]]></cid>
     <qid><![CDATA[7]]></qid>
     <cqid><![CDATA[6]]></cqid>
-    <cfieldname><![CDATA[265486X6X6]]></cfieldname>
+    <cfieldname><![CDATA[Q6]]></cfieldname>
     <method><![CDATA[==]]></method>
     <value><![CDATA[ ]]></value>
     <scenario><![CDATA[1]]></scenario>
@@ -116,7 +116,7 @@
     <cid><![CDATA[4]]></cid>
     <qid><![CDATA[8]]></qid>
     <cqid><![CDATA[6]]></cqid>
-    <cfieldname><![CDATA[265486X6X6]]></cfieldname>
+    <cfieldname><![CDATA[Q6]]></cfieldname>
     <method><![CDATA[==]]></method>
     <value><![CDATA[AO01]]></value>
     <scenario><![CDATA[1]]></scenario>
@@ -125,7 +125,7 @@
     <cid><![CDATA[5]]></cid>
     <qid><![CDATA[9]]></qid>
     <cqid><![CDATA[6]]></cqid>
-    <cfieldname><![CDATA[265486X6X6]]></cfieldname>
+    <cfieldname><![CDATA[Q6]]></cfieldname>
     <method><![CDATA[==]]></method>
     <value><![CDATA[AO02]]></value>
     <scenario><![CDATA[1]]></scenario>
