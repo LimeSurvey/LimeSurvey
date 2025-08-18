@@ -1861,6 +1861,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
                     $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
                     $fieldmap[$fieldname]['SQrelevance'] = $abrow['relevance'];
+                    $fieldmap[$fieldname]['sqid'] = $abrow['qid'];
                 }
 
                 $fieldname = "Q{$arow['qid']}_S{$abrow['qid']}#1";
@@ -1884,6 +1885,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                     $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
                     $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
+                    $fieldmap[$fieldname]['sqid'] = $abrow['qid'];
                     // TODO SQrelevance for different scales? $fieldmap[$fieldname]['SQrelevance']=$abrow['relevance'];
                 }
             }
