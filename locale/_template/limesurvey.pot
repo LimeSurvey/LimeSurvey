@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-08-18 14:01:50+00:00\n"
+"POT-Creation-Date: 2025-08-19 12:40:04+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -8674,7 +8674,7 @@ msgid "Activated"
 msgstr ""
 
 #: application/core/SurveyCommonAction.php:519
-msgid "Create new"
+msgid "Create new..."
 msgstr ""
 
 #: application/core/SurveyCommonAction.php:528
