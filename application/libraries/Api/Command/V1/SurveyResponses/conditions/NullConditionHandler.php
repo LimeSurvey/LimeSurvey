@@ -15,11 +15,16 @@ class NullConditionHandler implements HandlerInterface
     {
         $criteria = new \CDbCriteria();
 
+        if (is_array($key)) {
+            return $criteria;
+        }
+
         if (!is_array($value)) {
             $value = [$value];
         }
 
         $conditions = [];
+
         foreach ($value as $item) {
             $item = (string) $item;
             if (!in_array($item, ['true', 'false'])) {

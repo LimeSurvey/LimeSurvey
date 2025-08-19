@@ -19,6 +19,14 @@ class RangeConditionHandler implements HandlerInterface
 
     public function execute($key, $value): object
     {
+        if (is_array($key)) {
+            throw new InvalidArgumentException('Multiple keys are not supported for range conditions.');
+        }
+
+        if (!is_array($value) || count($value) > 2) {
+            throw new InvalidArgumentException("Invalid range sent.");
+        }
+
         $key = $this->sanitizeKey($key);
 
         $range = $this->parseRange($value);
@@ -49,12 +57,8 @@ class RangeConditionHandler implements HandlerInterface
      * @param array $range
      * @return array
      */
-    protected function parseRange($range): array
+    protected function parseRange(array $range): array
     {
-        if (count($range) > 2) {
-            throw new InvalidArgumentException("Invalid range sent.");
-        }
-
         $min = isset($range[0]) && $range[0] !== '' ? $range[0] : null;
         $max = isset($range[1]) && $range[1] !== '' ? $range[1] : null;
 

@@ -3,6 +3,7 @@
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions;
 
 use CDbCriteria;
+use InvalidArgumentException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\HandlerInterface;
 
 class MultiSelectConditionHandler implements HandlerInterface
@@ -19,6 +20,10 @@ class MultiSelectConditionHandler implements HandlerInterface
 
     public function execute($key, $value): object
     {
+        if (is_array($key)) {
+            throw new InvalidArgumentException('Multiple keys are not supported for multi select conditions.');
+        }
+
         $key = $this->sanitizeKey($key);
         $criteria = new CDbCriteria();
 

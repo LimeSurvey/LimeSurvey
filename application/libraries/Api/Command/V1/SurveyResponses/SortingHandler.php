@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses;
 
-class SortingHandler implements HandlerInterface
+class SortingHandler
 {
     private array $order = ['asc', 'desc'];
 

@@ -10,7 +10,7 @@ interface HandlerInterface
      * Builds criteria for either one or multiple keys.
      * @param string|array $key
      * @param string|array $value
-     * @return \CDbCriteria
+     * @return \CDbCriteria|\CSort
      */
     public function execute($key, $value): object;
 }

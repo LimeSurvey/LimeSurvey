@@ -3,6 +3,7 @@
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions;
 
 use CDbCriteria;
+use InvalidArgumentException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\HandlerInterface;
 
 class ContainConditionHandler implements HandlerInterface
@@ -17,14 +18,11 @@ class ContainConditionHandler implements HandlerInterface
         return false;
     }
 
-    /**
-     * Builds criteria for either one or multiple keys.
-     * @param string|array $key
-     * @param string|array $value
-     * @return \CDbCriteria
-     */
     public function execute($key, $value): object
     {
+        if (is_array($value)) {
+            throw new InvalidArgumentException('Multiple values are not supported for contain conditions.');
+        }
         $value = trim($value);
         $criteria = new CDbCriteria();
 
