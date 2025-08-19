@@ -89,6 +89,9 @@ class SurveyResponses implements CommandInterface
                 throw new TransformerException();
             }
 
+            $this->transformerOutputSurveyResponses->fieldMap =
+                createFieldMap($this->survey, 'short', false, false);
+
             $data = [];
             $data['responses'] = $this->transformerOutputSurveyResponses->transform(
                 $result
@@ -148,7 +151,7 @@ class SurveyResponses implements CommandInterface
     protected function getQuestionFieldMap(): array
     {
         //This function generates an array containing the fieldcode, and matching data in the same order as the responses table
-        $fieldMap = createFieldMap($this->survey, 'short', false, false);
+        $fieldMap = $this->transformerOutputSurveyResponses->fieldMap;
 
         return array_filter(
             array_map(

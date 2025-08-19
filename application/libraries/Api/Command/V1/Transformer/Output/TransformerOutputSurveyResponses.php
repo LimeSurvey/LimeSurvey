@@ -7,6 +7,8 @@ use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 
 class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
 {
+    public array $fieldMap = [];
+
     /**
      * Construct
      */
@@ -68,6 +70,14 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
                     "id" => $question,
                     "gid" => $group,
                     "sid" => $survey,
+                    "value" => $value
+                ];
+            } elseif (str_starts_with($key, "Q") && !empty($this->fieldMap[$key])) {
+                $responses[$key] = [
+                    "key" => $key,
+                    "id" => $this->fieldMap[$key]['qid'],
+                    "gid" => $this->fieldMap[$key]['gid'],
+                    "sid" => $this->fieldMap[$key]['sid'],
                     "value" => $value
                 ];
             }
