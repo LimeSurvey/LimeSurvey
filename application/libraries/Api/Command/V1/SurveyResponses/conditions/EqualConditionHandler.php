@@ -20,23 +20,23 @@ class EqualConditionHandler implements HandlerInterface
     {
         $criteria = new \CDbCriteria();
 
-        if (is_array($key)) {
-            $conditions = [];
-
-            foreach ($key as $rawKey) {
-                $quotedKey = $this->sanitizeKey($rawKey);
-                $conditions[] = "$quotedKey = :value";
-            }
-
-            $criteria->condition = implode(' OR ', $conditions);
-            $criteria->params = [':value' => $value];
-
-            return $criteria;
+        if (!is_array($key)) {
+            $key = [$key];
         }
 
-        $quotedKey = $this->sanitizeKey($key);
+        $conditions = [];
+        $params = [];
 
-        $criteria->addColumnCondition([$quotedKey => $value]);
+        foreach ($key as $rawKey) {
+            $quotedKey = $this->sanitizeKey($rawKey);
+            $strippedKey = $this->stripKey($quotedKey);
+
+            $conditions[] = "$quotedKey = :{$strippedKey}Value";
+            $params[":{$strippedKey}Value"] = $value;
+        }
+
+        $criteria->condition = implode(' OR ', $conditions);
+        $criteria->params = $params;
 
         return $criteria;
     }

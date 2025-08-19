@@ -72,7 +72,7 @@ class FilterPatcher
 
                         // check for null values
                         $new_criteria = (new NullConditionHandler())->execute($key, $value);
-                        if (!$new_criteria->condition) {
+                        if (empty($new_criteria->condition)) {
                             $new_criteria = $op->execute($key, $value);
                         }
 

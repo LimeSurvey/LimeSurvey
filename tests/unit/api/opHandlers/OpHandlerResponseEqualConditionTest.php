@@ -32,7 +32,7 @@ class OpHandlerResponseEqualConditionTest extends TestCase
 
         $this->assertStringContainsString('`status`', $criteria->condition);
 
-        $this->assertSame('active', $criteria->params[':ycp1']);
+        $this->assertSame('active', $criteria->params[':statusValue']);
     }
 
     public function testExecuteArrayKeysBuildsOrConditionAndSharedParam(): void
@@ -46,7 +46,7 @@ class OpHandlerResponseEqualConditionTest extends TestCase
         $this->assertStringContainsString('`last_name`', $criteria->condition);
 
         // Single shared placeholder per the handler’s implementation
-        $this->assertSame([':value' => 'Name'], $criteria->params);
+        $this->assertSame([':first_nameValue' => 'Name', ':last_nameValue' => 'Name'], $criteria->params);
     }
 
     /**
@@ -60,11 +60,10 @@ class OpHandlerResponseEqualConditionTest extends TestCase
         $criteria = $handler->execute('name; DROP TABLE responses--', 'ok');
 
         $this->assertStringNotContainsString(';', $criteria->condition);
-        $this->assertStringNotContainsString(' ', $criteria->condition);
 
         // Expect the sanitized, quoted column name
-        $this->assertStringContainsString('`nameDROPTABLEresponses--`=:ycp2', $criteria->condition);
-        $this->assertSame([':ycp2' => 'ok'], $criteria->params);
+        $this->assertStringContainsString('`nameDROPTABLEresponses--` = :nameDROPTABLEresponsesValue', $criteria->condition);
+        $this->assertSame([':nameDROPTABLEresponsesValue' => 'ok'], $criteria->params);
     }
 
     /**
@@ -77,12 +76,12 @@ class OpHandlerResponseEqualConditionTest extends TestCase
 
         $criteria = $handler->execute(['fieldA', 'filedB', 'fieldC'], 'sharedValue');
 
-        $pattern = '/`fieldA` = :value.*OR.*`filedB` = :value.*OR.*`fieldC` = :value/s';
+        $pattern = '/`fieldA` = :fieldAValue.*OR.*`filedB` = :filedBValue.*OR.*`fieldC` = :fieldCValue/s';
         $this->assertTrue(
             (bool)preg_match($pattern, $criteria->condition),
             "Failed asserting OR chain uses the same placeholder: {$criteria->condition}"
         );
 
-        $this->assertSame([':value' => 'sharedValue'], $criteria->params);
+        $this->assertSame([':fieldAValue' => 'sharedValue', ':filedBValue' => 'sharedValue', ':fieldCValue' => 'sharedValue'], $criteria->params);
     }
 }
