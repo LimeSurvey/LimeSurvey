@@ -1,3 +1,8 @@
+if (typeof lsFormIndex === "undefined") {
+    var lsFormIndex = 0;
+} else {
+    lsFormIndex++;
+}
 (function () {
     // Configuration & Script Info
     const script = document.currentScript;
@@ -19,6 +24,11 @@
       <div id="beginScripts"></div>
       <div id="limesurvey-${containerId}"></div>
       <div id="bottomScripts"></div>
+      <style>
+          .nav-link.ls-link-action.ls-link-loadall {
+              display: none;
+          }
+      </style>
     `;
 
     // Inject scripts and styles in order
@@ -112,6 +122,14 @@
 
         // Update form for submission via fetch
         const form = surveyRoot.querySelector("#limesurvey");
+        window["lssubmit" + lsFormIndex] = function(l) {
+            lang = l;
+            const formData = Array.from(form.querySelectorAll("[name]"))
+                .filter((el) => (['LSEMBED-YII_CSRF_TOKEN', 'LSEMBED-LEMpostKey'].indexOf(el.name) >= 0) || (el.name.indexOf("LSSESSION-") === 0))
+                .map((el) => `${el.name}=${el.value}`)
+                .join("&");
+            fetchSurveyContent(formData + "&popuppreview=false");
+        }
         form.action = getRequestUrl();
 
         form.querySelectorAll("[name]").forEach((el) => {
@@ -128,7 +146,7 @@
         for (let languageLink of surveyRoot.querySelectorAll(".ls-language-link")) {
             languageLink.classList.remove("ls-language-link");
             window.fetchSurveyContent = fetchSurveyContent;
-            languageLink.setAttribute('onclick', `fetchSurveyContent({popuppreview: false,js: false,container_id: ${containerId}, lang: '${languageLink.getAttribute("data-limesurvey-lang")}'});`);
+            languageLink.setAttribute('onclick', `window["lssubmit" + ${lsFormIndex}]('${languageLink.getAttribute("data-limesurvey-lang")}')`);
         }
 
         let showMenu = false;
