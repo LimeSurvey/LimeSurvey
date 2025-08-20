@@ -131,11 +131,13 @@
             languageLink.setAttribute('onclick', `fetchSurveyContent({popuppreview: false,js: false,container_id: ${containerId}, lang: '${languageLink.getAttribute("data-limesurvey-lang")}'});`);
         }
 
-        if (pageNumber) {
-            surveyRoot.querySelector("#navbar-toggler").addEventListener("click", function() {
-                surveyRoot.querySelector("#main-dropdown").classList.toggle("show");
-            });
-        }
+        let showMenu = false;
+        surveyRoot.querySelector("#navbar-toggler").addEventListener("click", function() {
+            setTimeout(() => {
+                showMenu = !showMenu;
+                surveyRoot.querySelector("#main-dropdown").classList[showMenu ? "add" : "remove"]("show");
+            }, 1);
+        });
 
         // Intercept form submission and resend via fetch
         form.addEventListener("submit", (event) => {
