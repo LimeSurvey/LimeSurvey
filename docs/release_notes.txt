@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.15.6 (build 250818) to 6.15.7 (build 250820) August 20, 2025
+-Fixed issue #20222: error when trying to store token
+#Updated translation: Slovak by jelen1
+#Updated translation: Kazakh by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by Basil, c_schmitz, HonkXL, lsurvey20
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.15.5 (build 250724) to 6.15.6 (build 250818) August 18, 2025
 +New feature #20092: Statistics - subtotals will not show "No Answer" when "complete only" is selected (#4336) (Denis Chenu)
 -Fixed issue AT-1713: survey creation flow alert and redirect (#4382) (Tim Willig)
