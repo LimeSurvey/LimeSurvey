@@ -47,6 +47,10 @@
         color: {{ aSurveyInfo.options.fontcolor  }};
     }
 
+    .question-container {
+        background-color: {{ aSurveyInfo.options.questionbackgroundcolor  }};
+    }
+
     {% set checkicon = '"\\' ~  aSurveyInfo.options.checkicon   ~ '"' %}
     .checkbox-item input[type="checkbox"]:checked + label::after, .checkbox-item input[type="radio"]:checked + label::after {
         content: {{ checkicon }};
