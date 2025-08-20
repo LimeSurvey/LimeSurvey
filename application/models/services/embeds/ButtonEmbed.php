@@ -6,7 +6,6 @@ use LimeSurvey\Models\Services\embeds\BaseEmbed;
 
 class ButtonEmbed extends BaseEmbed
 {
-
     /**
      * Gets the HTML wrapper around the main structure
      * @param string $placeholder a text placeholder with a default value which will be replaced with the inner structure
@@ -53,12 +52,12 @@ class ButtonEmbed extends BaseEmbed
 
         $iconHtml = '';
         if (!empty($customIcon)) {
-            $iconHtml = '<img src="' .$customIcon. '"class="ls-button-icon" />';
+            $iconHtml = '<img src="' . $customIcon . '"class="ls-button-icon" />';
         }
 
         $onclick = $openIn === 'newwindow'
-            ? "window.open('".$surveyUrl."', '_blank');"
-            : "window.location.href='".$surveyUrl."';";
+            ? "window.open('". $surveyUrl ."', '_blank');"
+            : "window.location.href='". $surveyUrl. "';";
 
         return <<<HTML
         <link rel="stylesheet" href="{$cssUrl}">
