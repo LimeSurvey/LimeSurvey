@@ -125,15 +125,15 @@
             el.remove()
         );
 
-        for (let languageLink of document.querySelectorAll(".ls-language-link")) {
+        for (let languageLink of surveyRoot.querySelectorAll(".ls-language-link")) {
             languageLink.classList.remove("ls-language-link");
             window.fetchSurveyContent = fetchSurveyContent;
             languageLink.setAttribute('onclick', `fetchSurveyContent({popuppreview: false,js: false,container_id: ${containerId}, lang: '${languageLink.getAttribute("data-limesurvey-lang")}'});`);
         }
 
         if (pageNumber) {
-            document.getElementById("navbar-toggler").addEventListener("click", function() {
-                document.getElementById("main-dropdown").classList.toggle("show");
+            surveyRoot.querySelector("#navbar-toggler").addEventListener("click", function() {
+                surveyRoot.querySelector("#main-dropdown").classList.toggle("show");
             });
         }
 
@@ -145,6 +145,21 @@
                 .join("&");
             fetchSurveyContent(formData + "&popuppreview=false");
         });
+
+        let languageForm = surveyRoot.querySelector("#firstpage-changelang");
+
+        if (languageForm) {
+            languageForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+                let languageSelector = languageForm.querySelector("#language-changer-select").value;
+                lang = languageSelector;
+                fetchSurveyContent({
+                    popuppreview: false,
+                    js: false,
+                    container_id: containerId,
+                });
+            });
+        }
 
         const headScriptsList = head.split("SEPARATOR");
         const beginScriptList = beginScripts.split("SEPARATOR");
