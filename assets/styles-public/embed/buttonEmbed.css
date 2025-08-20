@@ -1,0 +1,24 @@
+#limesurvey-embed-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    gap: 6px;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+  
+#limesurvey-embed-button .ls-button-icon {
+  height: 1em;
+  width: auto;
+}
+
+@media (max-width: 768px) {
+  #limesurvey-embed-button.fullscreen-mobile {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+}

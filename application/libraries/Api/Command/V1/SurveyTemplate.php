@@ -91,6 +91,7 @@ class SurveyTemplate implements CommandInterface
         $target = \Yii::app()->request->getParam('target', 'marketing');
         $embedType = \Yii::app()->request->getParam('embed', BaseEmbed::EMBED_STRUCTURE_STANDARD);
         $embedOptions = \Yii::app()->request->getParam('embedOptions', []);
+        $embedOptions['surveyId'] = $this->surveyId;
         $this->embed = BaseEmbed::instantiate($embedType)
                         ->setEmbedOptions($embedOptions);
 
@@ -120,19 +121,23 @@ class SurveyTemplate implements CommandInterface
             $response['title'] = $languageSettings->surveyls_title;
             $response['subtitle'] = $languageSettings->surveyls_description;
         }
-        if ($this->js) {
-            $this->embed->setStructure($this->getJavascript());
-        } elseif ($this->isPreview) {
-            $result = $this->getTemplateData();
-            $this->embed->displayWrapper($target !== 'marketing')->setStructure($result);
-        } else {
-            $surveyResult = $this->getSurveyResult();
-            $this->embed->displayWrapper(false)->setStructure($surveyResult['form']);
-            $response['hiddenInputs'] = $surveyResult['hiddenInputs'];
-            $response['head'] = $surveyResult['head'];
-            $response['beginScripts'] = $surveyResult['beginScripts'];
-            $response['bottomScripts'] = $surveyResult['bottomScripts'];
+
+        if ($embedType !== BaseEmbed::EMBED_STRUCTURE_BUTTON) {
+            if ($this->js) {
+                $this->embed->setStructure($this->getJavascript());
+            } elseif ($this->isPreview) {
+                $result = $this->getTemplateData();
+                $this->embed->displayWrapper($target !== 'marketing')->setStructure($result);
+            } else {
+                $surveyResult = $this->getSurveyResult();
+                $this->embed->displayWrapper(false)->setStructure($surveyResult['form']);
+                $response['hiddenInputs'] = $surveyResult['hiddenInputs'];
+                $response['head'] = $surveyResult['head'];
+                $response['beginScripts'] = $surveyResult['beginScripts'];
+                $response['bottomScripts'] = $surveyResult['bottomScripts'];
+            }
         }
+
         return $this->responseFactory->makeSuccess(
             array_merge($response, ['template' => $this->embed->render()])
         );
