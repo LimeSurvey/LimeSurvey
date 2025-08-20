@@ -33,6 +33,7 @@ class SurveyTemplate implements CommandInterface
     protected bool $isPreview = true;
     protected bool $js = false;
     protected string $language = "en";
+    protected string $token = "";
     const ENDPOINT = "/index.php/rest/v1/survey-template/";
     /**
      * @psalm-suppress UndefinedClass
@@ -88,6 +89,7 @@ class SurveyTemplate implements CommandInterface
         $this->surveyId = (int)$request->getData('_id');
         $this->isPreview = $this->isPreview && (\Yii::app()->request->getParam('popuppreview', 'true') === 'true');
         $this->js = $this->js || (\Yii::app()->request->getParam('js', 'false') === 'true');
+        $this->token = \Yii::app()->request->getParam('LSEMBED-token', '');
         $target = \Yii::app()->request->getParam('target', 'marketing');
         $embedType = \Yii::app()->request->getParam('embed', BaseEmbed::EMBED_STRUCTURE_STANDARD);
         $embedOptions = \Yii::app()->request->getParam('embedOptions', []);
@@ -241,7 +243,8 @@ class SurveyTemplate implements CommandInterface
     private function getSrc()
     {
         $root = $this->getRootUrl();
-        return $root . "/index.php/{$this->surveyId}?lang={$this->language}";
+        $token = ($this->token ? "&token=" . $this->token : "");
+        return $root . "/index.php/{$this->surveyId}?lang={$this->language}" . $token;
     }
 
     /**

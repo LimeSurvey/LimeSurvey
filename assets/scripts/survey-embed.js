@@ -106,7 +106,7 @@
         surveyRoot.innerHTML = template;
 
         // Update form for submission via fetch
-        const form = surveyRoot.querySelector("#limesurvey");
+        const form = surveyRoot.querySelector("#limesurvey, #form-token");
         form.action = requestUrl;
 
         form.querySelectorAll("[name]").forEach((el) => {
@@ -119,6 +119,21 @@
         form.querySelectorAll(".clearall-saveall-wrapper").forEach((el) =>
             el.remove()
         );
+
+        if (form.id === "form-token") {
+            for (let toggle of form.querySelectorAll("#ls-toggle-token-show")) {
+                const tokenItems = toggle.parentNode.parentNode.querySelectorAll("#token");
+                if (tokenItems.length) {
+                    let tokenItem = tokenItems[0];
+                    toggle.addEventListener("click", function(evt) {
+                        tokenItem.type = ((tokenItem.type === "password") ? "text" : "password");
+                        for (let child of toggle.children) {
+                            child.classList.toggle("d-none");
+                        }
+                    });
+                }
+            }
+        }
 
         // Intercept form submission and resend via fetch
         form.addEventListener("submit", (event) => {
