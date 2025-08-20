@@ -297,7 +297,7 @@ class SurveyTemplate implements CommandInterface
         $nonEmpty = $headerPart . ' ';
         @$dom->loadHTML($nonEmpty);
         $xpath = new \DOMXPath($dom);
-        $forms = $xpath->query("//*[@id='limesurvey']");
+        $forms = $xpath->query("//article");
         $form = substr($result, $headerEnd ?? 0);
         foreach ($forms as $f) {
             $form = $dom->saveHTML($f);

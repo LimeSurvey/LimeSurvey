@@ -2,12 +2,14 @@
     // Configuration & Script Info
     const script = document.currentScript;
     const surveyId = script.dataset.surveyId;
-    const lang = script.dataset.lang || "en";
+    let lang = script.dataset.lang || "en";
     const containerId = script.dataset.containerId || "1";
     const rootUrl = script.dataset.rootUrl || window.location.origin;
     const referer =
         window.location.protocol + "//" + window.location.host + "/";
-    const requestUrl = `${rootUrl}/index.php/rest/v1/survey-template/${surveyId}?lang=${lang}`;
+    function getRequestUrl() {
+        return `${rootUrl}/index.php/rest/v1/survey-template/${surveyId}?lang=${lang}`;
+    }
     let pageNumber = 0;
 
     // Prepare the container in the DOM
@@ -75,8 +77,11 @@
     // Send a POST request to load or submit the form
     async function fetchSurveyContent(params) {
         pageNumber++;
+        if (params.lang) {
+            lang = params.lang;
+        }
 
-        const response = await fetch(requestUrl, {
+        const response = await fetch(getRequestUrl(), {
             method: "POST",
             body: new URLSearchParams(params),
             headers: {
@@ -107,7 +112,7 @@
 
         // Update form for submission via fetch
         const form = surveyRoot.querySelector("#limesurvey");
-        form.action = requestUrl;
+        form.action = getRequestUrl();
 
         form.querySelectorAll("[name]").forEach((el) => {
             el.name = "LSEMBED-" + el.name;
@@ -119,6 +124,18 @@
         form.querySelectorAll(".clearall-saveall-wrapper").forEach((el) =>
             el.remove()
         );
+
+        for (let languageLink of document.querySelectorAll(".ls-language-link")) {
+            languageLink.classList.remove("ls-language-link");
+            window.fetchSurveyContent = fetchSurveyContent;
+            languageLink.setAttribute('onclick', `fetchSurveyContent({popuppreview: false,js: false,container_id: ${containerId}, lang: '${languageLink.getAttribute("data-limesurvey-lang")}'});`);
+        }
+
+        if (pageNumber) {
+            document.getElementById("navbar-toggler").addEventListener("click", function() {
+                document.getElementById("main-dropdown").classList.toggle("show");
+            });
+        }
 
         // Intercept form submission and resend via fetch
         form.addEventListener("submit", (event) => {
