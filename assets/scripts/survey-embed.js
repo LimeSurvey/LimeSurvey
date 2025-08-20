@@ -122,13 +122,14 @@ if (typeof lsFormIndex === "undefined") {
 
         // Update form for submission via fetch
         const form = surveyRoot.querySelector("#limesurvey, #form-token");
-        window["lssubmit" + lsFormIndex] = function(l, ft = false) {
+        window["lssubmit" + lsFormIndex] = function(l, ft = false, token = "") {
             lang = l;
             const formData = Array.from(form.querySelectorAll("[name]"))
                 .filter((el) => (['LSEMBED-YII_CSRF_TOKEN', 'LSEMBED-LEMpostKey'].indexOf(el.name) >= 0) || (el.name.indexOf("LSSESSION-") === 0))
                 .map((el) => `${el.name}=${el.value}`)
                 .join("&");
-            fetchSurveyContent(formData + "&popuppreview=false" + (ft ? "&filltoken=true" : ""));
+                console.log(formData + "&popuppreview=false" + (ft ? "&filltoken=true" : "") + (token ? `LSEMBED-token=${token}` : ""));
+            fetchSurveyContent(formData + "&popuppreview=false" + (ft ? "&filltoken=true" : "") + (token ? `&LSEMBED-token=${token}` : ""));
         }
         form.action = getRequestUrl();
 
@@ -150,12 +151,15 @@ if (typeof lsFormIndex === "undefined") {
         }
 
         let showMenu = false;
-        surveyRoot.querySelector("#navbar-toggler").addEventListener("click", function() {
-            setTimeout(() => {
-                showMenu = !showMenu;
-                surveyRoot.querySelector("#main-dropdown").classList[showMenu ? "add" : "remove"]("show");
-            }, 1);
-        });
+        let navbarToggler = surveyRoot.querySelector("#navbar-toggler");
+        if (navbarToggler) {
+            navbarToggler.addEventListener("click", function() {
+                setTimeout(() => {
+                    showMenu = !showMenu;
+                    surveyRoot.querySelector("#main-dropdown").classList[showMenu ? "add" : "remove"]("show");
+                }, 1);
+            });
+        }
 
         if (form.id === "form-token") {
             for (let toggle of form.querySelectorAll("#ls-toggle-token-show")) {
@@ -185,23 +189,33 @@ if (typeof lsFormIndex === "undefined") {
             let languageForm = languageSelector.parentNode.parentNode.parentNode.parentNode;
             languageForm.addEventListener("submit", (event) => {
                 event.preventDefault();
-                lang = languageSelector.value;
-                fetchSurveyContent({
-                    popuppreview: false,
-                    js: false,
-                    container_id: containerId,
-                });
+                window["lssubmit" + lsFormIndex](languageSelector.value);
             });
         }
 
+        function register() {
+            window.open(`${rootUrl}/index.php/${surveyId}?lang=${lang}&filltoken=true`, "", "popup");
+            let token = prompt("token");
+            if (token) {
+                window["lssubmit" + lsFormIndex](lang, true, token);
+            }
+        }
         let tokenRedirects = [...surveyRoot.querySelectorAll(".nav-link.ls-link-action")]
           .filter((el) => el.href.indexOf("filltoken") >= 0);
         if (tokenRedirects.length) {
             let tokenRedirect = tokenRedirects[0];
             tokenRedirect.addEventListener("click", function(evt) {
                 evt.preventDefault();
-                window["lssubmit" + lsFormIndex](lang, true);
+                if (tokenRedirect.classList.contains("token")) {
+                    window["lssubmit" + lsFormIndex](lang, true);
+                } else {
+                    register();
+                }
             });
+        }
+
+        if (form.classList.contains('register')) {
+            register();
         }
 
         const headScriptsList = head.split("SEPARATOR");

@@ -29,7 +29,7 @@ via survey configuration, at start page, when survey is completed, etc
     <!-- Fill token button -->
     <li class="nav-item ls-no-js-hidden">
         <a href="{{ aSurveyInfo.surveyUrl }}?lang=en&filltoken=true"
-            class="nav-link ls-link-action">
+            class="nav-link ls-link-action {% if aSurveyInfo.allowregister == "Y" %}register{% else %}token{% endif %}">
             {% if aSurveyInfo.allowregister == "Y" %}
                 {{ gT("Register") }}
             {% else %}

@@ -325,8 +325,13 @@ class SurveyTemplate implements CommandInterface
             $bos[] = $dom->saveHTML($bottomScript);
         }
         $bos = implode("SEPARATOR", $bos);
+        $registration = $xpath->query("//*[@id='register_firstname']");
+        $isRegistration = false;
+        foreach ($registration as $r) {
+            $isRegistration = true;
+        }
         return [
-            'form' => $form,
+            'form' => $isRegistration ?  "<form id='limesurvey' class='register'><a class='register' target='_blank'></a></form>" : $form,
             'hiddenInputs' => $hiddenInputs,
             'head' => $h,
             'beginScripts' => $bes,
