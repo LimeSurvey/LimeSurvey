@@ -121,14 +121,14 @@ if (typeof lsFormIndex === "undefined") {
         surveyRoot.innerHTML = template;
 
         // Update form for submission via fetch
-        const form = surveyRoot.querySelector("#limesurvey");
-        window["lssubmit" + lsFormIndex] = function(l) {
+        const form = surveyRoot.querySelector("#limesurvey, #form-token");
+        window["lssubmit" + lsFormIndex] = function(l, ft = false) {
             lang = l;
             const formData = Array.from(form.querySelectorAll("[name]"))
                 .filter((el) => (['LSEMBED-YII_CSRF_TOKEN', 'LSEMBED-LEMpostKey'].indexOf(el.name) >= 0) || (el.name.indexOf("LSSESSION-") === 0))
                 .map((el) => `${el.name}=${el.value}`)
                 .join("&");
-            fetchSurveyContent(formData + "&popuppreview=false");
+            fetchSurveyContent(formData + "&popuppreview=false" + (ft ? "&filltoken=true" : ""));
         }
         form.action = getRequestUrl();
 
@@ -157,6 +157,20 @@ if (typeof lsFormIndex === "undefined") {
             }, 1);
         });
 
+        if (form.id === "form-token") {
+            for (let toggle of form.querySelectorAll("#ls-toggle-token-show")) {
+                const tokenItems = toggle.parentNode.parentNode.querySelectorAll("#token");
+                if (tokenItems.length) {
+                    let tokenItem = tokenItems[0];
+                    toggle.addEventListener("click", function(evt) {
+                        tokenItem.type = ((tokenItem.type === "password") ? "text" : "password");
+                        for (let child of toggle.children) {
+                            child.classList.toggle("d-none");
+                        }
+                    });
+                }
+            }
+        }
         // Intercept form submission and resend via fetch
         form.addEventListener("submit", (event) => {
             event.preventDefault();
@@ -166,18 +180,27 @@ if (typeof lsFormIndex === "undefined") {
             fetchSurveyContent(formData + "&popuppreview=false");
         });
 
-        let languageForm = surveyRoot.querySelector("#firstpage-changelang");
-
-        if (languageForm) {
+        let languageSelector = surveyRoot.querySelector("#language-changer-select");
+        if (languageSelector) {
+            let languageForm = languageSelector.parentNode.parentNode.parentNode.parentNode;
             languageForm.addEventListener("submit", (event) => {
                 event.preventDefault();
-                let languageSelector = languageForm.querySelector("#language-changer-select").value;
-                lang = languageSelector;
+                lang = languageSelector.value;
                 fetchSurveyContent({
                     popuppreview: false,
                     js: false,
                     container_id: containerId,
                 });
+            });
+        }
+
+        let tokenRedirects = [...surveyRoot.querySelectorAll(".nav-link.ls-link-action")]
+          .filter((el) => el.href.indexOf("filltoken") >= 0);
+        if (tokenRedirects.length) {
+            let tokenRedirect = tokenRedirects[0];
+            tokenRedirect.addEventListener("click", function(evt) {
+                evt.preventDefault();
+                window["lssubmit" + lsFormIndex](lang, true);
             });
         }
 
