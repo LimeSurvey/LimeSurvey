@@ -56,8 +56,8 @@ class ButtonEmbed extends BaseEmbed
         }
 
         $onclick = $openIn === 'newwindow'
-            ? "window.open('". $surveyUrl ."', '_blank');"
-            : "window.location.href='". $surveyUrl. "';";
+            ? "window.open('" . $surveyUrl . "', '_blank');"
+            : "window.location.href='" . $surveyUrl . "';";
 
         return <<<HTML
         <link rel="stylesheet" href="{$cssUrl}">
