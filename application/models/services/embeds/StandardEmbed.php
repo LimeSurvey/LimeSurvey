@@ -15,7 +15,7 @@ class StandardEmbed extends BaseEmbed
     {
         $width = ($this->embedOptions['width'] ?? $this->fullWidth);
         $height = ($this->embedOptions['height'] ?? $this->fullHeight);
-        $style = "width: {$width}; height: {$height}; border: 1px solid #6E748C; border-radius: 4px;";
+        $style = "width: {$width}; height: {$height}; border: 1px solid #6E748C; border-radius: 4px; overflow-y: auto;";
 
         return "<div id='limesurvey-container' style='{$style}'>{$placeholder}</div>";
     }
