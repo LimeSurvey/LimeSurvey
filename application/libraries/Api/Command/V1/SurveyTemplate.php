@@ -81,6 +81,7 @@ class SurveyTemplate implements CommandInterface
      *     "subtitle": "What should we eat for lunch?"
      * }
      *
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @psalm-suppress UndefinedClass
      * @param Request $request
      * @return Response
