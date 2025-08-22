@@ -145,7 +145,6 @@ if (typeof lsFormIndex === "undefined") {
 
         for (let languageLink of surveyRoot.querySelectorAll(".ls-language-link")) {
             languageLink.classList.remove("ls-language-link");
-            window.fetchSurveyContent = fetchSurveyContent;
             languageLink.setAttribute('onclick', `window["lssubmit" + ${lsFormIndex}]('${languageLink.getAttribute("data-limesurvey-lang")}')`);
         }
 
