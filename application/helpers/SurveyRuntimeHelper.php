@@ -233,12 +233,14 @@ class SurveyRuntimeHelper
                 $oSurveyResponse->save();
                 $survey = Survey::model()->findByPk($surveyid);
                 if ($survey->getHasTokensTable()) {
-                    $token = Token::model($this->iSurveyid)->findByAttributes(['token' => $tokenValue]);
-                    if (!--$token->usesleft) {
-                        $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+                    if ($token = Token::model($this->iSurveyid)->findByAttributes(['token' => $tokenValue])) {
+                        $token->usesleft--;
+                        if ($token->usesleft > 0) {
+                            $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+                        }
+                        $token->decrypt();
+                        $token->encryptSave();
                     }
-                    $token->decrypt();
-                    $token->encryptSave();
                 }
             }
             // TODO: move somewhere else
