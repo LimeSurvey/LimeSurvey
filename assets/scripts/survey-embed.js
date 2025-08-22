@@ -128,7 +128,6 @@ if (typeof lsFormIndex === "undefined") {
                 .filter((el) => (['LSEMBED-YII_CSRF_TOKEN', 'LSEMBED-LEMpostKey'].indexOf(el.name) >= 0) || (el.name.indexOf("LSSESSION-") === 0))
                 .map((el) => `${el.name}=${el.value}`)
                 .join("&");
-                console.log(formData + "&popuppreview=false" + (ft ? "&filltoken=true" : "") + (token ? `LSEMBED-token=${token}` : ""));
             fetchSurveyContent(formData + "&popuppreview=false" + (ft ? "&filltoken=true" : "") + (token ? `&LSEMBED-token=${token}` : ""));
         }
         form.action = getRequestUrl();
