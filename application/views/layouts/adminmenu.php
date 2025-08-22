@@ -79,10 +79,12 @@
                         href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>"
                         class="nav-link ps-0"><?php eT("Surveys"); ?></a>
                     <?php if ($activesurveyscount > 0) : ?>
-                        <a
-                            class="nav-link ps-0 active-surveys"
-                            href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>"
-                        ><span class="badge"> <?php echo $activesurveyscount ?> </span></a>
+                       <a class="nav-link ps-0 active-surveys"
+   href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>">
+    <span class="visually-hidden">View active surveys: </span>
+    <span class="badge"><?php echo $activesurveyscount ?></span>
+</a>
+
                     <?php endif; ?>
                 </li>
 
