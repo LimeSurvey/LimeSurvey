@@ -53,7 +53,7 @@ class SurveyTemplate implements CommandInterface
         ResponseFactory $responseFactory,
         CHttpSession $session,
         Survey $survey,
-        SurveyLanguageSetting $surveyLanguageSetting,
+        SurveyLanguageSetting $surveyLanguageSetting
     ) {
         $this->responseFactory = $responseFactory;
         $this->session = $session;
@@ -119,7 +119,6 @@ class SurveyTemplate implements CommandInterface
                 )->toArray()
             );
         }
-        
         $this->language = ((\Yii::app()->request->getParam('lang') ?? $survey->language) ?? 'en');
         $languageSettings = $this
             ->surveyLanguageSetting
