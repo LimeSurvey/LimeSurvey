@@ -19,7 +19,7 @@ foreach ($extraMenus as $menu): ?>
             if ($menu->isDropDown()): ?>
             <?php if ($menu->isDropDownButton()) { ?>
                     <a href="#" class="nav-link " data-bs-toggle="dropdown" aria-expanded="false" role="button">
-                        <button type="button" class="btn btn-info btn-create" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                        <button type="button" class="btn btn-info btn-create"  aria-label="create new" data-bs-toggle="tooltip" data-bs-placement="bottom">
                             <i class="ri-add-line"></i>
                         </button>
                     </a>
