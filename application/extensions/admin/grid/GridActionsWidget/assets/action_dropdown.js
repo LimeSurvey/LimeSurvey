@@ -31,14 +31,54 @@ LS.actionDropdown = {
                     },
                 });
                 body.append(dropdownMenu);
+
+                // ✅ Add focus trap logic
+                dropdownToggleEl.addEventListener('shown.bs.dropdown', function () {
+                    trapFocus(dropdownMenu);
+                });
+
+                dropdownToggleEl.addEventListener('hidden.bs.dropdown', function () {
+                    releaseFocusTrap(dropdownMenu);
+                });
             }
         });
+
+        // ✅ Focus Trap Helpers
+        function trapFocus(container) {
+            let focusableSelectors = 'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+            let focusableEls = Array.from(container.querySelectorAll(focusableSelectors));
+            if (focusableEls.length === 0) return;
+
+            let firstEl = focusableEls[0];
+            let lastEl = focusableEls[focusableEls.length - 1];
+
+            container._focusHandler = function (e) {
+                if (e.key === 'Tab') {
+                    if (e.shiftKey) {
+                        if (document.activeElement === firstEl) {
+                            e.preventDefault();
+                            lastEl.focus();
+                        }
+                    } else {
+                        if (document.activeElement === lastEl) {
+                            e.preventDefault();
+                            firstEl.focus();
+                        }
+                    }
+                }
+            };
+
+            container.addEventListener('keydown', container._focusHandler);
+            firstEl.focus();
+        }
+
+        function releaseFocusTrap(container) {
+            if (container._focusHandler) {
+                container.removeEventListener('keydown', container._focusHandler);
+                delete container._focusHandler;
+            }
+        }
     },
-    /**
-     * Removes dropdown menus that no longer have a toggle element (i.e. the toggle was in a table row
-     * and the table was filtered or sorted).
-     * This is limited to dropdown menus handled by LS.actionDropdown.create().
-     */
     removeOrphanedDropdowns: function () {
         document.querySelectorAll('.dropdown-menu').forEach(function (menu) {
             // If the menu doesn't have a 'data-for-ls-dropdown-toggle-id' attribute, it's not
