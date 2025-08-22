@@ -1,13 +1,20 @@
+if (typeof lsFormIndex === "undefined") {
+    var lsFormIndex = 0;
+} else {
+    lsFormIndex++;
+}
 (function () {
     // Configuration & Script Info
     const script = document.currentScript;
     const surveyId = script.dataset.surveyId;
-    const lang = script.dataset.lang || "en";
+    let lang = script.dataset.lang || "en";
     const containerId = script.dataset.containerId || "1";
     const rootUrl = script.dataset.rootUrl || window.location.origin;
     const referer =
         window.location.protocol + "//" + window.location.host + "/";
-    const requestUrl = `${rootUrl}/index.php/rest/v1/survey-template/${surveyId}?lang=${lang}`;
+    function getRequestUrl() {
+        return `${rootUrl}/index.php/rest/v1/survey-template/${surveyId}?lang=${lang}`;
+    }
     let pageNumber = 0;
 
     // Prepare the container in the DOM
@@ -17,6 +24,11 @@
       <div id="beginScripts"></div>
       <div id="limesurvey-${containerId}"></div>
       <div id="bottomScripts"></div>
+      <style>
+          .nav-link.ls-link-action.ls-link-loadall {
+              display: none;
+          }
+      </style>
     `;
 
     // Inject scripts and styles in order
@@ -75,8 +87,11 @@
     // Send a POST request to load or submit the form
     async function fetchSurveyContent(params) {
         pageNumber++;
+        if (params.lang) {
+            lang = params.lang;
+        }
 
-        const response = await fetch(requestUrl, {
+        const response = await fetch(getRequestUrl(), {
             method: "POST",
             body: new URLSearchParams(params),
             headers: {
@@ -106,8 +121,16 @@
         surveyRoot.innerHTML = template;
 
         // Update form for submission via fetch
-        const form = surveyRoot.querySelector("#limesurvey");
-        form.action = requestUrl;
+        const form = surveyRoot.querySelector("#limesurvey, #form-token");
+        window["lssubmit" + lsFormIndex] = function(l, ft = false, token = "") {
+            lang = l;
+            const formData = Array.from(form.querySelectorAll("[name]"))
+                .filter((el) => (['LSEMBED-YII_CSRF_TOKEN', 'LSEMBED-LEMpostKey'].indexOf(el.name) >= 0) || (el.name.indexOf("LSSESSION-") === 0))
+                .map((el) => `${el.name}=${el.value}`)
+                .join("&");
+            fetchSurveyContent(formData + "&popuppreview=false" + (ft ? "&filltoken=true" : "") + (token ? `&LSEMBED-token=${token}` : ""));
+        }
+        form.action = getRequestUrl();
 
         form.querySelectorAll("[name]").forEach((el) => {
             el.name = "LSEMBED-" + el.name;
@@ -120,6 +143,36 @@
             el.remove()
         );
 
+        for (let languageLink of surveyRoot.querySelectorAll(".ls-language-link")) {
+            languageLink.classList.remove("ls-language-link");
+            languageLink.setAttribute('onclick', `window["lssubmit" + ${lsFormIndex}]('${languageLink.getAttribute("data-limesurvey-lang")}')`);
+        }
+
+        let showMenu = false;
+        let navbarToggler = surveyRoot.querySelector("#navbar-toggler");
+        if (navbarToggler) {
+            navbarToggler.addEventListener("click", function() {
+                setTimeout(() => {
+                    showMenu = !showMenu;
+                    surveyRoot.querySelector("#main-dropdown").classList[showMenu ? "add" : "remove"]("show");
+                }, 1);
+            });
+        }
+
+        if (form.id === "form-token") {
+            for (let toggle of form.querySelectorAll("#ls-toggle-token-show")) {
+                const tokenItems = toggle.parentNode.parentNode.querySelectorAll("#token");
+                if (tokenItems.length) {
+                    let tokenItem = tokenItems[0];
+                    toggle.addEventListener("click", function(evt) {
+                        tokenItem.type = ((tokenItem.type === "password") ? "text" : "password");
+                        for (let child of toggle.children) {
+                            child.classList.toggle("d-none");
+                        }
+                    });
+                }
+            }
+        }
         // Intercept form submission and resend via fetch
         form.addEventListener("submit", (event) => {
             event.preventDefault();
@@ -128,6 +181,40 @@
                 .join("&");
             fetchSurveyContent(formData + "&popuppreview=false");
         });
+
+        let languageSelector = surveyRoot.querySelector("#language-changer-select");
+        if (languageSelector) {
+            let languageForm = languageSelector.parentNode.parentNode.parentNode.parentNode;
+            languageForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+                window["lssubmit" + lsFormIndex](languageSelector.value);
+            });
+        }
+
+        function register() {
+            window.open(`${rootUrl}/index.php/${surveyId}?lang=${lang}&filltoken=true`, "", "popup");
+            let token = prompt("token");
+            if (token) {
+                window["lssubmit" + lsFormIndex](lang, true, token);
+            }
+        }
+        let tokenRedirects = [...surveyRoot.querySelectorAll(".nav-link.ls-link-action")]
+          .filter((el) => el.href.indexOf("filltoken") >= 0);
+        if (tokenRedirects.length) {
+            let tokenRedirect = tokenRedirects[0];
+            tokenRedirect.addEventListener("click", function(evt) {
+                evt.preventDefault();
+                if (tokenRedirect.classList.contains("token")) {
+                    window["lssubmit" + lsFormIndex](lang, true);
+                } else {
+                    register();
+                }
+            });
+        }
+
+        if (form.classList.contains('register')) {
+            register();
+        }
 
         const headScriptsList = head.split("SEPARATOR");
         const beginScriptList = beginScripts.split("SEPARATOR");
