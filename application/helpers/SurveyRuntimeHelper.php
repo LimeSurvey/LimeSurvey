@@ -226,9 +226,6 @@ class SurveyRuntimeHelper
                 if (isset($_SESSION[$this->LEMsessid]['filltoken'])) {
                     unset($_SESSION[$this->LEMsessid]['filltoken']);
                 }
-                if (isset($_SESSION[$this->LEMsessid]['token'])) {
-                    unset($_SESSION[$this->LEMsessid]['token']);
-                }
                 $oSurveyResponse->save();
                 $survey = Survey::model()->findByPk($surveyid);
                 if ($survey->getHasTokensTable()) {
