@@ -131,7 +131,7 @@ class SurveyTemplate implements CommandInterface
             $response['title'] = $languageSettings->surveyls_title;
             $response['subtitle'] = $languageSettings->surveyls_description;
         }
-        if(!in_array($embedType, $renderOnlyEmbedTypes)) {
+        if (!in_array($embedType, $renderOnlyEmbedTypes)) {
             if ($this->js) {
                 $this->embed->setStructure($this->getJavascript());
             } elseif ($this->isPreview) {
