@@ -100,12 +100,15 @@
                 </div>
             </div>
 
-            <?php if ($this->switch) : ?>
+  <?php if ($this->switch): ?>
                 <div class="survey-actionbar-switch">
-                    <i class="view-switch ri-grid-fill survey-actionbar-item" data-action="box-widget" <?= $this->viewtype === 'box-widget' ? 'active' : '' ?>></i>
-                    <i class="view-switch ri-menu-line survey-actionbar-item" data-action="list-widget" <?= $this->viewtype === 'list-widget' ? 'active' : '' ?>></i>
+                    <i class="view-switch ri-grid-fill survey-actionbar-item" data-action="box-widget" role="button"
+                        tabindex="0" aria-label="Grid view" <?= $this->viewtype === 'box-widget' ? 'active' : '' ?>></i>
+                    <i class="view-switch ri-menu-line survey-actionbar-item" data-action="list-widget" role="button"
+                        tabindex="0" aria-label="Table view" <?= $this->viewtype === 'list-widget' ? 'active' : '' ?>></i>
                 </div>
             <?php endif; ?>
+
 
         </div>
         <?php $this->endWidget(); ?>
