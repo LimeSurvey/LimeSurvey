@@ -247,7 +247,7 @@ class SurveyTemplate implements CommandInterface
     {
         $root = $this->getRootUrl();
         $token = ($this->token ? "&token=" . $this->token : "");
-        return $root . "/index.php/{$this->surveyId}?lang={$this->language}" . ($this->fillToken ? "&filltoken=true" : "") . $token;
+        return $root . "/index.php/{$this->surveyId}?lang={$this->language}&noregister=true&" . ($this->fillToken ? "&filltoken=true" : "") . $token;
     }
 
     /**
@@ -326,13 +326,8 @@ class SurveyTemplate implements CommandInterface
             $bos[] = $dom->saveHTML($bottomScript);
         }
         $bos = implode("SEPARATOR", $bos);
-        $registration = $xpath->query("//*[@id='register_firstname']");
-        $isRegistration = false;
-        foreach ($registration as $r) {
-            $isRegistration = true;
-        }
         return [
-            'form' => $isRegistration ?  "<form id='limesurvey' class='register'><a class='register' target='_blank'></a></form>" : $form,
+            'form' => $form,
             'hiddenInputs' => $hiddenInputs,
             'head' => $h,
             'beginScripts' => $bes,
