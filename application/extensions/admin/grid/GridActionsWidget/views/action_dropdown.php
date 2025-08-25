@@ -4,7 +4,7 @@
  */
 
 ?>
-<div id="<?= 'dropdown_' . $id; ?>" class="dropdown ls-action_dropdown">
+<div id="<?= 'dropdown_' . $id; ?>" class="dropdown ls-action_dropdown" tabidex=""0>
     <button class="ls-dropdown-toggle" data-bs-toggle="dropdown" type="button"
             aria-expanded="false">
         <i class="ri-more-fill"></i>
