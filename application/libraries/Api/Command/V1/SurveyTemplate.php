@@ -132,12 +132,20 @@ class SurveyTemplate implements CommandInterface
             $response['subtitle'] = $languageSettings->surveyls_description;
         }
         if (!in_array($embedType, $renderOnlyEmbedTypes)) {
+            $structure = '';
             if ($this->js) {
-                $this->embed->setStructure($this->getJavascript());
-            } elseif ($this->isPreview) {
+                $structure = $this->getJavascript($embedType, $this->isPreview);
+                if (!$this->isPreview) {
+                    $this->embed->setStructure($structure);
+                }
+            }
+            if ($this->isPreview) {
                 $result = $this->getTemplateData();
-                $this->embed->displayWrapper($target !== 'marketing')->setStructure($result);
-            } else {
+                if (is_string($result)) {
+                    $structure .= " {$result}";
+                }
+                $this->embed->displayWrapper($target !== 'marketing')->setStructure($structure);
+            } elseif (!$this->js) {
                 $surveyResult = $this->getSurveyResult();
                 $this->embed->displayWrapper(false)->setStructure($surveyResult['form']);
                 $response['hiddenInputs'] = $surveyResult['hiddenInputs'];
@@ -346,28 +354,35 @@ class SurveyTemplate implements CommandInterface
 
     /**
      * Gets the javascript that does the goodies
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-     * @param mixed $properties
+     * @param string $embedType
+     * @param bool $isPreview
      * @return string
      */
-    private function getJavascript($properties = null)
+    private function getJavascript(string $embedType, bool $isPreview = false)
     {
-        $containerId = is_array($properties) && isset($properties['container_id'])
-        ? $properties['container_id']
-        : '1';
+        $containerId = '1';
         $lang = $this->language;
         $surveyId = $this->surveyId;
         $rootUrl = $this->getRootUrl();
         $embedScriptUrl = $rootUrl . '/assets/scripts/survey-embed.js';
 
+        $allowedTypes = [BaseEmbed::EMBED_STRUCTURE_POPUP, BaseEmbed::EMBED_STRUCTURE_WIDGET];
+        $optionalAttributes = '';
+        if ($isPreview) {
+            $optionalAttributes .= ' data-is-preview="true"';
+        }
+        if (in_array($embedType, $allowedTypes, true)) {
+            $optionalAttributes .= ' data-embed-type="' . $embedType . '"';
+        }
+
         return <<<HTML
-    <script
-        src="{$embedScriptUrl}"
-        data-survey-id="{$surveyId}"
-        data-lang="{$lang}"
-        data-container-id="{$containerId}"
-        data-root-url="{$rootUrl}"
-    ></script>
-    HTML;
+                <script
+                    src="{$embedScriptUrl}"
+                    data-survey-id="{$surveyId}"
+                    data-lang="{$lang}"
+                    data-container-id="{$containerId}"
+                    data-root-url="{$rootUrl}" {$optionalAttributes}>
+                </script>
+            HTML;
     }
 }

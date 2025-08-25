@@ -36,50 +36,9 @@ class PopupEmbed extends BaseEmbed
             {$placeholder}
         </div>
         </div>
-        <div id="limesurvey-embed-button">
+        <div id="limesurvey-embed-button" data-trigger-on="{$triggerOn}">
             <span class="text">{$popupTitle}</span>
         </div>
-        <script data-ls-interaction>
-        (function(){
-            const root = window.__LS_SHADOW_ROOT__ || document;
-            const container = root.getElementById('limesurvey-parent-container');
-            const button = root.getElementById('limesurvey-embed-button');
-            const closeBtn = root.getElementById('ls-popup-close');
-            let isOpen = false;
-
-            function openPopup() {
-                container.classList.add('open');
-                isOpen = true;
-            }
-
-            function closePopup() {
-                container.classList.remove('open');
-                isOpen = false;
-            }
-
-            button.addEventListener('click', function(){
-                isOpen ? closePopup() : openPopup();
-            });
-
-            closeBtn.addEventListener('click', function(){
-                closePopup();
-            });
-
-            const triggerOn = "{$triggerOn}";
-            if (triggerOn === "auto") {
-                openPopup();
-            } 
-            if (triggerOn === "scroll") {
-                window.addEventListener('scroll', function onScroll() {
-                    const rect = button.getBoundingClientRect();
-                    if (rect.top < window.innerHeight && rect.bottom >= 0) {
-                        openPopup();
-                        window.removeEventListener('scroll', onScroll);
-                    }
-                });
-            }
-        })();
-        </script>
         HTML;
     }
 }

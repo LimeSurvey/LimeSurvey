@@ -29,32 +29,10 @@ class WidgetEmbed extends BaseEmbed
         <div id="limesurvey-container" class="{$classes}">
             {$placeholder}
         </div>
-        <div id="limesurvey-embed-button" class="{$classes}">
+        <div id="limesurvey-embed-button" class="{$classes}" data-side="{$side}">
             <span class="text">{$buttonText}</span>
             <span class="icon">{$arrow}</span>
         </div>
-        <script data-ls-interaction>
-        (function(){
-            const root = window.__LS_SHADOW_ROOT__ || document;
-            var container = root.getElementById('limesurvey-container');
-            var button = root.getElementById('limesurvey-embed-button');
-            var icon = button.querySelector('.icon');
-            var isOpen = false;
-        
-            button.addEventListener('click', function(){
-                if (isOpen) {
-                    button.classList.remove('open');
-                    container.classList.remove('open');
-                    icon.innerHTML = '{$arrow}';
-                } else {
-                    button.classList.add('open');
-                    container.classList.add('open');
-                    icon.innerHTML = 'x';
-                }
-                isOpen = !isOpen;
-            });
-        })();
-        </script>
         HTML;
     }
 }

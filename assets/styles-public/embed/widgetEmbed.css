@@ -11,6 +11,7 @@
     border: 1px dashed #8146F6;
     border-radius: 4px;
     padding: 16px;
+    padding-top: 46px;
     overflow-y: auto;
 }
 
