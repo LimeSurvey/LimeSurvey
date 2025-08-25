@@ -4,6 +4,7 @@
  * @var AdminController $this
  * @var Survey $oSurvey
  * @var array $dateformatdetails
+ * @var boolean $surveyTemplateEmbedding
  */
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyPublicationOptions');
@@ -94,14 +95,14 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             </div>
 
             <!-- Use CAPTCHA for survey access -->
-            <?php $usecap = $oSurvey->usecaptcha; // Just a short-hand 
+            <?php $usecap = $oSurvey->usecaptcha; // Just a short-hand
             $aCaptchaSurveyAccessYes        = array('A', 'B', 'C', 'X', 'F', 'H', 'K', 'O', 'T');
             $aCaptchaSurveyAccessInherit    = array('E', 'G', 'I', 'J', 'L', 'M', '1', '2', '4');
             $aCaptchaRegistrationYes        = array('A', 'B', 'D', 'R', 'F', 'G', 'I', 'M', 'U');
             $aCaptchaRegistrationInherit    = array('E', 'H', 'J', 'K', 'O', 'P', '1', '3', '6');
             $aCaptchaLoadSaveYes            = array('A', 'C', 'D', 'S', 'G', 'H', 'J', 'L', 'P');
             $aCaptchaLoadSaveInherit        = array('E', 'F', 'I', 'K', 'T', 'U', '2', '3', '5');
-            
+
             ?>
             <div class="mb-3 mt-4">
                 <h1><?php eT("CAPTCHA"); ?></h1>
@@ -150,6 +151,30 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->useCaptchaSaveAndLoad . " ᴵ" ])
                             : $optionsOnOff,
                     ]); ?>
+                </div>
+            </div>
+            <!-- Survey embedding -->
+            <div class="mb-3 mt-4">
+                <h1><?php eT("Embedding"); ?></h1>
+                <label class=" form-label" for='allow_embed'>
+                    <?php printf(gT("Allow survey embedding:"));?>
+                </label>
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'allow_embed',
+                        'checkedOption' => (!$oSurvey->getIsInhertedEmbeddingMode())
+                            ? 'I'
+                            : ($oSurvey->getIsEmbeddingAllowed() ? ('Y') : ('N')),
+                        'selectOptions' => [
+                            'Y' => gT('Yes'),
+                            'N' => gT('No'),
+                            'I' => $oSurvey->getIsInhertedEmbeddingMode() == 'Y' ? gT('Yes'). " ᴵ" :  gT('No'). " ᴵ"
+                        ],
+                        'htmlOptions' => [
+                            "class" => ($oSurvey->getIsInhertedEmbeddingMode() ? '' : 'setting-readonly')
+                        ]
+                    ]);
+                    ?>
                 </div>
             </div>
             <?php if (!extension_loaded('gd')) { ?>

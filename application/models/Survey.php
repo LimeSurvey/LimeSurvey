@@ -142,6 +142,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isNoKeyboard Show on-screen keyboard
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
  * @property string $access_mode Whether the access mode is open (O) or closed (C), if O token-based participation may be supported, if C, it's enforced
+ * @property string $allow_embed The survey embedding mode, allowed (Y) or not allowed (N)
  * @property SurveyLanguageSetting $defaultlanguage
  * @property SurveysGroups $surveygroup
  * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
@@ -563,6 +564,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('googleanalyticsapikey', 'match', 'pattern' => '/^[a-zA-Z\-\d]*$/',
                 'message' => gT('Google Analytics Tracking ID may only contain alphanumeric characters and hyphens.'),
             ),
+            array('allow_embed', 'in', 'range' => array('Y', 'N'), 'allowEmpty' => true),
         );
     }
 
@@ -2182,6 +2184,23 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         return $this->countTotalQuestions - $this->countNoInputQuestions;
     }
+
+    public function getIsInhertedEmbeddingMode()
+    {
+        return (\TemplateConfiguration::getIsEmbeddingAllowed($this->sid) == 'Y');
+    }
+
+    public function getIsEmbeddingAllowed()
+    {
+        $surveyThemeEmbedding = \TemplateConfiguration::getIsEmbeddingAllowed($this->sid);
+
+        if ($surveyThemeEmbedding === 'N') {
+            return false;
+        }
+
+        return ($this->allow_embed === 'Y');
+    }
+
 
     /**
      * Returns true if this survey has any question of type $type.

@@ -294,7 +294,8 @@ class GeneralSettings
             'bounce_email' => [],
             'gsid' => ['default' => 1],
             'format' => [],
-            'template' => []
+            'template' => [],
+            'allow_embed' => ['type' => static::FIELD_TYPE_YN],
         ];
     }
 

@@ -114,6 +114,17 @@ class SurveyTemplate implements CommandInterface
                 )->toArray()
             );
         }
+
+        if (!$survey->getIsEmbeddingAllowed()) {
+            return $this->responseFactory->makeErrorNotFound(
+                (new ResponseDataError(
+                    'EMBEDDING_NOT_ALLOWED',
+                    'Embedding not allowed'
+                )
+                )->toArray()
+            );
+        }
+
         $this->language = ((\Yii::app()->request->getParam('lang') ?? $survey->language) ?? 'en');
         $languageSettings = $this
             ->surveyLanguageSetting
