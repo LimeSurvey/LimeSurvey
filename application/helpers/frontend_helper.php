@@ -1905,6 +1905,7 @@ function display_first_page($thissurvey, $aSurveyInfo)
     $thissurvey['attr']['welcomecontainer'] = $thissurvey['attr']['surveyname'] = $thissurvey['attr']['description'] = $thissurvey['attr']['welcome'] = $thissurvey['attr']['questioncount'] = '';
 
     $thissurvey['include_content'] = 'firstpage';
+    $thissurvey['noregister'] = (Yii::app()->request->getParam('noregister', 'true') === 'true');
 
     Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey), false);
 }

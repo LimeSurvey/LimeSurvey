@@ -191,6 +191,16 @@ if (typeof lsFormIndex === "undefined") {
             });
         }
 
+        let tokenRedirects = [...surveyRoot.querySelectorAll(".nav-link.ls-link-action")]
+          .filter((el) => el.href.indexOf("filltoken") >= 0);
+        if (tokenRedirects.length) {
+            let tokenRedirect = tokenRedirects[0];
+            tokenRedirect.addEventListener("click", function(evt) {
+                evt.preventDefault();
+                window["lssubmit" + lsFormIndex](lang, true);
+            });
+        }
+
         const headScriptsList = head.split("SEPARATOR");
         const beginScriptList = beginScripts.split("SEPARATOR");
         const bottomScriptsList = bottomScripts.split("SEPARATOR");
