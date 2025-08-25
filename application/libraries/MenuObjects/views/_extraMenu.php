@@ -42,7 +42,13 @@ foreach ($extraMenus as $menu): ?>
                         <?php
                         else: ?>
                             <li class="create-menu-item ms-3 me-3">
-                                <a href="<?= $menuItem->getHref(); ?>" class="dropdown-item"
+                                <?php
+                                    $modalHTML = "";
+                                    if ($menuItem->isModal()) {
+                                        $modalHTML = 'data-bs-toggle="modal"' . 'data-bs-target="#' . $menuItem->getModalId() . '"';
+                                    }
+                                ?>
+                                <a href="<?= $menuItem->getHref(); ?>" class="dropdown-item" <?= $modalHTML?>
                                     <?php if ($menuItem->getId() !== null) {
                                         echo 'id="'. $menuItem->getId(). '"';
                                     }?>
