@@ -1007,6 +1007,18 @@ class Question extends LSActiveRecord
     }
 
     /**
+     * Return true if the question type supports answer options
+     * @return boolean
+     */
+    public function getAllowAnswerOptions()
+    {
+        return (
+            !$this->parent_qid
+            && $this->getQuestionType()->answerscales > 0
+        );
+    }
+
+    /**
      * Get an new title/code for a question
      * @param integer $index base for question code (example : inde of question when survey import)
      * @return string|null : new title, null if impossible
@@ -1632,6 +1644,7 @@ class Question extends LSActiveRecord
     {
         if (parent::update($attributes)) {
             $this->removeInvalidSubquestions();
+            $this->removeInvalidAnswerOptions();
             return true;
         } else {
             return false;
@@ -1654,6 +1667,25 @@ class Question extends LSActiveRecord
             foreach ($aSubquestions as $oSubquestion) {
                 /* Use delete to delete related model */
                 $oSubquestion->delete();
+            }
+        }
+    }
+
+    /**
+     * Removes all answer options if the question's type doesn't allow answer options.
+     * @return void
+     */
+    protected function removeInvalidAnswerOptions()
+    {
+        if ($this->getAllowAnswerOptions()) {
+            return;
+        }
+
+        // Remove answer options if the question's type doesn't allow answer options
+        $answerOptions = Answer::model()->findAll("qid=:qid", array("qid" => $this->qid));
+        if (!empty($answerOptions)) {
+            foreach ($answerOptions as $answerOption) {
+                $answerOption->delete();
             }
         }
     }
