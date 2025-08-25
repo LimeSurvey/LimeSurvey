@@ -352,7 +352,7 @@ class SurveyTemplate implements CommandInterface
      * @param bool $isPreview
      * @return string
      */
-    private function getJavascript(string $embedType ,bool $isPreview = false)
+    private function getJavascript(string $embedType, bool $isPreview = false)
     {
         $containerId = '1';
         $lang = $this->language;

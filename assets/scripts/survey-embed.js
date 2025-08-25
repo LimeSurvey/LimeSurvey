@@ -274,7 +274,6 @@ if (typeof lsFormIndex === "undefined") {
     }
 
     if (!isPreview) {
-        console.log("Initial Load");
         // Initial Load
         fetchSurveyContent({
             popuppreview: false,
@@ -284,7 +283,6 @@ if (typeof lsFormIndex === "undefined") {
     }
 
     function initWidget() {
-        console.log("Widget embed init");
         const root = window.__LS_SHADOW_ROOT__ || document;
         var container = root.getElementById("limesurvey-container");
         var button = root.getElementById("limesurvey-embed-button");
