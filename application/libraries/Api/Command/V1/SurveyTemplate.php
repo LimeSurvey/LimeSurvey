@@ -137,7 +137,9 @@ class SurveyTemplate implements CommandInterface
             }
             if ($this->isPreview) {
                 $result = $this->getTemplateData();
-                $structure .= ' ' . (string)$result;
+                if (is_string($result)) {
+                    $structure .= " {$result}";
+                }
                 $this->embed->displayWrapper($target !== 'marketing')->setStructure($structure);
             } elseif (!$this->js) {
                 $surveyResult = $this->getSurveyResult();
