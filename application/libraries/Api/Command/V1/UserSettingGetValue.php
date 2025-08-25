@@ -26,7 +26,7 @@ class UserSettingGetValue implements CommandInterface
   ) {
     $this->responseFactory = $responseFactory;
     $this->permission = $permission;
-    $this->$modelSettingsUser = $modelSettingsUser;
+    $this->modelSettingsUser = $modelSettingsUser;
   }
 
   /**
@@ -36,8 +36,6 @@ class UserSettingGetValue implements CommandInterface
    */
   public function run(Request $request)
   {
-    echo $request;
-    exit();
     $settingsName = $request->getData('_id');
     $hasPermission = $this->permission->hasGlobalPermission('users');
 
@@ -53,8 +51,8 @@ class UserSettingGetValue implements CommandInterface
     if (!$settingsUser) {
       return $this->responseFactory->makeErrorNotFound(
         (new ResponseDataError(
-          'SETTINGS_NOT_FOUND',
-          'Settings not found'
+          'SETTING_NOT_FOUND',
+          'Setting not found'
         )
         )->toArray()
       );

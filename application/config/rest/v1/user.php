@@ -72,8 +72,8 @@ $rest['v1/user-detail/$id'] = [
 
 $rest['v1/user-setting/$id'] = [
   'GET' => [
-    'tag' => 'user-setting',
-    'description' => 'User setting',
+    'tag' => 'user',
+    'description' => 'get one user setting value',
     'commandClass' => UserSettingGetValue::class,
     'auth' => true,
     'responses' => [
@@ -97,11 +97,15 @@ $rest['v1/user-setting/$id'] = [
   ]
 ];
 
-$rest['v1/user-setting/$id'] = [
+$rest['v1/user-setting'] = [
   'POST' => [
-    'tag' => 'user-setting',
-    'description' => 'User setting',
+    'tag' => 'user',
+    'description' => 'set value for one user setting',
     'commandClass' => UserSettingSetValue::class,
+      'params' => [
+          'settingName' => ['src' => 'form'],
+          'settingValue' => ['src' => 'form']
+      ],
     'auth' => true,
     'responses' => [
       'success' => [

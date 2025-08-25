@@ -26,7 +26,7 @@ class UserSettingSetValue implements CommandInterface
   ) {
     $this->responseFactory = $responseFactory;
     $this->permission = $permission;
-    $this->$modelSettingsUser = $modelSettingsUser;
+    $this->modelSettingsUser = $modelSettingsUser;
   }
 
   /**
