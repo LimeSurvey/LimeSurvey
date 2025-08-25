@@ -96,7 +96,12 @@ class SurveyTemplate implements CommandInterface
         $target = \Yii::app()->request->getParam('target', 'marketing');
         $embedType = \Yii::app()->request->getParam('embed', BaseEmbed::EMBED_STRUCTURE_STANDARD);
         $embedOptions = \Yii::app()->request->getParam('embedOptions', []);
-        $embedOptions['surveyId'] = $this->surveyId;
+        $renderOnlyEmbedTypes = [BaseEmbed::EMBED_STRUCTURE_EMAIL, BaseEmbed::EMBED_STRUCTURE_BUTTON];
+
+        if (in_array($embedType, $renderOnlyEmbedTypes)) {
+            $embedOptions['surveyId'] = $this->surveyId;
+        }
+
         $this->embed = BaseEmbed::instantiate($embedType)
                         ->setEmbedOptions($embedOptions);
 
@@ -126,9 +131,7 @@ class SurveyTemplate implements CommandInterface
             $response['title'] = $languageSettings->surveyls_title;
             $response['subtitle'] = $languageSettings->surveyls_description;
         }
-
-        if ($embedType !== BaseEmbed::EMBED_STRUCTURE_BUTTON) {
-            $structure = '';
+        if (!in_array($embedType, $renderOnlyEmbedTypes)) {
             if ($this->js) {
                 $structure = $this->getJavascript($embedType, $this->isPreview);
                 if (!$this->isPreview) {

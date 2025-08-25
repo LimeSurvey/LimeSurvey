@@ -106,7 +106,7 @@ class SurveyIndex extends CAction
 
         $previewmode = false;
         if (isset($param['action']) && (in_array($param['action'], array('previewgroup', 'previewquestion')))) {
-            if (!$canPreviewSurvey) {
+            if (!$canPreviewSurvey && !$redata['popuppreview']) {
                 $aErrors  = array(gT('Error'));
                 $message = gT("We are sorry but you don't have permissions to do this.", 'unescaped');
                 if (Permission::model()->getUserId()) {
