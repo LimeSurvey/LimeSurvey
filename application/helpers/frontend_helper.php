@@ -379,7 +379,9 @@ function submittokens($quotaexit = false)
     }
     $clienttoken = $_SESSION['survey_' . $surveyid]['token'] ?? '';
 
-    if (($clienttoken === '') && ($thissurvey['access_mode'] !== SurveyAccessModeService::$ACCESS_TYPE_CLOSED)) {
+    $tokenused = ($_SESSION['survey_' . $surveyid]['tokenused'] ?? false);
+
+    if (($clienttoken === '') && (!$tokenused) && ($thissurvey['access_mode'] !== SurveyAccessModeService::$ACCESS_TYPE_CLOSED)) {
         return; //optional
     }
 
@@ -387,7 +389,7 @@ function submittokens($quotaexit = false)
     $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
 
     // check how many uses the token has left
-    $token = Token::model($surveyid)->findByAttributes(array('token' => $clienttoken));
+    $token = Token::model($surveyid)->findByAttributes(array('token' => $clienttoken ? $clienttoken : $tokenused));
     if (!$token) {
         throw new CHttpException(403, gT("Invalid access code"));
     }
@@ -395,9 +397,11 @@ function submittokens($quotaexit = false)
 
     if ($quotaexit == true) {
         $token->completed = 'Q';
-        $token->usesleft--;
+        if (!$tokenused) {
+            $token->usesleft--;
+        }
     } else {
-        if ($token->usesleft <= 1) {
+        if ((($token->usesleft == 1) && ($tokenused)) || ($token->usesleft == 0)) {
             // Finish the token
             if (isTokenCompletedDatestamped($thissurvey)) {
                 $token->completed = $today;
@@ -417,7 +421,9 @@ function submittokens($quotaexit = false)
                 }
             }
         }
-        $token->usesleft--;
+        if (!$tokenused) {
+            $token->usesleft--;
+        }
     }
     $token->decrypt();
     $token->encryptSave();
