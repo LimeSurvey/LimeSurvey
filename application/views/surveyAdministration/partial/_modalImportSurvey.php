@@ -35,8 +35,10 @@
                         <div class="upload-container">
                             <label><b><?php eT("Select or drop a file here"); ?></b></label>
                             <label for="fileUpload" class="upload-label" id="drop_zone">
-                                <span class="ri-upload-line">&nbsp;</span>
-                                <div class="upload-text" id="file-upload-text"><?php et('Drop file here'); ?></div>
+                                <div class="upload-text" id="file-upload-text">
+                                    <span class="ri-upload-line">&nbsp;</span> </br>
+                                    <?php et('Drop file here'); ?>
+                                </div>
                                 <input
                                     type="file"
                                     id="fileUpload"

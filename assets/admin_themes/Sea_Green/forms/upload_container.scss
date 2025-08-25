@@ -13,6 +13,7 @@
   border-color: $g-400;
   border-radius: $border-radius;
   background-color: $white;
+  height: 150px;           /* Set a height so vertical centering is visible */
   cursor: pointer;
   transition: border-color 0.3s;
   text-align: center;
