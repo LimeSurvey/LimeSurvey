@@ -1283,7 +1283,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
         if (!$subscenarios['tokenValid']) {
             //Check if there is a clienttoken set
             if ((!isset($clienttoken) || $clienttoken == "")) {
-                if (isset($thissurvey) && $thissurvey['allowregister'] == "Y") {
+                if (isset($thissurvey) && $thissurvey['allowregister'] == "Y" && (Yii::app()->request->getParam('noregister', 'true') !== 'true')) {
                     $renderToken = 'register';
                 } else {
                     $renderToken = 'main';
@@ -1905,6 +1905,7 @@ function display_first_page($thissurvey, $aSurveyInfo)
     $thissurvey['attr']['welcomecontainer'] = $thissurvey['attr']['surveyname'] = $thissurvey['attr']['description'] = $thissurvey['attr']['welcome'] = $thissurvey['attr']['questioncount'] = '';
 
     $thissurvey['include_content'] = 'firstpage';
+    $thissurvey['noregister'] = (Yii::app()->request->getParam('noregister', 'true') === 'true');
 
     Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey), false);
 }

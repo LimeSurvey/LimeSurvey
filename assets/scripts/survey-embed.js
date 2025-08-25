@@ -13,7 +13,7 @@ if (typeof lsFormIndex === "undefined") {
     const referer =
         window.location.protocol + "//" + window.location.host + "/";
     function getRequestUrl() {
-        return `${rootUrl}/index.php/rest/v1/survey-template/${surveyId}?lang=${lang}`;
+        return `${rootUrl}/index.php/rest/v1/survey-template/${surveyId}?lang=${lang}&noregister=true`;
     }
     let pageNumber = 0;
 
@@ -191,29 +191,14 @@ if (typeof lsFormIndex === "undefined") {
             });
         }
 
-        function register() {
-            window.open(`${rootUrl}/index.php/${surveyId}?lang=${lang}&filltoken=true`, "", "popup");
-            let token = prompt("token");
-            if (token) {
-                window["lssubmit" + lsFormIndex](lang, true, token);
-            }
-        }
         let tokenRedirects = [...surveyRoot.querySelectorAll(".nav-link.ls-link-action")]
           .filter((el) => el.href.indexOf("filltoken") >= 0);
         if (tokenRedirects.length) {
             let tokenRedirect = tokenRedirects[0];
             tokenRedirect.addEventListener("click", function(evt) {
                 evt.preventDefault();
-                if (tokenRedirect.classList.contains("token")) {
-                    window["lssubmit" + lsFormIndex](lang, true);
-                } else {
-                    register();
-                }
+                window["lssubmit" + lsFormIndex](lang, true);
             });
-        }
-
-        if (form.classList.contains('register')) {
-            register();
         }
 
         const headScriptsList = head.split("SEPARATOR");
