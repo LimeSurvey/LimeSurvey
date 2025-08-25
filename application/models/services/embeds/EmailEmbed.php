@@ -19,7 +19,6 @@ class EmailEmbed extends BaseEmbed
      * Gets the HTML wrapper around the main structure
      * @param string $placeholder a text placeholder with a default value which will be replaced with the inner structure
      * @return string
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function getWrapper(string $placeholder = "PLACEHOLDER")
     {
@@ -30,6 +29,7 @@ class EmailEmbed extends BaseEmbed
      * Renders the structure with the wrapper wrapped around it
      * @param string $placeholder a text placeholder with a default value which will be replaced with the inner structure
      * @return array|string
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function render(string $placeholder = "PLACEHOLDER")
     {
