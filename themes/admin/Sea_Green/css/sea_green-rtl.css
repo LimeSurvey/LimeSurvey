@@ -18823,6 +18823,7 @@ input[type=number] {
   border-color: #D3D5DA;
   border-radius: 4px;
   background-color: #fff;
+  height: 150px; /* Set a height so vertical centering is visible */
   cursor: pointer;
   transition: border-color 0.3s;
   text-align: center;
@@ -18839,6 +18840,10 @@ input[type=number] {
 
 .upload-input {
   visibility: hidden;
+  margin: 0;
+  padding: 0 !important;
+  width: 0;
+  height: 0;
 }
 
 .welcome #lime-logo {
