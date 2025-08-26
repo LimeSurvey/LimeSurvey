@@ -119,6 +119,9 @@ class SurveyTemplate implements CommandInterface
                 )->toArray()
             );
         }
+        if ($response = $this->validateAccessToken()) {
+            return $response;
+        }
         $this->language = ((\Yii::app()->request->getParam('lang') ?? $survey->language) ?? 'en');
         $languageSettings = $this
             ->surveyLanguageSetting
@@ -192,6 +195,26 @@ class SurveyTemplate implements CommandInterface
         return false;
     }
 
+    /**
+     * Validate the access token
+     *
+     * @return Response|false
+     */
+    private function validateAccessToken()
+    {
+        $tokenFound = \Token::model($this->surveyId)->findByAttributes(['token' => $this->token]);
+        $step = \Yii::app()->request->getParam('LSEMBED-move', '');
+        if ($this->token && !$tokenFound && $step !== 'movesubmit') {
+            return $this->responseFactory->makeErrorNotFound(
+                (new ResponseDataError(
+                    'TOKEN_NOT_FOUND',
+                    gT("The access code you have provided is either not valid, or has already been used.")
+                )
+                )->toArray()
+            );
+        }
+        return false;
+    }
     /**
      * Get template data
      *
@@ -306,6 +329,7 @@ class SurveyTemplate implements CommandInterface
             $hiddenInputs = implode(" ", $cookies);
             $sc = implode("; ", $sessionCookies);
             $p = implode("&", $parameters);
+            $getSrc = $this->getSrc();
             $curl = str_replace("==", "%3D%3D", "curl '{$this->getSrc()}' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' -H 'Accept-Language: en-US,en;q=0.9' -H 'Cache-Control: max-age=0' -H 'Connection: keep-alive' -H 'Content-Type: application/x-www-form-urlencoded' -b '{$sc}' -H 'Origin: {$this->getRootUrl()}' -H 'Referer: {$this->getSrc()}' -H 'Sec-Fetch-Dest: document' -H 'Sec-Fetch-Mode: navigate' -H 'Sec-Fetch-Site: same-origin' -H 'Sec-Fetch-User: ?1' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36' -H 'sec-ch-ua: \"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\"' -H 'sec-ch-ua-mobile: ?0' -H 'sec-ch-ua-platform: \"Linux\"' --data-raw '{$p}' --insecure");
             exec($curl, $output, $result_code);
             $result = implode("\n", $output);
