@@ -31,7 +31,7 @@
         {# Previous button must be set to ON in survey settings (and it's not shown in first page, in All in One survey mode, etc) #}
         {% if (not aSurveyInfo.popupPreview) and aNavigator.aMovePrev.show %}
             <!-- Button previous -->
-            <button {{ aSurveyInfo.attr.navigatorbuttonprev }} accesskey="p" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonprev }} btn btn-lg btn-outline-secondary " >
+            <button aria-label="{{ gT("Previous page") }}" {{ aSurveyInfo.attr.navigatorbuttonprev }} accesskey="p" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonprev }} btn btn-lg btn-outline-secondary " >
                 {{ gT("Previous") }}
             </button>
         {% endif %}
@@ -55,7 +55,7 @@
                 </button>
             {% else %}
                 <!-- Button Next -->
-                <button {{ aSurveyInfo.attr.navigatorbuttonnext }} accesskey="n" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonnext }} btn btn-lg btn-primary " >
+                <button aria-label="{{ gT("Next page") }}" {{ aSurveyInfo.attr.navigatorbuttonnext }} accesskey="n" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonnext }} btn btn-lg btn-primary " >
                     {{ gT("Next") }}
                 </button>
             {% endif %}

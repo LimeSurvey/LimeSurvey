@@ -38,16 +38,11 @@ class LSActiveRecord extends CActiveRecord
         $sCreateFieldName = ($this->hasAttribute('created') ? 'created' : null);
         $sUpdateFieldName = ($this->hasAttribute('modified') ? 'modified' : null);
         $sDriverName = Yii::app()->db->getDriverName();
-        if ($sDriverName == 'sqlsrv' || $sDriverName == 'dblib') {
-            $sTimestampExpression = new CDbExpression('GETDATE()');
-        } else {
-            $sTimestampExpression = new CDbExpression('NOW()');
-        }
         $aBehaviors['CTimestampBehavior'] = [
             'class'               => 'zii.behaviors.CTimestampBehavior',
             'createAttribute'     => $sCreateFieldName,
             'updateAttribute'     => $sUpdateFieldName,
-            'timestampExpression' => $sTimestampExpression
+            'timestampExpression' => "date('Y-m-d H:i:s', time())"
         ];
         // Some tables might not exist/not be up to date during a database upgrade so in that case disconnect plugin events
         if (!Yii::app()->getConfig('Updating')) {

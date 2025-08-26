@@ -33,8 +33,8 @@ jobs:
           sudo apt update
           sudo apt -y install php${{ matrix.php-versions }}
           sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php7.4-ldap php7.4-gd php7.4-intl php7.4-zip php7.4-mysql php7.4-xml php7.4-curl php7.4-mbstring libapache2-mod-php7.4 -y
-          sudo apt --fix-broken install php php8.3-ldap php8.3-gd php8.3-intl php8.3-zip php8.3-mysql php8.3-xml php8.3-curl php8.3-mbstring libapache2-mod-php8.3 -y
+          sudo apt --fix-broken install php php7.4-ldap php7.4-gd php7.4-intl php7.4-zip php7.4-mysql php7.4-xml php7.4-curl php7.4-mbstring php7.4-sqlite3 libapache2-mod-php7.4 -y
+          sudo apt --fix-broken install php php8.3-ldap php8.3-gd php8.3-intl php8.3-zip php8.3-mysql php8.3-xml php8.3-curl php8.3-mbstring php8.3-sqlite3 libapache2-mod-php8.3 -y
           sudo update-alternatives --set php /usr/bin/php8.3
 
       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql

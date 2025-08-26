@@ -52,7 +52,7 @@
                 echo CHtml::form(
                     ["surveyPermissions/addusergroup/surveyid/{$surveyid}"],
                     'post',
-                    ['class' => "form44"]
+                    ["id" => "SurveyPermissions-addusergroup-form"]
                 ); ?>
                 <div class="row justify-content-md-end">
                     <label class='col-2 text-end control-label' for='ugidselect'>
@@ -73,7 +73,7 @@
                         </select>
                     </div>
                     <div class="col-3">
-                    <input class='btn btn-outline-secondary w-100' type='submit' value='<?= gT("Add group users") ?>'/>
+                    <button id="SurveyPermissions-addusergroup-submit" class='btn btn-outline-secondary w-100' type='button'><?= gT("Add group users") ?></button>
                     <input type='hidden' name='action' value='addusergroupsurveysecurity'/>
                     </div>
                 </div>

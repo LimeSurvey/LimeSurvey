@@ -262,6 +262,12 @@ var UserManagement = function () {
 
     var wireDatePicker = function () {
         const expires = document.getElementById('expires');
+
+        // This function is used with multiple modals, and not all modals have an expiration date
+        if (!expires) {
+            return;
+        }
+
         let cleared = false;
         initDatePicker(expires);
 
@@ -374,6 +380,7 @@ var UserManagement = function () {
         wirePermissions: wirePermissions,
         wireMassPermissions: wireMassPermissions,
         wireForm: wireForm,
+        openModal: openModal,
     };
 };
 

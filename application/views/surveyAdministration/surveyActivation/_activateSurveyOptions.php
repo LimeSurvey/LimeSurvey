@@ -48,6 +48,7 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
                 <?php
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'anonymized',
+                    'id' => 'activate_anonymized',
                     'checkedOption' => $aSurveysettings['anonymized'],
                     'selectOptions' => $optionsOnOff
                 ]);
@@ -155,9 +156,6 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
     </div>
 </div>
 
-<?php
-if (!$closeAccessMode) {
-    ?>
     <div class="row sub_footer">
         <div class="col-12 mt-5 mb-3">
             <div class="sub_footer_border"></div>
@@ -181,9 +179,6 @@ if (!$closeAccessMode) {
         </div>
     </div>
     <?php
-} else {  //transmit input value for "openAccessMode", it's needed to take further steps in action ?>
-    <input type="hidden" name="openAccessMode" value="N">
-<?php }
 ?>
 
 <input type="hidden" name="surveyId" value="<?php echo $aSurveysettings['sid']; ?>">
