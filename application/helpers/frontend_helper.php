@@ -401,7 +401,7 @@ function submittokens($quotaexit = false)
             $token->usesleft--;
         }
     } else {
-        if ((($token->usesleft == 1) && ($tokenused)) || ($token->usesleft == 0)) {
+        if ($token->usesleft <= 1) {
             // Finish the token
             if (isTokenCompletedDatestamped($thissurvey)) {
                 $token->completed = $today;
@@ -421,9 +421,7 @@ function submittokens($quotaexit = false)
                 }
             }
         }
-        if (!$tokenused) {
-            $token->usesleft--;
-        }
+        $token->usesleft--;
     }
     $token->decrypt();
     $token->encryptSave();

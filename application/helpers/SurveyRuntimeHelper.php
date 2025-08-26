@@ -232,16 +232,6 @@ class SurveyRuntimeHelper
                 }
                 $oSurveyResponse->save();
                 $survey = Survey::model()->findByPk($surveyid);
-                if ($survey->getHasTokensTable()) {
-                    if ($token = Token::model($this->iSurveyid)->findByAttributes(['token' => $tokenValue])) {
-                        $token->usesleft--;
-                        if ($token->usesleft > 0) {
-                            $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
-                        }
-                        $token->decrypt();
-                        $token->encryptSave();
-                    }
-                }
             }
             // TODO: move somewhere else
             $this->setNotAnsweredAndNotValidated();
@@ -1735,7 +1725,6 @@ class SurveyRuntimeHelper
                         $oSurveyResponse->token = Yii::app()->request->getPost('token');
                     }
                     $oSurveyResponse->save();
-                    $survey = Survey::model()->findByPk($this->iSurveyid);
                 } else {
                     $_SESSION[$this->LEMsessid]['filltoken'] = Yii::app()->request->getPost('token');
                 }
