@@ -1905,7 +1905,7 @@ function display_first_page($thissurvey, $aSurveyInfo)
     $thissurvey['attr']['welcomecontainer'] = $thissurvey['attr']['surveyname'] = $thissurvey['attr']['description'] = $thissurvey['attr']['welcome'] = $thissurvey['attr']['questioncount'] = '';
 
     $thissurvey['include_content'] = 'firstpage';
-    $thissurvey['noregister'] = (Yii::app()->request->getParam('noregister', 'true') === 'true');
+    $thissurvey['noregister'] = (Yii::app()->request->getParam('noregister', 'false') === 'true');
 
     Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey), false);
 }
@@ -2013,6 +2013,7 @@ function getMove()
     if ($move == 'default') {
         $surveyid = Yii::app()->getConfig('surveyID');
         $thissurvey = getsurveyinfo($surveyid);
+        $thissurvey['noregister'] = (Yii::app()->request->getParam('noregister', 'false') === 'true');
         $iSessionStep = $_SESSION['survey_' . $surveyid]['step'] ?? false;
         $iSessionTotalSteps = $_SESSION['survey_' . $surveyid]['totalsteps'] ?? false;
         if ($iSessionStep && ($iSessionStep == $iSessionTotalSteps) || $thissurvey['format'] == 'A') {
