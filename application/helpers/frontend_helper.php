@@ -1280,7 +1280,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
         $FlashError = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutParticipants') / 60);
         $renderToken = 'main';
     } else {
-        if (!$subscenarios['tokenValid']) {
+        if (!$subscenarios['tokenValid'] && !($thissurvey["popupPreview"] ?? false)) {
             //Check if there is a clienttoken set
             if ((!isset($clienttoken) || $clienttoken == "")) {
                 if (isset($thissurvey) && $thissurvey['allowregister'] == "Y") {
