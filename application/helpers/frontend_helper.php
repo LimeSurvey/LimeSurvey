@@ -1283,7 +1283,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
         if (!$subscenarios['tokenValid']) {
             //Check if there is a clienttoken set
             if ((!isset($clienttoken) || $clienttoken == "")) {
-                if (isset($thissurvey) && $thissurvey['allowregister'] == "Y" && (Yii::app()->request->getParam('noregister', 'true') !== 'true')) {
+                if (isset($thissurvey) && $thissurvey['allowregister'] == "Y" && (Yii::app()->request->getParam('noregister', 'false') !== 'true')) {
                     $renderToken = 'register';
                 } else {
                     $renderToken = 'main';
