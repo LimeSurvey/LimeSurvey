@@ -224,8 +224,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         $fullnameattribute = $this->get('fullnameattribute');
         $suffix             = $this->get('domainsuffix');
         $prefix             = $this->get('userprefix');
-        /* @var string $ldapescapeusername escaped user name, but leave original non escaped (we find it non escaped) */
-        $ldapescapeusername = ldap_escape($username, "", LDAP_ESCAPE_FILTER);
+        /* @var string $ldapEscapedUsername escaped user name, but leave original non escaped (we find it non escaped) */
+        $ldapEscapedUsername = ldap_escape($username, "", LDAP_ESCAPE_FILTER);
         // Try to connect
         $ldapconn = $this->createConnection();
         if (is_array($ldapconn)) {
@@ -238,7 +238,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         // Search email address and full name
         if (empty($ldapmode) || $ldapmode == 'simplebind') {
             // Use the user's account for LDAP search
-            $ldapbindsearch = @ldap_bind($ldapconn, $prefix . $ldapescapeusername . $suffix, $password);
+            $ldapbindsearch = @ldap_bind($ldapconn, $prefix . $ldapEscapedUsername . $suffix, $password);
         } elseif (empty($binddn)) {
             // There is no account defined to do the LDAP search,
             // let's use anonymous bind instead
@@ -256,9 +256,9 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         }
         // Now prepare the search fitler
         if ($extrauserfilter != "") {
-            $usersearchfilter = "(&($searchuserattribute=$ldapescapeusername)$extrauserfilter)";
+            $usersearchfilter = "(&($searchuserattribute=$ldapEscapedUsername)$extrauserfilter)";
         } else {
-            $usersearchfilter = "($searchuserattribute=$ldapescapeusername)";
+            $usersearchfilter = "($searchuserattribute=$ldapEscapedUsername)";
         }
         // Search for the user
         $userentry = false;
@@ -474,8 +474,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             $this->setAuthFailure(self::ERROR_PASSWORD_INVALID); // Error shown : user or password invalid
             return;
         }
-        /* @var string $ldapescapeusername escaped user name, but leave original non escaped (we find it non escaped) */
-        $ldapescapeusername = ldap_escape($username, "", LDAP_ESCAPE_FILTER);
+        /* @var string $ldapEscapedUsername escaped user name, but leave original non escaped (we find it non escaped) */
+        $ldapEscapedUsername = ldap_escape($username, "", LDAP_ESCAPE_FILTER);
         // Get configuration settings:
         $suffix             = $this->get('domainsuffix');
         $prefix             = $this->get('userprefix');
@@ -496,7 +496,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         if (empty($ldapmode) || $ldapmode == 'simplebind') {
             // in simple bind mode we know how to construct the userDN from the username
-            $ldapbind = @ldap_bind($ldapconn, $prefix . $ldapescapeusername . $suffix, $password);
+            $ldapbind = @ldap_bind($ldapconn, $prefix . $ldapEscapedUsername . $suffix, $password);
         } else {
             // in search and bind mode we first do a LDAP search from the username given
             // to foind the userDN and then we procced to the bind operation
@@ -515,9 +515,9 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             }
             // Now prepare the search fitler
             if ($extrauserfilter != "") {
-                $usersearchfilter = "(&($searchuserattribute=$ldapescapeusername)$extrauserfilter)";
+                $usersearchfilter = "(&($searchuserattribute=$ldapEscapedUsername)$extrauserfilter)";
             } else {
-                $usersearchfilter = "($searchuserattribute=$ldapescapeusername)";
+                $usersearchfilter = "($searchuserattribute=$ldapEscapedUsername)";
             }
             // Search for the user
             $userentry = false;
@@ -540,7 +540,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             // If specified, check group membership
             if ($groupsearchbase != '' && $groupsearchfilter != '') {
                 $keywords = array('$username', '$userdn');
-                $substitutions = array($ldapescapeusername, ldap_escape($userdn, "", LDAP_ESCAPE_FILTER));
+                $substitutions = array($ldapEscapedUsername, ldap_escape($userdn, "", LDAP_ESCAPE_FILTER));
                 $filter = str_replace($keywords, $substitutions, $groupsearchfilter);
                 $groupsearchres = ldap_search($ldapconn, $groupsearchbase, $filter);
                 $grouprescount = ldap_count_entries($ldapconn, $groupsearchres);
