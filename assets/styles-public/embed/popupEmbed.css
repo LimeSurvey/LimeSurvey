@@ -79,5 +79,5 @@
   }
 
 .fixed-top {
-  position: absolute;
+  position: static;
 }
