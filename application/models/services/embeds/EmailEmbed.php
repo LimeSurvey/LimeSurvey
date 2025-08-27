@@ -3,6 +3,7 @@
 namespace LimeSurvey\Models\Services\embeds;
 
 use LimeSurvey\Models\Services\embeds\BaseEmbed;
+use Survey;
 
 class EmailEmbed extends BaseEmbed
 {
@@ -26,7 +27,8 @@ class EmailEmbed extends BaseEmbed
         $surveyId = $this->embedOptions['surveyId'] ?? null;
         $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
         $host = $_SERVER['HTTP_HOST'];
-        $surveyUrl = "{$protocol}://{$host}/index.php/{$surveyId}";
+        $survey = Survey::model()->findByPk($surveyId);
+        $surveyUrl = $survey->getSurveyUrl();
         $filename = "email_embed_" . $surveyId . ".png";
         $urlPrefix = "{$protocol}://{$host}/";
         $imageUrl = $urlPrefix . "upload/surveys/{$surveyId}/images/{$filename}";
