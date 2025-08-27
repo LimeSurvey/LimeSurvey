@@ -91,12 +91,14 @@ class CLSYiiPager extends CLinkPager
      * @param boolean $selected whether this page button is selected
      * @return string the generated button
      */
-    protected function createPageButton($label, $page, $class, $hidden, $selected)
+   protected function createPageButton($label, $page, $class, $hidden, $selected)
     {
         if ($hidden || $selected) {
             $class .= ' ' . ($hidden ? $this->hiddenPageCssClass : 'active');
+            return '<li class="page-item ' . $class . '">' . CHtml::link($label, null, ['class' => 'page-link']) . '</li>';
+        }else{
+            return '<li class="page-item ' . $class . '">' . CHtml::link($label, $this->createPageUrl($page), ['class' => 'page-link']) . '</li>';
         }
-
-        return '<li class="page-item ' . $class . '">' . CHtml::link($label, $this->createPageUrl($page), ['class' => 'page-link']) . '</li>';
     }
 }
+
