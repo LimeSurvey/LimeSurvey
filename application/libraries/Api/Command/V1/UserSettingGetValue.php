@@ -46,9 +46,9 @@ class UserSettingGetValue implements CommandInterface
         ->makeErrorForbidden();
     }
 
-    $settingsUser = $this->modelSettingsUser::getUserSettingValue($settingsName);
+    $settingUser = $this->modelSettingsUser::getUserSettingValue($settingsName);
 
-    if (!$settingsUser) {
+    if (!isset($settingUser)) {
       return $this->responseFactory->makeErrorNotFound(
         (new ResponseDataError(
           'SETTING_NOT_FOUND',
@@ -59,6 +59,6 @@ class UserSettingGetValue implements CommandInterface
     }
 
 
-    return $this->responseFactory->makeSuccess($settingsUser);
+    return $this->responseFactory->makeSuccess($settingUser);
   }
 }
