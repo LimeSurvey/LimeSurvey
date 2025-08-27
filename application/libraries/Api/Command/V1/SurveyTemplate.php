@@ -202,16 +202,18 @@ class SurveyTemplate implements CommandInterface
      */
     private function validateAccessToken()
     {
-        $tokenFound = \Token::model($this->surveyId)->findByAttributes(['token' => $this->token]);
-        $step = \Yii::app()->request->getParam('LSEMBED-move', '');
-        if ($this->token && !$tokenFound && $step !== 'movesubmit') {
-            return $this->responseFactory->makeErrorNotFound(
-                (new ResponseDataError(
-                    'TOKEN_NOT_FOUND',
-                    gT("The access code you have provided is either not valid, or has already been used.")
-                )
-                )->toArray()
-            );
+        if ($this->survey->hasTokens()) {
+            $tokenFound = \Token::model($this->surveyId)->findByAttributes(['token' => $this->token]);
+            $step = \Yii::app()->request->getParam('LSEMBED-move', '');
+            if ($this->token && !$tokenFound && $step !== 'movesubmit') {
+                return $this->responseFactory->makeErrorNotFound(
+                    (new ResponseDataError(
+                        'TOKEN_NOT_FOUND',
+                        gT("The access code you have provided is either not valid, or has already been used.")
+                    )
+                    )->toArray()
+                );
+            }
         }
         return false;
     }
