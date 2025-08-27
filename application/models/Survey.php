@@ -44,7 +44,6 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $ipanonymize Whether id addresses should be anonymized (Y/N)
  * @property string $refurl Save referrer URL: (Y/N)
  * @property string $datecreated Date survey was created  as SQL datetime (YYYY-MM-DD hh:mm:ss)
- * @property string $lastmodified Date survey was last modified  as SQL datetime (YYYY-MM-DD hh:mm:ss)
  * @property string $publicstatistics Public statistics: (Y/N)
  * @property string $publicgraphs Show graphs in public statistics: (Y/N)
  * @property string $listpublic List survey publicly: (Y/N)
@@ -142,10 +141,10 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property bool $showsurveypolicynotice Show the security notice
  * @property bool $isNoKeyboard Show on-screen keyboard
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
+ * @property string $access_mode Whether the access mode is open (O) or closed (C), if O token-based participation may be supported, if C, it's enforced
  * @property SurveyLanguageSetting $defaultlanguage
  * @property SurveysGroups $surveygroup
  * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
- * @property string $othersettings Other settings that don't require a searchabla database column and can be save here as a JSON
  * @method mixed active()
  */
 class Survey extends LSActiveRecord implements PermissionInterface
@@ -233,8 +232,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 }
             }
         }
-        // Ready to add more settings here
-        $this->othersettings = json_encode(self::getDefaultOtherSettings());
     }
 
     /** @inheritdoc */
@@ -566,7 +563,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('googleanalyticsapikey', 'match', 'pattern' => '/^[a-zA-Z\-\d]*$/',
                 'message' => gT('Google Analytics Tracking ID may only contain alphanumeric characters and hyphens.'),
             ),
-            array('othersettings', 'LSYii_OtherSettingsValidator'),
         );
     }
 
@@ -1415,17 +1411,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Use the creation date for old entries when the last modified date is unavailable
-     */
-    public function getLastModifiedDate()
-    {
-        $date = $this->lastmodified > $this->datecreated ?
-            $this->lastmodified : $this->creationdate;
-
-        return self::shiftedDateTime($date)->format('d.m.Y');
-    }
-
-    /**
      * @return int|string
      */
     public function getCountFullAnswers()
@@ -1623,9 +1608,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'headerHtmlOptions' => ['class' => 'text-nowrap'],
             ],
             [
-                'header'            => gT('Last modified'),
-                'name'              => 'last modified',
-                'value'             => '$data->lastModifiedDate',
+                'header'            => gT('Created'),
+                'name'              => 'creation_date',
+                'value'             => '$data->creationdate',
                 'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
                 'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
             ],
@@ -2305,9 +2290,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
         // set Survey attributes to 'inherit' values
         foreach ($settings as $key => $value) {
             $this->$key = $value;
-            if ($key === 'othersettings') {
-                $this->$key = json_encode(self::getDefaultOtherSettings());
-            }
         }
     }
 
@@ -2579,72 +2561,5 @@ class Survey extends LSActiveRecord implements PermissionInterface
             return new DateTime($datetime);
         }
         return null;
-    }
-
-    /**
-     * Returns the default othersettings array with inherit values
-     * @return array
-     */
-    public static function getDefaultOtherSettings()
-    {
-        return [
-            'question_code_prefix' => 'I',
-            'subquestion_code_prefix' => 'I',
-            'answer_code_prefix' => 'I'
-        ];
-    }
-
-    /**
-     * Get a value from othersettings
-     *
-     * @param string $key The setting key to retrieve
-     * @param mixed $default Default value if setting doesn't exist
-     * @return mixed The setting value or default
-     */
-    public function getOtherSetting($key, $default = '')
-    {
-        $settings = $this->othersettings ? json_decode($this->othersettings, true) : [];
-        return isset($settings[$key]) ? $settings[$key] : $default;
-    }
-
-    /**
-     * Sets a specific attribute in the survey's other settings.
-     *
-     * This function updates or adds a single attribute in the survey's othersettings field.
-     * The othersettings field is a JSON-encoded string that stores various additional settings.
-     *
-     * @param string $attribute The name of the attribute to set
-     * @param mixed $value The value to set for the attribute
-     * @return void
-     */
-    public function setOtherSetting($attribute, $value)
-    {
-        $othersettings = json_decode($this->othersettings ?? '', true) ?? [];
-        $othersettings[$attribute] = $value;
-        $this->othersettings = json_encode($othersettings);
-    }
-
-    /**
-     * Retrieves prefix othersettings as an associative array.
-     *
-     * This method collects all the survey's othersettings (prefixes for question codes,
-     * subquestion codes, and answer codes) and returns them as an array.
-     *
-     * @return array An associative array containing the other settings with keys:
-     *               'question_code_prefix', 'subquestion_code_prefix', and 'answer_code_prefix'
-     */
-    public function getOtherSettingsPrefixArray()
-    {
-        $otherSettings['question_code_prefix'] = $this->getOtherSetting(
-            'question_code_prefix'
-        );
-        $otherSettings['subquestion_code_prefix'] = $this->getOtherSetting(
-            'subquestion_code_prefix'
-        );
-        $otherSettings['answer_code_prefix'] = $this->getOtherSetting(
-            'answer_code_prefix'
-        );
-
-        return $otherSettings;
     }
 }

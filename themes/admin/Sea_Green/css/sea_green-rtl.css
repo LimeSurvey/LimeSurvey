@@ -17660,6 +17660,17 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   background-color: var(--bs-primary);
 }
 
+.create-menu-item {
+  width: 222px;
+  border: 1px solid #fff;
+}
+.create-menu-item:hover {
+  border-color: #8146F6 !important;
+  border: 1px solid;
+  border-radius: 2px;
+  background-color: #fff !important;
+}
+
 .card .card-header {
   background-color: unset;
 }
@@ -18795,6 +18806,44 @@ input[type=number] {
 .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--selected, .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option[aria-selected=true]:not(.select2-results__option--highlighted) {
   color: #fff;
   background-color: var(--bs-primary);
+}
+
+.upload-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed;
+  border-color: #D3D5DA;
+  border-radius: 4px;
+  background-color: #fff;
+  height: 150px; /* Set a height so vertical centering is visible */
+  cursor: pointer;
+  transition: border-color 0.3s;
+  text-align: center;
+}
+
+.upload-label:hover {
+  border-color: #9094A7; /* Gray-600 */
+}
+
+.upload-text {
+  color: #1E1E1E;
+  font-weight: 400;
+}
+
+.upload-input {
+  visibility: hidden;
+  margin: 0;
+  padding: 0 !important;
+  width: 0;
+  height: 0;
 }
 
 .welcome #lime-logo {
@@ -20058,4 +20107,11 @@ table [class^=ri-], table [class*=" ri-"] {
 
 .ls-card-grid .ls-card-grid__description {
   padding-right: 8px;
+}
+
+input[type=checkbox]:checked:after,
+.checkbox input[type=checkbox]:checked:after,
+.checkbox-inline input[type=checkbox]:checked:after {
+  background-color: #000;
+  border-color: #000;
 }

@@ -1007,6 +1007,18 @@ class Question extends LSActiveRecord
     }
 
     /**
+     * Return true if the question type supports answer options
+     * @return boolean
+     */
+    public function getAllowAnswerOptions()
+    {
+        return (
+            !$this->parent_qid
+            && $this->getQuestionType()->answerscales > 0
+        );
+    }
+
+    /**
      * Get an new title/code for a question
      * @param integer $index base for question code (example : inde of question when survey import)
      * @return string|null : new title, null if impossible
@@ -1064,7 +1076,7 @@ class Question extends LSActiveRecord
             array(
                 'header' => gT("Group / Question order"),
                 'name' => 'question_order',
-                'value' => '$data->group->group_order ." / ". $data->question_order',
+                'value' => '$data->group->group_order ." / ". $data->question_order',
             ),
             array(
                 'header' => gT('Code'),
@@ -1632,6 +1644,7 @@ class Question extends LSActiveRecord
     {
         if (parent::update($attributes)) {
             $this->removeInvalidSubquestions();
+            $this->removeInvalidAnswerOptions();
             return true;
         } else {
             return false;
@@ -1659,6 +1672,25 @@ class Question extends LSActiveRecord
     }
 
     /**
+     * Removes all answer options if the question's type doesn't allow answer options.
+     * @return void
+     */
+    protected function removeInvalidAnswerOptions()
+    {
+        if ($this->getAllowAnswerOptions()) {
+            return;
+        }
+
+        // Remove answer options if the question's type doesn't allow answer options
+        $answerOptions = Answer::model()->findAll("qid=:qid", array("qid" => $this->qid));
+        if (!empty($answerOptions)) {
+            foreach ($answerOptions as $answerOption) {
+                $answerOption->delete();
+            }
+        }
+    }
+
+    /**
      * Used by question create form.
      *
      * @return Question
@@ -1667,7 +1699,7 @@ class Question extends LSActiveRecord
     {
         $question = new Question();
         $question->qid = 0;
-        $question->title = self::getCodePrefix('subquestion_code_prefix', $this->survey->sid) . '001';
+        $question->title = (SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id) ?? 'SQ') . '001';
         $question->relevance = 1;
         return $question;
     }
@@ -1683,7 +1715,7 @@ class Question extends LSActiveRecord
         // TODO: Assuming no collision.
         $answer->aid = 'new' . rand(1, 100000);
         $answer->sortorder = 0;
-        $answer->code = self::getCodePrefix('answer_code_prefix', $this->survey->sid) . '001';
+        $answer->code = (SettingsUser::getUserSettingValue('answeroptionprefix', App()->user->id) ?? 'AO') . '01';
 
         $l10n = [];
         foreach ($this->survey->allLanguages as $language) {
@@ -1700,13 +1732,6 @@ class Question extends LSActiveRecord
         $answer->answerl10ns = $l10n;
 
         return $answer;
-    }
-
-    public static function getCodePrefix($prefixType, $surveyid)
-    {
-        $survey = Survey::model()->findByPk($surveyid);
-        $nonNumericalSettings = json_decode($survey->oOptions->othersettings, true);
-        return $nonNumericalSettings[$prefixType] ?? '';
     }
 
     /**

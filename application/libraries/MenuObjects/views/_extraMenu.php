@@ -17,10 +17,19 @@ foreach ($extraMenus as $menu): ?>
         <li class="dropdown nav-item">
             <?php
             if ($menu->isDropDown()): ?>
+            <?php if ($menu->isDropDownButton()) { ?>
+                    <a href="#" class="nav-link " data-bs-toggle="dropdown" aria-expanded="false" role="button">
+                        <button type="button" class="btn btn-info btn-create" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                            <i class="ri-add-line"></i>
+                        </button>
+                    </a>
+                <?php
+                } else { ?>
                 <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#">
                     <?= $menu->getLabel(); ?>
                     <span class="caret"></span>
                 </a>
+                <?php }?>
                 <ul class="dropdown-menu" role="menu">
                     <?php
                     foreach ($menu->getMenuItems() as $menuItem): ?>
@@ -32,8 +41,18 @@ foreach ($extraMenus as $menu): ?>
                             <li class="dropdown-header"><?= $menuItem->getLabel(); ?></li>
                         <?php
                         else: ?>
-                            <li>
-                                <a href="<?= $menuItem->getHref(); ?>" class="dropdown-item">
+                            <li class="create-menu-item ms-3 me-3">
+                                <?php
+                                    $modalHTML = "";
+                                    if ($menuItem->isModal()) {
+                                        $modalHTML = 'data-bs-toggle="modal"' . 'data-bs-target="#' . $menuItem->getModalId() . '"';
+                                    }
+                                ?>
+                                <a href="<?= $menuItem->getHref(); ?>" class="dropdown-item" <?= $modalHTML?>
+                                    <?php if ($menuItem->getId() !== null) {
+                                        echo 'id="'. $menuItem->getId(). '"';
+                                    }?>
+                                >
                                     <!-- Spit out icon if present -->
                                     <?php
                                     if ($menuItem->getIconClass() != ''): ?>

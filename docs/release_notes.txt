@@ -34,6 +34,81 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.15.6 (build 250818) to 6.15.7 (build 250820) August 20, 2025
+-Fixed issue #20222: error when trying to store token
+#Updated translation: Slovak by jelen1
+#Updated translation: Kazakh by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by Basil, c_schmitz, HonkXL, lsurvey20
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.15.5 (build 250724) to 6.15.6 (build 250818) August 18, 2025
++New feature #20092: Statistics - subtotals will not show "No Answer" when "complete only" is selected (#4336) (Denis Chenu)
+-Fixed issue AT-1713: survey creation flow alert and redirect (#4382) (Tim Willig)
+-Fixed issue AT-1714: default question type for newly created surveys (#4382) (Tim Willig)
+-Fixed issue AT-1706: survey activation modal action buttons not being displayed in some cases during first load of the page (#4392) (Tim Willig)
+-Fixed issue #20209: Use translation function on Create new label in new menu (#4398) (fsay.php)
+-Fixed issue #20192: Responses not anonymized when activating survey displaying Participant settings (#4389) (Gabriel Jenik)
+-Fixed issue #20189: Javascript error after adding users from usergroup to survey (#4390) (Gabriel Jenik)
+-Fixed issue #20185: Answer Options Not Deleted When Changing Question Type to Multiple Choice (#4384) (Gabriel Jenik)
+-Fixed issue #20175: Print survey fails on SQL Server due to duplicated ORDER BY (sortorder,code) (#4383) (Gabriel Jenik)
+-Fixed issue #20133: Cannot use datepicker in batch editing of participants (#4331) (Gabriel Jenik)
+-Fixed issue #19597: Initially selected question group is not correct when adding a question directly after adding another question (#4385) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz, eddylackmann
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.15.4 (build 250710) to 6.15.5 (build 250724) July 24, 2025
+-Fixed issue: Applied a11y instruction that is not programmatically associated and other accessibility fixes (#4322) (Anblik Audit Team)
+-Fixed issue #CT-1333: Ensured that the old activate screen sets the access mode in the new manner (#4366) (lajosarpad)
+-Fixed issue #20183: Fixed the closed and opened access mode appearance (#4370) (lajosarpad)
+-Fixed issue #20180: Double escaping bug (#4374) (Gabriel Jenik)
+-Fixed issue #20159: Modal content not shown inside a modal but as a page itself with no style (#4360) (Gabriel Jenik)
+-Fixed issue #20037: Equation screen for subquestions - Wrong toggle, open/close reacts on every field (#4368) (Gabriel Jenik)
+-Fixed issue #19894: Calling "__tostring" method on a SimpleXMLElement (#4369) (Gabriel Jenik)
+#Updated translation: Slovak by brcino, jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Luxembourgish by yvilug
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.15.3 (build 250708) to 6.15.4 (build 250710) July 10, 2025
++New feature: Email type header is added to any sent emails to better identify bounced emails (Carsten Schmitz)
++New feature #QE-1454: question with image (#4314) (Tim Willig)
+-Fixed issue #LE-279: Ensured that datestamp is properly set (#4355) (lajosarpad)
+-Fixed issue #AT-1685: Saving general settings in new editor causes problems with new prefixes (#4350) (Tim Willig)
+-Fixed issue #20157: Encoded French special char aren't well translated (#4359) (Denis Chenu)
+-Fixed issue #20145: [security] SQL injection in statistics (thanks to AnNguyen) (#4328) (Denis Chenu)
+#Updated translation: French (France) by AnneSophieB, DenisChenu, eddylackmann, fgervais
+#Updated translation: Czech by jelen1
+
+
+Changes from 6.15.2 (build 250628) to 6.15.3 (build 250708) July 8, 2025
+-Fixed issue: Applied a11y patches to welcome page and text questions (#4291) (Anblik Audit Team)
+-Fixed issue #20147: Unable to update from 3.X (#4339) (Denis Chenu)
+-Fixed issue #20139: Export as QueXML with debug 2 and 8.3.22 throws error (#4333) (Adam Zammit)
+#Updated translation: Swahili by FredaM
+#Updated translation: Slovenian by pur3bolt
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni, VerenaBerisha
+#Updated translation: Italian (Informal) by lfanfoni, twilllig
+#Updated translation: Galician by Calidonia
+
+
 Changes from 6.15.1 (build 250626) to 6.15.2 (build 250628) June 28, 2025
 Fixed issue #20155: Error saving survey settings
 
