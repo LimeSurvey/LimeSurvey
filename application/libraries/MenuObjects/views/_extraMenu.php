@@ -18,10 +18,12 @@ foreach ($extraMenus as $menu): ?>
             <?php
             if ($menu->isDropDown()): ?>
             <?php if ($menu->isDropDownButton()) { ?>
-                    <a href="#" class="nav-link " data-bs-toggle="dropdown" aria-expanded="false" role="button">
-                        <button type="button" class="btn btn-info btn-create" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                    <a href="#" class="nav-link  " data-bs-toggle="dropdown"
+                    aria-label="create new" aria-expanded="false" role="button" >
+                        <div  class="btn btn-info btn-create" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                        
                             <i class="ri-add-line"></i>
-                        </button>
+            </div>
                     </a>
                 <?php
                 } else { ?>
