@@ -24,7 +24,7 @@ class Update_637 extends DatabaseUpdateBase
                 if ($templateConfiguration['options'] !== 'inherit') {
                     $sOptionsJson = $templateConfiguration['options'];
                     $oOldOptions = json_decode($sOptionsJson);
-                    $oOldOptions->cornerradius = '1';
+                    $oOldOptions->cornerradius = '2';
                     $oOldOptions->bodybackgroundcolor = '#ffffff';
                     $oOldOptions->fontcolor = '#444444';
                     $oOldOptions->questionbackgroundcolor = '#ffffff';
