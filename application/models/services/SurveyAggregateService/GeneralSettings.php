@@ -436,29 +436,6 @@ class GeneralSettings
         return $meta;
     }
 
-
-    private function updateOtherSettings($input, Survey $survey)
-    {
-        if (isset($input['question_code_prefix'])) {
-            $survey->setOtherSetting(
-                "question_code_prefix",
-                $input['question_code_prefix']
-            );
-        }
-        if (isset($input['subquestion_code_prefix'])) {
-            $survey->setOtherSetting(
-                "subquestion_code_prefix",
-                $input['subquestion_code_prefix']
-            );
-        }
-        if (isset($input['answer_code_prefix'])) {
-            $survey->setOtherSetting(
-                "answer_code_prefix",
-                $input['answer_code_prefix']
-            );
-        }
-    }
-
     private function getAdditionalLanguagesArray($input, Survey $survey)
     {
         $languages  = isset($input['additional_languages'])
