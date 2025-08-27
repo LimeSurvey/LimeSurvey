@@ -227,35 +227,11 @@ class SurveyRuntimeHelper
                     unset($_SESSION[$this->LEMsessid]['filltoken']);
                 }
                 if (isset($_SESSION[$this->LEMsessid]['token'])) {
+                    $_SESSION[$this->LEMsessid]['tokenused'] = $_SESSION[$this->LEMsessid]['token'];
                     unset($_SESSION[$this->LEMsessid]['token']);
                 }
                 $oSurveyResponse->save();
                 $survey = Survey::model()->findByPk($surveyid);
-                if ($survey->getHasTokensTable()) {
-                    $token = Token::model($this->iSurveyid)->findByAttributes(['token' => $oSurveyResponse->token]);
-                    if (!--$token->usesleft) {
-                        $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
-                        if (isTokenCompletedDatestamped($thissurvey)) {
-                            $token->completed = $today;
-                        } else {
-                            $token->completed = 'Y';
-                        }
-                        if (isset($token->participant_id)) {
-                            $slquery = SurveyLink::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid' => $token->participant_id, ':sid' => $surveyid, ':tid' => $token->tid));
-                            if ($slquery) {
-                                if (isTokenCompletedDatestamped($thissurvey)) {
-                                    $slquery->date_completed = $today;
-                                } else {
-                                    // Update the survey_links table if necessary, to protect anonymity, use the date_created field date
-                                    $slquery->date_completed = $slquery->date_created;
-                                }
-                                $slquery->save();
-                            }
-                        }
-                    }
-                    $token->decrypt();
-                    $token->encryptSave();
-                }
             }
             // TODO: move somewhere else
             $this->setNotAnsweredAndNotValidated();
@@ -1745,34 +1721,10 @@ class SurveyRuntimeHelper
             if ((Yii::app()->request->getParam('filltoken') === 'true') && (Yii::app()->request->getPost('token', '') !== '')) {
                 if (isset($_SESSION[$this->LEMsessid]['srid'])) {
                     $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $_SESSION[$this->LEMsessid]['srid']]);
-                    $oSurveyResponse->token = Yii::app()->request->getPost('token');
-                    $oSurveyResponse->save();
-                    $survey = Survey::model()->findByPk($this->iSurveyid);
-                    if ($survey->getHasTokensTable()) {
-                        $token = Token::model($this->iSurveyid)->findByAttributes(['token' => $oSurveyResponse->token]);
-                        if (!--$token->usesleft) {
-                            $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
-                            if (isTokenCompletedDatestamped($survey)) {
-                                $token->completed = $today;
-                            } else {
-                                $token->completed = 'Y';
-                            }
-                            if (isset($token->participant_id)) {
-                                $slquery = SurveyLink::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid' => $token->participant_id, ':sid' => $this->iSurveyid, ':tid' => $token->tid));
-                                if ($slquery) {
-                                    if (isTokenCompletedDatestamped($survey)) {
-                                        $slquery->date_completed = $today;
-                                    } else {
-                                        // Update the survey_links table if necessary, to protect anonymity, use the date_created field date
-                                        $slquery->date_completed = $slquery->date_created;
-                                    }
-                                    $slquery->save();
-                                }
-                            }
-                        }
-                        $token->decrypt();
-                        $token->encryptSave();
+                    if ($oSurveyResponse->hasAttribute('token')) {
+                        $oSurveyResponse->token = Yii::app()->request->getPost('token');
                     }
+                    $oSurveyResponse->save();
                 } else {
                     $_SESSION[$this->LEMsessid]['filltoken'] = Yii::app()->request->getPost('token');
                 }
