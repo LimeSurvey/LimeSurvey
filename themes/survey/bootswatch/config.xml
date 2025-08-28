@@ -74,6 +74,7 @@
         <brandlogo type="buttons" category="Images" width="4" title="Logo" options="on|off" optionlabels="Yes|No">on</brandlogo>
         <brandlogofile type="dropdown" category="Images" width="6" title="Logo file" parent="brandlogo">./files/logo.png</brandlogofile>
         <hideprivacyinfo type="buttons" category="Simple options" width="4" title="Hide privacy info" options="on|off" optionlabels="Yes|No">off</hideprivacyinfo>
+        <surveyembedding type="buttons" category="Simple options" width="4" title="Allow survey embedding" options="Y|N" optionlabels="Yes|No">N</surveyembedding>
         <cssframework type="dropdown" category="Simple options" title="Variations">Basic Bootstrap
             <dropdownoptions>
                 <optgroup>

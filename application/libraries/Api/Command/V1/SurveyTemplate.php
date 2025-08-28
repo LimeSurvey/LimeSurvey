@@ -19,6 +19,7 @@ use LimeSurvey\Models\Services\embeds\BaseEmbed;
  * Survey Template
  *
  * Used by cloud / account to retrieve templates.
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class SurveyTemplate implements CommandInterface
 {
@@ -33,8 +34,14 @@ class SurveyTemplate implements CommandInterface
     protected bool $isPreview = true;
     protected bool $js = false;
     protected string $language = "en";
+    protected string $embedType = "";
+    protected array $embedOptions = [];
     protected bool $fillToken = false;
     protected string $token = "";
+    protected array $renderOnlyEmbedTypes = [
+        BaseEmbed::EMBED_STRUCTURE_EMAIL, BaseEmbed::EMBED_STRUCTURE_BUTTON
+    ];
+
     const ENDPOINT = "/index.php/rest/v1/survey-template/";
     /**
      * @psalm-suppress UndefinedClass
@@ -88,22 +95,7 @@ class SurveyTemplate implements CommandInterface
      */
     public function run(Request $request)
     {
-        $this->surveyId = (int)$request->getData('_id');
-        $this->isPreview = $this->isPreview && (\Yii::app()->request->getParam('popuppreview', 'true') === 'true');
-        $this->js = $this->js || (\Yii::app()->request->getParam('js', 'false') === 'true');
-        $this->fillToken = (\Yii::app()->request->getParam('filltoken', 'false') === 'true');
-        $this->token = \Yii::app()->request->getParam('LSEMBED-token', '');
-        $target = \Yii::app()->request->getParam('target', 'marketing');
-        $embedType = \Yii::app()->request->getParam('embed', BaseEmbed::EMBED_STRUCTURE_STANDARD);
-        $embedOptions = \Yii::app()->request->getParam('embedOptions', []);
-        $renderOnlyEmbedTypes = [BaseEmbed::EMBED_STRUCTURE_EMAIL, BaseEmbed::EMBED_STRUCTURE_BUTTON];
-
-        if (in_array($embedType, $renderOnlyEmbedTypes)) {
-            $embedOptions['surveyId'] = $this->surveyId;
-        }
-
-        $this->embed = BaseEmbed::instantiate($embedType)
-                        ->setEmbedOptions($embedOptions);
+        $this->initializeRequest($request);
 
         if ($response = $this->ensurePermissions()) {
             return $response;
@@ -119,9 +111,37 @@ class SurveyTemplate implements CommandInterface
                 )->toArray()
             );
         }
-        if ($response = $this->validateAccessToken()) {
+
+        if ($response = $this->validateAccessToken($survey)) {
             return $response;
         }
+
+        if ($response = $this->ensureEmbeddingAllowed($survey)) {
+            return $response;
+        }
+
+        $this->buildEmbedOptions();
+        $response = $this->buildLanguageSettings($survey);
+        $response = $this->buildEmbedStructure($response);
+
+        return $this->responseFactory->makeSuccess(
+            array_merge($response, ['template' => $this->embed->render()])
+        );
+    }
+
+    private function initializeRequest(Request $request): void
+    {
+        $this->surveyId = (int)$request->getData('_id');
+        $this->isPreview = $this->isPreview && (\Yii::app()->request->getParam('popuppreview', 'true') === 'true');
+        $this->js = $this->js || (\Yii::app()->request->getParam('js', 'false') === 'true');
+        $this->fillToken = (\Yii::app()->request->getParam('filltoken', 'false') === 'true');
+        $this->token = \Yii::app()->request->getParam('LSEMBED-token', '');
+        $this->embedType = \Yii::app()->request->getParam('embed', BaseEmbed::EMBED_STRUCTURE_STANDARD);
+        $this->embedOptions = \Yii::app()->request->getParam('embedOptions', []);
+    }
+
+    private function buildLanguageSettings(Survey $survey): array
+    {
         $this->language = ((\Yii::app()->request->getParam('lang') ?? $survey->language) ?? 'en');
         $languageSettings = $this
             ->surveyLanguageSetting
@@ -134,15 +154,31 @@ class SurveyTemplate implements CommandInterface
             $response['title'] = $languageSettings->surveyls_title;
             $response['subtitle'] = $languageSettings->surveyls_description;
         }
-        if (!in_array($embedType, $renderOnlyEmbedTypes)) {
+        return $response;
+    }
+
+    private function buildEmbedOptions(): void
+    {
+        if (in_array($this->embedType, $this->renderOnlyEmbedTypes)) {
+            $this->embedOptions['surveyId'] = $this->surveyId;
+        }
+
+        $this->embed = BaseEmbed::instantiate($this->embedType)
+            ->setEmbedOptions($this->embedOptions);
+    }
+
+    private function buildEmbedStructure(array $response = []): array
+    {
+        if (!in_array($this->embedType, $this->renderOnlyEmbedTypes)) {
             $structure = '';
             if ($this->js) {
-                $structure = $this->getJavascript($embedType, $this->isPreview);
+                $structure = $this->getJavascript($this->embedType, $this->isPreview);
                 if (!$this->isPreview) {
                     $this->embed->setStructure($structure);
                 }
             }
             if ($this->isPreview) {
+                $target = \Yii::app()->request->getParam('target', 'marketing');
                 $result = $this->getTemplateData();
                 if (is_string($result)) {
                     $structure .= " {$result}";
@@ -150,7 +186,7 @@ class SurveyTemplate implements CommandInterface
                 $this->embed->displayWrapper($target !== 'marketing')->setStructure($structure);
             } elseif (!$this->js) {
                 $surveyResult = $this->getSurveyResult();
-                $this->embed->displayWrapper(false)->setStructure($surveyResult['form']);
+                $this->embed->displayWrapper(false)->setStructure((string)$surveyResult['form']);
                 $response['hiddenInputs'] = $surveyResult['hiddenInputs'];
                 $response['head'] = $surveyResult['head'];
                 $response['beginScripts'] = $surveyResult['beginScripts'];
@@ -158,9 +194,7 @@ class SurveyTemplate implements CommandInterface
             }
         }
 
-        return $this->responseFactory->makeSuccess(
-            array_merge($response, ['template' => $this->embed->render()])
-        );
+        return $response;
     }
 
     /**
@@ -196,16 +230,36 @@ class SurveyTemplate implements CommandInterface
     }
 
     /**
+     * Ensure Embedding mode
+     *
+     * @param Survey $survey
+     * @return Response|false
+     */
+    public function ensureEmbeddingAllowed(Survey $survey)
+    {
+        if (!$survey->getIsEmbeddingAllowed()) {
+            return $this->responseFactory->makeErrorNotFound(
+                (new ResponseDataError(
+                    'EMBEDDING_NOT_ALLOWED',
+                    'Embedding not allowed'
+                )
+                )->toArray()
+            );
+        }
+        return false;
+    }
+
+    /**
      * Validate the access token
      *
      * @return Response|false
      */
-    private function validateAccessToken()
+    private function validateAccessToken(Survey $survey)
     {
-        if ($this->survey->hasTokens()) {
+        if ($survey->hasTokens()) {
             $tokenFound = \Token::model($this->surveyId)->findByAttributes(['token' => $this->token]);
-            $step = \Yii::app()->request->getParam('LSEMBED-move', '');
-            if ($this->token && !$tokenFound && $step !== 'movesubmit') {
+            $step = App()->request->getParam('LSEMBED-move', '');
+            if ($this->token && $step !== 'movesubmit' && (!$tokenFound  || $tokenFound->usesleft < 1)) {
                 return $this->responseFactory->makeErrorNotFound(
                     (new ResponseDataError(
                         'TOKEN_NOT_FOUND',
@@ -217,6 +271,7 @@ class SurveyTemplate implements CommandInterface
         }
         return false;
     }
+
     /**
      * Get template data
      *
@@ -293,7 +348,7 @@ class SurveyTemplate implements CommandInterface
      * @psalm-suppress PossiblyInvalidCast
      * @return array{beginScripts: string, bottomScripts: string, form: bool|string, head: string, hiddenInputs: string|array{beginScripts: string, bottomScripts: string, form: string, head: string, hiddenInputs: string}}
      */
-    private function getSurveyResult()
+    private function getSurveyResult(): array
     {
         $LEMPostKey = \Yii::app()->request->getPost('LSEMBED-LEMpostKey', false);
         $form = "";

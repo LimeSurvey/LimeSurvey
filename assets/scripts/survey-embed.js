@@ -298,6 +298,31 @@ if (typeof lsFormIndex === "undefined") {
             .then(() => injectScripts(bottomScriptsList, bottomContainer));
     }
 
+    function removeError() {
+        const oldError = document.querySelector(".error");
+        if (oldError) {
+            oldError.remove();
+        }
+    }
+    function error(errorText) {
+        removeError()
+
+        const div = document.createElement("div");
+        div.className = "alert alert-danger list-unstyled mt-3";
+        div.textContent = errorText
+        const p = document.createElement("div");
+        p.className = "container-fluid error col-centered col-xl-8";
+        p.appendChild(div);
+
+        document.getElementById("limesurvey-container").prepend(p);
+    }
+
+    // Initial Load
+    fetchSurveyContent({
+        popuppreview: false,
+        js: false,
+        container_id: containerId,
+    });
     if (!isPreview) {
         // Initial Load
         fetchSurveyContent({

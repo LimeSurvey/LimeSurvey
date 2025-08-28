@@ -1752,4 +1752,10 @@ class TemplateConfiguration extends TemplateConfig
         }
         return $cssFiles;
     }
+
+    public static function getIsEmbeddingAllowed($iSurveyId)
+    {
+        $surveyThemeEmbedding = self::getThemeOptionsFromSurveyId($iSurveyId, true);
+        return $surveyThemeEmbedding[0]['config']['options']['surveyembedding'] ?? 'N';
+    }
 }
