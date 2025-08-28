@@ -220,7 +220,7 @@ class SurveyRuntimeHelper
             $tokenValue = ($_SESSION[$this->LEMsessid]['filltoken'] ?? ($_SESSION[$this->LEMsessid]['token'] ?? ''));
             if ($tokenValue && isset($_SESSION[$this->LEMsessid]['srid'])) {
                 $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $_SESSION[$this->LEMsessid]['srid']]);
-                if ($oSurveyResponse->hasAttribute('token')) {
+                if ($oSurveyResponse && $oSurveyResponse->hasAttribute('token')) {
                     $oSurveyResponse->token = $tokenValue;
                 }
                 if (isset($_SESSION[$this->LEMsessid]['filltoken'])) {
@@ -1721,7 +1721,7 @@ class SurveyRuntimeHelper
             if ((Yii::app()->request->getParam('filltoken') === 'true') && (Yii::app()->request->getPost('token', '') !== '')) {
                 if (isset($_SESSION[$this->LEMsessid]['srid'])) {
                     $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $_SESSION[$this->LEMsessid]['srid']]);
-                    if ($oSurveyResponse->hasAttribute('token')) {
+                    if ($oSurveyResponse && $oSurveyResponse->hasAttribute('token')) {
                         $oSurveyResponse->token = Yii::app()->request->getPost('token');
                     }
                     $oSurveyResponse->save();
