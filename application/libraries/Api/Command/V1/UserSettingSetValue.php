@@ -40,6 +40,10 @@ class UserSettingSetValue implements CommandInterface
         $settingValue = (string)$request->getData('settingValue');
         $hasPermission = $this->permission->hasGlobalPermission('users');
 
+        if ($settingName === null) {
+            throw new \InvalidArgumentException('Missing _id in request data.');
+        }
+
         //users should only be able to get their own data (when they don't have permission)
         if (!$hasPermission) {
             return $this->responseFactory

@@ -36,7 +36,12 @@ class UserSettingGetValue implements CommandInterface
      */
     public function run(Request $request)
     {
-        $settingsName = $request->getData('_id');
+        $settingName = $request->getData('_id');
+
+        if ($settingName === null) {
+            throw new \InvalidArgumentException('Missing _id in request data.');
+        }
+
         $hasPermission = $this->permission->hasGlobalPermission('users');
 
         //users should only be able to get their own data (when they don't have permission)
@@ -46,7 +51,7 @@ class UserSettingGetValue implements CommandInterface
         }
 
         $settingUser = $this->modelSettingsUser::getUserSettingValue(
-            $settingsName
+            $settingName
         );
 
         if (!isset($settingUser)) {
