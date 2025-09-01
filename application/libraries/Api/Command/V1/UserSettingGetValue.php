@@ -36,11 +36,7 @@ class UserSettingGetValue implements CommandInterface
      */
     public function run(Request $request)
     {
-        $settingName = $request->getData('_id');
-
-        if ($settingName === null) {
-            throw new \InvalidArgumentException('Missing _id in request data.');
-        }
+        $settingName = (string)$request->getData('_id');
 
         $hasPermission = $this->permission->hasGlobalPermission('users');
 
