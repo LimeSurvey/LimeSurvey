@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.15.9 (build 250826) to 6.15.10 (build 250901) September 1, 2025
+-Fixed issue #AT-1729: import definition of jspdf was wrong after package update (twilligls)
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 6.15.8 (build 250825) to 6.15.9 (build 250826) August 26, 2025
 -Fixed issue #20242: Fixed the broken token mechanism (#4420) (lajosarpad)
 #Updated translation: Telugu by FredaM
