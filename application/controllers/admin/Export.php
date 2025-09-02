@@ -698,7 +698,7 @@ class Export extends SurveyCommonAction
                 }
                 if ($vvVersion == 2) {
                     $fieldcode = viewHelper::getFieldCode($fielddata, array("LEMcompat" => true));
-                    $fieldcode = ($fieldcode) ? $fieldcode : $field; // $fieldcode is empty for token if there are no survey participants table
+                    $fieldcode = ($fieldcode) ? $fieldcode : $field; // $fieldcode is empty for token if there are no survey participant list
                 } else {
                     $fieldcode = $field;
                 }
@@ -889,8 +889,21 @@ class Export extends SurveyCommonAction
 
         $xml->endElement(); // close columns
         $xml->endDocument();
+        if ($token = Yii::app()->request->getPost('export_token')) {
+            Yii::app()->session[$token] = true;
+        }
         Yii::app()->end();
     }
+
+    public function exportstatus($token)
+    {
+        $done = boolval(Yii::app()->session[$token]);
+
+        header('Content-Type: application/json');
+        echo CJSON::encode(['done' => $done]);
+        Yii::app()->end();
+    }
+
 
     /**
      * Export multiple surveys structure. Called via ajax from surveys list massive action

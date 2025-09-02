@@ -25,16 +25,17 @@
             $sNoncompleted = (int)Yii::app()->request->getPost('noncompleted'); ?>
             <label class="form-label" id='noncompletedlbl' for='noncompleted' title='<?php
             eT(
-                "Count stats for each question based only on the total number of responses for which the question was displayed"
+                "Count stats for each question based only on the total number of responses for which the question was displayed or answered"
             ); ?>'><?php
-                eT("Subtotals based on displayed questions:"); ?></label>
+                eT("Subtotals based on displayed or answered questions:"); ?></label>
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'noncompleted',
                     'checkedOption' => $sNoncompleted,
                     'selectOptions' => [
-                        '1' => gT('On', 'unescaped'),
                         '0' => gT('Off', 'unescaped'),
+                        '1' => gT('Displayed', 'unescaped'),
+                        '2' => gT('Answered', 'unescaped'),
                     ],
                     'htmlOptions'   => [
                         'class' => 'text-option-inherit'
@@ -106,7 +107,9 @@
             <?php
             $message = gT("Each question has its own graph type defined in its advanced settings.") .
                 '<br>' .
-                gT("Using the chart type selector you can force the graph type for all selected questions.");
+                gT("Using the chart type selector you can force the graph type for all selected questions.") .
+                '<br>' .
+                gT("Only for HTML output.");
             $this->widget('ext.AlertWidget.AlertWidget', [
             'text' => $message,
             'type' => 'info',

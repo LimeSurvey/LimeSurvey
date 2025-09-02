@@ -160,17 +160,17 @@ var triggerPermissionsModalClose = function () {
 };
 
 var wireAddUserGroupForm = function () {
-    $('#SurveyPermissions-addusergroup-form').off('submit.addusergroup').on('submit.addusergroup', function (e) {
-        e.preventDefault();
-        addUserGroupToSurvey(this);
+    $('#SurveyPermissions-addusergroup-submit').off('click.addusergroup').on('click.addusergroup', function (e) {
+        addUserGroupToSurvey();
     });
 };
 
-var addUserGroupToSurvey = function (form) {
+var addUserGroupToSurvey = function () {
     startAddUserGroupSubmit();
-    var data = $(form).serializeArray();
+    const form = $('#SurveyPermissions-addusergroup-form');
+    var data = form.serializeArray();
     $.ajax({
-        url: $(form).attr('action'),
+        url: form.attr('action'),
         data: data,
         method: 'POST',
         dataType: 'json',

@@ -24,9 +24,9 @@ To see what's inside aSurveyInfo, turn debug mode on and copy the following line
 <div id="{{ aSurveyInfo.id.welcomecontainer }}" class="{{ aSurveyInfo.class.welcomecontainer }}" {{ aSurveyInfo.attr.welcomecontainer }}>
 
     <!-- Survey Name -->
-    <div class="{{ aSurveyInfo.class.surveyname }} large-heading" {{ aSurveyInfo.attr.surveyname }} >
+    <h1 class="{{ aSurveyInfo.class.surveyname }} large-heading mt-0" {{ aSurveyInfo.attr.surveyname }} >
         {{ processString(aSurveyInfo.name,1) }}
-    </div>
+    </h1>
 
     <!-- Survey description -->
     <div class="{{ aSurveyInfo.class.description }} form-heading" {{ aSurveyInfo.attr.description }}>
