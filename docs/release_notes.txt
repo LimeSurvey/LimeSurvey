@@ -34,6 +34,31 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.15.9 (build 250826) to 6.15.10 (build 250901) September 1, 2025
+-Fixed issue #AT-1729: import definition of jspdf was wrong after package update (twilligls)
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.15.8 (build 250825) to 6.15.9 (build 250826) August 26, 2025
+-Fixed issue #20242: Fixed the broken token mechanism (#4420) (lajosarpad)
+#Updated translation: Telugu by FredaM
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Marathi by FredaM
+#Updated translation: Japanese by d_inoue
+#Updated translation: Greek by M.E.Rigos
+#Updated translation: Bengali by FredaM
+
+
+Changes from 6.15.7 (build 250820) to 6.15.8 (build 250825) August 25, 2025
+-Fixed issue #20235: Applied fixes for tokens and anonymized (#4407) LE-337 (lajosarpad)
+-Fixed issue #20224: "Constant E_STRICT is deprecated" - PHP8.4 or later with debug enabled (Carsten Schmitz)
+#Updated translation: Slovak by jelen1
+#Updated translation: Japanese by nomoto
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.15.6 (build 250818) to 6.15.7 (build 250820) August 20, 2025
 -Fixed issue #20222: error when trying to store token
 #Updated translation: Slovak by jelen1
