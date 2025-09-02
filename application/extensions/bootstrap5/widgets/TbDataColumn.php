@@ -41,7 +41,10 @@ class TbDataColumn extends CDataColumn
                 }
             }
 
-            echo $sort->link($this->name, $label, array('class' => 'sort-link'));
+            echo $sort->link($this->name, $label, array(
+        'class' => 'sort-link',
+        'role'  => 'button',
+    ));
         } else {
             if ($this->name !== null && $this->header === null) {
                 if ($this->grid->dataProvider instanceof CActiveDataProvider) {
