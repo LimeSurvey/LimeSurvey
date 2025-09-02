@@ -8,17 +8,6 @@ $('#survey_reset').click(function (e) {
     location.href = url + '?' + new URLSearchParams(params).toString()
 });
 
-$('#survey_reset').click(function (e) {
-    e.preventDefault()
-    let url = location.toString().replace(location.search, "")
-    let params = Object.fromEntries(new URLSearchParams(location.search));
-    delete params['Survey[searched_value]'];
-    delete params['active'];
-    delete params['gsid'];
-    location.href = url + '?' + new URLSearchParams(params).toString()
-});
-
-
 $('.view-switch').on('click keydown', function (e) {  
     if (e.type === 'click' || e.key === "Enter" || e.key === " ") {
         e.preventDefault();

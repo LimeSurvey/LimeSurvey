@@ -20097,7 +20097,6 @@ table [class^=ri-], table [class*=" ri-"] {
 }
 
 *:focus{
- 
   outline: 2px solid currentColor !important;
 }
     
