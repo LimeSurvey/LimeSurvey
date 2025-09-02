@@ -1299,7 +1299,7 @@ function quexml_get_lengthth($qid, $attribute, $default, $quexmllang = false)
 /**
 * from export_structure_quexml.php
 */
-function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap, $scale_id = false, $free = false, $other = false, $yesvalue = "1", $comment = false)
+function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap, $scale_id = false, $free = false, $other = false, $yesvalue = "1", $comment = false, $EMreplace = false)
 {
     global $dom;
     global $quexmllang;
@@ -1315,12 +1315,16 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
     }
     $QueryResult = Question::model()->with('questionl10ns')->findAllByAttributes($aCondition, ['order' => 'question_order']);
     foreach ($QueryResult as $Row) {
+	$qtext = $Row->questionl10ns[$quexmllang]->question;
+        if ($EMreplace) {
+           $qtext = LimeExpressionManager::ProcessStepString($qtext,null,3,true);
+        }
         $response = $dom->createElement("response");
         if ($free == false) {
             $fixed = $dom->createElement("fixed");
             $category = $dom->createElement("category");
 
-            $label = $dom->createElement("label", QueXMLCleanup($Row->questionl10ns[$quexmllang]->question, ''));
+            $label = $dom->createElement("label", QueXMLCleanup($qtext, ''));
 
             $value = $dom->createElement("value", $yesvalue);
             $nextcode = $Row['title'];
@@ -1353,7 +1357,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
             $fixed->appendChild($category);
             $response->appendChild($fixed);
         } else {
-            $response->appendChild(QueXMLCreateFree($free['f'], $free['len'], $Row->questionl10ns[$quexmllang]->question));
+            $response->appendChild(QueXMLCreateFree($free['f'], $free['len'], $qtext));
         }
 
         $response->setAttribute("varName", $varname . "_" . QueXMLCleanup($Row['title']));
@@ -1420,7 +1424,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
 /**
 * from export_structure_quexml.php
 */
-function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $fieldmap, $use_answers = false, $aid = false, $scale = false)
+function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $fieldmap, $use_answers = false, $aid = false, $scale = false, $EMreplace = false)
 {
     global $dom;
     global $quexmllang;
@@ -1440,7 +1444,11 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
         if ($use_answers) {
             $text = $dom->createElement("text", QueXMLCleanup($Row->answerl10ns[$quexmllang]->answer, ''));
         } else {
-            $text = $dom->createElement("text", QueXMLCleanup($Row->questionl10ns[$quexmllang]->question, ''));
+            if ($EMreplace) {
+                $text = $dom->createElement("text", QueXMLCleanup(LimeExpressionManager::ProcessStepString($Row->questionl10ns[$quexmllang]->question,null,3,true), ''));
+            } else {
+                $text = $dom->createElement("text", QueXMLCleanup($Row->questionl10ns[$quexmllang]->question, ''));
+            }
         }
         $subQuestion->appendChild($text);
         if ($use_answers) {
@@ -1634,7 +1642,7 @@ function quexml_create_question($RowQ, $additional = false)
 /**
 * Export quexml survey.
 */
-function quexml_export($surveyi, $quexmllan, $iResponseID = false)
+function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = false)
 {
     global $dom, $quexmllang, $iSurveyID;
     $quexmllang = $quexmllan;
@@ -1776,7 +1784,11 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
 
         foreach ($Rows as $RowQ) {
             // placeholder substitution
-            $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'],$RowQReplacements,3,true);
+            if ($EMreplace) {
+                $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'],$RowQReplacements,3,true);
+            } else {
+                $RowQ['question'] = templatereplace($RowQ['question'], $RowQReplacements);
+            }
             $sectionInfo = $dom->createElement("sectionInfo");
             $position = $dom->createElement("position", "before");
             $text = $dom->createElement("text", QueXMLCleanup($RowQ['question']));
@@ -1800,8 +1812,12 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
             $type = $RowQ['type'];
             $qid = $RowQ['qid'];
 
-	    // placeholder substitution
-            $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'],$RowQReplacements,3,true);
+            // placeholder substitution
+            if ($EMreplace) {
+                $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'],$RowQReplacements,3,true);
+            } else {
+                $RowQ['question'] = templatereplace($RowQ['question'], $RowQReplacements);
+            }
             $other = false;
             if ($RowQ['other'] == 'Y') {
                 $other = true;
@@ -1825,17 +1841,17 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         //get multiflexible_checkbox - if set then each box is a checkbox (single fixed response)
                         $mcb = quexml_get_lengthth($qid, 'multiflexible_checkbox', -1);
                         if ($mcb != -1) {
-                                                    quexml_create_multi($question, $qid, $sgq . "_" . $SRow['title'], $iResponseID, $fieldmap, 1);
+                                                    quexml_create_multi($question, $qid, $sgq . "_" . $SRow['title'], $iResponseID, $fieldmap, 1, false, false, 1, false, $EMreplace);
                         } else {
                             //get multiflexible_max and maximum_chars - if set then make boxes of max of these widths
                             $mcm = max(quexml_get_lengthth($qid, 'maximum_chars', 1), strlen((string) quexml_get_lengthth($qid, 'multiflexible_max', 1)));
-                            quexml_create_multi($question, $qid, $sgq . "_" . $SRow['title'], $iResponseID, $fieldmap, 1, array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
+                            quexml_create_multi($question, $qid, $sgq . "_" . $SRow['title'], $iResponseID, $fieldmap, 1, array('f' => 'integer', 'len' => $mcm, 'lab' => ''), false, 1, false, $EMreplace);
                         }
                     } elseif ($type == Question::QT_SEMICOLON_ARRAY_TEXT) {
                         //multi-flexi array text
 
                         //foreach question where scale_id = 1 this is a textbox
-                        quexml_create_multi($question, $qid, $sgq . "_" . $SRow['title'], $iResponseID, $fieldmap, 1, array('f' => 'text', 'len' => quexml_get_lengthth($qid, 'maximum_chars', 10), 'lab' => ''));
+                        quexml_create_multi($question, $qid, $sgq . "_" . $SRow['title'], $iResponseID, $fieldmap, 1, array('f' => 'text', 'len' => quexml_get_lengthth($qid, 'maximum_chars', 10), 'lab' => ''), false, 1, false, $EMreplace);
                     }
                     $section->appendChild($question);
                 }
@@ -1850,7 +1866,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                 $question = quexml_create_question($RowQ, $QROW['value']);
 
                 //select subQuestions from answers table where QID
-                quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, false, true, 0);
+                quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, false, true, 0, $EMreplace);
                 //get the header of the first scale of the dual scale question
                 $response = $dom->createElement("response");
                 $response->appendChild(QueXMLCreateFixed($qid, $iResponseID, $fieldmap, false, false, 0, $other, $sgq));
@@ -1867,7 +1883,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                 $question = quexml_create_question($RowQ, $QROW['value']);
 
                 //get the header of the second scale of the dual scale question
-                quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, false, true, 1);
+                quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, false, true, 1, $EMreplace);
                 $response2 = $dom->createElement("response");
                 $response2->appendChild(QueXMLCreateFixed($qid, $iResponseID, $fieldmap, false, false, 1, $other, $sgq));
                 $question->appendChild($response2);
@@ -1906,7 +1922,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         $question->appendChild($response);
                         break;
                     case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
-                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
+                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, false, $EMreplace);
                         $response = $dom->createElement("response");
                         quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
                         $response->setAttribute("varName", QueXMLCleanup($sgq));
@@ -1921,25 +1937,25 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         $question->appendChild($response2);
                         break;
                     case "R": // Ranking STYLE
-                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, true);
+                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, true, false, false, $EMreplace);
                         //width of a ranking style question for display purposes is the width of the number of responses available (eg 12 responses, width 2)
                         $QueryResult = Answer::model()->findAllByAttributes(['qid' => $qid], ['order' => 'sortorder']);
                         $response->appendChild(QueXMLCreateFree("integer", strlen(count($QueryResult)), ""));
                         $question->appendChild($response);
                         break;
                     case "M": //Multiple choice checkbox
-                        quexml_create_multi($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, $other, "Y");
+                        quexml_create_multi($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, $other, "Y", false, $EMreplace);
                         break;
                     case "P": //Multiple choice with comments checkbox + text
-                        quexml_create_multi($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, $other, "Y", true);
+                        quexml_create_multi($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, $other, "Y", true, $EMreplace);
                         break;
                     case "Q": //Multiple short text
-                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
+                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, false, $EMreplace);
                         $response->appendChild(QueXMLCreateFree("text", quexml_get_lengthth($qid, "maximum_chars", "10"), ""));
                         $question->appendChild($response);
                         break;
                     case "K": //MULTIPLE NUMERICAL
-                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
+                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, false, $EMreplace);
                         $response->appendChild(QueXMLCreateFree("integer", quexml_get_lengthth($qid, "maximum_chars", "10"), ""));
                         $question->appendChild($response);
                         break;
@@ -1975,34 +1991,34 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         $question->appendChild($response);
                         break;
                     case "A": // Array (5 point choice) radio-buttons
-                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
+                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, false, $EMreplace);
                         $response->appendChild(QueXMLFixedArray(array("1" => 1, "2" => 2, "3" => 3, "4" => 4, "5" => 5)));
                         $question->appendChild($response);
                         break;
                     case "B": // Array (10 point choice) radio-buttons
-                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
+                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, false, $EMreplace);
                         $response->appendChild(QueXMLFixedArray(array("1" => 1, "2" => 2, "3" => 3, "4" => 4, "5" => 5, "6" => 6, "7" => 7, "8" => 8, "9" => 9, "10" => 10)));
                         $question->appendChild($response);
                         break;
                     case "C": // Array (Yes/Uncertain/No)
-                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
+                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, false, $EMreplace);
                         $response->appendChild(QueXMLFixedArray(array(gT("Yes") => 'Y', gT("Uncertain") => 'U', gT("No") => 'N')));
                         $question->appendChild($response);
                         break;
                     case "E": // Array (Increase/Same/Decrease) radio-buttons
-                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
+                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, false, $EMreplace);
                         $response->appendChild(QueXMLFixedArray(array(gT("Increase") => 'I', gT("Same") => 'S', gT("Decrease") => 'D')));
                         $question->appendChild($response);
                         break;
                     case "F": // Array (Flexible) - Row Format
                         //select subQuestions from answers table where QID
-                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
+                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, false, $EMreplace);
                         $response->appendChild(QueXMLCreateFixed($qid, $iResponseID, $fieldmap, false, false, 0, $other, $sgq));
                         $question->appendChild($response);
                         //select fixed responses from
                         break;
                     case "H": // Array (Flexible) - Column Format
-                        quexml_create_subQuestions($question, $RowQ['qid'], $sgq, $iResponseID, $fieldmap);
+                        quexml_create_subQuestions($question, $RowQ['qid'], $sgq, $iResponseID, $fieldmap, false, false, false, $EMreplace);
                         $response->appendChild(QueXMLCreateFixed($qid, $iResponseID, $fieldmap, true, false, 0, $other, $sgq));
                         $question->appendChild($response);
                         break;
