@@ -135,7 +135,7 @@ abstract class LSYii_Controller extends CController
         } elseif (Yii::app()->getConfig('debug') == 2) {
             //For debug purposes - switch on in config.php
             @ini_set("display_errors", '1');
-            error_reporting(E_ALL | E_STRICT);
+            error_reporting(E_ALL);
         } else {
             @ini_set("display_errors", '0');
             error_reporting(0);

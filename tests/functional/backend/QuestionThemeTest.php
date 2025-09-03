@@ -108,12 +108,28 @@ class QuestionThemeTest extends TestBaseClassWeb
             $button = $web->findById('questionEditorButton');
             $button->click();
 
-            // Select question theme
-            $button = $web->findById('trigger_questionTypeSelector_button');
+            $button = $web->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('trigger_questionTypeSelector_button')
+                )
+            );
+// Scroll it into view and click
+            $web->executeScript("arguments[0].scrollIntoView({block: 'center'});", [$button]);
+            sleep(1);
             $button->click();
+            sleep(1);
 
-            $group = $web->findElement(WebDriverBy::xpath("//*[contains(text(),'Mask questions')]"));
+            // Wait for the Mask questions group to be clickable
+            $group = $web->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::xpath("//button[contains(@class, 'accordion-button') and contains(text(),'Mask questions')]")
+                )
+            );
+            // Scroll it into view and click
+            $web->executeScript("arguments[0].scrollIntoView({block: 'center'});", [$group]);
+            sleep(1);
             $group->click();
+            sleep(1);
 
             $question = $web->findByPartialLinkText('Range Slider');
             $question->click();
