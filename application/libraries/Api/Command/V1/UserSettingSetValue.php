@@ -8,7 +8,6 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
 use LimeSurvey\Api\Command\Response\ResponseFactory;
 use LimeSurvey\Api\Command\ResponseData\ResponseDataError;
-use Permission;
 use SettingsUser;
 
 class UserSettingSetValue implements CommandInterface
@@ -16,16 +15,13 @@ class UserSettingSetValue implements CommandInterface
     use AuthPermissionTrait;
 
     protected ResponseFactory $responseFactory;
-    protected Permission $permission;
     protected SettingsUser $modelSettingsUser;
 
     public function __construct(
         ResponseFactory $responseFactory,
-        Permission $permission,
         SettingsUser $modelSettingsUser
     ) {
         $this->responseFactory = $responseFactory;
-        $this->permission = $permission;
         $this->modelSettingsUser = $modelSettingsUser;
     }
 
@@ -38,14 +34,6 @@ class UserSettingSetValue implements CommandInterface
     {
         $settingName = (string)$request->getData('settingName');
         $settingValue = (string)$request->getData('settingValue');
-        $hasPermission = $this->permission->hasGlobalPermission('users');
-
-        //users should only be able to get their own data (when they don't have permission)
-        if (!$hasPermission) {
-            return $this->responseFactory
-                ->makeErrorForbidden();
-        }
-
         $settingsUser = $this->modelSettingsUser::setUserSetting(
             $settingName,
             $settingValue
