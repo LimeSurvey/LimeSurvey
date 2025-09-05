@@ -2233,12 +2233,43 @@ class SurveyAdministrationController extends LSBaseController
             $this->redirect(App()->request->urlReferrer);
         }
 
-        $iSurveyID = sanitize_int(App()->request->getPost('copysurveylist'));
+        $surveyId = sanitize_int(App()->request->getPost('surveyIdToCopy'));
+        $survey = Survey::model()->findByPk($surveyId);
+        if (!$survey) {
+            App()->user->setFlash('error', gT("Survey does not exist."));
+            $this->redirect(App()->request->urlReferrer);
+        }
 
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'export')) {
             App()->user->setFlash('error', gT("Access denied"));
             $this->redirect(App()->request->urlReferrer);
         }
+
+        // Start treatment and messagebox
+        $options = [];
+
+        $aExcludes = array();
+
+        //we have to processes
+        // 1 -- one link without any options
+        // 2 -- one link where options could be selected
+        $options['excludeQuotas'] = App()->request->getPost('copysurveyexcludequotas') == "1";
+        $options['excludePermissions'] = App()->request->getPost('copysurveyexcludepermissions') == "1";
+        $options['excludeAnswers'] = App()->request->getPost('copysurveyexcludeanswers') == "1";
+        $options['resetConditions'] = App()->request->getPost('copysurveyresetconditions') == "1";
+        $options['resetStartEndDate'] = App()->request->getPost('copysurveyresetstartenddate') == "1";
+        $options['resetResponseId'] = App()->request->getPost('copysurveyresetresponsestartid') == "1";
+        $options['copyResources'] = App()->request->getPost('copysurveytranslinksfields') == '1';
+
+        $newSurveyId = sanitize_int(App()->request->getPost('copysurveyid'), 1, 99999);
+        $sNewSurveyName = $survey->currentLanguageSettings->surveyls_title . '_copy';
+
+        $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
+            $surveyId,
+            "newSurveyName",
+            $newSurveyId,
+            $options
+        );
 
         $aData = [];
 
@@ -2246,87 +2277,42 @@ class SurveyAdministrationController extends LSBaseController
         $aData['sSummaryHeader'] = gT("Survey copy summary");
         $aData['textCompleted'] = gT("Copy of survey is completed.");
 
-        // Start treatment and messagebox
-        $aData['bFailed'] = false;
-        $aExcludes = array();
-        if (App()->request->getPost('copysurveyexcludequotas') == "1") {
-            $aExcludes['quotas'] = true;
-        }
-
-        if (App()->request->getPost('copysurveyexcludepermissions') == "1") {
-            $aExcludes['permissions'] = true;
-        }
-
-        if (App()->request->getPost('copysurveyexcludeanswers') == "1") {
-            $aExcludes['answers'] = true;
-        }
-
-        if (App()->request->getPost('copysurveyresetconditions') == "1") {
-            $aExcludes['conditions'] = true;
-        }
-
-        if (App()->request->getPost('copysurveyresetstartenddate') == "1") {
-            $aExcludes['dates'] = true;
-        }
-
-        if (App()->request->getPost('copysurveyresetresponsestartid') == "1") {
-            $aExcludes['reset_response_id'] = true;
-        }
-
-        if (!$iSurveyID) {
-            $aData['sErrorMessage'] = gT("No survey ID has been provided. Cannot copy survey");
-            $aData['bFailed'] = true;
-        } elseif (!Survey::model()->findByPk($iSurveyID)) {
-            $aData['sErrorMessage'] = gT("Invalid survey ID");
-            $aData['bFailed'] = true;
-        } else {
-            App()->loadHelper('export');
-            $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
-            if (empty(App()->request->getPost('copysurveyname'))) {
-                $sourceSurvey = Survey::model()->findByPk($iSurveyID);
-                $sNewSurveyName = $sourceSurvey->currentLanguageSettings->surveyls_title;
-            } else {
-                $sNewSurveyName = App()->request->getPost('copysurveyname');
-            }
-        }
-
+        App()->loadHelper('export');
+        $copysurveydata = surveyGetXMLData($surveyId, $aExcludes);
         App()->loadHelper('admin/import');
-        if (!$aData['bFailed']) {
-            $copyResources = App()->request->getPost('copysurveytranslinksfields') == '1';
-            $translateLinks = $copyResources;
-            $aImportResults = XMLImportSurvey(
-                '',
-                $copysurveydata,
-                $sNewSurveyName,
-                sanitize_int(App()->request->getParam('copysurveyid'), '1', '999999'),
-                $translateLinks
-            );
-            if (isset($aExcludes['conditions'])) {
-                Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $aImportResults['newsid']);
-                QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $aImportResults['newsid']);
-            }
 
-            if (isset($aExcludes['reset_response_id'])) {
-                $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
-                $oSurvey->autonumber_start = 0;
-                $oSurvey->save();
-            }
-
-            if (!isset($aExcludes['permissions'])) {
-                Permission::model()->copySurveyPermissions($iSurveyID, $aImportResults['newsid']);
-            }
-
-            if (!empty($aImportResults['newsid']) && $copyResources) {
-                $resourceCopier = new CopySurveyResources();
-                [, $errorFilesInfo] = $resourceCopier->copyResources($iSurveyID, $aImportResults['newsid']);
-                if (!empty($errorFilesInfo)) {
-                    $aImportResults['importwarnings'][] = gT("Some resources could not be copied from the source survey");
-                }
-            }
-        } else {
-            $aData['bFailed'] = true;
+        $aImportResults = XMLImportSurvey(
+            '',
+            $copysurveydata,
+            $sNewSurveyName,
+            $options['newSurveyId'],
+            $options['copyResources']
+        );
+        if (isset($aExcludes['conditions'])) {
+            Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $aImportResults['newsid']);
+            QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $aImportResults['newsid']);
         }
 
+        if (isset($aExcludes['reset_response_id'])) {
+            $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
+            $oSurvey->autonumber_start = 0;
+            $oSurvey->save();
+        }
+
+        if (!isset($aExcludes['permissions'])) {
+            Permission::model()->copySurveyPermissions($surveyId, $aImportResults['newsid']);
+        }
+
+        if (!empty($aImportResults['newsid']) && $options['copyResources']) {
+            $resourceCopier = new CopySurveyResources();
+            [, $errorFilesInfo] = $resourceCopier->copyResources($surveyId, $aImportResults['newsid']);
+            if (!empty($errorFilesInfo)) {
+                $aImportResults['importwarnings'][] = gT("Some resources could not be copied from the source survey");
+            }
+        }
+
+
+        $aData['bFailed'] = false;
         // If the import failed, set the status and error message in order to keep consistency with other errors
         if (!empty($aImportResults['error'])) {
             $aData['sErrorMessage'] = $aImportResults['error'];

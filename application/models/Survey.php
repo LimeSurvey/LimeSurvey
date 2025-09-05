@@ -1508,12 +1508,21 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'url' => App()->createUrl("/surveyAdministration/view", array('iSurveyID' => $this->sid)),
             'enabledCondition' => $permissions['survey_update'],
         ];
+        //todo: it should just copy the survey without selecting options
         $dropdownItems[] = [
-            'linkId' => 'openCopyModal',
             'title' => gT('Copy'),
             'linkAttributes'   => [
                 'data-bs-toggle' => "modal",
-                'data-bs-target' => "#copySurvey_modal"
+                'data-bs-target' => "#copySurvey_modal",
+            ],
+            'enabledCondition' => $permissions['survey_update'],
+        ];
+        $dropdownItems[] = [
+            'title' => gT('Copy options'),
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-bs-target' => "#copySurvey_modal",
+                'onclick' => "copySurveyOptions($this->sid)",
             ],
             'enabledCondition' => $permissions['survey_update'],
         ];

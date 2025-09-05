@@ -216,7 +216,7 @@ App()->getController()->renderPartial('/surveyAdministration/partial/topbar/_mod
 ?>
 
 <?php
-//modal for survey activation
+//modal for copying a survey
 App()->getController()->renderPartial('/surveyAdministration/partial/_modalCopySurvey');
 ?>
 
