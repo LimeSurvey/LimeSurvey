@@ -2738,14 +2738,30 @@ class statistics_helper
                 if ($noncompleted) {
                     foreach ($outputs['alist'] as $al) {
                         $quotedColumnName = App()->db->quoteColumnName($al[2]);
-                        $condition = "$quotedColumnName IS NOT NULL AND $quotedColumnName = ''";
+                        switch ($sDatabaseType) {
+                            case 'mssql':
+                            case 'sqlsrv':
+                            case 'dblib':
+                                $condition = "$quotedColumnName IS NOT NULL AND CAST($quotedColumnName as VARCHAR)= ''";
+                                break;
+                            default:
+                                $condition = "$quotedColumnName IS NOT NULL AND $quotedColumnName  = ''";
+                        }
                         $criteria->addCondition($condition);
                     }
                     $fname = gT("Not completed");
                 } else {
                     foreach ($outputs['alist'] as $al) {
                         $quotedColumnName = App()->db->quoteColumnName($al[2]);
-                        $condition = "$quotedColumnName IS NULL OR $quotedColumnName = ''";
+                        switch ($sDatabaseType) {
+                            case 'mssql':
+                            case 'sqlsrv':
+                            case 'dblib':
+                                $condition = "$quotedColumnName IS NULL OR CAST($quotedColumnName as VARCHAR)= ''";
+                                break;
+                            default:
+                                $condition = "$quotedColumnName IS NULL OR $quotedColumnName  = ''";
+                        }
                         $criteria->addCondition($condition);
                     }
                     $fname = gT("Not completed or Not displayed");
