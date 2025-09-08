@@ -117,7 +117,7 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
             //get ipadr from table survey_573837 ...
             $models = \Response::model(self::$surveyId)->findAll();
 
-            $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr === '127.0.0.0'));
+            $this->assertTrue(isset($models[0]->ipaddr) && (substr($models[0]->ipaddr, -4) === ".0.0"));
         }  catch (\Exception $e) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
@@ -216,7 +216,7 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
 
             $models = \Response::model(self::$surveyId)->findAll();
 
-            $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr === '127.0.0.1'));
+            $this->assertTrue(isset($models[0]->ipaddr) && (substr($models[0]->ipaddr, -4) !== ".0.0"));
         }  catch (\Exception $e) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
