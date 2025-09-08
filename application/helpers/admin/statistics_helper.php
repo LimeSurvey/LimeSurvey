@@ -2535,17 +2535,56 @@ class statistics_helper
                 //answer text
                 $fname = "$al[1] ($al[0])";
             }
-             //are there some results to play with?
-            if ($results > 0) {
+            if (($outputs['qtype'] != Question::QT_M_MULTIPLE_CHOICE) and ($outputs['qtype'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
+                //are there some results to play with?
+                if ($results > 0) {
+                    //calculate percentage
+                    $gdata[] = ($row / $results) * 100;
+                } else {
+                    //no data!
+                    $gdata[] = "N/A";
+                }
+            } else {
+                if (!isset($totalMultiAnswers)) {
+                    $totalMultiAnswers = $results; // By default all answers
+                    if ($noncompleted) {
+                        $criteria = new CDbCriteria();
+                        foreach ($outputs['alist'] as $al) {
+                            $quotedColumnName = App()->db->quoteColumnName($al[2]);
+                            if ($noncompleted > 1 ) {
+                                // database can use blob due to encryption
+                                switch ($sDatabaseType) {
+                                    case 'mssql':
+                                    case 'sqlsrv':
+                                    case 'dblib':
+                                        $condition = $quotedColumnName . " IS NOT NULL AND CAST(" . $quotedColumnName ." as varchar) <> ''";
+                                        break;
+                                    case 'pgsql':
+                                    case 'mysql':
+                                    default:
+                                        $condition = $quotedColumnName . " IS NOT NULL AND " . $quotedColumnName ." <> ''";
+                                        break;
+                                }
+                            } else {
+                                $condition = $quotedColumnName . " IS NOT NULL";
+                            }
+                            $criteria->addCondition($condition, 'OR');
+                        }
+                        if (incompleteAnsFilterState() == "incomplete") {
+                            $criteria->addCondition("submitdate IS NULL");
+                        } elseif (incompleteAnsFilterState() == "complete") {
+                            $criteria->addCondition("submitdate IS NOT NULL");
+                        }
+                        $totalMultiAnswers = SurveyDynamic::model($surveyid)->count($criteria);
+                    }
+                }
                 //calculate percentage
-                $gdata[] = ($row / $results) * 100;
+                if ($totalMultiAnswers > 0) {
+                    $gdata[] = ($row / $totalMultiAnswers) * 100;
+                } else { //no data!
+                    $gdata[] = "N/A";
+                }
             }
-            //no results
-            else {
-                //no data!
-                $gdata[] = "N/A";
-            }
-
             //put absolute data into array
             $grawdata[] = $row;
 
@@ -2694,74 +2733,39 @@ class statistics_helper
 
         // For multi question type, we have to check non completed with ALL sub question set to NULL
         if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
-            $criteria = new CDbCriteria();
-            foreach ($outputs['alist'] as $al) {
-                $quotedColumnName = App()->db->quoteColumnName($al[2]);
-                if ($noncompleted > 1 ) {
-                    // database can use blob due to encryption
-                    switch ($sDatabaseType) {
-                        case 'mssql':
-                        case 'sqlsrv':
-                        case 'dblib':
-                            $condition = $quotedColumnName . " IS NULL OR CAST(" . $quotedColumnName ." as varchar) = ''";
-                            break;
-                        case 'pgsql':
-                        case 'mysql':
-                        default:
-                            $condition = $quotedColumnName . " IS NULL OR " . $quotedColumnName ." = ''";
-                            break;
+            if ($noncompleted < 2) {
+                $criteria = new CDbCriteria();
+                if ($noncompleted) {
+                    foreach ($outputs['alist'] as $al) {
+                        $quotedColumnName = App()->db->quoteColumnName($al[2]);
+                        $condition = "$quotedColumnName IS NOT NULL AND $quotedColumnName = ''";
+                        $criteria->addCondition($condition);
                     }
+                    $fname = gT("Not completed");
                 } else {
-                    $condition = $quotedColumnName . " IS NULL";
+                    foreach ($outputs['alist'] as $al) {
+                        $quotedColumnName = App()->db->quoteColumnName($al[2]);
+                        $condition = "$quotedColumnName IS NULL OR $quotedColumnName = ''";
+                        $criteria->addCondition($condition);
+                    }
+                    $fname = gT("Not completed or Not displayed");
                 }
-                $criteria->addCondition($condition);
-            }
-            if (incompleteAnsFilterState() == "incomplete") {
-                $criteria->addCondition("submitdate IS NULL");
-            } elseif (incompleteAnsFilterState() == "complete") {
-                $criteria->addCondition("submitdate IS NOT NULL");
-            }
-            $multiNotDisplayed = SurveyDynamic::model($surveyid)->count($criteria);
-            if ($noncompleted) {
-                //counter
-                $i = 0;
-                while (isset($gdata[$i])) {
-                    //we want to have some "real" data here
-                    if ($gdata[$i] != "N/A") {
-                        //calculate percentage
-                        if ($results > $multiNotDisplayed) {
-                            $gdata[$i] = ($grawdata[$i] / ($results - $multiNotDisplayed)) * 100;
-                        } else {
-                            $gdata[$i] = "N/A";
-                        }
-                    }
-                    $i++;
+                if (incompleteAnsFilterState() == "incomplete") {
+                    $criteria->addCondition("submitdate IS NULL");
+                } elseif (incompleteAnsFilterState() == "complete") {
+                    $criteria->addCondition("submitdate IS NOT NULL");
                 }
-            } else {
-                // Add a line with not displayed %
-                if ($multiNotDisplayed > 0) {
-                    if ((incompleteAnsFilterState() != "complete")) {
-                        $fname = gT("Not completed or Not displayed");
-                    } else {
-                        $fname = gT("Not displayed");
-                    }
-                    $label[] = $fname;
-                    $lbl[$fname] = $multiNotDisplayed;
-                    //we need some data
-                    if ($results > 0) {
-                        //calculate percentage
-                        $gdata[] = ($multiNotDisplayed / $results) * 100;
-                    }
-                    //no data :(
-                    else {
-                        $gdata[] = "N/A";
-                    }
-                    //put data of incompleted records into array
-                    $grawdata[] = $multiNotDisplayed;
+                $totalNoAnswers = SurveyDynamic::model($surveyid)->count($criteria);
+                $label[] = $fname;
+                $lbl[$fname] = $totalNoAnswers;
+                if ($totalMultiAnswers > 0) {
+                    $gdata[] = ($totalNoAnswers / $totalMultiAnswers) * 100;
+                } else {
+                    $gdata[] = "N/A";
                 }
+                $grawdata[] = $totalNoAnswers;
             }
         }
-
         // Columns
         $statsColumns = $_POST['stats_columns'];
 
@@ -3090,6 +3094,9 @@ class statistics_helper
         $aData['showaggregateddata'] = false;
 
         $aData['sumallitems']             = array_sum($grawdata);
+        if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
+            $aData['sumallitems']             = $totalMultiAnswers;
+        }
         $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_gross_total', $aData, true);
 
         //only show additional values when this setting is enabled
