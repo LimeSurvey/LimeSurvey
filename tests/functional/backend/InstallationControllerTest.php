@@ -46,6 +46,14 @@ class InstallationControllerTest extends TestBaseClassWeb
         $configFile = \Yii::app()->getBasePath() . '/config/config.php';
         $databaseName = 'limesurvey';
 
+        if (file_exists($configFile) && $config = include($configFile)) {
+            if (!empty($config['config']['publicurl'])) {
+                // skip test if publicurl is not set in the config.php file
+                // avoid destroying a local installation
+                $this->markTestSkipped();
+            }
+        }
+
         $username = getenv('ADMINUSERNAME');
         if (!$username) {
             $username = 'admin';

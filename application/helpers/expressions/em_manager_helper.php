@@ -3023,7 +3023,7 @@ class LimeExpressionManager
             }
 
             // min/max value for dates
-            if ($date_min != '' || $date_max != '') {
+            if (isset($aAttributes[$questionNum]) && ($date_min != '' || $date_max != '')) {
                 //Get date format of current question and convert date in help text accordingly
                 $LEM =& LimeExpressionManager::singleton();
                 $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $questionNum, $_SESSION['LEMlang']);

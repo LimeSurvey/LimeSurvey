@@ -2196,9 +2196,9 @@ class DataEntry extends SurveyCommonAction
                     $cdata['qidattributes'] = $qidattributes;
 
                     $qinfo = LimeExpressionManager::GetQuestionStatus($arQuestion['qid']);
-                    $relevance = trim((string) $qinfo['info']['relevance']);
-                    $explanation = trim((string) $qinfo['relEqn']);
-                    $validation = trim((string) $qinfo['prettyValidTip']);
+                    $relevance = trim((string) ($qinfo['info']['relevance'] ?? ''));
+                    $explanation = trim((string) ($qinfo['relEqn'] ?? ''));
+                    $validation = trim((string) ($qinfo['prettyValidTip'] ?? ''));
                     $arrayFilterHelp = flattenText($this->arrayFilterHelp($qidattributes, $sDataEntryLanguage, $surveyid));
 
                     if (true || ($relevance != '' && $relevance != '1') || ($validation != '') || ($arrayFilterHelp != '')) {
