@@ -2769,23 +2769,23 @@ class Tokens extends SurveyCommonAction
         Yii::app()->loadHelper("surveytranslator");
 
         $defaultFields = [
-            'tid',
-            'participant_id',
+            'tid' => null,
+            'participant_id' => null,
             'firstname' => '',
             'lastname' => '',
             'email' => '',
             'emailstatus' => '',
-            'token',
-            'language',
-            'blacklisted',
-            'sent',
-            'remindersent',
-            'remindercount',
-            'completed',
-            'usesleft',
-            'validfrom',
-            'validuntil',
-            'mpid'
+            'token' => null,
+            'language' => null,
+            'blacklisted' => null,
+            'sent' => 'N',
+            'remindersent' => 'N',
+            'remindercount' => null,
+            'completed' => 'N',
+            'usesleft' => 1,
+            'validfrom' => null,
+            'validuntil' => null,
+            'mpid' => null
         ];
 
         if ($iTokenId) {
