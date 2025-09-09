@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.15.10 (build 250901) to 6.15.11 (build 250909) September 9, 2025
+-Fixed issue: Several update issues when updating from version 1.x (Carsten Schmitz)
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Swahili by FredaM
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Italian by lfanfoni, sielte, usastice
+#Updated translation: Italian (Informal) by alesarrett, lfanfoni
+
+
 Changes from 6.15.9 (build 250826) to 6.15.10 (build 250901) September 1, 2025
 -Fixed issue #AT-1729: import definition of jspdf was wrong after package update (twilligls)
 #Updated translation: Finnish by Jmantysalo
