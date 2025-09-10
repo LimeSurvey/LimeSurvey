@@ -109,7 +109,11 @@ class SurveyThemeConfiguration
     {
         /* init the template to current one if option use some twig function (imageSrc for example) mantis #14363 */
         // Template::getInstance will call prepareTemplateRendering which will populate array needed for inheritance display
-        $preparedThemeConfigurationModel = Template::model()->getInstance($themeConfiguration->template_name, $sid, $gsid);
+        $preparedThemeConfigurationModel = Template::model()->getInstance(
+            $themeConfiguration->template_name,
+            $sid,
+            $gsid
+        );
         if ($preparedThemeConfigurationModel === null) {
             throw new NotFoundException(gT("Survey theme {$themeConfiguration->template_name} not found."));
         }
@@ -123,18 +127,18 @@ class SurveyThemeConfiguration
         }
         /** TODO: most of the options in this array should be renamed to better reflect what they actually contain,
          *  TODO: but it would break backwards compatibility with custom themes, unless we modify strings inside twig through a query
-        */
+         */
         $aData = [
             'model'                  => $preparedThemeConfigurationModel,
             'templateOptionPage'     => $customThemeOptionsPage,
-            'oParentOptions'         => (array) $preparedThemeConfigurationModel->oOptions,
+            'oParentOptions'         => (array)$preparedThemeConfigurationModel->oOptions,
             'optionCssFiles'         => $preparedThemeConfigurationModel->files_css,
             'optionCssFramework'     => $preparedThemeConfigurationModel->cssframework_css,
             'aTemplateConfiguration' => $themeConfigurationAttributesAndFiles,
             'aOptionAttributes'      => $themeCategoriesAndOptions,
             'sPackagesToLoad'        => $preparedThemeConfigurationModel->packages_to_load,
             'sid'                    => $sid,
-            'gsid'                   => $gsid
+            'gsid'                   => $gsid,
         ];
         if ($sid !== null) {
             $aData['surveyid'] = $sid;
@@ -166,7 +170,7 @@ class SurveyThemeConfiguration
     public function getSurveyThemeOptionsAttributes($optionAttributes): array
     {
         $attributes = $optionAttributes;
-        foreach ($optionAttributes as $key=>$optionAttribute) {
+        foreach ($optionAttributes as $key => $optionAttribute) {
             if ($optionAttribute['type'] === 'dropdown') {
                 $attributes[$key]['dropdownoptions'] = $this->extractDropdownOptions($optionAttribute['dropdownoptions']);
             }
