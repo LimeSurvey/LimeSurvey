@@ -355,7 +355,7 @@ class TemplateConfiguration extends TemplateConfig
 
     /**
      * Get an instance of a fitting TemplateConfiguration
-     * NOTE: for rendering prupose, you should never call this function directly, but rather Template::getInstance.
+     * NOTE: for rendering purpose, you should never call this function directly, but rather Template::getInstance.
      * if force_xmlsettings_for_survey_rendering is on, then the configuration from the XML file should be loaded,
      * not the one from database
      *
