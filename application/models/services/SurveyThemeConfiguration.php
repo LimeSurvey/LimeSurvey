@@ -109,34 +109,29 @@ class SurveyThemeConfiguration
     {
         /* init the template to current one if option use some twig function (imageSrc for example) mantis #14363 */
         $oTemplate = Template::model()->getInstance($model->template_name, $sid, $gsid);
-        $oModelWithInheritReplacement = TemplateConfiguration::model()->findByPk($model->id);
-        if ($oModelWithInheritReplacement === null) {
+        $themeConfigurationModel = TemplateConfiguration::model()->findByPk($model->id);
+        if ($themeConfigurationModel === null) {
             throw new NotFoundException(gT("Survey theme {$model->template_name} not found."));
         }
-        $aOptionAttributes = TemplateManifest::getOptionAttributes($oTemplate->path);
-        $oTemplate = $oModelWithInheritReplacement->prepareTemplateRendering($oModelWithInheritReplacement->template->name); // Fix empty file lists
-        $aTemplateConfiguration = $oTemplate->getOptionPageAttributes();
-        if ($aOptionAttributes['optionsPage'] === 'core') {
+        $categoriesAndOptions = TemplateManifest::getOptionAttributes($oTemplate->path);
+        $oTemplate = $themeConfigurationModel->prepareTemplateRendering($themeConfigurationModel->template->name); // Fix empty file lists
+        $themeConfigurationAttributesAndFiles = $oTemplate->getOptionPageAttributes();
+        if ($categoriesAndOptions['optionsPage'] === 'core') {
             App()->clientScript->registerPackage('themeoptions-core');
-            $templateOptionPage = '';
+            $customThemeOptionsPage = '';
         } else {
-            $templateOptionPage = $oModelWithInheritReplacement->getOptionPage();
+            $customThemeOptionsPage = $themeConfigurationModel->getOptionPage();
         }
-        $inheritName = $oModelWithInheritReplacement->sTemplateName;
-        $oSimpleInheritance = Template::getInstance($inheritName, $sid, $gsid, null, true);
-        $oSimpleInheritance->options = 'inherit';
-        $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering($inheritName);
-        $oParentOptions = (array)$oSimpleInheritanceTemplate->oOptions;
         $aData = [
             'model'                  => $model,
-            'templateOptionPage'     => $templateOptionPage,
-            'optionInheritedValues'  => $oModelWithInheritReplacement->oOptions,
-            'optionCssFiles'         => $oModelWithInheritReplacement->files_css,
-            'optionCssFramework'     => $oModelWithInheritReplacement->cssframework_css,
-            'aTemplateConfiguration' => $aTemplateConfiguration,
-            'aOptionAttributes'      => $aOptionAttributes,
-            'oParentOptions'         => $oParentOptions,
-            'sPackagesToLoad'        => $oModelWithInheritReplacement->packages_to_load,
+            'templateOptionPage'     => $customThemeOptionsPage,
+            // TODO: oParentOptions should be renamed to inheritedOptions, breaks backwards compatibility with custom options pages for the surveythemes
+            'oParentOptions'         => (array) $themeConfigurationModel->oOptions,
+            'optionCssFiles'         => $themeConfigurationModel->files_css,
+            'optionCssFramework'     => $themeConfigurationModel->cssframework_css,
+            'aTemplateConfiguration' => $themeConfigurationAttributesAndFiles,
+            'aOptionAttributes'      => $categoriesAndOptions,
+            'sPackagesToLoad'        => $themeConfigurationModel->packages_to_load,
             'sid'                    => $sid,
             'gsid'                   => $gsid
         ];
@@ -198,8 +193,8 @@ class SurveyThemeConfiguration
         $attributes = [];
         $oTemplate = Template::model()->getInstance($sTemplateName, $iSurveyId);
 
-        $aTemplateAttribute = $oTemplate->getOptionPageAttributes();
-        $attributes['imageFileList'] = $aTemplateAttribute['imageFileList'];
+        $themeConfigurationAttributesAndFiles = $oTemplate->getOptionPageAttributes();
+        $attributes['imageFileList'] = $themeConfigurationAttributesAndFiles['imageFileList'];
 
         $aOptionAttributes = TemplateManifest::getOptionAttributes($oTemplate->path);
         $fontsDropdownString = $aOptionAttributes['optionAttributes']['font']['dropdownoptions'];

@@ -1412,7 +1412,8 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
-     * Get options_page value from template configuration
+     * Loads the options definition from XML file
+     * @return array|false returns the array of options or false on failing to load the file
      */
     public static function getOptionAttributes($path)
     {

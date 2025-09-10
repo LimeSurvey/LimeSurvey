@@ -577,7 +577,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Sets all available inheritance fields of the class::TemplateConfiguration to the value inherit as string
      */
     public function setToInherit()
     {
@@ -947,7 +947,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Fetches the imageFileList and the maxFileSize for the current theme and adds them to a new array which includes all TemplateConfiguration attributes
      *
      * @return array
      */
@@ -1004,8 +1004,6 @@ class TemplateConfiguration extends TemplateConfig
         $oSimpleInheritance->options = 'inherit';
         $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering($this->template->name);
 
-        // TODO: It's not clear which class prepareTemplateRendering() returns or should return.
-        /** @var Template */
         $oTemplate = $this->prepareTemplateRendering($this->template->name);
 
         $renderArray = array('templateConfiguration' => $oTemplate->getOptionPageAttributes());

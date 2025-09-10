@@ -168,6 +168,29 @@
             </dropdownoptions>
         </cssframework>
     </options>
+    <optionsOrderReact>
+        <!-- simple options -->
+        <hideprivacyinfo category="Simple options" />
+        <showpopups category="Simple options" />
+        <showclearall category="Simple options" />
+        <questionhelptextposition category="Simple options"/>
+        <fixnumauto category="Simple options" />
+        <cornerradius category="Simple options"/>
+        <!-- colors -->
+        <bodybackgroundcolor category="Colors"/>
+        <fontcolor category="Colors"/>
+        <questionbackgroundcolor category="Colors"/>
+        <checkicon category="Colors"/>
+        <!-- images -->
+        <backgroundimage category="Images"/>
+        <backgroundimagefile category="Images"/>
+        <brandlogo category="Images"/>
+        <brandlogofile category="Images"/>
+        <!-- fonts -->
+        <font category="Fonts"/>
+        <cssframework category="Simple options"/>
+    </optionsOrderReact>
+
 
     <!-- Here datas about how LimeSurvey should load the theme -->
     <engine>

@@ -8,6 +8,9 @@ use LimeSurvey\Models\Services\SurveyCondition;
 use LimeSurvey\Models\Services\SurveyThemeConfiguration;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 use SurveysGroups;
+use Template;
+use TemplateConfiguration;
+use TemplateManifest;
 
 /**
  * TransformerOutputSurveyDetail
@@ -399,20 +402,29 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * @param-out array<array-key, mixed> $aThemeSettings
      * @param-out array<mixed> $aThemesettingattributes
      * @param-out string $sTemplatePreview
-     * @param string $sTemplateName
+     * @param string $themeName
      * @param integer $iSurveyId
      * @return void
      */
-    private function tranformThemeSettings(array &$aThemeSettings, array &$aThemesettingattributes, string &$sTemplatePreview, $sTemplateName, $iSurveyId = 0)
+    private function tranformThemeSettings(array &$aThemeSettings, array &$aThemesettingattributes, string &$sTemplatePreview, $themeName, $iSurveyId = 0)
     {
-        $aThemeSettings = $this->surveyThemeConfiguration->getSurveyThemeOptions($iSurveyId, $sTemplateName);
+        $aThemeSettings = $this->surveyThemeConfiguration->getSurveyThemeOptions($iSurveyId, $themeName);
         $aThemeSettings = &$aThemeSettings;
 
-        $aThemesettingattributes = $this->surveyThemeConfiguration->getSurveyThemeOptionsAttributes($iSurveyId, $sTemplateName);
+        $aThemesettingattributes = $this->surveyThemeConfiguration->getSurveyThemeOptionsAttributes($iSurveyId, $themeName);
         $aThemesettingattributes = &$aThemesettingattributes;
 
-        $templateConf = \TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+        $templateConf = \TemplateConfiguration::getInstanceFromTemplateName($themeName);
         $sTemplatePreview = $templateConf->getPreview(true);
         $sTemplatePreview = &$sTemplatePreview;
+
+        $theme = Template::model()->getInstance($themeName);
+        $themeConfiguration = TemplateConfiguration::getInstance(null, null, $iSurveyId);
+        if ($themeConfiguration === null) {
+            throw new NotFoundException(gT("Survey theme {$themeName} not found."));
+        }
+        $categoriesAndOptions = TemplateManifest::getOptionAttributes($theme->path);
+        $preparedThemeConfiguration = $themeConfiguration->prepareTemplateRendering($themeName);
+        $themeConfigurationAndFiles = $preparedThemeConfiguration->getOptionPageAttributes();
     }
 }
