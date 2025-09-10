@@ -268,6 +268,7 @@ if (!getenv('DOMAIN')) {
         fwrite(STDERR, "Warning: publicurl not set in config, falling back to default domain: $domain" . PHP_EOL);
     }
     putenv("DOMAIN=$domain");
+    putenv("LOCAL_TEST=true");
 }
 
 
