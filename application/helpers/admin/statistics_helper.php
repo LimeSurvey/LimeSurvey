@@ -2188,6 +2188,8 @@ class statistics_helper
         $tempdir            = Yii::app()->getConfig("tempdir");
         $astatdata          = array();
         $TotalIncomplete    = 0;
+        /* @var int|false total for multiple choice, if int : is set (used in foreach) */
+        $totalMultiAnswers = false;
 
         $sColumnName = null;
         $noncompleted = App()->getRequest()->getPost('noncompleted');
@@ -2544,13 +2546,14 @@ class statistics_helper
                     //no data!
                     $gdata[] = "N/A";
                 }
-            } else {
-                if (!isset($totalMultiAnswers)) {
+            } else { // For multiple choice : we need total answered or viewed on all columns
+                if ($totalMultiAnswers !== false)) {
                     $totalMultiAnswers = $results; // By default all answers
                     if ($noncompleted) {
                         $criteria = new CDbCriteria();
                         foreach ($outputs['alist'] as $al) {
                             $quotedColumnName = App()->db->quoteColumnName($al[2]);
+                            // Answered
                             if ($noncompleted > 1 ) {
                                 // database can use blob due to encryption
                                 switch ($sDatabaseType) {
@@ -2566,6 +2569,7 @@ class statistics_helper
                                         break;
                                 }
                             } else {
+                                // View
                                 $condition = $quotedColumnName . " IS NOT NULL";
                             }
                             $criteria->addCondition($condition, 'OR');
