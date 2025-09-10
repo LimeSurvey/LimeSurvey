@@ -2547,7 +2547,7 @@ class statistics_helper
                     $gdata[] = "N/A";
                 }
             } else { // For multiple choice : we need total answered or viewed on all columns
-                if ($totalMultiAnswers !== false)) {
+                if ($totalMultiAnswers !== false) {
                     $totalMultiAnswers = $results; // By default all answers
                     if ($noncompleted) {
                         $criteria = new CDbCriteria();
