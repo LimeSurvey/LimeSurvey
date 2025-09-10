@@ -26,8 +26,8 @@ class TransformerInputAnswerTest extends TestBaseClass
         );
 
         self::assertIsArray($preparedData);
-        self::assertArrayHasKey(0, $preparedData);
-        self::assertArrayHasKey(1, $preparedData);
+        self::assertArrayHasKey('temp__123', $preparedData);
+        self::assertArrayHasKey('temp__456', $preparedData);
         self::assertArrayHasKey(0, $preparedData['temp__123']);
         self::assertArrayHasKey(1, $preparedData['temp__456']);
         self::assertArrayHasKey('code', $preparedData['temp__123'][0]);
