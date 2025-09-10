@@ -74,8 +74,8 @@ class TransformerInputQuestionAggregateTest extends TestBaseClass
         $this->assertArrayHasKey('subquestions', $preparedData);
         $subQuestions = $preparedData['subquestions'];
         $this->assertIsArray($subQuestions);
-        $this->assertIsArray($subQuestions[0]);
-        $this->assertArrayHasKey('code', $subQuestions[0][0]);
+        $this->assertIsArray($subQuestions['XXX125']);
+        $this->assertArrayHasKey('code', $subQuestions['XXX125'][0]);
     }
 
     /**
@@ -181,6 +181,7 @@ class TransformerInputQuestionAggregateTest extends TestBaseClass
     {
         $subQuestion = [
             'tempId' => 'XXX125',
+            'qid'    => 'XXX125',
             'title'  => 'SQ001',
             'l10ns'  => [
                 'en' => [
