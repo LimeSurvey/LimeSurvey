@@ -125,8 +125,10 @@ class SurveyThemeConfiguration
         } else {
             $customThemeOptionsPage = $preparedThemeConfigurationModel->getOptionPage();
         }
-        $parentTheme = $preparedThemeConfigurationModel->oParentTemplate;
-        $preparedParentTheme = $parentTheme->prepareTemplateRendering();
+        if ($preparedThemeConfigurationModel->oParentTemplate !== null) {
+            $parentTheme = $preparedThemeConfigurationModel->oParentTemplate;
+            $preparedParentTheme = $parentTheme->prepareTemplateRendering();
+        }
         /** TODO: most of the options in this array should be renamed to better reflect what they actually contain,
          *  TODO: but it would break backwards compatibility with custom themes, unless we modify strings inside twig through a query
          */
