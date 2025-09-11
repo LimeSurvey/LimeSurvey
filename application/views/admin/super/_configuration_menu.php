@@ -40,7 +40,7 @@
                             </div>
                             <div class="box--info">
                                 <div class="box__title text-center"><?php eT("System overview"); ?></div>
-                                <dl class="dl-horizontal">
+                                <dl class="dl-horizontal" role="none">
                                     <div class="row">
                                         <dt class="col-8 text-truncate text-end"><?php eT('Users'); ?></dt>
                                         <dd class="col-4 text-end"><?php echo $userscount; ?></dd>
@@ -138,12 +138,12 @@
                         <!-- Advanced -->
                         <li class="dropdown-header">
                             <span class="ri-tools-fill"></span>
-                            <?php eT('Advanced'); ?>
+                           <span  role="heading" aria-level="2"> <?php eT('Advanced'); ?></span>
                         </li>
                         <?php if (Permission::model()->hasGlobalPermission('templates', 'read')): ?>
                             <!-- Theme Editor -->
                             <li class="dropdown-item">
-                                <a href="<?php echo $this->createUrl("themeOptions/index"); ?>" class="link-themes">
+                             <a href="<?php echo $this->createUrl("themeOptions/index"); ?>" class="link-themes">
                                     <?php eT("Themes"); ?>
                                 </a>
                             </li>
@@ -197,7 +197,7 @@
                         <li class="dropdown-header">
 
                             <i class="ri-user-fill"></i>
-                            <?php eT('Users'); ?>
+                           <span role="heading" aria-level="2"> <?php eT('Users'); ?></span>
                         </li>
 
                         <!-- User management -->
@@ -252,7 +252,7 @@
                         <!-- Settings -->
                         <li class="dropdown-header">
                             <span class="ri-list-settings-line"></span>
-                            <?php eT('Settings'); ?>
+                          <span role="heading" aria-level="h2">  <?php eT('Settings'); ?></span>
                         </li>
 
                         <?php if (Permission::model()->hasGlobalPermission('settings', 'read')): ?>

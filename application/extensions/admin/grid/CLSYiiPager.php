@@ -46,7 +46,7 @@ class CLSYiiPager extends CLinkPager
             return array();
         }
 
-        list($beginPage,$endPage) = $this->getPageRange();
+        list($beginPage, $endPage) = $this->getPageRange();
         $currentPage = $this->getCurrentPage(false); // currentPage is calculated in getPageRange()
         $buttons = array();
 
@@ -95,8 +95,18 @@ class CLSYiiPager extends CLinkPager
     {
         if ($hidden || $selected) {
             $class .= ' ' . ($hidden ? $this->hiddenPageCssClass : 'active');
+            +$attrs = ['class' => 'page-link'];
+            if ($selected) {
+                $attrs['aria-current'] = 'page';
+            }
+            if ($hidden) {
+                $attrs['aria-disabled'] = 'true';
+                $attrs['tabindex'] = '-1';
+            }
+            return '<li class="page-item ' . $class . '">' . CHtml::tag('span', $attrs, $label) . '</li>';
+        } else {
+            return '<li class="page-item ' . $class . '">' . CHtml::link($label, $this->createPageUrl($page), ['class' => 'page-link']) . '</li>';
         }
-
-        return '<li class="page-item ' . $class . '">' . CHtml::link($label, $this->createPageUrl($page), ['class' => 'page-link']) . '</li>';
     }
 }
+
