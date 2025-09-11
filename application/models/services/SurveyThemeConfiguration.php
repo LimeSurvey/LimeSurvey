@@ -133,7 +133,7 @@ class SurveyThemeConfiguration
          *  TODO: but it would break backwards compatibility with custom themes, unless we modify strings inside twig through a query
          */
         $aData = [
-            'model'                  => $preparedThemeConfigurationModel,
+            'model'                  => $themeConfiguration,
             'templateOptionPage'     => $customThemeOptionsPage,
             'oParentOptions'         => (array)($preparedParentTheme->oOptions ?? []),
             'optionCssFiles'         => $preparedThemeConfigurationModel->files_css,
