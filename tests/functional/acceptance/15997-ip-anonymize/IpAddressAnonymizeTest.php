@@ -120,7 +120,7 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
             if (getenv('LOCAL_TEST')) {
                 $this->assertTrue(isset($models[0]->ipaddr) && (substr($models[0]->ipaddr, -4) === ".0.0"));
             } else {
-                $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr === '127.0.0.1'));
+                $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr === '127.0.0.0'));
             }
         }  catch (\Exception $e) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
