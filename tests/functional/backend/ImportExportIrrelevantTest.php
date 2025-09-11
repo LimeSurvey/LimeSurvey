@@ -2,6 +2,7 @@
 
 namespace ls\tests;
 
+use Facebook\WebDriver\Exception\WebDriverException;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 
@@ -112,7 +113,14 @@ class ImportExportIrrelevantTest extends TestBaseClassWeb
                 }
                 sleep(1);
             }
-            $this->assertTrue(file_exists($exportedSurveyFile));
+
+            if (getenv('LOCAL_TEST')){
+                $exportedSurveyFile = ROOT . '/../../../data/selenium-downloads/survey_archive_' . self::$surveyId . '.lsa';
+                fwrite(STDERR, $exportedSurveyFile . "\n");
+                $this->assertTrue(file_exists($exportedSurveyFile));
+            } else {
+                $this->assertTrue(file_exists($exportedSurveyFile));
+            }
 
             // Import LSA
             self::importSurvey($exportedSurveyFile);
@@ -130,6 +138,27 @@ class ImportExportIrrelevantTest extends TestBaseClassWeb
                 self::$testHelper->javaTrace($ex)
             );
         }
+    }
+
+    function waitForDownload(string $downloadDir, string $fileName, int $timeout = 30): string
+    {
+        $filePath = rtrim($downloadDir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $fileName;
+        $tempFile = $filePath . '.crdownload'; // Chrome’s temp extension
+        $elapsed = 0;
+
+        while ($elapsed < $timeout) {
+            clearstatcache();
+
+            // File exists and no temp file → download complete
+            if (file_exists($filePath) && !file_exists($tempFile)) {
+                return $filePath;
+            }
+
+            sleep(1);
+            $elapsed++;
+        }
+
+        throw new WebDriverException("Download of {$fileName} not completed within {$timeout} seconds.");
     }
 
     /**
