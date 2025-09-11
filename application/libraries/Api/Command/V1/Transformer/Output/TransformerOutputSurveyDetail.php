@@ -8,9 +8,7 @@ use LimeSurvey\Models\Services\SurveyCondition;
 use LimeSurvey\Models\Services\SurveyThemeConfiguration;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 use SurveysGroups;
-use Template;
 use TemplateConfiguration;
-use TemplateManifest;
 
 /**
  * TransformerOutputSurveyDetail
