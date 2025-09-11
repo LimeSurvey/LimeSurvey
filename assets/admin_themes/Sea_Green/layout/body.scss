@@ -6,3 +6,36 @@ body {
     min-height       : 100vh;
     flex-direction   : column;
 }
+
+    
+.navbar .btn-create {
+  display: flex;            
+  align-items: center;       
+  justify-content: center;   
+}
+
+button:focus {
+  outline:2px solid currentColor;
+  outline-offset: 2px;
+
+}
+
+a:focus {
+  outline:2px solid currentColor !important;
+  outline-offset: 2px !important;
+
+}
+.navbar .navbar-nav{
+  column-gap: 1rem;
+}
+.navbar .navbar-nav .nav-link{
+    padding: unset !important;
+}
+
+.navbar .badge{
+    margin-left: 1rem;
+}
+.modal-header .btn-close:focus{
+  outline:2px solid currentColor;
+  outline-offset: 2px;
+}
