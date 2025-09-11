@@ -1443,11 +1443,11 @@ class TemplateManifest extends TemplateConfiguration
 
                 if (!empty($option->dropdownoptions)) {
                     $dropdownOptions = '';
-                    if ($key == 'font') {
+                    if ($key === 'font') {
                         $dropdownOptions .= TemplateManifest::getFontDropdownOptions();
                     }
-                    foreach ($option->xpath('//options/' . $key . '/dropdownoptions') as $option) {
-                        $dropdownOptions .= $option->asXml();
+                    foreach ($option->xpath('//options/' . $key . '/dropdownoptions') as $dropdownOption) {
+                        $dropdownOptions .= $dropdownOption->asXml();
                     }
 
                     $aOptions['optionAttributes'][$key]['dropdownoptions'] = $dropdownOptions;
@@ -1457,6 +1457,12 @@ class TemplateManifest extends TemplateConfiguration
 
                 if (!in_array($aOptions['optionAttributes'][$key]['category'], $aOptions['categories'])) {
                     $aOptions['categories'][] = $aOptions['optionAttributes'][$key]['category'];
+                }
+            }
+            // different sorting for react part
+            if (isset($oXMLConfig->optionsOrderReact)) {
+                foreach ($oXMLConfig->optionsOrderReact->children() as $key => $optionOrderReact) {
+                    $aOptions['optionsOrderReact'][$key]['category'] = !empty($optionOrderReact['category']) ? (string)$optionOrderReact['category'] : gT('Display options');
                 }
             }
 
