@@ -135,7 +135,7 @@ class SurveyThemeConfiguration
         $aData = [
             'model'                  => $preparedThemeConfigurationModel,
             'templateOptionPage'     => $customThemeOptionsPage,
-            'oParentOptions'         => (array)$preparedParentTheme->oOptions,
+            'oParentOptions'         => (array)($preparedParentTheme->oOptions ?? []),
             'optionCssFiles'         => $preparedThemeConfigurationModel->files_css,
             'optionCssFramework'     => $preparedThemeConfigurationModel->cssframework_css,
             'aTemplateConfiguration' => $themeConfigurationAttributesAndFiles,
