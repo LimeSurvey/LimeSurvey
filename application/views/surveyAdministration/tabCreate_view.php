@@ -102,8 +102,9 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                                 'name'          => 'administrator',
                                 'checkedOption' => 'default',
                                 'selectOptions' => $optionsAdmin ?? [],
+                                'ariaLabel' => gT("Administrator"),
                             ]); ?>
-                        </div>
+                        </div>        
                     </div>
                     <div id="conditional-administrator-fields" style="display: none;">
                         <div class="mb-3">
