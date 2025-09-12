@@ -1412,7 +1412,8 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
-     * Get options_page value from template configuration
+     * Loads the options definition from XML file
+     * @return array|false returns the array of options or false on failing to load the file
      */
     public static function getOptionAttributes($path)
     {
@@ -1437,15 +1438,16 @@ class TemplateManifest extends TemplateConfiguration
                 $aOptions['optionAttributes'][$key]['rows'] = !empty($option['rows']) ? (string)$option['rows'] : '4';
                 $aOptions['optionAttributes'][$key]['options'] = !empty($option['options']) ? (string)$option['options'] : '';
                 $aOptions['optionAttributes'][$key]['optionlabels'] = !empty($option['optionlabels']) ? (string)$option['optionlabels'] : '';
+                $aOptions['optionAttributes'][$key]['optionimages'] = !empty($option['optionimages']) ? (string)$option['optionimages'] : '';
                 $aOptions['optionAttributes'][$key]['parent'] = !empty($option['parent']) ? (string)$option['parent'] : '';
 
                 if (!empty($option->dropdownoptions)) {
                     $dropdownOptions = '';
-                    if ($key == 'font') {
+                    if ($key === 'font') {
                         $dropdownOptions .= TemplateManifest::getFontDropdownOptions();
                     }
-                    foreach ($option->xpath('//options/' . $key . '/dropdownoptions') as $option) {
-                        $dropdownOptions .= $option->asXml();
+                    foreach ($option->xpath('//options/' . $key . '/dropdownoptions') as $dropdownOption) {
+                        $dropdownOptions .= $dropdownOption->asXml();
                     }
 
                     $aOptions['optionAttributes'][$key]['dropdownoptions'] = $dropdownOptions;
@@ -1455,6 +1457,12 @@ class TemplateManifest extends TemplateConfiguration
 
                 if (!in_array($aOptions['optionAttributes'][$key]['category'], $aOptions['categories'])) {
                     $aOptions['categories'][] = $aOptions['optionAttributes'][$key]['category'];
+                }
+            }
+            // different sorting for react part
+            if (isset($oXMLConfig->optionsOrderReact)) {
+                foreach ($oXMLConfig->optionsOrderReact->children() as $key => $optionOrderReact) {
+                    $aOptions['optionsOrderReact'][$key]['category'] = !empty($optionOrderReact['category']) ? (string)$optionOrderReact['category'] : gT('Display options');
                 }
             }
 

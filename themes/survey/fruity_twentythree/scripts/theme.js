@@ -40,7 +40,28 @@ window.bootstrap = Bootstrap;
 },{"../../../node_modules/bootstrap/dist/js/bootstrap.esm.js":12}],2:[function(require,module,exports){
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+var timeout;
 var A11yHandles = {
+  initLiveRegion: function initLiveRegion() {
+    var LiveRegion = document.createElement('div');
+    LiveRegion.id = 'live-region';
+    LiveRegion.classList.add('sr-only');
+    LiveRegion.setAttribute('aria-live', 'polite');
+    LiveRegion.setAttribute('role', 'status');
+    document.body.appendChild(LiveRegion);
+  },
+  liveAnnounce: function liveAnnounce(message) {
+    var liveRegion = document.getElementById('live-region');
+    clearTimeout(timeout);
+    liveRegion.innerHTML = '';
+    timeout = setTimeout(function () {
+      liveRegion.innerHTML = '<p>' + message + '</p>';
+    }, 500);
+  },
   handleTooltip: function handleTooltip() {
     document.body.addEventListener('keydown', function (e) {
       if (e.key == 'Escape') {
@@ -61,9 +82,17 @@ var A11yHandles = {
   }
 };
 $(document).on('ready pjax:scriptcomplete', function () {
+  A11yHandles.initLiveRegion();
   A11yHandles.handleTooltip();
   A11yHandles.handleTitle();
 });
+$(document).on('classChangeError', function (event) {
+  A11yHandles.liveAnnounce(event.target.textContent.trim());
+});
+$(document).on('classChangeGood', function (event) {
+  A11yHandles.liveAnnounce(event.target.textContent.trim());
+});
+var _default = exports["default"] = A11yHandles;
 
 },{}],3:[function(require,module,exports){
 "use strict";
@@ -2735,7 +2764,6 @@ exports.Tooltip = exports.Toast = exports.Tab = exports.ScrollSpy = exports.Popo
 var Popper = _interopRequireWildcard(require("@popperjs/core"));
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
-function _superPropGet(t, e, o, r) { var p = _get(_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
 function _get() { return _get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = _superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, _get.apply(null, arguments); }
 function _superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = _getPrototypeOf(t));); return t; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -2895,7 +2923,7 @@ var isDisabled = function isDisabled(element) {
   }
   return element.hasAttribute('disabled') && element.getAttribute('disabled') !== 'false';
 };
-var _findShadowRoot = function findShadowRoot(element) {
+var findShadowRoot = function findShadowRoot(element) {
   if (!document.documentElement.attachShadow) {
     return null;
   } // Can find the shadow root otherwise it'll return the document
@@ -2911,7 +2939,7 @@ var _findShadowRoot = function findShadowRoot(element) {
   if (!element.parentNode) {
     return null;
   }
-  return _findShadowRoot(element.parentNode);
+  return findShadowRoot(element.parentNode);
 };
 var noop = function noop() {};
 /**
@@ -2985,16 +3013,16 @@ var executeAfterTransition = function executeAfterTransition(callback, transitio
   var durationPadding = 5;
   var emulatedDuration = getTransitionDurationFromElement(transitionElement) + durationPadding;
   var called = false;
-  var _handler = function handler(_ref) {
+  var handler = function handler(_ref) {
     var target = _ref.target;
     if (target !== transitionElement) {
       return;
     }
     called = true;
-    transitionElement.removeEventListener(TRANSITION_END, _handler);
+    transitionElement.removeEventListener(TRANSITION_END, handler);
     execute(callback);
   };
-  transitionElement.addEventListener(TRANSITION_END, _handler);
+  transitionElement.addEventListener(TRANSITION_END, handler);
   setTimeout(function () {
     if (!called) {
       triggerTransitionEnd(transitionElement);
@@ -4656,7 +4684,7 @@ var Dropdown = exports.Dropdown = /*#__PURE__*/function (_BaseComponent5) {
       if (this._popper) {
         this._popper.destroy();
       }
-      _superPropGet(Dropdown, "dispose", this, 3)([]);
+      _get(_getPrototypeOf(Dropdown.prototype), "dispose", this).call(this);
     }
   }, {
     key: "update",
@@ -5401,7 +5429,7 @@ var Modal = exports.Modal = /*#__PURE__*/function (_BaseComponent6) {
       });
       this._backdrop.dispose();
       this._focustrap.deactivate();
-      _superPropGet(Modal, "dispose", this, 3)([]);
+      _get(_getPrototypeOf(Modal.prototype), "dispose", this).call(this);
     }
   }, {
     key: "handleUpdate",
@@ -5782,7 +5810,7 @@ var Offcanvas = exports.Offcanvas = /*#__PURE__*/function (_BaseComponent7) {
     value: function dispose() {
       this._backdrop.dispose();
       this._focustrap.deactivate();
-      _superPropGet(Offcanvas, "dispose", this, 3)([]);
+      _get(_getPrototypeOf(Offcanvas.prototype), "dispose", this).call(this);
     } // Private
   }, {
     key: "_getConfig",
@@ -6158,7 +6186,7 @@ var Tooltip = exports.Tooltip = /*#__PURE__*/function (_BaseComponent8) {
         this.tip.remove();
       }
       this._disposePopper();
-      _superPropGet(Tooltip, "dispose", this, 3)([]);
+      _get(_getPrototypeOf(Tooltip.prototype), "dispose", this).call(this);
     }
   }, {
     key: "show",
@@ -6171,7 +6199,7 @@ var Tooltip = exports.Tooltip = /*#__PURE__*/function (_BaseComponent8) {
         return;
       }
       var showEvent = EventHandler.trigger(this._element, this.constructor.Event.SHOW);
-      var shadowRoot = _findShadowRoot(this._element);
+      var shadowRoot = findShadowRoot(this._element);
       var isInTheDom = shadowRoot === null ? this._element.ownerDocument.documentElement.contains(this._element) : shadowRoot.contains(this._element);
       if (showEvent.defaultPrevented || !isInTheDom) {
         return;
@@ -6887,7 +6915,7 @@ var ScrollSpy = exports.ScrollSpy = /*#__PURE__*/function (_BaseComponent9) {
     key: "dispose",
     value: function dispose() {
       EventHandler.off(this._scrollElement, EVENT_KEY$2);
-      _superPropGet(ScrollSpy, "dispose", this, 3)([]);
+      _get(_getPrototypeOf(ScrollSpy.prototype), "dispose", this).call(this);
     } // Private
   }, {
     key: "_getConfig",
@@ -7322,7 +7350,7 @@ var Toast = exports.Toast = /*#__PURE__*/function (_BaseComponent11) {
       if (this._element.classList.contains(CLASS_NAME_SHOW)) {
         this._element.classList.remove(CLASS_NAME_SHOW);
       }
-      _superPropGet(Toast, "dispose", this, 3)([]);
+      _get(_getPrototypeOf(Toast.prototype), "dispose", this).call(this);
     } // Private
   }, {
     key: "_getConfig",
