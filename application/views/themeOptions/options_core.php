@@ -180,7 +180,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                                    class="btn-check selector_option_radio_field simple_edit_options_<?= $attributeKey ?>"/>
                                             <label for="<?= $id ?>" class="btn btn-outline-secondary">
                                                 <?php if (!empty($optionSettings['image'])) : ?>
-                                                    <?php $imageFilePath = App()->getConfig('imagedir') . DIRECTORY_SEPARATOR . $optionSettings['image'] ?>
+                                                    <?php $imageFilePath = App()->getConfig('standardthemerootdir') . DIRECTORY_SEPARATOR . $aTemplateConfiguration['template_name'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . $optionSettings['image'] ?>
                                                     <?php if (file_exists($imageFilePath)) : ?>
                                                         <?= file_get_contents($imageFilePath) ?>
                                                         <?= $optionKey === 'inherit' ? ' ᴵ' : '' ?>

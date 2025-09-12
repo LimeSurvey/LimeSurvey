@@ -133,6 +133,8 @@ class SurveyThemeConfiguration
          *  TODO: but it would break backwards compatibility with custom themes, unless we modify strings inside twig through a query
          */
         $aData = [
+            // $themeConfiguration needs to be a model with $bUseMagicInherit turned off since the advanced settings use an active form,
+            // which would use the magic getter to resolve 'inherit' based values
             'model'                  => $themeConfiguration,
             'templateOptionPage'     => $customThemeOptionsPage,
             'oParentOptions'         => (array)($preparedParentTheme->oOptions ?? []),
