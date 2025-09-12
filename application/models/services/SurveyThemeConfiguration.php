@@ -109,11 +109,7 @@ class SurveyThemeConfiguration
     {
         /* init the template to current one if option use some twig function (imageSrc for example) mantis #14363 */
         // Template::getInstance will call prepareTemplateRendering which will populate array needed for inheritance display
-        $preparedThemeConfigurationModel = Template::model()->getInstance(
-            $themeConfiguration->template_name,
-            $sid,
-            $gsid
-        );
+        $preparedThemeConfigurationModel = Template::model()->getInstance($themeConfiguration->template_name, $sid, $gsid);
         if ($preparedThemeConfigurationModel === null) {
             throw new NotFoundException(gT("Survey theme {$themeConfiguration->template_name} not found."));
         }
