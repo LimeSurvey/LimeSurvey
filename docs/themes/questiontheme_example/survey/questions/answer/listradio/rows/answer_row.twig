@@ -21,7 +21,7 @@
         onclick="if (document.getElementById('answer{{ name }}othertext') != null) document.getElementById('answer{{ name }}othertext').value='';checkconditions(this.value, this.name, this.type)"
      />
     <label for="answer{{ name }}{{ code }}" class="control-label radio-label">
-        {{ processString(answer) }}
+        {{ processString(answer) }} [{{ code }}]
     </label>
 </li>
 <!-- end of answer_row -->
