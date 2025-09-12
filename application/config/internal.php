@@ -362,6 +362,8 @@ $internalConfig = array(
                     'Survey'                            =>  array("getAllLanguages", "localizedtitle"),
                     'LSHttpRequest'                     =>  array("getParam"),
                     'LSCaptcha'                          =>  array("renderOut"),
+                    'TemplateConfiguration'             =>  array("__toString"),
+                    'SimpleXMLElement'                  =>  array("__toString"),
                 ),
                 'properties' =>  array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),

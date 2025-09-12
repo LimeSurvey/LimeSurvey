@@ -29,6 +29,10 @@ $rest = [
                 'name' => 'I18n',
                 'description' => 'Translations',
             ],
+            'version-info' => [
+                'name' => 'Version Info',
+                'description' => 'Version Info',
+            ],
             'user' => [
                 'name' => 'User',
                 'description' => 'User',
@@ -43,6 +47,7 @@ $rest = [
 
 return array_merge(
     $rest,
+    include_once __DIR__ . '/v1/survey-responses.php',
     include_once __DIR__ . '/v1/survey.php',
     include_once __DIR__ . '/v1/auth.php',
     include_once __DIR__ . '/v1/survey-group.php',
@@ -50,5 +55,5 @@ return array_merge(
     include_once __DIR__ . '/v1/site-settings.php',
     include_once __DIR__ . '/v1/i18n.php',
     include_once __DIR__ . '/v1/file-upload.php',
-    include_once __DIR__ . '/v1/permissions.php',
+    include_once __DIR__ . '/v1/version-info.php',
 );

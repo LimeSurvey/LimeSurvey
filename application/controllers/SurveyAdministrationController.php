@@ -4,6 +4,7 @@ use LimeSurvey\Models\Services\CopySurveyResources;
 use LimeSurvey\Models\Services\FileUploadService;
 use LimeSurvey\Models\Services\FilterImportedResources;
 use LimeSurvey\Models\Services\GroupHelper;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 /**
  * Class SurveyAdministrationController
@@ -557,6 +558,56 @@ class SurveyAdministrationController extends LSBaseController
             );
         }
         $this->redirect(Yii::app()->request->urlReferrer);
+    }
+
+    /**
+     * New create survey process with default values.
+     * Includes to open new question editor (in cloud) when editor is activated by user.
+     *
+     * @return void
+     */
+    public function actionCreateSurvey()
+    {
+        if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
+            $userId = App()->user->id;
+            $currentUser = User::model()->findByPk($userId);
+            $currentUserLanguage = $currentUser->lang;
+            //we need the language short
+            if ($currentUserLanguage === 'auto') {
+                $currentUserLanguage = Yii::app()->getConfig('defaultlang');
+            }
+
+            $simpleSurveyValues = new \LimeSurvey\Datavalueobjects\SimpleSurveyValues();
+            $simpleSurveyValues->title = gt('Untitled survey');
+            $simpleSurveyValues->surveyGroupId = 1;
+            $simpleSurveyValues->baseLanguage = $currentUserLanguage;
+            $surveyCreator = new \LimeSurvey\Models\Services\CreateSurvey(new Survey(), new SurveyLanguageSetting());
+            $newSurvey = $surveyCreator->createSimple(
+                $simpleSurveyValues,
+                (int)Yii::app()->user->getId(),
+                Permission::model()
+            );
+            if ($newSurvey) {
+                //create examlpe group and example question
+                $iNewGroupID = $this->createSampleGroup($newSurvey->sid);
+                $iNewQuestionID = $this->createSampleQuestion($newSurvey->sid, $iNewGroupID);
+
+                App()->setFlashMessage(gT("Your new survey was created. We also created a first question group and an example question for you."), 'info');
+                $redirectUrl = $this->getSurveyAndSidemenueDirectionURL(
+                    $newSurvey->sid,
+                    $iNewGroupID,
+                    $iNewQuestionID,
+                    'structure'
+                );
+                $this->redirect($redirectUrl);
+            } else {
+                App()->setFlashMessage(gT("Survey could not be created."), 'error');
+                $this->redirect(Yii::app()->request->urlReferrer);
+            }
+        } else {
+            App()->setFlashMessage(gT('Access denied'), 'error');
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
     }
 
     /**
@@ -1689,7 +1740,11 @@ class SurveyAdministrationController extends LSBaseController
             $error = gT("There are no questions in this survey.");
         }
         $checkFailed = (isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck) || !empty($error);
-        $footerButton = '';
+        $footerButton = $this->renderPartial(
+            '/surveyAdministration/surveyActivation/_activateFooterBtns',
+            [],
+            true
+        );
         if ($checkFailed) {
             //survey can not be activated
             $html = $this->renderPartial(
@@ -1790,6 +1845,17 @@ class SurveyAdministrationController extends LSBaseController
 
             $openAccessMode = Yii::app()->request->getPost('openAccessMode', null);
             if ($openAccessMode !== null) {
+                $modes = [
+                    'Y' => 'O',
+                    'N' => 'C'
+                ];
+                $mode = ($modes[$openAccessMode] ?? 'O');
+                $surveyAccessModeService = new SurveyAccessModeService(
+                    Permission::model(),
+                    Survey::model(),
+                    Yii::app(),
+                );
+                $surveyAccessModeService->changeAccessMode($surveyId, $mode);
                 switch ($openAccessMode) {
                     case 'Y': //show a modal or give feedback on another page
                         $this->redirect([
@@ -2775,19 +2841,82 @@ class SurveyAdministrationController extends LSBaseController
         $oQuestion = new Question();
         $oQuestion->sid = $iSurveyID;
         $oQuestion->gid = $iGroupID;
-        $oQuestion->type = Question::QT_T_LONG_FREE_TEXT;
+        $oQuestion->type = Question::QT_M_MULTIPLE_CHOICE;
         $oQuestion->title = 'Q00';
         $oQuestion->mandatory = 'N';
         $oQuestion->relevance = '1';
         $oQuestion->question_order = 1;
         $oQuestion->save();
+
         $oQuestionLS = new QuestionL10n();
         $oQuestionLS->question = '';
         $oQuestionLS->help = '';
         $oQuestionLS->language = $sLanguage;
         $oQuestionLS->qid = $oQuestion->qid;
         $oQuestionLS->save();
+
+        $editorEnabled = App()->getConfig('editorEnabled') ?? false;
+        if (!$editorEnabled) {
+            $this->createSampleSubquestion(
+                1,
+                $iSurveyID,
+                $iGroupID,
+                $oQuestion->qid,
+                $sLanguage,
+                gT('Option A')
+            );
+            $this->createSampleSubquestion(
+                2,
+                $iSurveyID,
+                $iGroupID,
+                $oQuestion->qid,
+                $sLanguage,
+                gT('Option B')
+            );
+        }
+
         return $oQuestion->qid;
+    }
+
+    /**
+     * Creates a sample subquestion for a parent question in a survey
+     *
+     * This method creates a new subquestion with the specified parameters and saves it to the database.
+     * It also creates the corresponding localization entry for the subquestion.
+     *
+     * @param int $number The sequence number for the subquestion, used for ordering and title generation
+     * @param int $surveyId The ID of the survey to which this subquestion belongs
+     * @param int $groupId The ID of the question group to which this subquestion belongs
+     * @param int $questionId The ID of the parent question to which this subquestion is attached
+     * @param string $language The language code for the subquestion's text
+     * @param string $text The actual text content of the subquestion
+     *
+     * @return void
+     */
+    private function createSampleSubquestion(
+        int $number,
+        int $surveyId,
+        int $groupId,
+        int $questionId,
+        string $language,
+        string $text
+    ) {
+        $subQuestion = new Question();
+        $subQuestion->parent_qid = $questionId;
+        $subQuestion->sid = $surveyId;
+        $subQuestion->gid = $groupId;
+        $subQuestion->type = Question::QT_T_LONG_FREE_TEXT;
+        $subQuestion->title = 'SQ00' . $number;
+        $subQuestion->question_order = $number;
+        $subQuestion->relevance = 1;
+        $subQuestion->save();
+
+        $subQuestionL10n = new QuestionL10n();
+        $subQuestionL10n->question = $text;
+        $subQuestionL10n->help = '';
+        $subQuestionL10n->language = $language;
+        $subQuestionL10n->qid = $subQuestion->qid;
+        $subQuestionL10n->save();
     }
 
     /**
