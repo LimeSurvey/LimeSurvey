@@ -74,7 +74,7 @@ class EmailTemplates extends SurveyCommonAction
                 foreach ($attachments as &$template) {
                     foreach ($template as &$attachment) {
                         // If the file is missing we add an error message
-                        if (!$this->attachmentExists($iSurveyId, $attachment)) {
+                        if (!LimeMailer::attachmentExist($iSurveyId, $attachment, false)) {
                             $attachment['error'] = gT("File not found.");
                         }
                         // For security reasons we don't include the full upload path in the frontend
@@ -329,31 +329,5 @@ class EmailTemplates extends SurveyCommonAction
         App()->getClientScript()->registerPackage('emailtemplates');
         $aData['display']['menu_bars']['surveysummary'] = 'editemailtemplates';
         parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
-    }
-
-    /**
-     * Checks that the specified attachment exists on one of the allowed paths.
-     * @param array<string,mixed> The attachment data
-     * @return bool True if the file exists within the survey or global upload dirs.
-     */
-    private function attachmentExists($surveyId, $attachment)
-    {
-        $isInSurvey = Yii::app()->is_file(
-            $attachment['url'],
-            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId,
-            false
-        );
-
-        $isInGlobal = Yii::app()->is_file(
-            $attachment['url'],
-            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "global",
-            false
-        );
-
-        if ($isInSurvey || $isInGlobal) {
-            return true;
-        }
-
-        return false;
     }
 }
