@@ -37,12 +37,19 @@ $route['admin/expressions'] = "admin/expressions/index";
 // REST
 // - Resource index
 // - Resource index with id
+// - Resource index with id and basetable (for survey responses)
 $route['rest/<_api_version:\w+>/<_entity>/<_id>'] = array(
     'rest',
     'verb' => 'GET, PUT, PATCH, POST, DELETE',
     'matchValue' => false
 );
 $route['rest/<_api_version:\w+>/<_entity>'] = array(
+    'rest',
+    'verb' => 'GET, PUT, PATCH, POST, DELETE',
+    'matchValue' => false
+);
+
+$route['rest/<_api_version:\w+>/<_entity>/id/<_id>/basetable/<_basetable>'] = array(
     'rest',
     'verb' => 'GET, PUT, PATCH, POST, DELETE',
     'matchValue' => false
