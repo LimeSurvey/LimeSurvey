@@ -97,7 +97,7 @@ class SurveyQuestionsFieldname implements CommandInterface
 
         $aDuplicateQIDs = [];
         $surveyLanguage = $survey->language;
-        $fullFieldMap = createFieldMap($survey, 'full', true, false, $surveyLanguage, $aDuplicateQIDs, [],true);
+        $fullFieldMap = createFieldMap($survey, 'full', true, false, $surveyLanguage, $aDuplicateQIDs, [], true);
 
         $questionsFieldMap = [];
 
