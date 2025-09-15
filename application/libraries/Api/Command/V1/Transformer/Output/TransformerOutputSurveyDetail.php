@@ -8,6 +8,7 @@ use LimeSurvey\Models\Services\SurveyCondition;
 use LimeSurvey\Models\Services\SurveyThemeConfiguration;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 use SurveysGroups;
+use TemplateConfiguration;
 
 /**
  * TransformerOutputSurveyDetail
@@ -210,7 +211,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['themesettings'] = [];
         $survey['themesettingattributes'] = [];
         $survey['templatePreview'] = '';
-        $this->tranformThemeSettings($survey['themesettings'], $survey['themesettingattributes'], $survey['templatePreview'], $data['template'], $data->sid);
+        $this->transformThemeSettings($survey['themesettings'], $survey['themesettingattributes'], $survey['templatePreview'], $data['template'], $data->sid);
 
         return $survey;
     }
@@ -395,24 +396,24 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     }
 
     /**
-     * Prepares theme settings necessary values,
+     * Prepares theme settings necessary values, including inheritance
      * @param-out array<array-key, mixed> $aThemeSettings
      * @param-out array<mixed> $aThemesettingattributes
      * @param-out string $sTemplatePreview
-     * @param string $sTemplateName
-     * @param integer $iSurveyId
+     * @param string $themeName
+     * @param integer $surveyId
      * @return void
      */
-    private function tranformThemeSettings(array &$aThemeSettings, array &$aThemesettingattributes, string &$sTemplatePreview, $sTemplateName, $iSurveyId = 0)
+    private function transformThemeSettings(array &$aThemeSettings, array &$aThemeSettingAttributes, string &$sTemplatePreview, $themeName, $surveyId = 0)
     {
-        $aThemeSettings = $this->surveyThemeConfiguration->getSurveyThemeOptions($iSurveyId, $sTemplateName);
-        $aThemeSettings = &$aThemeSettings;
+        $themeConfiguration = TemplateConfiguration::getInstance(null, null, $surveyId);
+        // loads all information available for the theme including inheritance
+        $themeData = $this->surveyThemeConfiguration->updateCommon($themeConfiguration, $surveyId);
+        $aThemeSettings = $themeData['oParentOptions'];
 
-        $aThemesettingattributes = $this->surveyThemeConfiguration->getSurveyThemeOptionsAttributes($iSurveyId, $sTemplateName);
-        $aThemesettingattributes = &$aThemesettingattributes;
+        $aThemeSettingAttributes = $themeData['aOptionAttributes'];
+        $aThemeSettingAttributes['optionAttributes'] = $this->surveyThemeConfiguration->getSurveyThemeOptionsAttributes($themeData['aOptionAttributes']['optionAttributes']);
 
-        $templateConf = \TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
-        $sTemplatePreview = $templateConf->getPreview(true);
-        $sTemplatePreview = &$sTemplatePreview;
+        $sTemplatePreview = $themeConfiguration->getPreview(true);
     }
 }
