@@ -95,8 +95,9 @@ class SurveyQuestionsFieldname implements CommandInterface
             return $this->responseFactory->makeErrorNotFound();
         }
 
+        $aDuplicateQIDs = [];
         $surveyLanguage = $survey->language;
-        $fullFieldMap = createFieldMap($survey, 'full', true, false, $surveyLanguage);
+        $fullFieldMap = createFieldMap($survey, 'full', true, false, $surveyLanguage, $aDuplicateQIDs, [], true);
 
         $questionsFieldMap = [];
 

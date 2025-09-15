@@ -1472,9 +1472,10 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
 * @param string $sLanguage The language to use
 * @param array $aDuplicateQIDs
 * @param array $surveyReplacements needed to replace qids with the correct values, for example during import
+* @param bool $includeAllAnswerOptions Include all answer options in the fieldmap (e.g. ignore min-max answers values) - default is false
 * @return array
 */
-function createFieldMap($survey, $style = 'short', $force_refresh = false, $questionid = false, $sLanguage = '', &$aDuplicateQIDs = array(), $surveyReplacements = [])
+function createFieldMap($survey, $style = 'short', $force_refresh = false, $questionid = false, $sLanguage = '', &$aDuplicateQIDs = array(), $surveyReplacements = [], $includeAllAnswerOptions = false)
 {
 
     static $aQIDReplacementMappings = [];
@@ -1896,6 +1897,10 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             $maxDbAnswer = QuestionAttribute::model()->find("qid = :qid AND attribute = 'max_subquestions'", array(':qid' => $arow['qid']));
             $columnsCount = (!$maxDbAnswer || intval($maxDbAnswer->value) < 1) ? $answersCount : intval($maxDbAnswer->value);
             $columnsCount = min($columnsCount, $answersCount); // Can not be upper than current answers #14899
+
+            if($includeAllAnswerOptions)
+                $columnsCount = $answersCount;
+
             for ($i = 1; $i <= $columnsCount; $i++) {
                 $fieldname = "Q{$arow['qid']}_R" . $answers[$i - 1]->aid;
                 if (isset($fieldmap[$fieldname])) {
