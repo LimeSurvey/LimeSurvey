@@ -137,14 +137,13 @@ foreach ($rest as $path => $config) {
         // Params
         $params = [];
 
-        if($pathPartsCount > 3) {
-             if($complexPathParams && count($complexPathParams) > 0) {
-                foreach ($complexPathParams as $paramName) {
-                    $params[] = Parameter::path()->name('_' . $paramName);
+             if($pathPartsCount > 3) {
+                if(isset($complexPathParams) && $complexPathParams  && count($complexPathParams) > 0) {
+                    foreach ($complexPathParams as $paramName) {
+                        $params[] = Parameter::path()->name('_' . $paramName);
+                    }
                 }
-            }
-            
-        } else {
+            } else {
            // Entity id param
             if ($id) {
                 $params[] = Parameter::path()->name('_id');
@@ -301,7 +300,6 @@ foreach ($rest as $path => $config) {
     if (!empty($operations)) {
         $oaPath = $oaPath->operations(...$operations);
     }
-       var_dump($oaPathString); 
     $paths[] = $oaPath;
 }
 
