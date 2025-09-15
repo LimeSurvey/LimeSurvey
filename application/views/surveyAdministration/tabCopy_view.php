@@ -26,9 +26,9 @@
 
                 <!-- New survey ID -->
                 <label class=" form-label" for='copysurveyid'><?php echo  eT("New survey ID:"); ?> </label>
-                <input type='number' step="1" min="1" max="999999" id='copysurveyid' size='82' name='copysurveyid' value='' class="form-control" />
+                <input type='number' step="1" min="1" max="999999" id='copysurveyid' size='82' name='copysurveyid' value='' class="form-control" aria-describedby="optional1dsk" />
                 <p class="form-control-static">
-                    <span class='annotation text-info'><?php echo  gT("Optional"); ?> </span>
+                    <span class='annotation text-info' id="optional1dsk"><?php echo  gT("Optional"); ?> </span>
                 </p>
                             <?= gT("If the new survey ID is already used, a random one will be assigned."); ?> </span>
                 <!-- Submit -->
