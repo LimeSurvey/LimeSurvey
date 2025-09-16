@@ -284,11 +284,11 @@ class Tokens extends SurveyCommonAction
 
                                 if ($iSurveyId == $iSurveyIdBounce[1]) {
                                     $condn  = array('token' => $tokenBounce[1]);
-                                    $record = Token::model($iSurveyId)->findByAttributes($condn);
+                                    $record = Token::model($iSurveyId)->findByAttributes($condn)->decrypt();
 
                                     if (!empty($record) && $record->emailstatus != 'bounced') {
                                         $record->emailstatus = 'bounced';
-                                        $record->save();
+                                        $record->encryptSave(true);
                                         $bouncetotal++;
                                     }
 
