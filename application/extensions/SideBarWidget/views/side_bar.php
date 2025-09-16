@@ -13,14 +13,14 @@
                      title="<?= $icon['title'] ?>"
                      data-bs-offset="0, 20"
                      data-bs-placement="right">
-                    <a href="<?= $icon['url'] ?>"
-                       target="<?= $icon['external'] ? '_blank' : '' ?>"
-                       class="btn btn-g-800 btn-icon"
-                       aria-label="<?= htmlspecialchars($icon['title'], ENT_QUOTES) ?>"
-                       <?= $icon['selected'] ? 'aria-current="page"' : '' ?>
-                    >
-                        <i class="<?php echo CHtml::encode($icon['ico']); ?>" aria-hidden="true"></i>
-                    </a>
+                   <a href="<?= $icon['url'] ?>"
+   target="<?= $icon['external'] ? '_blank' : '' ?>"
+   class="btn btn-g-800 btn-icon <?= $icon['selected'] ? 'active' : '' ?>"
+   aria-label="<?= htmlspecialchars($icon['title'], ENT_QUOTES) ?>"
+   <?= $icon['selected'] ? 'aria-current="page"' : '' ?>>
+   <i class="<?= CHtml::encode($icon['ico']); ?>" aria-hidden="true"></i>
+</a>
+
                 </div>
             </div>
         <?php endforeach; ?>
