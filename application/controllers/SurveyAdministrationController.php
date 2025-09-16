@@ -2224,6 +2224,7 @@ class SurveyAdministrationController extends LSBaseController
      * @access public
      * @return void
      * @throws CException
+     * @throws Exception
      */
     public function actionCopy()
     {
@@ -2245,91 +2246,44 @@ class SurveyAdministrationController extends LSBaseController
             $this->redirect(App()->request->urlReferrer);
         }
 
-        // Start treatment and messagebox
-        $options = [];
-
-        $aExcludes = array();
-
-        //we have to processes
-        // 1 -- one link without any options
-        // 2 -- one link where options could be selected
-        $options['excludeQuotas'] = App()->request->getPost('copysurveyexcludequotas') == "1";
-        $options['excludePermissions'] = App()->request->getPost('copysurveyexcludepermissions') == "1";
-        $options['excludeAnswers'] = App()->request->getPost('copysurveyexcludeanswers') == "1";
-        $options['resetConditions'] = App()->request->getPost('copysurveyresetconditions') == "1";
-        $options['resetStartEndDate'] = App()->request->getPost('copysurveyresetstartenddate') == "1";
-        $options['resetResponseId'] = App()->request->getPost('copysurveyresetresponsestartid') == "1";
-        $options['copyResources'] = App()->request->getPost('copysurveytranslinksfields') == '1';
-
         $newSurveyId = sanitize_int(App()->request->getPost('copysurveyid'), 1, 99999);
         $sNewSurveyName = $survey->currentLanguageSettings->surveyls_title . '_copy';
 
-        $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
-            $surveyId,
-            "newSurveyName",
-            $newSurveyId,
-            $options
-        );
-
         $aData = [];
 
+        //texts for the overview
         $aData['sHeader'] = gT("Copy survey");
         $aData['sSummaryHeader'] = gT("Survey copy summary");
         $aData['textCompleted'] = gT("Copy of survey is completed.");
 
-        App()->loadHelper('export');
-        $copysurveydata = surveyGetXMLData($surveyId, $aExcludes);
-        App()->loadHelper('admin/import');
-
-        $aImportResults = XMLImportSurvey(
-            '',
-            $copysurveydata,
+        //we have 2 different processes here
+        // 1 -- one link without any options (should open the overview after copy)
+        // 2 -- one link where options could be selected in a modal before copying
+        $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
+            App()->request,
             $sNewSurveyName,
-            $options['newSurveyId'],
-            $options['copyResources']
+            $newSurveyId,
         );
-        if (isset($aExcludes['conditions'])) {
-            Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $aImportResults['newsid']);
-            QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $aImportResults['newsid']);
-        }
-
-        if (isset($aExcludes['reset_response_id'])) {
-            $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
-            $oSurvey->autonumber_start = 0;
-            $oSurvey->save();
-        }
-
-        if (!isset($aExcludes['permissions'])) {
-            Permission::model()->copySurveyPermissions($surveyId, $aImportResults['newsid']);
-        }
-
-        if (!empty($aImportResults['newsid']) && $options['copyResources']) {
-            $resourceCopier = new CopySurveyResources();
-            [, $errorFilesInfo] = $resourceCopier->copyResources($surveyId, $aImportResults['newsid']);
-            if (!empty($errorFilesInfo)) {
-                $aImportResults['importwarnings'][] = gT("Some resources could not be copied from the source survey");
-            }
-        }
-
+        $copyResults = $copySurveyService->copy();
 
         $aData['bFailed'] = false;
         // If the import failed, set the status and error message in order to keep consistency with other errors
-        if (!empty($aImportResults['error'])) {
-            $aData['sErrorMessage'] = $aImportResults['error'];
+        if (!empty($copyResults['error'])) {
+            $aData['sErrorMessage'] = $copyResults['error'];
             $aData['bFailed'] = true;
         }
 
-        if (!$aData['bFailed'] && isset($aImportResults)) {
-            $aData['aImportResults'] = $aImportResults;
-            if (isset($aImportResults['newsid'])) {
+        if (!$aData['bFailed'] && isset($copyResults)) {
+            $aData['aImportResults'] = $copyResults;
+            if (isset($copyResults['newsid'])) {
                 // Set link pointing to survey administration overview. This link will be updated if the survey has groups
-                $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $aImportResults['newsid']]);
-                $aData['sLinkApplyThemeOptions'] = 'surveyAdministration/applythemeoptions/surveyid/' . $aImportResults['newsid'];
+                $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $copyResults['newsid']]);
+                $aData['sLinkApplyThemeOptions'] = 'surveyAdministration/applythemeoptions/surveyid/' . $copyResults['newsid'];
             }
         }
-        if (!empty($aImportResults['newsid'])) {
-            $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
-            $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $aImportResults['newsid']]);
+        if (!empty($copyResults['newsid'])) {
+            $oSurvey = Survey::model()->findByPk($copyResults['newsid']);
+            $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $copyResults['newsid']]);
 
             $this->resetExpressionManager($oSurvey, $aGrouplist);
 
@@ -2342,7 +2296,7 @@ class SurveyAdministrationController extends LSBaseController
                 );
 
                 $aData['sLink'] = $this->getSurveyAndSidemenueDirectionURL(
-                    $aImportResults['newsid'],
+                    $copyResults['newsid'],
                     $oFirstGroup->gid,
                     !empty($oFirstQuestion) ? $oFirstQuestion->qid : null,
                     'structure'
@@ -2350,12 +2304,12 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
 
-        if ((App()->getConfig("editorEnabled")) && isset($aImportResults['newsid'])) {
+        if ((App()->getConfig("editorEnabled")) && isset($copyResults['newsid'])) {
             if (!isset($oSurvey)) {
-                $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
+                $oSurvey = Survey::model()->findByPk($copyResults['newsid']);
             }
             if ($oSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
-                $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $aImportResults['newsid']]);
+                $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $copyResults['newsid']]);
             }
         }
         $this->aData = $aData;
