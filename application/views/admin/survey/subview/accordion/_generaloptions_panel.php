@@ -312,6 +312,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                     'name'          => 'format',
                     'checkedOption'         => $oSurvey->format,
                     'selectOptions' => $formatSelectOptions,
+                    'ariaLabel'    => gT(' format'),
                 ]); ?>
             </div>
         </div>
