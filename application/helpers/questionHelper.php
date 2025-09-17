@@ -866,6 +866,22 @@ class questionHelper
             "caption" => gT('Answer options order')
         );
 
+        self::$attributes["subquestion_order"] = array(
+            "types" => Question::QT_M_MULTIPLE_CHOICE . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
+            'category' => gT('Display'),
+            'sortorder' => 100,
+            'inputtype' => 'singleselect',
+            'options' => array(
+                'normal' => gT('Normal'),
+                'random' => gT("Random"),
+                'alphabetical' => gT("Alphabetical"),
+                'random_alphabetical' => gT("Random A-Z/Z-A")
+            ),
+            'default' => 'normal',
+            "help" => gT('Present subquestions in normal, random or alphabetical order'),
+            "caption" => gT('Subquestions order')
+        );
+
         self::$attributes["showpopups"] = array(
         "types" => Question::QT_R_RANKING,
             'category' => gT('Display'),
