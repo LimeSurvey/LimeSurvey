@@ -50,7 +50,7 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
 
 
 <!-- Tabs -->
-<ul class="nav nav-tabs" id="create-import-copy-survey">
+<ul class="nav nav-tabs" id="create-import-copy-survey" role="tablist">
 
     <!-- Create -->
     <li class="nav-item" role="presentation">
