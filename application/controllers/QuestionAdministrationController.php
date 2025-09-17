@@ -575,7 +575,8 @@ class QuestionAdministrationController extends LSBaseController
                             [
                                 'questionId' => $question->qid,
                                 'landOnSideMenuTab' => $landOnSideMenuTab,
-                                'tabOverviewEditor' => $tabOverviewEditorValue
+                                'tabOverviewEditor' => $tabOverviewEditorValue,
+                                'gid' => $question->gid    // Needed by adminsidepanel to know the context (ie. in createFullQuestionLink)
                             ]
                         );
                 }

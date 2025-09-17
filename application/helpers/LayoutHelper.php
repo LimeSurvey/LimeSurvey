@@ -165,7 +165,7 @@ class LayoutHelper
         $menuItemHeader = [
             'isDivider' => false,
             'isSmallText' => true,
-            'label' => 'Create new',
+            'label' => 'Create new...',
             'href' => '#',
             'iconClass' => 'ri-add-line',
         ];
