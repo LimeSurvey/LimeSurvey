@@ -1598,7 +1598,7 @@ class Participant extends LSActiveRecord
             $aTokenAttributes[$key] = $iIDAttributeCPDB;
         }
 
-        $aTokenAttributes = serialize($aTokenAttributes);
+        $aTokenAttributes = json_encode($aTokenAttributes);
 
         Yii::app()->db
             ->createCommand()
