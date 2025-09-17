@@ -59,7 +59,7 @@ class SurveyAdministrationController extends LSBaseController
      * Set filters for all actions
      * @return string[]
      */
-   public function filters()
+    public function filters()
     {
         return [
             'postOnly + copy'
@@ -2234,14 +2234,12 @@ class SurveyAdministrationController extends LSBaseController
             App()->user->setFlash('error', gT("Access denied"));
             $this->redirect(App()->request->urlReferrer);
         }
-
         $surveyId = sanitize_int(App()->request->getPost('surveyIdToCopy'));
         $survey = Survey::model()->findByPk($surveyId);
         if (!$survey) {
             App()->user->setFlash('error', gT("Survey does not exist."));
             $this->redirect(App()->request->urlReferrer);
         }
-
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'export')) {
             App()->user->setFlash('error', gT("Access denied"));
             $this->redirect(App()->request->urlReferrer);
@@ -2249,23 +2247,18 @@ class SurveyAdministrationController extends LSBaseController
 
         $newSurveyId = sanitize_int(App()->request->getPost('copysurveyid'), 1, 99999);
         $sNewSurveyName = $survey->currentLanguageSettings->surveyls_title . '- Copy';
-
-        $aData = [];
-
-        //texts for the overview
-        $aData['sHeader'] = gT("Copy survey");
-        $aData['sSummaryHeader'] = gT("Survey copy summary");
-        $aData['textCompleted'] = gT("Copy of survey is completed.");
-
-        //we have 2 different processes here
-        // 1 -- one link without any options (should open the overview after copy)
-        // 2 -- one link where options could be selected in a modal before copying
         $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
             App()->request,
             $sNewSurveyName,
             $newSurveyId,
         );
         $copyResults = $copySurveyService->copy();
+
+        $aData = [];
+        //texts for the overview
+        $aData['sHeader'] = gT("Copy survey");
+        $aData['sSummaryHeader'] = gT("Survey copy summary");
+        $aData['textCompleted'] = gT("Copy of survey is completed.");
 
         $aData['bFailed'] = false;
         // If the import failed, set the status and error message in order to keep consistency with other errors
@@ -2316,6 +2309,48 @@ class SurveyAdministrationController extends LSBaseController
         $this->aData = $aData;
 
         $this->render('importSurvey_view', $this->aData);
+    }
+
+    /**
+     * @param int $surveyIdToCopy
+     * @return void
+     * @throws Exception
+     */
+    public function actionCopySimple($surveyIdToCopy){
+        //everybody who has permission to create surveys
+        if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
+        }
+
+        $surveyId = sanitize_int($surveyIdToCopy);
+        $survey = Survey::model()->findByPk($surveyId);
+        if (!$survey) {
+            App()->user->setFlash('error', gT("Survey does not exist."));
+            $this->redirect(App()->request->urlReferrer);
+        }
+
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'export')) {
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
+        }
+
+        $sNewSurveyName = $survey->currentLanguageSettings->surveyls_title . '- Copy';
+
+        $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
+            App()->request,
+            $sNewSurveyName,
+            '',
+        );
+        $copyResults = $copySurveyService->copy();
+
+        if (empty($copyResults['error'])) {
+            App()->user->setFlash('success', gT("Survey copied successfully."));
+        } else{
+            App()->user->setFlash('error', gT("Error while copying the survey."));
+        }
+
+        $this->redirect(App()->request->urlReferrer);
     }
 
     public function actionImport()

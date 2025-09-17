@@ -56,6 +56,10 @@ class CopySurvey
     {
         $this->sourceSurveyId = sanitize_int($this->request->getPost('surveyIdToCopy'));
 
+        if($this->sourceSurveyId === null) {
+            $this->sourceSurveyId = sanitize_int($this->request->getParam('surveyIdToCopy'));
+        }
+
         $options = [];
         $options['copyResources'] = true;
         $options['excludeQuotas'] = true;
