@@ -836,7 +836,23 @@ class Question extends LSActiveRecord
                 foreach ($scaleArray as $key => $answer) {
                     $sorted[$key] = $answer->answerl10ns[$language]->answer;
                 }
-                LimeSurvey\Helpers\SortHelper::getInstance($language)->asort($sorted, LimeSurvey\Helpers\SortHelper::SORT_STRING);
+                // Check if we need to randomize the sort direction (A-Z or Z-A)
+                $answerOrder = $this->getQuestionAttribute('answer_order');
+                if (
+                    $answerOrder == 'random_alphabetical' && mt_rand(0, 1) == 1
+                ) {
+                    // Sort in reverse alphabetical order (Z-A)
+                    LimeSurvey\Helpers\SortHelper::getInstance($language)->arsort(
+                        $sorted,
+                        LimeSurvey\Helpers\SortHelper::SORT_STRING
+                    );
+                } else {
+                    // Sort in alphabetical order (A-Z)
+                    LimeSurvey\Helpers\SortHelper::getInstance($language)->asort(
+                        $sorted,
+                        LimeSurvey\Helpers\SortHelper::SORT_STRING
+                    );
+                }
                 // Now, we create a new array that store the old values of $answerOptions in the order of $sorted
                 $sortedScaleAnswers = array();
                 foreach ($sorted as $key => $answer) {
@@ -884,7 +900,7 @@ class Question extends LSActiveRecord
         // implement the 'answer_order' attribute instead of using separate attributes.
         $answerOrder = $this->getQuestionAttribute('answer_order');
         if (!is_null($answerOrder)) {
-            return $answerOrder == 'alphabetical';
+            return $answerOrder == 'alphabetical' || $answerOrder == 'random_alphabetical';
         }
         return $this->getQuestionAttribute('alphasort') == 1;
     }
