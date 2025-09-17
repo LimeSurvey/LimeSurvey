@@ -59,12 +59,13 @@ class SurveyAdministrationController extends LSBaseController
      * Set filters for all actions
      * @return string[]
      */
-    public function filters()
+   public function filters()
     {
         return [
             'postOnly + copy'
         ];
     }
+
     /**
      * SurveyAdministrationController constructor.
      * @param $id
@@ -2247,7 +2248,7 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         $newSurveyId = sanitize_int(App()->request->getPost('copysurveyid'), 1, 99999);
-        $sNewSurveyName = $survey->currentLanguageSettings->surveyls_title . '_copy';
+        $sNewSurveyName = $survey->currentLanguageSettings->surveyls_title . '- Copy';
 
         $aData = [];
 
@@ -2313,6 +2314,7 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
         $this->aData = $aData;
+
         $this->render('importSurvey_view', $this->aData);
     }
 

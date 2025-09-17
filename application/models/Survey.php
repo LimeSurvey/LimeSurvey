@@ -1511,9 +1511,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
         //todo: it should just copy the survey without selecting options
         $dropdownItems[] = [
             'title' => gT('Copy'),
+            //'url' => App()->createUrl("/surveyAdministration/copy"),
             'linkAttributes'   => [
-                'data-bs-toggle' => "modal",
-                'data-bs-target' => "#copySurvey_modal",
+                'onclick' => "copySurvey($this->sid)",
             ],
             'enabledCondition' => $permissions['survey_update'],
         ];

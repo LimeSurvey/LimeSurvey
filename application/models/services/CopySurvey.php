@@ -17,7 +17,6 @@ use Permission;
  */
 class CopySurvey
 {
-
     /** @var LSHttpRequest */
     private $request;
 
@@ -68,37 +67,37 @@ class CopySurvey
 
         //Survey resource files and adapt links
         $option = $this->request->getPost('copysurveytranslinksfields');
-        if(isset($option)){ //user decision
+        if (isset($option)) { //user decision
             $options['copyResources'] = $option == "1";
         }
 
         $option = $this->request->getPost('copysurveyexcludequotas');
-        if(isset($option)){ //user decision
+        if (isset($option)) { //user decision
             $options['excludeQuotas'] = $option == "1";
         }
 
         $option = $this->request->getPost('copysurveyexcludepermissions');
-        if(isset($option)){ //user decision
+        if (isset($option)) { //user decision
             $options['excludePermissions'] = $option == "1";
         }
 
         $option = $this->request->getPost('copysurveyexcludeanswers');
-        if(isset($option)){ //user decision
+        if (isset($option)) { //user decision
             $options['excludeAnswers'] = $option == "1";
         }
 
         $option = $this->request->getPost('copysurveyresetconditions');
-        if(isset($option)){ //user decision
+        if (isset($option)) { //user decision
             $options['resetConditions'] = $option == "1";
         }
 
         $option = $this->request->getPost('copysurveyresetstartenddate');
-        if(isset($option)){ //user decision
+        if (isset($option)) { //user decision
             $options['resetStartEndDate'] = $option == "1";
         }
 
         $option = $this->request->getPost('copysurveyresetresponsestartid');
-        if(isset($option)){ //user decision
+        if (isset($option)) { //user decision
             $options['resetResponseId'] = $option == "1";
         }
 
