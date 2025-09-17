@@ -70,6 +70,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                 'name'          => 'numberformat_' . $aSurveyLanguageSettings['surveyls_language'],
                 'checkedOption' => $aSurveyLanguageSettings['surveyls_numberformat'],
                 'selectOptions' => $aRadixPoint,
+                'ariaLabel'     => gT("Decimal mark:"),
                 'htmlOptions'   => [
                     "style" => "z-index:0"
                 ]
