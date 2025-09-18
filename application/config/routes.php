@@ -49,7 +49,7 @@ $route['rest/<_api_version:\w+>/<_entity>'] = array(
     'matchValue' => false
 );
 
-$route['rest/<_api_version:\w+>/<_entity>/id/<_id>/basetable/<_basetable>'] = array(
+$route['rest/<_api_version:\w+>/<_entity>/<_id>/<_basetable>'] = array(
     'rest',
     'verb' => 'GET, PUT, PATCH, POST, DELETE',
     'matchValue' => false

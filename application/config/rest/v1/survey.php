@@ -166,7 +166,7 @@ $rest['v1/survey-archives/$id'] = [
     ]
 ];
 
-$rest['v1/survey-archives/id/$id/basetable/$basetable'] = [
+$rest['v1/survey-archives/$id/$basetable'] = [
     'GET' => [
         'tag' => 'survey',
         'description' => 'Survey archives',

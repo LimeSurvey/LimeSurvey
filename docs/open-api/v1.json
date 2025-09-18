@@ -3152,7 +3152,7 @@
                 ]
             }
         },
-        "\/rest\/v1\/survey-archives\/id\/{_id}\/basetable\/{_basetable}": {
+        "\/rest\/v1\/survey-archives\/{_id}\/{_basetable}": {
             "get": {
                 "tags": [
                     "Survey"
