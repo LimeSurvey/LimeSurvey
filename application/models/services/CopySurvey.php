@@ -109,7 +109,7 @@ class CopySurvey
     }
 
     /**
-     * Copy the survey and return the import results.
+     * Copy the survey and return the results.
      *
      * It first extracts the original survey data to xml and afterward imports the xml data
      * as a survey.

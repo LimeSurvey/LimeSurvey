@@ -56,7 +56,7 @@
                         <div class="form-check">
                             <input id="ytcopysurveyexcludeanswers" name="copysurveyexcludeanswers" type="hidden" value="0" checked>
                             <input id="copysurveyexcludeanswers" name="copysurveyexcludeanswers" type="checkbox" value="1">
-                            <label class=" form-label" for='copysurveyexcludeanswers'><?php echo  eT("Answer options from hte original survey"); ?> </label>
+                            <label class=" form-label" for='copysurveyexcludeanswers'><?php echo  eT("Answer options from the original survey"); ?> </label>
                         </div>
 
                         <!-- Reset conditions/relevance -->
