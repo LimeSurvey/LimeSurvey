@@ -21,16 +21,18 @@ class TransformerOutputUserPermissions extends TransformerOutputActiveRecord
     public function transform($data, $options = [])
     {
         $permissions = ['global' => [], 'survey' => []];
-        foreach ($data as $permission) {
-            $permissionType = $permission['permission'];
-            unset($permission['permission']);
+        if (!empty($data)) {
+            foreach ($data as $permission) {
+                $permissionType = $permission['permission'];
+                unset($permission['permission']);
 
-            $permissionTransformed = parent::transform($permission, $options);
-            if ($permission['entity'] === 'global') {
-                $permissions['global'][$permissionType] = $permissionTransformed;
-            }
-            if ($permission['entity'] === 'survey') {
-                $permissions['survey'][$permission['entity_id']][$permissionType] = $permissionTransformed;
+                $permissionTransformed = parent::transform($permission, $options);
+                if ($permission['entity'] === 'global') {
+                    $permissions['global'][$permissionType] = $permissionTransformed;
+                }
+                if ($permission['entity'] === 'survey') {
+                    $permissions['survey'][$permission['entity_id']][$permissionType] = $permissionTransformed;
+                }
             }
         }
 
