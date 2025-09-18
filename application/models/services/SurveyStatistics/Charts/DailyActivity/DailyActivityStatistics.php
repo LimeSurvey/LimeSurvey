@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\DailyActivity;
 
-
 use DateInterval;
 use DatePeriod;
 use DateTime;
