@@ -6,8 +6,7 @@ use Permission;
 use LimeSurvey\Api\Command\{CommandInterface,
     Request\Request,
     Response\Response,
-    Response\ResponseFactory,
-    V1\AuthTokenSimple};
+    Response\ResponseFactory};
 use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputUserPermissions;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
