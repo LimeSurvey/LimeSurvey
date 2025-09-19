@@ -80,6 +80,17 @@ class Question extends LSActiveRecord
     const QT_COLON_ARRAY_NUMBERS = ':';
     const QT_SEMICOLON_ARRAY_TEXT = ';';
 
+    const ORDER_TYPES_SUBQUESTION = [
+        self::QT_M_MULTIPLE_CHOICE,
+        self::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS
+    ];
+    const ORDER_TYPES_ANSWER = [
+        self::QT_L_LIST,
+        self::QT_R_RANKING,
+        self::QT_EXCLAMATION_LIST_DROPDOWN,
+        self::QT_O_LIST_WITH_COMMENT
+    ];
+
     const START_SORTING_VALUE = 1; //this is the start value for question_order
 
     const DEFAULT_QUESTION_THEME = 'core';  // The question theme name to use when no theme is specified
