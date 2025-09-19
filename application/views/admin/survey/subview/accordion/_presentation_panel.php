@@ -54,6 +54,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'shownoanswer',
                             'checkedOption' => $oSurvey->shownoanswer,
+                            'ariaLabel' => gT('no answer'),
                             'selectOptions' => ($bShowInherited) ?
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->shownoanswer . " ᴵ")) : $optionsOnOff
                         )
@@ -72,6 +73,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'showxquestions',
                             'checkedOption' => $oSurvey->showxquestions,
+                             'ariaLabel' => gT('There are X questions in this survey'),
                             'selectOptions' => ($bShowInherited) ?
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->showxquestions . " ᴵ")) : $optionsOnOff
                         )
@@ -156,6 +158,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'showwelcome',
                             'checkedOption' => $oSurvey->showwelcome,
+                            'ariaLabel' => gT('welcome screen'),
                             'selectOptions' => ($bShowInherited) ?
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->showwelcome . " ᴵ")) : $optionsOnOff
                         )
@@ -173,6 +176,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'nokeyboard',
                             'checkedOption' => $oSurvey->nokeyboard,
+                             'ariaLabel' => gT('on-screen keyboard'),
                             'selectOptions' => ($bShowInherited) ?
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->nokeyboard . " ᴵ")) : $optionsOnOff
                         )
@@ -190,6 +194,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'showprogress',
                             'checkedOption' => $oSurvey->showprogress,
+                             'ariaLabel' => gT('progress bar'),
                             'selectOptions' => ($bShowInherited) ?
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->showprogress . " ᴵ")) : $optionsOnOff
                         )
@@ -207,6 +212,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'questionindex',
                             'checkedOption' => $oSurvey->questionindex,
+                             'ariaLabel' => gT('question index, allow jumping'),
                             'selectOptions' => $optionsQuestionIndex
                         )
                     );
@@ -257,6 +263,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'autoredirect',
                             'checkedOption' => $oSurvey->autoredirect,
+                                'ariaLabel' => gT('Automatically load end URL when survey complete'),
                             'selectOptions' => ($bShowInherited)
                                 ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->autoredirect . " ᴵ")) : $optionsOnOff
                         )
@@ -276,6 +283,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'allowprev',
                             'checkedOption' => $oSurvey->allowprev,
+                                'ariaLabel' => gT('Allow backward navigation'),
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->allowprev . " ᴵ")) : $optionsOnOff
                         )
                     );
@@ -291,6 +299,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'printanswers',
                             'checkedOption' => $oSurvey->printanswers,
+                                'ariaLabel' => gT('Participants may print answers'),
                             'selectOptions' => ($bShowInherited) ?
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->printanswers . " ᴵ")) : $optionsOnOff
                         )
@@ -313,6 +322,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'publicstatistics',
                             'checkedOption' => $oSurvey->publicstatistics,
+                                'ariaLabel' => gT('public statistics'),
                             'selectOptions' => ($bShowInherited) ?
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->publicstatistics . " ᴵ")) : $optionsOnOff
                         )
@@ -333,6 +343,7 @@ if ($bShowInherited) {
                     array(
                         'name' => 'publicgraphs',
                         'checkedOption' => $oSurvey->publicgraphs,
+                            'ariaLabel' => gT('public graphs'),
                         'selectOptions' => ($bShowInherited) ?
                             array_merge($optionsOnOff, array('I' => $oSurveyOptions->publicgraphs . " ᴵ")) : $optionsOnOff
                     )
