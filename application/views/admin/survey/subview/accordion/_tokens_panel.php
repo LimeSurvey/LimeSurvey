@@ -125,6 +125,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                         $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                             'name' => 'anonymized',
                             'checkedOption' => $oSurvey->anonymized,
+                            'ariaLabel' => gT('Anonymized responses:'),
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff,
                                 ['I' => $oSurveyOptions->anonymized . " ᴵ" ]) : $optionsOnOff,
                         ]);
@@ -141,6 +142,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'tokenanswerspersistence',
                         'checkedOption' => $oSurvey->tokenanswerspersistence,
+                        'ariaLabel' => gT('Enable participant-based response persistence:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' =>$oSurveyOptions->tokenanswerspersistence . " ᴵ" ])
                             : $optionsOnOff
@@ -158,6 +160,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'alloweditaftercompletion',
                         'checkedOption' => $oSurvey->alloweditaftercompletion,
+                       'ariaLabel' => gT('Allow to update the responses using the access code'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->alloweditaftercompletion . " ᴵ"])
                             : $optionsOnOff
@@ -183,6 +186,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                             'name'          => 'tokenlengthbutton',
                             'checkedOption' => ($bShowInherited && $tokenlength == '-1' ? 'Y' : 'N'),
+                             'ariaLabel' => gT('Inherit:'),
                             'selectOptions' => $optionsOnOff,
                             'htmlOptions'   => [
                                 'class' => 'text-option-inherit'
@@ -201,6 +205,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'allowregister',
                         'checkedOption' => $oSurvey->allowregister,
+                         'ariaLabel' => gT('Allow public registration:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->allowregister . " ᴵ"])
                             : $optionsOnOff
@@ -215,6 +220,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'htmlemail',
                         'checkedOption' => $oSurvey->htmlemail,
+                          'ariaLabel' => gT('Use HTML format for participant emails:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->htmlemail . " ᴵ" ])
                             : $optionsOnOff,
@@ -235,7 +241,9 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name' => 'sendconfirmation',
                         'checkedOption' => $oSurvey->sendconfirmation,
+                         'ariaLabel' => gT('Send confirmation emails:'),
                         'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff,
+
                             ['I' => $oSurveyOptions->sendconfirmation . " ᴵ"]) : $optionsOnOff
                     ]); ?>
                 </div>
