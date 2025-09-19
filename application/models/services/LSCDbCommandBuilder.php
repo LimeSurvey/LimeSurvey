@@ -103,7 +103,7 @@ class LSCDbCommandBuilder extends \CDbCommandBuilder
             $rowInsertValues[] = strtr($templates['rowInsertValue'], [
                 '{{tableName}}'         => $tableName,
                 '{{columnInsertNames}}' => $columnInsertNamesSqlPart,
-                '{{columnInsertValues}}'=> implode($templates['columnInsertValueGlue'], $columnInsertValues),
+                '{{columnInsertValues}}' => implode($templates['columnInsertValueGlue'], $columnInsertValues),
             ]);
         }
 
