@@ -69,26 +69,29 @@ class LSCDbCommandBuilder extends \CDbCommandBuilder
                     $params[':' . $placeholder . '_' . $rowKey] = $column->typecast($columnValue);
                 }
                 $columnInsertValues[] = strtr(
-                    $templates['columnInsertValue'], array(
-                    '{{column}}' => $columnInsertNames[$columnName],
-                    '{{value}}' => $columnInsertValue,
+                    $templates['columnInsertValue'],
+                    array(
+                        '{{column}}' => $columnInsertNames[$columnName],
+                        '{{value}}' => $columnInsertValue,
                     )
                 );
             }
             $rowInsertValues[] = strtr(
-                $templates['rowInsertValue'], array(
-                '{{tableName}}' => $tableName,
-                '{{columnInsertNames}}' => $columnInsertNamesSqlPart,
-                '{{columnInsertValues}}' => implode($templates['columnInsertValueGlue'], $columnInsertValues)
+                $templates['rowInsertValue'],
+                array(
+                    '{{tableName}}' => $tableName,
+                    '{{columnInsertNames}}' => $columnInsertNamesSqlPart,
+                    '{{columnInsertValues}}' => implode($templates['columnInsertValueGlue'], $columnInsertValues)
                 )
             );
         }
 
         $sql = strtr(
-            $templates['main'], array(
-            '{{tableName}}' => $tableName,
-            '{{columnInsertNames}}' => $columnInsertNamesSqlPart,
-            '{{rowInsertValues}}' => implode($templates['rowInsertValueGlue'], $rowInsertValues),
+            $templates['main'],
+            array(
+                '{{tableName}}' => $tableName,
+                '{{columnInsertNames}}' => $columnInsertNamesSqlPart,
+                '{{rowInsertValues}}' => implode($templates['rowInsertValueGlue'], $rowInsertValues),
             )
         );
         $command = $this->getDbConnection()->createCommand($sql);
