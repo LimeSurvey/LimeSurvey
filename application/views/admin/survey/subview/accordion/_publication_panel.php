@@ -73,6 +73,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'listpublic',
                         'checkedOption' => $oSurvey->listpublic,
+                        'ariaLabel' => gT('List survey on public index :'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->listpublic . " ᴵ" ])
                             : $optionsOnOff,
@@ -86,6 +87,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'usecookie',
                         'checkedOption' => $oSurvey->usecookie,
+                        'ariaLabel' => gT('Set cookie to prevent repeated participation:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->usecookie . " ᴵ" ])
                             : $optionsOnOff,
@@ -109,6 +111,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'usecaptcha_surveyaccess',
+                        'ariaLabel' => gT('Use CAPTCHA for survey access:'),
                         'checkedOption'         => (in_array($usecap, $aCaptchaSurveyAccessYes))
                             ? 'Y'
                             : ((in_array($usecap, $aCaptchaSurveyAccessInherit)) ? ('I') : ('N')),
@@ -125,6 +128,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'usecaptcha_registration',
+                        'ariaLabel' => gT('Use CAPTCHA for registration:'),
                         'checkedOption' => (in_array($usecap, $aCaptchaRegistrationYes))
                             ? 'Y'
                             : ((in_array($usecap, $aCaptchaRegistrationInherit))
@@ -143,6 +147,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'usecaptcha_saveandload',
+                        'ariaLabel' => gT('Use CAPTCHA for save and load:'),
                         'checkedOption' => (in_array($usecap, $aCaptchaLoadSaveYes))
                             ? 'Y'
                             : ((in_array($usecap, $aCaptchaLoadSaveInherit)) ? ('I') : ('N')),
