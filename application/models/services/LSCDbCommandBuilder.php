@@ -34,9 +34,7 @@ class LSCDbCommandBuilder extends \CDbCommandBuilder
         );
         $this->ensureTable($table);
         $tableName = $table->rawName;
-        $params = array();
         $columnInsertNames = array();
-        $rowInsertValues = array();
 
         $columns = array();
         foreach ($data as $rowData) {
@@ -52,6 +50,43 @@ class LSCDbCommandBuilder extends \CDbCommandBuilder
             $columnInsertNames[$name] = $this->getDbConnection()->quoteColumnName($name);
         }
         $columnInsertNamesSqlPart = implode($templates['columnInsertNameGlue'], $columnInsertNames);
+
+        list($rowInsertValues, $params) = $this->buildRowValues(
+            $data,
+            $columns,
+            $table,
+            $templates,
+            $columnInsertNames,
+            $columnInsertNamesSqlPart
+        );
+
+        $sql = strtr(
+            $templates['main'],
+            array(
+                '{{tableName}}' => $tableName,
+                '{{columnInsertNames}}' => $columnInsertNamesSqlPart,
+                '{{rowInsertValues}}' => implode($templates['rowInsertValueGlue'], $rowInsertValues),
+            )
+        );
+        $command = $this->bindParamsToCommand($sql, $params);
+
+        return $command;
+    }
+
+    private function bindParamsToCommand($sql, array $params)
+    {
+        $command = $this->getDbConnection()->createCommand($sql);
+        foreach ($params as $name => $value) {
+            $command->bindValue($name, $value);
+        }
+        return $command;
+    }
+
+    private function buildRowValues($table, array $data, array $columns, array $templates, array $columnInsertNames, array $columnInsertNamesSqlPart)
+    {
+        $params = array();
+        $rowInsertValues = array();
+        $tableName = $table->rawName;
 
         foreach ($data as $rowKey => $rowData) {
             $columnInsertValues = array();
@@ -86,20 +121,6 @@ class LSCDbCommandBuilder extends \CDbCommandBuilder
             );
         }
 
-        $sql = strtr(
-            $templates['main'],
-            array(
-                '{{tableName}}' => $tableName,
-                '{{columnInsertNames}}' => $columnInsertNamesSqlPart,
-                '{{rowInsertValues}}' => implode($templates['rowInsertValueGlue'], $rowInsertValues),
-            )
-        );
-        $command = $this->getDbConnection()->createCommand($sql);
-
-        foreach ($params as $name => $value) {
-            $command->bindValue($name, $value);
-        }
-
-        return $command;
+        return [$rowInsertValues, $params];
     }
 }
