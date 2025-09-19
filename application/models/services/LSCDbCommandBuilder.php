@@ -16,61 +16,127 @@ class LSCDbCommandBuilder extends \CDbCommandBuilder
      * @return \CDbCommand multiple insert command
      * @throws \CDbException if $data is empty.
      */
-    protected function composeMultipleInsertCommand($table, array $data, array $templates = array())
+    protected function composeMultipleInsertCommand($table, array $data, array $templates = [])
     {
         if (empty($data)) {
             throw new \CDbException(\Yii::t('yii', 'Can not generate multiple insert command with empty data set.'));
         }
-        $templates = array_merge(
-            array(
+
+        $templates = $this->mergeTemplates($templates);
+        $this->ensureTable($table);
+
+        $tableName = $table->rawName;
+        $columns = $this->extractColumns($table, $data);
+        $columnInsertNames = $this->quoteColumnNames($columns);
+        $columnInsertNamesSqlPart = implode($templates['columnInsertNameGlue'], $columnInsertNames);
+
+        list($rowInsertValues, $params) = $this->buildRowValues(
+            $table,
+            $data,
+            $columns,
+            $columnInsertNames,
+            $columnInsertNamesSqlPart,
+            $templates,
+            $tableName
+        );
+
+        $sql = $this->buildSql($templates, $tableName, $columnInsertNamesSqlPart, $rowInsertValues);
+        $command = $this->bindParamsToCommand($sql, $params);
+
+        return $command;
+    }
+
+    private function mergeTemplates(array $templates)
+    {
+        return array_merge(
+            [
                 'main' => 'INSERT INTO {{tableName}} ({{columnInsertNames}}) VALUES {{rowInsertValues}}',
                 'columnInsertValue' => '{{value}}',
                 'columnInsertValueGlue' => ', ',
                 'rowInsertValue' => '({{columnInsertValues}})',
                 'rowInsertValueGlue' => ', ',
                 'columnInsertNameGlue' => ', ',
-            ),
+            ],
             $templates
         );
-        $this->ensureTable($table);
-        $tableName = $table->rawName;
-        $columnInsertNames = array();
+    }
 
-        $columns = array();
+    private function extractColumns($table, array $data)
+    {
+        $columns = [];
         foreach ($data as $rowData) {
             foreach ($rowData as $columnName => $columnValue) {
-                if (!in_array($columnName, $columns, true)) {
-                    if ($table->getColumn($columnName) !== null) {
-                        $columns[] = $columnName;
-                    }
+                if (!in_array($columnName, $columns, true) && $table->getColumn($columnName) !== null) {
+                    $columns[] = $columnName;
                 }
             }
         }
+        return $columns;
+    }
+
+    private function quoteColumnNames(array $columns)
+    {
+        $quoted = [];
         foreach ($columns as $name) {
-            $columnInsertNames[$name] = $this->getDbConnection()->quoteColumnName($name);
+            $quoted[$name] = $this->getDbConnection()->quoteColumnName($name);
         }
-        $columnInsertNamesSqlPart = implode($templates['columnInsertNameGlue'], $columnInsertNames);
+        return $quoted;
+    }
 
-        list($rowInsertValues, $params) = $this->buildRowValues(
-            $data,
-            $columns,
-            $table,
-            $templates,
-            $columnInsertNames,
-            $columnInsertNamesSqlPart
-        );
+    private function buildRowValues($table, array $data, array $columns, array $columnInsertNames, $columnInsertNamesSqlPart, array $templates, $tableName)
+    {
+        $params = [];
+        $rowInsertValues = [];
 
-        $sql = strtr(
-            $templates['main'],
-            array(
-                '{{tableName}}' => $tableName,
+        foreach ($data as $rowKey => $rowData) {
+            $columnInsertValues = [];
+            foreach ($columns as $columnName) {
+                list($columnInsertValue, $newParams) = $this->buildColumnValue($table, $rowKey, $columnName, $rowData);
+                $params = array_merge($params, $newParams);
+
+                $columnInsertValues[] = strtr($templates['columnInsertValue'], [
+                    '{{column}}' => $columnInsertNames[$columnName],
+                    '{{value}}'  => $columnInsertValue,
+                ]);
+            }
+
+            $rowInsertValues[] = strtr($templates['rowInsertValue'], [
+                '{{tableName}}'         => $tableName,
                 '{{columnInsertNames}}' => $columnInsertNamesSqlPart,
-                '{{rowInsertValues}}' => implode($templates['rowInsertValueGlue'], $rowInsertValues),
-            )
-        );
-        $command = $this->bindParamsToCommand($sql, $params);
+                '{{columnInsertValues}}'=> implode($templates['columnInsertValueGlue'], $columnInsertValues),
+            ]);
+        }
 
-        return $command;
+        return [$rowInsertValues, $params];
+    }
+
+    private function buildColumnValue($table, $rowKey, $columnName, $rowData)
+    {
+        $params = [];
+        $placeholder = str_replace("#", "hashtag", $columnName);
+        $column = $table->getColumn($columnName);
+        $columnValue = array_key_exists($columnName, $rowData) ? $rowData[$columnName] : new \CDbExpression('NULL');
+
+        if ($columnValue instanceof \CDbExpression) {
+            $value = $columnValue->expression;
+            foreach ($columnValue->params as $paramName => $paramValue) {
+                $params[$paramName] = $paramValue;
+            }
+        } else {
+            $value = ':' . $placeholder . '_' . $rowKey;
+            $params[$value] = $column->typecast($columnValue);
+        }
+
+        return [$value, $params];
+    }
+
+    private function buildSql(array $templates, $tableName, $columnInsertNamesSqlPart, array $rowInsertValues)
+    {
+        return strtr($templates['main'], [
+            '{{tableName}}'         => $tableName,
+            '{{columnInsertNames}}' => $columnInsertNamesSqlPart,
+            '{{rowInsertValues}}'   => implode($templates['rowInsertValueGlue'], $rowInsertValues),
+        ]);
     }
 
     private function bindParamsToCommand($sql, array $params)
@@ -80,47 +146,5 @@ class LSCDbCommandBuilder extends \CDbCommandBuilder
             $command->bindValue($name, $value);
         }
         return $command;
-    }
-
-    private function buildRowValues($table, array $data, $columns, array $templates, array $columnInsertNames, string $columnInsertNamesSqlPart)
-    {
-        $params = array();
-        $rowInsertValues = array();
-        $tableName = $table->rawName;
-
-        foreach ($data as $rowKey => $rowData) {
-            $columnInsertValues = array();
-            foreach ($columns as $columnName) {
-                $placeholder = str_replace("#", "hashtag", $columnName);
-                $column = $table->getColumn($columnName);
-                $columnValue = array_key_exists($columnName, $rowData) ? $rowData[$columnName] : new \CDbExpression('NULL');
-                if ($columnValue instanceof \CDbExpression) {
-                    $columnInsertValue = $columnValue->expression;
-                    foreach ($columnValue->params as $columnValueParamName => $columnValueParam) {
-                        $params[$columnValueParamName] = $columnValueParam;
-                    }
-                } else {
-                    $columnInsertValue = ':' . $placeholder . '_' . $rowKey;
-                    $params[':' . $placeholder . '_' . $rowKey] = $column->typecast($columnValue);
-                }
-                $columnInsertValues[] = strtr(
-                    $templates['columnInsertValue'],
-                    array(
-                        '{{column}}' => $columnInsertNames[$columnName],
-                        '{{value}}' => $columnInsertValue,
-                    )
-                );
-            }
-            $rowInsertValues[] = strtr(
-                $templates['rowInsertValue'],
-                array(
-                    '{{tableName}}' => $tableName,
-                    '{{columnInsertNames}}' => $columnInsertNamesSqlPart,
-                    '{{columnInsertValues}}' => implode($templates['columnInsertValueGlue'], $columnInsertValues)
-                )
-            );
-        }
-
-        return [$rowInsertValues, $params];
     }
 }
