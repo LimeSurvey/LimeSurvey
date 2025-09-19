@@ -67,7 +67,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
     <div>
             <!-- List survey publicly -->
             <div class="mb-3 mt-4">
-                <h1><?php eT("Access control"); ?></h1>
+                <h1 role="heading" aria-level="2"><?php eT("Access control"); ?></h1>
                 <label class=" form-label" for='listpublic'><?php printf(gT("Link survey on %spublic index page%s:"), "<a href='" . Yii::app()->getConfig("publicurl") . "' target='_blank' >", "</a>");?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
