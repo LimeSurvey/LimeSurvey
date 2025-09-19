@@ -24,6 +24,7 @@ class CopySurveyTest extends TestBaseClass
         $request = $this
             ->getMockBuilder(LSHttpRequest::class)
             ->getMock();
+        $_POST['surveyIdToCopy'] = self::$testSurvey->sid;
         $_POST['copysurveytranslinksfields'] = '1';
         $_POST['copysurveyexcludequotas'] = '1';
         $_POST['copysurveyexcludepermissions'] = '1';
