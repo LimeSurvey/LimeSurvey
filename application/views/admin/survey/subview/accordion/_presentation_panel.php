@@ -311,7 +311,7 @@ if ($bShowInherited) {
     </div>
 
     <div class="row mt-5 mb-3">
-        <h1><?php eT('Public statistics') ?></h1>
+        <h1 role="heading" aria-level="2"><?php eT('Public statistics') ?></h1>
         <div class="col-12 col-lg-4 col-xl-3">
             <!-- Public statistics -->
             <div class="mb-3">
