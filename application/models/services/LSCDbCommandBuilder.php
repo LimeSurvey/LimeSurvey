@@ -82,7 +82,7 @@ class LSCDbCommandBuilder extends \CDbCommandBuilder
         return $command;
     }
 
-    private function buildRowValues($table, array $data, array $columns, array $templates, array $columnInsertNames, array $columnInsertNamesSqlPart)
+    private function buildRowValues($table, array $data, array $columns, array $templates, array $columnInsertNames, string $columnInsertNamesSqlPart)
     {
         $params = array();
         $rowInsertValues = array();
