@@ -27,6 +27,7 @@ abstract class CBaseListView extends CWidget
 	 * @var string the tag name for the view container. Defaults to 'div'.
 	 */
 	public $tagName='div';
+	public $caption=null;
 	/**
 	 * @var array the HTML options for the view container tag.
 	 */
