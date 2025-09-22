@@ -283,13 +283,11 @@ class QuestionOrderingService
         $excludedSubquestion = null;
 
         if (
-            $excludeAllOthers != ''
-            && ($question->getQuestionAttribute(
-                    'random_order'
-                ) == 1
-                || $question->getQuestionAttribute(
-                    'subquestion_order'
-                ) == 'random')
+            $excludeAllOthers != '' &&
+            (
+                $question->getQuestionAttribute('random_order') == 1 ||
+                $question->getQuestionAttribute('subquestion_order') == 'random'
+            )
         ) {
             foreach ($groupedSubquestions as $scaleId => &$scaleArray) {
                 foreach ($scaleArray as $key => $subquestion) {
