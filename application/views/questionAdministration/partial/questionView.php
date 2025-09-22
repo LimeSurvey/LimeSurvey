@@ -112,6 +112,7 @@
             $this->widget('ext.admin.grid.CLSGridView', array( //done
                 'dataProvider' => $questionModel->search(),
                 'id' => 'question-grid',
+                'caption'      => gT("List of questions in this surveyS"),
                 'emptyText' => gT('No questions found.'),
                 'massiveActionTemplate' => $massiveAction,
                 'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
