@@ -1,8 +1,6 @@
 <?php
 
-namespace LimeSurvey\Models\Services;
-
-class LSCDbCommandBuilder extends \CDbCommandBuilder
+class LSDbCommandBuilder extends \CDbCommandBuilder
 {
     /**
      * Creates a multiple INSERT command.

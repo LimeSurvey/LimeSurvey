@@ -14,7 +14,6 @@
 
 use LimeSurvey\Helpers\questionHelper;
 use LimeSurvey\Models\Services\SurveyAccessModeService;
-use LimeSurvey\Models\Services\LSCDbCommandBuilder;
 
 /**
  * This function imports a LimeSurvey .lsg question group XML file
@@ -2072,7 +2071,7 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
             if ($preserveIDs) {
                 switchMSSQLIdentityInsert("survey_$surveyId", true);
             }
-            $builder = new LSCDbCommandBuilder(App()->db->getSchema());
+            $builder = App()->db->getCommandBuilder();
             $command = $builder->createMultipleInsertCommand($tableName, $batchData);
             $importedResponses += $command->execute();
             if ($preserveIDs) {
@@ -2088,7 +2087,7 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
         if ($preserveIDs) {
             switchMSSQLIdentityInsert("survey_$surveyId", true);
         }
-        $builder = new LSCDbCommandBuilder(App()->db->getSchema());
+        $builder = App()->db->getCommandBuilder();
         $command = $builder->createMultipleInsertCommand($tableName, $batchData);
         $importedResponses += $command->execute();
         if ($preserveIDs) {
