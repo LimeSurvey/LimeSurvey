@@ -82,7 +82,7 @@ abstract class QuestionBaseRenderer extends StaticModel
         }
         $diContainer = \LimeSurvey\DI::getContainer();
         $this->questionOrderingService = $diContainer->get(
-            LimeSurvey\Models\Services\QuestionOrderingService::class
+            \LimeSurvey\Models\Services\QuestionOrderingService\QuestionOrderingService::class
         );
     }
 

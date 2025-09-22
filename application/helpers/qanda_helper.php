@@ -677,7 +677,7 @@ function do_list_dropdown($ia)
     // Getting answers
     $diContainer = \LimeSurvey\DI::getContainer();
     $questionOrderingService = $diContainer->get(
-        LimeSurvey\Models\Services\QuestionOrderingService::class
+        \LimeSurvey\Models\Services\QuestionOrderingService\QuestionOrderingService::class
     );
     $ansresult = $questionOrderingService->getOrderedAnswers($oQuestion);
 
@@ -904,7 +904,7 @@ function do_list_radio($ia)
     // Getting answers
     $diContainer = \LimeSurvey\DI::getContainer();
     $questionOrderingService = $diContainer->get(
-        LimeSurvey\Models\Services\QuestionOrderingService::class
+        \LimeSurvey\Models\Services\QuestionOrderingService\QuestionOrderingService::class
     );
     $ansresult = $questionOrderingService->getOrderedAnswers($oQuestion);
     $anscount  = count($ansresult);
@@ -1125,7 +1125,7 @@ function do_listwithcomment($ia)
     // Getting answers
     $diContainer = \LimeSurvey\DI::getContainer();
     $questionOrderingService = $diContainer->get(
-        LimeSurvey\Models\Services\QuestionOrderingService::class
+        \LimeSurvey\Models\Services\QuestionOrderingService\QuestionOrderingService::class
     );
     $ansresult = $questionOrderingService->getOrderedAnswers($oQuestion);
     $anscount     = count($ansresult);
@@ -1430,7 +1430,7 @@ function do_multiplechoice($ia)
     // Getting answers
     $diContainer = \LimeSurvey\DI::getContainer();
     $questionOrderingService = $diContainer->get(
-        LimeSurvey\Models\Services\QuestionOrderingService::class
+        \LimeSurvey\Models\Services\QuestionOrderingService\QuestionOrderingService::class
     );
     $aQuestions = $questionOrderingService->getOrderedSubQuestions($oQuestion);
     $anscount  = count($aQuestions);

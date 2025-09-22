@@ -2360,7 +2360,7 @@ class QuestionAdministrationController extends LSBaseController
 
         $diContainer = \LimeSurvey\DI::getContainer();
         $questionOrderingService = $diContainer->get(
-            LimeSurvey\Models\Services\QuestionOrderingService::class
+            \LimeSurvey\Models\Services\QuestionOrderingService\QuestionOrderingService::class
         );
         $aScaledSubquestions = $questionOrderingService->getOrderedSubQuestions($oQuestion);
         foreach ($aScaledSubquestions as $scaleId => $aSubquestions) {

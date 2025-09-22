@@ -1,9 +1,12 @@
 <?php
 
-namespace LimeSurvey\Models\Services;
+namespace LimeSurvey\Models\Services\QuestionOrderingService;
 
 use Question;
 use Yii;
+use LimeSurvey\Helpers\SortHelper;
+use LimeSurvey\Models\Services\QuestionOrderingService\SortingStrategy;
+use LimeSurvey\Models\Services\QuestionOrderingService\RandomizerHelper;
 
 /**
  * Question Ordering Service
@@ -12,6 +15,21 @@ use Yii;
  */
 class QuestionOrderingService
 {
+    /** @var SortingStrategy */
+    private $sortingStrategy;
+
+    /** @var RandomizerHelper */
+    private $randomizerHelper;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->sortingStrategy = new SortingStrategy();
+        $this->randomizerHelper = new RandomizerHelper();
+    }
+
     /**
      * Get ordered answers for a question
      *
@@ -75,7 +93,7 @@ class QuestionOrderingService
         }
 
         // Determine sorting strategy
-        $sortStrategy = $this->determineSortStrategy($question, 'subquestions');
+        $sortStrategy = $this->sortingStrategy->determine($question, 'subquestions');
 
         return $this->applySorting(
             $groupedSubquestions,
@@ -100,7 +118,7 @@ class QuestionOrderingService
         $language = null
     ) {
         // Determine sorting strategy
-        $sortStrategy = $this->determineSortStrategy($question);
+        $sortStrategy = $this->sortingStrategy->determine($question);
 
         return $this->applySorting(
             $answerOptions,
@@ -109,28 +127,6 @@ class QuestionOrderingService
             $sortStrategy,
             $language
         );
-    }
-
-    /**
-     * Determine which sorting strategy to use
-     *
-     * @param Question $question
-     * @param string $context 'answers' or 'subquestions'
-     * @return string 'random', 'alphabetical', or 'normal'
-     */
-    private function determineSortStrategy(
-        Question $question,
-        string $context = 'answers'
-    ) {
-        if ($this->shouldOrderRandomly($question, $context)) {
-            return 'random';
-        }
-
-        if ($this->shouldOrderAlphabetically($question, $context)) {
-            return 'alphabetical';
-        }
-
-        return 'normal';
     }
 
     /**
@@ -226,9 +222,9 @@ class QuestionOrderingService
 
             // Apply appropriate sorting direction
             $sortMethod = $isReverseOrder ? 'arsort' : 'asort';
-            \LimeSurvey\Helpers\SortHelper::getInstance($language)->$sortMethod(
+            SortHelper::getInstance($language)->$sortMethod(
                 $sorted,
-                \LimeSurvey\Helpers\SortHelper::SORT_STRING
+                SortHelper::SORT_STRING
             );
 
             $sortedItems = [];
@@ -264,32 +260,6 @@ class QuestionOrderingService
     }
 
     /**
-     * Extract excluded subquestion based on 'exclude_all_others' attribute
-     *
-     * @param array $groupedSubquestions
-     * @param string $excludeAllOthers
-     * @return array [excludedSubquestion, updatedGroupedSubquestions]
-     */
-    private function extractExcludedSubquestion(array $groupedSubquestions, string $excludeAllOthers)
-    {
-        $excludedSubquestion = null;
-
-        foreach ($groupedSubquestions as $scaleId => &$scaleArray) {
-            foreach ($scaleArray as $key => $subquestion) {
-                if ($subquestion->title == $excludeAllOthers) {
-                    $excludedSubquestion = $subquestion;
-                    unset($scaleArray[$key]);
-                    // Reindex the array to ensure no gaps in numeric indices
-                    $scaleArray = array_values($scaleArray);
-                    break 2;
-                }
-            }
-        }
-
-        return [$excludedSubquestion, $groupedSubquestions];
-    }
-
-    /**
      * Apply random sorting to subquestions
      *
      * @param array $groupedSubquestions
@@ -300,7 +270,7 @@ class QuestionOrderingService
         array $groupedSubquestions,
         Question $question
     ) {
-        $this->initializeRandomizer($question->sid);
+        $this->randomizerHelper->initialize($question->sid);
 
         // Check for excluded subquestion before randomization
         $excludeAllOthers = $question->getQuestionAttribute('exclude_all_others');
@@ -314,7 +284,7 @@ class QuestionOrderingService
             [
                 $excludedSubquestion,
                 $groupedSubquestions
-            ] = $this->extractExcludedSubquestion(
+            ] = $this->randomizerHelper->extractExcludedSubquestion(
                 $groupedSubquestions,
                 $excludeAllOthers
             );
@@ -337,75 +307,5 @@ class QuestionOrderingService
         }
 
         return $groupedSubquestions;
-    }
-
-    /**
-     * Returns true if the items should be ordered randomly.
-     *
-     * @param Question $question The question model
-     * @param string $context 'answers' or 'subquestions'
-     * @return bool
-     */
-    private function shouldOrderRandomly(
-        Question $question,
-        $context = 'answers'
-    ) {
-        $answerOrder = $question->getQuestionAttribute(
-            $context === 'answers' ? 'answer_order' : 'subquestion_order'
-        );
-        if (!is_null($answerOrder)) {
-            return $answerOrder == 'random';
-        }
-
-        // Fall back to random_order attribute for both contexts
-        $randomOrder = $question->getQuestionAttribute('random_order') == 1;
-
-        // For answers, we need additional check for subquestions
-        if ($context === 'answers') {
-            return $randomOrder
-                && $question->getQuestionType()->subquestions == 0;
-        }
-
-        return $randomOrder;
-    }
-
-    /**
-     * Returns true if the items should be ordered alphabetically.
-     *
-     * @param Question $question The question model
-     * @param string $context 'answers' or 'subquestions'
-     * @return bool
-     */
-    private function shouldOrderAlphabetically(
-        Question $question,
-        string $context = 'answers'
-    ) {
-        $orderAttribute = $context
-        === 'answers' ? 'answer_order' : 'subquestion_order';
-        $answerOrder = $question->getQuestionAttribute($orderAttribute);
-
-        if (!is_null($answerOrder)) {
-            return $answerOrder == 'alphabetical'
-                || $answerOrder == 'random_alphabetical';
-        }
-
-        // Fall back to alphasort attribute for answers, but subquestions don't typically have this option
-        if ($context === 'answers') {
-            return $question->getQuestionAttribute('alphasort') == 1;
-        }
-
-        return false;
-    }
-
-    /**
-     * Get the MersenneTwister instance and set the seed
-     *
-     * @param int $seed The seed value
-     * @return void
-     */
-    private function initializeRandomizer($seed)
-    {
-        require_once(Yii::app()->basePath . '/libraries/MersenneTwister.php');
-        \ls\mersenne\setSeed($seed);
     }
 }
