@@ -195,6 +195,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     [
                                         'class' => 'form-control',
                                         'size' => '20',
+                                        'aria-describedby' => 'generate-token-info-desc',
                                         'maxlength' => $iTokenLength
                                     ]
                                 ); ?>
@@ -205,7 +206,8 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                             "You can leave this blank, and automatically generate access codes using 'Generate access codes'"
                                         ),
                                         'type'        => 'info',
-                                        'htmlOptions' => ['class' => 'mt-1'],
+                                        'htmlOptions' => ['class' => 'mt-1'
+                                    ,'id' => 'generate-token-info-desc'],
                                     ]);
                                     ?>
                                 <?php endif; ?>
