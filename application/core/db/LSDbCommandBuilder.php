@@ -2,6 +2,9 @@
 
 class LSDbCommandBuilder extends \CDbCommandBuilder
 {
+    protected $_schema;
+
+    protected $_connection;
     /**
      * Creates a multiple INSERT command.
      * This method compose the SQL expression via given part templates, providing ability to adjust
