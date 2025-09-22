@@ -2376,7 +2376,7 @@ class statistics_helper
                     . gT("Browse") . "' id='$sColumnName' />";
                 }
 
-                if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'pdf') {
+                if ($browse === true && !empty($_POST['showtextinline']) && $outputType == 'pdf') {
                     $headPDF2 = array();
                     $headPDF2[] = array(gT("ID"), gT("Response"));
                     $result2 = $this->_listcolumn($surveyid, $sColumnName);
@@ -2386,7 +2386,7 @@ class statistics_helper
                     }
                 }
 
-                if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'xls') {
+                if ($browse === true && !empty($_POST['showtextinline']) && $outputType == 'xls') {
                     $headXLS = array();
                     $headXLS[] = array(gT("ID"), gT("Response"));
 
@@ -2426,7 +2426,7 @@ class statistics_helper
                 $bAnswer = true; // For view
                 $bSum    = false;
 
-                if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'pdf') {
+                if ($browse === true && !empty($_POST['showtextinline']) && $outputType == 'pdf') {
                     $headPDF2 = array();
                     $headPDF2[] = array(gT("ID"), gT("Response"));
                     $tablePDF2 = array();

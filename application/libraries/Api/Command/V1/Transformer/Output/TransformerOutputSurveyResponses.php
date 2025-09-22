@@ -24,6 +24,8 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
                 'formatter' => ['dateTimeToJson' => true]
             ],
             'startdate' => ['key' => 'startDate'],
+            'ipaddr' => ['key' => 'ipAddr'],
+            'refurl' => ['key' => 'refUrl'],
             'datestamp' => ['key' => 'dateLastAction'],
         ]);
     }
