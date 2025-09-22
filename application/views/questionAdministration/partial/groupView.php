@@ -87,6 +87,7 @@
             'ext.admin.grid.CLSGridView', //done
             [
                 'id'              => 'question-group-grid',
+                'caption'        => gT("List of question groups in this survey"),
                 'dataProvider'    => $groupModel->search(),
                 'emptyText'       => gT('No question groups found.'),
                 'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
