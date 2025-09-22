@@ -109,6 +109,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                     'name'          => "completed-switch",
                                                     'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch mb-1"],
+                                                    'ariaLabel'    => gT('Completed?'),
                                                     'checkedOption' => $bCompletedValue,
                                                     'selectOptions' => [
                                                         '1' => gT('Yes'),
@@ -297,6 +298,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                 'name'          => "sent-switch",
                                                 'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch mb-1"],
                                                 'checkedOption' => $bSwitchValue,
+                                                'ariaLabel'    => gT('Invitation sent?'),
                                                 'selectOptions' => [
                                                     '1' => gT('Yes'),
                                                     '0' => gT('No'),
@@ -354,6 +356,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                         <?php if ($oSurvey->anonymized !== 'Y'): ?>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                 'name'          => "remind-switch",
+                                                'ariaLabel'    => gT('Reminder sent?'),
                                                 'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch mb-1"],
                                                 'checkedOption' => $bRemindSwitchValue,
                                                 'selectOptions' => [
