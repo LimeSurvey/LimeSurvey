@@ -2,6 +2,11 @@
 
 class MssqlSchema extends CMssqlSchema
 {
+	protected $_tableNames=array();
+	protected $_tables=array();
+	protected $_connection;
+	protected $_builder;
+	protected $_cacheExclude=array();
     public function __construct($conn)
     {
         parent::__construct($conn);
@@ -94,4 +99,15 @@ class MssqlSchema extends CMssqlSchema
 	{
 		return new LSDbCommandBuilder($this);
 	}
+
+    /**
+     * Gets the command builder
+     * @return LSDbCommandBuilder
+     */
+    public function getCommandBuilder() {
+        if ($this->_builder === null) {
+            $this->_builder = new LSDbCommandBuilder($this);
+        }
+        return $this->_builder;
+    }
 }
