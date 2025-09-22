@@ -42,6 +42,8 @@ class LSHttpRequest extends CHttpRequest
     /** @var array<string,mixed>|null the request query parameters (name-value pairs) */
     private $queryParams;
 
+    protected $_csrfToken;
+
     /**
      * Return the referal url,
      * it's used for the "close" buttons, and the "save and close" buttons
@@ -312,5 +314,23 @@ class LSHttpRequest extends CHttpRequest
                  throw new CHttpException(400, gT("The requested hostname is invalid.", 'unescaped'));
             }
         }
+    }
+
+    /**
+     * @inheritdoc
+     * Sanitize the CSRF token to avoid XSS attacks
+     */
+    public function getCsrfToken()
+    {
+        if ($this->_csrfToken === null) {
+            $cookie = $this->getCookies()->itemAt($this->csrfTokenName);
+            if (!$cookie || ($this->_csrfToken = sanitize_base64($cookie->value)) == null) {
+                $cookie = $this->createCsrfCookie();
+                $this->_csrfToken = $cookie->value;
+                $this->getCookies()->add($cookie->name, $cookie);
+            }
+        }
+
+        return $this->_csrfToken;
     }
 }
