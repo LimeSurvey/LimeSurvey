@@ -115,16 +115,20 @@ class CopySurvey
      * as a survey.
      * All the functions used here (surveyGetXMLData, XMLImportSurvey) are very old functions.
      *
-     * @return array
+     * @return array | null  Returns an array with success and error messages or null if source survey does not exist.
      * @throws \Exception
      */
-    public function copy(): array
+    public function copy()
     {
         //for other functions deeply hidden the naming is relevant...
         $this->options['answers'] = $this->options['excludeAnswers'];
         $this->options['conditions'] = $this->options['resetConditions'];
 
         App()->loadHelper('export');
+        $sourceSurvey = Survey::model()->findByPk($this->sourceSurveyId);
+        if(!$sourceSurvey) {
+            return null;
+        }
         $copySurveyData = surveyGetXMLData($this->sourceSurveyId, $this->options);
 
         App()->loadHelper('admin/import');
