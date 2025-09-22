@@ -12,11 +12,11 @@ class SortingStrategy
     /**
      * Determine which sorting strategy to use
      *
-     * @param Question $question
+     * @param Question $question The question model
      * @param string $context 'answers' or 'subquestions'
      * @return string 'random', 'alphabetical', or 'normal'
      */
-    public function determine(Question $question, string $context = 'answers')
+    public function determine(Question $question, string $context = 'answers'): string
     {
         if ($this->shouldOrderRandomly($question, $context)) {
             return 'random';
@@ -36,27 +36,15 @@ class SortingStrategy
      * @param string $context 'answers' or 'subquestions'
      * @return bool
      */
-    public function shouldOrderRandomly(
-        Question $question,
-        $context = 'answers'
-    ) {
-        $answerOrder = $question->getQuestionAttribute(
-            $context === 'answers' ? 'answer_order' : 'subquestion_order'
-        );
-        if (!is_null($answerOrder)) {
-            return $answerOrder == 'random';
-        }
-
-// Fall back to random_order attribute for both contexts
-        $randomOrder = $question->getQuestionAttribute('random_order') == 1;
-
-// For answers, we need additional check for subquestions
+    private function shouldOrderRandomly(Question $question, string $context = 'answers'): bool
+    {
         if ($context === 'answers') {
-            return $randomOrder
-                && $question->getQuestionType()->subquestions == 0;
+            return $question->getQuestionAttribute('random_order') == 1;
         }
 
-        return $randomOrder;
+        // For subquestions
+        return $question->getQuestionAttribute('random_order') == 1
+            || $question->getQuestionAttribute('subquestion_order') === 'random';
     }
 
     /**
@@ -66,24 +54,14 @@ class SortingStrategy
      * @param string $context 'answers' or 'subquestions'
      * @return bool
      */
-    public function shouldOrderAlphabetically(
-        Question $question,
-        string $context = 'answers'
-    ) {
-        $orderAttribute = $context
-        === 'answers' ? 'answer_order' : 'subquestion_order';
-        $answerOrder = $question->getQuestionAttribute($orderAttribute);
-
-        if (!is_null($answerOrder)) {
-            return $answerOrder == 'alphabetical'
-                || $answerOrder == 'random_alphabetical';
-        }
-
-        // Fall back to alphasort attribute for answers, but subquestions don't typically have this option
+    private function shouldOrderAlphabetically(Question $question, string $context = 'answers'): bool
+    {
         if ($context === 'answers') {
-            return $question->getQuestionAttribute('alphasort') == 1;
+            $orderAttribute = $question->getQuestionAttribute('answer_order');
+        } else {
+            $orderAttribute = $question->getQuestionAttribute('subquestion_order');
         }
 
-        return false;
+        return in_array($orderAttribute, ['alphabetical', 'random_alphabetical']);
     }
 }

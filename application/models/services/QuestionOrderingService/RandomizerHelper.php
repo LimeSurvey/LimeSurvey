@@ -2,44 +2,44 @@
 
 namespace LimeSurvey\Models\Services\QuestionOrderingService;
 
+use Yii;
+
 /**
  * Helper class for randomization operations
  */
 class RandomizerHelper
 {
     /**
-     * Get the MersenneTwister instance and set the seed
+     * Initialize the randomizer with a seed based on survey ID
      *
-     * @param int $seed The seed value
+     * @param int $surveyId The survey ID to use for seeding
      * @return void
      */
-    public function initialize($seed)
+    public function initialize(int $surveyId): void
     {
         require_once(App()->basePath . '/libraries/MersenneTwister.php');
-        \ls\mersenne\setSeed($seed);
+        \ls\mersenne\setSeed($surveyId);
     }
 
     /**
-     * Extract excluded subquestion based on 'exclude_all_others' attribute
+     * Extract excluded subquestion from the grouped subquestions
      *
-     * @param array $groupedSubquestions
-     * @param string $excludeAllOthers
+     * @param array $groupedSubquestions Subquestions grouped by scale_id
+     * @param string $excludeAllOthers The code of the excluded subquestion
      * @return array [excludedSubquestion, updatedGroupedSubquestions]
      */
     public function extractExcludedSubquestion(
         array $groupedSubquestions,
         string $excludeAllOthers
-    )
-    {
+    ): array {
         $excludedSubquestion = null;
 
-        foreach ($groupedSubquestions as $scaleId => &$scaleArray) {
+        foreach ($groupedSubquestions as $scaleId => $scaleArray) {
             foreach ($scaleArray as $key => $subquestion) {
                 if ($subquestion->title == $excludeAllOthers) {
                     $excludedSubquestion = $subquestion;
-                    unset($scaleArray[$key]);
-                    // Reindex the array to ensure no gaps in numeric indices
-                    $scaleArray = array_values($scaleArray);
+                    unset($groupedSubquestions[$scaleId][$key]);
+                    $groupedSubquestions[$scaleId] = array_values($groupedSubquestions[$scaleId]);
                     break 2;
                 }
             }
