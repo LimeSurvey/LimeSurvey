@@ -264,6 +264,32 @@ class QuestionOrderingService
     }
 
     /**
+     * Extract excluded subquestion based on 'exclude_all_others' attribute
+     *
+     * @param array $groupedSubquestions
+     * @param string $excludeAllOthers
+     * @return array [excludedSubquestion, updatedGroupedSubquestions]
+     */
+    private function extractExcludedSubquestion(array $groupedSubquestions, string $excludeAllOthers)
+    {
+        $excludedSubquestion = null;
+
+        foreach ($groupedSubquestions as $scaleId => &$scaleArray) {
+            foreach ($scaleArray as $key => $subquestion) {
+                if ($subquestion->title == $excludeAllOthers) {
+                    $excludedSubquestion = $subquestion;
+                    unset($scaleArray[$key]);
+                    // Reindex the array to ensure no gaps in numeric indices
+                    $scaleArray = array_values($scaleArray);
+                    break 2;
+                }
+            }
+        }
+
+        return [$excludedSubquestion, $groupedSubquestions];
+    }
+
+    /**
      * Apply random sorting to subquestions
      *
      * @param array $groupedSubquestions
@@ -277,29 +303,21 @@ class QuestionOrderingService
         $this->initializeRandomizer($question->sid);
 
         // Check for excluded subquestion before randomization
-        $excludeAllOthers = $question->getQuestionAttribute(
-            'exclude_all_others'
-        );
+        $excludeAllOthers = $question->getQuestionAttribute('exclude_all_others');
         $excludedSubquestion = null;
 
         if (
             $excludeAllOthers != '' &&
-            (
-                $question->getQuestionAttribute('random_order') == 1 ||
-                $question->getQuestionAttribute('subquestion_order') == 'random'
-            )
+            ($question->getQuestionAttribute('random_order') == 1 ||
+                $question->getQuestionAttribute('subquestion_order') == 'random')
         ) {
-            foreach ($groupedSubquestions as $scaleId => &$scaleArray) {
-                foreach ($scaleArray as $key => $subquestion) {
-                    if ($subquestion->title == $excludeAllOthers) {
-                        $excludedSubquestion = $subquestion;
-                        unset($scaleArray[$key]);
-                        // Reindex the array to ensure no gaps in numeric indices
-                        $scaleArray = array_values($scaleArray);
-                        break 2;
-                    }
-                }
-            }
+            [
+                $excludedSubquestion,
+                $groupedSubquestions
+            ] = $this->extractExcludedSubquestion(
+                $groupedSubquestions,
+                $excludeAllOthers
+            );
         }
 
         // Apply random sorting to each scale group
