@@ -28,13 +28,13 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
         ) {
             $mfield = $this->rt . 'other';
             $legend[] = 'other';
-            $count = $this->getResponseCount($mfield, $this->surveyId);
+            $count = $this->getResponseCount($mfield);
             $dataItems[] = ['key' => 'other', 'value' => $count, 'title' => 'Other'];
         }
         if ($this->question['type'] == Question::QT_O_LIST_WITH_COMMENT) {
             $mfield = $this->rt . 'comment';
             $legend[] = 'comment';
-            $count = $this->getResponseCount($mfield, $this->surveyId);
+            $count = $this->getResponseCount($mfield);
             $dataItems[] = ['key' => 'comment', 'value' => $count, 'title' => 'Comments'];
         }
 
@@ -75,7 +75,7 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
         $codes = ['F', 'M'];
         $labels = ['Female', 'Male'];
 
-        [$legend, $items] = $this->buildItemsFromCodes($this->rt, $this->surveyId, $codes, $labels);
+        [$legend, $items] = $this->buildItemsFromCodes($this->rt, $codes, $labels);
         return ['title' => $this->question['question'], 'legend' => $legend, 'data' => $items];
     }
 
@@ -84,26 +84,26 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
         $codes = ['Y', 'N'];
         $labels = ['Yes', 'No'];
 
-        [$legend, $items] = $this->buildItemsFromCodes($this->rt, $this->surveyId, $codes, $labels);
+        [$legend, $items] = $this->buildItemsFromCodes($this->rt, $codes, $labels);
         return ['title' => $this->question['title'], 'legend' => $legend, 'data' => $items];
     }
 
     private function handleLanguage(): array
     {
-        /// TODO: REMOVE
-        $langs = Survey::model()->findByPk($this->surveyId)->getAllLanguages();
-        $codes = $langs;
-        $labels = array_map(fn($l) => getLanguageNameFromCode($l, false), $langs);
+        $languages = Survey::model()->findByPk($this->surveyId)->getAllLanguages();
+        $codes = $languages;
+        $labels = array_map(fn($l) => getLanguageNameFromCode($l, false), $languages);
 
-        [, $items] = $this->buildItemsFromCodes($this->rt, $this->surveyId, $codes, $labels);
+        [, $items] = $this->buildItemsFromCodes($this->rt, $codes, $labels);
         $legend = array_column($items, 'title');
+
         return ['title' => $this->question['question'], 'legend' => $legend, 'data' => $items];
     }
 
     private function handle5PointChoice(): array
     {
         $codes = array_map('strval', range(1, 5));
-        [$legend, $items] = $this->buildItemsFromCodes($this->rt, $this->surveyId, $codes, $codes);
+        [$legend, $items] = $this->buildItemsFromCodes($this->rt, $codes, $codes);
         return ['title' => $this->question['question'], 'legend' => $legend, 'data' => $items];
     }
 
@@ -117,7 +117,7 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
             $title = flattenText($answer['answer']);
 
             $legend[] = $title;
-            $count = $this->getResponseCount($this->rt, $this->surveyId, $code);
+            $count = $this->getResponseCount($this->rt, $code);
             $items[] = ['key' => $code, 'title' => $title, 'value' => $count];
         }
 

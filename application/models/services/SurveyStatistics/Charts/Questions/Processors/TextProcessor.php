@@ -16,10 +16,10 @@ class TextProcessor extends AbstractQuestionProcessor
         $this->rt();
 
         $legend = ['Answer', 'NoAnswer'];
-        $count = $this->getResponseCount($this->rt, $this->question['sid']);
+        $count = $this->getResponseCount($this->rt);
         $dataItems = [
             ['key' => 'Answer', 'title' => 'Answer', 'value' => $count],
-            ['key' => 'NoAnswer', 'title' => 'No answer', 'value' => $this->getResponseNotAnsweredCount($this->rt, $this->question['sid'])],
+            ['key' => 'NoAnswer', 'title' => 'No answer', 'value' => $this->getResponseNotAnsweredCount($this->rt)],
         ];
 
         return new StatisticsChartDTO(

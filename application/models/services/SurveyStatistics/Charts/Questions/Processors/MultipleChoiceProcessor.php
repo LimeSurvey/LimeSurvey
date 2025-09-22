@@ -23,7 +23,7 @@ class MultipleChoiceProcessor extends AbstractQuestionProcessor
             $field = $this->rt . $subQuestion['title'];
             $legend[] = $subQuestion['question'];
 
-            $count = $this->getResponseCount($field, $this->surveyId);
+            $count = $this->getResponseCount($field);
             $dataItems[] = [
                 'key' => $subQuestion['title'],
                 'title' => $subQuestion['question'],
@@ -34,14 +34,14 @@ class MultipleChoiceProcessor extends AbstractQuestionProcessor
         $dataItems[] = [
             'key' => 'NotAnswered',
             'title' => 'Not Answered',
-            'value' => $this->getResponseNotAnsweredCount($field, $this->surveyId),
+            'value' => $this->getResponseNotAnsweredCount($field),
         ];
         $legend[] = 'Not Answered';
 
         if ($this->question['other'] == 'Y') {
             $field = $this->rt . 'other';
             $legend[] = 'other';
-            $count = $this->getResponseCount($field, $this->surveyId);
+            $count = $this->getResponseCount($field);
             $dataItems[] = ['key' => 'other', 'title' => 'Other', 'value' => $count];
         }
 

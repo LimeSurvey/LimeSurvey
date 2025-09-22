@@ -19,6 +19,8 @@ class RankingProcessor extends AbstractQuestionProcessor
 
         foreach ($this->question['subQuestions'] as $subQuestion) {
             $title = flattenText($this->question['question']) . " [{$subQuestion['question']}]]";
+            $dataItems = [];
+            $legend = [];
 
             foreach ($this->answers as $answer) {
                 $rt = $this->rt . $subQuestion['title'] . '#' . $i;

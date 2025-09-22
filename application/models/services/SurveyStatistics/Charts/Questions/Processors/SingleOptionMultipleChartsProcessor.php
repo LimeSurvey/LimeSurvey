@@ -42,7 +42,7 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
 
         foreach ($this->question['subQuestions'] as $subQuestion) {
             $rt = $this->rt . $subQuestion['title'];
-            [$legend, $items] = $this->buildItemsFromCodes($rt, $this->surveyId, $codes, $codes);
+            [$legend, $items] = $this->buildItemsFromCodes($rt, $codes, $codes);
             $title = $this->question['question'] . '(' . $subQuestion['question'] . ')';
 
             $charts[] = new StatisticsChartDTO($title, $legend, $items, null, ['question' => $this->question]);
@@ -59,7 +59,7 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
 
         foreach ($this->question['subQuestions'] as $subQuestion) {
             $rt = $this->rt . $subQuestion['title'];
-            [$legend, $items] = $this->buildItemsFromCodes($rt, $this->surveyId, $codes, $labels);
+            [$legend, $items] = $this->buildItemsFromCodes($rt, $codes, $labels);
             $title = $this->question['question'] . "[{$subQuestion['question']}]";
 
             $charts[] = new StatisticsChartDTO($title, $legend, $items, null, ['question' => $this->question]);
@@ -75,7 +75,7 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
             $codes = ['I', 'S', 'D'];
             $labels = ['Increase', 'Same', 'Decrease'];
             $rt = $this->rt . $subQuestion['title'];
-            [$legend, $items] = $this->buildItemsFromCodes($rt, $this->surveyId, $codes, $labels);
+            [$legend, $items] = $this->buildItemsFromCodes($rt, $codes, $labels);
 
             $charts[] = new StatisticsChartDTO($title, $legend, $items, null, ['question' => $this->question]);
         }
@@ -94,7 +94,7 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
             $items = [];
 
             if ((int)$subQuestion['scale_id'] === 0) {
-                $count = $this->getResponseCount($this->rt . $subQuestion['title'], $this->surveyId);
+                $count = $this->getResponseCount($this->rt . $subQuestion['title']);
                 $legend[] = $subQuestion['question'];
                 $items[] = ['key' => $subQuestion['title'], 'value' => $count, 'title' => $subQuestion['question']];
             }

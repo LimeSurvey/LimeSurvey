@@ -79,7 +79,7 @@ class DailyActivityStatistics implements StatisticsChartInterface
 
         $countsByDate = [];
         foreach ($rows as $row) {
-            $countsByDate[$row['response_date']] = (int) $row['responses'];
+            $countsByDate[$row['response_date']] = (int)$row['responses'];
         }
 
         return $countsByDate;
@@ -107,7 +107,7 @@ class DailyActivityStatistics implements StatisticsChartInterface
 
             $legend[] = $day;
             $dataItems[] = [
-                'key'   => $day,
+                'key' => $day,
                 'title' => $day,
                 'value' => $count,
             ];

@@ -2,8 +2,10 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
+use CDbCriteria;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
 use PDO;
+use SurveyDynamic;
 use Yii;
 
 /**
@@ -43,7 +45,7 @@ abstract class AbstractQuestionProcessor
     {
         $this->question = $question;
         $this->question['title'] = flattenText($this->question['title']);
-        $this->surveyId = (int) $this->question['sid'];
+        $this->surveyId = (int)$this->question['sid'];
 
         $this->rt();
     }
@@ -62,58 +64,60 @@ abstract class AbstractQuestionProcessor
      * Gets the number of responses where the field is answered.
      *
      * @param string $fieldName Field name (column in survey table)
-     * @param int $surveyId Survey ID
      * @param string|null $value Specific value to filter on (optional)
      * @return int Response count
      */
-    protected function getResponseCount($fieldName, $surveyId, $value = null)
+    protected function getResponseCount(string $fieldName, $value = null)
     {
-        $query = "SELECT COUNT(id) as cnt FROM {{survey_$surveyId}}
-                   WHERE " . Yii::app()->db->quoteColumnName($fieldName) . " IS NOT NULL
-                    AND " . Yii::app()->db->quoteColumnName($fieldName) . " != ''";
+        $model = SurveyDynamic::model($this->surveyId);
+        $db = $model->getDbConnection();
+        $col = $db->quoteColumnName($fieldName);
+
+        $criteria = new CDbCriteria();
+
+        $criteria->addCondition("$col IS NOT NULL");
+        $criteria->addCondition("$col != ''");
+
         if ($value !== null) {
-            $query .= " AND " . Yii::app()->db->quoteColumnName($fieldName) . " = :value";
-        }
-        $command = Yii::app()->db->createCommand($query);
-        if ($value !== null) {
-            $command->bindParam(':value', $value, PDO::PARAM_STR);
+            $criteria->compare($fieldName, $value);
         }
 
-        return (int) $command->queryScalar();
+        return (int)$model->count($criteria);
     }
 
     /**
      * Gets the number of responses where the field is empty or null.
      *
      * @param string $fieldName Field name (column in survey table)
-     * @param int $surveyId Survey ID
      * @return int Response count
      */
-    protected function getResponseNotAnsweredCount($fieldName, $surveyId)
+    protected function getResponseNotAnsweredCount(string $fieldName)
     {
-        $query = "SELECT COUNT(id) as cnt FROM {{survey_$surveyId}}
-                   WHERE " . Yii::app()->db->quoteColumnName($fieldName) . " IS NULL
-                   OR " . Yii::app()->db->quoteColumnName($fieldName) . " = ''";
+        $model = SurveyDynamic::model($this->surveyId);
+        $db = $model->getDbConnection();
+        $col = $db->quoteColumnName($fieldName);
 
-        return (int) Yii::app()->db->createCommand($query)->queryScalar();
+        $criteria = new CDbCriteria();
+        $criteria->addCondition("($col IS NULL OR $col = '')");
+
+        return (int)$model->count($criteria);
     }
 
     /**
      * Build chart items (legend + values) from a list of answer codes.
      *
      * @param string $rt Response token (sidXgidXqid)
-     * @param int $surveyId Survey ID
      * @param array $codes Answer codes
      * @param array $labels Optional display labels (aligned with $codes)
      * @return array [legend[], items[]]
      */
-    protected function buildItemsFromCodes($rt, $surveyId, array $codes, array $labels = []): array
+    protected function buildItemsFromCodes($rt, array $codes, array $labels = []): array
     {
         $legend = [];
         $items = [];
 
         foreach ($codes as $i => $code) {
-            $count = $this->getResponseCount($rt, $surveyId, (string)$code);
+            $count = $this->getResponseCount($rt, (string)$code);
             $title = $labels[$i] ?? (string)$code;
             $legend[] = $title;
 
