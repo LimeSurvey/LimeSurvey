@@ -208,17 +208,20 @@ class LSDbCommandBuilder extends \CDbCommandBuilder
 	 * @return CDbCommand delete command.
 	 */
 	public function createDeleteCommand($table,$criteria)
-	{
-		$this->ensureTable($table);
-		$sql="DELETE {$table->rawName} FROM {$table->rawName}";
-		$sql=$this->applyJoin($sql,$criteria->join);
-		$sql=$this->applyCondition($sql,$criteria->condition);
-		$sql=$this->applyGroup($sql,$criteria->group);
-		$sql=$this->applyHaving($sql,$criteria->having);
-		$sql=$this->applyOrder($sql,$criteria->order);
-		$sql=$this->applyLimit($sql,$criteria->limit,$criteria->offset);
-		$command=$this->getDbConnection()->createCommand($sql);
-		$this->bindValues($command,$criteria->params);
-		return $command;
-	}
+    {
+        if (Yii::app()->db->getDriverName() === 'pgsql') {
+            return parent::createDeleteCommand($table, $criteria);
+        }
+        $this->ensureTable($table);
+        $sql="DELETE {$table->rawName} FROM {$table->rawName}";
+        $sql=$this->applyJoin($sql,$criteria->join);
+        $sql=$this->applyCondition($sql,$criteria->condition);
+        $sql=$this->applyGroup($sql,$criteria->group);
+        $sql=$this->applyHaving($sql,$criteria->having);
+        $sql=$this->applyOrder($sql,$criteria->order);
+        $sql=$this->applyLimit($sql,$criteria->limit,$criteria->offset);
+        $command=$this->getDbConnection()->createCommand($sql);
+        $this->bindValues($command,$criteria->params);
+        return $command;
+    }
 }
