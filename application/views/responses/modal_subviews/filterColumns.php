@@ -45,7 +45,7 @@
                             </div>
                         <?php endforeach; ?>
                         <input type="hidden" name="surveyid" value="<?= $surveyId ?>"/>
-                        <input type="hidden" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= App()->request->csrfToken ?>"/>
+                        <input type="hidden" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= htmlspecialchars(App()->request->csrfToken, ENT_QUOTES, null, false) ?>"/>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -59,7 +59,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     'classes' => 'selector__action-change-display-mode'
                 ]
             ]); ?>
-            <input type="hidden" name="<?= App()->request->csrfTokenName ?>" value="<?= App()->request->csrfToken ?>"/>
+            <input type="hidden" name="<?= App()->request->csrfTokenName ?>" value="<?= htmlspecialchars(App()->request->csrfToken, ENT_QUOTES, null, false) ?>"/>
             <input type="submit" class="d-none" name="submit" value="submit"/>
         </div>
     </form>
