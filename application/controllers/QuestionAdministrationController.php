@@ -2358,7 +2358,11 @@ class QuestionAdministrationController extends LSBaseController
         $oQuestionGroup = QuestionGroup::model()->findByPk($oQuestion->gid);
         $aQuestionGroupDefinition = array_merge($oQuestionGroup->attributes, $oQuestionGroup->questiongroupl10ns);
 
-        $aScaledSubquestions = $oQuestion->getOrderedSubQuestions();
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $questionOrderingService = $diContainer->get(
+            LimeSurvey\Models\Services\QuestionOrderingService::class
+        );
+        $aScaledSubquestions = $questionOrderingService->getOrderedSubQuestions($oQuestion);
         foreach ($aScaledSubquestions as $scaleId => $aSubquestions) {
             $aScaledSubquestions[$scaleId] = array_map(
                 function ($oSubQuestion) {
@@ -2368,7 +2372,7 @@ class QuestionAdministrationController extends LSBaseController
             );
         }
 
-        $aScaledAnswerOptions = $oQuestion->getOrderedAnswers();
+        $aScaledAnswerOptions = $questionOrderingService->getOrderedAnswers($oQuestion);
         foreach ($aScaledAnswerOptions as $scaleId => $aAnswerOptions) {
             $aScaledAnswerOptions[$scaleId] = array_map(
                 function ($oAnswerOption) {

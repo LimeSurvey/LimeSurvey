@@ -40,6 +40,7 @@ abstract class QuestionBaseRenderer extends StaticModel
     protected $aScripts = [];
     protected $aScriptFiles = [];
     protected $aStyles = [];
+    protected $questionOrderingService;
 
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
@@ -79,6 +80,10 @@ abstract class QuestionBaseRenderer extends StaticModel
                 'SGQ' => null,
             ));
         }
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $this->questionOrderingService = $diContainer->get(
+            LimeSurvey\Models\Services\QuestionOrderingService::class
+        );
     }
 
     protected function getTimeSettingRender()
@@ -251,13 +256,20 @@ abstract class QuestionBaseRenderer extends StaticModel
 
     protected function setSubquestions($scale_id = null)
     {
-
-        $this->aSubQuestions = $this->oQuestion->getOrderedSubQuestions($scale_id);
+        $this->aSubQuestions = $this->questionOrderingService->getOrderedSubQuestions(
+            $this->oQuestion,
+            $scale_id,
+            $this->sLanguage
+        );
     }
 
     protected function setAnsweroptions($scale_id = null)
     {
-        $this->aAnswerOptions = $this->oQuestion->getOrderedAnswers($scale_id, $this->sLanguage);
+        $this->aAnswerOptions = $this->questionOrderingService->getOrderedAnswers(
+            $this->oQuestion,
+            $scale_id,
+            $this->sLanguage
+        );
     }
 
     protected function getAnswerCount($iScaleId = 0)
