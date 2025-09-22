@@ -86,7 +86,7 @@
                                 echo App()->createUrl(
                                     'questionAdministration/listquestions',
                                     ['surveyid' => $oSurvey->primaryKey]
-                                ); ?>" class="btn btn-warning">
+                                ); ?>" class="btn btn-warning" role="button" aria-label="<?php eT('Reset'); ?>">
                         <span class="ri-refresh-line"></span>
                         <?php
                         eT('Reset'); ?>
