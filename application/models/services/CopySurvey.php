@@ -54,6 +54,11 @@ class CopySurvey
      */
     private function initialiseOptions(): array
     {
+        //test it
+        if($this->request->getPost('surveyIdToCopy') === null) {
+            throw new \Exception('No survey ID provided');
+        }
+
         $this->sourceSurveyId = sanitize_int($this->request->getPost('surveyIdToCopy'));
 
         if ($this->sourceSurveyId === null) {
