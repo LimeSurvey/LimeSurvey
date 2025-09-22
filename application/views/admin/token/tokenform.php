@@ -7,7 +7,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
 ?>
 <div class='<?= (!isset($ajax) || $ajax = false) ? 'col-12 side-body' : ''?>'>
     <?php if (!isset($ajax) || $ajax = false) { ?>
-        <h3>
+        <h3 role="heading" aria-level="1">
             <?php
 
             if ($token_subaction == "edit") {
