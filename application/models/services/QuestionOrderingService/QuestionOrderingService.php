@@ -273,22 +273,20 @@ class QuestionOrderingService
         $this->randomizerHelper->initialize($question->sid);
 
         // Check for excluded subquestion before randomization
-        $excludeAllOthers = $question->getQuestionAttribute('exclude_all_others');
+        $excludeAllOthers = (string)$question->getQuestionAttribute('exclude_all_others');
         $excludedSubquestion = null;
 
         if (
-            $excludeAllOthers != '' &&
+            $excludeAllOthers !== '' &&
             ($question->getQuestionAttribute('random_order') == 1 ||
                 $question->getQuestionAttribute('subquestion_order') == 'random')
         ) {
-            // Convert to string if it's an array
-            $excludeCode = is_array($excludeAllOthers) ? reset($excludeAllOthers) : $excludeAllOthers;
             [
                 $excludedSubquestion,
                 $groupedSubquestions
             ] = $this->randomizerHelper->extractExcludedSubquestion(
                 $groupedSubquestions,
-                $excludeCode
+                $excludeAllOthers
             );
         }
 
