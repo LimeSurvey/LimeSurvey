@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.15.12 (build 250916) to 6.15.13 (build 250923) September 23, 2025
+-Fixed issue: Question text too small in question summary (Carsten Schmitz)
+-Fixed issue: Question group text too small in summary (Carsten Schmitz)
+-Fixed issue: Question group name not shown properly in question summary (Carsten Schmitz)
+-Fixed issue: Breadcrumb text too small (Carsten Schmitz)
+-Fixed issue #20271: [security] Reflected XSS in CSRF token handling (#4449) (Gabriel Jenik)
+-Fixed issue #20256: Date question doesn't show AM/PM correctly (#4431) (Gabriel Jenik)
+
+
 Changes from 6.15.11 (build 250909) to 6.15.12 (build 250916) September 16, 2025
 -Fixed issue: Offered encodings for file imports don't properly work (Carsten Schmitz)
 -Fixed issue #AT-1745: Storing answers from new editor (#4433) (Tim Willig)
