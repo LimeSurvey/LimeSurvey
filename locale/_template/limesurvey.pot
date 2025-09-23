@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-09-23 15:18:14+00:00\n"
+"POT-Creation-Date: 2025-09-23 20:38:26+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7119,7 +7119,7 @@ msgstr ""
 msgid "Disabled by configuration. Set 'showpopups' option in config.php file to enable this option. "
 msgstr ""
 
-#: application/core/LSHttpRequest.php:314
+#: application/core/LSHttpRequest.php:312
 msgid "The requested hostname is invalid."
 msgstr ""
 
