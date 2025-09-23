@@ -17,7 +17,7 @@ class CopySurveyTest extends TestBaseClass
     public function testCopySurvey()
     {
         // Import survey all options that could be selected in the modal for copy survey
-        $surveyFile = self::$surveysFolder . '/limesurvey_survey_373616_copySurvey.lss';
+        $surveyFile = self::$surveysFolder . 'limesurvey_survey_373616_copySurvey.lss';
         self::importSurvey($surveyFile);
 
         $survey = Survey::model()->findByPk(self::$testSurvey->sid);
