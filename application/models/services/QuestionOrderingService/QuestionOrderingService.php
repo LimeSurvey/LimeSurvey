@@ -273,11 +273,12 @@ class QuestionOrderingService
         $this->randomizerHelper->initialize($question->sid);
 
         // Check for excluded subquestion before randomization
-        $excludeAllOthers = (string)$question->getQuestionAttribute('exclude_all_others');
+        /* @param string|null $excludeAllOthers */
+        $excludeAllOthers = $question->getQuestionAttribute('exclude_all_others');
         $excludedSubquestion = null;
 
         if (
-            $excludeAllOthers !== '' &&
+            $excludeAllOthers !== '' && $excludeAllOthers !== null &&
             ($question->getQuestionAttribute('random_order') == 1 ||
                 $question->getQuestionAttribute('subquestion_order') == 'random')
         ) {

@@ -1134,7 +1134,7 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * @return QuestionAttribute[]
+     * @return mixed
      */
     public function getQuestionAttribute($sAttribute)
     {
