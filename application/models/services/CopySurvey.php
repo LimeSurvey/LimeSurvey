@@ -17,15 +17,6 @@ use Permission;
  */
 class CopySurvey
 {
-    /** @var LSHttpRequest */
-    private $request;
-
-    /** @var int */
-    private $sourceSurveyId;
-
-    /** @var string */
-    private $newSurveyName;
-
     /** @var ?int */
     private $newSurveyId;
 
@@ -33,85 +24,21 @@ class CopySurvey
     private $options;
 
     /**
-     * @param LSHttpRequest $request
-     * @param string $newSurveyName
-     * @param int|null $newSurveyId
-     *
-     */
-    public function __construct($request, $newSurveyName, $newSurveyId)
-    {
-        $this->request = $request;
-        $this->sourceSurveyId = null;
-        $this->newSurveyName = $newSurveyName;
-        $this->newSurveyId = $newSurveyId;
-        $this->options = $this->initialiseOptions();
-    }
+     * @var Survey */
+    private $sourceSurvey;
 
     /**
-     * Initialise the options array based on the user's decision or default settings.
-     *
-     * @return array
+     * @param Survey $sourceSurvey
+     * @param array $options
+     * @param int $newSurveyId
      */
-    private function initialiseOptions(): array
+    public function __construct($sourceSurvey, $options, $newSurveyId)
     {
-        //test it
-        if($this->request->getPost('surveyIdToCopy') === null) {
-            throw new \Exception('No survey ID provided');
-        }
-
-        $this->sourceSurveyId = sanitize_int($this->request->getPost('surveyIdToCopy'));
-
-        if ($this->sourceSurveyId === null) {
-            $this->sourceSurveyId = sanitize_int($this->request->getParam('surveyIdToCopy'));
-        }
-
-        $options = [];
-        $options['copyResources'] = true;
-        $options['excludeQuotas'] = true;
-        $options['excludePermissions'] = true;
-        $options['excludeAnswers'] = true;
-        $options['resetConditions'] = true;
-        $options['resetStartEndDate'] = true;
-        $options['resetResponseId'] = true;
-
-        //Survey resource files and adapt links
-        $option = $this->request->getPost('copysurveytranslinksfields');
-        if (isset($option)) { //user decision
-            $options['copyResources'] = $option == "1";
-        }
-
-        $option = $this->request->getPost('copysurveyexcludequotas');
-        if (isset($option)) { //user decision
-            $options['excludeQuotas'] = $option == "1";
-        }
-
-        $option = $this->request->getPost('copysurveyexcludepermissions');
-        if (isset($option)) { //user decision
-            $options['excludePermissions'] = $option == "1";
-        }
-
-        $option = $this->request->getPost('copysurveyexcludeanswers');
-        if (isset($option)) { //user decision
-            $options['excludeAnswers'] = $option == "1";
-        }
-
-        $option = $this->request->getPost('copysurveyresetconditions');
-        if (isset($option)) { //user decision
-            $options['resetConditions'] = $option == "1";
-        }
-
-        $option = $this->request->getPost('copysurveyresetstartenddate');
-        if (isset($option)) { //user decision
-            $options['resetStartEndDate'] = $option == "1";
-        }
-
-        $option = $this->request->getPost('copysurveyresetresponsestartid');
-        if (isset($option)) { //user decision
-            $options['resetResponseId'] = $option == "1";
-        }
-
-        return $options;
+        $this->sourceSurvey = $sourceSurvey;
+        $this->options = $options;
+        $this->newSurveyId = $newSurveyId;
     }
+
 
     /**
      * Copy the survey and return the results.
@@ -128,19 +55,17 @@ class CopySurvey
         //for other functions deeply hidden the naming is relevant...
         $this->options['answers'] = $this->options['excludeAnswers'];
         $this->options['conditions'] = $this->options['resetConditions'];
-
         App()->loadHelper('export');
-        $sourceSurvey = Survey::model()->findByPk($this->sourceSurveyId);
-        if(!$sourceSurvey) {
+        if(!$this->sourceSurvey) {
             return null;
         }
-        $copySurveyData = surveyGetXMLData($this->sourceSurveyId, $this->options);
+        $copySurveyData = surveyGetXMLData($this->sourceSurvey->sid, $this->options);
 
         App()->loadHelper('admin/import');
         $aImportResults = XMLImportSurvey(
             '',
             $copySurveyData,
-            $this->newSurveyName,
+            $this->sourceSurvey->currentLanguageSettings->surveyls_title . '- Copy',
             $this->newSurveyId,
             $this->options['copyResources']
         );
@@ -157,7 +82,7 @@ class CopySurvey
         }
 
         if (!isset($this->options['excludePermissions'])) {
-            Permission::model()->copySurveyPermissions($this->sourceSurveyId, $aImportResults['newsid']);
+            Permission::model()->copySurveyPermissions($this->sourceSurvey->sid, $aImportResults['newsid']);
         }
 
         if (!empty($aImportResults['newsid']) && $this->options['copyResources']) {

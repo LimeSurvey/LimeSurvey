@@ -2245,11 +2245,21 @@ class SurveyAdministrationController extends LSBaseController
             $this->redirect(App()->request->urlReferrer);
         }
 
+        //the new survey id
         $newSurveyId = sanitize_int(App()->request->getPost('copysurveyid'), 1, 99999);
-        $sNewSurveyName = $survey->currentLanguageSettings->surveyls_title . '- Copy';
+
+        //the source survey id
+        $sourceSurveyId = sanitize_int($this->request->getPost('surveyIdToCopy'));
+        if ($sourceSurveyId === null) {
+            $sourceSurveyId = sanitize_int($this->request->getParam('surveyIdToCopy'));
+        }
+
+        $sourceSurvey = Survey::model()->findByPk($sourceSurveyId);
+
+        $options = $this->getPostParamsForCopySurvey();
         $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
-            App()->request,
-            $sNewSurveyName,
+            $sourceSurvey,
+            $options,
             $newSurveyId,
         );
         $copyResults = $copySurveyService->copy();
@@ -2309,6 +2319,60 @@ class SurveyAdministrationController extends LSBaseController
         $this->aData = $aData;
 
         $this->render('importSurvey_view', $this->aData);
+    }
+
+    /**
+     * Intialises the necessary options.
+     *
+     * @return array
+     */
+    private function getPostParamsForCopySurvey()
+    {
+        $options['copyResources'] = true;
+        $options['excludeQuotas'] = true;
+        $options['excludePermissions'] = true;
+        $options['excludeAnswers'] = true;
+        $options['resetConditions'] = true;
+        $options['resetStartEndDate'] = true;
+        $options['resetResponseId'] = true;
+
+        //Survey resource files and adapt links
+        $option = $this->request->getPost('copysurveytranslinksfields');
+        if (isset($option)) { //user decision
+            $options['copyResources'] = $option == "1";
+        }
+
+        $option = $this->request->getPost('copysurveyexcludequotas');
+        if (isset($option)) { //user decision
+            $options['excludeQuotas'] = $option == "1";
+        }
+
+        $option = $this->request->getPost('copysurveyexcludepermissions');
+        if (isset($option)) { //user decision
+            $options['excludePermissions'] = $option == "1";
+        }
+
+        $option = $this->request->getPost('copysurveyexcludeanswers');
+        if (isset($option)) { //user decision
+            $options['excludeAnswers'] = $option == "1";
+        }
+
+        $option = $this->request->getPost('copysurveyresetconditions');
+        if (isset($option)) { //user decision
+            $options['resetConditions'] = $option == "1";
+        }
+
+        $option = $this->request->getPost('copysurveyresetstartenddate');
+        if (isset($option)) { //user decision
+            $options['resetStartEndDate'] = $option == "1";
+        }
+
+        $option = $this->request->getPost('copysurveyresetresponsestartid');
+        if (isset($option)) { //user decision
+            $options['resetResponseId'] = $option == "1";
+        }
+
+        return $options;
     }
 
     /**

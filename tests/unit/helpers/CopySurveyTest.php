@@ -20,25 +20,19 @@ class CopySurveyTest extends TestBaseClass
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_373616_copySurvey.lss';
         self::importSurvey($surveyFile);
 
-        //produce a fake post request with specific params
-        $request = $this
-            ->getMockBuilder(LSHttpRequest::class)
-            ->getMock();
-        $_POST['surveyIdToCopy'] = self::$testSurvey->sid;
-        $_POST['copysurveytranslinksfields'] = '1';
-        $_POST['copysurveyexcludequotas'] = '1';
-        $_POST['copysurveyexcludepermissions'] = '1';
-        $_POST['copysurveyexcludeanswers'] = '1';
-        $_POST['copysurveyresetconditions'] = '1';
-        $_POST['copysurveyresetstartenddate'] = '1';
-        $_POST['copysurveyresetresponsestartid'] = '1';
+        $options['copyResources'] = true;
+        $options['excludeQuotas'] = true;
+        $options['excludePermissions'] = true;
+        $options['excludeAnswers'] = true;
+        $options['resetConditions'] = true;
+        $options['resetStartEndDate'] = true;
+        $options['resetResponseId'] = true;
 
-        $newSurveyName = self::$testSurvey->currentLanguageSettings->surveyls_title . '- Copy';
         $newSurveyId = rand(10000, 99999);
 
         $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
-            $request,
-            $newSurveyName,
+            self::$testSurvey,
+            $options,
             $newSurveyId
         );
         $result = $copySurveyService->copy();
