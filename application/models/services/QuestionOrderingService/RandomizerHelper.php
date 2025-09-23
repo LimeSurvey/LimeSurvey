@@ -34,6 +34,10 @@ class RandomizerHelper
     ): array {
         $excludedSubquestion = null;
 
+        if (empty($excludeAllOthers)) {
+            return [$excludedSubquestion, $groupedSubquestions];
+        }
+
         foreach ($groupedSubquestions as $scaleId => $scaleArray) {
             foreach ($scaleArray as $key => $subquestion) {
                 if ($subquestion->title == $excludeAllOthers) {

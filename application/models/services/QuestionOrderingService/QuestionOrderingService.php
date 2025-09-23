@@ -281,12 +281,14 @@ class QuestionOrderingService
             ($question->getQuestionAttribute('random_order') == 1 ||
                 $question->getQuestionAttribute('subquestion_order') == 'random')
         ) {
+            // Convert to string if it's an array
+            $excludeCode = is_array($excludeAllOthers) ? reset($excludeAllOthers) : $excludeAllOthers;
             [
                 $excludedSubquestion,
                 $groupedSubquestions
             ] = $this->randomizerHelper->extractExcludedSubquestion(
                 $groupedSubquestions,
-                $excludeAllOthers
+                $excludeCode
             );
         }
 
