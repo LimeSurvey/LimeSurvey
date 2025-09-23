@@ -3,7 +3,6 @@
 namespace helpers;
 
 use ls\tests\TestBaseClass;
-use LSHttpRequest;
 use Survey;
 
 class CopySurveyTest extends TestBaseClass
@@ -23,7 +22,7 @@ class CopySurveyTest extends TestBaseClass
 
         $survey = Survey::model()->findByPk(self::$testSurvey->sid);
 
-        $this->assertNotNull($survey);
+        $this->assertNotNull(self::$testSurvey);
 
         $options['copyResources'] = true;
         $options['excludeQuotas'] = true;
