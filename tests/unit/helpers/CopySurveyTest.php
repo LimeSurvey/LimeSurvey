@@ -4,6 +4,7 @@ namespace helpers;
 
 use ls\tests\TestBaseClass;
 use LSHttpRequest;
+use Survey;
 
 class CopySurveyTest extends TestBaseClass
 {
@@ -20,6 +21,8 @@ class CopySurveyTest extends TestBaseClass
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_373616_copySurvey.lss';
         self::importSurvey($surveyFile);
 
+        $survey = Survey::model()->findByPk(self::$testSurvey->sid);
+
         $options['copyResources'] = true;
         $options['excludeQuotas'] = true;
         $options['excludePermissions'] = true;
@@ -31,7 +34,7 @@ class CopySurveyTest extends TestBaseClass
         $newSurveyId = rand(10000, 99999);
 
         $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
-            self::$testSurvey,
+            $survey,
             $options,
             $newSurveyId
         );
