@@ -554,14 +554,3 @@ function sanitize_alphanumeric($value)
 {
     return preg_replace("/[^a-zA-Z0-9\-\_]/", "", $value);
 }
-
-/**
- * Remove all chars from $value that don't belong to a base64 string (doesn't check if the string is a valid base64 string)
- *
- * @param string $value
- * @return string
- */
-function sanitize_base64($value)
-{
-    return preg_replace("/[^a-zA-Z0-9\/\+=]/", "", $value);
-}
