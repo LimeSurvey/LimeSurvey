@@ -28,6 +28,7 @@ class SurveyTemplate implements CommandInterface
 
     protected Survey $survey;
     protected SurveyLanguageSetting $surveyLanguageSetting;
+    protected string $language = "en";
 
     /**
      * Constructor
@@ -104,7 +105,7 @@ class SurveyTemplate implements CommandInterface
         $languageSettings = $this
             ->surveyLanguageSetting
             ->find('surveyls_survey_id = :sid and surveyls_language = :language', [
-                ':sid'      => $survey->id,
+                ':sid'      => $survey->sid,
                 ':language' => $this->language
             ]);
         $response = [];
