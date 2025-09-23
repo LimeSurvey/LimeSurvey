@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-09-15 11:13:59+00:00\n"
+"POT-Creation-Date: 2025-09-23 15:18:14+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2719,9 +2719,9 @@ msgstr ""
 #: application/views/questionAdministration/copyQuestionForm.php:94
 #: application/views/questionAdministration/copyQuestionForm.php:107
 #: application/views/questionAdministration/copyQuestionForm.php:122
-#: application/views/questionAdministration/summary.php:151
-#: application/views/questionAdministration/summary.php:171
-#: application/views/questionAdministration/summary.php:190
+#: application/views/questionAdministration/summary.php:152
+#: application/views/questionAdministration/summary.php:172
+#: application/views/questionAdministration/summary.php:191
 #: application/views/quotas/_form.php:53 application/views/quotas/_form.php:69
 #: application/views/responses/partial/responseListTable.php:134
 #: application/views/userManagement/partial/addedituser.php:91
@@ -2872,9 +2872,9 @@ msgstr ""
 #: application/views/questionAdministration/copyQuestionForm.php:93
 #: application/views/questionAdministration/copyQuestionForm.php:106
 #: application/views/questionAdministration/copyQuestionForm.php:121
-#: application/views/questionAdministration/summary.php:149
-#: application/views/questionAdministration/summary.php:167
-#: application/views/questionAdministration/summary.php:188
+#: application/views/questionAdministration/summary.php:150
+#: application/views/questionAdministration/summary.php:168
+#: application/views/questionAdministration/summary.php:189
 #: application/views/quotas/_form.php:52 application/views/quotas/_form.php:68
 #: application/views/responses/partial/responseListTable.php:134
 #: application/views/userManagement/partial/addedituser.php:86
@@ -7119,7 +7119,7 @@ msgstr ""
 msgid "Disabled by configuration. Set 'showpopups' option in config.php file to enable this option. "
 msgstr ""
 
-#: application/core/LSHttpRequest.php:312
+#: application/core/LSHttpRequest.php:314
 msgid "The requested hostname is invalid."
 msgstr ""
 
@@ -9527,73 +9527,73 @@ msgstr ""
 msgid "Breadcrumb"
 msgstr ""
 
-#: application/extensions/DateTimePickerWidget/DateTimePicker.php:412
+#: application/extensions/DateTimePickerWidget/DateTimePicker.php:419
 #: application/extensions/admin/grid/ColumnFilterWidget/views/columns_filter.php:35
 #: application/views/admin/participants/participantsPanel_view.php:40
 #: application/views/responses/modal_subviews/filterColumns.php:35
 msgid "Clear selection"
 msgstr ""
 
-#: application/extensions/DateTimePickerWidget/DateTimePicker.php:413
+#: application/extensions/DateTimePickerWidget/DateTimePicker.php:420
 #: application/views/admin/participants/participantsPanel_view.php:43
 msgid "Previous month"
 msgstr ""
 
-#: application/extensions/DateTimePickerWidget/DateTimePicker.php:414
+#: application/extensions/DateTimePickerWidget/DateTimePicker.php:421
 #: application/views/admin/participants/participantsPanel_view.php:44
 msgid "Next month"
 msgstr ""
 
-#: application/extensions/DateTimePickerWidget/DateTimePicker.php:415
+#: application/extensions/DateTimePickerWidget/DateTimePicker.php:422
 #: application/views/admin/participants/participantsPanel_view.php:42
 msgid "Select month"
 msgstr ""
 
-#: application/extensions/DateTimePickerWidget/DateTimePicker.php:416
+#: application/extensions/DateTimePickerWidget/DateTimePicker.php:423
 #: application/views/admin/participants/participantsPanel_view.php:45
 msgid "Select year"
 msgstr ""
 
-#: application/extensions/DateTimePickerWidget/DateTimePicker.php:417
+#: application/extensions/DateTimePickerWidget/DateTimePicker.php:424
 #: application/views/admin/participants/participantsPanel_view.php:46
 msgid "Previous year"
 msgstr ""
 
-#: application/extensions/DateTimePickerWidget/DateTimePicker.php:418
+#: application/extensions/DateTimePickerWidget/DateTimePicker.php:425
 #: application/views/admin/participants/participantsPanel_view.php:47
 msgid "Next year"
 msgstr ""
 
-#: application/extensions/DateTimePickerWidget/DateTimePicker.php:419
+#: application/extensions/DateTimePickerWidget/DateTimePicker.php:426
 #: application/views/admin/participants/participantsPanel_view.php:48
 msgid "Select decade"
 msgstr ""
 
-#: application/extensions/DateTimePickerWidget/DateTimePicker.php:420
+#: application/extensions/DateTimePickerWidget/DateTimePicker.php:427
 #: application/views/admin/participants/participantsPanel_view.php:49
 msgid "Previous decade"
 msgstr ""
 
-#: application/extensions/DateTimePickerWidget/DateTimePicker.php:421
+#: application/extensions/DateTimePickerWidget/DateTimePicker.php:428
 #: application/views/admin/participants/participantsPanel_view.php:50
 msgid "Next decade"
 msgstr ""
 
-#: application/extensions/DateTimePickerWidget/DateTimePicker.php:422
+#: application/extensions/DateTimePickerWidget/DateTimePicker.php:429
 #: application/views/admin/participants/participantsPanel_view.php:51
 msgid "Previous century"
 msgstr ""
 
-#: application/extensions/DateTimePickerWidget/DateTimePicker.php:423
+#: application/extensions/DateTimePickerWidget/DateTimePicker.php:430
 #: application/views/admin/participants/participantsPanel_view.php:52
 msgid "Next century"
 msgstr ""
 
-#: application/extensions/DateTimePickerWidget/DateTimePicker.php:424
+#: application/extensions/DateTimePickerWidget/DateTimePicker.php:431
 msgid "Select time"
 msgstr ""
 
-#: application/extensions/DateTimePickerWidget/DateTimePicker.php:425
+#: application/extensions/DateTimePickerWidget/DateTimePicker.php:432
 msgid "Select date"
 msgstr ""
 
@@ -9651,7 +9651,7 @@ msgstr ""
 #: application/extensions/GeneralOptionWidget/settings/MandatoryGeneralOption.php:26
 #: application/models/Question.php:959
 #: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:20
-#: application/views/questionAdministration/summary.php:169
+#: application/views/questionAdministration/summary.php:170
 msgid "Soft"
 msgstr ""
 
@@ -12925,7 +12925,7 @@ msgstr ""
 #: application/views/questionGroupsAdministration/addGroup_view.php:69
 #: application/views/questionGroupsAdministration/editGroup_view.php:44
 #: application/views/questionGroupsAdministration/editGroup_view.php:48
-#: application/views/questionGroupsAdministration/group_view.php:21
+#: application/views/questionGroupsAdministration/group_view.php:23
 #: application/views/userGroup/addUserGroup_view.php:21
 #: application/views/userGroup/editUserGroup_view.php:16
 #: tmp/runtime/twig_cache/4c/4c336f9f4acb0aa9474d899d1e971227.php:65
@@ -12987,7 +12987,7 @@ msgid "Default:"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9325
-#: application/views/questionAdministration/summary.php:62
+#: application/views/questionAdministration/summary.php:63
 #: application/views/questionAdministration/textElements.php:84
 msgid "Help:"
 msgstr ""
@@ -18341,7 +18341,7 @@ msgid "The following answers should be deleted:"
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:87
-#: application/views/questionAdministration/summary.php:20
+#: application/views/questionAdministration/summary.php:43
 msgid "Code:"
 msgstr ""
 
@@ -21786,12 +21786,12 @@ msgid "Group:"
 msgstr ""
 
 #: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:13
-#: application/views/questionAdministration/summary.php:162
+#: application/views/questionAdministration/summary.php:163
 msgid "Mandatory:"
 msgstr ""
 
 #: application/views/admin/survey/Question/massive_actions/_set_questions_other.php:12
-#: application/views/questionAdministration/summary.php:144
+#: application/views/questionAdministration/summary.php:145
 msgid "Option 'Other':"
 msgstr ""
 
@@ -24578,7 +24578,7 @@ msgstr ""
 
 #: application/views/assessment/assessments_edit.php:36
 #: application/views/questionAdministration/copyQuestionForm.php:128
-#: application/views/questionAdministration/summary.php:10
+#: application/views/questionAdministration/summary.php:32
 msgid "Question group:"
 msgstr ""
 
@@ -25316,53 +25316,53 @@ msgstr ""
 msgid "The question code is used for quick identification of this question and must be unique. It is especially useful if you wish to use the LimeSurvey assessments feature and/or the ExpressionScript."
 msgstr ""
 
-#: application/views/questionAdministration/summary.php:28
-msgid "Mandatory Question"
-msgstr ""
-
-#: application/views/questionAdministration/summary.php:30
-msgid "Optional Question"
-msgstr ""
-
-#: application/views/questionAdministration/summary.php:40
+#: application/views/questionAdministration/summary.php:10
 #: application/views/questionAdministration/textElements.php:51
 msgid "Question:"
 msgstr ""
 
-#: application/views/questionAdministration/summary.php:89
+#: application/views/questionAdministration/summary.php:51
+msgid "Mandatory Question"
+msgstr ""
+
+#: application/views/questionAdministration/summary.php:53
+msgid "Optional Question"
+msgstr ""
+
+#: application/views/questionAdministration/summary.php:90
 msgid "Validation:"
 msgstr ""
 
-#: application/views/questionAdministration/summary.php:102
+#: application/views/questionAdministration/summary.php:103
 #: application/views/questionAdministration/typeSelector.php:29
 msgid "Type:"
 msgstr ""
 
-#: application/views/questionAdministration/summary.php:119
-#: application/views/questionAdministration/summary.php:132
+#: application/views/questionAdministration/summary.php:120
+#: application/views/questionAdministration/summary.php:133
 msgid "Warning:"
 msgstr ""
 
-#: application/views/questionAdministration/summary.php:120
+#: application/views/questionAdministration/summary.php:121
 msgid "You need to add answer options to this question."
 msgstr ""
 
-#: application/views/questionAdministration/summary.php:133
+#: application/views/questionAdministration/summary.php:134
 msgid "You need to add subquestions to this question."
 msgstr ""
 
-#: application/views/questionAdministration/summary.php:183
+#: application/views/questionAdministration/summary.php:184
 msgid "Encrypted:"
 msgstr ""
 
-#: application/views/questionAdministration/summary.php:201
+#: application/views/questionAdministration/summary.php:202
 #: application/views/questionGroupsAdministration/addGroup_view.php:86
 #: application/views/questionGroupsAdministration/editGroup_view.php:65
-#: application/views/questionGroupsAdministration/group_view.php:36
+#: application/views/questionGroupsAdministration/group_view.php:38
 msgid "Condition:"
 msgstr ""
 
-#: application/views/questionAdministration/summary.php:219
+#: application/views/questionAdministration/summary.php:220
 msgid "Group relevance:"
 msgstr ""
 
@@ -25408,7 +25408,7 @@ msgstr ""
 
 #: application/views/questionGroupsAdministration/addGroup_view.php:78
 #: application/views/questionGroupsAdministration/editGroup_view.php:57
-#: application/views/questionGroupsAdministration/group_view.php:51
+#: application/views/questionGroupsAdministration/group_view.php:53
 msgid "Randomization group:"
 msgstr ""
 
@@ -25420,7 +25420,7 @@ msgstr ""
 msgid "Edit Group"
 msgstr ""
 
-#: application/views/questionGroupsAdministration/group_view.php:60
+#: application/views/questionGroupsAdministration/group_view.php:62
 msgid "Questions with conditions to this group"
 msgstr ""
 
