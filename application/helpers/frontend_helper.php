@@ -808,7 +808,9 @@ function buildsurveysession($surveyid, $preview = false)
 
 
     // Reset all the session variables and start again
-    resetAllSessionVariables($surveyid);
+    if (!Yii::app()->request->getParam('popuppreview', false)) {
+        resetAllSessionVariables($surveyid);
+    }
 
     // NOTE: All of this is already done in survey controller.
     // We keep it here only for Travis Tested thar are still not using Selenium
@@ -1284,10 +1286,10 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
         $FlashError = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutParticipants') / 60);
         $renderToken = 'main';
     } else {
-        if (!$subscenarios['tokenValid']) {
+        if (!$subscenarios['tokenValid'] && !($thissurvey["popupPreview"] ?? false)) {
             //Check if there is a clienttoken set
             if ((!isset($clienttoken) || $clienttoken == "")) {
-                if (isset($thissurvey) && $thissurvey['allowregister'] == "Y") {
+                if (isset($thissurvey) && $thissurvey['allowregister'] == "Y" && (Yii::app()->request->getParam('noregister', 'false') !== 'true')) {
                     $renderToken = 'register';
                 } else {
                     $renderToken = 'main';
@@ -1909,6 +1911,7 @@ function display_first_page($thissurvey, $aSurveyInfo)
     $thissurvey['attr']['welcomecontainer'] = $thissurvey['attr']['surveyname'] = $thissurvey['attr']['description'] = $thissurvey['attr']['welcome'] = $thissurvey['attr']['questioncount'] = '';
 
     $thissurvey['include_content'] = 'firstpage';
+    $thissurvey['noregister'] = (Yii::app()->request->getParam('noregister', 'false') === 'true');
 
     Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey), false);
 }
@@ -2016,6 +2019,7 @@ function getMove()
     if ($move == 'default') {
         $surveyid = Yii::app()->getConfig('surveyID');
         $thissurvey = getsurveyinfo($surveyid);
+        $thissurvey['noregister'] = (Yii::app()->request->getParam('noregister', 'false') === 'true');
         $iSessionStep = $_SESSION['survey_' . $surveyid]['step'] ?? false;
         $iSessionTotalSteps = $_SESSION['survey_' . $surveyid]['totalsteps'] ?? false;
         if ($iSessionStep && ($iSessionStep == $iSessionTotalSteps) || $thissurvey['format'] == 'A') {

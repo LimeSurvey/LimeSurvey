@@ -89,22 +89,30 @@ class SurveyTemplate implements CommandInterface
                 )->toArray()
             );
         }
-        $language = (($request->getData('language') ?? $survey->language) ?? 'en');
+
+        $response = $this->buildLanguageSettings($survey);
+        $result = $this->getTemplateData($surveyId, $this->language);
+
+        return $this->responseFactory->makeSuccess(
+            array_merge($response, ['template' => $result])
+        );
+    }
+
+    private function buildLanguageSettings(Survey $survey): array
+    {
+        $this->language = ((\Yii::app()->request->getParam('lang') ?? $survey->language) ?? 'en');
         $languageSettings = $this
             ->surveyLanguageSetting
             ->find('surveyls_survey_id = :sid and surveyls_language = :language', [
-                ':sid'      => $surveyId,
-                ':language' => $language
+                ':sid'      => $survey->id,
+                ':language' => $this->language
             ]);
         $response = [];
         if ($languageSettings) {
             $response['title'] = $languageSettings->surveyls_title;
             $response['subtitle'] = $languageSettings->surveyls_description;
         }
-        $result = $this->getTemplateData($surveyId, $language);
-        return $this->responseFactory->makeSuccess(
-            array_merge($response, ['template' => $result])
-        );
+        return $response;
     }
 
     /**

@@ -35,6 +35,14 @@
         </div>
     </div>
 </div>
-<script>doBootstrapRadioOther();</script>
+<script>
+    if (typeof doBootstrapRadioOther === "undefined") {
+        window.addEventListener('load', function() {
+            setTimeout(doBootstrapRadioOther, 1000);
+        });
+    } else {
+        doBootstrapRadioOther();
+    }
+</script>
 
 <!-- end of answer -->
