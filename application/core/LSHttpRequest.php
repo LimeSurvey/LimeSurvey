@@ -324,7 +324,7 @@ class LSHttpRequest extends CHttpRequest
     {
         if ($this->_csrfToken === null) {
             $cookie = $this->getCookies()->itemAt($this->csrfTokenName);
-            if (!$cookie || ($this->_csrfToken = sanitize_base64($cookie->value)) == null) {
+            if (!$cookie || ($this->_csrfToken = sanitize_csrf_token($cookie->value)) == null) {
                 $cookie = $this->createCsrfCookie();
                 $this->_csrfToken = $cookie->value;
                 $this->getCookies()->add($cookie->name, $cookie);
