@@ -139,4 +139,117 @@ class CsrfHttpRequestTest extends TestBaseClass
             'CSRF validation should not be skipped since the route ' . $routes[2] . ' is not a remote control route.'
         );
     }
+
+    /**
+     * Test CSRF token validation
+     * @dataProvider csrfValidationDataProvider
+     */
+    public function testCsrfTokenValidation($cookieValue, $shouldPass, $shouldBeSanitized)
+    {
+        $request = new \LSHttpRequest();
+        $tokenName = $request->csrfTokenName;
+        // Keep the original state
+        $originalRequestMethod = $_SERVER['REQUEST_METHOD'] ?? null;
+        $originalPostToken = $_POST[$tokenName] ?? null;
+        $originalCsrfCookie = $request->getCookies()->itemAt($tokenName);
+
+        // If the cookie value is null, unset the cookie
+        if (!isset($cookieValue)) {
+            $request->getCookies()->remove($tokenName);
+        } else {
+            // Set the CSRF cookie to the provided value
+            $request->getCookies()->add($tokenName, new \CHttpCookie($tokenName, $cookieValue));
+        }
+
+        // Get the CSRF token from the request
+        // This should pick the value from the cookie or create a new one if the cookie is not set
+        $tokenValue = $request->getCsrfToken();
+
+        // Check sanitization. If sanitization was expected, the sanitized value should be different than the original
+        if (isset($cookieValue)) {
+            $this->assertEquals(
+                $shouldBeSanitized,
+                $tokenValue !== $cookieValue,
+                'The CSRF token should ' . ($shouldBeSanitized ? '' : 'not ') . 'be sanitized.'
+            );
+        }
+
+        // Simulate the POST
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_POST[$tokenName] = $tokenValue;
+        // Run the validation
+        $validationPassed = false;
+        try {
+            $request->validateCsrfToken(new \CEvent());
+            $validationPassed = true;
+        } catch (\Exception $e) {
+        }
+
+        // Restore the original state
+        $_SERVER['REQUEST_METHOD'] = $originalRequestMethod;
+        $_POST[$tokenName] = $originalPostToken;
+        if (!isset($originalCsrfCookie)) {
+            $request->getCookies()->remove($tokenName);
+        } else {
+            $request->getCookies()->add($tokenName, $originalCsrfCookie);
+        }
+
+        $this->assertEquals($validationPassed, $shouldPass, 'CSRF validation should ' . ($shouldPass ? '' : 'not ') . 'pass.');
+    }
+
+    /**
+     * Provides test data for the testCsrfTokenValidation method.
+     * Returns an array of arrays in the form [cookieValue, shouldPass, shouldBeSanitized]
+     */
+    public function csrfValidationDataProvider()
+    {
+        $testData = [
+            // Basic case (no cookie present, new token created)
+            [
+                null, // Cookie value
+                true, // Should pass
+                false // Should not be sanitized
+            ]
+        ];
+
+        $securityManager = \Yii::app()->getSecurityManager();
+        // Generate 20 random valid CSRF tokens
+        $validTokens = [];
+        for ($i = 0; $i < 20; $i++) {
+            $token = $securityManager->generateRandomBytes(32);
+            $maskedToken = $securityManager->maskToken($token);
+            $validTokens[] = $maskedToken;
+            $testData[] = [
+                $maskedToken, // Cookie value
+                true, // Should pass
+                false // Should not be sanitized
+            ];
+        }
+
+        // Make sure we test values with underscores and hyphens
+        $testData[] = [
+            'valid_token-with-mixed-characters123',
+            true,
+            false // Should not be sanitized
+        ];
+
+        // Add some invalid tokens
+        $testData[] = [
+            $validTokens[0] . '!',
+            true,
+            true // Should be sanitized
+        ];
+        $testData[] = [
+            $validTokens[1] . '$',
+            true,
+            true // Should be sanitized
+        ];
+        $testData[] = [
+            $validTokens[2] . '<script>',
+            true,
+            true // Should be sanitized
+        ];
+
+        return $testData;
+    }
 }
