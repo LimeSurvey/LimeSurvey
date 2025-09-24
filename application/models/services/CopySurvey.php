@@ -39,7 +39,6 @@ class CopySurvey
         $this->newSurveyId = $newSurveyId;
     }
 
-
     /**
      * Copy the survey and return the results.
      *
@@ -52,13 +51,20 @@ class CopySurvey
      */
     public function copy()
     {
-        //for other functions deeply hidden the naming is relevant...
-        $this->options['answers'] = $this->options['excludeAnswers'];
-        $this->options['conditions'] = $this->options['resetConditions'];
-        App()->loadHelper('export');
-        if(!$this->sourceSurvey) {
+        if (!$this->sourceSurvey) {
             return null;
         }
+
+        //for other functions deeply hidden the naming is relevant...
+        if (isset($this->options['excludeAnswers'])) {
+            $this->options['answers'] = $this->options['excludeAnswers'];
+        }
+
+        if (isset($this->options['resetConditions'])) {
+            $this->options['conditions'] = $this->options['resetConditions'];
+        }
+
+        App()->loadHelper('export');
         $copySurveyData = surveyGetXMLData($this->sourceSurvey->sid, $this->options);
 
         App()->loadHelper('admin/import');
@@ -87,7 +93,7 @@ class CopySurvey
 
         if (!empty($aImportResults['newsid']) && $this->options['copyResources']) {
             $resourceCopier = new CopySurveyResources();
-            [, $errorFilesInfo] = $resourceCopier->copyResources($this->sourceSurveyId, $aImportResults['newsid']);
+            [, $errorFilesInfo] = $resourceCopier->copyResources($this->sourceSurvey->sid, $aImportResults['newsid']);
             if (!empty($errorFilesInfo)) {
                 $aImportResults['importwarnings'][] = gT("Some resources could not be copied from the source survey");
             }

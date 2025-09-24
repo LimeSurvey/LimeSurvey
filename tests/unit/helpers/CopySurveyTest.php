@@ -30,15 +30,14 @@ class CopySurveyTest extends TestBaseClass
         $options['resetStartEndDate'] = true;
         $options['resetResponseId'] = true;
 
-        $newSurveyId = rand(10000, 99999);
-
         $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
             $survey,
             $options,
-            $newSurveyId
+            ''
         );
         $result = $copySurveyService->copy();
 
-       $this->assertNotNull($result);
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('newsid', $result);
     }
 }

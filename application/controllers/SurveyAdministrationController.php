@@ -2246,17 +2246,14 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         //the new survey id
-        $newSurveyId = sanitize_int(App()->request->getPost('copysurveyid'), 1, 99999);
+        $newSurveyId = sanitize_int(App()->request->getPost('copysurveyid'), 100000, 999999);
 
         //the source survey id
-        $sourceSurveyId = sanitize_int($this->request->getPost('surveyIdToCopy'));
-        if ($sourceSurveyId === null) {
-            $sourceSurveyId = sanitize_int($this->request->getParam('surveyIdToCopy'));
-        }
+        $sourceSurveyId = sanitize_int(App()->request->getPost('surveyIdToCopy'));
 
         $sourceSurvey = Survey::model()->findByPk($sourceSurveyId);
 
-        $options = $this->getPostParamsForCopySurvey();
+        $options = $this->getPostParamsForCopySurvey(App()->request);
         $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
             $sourceSurvey,
             $options,
@@ -2287,13 +2284,13 @@ class SurveyAdministrationController extends LSBaseController
         }
         if (!empty($copyResults['newsid'])) {
             $oSurvey = Survey::model()->findByPk($copyResults['newsid']);
-            $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $copyResults['newsid']]);
+            $questionGroupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copyResults['newsid']]);
 
-            $this->resetExpressionManager($oSurvey, $aGrouplist);
+            $this->resetExpressionManager($oSurvey, $questionGroupList);
 
             // Make the link point to the first group/question if available
-            if (!empty($aGrouplist)) {
-                $oFirstGroup = $aGrouplist[0];
+            if (!empty($questionGroupList)) {
+                $oFirstGroup = $questionGroupList[0];
                 $oFirstQuestion = Question::model()->primary()->findByAttributes(
                     ['gid' => $oFirstGroup->gid],
                     ['order' => 'question_order ASC']
@@ -2326,7 +2323,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return array
      */
-    private function getPostParamsForCopySurvey()
+    private function getPostParamsForCopySurvey($request)
     {
         $options['copyResources'] = true;
         $options['excludeQuotas'] = true;
@@ -2337,37 +2334,37 @@ class SurveyAdministrationController extends LSBaseController
         $options['resetResponseId'] = true;
 
         //Survey resource files and adapt links
-        $option = $this->request->getPost('copysurveytranslinksfields');
+        $option = $request->getPost('copysurveytranslinksfields');
         if (isset($option)) { //user decision
             $options['copyResources'] = $option == "1";
         }
 
-        $option = $this->request->getPost('copysurveyexcludequotas');
+        $option = $request->getPost('copysurveyexcludequotas');
         if (isset($option)) { //user decision
             $options['excludeQuotas'] = $option == "1";
         }
 
-        $option = $this->request->getPost('copysurveyexcludepermissions');
+        $option = $request->getPost('copysurveyexcludepermissions');
         if (isset($option)) { //user decision
             $options['excludePermissions'] = $option == "1";
         }
 
-        $option = $this->request->getPost('copysurveyexcludeanswers');
+        $option = $request->getPost('copysurveyexcludeanswers');
         if (isset($option)) { //user decision
             $options['excludeAnswers'] = $option == "1";
         }
 
-        $option = $this->request->getPost('copysurveyresetconditions');
+        $option = $request->getPost('copysurveyresetconditions');
         if (isset($option)) { //user decision
             $options['resetConditions'] = $option == "1";
         }
 
-        $option = $this->request->getPost('copysurveyresetstartenddate');
+        $option = $request->getPost('copysurveyresetstartenddate');
         if (isset($option)) { //user decision
             $options['resetStartEndDate'] = $option == "1";
         }
 
-        $option = $this->request->getPost('copysurveyresetresponsestartid');
+        $option = $request->getPost('copysurveyresetresponsestartid');
         if (isset($option)) { //user decision
             $options['resetResponseId'] = $option == "1";
         }
@@ -2399,11 +2396,10 @@ class SurveyAdministrationController extends LSBaseController
             $this->redirect(App()->request->urlReferrer);
         }
 
-        $sNewSurveyName = $survey->currentLanguageSettings->surveyls_title . '- Copy';
-
+        $options = $this->getPostParamsForCopySurvey(App()->request);
         $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
-            App()->request,
-            $sNewSurveyName,
+            $survey,
+            $options,
             '',
         );
         $copyResults = $copySurveyService->copy();
