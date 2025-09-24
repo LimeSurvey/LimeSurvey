@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-09-23 20:38:26+00:00\n"
+"POT-Creation-Date: 2025-09-24 09:17:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3821,7 +3821,7 @@ msgid "Saved permissions successfully."
 msgstr ""
 
 #: application/controllers/UserManagementController.php:736
-msgid "Saved template permissions successfully."
+msgid "Saved theme permissions successfully."
 msgstr ""
 
 #: application/controllers/UserManagementController.php:839
@@ -17752,7 +17752,8 @@ msgid "Edit user"
 msgstr ""
 
 #: application/models/User.php:664
-msgid "Template permissions"
+#: application/views/userManagement/partial/edittemplatepermissions.php:5
+msgid "Theme permissions"
 msgstr ""
 
 #: application/models/User.php:678
@@ -26746,10 +26747,6 @@ msgstr ""
 
 #: application/views/userManagement/partial/editpermissions.php:76
 msgid "Warning: The user has at least one role assigned. Setting individual user permissions will remove all roles from this user!"
-msgstr ""
-
-#: application/views/userManagement/partial/edittemplatepermissions.php:5
-msgid "Theme template permission"
 msgstr ""
 
 #: application/views/userManagement/partial/edittemplatepermissions.php:22
