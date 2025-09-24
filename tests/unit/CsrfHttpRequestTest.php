@@ -236,18 +236,24 @@ class CsrfHttpRequestTest extends TestBaseClass
         // Add some invalid tokens
         $testData[] = [
             $validTokens[0] . '!',
-            true,
+            true, // Should pass after sanitization
             true // Should be sanitized
         ];
         $testData[] = [
             $validTokens[1] . '$',
-            true,
+            true, // Should pass after sanitization
             true // Should be sanitized
         ];
         $testData[] = [
             $validTokens[2] . '<script>',
-            true,
+            true, // Should pass after sanitization
             true // Should be sanitized
+        ];
+        // Add a token that becomes empty after sanitization
+        $testData[] = [
+            '<>!@#$', // Invalid token that will be sanitized to an empty string
+            true,    // Should pass because a new token will be generated
+            true     // Should be sanitized
         ];
 
         return $testData;
