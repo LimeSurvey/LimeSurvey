@@ -2,11 +2,10 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
-use CDbCriteria;
+use InvalidArgumentException;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
-use PDO;
+use LSDbCriteria;
 use SurveyDynamic;
-use Yii;
 
 /**
  * Base abstract class for all question processors used in statistics that
@@ -17,12 +16,24 @@ use Yii;
 abstract class AbstractQuestionProcessor
 {
     protected string $rt = '';
+
     /** @var array Current question data */
     protected array $question = [];
+
     /** @var int Survey ID for the current context */
     protected int $surveyId = 0;
+
     /** @var array Answer list for the question (if applicable) */
     protected array $answers = [];
+
+    /** @var bool Completed responses filter */
+    private $completed = null;
+
+    /** @var int Min ID for responses filter */
+    private $minId = null;
+
+    /** @var int Max ID for responses filter */
+    private $maxId = null;
 
     /**
      * Build the identifier for current question.
@@ -40,9 +51,14 @@ abstract class AbstractQuestionProcessor
      * Assign question metadata to the processor.
      *
      * @param array $question Question data (from DB/metadata fetch)
+     * @throws InvalidArgumentException if question data is invalid
      */
-    public function setQuestion($question): void
+    public function setQuestion(array $question): void
     {
+        if (empty($question['sid']) || empty($question['gid']) || empty($question['qid'])) {
+            throw new InvalidArgumentException('Invalid question data: missing required fields');
+        }
+
         $this->question = $question;
         $this->question['title'] = flattenText($this->question['title']);
         $this->surveyId = (int)$this->question['sid'];
@@ -55,7 +71,7 @@ abstract class AbstractQuestionProcessor
      *
      * @param array $answers List of answers
      */
-    public function setAnswers($answers): void
+    public function setAnswers(array $answers): void
     {
         $this->answers = $answers;
     }
@@ -67,13 +83,13 @@ abstract class AbstractQuestionProcessor
      * @param string|null $value Specific value to filter on (optional)
      * @return int Response count
      */
-    protected function getResponseCount(string $fieldName, $value = null)
+    protected function getResponseCount(string $fieldName, $value = null): int
     {
         $model = SurveyDynamic::model($this->surveyId);
         $db = $model->getDbConnection();
         $col = $db->quoteColumnName($fieldName);
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
 
         $criteria->addCondition("$col IS NOT NULL");
         $criteria->addCondition("$col != ''");
@@ -82,31 +98,46 @@ abstract class AbstractQuestionProcessor
             $criteria->compare($fieldName, $value);
         }
 
+        $this->applyFilters($criteria);
+
         return (int)$model->count($criteria);
     }
 
-    /**
-     * Gets the number of responses where the field is empty or null.
-     *
-     * @param string $fieldName Field name (column in survey table)
-     * @return int Response count
-     */
-    protected function getResponseNotAnsweredCount(string $fieldName)
+
+    protected function getResponseNotAnsweredCount(string $fieldName): int
     {
         $model = SurveyDynamic::model($this->surveyId);
         $db = $model->getDbConnection();
         $col = $db->quoteColumnName($fieldName);
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
         $criteria->addCondition("($col IS NULL OR $col = '')");
+        $this->applyFilters($criteria);
 
         return (int)$model->count($criteria);
+    }
+    /**
+     * Apply common filters to criteria
+     */
+    protected function applyFilters(LSDbCriteria &$criteria): void
+    {
+        if ($this->completed !== null) {
+            $criteria->addCondition('submitdate IS' . ($this->completed ? ' NOT ' : ' ') . 'NULL');
+        }
+
+        if ($this->minId !== null) {
+            $criteria->compare('id', '>=' . (int)$this->minId);
+        }
+
+        if ($this->maxId !== null) {
+            $criteria->compare('id', '<=' . (int)$this->maxId);
+        }
     }
 
     /**
      * Build chart items (legend + values) from a list of answer codes.
      *
-     * @param string $rt Response token (sidXgidXqid)
+     * @param string $rt Question key (sidXgidXqid)
      * @param array $codes Answer codes
      * @param array $labels Optional display labels (aligned with $codes)
      * @return array [legend[], items[]]

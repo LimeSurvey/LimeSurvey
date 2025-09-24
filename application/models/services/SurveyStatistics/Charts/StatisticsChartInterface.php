@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts;
 
+use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
+
 /**
  * Interface for all statistics chart classes.
  *
@@ -10,6 +12,14 @@ namespace LimeSurvey\Models\Services\SurveyStatistics\Charts;
  */
 interface StatisticsChartInterface
 {
+    /**
+     * Set filters for responses
+     *
+     * @param StatisticsResponseFilters $filters Filters to apply
+     * @return void
+     */
+    public function setFilters(StatisticsResponseFilters $filters): void;
+
     /**
      * Run the chart generation logic.
      *

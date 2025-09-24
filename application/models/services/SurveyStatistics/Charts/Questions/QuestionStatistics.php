@@ -2,10 +2,11 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions;
 
+use CDbCommand;
 use Exception;
 use InvalidArgumentException;
-use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartInterface;
+use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\{MultipleChoiceProcessor,
     SingleOptionMultipleChartsProcessor,
     TextProcessor,
@@ -13,7 +14,6 @@ use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\{Mul
     SingleOptionProcessor,
     DualScaleProcessor
 };
-use PDO;
 use Question;
 use Yii;
 
@@ -24,6 +24,8 @@ class QuestionStatistics implements StatisticsChartInterface
     private string $language;
 
     private array $output = [];
+
+    private $filters = null;
 
     public function __construct()
     {
@@ -82,6 +84,11 @@ class QuestionStatistics implements StatisticsChartInterface
         return $this->output;
     }
 
+    public function setFilters(StatisticsResponseFilters $filters): void
+    {
+        $this->filters = $filters;
+    }
+
     private function handleFactory($factory, $survey, $question)
     {
         $factory->setQuestion($question);
@@ -89,6 +96,18 @@ class QuestionStatistics implements StatisticsChartInterface
         if (!empty($answers)) {
             $factory->setAnswers($answers);
         }
+
+        if (!empty($this->filters) && $this->filters->count() > 0) {
+            foreach ($this->filters->getFilters() as $key => $value) {
+                if ($value !== null) {
+                    $method = 'set' . ucfirst($key);
+                    if (method_exists($factory, $method)) {
+                        $factory->$method($value);
+                    }
+                }
+            }
+        }
+
         try {
             $output = $factory->process($question);
         } catch (Exception $e) {
@@ -98,35 +117,47 @@ class QuestionStatistics implements StatisticsChartInterface
         return $output;
     }
 
+    private function buildBaseQuery(): CDbCommand
+    {
+        $select = [
+            'q.qid', 'q.sid', 'q.gid', 'q.type', 'q.title',
+            'q.parent_qid', 'q.scale_id', 'q.question_order', 'q.other',
+            'ql.question as question_text',
+            'a.aid', 'a.qid as answer_qid', 'a.code', 'a.sortorder',
+            'a.scale_id as answer_scale_id',
+            'al.answer',
+            'qa.attribute', 'qa.value'
+        ];
+
+        $command = Yii::app()->db->createCommand()
+            ->select($select)
+            ->from('{{questions}} q')
+            ->leftJoin('{{question_l10ns}} ql', 'q.qid = ql.qid AND ql.language = :language')
+            ->leftJoin('{{answers}} a', 'q.qid = a.qid')
+            ->leftJoin('{{answer_l10ns}} al', 'a.aid = al.aid AND al.language = :language')
+            ->leftJoin('{{question_attributes}} qa', 'q.qid = qa.qid')
+            ->where('q.sid = :sid AND (q.parent_qid = 0 OR q.parent_qid IN (SELECT qid FROM {{questions}} WHERE sid = :sid))')
+            ->order('q.parent_qid ASC, q.scale_id ASC, q.question_order ASC, q.title ASC, a.sortorder ASC, a.code ASC');
+
+        $command->params = [
+            ':sid' => $this->surveyId,
+            ':language' => $this->language,
+        ];
+
+        return $command;
+    }
+
     private function fetchSurveyMetadata()
     {
-        $sqlQuery = "
-            SELECT 
-                q.qid, q.sid, q.gid, q.type, q.title, q.parent_qid, q.scale_id, q.question_order, q.other,
-                ql.question as question_text,
-                a.aid, a.qid as answer_qid, a.code, a.sortorder, a.scale_id as answer_scale_id,
-                al.answer,
-                qa.attribute, qa.value
-            FROM {{questions}} q
-            LEFT JOIN {{question_l10ns}} ql ON q.qid = ql.qid AND ql.language = :language
-            LEFT JOIN {{answers}} a ON q.qid = a.qid
-            LEFT JOIN {{answer_l10ns}} al ON a.aid = al.aid AND al.language = :language
-            LEFT JOIN {{question_attributes}} qa ON q.qid = qa.qid
-            WHERE q.sid = :sid
-                AND (q.parent_qid = 0 OR q.parent_qid IN (SELECT qid FROM {{questions}} WHERE sid = :sid))
-            ORDER BY q.parent_qid, q.scale_id, q.question_order, q.title, a.sortorder, a.code
-        ";
-        $command = Yii::app()->db->createCommand($sqlQuery);
-        $command->bindParam(':sid', $this->surveyId, PDO::PARAM_INT);
-        $command->bindParam(':language', $this->language, PDO::PARAM_STR);
+        $command = $this->buildBaseQuery();
         $rows = $command->queryAll();
 
         $questions = [];
         $answers = [];
 
         foreach ($rows as $row) {
-            $qid = $row['qid'];
-            if ($row['parent_qid'] == 0) {
+            $qid = (int) $row['qid'];
+            if ((int) $row['parent_qid'] === 0) {
                 if (empty($questions[$qid])) {
                     $questions[$qid] = [
                         'qid' => $qid, 'sid' => $row['sid'], 'gid' => $row['gid'],
@@ -136,7 +167,7 @@ class QuestionStatistics implements StatisticsChartInterface
                     ];
                 }
             } else {
-                if (empty($questions[$qid]['subQuestions'][$qid])) {
+                if (empty($questions[$row['parent_qid']]['subQuestions'][$qid])) {
                     $questions[$row['parent_qid']]['subQuestions'][$qid] = [
                         'qid' => $qid, 'gid' => $row['gid'],
                         'title' => $row['title'], 'question' => flattenText($row['question_text']),
@@ -144,13 +175,13 @@ class QuestionStatistics implements StatisticsChartInterface
                     ];
                 }
             }
-            if ($row['aid']) {
+            if (!empty($row['aid'])) {
                 $answers[$row['answer_qid']][$row['code']] = [
                     'aid' => $row['aid'], 'code' => $row['code'], 'answer' => flattenText($row['answer']),
                     'sortorder' => $row['sortorder'], 'scale_id' => $row['answer_scale_id']
                 ];
             }
-            if ($row['attribute'] && empty($questions[$qid]['attributes'][$row['attribute']])) {
+            if (!empty($row['attribute']) && empty($questions[$qid]['attributes'][$row['attribute']])) {
                 $questions[$qid]['attributes'][$row['attribute']] = $row['value'];
             }
         }

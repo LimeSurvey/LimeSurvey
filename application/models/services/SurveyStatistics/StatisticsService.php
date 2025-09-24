@@ -2,10 +2,14 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics;
 
+use InvalidArgumentException;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\DailyActivity\DailyActivityStatistics;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\QuestionStatistics;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartInterface;
+use LimeSurvey\Models\Services\SurveyStatistics\Charts\SurveyOverview\SurveyOverviewStatistics;
+use RuntimeException;
+use Survey;
 
 /**
  * Service layer for survey statistics.
@@ -24,8 +28,11 @@ class StatisticsService
     /** @var array List of charts classes to run */
     private array $charts;
 
-    /** @var array Gathered chart results*/
+    /** @var array Gathered chart results */
     private array $output = [];
+
+    /** @var StatisticsResponseFilters $filters */
+    private StatisticsResponseFilters $filters;
 
 
     public function __construct()
@@ -42,21 +49,57 @@ class StatisticsService
      * @param int|string $surveyId Survey ID
      * @param string $language Language code (default = "en")
      * @return $this
+     * @throws InvalidArgumentException
      */
     public function setSurvey($surveyId, string $language = 'en'): self
     {
-        $this->surveyId = $surveyId;
+        // Validate survey ID
+        if (!is_numeric($surveyId) || $surveyId < 1) {
+            throw new InvalidArgumentException('Invalid survey ID');
+        }
+
+        // Validate language code
+        $allowedLanguages = Survey::model()->findByPk($surveyId)->getAllLanguages();
+        if (!in_array($language, $allowedLanguages, true)) {
+            throw new InvalidArgumentException('Invalid language code');
+        }
+
+        $this->surveyId = (int)$surveyId;
         $this->language = $language;
         return $this;
     }
 
     /**
+     * Set response filters to apply to all chart processors.
+     * @param StatisticsResponseFilters $filters
+     * @return void
+     */
+    public function setFilters(StatisticsResponseFilters $filters): void
+    {
+        $this->filters = $filters;
+    }
+
+    /**
      * Execute statistics generation for all configured graphs.
      *
+     * @param array $specificCharts List of specific chart classes to run
      * @return array Combined output from all graph processors
+     * @throws RuntimeException
      */
-    public function run()
+    public function run(array $specificCharts = []): array
     {
+        if (!isset($this->surveyId)) {
+            throw new RuntimeException('Survey ID must be set before running statistics');
+        }
+
+        if (!empty($specificCharts)) {
+            $invalidCharts = array_diff($specificCharts, $this->charts);
+            if (!empty($invalidCharts)) {
+                throw new InvalidArgumentException('Invalid chart types specified: ' . implode(', ', $invalidCharts));
+            }
+            $this->charts = array_intersect($this->charts, $specificCharts);
+        }
+
         foreach ($this->charts as $chart) {
             if (!class_exists($chart)) {
                 continue;
@@ -65,6 +108,10 @@ class StatisticsService
             $chartObj = new $chart();
             if (!($chartObj instanceof StatisticsChartInterface)) {
                 continue;
+            }
+
+            if (!empty($this->filters) && count($this->filters->getFilters()) > 0) {
+                $chartObj->setFilters($this->filters);
             }
 
             $data = $chartObj->run($this->surveyId, $this->language);
@@ -89,5 +136,15 @@ class StatisticsService
                 }, $chart));
             }
         }
+    }
+
+    public function setChart(string $chart): StatisticsService
+    {
+        if (!class_exists($chart)) {
+            throw new InvalidArgumentException('Chart type ' . $chart . ' does not exist');
+        }
+
+        $this->charts[] = $chart;
+        return $this;
     }
 }

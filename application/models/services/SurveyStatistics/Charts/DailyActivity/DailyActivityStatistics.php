@@ -7,7 +7,7 @@ use DatePeriod;
 use DateTime;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartInterface;
-use PDO;
+use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use Yii;
 
 /**
@@ -17,6 +17,9 @@ use Yii;
  */
 class DailyActivityStatistics implements StatisticsChartInterface
 {
+    /** @var StatisticsResponseFilters|null Filters to apply to the query */
+    private $filters = null;
+
     /**
      * Run the daily activity statistics query.
      *
@@ -42,6 +45,15 @@ class DailyActivityStatistics implements StatisticsChartInterface
     }
 
     /**
+     * @param StatisticsResponseFilters $filters
+     * @return void
+     */
+    public function setFilters(StatisticsResponseFilters $filters): void
+    {
+        $this->filters = $filters;
+    }
+
+    /**
      * Get the start and end dates for the last 30 days.
      *
      * @return DateTime[] [$startDate, $endDate]
@@ -63,17 +75,12 @@ class DailyActivityStatistics implements StatisticsChartInterface
      */
     private function fetchCounts(int $surveyId, DateTime $startDate): array
     {
-        $sql = "
-            SELECT DATE(submitdate) as response_date, COUNT(id) as responses
-            FROM {{survey_$surveyId}}
-            WHERE submitdate IS NOT NULL
-              AND submitdate >= :startDate
-            GROUP BY DATE(submitdate)
-            ORDER BY response_date ASC
-        ";
-
-        $command = Yii::app()->db->createCommand($sql);
-        $command->bindValue(':startDate', $startDate->format('Y-m-d 00:00:00'), PDO::PARAM_STR);
+        $command = Yii::app()->db->createCommand()
+            ->select(['response_date' => 'DATE(submitdate)', 'responses' => 'COUNT(id)'])
+            ->from("{{survey_$surveyId}}")
+            ->where('submitdate IS NOT NULL AND submitdate >= :startDate', [':startDate' => $startDate->format('Y-m-d 00:00:00')])
+            ->group('DATE(submitdate)')
+            ->order('DATE(submitdate) ASC');
 
         $rows = $command->queryAll();
 
@@ -100,7 +107,7 @@ class DailyActivityStatistics implements StatisticsChartInterface
         $dataItems = [];
         $total = 0;
 
-        $period = new DatePeriod($startDate, new DateInterval('P1D'), $endDate->modify('+1 day'));
+        $period = new DatePeriod($startDate, new DateInterval('P1D'), (clone $endDate)->modify('+1 day'));
         foreach ($period as $date) {
             $day = $date->format('Y-m-d');
             $count = $countsByDate[$day] ?? 0;

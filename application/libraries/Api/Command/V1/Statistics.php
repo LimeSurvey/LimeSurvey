@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Libraries\Api\Command\V1;
 
+use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsService;
 use Permission;
 use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputSurvey;
@@ -13,6 +14,7 @@ use LimeSurvey\Api\Command\{
 };
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use DI\FactoryInterface;
+use Yii;
 
 class Statistics implements CommandInterface
 {
@@ -22,6 +24,7 @@ class Statistics implements CommandInterface
     protected TransformerOutputSurvey $transformerOutputSurvey;
     protected ResponseFactory $responseFactory;
     protected StatisticsService $statisticsService;
+    protected StatisticsResponseFilters $filters;
 
     /**
      * Constructor
@@ -29,17 +32,21 @@ class Statistics implements CommandInterface
      * @param TransformerOutputSurvey $transformerOutputSurvey
      * @param FactoryInterface $diFactory
      * @param ResponseFactory $responseFactory
+     * @param StatisticsResponseFilters $filters
+     * @param StatisticsService $statisticsService
      */
     public function __construct(
         TransformerOutputSurvey $transformerOutputSurvey,
         Permission $permission,
         ResponseFactory $responseFactory,
+        StatisticsResponseFilters $filters,
         StatisticsService $statisticsService
     ) {
         $this->permission = $permission;
         $this->transformerOutputSurvey = $transformerOutputSurvey;
         $this->responseFactory = $responseFactory;
         $this->statisticsService = $statisticsService;
+        $this->filters = $filters;
     }
 
     /**
@@ -58,11 +65,36 @@ class Statistics implements CommandInterface
 
         $this->statisticsService->setSurvey($surveyId, $request->getData('language') ?? 'en');
 
+        if ($this->getFilters()->count() > 0) {
+            $this->statisticsService->setFilters($this->filters);
+        }
+
         $statistics = $this->statisticsService->run();
 
         return $this->responseFactory
             ->makeSuccess([
                 'statistics' => $statistics,
             ]);
+    }
+
+    public function getFilters(): StatisticsResponseFilters
+    {
+        $params = Yii::app()->getRequest()->getQueryParams();
+        $filterMap = [
+            'minId' => 'setMinId',
+            'maxId' => 'setMaxId',
+            'completed' => 'setCompleted',
+        ];
+
+        foreach ($filterMap as $key => $method) {
+            $value = $params[$key] ?? null;
+            if (!empty($value)) {
+                $this->filters->$method(
+                    $key === 'completed' ? $value === 'true' : (int)$value
+                );
+            }
+        }
+
+        return $this->filters;
     }
 }

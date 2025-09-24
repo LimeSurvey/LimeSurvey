@@ -3,6 +3,7 @@
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
+use Question;
 
 class MultipleChoiceProcessor extends AbstractQuestionProcessor
 {
@@ -38,7 +39,7 @@ class MultipleChoiceProcessor extends AbstractQuestionProcessor
         ];
         $legend[] = 'Not Answered';
 
-        if ($this->question['other'] == 'Y') {
+        if ($this->question['other'] === Question::QT_Y_YES_NO_RADIO) {
             $field = $this->rt . 'other';
             $legend[] = 'other';
             $count = $this->getResponseCount($field);

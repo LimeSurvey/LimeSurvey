@@ -18,7 +18,7 @@ class StatisticsChartDTO
     private array $data;
 
     /** @var int|null Total count of responses (optional, falls back to count($data)) */
-    private ?int $total;
+    private $total;
 
 
     /** @var array Additional metadata that may be included (e.g. question, filters applied) */
@@ -36,7 +36,7 @@ class StatisticsChartDTO
         $this->title = $title;
         $this->legend = $legend;
         $this->data = $data;
-        $this->total = $total ?? count($data);
+        $this->total = $total;
         $this->meta = $meta;
     }
 
