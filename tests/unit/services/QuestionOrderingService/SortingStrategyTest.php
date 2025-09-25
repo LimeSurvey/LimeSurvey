@@ -9,15 +9,6 @@ use LimeSurvey\Models\Services\QuestionOrderingService\SortingStrategy;
 class SortingStrategyTest extends TestBaseClass
 {
     /**
-     * Tear down after each test
-     */
-    public function tearDown(): void
-    {
-        \Mockery::close();
-        parent::tearDown();
-    }
-
-    /**
      * @var SortingStrategyMockSetFactory
      */
     private $mockSetFactory;
