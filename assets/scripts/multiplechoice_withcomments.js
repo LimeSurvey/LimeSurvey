@@ -16,7 +16,7 @@ var  doMultipleChoiceWithComments = function(qID,when)
       }
     });
     question.on('keyup focusout',':not(.other-item) input:text',function(event){
-      var checkboxinput=$("#answer"+$(this)[0].name.replace("comment",""));
+        var checkboxinput=$("#answer"+$(this)[0].name.replace("comment","").replace("LSEMBED-", ""));
       if($(this)[0].value==""){
         // Do nothing in this case - if the question is mandatory, it should still be possible to
         // submit a checked box without a comment.
@@ -60,7 +60,7 @@ var  doMultipleChoiceWithComments = function(qID,when)
       }
     });
     question.on('keyup focusout',':not(.other-item) input:text',function(event){
-      var checkboxinput=$("#answer"+$(this)[0].name.replace("comment",""));
+        var checkboxinput=$("#answer"+$(this)[0].name.replace("comment","").replace("LSEMBED-", ""));
       if(!$(this)[0].value==""){
         checkboxinput[0].checked=false;
       }else{

@@ -24,6 +24,9 @@
  */
 function checkconditions(value, name, type, evt_type)
 {
+    if (name) {
+        name = name.replace("LSEMBED-", "");
+    }
     if (typeof evt_type === 'undefined')
     {
         evt_type = 'onchange';

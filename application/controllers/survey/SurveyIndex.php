@@ -93,10 +93,11 @@ class SurveyIndex extends CAction
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
         $redata['popuppreview'] = Yii::app()->request->getParam('popuppreview', false);
+        $redata['noregister'] = (Yii::app()->request->getParam('noregister', 'false') === 'true');
 
         $canPreviewSurvey = $this->canUserPreviewSurvey($surveyid);
 
-        if ($redata['popuppreview'] && !$canPreviewSurvey) {
+        if ($redata['popuppreview'] && !$canPreviewSurvey && (Yii::app()->getConfig('authTemplates', false))) {
             $message = gT("We are sorry but you don't have permissions to do this.", 'unescaped');
             if (Permission::model()->getUserId()) {
                 throw new CHttpException(403, $message);
@@ -520,6 +521,7 @@ class SurveyIndex extends CAction
             //$oTemplate->registerAssets();
             $thissurvey['include_content'] = 'load';
             $thissurvey['trackUrlPageName'] = 'load';
+            $thissurvey['noregister'] = (Yii::app()->request->getParam('noregister', 'false') === 'true');
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey), false);
         }
 

@@ -43,7 +43,7 @@
             {% if numbers_only %} data-number="1" {% endif %}
             />
         </div>
-    <script>
+    <script class="js-embed">
         $("#answer{{ name }}othertext").on("keyup",function(){
             if($.trim($(this).val())!=''){ $('#SOTH{{ name }}').click(); };
         });

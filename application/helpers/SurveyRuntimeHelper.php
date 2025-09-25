@@ -263,7 +263,7 @@ class SurveyRuntimeHelper
             $qnumber = 0;
 
             if ($this->sSurveyMode != 'survey') {
-                $onlyThisGID = $this->aStepInfo['gid'];
+                $onlyThisGID = $this->aStepInfo['gid'] ?? null;
                 if ($onlyThisGID != $gid) {
                     continue;
                 }
@@ -422,7 +422,7 @@ class SurveyRuntimeHelper
         $this->aSurveyInfo['jPopup'] = json_encode($aPopup);
         $this->aSurveyInfo['mandSoft'] = isset($this->aMoveResult['mandSoft']) ? $this->aMoveResult['mandSoft'] : false;
         $this->aSurveyInfo['mandNonSoft'] = isset($this->aMoveResult['mandNonSoft']) ? $this->aMoveResult['mandNonSoft'] : false;
-        $this->aSurveyInfo['mandViolation'] = $this->aStepInfo['mandViolation'] && $this->okToShowErrors;
+        $this->aSurveyInfo['mandViolation'] = ($this->aStepInfo['mandViolation'] ?? false) && $this->okToShowErrors;
         $this->aSurveyInfo['showPopups'] = $this->oTemplate != null ? $this->oTemplate->showpopups : false;
 
         $aErrorHtmlMessage                             = $this->getErrorHtmlMessage();
@@ -440,7 +440,7 @@ class SurveyRuntimeHelper
             ));
             $aGroup           = array();
             if ($this->sSurveyMode != 'survey') {
-                $onlyThisGID = $this->aStepInfo['gid'];
+                $onlyThisGID = $this->aStepInfo['gid'] ?? false;
                 if ($onlyThisGID != $gid) {
                     continue;
                 }
@@ -601,6 +601,7 @@ class SurveyRuntimeHelper
         }
 
         $this->aSurveyInfo['include_content'] = 'main';
+        $this->aSurveyInfo['noregister'] = (Yii::app()->request->getParam('noregister', 'false') === 'true');
 
         Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array(
             'oSurvey' => Survey::model()->findByPk($this->iSurveyid),
@@ -1180,6 +1181,7 @@ class SurveyRuntimeHelper
 
                 $this->aSurveyInfo['include_content'] = 'save';
                 $this->aSurveyInfo['trackUrlPageName'] = 'save';
+                $this->aSurveyInfo['noregister'] = (Yii::app()->request->getParam('noregister', 'false') === 'true');
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo' => $this->aSurveyInfo), false);
             } else {
                 // Intentional retest of all conditions to be true, to make sure we do have tokens and surveyid
@@ -1238,6 +1240,7 @@ class SurveyRuntimeHelper
             if (!empty($aResult['aSaveErrors'])) {
                 $this->aSurveyInfo['aSaveForm'] = $cSave->getSaveFormDatas($this->aSurveyInfo['sid']);
                 $this->aSurveyInfo['include_content'] = 'save';
+                $this->aSurveyInfo['noregister'] = (Yii::app()->request->getParam('noregister', 'false') === 'true');
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo' => $this->aSurveyInfo), false);
             }
 
@@ -1257,7 +1260,7 @@ class SurveyRuntimeHelper
         $this->notvalidated = $notanswered;
         $this->notanswered  = $notanswered;
 
-        if (!$this->aMoveResult['finished']) {
+        if (!($this->aMoveResult['finished'] ?? true)) {
             $unansweredSQList = $this->aMoveResult['unansweredSQs']; // A list of the unanswered responses created via the global variable $notanswered. Should be $oResponse->unanswereds
             if (strlen((string) $unansweredSQList) > 0) {
                 $this->notanswered = explode('|', (string) $unansweredSQList);
@@ -1406,6 +1409,7 @@ class SurveyRuntimeHelper
             if (!$surveyActive) {
                 $this->aSurveyInfo['include_content'] = 'submit_preview';
             }
+            $this->aSurveyInfo['noregister'] = (Yii::app()->request->getParam('noregister', 'false') === 'true');
             $sHtml = Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => $oSurvey, 'aSurveyInfo' => $this->aSurveyInfo), true);
             $oTemplate = Template::getLastInstance();
             // kill survey session after doing template : didn't work for all var, but for EM core var : it's OK.
@@ -1508,7 +1512,7 @@ class SurveyRuntimeHelper
         $aErrorsMandatory = array();
 
         //Mandatory question(s) with unanswered answer
-        if ($this->aStepInfo['mandViolation'] && $this->okToShowErrors) {
+        if (($this->aStepInfo['mandViolation'] ?? false) && $this->okToShowErrors) {
             if ($this->aStepInfo['mandNonSoft']) {
                 $aErrorsMandatory[] = gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.");
             } else {
@@ -1517,7 +1521,7 @@ class SurveyRuntimeHelper
         }
 
         // Question(s) with not valid answer(s)
-        if (!$this->aStepInfo['valid'] && $this->okToShowErrors) {
+        if (!($this->aStepInfo['valid'] ?? false) && $this->okToShowErrors) {
             $aErrorsMandatory[] = gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.");
         }
 
@@ -1587,6 +1591,7 @@ class SurveyRuntimeHelper
 
             $this->aSurveyInfo['surveyUrl'] = $restarturl;
             $this->aSurveyInfo['include_content'] = 'clearall';
+            $this->aSurveyInfo['noregister'] = (Yii::app()->request->getParam('noregister', 'false') === 'true');
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo' => $this->aSurveyInfo), false);
         }
     }
@@ -1862,9 +1867,9 @@ class SurveyRuntimeHelper
                 if ($this->sSurveyMode != 'group') {
                     $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
                 }
-                $this->gid              = $this->aStepInfo['gid'];
-                $this->groupname        = $this->aStepInfo['gname'];
-                $this->groupdescription = $this->aStepInfo['gtext'];
+                $this->gid              = $this->aStepInfo['gid'] ?? null;
+                $this->groupname        = $this->aStepInfo['gname'] ?? '';
+                $this->groupdescription = $this->aStepInfo['gtext'] ?? '';
                 $this->groupname        = LimeExpressionManager::ProcessString($this->groupname, null, null, 3, 1, false, true, false);
                 $this->groupdescription = LimeExpressionManager::ProcessString($this->groupdescription, null, null, 3, 1, false, true, false);
             }

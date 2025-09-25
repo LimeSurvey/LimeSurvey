@@ -76,7 +76,7 @@
 
 <!-- end of answer -->
 
-<script type='text/javascript'>
+<script type='text/javascript' class="js-embed">
     var surveyid = '{{surveyId}}',
         uploadLang = {
              title: '{{ "Upload your files" | gT }}',
@@ -128,7 +128,7 @@
     });
 </script>
 
-<script type="text/x-template" id="filerowtemplate_{{fileid}}">
+<script type="text/x-template" id="filerowtemplate_{{fileid}}" class="js-embed">
     <tr>
         <td class="upload {imageOrPlaceholder}">{imageOrPlaceholderHtml}</td>
         {% if showTitle %}
