@@ -55,11 +55,27 @@ class QuestionOrderingService
             $answerOptions[$answer->scale_id][] = $answer;
         }
 
-        if ($scaleId !== null) {
-            return $answerOptions[$scaleId];
+        // If no answers match the criteria, return empty array
+        if (empty($answerOptions)) {
+            return [];
         }
 
-        return $this->sortAnswerOptions($answerOptions, $question, $language);
+        // Determine sorting strategy and apply it
+        $sortStrategy = $this->sortingStrategy->determine($question);
+        $sortedOptions = $this->applySorting(
+            $answerOptions,
+            $question,
+            'answers',
+            $sortStrategy,
+            $language
+        );
+
+        // Return only the requested scale if specified
+        if ($scaleId !== null) {
+            return $sortedOptions[$scaleId] ?? [];
+        }
+
+        return $sortedOptions;
     }
 
     /**
@@ -87,46 +103,29 @@ class QuestionOrderingService
             $groupedSubquestions[$subquestion->scale_id][] = $subquestion;
         }
 
-        // Return early if we're filtering by scale_id and it's empty
-        if ($scaleId !== null) {
-            return $groupedSubquestions[$scaleId] ?? [];
+        // If no subquestions match the criteria, return empty array
+        if (empty($groupedSubquestions)) {
+            return [];
         }
 
         // Determine sorting strategy
         $sortStrategy = $this->sortingStrategy->determine($question, 'subquestions');
 
-        return $this->applySorting(
+        // Apply sorting
+        $sortedGroups = $this->applySorting(
             $groupedSubquestions,
             $question,
             'subquestions',
             $sortStrategy,
             $language
         );
-    }
 
-    /**
-     * Sort answer options according to question attributes
-     *
-     * @param array $answerOptions The answer options to sort
-     * @param Question $question The question model
-     * @param string|null $language Optional language code
-     * @return array Sorted answer options
-     */
-    public function sortAnswerOptions(
-        array $answerOptions,
-        Question $question,
-        $language = null
-    ) {
-        // Determine sorting strategy
-        $sortStrategy = $this->sortingStrategy->determine($question);
+        // Return only the requested scale if specified
+        if ($scaleId !== null) {
+            return $sortedGroups[$scaleId] ?? [];
+        }
 
-        return $this->applySorting(
-            $answerOptions,
-            $question,
-            'answers',
-            $sortStrategy,
-            $language
-        );
+        return $sortedGroups;
     }
 
     /**
@@ -148,7 +147,7 @@ class QuestionOrderingService
     ) {
         switch ($sortStrategy) {
             case 'random':
-                return $this->applyRandomSorting($groupedItems, $question, $context);
+                return $this->randomizerHelper->applyRandomSorting($groupedItems, $question, $context);
 
             case 'alphabetical':
                 return $this->applyAlphabeticalSorting($groupedItems, $question, $context, $language);
@@ -156,34 +155,6 @@ class QuestionOrderingService
             default: // 'normal'
                 return $this->applyDefaultSorting($groupedItems, $context);
         }
-    }
-
-    /**
-     * Apply random sorting to items
-     *
-     * @param array $groupedItems
-     * @param Question $question
-     * @param string $context 'answers' or 'subquestions'
-     * @return array
-     */
-    private function applyRandomSorting(array $groupedItems, Question $question, string $context)
-    {
-        if ($context === 'subquestions') {
-            return $this->applyRandomSortingToSubquestions($groupedItems, $question);
-        }
-
-        // For answers, we use a simpler approach
-        foreach ($groupedItems as $scaleId => $scaleArray) {
-            $keys = array_keys($scaleArray);
-            shuffle($keys);
-
-            $sortedItems = [];
-            foreach ($keys as $key) {
-                $sortedItems[$key] = $scaleArray[$key];
-            }
-            $groupedItems[$scaleId] = $sortedItems;
-        }
-        return $groupedItems;
     }
 
     /**
@@ -257,56 +228,5 @@ class QuestionOrderingService
             });
         }
         return $groupedItems;
-    }
-
-    /**
-     * Apply random sorting to subquestions
-     *
-     * @param array $groupedSubquestions
-     * @param Question $question
-     * @return array
-     */
-    private function applyRandomSortingToSubquestions(
-        array $groupedSubquestions,
-        Question $question
-    ) {
-        $this->randomizerHelper->initialize($question->sid);
-
-        // Check for excluded subquestion before randomization
-        /* @param string|null $excludeAllOthers */
-        $excludeAllOthers = $question->getQuestionAttribute('exclude_all_others');
-        $excludedSubquestion = null;
-
-        if (
-            $excludeAllOthers !== '' && $excludeAllOthers !== null &&
-            ($question->getQuestionAttribute('random_order') == 1 ||
-                $question->getQuestionAttribute('subquestion_order') == 'random')
-        ) {
-            [
-                $excludedSubquestion,
-                $groupedSubquestions
-            ] = $this->randomizerHelper->extractExcludedSubquestion(
-                $groupedSubquestions,
-                $excludeAllOthers
-            );
-        }
-
-        // Apply random sorting to each scale group
-        foreach ($groupedSubquestions as $scaleId => &$scaleArray) {
-            $scaleArray = \ls\mersenne\shuffle($scaleArray);
-        }
-
-        // Reinsert excluded subquestion if needed
-        if ($excludedSubquestion !== null) {
-            $scaleId = $excludedSubquestion->scale_id;
-            array_splice(
-                $groupedSubquestions[$scaleId],
-                ($excludedSubquestion->question_order - 1),
-                0,
-                [$excludedSubquestion]
-            );
-        }
-
-        return $groupedSubquestions;
     }
 }

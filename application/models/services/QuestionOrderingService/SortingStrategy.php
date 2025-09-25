@@ -39,7 +39,8 @@ class SortingStrategy
     private function shouldOrderRandomly(Question $question, string $context = 'answers'): bool
     {
         if ($context === 'answers') {
-            return $question->getQuestionAttribute('random_order') == 1;
+            return $question->getQuestionAttribute('random_order') == 1
+                || $question->getQuestionAttribute('answer_order') === 'random';
         }
 
         // For subquestions

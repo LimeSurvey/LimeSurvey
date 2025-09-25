@@ -254,20 +254,20 @@ abstract class QuestionBaseRenderer extends StaticModel
         return $result;
     }
 
-    protected function setSubquestions($scale_id = null)
+    protected function setSubquestions($scaleId = null)
     {
         $this->aSubQuestions = $this->questionOrderingService->getOrderedSubQuestions(
             $this->oQuestion,
-            $scale_id,
+            $scaleId,
             $this->sLanguage
         );
     }
 
-    protected function setAnsweroptions($scale_id = null)
+    protected function setAnsweroptions($scaleId = null)
     {
         $this->aAnswerOptions = $this->questionOrderingService->getOrderedAnswers(
             $this->oQuestion,
-            $scale_id,
+            $scaleId,
             $this->sLanguage
         );
     }
