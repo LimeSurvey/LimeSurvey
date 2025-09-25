@@ -17,8 +17,10 @@ class SortingStrategyMockSetFactory
         $mockSet = new \stdClass();
 
         // Create mock Question
-        $mockSet->question = Mockery::mock('overload:Question');
+        $mockSet->question = Mockery::mock(Question::class);
 
+        // expectation changed because of previous question mock
+        $mockSet->question->shouldReceive('deleteAllAnswers')->never();
         // Set up common method expectations
         $mockSet->question->shouldReceive('getQuestionAttribute')
             ->byDefault()
