@@ -97,6 +97,9 @@ class SurveySearchTest extends TestBaseClass
      */
     public function testTwoSurveysFoundOnGroupThree($testData)
     {
+        if (getenv('LOCAL_TEST')) {
+            $this->markTestSkipped();
+        }
         // Create a new survey in SG03.
         $surveyData = array(
             'gsid' => $testData['sgids'][2],

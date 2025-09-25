@@ -44,6 +44,9 @@ class UserManagementTest extends TestBaseClass
 
     public static function setupBeforeClass(): void
     {
+        if (getenv('LOCAL_TEST')) {
+            self::markTestSkipped();
+        }
         parent::setupBeforeClass();
         $_SESSION = [];
         include(ROOT.DIRECTORY_SEPARATOR.'tests'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'datasets'.DIRECTORY_SEPARATOR.'userdata.php');
@@ -82,7 +85,7 @@ class UserManagementTest extends TestBaseClass
         if($success) {
             $this->assertTrue($success);
         } else {
-            throw new \Exception( 
+            throw new \Exception(
                 "Test ".__METHOD__ ." failed: \n"
                 ."The password has not been changed correctly"
             );

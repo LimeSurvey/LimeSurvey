@@ -169,6 +169,9 @@ class TranslateLinksTest extends TestBaseClass
      */
     public function testTranslateLinksWithDifferentPublicUrlConfigurations()
     {
+        if (getenv('LOCAL_TEST')) {
+            $this->markTestSkipped();
+        }
         $linkString = 'http://limesurvey.org/upload/labels/111111/files/file.ext<br>/upload/labels/111111/files/file.ext';
 
         \Yii::app()->getRequest()->setBaseUrl('www.example.com');

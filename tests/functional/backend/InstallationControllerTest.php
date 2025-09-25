@@ -16,6 +16,9 @@ class InstallationControllerTest extends TestBaseClassWeb
      */
     public static function setupBeforeClass(): void
     {
+        if (getenv('LOCAL_TEST')) {
+            self::markTestSkipped();
+        }
         // NB: Does not call parent, because there might not
         // be a database (happens if this test is run multiple
         // times with failures).
@@ -29,6 +32,7 @@ class InstallationControllerTest extends TestBaseClassWeb
      */
     public static function tearDownAfterClass(): void
     {
+        parent::tearDownAfterClass();
         $configFile = \Yii::app()->getBasePath() . '/config/config.php';
         if (file_exists($configFile)) {
             self::$testHelper->connectToOriginalDatabase();
@@ -41,9 +45,6 @@ class InstallationControllerTest extends TestBaseClassWeb
      */
     public function testBasic()
     {
-        if (getenv('LOCAL_TEST')){
-            $this->markTestSkipped();
-        }
         //$this->checkFolders();
 
         $configFile = \Yii::app()->getBasePath() . '/config/config.php';

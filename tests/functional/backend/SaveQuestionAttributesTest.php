@@ -153,6 +153,7 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
     {
         $oUser = \User::model()->findByPk(self::$newUserId);
         $oUser->delete();
+        parent::tearDownAfterClass();
     }
 
     protected function importDemoPlugin()

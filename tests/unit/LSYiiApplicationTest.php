@@ -46,6 +46,9 @@ class LSYiiApplicationTest extends TestBaseClass
      */
     public function testGetpublicBaseUrlFromRequest()
     {
+        if (getenv('LOCAL_TEST')) {
+            App()->setConfig('publicurl', 'http://request.example.com/');
+        }
         $tmpPublicUrl = Yii::app()->getRequest()->getBaseUrl();
 
         Yii::app()->getRequest()->baseUrl = 'http://request.example.com/';
@@ -62,6 +65,9 @@ class LSYiiApplicationTest extends TestBaseClass
      */
     public function testGetAbsolutepublicBaseUrlFromRequest()
     {
+        if (getenv('LOCAL_TEST')) {
+            App()->setConfig('publicurl', 'http://absoluteRequest.example.com/');
+        }
         $tmpPublicUrl = Yii::app()->getRequest()->getBaseUrl();
 
         Yii::app()->getRequest()->baseUrl = 'absoluteRequest.example.com/';

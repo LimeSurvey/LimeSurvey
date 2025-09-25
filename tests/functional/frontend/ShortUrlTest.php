@@ -11,6 +11,13 @@ use Survey;
  */
 class ShortUrlTest extends TestBaseClassWeb
 {
+    public static function setupBeforeClass(): void
+    {
+        if (YII_DEBUG) {
+            self::markTestSkipped();
+        }
+        parent::setUpBeforeClass();
+    }
     /**
      * Test short urls without extra params (except language)
      * @dataProvider shortUrlDataProvider

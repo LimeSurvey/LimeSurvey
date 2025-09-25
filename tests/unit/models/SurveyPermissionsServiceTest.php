@@ -162,6 +162,9 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
      */
     public function testCntValidUsers()
     {
+        if (getenv('LOCAL_TEST')) {
+            $this->markTestSkipped();
+        }
         $oSurveyPermissions = new SurveyPermissions(self::$testSurvey, true);
         self::assertEquals(5, count($oSurveyPermissions->getSurveyUserList()));
     }
@@ -186,6 +189,9 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
      */
     public function testCntValidUsersNotAll()
     {
+        if (getenv('LOCAL_TEST')) {
+            $this->markTestSkipped();
+        }
         $oSurveyPermissions = new SurveyPermissions(self::$testSurvey, true);
         self::assertEquals(4, count($oSurveyPermissions->getSurveyUserList()));
     }

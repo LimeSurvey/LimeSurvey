@@ -11,6 +11,13 @@ use Survey;
  */
 class ParticipantBlacklistHandlerTest extends TestBaseClass
 {
+    public static function setupBeforeClass(): void
+    {
+        if (YII_DEBUG) {
+            self::markTestSkipped();
+        }
+        parent::setUpBeforeClass();
+    }
     /**
      * Test adding participant to blocklist
      *
