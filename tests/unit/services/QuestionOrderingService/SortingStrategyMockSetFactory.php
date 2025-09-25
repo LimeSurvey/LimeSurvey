@@ -17,7 +17,7 @@ class SortingStrategyMockSetFactory
         $mockSet = new \stdClass();
 
         // Create mock Question
-        $mockSet->question = Mockery::mock(Question::class);
+        $mockSet->question = Mockery::mock('overload:Question');
 
         // Set up common method expectations
         $mockSet->question->shouldReceive('getQuestionAttribute')
