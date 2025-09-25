@@ -2,12 +2,6 @@
 
 class PgsqlSchema extends CPgsqlSchema
 {
-	protected $_tableNames=array();
-	protected $_tables=array();
-	protected $_connection;
-	protected $_builder;
-	protected $_cacheExclude=array();
-
     public function __construct($conn)
     {
         parent::__construct($conn);
