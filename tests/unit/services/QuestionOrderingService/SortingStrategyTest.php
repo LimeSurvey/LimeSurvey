@@ -31,6 +31,14 @@ class SortingStrategyTest extends TestBaseClass
             ->byDefault()
             ->andReturn(null);
 
+        // Allow deleteAllAnswers to be called or not called
+        $mockQuestion->shouldReceive('deleteAllAnswers')
+            ->zeroOrMoreTimes();
+
+        // Allow any other common methods that might be called in the destructor
+        $mockQuestion->shouldReceive('__destruct')
+            ->zeroOrMoreTimes();
+
         return $mockQuestion;
     }
 
