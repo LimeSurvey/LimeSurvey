@@ -148,4 +148,10 @@ class AnswersServiceTest extends TestBaseClass
             ]
         ]);
     }
+
+    protected function tearDown(): void
+    {
+        Mockery::close();
+        parent::tearDown();
+    }
 }
