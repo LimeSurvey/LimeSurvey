@@ -9,12 +9,38 @@ use LimeSurvey\Models\Services\QuestionOrderingService\SortingStrategy;
 class SortingStrategyTest extends TestBaseClass
 {
     /**
+     * Set up before each test
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+        \Mockery::getConfiguration()->allowMockingNonExistentMethods(false);
+    }
+
+    /**
+     * Create a properly configured Question mock
+     *
+     * @return \Mockery\MockInterface|Question
+     */
+    protected function createQuestionMock()
+    {
+        $mockQuestion = \Mockery::mock(Question::class);
+
+        // Default behavior for methods that might be called
+        $mockQuestion->shouldReceive('getQuestionAttribute')
+            ->byDefault()
+            ->andReturn(null);
+
+        return $mockQuestion;
+    }
+
+    /**
      * @testdox determine() returns 'random' when random_order is set
      */
     public function testDetermineReturnsRandomWhenRandomOrderIsSet()
     {
         // Create mock Question using Mockery
-        $mockQuestion = \Mockery::mock(Question::class)->makePartial();
+        $mockQuestion = $this->createQuestionMock();
 
         // Setup attribute returns
         $mockQuestion->shouldReceive('getQuestionAttribute')
@@ -33,7 +59,7 @@ class SortingStrategyTest extends TestBaseClass
     public function testDetermineReturnsRandomWhenRandomOrderIsSet2()
     {
         // Create mock Question using Mockery
-        $mockQuestion = \Mockery::mock(Question::class)->makePartial();
+        $mockQuestion = $this->createQuestionMock();
 
         // Setup attribute returns
         $mockQuestion->shouldReceive('getQuestionAttribute')
@@ -52,7 +78,7 @@ class SortingStrategyTest extends TestBaseClass
     public function testDetermineReturnsAlphabeticalWhenAnswerOrderIsSet()
     {
         // Create mock Question using Mockery
-        $mockQuestion = \Mockery::mock(Question::class)->makePartial();
+        $mockQuestion = $this->createQuestionMock();
 
         // Setup attribute returns
         $mockQuestion->shouldReceive('getQuestionAttribute')
@@ -82,7 +108,7 @@ class SortingStrategyTest extends TestBaseClass
     public function testDetermineReturnsNormalWhenNoSpecialOrderingIsSet()
     {
         // Create mock Question using Mockery
-        $mockQuestion = \Mockery::mock(Question::class)->makePartial();
+        $mockQuestion = $this->createQuestionMock();
 
         // Setup attribute returns
         $mockQuestion->shouldReceive('getQuestionAttribute')
@@ -112,7 +138,7 @@ class SortingStrategyTest extends TestBaseClass
     public function testDetermineForSubquestionsReturnsRandomWhenSubquestionOrderIsRandom()
     {
         // Create mock Question using Mockery
-        $mockQuestion = \Mockery::mock(Question::class)->makePartial();
+        $mockQuestion = $this->createQuestionMock();
 
         // Setup attribute returns for subquestion_order
         $mockQuestion->shouldReceive('getQuestionAttribute')
@@ -136,7 +162,7 @@ class SortingStrategyTest extends TestBaseClass
     public function testDetermineForSubquestionsReturnsRandomWhenSubquestionOrderIsRandom2()
     {
         // Create mock Question using Mockery
-        $mockQuestion = \Mockery::mock(Question::class)->makePartial();
+        $mockQuestion = $this->createQuestionMock();
 
         $mockQuestion->shouldReceive('getQuestionAttribute')
             ->with('random_order')
@@ -154,7 +180,7 @@ class SortingStrategyTest extends TestBaseClass
     public function testDetermineForSubquestionsReturnsRandomWhenSubquestionOrderIsNormal()
     {
         // Create mock Question using Mockery
-        $mockQuestion = \Mockery::mock(Question::class)->makePartial();
+        $mockQuestion = $this->createQuestionMock();
 
         $mockQuestion->shouldReceive('getQuestionAttribute')
             ->with('random_order')
@@ -172,7 +198,7 @@ class SortingStrategyTest extends TestBaseClass
     public function testDetermineForSubquestionsReturnsRandomWhenSubquestionOrderIsNormal2()
     {
         // Create mock Question using Mockery
-        $mockQuestion = \Mockery::mock(Question::class)->makePartial();
+        $mockQuestion = $this->createQuestionMock();
 
         $mockQuestion->shouldReceive('getQuestionAttribute')
             ->with('subquestion_order')
@@ -190,7 +216,7 @@ class SortingStrategyTest extends TestBaseClass
     public function testDetermineForSubquestionsReturnsAlphabeticalWhenSubquestionOrderIsAlphabetical()
     {
         // Create mock Question using Mockery
-        $mockQuestion = \Mockery::mock(Question::class)->makePartial();
+        $mockQuestion = $this->createQuestionMock();
 
         $mockQuestion->shouldReceive('getQuestionAttribute')
             ->with('subquestion_order')
