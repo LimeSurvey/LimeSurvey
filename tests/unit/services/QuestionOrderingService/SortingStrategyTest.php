@@ -9,35 +9,37 @@ use LimeSurvey\Models\Services\QuestionOrderingService\SortingStrategy;
 class SortingStrategyTest extends TestBaseClass
 {
     /**
+     * Tear down after each test
+     */
+    public function tearDown(): void
+    {
+        \Mockery::close();
+        parent::tearDown();
+    }
+
+    /**
+     * @var SortingStrategyMockSetFactory
+     */
+    private $mockSetFactory;
+
+    /**
      * Set up before each test
      */
     public function setUp(): void
     {
         parent::setUp();
-        \Mockery::getConfiguration()->allowMockingNonExistentMethods(true);
+        $this->mockSetFactory = new SortingStrategyMockSetFactory();
     }
 
     /**
-     * Create a properly configured Question mock
+     * Get a properly configured Question mock
      *
      * @return \Mockery\MockInterface|Question
      */
     protected function createQuestionMock()
     {
-        // Use a different approach - create a partial mock with specific methods
-        $mockQuestion = \Mockery::mock('Question')
-            ->shouldAllowMockingProtectedMethods()
-            ->makePartial();
-
-        // Explicitly define the methods we want to mock
-        $mockQuestion->shouldReceive('getQuestionAttribute')
-            ->byDefault()
-            ->andReturn(null);
-
-        // Prevent any unexpected method calls from causing errors
-        \Mockery::getConfiguration()->allowMockingNonExistentMethods(true);
-
-        return $mockQuestion;
+        $mockSet = $this->mockSetFactory->make();
+        return $mockSet->question;
     }
 
     /**
@@ -237,14 +239,5 @@ class SortingStrategyTest extends TestBaseClass
 
         $this->assertEquals('alphabetical', $result);
         $this->assertEquals('alphabetical', $result2);
-    }
-
-    /**
-     * Tear down after each test
-     */
-    public function tearDown(): void
-    {
-        \Mockery::close();
-        parent::tearDown();
     }
 }
