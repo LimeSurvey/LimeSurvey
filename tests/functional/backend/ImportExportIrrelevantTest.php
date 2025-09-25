@@ -112,7 +112,13 @@ class ImportExportIrrelevantTest extends TestBaseClassWeb
                 }
                 sleep(1);
             }
-            $this->assertTrue(file_exists($exportedSurveyFile));
+
+            if (getenv('LOCAL_TEST')){
+                $exportedSurveyFile = ROOT . '/../../../data/selenium-downloads/survey_archive_' . self::$surveyId . '.lsa';
+                $this->assertTrue(file_exists($exportedSurveyFile));
+            } else {
+                $this->assertTrue(file_exists($exportedSurveyFile));
+            }
 
             // Import LSA
             self::importSurvey($exportedSurveyFile);

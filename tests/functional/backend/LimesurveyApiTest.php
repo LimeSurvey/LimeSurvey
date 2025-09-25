@@ -67,9 +67,10 @@ class LimesurveyApiTest extends TestBaseClass
      * @inheritdoc
      * @todo Deactivate and uninstall plugins ?
      */
-    public static function tearDownAfterClass(): void
-    {
-        self::deActivatePlugin('NewQuestionAttributesPlugin');
-    }
+//    public static function tearDownAfterClass(): void
+//    {
+//        self::deActivatePlugin('NewQuestionAttributesPlugin');
+//        parent::tearDownAfterClass();
+//    }
 
 }

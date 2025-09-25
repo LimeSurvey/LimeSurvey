@@ -255,6 +255,21 @@ if ($forceDebug) {
     putenv('RUNNER_DEBUG=1');
     fwrite(STDERR, 'Set $forceDebug=false in tests/bootstrap.php to reduce the logging.' . "\n");
 }
+
+if (!getenv('DOMAIN')) {
+    $config = include(__DIR__ . '/../application/config/config.php');
+    $defaultDomain = 'localhost/limesurvey';
+
+    if (isset($config['config']['publicurl']) && !empty($config['config']['publicurl'])) {
+        $domain = preg_replace('#^https?://#', '', $config['config']['publicurl']);
+        fwrite(STDERR, "Using configured domain: $domain" . PHP_EOL);
+    } else {
+        $domain = $defaultDomain;
+        fwrite(STDERR, "Warning: publicurl not set in config, falling back to default domain: $domain" . PHP_EOL);
+    }
+    putenv("DOMAIN=$domain");
+    putenv("LOCAL_TEST=true");
+}
 $isDebug = getenv('RUNNER_DEBUG', false);
 fwrite(STDERR, 'Error Reporting and Debug: ' . ($isDebug ? 'Yes' : 'No') . "\n");
 if ($isDebug) {

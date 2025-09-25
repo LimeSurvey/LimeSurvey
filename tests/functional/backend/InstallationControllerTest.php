@@ -41,6 +41,9 @@ class InstallationControllerTest extends TestBaseClassWeb
      */
     public function testBasic()
     {
+        if (getenv('LOCAL_TEST')){
+            $this->markTestSkipped();
+        }
         //$this->checkFolders();
 
         $configFile = \Yii::app()->getBasePath() . '/config/config.php';

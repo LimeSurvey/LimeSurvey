@@ -3,6 +3,7 @@
 namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
 use Survey;
 
 /**
@@ -86,14 +87,22 @@ class ShortUrlTest extends TestBaseClassWeb
             $web->next();
 
             // Check first question
-            $answer = $web->findByName($sgqa);
+            $answer = self::$webDriver->wait(5)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::name($sgqa)
+                )
+            );
             $this->assertEquals($answer->getAttribute("value"), 'Prefilled');
 
             // Submit
             $web->next();
 
             // Check the completed text is there
-            $completedText = $web->findByCss(".completed-text");
+            $completedText = self::$webDriver->wait(2)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector(".completed-text")
+                )
+            );
 
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot($web, __CLASS__ . '_' . __FUNCTION__);
