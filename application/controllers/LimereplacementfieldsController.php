@@ -346,8 +346,8 @@ class LimeReplacementFieldsController extends LSBaseController
             $replFields['ADMINEMAIL'] = gT("Email address of the survey administrator");
             return array($replFields, false);
         } elseif (
-            strpos($fieldtype, 'email_invitation') !== false
-            || strpos($fieldtype, 'email_reminder') !== false
+            strpos($fieldtype, 'email-invitation') !== false
+            || strpos($fieldtype, 'email-reminder') !== false
         ) {
             // these 2 fields are supported by email-inv and email-rem
             // but not email-reg for the moment
