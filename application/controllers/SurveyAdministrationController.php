@@ -2319,45 +2319,32 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
-     * Intialises the necessary options.
+     * Initialises the necessary options.
      *
      * @return array
      */
     private function getPostParamsForCopySurvey($request)
     {
-        $options['copyResources'] = true;
-        $options['excludeQuotas'] = true;
-        $options['excludePermissions'] = true;
-        $options['excludeAnswers'] = true;
-        $options['resetConditions'] = true;
-        $options['resetStartEndDate'] = true;
-        $options['resetResponseId'] = true;
-
         //Survey resource files and adapt links
         $option = $request->getPost('copysurveytranslinksfields');
         if (isset($option)) { //user decision
             $options['copyResources'] = $option == "1";
         }
 
+        //null means exclude and checkbox has not been set
         $option = $request->getPost('copysurveyexcludequotas');
-        if (isset($option)) { //user decision
-            $options['excludeQuotas'] = $option == "1";
-        }
+        $options['excludeQuotas'] = ($option===null) ? null : $option == "1";
 
         $option = $request->getPost('copysurveyexcludepermissions');
         if (isset($option)) { //user decision
             $options['excludePermissions'] = $option == "1";
         }
 
-        $option = $request->getPost('copysurveyexcludeanswers');
-        if (isset($option)) { //user decision
-            $options['excludeAnswers'] = $option == "1";
-        }
+        $option = $request->getPost('includeAnswerOptions', null) ;
+        $options['excludeAnswers'] = ($option===null) ? null : !($option == "1");
 
         $option = $request->getPost('copysurveyresetconditions');
-        if (isset($option)) { //user decision
-            $options['resetConditions'] = $option == "1";
-        }
+        $options['resetConditions'] = ($option===null) ? null : $option == "1";
 
         $option = $request->getPost('copysurveyresetstartenddate');
         if (isset($option)) { //user decision
@@ -2395,8 +2382,15 @@ class SurveyAdministrationController extends LSBaseController
             App()->user->setFlash('error', gT("Access denied"));
             $this->redirect(App()->request->urlReferrer);
         }
+        $options['copyResources'] = true;
 
-        $options = $this->getPostParamsForCopySurvey(App()->request);
+        $options['excludeQuotas'] = null;
+        $options['excludePermissions'] = null;
+        $options['excludeAnswers'] = null;
+
+        $options['resetConditions'] = null;
+        $options['resetStartEndDate'] = false;
+        $options['resetResponseId'] = false;
         $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
             $survey,
             $options,

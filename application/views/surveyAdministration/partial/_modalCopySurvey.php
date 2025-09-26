@@ -52,11 +52,10 @@
                             <label class=" form-label" for='copysurveyexcludepermissions'><?php echo  eT("Survey permissions"); ?> </label>
                         </div>
 
-                        <!-- Exclude answers -->
+                        <!-- include answers -->
                         <div class="form-check">
-                            <input id="ytcopysurveyexcludeanswers" name="copysurveyexcludeanswers" type="hidden" value="0" checked>
-                            <input id="copysurveyexcludeanswers" name="copysurveyexcludeanswers" type="checkbox" value="1">
-                            <label class=" form-label" for='copysurveyexcludeanswers'><?php echo  eT("Answer options from the original survey"); ?> </label>
+                            <input id="includeAnswerOptions" name="includeAnswerOptions" type="checkbox" value="1" checked>
+                            <label class=" form-label" for='includeAnswerOptions'><?php echo  eT("Answer options from the original survey"); ?> </label>
                         </div>
 
                         <!-- Reset conditions/relevance -->
