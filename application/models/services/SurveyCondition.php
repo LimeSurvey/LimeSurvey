@@ -22,6 +22,7 @@ class SurveyCondition
     protected array $tokenFieldsAndNames;
     protected string $language;
     protected const X = 'X';
+    protected $processedSurveys = [];
 
     /**
      * Constructor
@@ -1722,8 +1723,11 @@ class SurveyCondition
      */
     protected function renderFormAux(\Question $question)
     {
-        \LimeExpressionManager::SetSurveyId($question->sid);
-        \LimeExpressionManager::StartProcessingPage(false, true);
+        if (!($this->processedSurveys[$question->sid] ?? false)) {
+            \LimeExpressionManager::SetSurveyId($question->sid);
+            \LimeExpressionManager::StartProcessingPage(true, true);
+            $this->processedSurveys[$question->sid] = true;
+        }
         \LimeExpressionManager::ProcessString(
             "{" . trim((string) $question->relevance) . "}",
             $question->qid
