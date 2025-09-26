@@ -724,7 +724,6 @@ class ThemeOptionsController extends LSBaseController
             App()->user->setFlash(gT('Error'), $e->getMessage());
         }
         $data = $surveyThemeService->updateCommon($model, $sid, $gsid);
-        App()->clientScript->registerPackage('bootstrap-switch');
         if ($data['aOptionAttributes']['optionsPage'] === 'core') {
             App()->clientScript->registerPackage('themeoptions-core');
         }

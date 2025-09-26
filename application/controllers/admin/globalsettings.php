@@ -549,7 +549,6 @@ class GlobalSettings extends SurveyCommonAction
             $this->getController()->redirect($this->getController()->createUrl('dashboard/view'));
         }
 
-        Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
         Yii::app()->clientScript->registerPackage('globalsidepanel');
 
         $aData['aDateFormatDetails'] = getDateFormatData(Yii::app()->session['dateformat']);

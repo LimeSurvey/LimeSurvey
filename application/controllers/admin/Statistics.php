@@ -828,7 +828,6 @@ class Statistics extends SurveyCommonAction
      */
     protected function renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        yii::app()->clientScript->registerPackage('bootstrap-switch');
         yii::app()->clientScript->registerPackage('jspdf');
         $oSurvey = Survey::model()->findByPk($aData['surveyid']);
 
