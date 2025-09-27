@@ -12,20 +12,23 @@
 <!-- admin menu bar -->
 <nav class="navbar navbar-expand-md">
     <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#small-screens-menus" aria-controls="small-screens-menus" aria-expanded="false">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#small-screens-menus"
+            aria-controls="small-screens-menus" aria-expanded="false">
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
-            <img src="<?= Yii::app()->baseUrl ?>/assets/images/logo-icon-white.png" height="34" class="d-inline-block align-bottom" alt="">
+            <img src="<?= Yii::app()->baseUrl ?>/assets/images/logo-icon-white.png" height="34"
+                class="d-inline-block align-bottom" alt="">
             <?= $sitename ?>
         </a>
         <!-- Only on xs screens -->
         <div class="collapse navbar-collapse " id="small-screens-menus">
             <ul class="nav navbar-nav">
                 <!-- active surveys -->
-                <?php if ($activesurveyscount > 0) : ?>
+                <?php if ($activesurveyscount > 0): ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>">
+                        <a class="nav-link"
+                            href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>">
                             <?php eT("Active surveys"); ?> <span class="badge"><?php echo $activesurveyscount ?></span>
                         </a>
                     </li>
@@ -51,7 +54,8 @@
                 <?php $sMaintenanceMode = getGlobalSetting('maintenancemode');
                 if ($sMaintenanceMode === 'hard' || $sMaintenanceMode === 'soft') { ?>
                     <li class="nav-item">
-                        <a class="nav-link text-warning" href="<?php echo $this->createUrl("admin/globalsettings"); ?>" title="<?php eT("Click here to change maintenance mode setting."); ?>">
+                        <a class="nav-link text-warning" href="<?php echo $this->createUrl("admin/globalsettings"); ?>"
+                            title="<?php eT("Click here to change maintenance mode setting."); ?>">
                             <span class="ri-alert-fil"></span>
                             <?php eT("Maintenance mode is active!"); ?>
                         </a>
@@ -74,15 +78,15 @@
 
                 <!-- Surveys menus -->
 
-                <li
-                    class="nav-item d-flex"><a
+                <li class="nav-item d-flex"><a
                         href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>"
                         class="nav-link ps-0"><?php eT("Surveys"); ?></a>
-                    <?php if ($activesurveyscount > 0) : ?>
-                        <a
-                            class="nav-link ps-0 active-surveys"
-                            href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>"
-                        ><span class="badge"> <?php echo $activesurveyscount ?> </span></a>
+                    <?php if ($activesurveyscount > 0): ?>
+                        <a class="nav-link ps-0 active-surveys"
+                            href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>">
+                            <span class="visually-hidden"><?php eT("View active surveys:"); ?></span>
+                            <span class="badge"><?php echo $activesurveyscount ?></span>
+                        </a>
                     <?php endif; ?>
                 </li>
 
@@ -106,7 +110,8 @@
                 <?php echo $adminNotifications; ?>
 
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                    <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown"
+                        role="button" aria-expanded="false">
                         <!-- <i class="ri-user-fill"></i> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a> -->
                         <span class='rounded-circle text-center d-flex align-items-center justify-content-center me-1'>
                             <?= strtoupper(substr((string) Yii::app()->session['user'], 0, 1)) ?>
@@ -115,7 +120,8 @@
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu dropdown-menu-end" role="menu">
                         <li id="admin-menu-item-account">
-                            <a class="dropdown-item" href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>">
+                            <a class="dropdown-item"
+                                href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>">
                                 <?php eT("Account"); ?>
                             </a>
                         </li>
@@ -124,7 +130,8 @@
 
                         <!-- Logout -->
                         <li>
-                            <a class="dropdown-item" href="<?php echo $this->createUrl("admin/authentication/sa/logout"); ?>">
+                            <a class="dropdown-item"
+                                href="<?php echo $this->createUrl("admin/authentication/sa/logout"); ?>">
                                 <?php eT("Logout"); ?>
                             </a>
                         </li>
@@ -140,11 +147,11 @@
 <script type="text/javascript">
     //show tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     })
 
-    $(document).ajaxComplete(function(handler) {
+    $(document).ajaxComplete(function (handler) {
         window.LS.doToolTip();
     });
 </script>

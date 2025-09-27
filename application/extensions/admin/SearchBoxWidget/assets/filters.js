@@ -8,11 +8,13 @@ $('#survey_reset').click(function (e) {
     location.href = url + '?' + new URLSearchParams(params).toString()
 });
 
-$('.view-switch').click(function (e) {
-    e.preventDefault();
-    var viewtype = $(this).data('action')
-    $(this).append('<input type="hidden" name="viewtype" value="'+viewtype+'" /> ');
-    $('#survey-search').submit();
+$('.view-switch').on('click keydown', function (e) {  
+    if (e.type === 'click' || e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        var viewtype = $(this).data('action');
+        $(this).append('<input type="hidden" name="viewtype" value="' + viewtype + '" />');
+        $('#survey-search').submit();
+    }
 });
 
 $('#survey_gsid, #survey_active').change(function (e) {
@@ -20,17 +22,12 @@ $('#survey_gsid, #survey_active').change(function (e) {
     $('#survey-search').submit();
 });
 
-$('.search-bar input')
-    .blur(function (e) {
-        $('#survey-search').submit();
-    })
-    .keydown(function (e) {
-        if (e.keyCode === 13) {
-            e.preventDefault()
-            $('#survey-search').submit();
-        }
-    });
-
+$('.search-bar input').keydown(function (e) {
+    if (e.key === "Enter" || e.keyCode === 13) {
+        e.preventDefault(); 
+        $('#survey-search').submit();  // 🔍 trigger search
+    }
+});
 
 $('.search-bar i').click(function (e) {
     $('#survey-search').submit();
