@@ -1260,7 +1260,7 @@ class SurveyRuntimeHelper
         $this->notvalidated = $notanswered;
         $this->notanswered  = $notanswered;
 
-        if (!($this->aMoveResult['finished'] ?? true)) {
+        if (!($this->aMoveResult['finished'] ?? false)) {
             $unansweredSQList = $this->aMoveResult['unansweredSQs']; // A list of the unanswered responses created via the global variable $notanswered. Should be $oResponse->unanswereds
             if (strlen((string) $unansweredSQList) > 0) {
                 $this->notanswered = explode('|', (string) $unansweredSQList);
