@@ -422,7 +422,7 @@ class SurveyRuntimeHelper
         $this->aSurveyInfo['jPopup'] = json_encode($aPopup);
         $this->aSurveyInfo['mandSoft'] = isset($this->aMoveResult['mandSoft']) ? $this->aMoveResult['mandSoft'] : false;
         $this->aSurveyInfo['mandNonSoft'] = isset($this->aMoveResult['mandNonSoft']) ? $this->aMoveResult['mandNonSoft'] : false;
-        $this->aSurveyInfo['mandViolation'] = $this->aStepInfo['mandViolation'] && $this->okToShowErrors;
+        $this->aSurveyInfo['mandViolation'] = ($this->aStepInfo['mandViolation']) && $this->okToShowErrors;
         $this->aSurveyInfo['showPopups'] = $this->oTemplate != null ? $this->oTemplate->showpopups : false;
 
         $aErrorHtmlMessage                             = $this->getErrorHtmlMessage();
@@ -601,6 +601,7 @@ class SurveyRuntimeHelper
         }
 
         $this->aSurveyInfo['include_content'] = 'main';
+        $this->aSurveyInfo['noregister'] = (Yii::app()->request->getParam('noregister', 'false') === 'true');
 
         Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array(
             'oSurvey' => Survey::model()->findByPk($this->iSurveyid),
@@ -1180,6 +1181,7 @@ class SurveyRuntimeHelper
 
                 $this->aSurveyInfo['include_content'] = 'save';
                 $this->aSurveyInfo['trackUrlPageName'] = 'save';
+                $this->aSurveyInfo['noregister'] = (Yii::app()->request->getParam('noregister', 'false') === 'true');
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo' => $this->aSurveyInfo), false);
             } else {
                 // Intentional retest of all conditions to be true, to make sure we do have tokens and surveyid
@@ -1238,6 +1240,7 @@ class SurveyRuntimeHelper
             if (!empty($aResult['aSaveErrors'])) {
                 $this->aSurveyInfo['aSaveForm'] = $cSave->getSaveFormDatas($this->aSurveyInfo['sid']);
                 $this->aSurveyInfo['include_content'] = 'save';
+                $this->aSurveyInfo['noregister'] = (Yii::app()->request->getParam('noregister', 'false') === 'true');
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo' => $this->aSurveyInfo), false);
             }
 
@@ -1406,6 +1409,7 @@ class SurveyRuntimeHelper
             if (!$surveyActive) {
                 $this->aSurveyInfo['include_content'] = 'submit_preview';
             }
+            $this->aSurveyInfo['noregister'] = (Yii::app()->request->getParam('noregister', 'false') === 'true');
             $sHtml = Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => $oSurvey, 'aSurveyInfo' => $this->aSurveyInfo), true);
             $oTemplate = Template::getLastInstance();
             // kill survey session after doing template : didn't work for all var, but for EM core var : it's OK.
@@ -1587,6 +1591,7 @@ class SurveyRuntimeHelper
 
             $this->aSurveyInfo['surveyUrl'] = $restarturl;
             $this->aSurveyInfo['include_content'] = 'clearall';
+            $this->aSurveyInfo['noregister'] = (Yii::app()->request->getParam('noregister', 'false') === 'true');
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo' => $this->aSurveyInfo), false);
         }
     }
