@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-09-24 09:17:32+00:00\n"
+"POT-Creation-Date: 2025-09-29 12:33:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7187,12 +7187,12 @@ msgstr ""
 msgid "Usage of processString without a string in your template"
 msgstr ""
 
-#: application/core/LimeMailer.php:595 application/core/LimeMailer.php:634
-#: application/core/LimeMailer.php:663
+#: application/core/LimeMailer.php:598 application/core/LimeMailer.php:637
+#: application/core/LimeMailer.php:666
 msgid "Email was not sent because demo-mode is activated."
 msgstr ""
 
-#: application/core/LimeMailer.php:972
+#: application/core/LimeMailer.php:975
 msgid "File not found: %s"
 msgstr ""
 
