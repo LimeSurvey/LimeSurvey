@@ -327,7 +327,7 @@ class LSActiveRecord extends CActiveRecord
             $iSurveyId = $this->getSurveyId();
             /* Set encryption method according to survey */
             if ($oSurvey = Survey::model()->findByPk($iSurveyId)) {
-                $sodium->setEncryptionMethod($oSurvey->crypt_method);
+                $sodium->setEncryptionMethod($oSurvey->oOptions->crypt_method);
             }
         } else {
             $iSurveyId = 0;
@@ -363,7 +363,7 @@ class LSActiveRecord extends CActiveRecord
                 $iSurveyId = $this->getSurveyId();
                 /* Set encryption method according to survey */
                 if ($oSurvey = Survey::model()->findByPk($iSurveyId)) {
-                    $sodium->setEncryptionMethod($oSurvey->crypt_method);
+                    $sodium->setEncryptionMethod($oSurvey->oOptions->crypt_method);
                 }
             } else {
                 // @TODO : check if use default Surveys settings or new settings ? 
@@ -486,8 +486,7 @@ class LSActiveRecord extends CActiveRecord
             $iSurveyId = $this->getSurveyId();
             /* Set encryption method according to survey */
             if ($oSurvey = Survey::model()->findByPk($iSurveyId)) {
-                tracevar($oSurvey->crypt_method);
-                $sodium->setEncryptionMethod($oSurvey->crypt_method);
+                $sodium->setEncryptionMethod($oSurvey->oOptions->crypt_method);
             }
         } else {
             // @TODO : check if use default Surveys settings or new settings ? 
