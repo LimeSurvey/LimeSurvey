@@ -51,6 +51,7 @@ class SurveyDetail implements CommandInterface
 
     /**
      * Run survey detail command
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      *
      * @param Request $request
      * @return Response
