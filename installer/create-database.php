@@ -756,7 +756,7 @@ function populateDatabase($oDB)
             'questionindex' => "integer NULL DEFAULT '0'",
             'navigationdelay' => "integer NULL DEFAULT '0'",
             'nokeyboard' => "string(1) NULL DEFAULT 'N'",
-            'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'"
+            'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'",
             'crypt_method' => "string(1) DEFAULT 'I'",
         ), $options);
 
