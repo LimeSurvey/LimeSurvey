@@ -109,12 +109,14 @@ class SurveyDetail implements CommandInterface
         // for example get inherit template value  $surveyModel->options->template
         $surveyModel->setOptionsFromDatabase();
 
-        $survey = $this->surveyDetailService->getCache($surveyId);
+        $survey = $this->surveyDetailService->getCache((int)$surveyId);
 
         if (!$survey) {
             $survey = $this->transformerOutputSurveyDetail
                 ->transform($surveyModel);
-            $this->surveyDetailService->saveCache($surveyId, $survey);
+            if ($survey) {
+                $this->surveyDetailService->saveCache((int)$surveyId, $survey);
+            }
         }
 
         return $this->responseFactory
