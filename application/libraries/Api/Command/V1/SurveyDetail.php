@@ -47,6 +47,7 @@ class SurveyDetail implements CommandInterface
         $this->responseFactory = $responseFactory;
         $this->permission = $permission;
         $this->surveyDetailService = $surveyDetailService;
+        $this->lastLoaded = '';
     }
 
     /**
