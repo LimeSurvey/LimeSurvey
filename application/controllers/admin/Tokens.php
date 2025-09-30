@@ -1245,6 +1245,7 @@ class Tokens extends SurveyCommonAction
         );
 
         $sodium = Yii::app()->sodium;
+        $sodium->setEncryptionMethod($oSurvey->crypt_method);
         $aData['bEncrypted'] = $sodium->bLibraryExists;
         $this->renderWrappedTemplate('token', array('managetokenattributes'), $aData);
     }
