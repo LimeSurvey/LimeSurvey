@@ -1,0 +1,52 @@
+{
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "env": {
+    "node": true,
+    "browser": true,
+    "es2021": true,
+    "jest/globals": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:storybook/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "overrides": [
+    {
+      // or whatever matches stories specified in .storybook/main.js
+      "files": ["**/*.stories.@(ts|tsx|js|jsx|mjs|cjs)"],
+      "rules": {
+        // example of overriding a rule
+        "storybook/hierarchy-separator": "error",
+        // example of disabling a rule
+        "storybook/default-exports": "off"
+      }
+    }
+  ],
+  "plugins": ["react", "jest"],
+  "rules": {
+    // disable following rule as it shows errors for windows system
+    // "linebreak-style": ["error", "unix"],
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
+    // Allowing using .JS files only.
+    "react/jsx-filename-extension": ["error", { "extensions": [".jsx"] }], //should add ".ts" if typescript project
+    "no-console": "warn",
+    "react/no-unescaped-entities": "off",
+    "no-unused-vars": "warn",
+    "no-prototype-builtins": "off",
+    "no-unreachable": "warn"
+  },
+  "globals": {
+    "t": "writable",
+    "st": "writable"
+  }
+}

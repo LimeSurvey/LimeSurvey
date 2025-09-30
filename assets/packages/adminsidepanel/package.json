@@ -1,60 +1,35 @@
 {
   "name": "adminsidepanel",
-  "version": "0.1.0",
   "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "yarn run dev && yarn run prod",
-    "prod": "vue-cli-service build",
-    "dev": "vue-cli-service build --mode development",
-    "lint": "vue-cli-service lint",
-    "watch": "vue-cli-service build --mode=development --watch"
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.4.4",
-    "core-js": "^2.6.5",
-    "lodash": "^4.17.21",
-    "sass": "^1.51.0",
-    "vue": "~2.6.x",
-    "vue-localstorage": "^0.5.0",
-    "vuex": "^2.3.1",
-    "vuex-persist": "^1.0.3"
+    "@tanstack/react-query": "^5.90.2",
+    "bootstrap": "^5.3.8",
+    "react": "^19.1.1",
+    "react-bootstrap": "^2.10.10",
+    "react-dom": "^19.1.1",
+    "react-router": "^7.9.3",
+    "react-router-dom": "^7.9.3",
+    "sass-embedded": "^1.93.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.6.0",
-    "@vue/cli-plugin-eslint": "^3.6.0",
-    "@vue/cli-service": "^3.6.0",
-    "babel-eslint": "^10.0.1",
-    "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "mini-css-extract-plugin": "0.9.0",
-    "rtlcss-webpack-plugin": "^4.0.3",
-    "sass-loader": "7",
-    "vue-template-compiler": "~2.6.x",
-    "webpack": "4.5"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
-  "browserslist": [
-    "> 0.25%",
-    "not dead",
-    "not ie <= 8"
-  ]
+    "@eslint/js": "^9.36.0",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.4",
+    "babel-plugin-react-compiler": "^19.1.0-rc.3",
+    "eslint": "^9.36.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.4.0",
+    "prettier": "3.6.2",
+    "vite": "^7.1.7"
+  }
 }

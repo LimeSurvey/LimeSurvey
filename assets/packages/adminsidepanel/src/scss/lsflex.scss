@@ -1,0 +1,74 @@
+@mixin alignitems($direction) {
+  -ms-align-items: $direction;
+  -webkit-align-items: $direction;
+  -moz-align-items: $direction;
+  align-items: $direction;
+}
+
+$y-directions: center flex-start flex-end baseline stretch;
+@mixin aligncontent($direction) {
+  -ms-justify-content: $direction;
+  -webkit-justify-content: $direction;
+  -moz-justify-content: $direction;
+  justify-content: $direction;
+}
+
+$x-directions: center flex-start flex-end space-between space-around;
+.ls-flex {
+  display: -moz-flex;
+  display: -webkit-flex;
+  display: flex;
+  @each $alignment in $y-directions {
+    &.align-items-#{$alignment} {
+      @include alignitems($alignment);
+    }
+  }
+  @each $alignment in $x-directions {
+    &.align-content-#{$alignment} {
+      @include aligncontent($alignment);
+    }
+  }
+  &.wrap {
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
+  @for $i from 1 through 12 {
+    .grow-#{$i} {
+      flex-grow: $i;
+    }
+    .shrink-#{$i} {
+      flex-shrink: $i;
+    }
+  }
+}
+
+.ls-flex-item {
+  flex: 1;
+  @for $i from 1 through 12 {
+    .grow-#{$i} {
+      flex-grow: $i;
+    }
+  }
+}
+
+.ls-flex-row {
+  @extend .ls-flex;
+  -ms-flex-direction: row;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  width: 100%;
+  flex-direction: row;
+}
+
+.ls-flex-column {
+  @extend .ls-flex;
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  flex-direction: column;
+  &.fill {
+    height: 100%;
+  }
+}
