@@ -24,6 +24,7 @@ class SurveyDetail implements CommandInterface
     protected ResponseFactory $responseFactory;
     protected Permission $permission;
     protected SurveyDetailService $surveyDetailService;
+    protected string $lastLoaded;
 
     /**
      * Constructor
@@ -56,7 +57,8 @@ class SurveyDetail implements CommandInterface
      */
     public function run(Request $request)
     {
-        $surveyId = (string) $request->getData('_id');
+        $surveyId = (string) ($request->getData('_id') ?? \Yii::app()->getRequest()->getQuery('survey-detail'));
+        $this->lastLoaded = (string) (\Yii::app()->getRequest()->getQuery('ts') ?? '');
         $hasPermission = $this->permission->hasSurveyPermission(
             (int)$surveyId,
             'survey',
@@ -95,6 +97,11 @@ class SurveyDetail implements CommandInterface
                 )
                 )->toArray()
             );
+        }
+
+        if ($this->lastLoaded && (strtotime($this->lastLoaded) > strtotime($surveyModel->lastmodified))) {
+            return $this->responseFactory
+                ->makeSuccess(['survey' => 'not changed']);
         }
 
         //set real survey options with inheritance to get value of "inherit" attribute from db
