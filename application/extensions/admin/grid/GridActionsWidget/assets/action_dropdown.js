@@ -31,9 +31,84 @@ LS.actionDropdown = {
                     },
                 });
                 body.append(dropdownMenu);
+
+                
+                       // ✅ Add focus trap logic
+                dropdownToggleEl.addEventListener('shown.bs.dropdown', function () {
+                    trapFocus(dropdownMenu);
+                });
+
+                dropdownToggleEl.addEventListener('hidden.bs.dropdown', function () {
+                    releaseFocusTrap(dropdownMenu);
+                });
             }
         });
+
+        // ✅ Focus Trap Helpers
+        function trapFocus(container) {
+            let focusableSelectors = 'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+            let focusableEls = Array.from(container.querySelectorAll(focusableSelectors));
+            if (focusableEls.length === 0) return;
+
+            let firstEl = focusableEls[0];
+            let lastEl = focusableEls[focusableEls.length - 1];
+
+            container._focusHandler = function (e) {
+                if (e.key === 'Tab') {
+                    if (e.shiftKey) {
+                        if (document.activeElement === firstEl) {
+                            e.preventDefault();
+                            lastEl.focus();
+                        }
+                    } else {
+                        if (document.activeElement === lastEl) {
+                            e.preventDefault();
+                            firstEl.focus();
+                        }
+                    }
+                } else if (e.key === 'Escape' || e.key === 'Esc') {
+                    // Find the dropdown toggle button and return focus to it
+                    let toggleId = container.getAttribute('data-for-ls-dropdown-toggle-id');
+                    let toggleButton = document.querySelector(`.ls-dropdown-toggle[data-ls-dropdown-toggle-id="${toggleId}"]`);
+                    if (toggleButton) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        // Store reference to toggle button for focus
+                        let targetToggle = toggleButton;
+                        
+                        // Close the dropdown first
+                        let dropdownInstance = bootstrap.Dropdown.getInstance(toggleButton);
+                        if (dropdownInstance) {
+                            dropdownInstance.hide();
+                        } else {
+                            // Fallback: manually hide the dropdown
+                            container.style.display = 'none';
+                            container.classList.remove('show');
+                        }
+                        
+                        // Return focus to the toggle button after a short delay
+                        setTimeout(() => {
+                            if (targetToggle) {
+                                targetToggle.focus();
+                            }
+                        }, 50);
+                    }
+                }
+            };
+
+            container.addEventListener('keydown', container._focusHandler);
+            firstEl.focus();
+        }
+
+        function releaseFocusTrap(container) {
+            if (container._focusHandler) {
+                container.removeEventListener('keydown', container._focusHandler);
+                delete container._focusHandler;
+            }
+        }
     },
+
     /**
      * Removes dropdown menus that no longer have a toggle element (i.e. the toggle was in a table row
      * and the table was filtered or sorted).
