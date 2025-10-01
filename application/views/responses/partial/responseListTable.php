@@ -14,6 +14,8 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
+/* @var boolean hide crypted filter columns */
+$hideCryptedFilter = $survey->oOptions->crypt_method == 'H';
 ?>
 <!-- for filter columns with datepicker-->
 <div style="display: none;">
@@ -228,7 +230,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         'headerHtmlOptions' => ['style' => 'min-width: 350px;'],
                         'name'              => $column->name,
                         'type'              => 'raw',
-                        'filter'            => TbHtml::textField(
+                        'filter'            => $hideCryptedFilter && $encryptionSymbol ? false : TbHtml::textField(
                             'SurveyDynamic[' . $column->name . ']',
                             $model->{$column->name}
                         ),

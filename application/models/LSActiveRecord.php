@@ -331,7 +331,7 @@ class LSActiveRecord extends CActiveRecord
             }
         } else {
             $iSurveyId = 0;
-            // @TODO : check if use default Surveys settings or new settings ? 
+            // @TODO : check if use default Surveys settings or new settings ?
         }
         $class = get_class($this);
         $encryptedAttributes = $this->getAllEncryptedAttributes($iSurveyId, $class);
@@ -366,7 +366,7 @@ class LSActiveRecord extends CActiveRecord
                     $sodium->setEncryptionMethod($oSurvey->oOptions->crypt_method);
                 }
             } else {
-                // @TODO : check if use default Surveys settings or new settings ? 
+                // @TODO : check if use default Surveys settings or new settings ?
             }
             return $sodium->decrypt($value);
         } else {
@@ -389,7 +389,7 @@ class LSActiveRecord extends CActiveRecord
         if (!empty($value)) {
             // load sodium library
             $sodium = Yii::app()->sodium;
-            // @TODO : check if use default Surveys settings or new settings ? 
+            // @TODO : check if use default Surveys settings or new settings ?
             // But default test both, then decrypt in all case
             return $sodium->decrypt($value);
         }
@@ -437,7 +437,7 @@ class LSActiveRecord extends CActiveRecord
         if (isset($value) && $value !== "") {
             // load sodium library
             $sodium = Yii::app()->sodium;
-            // @TODO : check if use default Surveys settings or new settings ? 
+            // @TODO : check if use default Surveys settings or new settings ?
             // But default test both, then decrypt in all case
             return $sodium->encrypt($value);
         }
@@ -489,7 +489,7 @@ class LSActiveRecord extends CActiveRecord
                 $sodium->setEncryptionMethod($oSurvey->oOptions->crypt_method);
             }
         } else {
-            // @TODO : check if use default Surveys settings or new settings ? 
+            // @TODO : check if use default Surveys settings or new settings ?
         }
         $class = get_class($this);
         // TODO: Use OOP polymorphism instead of switching on class names.
