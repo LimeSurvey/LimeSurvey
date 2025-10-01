@@ -62,6 +62,7 @@ $googleAnalyticsStyleOptions = array(
                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'datestamp',
                         'checkedOption'         => $oSurvey->datestamp,
+                        'ariaLabel' => gT('Date stamp:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->datestamp . " ᴵ"])
                             : $optionsOnOff
@@ -78,6 +79,7 @@ $googleAnalyticsStyleOptions = array(
                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'ipaddr',
                         'checkedOption' => $oSurvey->ipaddr,
+                        'ariaLabel' => gT('Save IP address:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->ipaddr . " ᴵ"])
                             : $optionsOnOff,
@@ -94,6 +96,7 @@ $googleAnalyticsStyleOptions = array(
                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'ipanonymize',
                         'checkedOption' => $oSurvey->ipanonymize,
+                        'ariaLabel' => gT('Anonymize IP address:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->ipanonymize . " ᴵ"])
                             : $optionsOnOff,
@@ -110,6 +113,7 @@ $googleAnalyticsStyleOptions = array(
                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'refurl',
                         'checkedOption' => $oSurvey->refurl,
+                        'ariaLabel' => gT('Save referrer URL:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->refurl . " ᴵ"])
                             : $optionsOnOff,
@@ -125,6 +129,7 @@ $googleAnalyticsStyleOptions = array(
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'savetimings',
                         'checkedOption' => $oSurvey->savetimings,
+                        'ariaLabel' => gT('Save timings:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->savetimings . " ᴵ"])
                             : $optionsOnOff,
@@ -145,6 +150,7 @@ $googleAnalyticsStyleOptions = array(
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'assessments',
                         'checkedOption' => $oSurvey->assessments,
+                        'ariaLabel' => gT('Enable assessment mode:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->assessments . " ᴵ"])
                             : $optionsOnOff,
@@ -159,6 +165,7 @@ $googleAnalyticsStyleOptions = array(
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'allowsave',
                         'checkedOption' => $oSurvey->allowsave,
+                        'ariaLabel' => gT('Participant may save and resume later:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->allowsave . " ᴵ"])
                             : $optionsOnOff,
@@ -184,6 +191,7 @@ $googleAnalyticsStyleOptions = array(
                         <label class=" form-label content-center col-12" for='emailnotificationto'><?php eT("Inherit:"); ?></label>
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                             'name'          => 'emailnotificationtobutton',
+                            'ariaLabel' => gT('Inherit:'),
                             'checkedOption' => ($bShowInherited && $emailnotificationto === 'inherit' ? 'Y' : 'N'),
                             'selectOptions' => $optionsOnOff,
                             'htmlOptions'   => [
@@ -215,6 +223,7 @@ $googleAnalyticsStyleOptions = array(
                             'name'          => 'emailresponsetobutton',
                             'checkedOption' => ($bShowInherited && $emailresponseto === 'inherit' ? 'Y' : 'N'),
                             'selectOptions' => $optionsOnOff,
+                            'ariaLabel' => gT('Inherit:'),
                             'htmlOptions'   => [
                                 'class' => 'text-option-inherit'
                             ]
@@ -233,6 +242,7 @@ $googleAnalyticsStyleOptions = array(
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                             'name'          => 'googleanalyticsapikeysetting',
                             'checkedOption' => $oSurvey->googleanalyticsapikeysetting,
+                            'ariaLabel' => gT('Google Analytics settings:'),
                             'selectOptions' => $googleAnalyticsOptions,
                         ]); ?>
                     </div>
@@ -255,6 +265,7 @@ $googleAnalyticsStyleOptions = array(
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                             'name'          => 'googleanalyticsstyle',
                             'checkedOption' => $oSurvey->googleanalyticsstyle,
+                            'ariaLabel' => gT('Google Analytics style:'),
                             'selectOptions' => $googleAnalyticsStyleOptions,
                         ]); ?>
                     </div>
