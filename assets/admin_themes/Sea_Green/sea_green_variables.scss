@@ -35,19 +35,19 @@ $g-300        : #DDDEE8;
 $g-200        : #EEEFF7;
 $g-100        : #F9F9FB;
 
-$theme-colors: (
-    "primary":    $active-green,
-    "secondary":  $g-600,
-    "success":    $success,
-    "danger":     $error,
-    "warning":    $warning,
-    "info":       $grape,
-    "light":      $g-200,
-    "g-800":      $g-800,
-    "dark":       $g-900,
-    "black60":    $black60,
-    "cancel":     $g-600, // replace with secondary
-    "orange":     $orange-light,
+$theme-colors : (
+    "primary": $active-green,
+    "secondary": $g-600,
+    "success": $success,
+    "danger": $error,
+    "warning": $warning,
+    "info": $grape,
+    "light": $g-200,
+    "g-800": $g-800,
+    "dark": $g-900,
+    "black60": $black60,
+    "cancel": $g-600, // replace with secondary
+    "orange-light": $orange-light,
 );
 
 $border-radius: 4px;
