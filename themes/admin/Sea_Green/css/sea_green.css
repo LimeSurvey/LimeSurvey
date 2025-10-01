@@ -606,7 +606,7 @@ progress {
   color: #6c757d;
 }
 .blockquote-footer::before {
-  content: "— ";
+  content: "— ";
 }
 
 .img-fluid {
@@ -4772,7 +4772,7 @@ textarea.form-control-lg {
   flex-wrap: wrap;
   padding: 0 0;
   margin-bottom: 1rem;
-  font-size: 0.9975rem;
+  font-size: 1.1rem;
   list-style: none;
 }
 
@@ -11186,7 +11186,7 @@ textarea.form-control-lg {
 }
 
 .summary-table {
-  font-size: 0.9975rem;
+  font-size: 1.1rem;
   padding-left: 0.5rem;
 }
 .summary-table strong {
@@ -17436,7 +17436,7 @@ ol.breadcrumb.title-bar-breadcrumb {
 }
 ol.breadcrumb.title-bar-breadcrumb a {
   color: #14AE5C;
-  font-weight: 400;
+  font-weight: 500;
 }
 ol.breadcrumb.title-bar-breadcrumb a:hover {
   color: #108b4a;
@@ -17463,8 +17463,8 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 
 .breadcrumb {
-  font-size: 0.9975rem;
-  line-height: 20px;
+  font-size: 1.1;
+  line-height: 25px;
   margin-bottom: 0;
 }
 
