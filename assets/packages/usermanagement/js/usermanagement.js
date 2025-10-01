@@ -318,9 +318,6 @@ var UserManagement = function () {
                 $(this).prop('checked', toggled);
             })
         });
-        //$('input[name="alltemplates"]').on('switchChange.bootstrapSwitch', function (event, state) {
-            //$('input[id$="_use"]').prop('checked', state).trigger('change');
-        //});
         $('.UserManagement--action--openmodal').on('click', function () {
             var href = $(this).data('href');
             var modalSize = $(this).data('modalsize');

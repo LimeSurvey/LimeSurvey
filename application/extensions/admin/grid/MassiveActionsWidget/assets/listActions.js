@@ -264,57 +264,6 @@ var onClickListAction =  function () {
     modal.show();
 };
 
-/**
- * Bootstrap switch extension
- *
- * 1. Setting the value
- * By default, bootstrap switch use the val() jQuery function, which works well for form submission.
- * But, for the ajax request, we need to collect the value in a array for the post using $postDatas[$(this).attr('name')]=$(this).val();
- * So we need to change the value using $(this).attr('value', state);.
- * The difference can be seen visually in the browser code explorer : by default, the bootstrap switch extension change in an invisble way.
- * With the method here, the input value change will be visible.
- *
- * 2. Defining value Type
- * By default, bootstrap switch use boolean values {true,false} for its states.
- * In the PHP code (like in controller questionEditor::changeMultipleQuestionAttributes()), we want to keep the code as dry as possible.
- * To avoid to create a single method for each action using bootstrap-switch, just to change the boolean value to something else ({1,0} or {Y,N}, etc), we perform it here.
- * e.g: a bootstrap-switch with the class bootstrap-switch-integer will have its value converted to integer.
- *
- * 3. Managing grid refresh
- * For now, the modals are injected on the bottom of the selector, which is in the grid footer, which is reload on grid refresh
- * So, when refreshing the grid, the bootstrap-switch must be re-applyed to the elements
- *
- */
-// TODO: It seems below two functions are not used and can be deleted. Please confirm.
- function prepareBsSwitchBoolean($gridid){
-     // Bootstrap switch with class "bootstrap-switch-boolean" will use the default boolean values.
-     // e.g: question mandatory, question other, etc
-     $('.bootstrap-switch-boolean').each(function(){
-         $(this).attr('value', false);                                           // we specify its value in a "visible" way (see point 1)
-
-         // Switch change
-         $(this).on('switchChange.bootstrapSwitch', function(event, state) {
-             $(this).attr('value', state);                                       // When the switch change,we specify its value in a "visible" way (see point 1)
-         });
-     });
-}
-
-function prepareBsSwitchInteger($gridid){
-    // Bootstrap switch with class "bootstrap-switch-integer" will use integer values
-    // e.g: question statistics_showgraph, question public_statistics, etc
-    $('.bootstrap-switch-integer').each(function(){
-        $(this).attr('value', 0);                                               // we specify its value in a "visible" way (see point 1)
-
-        // Switch change
-        $(this).on('switchChange.bootstrapSwitch', function(event, state) {
-            var intValue = (state==true)?'1':'0';                               // Convertion of the boolean to integer (see point 2)
-            $(this).attr('value', intValue)
-        });
-    });
-}
-// =================================================================================
-
-
 function prepareBsDateTimePicker($gridid){
     var dateTimeSettings = getDefaultDateTimePickerSettings();
     if (dateTimeSettings) {
@@ -362,13 +311,8 @@ function bindListItemclick() {
 
 
 $(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listActions, ready ', function() {
-    prepareBsSwitchBoolean(gridId);
-    prepareBsSwitchInteger(gridId);
-
     // Grid refresh: see point 3
     $(document).on('actions-updated', function(){
-        prepareBsSwitchBoolean(gridId);
-        prepareBsSwitchInteger(gridId);
         prepareBsDateTimePicker(gridId);
         bindListItemclick();
     });
