@@ -3331,7 +3331,19 @@ class LimeExpressionManager
         $this->gseq2relevanceStatus = [];
         /* Fill some static know vars , the used is always $this->knownVars (even if set in templatereplace function) */
         $this->knownVars['SID'] = [
-            'code'      => $this->sid,
+            'code'      => $survey->sid,
+            'jsName_on' => '',
+            'jsName'    => '',
+            'readWrite' => 'N',
+        ];
+        $this->knownVars['SURVEYNAME'] = [
+            'code'      => $survey->languagesettings[self::getEMlanguage()]->surveyls_title,
+            'jsName_on' => '',
+            'jsName'    => '',
+            'readWrite' => 'N',
+        ];
+        $this->knownVars['EXPIRY'] = [
+            'code'      => $survey->expires,
             'jsName_on' => '',
             'jsName'    => '',
             'readWrite' => 'N',
