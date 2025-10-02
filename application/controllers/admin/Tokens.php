@@ -1606,7 +1606,7 @@ class Tokens extends SurveyCommonAction
                 $mail->setSurvey($iSurveyId);
                 $mail->emailType = $sSubAction;
                 $mail->replaceTokenAttributes = true;
-                foreach ($emresult as $emrow) {
+                foreach ($emresult as $index => $emrow) {
                     $mailLanguage = $emrow['language'];
                     if (empty($mailLanguage)) {
                         $mailLanguage = $sBaseLanguage;
@@ -1630,6 +1630,7 @@ class Tokens extends SurveyCommonAction
                         }
                         continue;
                     }
+                    $mail->index = $index;
                     $mail->setToken($emrow['token']);
                     $mail->setFrom(Yii::app()->request->getPost('from_' . $mailLanguage));
                     $mail->rawSubject = $sSubject[$mailLanguage];
