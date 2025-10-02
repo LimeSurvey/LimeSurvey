@@ -282,6 +282,18 @@ class QuestionService
 
         $originalRelevance = $question->relevance;
 
+        if ($question->type !== ($data['type'] ?? $question->type)) {
+            $answers = \Answer::model()->findAll('qid = :qid', [':qid' => $question->qid]);
+            foreach ($answers as $answer) {
+                $conditions = Condition::model()->findAll('cqid = :qid and value = :title', [':qid' => $question->qid, ':title' => $answer->code]);
+                foreach ($conditions as $condition) {
+                    $condition->delete();
+                    \LimeExpressionManager::UpgradeConditionsToRelevance(null, $condition->qid);
+                }
+                $answer->delete();
+            }
+        }
+
         $question->setAttributes($data, false);
 
         if (!$question->save()) {
