@@ -1421,6 +1421,17 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Use the creation date for old entries when the last modified date is unavailable
+     */
+    public function getLastModifiedDate()
+    {
+        $date = $this->lastmodified > $this->datecreated ?
+            $this->lastmodified : $this->creationdate;
+
+        return self::shiftedDateTime($date)->format('d.m.Y');
+    }
+
+    /**
      * @return int|string
      */
     public function getCountFullAnswers()
@@ -1643,6 +1654,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getAdditionalColumns(): array
     {
         $additionalColumns = [
+            'lastModified' => [
+                'header'            => gT('Last modified'),
+                'name'              => 'lastModified',
+                'value'             => '$data->lastModifiedDate',
+                'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
+            ],
             'group' => [
                 'header'            => gT('Group'),
                 'name'              => 'group',
