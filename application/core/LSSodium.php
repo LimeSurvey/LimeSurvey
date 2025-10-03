@@ -6,6 +6,7 @@
 class LSSodium
 {
     public $bLibraryExists = false;
+    protected $sEncryptionMethod = null;
     protected $sEncryptionNonce = null;
     protected $sEncryptionSecretBoxKey = null;
 
@@ -23,6 +24,16 @@ class LSSodium
         } else {
             $this->checkIfKeyExists();
         }
+    }
+
+    /** 
+     * Set the encrytion method
+     * @param string 
+     * @return void
+     */
+    public function setEncryptionMethod($string)
+    {
+        $this->sEncryptionMethod = $string;
     }
 
     /**
@@ -116,7 +127,23 @@ class LSSodium
     {
         if ($this->bLibraryExists === true) {
             if (isset($sDataToEncrypt) && $sDataToEncrypt !== "") {
-                $sEncrypted = base64_encode(ParagonIE_Sodium_Compat::crypto_secretbox((string) $sDataToEncrypt, $this->sEncryptionNonce, $this->sEncryptionSecretBoxKey));
+                switch ($this->sEncryptionMethod) {
+                    case 'H':
+                        // generate a random nonce
+                        $nonce = random_bytes(ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_NONCEBYTES);
+                        // encrypt plaintext with key and nonce
+                        $ciphertext = ParagonIE_Sodium_Compat::crypto_secretbox(
+                            strval($sDataToEncrypt),
+                            $nonce,
+                            $this->sEncryptionSecretBoxKey
+                        );
+                        $sEncrypted = ParagonIE_Sodium_Compat::bin2hex($nonce) . ParagonIE_Sodium_Compat::bin2hex($ciphertext);
+                        break;
+                    case 'B':
+                    default:
+                        $sEncrypted = base64_encode(ParagonIE_Sodium_Compat::crypto_secretbox((string) $sDataToEncrypt, $this->sEncryptionNonce, $this->sEncryptionSecretBoxKey));
+                        break;
+                }
                 return $sEncrypted;
             }
             return '';
@@ -129,23 +156,85 @@ class LSSodium
      * Decrypt encrypted string.
      * @param string $sEncryptedString Encrypted string to decrypt, if it string 'null', didn't try to decode
      * @param bool $bReturnFalseIfError false by default. If TRUE, return false in case of error (bad decryption). Else, return given $encryptedInput value
-     * @return string Return decrypted value (string or unsezialized object) if suceeded. Return FALSE if an error occurs (bad password/salt given) or inpyt encryptedString
+     * @return string|false Return decrypted value (string or unsezialized object) if suceeded. Return FALSE if an error occurs (bad password/salt given) or input encryptedString
      * @throws SodiumException
      */
     public function decrypt($sEncryptedString, $bReturnFalseIfError = false): string
     {
         if ($this->bLibraryExists === true) {
             if (!empty($sEncryptedString) && $sEncryptedString !== 'null') {
-                $plaintext = ParagonIE_Sodium_Compat::crypto_secretbox_open(base64_decode($sEncryptedString), $this->sEncryptionNonce, $this->sEncryptionSecretBoxKey);
-                if ($plaintext === false) {
-                    throw new SodiumException(sprintf(gT("Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s.", 'unescaped'), 'https://www.limesurvey.org/manual/Data_encryption#Errors'));
-                } else {
-                    return $plaintext;
+                /* Try to decrypt according to sEncryptionMethod if H */
+                switch ($this->sEncryptionMethod) {
+                    case 'H':
+                        $plaintext = $this->decryptHardened($sEncryptedString);
+                        if ($plaintext !== false) {
+                            return $plaintext;
+                        }
+                        $plaintext = $this->decryptBasic($sEncryptedString);
+                        if ($plaintext !== false) {
+                            return $plaintext;
+                        }
+                        break;
+                    case 'B':
+                    default:
+                        $plaintext = $this->decryptBasic($sEncryptedString);
+                        if ($plaintext !== false) {
+                            return $plaintext;
+                        }
+                        $plaintext = $this->decryptHardened($sEncryptedString);
+                        if ($plaintext !== false) {
+                            return $plaintext;
+                        }
+                        break;
                 }
+                /* We get here : all solution return false */
+                if ($bReturnFalseIfError) {
+                    throw new SodiumException(sprintf(gT("Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s.", 'unescaped'), 'https://www.limesurvey.org/manual/Data_encryption#Errors'));
+                }
+                return false;
             }
             return '';
         }
         return $sEncryptedString;
+    }
+
+    /**
+     * Decrypt encrypted string using Hardened methos
+     * @param string $sEncryptedString Encrypted string to decrypt, if it string 'null', didn't try to decode
+     * @return string|false Return decrypted value (string or unsezialized object) if suceeded. Return FALSE if an error occurs (bad password/salt given) or input encryptedString
+    */
+    private function decryptHardened($sEncryptedString)
+    {
+            $minLength = (
+                ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_NONCEBYTES +
+                ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_MACBYTES
+            );
+            // check that encrypted string is of sufficient length to
+            // contain at minimum the random nonce and authentication tag
+            // split the string into nonce and cipher text then try to decrypt
+            if (strlen($sEncryptedString) < $minLength) {
+                return false;
+            }
+            $nonceAndCipherText = ParagonIE_Sodium_Compat::hex2bin($sEncryptedString);
+            $nonce = substr($nonceAndCipherText, 0, ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_NONCEBYTES);
+            $ciphertext = substr($nonceAndCipherText, ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_NONCEBYTES);
+            $plaintext = ParagonIE_Sodium_Compat::crypto_secretbox_open(
+                $ciphertext,
+                $nonce,
+                $this->sEncryptionSecretBoxKey
+            );
+            return $plaintext;
+    }
+
+    /**
+     * Decrypt encrypted string using Basic methos
+     * @param string $sEncryptedString Encrypted string to decrypt, if it string 'null', didn't try to decode
+     * @return string|false Return decrypted value (string or unsezialized object) if suceeded. Return FALSE if an error occurs (bad password/salt given) or input encryptedString
+    */
+    private function decryptBasic($sEncryptedString)
+    {
+            $plaintext = ParagonIE_Sodium_Compat::crypto_secretbox_open(base64_decode($sEncryptedString), $this->sEncryptionNonce, $this->sEncryptionSecretBoxKey);
+            return $plaintext;
     }
 
     /**

@@ -1033,6 +1033,9 @@ class SurveyDynamic extends LSActiveRecord
         $encryptedAttr = Response::getEncryptedAttributes($this->getSurveyId());
         $attributes = $this->attributes;
         $sodium = Yii::app()->sodium;
+        if ($this->survey) {
+            $sodium->setEncryptionMethod($this->survey->crypt_method);
+        }
         foreach ($encryptedAttr as $key) {
             $this->setAttribute($key, $sodium->decrypt($attributes[$key]));
         }
