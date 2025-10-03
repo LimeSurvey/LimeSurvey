@@ -5,6 +5,8 @@ namespace LimeSurvey\Models\Services\QuestionAggregateService;
 use Question;
 use QuestionAttribute;
 use Survey;
+use Answer;
+use LimeExpressionManager;
 use Condition;
 use LSYii_Application;
 use LimeSurvey\DI;
@@ -283,14 +285,18 @@ class QuestionService
         $originalRelevance = $question->relevance;
 
         if ($question->type !== ($data['type'] ?? $question->type)) {
-            $answers = \Answer::model()->findAll('qid = :qid', [':qid' => $question->qid]);
+            $answers = Answer::model()->findAll('qid = :qid', [':qid' => $question->qid]);
+            $qids = [];
             foreach ($answers as $answer) {
                 $conditions = Condition::model()->findAll('cqid = :qid and value = :title', [':qid' => $question->qid, ':title' => $answer->code]);
                 foreach ($conditions as $condition) {
+                    $qids[$condition->qid] = true;
                     $condition->delete();
-                    \LimeExpressionManager::UpgradeConditionsToRelevance(null, $condition->qid);
                 }
                 $answer->delete();
+            }
+            foreach ($qids as $qid => $value) {
+                LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
             }
         }
 
