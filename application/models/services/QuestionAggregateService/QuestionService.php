@@ -6,6 +6,7 @@ use Question;
 use QuestionAttribute;
 use Survey;
 use Answer;
+use AnswerL10n;
 use LimeExpressionManager;
 use Condition;
 use LSYii_Application;
@@ -293,6 +294,7 @@ class QuestionService
                     $qids[$condition->qid] = true;
                     $condition->delete();
                 }
+                AnswerL10n::model()->deleteAll('aid = :aid', [':aid' => $answer->aid]);
                 $answer->delete();
             }
             foreach ($qids as $qid => $value) {
