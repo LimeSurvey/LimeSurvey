@@ -30,7 +30,7 @@ foreach ($extraMenus as $menu): ?>
                     <span class="caret"></span>
                 </a>
                 <?php }?>
-                <ul class="dropdown-menu" role="menu">
+                <ul class="dropdown-menu" >
                     <?php
                     foreach ($menu->getMenuItems() as $menuItem): ?>
                         <?php

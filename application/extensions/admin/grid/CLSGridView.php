@@ -212,7 +212,8 @@ class CLSGridView extends TbGridView
         if (!$this->dataProvider instanceof CActiveDataProvider) {
             return;
         }
-        $columns_filter_button = '<button role="button" type="button" class="btn b-0" data-bs-toggle="modal" data-bs-target="#survey-column-filter-modal">
+        $columns_filter_button = '<button role="button" type="button"aria-label="' . gT("select columns") . '" 
+class="btn b-0" data-bs-toggle="modal" data-bs-target="#survey-column-filter-modal">
                 <i class="ri-layout-column-fill"></i>
             </button>';
         $this->columns[]  = [
