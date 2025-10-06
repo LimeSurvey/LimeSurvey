@@ -399,9 +399,6 @@ class Tokens extends SurveyCommonAction
             $this->getController()->redirect(array("/admin/tokens/sa/index/surveyid/{$iSurveyId}"));
         }
 
-        // TODO: Why needed?
-        App()->clientScript->registerPackage('bootstrap-switch');
-
         if (!$survey->hasTokensTable) {
             $this->newParticipantTable($iSurveyId);
         }
