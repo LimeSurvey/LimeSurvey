@@ -436,6 +436,7 @@ class ResponsesController extends LSBaseController
             // Basic data for the view
             $aData = $this->getData($surveyId);
             $aData['surveyid'] = $surveyId;
+            $aData['survey'] = Survey::model()->findByPk($surveyId);
             $aData['sidemenu']['state'] = false;
             $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin');
             $aData['hasUpload'] = hasFileUploadQuestion($surveyId);
@@ -541,6 +542,7 @@ class ResponsesController extends LSBaseController
                 'num_total_answers'     => $aData['num_total_answers'],
                 // response table data
                 'surveyid' => $aData['surveyid'],
+                'survey' => $aData['survey'],
                 'dateformatdetails' => $aData['dateformatdetails'],
                 'model' => $aData['model'],
                 'bHaveToken' => $aData['bHaveToken'],

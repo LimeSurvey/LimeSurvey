@@ -138,6 +138,28 @@ $googleAnalyticsStyleOptions = array(
 
         <div class="col-12 col-lg-6">
 
+            <!-- Crypt method -->
+            <?php
+            $optionsCryptMethod = array(
+                'B' => gT('Basic', 'unescaped'),
+                'H' => gT('Hardened', 'unescaped'),
+            );
+            if ($bShowInherited) {
+                $optionsCryptMethod['I'] = $oSurveyOptions->crypt_method . " ᴵ";
+            }
+            ?>
+            <div class="ex-form-group mb-3">
+                <label class="form-label" for='crypt_method'><?php eT("Crypt method:"); ?></label>
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'crypt_method',
+                        'checkedOption' => $oSurvey->crypt_method,
+                        'selectOptions' => $optionsCryptMethod,
+                    ]); ?>
+                </div>
+                <div class="form-text"><?php eT("Basic encryption allows filtering and searching in browse responses, as well as statistics generation. Hardened encryption uses stronger cryptographic methods but disables all statistics and filtering features."); ?></div>
+            </div>
+
             <!-- Enable assessment mode -->
             <div class="ex-form-group mb-3">
                 <label class=" form-label" for='assessments'><?php eT("Enable assessment mode:"); ?></label>

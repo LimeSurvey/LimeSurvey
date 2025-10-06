@@ -78,6 +78,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $googleanalyticsstyle Google Analytics style: (0: off; 1:Default; 2:Survey-SID/Group)
  * @property string $googleanalyticsapikey Google Analytics Tracking ID
  * @property string $tokenencryptionoptions Token encryption options
+ * @property string $crypt_method Crypt method: I : inherit, B : Basic (allow filter and search), H : Hardened (better crypt method; no filter, no search) see mantis issue #19645
  *
  * @property Permission[] $permissions
  * @property SurveyLanguageSetting[] $languagesettings
@@ -541,6 +542,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('showgroupinfo', 'in', 'range' => array('B', 'N', 'D', 'X', 'I'), 'allowEmpty' => true),
             array('showqnumcode', 'in', 'range' => array('B', 'N', 'C', 'X', 'I'), 'allowEmpty' => true),
             array('format', 'in', 'range' => array('G', 'S', 'A', 'I'), 'allowEmpty' => true),
+            array('crypt_method', 'in', 'range' => array('I', 'B', 'H'), 'allowEmpty' => true),
             array('googleanalyticsstyle', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '3', 'allowEmpty' => true),
             array('autonumber_start', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('tokenlength', 'default', 'value' => 15),
