@@ -385,7 +385,6 @@ class SurveyAdministrationController extends LSBaseController
         $survey->setToInherit();
 
         App()->getClientScript()->registerPackage('jquery-json');
-        App()->getClientScript()->registerPackage('bootstrap-switch');
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin.htmleditor');
 
@@ -2058,7 +2057,6 @@ class SurveyAdministrationController extends LSBaseController
 
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerPackage('jquery-json');
-        App()->getClientScript()->registerPackage('bootstrap-switch');
 
         // override survey settings if global settings exist
         $templateData['showqnumcode']   = getGlobalSetting('showqnumcode') !== 'choose' ? getGlobalSetting('showqnumcode') : $survey->showqnumcode;
