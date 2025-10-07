@@ -76,7 +76,7 @@ class DailyActivityStatistics implements StatisticsChartInterface
     private function fetchCounts(int $surveyId, DateTime $startDate): array
     {
         $command = Yii::app()->db->createCommand()
-            ->select(['response_date' => 'DATE(submitdate)', 'responses' => 'COUNT(id)'])
+            ->select(['DATE(submitdate) as response_date', 'COUNT(id) as responses'])
             ->from("{{survey_$surveyId}}")
             ->where('submitdate IS NOT NULL AND submitdate >= :startDate', [':startDate' => $startDate->format('Y-m-d 00:00:00')])
             ->group('DATE(submitdate)')
