@@ -43,15 +43,17 @@ class CopyQuestion
      *                          ['copyAnswerOptions']
      *                          ['copyDefaultAnswers']
      *                          ['copySettings'] --> generalSettings and advancedSettings
+     * @param int|null $surveyId The id of the survey to which the new question should be added. If null, it will be added to the current survey.
      *
      * @return boolean True if new copied question could be saved, false otherwise
      */
-    public function copyQuestion($copyOptions)
+    public function copyQuestion($copyOptions, $surveyId=null)
     {
         $copySuccessful = $this->createNewCopiedQuestion(
             $this->copyQuestionValues->getQuestionCode(),
             $this->copyQuestionValues->getQuestionGroupId(),
-            $this->copyQuestionValues->getQuestiontoCopy()
+            $this->copyQuestionValues->getQuestiontoCopy(),
+            $surveyId
         );
         if ($copySuccessful) {
             //copy question languages
@@ -87,10 +89,11 @@ class CopyQuestion
      * @param string $questionCode
      * @param int $groupId
      * @param \Question $questionToCopy the question that should be copied
+     * @param int $surveyId null if copied to same survey
      *
      * @return bool true if question could be saved, false otherwise
      */
-    public function createNewCopiedQuestion($questionCode, $groupId, $questionToCopy)
+    public function createNewCopiedQuestion($questionCode, $groupId, $questionToCopy, $surveyId = null)
     {
         $this->newQuestion = new \Question();
         // We need to use setAttributes here with $safeOnly=false to avoid issue #18323.
@@ -102,6 +105,7 @@ class CopyQuestion
         $this->newQuestion->gid = $groupId;
         $this->newQuestion->question_order = $this->copyQuestionValues->getQuestionPositionInGroup();
         $this->newQuestion->qid = null;
+        $this->newQuestion->sid = $surveyId;
 
         return $this->newQuestion->save();
     }

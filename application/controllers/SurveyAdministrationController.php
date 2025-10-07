@@ -2260,33 +2260,17 @@ class SurveyAdministrationController extends LSBaseController
             $newSurveyId,
         );
         $copyResults = $copySurveyService->copy();
+        $copiedSurvey = $copyResults->getCopiedSurvey();
 
         $aData = [];
-        //texts for the overview
-        $aData['sHeader'] = gT("Copy survey");
-        $aData['sSummaryHeader'] = gT("Survey copy summary");
-        $aData['textCompleted'] = gT("Copy of survey is completed.");
+        $aData['copyResults'] = $copyResults;
 
-        $aData['bFailed'] = false;
-        // If the import failed, set the status and error message in order to keep consistency with other errors
-        if (!empty($copyResults['error'])) {
-            $aData['sErrorMessage'] = $copyResults['error'];
-            $aData['bFailed'] = true;
-        }
-
-        if (!$aData['bFailed'] && isset($copyResults)) {
-            $aData['aImportResults'] = $copyResults;
-            if (isset($copyResults['newsid'])) {
-                // Set link pointing to survey administration overview. This link will be updated if the survey has groups
-                $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $copyResults['newsid']]);
-                $aData['sLinkApplyThemeOptions'] = 'surveyAdministration/applythemeoptions/surveyid/' . $copyResults['newsid'];
-            }
-        }
-        if (!empty($copyResults['newsid'])) {
-            $oSurvey = Survey::model()->findByPk($copyResults['newsid']);
-            $questionGroupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copyResults['newsid']]);
-
-            $this->resetExpressionManager($oSurvey, $questionGroupList);
+        if ($copiedSurvey !== null) {
+            $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $copiedSurvey->sid]);
+            //todo another option after copy?!? Häää?
+            $aData['sLinkApplyThemeOptions'] = 'surveyAdministration/applythemeoptions/surveyid/' . $copiedSurvey->sid;
+            $questionGroupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
+           // $this->resetExpressionManager($copiedSurvey, $questionGroupList);
 
             // Make the link point to the first group/question if available
             if (!empty($questionGroupList)) {
@@ -2297,7 +2281,7 @@ class SurveyAdministrationController extends LSBaseController
                 );
 
                 $aData['sLink'] = $this->getSurveyAndSidemenueDirectionURL(
-                    $copyResults['newsid'],
+                    $copiedSurvey->sid,
                     $oFirstGroup->gid,
                     !empty($oFirstQuestion) ? $oFirstQuestion->qid : null,
                     'structure'
@@ -2305,17 +2289,17 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
 
-        if ((App()->getConfig("editorEnabled")) && isset($copyResults['newsid'])) {
+        if ((App()->getConfig("editorEnabled")) && ($copiedSurvey !== null)) {
             if (!isset($oSurvey)) {
-                $oSurvey = Survey::model()->findByPk($copyResults['newsid']);
+                $oSurvey = Survey::model()->findByPk($copiedSurvey->sid);
             }
             if ($oSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
-                $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $copyResults['newsid']]);
+                $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $copiedSurvey->sid]);
             }
         }
         $this->aData = $aData;
 
-        $this->render('importSurvey_view', $this->aData);
+        $this->render('copySurveyResult_view', $this->aData);
     }
 
     /**
