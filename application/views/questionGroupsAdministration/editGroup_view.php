@@ -2,7 +2,7 @@
 echo PrepareEditorScript(false, $this);
 $count = 0;
 ?>
-<div id='edit-group' class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div id='edit-group' class='side-body'>
     <div class="row">
         <div class="col-12 content-right">
             <div class="pagetitle h1"><?php eT("Edit Group"); ?></div>

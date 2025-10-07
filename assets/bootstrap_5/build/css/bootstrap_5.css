@@ -626,8 +626,8 @@ progress {
 .container-md,
 .container-sm {
   width: 100%;
-  padding-right: var(--bs-gutter-x, 12px);
-  padding-left: var(--bs-gutter-x, 12px);
+  padding-right: var(--bs-gutter-x, 10px);
+  padding-left: var(--bs-gutter-x, 10px);
   margin-right: auto;
   margin-left: auto;
 }
@@ -658,7 +658,7 @@ progress {
   }
 }
 .row {
-  --bs-gutter-x: 24px;
+  --bs-gutter-x: 20px;
   --bs-gutter-y: 0;
   display: flex;
   flex-wrap: wrap;
@@ -4454,7 +4454,7 @@ textarea.form-control-lg {
 }
 
 .card-group > .card {
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 @media (min-width: 576px) {
   .card-group {
@@ -5291,7 +5291,7 @@ textarea.form-control-lg {
   pointer-events: none;
 }
 .toast-container > :not(:last-child) {
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .toast-header {
@@ -10922,11 +10922,4 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
-}
-html {
-  font-size: 14px;
-}
-
-a {
-  text-decoration: none;
 }

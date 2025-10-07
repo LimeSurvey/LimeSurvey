@@ -5,6 +5,7 @@
  * @var $sitename
  * @var $activesurveyscount
  * @var $dataForConfigMenu
+ * @var array $extraMenus   //menu items fetched from plugins
  */
 ?>
 
@@ -44,7 +45,7 @@
             </ul>
         </div>
 
-        <div class="collapse navbar-collapse justify-content-center">
+        <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <!-- Maintenance mode -->
                 <?php $sMaintenanceMode = getGlobalSetting('maintenancemode');
@@ -60,7 +61,7 @@
                 <!-- Prepended extra menus from plugins -->
                 <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => true, 'prependedMenu' => true]); ?>
 
-                <!-- create survey -->
+                <!--
                 <li class="nav-item">
                     <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" class="nav-link">
                         <button type="button" class="btn btn-info btn-create" data-bs-toggle="tooltip"
@@ -69,6 +70,8 @@
                         </button>
                     </a>
                 </li>
+                -->
+
                 <!-- Surveys menus -->
 
                 <li
@@ -111,7 +114,7 @@
                         <?= Yii::app()->session['user']; ?>
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu dropdown-menu-end" role="menu">
-                        <li>
+                        <li id="admin-menu-item-account">
                             <a class="dropdown-item" href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>">
                                 <?php eT("Account"); ?>
                             </a>

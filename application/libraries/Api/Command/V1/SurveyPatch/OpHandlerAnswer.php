@@ -2,45 +2,49 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\Transformer\{
-    Input\TransformerInputAnswer,
-    Input\TransformerInputAnswerL10ns,
-};
+use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
-    OpHandlerQuestionTrait,
     OpHandlerSurveyTrait,
+    OpHandlerQuestionTrait,
+    OpHandlerExceptionTrait,
+    OpHandlerValidationTrait
 };
-use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
-use LimeSurvey\ObjectPatch\{Op\OpInterface,
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
     OpType\OpTypeCreate,
     OpHandler\OpHandlerException,
     OpHandler\OpHandlerInterface,
     OpType\OpTypeUpdate
 };
-use LimeSurvey\Models\Services\QuestionAggregateService\AnswersService;
+use LimeSurvey\Models\Services\{
+    QuestionAggregateService,
+    QuestionAggregateService\QuestionService,
+    QuestionAggregateService\AnswersService
+};
 
 class OpHandlerAnswer implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
     use OpHandlerQuestionTrait;
+    use OpHandlerValidationTrait;
 
     protected string $entity;
-    protected TransformerInputAnswer $transformerAnswer;
-    protected TransformerInputAnswerL10ns $transformerAnswerL10n;
+    protected TransformerInputAnswer $transformer;
     protected AnswersService $answersService;
     protected QuestionService $questionService;
+    protected QuestionAggregateService $questionAggregateService;
 
     public function __construct(
-        TransformerInputAnswer $transformerAnswer,
-        TransformerInputAnswerL10ns $transformerAnswerL10n,
+        TransformerInputAnswer $transformer,
         AnswersService $answersService,
-        QuestionService $questionService
+        QuestionService $questionService,
+        QuestionAggregateService $questionAggregateService
     ) {
         $this->entity = 'answer';
-        $this->transformerAnswer = $transformerAnswer;
-        $this->transformerAnswerL10n = $transformerAnswerL10n;
+        $this->transformer = $transformer;
         $this->answersService = $answersService;
         $this->questionService = $questionService;
+        $this->questionAggregateService = $questionAggregateService;
     }
 
     public function canHandle(OpInterface $op): bool
@@ -60,10 +64,6 @@ class OpHandlerAnswer implements OpHandlerInterface
      * Attention: Currently all answers not provided in the patch
      *            will be deleted by the service. Doesn't matter if
      *            create or update was chosen
-     * You could also mix updated and newly created answers in one patch.
-     * The difference is that new created answers need "tempId"
-     * and updated answers need the "aid" provided.
-     * The OpHandler doesn't care if you choose create or update as "op"!!!
      *
      * Example for "update":
      * {
@@ -159,44 +159,61 @@ class OpHandlerAnswer implements OpHandlerInterface
      * @param OpInterface $op
      * @return array
      * @throws OpHandlerException
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
      * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
      * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
      * @throws \LimeSurvey\Models\Services\Exception\PersistErrorException
      */
     public function handle(OpInterface $op): array
     {
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $this->questionAggregateService->checkUpdatePermission($surveyId);
         $question = $this->questionService->getQuestionBySidAndQid(
-            $this->getSurveyIdFromContext($op),
-            $op->getEntityId()
+            $surveyId,
+            (int)$op->getEntityId()
         );
-        $preparedData = $this->prepareAnswers(
-            $op,
+
+        $data = $this->transformer->transformAll(
             $op->getProps(),
-            $this->transformerAnswer,
-            $this->transformerAnswerL10n,
-            ['answer', 'answerL10n']
+            ['operation' => $op->getType()->getId()]
         );
         $this->answersService->save(
             $question,
-            $preparedData
+            $data
         );
 
-        return $this->getSubQuestionNewIdMapping(
-            $question,
-            $preparedData,
-            true
-        );
+        return [
+            'tempIdMapping' => $this->getSubQuestionNewIdMapping(
+                $question,
+                $data,
+                true
+            )
+        ];
     }
 
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        return ((int)$op->getEntityId()) > 0;
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateCollectionIndex($op, $validationData, false);
+        if (empty($validationData)) {
+            $validationData = $this->transformer->validateAll(
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
+            );
+            $validationData = $this->validateEntityId(
+                $op,
+                !is_array($validationData) ? [] : $validationData
+            );
+        }
+
+        return $this->getValidationReturn(
+            gT('Could not save answer option'),
+            $validationData,
+            $op
+        );
     }
 }

@@ -24,8 +24,8 @@ class SettingsWidget extends CWidget
     public $settings = array();
 
     public $title;
-    public $labelWidth=6;
-    public $controlWidth=6;
+    public $labelWidth = 6;
+    public $controlWidth = 6;
     /** @var string - Raw HTML to output last */
     public $additionalHtml = "";
 
@@ -100,27 +100,27 @@ class SettingsWidget extends CWidget
         if (is_string($metaData)) {
             $label = $metaData;
             $metaData = array(
-                'htmlOptions'=>array(),
+                'htmlOptions' => array(),
             );
         }
 
-        $metaData['class'][]='btn';
+        $metaData['class'][] = 'btn';
         $htmlOptions = $this->htmlOptions($metaData);
 
         if (isset($metaData['type']) && $metaData['type'] == 'link') {
-            if(!empty($metaData['label'])) {
+            if (!empty($metaData['label'])) {
                 $label = $metaData['label'];
                 unset($metaData['label']);
             }
             // This allow cancel without js
             return CHtml::link($label, $metaData['href'], $htmlOptions);
         } elseif (isset($metaData['type'])) {
-            $htmlOptions['type']=$metaData['type'];
+            $htmlOptions['type'] = $metaData['type'];
             if (!empty($metaData['name']) && is_string($metaData['name'])) {
-                $htmlOptions['name']=$metaData['name'];
+                $htmlOptions['name'] = $metaData['name'];
             }
-            if(!empty($metaData['label'])) {
-                if(empty($metaData['name'])) {
+            if (!empty($metaData['label'])) {
+                if (empty($metaData['name'])) {
                     $htmlOptions['name'] = $label;
                 }
                 $label = $metaData['label'];
@@ -135,15 +135,15 @@ class SettingsWidget extends CWidget
     protected function renderButtons()
     {
         if (!empty($this->buttons)) {
-            $aHtmlButtons=array();
+            $aHtmlButtons = array();
             foreach ($this->buttons as $label => $htmlOptions) {
                 if (is_string($htmlOptions)) {
                     $label = $htmlOptions;
-                    $htmlOptions=array(
-                        'htmlOptions'=>array()
+                    $htmlOptions = array(
+                        'htmlOptions' => array()
                     );
                 }
-                $aHtmlButtons[]= $this->renderButton($label, $htmlOptions);
+                $aHtmlButtons[] = $this->renderButton($label, $htmlOptions);
             }
             echo CHtml::tag(
                 'div',
@@ -158,7 +158,7 @@ class SettingsWidget extends CWidget
     /**
      * @param string $name
      * @param array $metaData
-     * @param ? $form
+     * @param array $form
      * @param boolean $return
      * @param string $wrapper
      * @return string|void
@@ -171,12 +171,12 @@ class SettingsWidget extends CWidget
             throw new CHttpException(405, 'invalid settings type');
         }
         $wrapperCss = '';
-        if ($metaData['type'] === 'radio' || 'checkbox') {
+        if ($metaData['type'] === 'radio') {
             $wrapperCss = "align-items-center";
         }
 
         // Fix $metaData
-        $metaData=$this->fixMetaData($name, $metaData);
+        $metaData = $this->fixMetaData($name, $metaData);
         // Fix $name
         if (isset($this->prefix)) {
             $name = "{$this->prefix}[$name]";
@@ -198,7 +198,7 @@ class SettingsWidget extends CWidget
         $content .= $this->renderHelp($name, $metaData);
         $content .= CHtml::closeTag('div');
 
-        $result=CHtml::tag(
+        $result = CHtml::tag(
             $wrapper,
             [
                 'class'     => "mb-3 row setting setting-{$metaData['type']} $wrapperCss",
@@ -258,23 +258,23 @@ class SettingsWidget extends CWidget
             'labelOptions' => array( // html option for the form-label part (not the label, but the wrapper)
                 'class' => "default"
             ),
-            'help'=> null,
-            'controlOptions'=> array(// html option for the control-option part (wrapper of input(s))
+            'help' => null,
+            'controlOptions' => array(// html option for the control-option part (wrapper of input(s))
                 'class' => "default"
             ),
-            'localized'=>false,
+            'localized' => false,
         );
         $metaData = array_merge($defaults, $metaData);
 
         // col-md-6/col-md-6 used in survey settings, sm-4/sm-6 in global : use sm-4/sm-6 for plugins ?
-        $metaData['labelOptions']['class'].=" col-form-label text-end col-md-{$this->labelWidth}";
+        $metaData['labelOptions']['class'] .= " col-form-label text-end col-md-{$this->labelWidth}";
         // Set the witdth of control-option according to existence of label
         if (!isset($metaData['label'])) {
-            $metaData['controlOptions']['class'].=" col-12";
+            $metaData['controlOptions']['class'] .= " col-12";
         } else {
-            $metaData['controlOptions']['class'].=" col-md-{$this->controlWidth}";
+            $metaData['controlOptions']['class'] .= " col-md-{$this->controlWidth}";
         }
-        $metaData['controlOptions']['class'].=" controls";
+        $metaData['controlOptions']['class'] .= " controls";
 
         if (is_string($metaData['class'])) {
             $metaData['class'] = array($metaData['class']);
@@ -282,9 +282,11 @@ class SettingsWidget extends CWidget
         // Handle localization.
         if ($metaData['localized']) {
             $name = "{$name}[{$metaData['language']}]";
-            if (isset($metaData['current'])
+            if (
+                isset($metaData['current'])
                 && is_array($metaData['current'])
-                && isset($metaData['current'][$metaData['language']])) {
+                && isset($metaData['current'][$metaData['language']])
+            ) {
                 $metaData['current'] = $metaData['current'][$metaData['language']];
             } else {
                 unset($metaData['current']);
@@ -359,7 +361,7 @@ class SettingsWidget extends CWidget
 
     public function renderCheckbox($name, array $metaData, $form = null)
     {
-        $htmlOptions = $this->htmlOptions($metaData, $form, array('uncheckValue'=>false));
+        $htmlOptions = $this->htmlOptions($metaData, $form, array('uncheckValue' => false));
         $htmlOptions['class'] = 'form-check-input';
         $value = isset($metaData['current']) ? (bool) $metaData['current'] : false;
         return CHtml::checkBox($name, $value, $htmlOptions);
@@ -369,7 +371,7 @@ class SettingsWidget extends CWidget
     {
         $metaData['class'][] = 'form-control';
         // Step can be replaced by plugin developer.
-        $htmlOptions = $this->htmlOptions($metaData, $form, array('step'=>'any'));
+        $htmlOptions = $this->htmlOptions($metaData, $form, array('step' => 'any'));
         $value = $metaData['current'] ?? '';
         return CHtml::numberField($name, $value, $htmlOptions);
     }
@@ -379,14 +381,16 @@ class SettingsWidget extends CWidget
         $metaData['class'][] = 'form-control';
         $value = $metaData['current'] ?? '';
         $metaData['class'][] = 'htmleditor';
-        $htmlOptions = $this->htmlOptions($metaData,$form);
+        $htmlOptions = $this->htmlOptions($metaData, $form);
         $editorOptions = array_merge(
             array(
                 'html' => true,
             ),
             $metaData['editorOptions'] ?? array()
         );
-        return CHtml::tag('div', array("style"=>'height:auto;width:100%','class'=>'well'),
+        return CHtml::tag(
+            'div',
+            array("style" => 'height:auto;width:100%','class' => 'well'),
             $this->widget('yiiwheels.widgets.html5editor.WhHtml5Editor', array(
                 'name' => $name,
                 'value' => $value,
@@ -421,7 +425,7 @@ class SettingsWidget extends CWidget
         if (is_array($value)) {
             throw new CException('wrong type' . $name);
         }
-        $htmlOptions = $this->htmlOptions($metaData, $form, array('step'=> 1,'pattern' => '\d+'));
+        $htmlOptions = $this->htmlOptions($metaData, $form, array('step' => 1,'pattern' => '\d+'));
         return CHtml::numberField($name, $value, $htmlOptions);
     }
 
@@ -461,7 +465,7 @@ class SettingsWidget extends CWidget
      */
     public function renderLogo($name, array $metaData, $form = null)
     {
-        $alt=$metaData['alt'] ?? '';
+        $alt = $metaData['alt'] ?? '';
         $htmlOptions = $this->htmlOptions($metaData);
         return CHtml::image($metaData['path'], $alt, $htmlOptions);
     }
@@ -469,8 +473,8 @@ class SettingsWidget extends CWidget
     public function renderRadio($name, array $metaData, $form = null)
     {
         $value = $metaData['current'] ?? $metaData['default'] ?? null;
-        $htmlOptions = $this->htmlOptions($metaData,$form);
-        return CHtml::radioButtonList($name, $value, $metaData['options'],$htmlOptions);
+        $htmlOptions = $this->htmlOptions($metaData, $form);
+        return CHtml::radioButtonList($name, $value, $metaData['options'], $htmlOptions);
     }
 
     public function renderRelevance($name, array $metaData, $form = null)
@@ -488,10 +492,10 @@ class SettingsWidget extends CWidget
         $value = $metaData['current'] ?? $metaData['default'] ?? null;
         $htmlOptions = $this->htmlOptions($metaData, $form);
         $htmlOptions['class'] .= 'form-select ';
-        $select2Options=array_merge(
+        $select2Options = array_merge(
             [
                 'minimumResultsForSearch' => 8,
-                'dropdownAutoWidth'=> true,
+                'dropdownAutoWidth' => true,
                 'width' => "js: function(){ return Math.max.apply(null, $(this.element).find('option').map(function() { return $(this).text().length; }))+'em' }",
             ],
             $metaData['selectOptions'] ?? []
@@ -501,12 +505,12 @@ class SettingsWidget extends CWidget
             'name' => $name,
             'value' => $value,
             'pluginOptions' => $select2Options,
-            'htmlOptions'=>$htmlOptions,
+            'htmlOptions' => $htmlOptions,
         );
-        $properties['events']=$metaData['events'] ?? array();
+        $properties['events'] = $metaData['events'] ?? array();
         // allow to submit the form when this element changes
         if (isset($metaData['submitonchange']) && $metaData['submitonchange']) {
-            $properties['events']['change']='js: function(e) { this.form.submit();}';
+            $properties['events']['change'] = 'js: function(e) { this.form.submit();}';
         }
 
         // Remove class 'form-control' because of double styling
@@ -514,7 +518,6 @@ class SettingsWidget extends CWidget
         $html = App()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', $properties, true);
         $html = str_replace('form-control', '', (string) $html);
         return $html;
-
     }
 
     /**
@@ -524,7 +527,7 @@ class SettingsWidget extends CWidget
     {
         $metaData['class'][] = 'form-control';
         $value = $metaData['current'] ?? '';
-        $htmlOptions = $this->htmlOptions($metaData, $form, array('size'=>50));
+        $htmlOptions = $this->htmlOptions($metaData, $form, array('size' => 50));
         return CHtml::textField($name, $value, $htmlOptions);
     }
 
@@ -532,7 +535,7 @@ class SettingsWidget extends CWidget
     {
         $metaData['class'][] = 'form-control';
         $value = $metaData['current'] ?? '';
-        $htmlOptions = $this->htmlOptions($metaData, $form, array('size'=>50));
+        $htmlOptions = $this->htmlOptions($metaData, $form, array('size' => 50));
         return CHtml::emailField($name, $value, $htmlOptions);
     }
 
@@ -548,15 +551,15 @@ class SettingsWidget extends CWidget
     {
         $metaData['class'][] = 'form-control';
         $value = $metaData['current'] ?? '';
-        $htmlOptions = $this->htmlOptions($metaData, $form, array('autocomplete'=>'off','size'=>50));
+        $htmlOptions = $this->htmlOptions($metaData, $form, array('autocomplete' => 'off','size' => 50));
         return CHtml::passwordField($name, $value, $htmlOptions);
     }
 
     public function renderLink($name, array $metaData, $form = null)
     {
         $metaData['class'][] = 'btn btn-link';
-        $metaData['text']=$metaData['text'] ?? $metaData['label'];
-        $htmlOptions = $this->htmlOptions($metaData,$form,array('id' => $name));
+        $metaData['text'] = $metaData['text'] ?? $metaData['label'];
+        $htmlOptions = $this->htmlOptions($metaData, $form, array('id' => $name));
         return CHtml::link($metaData['text'], $metaData['link'], $htmlOptions);
     }
 
@@ -572,7 +575,7 @@ class SettingsWidget extends CWidget
             $headers .= CHtml::tag('th', array(), $itemMetaData['label']);
             //$itemMetaData['title']=$itemMetaData['label'];
             unset($itemMetaData['label']);
-            $itemMetaData['controlOptions']['class']=$itemMetaData['controlOptions']['class'] ?? 'default';
+            $itemMetaData['controlOptions']['class'] = $itemMetaData['controlOptions']['class'] ?? 'default';
             //$cells .= CHtml::tag('td', array(), $this->renderSetting($itemName . '[]', $itemMetaData, $form, true,false));
             // TODO $itemMetaData['htmlOtions']['id']=$itemName.$key or something like this
             $cells .= $this->renderSetting($itemName . '[]', $itemMetaData, $form, true, 'td');
@@ -593,7 +596,7 @@ class SettingsWidget extends CWidget
                 true
             )
         );
-        $out .= CHtml::openTag('table', array('class'=>'settings activecell'));
+        $out .= CHtml::openTag('table', array('class' => 'settings activecell'));
         // Create header row.
         $out .= CHtml::openTag('thead');
         $out .= CHtml::openTag('tr');
@@ -644,8 +647,18 @@ class SettingsWidget extends CWidget
                     'showClear' => true,
                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                 )
-            ), true
-        );
+            ), true);
+    }
+
+    public function renderSeparator($name, array $metaData, $form = null)
+    {
+        $value = CHtml::tag('hr');
+        $title = $metaData['title'] ?? '';
+        if (!empty($title)) {
+            $value .= CHtml::tag('h1', ['class' => 'col-md-4 text-end'], $title);
+        }
+        $htmlOptions = $this->htmlOptions($metaData);
+        return CHtml::tag('div', $htmlOptions, $value);
     }
 
     /* Return htmlOptions for an input od seting
@@ -658,9 +671,9 @@ class SettingsWidget extends CWidget
     public function htmlOptions(array $metaData, $form = null, array $aDefault = array(), array $aForced = array())
     {
         if (isset($metaData['htmlOptions']) && is_array($metaData['htmlOptions'])) {
-            $htmlOptions=$metaData['htmlOptions'];
+            $htmlOptions = $metaData['htmlOptions'];
         } else {
-            $htmlOptions=array();
+            $htmlOptions = array();
         }
         // If metadata have a class, replace (?) to actual class
         if (!empty($metaData['class']) && is_array($metaData['class'])) {
@@ -668,12 +681,12 @@ class SettingsWidget extends CWidget
         }
         // If metadata have style, replace actual style
         if (!empty($metaData['style']) && is_string($metaData['style'])) {
-            $htmlOptions['style']=$metaData['style'];
+            $htmlOptions['style'] = $metaData['style'];
         }
         if (isset($metaData['readOnly'])) {
-            $metaData['htmlOptions']["readonly"]= $metaData['readOnly'];
+            $metaData['htmlOptions']["readonly"] = $metaData['readOnly'];
         }
 
-        return array_merge(array('form'=>$form), $aDefault, $htmlOptions, $aForced);
+        return array_merge(array('form' => $form), $aDefault, $htmlOptions, $aForced);
     }
 }

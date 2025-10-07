@@ -17970,7 +17970,7 @@
 	    return window.event ? window.event.keyCode : e ? e.which : null;
 	  },
 	  goodchars: (e, goods) => {
-	    const key = getkey(e);
+	    const key = globalWindowMethods.getkey(e);
 	    if (key == null) return true;
 
 	    // get character
@@ -19196,6 +19196,8 @@
 	      if ($(el).data('form-id') == 'addnewsurvey') {
 	        const loadingSpinner = '<i class="ri-settings-5-fill remix-spin lsLoadingStateIndicator"></i>';
 	        $(el).prop('disabled', true).append(loadingSpinner);
+	      } else if (el.id === 'save-button' || el.id === 'save-form-button' || el.id === 'save-and-close-button' || el.id === 'save-and-close-button-create-question') {
+	        $('#ls-loading').show();
 	      }
 	    },
 	    stopDisplayLoadingState = () => {
@@ -19321,8 +19323,8 @@
 	            if ($form.data('isvuecomponent') == true) {
 	              LS.EventBus.$emit('componentFormSubmit', button);
 	            } else {
-	              $form.find('[type="submit"]').first().trigger('click');
 	              displayLoadingState(this);
+	              $form.find('[type="submit"]').first().trigger('click');
 	            }
 	          },
 	          on: 'click'
@@ -21290,27 +21292,11 @@
 	}
 
 	/**
-	 * Welcome page card animations
+	 * Welcome page animations
 	 * NB: Bootstrap 5 replaced panels with cards
 	 */
 	function panelsAnimation() {
 	  setTimeout(() => {
-	    adminCoreLSConsole.log('Triggering card animation');
-	    /**
-	     * Card shown one by one
-	     */
-	    document.querySelectorAll(".card").forEach(function (e, i) {
-	      setTimeout(() => {
-	        e.animate({
-	          top: '0px',
-	          opacity: 1
-	        }, {
-	          duration: 200,
-	          fill: 'forwards'
-	        });
-	      }, i * 200);
-	    });
-
 	    /**
 	     * Rotate last survey/question
 	     */

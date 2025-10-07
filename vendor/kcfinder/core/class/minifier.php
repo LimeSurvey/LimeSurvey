@@ -36,7 +36,7 @@ class minifier {
 
     public function minify($cacheFile=null, $dir=null) {
         if ($dir === null)
-            $dir = dirname($_SERVER['SCRIPT_FILENAME']);
+            $dir = dirname((string) $_SERVER['SCRIPT_FILENAME']);
 
         // MODIFICATION TIME FILES
         $mtFiles = array(
@@ -83,8 +83,8 @@ class minifier {
         $source = "";
         foreach ($files as $file) {
 
-            if (strlen($this->minCmd) && (substr($file, 4, 1) != "_")) {
-                $cmd = str_replace("{file}", $file, $this->minCmd);
+            if (strlen((string) $this->minCmd) && (substr((string) $file, 4, 1) != "_")) {
+                $cmd = str_replace("{file}", $file, (string) $this->minCmd);
                 $source .= `$cmd`;
 
             } else

@@ -196,7 +196,7 @@ class Participant extends LSActiveRecord
             'lastname' => gT('Last name') . $this->setEncryptedAttributeLabel(0, 'Participant', 'lastname'),
             'email' => gT('Email address') . $this->setEncryptedAttributeLabel(0, 'Participant', 'email'),
             'language' => gT('Language') . $this->setEncryptedAttributeLabel(0, 'Participant', 'language'),
-            'blacklisted' => gT('Blacklisted') . $this->setEncryptedAttributeLabel(0, 'Participant', 'blacklisted'),
+            'blacklisted' => gT('Blocklisted') . $this->setEncryptedAttributeLabel(0, 'Participant', 'blacklisted'),
             'owner_uid' => gT('Owner ID') . $this->setEncryptedAttributeLabel(0, 'Participant', 'owner_uid'),
             'surveyid' => gT('Active survey ID') . $this->setEncryptedAttributeLabel(0, 'Participant', 'surveyid'),
             'created' => gT('Created on') . $this->setEncryptedAttributeLabel(0, 'Participant', 'created')
@@ -327,13 +327,13 @@ class Participant extends LSActiveRecord
                 'htmlOptions'       => ['class' => 'ls-sticky-column'],
             ],
             [
-                "name" => 'lastname'
+                "name" => 'lastname',
             ],
             [
-                "name" => 'firstname'
+                "name" => 'firstname',
             ],
             [
-                "name" => 'email'
+                "name" => 'email',
             ],
             [
                 "name"   => 'language',
@@ -417,6 +417,15 @@ class Participant extends LSActiveRecord
      */
     public function search()
     {
+        $encryptedAttributes = $this->getParticipantsEncryptionOptions();
+        $encryptedAttributesColums = isset($encryptedAttributes) && isset($encryptedAttributes['columns'])
+            ? $encryptedAttributes['columns']
+            : [];
+        $encryptedAttributesColums = array_filter($encryptedAttributesColums, function ($column) {
+            return $column === 'Y';
+        });
+        $encryptedAttributesColums = array_keys($encryptedAttributesColums);
+
         $sort = new CSort();
         $sort->defaultOrder = 'lastname';
         $sortAttributes = array(
@@ -455,8 +464,17 @@ class Participant extends LSActiveRecord
         );
         $this->decryptEncryptAttributes('encrypt');
 
-        $criteria = new CDbCriteria();
-        $criteria->join = 'LEFT JOIN {{users}} as owner on uid=owner_uid LEFT JOIN {{participant_shares}} AS shares ON t.participant_id = shares.participant_id AND (shares.share_uid = ' . Yii::app()->user->id . ' OR shares.share_uid = -1)';
+        if (!empty($encryptedAttributesColums)) {
+            foreach ($encryptedAttributesColums as $encryptedColum) {
+                if (isset($sortAttributes[$encryptedColum])) {
+                    unset($sortAttributes[$encryptedColum]);
+                }
+            }
+        }
+
+        $criteria = new LSDbCriteria();
+        $criteria->join = 'LEFT JOIN {{users}} as owner on uid=owner_uid ' .
+            'LEFT JOIN {{participant_shares}} AS shares ON t.participant_id = shares.participant_id AND (shares.share_uid = ' . Yii::app()->user->id . ' OR shares.share_uid = -1) ';
         $criteria->compare('t.participant_id', $this->participant_id, true, 'AND', true);
         $criteria->compare('t.firstname', $this->firstname, true, 'AND', true);
         $criteria->compare('t.lastname', $this->lastname, true, 'AND', true);
@@ -483,27 +501,16 @@ class Participant extends LSActiveRecord
             $attributeId = (int) substr($attributeId, 3);
 
             /** @var string Param name to bind in prepared statement */
-
-            $callParticipantAttributes = Yii::app()->db->createCommand()
-                ->selectDistinct('pa.participant_id')
-                ->from('{{participant_attribute}} AS pa');
-            // NB: Binding in andWhere() is not enough since the subquery is converted to string.
-            // See: https://forum.yiiframework.com/t/show-sql-generated-from-cdbcriteria/45021
-
+            $ParticipantAttributesCriteria = new LSDbCriteria();
+            $ParticipantAttributesCriteria->select = 'pa.participant_id';
+            $ParticipantAttributesCriteria->distinct = true;
+            $ParticipantAttributesCriteria->alias = 'pa';
+            $ParticipantAttributesCriteria->compare('attribute_id', $attributeId);
             // Use "LIKE" for text-box, equal for other types
-            if ($attributeType === 'TB') {
-                $bindKey = ':attribute_id' . $attributeId;
-                $callParticipantAttributes->where("attribute_id = " . $bindKey . " AND value LIKE '%" . $value . "%'", array($bindKey => $attributeId));
-                $criteria->params[$bindKey] = $attributeId;
-            } else {
-                /** @var string Param name to bind in prepared statement */
-                $bindKey = ':value' . $attributeId;
-                $callParticipantAttributes->where("attribute_id = '" . $attributeId . "' AND value = " . $bindKey, array($bindKey => $value));
-                // NB: Binding in andWhere() is not enough since the subquery is converted to string.
-                $criteria->params[$bindKey] = $value;
-            }
-
+            $ParticipantAttributesCriteria->compare('value', $value, $attributeType === 'TB');
+            $callParticipantAttributes = ParticipantAttribute::model()->getCommandBuilder()->createFindCommand(ParticipantAttribute::model()->getTableSchema(), $ParticipantAttributesCriteria);
             $criteria->addCondition('t.participant_id IN (' . $callParticipantAttributes->getText() . ')');
+            $criteria->params = array_merge($criteria->params, $ParticipantAttributesCriteria->params);
         }
 
         $DBCountActiveSurveys = SurveyLink::model()->tableName();
@@ -894,7 +901,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * This function deletes the participant from the participants table,
+     * This function deletes the participant from the participant list,
      * references in the survey_links table (but not in matching tokens tables)
      * and then all the participants attributes.
      * @param string $rows Participants ID separated by comma
@@ -960,7 +967,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Deletes CPDB participants identified by their participant ID from survey participants tables
+     * Deletes CPDB participants identified by their participant ID from survey participant lists
      *
      * @param string $sParticipantsIDs
      *
@@ -969,7 +976,7 @@ class Participant extends LSActiveRecord
      */
     public function deleteParticipantToken($sParticipantsIDs)
     {
-        /* This function deletes the participant from the participants table,
+        /* This function deletes the participant from the participant list,
            the participant from any tokens table they're in (using the survey_links table to find them)
            and then all the participants attributes. */
         $aParticipantsIDChunks = array_chunk(explode(",", $sParticipantsIDs), 100);
@@ -1010,7 +1017,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * This function deletes the participant from the participants table,
+     * This function deletes the participant from the participant list,
      * the participant from any tokens table they're in (using the survey_links table to find them),
      * all responses in surveys they've been linked to,
      * and then all the participants attributes.
@@ -1591,7 +1598,7 @@ class Participant extends LSActiveRecord
             $aTokenAttributes[$key] = $iIDAttributeCPDB;
         }
 
-        $aTokenAttributes = serialize($aTokenAttributes);
+        $aTokenAttributes = json_encode($aTokenAttributes);
 
         Yii::app()->db
             ->createCommand()
@@ -1649,7 +1656,7 @@ class Participant extends LSActiveRecord
                 return $carry ? $carry : ($oToken->participant_id == $oParticipant->participant_id);
             }, false);
             if ($isDuplicate) {
-                //Participant already exists in survey participants table - don't copy
+                //Participant already exists in survey participant list - don't copy
                 $duplicate++;
 
                 // Here is where we can put code for overwriting the attribute data if so required
@@ -1743,7 +1750,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Copies central attributes/participants to an individual survey survey participants table
+     * Copies central attributes/participants to an individual survey survey participant list
      *
      * @param int $surveyId The survey ID
      * @param string $participantIds Array containing the participant ids of the participants we are adding
@@ -1781,7 +1788,7 @@ class Participant extends LSActiveRecord
         // TODO: Why use two variables for this?
         [$addedAttributes, $addedAttributeIds] = $this->createColumnsInTokenTable($surveyId, $newAttributes);
 
-        //Write each participant to the survey survey participants table
+        //Write each participant to the survey survey participant list
         [$successful, $duplicate, $blacklistSkipped] = $this->writeParticipantsToTokenTable(
             $surveyId,
             $participantIds,
@@ -1803,12 +1810,12 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Updates a field in the survey participants table with a value from the participant attributes table
+     * Updates a field in the survey participant list with a value from the participant attributes table
      *
      * @param int $surveyId Survey ID number
      * @param string $participantId unique key for the participant
      * @param int $participantAttributeId the unique key for the participant_attribute table
-     * @param int $tokenFieldname fieldname in the survey participants table
+     * @param int $tokenFieldname fieldname in the survey participant list
      *
      * @return bool true/false
      */
@@ -1840,12 +1847,12 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Updates or creates a field in the survey participants table with a value from the participant attributes table
+     * Updates or creates a field in the survey participant list with a value from the participant attributes table
      *
      * @param int $surveyId Survey ID number
      * @param int $participantId unique key for the participant
      * @param int $participantAttributeId the unique key for the participant_attribute table
-     * @param int $tokenFieldname fieldname in the survey participants table
+     * @param int $tokenFieldname fieldname in the survey participant list
      *
      * @return boolean|null true/false
      */
@@ -1888,7 +1895,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Copies token participants to the central participants table, and also copies
+     * Copies token participants to the central participant list, and also copies
      * token attribute values where applicable. It checks for matching entries using
      * firstname/lastname/email combination.
      *
@@ -1906,7 +1913,7 @@ class Participant extends LSActiveRecord
     public function copyToCentral($surveyid, $aAttributesToBeCreated, $aMapped, $overwriteauto = false, $overwriteman = false, $createautomap = true)
     {
         $survey = Survey::model()->findByPk($surveyid);
-        $tokenid_string = Yii::app()->session['participantid']; //List of token_id's to add to participants table
+        $tokenid_string = Yii::app()->session['participantid']; //List of token_id's to add to participant list
         $tokenids = json_decode((string) $tokenid_string, true);
         $duplicate = 0;
         $sucessfull = 0;
@@ -1919,7 +1926,7 @@ class Participant extends LSActiveRecord
         if (!empty($aAttributesToBeCreated)) {
             foreach ($aAttributesToBeCreated as $key => $value) {
                 //creating new central attribute
-                /* $key is the fieldname from the survey participants table (ie "attribute_1")
+                /* $key is the fieldname from the survey participant list (ie "attribute_1")
                  * $value is the 'friendly name' for the attribute (ie "Gender")
                  */
                 $insertnames = [
@@ -1982,7 +1989,7 @@ class Participant extends LSActiveRecord
                         }
                     }
                 } /* If there isn't an existing entry, create one! */ else {
-                    /* Create entry in participants table */
+                    /* Create entry in participant list */
                     $black = !empty($oTokenDynamic->blacklisted) ? $oTokenDynamic->blacklisted : 'N';
                     $pid = !empty($oTokenDynamic->participant_id) ? $oTokenDynamic->participant_id : $this->genUuid();
 
@@ -2001,7 +2008,7 @@ class Participant extends LSActiveRecord
                     $oParticipant->setAttributes($writearray, false);
                     $oParticipant->encryptSave();
 
-                    //Update survey participants table and insert the new UUID
+                    //Update survey participant list and insert the new UUID
                     $oTokenDynamic->participant_id = $pid;
                     $oTokenDynamic->encryptSave();
 
@@ -2295,7 +2302,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Returns the list of blacklisted participant IDs
+     * Returns the list of blocklisted participant IDs
      * @return string[]
      */
     public function getBlacklistedParticipantIds()

@@ -16,8 +16,8 @@
 /**
 * Strips html tags and replaces new lines
 *
-* @param $string
-* @param $removeOther   if 'true', removes '-oth-' from the string.
+* @param string $string
+* @param boolean $removeOther   if 'true', removes '-oth-' from the string.
 * @return string
 */
 function stripTagsFull($string, $removeOther = true)
@@ -77,13 +77,13 @@ function strSplitUnicode($str, $l = 0)
 /**
 * Quotes a string with surrounding quotes and masking inside quotes by doubling them
 *
-* @param string $sText Text to quote
+* @param string|null $sText Text to quote
 * @param string $sQuoteChar The quote character (Use ' for SPSS and " for R)
 * @param string $aField General field information from SPSSFieldmap
 */
 function quoteSPSS($sText, $sQuoteChar, $aField)
 {
-    $sText = trim($sText);
+    $sText = trim((string) $sText);
     if ($sText == '') {
         return '';
     }
@@ -233,7 +233,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
                         break;
                     case ':':
                         $aSize = explode(".", (string) $field['size']);
-                        if (isset($aSize[1]) && $aSize[1]) {
+                        if (is_numeric($row[$fieldno]) && isset($aSize[1]) && $aSize[1]) {
                             // We need to add decimal
                             echo quoteSPSS(number_format($row[$fieldno], $aSize[1], ".", ""), $q, $field);
                         } else {
@@ -245,8 +245,6 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
                         if (substr((string) $field['code'], -7) != 'comment' && substr((string) $field['code'], -5) != 'other') {
                             if ($row[$fieldno] == 'Y') {
                                 echo quoteSPSS('1', $q, $field);
-                            } elseif ($row[$fieldno] === '') {
-                                echo quoteSPSS($sEmptyAnswerValue, $q, $field);
                             } elseif (isset($row[$fieldno])) {
                                 echo quoteSPSS('0', $q, $field);
                             } else {
@@ -367,11 +365,10 @@ function SPSSGetValues($field, $qidattributes, $language)
                 $reverse = false;
             }
 
-            if ($qidattributes['multiflexible_checkbox']!=0)
-            {
-                $minvalue=0;
-                $maxvalue=1;
-                $stepvalue=1;
+            if ($qidattributes['multiflexible_checkbox'] != 0) {
+                $minvalue = 0;
+                $maxvalue = 1;
+                $stepvalue = 1;
             }
             for ($i = $minvalue; $i <= $maxvalue; $i += $stepvalue) {
                 $answers[] = array('code' => $i, 'value' => $i);
@@ -762,7 +759,7 @@ function SPSSGetQuery($iSurveyID, $limit = null, $offset = null)
 */
 function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(), $iSurveyID = 0)
 {
-    $iChunkSize = 3000; // This works even for very large result sets and leaves a minimal memory footprint
+    $iChunkSize = 1000; // This works even for very large result sets and leaves a minimal memory footprint
 
     preg_match('/\bfrom\b\s*{{(\w+)}}/i', (string) $Query, $MatchResults);
     if ($tagname != '') {
@@ -794,7 +791,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
         } else {
             /** @var CDbConnection $db */
             $db = Yii::app()->db;
-            if(is_string($Query)) {
+            if (is_string($Query)) {
                 $commandBuilder = $db->getCommandBuilder();
                 $limitedQuery = $commandBuilder->applyLimit($Query, $iChunkSize, $iStart);
                 $QueryResult = $db->createCommand($limitedQuery)->query();
@@ -1537,7 +1534,7 @@ function quexml_set_default_value(&$element, $iResponseID, $qid, $iSurveyID, $fi
             // prepare and decrypt data
             $oResponse = Response::model($iSurveyID)->findByPk($iResponseID);
             $oResponse->decrypt();
-            $value = $oResponse->$colname;
+            $value = strval($oResponse->$colname);
             $element->setAttribute("defaultValue", $value);
         }
     }
@@ -2035,10 +2032,19 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
 // 2. answers
 
 /**
- * @param string $action
+ * @param string $action unused
+ * @param integer $iSurveyID the Survey ID of the question
+ * @param integer $gid the Group ID of the question
  */
 function group_export($action, $iSurveyID, $gid)
 {
+    $group = QuestionGroup::model()->find(
+        "sid = :sid AND gid = :gid",
+        [":sid" => $iSurveyID, ":gid" => $gid]
+    );
+    if (empty($group)) {
+        throw new CHttpException(404, gT("Invalid group ID"));
+    }
     $fn = "limesurvey_group_$gid.lsg";
     $xml = getXMLWriter();
 
@@ -2180,10 +2186,20 @@ function groupGetXMLStructure($xml, $gid)
 //  - Question attributes
 //  - Default values
 /**
- * @param string $action
+ * @param string $action unused
+ * @param integer $iSurveyID the Survey ID of the question
+ * @param integer $gid the Group ID of the question
+ * @param integer $qid the Question ID of the question
  */
 function questionExport($action, $iSurveyID, $gid, $qid)
 {
+    $question = Question::model()->find(
+        "sid = :sid AND gid = :gid AND qid = :qid",
+        [":sid" => $iSurveyID, ":gid" => $gid, ":qid" => $qid]
+    );
+    if (empty($question)) {
+        throw new CHttpException(404, gT("Invalid question id"));
+    }
     $fn = "limesurvey_question_$qid.lsq";
     $xml = getXMLWriter();
 
@@ -2410,7 +2426,6 @@ function tokensExport($iSurveyID)
         $bresult = $oRecordSetQuery->query();
         // fetching all records into array, values need to be decrypted
         foreach ($bresult as $tokenValue) {
-
             // Populate TokenDynamic object with values
             // NB: $tokenValue also contains values not belonging to TokenDynamic model (joined with survey)
             foreach ($tokenValue as $key => $value) {
@@ -2729,9 +2744,12 @@ function tsvSurveyExport($surveyid)
         $defaultvalues_data = array();
     }
     // insert translations to defaultvalues_datas
+    $defaultvalues_datas = [];
     if (array_key_exists('defaultvalue_l10ns', $xmlData)) {
         $defaultvalues_l10ns_data = $xmlData['defaultvalue_l10ns']['rows']['row'];
-        $defaultvalues_datas = [];
+        if (!array_key_exists('0', $defaultvalues_l10ns_data)) {
+            $defaultvalues_l10ns_data = array($defaultvalues_l10ns_data);
+        }
         foreach ($defaultvalues_l10ns_data as $defaultvalue_l10ns_key => $defaultvalue_l10ns_data) {
             foreach ($defaultvalues_data as $defaultvalue_key => $defaultvalue_data) {
                 if ($defaultvalue_l10ns_data['dvid'] === $defaultvalue_data['dvid']) {
@@ -2755,8 +2773,8 @@ function tsvSurveyExport($surveyid)
         }
     }
 
-    $groups = array();
-    $index_languages = 0;
+        $groups = array();
+        $index_languages = 0;
     foreach ($aSurveyLanguages as $key => $language) {
         // groups data
         if (array_key_exists('groups', $xmlData)) {
@@ -2814,11 +2832,15 @@ function tsvSurveyExport($surveyid)
         }
 
         // subquestions data
+        $subquestions_data = [];
         if (array_key_exists('subquestions', $xmlData)) {
+            if (isset($xmlData['subquestions']['rows']['row']['qid'])) {
+                // Only one subquestion then one row : set as array like we have multiple rows
+                $xmlData['subquestions']['rows']['row'] = [$xmlData['subquestions']['rows']['row']];
+            }
             foreach ($xmlData['subquestions']['rows']['row'] as $subquestion) {
                 $subquestions_data[$subquestion['qid']] = $subquestion;
             }
-
             foreach ($xmlData['question_l10ns']['rows']['row'] as $subquestion_l10ns) {
                 if (array_key_exists($subquestion_l10ns['qid'], $subquestions_data)) {
                     if ($subquestion_l10ns['language'] === $language) {
@@ -2829,8 +2851,6 @@ function tsvSurveyExport($surveyid)
                     }
                 }
             }
-        } else {
-            $subquestions_data = array();
         }
 
         // answers data
@@ -2871,7 +2891,7 @@ function tsvSurveyExport($surveyid)
         }
         $assessments = array();
         foreach ($assessments_data as $key => $assessment) {
-                $assessments[] = $assessment;
+            $assessments[] = $assessment;
         }
 
         // quotas data
@@ -2885,7 +2905,7 @@ function tsvSurveyExport($surveyid)
         }
         $quotas = array();
         foreach ($quotas_data as $key => $quota) {
-                $quotas[$quota['id']] = $quota;
+            $quotas[$quota['id']] = $quota;
         }
 
         // quota members data
@@ -3108,9 +3128,9 @@ function tsvSurveyExport($surveyid)
         }
     }
 
-    $output = $out;
-    fclose($out);
-    return $output;
+        $output = $out;
+        fclose($out);
+        return $output;
 }
 
 /**
@@ -3143,6 +3163,17 @@ function writeXmlFromArray(XMLWriter $xml, $aData, $sParentKey = '')
 {
     $bCloseElement = false;
     foreach ($aData as $key => $value) {
+        if (is_array($value) && isset($value['@attributes'])) {
+            // If '@attributes' exists, handle the element with attributes
+            $xml->startElement($key);
+            foreach ($value['@attributes'] as $attrName => $attrValue) {
+                $xml->writeAttribute($attrName, $attrValue);
+            }
+            writeXmlFromArray($xml, array_diff_key($value, ['@attributes' => '']));
+            $xml->endElement();
+            continue;
+        }
+
         if (!empty($value)) {
             if (is_array($value)) {
                 if (is_numeric($key)) {
@@ -3153,11 +3184,7 @@ function writeXmlFromArray(XMLWriter $xml, $aData, $sParentKey = '')
                     $bCloseElement = true;
                 }
 
-                if (is_numeric($key)) {
-                    writeXmlFromArray($xml, $value, $sParentKey);
-                } else {
-                    writeXmlFromArray($xml, $value, $key);
-                }
+                writeXmlFromArray($xml, $value, $key);
 
                 if ($bCloseElement === true) {
                     $xml->endElement();
@@ -3191,6 +3218,11 @@ function surveyGetThemeConfiguration($iSurveyId = null, $oXml = null, $bInherit 
 
         foreach ($aSurveyConfiguration as $iThemeKey => $oConfig) {
             foreach ($oConfig as $key => $attribute) {
+                if ($key == "@attributes") {
+                    /* Survey theme option export XML of theme without filtering attributes (happen for cssframework) */
+                    /* see mantis issue #19404: Export survey propblem with PHP version 8.0 https://bugs.limesurvey.org/view.php?id=19404 */
+                    continue;
+                }
                 if (is_array($attribute)) {
                     $attribute = (array)$attribute;
                 } elseif (isJson($attribute)) {

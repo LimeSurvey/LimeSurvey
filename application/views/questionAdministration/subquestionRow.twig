@@ -33,6 +33,7 @@
                 value="{{ subquestion.title|escape('html_attr') }}"
                 required='required'
                 maxlength="20"
+                pattern="[a-zA-Z0-9]+"
                 {% if question.survey.active == 'Y' %}
                 readonly="readonly"
                 {% endif %}
@@ -67,6 +68,7 @@
                 value="{{ subquestion.title|escape('html_attr') }}"
                 required='required'
                 maxlength="20"
+                pattern="[a-zA-Z0-9]+"
                 {% if question.survey.active == 'Y' %}
                 readonly="readonly"
                 {% endif %}
@@ -119,7 +121,8 @@
         <td class="relevance-equation">
             <input
                 data-bs-toggle="tooltip"
-                data-title="{{ gT("Click to expand") }}"
+                data-bs-placement="bottom"
+                title="{{ gT("Click to expand") }}"
                 type='text'
                 class='relevance form-control input'
                 id='subquestions[{{ subquestion.qid }}][{{ scale_id }}][relevance]'

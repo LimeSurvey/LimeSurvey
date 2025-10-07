@@ -135,14 +135,14 @@ var TclHighlightRules = function () {
                 token: "text",
                 regex: /\\(?:["{}\[\]$\\])/
             }, {
-                token: "text",
+                token: "text", // last value before command
                 regex: '^|[^{][;][^}]|[/\r/]',
                 next: "commandItem"
             }, {
-                token: "string",
+                token: "string", // single line
                 regex: '[ ]*["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
             }, {
-                token: "string",
+                token: "string", // multi line """ string start
                 regex: '[ ]*["]',
                 next: "qqstring"
             }, {
@@ -180,7 +180,7 @@ var TclHighlightRules = function () {
                 regex: "#.*$",
                 next: "start"
             }, {
-                token: "string",
+                token: "string", // single line
                 regex: '[ ]*["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
             }, {
                 token: "variable.instance",
@@ -233,17 +233,17 @@ var TclHighlightRules = function () {
         ],
         "variable": [
             {
-                token: "variable.instance",
+                token: "variable.instance", // variable tcl
                 regex: "[a-zA-Z_\\d]+(?:[(][a-zA-Z_\\d]+[)])?",
                 next: "start"
             }, {
-                token: "variable.instance",
+                token: "variable.instance", // variable tcl with braces
                 regex: "{?[a-zA-Z_\\d]+}?",
                 next: "start"
             }
         ],
         "qqstring": [{
-                token: "string",
+                token: "string", // multi line """ string end
                 regex: '(?:[^\\\\]|\\\\.)*?["]',
                 next: "start"
             }, {

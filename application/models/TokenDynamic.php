@@ -123,7 +123,7 @@ class TokenDynamic extends LSActiveRecord
      * (some older tokens tables dont' get udated properly)
      *
      * This method should be moved to db update for 2.05 version so it runs only
-     * once per survey participants table / backup survey participants table
+     * once per survey participant list / backup survey participant list
      */
     public function checkColumns()
     {
@@ -149,7 +149,7 @@ class TokenDynamic extends LSActiveRecord
             }
             Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
         } else {
-            // On some installs we have created not null for participant_id and blacklisted fix this
+            // On some installs we have created not null for participant_id and blocklisted fix this
             $columns = array('blacklisted', 'participant_id');
 
             foreach ($columns as $columnname) {
@@ -851,8 +851,7 @@ class TokenDynamic extends LSActiveRecord
             'title'            => gT('Edit this survey participant'),
             'url'              => App()->createUrl("/admin/tokens/sa/edit", [
                 "iSurveyId" => self::$sid,
-                "iTokenId"  => $this->tid,
-                "ajax"      => "true"
+                "iTokenId"  => $this->tid
             ]),
             'iconClass'        => 'ri-pencil-fill',
             'linkAttributes'    => [
@@ -868,12 +867,12 @@ class TokenDynamic extends LSActiveRecord
                 'data-bs-toggle'  => "modal",
                 'data-bs-target'  => '#confirmation-modal',
                 'data-btnclass' => 'btn-danger',
-                'data-message'    => gt('Do you really want to delete this participant'),
+                'data-message'    => gT('Do you really want to delete this participant'),
                 'data-post-url'   => App()->createUrl("/admin/tokens/sa/deleteToken", [
                     "sid"   => self::$sid,
                     "sItem" => $this->tid
                 ]),
-                'data-btntext'    => gt('Delete'),
+                'data-btntext'    => gT('Delete'),
             ],
             'enabledCondition' => $permission_tokens_delete
         ];

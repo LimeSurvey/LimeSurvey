@@ -111,7 +111,7 @@ class PrintableSurvey extends SurveyCommonAction
             //if $showsgqacode is enabled at config.php show table name for reference
             $showsgqacode = Yii::app()->getConfig("showsgqacode");
             if (isset($showsgqacode) && $showsgqacode == true) {
-                $surveyname = $surveyname . "<br />[" . gT('Database') . " " . gT('table') . ": $surveytable]";
+                $surveyname = $surveyname . "<br />[" . sprintf(gT('Table name: %s'), $surveytable) . "]";
             }
 
             /* Get the HTML tag */
@@ -137,6 +137,20 @@ class PrintableSurvey extends SurveyCommonAction
 
             $fieldmap = createFieldMap($oSurvey, 'full', false, false, $sLanguageCode);
 
+            // For print condition text : need questionobject of some specific question
+            $criteria = new CDBCriteria();
+            $criteria->select = ['cqid'];
+            $criteria->with = ['questions'];
+            $criteria->compare('questions.sid', $surveyid);
+            $neededTypes = [QuestionType::QT_1_ARRAY_DUAL];
+            $criteria->addInCondition('questions.type', $neededTypes);
+            $oConditions = Condition::model()->with('questions')->findAll($criteria);
+            // We need only the question attributes
+            /* array[] Needed question attributes for condition question */
+            $conditionQuestionsAttributes = [];
+            foreach ($oConditions as $oCondition) {
+                $conditionQuestionsAttributes[$oCondition->cqid] = QuestionAttribute::model()->getQuestionAttributes($oCondition->questions);
+            }
             // =========================================================
             // START doin the business:
             foreach ($arGroups as $arQuestionGroup) {
@@ -170,10 +184,7 @@ class PrintableSurvey extends SurveyCommonAction
                 foreach ($arQuestions as $arQuestion) {
                     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                     // START doing questions
-
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion['qid']);
-
-
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion);
                     if ($qidattributes['hidden'] == 1 && $arQuestion['type'] != Question::QT_ASTERISK_EQUATION) {
                         continue;
                     }
@@ -184,8 +195,6 @@ class PrintableSurvey extends SurveyCommonAction
                     $sExplanation = ''; //reset conditions explanation
                     $s = 0;
                     // TMSW Condition->Relevance:  show relevance instead of this whole section to create $explanation
-
-
                     $scenarioresult = Condition::model()->getScenarios($arQuestion['qid']);
                     $scenarioresult = $scenarioresult->readAll();
                     //Loop through distinct scenarios, thus grouping them together.
@@ -238,7 +247,7 @@ class PrintableSurvey extends SurveyCommonAction
                                 // cqid == 0  ==> token attribute match
                                 $tokenData = getTokenFieldsAndNames($surveyid);
                                 preg_match('/^{TOKEN:([^}]*)}$/', (string) $distinctrow['cfieldname'], $extractedTokenAttr);
-                                $sExplanation .= "Your " . $tokenData[strtolower($extractedTokenAttr[1])]['description'] . " ";
+                                $sExplanation .= "Your " . ($tokenData[strtolower($extractedTokenAttr[1])]['description'] ?? "") . " ";
                                 if ($distinctrow['method'] == '==') {
                                     $sExplanation .= gT("is") . " ";
                                 } elseif ($distinctrow['method'] == '!=') {
@@ -256,11 +265,10 @@ class PrintableSurvey extends SurveyCommonAction
                                 } else {
                                     $sExplanation .= gT("is") . " ";
                                 }
-                                $answer_section = ' ' . $distinctrow['value'] . ' ';
+                                $answer_section = ' ' . ($distinctrow['value'] ?? "") . ' ';
                             }
 
                             $conresult = Condition::model()->getConditionsQuestions($distinctrow['cqid'], $arQuestion['qid'], $scenariorow['scenario'], $sLanguageCode);
-
                             $conditions = array();
                             foreach ($conresult->readAll() as $conrow) {
                                 $value = $conrow['value'];
@@ -322,7 +330,7 @@ class PrintableSurvey extends SurveyCommonAction
                                     case Question::QT_1_ARRAY_DUAL:
                                         $labelIndex = preg_match("/^[^#]+#([01]{1})$/", (string) $conrow['cfieldname']);
                                         $condition = "qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND scale_id=" . $labelIndex;
-                                        $fresult = Answer::model()->findAll(['condition' => $condition, 'order' => 'sortorder, code']);
+                                        $fresult = Answer::model()->findAll(['condition' => $condition]);
                                         foreach ($fresult as $frow) {
                                             $conditions[] = $frow->answerl10ns[$sLanguageCode]->answer;
                                         }
@@ -332,7 +340,7 @@ class PrintableSurvey extends SurveyCommonAction
                                     case Question::QT_O_LIST_WITH_COMMENT:
                                     case Question::QT_R_RANKING:
                                         $condition = "qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
-                                        $ansresult = Answer::model()->findAll(['condition' => $condition, 'order' => 'sortorder, code']);
+                                        $ansresult = Answer::model()->findAll(['condition' => $condition]);
 
                                         foreach ($ansresult as $ansrow) {
                                             $conditions[] = $ansrow->answerl10ns[$sLanguageCode]->answer;
@@ -359,7 +367,7 @@ class PrintableSurvey extends SurveyCommonAction
                                     case Question::QT_H_ARRAY_COLUMN:
                                     default:
                                         $condition = " qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
-                                        $fresult = Answer::model()->findAll(['condition' => $condition, 'order' => 'sortorder, code']);
+                                        $fresult = Answer::model()->findAll(['condition' => $condition]);
                                         foreach ($fresult as $frow) {
                                             $conditions[] = $frow->answerl10ns[$sLanguageCode]->answer;
                                         } // while
@@ -389,7 +397,7 @@ class PrintableSurvey extends SurveyCommonAction
                                         $thiscquestion = $fieldmap[$conrow['cfieldname']];
                                         $condition = "parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}'";
                                         $ansresult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);
-                                        $cqidattributes = QuestionAttribute::model()->getQuestionAttributes($conrow['cqid']);
+                                        $cqidattributes = $conditionQuestionsAttributes[$conrow['cqid']];
                                         if ($labelIndex == 0) {
                                             if (trim((string) $cqidattributes['dualscale_headerA'][$sLanguageCode]) != '') {
                                                 $header = gT($cqidattributes['dualscale_headerA'][$sLanguageCode]);
@@ -414,7 +422,7 @@ class PrintableSurvey extends SurveyCommonAction
                                         $ansresult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);
                                         foreach ($ansresult as $ansrow) {
                                             $condition = "qid = '{$conrow['cqid']}' AND code = '{$conrow['value']}'";
-                                            $fresult = Answer::model()->findAll(['condition' => $condition, 'order' => 'sortorder, code']);
+                                            $fresult = Answer::model()->findAll(['condition' => $condition]);
                                             foreach ($fresult as $frow) {
                                                 //$conditions[]=$frow['title'];
                                                 $answer_section = " (" . $ansrow->question . "[" . $frow['answer'] . "])";
@@ -442,7 +450,7 @@ class PrintableSurvey extends SurveyCommonAction
                             if ($distinctrow['cqid']) {
                                 $sExplanation .= " <span class='scenario-at-separator'>" . gT("at question") . "</span> '" . " [" . $subresult['title'] . "]' (" . strip_tags((string) $subresult->questionl10ns[$sLanguageCode]->question) . "$answer_section)";
                             } else {
-                                $sExplanation .= " " . $distinctrow['value'];
+                                $sExplanation .= " " . ($distinctrow['value'] ?? "");
                             }
                             //$distinctrow
                             $x++;
@@ -450,7 +458,14 @@ class PrintableSurvey extends SurveyCommonAction
                         $s++;
                     }
 
-                    $qinfo = LimeExpressionManager::GetQuestionStatus($arQuestion['qid']);
+                    //Defaulting to dummy array to avoid crashes when qinfo is not found for this question
+                    $qinfo = LimeExpressionManager::GetQuestionStatus($arQuestion['qid']) ?? [
+                        "info" => [
+                            "relevance" => ""
+                        ],
+                        "relEqn" => "",
+                        "validTip" => ""
+                    ];
                     $relevance = trim((string) $qinfo['info']['relevance']);
                     $sEquation = $qinfo['relEqn'];
 
@@ -592,7 +607,7 @@ class PrintableSurvey extends SurveyCommonAction
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose *only one* of the following:"));
                             $question['type_help'] .= self::arrayFilterHelp($qidattributes, $sLanguageCode, $surveyid);
 
-                            $dearesult = Answer::model()->findAll(['condition' => "qid={$arQuestion['qid']}", 'order' => 'sortorder, code']);
+                            $dearesult = Answer::model()->findAll(['condition' => "qid={$arQuestion['qid']}"]);
                             $deacount = count($dearesult);
                             if ($arQuestion['other'] == "Y") {
                                 $deacount++;
@@ -631,7 +646,7 @@ class PrintableSurvey extends SurveyCommonAction
                                 }
                             }
 
-                            if ($arQuestion['other'] == 'Y') {
+                            if (($arQuestion['other'] == 'Y') && isset($qidattributes["printable_help"])) {
                                 /*echo '<pre>';
                                 print_r($qidattributes);
                                 echo '</pre>';
@@ -649,7 +664,7 @@ class PrintableSurvey extends SurveyCommonAction
                             // ==================================================================
                         case Question::QT_O_LIST_WITH_COMMENT:  //LIST WITH COMMENT
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose *only one* of the following:"));
-                            $dearesult = Answer::model()->findAll(['condition' => "qid={$arQuestion['qid']}", 'order' => 'sortorder, code']);
+                            $dearesult = Answer::model()->findAll(['condition' => "qid={$arQuestion['qid']}"]);
 
                             $question['answer'] = "\t<ul class='list-print-answers list-unstyled'>\n";
                             foreach ($dearesult as $dearow) {
@@ -663,7 +678,7 @@ class PrintableSurvey extends SurveyCommonAction
 
                             // ==================================================================
                         case Question::QT_R_RANKING:  // Ranking Type Question
-                            $rearesult = Answer::model()->findAll(['condition' => "qid={$arQuestion['qid']}", 'order' => 'sortorder, code']);
+                            $rearesult = Answer::model()->findAll(['condition' => "qid={$arQuestion['qid']}"]);
                             $reacount = count($rearesult);
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please number each box in order of preference from 1 to") . " $reacount");
                             $question['type_help'] .= self::minMaxAnswersHelp($qidattributes, $sLanguageCode, $surveyid);
@@ -709,7 +724,7 @@ class PrintableSurvey extends SurveyCommonAction
                                     ++$colcounter;
                                 }
                             }
-                            if ($arQuestion['other'] == "Y") {
+                            if (($arQuestion['other'] == "Y") && (isset($qidattributes["printable_help"]))) {
                                 if (trim((string) $qidattributes["printable_help"][$sLanguageCode]) == '') {
                                     $qidattributes["printable_help"][$sLanguageCode] = "Other";
                                 }
@@ -1079,7 +1094,7 @@ class PrintableSurvey extends SurveyCommonAction
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose the appropriate response for each item:"));
                             $question['type_help'] .= self::arrayFilterHelp($qidattributes, $sLanguageCode, $surveyid);
 
-                            $fresult = Answer::model()->findAll(['condition' => "scale_id=0 AND qid='{$arQuestion['qid']}'", 'order' => 'sortorder, code']);
+                            $fresult = Answer::model()->findAll(['condition' => "scale_id=0 AND qid='{$arQuestion['qid']}'"]);
                             $fcount = count($fresult);
                             $i = 1;
                             $column_headings = array();
@@ -1150,7 +1165,7 @@ class PrintableSurvey extends SurveyCommonAction
                             $question['answer'] .= "\n<table class='table-print-answers table table-bordered'>\n\t<thead>\n\t\t<tr>\n";
 
                             $condition = "qid={$arQuestion['qid']} AND scale_id=0";
-                            $fresult = Answer::model()->findAll(['condition' => $condition, 'order' => 'sortorder, code']);
+                            $fresult = Answer::model()->findAll(['condition' => $condition]);
                             $fcount = count($fresult);
 
                             $l1 = 0;
@@ -1165,7 +1180,7 @@ class PrintableSurvey extends SurveyCommonAction
                             $printablesurveyoutput2 .= "\t\t\t<td><span></span></td>\n";
                              //$fquery1 = "SELECT * FROM {{answers}} WHERE qid='{$deqrow['qid']}'  AND language='{$sLanguageCode}' AND scale_id=1 ORDER BY sortorder, code";
                             // $fresult1 = Yii::app()->db->createCommand($fquery1)->query();
-                            $fresult1 = Answer::model()->findAll(['condition' => "qid='{$arQuestion['qid']}' AND scale_id=1", 'order' => 'sortorder, code']);
+                            $fresult1 = Answer::model()->findAll(['condition' => "qid='{$arQuestion['qid']}' AND scale_id=1"]);
                             $fcount1 = count($fresult1);
                             $l2 = 0;
 
@@ -1252,7 +1267,7 @@ class PrintableSurvey extends SurveyCommonAction
                             $a = 1;
                             $rowclass = 'ls-odd';
 
-                            $mearesult = Answer::model()->findAll(['condition' => "qid={$arQuestion['qid']} AND scale_id=0", 'order' => 'sortorder,code']);
+                            $mearesult = Answer::model()->findAll(['condition' => "qid={$arQuestion['qid']} AND scale_id=0"]);
                             foreach ($mearesult as $mearow) {
                                 //$_POST['type']=$type;
                                 $question['answer'] .= "\t\t<tr class=\"$rowclass\">\n";

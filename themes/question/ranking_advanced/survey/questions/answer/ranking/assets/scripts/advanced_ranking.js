@@ -154,14 +154,13 @@ var AdvancedRankingQuestion = function (options) {
             window.templateCore.alertSurveyDialog(txtAlert, '');
         }
     },
-    loadDragDropRank = function (questionId) {
-        
+    loadDragDropRank = function () {
         // Update #relevance
         $("[id^=" + relevancename + "]").val('0');
         $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function () {
             $(this).appendTo('#sortable-choice-' + questionId );
         });
-        $('#question' + questionId + ' .select-item select').each(function (index) {
+        $('#question' + questionId + ' .select-item select :selected').each(function (index) {
             if ($(this).val() != '') {
                 $("#" + relevancename + (index+1)).val("1");
                 $('#sortable-choice-' + questionId + ' #' + rankingID + $(this).val()).appendTo('#sortable-rank-' + questionId);
@@ -177,8 +176,8 @@ var AdvancedRankingQuestion = function (options) {
 
     fixChoiceListHeight = function() {
         //Keep the target field as big as the source field
-        var minHeight = $('#sortable-choice-' + questionId).height();
-        var minWidth = $('#sortable-choice-' + questionId).width();
+        var minHeight = $('#sortable-choice-' + questionId).actual('height');
+        var minWidth = $('#sortable-choice-' + questionId).actual('width');
         $('#sortable-choice-' + questionId).css('min-height', minHeight);
         $('#sortable-rank-' + questionId).css('min-height', minHeight);
         $('#sortable-choice-' + questionId).css('min-width', minWidth);

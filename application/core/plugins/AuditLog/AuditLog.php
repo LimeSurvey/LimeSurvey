@@ -7,7 +7,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     protected static $description = 'Core: Create an audit log of changes';
     protected static $name = 'auditlog';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     protected $settings = array(
@@ -430,15 +430,20 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         }
 
         $filterCriteria = $event->get('filterCriteria');
+
         // We need to "fix" (update) the criteria given by parameter.
         // - SELECT queries are built with the table alias.
         // - DELETE queries are not.
-        // We are given a DELETE query criteria and need to use it on a SELECT query.
-        // Add the alias.
-        $tableName = Token::model($surveyId)->getTableSchema()->name;
-        $filterCriteria->alias = $tableName;
+        // We are given a DELETE query criteria and need to use it on a SELECT query,
+        // so we replace the table name with the alias.
+        $tokenModel = Token::model($surveyId);
+        $selectCriteria = clone $filterCriteria;
+        $tableName = $tokenModel->getTableSchema()->rawName;
+        $alias = $tokenModel->getTableAlias(true);
+        // Replace the table name with the alias
+        $selectCriteria->condition = str_replace($tableName, $alias, $selectCriteria->condition);
 
-        $tokens = Token::model($surveyId)->findAll($filterCriteria);
+        $tokens = $tokenModel->findAll($selectCriteria);
 
         $oCurrentUser = $this->api->getCurrentUser();
 

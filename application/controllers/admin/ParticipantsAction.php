@@ -46,6 +46,9 @@ function subval_sort($a, $subkey, $order)
  */
 class ParticipantsAction extends SurveyCommonAction
 {
+    /** @var AjaxHelper $ajaxHelper */
+    protected $ajaxHelper;
+
     /**********************************************BASIC SETTINGS AND METHODS***********************************************/
 
     public function runWithParams($params)
@@ -440,7 +443,7 @@ class ParticipantsAction extends SurveyCommonAction
         if ($selectoption == 'po') {
             $deletedParticipants = Participant::model()->deleteParticipants($participantIds, !$deletePermission);
         } elseif ($selectoption == 'ptt') {
-            // Deletes from central and survey participants table
+            // Deletes from central and survey participant list
             $deletedParticipants = Participant::model()->deleteParticipantToken($participantIds);
         } elseif ($selectoption == 'ptta') {
             // Deletes from central , token and assosiated responses as well
@@ -1289,7 +1292,7 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function blacklistControl()
     {
-        $title = gT("Blacklist settings");
+        $title = gT("Blocklist settings");
         $aData = array(
             'blacklistallsurveys' => Yii::app()->getConfig('blacklistallsurveys'),
             'blacklistnewsurveys' => Yii::app()->getConfig('blacklistnewsurveys'),
@@ -1306,7 +1309,7 @@ class ParticipantsAction extends SurveyCommonAction
     }
 
     /**
-     * Stores the blacklist setting to the database
+     * Stores the blocklist setting to the database
      * @return void
      */
     public function storeBlacklistValues()
@@ -1334,12 +1337,12 @@ class ParticipantsAction extends SurveyCommonAction
                 $stg->save();
             }
         }
-        Yii::app()->setFlashMessage(gT('Blacklist settings were saved.'), 'success');
+        Yii::app()->setFlashMessage(gT('Blocklist settings were saved.'), 'success');
         Yii::app()->getController()->redirect(array('admin/participants/sa/blacklistControl'));
     }
 
     /**
-     * AJAX Method to change the blacklist status of a participant
+     * AJAX Method to change the blocklist status of a participant
      * Requires POST with 'participant_id' (varchar) and 'blacklist' (boolean)
      * Echos JSON-encoded array with 'success' (boolean) and 'newValue' ('Y' || 'N')
      * @return void
@@ -2488,7 +2491,7 @@ class ParticipantsAction extends SurveyCommonAction
         $response = Participant::model()->copyToCentral((int) Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);
 
         echo "<p>";
-        printf(gT("%s participants have been copied to the central participants table"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>&nbsp;");
+        printf(gT("%s participants have been copied to the central participant list"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>&nbsp;");
         echo "</p>";
         if ($response['duplicate'] > 0) {
             echo "<p>";
@@ -2550,7 +2553,7 @@ class ParticipantsAction extends SurveyCommonAction
 
         // TODO: This code can't be reached
         echo "<p>";
-        printf(gT("%s participants have been copied to the survey survey participants table"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>");
+        printf(gT("%s participants have been copied to the survey participant list"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>");
         echo "</p>";
         if ($response['duplicate'] > 0) {
             echo "<p>";
@@ -2559,7 +2562,7 @@ class ParticipantsAction extends SurveyCommonAction
         }
         if ($response['blacklistskipped'] > 0) {
             echo "<p>";
-            printf(gT("%s entries were skipped because they are blacklisted"), "<span class='badge rounded-pill bg-danger'>" . $response['blacklistskipped'] . "</span>");
+            printf(gT("%s entries were skipped because they are blocklisted"), "<span class='badge rounded-pill bg-danger'>" . $response['blacklistskipped'] . "</span>");
             echo "</p>";
         }
         if ($response['overwriteauto'] == "true" || $response['overwriteman'] == "true") {
@@ -2708,7 +2711,7 @@ class ParticipantsAction extends SurveyCommonAction
         );
 
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $aData['subaction'] = gt('Add participants to central database');
+        $aData['subaction'] = gT('Add participants to central database');
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $topbarData = TopbarConfiguration::getSurveyTopbarData($oSurvey->sid);
         $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
@@ -2780,7 +2783,7 @@ class ParticipantsAction extends SurveyCommonAction
     private function getTopBarComponents($title, $ownsAddParticipantsButton, $ownsAddAttributeButton)
     {
         $topBarConf['title'] = $title;
-        $topBarConf['backLink'] = App()->createUrl('admin/index');
+        $topBarConf['backLink'] = App()->createUrl('dashboard/view');
 
         $topBarConf['middleButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/participants/partial/topbarBtns/leftSideButtons',

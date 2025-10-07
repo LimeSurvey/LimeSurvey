@@ -34,7 +34,6 @@
  */
 class LSHttpRequest extends CHttpRequest
 {
-
     private $_pathInfo;
 
     public $noCsrfValidationRoutes = array();
@@ -98,7 +97,7 @@ class LSHttpRequest extends CHttpRequest
             if (isset($sAlternativeUrl)) {
                 $referrer = $sAlternativeUrl;
             } else {
-                return App()->createUrl('admin/index');
+                return App()->createUrl('dashboard/view');
             }
         }
         return $referrer;
@@ -269,10 +268,10 @@ class LSHttpRequest extends CHttpRequest
     }
 
     /**
-	 * Is this a REST API request
-	 *
-	 * @return boolean
-	 */
+     * Is this a REST API request
+     *
+     * @return boolean
+     */
     public function isRestRequest()
     {
         $restRoutePattern = '#^(/)?(index.php/)?rest(/.*)?#';
@@ -282,8 +281,36 @@ class LSHttpRequest extends CHttpRequest
         ) === 1;
         $restRoute = preg_match(
             $restRoutePattern,
-            $this->getParam('r')
+            $this->getParam('r', '')
         ) === 1;
         return $restPath || $restRoute;
+    }
+
+    /**
+     * @inheritdoc
+     * Check host with config['allowedHost'] if it set
+     */
+    public function getHostInfo($schema = '')
+    {
+        $hostInfo = parent::getHostInfo($schema);
+        self::checkIsAllowedHost($hostInfo);
+        return $hostInfo;
+    }
+
+    /**
+     * Check if an url are in allowed host (if exist)
+     * @var string $hostInfo
+     * @throw Exception
+     * @return void
+     */
+    public static function checkIsAllowedHost($hostInfo)
+    {
+        $allowedHosts = App()->getConfig('allowedHosts');
+        if (!empty($allowedHosts) && is_array($allowedHosts)) {
+            $host = parse_url($hostInfo, PHP_URL_HOST);
+            if ($host && !in_array($host, $allowedHosts)) {
+                 throw new CHttpException(400, gT("The requested hostname is invalid.", 'unescaped'));
+            }
+        }
     }
 }

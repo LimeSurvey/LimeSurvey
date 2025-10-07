@@ -34,6 +34,9 @@ App()->getClientScript()->registerScriptFile(
             </li>
         <?php }
     } ?>
+    <?php if (!empty($error)): ?>
+        <li><?= $error ?></li>
+    <?php endif; ?>
 </ul>
 <!--
 <button class="btn btn-outline-secondary" id="ajaxAllConsistency">Fix numbering</button>

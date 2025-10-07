@@ -8,6 +8,9 @@ use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
 
 class Patcher
 {
+    /**
+     * @var OpHandlerInterface[] Operation handlers to apply operations to entities.
+     */
     private $opHandlers = [];
 
     /**
@@ -59,16 +62,12 @@ class Patcher
             if (!$opHandler->canHandle($op)) {
                 continue;
             }
-            if ($opHandler->isValidPatch($op)) {
+            $validateOperation = $opHandler->validateOperation($op);
+            if (empty($validateOperation)) {
                 $return = $opHandler->handle($op);
                 $returnedData = is_array($return) ? $return : [];
             } else {
-                throw new ObjectPatchException(
-                    sprintf(
-                        'Invalid patch for handler (entityType: %s)',
-                        $op->getEntityType()
-                    )
-                );
+                $returnedData = $validateOperation;
             }
             $handled = true;
             break;

@@ -140,11 +140,11 @@
         <div class="col-6">
 
             <div class="">
-                <h3><?= gt('Brute-force protection for administration'); ?></h3>
+                <h3><?= gT('Brute-force protection for administration'); ?></h3>
 
                 <div class="mb-3">
                     <label class="form-label" for='loginIpWhitelist'>
-                        <?php eT("IP whitelist:"); ?>
+                        <?php eT("IP allowlist:"); ?>
                     </label>
                     <textarea class="form-control" id='loginIpWhitelist' name='loginIpWhitelist'><?php echo htmlspecialchars((string) Yii::app()->getConfig('loginIpWhitelist')); ?></textarea>
                     <div class='form-text'><?php eT("List of IP addresses to exclude from the maximum login attempts check. Separate each IP address with a comma or a new line."); ?></div>
@@ -177,11 +177,11 @@
 
         <!-- Brute-force for participant -->
         <div class="col-6">
-            <h3><?= gt('Brute-force protection for survey participation') ?></h3>
+            <h3><?= gT('Brute-force protection for survey participation') ?></h3>
 
             <div class="mb-3">
                 <label class="form-label" for='tokenIpWhitelist'>
-                    <?php eT("IP whitelist:"); ?>
+                    <?php eT("IP allowlist:"); ?>
                 </label>
                 <textarea class="form-control" id='tokenIpWhitelist' name='tokenIpWhitelist'><?php echo htmlspecialchars((string) Yii::app()->getConfig('tokenIpWhitelist')); ?></textarea>
                 <span class='form-text'>

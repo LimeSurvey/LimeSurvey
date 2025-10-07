@@ -84,7 +84,7 @@ class FailedLoginAttempt extends LSActiveRecord
         $isLockedOut = false;
         $ip = substr(getRealIPAddress(), 0, 40);
 
-        // Return false if IP is whitelisted
+        // Return false if IP is allowlisted
         if ($this->isWhitelisted($ip, $attemptType)) {
             return false;
         }
@@ -176,7 +176,7 @@ class FailedLoginAttempt extends LSActiveRecord
     }
 
     /**
-     * Returns true if the specified IP is whitelisted
+     * Returns true if the specified IP is allowlisted
      *
      * @param string $ip
      * @param string $attemptType   'login' or 'token'
@@ -208,18 +208,18 @@ class FailedLoginAttempt extends LSActiveRecord
             }
             // Compare directly
             if ($whiteListEntry == $ip) {
-                // The IP is whitelisted
+                // The IP is allowlisted
                 return true;
             }
             // Compare binary representations
             $binaryWhiteListEntry = inet_pton($whiteListEntry);
             if ($binaryWhiteListEntry !== false && $binaryWhiteListEntry == $binaryIP) {
-                // The IP is whitelisted
+                // The IP is allowlisted
                 return true;
             }
         }
 
-        // Not whitelisted
+        // Not allowlisted
         return false;
     }
 }

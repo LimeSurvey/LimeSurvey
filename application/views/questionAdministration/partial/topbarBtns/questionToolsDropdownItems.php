@@ -42,7 +42,7 @@
     <?php if (count($surveyLanguages) > 1): ?>
         <!-- Check survey logic multilanguage -->
         <li role="separator" class="dropdown-divider"></li>
-        <li class="dropdown-header"><?php eT("Survey logic file"); ?></li>
+        <li class="dropdown-header"><?php eT("Check logic"); ?></li>
         <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>
             <li>
                 <a class="dropdown-item" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/lang/" . $languageCode); ?>" >
@@ -66,26 +66,26 @@
     <!-- Delete -->
     <?php if ($oSurvey->active !== 'Y') : ?>
         <li>
-            <a href="#" onclick="return false;"
+            <button
                 class="dropdown-item"
                 data-bs-toggle="modal"
                 data-bs-target="#confirmation-modal"
                 data-btnclass="btn-danger"
-                data-title="<?= gt('Delete this question') ?>"
-                data-btntext="<?= gt('Delete') ?>"
+                data-title="<?= gT('Delete this question') ?>"
+                data-btntext="<?= gT('Delete') ?>"
                 data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $qid, "redirectTo" => "groupoverview"])); ?>})'
-                data-message="<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?", "js"); ?>"
+                data-message="<?php echo CHtml::encode(gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?", "unescaped")); ?>"
             >
                 <span class="ri-delete-bin-fill text-danger"></span>
                 <?php eT("Delete question"); ?>
-            </a>
+            </button>
         </li>
     <?php else : ?>
-        <li class="disabled">
-            <a class="btntooltip dropdown-item" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You can't delete a question if the survey is active."); ?>">
+        <li class="disabled" title="<?php eT("You can't delete a question if the survey is active.");?>">
+            <button class="btntooltip dropdown-item" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" disabled>
                 <span class="ri-delete-bin-fill text-danger"></span>
                 <?php eT("Delete question"); ?>
-            </a>
+            </button>
         </li>
     <?php endif; ?>
 <?php endif; ?>

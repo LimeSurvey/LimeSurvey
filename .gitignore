@@ -64,6 +64,12 @@
 !/tmp/runtime/index.html
 !/tmp/upload/index.html
 
+# ignore plugins directory by default except LS plugin
+# if you want to add a new distributed plugin : use /application/core/plugins
+/plugins/*
+!/plugins/index.html
+!/plugins/Demo/
+
 # ignore editor contents - reserved for future use
 /editor/*
 
@@ -120,6 +126,10 @@ node_modules/**/src
 /node_modules/leaflet/*
 !/node_modules/leaflet/dist/
 
+!/node_modules/chart.js/
+/node_modules/chart.js/*
+!/node_modules/chart.js/dist/
+!/node_modules/chart.js/LICENSE.md
 
 vendor/**/docs/
 vendor/**/scripts/
@@ -170,7 +180,7 @@ vendor/composer/installed\.json
 vendor/composer/package-versions-deprecated/
 vendor/composer/semver/
 vendor/composer/xdebug-handler/
-vendor/doctrine/
+#vendor/doctrine/
 vendor/dnoegel/
 vendor/felixfbecker/
 vendor/myclabs/

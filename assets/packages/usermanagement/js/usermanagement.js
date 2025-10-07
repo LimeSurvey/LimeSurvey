@@ -83,6 +83,7 @@ var UserManagement = function () {
             if (buttonClassName.includes('outline-secondary')) {
                 return false;
             }
+            $('#UserManagement--errors').addClass('d-none').removeClass('alert alert-danger');
             startSubmit();
             var data = $('#UserManagement--modalform').serializeArray();
             $.ajax({
@@ -96,7 +97,6 @@ var UserManagement = function () {
                     {
                         $('#UserManagement--modalform').off('submit.USERMANAGERMODAL');
                         $('#UserManagement-action-modal').find('.modal-content').html(result.html);
-                        wireExportDummyUser();
                         if (!result.hasOwnProperty('html')) {
                             triggerModalClose();
                             window.LS.ajaxAlerts(result.message, 'success', {showCloseButton: true});
@@ -115,8 +115,8 @@ var UserManagement = function () {
                         });
                         return;
                     }
-                    $('#UserManagement--errors').html(LS.LsGlobalNotifier.createAlert(result.errors, 'danger', {showCloseButton: true})
-                    ).removeClass('d-none');
+                    $("#usermanagement-modal-doalog").offset({ top: 10 });
+                    $('#UserManagement--errors').html(result.errors).removeClass('d-none').addClass('alert alert-danger');
                 },
                 error: function (request, status, error) {
                     if (request && request.responseJSON && request.responseJSON.message) {
@@ -139,26 +139,6 @@ var UserManagement = function () {
             $('#exitForm').off('click.AUMMODAL');
             triggerModalClose();
         });
-    };
-
-    var wireExportDummyUser = function () {
-        $('#exportUsers').on('click', function (e) {
-            e.preventDefault();
-            var users = $('#exportUsers').data('users');
-            var csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += 'users_name;password' + "\r\n";
-            $.each(users, function (i, user) {
-                csvContent += user.username + ';' + user.password + "\r\n";
-            });
-            var encodedUri = encodeURI(csvContent);
-            var link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("class", 'd-none');
-            link.setAttribute("download", "addedUsers_" + moment().format('YYMMDDHHmm') + ".csv");
-            link.innerHTML = "Click Here to download";
-            document.body.appendChild(link); // Required for FF
-            link.click();
-        })
     };
 
     var wireTemplatePermissions = function () {
@@ -282,6 +262,12 @@ var UserManagement = function () {
 
     var wireDatePicker = function () {
         const expires = document.getElementById('expires');
+
+        // This function is used with multiple modals, and not all modals have an expiration date
+        if (!expires) {
+            return;
+        }
+
         let cleared = false;
         initDatePicker(expires);
 
@@ -394,6 +380,7 @@ var UserManagement = function () {
         wirePermissions: wirePermissions,
         wireMassPermissions: wireMassPermissions,
         wireForm: wireForm,
+        openModal: openModal,
     };
 };
 

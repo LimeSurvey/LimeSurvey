@@ -6,7 +6,7 @@
  * @var Survey $oSurvey
  */
 ?>
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <h3><?php eT("Manage attribute fields"); ?></h3>
 
     <div class="row">
@@ -175,7 +175,7 @@
 
     <div class="row">
         <div class="col-12 content-right">
-            <p><?php neT('There is {n} user attribute field in this survey participants table.|There are {n} user attribute fields in this survey participants table.', $nrofattributes); ?></p>
+            <p><?php neT('There is {n} user attribute field in this survey participant list.|There are {n} user attribute fields in this survey participant list.', $nrofattributes); ?></p>
             <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'addattribute')); ?>
             <p>
                 <label for="addnumber"><?php eT('Number of attribute fields to add:'); ?></label>

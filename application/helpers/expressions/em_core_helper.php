@@ -268,7 +268,7 @@ class ExpressionManager
             'strtotime' => array('strtotime', 'strtotime', gT('Convert a date/time string to unix timestamp'), 'int strtotime(string)', 'http://php.net/manual/de/function.strtotime', 1),
             'strtoupper' => array('exprmgr_strtoupper', 'LEMstrtoupper', gT('Make a string uppercase'), 'string strtoupper(string)', 'http://php.net/strtoupper', 1),
             'substr' => array('exprmgr_substr', 'substr', gT('Return part of a string'), 'string substr(string, start [, length])', 'http://php.net/substr', 2, 3),
-            'sum' => array('array_sum', 'LEMsum', gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
+            'sum' => array('exprmgr_array_sum', 'LEMsum', gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
             'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', gT('Sum the values of answered questions in the list which pass the critiera (arg op value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
             'tan' => array('tan', 'Decimal.asNum.tan', gT('Tangent'), 'number tan(arg)', 'http://php.net/tan', 1),
             'convert_value' => array('exprmgr_convert_value', 'LEMconvert_value', gT('Convert a numerical value using a inputTable and outputTable of numerical values'), 'number convert_value(fValue, iStrict, sTranslateFromList, sTranslateToList)', '', 4),
@@ -2029,7 +2029,6 @@ class ExpressionManager
                 if (count($onpageJsVarsUsed) > 0 && !$staticReplacement) {
                     $idName = "LEMtailor_Q_" . $questionNum . "_" . $this->substitutionNum;
                     $resolvedParts[] = "<span id='" . $idName . "'>" . $resolvedPart . "</span>";
-                    $this->substitutionVars[$idName] = 1;
                     $this->substitutionInfo[] = array(
                         'questionNum' => $questionNum,
                         'num' => $this->substitutionNum,
@@ -2222,7 +2221,12 @@ class ExpressionManager
                                         }
                                         break;
                                     default:
-                                        $result = call_user_func($funcName, $params[0], $params[1]);
+                                        try {
+                                            $result = call_user_func($funcName, $params[0], $params[1]);
+                                        } catch (\Throwable $e) {
+                                            $this->RDP_AddError($e->getMessage(), $funcNameToken);
+                                            return false;
+                                        }
                                         break;
                                 }
                             }
@@ -2980,6 +2984,31 @@ function exprmgr_abs($num)
     // Trying to cast either to int or float, depending on the value.
     $num = $num + 0;
     return abs($num);
+}
+
+/**
+ * Calculate the sum of values in an array
+ * @see https://bugs.limesurvey.org/view.php?id=19897
+ * @see https://www.php.net/manual/en/function.array-sum.php
+ * Like php 8.1 and before : Ignore array or object, cast to float string and cast to int other.
+ * @param array $args
+ * @return float
+ */
+function exprmgr_array_sum($args)
+{
+    $args = array_map(function ($arg) {
+        if (is_int($arg) || is_float($arg)) {
+            return $arg;
+        }
+        if (is_string($arg)) {
+            return floatval($arg);
+        }
+        if (is_array($arg) || is_object($arg)) {
+            return 0;
+        }
+        return intval($arg);
+    }, $args);
+    return array_sum($args);
 }
 
 /**

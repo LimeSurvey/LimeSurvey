@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ CKEditor 4 LTS ("Long Term Support") is available under the terms of the Extended Support Model.
 */
 (function(){function w(a){for(var b=0,p=0,n=0,q,e=a.$.rows.length;n<e;n++){q=a.$.rows[n];for(var l=b=0,c,d=q.cells.length;l<d;l++)c=q.cells[l],b+=c.colSpan;b>p&&(p=b)}return p}function t(a){return function(){var b=this.getValue(),b=!!(CKEDITOR.dialog.validate.integer().call(this,b)&&0<b);b||(alert(a),this.select());return b}}function r(a,b){var p=function(e){return new CKEDITOR.dom.element(e,a.document)},r=a.editable(),q=a.plugins.dialogadvtab;return{title:a.lang.table.title,minWidth:310,minHeight:CKEDITOR.env.ie?
 310:280,getModel:function(e){return"tableProperties"!==this.dialog.getName()?null:(e=(e=e.getSelection())&&e.getRanges()[0])?e._getTableElement({table:1}):null},onLoad:function(){var e=this,a=e.getContentElement("advanced","advStyles");if(a)a.on("change",function(){var a=this.getStyle("width",""),d=e.getContentElement("info","txtWidth");d&&d.setValue(a,!0);a=this.getStyle("height","");(d=e.getContentElement("info","txtHeight"))&&d.setValue(a,!0)})},onShow:function(){var e=a.getSelection(),l=e.getRanges(),

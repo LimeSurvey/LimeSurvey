@@ -15,6 +15,7 @@ use LimeSurvey\Models\Services\Exception\{
     PermissionDeniedException
 };
 use User;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 /**
  * Service GeneralSettings
@@ -33,13 +34,15 @@ class GeneralSettings
     private PluginManager $pluginManager;
     private LanguageConsistency $languageConsistency;
     private User $modelUser;
+    private SurveyAccessModeService $surveyAccessModeService;
+    private $restMode = false;
 
-    const FIELD_TYPE_YN = 'yesorno';
-    const FIELD_TYPE_DATETIME = 'dateime';
-    const FIELD_TYPE_GAKEY = 'gakey';
-    const FIELD_TYPE_USE_CAPTCHA = 'use_captcha';
+    public const FIELD_TYPE_YN = 'yesorno';
+    public const FIELD_TYPE_DATETIME = 'datetime';
+    public const FIELD_TYPE_GAKEY = 'gakey';
+    public const FIELD_TYPE_USE_CAPTCHA = 'use_captcha';
 
-    const GA_GLOBAL_KEY = '9999useGlobal9999';
+    public const GA_GLOBAL_KEY = '9999useGlobal9999';
 
     public function __construct(
         Permission $modelPermission,
@@ -48,7 +51,8 @@ class GeneralSettings
         CHttpSession $session,
         PluginManager $pluginManager,
         LanguageConsistency $languageConsistency,
-        User $modelUser
+        User $modelUser,
+        SurveyAccessModeService $surveyAccessModeService
     ) {
         $this->modelPermission = $modelPermission;
         $this->modelSurvey = $modelSurvey;
@@ -57,6 +61,21 @@ class GeneralSettings
         $this->pluginManager = $pluginManager;
         $this->languageConsistency = $languageConsistency;
         $this->modelUser = $modelUser;
+        $this->surveyAccessModeService = $surveyAccessModeService;
+    }
+
+    /**
+     * Set REST Mode
+     *
+     * In rest mode we have different expecations about data formats.
+     * For example datetime objects inputs/output
+     * as UTC JSON format Y-m-d\TH:i:s.000\Z.
+     *
+     * @param boolean $restMode
+     */
+    public function setRestMode($restMode)
+    {
+        $this->restMode = (bool) $restMode;
     }
 
     /**
@@ -98,7 +117,7 @@ class GeneralSettings
         // by the current user (in case the request was forged)
         // NOTE: Internally, the getUserList function will use objects (like the Yii App and Permission model) that
         //       currently may differ from the ones injected in this service.
-        if (!empty($input['owner_id'])) {
+        if (!empty($input['owner_id']) && $input['owner_id'] != '-1') {
             $owner = $this->modelUser->findByPk($input['owner_id']);
             if (!isset($owner) || !in_array($input['owner_id'], getUserList('onlyuidarray'))) {
                 throw new PermissionDeniedException(
@@ -161,13 +180,20 @@ class GeneralSettings
                 $survey
             );
 
-            if (!$survey->save()) {
-                throw new PersistErrorException(
+            $saved = $survey->save();
+            if (array_key_exists('allowregister', $input)) {
+                $this->ensureTokensTableExistance($survey);
+            }
+
+            if (!$saved) {
+                $e = new PersistErrorException(
                     sprintf(
                         'Failed saving general settings for survey #%s',
                         $survey->sid
                     )
                 );
+                $e->setErrorModel($survey);
+                throw $e;
             }
         }
 
@@ -334,9 +360,12 @@ class GeneralSettings
         $value = $input[$field] ?? null;
         switch ($type) {
             case static::FIELD_TYPE_DATETIME:
-                $value = !empty($value)
-                    ? $this->formatDateTimeInput($value)
-                    : $default;
+                // In rest mode API transformer handles date format conversion
+                if ($this->restMode === false) {
+                    $value = !empty($value)
+                        ? $this->formatDateTimeInput($value)
+                        : $default;
+                }
                 break;
             case static::FIELD_TYPE_YN:
                 if (!in_array('' . $value, ['Y', 'N', 'I'])) {
@@ -612,5 +641,25 @@ class GeneralSettings
         }
 
         return $result;
+    }
+
+    /**
+     * Ensure the tokens table exists for a survey.
+     *
+     * @param Survey $survey
+     *
+     * @return void
+     */
+    private function ensureTokensTableExistance(Survey $survey): void
+    {
+        $survey->setOptions($survey->gsid);
+        $isSurveyActive = $survey->getIsActive();
+        $isOpenAccessMode = $survey->access_mode === SurveyAccessModeService::$ACCESS_TYPE_OPEN;
+        $publicRegistrationAllowed = $survey->getIsAllowRegister();
+        $hasTokensTable = $survey->hasTokensTable;
+
+        if ($isSurveyActive && $isOpenAccessMode && $publicRegistrationAllowed && !$hasTokensTable) {
+            $this->surveyAccessModeService->newParticipantTable($survey, true);
+        }
     }
 }

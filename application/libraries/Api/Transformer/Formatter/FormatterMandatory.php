@@ -3,27 +3,50 @@
 namespace LimeSurvey\Api\Transformer\Formatter;
 
 /**
- * this class is extending the FormatterYnToBool class in revert mode
- * to be able to translate null value to 'S'.
+ * This class is extending the FormatterYnToBool class
+ * to be able to have 'S' as a third option.
  * It is only needed for prop of type "mandatory"
  */
 class FormatterMandatory extends FormatterYnToBool
 {
-    public function __construct()
+    /**
+     * Cast y/n to boolean while keeping 'S' as a third option
+     *
+     * Converts 'Y' or 'y' to boolean true.
+     * Converts 'N' or 'n' to boolean false.
+     *
+     * @param ?string $value
+     * @return bool|string|null
+     */
+    protected function apply($value)
     {
-        parent::__construct(true);
+        $lowercase = is_string($value)
+            ? strtolower($value)
+            : $value;
+        if (
+            $value === null
+            || $value === ''
+            || !in_array($lowercase, ['y', 'n', 's'])
+        ) {
+            return null;
+        }
+        return $lowercase === 's' ? 'S' : $lowercase === 'y';
     }
 
     /**
-     * if parent revert function returns null, 'S' is returned
+     * if value is 'S' it will be returned,
+     * otherwise the parent revert function will be called
      *
      * @param ?mixed $value
-     * @return ?mixed
+     * @param array $config
+     * @return mixed|string|null
      */
-    public function revert($value)
+    protected function revert($value, array $config = [])
     {
-        $string = parent::revert($value);
+        if ($value !== 'S') {
+            $value = parent::revert($value, $config);
+        }
 
-        return $string === null ? 'S' : $string;
+        return $value;
     }
 }

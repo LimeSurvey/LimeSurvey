@@ -4,7 +4,7 @@ $this->widget(
     'ext.ButtonWidget.ButtonWidget',
     [
         'name' => 'save-form-button',
-        'id' => 'save-form-button',
+        'id' => 'open-add-role-form-button',
         'text' => gT('Add user role'),
         'icon' => 'ri-user-add-line',
         'htmlOptions' => [
@@ -20,7 +20,7 @@ $this->widget(
     'ext.ButtonWidget.ButtonWidget',
     [
         'name' => 'save-form-button',
-        'id' => 'save-form-button',
+        'id' => 'import-roles-button',
         'text' => gT('Import (XML)'),
         'icon' => 'ri-download-2-fill',
         'htmlOptions' => [

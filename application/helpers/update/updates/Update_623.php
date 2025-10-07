@@ -19,5 +19,8 @@ class Update_623 extends DatabaseUpdateBase
                 $this->db->createCommand("ALTER TABLE {{users}} ALTER COLUMN user_status SET DEFAULT 1;")->execute();
             }
         }
+        if (in_array(\Yii::app()->db->driverName, array('mssql', 'sqlsrv', 'dblib'))) {
+            $this->db->createCommand("UPDATE {{users}} SET user_status=1")->execute();
+        }
     }
 }

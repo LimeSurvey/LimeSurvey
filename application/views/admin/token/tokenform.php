@@ -5,7 +5,7 @@
 
 $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
 ?>
-<div class='<?php if (!isset($ajax) || $ajax = false): ?>col-12 side-body <?php echo getSideBodyClass(false); ?> <?php endif; ?>'>
+<div class='<?= (!isset($ajax) || $ajax = false) ? 'col-12 side-body' : ''?>'>
     <?php if (!isset($ajax) || $ajax = false) { ?>
         <h3>
             <?php
@@ -15,7 +15,6 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
             } else {
                 eT("Add survey participant");
             }
-
             ?>
         </h3>
     <?php } ?>
@@ -119,7 +118,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                             </div>
                                         <?php else: ?>
                                             <div>
-                                                <?php $completedDBFormat = $completed;
+                                                <?php $completedDBFormat = $completed ?? 'N';
                                                 $bCompletedValue = (isset($completed) && $completed != 'N') ? "1" : "0";
                                                 $completed = (isset($completed) && $completed != 'N') ? 'Y' : 'N'; ?>
                                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -303,8 +302,8 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                             ]); ?>
                                         <?php else: ?>
                                             <?php
-                                            $sentDBValue         = $sent;
-                                            $remindersentDBValue = $remindersent;
+                                            $sentDBValue         = $sent ?? 'N';
+                                            $remindersentDBValue = $remindersent ?? 'N';
                                             $bSwitchValue        = (isset($sent) && $sent != 'N') ? "1" : "0";
                                             $bRemindSwitchValue  = (isset($remindersent) && $remindersent != 'N') ? "1" : "0";
                                             ?>

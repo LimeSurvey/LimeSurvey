@@ -42,13 +42,13 @@
 		"twig/twig": "^3.0",
 		"phpseclib/bcmath_compat": "^2.0",
 		"phpseclib/phpseclib": "^3.0",
-		"tiamo/spss": "^2.2",
+		"tiamo/spss": "dev-master",
 		"symfony/polyfill-mbstring": "^1.26",
 		"yiisoft/yii": "^1.1.26",
 		"phpmailer/phpmailer": "^6.6",
 		"khaled.alshamaa/ar-php": "^6.3",
 		"tecnickcom/tcpdf": "^6.5",
-		"mk-j/php_xlsxwriter": "^0.38.0",
+		"mk-j/php_xlsxwriter": "0.39",
 		"html2text/html2text": "^4.3",
 		"pear/ole": "1.*@dev",
 		"pear/spreadsheet_excel_writer": "^0.9.7",
@@ -56,7 +56,10 @@
 		"league/oauth2-client": "^2.0",
 		"league/oauth2-google": "^3.0",
 		"goldspecdigital/oooas": "^2.10",
-		"php-di/php-di": "6.4.0"
+		"php-di/php-di": "6.4.0",
+		"doctrine/annotations": "~1.10",
+		"anper/iuliia": "^1.2",
+		"shardj/zf1-future": "^1.24"
 	},
     "config": {
         "vendor-dir": "vendor",
@@ -76,6 +79,7 @@
 		"mockery/mockery": "^1.5"
     },
     "scripts": {
+		"phpcs": "phpcs --standard=phpcs.ruleset.xml",
 		"openapi": [
 			"php ./open-api-gen.php v1"
 		],

@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ CKEditor 4 LTS ("Long Term Support") is available under the terms of the Extended Support Model.
 */
 CKEDITOR.dialog.add("cellProperties",function(g){function k(a){return{isSpacer:!0,type:"html",html:"\x26nbsp;",requiredContent:a?a:void 0}}function r(){return{type:"vbox",padding:0,children:[]}}function t(a){return{requiredContent:"td{"+a+"}",type:"hbox",widths:["70%","30%"],children:[{type:"text",id:a,width:"100px",label:e[a],validate:p.number(d["invalid"+CKEDITOR.tools.capitalize(a)]),onLoad:function(){var b=this.getDialog().getContentElement("info",a+"Type").getElement(),c=this.getInputElement(),
 d=c.getAttribute("aria-labelledby");c.setAttribute("aria-labelledby",[d,b.$.id].join(" "))},setup:f(function(b){var c=parseFloat(b.getAttribute(a),10);b=parseFloat(b.getStyle(a),10);if(!isNaN(b))return b;if(!isNaN(c))return c}),commit:function(b){var c=parseFloat(this.getValue(),10),d=this.getDialog().getValueOf("info",a+"Type")||u(b,a);isNaN(c)?b.removeStyle(a):b.setStyle(a,c+d);b.removeAttribute(a)},"default":""},{type:"select",id:a+"Type",label:g.lang.table[a+"Unit"],labelStyle:"visibility:hidden;display:block;width:0;overflow:hidden",

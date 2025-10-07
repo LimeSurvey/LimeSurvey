@@ -147,11 +147,6 @@ body {
     padding-bottom: 2em;
 }
 
-.question-container.row {
-    margin-right: 0;
-    margin-left: 0;
-}
-
 .question-title-container {
     padding-top: 1em;
     padding-bottom: 1em;
@@ -371,8 +366,7 @@ body {
 {
 }
 
-@media only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px) {
+@media only screen and (max-width: 767px) {
     .ls-answers > tbody > tr.ls-even:hover {
     }
 }
@@ -514,8 +508,7 @@ table > tbody > tr > td.ddprefix {
  * (Both in portrait mode.)
  * We don't have to collapse tables on pads.
  */
-@media only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px) {
+@media only screen and (max-width: 767px) {
     table.ls-answers tbody {
         padding: 0 1em 0 1em;
     }

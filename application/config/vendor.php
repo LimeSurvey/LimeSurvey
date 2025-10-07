@@ -347,7 +347,8 @@ return array(
         'basePath' => 'node_modules.jspdf.dist',
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
-            'jspdf.min.js'
+            'jspdf.umd.min.js',
+            'jspdf.es.min.js'
         ),
         'depends' => array(
             'dom2image',
@@ -403,11 +404,20 @@ return array(
             'build/tempus-dominus.min.css',
         ),
         'js' => array(
-            'build/popper-tempus.min.js',
+            'build/popper-tempus.js',
             'datepickerInit.js'
         ),
         'depends' => array(
             'moment'
         )
+    ),
+    // Used for Statistics
+    'chart.js' => array(
+        'devBaseUrl' => 'node_modules/chart.js/dist',
+        'basePath' => 'node_modules.chartjs',
+        'position' => CClientScript::POS_BEGIN,
+        'js' => array(
+            'chart.umd.js'
+        ),
     ),
 );

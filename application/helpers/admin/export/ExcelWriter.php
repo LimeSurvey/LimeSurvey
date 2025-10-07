@@ -43,7 +43,7 @@ class ExcelWriter extends Writer
         $this->forceDownload = !($oOptions->output == 'file');
     }
 
-    protected function outputRecord($headers, $values, FormattingOptions $oOptions)
+    protected function outputRecord($headers, $values, FormattingOptions $oOptions, $fieldNames = [])
     {
         if (!$this->hasOutputHeader) {
             $this->workbook->writeSheetRow($this->currentSheet, $headers);

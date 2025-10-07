@@ -18,14 +18,14 @@ class ParticipantBlacklistHandler
             return new BlacklistResult(false, gT("No CPDB participant found."));
         }
 
-        // Add participant to the blacklist if it's not already blacklisted
+        // Add participant to the blocklist if it's not already blocklisted
         if ($participant->blacklisted != "Y") {
             $participant->blacklisted = 'Y';
             $participant->save();
 
-            $result = new BlacklistResult(true, gT("You have been removed from the central participants list for this site."));
+            $result = new BlacklistResult(true, gT("You have been removed from the central participant list for this site."));
 
-            // Remove or blacklist participant in current surveys if needed
+            // Remove or blocklist participant in current surveys if needed
             if (\Yii::app()->getConfig('deleteblacklisted') == "Y") {
                 $surveyIds = $this->removeParticipantFromAllSurveys($participant);
             } elseif (\Yii::app()->getConfig('blacklistallsurveys') == "Y") {
@@ -37,8 +37,8 @@ class ParticipantBlacklistHandler
 
             return $result;
         } else {
-            // Already blacklisted
-            return new BlacklistResult(true, gT("You have already been removed from the central participants list for this site."));
+            // Already blocklisted
+            return new BlacklistResult(true, gT("You have already been removed from the central participant list for this site."));
         }
     }
 
@@ -50,14 +50,14 @@ class ParticipantBlacklistHandler
     {
         $participant = $this->getCentralParticipantFromToken($token);
         if (empty($participant) || $participant->blacklisted != "Y") {
-            return new BlacklistResult(false, gT("You are not globally blacklisted on this site."));
+            return new BlacklistResult(false, gT("You are not globally blocklisted on this site."));
         }
 
-        // Remove participant from the blacklist
-        $participant->blacklisted == 'N';
+        // Remove participant from the blocklist
+        $participant->blacklisted = 'N';
         $participant->save();
 
-        $result = new BlacklistResult(false, gT("You have been added back to the central participants list for this site."));
+        $result = new BlacklistResult(false, gT("You have been added back to the central participant list for this site."));
 
         // TODO: Remove 'OptOut' status from all surveys if 'blacklistallsurveys' setting is true?
 
@@ -131,7 +131,7 @@ class ParticipantBlacklistHandler
     }
 
     /**
-     * Returns true if the token is globally blacklisted
+     * Returns true if the token is globally blocklisted
      * @param \Token $token
      * @return bool
      */

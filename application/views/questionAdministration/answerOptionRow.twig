@@ -55,6 +55,7 @@
                     class='code code-title'
                     value="{{ answerOption.code }}"
                     maxlength='5'
+                    pattern="[a-zA-Z0-9]+"
                     required='required'
                     onfocusout="LS.questionEditor.showAnswerOptionCodeUniqueError(this);"
                 />
@@ -76,9 +77,10 @@
                 id='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][assessment]'
                 name='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][assessment]'
                 value="{{ answerOption.assessment_value }}"
+                pattern="-?\d+"
                 maxlength='5'
                 size='5'
-                onkeypress="returnwindow.LS.goodchars(event,'-1234567890')"
+                onkeypress="return window.LS.goodchars(event,'-1234567890')"
             />
         </td>
     {% elseif first %}
@@ -90,8 +92,9 @@
                 name='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][assessment]'
                 value="{{ answerOption.assessment_value }}"
                 maxlength='5'
+                pattern="-?\d+"
                 size='5'
-                onkeypress="returnwindow.LS.goodchars(event,'-1234567890')"
+                onkeypress="return window.LS.goodchars(event,'-1234567890')"
             />
         </td>
     {% elseif assessmentvisible %}

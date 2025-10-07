@@ -50,6 +50,16 @@ class SurveyLanguageSetting extends LSActiveRecord
     private $oldSurveyId;
     private $oldAlias;
 
+    public $surveyls_language = "";
+    public $surveyls_title = "";
+    public $surveyls_description = "";
+    public $surveyls_welcometext = "";
+    public $surveyls_endtext = "";
+    public $surveyls_policy_notice = "";
+    public $surveyls_policy_notice_label = "";
+    public $surveyls_url = "";
+    public $surveyls_urldescription = "";
+
     /** @inheritdoc */
     public function tableName()
     {
@@ -226,6 +236,9 @@ class SurveyLanguageSetting extends LSActiveRecord
      */
     public function getAttributeCaptions()
     {
+        if (empty($this->surveyls_attributecaptions)) {
+            return [];
+        }
         $captions = @json_decode($this->surveyls_attributecaptions, true);
         return $captions !== false ? $captions : array();
     }

@@ -29,11 +29,20 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th class='col-lg-1'>{{ gT("Code") }}</th>
+                            <th class='col-lg-1'>{{ gT("Code") }}
+                            <i
+                class="ri-information-fill"
+                data-bs-toggle="tooltip"
+                title="{{ gT("A mandatory unique alpha-numeric code for each answer option (1-5 characters)") }}"
+            > </i>                            </th>
 
                             {% if assessmentvisible %}
                                 <th class='col-lg-1'>
-                                    {{ gT("Assessment value") }}
+                                    {{ gT("Assessment value") }} <i
+                class="ri-information-fill"
+                data-bs-toggle="tooltip"
+                title="{{ gT("A positive or negative integer number as assement value if this option is selected") }}"
+            > </i>     
                                 </th>
                             {% else %}
                                 <th style='display:none;'>

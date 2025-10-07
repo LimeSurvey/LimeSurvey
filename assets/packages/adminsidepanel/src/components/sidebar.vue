@@ -187,22 +187,25 @@ export default {
 
 			//check for corresponding question
 			let lastQuestionObject = false;
-			let questionId = document.querySelector('#edit-question-form[name="question[qid]"]').value
-			LS.ld.each(this.questiongroups, (itm, i) => {
-				LS.ld.each(itm.questions, (itmm, j) => {
-					lastQuestionObject = questionId === itmm.qid
-							? itmm
-							: lastQuestionObject;
+			let questionId = document.querySelector('#edit-question-form [name="question[qid]"]');
+			if (questionId !== null) {
+				questionId = questionId.value;
+				LS.ld.each(this.questiongroups, (itm, i) => {
+					LS.ld.each(itm.questions, (itmm, j) => {
+						lastQuestionObject = questionId === itmm.qid
+								? itmm
+								: lastQuestionObject;
+						if (lastQuestionObject !== false) {
+							lastQuestionGroupObject = itm;
+							return false;
+						}
+					});
 					if (lastQuestionObject !== false) {
 						lastQuestionGroupObject = itm;
 						return false;
 					}
 				});
-				if (lastQuestionObject !== false) {
-					lastQuestionGroupObject = itm;
-					return false;
-				}
-			});
+			}
 
             //unload every selection
             this.$store.commit("closeAllMenus");
