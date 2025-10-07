@@ -606,7 +606,7 @@ progress {
   color: #6c757d;
 }
 .blockquote-footer::before {
-  content: "— ";
+  content: "— ";
 }
 
 .img-fluid {
@@ -4772,7 +4772,7 @@ textarea.form-control-lg {
   flex-wrap: wrap;
   padding: 0 0;
   margin-bottom: 1rem;
-  font-size: 1.1rem;
+  font-size: 0.9975rem;
   list-style: none;
 }
 
@@ -11186,7 +11186,7 @@ textarea.form-control-lg {
 }
 
 .summary-table {
-  font-size: 1.1rem;
+  font-size: 0.9975rem;
   padding-left: 0.5rem;
 }
 .summary-table strong {
@@ -17398,6 +17398,33 @@ a {
   font-weight: 400;
 }
 
+.reg12 {
+  color: #6E748C;
+  font-weight: 400;
+  font-size: 0.855rem;
+  line-height: 16px;
+  letter-spacing: -0.5px;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.reg16 {
+  color: #1E1E1E;
+  font-weight: 400;
+  font-size: 1.14rem;
+  line-height: 20px;
+  letter-spacing: -0.272px;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.semibold12 {
+  color: #1E1E1E;
+  font-weight: 600;
+  font-size: 0.855rem;
+  line-height: 16px;
+  letter-spacing: -0.204px;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
 .tooltip {
   opacity: 0;
 }
@@ -17436,7 +17463,7 @@ ol.breadcrumb.title-bar-breadcrumb {
 }
 ol.breadcrumb.title-bar-breadcrumb a {
   color: #14AE5C;
-  font-weight: 500;
+  font-weight: 400;
 }
 ol.breadcrumb.title-bar-breadcrumb a:hover {
   color: #108b4a;
@@ -17463,8 +17490,8 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 
 .breadcrumb {
-  font-size: 1.1;
-  line-height: 25px;
+  font-size: 0.9975rem;
+  line-height: 20px;
   margin-bottom: 0;
 }
 
