@@ -1598,7 +1598,7 @@ class Participant extends LSActiveRecord
             $aTokenAttributes[$key] = $iIDAttributeCPDB;
         }
 
-        $aTokenAttributes = serialize($aTokenAttributes);
+        $aTokenAttributes = json_encode($aTokenAttributes);
 
         Yii::app()->db
             ->createCommand()
@@ -1610,6 +1610,7 @@ class Participant extends LSActiveRecord
             addColumn("{{tokens_$surveyId}}", $key, $value['type']);
         }
         Yii::app()->db->schema->getTable("{{tokens_$surveyId}}", true); // Refresh schema cache just
+        Token::model($surveyId)->refreshMetaData(); // Refresh model meta data
 
         return array($addedAttributes, $addedAttributeIds);
     }

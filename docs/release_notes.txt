@@ -34,6 +34,95 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.15.15 (build 250929) to 6.15.16 (build 251006) October 6, 2025
+-Fixed issue: Email index missing in plugin event (Carsten Schmitz)
+-Fixed issue #LE-428: Fixed a performance issue when displaying condition fields (#4453) (lajosarpad)
+-Fixed issue #20277: Error when adding survey participant attributes to create (#4454) (Gabriel Jenik)
+-Fixed issue #20276: Placeholder fields on send invitation emails are not populated (#4456) (Gabriel Jenik)
+-Fixed issue #20274: Issue when printing survey with empty date question (#4451) (Denis Chenu)
+-Fixed issue #20260: Survey progress bar breaks on back button (#4457) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by c_schmitz, holch, samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.15.14 (build 250924) to 6.15.15 (build 250929) September 29, 2025
++New feature: When sending batches of emails, make the current email index/count available in the plugin event (Carsten Schmitz)
+-Fixed issue #LE-413: Implemented a fix for response importer to support fields with hashtag in their name (#4446) (lajosarpad)
+-Fixed issue #20144: Attribute descriptions in old serialized format were not converted to new format, causing empty attributes (#4329) (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+
+
+Changes from 6.15.13 (build 250923) to 6.15.14 (build 250924) September 23, 2025
+-Fixed issue: The CSRF token could not be verified (Carsten Schmitz)
+#Updated translation: Welsh by AlfNathan, c_schmitz, ChrisWilliams
+#Updated translation: Galician by Calidonia, Gronnd, oslcixug
+
+
+Changes from 6.15.12 (build 250916) to 6.15.13 (build 250923) September 23, 2025
+-Fixed issue: Question text too small in question summary (Carsten Schmitz)
+-Fixed issue: Question group text too small in summary (Carsten Schmitz)
+-Fixed issue: Question group name not shown properly in question summary (Carsten Schmitz)
+-Fixed issue: Breadcrumb text too small (Carsten Schmitz)
+-Fixed issue #20271: [security] Reflected XSS in CSRF token handling (#4449) (Gabriel Jenik)
+-Fixed issue #20256: Date question doesn't show AM/PM correctly (#4431) (Gabriel Jenik)
+
+
+Changes from 6.15.11 (build 250909) to 6.15.12 (build 250916) September 16, 2025
+-Fixed issue: Offered encodings for file imports don't properly work (Carsten Schmitz)
+-Fixed issue #AT-1745: Storing answers from new editor (#4433) (Tim Willig)
+-Fixed issue #AT-1743: Storing of subquestions from new editor (#4432) (Tim Willig)
+-Fixed issue #20243: Attribute names disappear and automatic mapping breaks when adding CPDB participants to a survey (#4439) (Gabriel Jenik)
+-Fixed issue #20239: [security] Reflected Cross-Site Scripting (#4428) (Gabriel Jenik)
+-Fixed issue #20233: Question Themes not compatible with LimeSurvey 6 (#4417) (Gabriel Jenik)
+-Fixed issue #20229: "Uses left" value is not pre-set when creating a new participant (#4430) (Gabriel Jenik)
+-Fixed issue #20218: PDF export of the statistics tool does not take the setting 'Show text responses inline' into account (#4423) (Gabriel Jenik)
+-Fixed issue #19812: fruity, bootswatch and vanilla truncate question index dropdown text (#4427) (Gabriel Jenik)
+#Updated translation: Japanese by tibor.pacalat
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.15.10 (build 250901) to 6.15.11 (build 250909) September 9, 2025
+-Fixed issue: Several update issues when updating from version 1.x (Carsten Schmitz)
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Swahili by FredaM
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Italian by lfanfoni, sielte, usastice
+#Updated translation: Italian (Informal) by alesarrett, lfanfoni
+
+
+Changes from 6.15.9 (build 250826) to 6.15.10 (build 250901) September 1, 2025
+-Fixed issue #AT-1729: import definition of jspdf was wrong after package update (twilligls)
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.15.8 (build 250825) to 6.15.9 (build 250826) August 26, 2025
+-Fixed issue #20242: Fixed the broken token mechanism (#4420) (lajosarpad)
+#Updated translation: Telugu by FredaM
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Marathi by FredaM
+#Updated translation: Japanese by d_inoue
+#Updated translation: Greek by M.E.Rigos
+#Updated translation: Bengali by FredaM
+
+
+Changes from 6.15.7 (build 250820) to 6.15.8 (build 250825) August 25, 2025
+-Fixed issue #20235: Applied fixes for tokens and anonymized (#4407) LE-337 (lajosarpad)
+-Fixed issue #20224: "Constant E_STRICT is deprecated" - PHP8.4 or later with debug enabled (Carsten Schmitz)
+#Updated translation: Slovak by jelen1
+#Updated translation: Japanese by nomoto
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.15.6 (build 250818) to 6.15.7 (build 250820) August 20, 2025
 -Fixed issue #20222: error when trying to store token
 #Updated translation: Slovak by jelen1

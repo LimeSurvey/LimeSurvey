@@ -78,4 +78,14 @@ class MysqlSchema extends CMysqlSchema
         }
         return $sResult;
     }
+
+	/**
+	 * Creates a command builder for the database.
+	 * This method may be overridden by child classes to create a DBMS-specific command builder.
+	 * @return LSDbCommandBuilder command builder instance
+	 */
+	protected function createCommandBuilder()
+	{
+		return new LSDbCommandBuilder($this);
+	}
 }
