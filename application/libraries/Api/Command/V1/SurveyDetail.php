@@ -13,6 +13,7 @@ use LimeSurvey\Api\Command\{
     Response\ResponseFactory
 };
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
+use LimeSurvey\Models\Services\SurveyDetailService;
 
 class SurveyDetail implements CommandInterface
 {
@@ -22,6 +23,8 @@ class SurveyDetail implements CommandInterface
     protected TransformerOutputSurveyDetail $transformerOutputSurveyDetail;
     protected ResponseFactory $responseFactory;
     protected Permission $permission;
+    protected SurveyDetailService $surveyDetailService;
+    protected string $lastLoaded;
 
     /**
      * Constructor
@@ -30,28 +33,34 @@ class SurveyDetail implements CommandInterface
      * @param TransformerOutputSurveyDetail $transformerOutputSurveyDetail
      * @param ResponseFactory $responseFactory
      * @param Permission $permission
+     * @param SurveyDetailService $surveyDetailService
      */
     public function __construct(
         Survey $survey,
         TransformerOutputSurveyDetail $transformerOutputSurveyDetail,
         ResponseFactory $responseFactory,
-        Permission $permission
+        Permission $permission,
+        SurveyDetailService $surveyDetailService
     ) {
         $this->survey = $survey;
         $this->transformerOutputSurveyDetail = $transformerOutputSurveyDetail;
         $this->responseFactory = $responseFactory;
         $this->permission = $permission;
+        $this->surveyDetailService = $surveyDetailService;
+        $this->lastLoaded = '';
     }
 
     /**
      * Run survey detail command
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      *
      * @param Request $request
      * @return Response
      */
     public function run(Request $request)
     {
-        $surveyId = (string) $request->getData('_id');
+        $surveyId = (string) ($request->getData('_id') ?? \Yii::app()->getRequest()->getQuery('survey-detail'));
+        $this->lastLoaded = (string) (\Yii::app()->getRequest()->getQuery('ts') ?? '');
         $hasPermission = $this->permission->hasSurveyPermission(
             (int)$surveyId,
             'survey',
@@ -92,12 +101,24 @@ class SurveyDetail implements CommandInterface
             );
         }
 
+        if ($this->lastLoaded && (strtotime($this->lastLoaded) > strtotime($surveyModel->lastmodified))) {
+            return $this->responseFactory
+                ->makeSuccess(['survey' => 'not changed']);
+        }
+
         //set real survey options with inheritance to get value of "inherit" attribute from db
         // for example get inherit template value  $surveyModel->options->template
         $surveyModel->setOptionsFromDatabase();
 
-        $survey = $this->transformerOutputSurveyDetail
-            ->transform($surveyModel);
+        $survey = $this->surveyDetailService->getCache((int)$surveyId);
+
+        if (!$survey) {
+            $survey = $this->transformerOutputSurveyDetail
+                ->transform($surveyModel);
+            if ($survey) {
+                $this->surveyDetailService->saveCache((int)$surveyId, $survey);
+            }
+        }
 
         return $this->responseFactory
             ->makeSuccess(['survey' => $survey]);
