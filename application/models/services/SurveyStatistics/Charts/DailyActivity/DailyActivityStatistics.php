@@ -76,11 +76,28 @@ class DailyActivityStatistics implements StatisticsChartInterface
     private function fetchCounts(int $surveyId, DateTime $startDate): array
     {
         $command = Yii::app()->db->createCommand()
-            ->select(['DATE(submitdate) as response_date', 'COUNT(id) as responses'])
+            ->select(['DATE(submitdate) as response_date', 'COUNT(id) as responses', 'GROUP_CONCAT(id) as response_ids'])
             ->from("{{survey_$surveyId}}")
-            ->where('submitdate IS NOT NULL AND submitdate >= :startDate', [':startDate' => $startDate->format('Y-m-d 00:00:00')])
-            ->group('DATE(submitdate)')
-            ->order('DATE(submitdate) ASC');
+            ->where('submitdate IS NOT NULL AND submitdate >= :startDate', [':startDate' => $startDate->format('Y-m-d 00:00:00')]);
+
+
+        // Apply filters if any
+        if ($this->filters && $this->filters->count() > 0) {
+            $filters = $this->filters->getFilters();
+            if (!empty($filters['minId'])) {
+                $command = $command->andWhere('id >= :minId', [':minId' => $filters['minId']]);
+            }
+
+            if (!empty($filters['maxId'])) {
+                $command = $command->andWhere('id <= :maxId', [':maxId' => $filters['maxId']]);
+            }
+
+//            if (isset($filters['completed'])) {
+//                $command = $command->andWhere('submitdate IS ' . ($filters['completed'] ? 'NOT' : '') . ' NULL');
+//            }
+        }
+
+        $command = $command->group('DATE(submitdate)')->order('DATE(submitdate) ASC');
 
         $rows = $command->queryAll();
 

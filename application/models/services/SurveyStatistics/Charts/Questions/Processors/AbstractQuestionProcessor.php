@@ -76,6 +76,24 @@ abstract class AbstractQuestionProcessor
         $this->answers = $answers;
     }
 
+    public function setCompleted(?bool $completed): AbstractQuestionProcessor
+    {
+        $this->completed = $completed;
+        return $this;
+    }
+
+    public function setMinId(?int $minId): AbstractQuestionProcessor
+    {
+        $this->minId = $minId;
+        return $this;
+    }
+
+    public function setMaxId(?int $maxId): AbstractQuestionProcessor
+    {
+        $this->maxId = $maxId;
+        return $this;
+    }
+
     /**
      * Gets the number of responses where the field is answered.
      *
