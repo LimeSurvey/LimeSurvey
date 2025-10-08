@@ -98,7 +98,7 @@ class StatisticsOverview implements CommandInterface
                 // Survey statistics overview
                 'statistics' => $overview['data'],
                 // Daily activity (last 30 days)
-                'dailyActivity' => $dailyActivity['data'],
+                'dailyActivity' => $dailyActivity,
                 // Latest 10 responses
                 'responses' => $latestResponses,
             ];
