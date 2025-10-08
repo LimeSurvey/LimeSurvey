@@ -27,10 +27,6 @@ switch($activeTab) {
         $label = '<i class="ri-check-fill"></i>&nbsp;'.gT("Save");
         
         break;
-    case 'import':
-        $activeForm = 'importsurvey'; 
-        $label = '<i class="ri-download-fill"></i>&nbsp;'.gT('Import');
-        break;
     case 'copy':
         $activeForm = 'copysurveyform'; 
         $label = '<i class="ri-file-copy-line"></i>&nbsp;'.gT('Copy');
@@ -61,13 +57,6 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
 
 
     <?php if ($action === "newsurvey"): ?>
-        <!-- Import -->
-        <li class="nav-item" role="presentation">
-            <a class="nav-link <?= $active === 'import' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title=" <span class='ri-download-2-fill '></span>&nbsp;<?= gT('Import'); ?>" data-form-id="importsurvey" href="#import">
-                <?php  eT("Import"); ?>
-            </a>
-        </li>
-
         <!-- Copy -->
         <li class="nav-item" role="presentation">
             <a class="nav-link <?= $active === 'copy' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title="<i class='ri-file-copy-line'></i>&nbsp;<?= gT('Copy'); ?>" data-form-id="copysurveyform" href="#copy">
