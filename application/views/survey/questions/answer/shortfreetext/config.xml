@@ -85,6 +85,18 @@
             <readonly_when_active></readonly_when_active>
         </attribute>
         <attribute>
+            <name>placeholder</name>
+            <category>Display</category>
+            <sortorder>12</sortorder>
+            <inputtype>text</inputtype>
+            <expression>1</expression>
+            <i18n>1</i18n>
+            <help>A placeholder answer to a question. This will appear in the answer field and disappear when real answer text is entered.</help>
+            <caption>Placeholder answer</caption>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
             <name>hide_tip</name>
             <category>Display</category>
             <sortorder>100</sortorder>
