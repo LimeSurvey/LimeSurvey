@@ -101,9 +101,9 @@ class SurveyDetail implements CommandInterface
             );
         }
 
-        if ($this->lastLoaded && (strtotime($this->lastLoaded) > strtotime($surveyModel->lastmodified))) {
+        if ($this->lastLoaded && ($this->lastLoaded > strtotime($surveyModel->lastmodified))) {
             return $this->responseFactory
-                ->makeSuccess(['survey' => 'not changed']);
+                ->makeSuccessNoContent();
         }
 
         //set real survey options with inheritance to get value of "inherit" attribute from db
