@@ -158,50 +158,55 @@ class QuestionAttribute extends LSActiveRecord
     }
 
     /**
-     * Set attributes for multiple questions
+     * Set attributes for multiple questions simultaneously
      *
-     * NOTE: We can't use self::setQuestionAttribute() because it doesn't check for question types first.
-     * TODO: the question type check should be done via rules, or via a call to a question method
+     * This function updates specified attributes for multiple questions at once.
+     * It first checks if the user has permission to update survey content,
+     * then handles special case for random order attributes, and finally
+     * applies the requested attribute updates to all specified questions.
      *
-     * @param integer $iSid                   the sid to update  (only to check permission)
-     * @param array $aQids                    an array containing the list of primary keys for questions
-     * @param array $aAttributesToUpdate    array containing the list of attributes to update
-     * @param array $aValidQuestionTypes    the question types we can update for those attributes
-     * @todo Missign noun in function name - set multiple what?
+     * @param integer $surveyId The survey ID
+     * @param array $questionIds Array of question IDs to update
+     * @param array $attributesWithValue Array of attribute names and the new value
+     * @param array $validQuestionTypes Array of question types that are valid for these attributes
+     *
+     * @return void No direct return value, updates are applied to the database
      */
-    public function setMultiple($iSid, $aQids, $aAttributesToUpdate, $aValidQuestionTypes)
-    {
+    public function setMultipleAttributes(
+        $surveyId,
+        $questionIds,
+        $attributesWithValue,
+        $validQuestionTypes
+    ) {
         // Permissions check
-        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
-            // For each question
-            foreach ($aQids as $sQid) {
-                $iQid = (int)$sQid;
-                // We need to generate a question object to check for the question type
-                // So, we can also force the sid: we don't allow to update questions on different surveys at the same time (permission check is by survey)
-                $oQuestion = Question::model()->find('qid=:qid AND sid=:sid', [":qid" => $iQid, ":sid" => $iSid]);
-
-                // For each attribute
-                foreach ($aAttributesToUpdate as $sAttribute) {
-                    // TODO: use an array like for a form submit, so we can parse it from the controller instead of using $_POST directly here
-                    $sValue = Yii::app()->request->getPost($sAttribute);
-                    $questionAttributes = QuestionAttribute::model()->findAllByAttributes(['attribute' => $sAttribute, 'qid' => $iQid]);
-
-                    // We check if we can update this attribute for this question type
-                    // TODO: if (in_array($oQuestion->attributes, $sAttribute))
-                    if (in_array($oQuestion->type, $aValidQuestionTypes)) {
-                        if (count($questionAttributes) > 0) {
-                            // Update
-                            foreach ($questionAttributes as $questionAttribute) {
-                                $questionAttribute->value = $sValue;
-                                $questionAttribute->save();
-                            }
-                        } else {
-                            // Create
-                            $oAttribute = new QuestionAttribute();
-                            $oAttribute->qid = $iQid;
-                            $oAttribute->value = $sValue;
-                            $oAttribute->attribute = $sAttribute;
-                            $oAttribute->save();
+        if (
+            Permission::model()->hasSurveyPermission(
+                $surveyId,
+                'surveycontent',
+                'update'
+            )
+        ) {
+            $attributesWithValue = $this->setRandomOrderAttributes(
+                $surveyId,
+                $questionIds,
+                $attributesWithValue,
+                $validQuestionTypes
+            );
+            if (!empty($attributesWithValue)) {
+                foreach ($questionIds as $questionId) {
+                    $questionId = (int)$questionId;
+                    $question = Question::model()->find(
+                        'qid=:qid AND sid=:sid',
+                        [":qid" => $questionId, ":sid" => $surveyId]
+                    );
+                    // For each attribute
+                    foreach ($attributesWithValue as $attribute => $value) {
+                        if (in_array($question->type, $validQuestionTypes)) {
+                            $this->setQuestionAttribute(
+                                $questionId,
+                                $attribute,
+                                $value
+                            );
                         }
                     }
                 }
@@ -635,5 +640,55 @@ class QuestionAttribute extends LSActiveRecord
         $validator = new LSYii_Validators();
         $validator->attributes = [$attribute];
         $validator->validate($this, [$attribute]);
+    }
+
+    /**
+     * Massive action "Present subquestions/answer options in random order"
+     * has to update random_order, answer_order and/or subquestion_order
+     * depending on question type.
+     * This function checks for random_order attribute and updates the corresponding fields instead if necessary.
+     * $attributesToUpdate will be returned with the random_order attr removed
+     * @param int $surveyId the survey ID
+     * @param array $questionIds the question IDs
+     * @param array $attributesWithValue the attributes to update
+     * @param array $validQuestionTypes the valid question types
+     *
+     * @return array $attributesToUpdate with random_order attr removed
+     */
+    public function setRandomOrderAttributes(
+        int $surveyId,
+        array $questionIds,
+        array $attributesWithValue,
+        array $validQuestionTypes
+    ) {
+        if (array_key_exists('random_order', $attributesWithValue)) {
+            $value = $attributesWithValue['random_order'];
+            $stringValue = $value === '1' ? 'random' : 'normal';
+            foreach ($questionIds as $questionId) {
+                $questionModel = Question::model()->find(
+                    'qid=:qid AND sid=:sid',
+                    [":qid" => $questionId, ":sid" => $surveyId]
+                );
+                if (in_array($questionModel->type, $validQuestionTypes)) {
+                    if (
+                        in_array($questionModel->type, Question::ORDER_TYPES_SUBQUESTION)
+                    ) {
+                        $updateAttribute = 'subquestion_order';
+                        $updateValue = $stringValue;
+                    } elseif (
+                        in_array($questionModel->type, Question::ORDER_TYPES_ANSWER)
+                    ) {
+                        $updateAttribute = 'answer_order';
+                        $updateValue = $stringValue;
+                    } else {
+                        $updateAttribute = 'random_order';
+                        $updateValue = $value;
+                    }
+                    $this->setQuestionAttribute($questionId, $updateAttribute, $updateValue);
+                }
+            }
+            unset($attributesWithValue['random_order']);
+        }
+        return $attributesWithValue;
     }
 }
