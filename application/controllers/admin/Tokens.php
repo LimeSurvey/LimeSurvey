@@ -399,9 +399,6 @@ class Tokens extends SurveyCommonAction
             $this->getController()->redirect(array("/admin/tokens/sa/index/surveyid/{$iSurveyId}"));
         }
 
-        // TODO: Why needed?
-        App()->clientScript->registerPackage('bootstrap-switch');
-
         if (!$survey->hasTokensTable) {
             $this->newParticipantTable($iSurveyId);
         }
@@ -1606,7 +1603,7 @@ class Tokens extends SurveyCommonAction
                 $mail->setSurvey($iSurveyId);
                 $mail->emailType = $sSubAction;
                 $mail->replaceTokenAttributes = true;
-                foreach ($emresult as $emrow) {
+                foreach ($emresult as $index => $emrow) {
                     $mailLanguage = $emrow['language'];
                     if (empty($mailLanguage)) {
                         $mailLanguage = $sBaseLanguage;
@@ -1630,6 +1627,7 @@ class Tokens extends SurveyCommonAction
                         }
                         continue;
                     }
+                    $mail->index = $index;
                     $mail->setToken($emrow['token']);
                     $mail->setFrom(Yii::app()->request->getPost('from_' . $mailLanguage));
                     $mail->rawSubject = $sSubject[$mailLanguage];
@@ -2769,23 +2767,23 @@ class Tokens extends SurveyCommonAction
         Yii::app()->loadHelper("surveytranslator");
 
         $defaultFields = [
-            'tid',
-            'participant_id',
+            'tid' => null,
+            'participant_id' => null,
             'firstname' => '',
             'lastname' => '',
             'email' => '',
             'emailstatus' => '',
-            'token',
-            'language',
-            'blacklisted',
-            'sent',
-            'remindersent',
-            'remindercount',
-            'completed',
-            'usesleft',
-            'validfrom',
-            'validuntil',
-            'mpid'
+            'token' => null,
+            'language' => null,
+            'blacklisted' => null,
+            'sent' => 'N',
+            'remindersent' => 'N',
+            'remindercount' => null,
+            'completed' => 'N',
+            'usesleft' => 1,
+            'validfrom' => null,
+            'validuntil' => null,
+            'mpid' => null
         ];
 
         if ($iTokenId) {
