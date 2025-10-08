@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Libraries\Api\Command\V1;
 
+use CDbException;
 use InvalidArgumentException;
 use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
@@ -106,6 +107,11 @@ class StatisticsOverview implements CommandInterface
             return $this->responseFactory->makeErrorBadRequest($exception->getMessage());
         } catch (TransformerException $exception) {
             return $this->responseFactory->makeErrorBadRequest($exception->getMessage());
+        } catch (CDbException $exception) {
+            if ($exception->getCode() === 42) {
+                return $this->responseFactory->makeErrorBadRequest("Survey table with ID {$this->surveyId} does not exist.");
+            }
+            throw $exception;
         }
 
         return $this->responseFactory->makeSuccess(['overview' => $data]);
