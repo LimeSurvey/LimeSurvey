@@ -288,7 +288,7 @@ class Tokens extends SurveyCommonAction
 
                                     if (!empty($record) && $record->emailstatus != 'bounced') {
                                         $record->emailstatus = 'bounced';
-                                        $record->save();
+                                        $record->save(true, ['emailstatus']);
                                         $bouncetotal++;
                                     }
 
