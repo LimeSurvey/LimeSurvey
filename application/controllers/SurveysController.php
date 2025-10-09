@@ -86,7 +86,7 @@ class SurveysController extends LSYii_Controller
             // TODO: Remove? It seems this can never happen because it's already caught by LSYii_Application::onException() (see commit c792c2e).
             $this->spitOutJsonError($error, $oException);
         } elseif ($error) {
-            $this->spitOutHtmlError($error, (int) $request->getParam('sid', $request->getParam('surveyid')));
+            $this->spitOutHtmlError($error);
         } else {
             throw new CHttpException(404, 'Page not found.');
         }
@@ -96,7 +96,6 @@ class SurveysController extends LSYii_Controller
      * Echo $error as HTML and end execution.
      *
      * @param array $error
-     * @param string|null $surveyId
      *
      * @return void
      *
@@ -106,12 +105,13 @@ class SurveysController extends LSYii_Controller
      * @throws Twig_Error_Syntax
      * @throws WrongTemplateVersionException
      */
-    public function spitOutHtmlError(array $error, $surveyId)
+    public function spitOutHtmlError(array $error)
     {
+        $surveyId = LSYii_Application::getSurveyId(false);
         if ($surveyId) {
-            $oTemplate = Template::model()->getInstance('', $surveyId);
+            $oTemplate = Template::model()->getInstance(null, $surveyId);
         } else {
-            $oTemplate = Template::getLastInstance();
+            $oTemplate = Template::model()->getInstance(App()->getConfig('defaulttheme'));
         }
         $this->sTemplate = $oTemplate->sTemplateName;
 
