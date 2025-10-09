@@ -526,7 +526,7 @@ class SurveyCommonAction extends CAction
             'isDivider' => false,
             'isSmallText' => false,
             'label' => gT('Survey'),
-            'href' => \Yii::app()->createUrl('surveyAdministration/createSurvey'),
+            'href' => \Yii::app()->createUrl('surveyAdministration/newSurvey'),
             'iconClass' => 'ri-add-line',
         ];
         $menuItems[] = (new MenuItem($menuItemNewSurvey));

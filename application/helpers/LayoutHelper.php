@@ -175,7 +175,7 @@ class LayoutHelper
             'isDivider' => false,
             'isSmallText' => false,
             'label' => gT('Survey'),
-            'href' => \Yii::app()->createUrl('surveyAdministration/createSurvey'),
+            'href' => \Yii::app()->createUrl('surveyAdministration/newSurvey'),
             'iconClass' => 'ri-add-line',
             'id' => 'create-survey-link',
         ];

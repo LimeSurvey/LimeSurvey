@@ -31,11 +31,6 @@ $active = Yii::app()->request->getParam('tab', 'create');
                 <?php $this->renderPartial('tabCreate_view', ['data' => $data]); ?>
             </div>
 
-            <!-- Import -->
-            <div id='import' class="tab-pane fade <?= $active === 'import' ? 'show active' : '' ?>">
-                <?php $this->renderPartial('tabImport_view', $data); ?>
-            </div>
-
             <!-- Copy -->
             <div id='copy' class="tab-pane fade <?= $active === 'copy' ? 'show active' : '' ?>">
                 <?php $this->renderPartial('tabCopy_view', $data); ?>
