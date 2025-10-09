@@ -4,6 +4,10 @@ namespace LimeSurvey\Models\Services;
 
 use Survey;
 
+/**
+ * This class has all the results from the copy survey process.
+ */
+
 class CopySurveyResult
 {
     /** @var Survey */

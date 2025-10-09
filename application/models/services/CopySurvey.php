@@ -25,7 +25,7 @@ class CopySurvey
     /** @var ?int */
     private $newSurveyId;
 
-    /** @var array */
+    /** @var CopySurveyOptions */
     private $options;
 
     /**
@@ -34,7 +34,7 @@ class CopySurvey
 
     /**
      * @param Survey $sourceSurvey
-     * @param array $options
+     * @param CopySurveyOptions $options
      * @param int $newSurveyId
      */
     public function __construct($sourceSurvey, $options, $newSurveyId)
@@ -78,22 +78,31 @@ class CopySurvey
             $mappingGroupIdsAndQuestionIds['questionGroupIds']
         );
 
-        if (isset($this->options['resetConditions'])) {
+        if ($this->options->isQuotas()){
+           $copySurveyQuotas = new CopySurveyQuotas($this->sourceSurvey, $destinationSurvey);
+            $cntQuotas = $copySurveyQuotas->copyQuotas($mappingGroupIdsAndQuestionIds['questionIds']);
+            $copySurveyResult->setCntQuotas($cntQuotas);
+        }
+
+        //if a question has conditions they are copied or not...
+        if ($this->options->isConditions()) {
+            //copy the conditions from table
+        } else {
             Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $destinationSurvey->sid);
             QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $destinationSurvey->sid);
         }
 
-        if (isset($this->options['resetResponseId'])) {
+        if ($this->options->isResetResponseStartId()) {
             $oSurvey = Survey::model()->findByPk($destinationSurvey->sid);
             $oSurvey->autonumber_start = 0;
             $oSurvey->save();
         }
 
-        if (!isset($this->options['excludePermissions'])) {
+        if ($this->options->isPermissions()) {
             Permission::model()->copySurveyPermissions($this->sourceSurvey->sid, $destinationSurvey->sid);
         }
 
-        if ($this->options['copyResources']) {
+        if ($this->options->isResourcesAndLinks()) {
             $resourceCopier = new CopySurveyResources();
             [, $errorFilesInfo] = $resourceCopier->copyResources($this->sourceSurvey->sid, $destinationSurvey->sid);
             if (!empty($errorFilesInfo)) {
@@ -179,7 +188,7 @@ class CopySurvey
             $copyQuestionValues->setQuestionL10nData($copyQuestionTextValues);
             $copyQuestion = new CopyQuestion($copyQuestionValues);
             $optionsCopyQuestion['copySubquestions'] = true;
-            $optionsCopyQuestion['copyAnswerOptions'] = !$this->options['excludeAnswers'];
+            $optionsCopyQuestion['copyAnswerOptions'] = $this->options->isAnswerOptions();
             $optionsCopyQuestion['copyDefaultAnswers'] = true;
             $optionsCopyQuestion['copySettings'] = true;
             if ($copyQuestion->copyQuestion($optionsCopyQuestion, $destinationSurvey->sid)) {
@@ -223,14 +232,33 @@ class CopySurvey
     private function copySurveyAssessments($copySurveyResult, $destinationSurvey, $mappingGroupIds)
     {
         $cntCopiedAssessments = 0;
-        $assessments = Assessment::model()->findAllByAttributes(['sid' => $this->sourceSurvey->sid]);
+        //only get assessment for the base language, as id+language is primary key...
+        $assessments = Assessment::model()->findAllByAttributes(['sid' => $this->sourceSurvey->sid,'language' => $this->sourceSurvey->language]);
         foreach ($assessments as $assessment) {
             $destinationAssessment = new Assessment();
             $destinationAssessment->attributes = $assessment->attributes;
+            $destinationAssessment->minimum = $assessment->minimum;
+            $destinationAssessment->maximum = $assessment->maximum;
             $destinationAssessment->sid = $destinationSurvey->sid;
             $destinationAssessment->gid = $mappingGroupIds[$assessment->gid];
             if ($destinationAssessment->save()) {
                 $cntCopiedAssessments++;
+            }
+            //now copy for other languages
+            $assessmentLangEntries = Assessment::model()->findAllByAttributes(['id' => $assessment->id]);
+            foreach ($assessmentLangEntries as $assessmentLangEntry) {
+                if ($assessmentLangEntry->language!= $this->sourceSurvey->language){
+                    $langAssessment = new Assessment();
+                    $langAssessment->attributes = $assessmentLangEntry->attributes;
+                    $langAssessment->language = $assessmentLangEntry->language;
+                    $langAssessment->minimum = $assessmentLangEntry->minimum;
+                    $langAssessment->maximum = $assessmentLangEntry->maximum;
+                    $langAssessment->sid = $destinationSurvey->sid;
+                    $langAssessment->gid = $mappingGroupIds[$assessment->gid];
+                    $langAssessment->id = $destinationAssessment->id;
+                    //var_dump($langAssessment->language . ' id: '. $langAssessment->id);
+                    $langAssessment->save();
+                }
             }
         }
         $copySurveyResult->setCntAssessments($cntCopiedAssessments);

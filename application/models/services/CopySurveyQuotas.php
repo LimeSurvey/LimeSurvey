@@ -44,6 +44,7 @@ class CopySurveyQuotas
             /** @var Quota $quota */
             $newQuota = new Quota();
             $newQuota->attributes = $quota->attributes;
+            $newQuota->sid = $this->destinationSurvey->sid;
             if ($newQuota->save()) {
                 $cnt++;
                 //copy quota languages

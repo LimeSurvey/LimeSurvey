@@ -33,49 +33,43 @@
                         <label class=" form-label semibold12" ><?php echo  eT("Select the elements to include:"); ?> </label>
                         <!-- Convert resource links -->
                         <div class="form-check">
-                            <input id="ytcopysurveytranslinksfields" name="copysurveytranslinksfields" type="hidden" value="0" >
-                            <input id="copysurveytranslinksfields" name="copysurveytranslinksfields" type="checkbox" value="1" checked>
-                            <label class=" form-label reg16" for='copysurveytranslinksfields'><?php echo  eT("Survey resource files and adapt links"); ?> </label>
+                            <input name="copyResourcesAndLinks" type="checkbox" value="1" checked>
+                            <label class=" form-label reg16" for='copyResourcesAndLinks'><?php echo  eT("Survey resource files and adapt links"); ?> </label>
                         </div>
 
                         <!-- Exclude quotas -->
                         <div class="form-check">
-                            <input id="ytcopysurveyexcludequotas" name="copysurveyexcludequotas" type="hidden" value="0" checked>
-                            <input id="copysurveyexcludequotas" name="copysurveyexcludequotas" type="checkbox" value="1">
-                            <label class=" form-label reg16" for='copysurveyexcludequotas'><?php echo  eT("Survey quotas"); ?> </label>
+                            <input name="copySurveyQuotas" type="checkbox" value="1">
+                            <label class=" form-label reg16" for='copySurveyQuotas'><?php echo  eT("Survey quotas"); ?> </label>
                         </div>
 
                         <!-- Exclude survey permissions -->
                         <div class="form-check">
-                            <input id="ytcopysurveyexcludepermissions" name="copysurveyexcludepermissions" type="hidden" value="0" checked>
-                            <input id="copysurveyexcludepermissions" name="copysurveyexcludepermissions" type="checkbox" value="1">
-                            <label class=" form-label reg16" for='copysurveyexcludepermissions'><?php echo  eT("Survey permissions"); ?> </label>
+                            <input name="copySurveyPermissions" type="checkbox" value="1">
+                            <label class=" form-label reg16" for='copySurveyPermissions'><?php echo  eT("Survey permissions"); ?> </label>
                         </div>
 
                         <!-- include answers -->
                         <div class="form-check">
-                            <input id="includeAnswerOptions" name="includeAnswerOptions" type="checkbox" value="1" checked>
-                            <label class=" form-label reg16" for='includeAnswerOptions'><?php echo  eT("Answer options from the original survey"); ?> </label>
+                            <input name="copyAnswerOptions" type="checkbox" value="1" checked>
+                            <label class=" form-label reg16" for='copyAnswerOptions'><?php echo  eT("Answer options from the original survey"); ?> </label>
                         </div>
 
                         <!-- Reset conditions/relevance -->
                         <div class="form-check">
-                            <input id="ytcopysurveyresetconditions" name="copysurveyresetconditions" type="hidden" value="0" checked>
-                            <input id="copysurveyresetconditions" name="copysurveyresetconditions" type="checkbox" value="1">
-                            <label class=" form-label reg16" for='copysurveyresetconditions'><?php echo  eT("Survey conditions"); ?> </label>
+                            <input name="copySurveyConditions" type="checkbox" value="1">
+                            <label class=" form-label reg16" for='copySurveyConditions'><?php echo  eT("Survey conditions"); ?> </label>
                         </div>
 
                         <!-- Reset start/end date/time -->
                         <div class="form-check">
-                            <input id="ytcopysurveyresetstartenddate" name="copysurveyresetstartenddate" type="hidden" value="0" checked>
-                            <input id="copysurveyresetstartenddate" name="copysurveyresetstartenddate" type="checkbox" value="1">
-                            <label class=" form-label reg16" for='copysurveyresetstartenddate'><?php echo  eT("Start/end date/time"); ?> </label>
+                            <input name="resetStartEndDate" type="checkbox" value="1">
+                            <label class=" form-label reg16" for='resetStartEndDate'><?php echo  eT("Start/end date/time"); ?> </label>
                         </div>
 
                         <div class="form-check">
-                            <input id="ytcopysurveyresetresponsestartid" name="copysurveyresetresponsestartid" type="hidden" value="0" checked>
-                            <input id="copysurveyresetresponsestartid" name="copysurveyresetresponsestartid" type="checkbox" value="1">
-                            <label class=" form-label reg16" for='copysurveyresetresponsestartid'><?php echo  eT("Reset response start ID"); ?> </label>
+                            <input name="resetResponseStartId" type="checkbox" value="1">
+                            <label class=" form-label reg16" for='resetResponseStartId'><?php echo  eT("Reset response start ID"); ?> </label>
                         </div>
                     </div>
             </div>

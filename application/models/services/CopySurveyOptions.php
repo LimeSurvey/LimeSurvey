@@ -8,6 +8,9 @@ namespace LimeSurvey\Models\Services;
  */
 class CopySurveyOptions
 {
+    /** @var bool whether to copy resources and links */
+    private bool $resourcesAndLinks;
+
     /** @var bool whether to copy answer options of the questions of a survey */
     private bool $answerOptions;
 
@@ -38,6 +41,16 @@ class CopySurveyOptions
         $this->permissions = true;
         $this->resetStartAndEndDate = false;
         $this->resetResponseStartId = false;
+    }
+
+    public function isResourcesAndLinks(): bool
+    {
+        return $this->resourcesAndLinks;
+    }
+
+    public function setResourcesAndLinks(bool $resourcesAndLinks): void
+    {
+        $this->resourcesAndLinks = $resourcesAndLinks;
     }
 
     public function isAnswerOptions(): bool

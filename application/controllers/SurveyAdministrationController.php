@@ -1,5 +1,6 @@
 <?php
 
+use LimeSurvey\Models\Services\CopySurveyOptions;
 use LimeSurvey\Models\Services\CopySurveyResources;
 use LimeSurvey\Models\Services\FileUploadService;
 use LimeSurvey\Models\Services\FilterImportedResources;
@@ -2303,42 +2304,35 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Initialises the necessary options.
      *
-     * @return array
+     * @return CopySurveyOptions
      */
-    private function getPostParamsForCopySurvey($request)
+    private function getPostParamsForCopySurvey($request): CopySurveyOptions
     {
+        $optionsDataContainer = new CopySurveyOptions();
+
         //Survey resource files and adapt links
-        $option = $request->getPost('copysurveytranslinksfields');
-        if (isset($option)) { //user decision
-            $options['copyResources'] = $option == "1";
-        }
+        $option = $request->getPost('copyResourcesAndLinks');
+        $optionsDataContainer->setResourcesAndLinks(isset($option) && $option == "1");
 
-        //null means exclude and checkbox has not been set
-        $option = $request->getPost('copysurveyexcludequotas');
-        $options['excludeQuotas'] = ($option===null) ? null : $option == "1";
+        $option = $request->getPost('copySurveyQuotas');
+        $optionsDataContainer->setQuotas(isset($option) && $option == "1");
 
-        $option = $request->getPost('copysurveyexcludepermissions');
-        if (isset($option)) { //user decision
-            $options['excludePermissions'] = $option == "1";
-        }
+        $option = $request->getPost('copySurveyPermissions');
+        $optionsDataContainer->setPermissions(isset($option) && $option == "1");
 
-        $option = $request->getPost('includeAnswerOptions', null) ;
-        $options['excludeAnswers'] = ($option===null) ? null : !($option == "1");
+        $option = $request->getPost('copyAnswerOptions');
+        $optionsDataContainer->setAnswerOptions(isset($option) && $option == "1");
 
-        $option = $request->getPost('copysurveyresetconditions');
-        $options['resetConditions'] = ($option===null) ? null : $option == "1";
+        $option = $request->getPost('copySurveyConditions');
+        $optionsDataContainer->setConditions(isset($option) && $option == "1");
 
-        $option = $request->getPost('copysurveyresetstartenddate');
-        if (isset($option)) { //user decision
-            $options['resetStartEndDate'] = $option == "1";
-        }
+        $option = $request->getPost('resetStartEndDate');
+        $optionsDataContainer->setResetStartAndEndDate(isset($option) && $option == "1");
 
-        $option = $request->getPost('copysurveyresetresponsestartid');
-        if (isset($option)) { //user decision
-            $options['resetResponseId'] = $option == "1";
-        }
+        $option = $request->getPost('resetResponseStartId');
+        $optionsDataContainer->setResetResponseStartId(isset($option) && $option == "1");
 
-        return $options;
+        return $optionsDataContainer;
     }
 
     /**
