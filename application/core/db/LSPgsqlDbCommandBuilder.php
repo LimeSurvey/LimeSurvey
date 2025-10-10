@@ -1,6 +1,6 @@
 <?php
 
-class LSDbCommandBuilder extends \CDbCommandBuilder
+class LSPgsqlDbCommandBuilder extends \CPgsqlCommandBuilder
 {
     protected $_schema;
 
