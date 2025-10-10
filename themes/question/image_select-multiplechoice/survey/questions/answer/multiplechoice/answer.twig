@@ -16,7 +16,7 @@
 <ul class="list-unstyled {{coreClass}} {% if iNbCols > 1 %} ls-column-count-{{iNbCols}}{% endif %}"{% if iNbCols > 1 %} data-column-count={{iNbCols}}{% endif %}>
     {% for aRow in aRows %}
         {% set rowTemplate = aRow.other ? './survey/questions/answer/multiplechoice/rows/answer_row_other.twig' : './survey/questions/answer/multiplechoice/rows/answer_row.twig' %}
-        {% include rowTemplate with aRow only %}
+        {% include rowTemplate with aRow %}
     {% endfor %}
 </ul>
 <!-- end of answer -->
