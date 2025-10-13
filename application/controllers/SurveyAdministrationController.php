@@ -3574,7 +3574,7 @@ class SurveyAdministrationController extends LSBaseController
     {
         $surveyId = (int) Yii::app()->request->getPost('surveyId');
         $accessMode = Yii::app()->request->getPost('accessMode');
-        
+
         if (!$surveyId || !$accessMode) {
             $this->renderJSON(['success' => false, 'message' => 'Missing parameters']);
             return;
@@ -3586,12 +3586,12 @@ class SurveyAdministrationController extends LSBaseController
                 Survey::model(),
                 Yii::app()
             );
-            
+
             $result = $surveyAccessModeService->changeAccessMode($surveyId, $accessMode);
-            
+
             if ($result) {
                 $this->renderJSON([
-                    'success' => true, 
+                    'success' => true,
                     'message' => 'Access mode updated successfully',
                     'accessMode' => $accessMode
                 ]);
