@@ -554,3 +554,15 @@ function sanitize_alphanumeric($value)
 {
     return preg_replace("/[^a-zA-Z0-9\-\_]/", "", $value);
 }
+
+/**
+ * Remove all chars from $value that don't belong to a valid CSRF token.
+ * CSRF tokens are basically base64 strings with "_" and "-" instead of "/" and "+".
+ *
+ * @param string $value
+ * @return string
+ */
+function sanitize_csrf_token($value)
+{
+    return preg_replace("/[^a-zA-Z0-9_\-=]/", "", $value);
+}
