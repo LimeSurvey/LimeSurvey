@@ -35,6 +35,7 @@ class CopySurveyOptions
      * The initial state is, that everything is copied and nothing is reset.
      */
     public function __construct(){
+        $this->resourcesAndLinks = true;
         $this->answerOptions = true;
         $this->conditions = true;
         $this->quotas = true;

@@ -2358,23 +2358,14 @@ class SurveyAdministrationController extends LSBaseController
             App()->user->setFlash('error', gT("Access denied"));
             $this->redirect(App()->request->urlReferrer);
         }
-        $options['copyResources'] = true;
-
-        $options['excludeQuotas'] = null;
-        $options['excludePermissions'] = null;
-        $options['excludeAnswers'] = null;
-
-        $options['resetConditions'] = null;
-        $options['resetStartEndDate'] = false;
-        $options['resetResponseId'] = false;
+        $optionsDataContainer = new CopySurveyOptions();
         $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
             $survey,
-            $options,
-            '',
+            $optionsDataContainer,
         );
         $copyResults = $copySurveyService->copy();
 
-        if (empty($copyResults['error'])) {
+        if (empty($copyResults->getErrors())) {
             App()->user->setFlash('success', gT("Survey copied successfully."));
         } else{
             App()->user->setFlash('error', gT("Error while copying the survey."));

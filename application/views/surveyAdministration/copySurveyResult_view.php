@@ -66,7 +66,7 @@ use LimeSurvey\Models\Services\CopySurveyResult;
                     </tr>
                     <tr>
                         <td><?php eT("Quotas"); ?>:</td>
-                        <td><?php echo $copyResults->getCntAssessments(); ?></td>
+                        <td><?php echo $copyResults->getCntQuotas(); ?></td>
                     </tr>
                 </table>
             </div>

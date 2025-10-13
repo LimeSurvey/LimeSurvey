@@ -4,6 +4,7 @@ namespace LimeSurvey\Models\Services;
 
 use App;
 use Assessment;
+use Condition;
 use LimeSurvey\Datavalueobjects\CopyQuestionValues;
 use LSHttpRequest;
 use Question;
@@ -13,6 +14,7 @@ use QuestionL10n;
 use Survey;
 use Permission;
 use SurveyLanguageSetting;
+use Yii;
 
 /**
  * This class is responsible for copying a survey.
@@ -35,9 +37,9 @@ class CopySurvey
     /**
      * @param Survey $sourceSurvey
      * @param CopySurveyOptions $options
-     * @param int $newSurveyId
+     * @param int|null $newSurveyId
      */
-    public function __construct($sourceSurvey, $options, $newSurveyId)
+    public function __construct($sourceSurvey, $options, $newSurveyId=null)
     {
         $this->sourceSurvey = $sourceSurvey;
         $this->options = $options;
@@ -59,7 +61,9 @@ class CopySurvey
         $newSurveyTitle = $this->sourceSurvey->currentLanguageSettings->surveyls_title . '- Copy';
         $destinationSurvey = new Survey();
         $destinationSurvey->attributes = $this->sourceSurvey->attributes;
-        $destinationSurvey->sid = $this->newSurveyId;
+        if ($this->newSurveyId !== null) {
+            $destinationSurvey->sid = $this->newSurveyId;
+        }
         $destinationSurvey = $this->getValidSurveyId($destinationSurvey);
         if(!$destinationSurvey->save()) {
             throw new \Exception(gt("Failed to copy survey"));
@@ -87,6 +91,11 @@ class CopySurvey
         //if a question has conditions they are copied or not...
         if ($this->options->isConditions()) {
             //copy the conditions from table
+            $cntConditions = $this->copyConditions(
+                $mappingGroupIdsAndQuestionIds['questionIds'],
+                $mappingGroupIdsAndQuestionIds['questionGroupIds'],
+                $destinationSurvey->sid
+            );
         } else {
             Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $destinationSurvey->sid);
             QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $destinationSurvey->sid);
@@ -263,4 +272,46 @@ class CopySurvey
         }
         $copySurveyResult->setCntAssessments($cntCopiedAssessments);
     }
+
+    /**
+     * Copies the conditions of a survey.
+     *
+     * @param array $mappingQuestionIds
+     * @param array $mappingGroupIds
+     * @param int $destinationSurveyId
+     * @return int number of conditions copied
+     */
+    private function copyConditions($mappingQuestionIds, $mappingGroupIds, $destinationSurveyId){
+        //find all conditions for the source survey
+        //the surveyId is in the attribute "cfieldname"...ahhhhhhhhh a nightmare...
+        $conditionRows = Yii::app()->db->createCommand()
+            ->select('conditions.*')
+            ->from('{{conditions}} conditions')
+            ->join('{{questions}} questions', 'questions.qid=conditions.qid')
+            ->where('questions.sid=:sid and questions.parent_qid=:parent_qid', [
+                ':sid' => $this->sourceSurvey->sid,
+                ':parent_qid' => 0
+            ])
+            ->queryAll();
+
+
+        $cntConditions = 0;
+        foreach ($conditionRows as $conditionRow) {
+            $condition = new Condition();
+            $condition->attributes = $conditionRow;
+            $condition->qid = $mappingQuestionIds[$conditionRow['qid']];
+            $condition->cqid = $mappingQuestionIds[$conditionRow['cqid']];
+            //rebuild the cfieldname --> "$iSurveyID . "X" . $iGroupID . "X" . $iQuestionID"
+            $sidGidQid = explode('X', $conditionRow['cfieldname']); //[0]sid, [1]gid, [2]qid
+            $condition->cfieldname = $destinationSurveyId . "X". $mappingGroupIds[$sidGidQid[1]]. "X". $mappingQuestionIds[$conditionRow['cqid']];
+            $condition->value = $conditionRow['value'];
+            $condition->method = $conditionRow['method'];
+            if ($condition->save()) {
+                $cntConditions++;
+            }
+        }
+
+        return $cntConditions;
+    }
+
 }
