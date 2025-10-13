@@ -1215,12 +1215,12 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
 
     foreach ($Rows as $Row) {
         $category = $dom->createElement("category");
-	$title = QueXMLCleanup($Row['title'], '');
+	$title = $Row['title'];
         if ($EMreplace) {
             $title = LimeExpressionManager::ProcessStepString($title,null,3,true);
         }
 
-	$label = $dom->createElement("label", $title);
+	$label = $dom->createElement("label", QueXMLCleanup($title,''));
 
         $value = $dom->createElement("value", QueXMLCleanup($Row['code']));
 
