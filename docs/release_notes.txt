@@ -34,6 +34,22 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.15.16 (build 251006) to 6.15.17 (build 251013) October 13, 2025
+-Fixed issue: provide event so additional global general settings can be rendered through plugins (Patrick Teichmann)
+-Fixed issue #CT-1443: Added support for exporting and importing question theme name with txt (#4472) (lajosarpad)
+-Fixed issue #AT-1727: Clean up answer records when question type changes (#4464) (lajosarpad)
+-Fixed issue #20264: Bounce processing cannot match encrypted participant email addresses (#4440) (Gabriel Jenik)
+#Updated translation: Welsh by ChrisWilliams
+#Updated translation: Russian by alexez, c_schmitz, kvolk2lim, s.gorbatov, twilllig, vipgroup, watslaw
+#Updated translation: Portuguese (Brazil) by holch, perrang
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han, twilllig
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Arabic by falsumairi, Shatha
+
+
 Changes from 6.15.15 (build 250929) to 6.15.16 (build 251006) October 6, 2025
 -Fixed issue: Email index missing in plugin event (Carsten Schmitz)
 -Fixed issue #LE-428: Fixed a performance issue when displaying condition fields (#4453) (lajosarpad)
