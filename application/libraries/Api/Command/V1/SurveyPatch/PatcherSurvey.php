@@ -15,23 +15,28 @@ use LimeSurvey\ObjectPatch\{
     Patcher
 };
 use Psr\Container\ContainerInterface;
+use LimeSurvey\Models\Services\SurveyDetailService;
 
 class PatcherSurvey extends Patcher
 {
     protected SurveyResponse $surveyResponse;
+    protected SurveyDetailService $surveyDetailService;
 
     /**
      * Constructor
      *
      * @param ContainerInterface $diContainer
      * @param SurveyResponse $surveyResponse
+     * * @param SurveyDetailService $surveyDetailService
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function __construct(
         ContainerInterface $diContainer,
-        SurveyResponse $surveyResponse
+        SurveyResponse $surveyResponse,
+        SurveyDetailService $surveyDetailService
     ) {
         $this->surveyResponse = $surveyResponse;
+        $this->surveyDetailService = $surveyDetailService;
         $classes = [
             OpHandlerSurveyUpdate::class,
             OpHandlerLanguageSettingsUpdate::class,
@@ -75,6 +80,7 @@ class PatcherSurvey extends Patcher
     public function applyPatch($patch, $context = []): array
     {
         if (is_array($patch) && !empty($patch)) {
+            $entityMap = [];
             foreach ($patch as $patchOpData) {
                 $op = OpStandard::factory(
                     $patchOpData['entity'] ?? '',
@@ -86,9 +92,16 @@ class PatcherSurvey extends Patcher
                 try {
                     $response = $this->handleOp($op);
                     $this->surveyResponse->handleResponse($response);
+                    $entityMap[$patchOpData['entity']] = $patchOpData['id'] ?? null;
                 } catch (\Exception $e) {
                     $this->surveyResponse->handleException($e, $op);
                 }
+            }
+            $survey = $this->surveyDetailService->getSurveyFromEntityMap($entityMap);
+            if ($survey) {
+                $survey->lastmodified = date('Y-m-d h:i:s');
+                $survey->save();
+                $this->surveyDetailService->removeCache($survey->sid);
             }
         }
         return $this->surveyResponse->buildResponseObject();
