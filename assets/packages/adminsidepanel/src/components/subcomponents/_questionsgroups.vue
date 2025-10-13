@@ -309,6 +309,13 @@ export default {
     <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane h-100 pt-2">
         <div class="ls-flex-row button-sub-bar mb-2">
           <div class="scoped-toolbuttons-right me-2">
+           <button
+                class="btn btn-sm btn-outline-secondary me-2"
+                @click="collapseAll"
+                :title="translate('collapseAll')"
+            >
+              <i class="ri-link-unlink" />
+            </button>
             <button
                 class="btn btn-sm btn-outline-secondary"
                 @click="toggleOrganizer"
@@ -316,13 +323,7 @@ export default {
             >
               <i :class="allowOrganizer ? 'ri-lock-unlock-fill' : 'ri-lock-fill'" />
             </button>
-            <button
-                class="btn btn-sm btn-outline-secondary me-2"
-                @click="collapseAll"
-                :title="translate('collapseAll')"
-            >
-              <i class="ri-link-unlink" />
-            </button>
+           
           </div>
         </div>
 		<div class="ls-flex-row wrap align-content-center align-items-center button-sub-bar">
@@ -386,7 +387,7 @@ export default {
                                 class="d-flex pjax"
                                 :href="questiongroup.link"
                             >
-                                <span class="question_text_ellipsize" :style="{ 'max-width': itemWidth }">
+                                <span class="question_text_ellipsize" :style="{ 'max-width': itemWidth }" tab-index="1">
                                     {{ questiongroup.group_name }}
                                 </span>
                             </a>
@@ -398,9 +399,9 @@ export default {
                                 </span>
                             </div>
 
-                            <div v-if="groupActivated(questiongroup) || (hoveredQuestionGroup && hoveredQuestionGroup.gid === questiongroup.gid)">
+                            <div>
                             <div class="ls-questiongroup-tools cursor-pointer" id="dropdownMenuButton1"
-                                data-bs-toggle="dropdown" aria-expanded="false">
+                                data-bs-toggle="dropdown" aria-expanded="false" tab-index="1">
                                 <i class="ri-more-fill"></i>
                             </div>
 
@@ -487,9 +488,9 @@ export default {
                                         [{{question.title}}] &rsaquo; {{ question.question_flat }}
                                     </span>
                                 </a>
-                                <div v-if="itemActivated(question)||(hoveredQuestion && hoveredQuestion.qid === question.qid)" class="dropdown position-absolute" style="right:10px" >
+                                <div  class="dropdown position-absolute" style="right:10px" >
                                     <div class="ls-question-tools ms-auto position-relative cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                     aria-expanded="false">
+                                     aria-expanded="false" tab-index="1">
                                         <i class="ri-more-fill"></i>
                                     </div>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
