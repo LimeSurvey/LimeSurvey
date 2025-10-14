@@ -2221,6 +2221,8 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Function responsible to import/copy a survey based on $action.
      *
+     * @todo this should be separated in two actions import and copy ...
+     *
      * @access public
      * @return void
      * @throws CException
