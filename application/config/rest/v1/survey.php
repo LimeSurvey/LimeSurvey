@@ -47,7 +47,8 @@ $rest['v1/survey'] = [
     ]
 ];
 
-$rest['v1/survey-detail/$id'] = [
+$rest['v1/survey-detail/$id'] =
+$rest['v1/survey-detail/$id/ts/$ts'] = [
     'GET' => [
         'tag' => 'survey',
         'description' => 'Survey detail',
