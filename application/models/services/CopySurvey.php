@@ -180,7 +180,7 @@ class CopySurvey
             'parent_qid' => 0
         ]);
         $mappingQuestionIds = [];
-        $mappedSuquestionIds = [];
+        $mappedSubquestionIds = [];
         $cntCopiedQuestions = 0;
         foreach ($questions as $question) {
             $copyQuestionValues = new CopyQuestionValues();
@@ -212,13 +212,13 @@ class CopySurvey
                 $mappingQuestionIds[$question->qid] = $destinationQuestion->qid;
                 $cntCopiedQuestions++;
                 if (!empty($copyQuestion->getMappedSubquestionIds()) && is_array($copyQuestion->getMappedSubquestionIds())) {
-                    $mappedSuquestionIds += $copyQuestion->getMappedSubquestionIds();
+                    $mappedSubquestionIds += $copyQuestion->getMappedSubquestionIds();
                 }
             }
         }
         $copyResults->setCntQuestions($cntCopiedQuestions);
         $mapping['questionIds'] = $mappingQuestionIds;
-        $this->copyDefaultAnswers($mappingQuestionIds, $mappedSuquestionIds);
+        $this->copyDefaultAnswers($mappingQuestionIds, $mappedSubquestionIds);
 
         return $mapping;
     }
@@ -349,7 +349,11 @@ class CopySurvey
             $defaultAnswer->dvid = null;
             $defaultAnswer->qid = $mappingQuestionIds[$defaultAnswerRow['qid']];
             //find the correct subquestion id
-            $defaultAnswer->sqid = $mappedSuquestionIds[$defaultAnswerRow['sqid']];
+            if ($defaultAnswerRow['sqid'] === 0) {
+                $defaultAnswer->sqid = 0; //this is the case, when an answer option is the default...
+            } else {
+                $defaultAnswer->sqid = $mappedSuquestionIds[$defaultAnswerRow['sqid']];
+            }
             $defaultAnswer->scale_id = $defaultAnswerRow['scale_id'];
             $defaultAnswer->specialtype = $defaultAnswerRow['specialtype'];
             if ($defaultAnswer->save()) {

@@ -2342,7 +2342,8 @@ class SurveyAdministrationController extends LSBaseController
      * @return void
      * @throws Exception
      */
-    public function actionCopySimple($surveyIdToCopy){
+    public function actionCopySimple($surveyIdToCopy)
+    {
         //everybody who has permission to create surveys
         if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
             App()->user->setFlash('error', gT("Access denied"));
@@ -2369,7 +2370,7 @@ class SurveyAdministrationController extends LSBaseController
 
         if (empty($copyResults->getErrors())) {
             App()->user->setFlash('success', gT("Survey copied successfully."));
-        } else{
+        } else {
             App()->user->setFlash('error', gT("Error while copying the survey."));
         }
 
