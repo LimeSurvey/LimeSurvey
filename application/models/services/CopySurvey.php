@@ -5,6 +5,7 @@ namespace LimeSurvey\Models\Services;
 use App;
 use Assessment;
 use Condition;
+use DefaultValue;
 use LimeSurvey\Datavalueobjects\CopyQuestionValues;
 use LSHttpRequest;
 use Question;
@@ -178,6 +179,7 @@ class CopySurvey
             'parent_qid' => 0
         ]);
         $mappingQuestionIds = [];
+        $mappedSuquestionIds = [];
         $cntCopiedQuestions = 0;
         foreach ($questions as $question) {
             $copyQuestionValues = new CopyQuestionValues();
@@ -198,7 +200,7 @@ class CopySurvey
             $copyQuestion = new CopyQuestion($copyQuestionValues);
             $optionsCopyQuestion['copySubquestions'] = true;
             $optionsCopyQuestion['copyAnswerOptions'] = $this->options->isAnswerOptions();
-            $optionsCopyQuestion['copyDefaultAnswers'] = true;
+            $optionsCopyQuestion['copyDefaultAnswers'] = false; //we have to do it separately here (id-mapping)
             $optionsCopyQuestion['copySettings'] = true;
             if ($copyQuestion->copyQuestion($optionsCopyQuestion, $destinationSurvey->sid)) {
                 $destinationQuestion = $copyQuestion->getNewCopiedQuestion();
@@ -208,10 +210,14 @@ class CopySurvey
                 $destinationQuestion->save();
                 $mappingQuestionIds[$question->qid] = $destinationQuestion->qid;
                 $cntCopiedQuestions++;
+                if(!empty($copyQuestion->getMappedSubquestionIds()) && is_array($copyQuestion->getMappedSubquestionIds() )){
+                    $mappedSuquestionIds += $copyQuestion->getMappedSubquestionIds();
+                }
             }
         }
         $copyResults->setCntQuestions($cntCopiedQuestions);
         $mapping['questionIds'] = $mappingQuestionIds;
+        $this->copyDefaultAnswers($mappingQuestionIds, $mappedSuquestionIds);
 
         return $mapping;
     }
@@ -312,6 +318,42 @@ class CopySurvey
         }
 
         return $cntConditions;
+    }
+
+    /**
+     * Copy default answers from table "defaultvalues" for the questions.
+     *
+     * @param array $mappingQuestionIds mapping of question ids
+     * @param array $mappedSuquestionIds mapping of subquestion ids (if any)
+     * @return int number of default answers copied
+     */
+    private function copyDefaultAnswers($mappingQuestionIds, $mappedSuquestionIds){
+        //get all entries from defaultvalues table where the qid belongs to the source survey
+        $defaultAnswerRows = Yii::app()->db->createCommand()
+            ->select('defaultvalues.*')
+            ->from('{{defaultvalues}} defaultvalues')
+            ->join('{{questions}} questions', 'questions.qid=defaultvalues.qid')
+            ->where('questions.sid=:sid and questions.parent_qid=:parent_qid', [
+                ':sid' => $this->sourceSurvey->sid,
+                ':parent_qid' => 0
+            ])
+            ->queryAll();
+        $cntDefaultAnswers = 0;
+        //now copy the default answers and map them to the corresponding question ids
+        foreach ($defaultAnswerRows as $defaultAnswerRow) {
+            $defaultAnswer = new Defaultvalue();
+            $defaultAnswer->dvid = null;
+            $defaultAnswer->qid = $mappingQuestionIds[$defaultAnswerRow['qid']];
+            //find the correct subquestion id
+            $defaultAnswer->sqid = $mappedSuquestionIds[$defaultAnswerRow['sqid']];
+            $defaultAnswer->scale_id = $defaultAnswerRow['scale_id'];
+            $defaultAnswer->specialtype = $defaultAnswerRow['specialtype'];
+            if ($defaultAnswer->save()) {
+                $cntDefaultAnswers++;
+            }
+        }
+
+        return $cntDefaultAnswers;
     }
 
 }

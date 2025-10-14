@@ -24,6 +24,11 @@ class CopyQuestion
     private $newQuestion;
 
     /**
+     * @var array map between original subquestion id and new subquestion id
+     */
+    private $mappedSubquestionIds = [];
+
+    /**
      * CopyQuestion constructor.
      *
      * @param CopyQuestionValues $copyQuestionValues
@@ -61,7 +66,7 @@ class CopyQuestion
 
             //copy subquestions
             if ($copyOptions['copySubquestions']) {
-                $this->copyQuestionsSubQuestions($this->copyQuestionValues->getQuestiontoCopy()->qid);
+                $this->copyQuestionsSubQuestions($this->copyQuestionValues->getQuestiontoCopy()->qid, $surveyId);
             }
 
             //copy answer options
@@ -146,12 +151,14 @@ class CopyQuestion
      * Copy subquestions of a question
      *
      * @param int $parentId id of question to be copied
+     * @param int|null $surveyId The id of the survey to which the new question should be added.
+     *                           If null, it will be added to the current survey.
      *
      * * @before $this->newQuestion must exist and should not be null
      *
      * @return bool true if all subquestions could be copied&saved, false if a subquestion could not be saved
      */
-    private function copyQuestionsSubQuestions($parentId)
+    private function copyQuestionsSubQuestions($parentId, $surveyId = null)
     {
         //copy subquestions
         $areSubquestionsCopied = true;
@@ -166,7 +173,11 @@ class CopyQuestion
             $copiedSubquestion->setAttributes($subquestion->attributes, false);
             $copiedSubquestion->parent_qid = $this->newQuestion->qid;
             $copiedSubquestion->qid = null; //new question id needed ...
+            if ($surveyId !== null){
+                $copiedSubquestion->sid = $surveyId;
+            }
             $areSubquestionsCopied = $areSubquestionsCopied && $copiedSubquestion->save();
+            $this->mappedSubquestionIds[$subquestion->qid] = $copiedSubquestion->qid; // map old subquestion id to new subquestion id
             foreach ($subquestion->questionl10ns as $subquestLanguage) {
                 $newSubquestLanguage = new \QuestionL10n();
                 $newSubquestLanguage->attributes = $subquestLanguage->attributes;
@@ -177,6 +188,15 @@ class CopyQuestion
         }
 
         return $areSubquestionsCopied;
+    }
+
+    /**
+     * Returns the mapping of subquestions
+     *
+     * * @before $this->newQuestion must exist and should not be null
+     */
+    public function getMappedSubquestionIds() {
+        return $this->mappedSubquestionIds;
     }
 
     /**
