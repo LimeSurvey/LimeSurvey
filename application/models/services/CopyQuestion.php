@@ -52,7 +52,7 @@ class CopyQuestion
      *
      * @return boolean True if new copied question could be saved, false otherwise
      */
-    public function copyQuestion($copyOptions, $surveyId=null)
+    public function copyQuestion($copyOptions, $surveyId = null)
     {
         $copySuccessful = $this->createNewCopiedQuestion(
             $this->copyQuestionValues->getQuestionCode(),
@@ -173,7 +173,7 @@ class CopyQuestion
             $copiedSubquestion->setAttributes($subquestion->attributes, false);
             $copiedSubquestion->parent_qid = $this->newQuestion->qid;
             $copiedSubquestion->qid = null; //new question id needed ...
-            if ($surveyId !== null){
+            if ($surveyId !== null) {
                 $copiedSubquestion->sid = $surveyId;
             }
             $areSubquestionsCopied = $areSubquestionsCopied && $copiedSubquestion->save();
@@ -195,7 +195,8 @@ class CopyQuestion
      *
      * * @before $this->newQuestion must exist and should not be null
      */
-    public function getMappedSubquestionIds() {
+    public function getMappedSubquestionIds()
+    {
         return $this->mappedSubquestionIds;
     }
 

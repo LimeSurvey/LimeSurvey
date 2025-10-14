@@ -32,7 +32,8 @@ class CopySurvey
     private $options;
 
     /**
-     * @var Survey */
+     * @var Survey
+     */
     private $sourceSurvey;
 
     /**
@@ -40,7 +41,7 @@ class CopySurvey
      * @param CopySurveyOptions $options
      * @param int|null $newSurveyId
      */
-    public function __construct($sourceSurvey, $options, $newSurveyId=null)
+    public function __construct($sourceSurvey, $options, $newSurveyId = null)
     {
         $this->sourceSurvey = $sourceSurvey;
         $this->options = $options;
@@ -66,7 +67,7 @@ class CopySurvey
             $destinationSurvey->sid = $this->newSurveyId;
         }
         $destinationSurvey = $this->getValidSurveyId($destinationSurvey);
-        if(!$destinationSurvey->save()) {
+        if (!$destinationSurvey->save()) {
             throw new \Exception(gt("Failed to copy survey"));
         }
 
@@ -83,8 +84,8 @@ class CopySurvey
             $mappingGroupIdsAndQuestionIds['questionGroupIds']
         );
 
-        if ($this->options->isQuotas()){
-           $copySurveyQuotas = new CopySurveyQuotas($this->sourceSurvey, $destinationSurvey);
+        if ($this->options->isQuotas()) {
+            $copySurveyQuotas = new CopySurveyQuotas($this->sourceSurvey, $destinationSurvey);
             $cntQuotas = $copySurveyQuotas->copyQuotas($mappingGroupIdsAndQuestionIds['questionIds']);
             $copySurveyResult->setCntQuotas($cntQuotas);
         }
@@ -136,7 +137,7 @@ class CopySurvey
         $sourceLanguageSettings = SurveyLanguageSetting::model()->findAllByAttributes(
             ['surveyls_survey_id' => $this->sourceSurvey->sid]
         );
-        $cntCopiedLanguageSettings =0;
+        $cntCopiedLanguageSettings = 0;
         foreach ($sourceLanguageSettings as $sourceLanguageSetting) {
             $destinationLanguageSetting = new SurveyLanguageSetting();
             $destinationLanguageSetting->attributes = $sourceLanguageSetting->attributes;
@@ -210,7 +211,7 @@ class CopySurvey
                 $destinationQuestion->save();
                 $mappingQuestionIds[$question->qid] = $destinationQuestion->qid;
                 $cntCopiedQuestions++;
-                if(!empty($copyQuestion->getMappedSubquestionIds()) && is_array($copyQuestion->getMappedSubquestionIds() )){
+                if (!empty($copyQuestion->getMappedSubquestionIds()) && is_array($copyQuestion->getMappedSubquestionIds())) {
                     $mappedSuquestionIds += $copyQuestion->getMappedSubquestionIds();
                 }
             }
@@ -222,7 +223,8 @@ class CopySurvey
         return $mapping;
     }
 
-    private function getValidSurveyId($destinationSurvey){
+    private function getValidSurveyId($destinationSurvey)
+    {
         $attempts = 0;
         /* Validate sid : > 1 and unique */
         while (!$destinationSurvey->validate(array('sid'))) {
@@ -241,14 +243,14 @@ class CopySurvey
      *
      * @param CopySurveyResult $copySurveyResult
      * @param Survey $destinationSurvey
-     * @param array $mappingGroupIds    the mapped ids of question groups
+     * @param array $mappingGroupIds the mapped ids of question groups
      * @return void
      */
     private function copySurveyAssessments($copySurveyResult, $destinationSurvey, $mappingGroupIds)
     {
         $cntCopiedAssessments = 0;
         //only get assessment for the base language, as id+language is primary key...
-        $assessments = Assessment::model()->findAllByAttributes(['sid' => $this->sourceSurvey->sid,'language' => $this->sourceSurvey->language]);
+        $assessments = Assessment::model()->findAllByAttributes(['sid' => $this->sourceSurvey->sid, 'language' => $this->sourceSurvey->language]);
         foreach ($assessments as $assessment) {
             $destinationAssessment = new Assessment();
             $destinationAssessment->attributes = $assessment->attributes;
@@ -262,7 +264,7 @@ class CopySurvey
             //now copy for other languages
             $assessmentLangEntries = Assessment::model()->findAllByAttributes(['id' => $assessment->id]);
             foreach ($assessmentLangEntries as $assessmentLangEntry) {
-                if ($assessmentLangEntry->language!= $this->sourceSurvey->language){
+                if ($assessmentLangEntry->language != $this->sourceSurvey->language) {
                     $langAssessment = new Assessment();
                     $langAssessment->attributes = $assessmentLangEntry->attributes;
                     $langAssessment->language = $assessmentLangEntry->language;
@@ -287,7 +289,8 @@ class CopySurvey
      * @param int $destinationSurveyId
      * @return int number of conditions copied
      */
-    private function copyConditions($mappingQuestionIds, $mappingGroupIds, $destinationSurveyId){
+    private function copyConditions($mappingQuestionIds, $mappingGroupIds, $destinationSurveyId)
+    {
         //find all conditions for the source survey
         //the surveyId is in the attribute "cfieldname"...ahhhhhhhhh a nightmare...
         $conditionRows = Yii::app()->db->createCommand()
@@ -309,7 +312,7 @@ class CopySurvey
             $condition->cqid = $mappingQuestionIds[$conditionRow['cqid']];
             //rebuild the cfieldname --> "$iSurveyID . "X" . $iGroupID . "X" . $iQuestionID"
             $sidGidQid = explode('X', $conditionRow['cfieldname']); //[0]sid, [1]gid, [2]qid
-            $condition->cfieldname = $destinationSurveyId . "X". $mappingGroupIds[$sidGidQid[1]]. "X". $mappingQuestionIds[$conditionRow['cqid']];
+            $condition->cfieldname = $destinationSurveyId . "X" . $mappingGroupIds[$sidGidQid[1]] . "X" . $mappingQuestionIds[$conditionRow['cqid']];
             $condition->value = $conditionRow['value'];
             $condition->method = $conditionRow['method'];
             if ($condition->save()) {
@@ -327,7 +330,8 @@ class CopySurvey
      * @param array $mappedSuquestionIds mapping of subquestion ids (if any)
      * @return int number of default answers copied
      */
-    private function copyDefaultAnswers($mappingQuestionIds, $mappedSuquestionIds){
+    private function copyDefaultAnswers($mappingQuestionIds, $mappedSuquestionIds)
+    {
         //get all entries from defaultvalues table where the qid belongs to the source survey
         $defaultAnswerRows = Yii::app()->db->createCommand()
             ->select('defaultvalues.*')

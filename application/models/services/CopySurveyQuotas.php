@@ -50,12 +50,12 @@ class CopySurveyQuotas
                 //copy quota languages
                 $surveyQuotasLanguages = QuotaLanguageSetting::model()->findAllByAttributes(['quotals_quota_id' => $quota->id]);
                 if (!empty($surveyQuotasLanguages)) {
-                   foreach ($surveyQuotasLanguages as $quotaLanguage) {
-                       $newQuotaLanguage = new QuotaLanguageSetting();
-                       $newQuotaLanguage->attributes = $quotaLanguage->attributes;
-                       $newQuotaLanguage->quotals_quota_id = $newQuota->id;
-                       $newQuotaLanguage->save();
-                   }
+                    foreach ($surveyQuotasLanguages as $quotaLanguage) {
+                        $newQuotaLanguage = new QuotaLanguageSetting();
+                        $newQuotaLanguage->attributes = $quotaLanguage->attributes;
+                        $newQuotaLanguage->quotals_quota_id = $newQuota->id;
+                        $newQuotaLanguage->save();
+                    }
                 }
                 //copy quota members (relation between quota and question)
                 $quotaMembers = QuotaMember::model()->findAllByAttributes([

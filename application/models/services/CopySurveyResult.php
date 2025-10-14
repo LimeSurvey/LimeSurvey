@@ -295,6 +295,4 @@ class CopySurveyResult
     {
         $this->errors = $errors;
     }
-
-
 }
