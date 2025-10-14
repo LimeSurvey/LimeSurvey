@@ -2,32 +2,28 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\Auth\AuthSession;
-use LimeSurvey\Api\Command\{
-    CommandInterface,
+use LimeSurvey\Api\Command\{CommandInterface,
+    Mixin\Auth\AuthPermissionTrait,
     Request\Request,
     Response\Response,
-    Response\ResponseFactory
-};
-use LimeSurvey\Libraries\Api\Command\V1\LLMs\GoogleGeminiPro;
+    Response\ResponseFactory};
+use LimeSurvey\Libraries\Api\Command\V1\LLMs\Gemini;
 use LimeSurvey\Libraries\Api\Command\V1\LLMs\Handlers\Command;
+use LimeSurvey\Libraries\Api\Command\V1\LLMs\LimeSurveyLLM;
 
 class LLM implements CommandInterface
 {
-    protected AuthSession $authSession;
+    use AuthPermissionTrait;
+
     protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
-     *
-     * @param AuthSession $authSession
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        AuthSession $authSession,
         ResponseFactory $responseFactory
     ) {
-        $this->authSession = $authSession;
         $this->responseFactory = $responseFactory;
     }
 
@@ -39,27 +35,20 @@ class LLM implements CommandInterface
      */
     public function run(Request $request)
     {
-        $sessionKey = (string) $request->getData('sessionKey');
-        if (
-            !$this->authSession->checkKey($sessionKey)
-        ) {
-            return $this->responseFactory
-                ->makeErrorUnauthorised();
-        }
-
         $prompt = (string) $request->getData('command');
         $operation = (string) $request->getData('operation');
 
-        if (!empty($prompt) && !empty($operation)) {
+        if (!empty($prompt)) {
             $cmd = new Command($operation, $prompt);
-            $gemini = new GoogleGeminiPro($cmd);
-            $response = $gemini->run();
+
+            $llm = new LimeSurveyLLM($cmd);
+            $response = $llm->run();
 
             return $this->responseFactory
                 ->makeSuccess(json_encode($response));
         }
 
         return $this->responseFactory
-            ->makeSuccess('No');
+            ->makeError('Invalid request parameters');
     }
 }

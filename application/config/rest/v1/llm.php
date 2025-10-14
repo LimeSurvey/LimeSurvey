@@ -1,12 +1,9 @@
 <?php
 
-use LimeSurvey\Api\Command\V1\{
-    SessionKeyCreate,
-    SessionKeyRelease
-};
+use LimeSurvey\Api\Command\V1\LLM;
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactoryError,
-    SchemaFactoryAuthToken
+    SchemaFactorySurveyArchive
 };
 
 $errorSchema = (new SchemaFactoryError)->make();
@@ -15,19 +12,21 @@ $rest = [];
 
 $rest['v1/ai/completion'] = [
     'GET' => [
-        'description' => 'Chat completions',
-        'commandClass' => \LimeSurvey\Api\Command\V1\LLM::class,
-        'auth' => 'session',
+        'tag' => 'survey',
+        'description' => 'Survey archives',
+        'commandClass' => LLM::class,
+        'auth' => false,
         'params' => [
             'command' => ['type' => 'str'],
             'operation' => ['type' => 'str']
         ],
-        'bodyParams' => [],
+//        'bodyParams' => [],
         'responses' => [
             'success' => [
                 'code' => 200,
                 'description' => 'Success',
-                'schema' => (new SchemaFactoryAuthToken)->make()
+                'content' => null,
+                'schema' => (new SchemaFactorySurveyArchive())->make()
             ],
             'unauthorized' => [
                 'code' => 401,

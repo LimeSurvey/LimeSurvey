@@ -10,6 +10,9 @@ class GrammarCheckHandler implements CommandHandlerInterface
         if (str_contains($cmd, 'grammar')) {
             return true;
         }
+        if (str_contains($cmd, 'spell')) {
+            return true;
+        }
         return false;
     }
 

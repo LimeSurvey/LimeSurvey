@@ -2,36 +2,40 @@
 
 namespace LimeSurvey\Libraries\Api\Command\V1\LLMs;
 
+use LimeSurvey\Api\Command\ApiCommandException;
+use LimeSurvey\Api\Command\ResponseData\ResponseDataError;
 use LimeSurvey\Libraries\Api\Command\V1\LLMs\Handlers\Command;
 use LimeSurvey\Libraries\Api\Command\V1\LLMs\Handlers\CommandPatcher;
 use LimeSurvey\Libraries\Api\Command\V1\LLMs\Handlers\AIClientInterface;
 
-class GoogleGeminiPro implements AIClientInterface
+use LimeSurvey\Api\ApiException;
+
+class Gemini implements AIClientInterface
 {
     /**
      * Gemini API URL
      *
      * @var string
      */
-    protected string $googleai_url = 'https://generativelanguage.googleapis.com/v1beta';
+    protected string $url = 'https://generativelanguage.googleapis.com/v1beta';
 
     /**
      * GeminiAPI model
      * @var string
      */
-    protected string $googleai_model = 'models/gemini-pro';
+    protected string $modelType = 'models/gemini-pro';
 
     /**
      * GeminiAPI model
      * @var string
      */
-    protected string $googleai_apikey;
+    protected string $apikey;
 
     protected Command $command;
 
     public function __construct(Command $command)
     {
-        $this->googleai_apikey = trim((string) \Yii::app()->getConfig("googleGeminiAPIKey"));
+        $this->apikey = trim((string) App()->getConfig("googleGeminiAPIKey"));
         $this->command = $command;
     }
 
@@ -94,22 +98,28 @@ class GoogleGeminiPro implements AIClientInterface
 
     private function buildURL(): string
     {
-        return "{$this->googleai_url}/{$this->googleai_model}:generateContent?key={$this->googleai_apikey}";
+        return "{$this->url}/{$this->modelType}:generateContent?key={$this->apikey}";
     }
 
+    /**
+     * @throws ApiCommandException
+     */
     private function handleResponse(string $response): string
     {
         $responseData = json_decode($response, true);
         if (isset($responseData['candidates'][0]['content']['parts'][0]['text'])) {
             return $responseData['candidates'][0]['content']['parts'][0]['text'];
-        } else {
-            return "No text";
         }
+
+        throw new ApiCommandException('No_CONTENT_FOUND_IN_RESPONSE');
     }
 
+    /**
+     * @throws ApiCommandException
+     */
     public function generateContent(): string
     {
-        if (!empty($this->googleai_apikey)) {
+        if (!empty($this->apikey)) {
             $ch = curl_init($this->buildURL());
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
             curl_setopt($ch, CURLOPT_POSTFIELDS, $this->buildPostFields());
@@ -118,17 +128,23 @@ class GoogleGeminiPro implements AIClientInterface
             $response = curl_exec($ch);
             curl_close($ch);
 
-            if (is_string($response)) {
-                return $this->handleResponse($response);
-            }
-            return 'No text';
+            return $this->handleResponse($response);
         }
-        return 'No API key';
+
+        throw new ApiCommandException('NO_API_KEY');
     }
 
     public function run(): string
     {
         $patcher = new CommandPatcher($this->command, $this);
         return $patcher->apply();
+    }
+
+    public function getModelInfo(): array
+    {
+        return [
+            'name' => 'Gemini',
+            'type' => $this->modelType
+        ];
     }
 }
