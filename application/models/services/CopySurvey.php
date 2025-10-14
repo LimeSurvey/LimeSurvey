@@ -60,7 +60,6 @@ class CopySurvey
      */
     public function copy()
     {
-        $newSurveyTitle = $this->sourceSurvey->currentLanguageSettings->surveyls_title . '- Copy';
         $destinationSurvey = new Survey();
         $destinationSurvey->attributes = $this->sourceSurvey->attributes;
         if ($this->newSurveyId !== null) {
@@ -75,14 +74,10 @@ class CopySurvey
         $copySurveyResult->setCopiedSurvey($destinationSurvey);
 
         $this->copySurveyLanguages($copySurveyResult, $destinationSurvey);
-        $destinationSurvey->currentLanguageSettings->surveyls_title = $newSurveyTitle;
+        $destinationSurvey->currentLanguageSettings->surveyls_title = $this->sourceSurvey->currentLanguageSettings->surveyls_title . '- Copy';
         $destinationSurvey->currentLanguageSettings->save();
         $mappingGroupIdsAndQuestionIds = $this->copyGroupsAndQuestions($copySurveyResult, $destinationSurvey);
-        $this->copySurveyAssessments(
-            $copySurveyResult,
-            $destinationSurvey,
-            $mappingGroupIdsAndQuestionIds['questionGroupIds']
-        );
+        $this->copySurveyAssessments($copySurveyResult, $destinationSurvey, $mappingGroupIdsAndQuestionIds['questionGroupIds']);
 
         if ($this->options->isQuotas()) {
             $copySurveyQuotas = new CopySurveyQuotas($this->sourceSurvey, $destinationSurvey);
@@ -90,10 +85,8 @@ class CopySurvey
             $copySurveyResult->setCntQuotas($cntQuotas);
         }
 
-        //if a question has conditions they are copied or not...
         if ($this->options->isConditions()) {
-            //copy the conditions from table
-            $cntConditions = $this->copyConditions(
+            $this->copyConditions(
                 $mappingGroupIdsAndQuestionIds['questionIds'],
                 $mappingGroupIdsAndQuestionIds['questionGroupIds'],
                 $destinationSurvey->sid
@@ -162,7 +155,6 @@ class CopySurvey
     private function copyGroupsAndQuestions($copyResults, $destinationSurvey)
     {
         $mapping = [];
-        //copy questionGroups
         $questionGroups = QuestionGroup::model()->findAllByAttributes(['sid' => $this->sourceSurvey->sid]);
         $mappingQuestionGroupIds = [];
         $cntCopiedQuestionGroups = 0;
@@ -189,7 +181,6 @@ class CopySurvey
             $copyQuestionValues->setOSurvey($destinationSurvey);
             $copyQuestionValues->setQuestionCode($question->title);
             $copyQuestionValues->setQuestionPositionInGroup($question->question_order);
-            //get all languages for the question (text and help)
             $copyQuestionTextValues = [];
             $questionLanguages = QuestionL10n::model()->findAllByAttributes(['qid' => $question->qid]);
             foreach ($questionLanguages as $questionL10n) {
