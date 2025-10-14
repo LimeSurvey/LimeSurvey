@@ -114,5 +114,4 @@ class CopySurveyOptions
     {
         $this->resetResponseStartId = $resetResponseStartId;
     }
-
 }

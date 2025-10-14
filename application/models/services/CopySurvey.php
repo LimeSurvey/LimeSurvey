@@ -359,5 +359,4 @@ class CopySurvey
 
         return $cntDefaultAnswers;
     }
-
 }

@@ -37,7 +37,6 @@ class CopySurveyTest extends TestBaseClass
         );
         $result = $copySurveyService->copy();
 
-        $this->assertIsArray($result);
-        $this->assertArrayHasKey('newsid', $result);
+        $this->assertEquals($result->getErrors(), []);
     }
 }
