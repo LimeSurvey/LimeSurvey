@@ -73,7 +73,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'listpublic',
                         'checkedOption' => $oSurvey->listpublic,
-                        'ariaLabel' => gT('List survey on public index :'),
+                        'ariaLabel' => gT('Link survey on public index page:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->listpublic . " ᴵ" ])
                             : $optionsOnOff,
