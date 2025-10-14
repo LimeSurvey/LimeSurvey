@@ -65,3 +65,6 @@ ol.breadcrumb.title-bar-breadcrumb {
 #breadcrumb-container {
     width: 100%;
 }
+ol.breadcrumb.title-bar-breadcrumb a:focus{
+    outline-offset: -2px !important
+}
