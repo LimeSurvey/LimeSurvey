@@ -2,6 +2,7 @@
 
 namespace helpers;
 
+use LimeSurvey\Models\Services\CopySurveyOptions;
 use ls\tests\TestBaseClass;
 use Survey;
 
@@ -22,17 +23,12 @@ class CopySurveyTest extends TestBaseClass
 
         $survey = Survey::model()->findByPk(self::$testSurvey->sid);
 
-        $options['copyResources'] = true;
-        $options['excludeQuotas'] = true;
-        $options['excludePermissions'] = true;
-        $options['excludeAnswers'] = true;
-        $options['resetConditions'] = true;
-        $options['resetStartEndDate'] = true;
-        $options['resetResponseId'] = true;
+        //intial state is, that everything is copied and all values are reset
+        $optionsDataContainer = new CopySurveyOptions();
 
         $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
             $survey,
-            $options,
+            $optionsDataContainer,
             ''
         );
         $result = $copySurveyService->copy();
