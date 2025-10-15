@@ -100,7 +100,7 @@ class SurveyDetail implements CommandInterface
             );
         }
 
-        if ($this->lastLoaded && (strtotime($this->lastLoaded) > strtotime($surveyModel->lastmodified))) {
+        if ($this->lastLoaded && ($this->lastLoaded > strtotime($surveyModel->lastmodified))) {
             return $this->responseFactory
                 ->makeSuccess(['survey' => 'not changed']);
         }

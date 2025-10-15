@@ -99,7 +99,7 @@ class PatcherSurvey extends Patcher
             }
             $survey = $this->surveyDetailService->getSurveyFromEntityMap($entityMap);
             if ($survey) {
-                $survey->lastmodified = date('Y-m-d H:i:s');
+                $survey->lastmodified = date('Y-m-d HH:i:s');
                 $survey->save();
                 $this->surveyDetailService->removeCache($survey->sid);
             }
