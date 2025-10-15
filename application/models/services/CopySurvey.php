@@ -143,6 +143,21 @@ class CopySurvey
         $copySurveyResult->setCntSurveyLanguages($cntCopiedLanguageSettings);
     }
 
+    private function copyQuestionGroup($copyResults, $destinationSurvey) {
+        $questionGroups = QuestionGroup::model()->findAllByAttributes(['sid' => $this->sourceSurvey->sid]);
+        $mappingQuestionGroupIds = [];
+        $cntCopiedQuestionGroups = 0;
+        foreach ($questionGroups as $questionGroup) {
+            $copyQuestionGroup = new CopyQuestionGroup($questionGroup, $destinationSurvey->sid);
+            $destinationQuestionGroup = $copyQuestionGroup->copyQuestionGroup();
+            $mappingQuestionGroupIds[$questionGroup->gid] = $destinationQuestionGroup->gid;
+            $cntCopiedQuestionGroups++;
+        }
+        $copyResults->setCntQuestionGroups($cntCopiedQuestionGroups);
+
+        return $mappingQuestionGroupIds;
+    }
+
     /**
      * Copies the question groups and the questions from the source survey to the destination survey.
      * A mapping of groupIds and questionIds is returned.
@@ -155,17 +170,7 @@ class CopySurvey
     private function copyGroupsAndQuestions($copyResults, $destinationSurvey)
     {
         $mapping = [];
-        $questionGroups = QuestionGroup::model()->findAllByAttributes(['sid' => $this->sourceSurvey->sid]);
-        $mappingQuestionGroupIds = [];
-        $cntCopiedQuestionGroups = 0;
-        foreach ($questionGroups as $questionGroup) {
-            $copyQuestionGroup = new CopyQuestionGroup($questionGroup, $destinationSurvey->sid);
-            $destinationQuestionGroup = $copyQuestionGroup->copyQuestionGroup();
-            $mappingQuestionGroupIds[$questionGroup->gid] = $destinationQuestionGroup->gid;
-            $cntCopiedQuestionGroups++;
-        }
-        $copyResults->setCntQuestionGroups($cntCopiedQuestionGroups);
-        $mapping['questionGroupIds'] = $mappingQuestionGroupIds;
+        $mapping['questionGroupIds'] = $this->copyQuestionGroup($copyResults, $destinationSurvey);
 
         $questions = Question::model()->findAllByAttributes([
             'sid' => $this->sourceSurvey->sid,
@@ -177,7 +182,7 @@ class CopySurvey
         foreach ($questions as $question) {
             $copyQuestionValues = new CopyQuestionValues();
             $copyQuestionValues->setQuestiontoCopy($question);
-            $copyQuestionValues->setQuestionGroupId($mappingQuestionGroupIds[$question->gid]);
+            $copyQuestionValues->setQuestionGroupId($mapping['questionGroupIds'][$question->gid]);
             $copyQuestionValues->setOSurvey($destinationSurvey);
             $copyQuestionValues->setQuestionCode($question->title);
             $copyQuestionValues->setQuestionPositionInGroup($question->question_order);
@@ -198,7 +203,7 @@ class CopySurvey
                 $destinationQuestion = $copyQuestion->getNewCopiedQuestion();
                 //change sid and gip for the new question
                 $destinationQuestion->sid = $destinationSurvey->sid;
-                $destinationQuestion->gid = $mappingQuestionGroupIds[$question->gid];
+                $destinationQuestion->gid = $mapping['questionGroupIds'][$question->gid];
                 $destinationQuestion->save();
                 $mappingQuestionIds[$question->qid] = $destinationQuestion->qid;
                 $cntCopiedQuestions++;
