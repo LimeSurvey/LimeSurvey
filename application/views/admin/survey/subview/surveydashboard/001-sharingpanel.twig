@@ -87,63 +87,15 @@
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="access-mode-dropdown" data-bs-toggle="dropdown" aria-expanded="false" {{ oSurvey.active == 'Y' ? '' : 'disabled' }}>
                             <i class="{{ accessModeIcon }}"></i> {{ accessModeText }}
                         </button>
-                        <ul class="dropdown-menu" aria-labelledby="access-mode-dropdown">
-                            <li><a class="dropdown-item" href="#" onclick="updateAccessMode('O'); return false;"><i class="ri-global-line"></i> {{ gT("Anyone with link") }}</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="updateAccessMode('C'); return false;"><i class="ri-lock-2-line"></i> {{ gT("Link with access code") }}</a></li>
+                         <ul class="dropdown-menu" aria-labelledby="access-mode-dropdown">
+                            <li><a id="updateAccessModeBtn" data-surveyid="{{ oSurvey.sid }}" data-newaccessmode="O" class="dropdown-item" href="#"><i class="ri-global-line"></i> {{ gT("Anyone with link") }}</a></li>
+                            <li><a id="updateAccessModeBtn" data-surveyid="{{ oSurvey.sid }}" data-newaccessmode="C" class="dropdown-item" href="#"><i class="ri-lock-2-line"></i> {{ gT("Link with access code") }}</a></li>
                         </ul>
                     </div>
                 </div>
         </li>
     </ul>
 </div>
-
-<script>
-function updateAccessMode(newAccessMode) {
-    const surveyId = {{ oSurvey.sid }};
-    const button = document.getElementById('access-mode-dropdown');
-    
-    // Show loading state
-    const originalText = button.innerHTML;
-    button.innerHTML = '<i class="ri-loader-4-line ri-spin"></i> Updating...';
-    button.disabled = true;
-    
-    // Make AJAX request to call the Twig function
-    fetch('{{ createUrl("surveyAdministration/updateAccessMode") }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'surveyId=' + surveyId + '&accessMode=' + newAccessMode + '&' + LS.data.csrfTokenName + '=' + LS.data.csrfToken
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Update button display
-            if (newAccessMode === 'O') {
-                button.innerHTML = '<i class="ri-global-line"></i> {{ gT("Anyone with link") }}';
-            } else {
-                button.innerHTML = '<i class="ri-lock-2-line"></i> {{ gT("Link with access code") }}';
-            }
-            
-            // Close dropdown
-            const dropdown = bootstrap.Dropdown.getInstance(button);
-            if (dropdown) {
-                dropdown.hide();
-            }
-            
-        } else {
-            button.innerHTML = originalText;
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        button.innerHTML = originalText;
-    })
-    .finally(() => {
-        button.disabled = false;
-    });
-}
-</script>
 
 {% if oSurvey.active == 'Y' %}
     <div class="modal fade" tabindex="-1" role="dialog" id="sharingdialog">

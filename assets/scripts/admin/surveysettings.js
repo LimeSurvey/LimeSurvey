@@ -6,7 +6,7 @@
 function saveParameter() {
     var sParamname = $.trim($('#paramname').val());
     if (sParamname == '' || !/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(sParamname) || sParamname == 'sid' || sParamname == 'newtest' || sParamname == 'token' || sParamname == 'lang') {
-        LS.ajaxAlerts(window.sEnterValidParam, 'danger', {inline: '#parameterError'});
+        LS.ajaxAlerts(window.sEnterValidParam, 'danger', { inline: '#parameterError' });
         return;
     }
     var modal = bootstrap.Modal.getInstance($('#dlgEditParameter'))
@@ -97,7 +97,7 @@ function validateSettingsForm($form) {
                 $('#startdate_datetimepicker').data('DateTimePicker'),
                 $('#expires_datetimepicker').data('DateTimePicker'),
                 () => {
-                    LS.createAlert(expirationLowerThanStartError, 'danger', {'showCloseButton': true})
+                    LS.createAlert(expirationLowerThanStartError, 'danger', { 'showCloseButton': true })
                 }
             );
         default:
@@ -133,7 +133,7 @@ function sendPostAndUpdate(url, data) {
         type: 'POST',
         data: postDatas,
 
-        success : function(result) {
+        success: function (result) {
             if (!result.success) {
                 var errorMsg = result.message || '';
                 if (!errorMsg) errorMsg = "Unexpected error";
@@ -145,13 +145,13 @@ function sendPostAndUpdate(url, data) {
 
             try {
                 $.fn.yiiGridView.update('urlparams');
-            } catch (e){
+            } catch (e) {
                 if (e) {
                     console.ls.error(e);
                 }
             }
         },
-        error :  function(result){
+        error: function (result) {
             LS.LsGlobalNotifier.createAlert(result.statusText ?? "Unexpected error", 'danger');
         }
     });
@@ -161,21 +161,76 @@ function searchParameters() {
     var data = {
         search_query: $('#search_query').val()
     };
-    $.fn.yiiGridView.update('urlparams', {data: data});
+    $.fn.yiiGridView.update('urlparams', { data: data });
 }
 
-$(document).on('click', '#addParameterButton', function(e){
+$(document).on('click', '#addParameterButton', function (e) {
     e.preventDefault();
     newParameter(e);
 });
-$(document).on('click', '.surveysettings_edit_intparameter', function(e){
+$(document).on('click', '.surveysettings_edit_intparameter', function (e) {
     e.preventDefault();
-    editParameter(e,$(this).data());
+    editParameter(e, $(this).data());
 });
 
 $(document).on('click', '#btnSaveParams', saveParameter);
 
 $(document).on('click', '#searchParameterButton', searchParameters);
-$(document).on('change', '#integrationPanelPager #pageSize', function(){
-    $.fn.yiiGridView.update('urlparams',{ data:{ pageSize: $(this).val() }});
+$(document).on('change', '#integrationPanelPager #pageSize', function () {
+    $.fn.yiiGridView.update('urlparams', { data: { pageSize: $(this).val() } });
+});
+
+
+$(document).on('click', '#updateAccessModeBtn', function updateAccessMode(e) {
+    const newAccessMode = e.target.dataset.newaccessmode;
+    const surveyId = e.target.dataset.surveyid;
+    const button = document.getElementById('access-mode-dropdown');
+
+    // Show loading state
+    const originalText = button.innerHTML;
+    button.innerHTML = '<i class="ri-loader-4-line ri-spin"></i> Updating...';
+    button.disabled = true;
+
+    // Build URL using LS.createUrl helper
+    const url = LS.createUrl('surveyAdministration/updateAccessMode');
+
+    // Make AJAX request
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'surveyId=' + surveyId + '&accessMode=' + newAccessMode + '&' + LS.data.csrfTokenName + '=' + LS.data.csrfToken
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update button display
+                if (newAccessMode === 'O') {
+                    button.innerHTML = '<i class="ri-global-line"></i> Anyone with link';
+                } else {
+                    button.innerHTML = '<i class="ri-lock-2-line"></i> Link with access code';
+                }
+
+                // Close dropdown
+                const dropdownElement = document.getElementById('access-mode-dropdown');
+                const dropdown = bootstrap.Dropdown.getInstance(dropdownElement);
+                if (dropdown) {
+                    dropdown.hide();
+                }
+            } else {
+                // Show error message
+                console.error('Error updating access mode:', data.message);
+                button.innerHTML = originalText;
+                alert('Error updating access mode: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            button.innerHTML = originalText;
+            alert('Error updating access mode: ' + error.message);
+        })
+        .finally(() => {
+            button.disabled = false;
+        });
 });
