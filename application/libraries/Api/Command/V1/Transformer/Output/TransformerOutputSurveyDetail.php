@@ -211,7 +211,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['themesettings'] = [];
         $survey['themesettingattributes'] = [];
         $survey['templatePreview'] = '';
-        $this->transformThemeSettings($survey['themesettings'], $survey['themesettingattributes'], $survey['templatePreview'], $data['template'], $data->sid);
+        $this->transformThemeSettings($survey['themesettings'], $survey['themesettingattributes'], $survey['templatePreview'], $data);
 
         return $survey;
     }
@@ -400,16 +400,15 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * @param-out array<array-key, mixed> $aThemeSettings
      * @param-out array<mixed> $aThemesettingattributes
      * @param-out string $sTemplatePreview
-     * @param string $themeName
-     * @param integer $surveyId
+     * @param Survey $survey
      * @return void
      */
-    private function transformThemeSettings(array &$aThemeSettings, array &$aThemeSettingAttributes, string &$sTemplatePreview, $themeName, $surveyId = 0)
+    private function transformThemeSettings(array &$aThemeSettings, array &$aThemeSettingAttributes, string &$sTemplatePreview, $survey)
     {
-        $themeConfiguration = TemplateConfiguration::getInstance(null, null, $surveyId);
+        $themeConfiguration = TemplateConfiguration::getInstance(null, null, $survey->sid);
         // loads all information available for the theme including inheritance
-        $themeData = $this->surveyThemeConfiguration->updateCommon($themeConfiguration, $surveyId);
-        $aThemeSettings = $themeData['oParentOptions'];
+        $themeData = $this->surveyThemeConfiguration->updateCommon($themeConfiguration, $survey->sid, $survey->gsid);
+        $aThemeSettings = $themeData;
 
         $aThemeSettingAttributes = $themeData['aOptionAttributes'];
         $aThemeSettingAttributes['optionAttributes'] = $this->surveyThemeConfiguration->getSurveyThemeOptionsAttributes($themeData['aOptionAttributes']['optionAttributes']);
