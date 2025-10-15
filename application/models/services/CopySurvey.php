@@ -143,7 +143,8 @@ class CopySurvey
         $copySurveyResult->setCntSurveyLanguages($cntCopiedLanguageSettings);
     }
 
-    private function copyQuestionGroup($copyResults, $destinationSurvey) {
+    private function copyQuestionGroup($copyResults, $destinationSurvey)
+    {
         $questionGroups = QuestionGroup::model()->findAllByAttributes(['sid' => $this->sourceSurvey->sid]);
         $mappingQuestionGroupIds = [];
         $cntCopiedQuestionGroups = 0;
