@@ -13,7 +13,7 @@ class Update_638 extends DatabaseUpdateBase
             // Step 1: Add column allowing NULL.
             addColumn('{{surveys}}', 'lastmodified', 'datetime NULL');
 
-            // Step 2: Fill it with data using datecreated as default.
+            // Step 2: Fill it with data using the current UTC time as default.
             $db->createCommand(
                 'UPDATE {{surveys}} SET lastmodified = :lastmodified WHERE lastmodified IS NULL'
             )->bindValue(':lastmodified', gmdate('Y-m-d H:i:s'))->execute();
