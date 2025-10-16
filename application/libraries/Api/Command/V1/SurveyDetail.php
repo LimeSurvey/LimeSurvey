@@ -100,14 +100,17 @@ class SurveyDetail implements CommandInterface
             );
         }
 
+        $tz = date_default_timezone_get();
+        date_default_timezone_set('UTC');
         if (
             $this->lastLoaded
-            && $this->lastLoaded >= strtotime(str_replace(' ', 'T', $surveyModel->lastmodified))
+            && ((int)$this->lastLoaded) >= ((int)strtotime($surveyModel->lastmodified))
         ) {
             return $this->responseFactory->makeSuccess([
-                'survey' => 'not changed',
+                    'survey' => 'not changed'
             ]);
         }
+        date_default_timezone_set($tz);
 
         //set real survey options with inheritance to get value of "inherit" attribute from db
         // for example get inherit template value  $surveyModel->options->template
