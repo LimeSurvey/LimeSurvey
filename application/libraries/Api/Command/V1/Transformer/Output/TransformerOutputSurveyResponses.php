@@ -4,6 +4,8 @@ namespace LimeSurvey\Libraries\Api\Command\V1\Transformer\Output;
 
 use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
+use Survey;
+use SurveyDynamic;
 
 class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
 {
@@ -15,22 +17,22 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
     public function __construct()
     {
         $this->setDataMap([
-            'id' => ['type' => 'int'],
+            'id'            => ['type' => 'int'],
             'startlanguage' => ['key' => 'language', 'type' => 'string'],
-            'seed' => ['key' => 'seed'],
-            'lastpage' => ['key' => 'lastPage'],
-            'submitdate' => [
-                'key' => 'submitDate',
+            'seed'          => ['key' => 'seed'],
+            'lastpage'      => ['key' => 'lastPage'],
+            'submitdate'    => [
+                'key'       => 'submitDate',
                 'formatter' => ['dateTimeToJson' => true]
             ],
-            'startdate' => ['key' => 'startDate'],
-            'ipaddr' => ['key' => 'ipAddr'],
-            'refurl' => ['key' => 'refUrl'],
-            'datestamp' => ['key' => 'dateLastAction'],
-            'token' => ['key' => 'token'],
-            'firstname' => ['key' => 'firstName'],
-            'lastname' => ['key' => 'lastName'],
-            'email' => ['key' => 'email'],
+            'startdate'     => ['key' => 'startDate'],
+            'ipaddr'        => ['key' => 'ipAddr'],
+            'refurl'        => ['key' => 'refUrl'],
+            'datestamp'     => ['key' => 'dateLastAction'],
+            'token'         => ['key' => 'token'],
+            'firstname'     => ['key' => 'firstName'],
+            'lastname'      => ['key' => 'lastName'],
+            'email'         => ['key' => 'email'],
         ]);
     }
 
@@ -39,7 +41,7 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
      *
      * Returns an array of entity references indexed by the specified key.
      *
-     * @param ?mixed $data
+     * @param array $data
      * @param ?mixed $options
      * @return array
      * @throws TransformerException
@@ -50,7 +52,7 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
         $responses = [];
         if ($data !== null) {
             foreach ($data as $surveyResponse) {
-                $responses[] = $this->transformerResponseItem($surveyResponse);
+                $responses[] = $this->transformerResponseItem($surveyResponse, $options);
             }
         }
 
@@ -62,62 +64,49 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
     /**
      * Transforms survey menu items and puts them into the main survey menus,
      * organized by their unique names.
-     * @param array $surveyResponse
+     * @param SurveyDynamic $surveyResponse
+     * @param array $options
      * @return array
+     * @throws TransformerException
      */
-    private function transformerResponseItem($surveyResponse): array
+    private function transformerResponseItem(SurveyDynamic $surveyResponse, array $options): array
     {
-        $firstName = '';
-        $lastName = '';
-        $email = '';
-
-        try {
-            if (is_object($surveyResponse)) {
-                $firstName =  $surveyResponse->firstNameForGrid;
-                $lastName = $surveyResponse->lastNameForGrid;
-                $email = $surveyResponse->emailForGrid;
-            }
-        } catch (\Throwable $th) {
-          //throw $th;
-        }
-
-
-        foreach ($surveyResponse as $key => $value) {
+        $surveyResponseAttributes = $surveyResponse->attributes;
+        foreach ($surveyResponseAttributes as $key => $value) {
             if (str_contains($key, 'X')) {
-                list($survey, $group, $question) = explode("X", $key);
+                [$survey, $group, $question] = explode("X", $key);
                 $responses[$key] = [
-                    "key" => $key,
-                    "id" => $question,
-                    "gid" => $group,
-                    "sid" => $survey,
+                    "key"   => $key,
+                    "id"    => $question,
+                    "gid"   => $group,
+                    "sid"   => $survey,
                     "value" => $value
                 ];
-            } elseif (str_starts_with($key, "Q") && !empty($this->fieldMap[$key])) {
+            } elseif (!empty($this->fieldMap[$key]) && str_starts_with($key, "Q")) {
                 $responses[$key] = [
-                    "key" => $key,
-                    "id" => $this->fieldMap[$key]['qid'],
-                    "gid" => $this->fieldMap[$key]['gid'],
-                    "sid" => $this->fieldMap[$key]['sid'],
+                    "key"   => $key,
+                    "id"    => $this->fieldMap[$key]['qid'],
+                    "gid"   => $this->fieldMap[$key]['gid'],
+                    "sid"   => $this->fieldMap[$key]['sid'],
                     "value" => $value
                 ];
             }
         }
 
-        $surveyResponse = parent::transform($surveyResponse);
-        $surveyResponse['completed'] = !empty($surveyResponse['submitDate']);
-
-        if ($firstName) {
-            $surveyResponse['firstName'] = $firstName;
+        $surveyResponseArray = parent::transform($surveyResponse);
+        /** @var Survey $survey */
+        $survey = $options['survey'];
+        $hasToken = $survey->anonymized === "N"
+            && tableExists('tokens_' . $survey->sid)
+            && isset($surveyResponse->tokens);
+        if ($hasToken) {
+            $surveyResponseArray['firstNameForGrid'] = $surveyResponse->getFirstNameForGrid();
+            $surveyResponseArray['lastNameForGrid'] = $surveyResponse->getLastNameForGrid();
+            $surveyResponseArray['emailForGrid'] = $surveyResponse->getEmailForGrid();
         }
-        if ($lastName) {
-            $surveyResponse['lastName'] = $lastName;
-        }
-        if ($email) {
-            $surveyResponse['email'] = $email;
-        }
+        $surveyResponseArray['completed'] = !empty($surveyResponseArray['submitDate']);
+        $surveyResponseArray['answers'] = $responses;
 
-        $surveyResponse['answers'] = $responses;
-
-        return $surveyResponse;
+        return $surveyResponseArray;
     }
 }

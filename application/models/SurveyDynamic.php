@@ -623,7 +623,7 @@ class SurveyDynamic extends LSActiveRecord
         // decrypt token information ( if needed )
         $tokens = $this->tokens;
         if (is_object($tokens)) {
-          return $tokens->email;
+            return $tokens->email;
         }
     }
 
