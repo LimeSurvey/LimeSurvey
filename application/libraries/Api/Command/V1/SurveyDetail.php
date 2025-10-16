@@ -107,7 +107,7 @@ class SurveyDetail implements CommandInterface
             && ((int)$this->lastLoaded) >= ((int)strtotime($surveyModel->lastmodified))
         ) {
             return $this->responseFactory->makeSuccess([
-                    'survey' => 'not changed'
+                'survey' => 'not changed'
             ]);
         }
         date_default_timezone_set($tz);
