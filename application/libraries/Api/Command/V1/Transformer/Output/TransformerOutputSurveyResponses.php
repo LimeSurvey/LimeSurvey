@@ -100,9 +100,9 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
             && tableExists('tokens_' . $survey->sid)
             && isset($surveyResponse->tokens);
         if ($hasToken) {
-            $surveyResponseArray['firstNameForGrid'] = $surveyResponse->getFirstNameForGrid();
-            $surveyResponseArray['lastNameForGrid'] = $surveyResponse->getLastNameForGrid();
-            $surveyResponseArray['emailForGrid'] = $surveyResponse->getEmailForGrid();
+            $surveyResponseArray['firstName'] = $surveyResponse->getFirstNameForGrid();
+            $surveyResponseArray['lastName'] = $surveyResponse->getLastNameForGrid();
+            $surveyResponseArray['email'] = $surveyResponse->getEmailForGrid();
         }
         $surveyResponseArray['completed'] = !empty($surveyResponseArray['submitDate']);
         $surveyResponseArray['answers'] = $responses;
