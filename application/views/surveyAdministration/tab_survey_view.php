@@ -25,10 +25,8 @@ App()->getClientScript()->registerScript("check-hash-for-tab", "
     function switchTabBasedOnHash() {
         if(window.location.hash === '#copy') {
             $('#create-import-copy-survey a[href=\"#copy\"]').tab('show');
-            console.log('copy');
         } else {
             $('#create-import-copy-survey a[href=\"#general\"]').tab('show');
-            console.log('general');
         }
     }
     
