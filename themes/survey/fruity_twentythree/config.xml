@@ -170,6 +170,7 @@
     </options>
     <optionsOrderReact>
         <brandlogo category="Logo"/>
+        <brandlogofile category="Logo"/>
         <cssframework category="Appearance"/>
         <font category="Appearance"/>
         <fontcolor category="Appearance"/>
@@ -177,6 +178,7 @@
         <questionbackgroundcolor category="Appearance"/>
         <checkicon category="Appearance"/>
         <backgroundimage category="Appearance"/>
+        <backgroundimagefile category="Appearance"/>
         <cornerradius category="Display options"/>
         <hideprivacyinfo category="Display options" />
         <showclearall category="Display options" />
