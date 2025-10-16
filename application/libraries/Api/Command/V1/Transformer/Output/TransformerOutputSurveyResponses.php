@@ -71,10 +71,14 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
         $lastName = '';
         $email = '';
 
-        if (is_object($surveyResponse)) {
-            $firstName = $surveyResponse->firstNameForGrid;
-            $lastName = $surveyResponse->lastNameForGrid;
-            $email = $surveyResponse->emailForGrid;
+        try {
+            if (is_object($surveyResponse)) {
+                $firstName =  $surveyResponse->firstNameForGrid;
+                $lastName = $surveyResponse->lastNameForGrid;
+                $email = $surveyResponse->emailForGrid;
+            }
+        } catch (\Throwable $th) {
+          //throw $th;
         }
 
 
@@ -101,9 +105,17 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
 
         $surveyResponse = parent::transform($surveyResponse);
         $surveyResponse['completed'] = !empty($surveyResponse['submitDate']);
-        $surveyResponse['firstName'] = $firstName;
-        $surveyResponse['lastName'] = $lastName;
-        $surveyResponse['email'] = $email;
+
+        if ($firstName) {
+            $surveyResponse['firstName'] = $firstName;
+        }
+        if ($lastName) {
+            $surveyResponse['lastName'] = $lastName;
+        }
+        if ($email) {
+            $surveyResponse['email'] = $email;
+        }
+
         $surveyResponse['answers'] = $responses;
 
         return $surveyResponse;
