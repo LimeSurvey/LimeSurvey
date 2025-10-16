@@ -27,6 +27,10 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
             'ipaddr' => ['key' => 'ipAddr'],
             'refurl' => ['key' => 'refUrl'],
             'datestamp' => ['key' => 'dateLastAction'],
+            'token' => ['key' => 'token'],
+            'firstname' => ['key' => 'firstName'],
+            'lastname' => ['key' => 'lastName'],
+            'email' => ['key' => 'email'],
         ]);
     }
 
@@ -63,7 +67,17 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
      */
     private function transformerResponseItem($surveyResponse): array
     {
-        $responses = [];
+        $firstName = '';
+        $lastName = '';
+        $email = '';
+
+        if (is_object($surveyResponse)) {
+            $firstName = $surveyResponse->firstNameForGrid;
+            $lastName = $surveyResponse->lastNameForGrid;
+            $email = $surveyResponse->emailForGrid;
+        }
+
+
         foreach ($surveyResponse as $key => $value) {
             if (str_contains($key, 'X')) {
                 list($survey, $group, $question) = explode("X", $key);
@@ -87,6 +101,9 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
 
         $surveyResponse = parent::transform($surveyResponse);
         $surveyResponse['completed'] = !empty($surveyResponse['submitDate']);
+        $surveyResponse['firstName'] = $firstName;
+        $surveyResponse['lastName'] = $lastName;
+        $surveyResponse['email'] = $email;
         $surveyResponse['answers'] = $responses;
 
         return $surveyResponse;
