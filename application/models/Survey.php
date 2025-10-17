@@ -1511,7 +1511,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         ];
         $dropdownItems[] = [
             'title' => gT('Copy'),
-            'url' => App()->createUrl("/surveyAdministration/newSurvey#copy"),
+            'url' => App()->createUrl("/surveyAdministration/newSurvey", ['tab' => 'copy']),
 
             'enabledCondition' => $permissions['survey_update'],
         ];
