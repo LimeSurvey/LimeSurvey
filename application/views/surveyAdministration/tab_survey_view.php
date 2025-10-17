@@ -20,35 +20,16 @@ App()->getClientScript()->registerScript("tab-survey-view-variables", "
 ", LSYii_ClientScript::POS_BEGIN);
 $activeTab = Yii::app()->request->getParam('tab', 'create');
 
-// Check if URL ends with #copy and set activeTab accordingly
-App()->getClientScript()->registerScript("check-hash-for-tab", "
-    function switchTabBasedOnHash() {
-        if(window.location.hash === '#copy') {
-            $('#create-import-copy-survey a[href=\"#copy\"]').tab('show');
-        } else {
-            $('#create-import-copy-survey a[href=\"#general\"]').tab('show');
-        }
-    }
-    
-    $(document).ready(function() {
-        switchTabBasedOnHash();
-        
-        // Listen for hash changes
-        $(window).on('hashchange', function() {
-            switchTabBasedOnHash();
-        });
-    });
-", LSYii_ClientScript::POS_END);
 
 switch($activeTab) {
     case 'create':
-        $activeForm = 'addnewsurvey'; 
+        $activeForm = 'addnewsurvey';
         // $label = '<i class="ri-check-fill"></i>&nbsp;'.gT("Save");
         $label = '<i class="ri-check-fill"></i>&nbsp;'.gT("Save");
-        
+
         break;
     case 'copy':
-        $activeForm = 'copysurveyform'; 
+        $activeForm = 'copysurveyform';
         $label = '<i class="ri-file-copy-line"></i>&nbsp;'.gT('Copy');
         break;
 }
