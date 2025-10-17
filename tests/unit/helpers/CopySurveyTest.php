@@ -23,7 +23,7 @@ class CopySurveyTest extends TestBaseClass
 
         $survey = Survey::model()->findByPk(self::$testSurvey->sid);
 
-        //intial state is, that everything is copied and all values are reset
+        //initial state is, that everything is copied and all values are reset
         $optionsDataContainer = new CopySurveyOptions();
 
         $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(

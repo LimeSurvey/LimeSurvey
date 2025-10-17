@@ -24,7 +24,7 @@ class CopyQuestion
     private $newQuestion;
 
     /**
-     * @var array map between original subquestion id and new subquestion id
+     * @var array mapping between original subquestion id and new subquestion id
      */
     private $mappedSubquestionIds = [];
 
@@ -152,7 +152,7 @@ class CopyQuestion
      *
      * @param int $parentId id of question to be copied
      * @param int|null $surveyId The id of the survey to which the new question should be added.
-     *                           If null, it will be added to the current survey.
+     *                           If null, it will be added to the survey the original question belongs to.
      *
      * * @before $this->newQuestion must exist and should not be null
      *
@@ -193,7 +193,7 @@ class CopyQuestion
     /**
      * Returns the mapping of subquestions
      *
-     * * @before $this->newQuestion must exist and should not be null
+     * @return array the mapping of subquestion ids from the original question to the copied question
      */
     public function getMappedSubquestionIds()
     {

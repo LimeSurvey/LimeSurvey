@@ -2219,9 +2219,7 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
-     * Function responsible to import/copy a survey based on $action.
-     *
-     * @todo this should be separated in two actions import and copy ...
+     * Function responsible to copy a survey.
      *
      * @access public
      * @return void
@@ -2291,10 +2289,7 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         if ((App()->getConfig("editorEnabled")) && ($copiedSurvey !== null)) {
-            if (!isset($oSurvey)) {
-                $oSurvey = Survey::model()->findByPk($copiedSurvey->sid);
-            }
-            if ($oSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
+            if ($copiedSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
                 $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $copiedSurvey->sid]);
             }
         }
@@ -2374,7 +2369,15 @@ class SurveyAdministrationController extends LSBaseController
             App()->user->setFlash('error', gT("Error while copying the survey."));
         }
 
-        $this->redirect(App()->request->urlReferrer);
+        $copiedSurvey = $copyResults->getCopiedSurvey();
+        if ($copiedSurvey !== null) {
+            $redirectUrl = App()->createUrl("surveyAdministration/view/", ["iSurveyID" => $copiedSurvey->sid]);
+            if ((App()->getConfig("editorEnabled")) && $copiedSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
+                $redirectUrl = App()->createUrl("editorLink/index", ["route" => "survey/" . $copiedSurvey->sid]);
+            }
+        }
+
+        $this->redirect($redirectUrl?? App()->request->urlReferrer);
     }
 
     public function actionImport()
