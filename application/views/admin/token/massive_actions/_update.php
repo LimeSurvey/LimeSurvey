@@ -60,6 +60,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "completed-switch",
                                         'id'            => "massedit_completed-switch",
+                                        'ariaLabel' => gT('Completed?'),
                                         'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch", 'disabled' => true],
                                         'checkedOption' => 0,
                                         'selectOptions' => [
@@ -182,6 +183,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 <?php if ($oSurvey->anonymized !== 'Y') : ?>
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "sent-switch",
+                                         'ariaLabel' => gT('Invitation sent?'),
                                         'id'            => "massedit_sent-switch",
                                         'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch", 'disabled' => true],
                                         'checkedOption' => 0,
@@ -234,6 +236,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "remind-switch",
                                         'id'            => "massedit_remind-switch",
+                                        'ariaLabel' => gT('Reminder sent?'),
                                         'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch", 'disabled' => true],
                                         'checkedOption' => 0,
                                         'selectOptions' => [
