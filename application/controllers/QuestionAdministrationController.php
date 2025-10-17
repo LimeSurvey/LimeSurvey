@@ -2421,7 +2421,7 @@ class QuestionAdministrationController extends LSBaseController
         $advancedSettings = $questionAttributeHelper->groupAttributesByCategory($advancedSettings);
 
         // This category is "general setting".
-        unset($advancedSettings['Attribute']);
+        unset($advancedSettings[gT('Attribute')]);
 
         return $advancedSettings;
     }
