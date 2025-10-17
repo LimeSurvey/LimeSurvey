@@ -42,7 +42,7 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
      * Returns an array of entity references indexed by the specified key.
      *
      * @param array $data
-     * @param ?mixed $options
+     * @param array $options
      * @return array
      * @throws TransformerException
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
@@ -50,10 +50,8 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
     public function transform($data = [], $options = []): array
     {
         $responses = [];
-        if ($data !== null) {
-            foreach ($data as $surveyResponse) {
-                $responses[] = $this->transformerResponseItem($surveyResponse, $options);
-            }
+        foreach ($data as $surveyResponse) {
+            $responses[] = $this->transformerResponseItem($surveyResponse, $options);
         }
 
 
@@ -72,6 +70,8 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
     private function transformerResponseItem(SurveyDynamic $surveyResponse, array $options): array
     {
         $surveyResponseAttributes = $surveyResponse->attributes;
+        $responses = [];
+
         foreach ($surveyResponseAttributes as $key => $value) {
             if (str_contains($key, 'X')) {
                 [$survey, $group, $question] = explode("X", $key);
