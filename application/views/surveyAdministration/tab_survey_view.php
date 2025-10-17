@@ -6,8 +6,6 @@
  * It doesn't render the tab content
  */
 
-$active = $_GET['tab'] ?? 'create';
-
 App()->getClientScript()->registerScript("tab-survey-view-variables", "
     var jsonUrl = '';
     var sAction = '';
@@ -51,7 +49,7 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
 
     <!-- Create -->
     <li class="nav-item" role="presentation">
-        <a class="nav-link <?= $active === 'create' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title="<i class='ri-check-fill'></i>&nbsp;<?= gT('Save'); ?>" data-form-id="addnewsurvey" href='#general'>
+        <a class="nav-link <?= $activeTab === 'create' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title="<i class='ri-check-fill'></i>&nbsp;<?= gT('Save'); ?>" data-form-id="addnewsurvey" href='#general'>
             <?php  eT("Create"); ?>
         </a>
     </li>
@@ -60,7 +58,7 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
     <?php if ($action === "newsurvey"): ?>
         <!-- Copy -->
         <li class="nav-item" role="presentation">
-            <a class="nav-link <?= $active === 'copy' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title="<i class='ri-file-copy-line'></i>&nbsp;<?= gT('Copy'); ?>" data-form-id="copysurveyform" href="#copy">
+            <a class="nav-link <?= $activeTab === 'copy' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title="<i class='ri-file-copy-line'></i>&nbsp;<?= gT('Copy'); ?>" data-form-id="copysurveyform" href="#copy">
                 <?php  eT("Copy"); ?>
             </a>
         </li>
