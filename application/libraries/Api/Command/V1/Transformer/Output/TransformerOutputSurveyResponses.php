@@ -50,8 +50,10 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
     public function transform($data = [], $options = []): array
     {
         $responses = [];
-        foreach ($data as $surveyResponse) {
-            $responses[] = $this->transformerResponseItem($surveyResponse, $options ?? []);
+        if ($data !== null) {
+            foreach ($data as $surveyResponse) {
+                $responses[] = $this->transformerResponseItem($surveyResponse, $options ?? []);
+            }
         }
 
 
