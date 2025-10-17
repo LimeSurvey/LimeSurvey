@@ -2377,7 +2377,7 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
 
-        $this->redirect($redirectUrl?? App()->request->urlReferrer);
+        $this->redirect($redirectUrl ?? App()->request->urlReferrer);
     }
 
     public function actionImport()
