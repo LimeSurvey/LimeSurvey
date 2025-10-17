@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-10-16 13:40:16+00:00\n"
+"POT-Creation-Date: 2025-10-17 14:29:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2322,9 +2322,9 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:1101
 #: application/models/Survey.php:1513
 #: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:36
-#: application/views/surveyAdministration/tab_survey_view.php:36
-#: application/views/surveyAdministration/tab_survey_view.php:73
-#: application/views/surveyAdministration/tab_survey_view.php:74
+#: application/views/surveyAdministration/tab_survey_view.php:52
+#: application/views/surveyAdministration/tab_survey_view.php:82
+#: application/views/surveyAdministration/tab_survey_view.php:83
 msgid "Copy"
 msgstr ""
 
@@ -3066,8 +3066,8 @@ msgstr ""
 #: application/views/surveyAdministration/addPanelIntegrationParameter_view.php:65
 #: application/views/surveyAdministration/partial/topbar/surveyTopbarRight_view.php:92
 #: application/views/surveyAdministration/partial/topbarBtns_create_survey/rightSideButtons.php:24
-#: application/views/surveyAdministration/tab_survey_view.php:27
-#: application/views/surveyAdministration/tab_survey_view.php:57
+#: application/views/surveyAdministration/tab_survey_view.php:47
+#: application/views/surveyAdministration/tab_survey_view.php:73
 #: application/views/surveyPermissions/partial/editpermission.php:68
 #: application/views/themeOptions/advanced.php:103
 #: application/views/themeOptions/update.php:54
@@ -5534,7 +5534,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:895
 #: application/models/QuestionAttribute.php:432
 #: application/views/admin/super/_configuration_menu.php:283
-#: application/views/surveyAdministration/tab_survey_view.php:98
+#: application/views/surveyAdministration/tab_survey_view.php:107
 msgid "Plugins"
 msgstr ""
 
@@ -7383,7 +7383,7 @@ msgid "Edit survey panel integration"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:472
-#: application/views/surveyAdministration/tab_survey_view.php:83
+#: application/views/surveyAdministration/tab_survey_view.php:92
 msgid "Panel integration"
 msgstr ""
 
@@ -7408,7 +7408,7 @@ msgid "Add/edit resources (files/images) for this survey"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:556
-#: application/views/surveyAdministration/tab_survey_view.php:90
+#: application/views/surveyAdministration/tab_survey_view.php:99
 msgid "Resources"
 msgstr ""
 
@@ -9736,7 +9736,7 @@ msgstr ""
 #: application/views/admin/surveymenu_entries/create.php:7
 #: application/views/admin/token/createParticipantsTable.php:30
 #: application/views/admin/user/setuserpermissions.php:26
-#: application/views/surveyAdministration/tab_survey_view.php:58
+#: application/views/surveyAdministration/tab_survey_view.php:74
 #: application/views/surveyPermissions/partial/editpermission.php:16
 #: application/views/themeOptions/advanced.php:103
 #: application/views/themeOptions/update.php:54
@@ -9783,9 +9783,6 @@ msgstr ""
 #: application/views/questionGroupsAdministration/partial/topbarBtns/importGroupTopbarRight_view.php:8
 #: application/views/responses/partial/topbarBtns/leftSideButtons.php:55
 #: application/views/surveyAdministration/partial/topbar/surveyTopbarRight_view.php:150
-#: application/views/surveyAdministration/tab_survey_view.php:32
-#: application/views/surveyAdministration/tab_survey_view.php:66
-#: application/views/surveyAdministration/tab_survey_view.php:67
 #: application/views/surveyPermissions/partial/editpermission.php:20
 #: application/views/userManagement/massiveAction/_updatepermissions.php:34
 #: application/views/userManagement/partial/editpermissions.php:23
