@@ -92,7 +92,7 @@
             <div class="survey-actionbar-actions ms-auto">
                 <div class="survey-actionbar-item">
                     <?php if (Permission::model()->hasGlobalPermission('surveys', 'create')) : ?>
-                        <a href="<?= Yii::app()->createUrl('surveyAdministration/createSurvey') ?>" class="btn btn-outline-info survey-actionbar-button">
+                        <a href="<?= Yii::app()->createUrl('surveyAdministration/newSurvey') ?>" class="btn btn-outline-info survey-actionbar-button">
                             <i class="ri-add-line"></i>
                             <?= gT('Create survey') ?>
                         </a>
