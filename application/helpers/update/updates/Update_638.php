@@ -19,7 +19,7 @@ class Update_638 extends DatabaseUpdateBase
             )->bindValue(':lastmodified', gmdate('Y-m-d H:i:s'))->execute();
 
             // Step 3: Set column to NOT NULL.
-            alterColumn('{{surveys}}', 'lastmodified', 'datetime NOT NULL');
+            alterColumn('{{surveys}}', 'lastmodified', 'datetime', false);
         }
     }
 }
