@@ -4034,6 +4034,7 @@ function TSVImportSurvey($sFullFilePath)
                 $question['encrypted'] = ($row['encrypted'] ?? 'N');
                 $lastother = $question['other'] = ($row['other'] ?? 'N'); // Keep trace of other settings for sub question
                 $question['same_default'] = ($row['same_default'] ?? 0);
+                $question['question_theme_name'] = ($row['question_theme_name'] ?? '');
                 $question['same_script'] = ($row['same_script'] ?? 0);
                 $question['parent_qid'] = 0;
 
@@ -4079,6 +4080,7 @@ function TSVImportSurvey($sFullFilePath)
                         case 'mandatory':
                         case 'other':
                         case 'same_default':
+                        case 'question_theme_name':
                         case 'same_script':
                         case 'default':
                             break;

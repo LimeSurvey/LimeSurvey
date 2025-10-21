@@ -526,8 +526,9 @@ class SurveyCommonAction extends CAction
             'isDivider' => false,
             'isSmallText' => false,
             'label' => gT('Survey'),
-            'href' => \Yii::app()->createUrl('surveyAdministration/createSurvey'),
+            'href' => \Yii::app()->createUrl('surveyAdministration/newSurvey'),
             'iconClass' => 'ri-add-line',
+            'id' => 'create-survey-link',
         ];
         $menuItems[] = (new MenuItem($menuItemNewSurvey));
 
@@ -544,7 +545,8 @@ class SurveyCommonAction extends CAction
             'isDivider' => false,
             'isSmallText' => false,
             'label' => gT('Import survey'),
-            'href' => \Yii::app()->createUrl('surveyAdministration/newSurvey'),
+            'isModal' => true,
+            'modalId' => 'importSurvey_modal',
             'iconClass' => 'ri-upload-line',
         ];
         $menuItems[] = (new MenuItem($menuItemNewSurvey));
