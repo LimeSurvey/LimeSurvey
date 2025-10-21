@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.15.19 (build 251017) to 6.15.20 (build 251021) October 21, 2025
+-Fixed issue: incorrect timezone survey (#4482) (lajosarpad)
+-Fixed issue #CT-458: Refactored SQL command builders (#4473) (lajosarpad)
+-Fixed issue #20310: Create survey from dashboard skips initial settings (#4490) (Tim Willig)
+-Fixed issue #20309: Multiple choice "Other" option has styling issues (#4488) (Denis Chenu)
+#Updated translation: Japanese by d_inoue
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han, twilllig
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.15.18 (build 251016) to 6.15.19 (build 251017) October 17, 2025
 -Fixed issue: Time stamp not always UTC (lajosarpad)
 -Fixed issue #20308: Update bug with Postgres (lajosarpad)
