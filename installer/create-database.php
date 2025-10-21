@@ -679,7 +679,7 @@ function populateDatabase($oDB)
             'googleanalyticsapikey' => "string(25) NULL",
             'tokenencryptionoptions' => "text NULL",
             'access_mode' => "string(1) DEFAULT 'O'",
-            'lastmodified' => 'datetime NOT NULL DEFAULT CURRENT_TIMESTAMP'
+            'lastmodified' => 'datetime NOT NULL',
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_pk}}', '{{surveys}}', 'sid');
