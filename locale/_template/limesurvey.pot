@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-10-17 14:29:11+00:00\n"
+"POT-Creation-Date: 2025-10-21 08:54:17+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -215,9 +215,9 @@ msgstr ""
 #: application/controllers/admin/Tokens.php:1791
 #: application/controllers/admin/Tokens.php:1918
 #: application/controllers/admin/Tokens.php:2188
-#: application/controllers/admin/Tokens.php:2536
-#: application/controllers/admin/Tokens.php:2595
-#: application/controllers/admin/Tokens.php:2681
+#: application/controllers/admin/Tokens.php:2538
+#: application/controllers/admin/Tokens.php:2597
+#: application/controllers/admin/Tokens.php:2683
 #: application/controllers/admin/dumpdb.php:110
 #: application/controllers/admin/globalsettings.php:37
 #: application/controllers/admin/globalsettings.php:62
@@ -272,11 +272,11 @@ msgstr ""
 #: application/controllers/admin/Tokens.php:1783
 #: application/controllers/admin/Tokens.php:1928
 #: application/controllers/admin/Tokens.php:2198
-#: application/controllers/admin/Tokens.php:2548
-#: application/controllers/admin/Tokens.php:2605
-#: application/controllers/admin/Tokens.php:2720
-#: application/controllers/admin/Tokens.php:2827
-#: application/controllers/admin/Tokens.php:2885
+#: application/controllers/admin/Tokens.php:2550
+#: application/controllers/admin/Tokens.php:2607
+#: application/controllers/admin/Tokens.php:2722
+#: application/controllers/admin/Tokens.php:2829
+#: application/controllers/admin/Tokens.php:2887
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
 #: application/helpers/admin/statistics_helper.php:2382
 #: application/helpers/admin/statistics_helper.php:2392
@@ -438,8 +438,8 @@ msgstr ""
 #: application/controllers/admin/Statistics.php:113
 #: application/controllers/admin/Statistics.php:671
 #: application/core/SurveyCommonAction.php:183
-#: application/core/SurveyCommonAction.php:704
-#: application/core/SurveyCommonAction.php:915
+#: application/core/SurveyCommonAction.php:706
+#: application/core/SurveyCommonAction.php:917
 #: application/helpers/LayoutHelper.php:451
 msgid "Invalid survey ID"
 msgstr ""
@@ -1232,7 +1232,7 @@ msgstr ""
 #: application/controllers/admin/Saved.php:87
 #: application/controllers/admin/SurveysGroupsController.php:420
 #: application/controllers/admin/dumpdb.php:105
-#: application/core/SurveyCommonAction.php:1145
+#: application/core/SurveyCommonAction.php:1147
 msgid "Invalid action"
 msgstr ""
 
@@ -2322,9 +2322,9 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:1101
 #: application/models/Survey.php:1513
 #: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:36
-#: application/views/surveyAdministration/tab_survey_view.php:52
-#: application/views/surveyAdministration/tab_survey_view.php:82
-#: application/views/surveyAdministration/tab_survey_view.php:83
+#: application/views/surveyAdministration/tab_survey_view.php:31
+#: application/views/surveyAdministration/tab_survey_view.php:61
+#: application/views/surveyAdministration/tab_survey_view.php:62
 msgid "Copy"
 msgstr ""
 
@@ -2473,7 +2473,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:2582
 #: application/controllers/admin/ParticipantsAction.php:872
 #: application/controllers/admin/Themes.php:402
-#: application/core/SurveyCommonAction.php:1072
+#: application/core/SurveyCommonAction.php:1074
 #: application/helpers/SurveyRuntimeHelper.php:1489
 #: application/helpers/frontend_helper.php:2038
 #: application/models/services/CopySurveyResources.php:68
@@ -2601,7 +2601,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:844
 #: application/controllers/admin/PrintableSurvey.php:929
 #: application/controllers/admin/PrintableSurvey.php:943
-#: application/controllers/admin/Tokens.php:2560
+#: application/controllers/admin/Tokens.php:2562
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:215
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:224
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:232
@@ -2746,7 +2746,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:843
 #: application/controllers/admin/PrintableSurvey.php:927
 #: application/controllers/admin/PrintableSurvey.php:941
-#: application/controllers/admin/Tokens.php:2558
+#: application/controllers/admin/Tokens.php:2560
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:184
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:193
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:211
@@ -3066,8 +3066,8 @@ msgstr ""
 #: application/views/surveyAdministration/addPanelIntegrationParameter_view.php:65
 #: application/views/surveyAdministration/partial/topbar/surveyTopbarRight_view.php:92
 #: application/views/surveyAdministration/partial/topbarBtns_create_survey/rightSideButtons.php:24
-#: application/views/surveyAdministration/tab_survey_view.php:47
-#: application/views/surveyAdministration/tab_survey_view.php:73
+#: application/views/surveyAdministration/tab_survey_view.php:26
+#: application/views/surveyAdministration/tab_survey_view.php:52
 #: application/views/surveyPermissions/partial/editpermission.php:68
 #: application/views/themeOptions/advanced.php:103
 #: application/views/themeOptions/update.php:54
@@ -4661,7 +4661,7 @@ msgstr ""
 
 #: application/controllers/admin/DataEntry.php:930
 #: application/core/SurveyCommonAction.php:489
-#: application/core/SurveyCommonAction.php:844
+#: application/core/SurveyCommonAction.php:846
 #: application/helpers/LayoutHelper.php:135
 #: application/helpers/common_helper.php:652
 #: application/helpers/questionHelper.php:1214
@@ -5534,7 +5534,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:895
 #: application/models/QuestionAttribute.php:432
 #: application/views/admin/super/_configuration_menu.php:283
-#: application/views/surveyAdministration/tab_survey_view.php:107
+#: application/views/surveyAdministration/tab_survey_view.php:86
 msgid "Plugins"
 msgstr ""
 
@@ -6553,8 +6553,8 @@ msgid "Some emails were not sent because the server did not accept the email(s) 
 msgstr ""
 
 #: application/controllers/admin/Tokens.php:1744
-#: application/controllers/admin/Tokens.php:2572
-#: application/controllers/admin/Tokens.php:2576
+#: application/controllers/admin/Tokens.php:2574
+#: application/controllers/admin/Tokens.php:2578
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:14
 #: application/views/admin/authentication/error.php:6
 #: application/views/admin/error_view.php:5
@@ -6725,53 +6725,53 @@ msgstr ""
 msgid "Line %s : %s %s"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2384
-#: application/controllers/admin/Tokens.php:2399
-#: application/controllers/admin/Tokens.php:3271
+#: application/controllers/admin/Tokens.php:2386
+#: application/controllers/admin/Tokens.php:2401
+#: application/controllers/admin/Tokens.php:3273
 msgid "Line %s : %s %s (%s)"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2407
-#: application/controllers/admin/Tokens.php:2413
+#: application/controllers/admin/Tokens.php:2409
+#: application/controllers/admin/Tokens.php:2415
 msgid "Line %s : %s %s (%s) - token : %s"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2555
-#: application/controllers/admin/Tokens.php:2579
+#: application/controllers/admin/Tokens.php:2557
+#: application/controllers/admin/Tokens.php:2581
 msgid "Create access codes"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2556
+#: application/controllers/admin/Tokens.php:2558
 msgid "Clicking 'Yes' will generate access codes for all those in this participant list that have not been issued one. Continue?"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2570
+#: application/controllers/admin/Tokens.php:2572
 msgid "Only {n} access code has been created.|Only {n} access codes have been created."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2571
+#: application/controllers/admin/Tokens.php:2573
 msgid "Need {n} access code.|Need {n} access codes."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2575
+#: application/controllers/admin/Tokens.php:2577
 msgid "{n} access code has been created.|{n} access codes have been created."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2712
+#: application/controllers/admin/Tokens.php:2714
 msgid "Bounce settings have been saved."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2869
+#: application/controllers/admin/Tokens.php:2871
 #: application/views/admin/token/tokenwarning.php:13
 msgid "Survey participants have not been initialised for this survey."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2875
+#: application/controllers/admin/Tokens.php:2877
 msgid "Participant list already exist for this survey."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2899
-#: application/controllers/admin/Tokens.php:3024
+#: application/controllers/admin/Tokens.php:2901
+#: application/controllers/admin/Tokens.php:3026
 #: application/core/LsDefaultDataSets.php:331
 #: application/extensions/BreadcrumbWidget/BreadcrumbWidget.php:217
 #: application/views/admin/token/browse.php:21
@@ -6779,12 +6779,12 @@ msgstr ""
 msgid "Survey participants"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2900
+#: application/controllers/admin/Tokens.php:2902
 msgid "A participant list has been created for this survey."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2902
-#: application/controllers/admin/Tokens.php:2960
+#: application/controllers/admin/Tokens.php:2904
+#: application/controllers/admin/Tokens.php:2962
 #: application/views/SurveysGroupsPermission/subviews/deleteUserResult.php:11
 #: application/views/admin/authentication/message.php:45
 #: application/views/admin/participants/attributeMapCSV_view.php:86
@@ -6810,23 +6810,23 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2957
+#: application/controllers/admin/Tokens.php:2959
 msgid "Import old participant list"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2958
+#: application/controllers/admin/Tokens.php:2960
 msgid "A survey participant list has been created for this survey and the old participants were imported."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2977
+#: application/controllers/admin/Tokens.php:2979
 msgid "Import failed"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2978
+#: application/controllers/admin/Tokens.php:2980
 msgid "There are no matching settings to start the restoration of the participant list."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:3266
+#: application/controllers/admin/Tokens.php:3268
 msgid "%s records with other errors"
 msgstr ""
 
@@ -7383,7 +7383,7 @@ msgid "Edit survey panel integration"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:472
-#: application/views/surveyAdministration/tab_survey_view.php:92
+#: application/views/surveyAdministration/tab_survey_view.php:71
 msgid "Panel integration"
 msgstr ""
 
@@ -7408,7 +7408,7 @@ msgid "Add/edit resources (files/images) for this survey"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:556
-#: application/views/surveyAdministration/tab_survey_view.php:99
+#: application/views/surveyAdministration/tab_survey_view.php:78
 msgid "Resources"
 msgstr ""
 
@@ -8102,7 +8102,7 @@ msgid "Click on 'Save and close' or 'Next' to proceed."
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:1633
-#: application/core/SurveyCommonAction.php:742
+#: application/core/SurveyCommonAction.php:744
 #: application/core/TopbarConfiguration.php:180
 #: application/views/surveyAdministration/partial/topbar/previewOrRunButton_view.php:39
 msgid "Preview survey"
@@ -8700,12 +8700,12 @@ msgstr ""
 msgid "Survey"
 msgstr ""
 
-#: application/core/SurveyCommonAction.php:537
+#: application/core/SurveyCommonAction.php:538
 #: application/helpers/LayoutHelper.php:187
 msgid "Survey group"
 msgstr ""
 
-#: application/core/SurveyCommonAction.php:546
+#: application/core/SurveyCommonAction.php:547
 #: application/helpers/LayoutHelper.php:196
 #: application/views/surveyAdministration/partial/_modalImportSurvey.php:23
 #: application/views/surveyAdministration/partial/_modalImportSurvey.php:66
@@ -8713,24 +8713,24 @@ msgstr ""
 msgid "Import survey"
 msgstr ""
 
-#: application/core/SurveyCommonAction.php:744
+#: application/core/SurveyCommonAction.php:746
 #: application/core/TopbarConfiguration.php:183
 #: application/views/surveyAdministration/partial/topbar/previewOrRunButton_view.php:39
 msgid "Run survey"
 msgstr ""
 
-#: application/core/SurveyCommonAction.php:1053
+#: application/core/SurveyCommonAction.php:1055
 #: application/models/services/FilterImportedResources.php:27
 msgid "Extracted files not found - maybe a permission problem?"
 msgstr ""
 
-#: application/core/SurveyCommonAction.php:1067
+#: application/core/SurveyCommonAction.php:1069
 #: application/models/services/CopySurveyResources.php:66
 #: application/models/services/FilterImportedResources.php:64
 msgid "Copy failed"
 msgstr ""
 
-#: application/core/SurveyCommonAction.php:1079
+#: application/core/SurveyCommonAction.php:1081
 #: application/models/services/FilterImportedResources.php:76
 msgid "Forbidden Extension"
 msgstr ""
@@ -9736,7 +9736,7 @@ msgstr ""
 #: application/views/admin/surveymenu_entries/create.php:7
 #: application/views/admin/token/createParticipantsTable.php:30
 #: application/views/admin/user/setuserpermissions.php:26
-#: application/views/surveyAdministration/tab_survey_view.php:74
+#: application/views/surveyAdministration/tab_survey_view.php:53
 #: application/views/surveyPermissions/partial/editpermission.php:16
 #: application/views/themeOptions/advanced.php:103
 #: application/views/themeOptions/update.php:54
@@ -21899,7 +21899,7 @@ msgstr ""
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:18
 #: application/views/admin/survey/subview/accordion/_plugins_panel.php:18
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:17
-#: application/views/surveyAdministration/tab_survey_view.php:17
+#: application/views/surveyAdministration/tab_survey_view.php:15
 msgid "If you are using token functions or notifications emails you need to set an administrator email address."
 msgstr ""
 
