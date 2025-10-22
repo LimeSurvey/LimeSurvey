@@ -14,6 +14,13 @@ class MenuItem implements MenuItemInterface
     protected $label = "Missing label";
     /** @var string */
     protected $iconClass = "";
+    /** @var string */
+    protected $id = null;
+
+    //make it possible to open a modal via the item click
+
+    protected $isModal = false;
+    protected $modalId = null;
 
     /**
      * @param array $options
@@ -39,6 +46,18 @@ class MenuItem implements MenuItemInterface
         if (isset($options['iconClass'])) {
             $this->iconClass = $options['iconClass'];
         }
+
+        if (isset($options['id'])) {
+            $this->id = $options['id'];
+        }
+
+        if (isset($options['isModal'])) {
+            $this->isModal = $options['isModal'];
+        }
+
+        if (isset($options['modalId'])) {
+            $this->modalId = $options['modalId'];
+        }
     }
 
     /**
@@ -47,6 +66,14 @@ class MenuItem implements MenuItemInterface
     public function getHref()
     {
         return $this->href;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
@@ -65,6 +92,10 @@ class MenuItem implements MenuItemInterface
         return $this->iconClass;
     }
 
+    public function getModalId(){
+        return $this->modalId;
+    }
+
     /**
      * @return boolean
      */
@@ -79,6 +110,11 @@ class MenuItem implements MenuItemInterface
     public function isSmallText()
     {
         return $this->isSmallText;
+    }
+
+    public function isModal()
+    {
+        return $this->isModal;
     }
 
     /**

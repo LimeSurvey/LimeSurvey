@@ -4819,7 +4819,7 @@ class LimeExpressionManager
                         // display new question : Ging backward : maxQuestionSeq>currentQuestionSeq is always true.
                         $message .= $LEM->_UpdateValuesInDatabase();
                         $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
-                        return [
+                        $LEM->lastMoveResult = [
                             'at_start'      => false,
                             'finished'      => false,
                             'message'       => $message,
@@ -4835,6 +4835,7 @@ class LimeExpressionManager
                             'notRelevantSteps'   => $notRelevantSteps,
                             'hiddenSteps'   => $hiddenSteps
                         ];
+                        return $LEM->lastMoveResult;
                     }
                 }
                 break;

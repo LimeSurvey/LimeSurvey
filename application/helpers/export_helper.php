@@ -2640,6 +2640,7 @@ function tsvSurveyExport($surveyid)
         'other',
         'default',
         'same_default',
+        'question_theme_name',
         'same_script',
     );
 
@@ -2981,6 +2982,7 @@ function tsvSurveyExport($surveyid)
                         $tsv_output['encrypted'] = !empty($question['encrypted']) ? $question['encrypted'] : 'N';
                         $tsv_output['other'] = $question['other'];
                         $tsv_output['same_default'] = $question['same_default'];
+                        $tsv_output['question_theme_name'] = $question['question_theme_name'];
                         $tsv_output['same_script'] = $question['same_script'];
 
                         if (array_key_exists($language, $defaultvalues) && array_key_exists($qid, $defaultvalues[$language])) {
@@ -3046,6 +3048,7 @@ function tsvSurveyExport($surveyid)
                                 $tsv_output['mandatory'] = !empty($subquestion['mandatory']) ? $subquestion['mandatory'] : '';
                                 $tsv_output['other'] = $subquestion['other'];
                                 $tsv_output['same_default'] = $subquestion['same_default'];
+                                $tsv_output['question_theme_name'] = $subquestion['question_theme_name'];
                                 $tsv_output['same_script'] = $subquestion['same_script'];
 
                                 if (array_key_exists($language, $defaultvalues) && array_key_exists($subquestion['qid'], $defaultvalues[$language])) {

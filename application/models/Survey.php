@@ -141,9 +141,11 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property bool $showsurveypolicynotice Show the security notice
  * @property bool $isNoKeyboard Show on-screen keyboard
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
+ * @property string $access_mode Whether the access mode is open (O) or closed (C), if O token-based participation may be supported, if C, it's enforced
  * @property SurveyLanguageSetting $defaultlanguage
  * @property SurveysGroups $surveygroup
  * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
+ * @property string $lastmodified date as SQL datetime (YYYY-MM-DD HH:mm:ss)
  * @method mixed active()
  */
 class Survey extends LSActiveRecord implements PermissionInterface
@@ -1509,7 +1511,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         ];
         $dropdownItems[] = [
             'title' => gT('Copy'),
-            'url' => App()->createUrl("/surveyAdministration/newSurvey#copy"),
+            'url' => App()->createUrl("/surveyAdministration/newSurvey", ['tab' => 'copy']),
 
             'enabledCondition' => $permissions['survey_update'],
         ];
@@ -2560,5 +2562,20 @@ class Survey extends LSActiveRecord implements PermissionInterface
             return new DateTime($datetime);
         }
         return null;
+    }
+
+    /**
+     * This method is invoked before saving a record (after validation, if any).
+     * The default implementation raises the {@link onBeforeSave} event.
+     * You may override this method to do any preparation work for record saving.
+     * Use {@link isNewRecord} to determine whether the saving is
+     * for inserting or updating record.
+     * Make sure you call the parent implementation so that the event is raised properly.
+     * @return boolean whether the saving should be executed. Defaults to true.
+     */
+    protected function beforeSave()
+    {
+        $this->lastmodified = gmdate('Y-m-d H:i:s');
+        return parent::beforeSave();
     }
 }

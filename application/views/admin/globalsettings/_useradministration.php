@@ -24,7 +24,7 @@
                             '0' => gT('Off'),
                         ],
                         'htmlOptions'   => [
-                            'class'        => 'custom-data bootstrap-switch-boolean',
+                            'class'        => 'custom-data',
                         ]
                     ]); ?>
                 </div>

@@ -18,6 +18,11 @@ function openModalActivate(){
             if (result.checkFailed) {
                 //footer buttons have to be different, if any activation-checks failed
                 modalDialog.find('.modal-footer').empty().html(result.footerButton);
+            } else {
+                if (result?.footerButton != '') {
+                    // if footerButton has content, it should also be used when checks are ok
+                    modalDialog.find('.modal-footer').empty().html(result.footerButton);
+                }
             }
             modalDialog.modal('show');
         },
