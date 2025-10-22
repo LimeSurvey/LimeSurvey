@@ -16,6 +16,7 @@ use LimeSurvey\ObjectPatch\{
 };
 use Psr\Container\ContainerInterface;
 use LimeSurvey\Models\Services\SurveyDetailService;
+use Survey;
 
 class PatcherSurvey extends Patcher
 {
@@ -98,6 +99,8 @@ class PatcherSurvey extends Patcher
                 }
             }
             $survey = $this->surveyDetailService->getSurveyFromEntityMap($entityMap);
+            $sid = \Yii::app()->getRequest()->getQuery('_id') ?? 0;
+            $survey = ($sid ? Survey::model()->findByPk($sid) : $this->surveyDetailService->getSurveyFromEntityMap($entityMap));
             if ($survey) {
                 $survey->lastmodified = gmdate('Y-m-d H:i:s');
                 $survey->save();
