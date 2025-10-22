@@ -82,6 +82,27 @@ class SortHelper
     }
 
     /**
+     * Sort array maintaining index association in reverse order
+     * @param string[] $array to sort
+     * @param integer $flags in self::SORT_REGULAR (default or invalid), self::SORT_NUMERIC, self::SORT_STRING
+     * @return boolean, see Collator::asort
+     * @see arsort and Collator::asort
+     */
+    public function arsort(array &$array, int $flags = self::SORT_REGULAR): bool
+    {
+        if (is_null(self::$collator)) {
+            return arsort($array, self::getFlag($flags));
+        }
+
+        // Use our own asort method and then reverse the array
+        $result = $this->asort($array, $flags);
+        if ($result) {
+            $array = array_reverse($array, true); // true preserves keys
+        }
+        return $result;
+    }
+
+    /**
      * Return flag tupe depend on functoion sed
      * @param integer
      * @return integer
