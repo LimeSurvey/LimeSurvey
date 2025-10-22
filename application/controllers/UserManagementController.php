@@ -733,7 +733,7 @@ class UserManagementController extends LSBaseController
         return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
             "data" => [
                 'success' => true,
-                'message' => gT("Saved template permissions successfully.")
+                'message' => gT("Saved theme permissions successfully.")
             ]
         ]);
     }

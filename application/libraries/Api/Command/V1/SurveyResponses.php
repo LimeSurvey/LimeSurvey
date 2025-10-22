@@ -82,7 +82,7 @@ class SurveyResponses implements CommandInterface
                 );
 
             try {
-                $result = $dataProvider->getData();
+                $surveyResponses = $dataProvider->getData();
             } catch (CDbException $e) {
                 // Since questions keys are column, if there's an invalid key sent,
                 // an exception will be thrown which will result in an error 500.
@@ -94,7 +94,8 @@ class SurveyResponses implements CommandInterface
 
             $data = [];
             $data['responses'] = $this->transformerOutputSurveyResponses->transform(
-                $result
+                $surveyResponses,
+                ['survey' => $this->survey]
             );
             $data['surveyQuestions'] = $this->getQuestionFieldMap();
             $data['_meta'] = [

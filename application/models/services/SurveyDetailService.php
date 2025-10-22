@@ -88,9 +88,7 @@ class SurveyDetailService
         }
         foreach ($supportedKeys['gid_sid'] as $key) {
             if (isset($entityMap[$key])) {
-                if (isset($entityMap[$key])) {
-                    return Survey::model()->findByPk(\QuestionGroup::model()->findByAttributes(['gid' => $entityMap[$key]])->sid);
-                }
+                return Survey::model()->findByPk(\QuestionGroup::model()->findByAttributes(['gid' => $entityMap[$key]])->sid);
             }
         }
         return null;
