@@ -98,7 +98,6 @@ class PatcherSurvey extends Patcher
                     $this->surveyResponse->handleException($e, $op);
                 }
             }
-            $survey = $this->surveyDetailService->getSurveyFromEntityMap($entityMap);
             $sid = \Yii::app()->getRequest()->getQuery('_id') ?? 0;
             $survey = ($sid ? Survey::model()->findByPk($sid) : $this->surveyDetailService->getSurveyFromEntityMap($entityMap));
             if ($survey) {
