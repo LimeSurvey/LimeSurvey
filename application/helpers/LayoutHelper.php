@@ -1,5 +1,8 @@
 <?php
 
+use LimeSurvey\Menu\Menu;
+use LimeSurvey\Menu\MenuItem;
+
 /**
  * Class LayoutHelper
  */
@@ -140,8 +143,8 @@ class LayoutHelper
 
             // Fetch extra menus from plugins, e.g. last visited surveys
             $aData['extraMenus'] = $this->fetchExtraMenus($aData);
-
-           // $aData['extraMenus'] = ''; //todo extraMenu should work
+            //new create process (including survey, survey group, import survey)
+            $aData['extraMenus'][] = $this->getCreateMenu();
 
             // Get notification menu
             $surveyId = $aData['surveyid'] ?? null;
@@ -151,6 +154,64 @@ class LayoutHelper
             Yii::app()->getController()->renderPartial("/layouts/adminmenu", $aData);
         }
         return null;
+    }
+
+    /**
+     * Returns extra menu for the new create process (including survey, survey group, import survey)
+     *
+     * @return Menu
+     */
+    public function getCreateMenu() {
+        $menuItemHeader = [
+            'isDivider' => false,
+            'isSmallText' => true,
+            'label' => gT('Create new...'),
+            'href' => '#',
+            'iconClass' => 'ri-add-line',
+        ];
+        $menuItems[] = (new MenuItem($menuItemHeader));
+
+        $menuItemNewSurvey = [
+            'isDivider' => false,
+            'isSmallText' => false,
+            'label' => gT('Survey'),
+            'href' => \Yii::app()->createUrl('surveyAdministration/newSurvey'),
+            'iconClass' => 'ri-add-line',
+            'id' => 'create-survey-link',
+        ];
+        $menuItems[] = (new MenuItem($menuItemNewSurvey));
+
+        $menuItemNewSurvey = [
+            'isDivider' => false,
+            'isSmallText' => false,
+            'label' => gT('Survey group'),
+            'href' => \Yii::app()->createUrl('admin/surveysgroups/sa/create'),
+            'iconClass' => 'ri-add-circle-line',
+        ];
+        $menuItems[] = (new MenuItem($menuItemNewSurvey));
+
+        $menuItemNewSurvey = [
+            'isDivider' => false,
+            'isSmallText' => false,
+            'label' => gT('Import survey'),
+            'isModal' => true,
+            'modalId' => 'importSurvey_modal',
+            'iconClass' => 'ri-upload-line',
+        ];
+        $menuItems[] = (new MenuItem($menuItemNewSurvey));
+
+        $options = [
+            'label' => '+',
+            'iconClass' => 'ri-add-line',
+            'isDropDown' => true,
+            'isDropDownButton' => true,
+            'menuItems' => $menuItems,
+            'isPrepended' => true,
+        ];
+
+        $createMenu = new Menu($options);
+
+        return $createMenu;
     }
 
     /**

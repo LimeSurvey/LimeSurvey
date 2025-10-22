@@ -19,6 +19,7 @@ if (!defined('BASEPATH')) {
 require_once(Yii::app()->basePath . '/libraries/MersenneTwister.php');
 
 use LimeSurvey\PluginManager\PluginEvent;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 function loadanswers()
 {
@@ -376,13 +377,19 @@ function submittokens($quotaexit = false)
     } else {
         $thissurvey = getSurveyInfo($surveyid);
     }
-    $clienttoken = $_SESSION['survey_' . $surveyid]['token'];
+    $clienttoken = $_SESSION['survey_' . $surveyid]['token'] ?? '';
+
+    $tokenused = ($_SESSION['survey_' . $surveyid]['tokenused'] ?? false);
+
+    if (($clienttoken === '') && (!$tokenused) && ($thissurvey['access_mode'] !== SurveyAccessModeService::$ACCESS_TYPE_CLOSED)) {
+        return; //optional
+    }
 
     // Shift the date due to global timeadjust setting
     $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
 
     // check how many uses the token has left
-    $token = Token::model($surveyid)->findByAttributes(array('token' => $clienttoken));
+    $token = Token::model($surveyid)->findByAttributes(array('token' => $clienttoken ? $clienttoken : $tokenused));
     if (!$token) {
         throw new CHttpException(403, gT("Invalid access code"));
     }
@@ -390,7 +397,9 @@ function submittokens($quotaexit = false)
 
     if ($quotaexit == true) {
         $token->completed = 'Q';
-        $token->usesleft--;
+        if (!$tokenused) {
+            $token->usesleft--;
+        }
     } else {
         if ($token->usesleft <= 1) {
             // Finish the token

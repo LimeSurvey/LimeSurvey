@@ -22,7 +22,7 @@
         <version>1.0.0</version>
         <apiVersion>3.0</apiVersion>
         <description twig="on"><![CDATA[{{gT("Our default theme for a fruity and flexible use. This theme offers single color variations")}}]]></description>
-        <lastUpdate>2023-03-15 12:00:00</lastUpdate>
+        <lastUpdate>2023-10-03 10:31:00</lastUpdate>
     </metadata>
 
     <compatibility>
@@ -194,6 +194,8 @@
                     <file type="view" role="subview">./subviews/survey/question_subviews/answers.twig</file>
                     <file type="view" role="subview">./subviews/survey/question_subviews/survey_question_help.twig</file>
                     <file type="view" role="subview">./subviews/survey/question_subviews/valid_message_and_help.twig</file>
+                    <file type="view" role="subview">./subviews/survey/question_subviews/question_image_container.twig</file>
+                    <file type="view" role="subview">./subviews/survey/question_subviews/question_image.twig</file>
                     <file type="css">./css/variations/theme_apple.css</file>
                     <file type="css">./css/variations/theme_apple-rtl.css</file>
                     <file type="css">./css/variations/theme_blueberry.css</file>

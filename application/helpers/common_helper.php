@@ -764,18 +764,33 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
         $thissurvey = $staticSurveyInfo[$surveyid][$languagecode];
     } else {
         $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+        $resultBaseLanguage = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $oSurvey->language));
         if (is_null($result)) {
             // When additional language was added, but not saved it does not exists
             // We should revert to the base language then
             $languagecode = $oSurvey->language;
-            $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+            $result = $resultBaseLanguage;
         }
         if ($result) {
             $aSurveyAtrributes = array_replace($result->survey->attributes, $aSurveyOptions);
             $thissurvey = array_merge($aSurveyAtrributes, $result->attributes);
             $thissurvey['name'] = $thissurvey['surveyls_title'];
+            if (($languagecode != $oSurvey->language) && empty($thissurvey['name']) || $thissurvey['name'] == '') {
+                $thissurvey['name'] = $resultBaseLanguage->surveyls_title;
+            }
             $thissurvey['description'] = $thissurvey['surveyls_description'];
+            if (($languagecode != $oSurvey->language) && empty($thissurvey['description']) || $thissurvey['description'] == '') {
+                $thissurvey['description'] = $resultBaseLanguage->surveyls_description;
+            }
             $thissurvey['welcome'] = $thissurvey['surveyls_welcometext'];
+            // if there is no welcome message for an additional language, we try to get it from the base language
+            if (($languagecode != $oSurvey->language) && empty($thissurvey['welcome']) || $thissurvey['welcome'] == '') {
+                $thissurvey['welcome'] = $resultBaseLanguage->surveyls_welcometext;
+            }
+            // if there is no end message for an additional language, we try to get it from the base language
+            if (($languagecode != $oSurvey->language) && empty($thissurvey['surveyls_endtext']) || $thissurvey['surveyls_endtext'] == '') {
+                $thissurvey['surveyls_endtext'] = $resultBaseLanguage->surveyls_endtext;
+            }
             $thissurvey['datasecurity_notice_label'] = $thissurvey['surveyls_policy_notice_label'];
             $thissurvey['datasecurity_error'] = $thissurvey['surveyls_policy_error'];
             $thissurvey['datasecurity_notice'] = $thissurvey['surveyls_policy_notice'];
@@ -796,6 +811,8 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             $thissurvey['attributedescriptions'] = $result->survey->tokenAttributes;
             $thissurvey['attributecaptions'] = $result->attributeCaptions;
             $thissurvey['googleanalyticsapikey'] = $oSurvey->getGoogleanalyticsapikey();
+            $thissurvey['hastokenstable'] = $oSurvey->hasTokensTable;
+            $thissurvey['filltoken'] = (Yii::app()->request->getParam('filltoken') === 'true');
             if (!isset($thissurvey['adminname'])) {
                 $thissurvey['adminname'] = Yii::app()->getConfig('siteadminemail');
             }
@@ -2564,7 +2581,7 @@ function tableExists($sTableName)
 }
 
 // Returns false if the survey is anonymous,
-// and a survey participants table exists: in this case the completed field of a token
+// and a survey participant list exists: in this case the completed field of a token
 // will contain 'Y' instead of the submitted date to ensure privacy
 // Returns true otherwise
 function isTokenCompletedDatestamped($thesurvey)
@@ -2885,7 +2902,7 @@ function filterForAttributes(string $fieldname)
 }
 
 /**
-* Retrieves the attribute field names from the related survey participants table
+* Retrieves the attribute field names from the related survey participant list
 *
 * @param mixed $iSurveyID  The survey ID
 * @return array The fieldnames
@@ -2921,7 +2938,7 @@ function getParticipantAttributes($iSurveyID)
 
 
 /**
-* Retrieves the attribute names from the related survey participants table
+* Retrieves the attribute names from the related survey participant list
 *
 * @param mixed $surveyid  The survey ID
 * @param boolean $bOnlyAttributes Set this to true if you only want the fieldnames of the additional attribue fields - defaults to false
@@ -4306,12 +4323,11 @@ function modifyDatabase($sqlfile = '', $sqlstring = '')
 {
     Yii::app()->loadHelper('database');
 
-
-    global $siteadminemail;
-    global $siteadminname;
     global $codeString;
     global $modifyoutput;
 
+    $siteadminname = Yii::app()->getConfig('siteadminname');
+    $siteadminemail = Yii::app()->getConfig('siteadminemail');
     $success = true; // Let's be optimistic
     $modifyoutput = '';
     $lines = [];
@@ -4558,48 +4574,12 @@ function json_decode_ls($jsonString)
  */
 function aEncodingsArray()
 {
-        $aEncodings = array(
-        "armscii8" => gT("ARMSCII-8 Armenian"),
-        "ascii" => gT("US ASCII"),
-        "big5" => gT("Big5 Traditional Chinese"),
-        "binary" => gT("Binary pseudo charset"),
-        "cp1250" => gT("Windows Central European (Windows-1250)"),
-        "cp1251" => gT("Windows Cyrillic (Windows-1251)"),
-        "cp1256" => gT("Windows Arabic (Windows-1256)"),
-        "cp1257" => gT("Windows Baltic (Windows-1257)"),
-        "cp850" => gT("DOS West European (cp850)"),
-        "cp852" => gT("DOS Central European (cp852)"),
-        "cp866" => gT("DOS Cyrillic (cp866)"),
-        "cp932" => gT("Windows-31J - SJIS for Windows Japanese (cp932)"),
-        "dec8" => gT("DEC West European"),
-        "eucjpms" => gT("UJIS for Windows Japanese"),
-        "euckr" => gT("EUC-KR Korean"),
-        "gb2312" => gT("GB2312 Simplified Chinese"),
-        "gbk" => gT("GBK Simplified Chinese"),
-        "geostd8" => gT("GEOSTD8 Georgian"),
-        "greek" => gT("ISO 8859-7 Greek"),
-        "hebrew" => gT("ISO 8859-8 Hebrew"),
-        "hp8" => gT("HP West European"),
-        "keybcs2" => gT("DOS Kamenicky Czech-Slovak (cp895)"),
-        "koi8r" => gT("KOI8-R Relcom Russian"),
-        "koi8u" => gT("KOI8-U Ukrainian"),
-        "latin1" => gT("ISO 8859-1 West European (latin1)"),
-        "latin2" => gT("ISO 8859-2 Central European (latin2)"),
-        "latin5" => gT("ISO 8859-9 Turkish (latin5)"),
-        "latin7" => gT("ISO 8859-13 Baltic (latin7)"),
-        "macce" => gT("Mac Central European"),
-        "macroman" => gT("Mac West European"),
-        "sjis" => gT("Shift-JIS Japanese"),
-        "swe7" => gT("7bit Swedish"),
-        "tis620" => gT("TIS620 Thai"),
-        "ucs2" => gT("UCS-2 Unicode"),
-        "ujis" => gT("EUC-JP Japanese"),
-        "utf8" => gT("UTF-8 Unicode"),
-        );
-        // Sort list of encodings
-        asort($aEncodings);
-        $aEncodings = array("auto" => gT("(Automatic)")) + $aEncodings;
-        return $aEncodings;
+    // create a list of key -> value array for accepted encodings
+    $encodings = array_combine(array_values(mb_list_encodings()), array_values(mb_list_encodings()));
+    // Sort list of encodings
+    asort($encodings);
+    $encodings = array("auto" => gT("(Automatic)")) + $encodings;
+    return $encodings;
 }
 
 

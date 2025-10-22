@@ -109,7 +109,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
         <div class="col-12 col-lg-6">
             <!-- Anonymized responses -->
             <div class="mb-3">
-                <label  class=" form-label"  for='anonymized' title='<?php eT("If you set 'Yes' then no link will exist between survey participants table and survey responses table. You won't be able to identify responses by their access code."); ?>'>
+                <label  class=" form-label"  for='anonymized' title='<?php eT("If you set 'Yes' then no link will exist between survey participant list and survey responses table. You won't be able to identify responses by their access code."); ?>'>
                     <?php  eT("Anonymized responses:"); ?>
                 </label>
                 <div>
@@ -134,7 +134,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
 
             <!-- Enable token-based response persistence -->
             <div class="mb-3">
-                <label class=" form-label" for='tokenanswerspersistence' title='<?php  eT("With non-anonymized responses (and the survey participants table field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link) their previous answers will be reloaded."); ?>'>
+                <label class=" form-label" for='tokenanswerspersistence' title='<?php  eT("With non-anonymized responses (and the survey participant list field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link) their previous answers will be reloaded."); ?>'>
                     <?php  eT("Enable participant-based response persistence:"); ?>
                 </label>
                 <div>
