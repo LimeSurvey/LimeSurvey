@@ -4,6 +4,7 @@ namespace LimeSurvey\Libraries\Api\Command\V1;
 
 use CDbException;
 use InvalidArgumentException;
+use LimeSurvey\Models\Services\Exception\NotFoundException;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsService;
 use Permission;
@@ -65,16 +66,18 @@ class Statistics implements CommandInterface
                 ->makeErrorUnauthorised();
         }
 
-        $this->statisticsService->setSurvey($surveyId, $request->getData('language') ?? 'en');
-
-        if ($this->getFilters()->count() > 0) {
-            $this->statisticsService->setFilters($this->filters);
-        }
-
         try {
+            $this->statisticsService->setSurvey($surveyId, $request->getData('language') ?? 'en');
+
+            if ($this->getFilters()->count() > 0) {
+                $this->statisticsService->setFilters($this->filters);
+            }
+
             $statistics = $this->statisticsService->run();
         } catch (InvalidArgumentException $exception) {
             return $this->responseFactory->makeErrorBadRequest($exception->getMessage());
+        } catch (NotFoundException $exception) {
+            return $this->responseFactory->makeErrorNotFound($exception->getMessage());
         } catch (CDbException $exception) {
             if ($exception->getCode() === 42) {
                 return $this->responseFactory->makeErrorBadRequest("Survey table with ID {$surveyId} does not exist.");

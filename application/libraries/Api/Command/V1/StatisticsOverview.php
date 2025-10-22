@@ -80,15 +80,14 @@ class StatisticsOverview implements CommandInterface
         $this->surveyId = (int)$request->getData('_id');
         $this->language = (string)$request->getData('language', 'en');
 
+        // Check if user has permission to view statistics
+        if (!$this->permission->hasSurveyPermission($this->surveyId, 'statistics')) {
+            return $this->responseFactory->makeErrorUnauthorised();
+        }
 
         $survey = $this->survey->findByPk($this->surveyId);
         if (empty($survey)) {
             return $this->responseFactory->makeErrorNotFound('Survey not found');
-        }
-
-        // Check if user has permission to view statistics
-        if (!$this->permission->hasSurveyPermission($this->surveyId, 'statistics')) {
-            return $this->responseFactory->makeErrorUnauthorised();
         }
 
         try {

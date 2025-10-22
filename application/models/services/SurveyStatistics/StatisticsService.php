@@ -3,6 +3,7 @@
 namespace LimeSurvey\Models\Services\SurveyStatistics;
 
 use InvalidArgumentException;
+use LimeSurvey\Models\Services\Exception\NotFoundException;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\DailyActivity\DailyActivityStatistics;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\QuestionStatistics;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
@@ -50,12 +51,19 @@ class StatisticsService
      * @param string $language Language code (default = "en")
      * @return $this
      * @throws InvalidArgumentException
+     * @throws NotFoundException
      */
     public function setSurvey($surveyId, string $language = 'en'): self
     {
         // Validate survey ID
         if (!is_numeric($surveyId) || $surveyId < 1) {
             throw new InvalidArgumentException('Invalid survey ID');
+        }
+
+        //Validate survey existence
+        $survey = Survey::model()->findByPk($surveyId);
+        if (empty($survey)) {
+            throw new NotFoundException('Survey not found');
         }
 
         // Validate language code
