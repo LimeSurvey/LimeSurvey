@@ -120,6 +120,7 @@
             'application.extensions.admin.grid.CLSGridView',
             [
                 'id'           => 'gridPanel',
+                'caption'      => gT("List of users with permission to this survey"),
                 'dataProvider' => $dataProvider,
                 'columns'      => array_merge([
                     [
