@@ -19,6 +19,7 @@ if (!defined('YII_DEBUG')) {
     // Set debug : if not set : set to default from PHP 5.3
     if (isset($settings['config']['debug'])) {
         if ($settings['config']['debug'] > 0) {
+            @ini_set("display_errors", 1);
             define('YII_DEBUG', true);
             if ($settings['config']['debug'] > 1) {
                 error_reporting(E_ALL);
@@ -29,6 +30,7 @@ if (!defined('YII_DEBUG')) {
                 error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
             }
         } else {
+            @ini_set("display_errors", 0);
             define('YII_DEBUG', false);
             error_reporting(0);
         }
