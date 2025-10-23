@@ -165,7 +165,7 @@ class LayoutHelper
         $menuItemHeader = [
             'isDivider' => false,
             'isSmallText' => true,
-            'label' => 'Create new...',
+            'label' => gT('Create new...'),
             'href' => '#',
             'iconClass' => 'ri-add-line',
         ];
@@ -175,7 +175,7 @@ class LayoutHelper
             'isDivider' => false,
             'isSmallText' => false,
             'label' => gT('Survey'),
-            'href' => \Yii::app()->createUrl('surveyAdministration/createSurvey'),
+            'href' => \Yii::app()->createUrl('surveyAdministration/newSurvey'),
             'iconClass' => 'ri-add-line',
             'id' => 'create-survey-link',
         ];
@@ -194,7 +194,8 @@ class LayoutHelper
             'isDivider' => false,
             'isSmallText' => false,
             'label' => gT('Import survey'),
-            'href' => \Yii::app()->createUrl('surveyAdministration/newSurvey'),
+            'isModal' => true,
+            'modalId' => 'importSurvey_modal',
             'iconClass' => 'ri-upload-line',
         ];
         $menuItems[] = (new MenuItem($menuItemNewSurvey));

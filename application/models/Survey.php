@@ -1421,6 +1421,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Use the creation date for old entries when the last modified date is unavailable
+     */
+    public function getLastModifiedDate()
+    {
+        $shifted = self::shiftedDateTime($this->lastmodified);
+
+        return $shifted ? $shifted->format('d.m.Y') : null;
+    }
+
+    /**
      * @return int|string
      */
     public function getCountFullAnswers()
@@ -1520,7 +1530,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         ];
         $dropdownItems[] = [
             'title' => gT('Copy'),
-            'url' => App()->createUrl("/surveyAdministration/newSurvey#copy"),
+            'url' => App()->createUrl("/surveyAdministration/newSurvey", ['tab' => 'copy']),
 
             'enabledCondition' => $permissions['survey_update'],
         ];
@@ -1645,6 +1655,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getAdditionalColumns(): array
     {
         $additionalColumns = [
+            'lastModified' => [
+                'header'            => gT('Last modified'),
+                'name'              => 'lastModified',
+                'value'             => '$data->lastModifiedDate',
+                'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
+            ],
             'group' => [
                 'header'            => gT('Group'),
                 'name'              => 'group',
@@ -2573,5 +2590,20 @@ class Survey extends LSActiveRecord implements PermissionInterface
             return new DateTime($datetime);
         }
         return null;
+    }
+
+    /**
+     * This method is invoked before saving a record (after validation, if any).
+     * The default implementation raises the {@link onBeforeSave} event.
+     * You may override this method to do any preparation work for record saving.
+     * Use {@link isNewRecord} to determine whether the saving is
+     * for inserting or updating record.
+     * Make sure you call the parent implementation so that the event is raised properly.
+     * @return boolean whether the saving should be executed. Defaults to true.
+     */
+    protected function beforeSave()
+    {
+        $this->lastmodified = gmdate('Y-m-d H:i:s');
+        return parent::beforeSave();
     }
 }

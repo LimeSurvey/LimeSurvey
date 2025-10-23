@@ -1215,7 +1215,7 @@ function getTableArchivesAndTimestamps(int $sid, string $baseTable = 'old_survey
                 WHERE t1.TABLE_SCHEMA = DATABASE() AND
                       t1.TABLE_NAME LIKE '%old%' AND
                       t1.TABLE_NAME LIKE '%{$sid}%'
-                GROUP BY SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1)
+                GROUP BY t1.TABLE_NAME, SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1)
             ")->queryAll();
         case 'pgsql':
             polyfillSUBSTRING_INDEX(Yii::app()->db->getDriverName());
@@ -4034,6 +4034,7 @@ function TSVImportSurvey($sFullFilePath)
                 $question['encrypted'] = ($row['encrypted'] ?? 'N');
                 $lastother = $question['other'] = ($row['other'] ?? 'N'); // Keep trace of other settings for sub question
                 $question['same_default'] = ($row['same_default'] ?? 0);
+                $question['question_theme_name'] = ($row['question_theme_name'] ?? '');
                 $question['same_script'] = ($row['same_script'] ?? 0);
                 $question['parent_qid'] = 0;
 
@@ -4079,6 +4080,7 @@ function TSVImportSurvey($sFullFilePath)
                         case 'mandatory':
                         case 'other':
                         case 'same_default':
+                        case 'question_theme_name':
                         case 'same_script':
                         case 'default':
                             break;
