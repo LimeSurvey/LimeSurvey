@@ -1,34 +1,69 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import VuexPersistence from 'vuex-persist';
-import VueLocalStorage from 'vue-localstorage';
+'use strict';
 
-import statePreset from './state';
-import getters from './getters';
-import mutations from './mutations';
-import actions from './actions';
+const getInitialState = (userid) => {
+    // Return your initial state structure here
+    return {
+        userid: userid,
+        // Add other state properties from statePreset
+    };
+};
 
-Vue.use(VueLocalStorage);
-Vue.use(Vuex);
-
-
-const getAppState = function (userid,surveyid) {
+const getAppState = function (userid, surveyid) {
     const AppStateName = 'limesurveyadminsidepanel';
-    const vuexLocal = new VuexPersistence({
-        key: AppStateName+'_'+userid+'_'+surveyid,
-        storage: window.sessionStorage
-    });
+    const storageKey = `${AppStateName}_${userid}_${surveyid}`;
 
+    // Load initial state from sessionStorage or use preset
+    const loadState = () => {
+        try {
+            const serializedState = window.sessionStorage.getItem(storageKey);
+            if (serializedState === null) {
+                return getInitialState(userid);
+            }
+            return JSON.parse(serializedState);
+        } catch (err) {
+            return getInitialState(userid);
+        }
+    };
 
-    return new Vuex.Store({
-        state: statePreset(userid),
-        plugins: [
-            vuexLocal.plugin
-        ],
-        getters,
-        mutations,
-        actions
-    });
+    // Save state to sessionStorage
+    const saveState = (state) => {
+        try {
+            const serializedState = JSON.stringify(state);
+            window.sessionStorage.setItem(storageKey, serializedState);
+        } catch (err) {
+            console.error('Error saving state:', err);
+        }
+    };
+
+    // Initialize state
+    const state = loadState();
+    const listeners = [];
+
+    // Store API
+    return {
+        getState: () => ({ ...state }),
+
+        commit: (mutation, payload) => {
+            // Apply mutation to state
+            Object.assign(state, typeof mutation === 'function' ? mutation(state, payload) : mutation);
+            saveState(state);
+            listeners.forEach(listener => listener(state));
+        },
+
+        dispatch: (action, payload) => {
+            return Promise.resolve(action(state, payload));
+        },
+
+        subscribe: (listener) => {
+            listeners.push(listener);
+            return () => {
+                const index = listeners.indexOf(listener);
+                if (index > -1) {
+                    listeners.splice(index, 1);
+                }
+            };
+        }
+    };
 };
 
 export default getAppState;

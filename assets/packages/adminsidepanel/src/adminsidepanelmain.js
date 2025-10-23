@@ -1,40 +1,91 @@
-//globals formId
-import Vue from "vue";
-import Sidebar from "./components/sidebar.vue";
-import getAppState from "./store/vuex-store.js";
-import {PluginLog} from "./mixins/logSystem.js";
-import Loader from './helperComponents/loader.vue';
+"use strict"
 
-//Ignore phpunits testing tags
-Vue.config.ignoredElements = ["x-test"];
-Vue.config.devtools = true;
+// Simple state management to replace Vuex
+const createStateManager = (userid, surveyid) => {
+    const state = {
+        userid: userid,
+        surveyid: surveyid || 'newSurvey',
+        isCollapsed: false,
+        maxHeight: 400,
+        allowOrganizer: false,
+        sideBarHeight: 400,
+        currentTab: 'settings',
+        sidemenus: [],
+        collapsedmenus: [],
+        questiongroups: [],
+        toggleKey: 0
+    };
 
-Vue.use(PluginLog);
+    const listeners = [];
 
-Vue.component('loader-widget', Loader);
+    return {
+        state: state,
 
-Vue.mixin({
-    methods: {
-        updatePjaxLinks: function () {
-            this.$forceUpdate();
-            this.$store.commit('newToggleKey');
+        commit(mutation, payload) {
+            switch(mutation) {
+                case 'updateSurveyId':
+                    state.surveyid = payload;
+                    break;
+                case 'changeIsCollapsed':
+                    state.isCollapsed = payload;
+                    break;
+                case 'changeMaxHeight':
+                    state.maxHeight = payload;
+                    break;
+                case 'setAllowOrganizer':
+                    state.allowOrganizer = payload;
+                    break;
+                case 'changeSideBarHeight':
+                    state.sideBarHeight = payload;
+                    break;
+                case 'changeCurrentTab':
+                    state.currentTab = payload;
+                    break;
+                case 'updateSidemenus':
+                    state.sidemenus = payload;
+                    break;
+                case 'updateCollapsedmenus':
+                    state.collapsedmenus = payload;
+                    break;
+                case 'newToggleKey':
+                    state.toggleKey++;
+                    break;
+            }
+            this.notify();
         },
-        redoTooltips: function () {
-            window.LS.doToolTip();
+
+        getters: {
+            isCollapsed: () => state.isCollapsed
         },
-        translate(string){
-            return window.SideMenuData.translate[string] || string;
+
+        notify() {
+            listeners.forEach(listener => listener(state));
+        },
+
+        subscribe(listener) {
+            listeners.push(listener);
+            return () => {
+                const index = listeners.indexOf(listener);
+                if (index > -1) listeners.splice(index, 1);
+            };
         }
-    },
-    filters: {
-        translate(string){
-            return window.SideMenuData.translate[string] || string;
-        }
+    };
+};
+
+// Translation helper
+const translate = (string) => {
+    return window.SideMenuData?.translate?.[string] || string;
+};
+
+// Tooltip helper
+const redoTooltips = () => {
+    if (window.LS?.doToolTip) {
+        window.LS.doToolTip();
     }
-});
+};
 
 const Lsadminsidepanel = (userid, surveyid) => {
-    const AppState = getAppState(userid, surveyid);
+    const AppState = createStateManager(userid, surveyid);
     const panelNameSpace = {};
 
     const applySurveyId = (store) => {
@@ -44,57 +95,80 @@ const Lsadminsidepanel = (userid, surveyid) => {
     };
 
     const controlWindowSize = () => {
-        const adminmenuHeight = $("body").find("nav").first().height();
-        const footerHeight = $("body").find("footer").last().height();
-        const menuHeight = $(".menubar").outerHeight();
+        const adminmenuHeight = $("body").find("nav").first().height() || 0;
+        const footerHeight = $("body").find("footer").last().height() || 0;
+        const menuHeight = $(".menubar").outerHeight() || 0;
         const inSurveyOffset = adminmenuHeight + footerHeight + menuHeight + 25;
         const windowHeight = window.innerHeight;
         const inSurveyViewHeight = windowHeight - inSurveyOffset;
-        const bodyWidth = (1 - (parseInt($('#sidebar').width()) / $('#vue-apps-main-container').width())) * 100;
-        const collapsedBodyWidth = (1 - (parseInt('98px') / $('#vue-apps-main-container').width())) * 100;
-        const inSurveyViewWidth = Math.floor($('#sidebar').data('collapsed') ? bodyWidth : collapsedBodyWidth) + '%';
 
-        panelNameSpace["surveyViewHeight"] = inSurveyViewHeight;
-        panelNameSpace["surveyViewWidth"] = inSurveyViewWidth;
-        $('#fullbody-container').css({
-            //'height': inSurveyViewHeight,
-            'max-width': inSurveyViewWidth,
-            'overflow-x': 'auto'
+        const $sidebar = $('#sidebar');
+        const $mainContainer = $('#vue-apps-main-container');
+
+        if ($sidebar.length && $mainContainer.length) {
+            const sidebarWidth = parseInt($sidebar.width()) || 315;
+            const mainWidth = $mainContainer.width() || 1;
+            const bodyWidth = (1 - (sidebarWidth / mainWidth)) * 100;
+            const collapsedBodyWidth = (1 - (98 / mainWidth)) * 100;
+            const isCollapsed = $sidebar.data('collapsed');
+            const inSurveyViewWidth = Math.floor(isCollapsed ? bodyWidth : collapsedBodyWidth) + '%';
+
+            panelNameSpace["surveyViewHeight"] = inSurveyViewHeight;
+            panelNameSpace["surveyViewWidth"] = inSurveyViewWidth;
+
+            $('#fullbody-container').css({
+                'max-width': inSurveyViewWidth,
+                'overflow-x': 'auto'
+            });
+        }
+    };
+
+    const initializeSideMenu = () => {
+        const $container = $("#vue-sidebar-container");
+
+        if (!$container.length) {
+            return null;
+        }
+
+        // Apply survey ID
+        applySurveyId(AppState);
+
+        // Set max height
+        const maxHeight = $("#in_survey_common").height() - 35 || 400;
+        AppState.commit("changeMaxHeight", maxHeight);
+
+        // Set allow organizer
+        if (window.SideMenuData?.allowOrganizer) {
+            AppState.commit("setAllowOrganizer", window.SideMenuData.allowOrganizer);
+        }
+
+        // Setup event handlers
+        $(document).on("vue-sidebar-collapse", () => {
+            AppState.commit("changeIsCollapsed", true);
+            controlWindowSize();
         });
-    }
 
-    const createSideMenu = () => {
-        return new Vue({
-            el: "#vue-sidebar-container",
+        $(document).on("vue-redraw", () => {
+            redoTooltips();
+            AppState.commit('newToggleKey');
+        });
+
+        // Initial updates
+        redoTooltips();
+        $(document).trigger("vue-reload-remote");
+
+        return {
             store: AppState,
-            components: {
-                sidebar: Sidebar,
-            },
-            created() {
-                $(document).on("vue-sidebar-collapse", () => {
-                    this.$store.commit("changeIsCollapsed", true);
-                });
-            },
-            mounted() {
-                applySurveyId(this.$store);
-
-                const maxHeight = $("#in_survey_common").height() - 35 || 400;
-                this.$store.commit("changeMaxHeight", maxHeight);
-                this.$store.commit("setAllowOrganizer", window.SideMenuData.allowOrganizer);
-                this.updatePjaxLinks();
-
-
-                $(document).on("vue-redraw", () => {
-                    this.updatePjaxLinks();
-                });
-
-                $(document).trigger("vue-reload-remote");
+            updatePjaxLinks: () => {
+                redoTooltips();
+                AppState.commit('newToggleKey');
             }
-        });
+        };
     };
 
     const applyPjaxMethods = () => {
         panelNameSpace.reloadcounter = 5;
+
         $(document)
             .off("pjax:send.panelloading")
             .on("pjax:send.panelloading", () => {
@@ -114,8 +188,11 @@ const Lsadminsidepanel = (userid, surveyid) => {
         $(document)
             .off("pjax:error.panelloading")
             .on("pjax:error.panelloading", event => {
-                // eslint-disable-next-line no-console
-                console.ls.log(event);
+                if (console.ls?.log) {
+                    console.ls.log(event);
+                } else {
+                    console.error(event);
+                }
             });
 
         $(document)
@@ -125,6 +202,7 @@ const Lsadminsidepanel = (userid, surveyid) => {
                     location.reload();
                 }
             });
+
         $(document)
             .off("pjax:scriptcomplete.panelloading")
             .on("pjax:scriptcomplete.panelloading", () => {
@@ -136,7 +214,7 @@ const Lsadminsidepanel = (userid, surveyid) => {
                 });
                 $(document).trigger("vue-resize-height");
                 $(document).trigger("vue-reload-remote");
-                // $(document).trigger('vue-sidemenu-update-link');
+
                 setTimeout(function () {
                     $("#pjax-file-load-container")
                         .find("div")
@@ -146,43 +224,60 @@ const Lsadminsidepanel = (userid, surveyid) => {
                         });
                 }, 2200);
             });
-
     };
 
     const createPanelAppliance = () => {
-        window.singletonPjax();
-        if (document.getElementById("vue-sidebar-container")) {
-            panelNameSpace['sidemenu'] = createSideMenu();
+        if (window.singletonPjax) {
+            window.singletonPjax();
         }
+
+        if (document.getElementById("vue-sidebar-container")) {
+            panelNameSpace['sidemenu'] = initializeSideMenu();
+        }
+
         $(document).on("click", "ul.pagination>li>a", () => {
             $(document).trigger('pjax:refresh');
         });
 
         controlWindowSize();
-        window.addEventListener("resize", LS.ld.debounce(controlWindowSize, 300));
-        $(document).on("vue-resize-height", LS.ld.debounce(controlWindowSize, 300));
+
+        if (window.LS?.ld?.debounce) {
+            window.addEventListener("resize", LS.ld.debounce(controlWindowSize, 300));
+            $(document).on("vue-resize-height", LS.ld.debounce(controlWindowSize, 300));
+        } else {
+            // Fallback if lodash debounce is not available
+            let resizeTimeout;
+            const debouncedResize = () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(controlWindowSize, 300);
+            };
+            window.addEventListener("resize", debouncedResize);
+            $(document).on("vue-resize-height", debouncedResize);
+        }
+
         applyPjaxMethods();
+    };
 
+    if (window.LS?.adminCore?.addToNamespace) {
+        LS.adminCore.addToNamespace(panelNameSpace, 'adminsidepanel');
     }
-
-    LS.adminCore.addToNamespace(panelNameSpace, 'adminsidepanel');
 
     return createPanelAppliance;
 };
 
-
-
 $(document).ready(function(){
     let surveyid = 'newSurvey';
-    if(window.LS != undefined) {
-        surveyid = window.LS.parameters.$GET.surveyid || window.LS.parameters.keyValuePairs.surveyid;
+
+    if (window.LS !== undefined) {
+        surveyid = window.LS.parameters?.$GET?.surveyid || window.LS.parameters?.keyValuePairs?.surveyid || surveyid;
     }
-    if(window.SideMenuData) {
+
+    if (window.SideMenuData?.surveyid) {
         surveyid = window.SideMenuData.surveyid;
     }
 
-    window.adminsidepanel =  window.adminsidepanel || Lsadminsidepanel(window.LS.globalUserId, surveyid);
+    const userId = window.LS?.globalUserId || 0;
+    window.adminsidepanel = window.adminsidepanel || Lsadminsidepanel(userId, surveyid);
 
     window.adminsidepanel();
 });
-

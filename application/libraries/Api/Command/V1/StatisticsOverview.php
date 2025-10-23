@@ -108,7 +108,7 @@ class StatisticsOverview implements CommandInterface
             return $this->responseFactory->makeErrorBadRequest($exception->getMessage());
         } catch (CDbException $exception) {
             if ($exception->getCode() === 42) {
-                return $this->responseFactory->makeErrorBadRequest("Survey table with ID {$this->surveyId} does not exist.");
+                return $this->responseFactory->makeErrorBadRequest("Survey table with ID {$this->surveyId} does not exist or there's a column mismatch.");
             }
             throw $exception;
         }

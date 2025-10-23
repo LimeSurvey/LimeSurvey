@@ -2,11 +2,8 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\SurveyOverview;
 
-use CDbException;
+use CDbExpression;
 use CDbTableSchema;
-use DateInterval;
-use DatePeriod;
-use DateTime;
 use InvalidArgumentException;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartInterface;
@@ -32,7 +29,7 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
     /** @var array Allowed system fields that should be excluded from answer checking */
     private const SYSTEM_FIELDS = [
         'id', 'submitdate', 'lastpage', 'startlanguage',
-        'seed', 'startdate', 'datestamp'
+        'seed', 'startdate', 'datestamp', 'token',
     ];
 
     /**
@@ -43,11 +40,13 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
         $this->surveyId = $surveyId;
 
         $rows = $this->fetchStatisticsOverview();
-        $rows['avgCompletionTime'] = round($rows['avgCompletionTime'], 2);
         $rows['completionRate'] = round($rows['completionRate'], 2);
         $rows['completedWithoutAnswers'] = (int)$rows['completedWithoutAnswers'];
         $rows['incompletedWithoutAnswers'] = (int)$rows['incompletedWithoutAnswers'];
         $rows['incompleteResponses'] = (int)$rows['incompleteResponses'];
+        if ($rows['avgCompletionTime'] !== null) {
+            $rows['avgCompletionTime'] = round($rows['avgCompletionTime'], 2);
+        }
 
         return new StatisticsChartDTO(
             'Survey Overview',
@@ -82,16 +81,22 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
 
         $coalesceSql = $this->buildCoalesceStatement($tableSchema);
 
+        $selectParams = [
+            'COUNT(id) AS totalResponses',
+            'SUM(CASE WHEN submitdate IS NULL THEN 1 ELSE 0 END) AS incompleteResponses',
+            "SUM(CASE WHEN submitdate IS NOT NULL AND {$coalesceSql} IS NULL THEN 1 ELSE 0 END) AS completedWithoutAnswers",
+            "SUM(CASE WHEN submitdate IS NULL AND {$coalesceSql} IS NULL THEN 1 ELSE 0 END) AS incompletedWithoutAnswers",
+            'ROUND(SUM(CASE WHEN submitdate IS NOT NULL THEN 1 ELSE 0 END) * 100.0 / COUNT(id), 2) AS completionRate',
+        ];
+
+        // datestamps is not enabled, therefor we cannot calculate avg completion time
+        $selectParams[] = isset($tableSchema->columns['startdate'])
+            ? 'AVG(CASE WHEN submitdate IS NOT NULL THEN TIMESTAMPDIFF(SECOND, startdate, submitdate) END) AS avgCompletionTime'
+            : new CDbExpression('NULL AS avgCompletionTime');
+
         // Build and execute query with proper parameter binding
         $command = Yii::app()->db->createCommand()
-            ->select([
-                'COUNT(id) AS totalResponses',
-                'SUM(CASE WHEN submitdate IS NULL THEN 1 ELSE 0 END) AS incompleteResponses',
-                "SUM(CASE WHEN submitdate IS NOT NULL AND {$coalesceSql} IS NULL THEN 1 ELSE 0 END) AS completedWithoutAnswers",
-                "SUM(CASE WHEN submitdate IS NULL AND {$coalesceSql} IS NULL THEN 1 ELSE 0 END) AS incompletedWithoutAnswers",
-                'ROUND(SUM(CASE WHEN submitdate IS NOT NULL THEN 1 ELSE 0 END) * 100.0 / COUNT(id), 2) AS completionRate',
-                'AVG(CASE WHEN submitdate IS NOT NULL THEN TIMESTAMPDIFF(SECOND, startdate, submitdate) END) AS avgCompletionTime',
-            ])
+            ->select($selectParams)
             ->from($tableName);
 
         return $command->queryRow();
