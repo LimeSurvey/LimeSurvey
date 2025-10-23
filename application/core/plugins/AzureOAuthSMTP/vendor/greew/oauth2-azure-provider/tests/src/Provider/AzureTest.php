@@ -160,7 +160,7 @@ class AzureTest extends TestCase
 
         $postResponse = m::mock('Psr\Http\Message\ResponseInterface');
         $postResponse->shouldReceive('getBody')->andReturn(
-            '{"error": {"code": "request_token_expired", "message": "' . $message . '"}}'
+            '{"error": "request_token_expired", "error_description": "' . $message . '"}'
         );
         $postResponse->shouldReceive('getHeader')->andReturn(['content-type' => 'json']);
         $postResponse->shouldReceive('getStatusCode')->andReturn(500);

@@ -28,10 +28,24 @@ class Azure extends AbstractProvider
      *
      * @var string
      */
-    protected $urlAuthorize = 'https://login.microsoftonline.com';
+    protected $urlAuthorize;
 
     /** @var string */
     protected $urlResourceOwnerDetails = 'https://graph.microsoft.com/v1.0/me';
+
+    /**
+     * @param array $options
+     * @param array $collaborators
+     * @param string $urlAuthorize Base url for authorization.
+     */
+    public function __construct(
+        array $options = [],
+        array $collaborators = [],
+        string $urlAuthorize = 'https://login.microsoftonline.com'
+    ) {
+        $this->urlAuthorize = $urlAuthorize;
+        parent::__construct($options, $collaborators);
+    }
 
     /**
      * Get authorization url to begin OAuth flow
@@ -87,7 +101,7 @@ class Azure extends AbstractProvider
     {
         if (isset($data['error'])) {
             throw new IdentityProviderException(
-                (isset($data['error']['message']) ? $data['error']['message'] : $response->getReasonPhrase()),
+                (isset($data['error_description']) ? $data['error_description'] : $response->getReasonPhrase()),
                 $response->getStatusCode(),
                 (string)$response->getBody()
             );
