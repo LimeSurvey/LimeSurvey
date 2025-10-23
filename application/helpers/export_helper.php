@@ -1245,7 +1245,7 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
             $rtext = LimeExpressionManager::ProcessStepString($rtext,null,3,true);
         }
 
-        $label = $dom->createElement("label", $rtext);
+        $label = $dom->createElement("label", QueXMLCleanup($rtext));
 
         $value = $dom->createElement("value", '-oth-');
 
@@ -1255,7 +1255,7 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
         $contingentQuestion = $dom->createElement("contingentQuestion");
         $length = $dom->createElement("length", 24);
         $format = $dom->createElement("format", "longtext");
-        $text = $dom->createElement("text", $rtext);
+        $text = $dom->createElement("text", QueXMLCleanup($rtext));
 
         $contingentQuestion->appendChild($text);
         $contingentQuestion->appendChild($length);
@@ -1794,8 +1794,6 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
             // placeholder substitution
             if ($EMreplace) {
                 $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'],$RowQReplacements,3,true);
-            } else {
-                $RowQ['question'] = templatereplace($RowQ['question'], $RowQReplacements);
             }
             $sectionInfo = $dom->createElement("sectionInfo");
             $position = $dom->createElement("position", "before");
@@ -1823,8 +1821,6 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
             // placeholder substitution
             if ($EMreplace) {
                 $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'],$RowQReplacements,3,true);
-            } else {
-                $RowQ['question'] = templatereplace($RowQ['question'], $RowQReplacements);
             }
             $other = false;
             if ($RowQ['other'] == 'Y') {
