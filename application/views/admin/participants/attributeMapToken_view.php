@@ -18,7 +18,7 @@
     <div class='row'>
         <div class='col-md-4'>
             <div id="tokenattribute" class="card attribute-column">
-                <div class="card-header "><?php eT("Unmapped survey participant attributes") ?></div>
+                <div class="card-header " role="heading" aria-level="2"><?php eT("Unmapped survey participant attributes") ?></div>
                 <div id="tokenatt" class="tokenatt droppable">
                     <?php
                         if (!empty($tokenattribute))
@@ -36,7 +36,7 @@
 
         <div class='col-md-4'>
             <div id="newcreated" class="card attribute-column">
-                <div class="card-header "><?php eT("Participant attributes to create") ?></div>
+                <div class="card-header " role="heading" aria-level="2"><?php eT("Participant attributes to create") ?></div>
                 <div class="card-body newcreate droppable" style ="height: 40px">
                 </div>
             </div>
@@ -44,7 +44,7 @@
 
         <div class='col-md-4'>
             <div id="centralattribute" class="card attribute-column">
-                <div class="card-header "><?php eT("Existing participant attributes")?></div>
+                <div class="card-header " role="heading" aria-level="2"><?php eT("Existing participant attributes")?></div>
                 <div class="centralatt">
                     <?php
                     if (!empty($attribute))
