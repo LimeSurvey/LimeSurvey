@@ -11,7 +11,7 @@
 </script>
 
 <div class='header'>
-    <h3 class='pagetitle'><?php eT("Map your survey participant attributes to an existing participant attribute or create a new one"); ?></h3>
+    <h3 class='pagetitle' aria-level="1"><?php eT("Map your survey participant attributes to an existing participant attribute or create a new one"); ?></h3>
 </div>
 
 <div class="draggable-container">
