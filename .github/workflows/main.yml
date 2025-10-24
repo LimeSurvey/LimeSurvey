@@ -57,11 +57,9 @@ jobs:
           # NB: PHPUnit 6.5.* is installed with composer.
           composer install -vvv
           ./vendor/bin/phpunit --version
-
       - name: Set up Apache+PHP
         run: |
           # Set up the Apache and PHP
-
           sudo cp -f ./tests/CI-pipeline/github-actions-apache /etc/apache2/sites-available/000-default.conf
           sudo sed -e "s?%CI_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
           sudo service apache2 restart
@@ -87,7 +85,6 @@ jobs:
           # InnoDB needs large_file_prefix & Barracuda file format
           # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
           # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
-
           sudo systemctl start mysql
           sudo service mysql status
           mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" || true
@@ -100,7 +97,6 @@ jobs:
         run: |
           cp application/config/config-sample-mysql.php application/config/config.php
           php application/commands/console.php install admin password TravisLS no@email.com verbose
-
           # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
           # TODO: Disable, a lines was added to config file and some tests started to fail.
           # NB: EmCache is always disabled when debug => 2
@@ -112,7 +108,6 @@ jobs:
      # - name: Setup upterm session
      #   uses: lhotari/action-upterm@v1
      #   if: ${{ contains(matrix.php-versions, '7.4') }}
-
       - name: Test the server
         run: |
           # Test server.
@@ -132,7 +127,6 @@ jobs:
         # Note: Keep getting timeout problems on Travis with chromedriver.
         # wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
         # unzip chromedriver_linux64.zip
-
       - name: Set up Selenium with firefox (needed for integrity tests)
         run: |
           echo `which firefox`
@@ -164,30 +158,53 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.3']
+        include:
+          # MySQL tests with PHP 7.4 and 8.3
+          - php-version: '7.4'
+            db-type: 'mysql'
+            db-version: '8.0'
+          - php-version: '8.3'
+            db-type: 'mysql'
+            db-version: '8.0'
+          # PostgreSQL tests with PHP 8.3
+          - php-version: '8.3'
+            db-type: 'pgsql'
+            db-version: '14'
+          # MSSQL tests with PHP 8.3
+          - php-version: '8.3'
+            db-type: 'mssql'
+            db-version: '2022'
     env:
       DBENGINE: INNODB
+    
+    name: PHP ${{ matrix.php-version }} - ${{ matrix.db-type }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
+          extensions: ${{ matrix.db-type == 'pgsql' && 'pdo_pgsql, pgsql' || matrix.db-type == 'mssql' && 'pdo_sqlsrv, sqlsrv' || 'mysql' }}
 
       - name: Setup
         run: |
           touch enabletests
           composer install -vvv
           sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php-mysql php8.3-mysql php7.4-mysql -y
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
           chmod -R 777 ./themes
           chmod -R 777 ./tests/tmp
           chmod -R 777 ./application/config
+
+      - name: Install MySQL extensions
+        if: matrix.db-type == 'mysql'
+        run: |
+          sudo apt --fix-broken install php php-mysql php8.3-mysql php7.4-mysql -y
+
       - name: Check MySQL service
+        if: matrix.db-type == 'mysql'
         run: |
           # InnoDB needs large_file_prefix & Barracuda file format
           # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
@@ -199,10 +216,74 @@ jobs:
           mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
           mysql -uroot -proot -e "CREATE DATABASE limesurvey;"
-      - name: Load custom console and start the Application
+
+      - name: Install and setup PostgreSQL
+        if: matrix.db-type == 'pgsql'
+        run: |
+          # Remove any existing PostgreSQL
+          sudo systemctl stop postgresql || true
+          sudo apt-get remove -y postgresql* || true
+          # Add PostgreSQL official repository (PGDG)
+          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+          # Install PostgreSQL
+          sudo apt-get update
+          sudo apt-get install -y postgresql-${{ matrix.db-version }} postgresql-client-${{ matrix.db-version }}
+          # Start PostgreSQL service
+          sudo systemctl start postgresql
+          sudo systemctl status postgresql
+          # Create user and database
+          sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
+          sudo -u postgres psql -c "CREATE DATABASE limesurvey;"
+          # Verify connection and version
+          PGPASSWORD=postgres psql -h localhost -U postgres -d limesurvey -c "SELECT version();"
+
+      - name: Install and setup MSSQL Server
+        if: matrix.db-type == 'mssql'
+        run: |
+          # Enable Microsoft Repository for MSSQL Server
+          curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
+          curl -fsSL https://packages.microsoft.com/config/ubuntu/22.04/mssql-server-${{ matrix.db-version }}.list | sudo tee /etc/apt/sources.list.d/mssql-server.list
+          # Install MSSQL Server
+          sudo apt-get update
+          sudo apt-get install -y mssql-server
+          # Configure MSSQL Server (non-interactive setup)
+          sudo MSSQL_SA_PASSWORD='LimeSurvey123!' MSSQL_PID='Developer' /opt/mssql/bin/mssql-conf -n setup accept-eula
+          # Verify MSSQL Server is running
+          sudo systemctl status mssql-server --no-pager
+          # Install Command-Line Tools
+          curl -fsSL https://packages.microsoft.com/config/ubuntu/22.04/prod.list | sudo tee /etc/apt/sources.list.d/msprod.list
+          sudo apt-get update
+          sudo ACCEPT_EULA=Y apt-get install -y mssql-tools18 unixodbc-dev
+          # Wait for MSSQL to be fully ready
+          sleep 10
+          # Create database and verify version
+          /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'LimeSurvey123!' -C -Q "CREATE DATABASE limesurvey"
+          /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'LimeSurvey123!' -C -d limesurvey -Q "SELECT @@VERSION"
+
+      - name: Load custom console and start the Application (MySQL)
+        if: matrix.db-type == 'mysql'
         run: |
           cp application/config/config-sample-mysql.php application/config/config.php
           php application/commands/console.php install admin password TravisLS no@email.com verbose
+
+      - name: Load custom console and start the Application (PostgreSQL)
+        if: matrix.db-type == 'pgsql'
+        run: |
+          cp application/config/config-sample-pgsql.php application/config/config.php
+          # Update config with correct credentials
+          sed -i "s/password=somepassword/password=postgres/g" application/config/config.php
+          sed -i "s/'password' => 'somepassword'/'password' => 'postgres'/g" application/config/config.php
+          php application/commands/console.php install admin password TravisLS no@email.com verbose
+
+      - name: Load custom console and start the Application (MSSQL)
+        if: matrix.db-type == 'mssql'
+        run: |
+          cp application/config/config-sample-sqlsrv.php application/config/config.php
+          # Update config with correct credentials
+          sed -i "s/'password' => 'somepassword'/'password' => 'LimeSurvey123!'/g" application/config/config.php
+          php application/commands/console.php install admin password TravisLS no@email.com verbose
+
       - name: Run unit tests
         env:
           XDEBUG_MODE: coverage
@@ -211,7 +292,7 @@ jobs:
       - name: Upload cov.xml
         uses: actions/upload-artifact@v4
         with:
-          name: cov-file-${{ matrix.php-versions }}
+          name: cov-file-${{ matrix.php-version }}-${{ matrix.db-type }}
           path: cov.xml
 
   test-coverage:
@@ -219,27 +300,37 @@ jobs:
     needs: unit-tests
     strategy:
       matrix:
-        # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.3']
+        include:
+          # MySQL tests with PHP 7.4 and 8.3
+          - php-version: '7.4'
+            db-type: 'mysql'
+          - php-version: '8.3'
+            db-type: 'mysql'
+          # PostgreSQL tests with PHP 8.3
+          - php-version: '8.3'
+            db-type: 'pgsql'
+          # MSSQL tests with PHP 8.3
+          - php-version: '8.3'
+            db-type: 'mssql'
     steps:
       - uses: actions/checkout@v4
 
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
 
       - name: Check if cov.xml artefact exists
         uses: xSAVIKx/artifact-exists-action@v0
         id: check_coverage_artifact
         with:
-          name: cov-file-${{ matrix.php-versions }}
+          name: cov-file-${{ matrix.php-version }}-${{ matrix.db-type }}
 
       - name: Download cov.xml
         if: steps.check_coverage_artifact.outputs.exists == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: cov-file-${{ matrix.php-versions }}
+          name: cov-file-${{ matrix.php-version }}-${{ matrix.db-type }}
 
       - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
         run: php tests/bin/check_coverage.php cov.xml 37
