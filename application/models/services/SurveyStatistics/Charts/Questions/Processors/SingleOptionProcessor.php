@@ -40,7 +40,6 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
         $dataItems = $chart['data'];
 
         $this->addSpecialOptions($legend, $dataItems);
-        $this->addNoAnswerOption($legend, $dataItems);
 
         $totalResponses = array_sum(array_column($dataItems, 'value'));
 
@@ -105,20 +104,6 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
     }
 
     /**
-     * @param array $legend
-     * @param array $dataItems
-     */
-    private function addNoAnswerOption(array &$legend, array &$dataItems): void
-    {
-        $legend[] = 'NoAnswer';
-        $dataItems[] = [
-            'key' => 'NoAnswer',
-            'value' => 0,
-            'title' => gT('No answer')
-        ];
-    }
-
-    /**
      * Build chart data based on question type
      * @throws RuntimeException
      * @return array
@@ -173,7 +158,7 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
 
         [$legend, $items] = $this->buildItemsFromCodes($this->rt, $codes, $labels);
         return [
-            'title' => $this->question['title'],
+            'title' => $this->question['question'],
             'legend' => $legend,
             'data' => $items
         ];
@@ -233,6 +218,7 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
             $items[] = ['key' => $code, 'title' => $title, 'value' => $count];
         }
 
+        $items[] = ['key' => 'NoAnswer', 'title' => 'No Answer', 'value' => $this->getResponseNotAnsweredCount($this->rt)];
         return [
             'title' => $this->question['question'],
             'legend' => $legend,

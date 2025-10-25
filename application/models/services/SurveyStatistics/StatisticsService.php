@@ -39,7 +39,6 @@ class StatisticsService
     public function __construct()
     {
         $this->charts = [
-            DailyActivityStatistics::class,
             QuestionStatistics::class,
         ];
     }
@@ -67,7 +66,7 @@ class StatisticsService
         }
 
         // Validate language code
-        $allowedLanguages = Survey::model()->findByPk($surveyId)->getAllLanguages();
+        $allowedLanguages = $survey->getAllLanguages();
         if (!in_array($language, $allowedLanguages, true)) {
             throw new InvalidArgumentException('Invalid language code');
         }

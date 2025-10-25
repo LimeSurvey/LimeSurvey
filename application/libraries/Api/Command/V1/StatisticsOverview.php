@@ -124,6 +124,7 @@ class StatisticsOverview implements CommandInterface
     private function getStatisticsOverviewData(): array
     {
         // Set up statistics overview chart because it's not part of the default set
+        $this->statisticsService->setChart(DailyActivityStatistics::class);
         $this->statisticsService->setChart(SurveyOverviewStatistics::class);
         $this->statisticsService->setSurvey($this->surveyId, $this->language);
 

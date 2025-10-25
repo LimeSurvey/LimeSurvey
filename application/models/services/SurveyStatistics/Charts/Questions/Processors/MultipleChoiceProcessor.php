@@ -32,13 +32,6 @@ class MultipleChoiceProcessor extends AbstractQuestionProcessor
             ];
         }
 
-        $dataItems[] = [
-            'key' => 'NotAnswered',
-            'title' => 'Not Answered',
-            'value' => $this->getResponseNotAnsweredCount($field),
-        ];
-        $legend[] = 'Not Answered';
-
         if ($this->question['other'] === Question::QT_Y_YES_NO_RADIO) {
             $field = $this->rt . 'other';
             $legend[] = 'other';

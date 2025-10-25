@@ -5,6 +5,7 @@ namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processor
 use InvalidArgumentException;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
 use LSDbCriteria;
+use Question;
 use SurveyDynamic;
 
 /**
@@ -25,6 +26,27 @@ abstract class AbstractQuestionProcessor
 
     /** @var array Answer list for the question (if applicable) */
     protected array $answers = [];
+
+    /** @var array List of question types which contain no answer option */
+    protected array $noAnswerTypes = [
+        Question::QT_L_LIST,
+        Question::QT_EXCLAMATION_LIST_DROPDOWN,
+        Question::QT_O_LIST_WITH_COMMENT,
+        Question::QT_Y_YES_NO_RADIO,
+        Question::QT_G_GENDER,
+        Question::QT_5_POINT_CHOICE,
+        Question::QT_A_ARRAY_5_POINT,
+        Question::QT_B_ARRAY_10_CHOICE_QUESTIONS,
+        Question::QT_C_ARRAY_YES_UNCERTAIN_NO,
+        Question::QT_E_ARRAY_INC_SAME_DEC,
+        Question::QT_F_ARRAY,
+        Question::QT_H_ARRAY_COLUMN,
+        Question::QT_1_ARRAY_DUAL,
+        Question::QT_SEMICOLON_ARRAY_TEXT,
+        Question::QT_S_SHORT_FREE_TEXT,
+        Question::QT_T_LONG_FREE_TEXT,
+        Question::QT_Q_MULTIPLE_SHORT_TEXT,
+    ];
 
     /** @var bool Completed responses filter */
     private $completed = null;
@@ -171,6 +193,10 @@ abstract class AbstractQuestionProcessor
             $legend[] = $title;
 
             $items[] = ['key' => (string)$code, 'title' => $title, 'value' => $count];
+        }
+
+        if (in_array($this->question['type'], $this->noAnswerTypes)) {
+            $items[] = ['key' => 'NoAnswer', 'title' => 'No Answer', 'value' => $this->getResponseNotAnsweredCount($rt)];
         }
 
         return [$legend, $items];
