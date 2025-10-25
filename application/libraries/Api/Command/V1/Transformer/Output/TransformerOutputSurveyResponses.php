@@ -96,16 +96,19 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
         }
 
         $surveyResponseArray = parent::transform($surveyResponse);
-        /** @var Survey $survey */
-        $survey = $options['survey'];
-        $hasToken = $survey->anonymized === "N"
-            && tableExists('tokens_' . $survey->sid)
-            && isset($surveyResponse->tokens);
-        if ($hasToken) {
-            $surveyResponseArray['firstName'] = $surveyResponse->getFirstNameForGrid();
-            $surveyResponseArray['lastName'] = $surveyResponse->getLastNameForGrid();
-            $surveyResponseArray['email'] = $surveyResponse->getEmailForGrid();
+        if (!empty($options['survey'])) {
+            /** @var Survey $survey */
+            $survey = $options['survey'];
+            $hasToken = $survey->anonymized === "N"
+                && tableExists('tokens_' . $survey->sid)
+                && isset($surveyResponse->tokens);
+            if ($hasToken) {
+                $surveyResponseArray['firstName'] = $surveyResponse->getFirstNameForGrid();
+                $surveyResponseArray['lastName'] = $surveyResponse->getLastNameForGrid();
+                $surveyResponseArray['email'] = $surveyResponse->getEmailForGrid();
+            }
         }
+
         $surveyResponseArray['completed'] = !empty($surveyResponseArray['submitDate']);
         $surveyResponseArray['answers'] = $responses;
 
