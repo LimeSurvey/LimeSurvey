@@ -157,6 +157,7 @@ jobs:
   unit-tests:
     runs-on: ubuntu-22.04
     strategy:
+      fail-fast: false
       matrix:
         include:
           # MySQL tests with PHP 7.4 and 8.3
