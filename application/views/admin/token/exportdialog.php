@@ -82,13 +82,13 @@
                             <?php eT('Filter by email address:'); ?>
                         </label>
                         <div class="default controls">
-                            <input type="text" class="form-control" value="" name="filteremail" id="filteremail" />
+                            <input type="text" class="form-control" value="" name="filteremail" id="filteremail" aria-describedby="filteremailhelp" />
                         </div>
                         <?php
                         $this->widget('ext.AlertWidget.AlertWidget', [
                             'text' => gT('Only export entries which contain this string in the email address.'),
                             'type' => 'info',
-                            'htmlOptions' => ['class' => 'mt-1'],
+                            'htmlOptions' => ['class' => 'mt-1' ,'id' => 'filteremailhelp'],
                         ]);
                         ?>
 
