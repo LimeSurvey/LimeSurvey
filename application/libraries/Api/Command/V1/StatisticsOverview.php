@@ -5,6 +5,7 @@ namespace LimeSurvey\Libraries\Api\Command\V1;
 use CDbException;
 use InvalidArgumentException;
 use LimeSurvey\Api\Transformer\TransformerException;
+use LimeSurvey\DI;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
 use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurveyResponses;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\DailyActivity\DailyActivityStatistics;
@@ -91,7 +92,7 @@ class StatisticsOverview implements CommandInterface
         }
 
         try {
-            $latestResponses = $this->getLatestResponses();
+            $latestResponses = $this->getLatestResponses($request);
             [$dailyActivity, $overview] = $this->getStatisticsOverviewData();
 
             $data = [
@@ -144,35 +145,13 @@ class StatisticsOverview implements CommandInterface
      * @return array Transformed array of latest survey responses
      * @throws TransformerException
      */
-    private function getLatestResponses($size = 10): array
+    private function getLatestResponses(Request $request, $size = 10): array
     {
-        $model = SurveyDynamic::model($this->surveyId);
-        $criteria = new \LSDbCriteria();
-        $sort = new \CSort();
-        $this->responseFilterPatcher->apply(
-            ['sort' => ['id' => 'DESC']],
-            $criteria,
-            $sort,
-            $this->transformerOutputSurveyResponses->getDataMap()
-        );
+        /** @var SurveyResponses $responses */
+        $responses = DI::getContainer()->make(SurveyResponses::class);
+        $request->setData('pageSize', $size);
+        $data = $responses->process($request);
 
-        $dataProvider = new \LSCActiveDataProvider(
-            $model,
-            array(
-                'sort' => $sort,
-                'criteria' => $criteria,
-                'pagination' => [
-                    'pageSize' => $size,
-                    'currentPage' => 0,
-                ],
-            )
-        );
-
-        $result = $dataProvider->getData();
-        if ($survey = $this->survey->findByPk($this->surveyId)) {
-            $this->transformerOutputSurveyResponses->fieldMap = createFieldMap($survey);
-        }
-
-        return $this->transformerOutputSurveyResponses->transform($result);
+        return $data['responses'];
     }
 }

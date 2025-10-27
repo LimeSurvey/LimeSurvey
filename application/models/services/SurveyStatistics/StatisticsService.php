@@ -87,6 +87,21 @@ class StatisticsService
     }
 
     /**
+     * Register a chart type processor by class name.
+     * @param string $chart
+     * @return $this
+     */
+    public function setChart(string $chart): StatisticsService
+    {
+        if (!class_exists($chart)) {
+            throw new InvalidArgumentException('Chart type ' . $chart . ' does not exist');
+        }
+
+        $this->charts[] = $chart;
+        return $this;
+    }
+
+    /**
      * Execute statistics generation for all configured graphs.
      *
      * @param array $specificCharts List of specific chart classes to run
@@ -143,15 +158,5 @@ class StatisticsService
                 }, $chart));
             }
         }
-    }
-
-    public function setChart(string $chart): StatisticsService
-    {
-        if (!class_exists($chart)) {
-            throw new InvalidArgumentException('Chart type ' . $chart . ' does not exist');
-        }
-
-        $this->charts[] = $chart;
-        return $this;
     }
 }
