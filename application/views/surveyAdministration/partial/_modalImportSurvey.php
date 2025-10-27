@@ -69,3 +69,11 @@
         </div>
     </div>
 </div>
+
+<?php
+App()->getClientScript()->registerScript('ImportSurveyModal', "
+$('#importsurvey').on('submit', function(e) {
+    $('#ls-loading').show();
+});
+", LSYii_ClientScript::POS_END);
+?>
