@@ -31,6 +31,7 @@
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                 'name' => 'invitationstatus',
                                 'checkedOption'=> 0 ,
+                                'ariaLabel'=>gT('Invitation status'),
                                 'selectOptions'=>array(
                                     "0"=>gT("All",'unescaped'),
                                     "1"=>gT("Invited",'unescaped'),
@@ -49,6 +50,7 @@
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                 'name' => 'reminderstatus',
                                 'checkedOption'=> 0 ,
+                                'ariaLabel'=>gT('Reminder status'),
                                 'selectOptions'=>array(
                                     "0"=>gT("All",'unescaped'),
                                     "1"=>gT("Reminder(s) sent",'unescaped'),
@@ -102,6 +104,7 @@
                         <div class="default controls">
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                 'name' => 'tokendeleteexported',
+                                'ariaLabel' => gT('Delete exported participants'),
                                 'checkedOption' => 0,
                                 'selectOptions' => [
                                     '1' => gT('On'),
@@ -126,6 +129,7 @@
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                 'name' => 'maskequations',
                                 'checkedOption' => 1,
+                                'ariaLabel' => gT('Quote equations'),
                                 'selectOptions' => [
                                     '1' => gT('On'),
                                     '0' => gT('Off'),
