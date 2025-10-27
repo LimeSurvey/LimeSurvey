@@ -144,7 +144,7 @@ class CsrfHttpRequestTest extends TestBaseClass
      * Test CSRF token validation
      * @dataProvider csrfValidationDataProvider
      */
-    public function testCsrfTokenValidation($cookieValue, $shouldPass, $shouldBeSanitized)
+    public function testCsrfTokenValidation($cookieValue, $shouldPass, $shouldThrowException)
     {
         $request = new \LSHttpRequest();
         $tokenName = $request->csrfTokenName;
@@ -161,28 +161,37 @@ class CsrfHttpRequestTest extends TestBaseClass
             $request->getCookies()->add($tokenName, new \CHttpCookie($tokenName, $cookieValue));
         }
 
-        // Get the CSRF token from the request
-        // This should pick the value from the cookie or create a new one if the cookie is not set
-        $tokenValue = $request->getCsrfToken();
-
-        // Check sanitization. If sanitization was expected, the sanitized value should be different than the original
-        if (isset($cookieValue)) {
-            $this->assertEquals(
-                $shouldBeSanitized,
-                $tokenValue !== $cookieValue,
-                'The CSRF token should ' . ($shouldBeSanitized ? '' : 'not ') . 'be sanitized.'
-            );
+        $exceptionThrown = false;
+        $tokenValue = null;
+        try {
+            // Get the CSRF token from the request
+            // This should pick the value from the cookie or create a new one if the cookie is not set
+            // If the cookie contains invalid characters, it should throw an exception
+            $tokenValue = $request->getCsrfToken();
+        } catch (\CHttpException $e) {
+            $exceptionThrown = true;
         }
 
-        // Simulate the POST
-        $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST[$tokenName] = $tokenValue;
-        // Run the validation
-        $validationPassed = false;
-        try {
-            $request->validateCsrfToken(new \CEvent());
-            $validationPassed = true;
-        } catch (\Exception $e) {
+        // Check if an exception was thrown as expected
+        $this->assertEquals(
+            $shouldThrowException,
+            $exceptionThrown,
+            'getCsrfToken() should ' . ($shouldThrowException ? '' : 'not ') . 'throw an exception.'
+        );
+
+        // If no exception was thrown (and it was not expected), simulate the POST and validate the token
+        if (!$exceptionThrown) {
+            // Simulate the POST
+            $_SERVER['REQUEST_METHOD'] = 'POST';
+            $_POST[$tokenName] = $tokenValue;
+            // Run the validation
+            $validationPassed = false;
+            try {
+                $request->validateCsrfToken(new \CEvent());
+                $validationPassed = true;
+            } catch (\Exception $e) {
+            }
+            $this->assertEquals($validationPassed, $shouldPass, 'CSRF validation should ' . ($shouldPass ? '' : 'not ') . 'pass.');
         }
 
         // Restore the original state
@@ -193,13 +202,11 @@ class CsrfHttpRequestTest extends TestBaseClass
         } else {
             $request->getCookies()->add($tokenName, $originalCsrfCookie);
         }
-
-        $this->assertEquals($validationPassed, $shouldPass, 'CSRF validation should ' . ($shouldPass ? '' : 'not ') . 'pass.');
     }
 
     /**
      * Provides test data for the testCsrfTokenValidation method.
-     * Returns an array of arrays in the form [cookieValue, shouldPass, shouldBeSanitized]
+     * Returns an array of arrays in the form [cookieValue, shouldPass, shouldThrowException]
      */
     public function csrfValidationDataProvider()
     {
@@ -208,7 +215,7 @@ class CsrfHttpRequestTest extends TestBaseClass
             [
                 null, // Cookie value
                 true, // Should pass
-                false // Should not be sanitized
+                false // Should not throw exception
             ]
         ];
 
@@ -222,7 +229,7 @@ class CsrfHttpRequestTest extends TestBaseClass
             $testData[] = [
                 $maskedToken, // Cookie value
                 true, // Should pass
-                false // Should not be sanitized
+                false // Should not throw exception
             ];
         }
 
@@ -230,30 +237,30 @@ class CsrfHttpRequestTest extends TestBaseClass
         $testData[] = [
             'valid_token-with-mixed-characters123',
             true,
-            false // Should not be sanitized
+            false // Should not throw exception
         ];
 
-        // Add some invalid tokens
+        // Add some invalid tokens that should throw exceptions
         $testData[] = [
             $validTokens[0] . '!',
-            true, // Should pass after sanitization
-            true // Should be sanitized
+            false, // Won't reach validation (exception thrown first)
+            true   // Should throw exception
         ];
         $testData[] = [
             $validTokens[1] . '$',
-            true, // Should pass after sanitization
-            true // Should be sanitized
+            false, // Won't reach validation (exception thrown first)
+            true   // Should throw exception
         ];
         $testData[] = [
             $validTokens[2] . '<script>',
-            true, // Should pass after sanitization
-            true // Should be sanitized
+            false, // Won't reach validation (exception thrown first)
+            true   // Should throw exception
         ];
-        // Add a token that becomes empty after sanitization
+        // Add a token with only invalid characters
         $testData[] = [
-            '<>!@#$', // Invalid token that will be sanitized to an empty string
-            true,    // Should pass because a new token will be generated
-            true     // Should be sanitized
+            '<>!@#$', // Invalid token that will trigger an exception
+            false,    // Won't reach validation (exception thrown first)
+            true      // Should throw exception
         ];
 
         return $testData;

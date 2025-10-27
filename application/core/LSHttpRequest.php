@@ -324,7 +324,11 @@ class LSHttpRequest extends CHttpRequest
     {
         if ($this->_csrfToken === null) {
             $cookie = $this->getCookies()->itemAt($this->csrfTokenName);
-            if (!$cookie || ($this->_csrfToken = sanitize_csrf_token($cookie->value)) == null) {
+            // Check if the CSRF token in the cookie is valid
+            if ($cookie && $cookie->value != sanitize_csrf_token($cookie->value)) {
+                throw new CHttpException(400, gT("The CSRF token is invalid.", 'unescaped'));
+            }
+            if (!$cookie || ($this->_csrfToken = $cookie->value) == null) {
                 $cookie = $this->createCsrfCookie();
                 $this->_csrfToken = $cookie->value;
                 $this->getCookies()->add($cookie->name, $cookie);
