@@ -51,10 +51,6 @@ class CopySurvey
     /**
      * Copy the survey and return the results.
      *
-     * It first extracts the original survey data to xml and afterward imports the xml data
-     * as a survey.
-     * All the functions used here (surveyGetXMLData, XMLImportSurvey) are very old functions.
-     *
      * @return CopySurveyResult  Returns results, success and error messages
      * @throws \Exception
      */
@@ -66,7 +62,6 @@ class CopySurvey
             $destinationSurvey->sid = $this->newSurveyId;
         }
         $copySurveyResult = new CopySurveyResult();
-        //set a warning if the survey is already in use
         if (Survey::model()->findByPk($destinationSurvey->sid) !== null) {
             $copySurveyResult->setWarnings(gt("The desired survey ID was already in use, therefore a random one was assigned."));
         }
@@ -86,8 +81,7 @@ class CopySurvey
 
         if ($this->options->isQuotas()) {
             $copySurveyQuotas = new CopySurveyQuotas($this->sourceSurvey, $destinationSurvey);
-            $cntQuotas = $copySurveyQuotas->copyQuotas($mappingGroupIdsAndQuestionIds['questionIds']);
-            $copySurveyResult->setCntQuotas($cntQuotas);
+            $copySurveyResult->setCntQuotas($copySurveyQuotas->copyQuotas($mappingGroupIdsAndQuestionIds['questionIds']));
         }
 
         if ($this->options->isConditions()) {
@@ -102,9 +96,8 @@ class CopySurvey
         }
 
         if ($this->options->isResetResponseStartId()) {
-            $oSurvey = Survey::model()->findByPk($destinationSurvey->sid);
-            $oSurvey->autonumber_start = 0;
-            $oSurvey->save();
+            $destinationSurvey->autonumber_start = 0;
+            $destinationSurvey->save();
         }
 
         if ($this->options->isPermissions()) {
@@ -118,7 +111,6 @@ class CopySurvey
                 $copySurveyResult->setWarnings(gT("Some resources could not be copied from the source survey"));
             }
         }
-
         return $copySurveyResult;
     }
 
@@ -148,6 +140,14 @@ class CopySurvey
         $copySurveyResult->setCntSurveyLanguages($cntCopiedLanguageSettings);
     }
 
+    /**
+     * Copy all question groups of the survey to the destination survey.
+     *
+     * @param CopySurveyResult $copyResults
+     * @param Survey $destinationSurvey
+     * @return array
+     * @throws \Exception
+     */
     private function copyQuestionGroup($copyResults, $destinationSurvey)
     {
         $questionGroups = QuestionGroup::model()->findAllByAttributes(['sid' => $this->sourceSurvey->sid]);
@@ -226,7 +226,7 @@ class CopySurvey
     }
 
     /**
-     *
+     * Searches for a valid survey id for the destination survey and retries if necessary.
      *
      * @param Survey $destinationSurvey
      *
@@ -301,8 +301,8 @@ class CopySurvey
      */
     private function copyConditions($mappingQuestionIds, $mappingGroupIds, $destinationSurveyId)
     {
-        //find all conditions for the source survey
-        //the surveyId is in the attribute "cfieldname"
+        // find all conditions for the source survey
+        // the surveyId is in the attribute "cfieldname"
         $conditionRows = Yii::app()->db->createCommand()
             ->select('conditions.*')
             ->from('{{conditions}} conditions')
@@ -320,17 +320,17 @@ class CopySurvey
             $condition->qid = $mappingQuestionIds[$conditionRow['qid']];
             $condition->cqid = $mappingQuestionIds[$conditionRow['cqid']];
             //rebuild the cfieldname --> "$iSurveyID . "X" . $iGroupID . "X" . $iQuestionID"
-            list($oldSurveyID, $oldGroupId, $oldQuestionId) = explode("X", (string) $conditionRow['cfieldname'], 3);
+            list(, $oldGroupId, $oldQuestionId) = explode("X", (string) $conditionRow['cfieldname'], 3);
             //the $oldQuestionId contains the question id from the old question id
             //and could in addition contain a subquestion code or answer option code
             //cut out the question id, which is at the beginning of $oldQuestionId
-            $appendSubQuestionORAnswerOption = substr($oldQuestionId, strlen((string) $conditionRow['qid']));
+            $appendSubQuestionOrAnswerOption = substr($oldQuestionId, strlen((string) $conditionRow['qid']));
             $addPlusSign = "";
             if (preg_match("/^\+/", $conditionRow['cfieldname'])) {
                 $addPlusSign = "+";
             }
             $condition->cfieldname = $addPlusSign . $destinationSurveyId . "X" . $mappingGroupIds[$oldGroupId] .
-                "X" . $mappingQuestionIds[$conditionRow['cqid']] . $appendSubQuestionORAnswerOption;
+                "X" . $mappingQuestionIds[$conditionRow['cqid']] . $appendSubQuestionOrAnswerOption;
             $condition->value = $conditionRow['value'];
             $condition->method = $conditionRow['method'];
             if ($condition->save()) {
