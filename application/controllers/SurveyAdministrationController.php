@@ -371,7 +371,7 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
-     * This function prepares the view for a new survey
+     * This function prepares the classic view for a new survey
      *
      * @return void
      */

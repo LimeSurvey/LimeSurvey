@@ -34,6 +34,29 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.15.18 (build 251016) to 6.15.19 (build 251017) October 17, 2025
+-Fixed issue: Time stamp not always UTC (lajosarpad)
+-Fixed issue #20308: Update bug with Postgres (lajosarpad)
+-Fixed issue #20214: Create new survey skips initial settings (#4471) (Tim Willig)
+#Updated translation: Japanese by d_inoue
+
+
+Changes from 6.15.17 (build 251013) to 6.15.18 (build 251016) October 16, 2025
+-Fixed issue #LE-429: Refactor timestamp format (#4479) (Ahmed Abd El-Azeem)
+-Fixed issue #LE-429: Optimized survey detail (#4476) (lajosarpad)
+-Fixed issue #18211: List (Radio) questions columns not in one (ul) tag (#3038) (Denis Chenu)
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Bengali by rhythms
+#Updated translation: Afrikaans by Satyajeetchauhan
+
+
 Changes from 6.15.16 (build 251006) to 6.15.17 (build 251013) October 13, 2025
 -Fixed issue: provide event so additional global general settings can be rendered through plugins (Patrick Teichmann)
 -Fixed issue #CT-1443: Added support for exporting and importing question theme name with txt (#4472) (lajosarpad)
