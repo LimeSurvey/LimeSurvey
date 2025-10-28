@@ -73,7 +73,13 @@
 <?php
 App()->getClientScript()->registerScript('ImportSurveyModal', "
 $('#importsurvey').on('submit', function(e) {
-    $('#ls-loading').show();
+    // Use a small timeout to allow client-side validation to run.
+    // If validation fails, the form submission is cancelled before the spinner is shown.
+    setTimeout(function() {
+        if (!e.isDefaultPrevented()) {
+            $('#ls-loading').show();
+        }
+    }, 100);
 });
 ", LSYii_ClientScript::POS_END);
 ?>
