@@ -302,7 +302,7 @@ class CopySurvey
     private function copyConditions($mappingQuestionIds, $mappingGroupIds, $destinationSurveyId)
     {
         //find all conditions for the source survey
-        //the surveyId is in the attribute "cfieldname"...ahhhhhhhhh a nightmare...
+        //the surveyId is in the attribute "cfieldname"
         $conditionRows = Yii::app()->db->createCommand()
             ->select('conditions.*')
             ->from('{{conditions}} conditions')
@@ -313,7 +313,6 @@ class CopySurvey
             ])
             ->queryAll();
 
-
         $cntConditions = 0;
         foreach ($conditionRows as $conditionRow) {
             $condition = new Condition();
@@ -322,7 +321,8 @@ class CopySurvey
             $condition->cqid = $mappingQuestionIds[$conditionRow['cqid']];
             //rebuild the cfieldname --> "$iSurveyID . "X" . $iGroupID . "X" . $iQuestionID"
             list($oldSurveyID, $oldGroupId, $oldQuestionId) = explode("X", (string) $conditionRow['cfieldname'], 3);
-            //the $oldQuestionId contains the question id from the old question id and could in addition contain a subquestion code or answeroption code
+            //the $oldQuestionId contains the question id from the old question id
+            //and could in addition contain a subquestion code or answer option code
             //cut out the question id, which is at the beginning of $oldQuestionId
             $appendSubQuestionORAnswerOption = substr($oldQuestionId, strlen((string) $conditionRow['qid']));
             $addPlusSign = "";

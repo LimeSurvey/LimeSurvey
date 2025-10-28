@@ -2264,7 +2264,7 @@ class SurveyAdministrationController extends LSBaseController
             $copyResults = $copySurveyService->copy();
         } catch (Exception $e) {
             $transaction->rollBack();
-            App()->user->setFlash('error', gT("Failed to copy survey") . ": ". $e->getMessage());
+            App()->user->setFlash('error', gT("Failed to copy survey") . ": " . $e->getMessage());
             $this->redirect(App()->request->urlReferrer);
         }
         $copiedSurvey = $copyResults->getCopiedSurvey();
@@ -2376,7 +2376,7 @@ class SurveyAdministrationController extends LSBaseController
             $copyResults = $copySurveyService->copy();
         } catch (Exception $e) {
             $transaction->rollBack();
-            App()->user->setFlash('error', gT("Failed to copy survey") . ": ". $e->getMessage());
+            App()->user->setFlash('error', gT("Failed to copy survey") . ": " . $e->getMessage());
             $this->redirect(App()->request->urlReferrer);
         }
         $copiedSurvey = $copyResults->getCopiedSurvey();
