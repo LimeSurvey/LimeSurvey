@@ -65,12 +65,17 @@ class CopySurvey
         if ($this->newSurveyId !== null) {
             $destinationSurvey->sid = $this->newSurveyId;
         }
+        $copySurveyResult = new CopySurveyResult();
+        //set a warning if the survey is already in use
+        if (Survey::model()->findByPk($destinationSurvey->sid) !== null) {
+            $copySurveyResult->setWarnings(gt("The desired survey ID was already in use, therefore a random one was assigned."));
+        }
         $destinationSurvey = $this->getValidSurveyId($destinationSurvey);
+        $destinationSurvey->active = 'N'; //don't activate the survey
         if (!$destinationSurvey->save()) {
             throw new \Exception(gt("Failed to copy survey"));
         }
 
-        $copySurveyResult = new CopySurveyResult();
         $copySurveyResult->setCopiedSurvey($destinationSurvey);
 
         $this->copySurveyLanguages($copySurveyResult, $destinationSurvey);
@@ -110,7 +115,7 @@ class CopySurvey
             $resourceCopier = new CopySurveyResources();
             [, $errorFilesInfo] = $resourceCopier->copyResources($this->sourceSurvey->sid, $destinationSurvey->sid);
             if (!empty($errorFilesInfo)) {
-                $copySurveyResult->setWarnings(['message' => gT("Some resources could not be copied from the source survey")]);
+                $copySurveyResult->setWarnings(gT("Some resources could not be copied from the source survey"));
             }
         }
 
@@ -220,7 +225,15 @@ class CopySurvey
         return $mapping;
     }
 
-    private function getValidSurveyId($destinationSurvey)
+    /**
+     *
+     *
+     * @param Survey $destinationSurvey
+     *
+     * @return Survey
+     * @throws Exception
+     */
+    private function getValidSurveyId(Survey $destinationSurvey)
     {
         $attempts = 0;
         /* Validate sid : > 1 and unique */
@@ -308,8 +321,16 @@ class CopySurvey
             $condition->qid = $mappingQuestionIds[$conditionRow['qid']];
             $condition->cqid = $mappingQuestionIds[$conditionRow['cqid']];
             //rebuild the cfieldname --> "$iSurveyID . "X" . $iGroupID . "X" . $iQuestionID"
-            $sidGidQid = explode('X', $conditionRow['cfieldname']); //[0]sid, [1]gid, [2]qid
-            $condition->cfieldname = $destinationSurveyId . "X" . $mappingGroupIds[$sidGidQid[1]] . "X" . $mappingQuestionIds[$conditionRow['cqid']];
+            list($oldSurveyID, $oldGroupId, $oldQuestionId) = explode("X", (string) $conditionRow['cfieldname'], 3);
+            //the $oldQuestionId contains the question id from the old question id and could in addition contain a subquestion code or answeroption code
+            //cut out the question id, which is at the beginning of $oldQuestionId
+            $appendSubQuestionORAnswerOption = substr($oldQuestionId, strlen((string) $conditionRow['qid']));
+            $addPlusSign = "";
+            if (preg_match("/^\+/", $conditionRow['cfieldname'])) {
+                $addPlusSign = "+";
+            }
+            $condition->cfieldname = $addPlusSign . $destinationSurveyId . "X" . $mappingGroupIds[$oldGroupId] .
+                "X" . $mappingQuestionIds[$conditionRow['cqid']] . $appendSubQuestionORAnswerOption;
             $condition->value = $conditionRow['value'];
             $condition->method = $conditionRow['method'];
             if ($condition->save()) {

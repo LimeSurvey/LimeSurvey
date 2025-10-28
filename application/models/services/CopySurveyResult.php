@@ -273,9 +273,9 @@ class CopySurveyResult
     }
 
     /**
-     * @param array $warnings
+     * @param string $warnings
      */
-    public function setWarnings(array $warnings): void
+    public function setWarnings(string $warnings): void
     {
         $this->warnings[] = $warnings;
     }

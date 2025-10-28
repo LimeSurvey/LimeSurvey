@@ -2245,7 +2245,7 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         //the new survey id
-        $newSurveyId = sanitize_int(App()->request->getPost('copysurveyid'), 100000, 999999);
+        $newSurveyId = sanitize_int(App()->request->getPost('copysurveyid'), 1, 999999);
 
         //the source survey id
         $sourceSurveyId = sanitize_int(App()->request->getPost('surveyIdToCopy'));
@@ -2258,18 +2258,26 @@ class SurveyAdministrationController extends LSBaseController
             $options,
             $newSurveyId,
         );
-        $copyResults = $copySurveyService->copy();
+
+        $transaction = \Yii::app()->db->beginTransaction();
+        try {
+            $copyResults = $copySurveyService->copy();
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            App()->user->setFlash('error', gT("Failed to copy survey") . ": ". $e->getMessage());
+            $this->redirect(App()->request->urlReferrer);
+        }
         $copiedSurvey = $copyResults->getCopiedSurvey();
+        $groupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
+        $this->resetExpressionManager($copiedSurvey, $groupList);
 
         $aData = [];
         $aData['copyResults'] = $copyResults;
 
         if ($copiedSurvey !== null) {
             $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $copiedSurvey->sid]);
-            //todo another option after copy?!? Häää?
             $aData['sLinkApplyThemeOptions'] = 'surveyAdministration/applythemeoptions/surveyid/' . $copiedSurvey->sid;
             $questionGroupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
-           // $this->resetExpressionManager($copiedSurvey, $questionGroupList);
 
             // Make the link point to the first group/question if available
             if (!empty($questionGroupList)) {
@@ -2301,6 +2309,7 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Initialises the necessary options.
      *
+     * @param $request
      * @return CopySurveyOptions
      */
     private function getPostParamsForCopySurvey($request): CopySurveyOptions
@@ -2361,7 +2370,18 @@ class SurveyAdministrationController extends LSBaseController
             $survey,
             $optionsDataContainer,
         );
-        $copyResults = $copySurveyService->copy();
+
+        $transaction = \Yii::app()->db->beginTransaction();
+        try {
+            $copyResults = $copySurveyService->copy();
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            App()->user->setFlash('error', gT("Failed to copy survey") . ": ". $e->getMessage());
+            $this->redirect(App()->request->urlReferrer);
+        }
+        $copiedSurvey = $copyResults->getCopiedSurvey();
+        $groupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
+        $this->resetExpressionManager($copiedSurvey, $groupList);
 
         if (empty($copyResults->getErrors())) {
             App()->user->setFlash('success', gT("Survey copied successfully."));

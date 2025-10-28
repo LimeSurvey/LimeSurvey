@@ -69,6 +69,18 @@ use LimeSurvey\Models\Services\CopySurveyResult;
                 </table>
             </div>
         </div>
+        <!-- Warnings -->
+        <?php if (count($copyResults->getWarnings())>0): ?>
+            <h2 class="warning"><?php eT("Warnings");?>:</h2>
+            <ul  class="list-unstyled">
+                <?php
+                foreach ($copyResults->getWarnings() as $warning)
+                { ?>
+                    <li><?php echo $warning; ?></li>
+                    <?php
+                } ?>
+            </ul>
+        <?php endif; ?>
         <p class="text-info"><?php eT("Copy of survey is completed.")?></p>
         <p>
             <input type='submit'
