@@ -408,6 +408,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $themeConfiguration = TemplateConfiguration::getInstance(null, null, $survey->sid);
         // loads all information available for the theme including inheritance
         $themeData = $this->surveyThemeConfiguration->updateCommon($themeConfiguration, $survey->sid, $survey->gsid);
+        // parse themeOptions to array
+        $themeData['aTemplateConfiguration']['options'] = json_decode($themeData['aTemplateConfiguration']['options']);
         $aThemeSettings = $themeData;
 
         $aThemeSettingAttributes = $themeData['aOptionAttributes'];
