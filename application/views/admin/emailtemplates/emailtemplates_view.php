@@ -24,7 +24,7 @@ var LS = LS || {};  // namespace
 
 ?>
 <div class="side-body">
-    <h3><?php eT("Edit email templates"); ?></h3>
+    <h3 aria-level="1"  ><?php eT("Edit email templates"); ?></h3>
     <div class="row">
         <div class="col-12 content-right">
             <?php echo CHtml::form(['admin/emailtemplates/sa/update/surveyid/' . $surveyid], 'post', ['name' => 'emailtemplates', 'class' => '', 'id' => 'emailtemplates']); ?>
