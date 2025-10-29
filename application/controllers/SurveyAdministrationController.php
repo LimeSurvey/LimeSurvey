@@ -2259,14 +2259,8 @@ class SurveyAdministrationController extends LSBaseController
             $newSurveyId,
         );
 
-        $transaction = \Yii::app()->db->beginTransaction();
-        try {
-            $copyResults = $copySurveyService->copy();
-        } catch (Exception $e) {
-            $transaction->rollBack();
-            App()->user->setFlash('error', gT("Failed to copy survey") . ": " . $e->getMessage());
-            $this->redirect(App()->request->urlReferrer);
-        }
+        $copyResults = $copySurveyService->copy();
+
         $copiedSurvey = $copyResults->getCopiedSurvey();
         $groupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
         $this->resetExpressionManager($copiedSurvey, $groupList);
@@ -2371,14 +2365,8 @@ class SurveyAdministrationController extends LSBaseController
             $optionsDataContainer,
         );
 
-        $transaction = \Yii::app()->db->beginTransaction();
-        try {
-            $copyResults = $copySurveyService->copy();
-        } catch (Exception $e) {
-            $transaction->rollBack();
-            App()->user->setFlash('error', gT("Failed to copy survey") . ": " . $e->getMessage());
-            $this->redirect(App()->request->urlReferrer);
-        }
+        $copyResults = $copySurveyService->copy();
+
         $copiedSurvey = $copyResults->getCopiedSurvey();
         $groupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
         $this->resetExpressionManager($copiedSurvey, $groupList);
