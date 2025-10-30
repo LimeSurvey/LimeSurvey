@@ -1534,7 +1534,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         $submenuItems = [];
         $submenuItems[] = [
-            'title' => gT('Quick copy with text'),
+            'title' => gT('Quick copy'),
             'url' => App()->createUrl("/surveyAdministration/newSurvey", ['tab' => 'copy']),
             'enabledCondition' => $enableCondition,
         ];

@@ -1,12 +1,12 @@
 <?php
-    /** @var string $tooltip */
-    /** @var string $linkId */
-    /** @var bool $enabledCondition */
-    /** @var string $linkClass */
-    /** @var string $url */
-    /** @var array $linkAttributes */
-    /** @var string $iconClass */
-    /** @var string $title */
+/** @var string $tooltip */
+/** @var string $linkId */
+/** @var bool $enabledCondition */
+/** @var string $linkClass */
+/** @var string $url */
+/** @var array $linkAttributes */
+/** @var string $iconClass */
+/** @var string $title */
 ?>
 
 <div data-bs-toggle="tooltip" title="<?= $tooltip ?? '' ?>">
