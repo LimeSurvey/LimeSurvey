@@ -17207,6 +17207,35 @@ body {
   vertical-align: bottom;
 }
 
+/* Submenu */
+.has-submenu > a::after {
+  content: "›";
+  position: absolute;
+  right: 16px;
+  color: #6b6f7b;
+  font-size: 14px;
+}
+
+.dropdown-submenu {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  z-index: 1000;
+  font-size: 0.9975rem;
+  background-color: #fff;
+  border: 1.33px solid #1E1E1E;
+  box-shadow: 4px 4px 0 #EEEFF7;
+  border-radius: 4px;
+  padding: 8px 0;
+  line-height: 20px;
+  list-style: none;
+}
+
+.has-submenu:hover > .dropdown-submenu {
+  display: block;
+}
+
 .btn-circle {
   width: 44px;
   height: 44px;

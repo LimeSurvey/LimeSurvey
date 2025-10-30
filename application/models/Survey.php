@@ -1509,11 +1509,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'url' => App()->createUrl("/surveyAdministration/view", array('iSurveyID' => $this->sid)),
             'enabledCondition' => $permissions['survey_update'],
         ];
+        $submenuItems = [];
         $dropdownItems[] = [
+            'submenu' => true,
             'title' => gT('Copy'),
-            'url' => App()->createUrl("/surveyAdministration/newSurvey", ['tab' => 'copy']),
-
-            'enabledCondition' => $permissions['survey_update'],
+            'submenu_items' => $this->getSubmenuItemsCopy($permissions['survey_update']),
         ];
         $dropdownItems[] = [
             'title' => gT('Add user'),
@@ -1528,6 +1528,22 @@ class Survey extends LSActiveRecord implements PermissionInterface
         ];
 
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
+    }
+
+    private function getSubmenuItemsCopy($enableCondition = true)
+    {
+        $submenuItems = [];
+        $submenuItems[] = [
+            'title' => gT('Quick copy with text'),
+            'url' => App()->createUrl("/surveyAdministration/newSurvey", ['tab' => 'copy']),
+            'enabledCondition' => $enableCondition,
+        ];
+        $submenuItems[] = [
+            'title' => gT('Custom copy'),
+            'url' => App()->createUrl("/surveyAdministration/newSurvey", ['tab' => 'copy']),
+            'enabledCondition' => $enableCondition,
+        ];
+        return $submenuItems;
     }
 
     /**
