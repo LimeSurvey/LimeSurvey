@@ -1442,15 +1442,54 @@ class TemplateManifest extends TemplateConfiguration
                 $aOptions['optionAttributes'][$key]['parent'] = !empty($option['parent']) ? (string)$option['parent'] : '';
 
                 if (!empty($option->dropdownoptions)) {
-                    $dropdownOptions = '';
+                    $dropdownOptions = $option->dropdownoptions; // The element to insert into
+                    $dropdownOptionsDom = dom_import_simplexml($dropdownOptions);
                     if ($key === 'font') {
-                        $dropdownOptions .= TemplateManifest::getFontDropdownOptions();
+                        $dropdownOptionsFonts = TemplateManifest::getFontDropdownOptions();
+                        $fontDropdownOptions = simplexml_load_string($dropdownOptionsFonts); // The element to insert
+                        $child_dom = dom_import_simplexml($fontDropdownOptions);
+                        // Import the child node into the parent's document
+                        $child_imported = $dropdownOptionsDom->ownerDocument->importNode($child_dom, true);
+                        // If the parent has children, insert before the first one.
+                        if ($dropdownOptionsDom->firstChild) {
+                            $dropdownOptionsDom->insertBefore($child_imported, $dropdownOptionsDom->firstChild);
+                        } else {
+                            // If the parent has no children, you can just append it (which makes it the first)
+                            $dropdownOptionsDom->appendChild($child_imported);
+                        }
                     }
-                    foreach ($option->xpath('//options/' . $key . '/dropdownoptions') as $dropdownOption) {
-                        $dropdownOptions .= $dropdownOption->asXml();
+                    $dropdownOptionsString = $dropdownOptions->asXML();
+                    $dropdownOptionsArray = [];
+                    if (isset($dropdownOptions->optgroup)) {
+                        $optgroup = 0;
+                        foreach ($dropdownOptions->optgroup as $XMLElementKey => $XMLElement) {
+                            foreach ($XMLElement->attributes() as $attributeKey => $attributeValue) {
+                                $dropdownOptionsArray[$XMLElementKey][$optgroup]['attributes'][$attributeKey] = (string)$attributeValue;
+                            }
+                            $optionIterator = 0;
+                            /** @var SimpleXMLElement $options */
+                            foreach ($XMLElement->children() as $optionKey => $options) {
+                                $dropdownOptionsArray[$XMLElementKey][$optgroup][$optionKey][$optionIterator]['value'] = (string)$options[0];
+                                foreach ($options->attributes() as $attributeKey => $attributeValue) {
+                                    $dropdownOptionsArray[$XMLElementKey][$optgroup][$optionKey][$optionIterator]['attributes'][$attributeKey]  = (string)$attributeValue;
+                                }
+                                $optionIterator++;
+                            }
+                            $optgroup++;
+                        }
+                    } else {
+                        $optionIterator = 0;
+                        /** @var SimpleXMLElement $options */
+                        foreach ($dropdownOptions->children() as $optionKey => $options) {
+                            $dropdownOptionsArray[$optionKey][$optionIterator]['value'] = (string)$options[0];
+                            foreach ($options->attributes() as $attributeKey => $attributeValue) {
+                                $dropdownOptionsArray[$optionKey][$optionIterator]['attributes'][$attributeKey] = (string)$attributeValue;
+                            }
+                            $optionIterator++;
+                        }
                     }
-
-                    $aOptions['optionAttributes'][$key]['dropdownoptions'] = $dropdownOptions;
+                    $aOptions['optionAttributes'][$key]['dropdownoptions'] = $dropdownOptionsString;
+                    $aOptions['optionAttributes'][$key]['dropdownoptionsArray'] = $dropdownOptionsArray;
                 } else {
                     $aOptions['optionAttributes'][$key]['dropdownoptions'] = '';
                 }
