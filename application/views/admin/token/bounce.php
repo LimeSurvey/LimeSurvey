@@ -1,5 +1,5 @@
 <div class='side-body'>
-    <h3><?php eT("Bounce settings"); ?></h3>
+    <h3 aria-level="2"><?php eT("Bounce settings"); ?></h3>
     <div class="row">
         <div class="col-12">
             <div id='bouncesettingsdiv'>
