@@ -141,9 +141,7 @@ class SurveyActivate
                 try {
                     createTableFromPattern($tokenTable, $archives["tokens"]);
                 } catch (\CDbException $ex) {
-                    if (strpos($ex->getMessage(), "Base table or view already exists") === false) {
-                        throw $ex;
-                    }
+
                 }
                 copyFromOneTableToTheOther($archives["tokens"], $tokenTable, $preserveIDs);
             }
