@@ -141,7 +141,6 @@ class SurveyActivate
                 try {
                     createTableFromPattern($tokenTable, $archives["tokens"]);
                 } catch (\CDbException $ex) {
-
                 }
                 copyFromOneTableToTheOther($archives["tokens"], $tokenTable, $preserveIDs);
             }
