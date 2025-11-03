@@ -67,6 +67,7 @@ class CopySurvey
         }
         $destinationSurvey = $this->getValidSurveyId($destinationSurvey);
         $destinationSurvey->active = 'N'; //don't activate the survey
+        $destinationSurvey->datecreated = date("Y-m-d H:i:s");
         if (!$destinationSurvey->save()) {
             throw new \Exception(gt("Failed to copy survey"));
         }
@@ -93,6 +94,13 @@ class CopySurvey
         } else {
             Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $destinationSurvey->sid);
             QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $destinationSurvey->sid);
+        }
+
+        if ($this->options->isResetStartAndEndDate()) {
+            //reset start and end dates
+            $destinationSurvey->startdate = null;
+            $destinationSurvey->expires = null;
+            $destinationSurvey->save();
         }
 
         if ($this->options->isResetResponseStartId()) {
