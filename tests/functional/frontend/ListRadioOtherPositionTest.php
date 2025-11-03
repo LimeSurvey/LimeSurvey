@@ -61,25 +61,25 @@ class ListRadioOtherPositionTest extends TestBaseClassWeb
 
             // Check "At beginning" position
             $qid = $questions[0]->qid;
-            $label = $web->findElement(WebDriverBy::cssSelector('#question' . $qid . ' .answers-list > ul > li:first-child label'));
+            $label = $web->findElement(WebDriverBy::cssSelector('#question' . $qid . ' ul.answers-list > li:first-child label'));
             $labelText = $label->getText();
             $this->assertEquals($labelText, 'Other:');
 
             // Check "After specific answer option" position
             $qid = $questions[1]->qid;
-            $label = $web->findElement(WebDriverBy::cssSelector('#question' . $qid . ' .answers-list > ul > li:nth-child(2) label'));
+            $label = $web->findElement(WebDriverBy::cssSelector('#question' . $qid . ' ul.answers-list > li:nth-child(2) label'));
             $labelText = $label->getText();
             $this->assertEquals($labelText, 'Other:');
 
             // Check "At end" position
             $qid = $questions[2]->qid;
-            $label = $web->findElement(WebDriverBy::cssSelector('#question' . $qid . ' .answers-list > ul > li:last-child label'));
+            $label = $web->findElement(WebDriverBy::cssSelector('#question' . $qid . ' ul.answers-list > li:last-child label'));
             $labelText = $label->getText();
             $this->assertEquals($labelText, 'Other:');
 
             // Check "Before No Answer" position
             $qid = $questions[3]->qid;
-            $label = $web->findElement(WebDriverBy::cssSelector('#question' . $qid . ' .answers-list > ul > li:nth-child(3) label'));
+            $label = $web->findElement(WebDriverBy::cssSelector('#question' . $qid . ' ul.answers-list > li:nth-child(3) label'));
             $labelText = $label->getText();
             $this->assertEquals($labelText, 'Other:');
 
