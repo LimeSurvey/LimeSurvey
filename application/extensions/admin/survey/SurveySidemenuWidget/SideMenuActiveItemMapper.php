@@ -111,7 +111,7 @@ class SideMenuActiveItemMapper extends WhSelect2
                 'urls' => []
             ],
             'participants' => [
-                'pattern' => '/admin/tokens/',
+                'pattern' => '/admin/tokens',
                 'urls' => []
             ],
             'responses' => [
