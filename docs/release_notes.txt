@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.15.21 (build 251028) to 6.15.22 (build 251103) November 3, 2025
+-Fixed issue: Survey template cannot be imported (Carsten Schmitz)
+-Fixed issue #20136: Token attributes logic with anonymous survey (#4358) (Denis Chenu)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 6.15.20 (build 251021) to 6.15.21 (build 251028) October 28, 2025
 -Fixed issue: Unresponsive react (lajosarpad)
 -Fixed issue: DB version update not possible with self-registering plugins (Carsten Schmitz)
