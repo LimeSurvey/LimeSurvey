@@ -13,7 +13,7 @@
                 <h1 class="align-items-center d-flex">
                     <?php
                         if ($titleBackLink !== null) {
-                            echo '<a class="h1" aria-label="Back" href="'.$titleBackLink.'">
+                            echo '<a id="back_bt13" aria-label="Back" href="'.$titleBackLink.'">
                             <i class="ri-arrow-left-s-line"></i></a>' ;
                         }
                     ?>
