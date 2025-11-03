@@ -1218,7 +1218,7 @@ function getTableArchivesAndTimestamps(int $sid, string $baseTable = 'old_survey
             $result[$timestamp]['tables'] .= ",{$table}";
         }
         if (strpos($table, 'survey') !== false) {
-            $result[$timestamp]['cnt'] = (array) Yii::app()->db->createCommand("select count(*) as cnt from {$table}")->queryAll()[0]['cnt'];
+            $result[$timestamp]['cnt'] = (int) Yii::app()->db->createCommand("select count(*) as cnt from " . Yii::app()->db->quoteTableName($table))->queryScalar();
         }
     }
     $keys = array_keys($result);
