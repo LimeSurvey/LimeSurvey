@@ -3413,6 +3413,18 @@ class LimeExpressionManager
             }
             $sgqa = $fielddata['fieldname'];
             $type = $fielddata['type'];
+            $problematicFields = [
+                'mandatory' => 'N',
+                'title' => '',
+                'subquestion' => '',
+                'question' => '',
+                'scale' => 0
+            ];
+            foreach ($problematicFields as $pk => $pf) {
+                if (!isset($fielddata[$pk])) {
+                    $fielddata[$pk] = $pf;
+                }
+            }
             $mandatory = $fielddata['mandatory'];
             $fieldNameParts = explode('X', (string) $sgqa);
             $groupNum = $fieldNameParts[1];
