@@ -90,7 +90,7 @@ class SurveyResponses implements CommandInterface
             }
 
             $this->transformerOutputSurveyResponses->fieldMap =
-                createFieldMap($this->survey, 'short', false, false);
+                createFieldMap($this->survey, 'full', false, false);
 
             $data = [];
             $data['responses'] = $this->transformerOutputSurveyResponses->transform(
