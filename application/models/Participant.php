@@ -1470,13 +1470,11 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Update stuff?
-     * If automapping is enabled then update the token field properties with the mapped CPDB field ID
-     * TODO: What is this?
+     * Updates the token attribute properties of a survey to include the mapping to Central Participant Database (CPDB) attributes.
+     * If automapping is enabled, this function updates the token field properties with the mapped CPDB field ID.
      *
-     * @param int $surveyId
-     * @param array $mappedAttributes
-     * @param integer $surveyId
+     * @param int   $surveyId         The ID of the survey.
+     * @param array $mappedAttributes An associative array where keys are token attribute field names and values are the corresponding CPDB attribute IDs.
      * @return void
      */
     private function updateTokenFieldProperties($surveyId, array $mappedAttributes)
