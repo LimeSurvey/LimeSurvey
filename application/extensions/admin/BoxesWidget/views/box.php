@@ -48,7 +48,7 @@
                                 $surveyls_title = $defaultlanguage->surveyls_title;
                             }
                             ?>
-                            <?php echo viewHelper::filterScript(gT($surveyls_title)); ?>
+                            <?php echo viewHelper::filterScript($surveyls_title); ?>
                         </div>
                     </div>
                     <div class="box-widget-card-text">
