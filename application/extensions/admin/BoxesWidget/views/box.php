@@ -42,6 +42,7 @@
                     <div class="box-widget-card-header">
                         <div class="box-widget-card-title">
                             <?php
+                            $surveyls_title = "";
                             $defaultlanguage = $item['survey']->defaultlanguage;
                             if (isset($defaultlanguage)) {
                                 $surveyls_title = $defaultlanguage->surveyls_title;
