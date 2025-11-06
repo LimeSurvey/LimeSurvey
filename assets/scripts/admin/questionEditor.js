@@ -115,6 +115,44 @@ $(document).on('ready pjax:scriptcomplete', function () {
         }
       });
 
+      elements.element.addEventListener('hide.bs.modal', () => {
+        if (!scriptEditorTarget) {
+          return;
+        }
+        const latestElements = fetchScriptModalElements();
+        const editor = ensureScriptEditorInstance(latestElements ? latestElements.editorContainer : null);
+        if (!editor) {
+          return;
+        }
+
+        const $target = $(scriptEditorTarget);
+        if ($target.prop('readonly') === true) {
+          return;
+        }
+
+        const newValue = editor.getValue();
+
+        try {
+          if (typeof $target.ace === 'function' && $target.ace('check')) {
+            $target.ace('val', newValue);
+          } else {
+            $target.val(newValue);
+          }
+        } catch (err) {
+          $target.val(newValue);
+        }
+
+        $target.trigger('change');
+
+        try {
+          scriptEditorTarget.dispatchEvent(new Event('input', { bubbles: true }));
+        } catch (err) {
+          const inputEvent = document.createEvent('Event');
+          inputEvent.initEvent('input', true, false);
+          scriptEditorTarget.dispatchEvent(inputEvent);
+        }
+      });
+
       elements.element.addEventListener('hidden.bs.modal', () => {
         scriptEditorTarget = null;
         const latestElements = fetchScriptModalElements();
