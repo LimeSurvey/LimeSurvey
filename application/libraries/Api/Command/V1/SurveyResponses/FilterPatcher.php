@@ -26,7 +26,7 @@ class FilterPatcher
      */
     public function apply(array $filterParams, \LSDbCriteria &$criteria, \CSort &$sort, array $dataMap = array()): void
     {
-        $sort->defaultOrder = "id ASC";
+        $sort->defaultOrder = "id DESC";
         if (!empty($filterParams['sort'])) {
             $sortParams = array_intersect_key($filterParams['sort'], array_flip($this->sortAllowedKeys));
 
