@@ -37,7 +37,7 @@ declare var CKEDITOR: any
 // flowlint unclear-type: error
 
 // Globals for jshint.
-/* globals $, _, alert, document, CKEDITOR */
+/* globals $, _, alert, document, CKEDITOR, ace, bootstrap */
 
 // NB: All public functions are in LS.questionEditor.
 var LS = LS || {};
@@ -67,6 +67,148 @@ $(document).on('ready pjax:scriptcomplete', function () {
       'highlightActiveLine': false
     });
   }
+
+  let scriptEditorInstance = null;
+  let scriptEditorTarget = null;
+  let scriptEditorContainerElement = null;
+  let scriptEditorResizeHandler = null;
+
+  function fetchScriptModalElements() {
+    const element = document.getElementById('question-script-modal');
+    if (!element) {
+      return null;
+    }
+    const titleElement = element.querySelector('.modal-title');
+    const defaultTitle = element.getAttribute('data-default-title') || (titleElement ? titleElement.textContent : '');
+    const editorContainer = document.getElementById('question-script-modal-editor');
+
+    return {
+      element,
+      titleElement,
+      defaultTitle,
+      editorContainer
+    };
+  }
+
+  function prepareScriptModal() {
+    const elements = fetchScriptModalElements();
+    if (!elements) {
+      return null;
+    }
+
+    if (elements.element.dataset.scriptEditorBound !== 'true') {
+      elements.element.addEventListener('shown.bs.modal', () => {
+        const latestElements = fetchScriptModalElements();
+        const editor = ensureScriptEditorInstance(latestElements ? latestElements.editorContainer : null);
+        if (editor) {
+          window.setTimeout(() => {
+            editor.resize(true);
+            editor.focus();
+          }, 0);
+          if (scriptEditorResizeHandler) {
+            window.removeEventListener('resize', scriptEditorResizeHandler);
+          }
+          scriptEditorResizeHandler = () => {
+            editor.resize(true);
+          };
+          window.addEventListener('resize', scriptEditorResizeHandler);
+        }
+      });
+
+      elements.element.addEventListener('hidden.bs.modal', () => {
+        scriptEditorTarget = null;
+        const latestElements = fetchScriptModalElements();
+        if (latestElements && latestElements.titleElement) {
+          latestElements.titleElement.textContent = latestElements.defaultTitle;
+        }
+        if (scriptEditorResizeHandler) {
+          window.removeEventListener('resize', scriptEditorResizeHandler);
+          scriptEditorResizeHandler = null;
+        }
+      });
+
+      elements.element.dataset.scriptEditorBound = 'true';
+    }
+
+    return elements;
+  }
+
+  function ensureScriptEditorInstance(container) {
+    if (!container || typeof ace === 'undefined') {
+      return null;
+    }
+    if (!scriptEditorInstance || scriptEditorContainerElement !== container) {
+      scriptEditorInstance = ace.edit(container);
+      scriptEditorContainerElement = container;
+      scriptEditorInstance.session.setMode('ace/mode/javascript');
+      scriptEditorInstance.setOptions({
+        wrap: true,
+        tabSize: 4,
+        useSoftTabs: true,
+        highlightActiveLine: true
+      });
+    }
+    return scriptEditorInstance;
+  }
+
+  prepareScriptModal();
+
+  $(document).off('click.scriptEditor', '.script-editor-fullscreen').on('click.scriptEditor', '.script-editor-fullscreen', function (event) {
+    event.preventDefault();
+    const targetFieldId = $(this).attr('data-target-field-id') || $(this).data('targetFieldId');
+    if (!targetFieldId) {
+      console.warn('Script editor: missing target field id on trigger.');
+      return;
+    }
+
+    const targetElement = document.getElementById(targetFieldId);
+    if (!targetElement) {
+      console.warn(`Script editor: target field ${targetFieldId} not found.`);
+      return;
+    }
+
+    const modalElements = prepareScriptModal();
+    if (!modalElements || typeof bootstrap === 'undefined') {
+      console.error('Script editor modal is not available.');
+      return;
+    }
+
+    const modal = bootstrap.Modal.getOrCreateInstance(modalElements.element);
+    const editor = ensureScriptEditorInstance(modalElements.editorContainer);
+    if (!modal || !editor) {
+      console.error('Script editor modal is not available.');
+      return;
+    }
+
+    scriptEditorTarget = targetElement;
+    const $target = $(targetElement);
+    let currentValue = '';
+
+    try {
+      if (typeof $target.ace === 'function' && $target.ace('check')) {
+        currentValue = $target.ace('val');
+      } else {
+        currentValue = $target.val();
+      }
+    } catch (err) {
+      currentValue = $target.val();
+    }
+
+    editor.session.setValue(currentValue || '');
+    editor.session.getUndoManager().reset();
+    editor.clearSelection();
+    editor.gotoLine(1, 0, false);
+
+    const readOnly = $target.prop('readonly') === true;
+    editor.setReadOnly(readOnly);
+
+    if (modalElements.titleElement) {
+      const titleFromButton = $(this).attr('data-modal-title') || $(this).data('modalTitle');
+      modalElements.titleElement.textContent = titleFromButton || modalElements.defaultTitle;
+    }
+
+    modal.show();
+  });
 
   // TODO: Remove this when Vue topbar is removed.
   $('#vue-topbar-container').hide();

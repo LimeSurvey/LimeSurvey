@@ -98,24 +98,40 @@
             <?php foreach($oSurvey->allLanguages as $lang): ?>
             <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
                 <div class="mb-3">
-                    <?php if ($lang == $oSurvey->language): ?>
-                        <div class="row">
-                        <div class="col-12 text-end">
+                    <?php
+                    $scriptFieldId = CHtml::getIdByName("questionI10N[{$lang}][script]");
+                    $scriptModalTitle = gT('Script') . ' - ' . getLanguageNameFromCode($lang, false);
+                    ?>
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-2">
+                        <div>
+                            <button
+                                type="button"
+                                class="btn btn-outline-secondary btn-sm script-editor-fullscreen"
+                                data-target-field-id="<?= $scriptFieldId; ?>"
+                                data-modal-title="<?= CHtml::encode($scriptModalTitle); ?>"
+                            >
+                                <span class="ri-fullscreen-line"></span>
+                                <?= gT('Open full-screen editor'); ?>
+                            </button>
+                        </div>
+                        <?php if ($lang == $oSurvey->language): ?>
+                            <div class="form-check mb-0">
                                 <input
                                     type="checkbox"
+                                    class="form-check-input"
                                     name="question[same_script]"
                                     id="same_script"
-                                    value=1
-                                    <?php if($question->same_script): ?>
-                                        checked = 'checked'
-                                    <?php endif; ?>
-                                />&nbsp;
-                                <label for="same_script">
+                                    value="1"
+                                    <?php if($question->same_script): ?>checked="checked"<?php endif; ?>
+                                />
+                                <label class="form-check-label" for="same_script">
                                     <?= gT('Use for all languages'); ?>
                                 </label>
                             </div>
-                        </div>
-                    <?php else: ?>
+                        <?php endif; ?>
+                    </div>
+
+                    <?php if ($lang != $oSurvey->language): ?>
                         <?php
                         $this->widget('ext.AlertWidget.AlertWidget', [
                             'text' => gT('The script for this language will not be used because "Use for all languages" is set on the base language\'s script.'),
@@ -129,7 +145,7 @@
                         "questionI10N[$lang][script]",
                         $question->questionl10ns[$lang]->script,
                         [
-                            'id' => CHtml::getIdByName("questionI10N[{$lang}][script]"),
+                            'id' => $scriptFieldId,
                             'rows' => '10',
                             'cols' => '20',
                             'data-filetype' => 'javascript',
