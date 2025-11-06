@@ -108,8 +108,13 @@ $(document).on('ready pjax:scriptcomplete', function () {
           if (scriptEditorResizeHandler) {
             window.removeEventListener('resize', scriptEditorResizeHandler);
           }
+          const debouncedResize = _.debounce(() => {
+            if (scriptEditorInstance) {
+              scriptEditorInstance.resize(true);
+            }
+          }, 150);
           scriptEditorResizeHandler = () => {
-            editor.resize(true);
+            debouncedResize();
           };
           window.addEventListener('resize', scriptEditorResizeHandler);
         }
