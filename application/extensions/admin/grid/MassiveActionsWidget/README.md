@@ -224,18 +224,11 @@ The form will not be posted to the url directly by the ajax request. Indeed, the
 ## Special cases with special classes:
 To fit LimeSurvey specifities, two special cases has been added to make the code dryer:
 - A special case for defining question attributes (adding a class "attributes-to-update" to a custom-data)
-- A special case for BootstrapSwitches ( to manage its value and reload behaviour)
 
 ### Question attributes
 Instead of using a custom method for each set of question attributes to update (like setMultipleStatisticsOptions to set public_statistics, statistics_showgraph, statistics_graphtype), all question attribute editing can call the same method : questionEditor::changeMultipleQuestionAttributes()
 
 Then, in the modal form, the list of a attributes to set should not only have the class "custom-data" but also the class "attributes-to-update".
-See Questions massive actions for detailed example.
-
-### BootstrapSwitches
-Bootstrap switches are often used in forms. They needed to be reloaded when the grid is updated. This has been automatized in the widget.
-Also, Bootstrap switches always provides a boolean value {true, false}, whereas sometimes an integer {1,0} or a string {Y,N} can be necessary. Usually, the value is converted on the action side. But to preserver the unity and simplicity of questionEditor::changeMultipleQuestionAttributes, this can be done by the listActions.js script.
-To reload automatically the bootrstrap switches on grid reload, and/or convert its values, add to the switch one of the classes bootstrap-switch-boolean or bootstrap-switch-integer.
 See Questions massive actions for detailed example.
 
 

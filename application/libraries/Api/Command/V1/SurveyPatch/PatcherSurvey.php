@@ -16,6 +16,7 @@ use LimeSurvey\ObjectPatch\{
 };
 use Psr\Container\ContainerInterface;
 use LimeSurvey\Models\Services\SurveyDetailService;
+use Survey;
 
 class PatcherSurvey extends Patcher
 {
@@ -26,8 +27,8 @@ class PatcherSurvey extends Patcher
      * Constructor
      *
      * @param ContainerInterface $diContainer
-     * @param SurveyResponse $surveyResponse,
-     * @param SurveyDetailService $surveyDetailService
+     * @param SurveyResponse $surveyResponse
+     * * @param SurveyDetailService $surveyDetailService
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function __construct(
@@ -97,9 +98,10 @@ class PatcherSurvey extends Patcher
                     $this->surveyResponse->handleException($e, $op);
                 }
             }
-            $survey = $this->surveyDetailService->getSurveyFromEntityMap($entityMap);
+            $sid = \Yii::app()->getRequest()->getQuery('_id') ?? 0;
+            $survey = ($sid ? Survey::model()->findByPk($sid) : $this->surveyDetailService->getSurveyFromEntityMap($entityMap));
             if ($survey) {
-                $survey->lastmodified = date('Y-m-d H:i:s');
+                $survey->lastmodified = gmdate('Y-m-d H:i:s');
                 $survey->save();
                 $this->surveyDetailService->removeCache($survey->sid);
             }
