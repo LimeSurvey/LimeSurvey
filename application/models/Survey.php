@@ -950,6 +950,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
         if (!isset($aData['datecreated'])) {
             $aData['datecreated'] = date('Y-m-d H:i:s');
         }
+        if (!isset($aData['lastmodified'])) {
+            $aData['lastmodified'] = $aData['datecreated'];
+        }
         if (isset($aData['wishSID'])) {
             $aData['sid'] = $aData['wishSID'];
             unset($aData['wishSID']);

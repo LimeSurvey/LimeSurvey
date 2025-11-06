@@ -1203,55 +1203,33 @@ function finalizeSurveyImportFile($newsid, $baselang)
  */
 function getTableArchivesAndTimestamps(int $sid, string $baseTable = 'old_survey')
 {
-    switch (Yii::app()->db->getDriverName()) {
-        case 'mysqli':
-        case 'mysql':
-                return (array) Yii::app()->db->createCommand("
-                SELECT GROUP_CONCAT(t1.TABLE_NAME) AS tables, SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1) AS timestamp, MAX(t2.TABLE_ROWS) AS cnt
-                FROM information_schema.tables t1
-                JOIN information_schema.tables t2
-                ON t1.TABLE_SCHEMA = t2.TABLE_SCHEMA AND
-                   t2.TABLE_NAME LIKE CONCAT('%{$baseTable}_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
-                WHERE t1.TABLE_SCHEMA = DATABASE() AND
-                      t1.TABLE_NAME LIKE '%old%' AND
-                      t1.TABLE_NAME LIKE '%{$sid}%'
-                GROUP BY t1.TABLE_NAME, SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1)
-            ")->queryAll();
-        case 'pgsql':
-            polyfillSUBSTRING_INDEX(Yii::app()->db->getDriverName());
-            return (array) Yii::app()->db->createCommand("
-            SELECT array_to_string(array_agg(t1.TABLE_NAME), ',') AS tables, SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1) AS timestamp, replace((regexp_split_to_array(XMLSERIALIZE(DOCUMENT query_to_xml(format('select count(*) as cnt from %I', t2.table_name), false, true, '') as text), '>'::text))[3], '</cnt', '') AS cnt
-            FROM information_schema.tables t1
-            JOIN information_schema.tables t2
-            ON t1.TABLE_CATALOG = t2.TABLE_CATALOG AND
-               t2.TABLE_NAME LIKE CONCAT('%{$baseTable}_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
-            WHERE t1.TABLE_CATALOG = current_database() AND
-                  t1.TABLE_NAME LIKE '%old%' AND
-                  t1.TABLE_NAME LIKE '%{$sid}%'
-            GROUP BY SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1), t2.table_name;
-            ")->queryAll();
-        case 'mssql':
-        case 'sqlsrv':
-            return (array) Yii::app()->db->createCommand("
-                SELECT STRING_AGG(t1.TABLE_NAME, ',') AS tables, substring(t1.TABLE_NAME, len(t1.TABLE_NAME) - charindex('_', reverse(t1.TABLE_NAME)) + 2, 2000) AS timestamp,
-				(
-        		    SELECT TOP 1 p.rows
-			    	FROM sys.tables t
-	    			JOIN sys.partitions p
-    				ON p.object_id = t.object_id
-		    		WHERE t2.TABLE_NAME = t.[name]
-				) AS cnt
-                FROM information_schema.tables t1
-                JOIN information_schema.tables t2
-                ON t1.TABLE_CATALOG = t2.TABLE_CATALOG AND
-                   t2.TABLE_NAME LIKE CONCAT('%{$baseTable}_{$sid}_', substring(t1.TABLE_NAME, len(t1.TABLE_NAME) - charindex('_', reverse(t1.TABLE_NAME)) + 2, 2000))
-                WHERE t1.TABLE_CATALOG = db_name() AND
-                      t1.TABLE_NAME LIKE '%old%' AND
-                      t1.TABLE_NAME LIKE '%{$sid}%'
-                GROUP BY t2.TABLE_NAME, substring(t1.TABLE_NAME, len(t1.TABLE_NAME) - charindex('_', reverse(t1.TABLE_NAME)) + 2, 2000)
-            ")->queryAll();
-        default: return [];
+    $tables = dbGetTablesLike("%old%\_{$sid}\_%");
+    $result = [];
+
+    foreach ($tables as $table) {
+        $parts = explode("_", $table);
+        $timestamp = $parts[count($parts) - 1];
+        if (!isset($result[$timestamp])) {
+            $result[$timestamp] = [
+                'tables' => $table,
+                'timestamp' => $timestamp,
+                'cnt' => 0
+            ];
+        } else {
+            $result[$timestamp]['tables'] .= ",{$table}";
+        }
+        if (strpos($table, 'survey') !== false) {
+            $result[$timestamp]['cnt'] = (int) Yii::app()->db->createCommand("select count(*) as cnt from " . Yii::app()->db->quoteTableName($table))->queryScalar();
+        }
     }
+
+    $keys = array_keys($result);
+    asort($keys);
+    $finalResult = [];
+    foreach ($keys as $key) {
+        $finalResult []= $result[$key];
+    }
+    return $finalResult;
 }
 
 /**
