@@ -1205,6 +1205,7 @@ function getTableArchivesAndTimestamps(int $sid, string $baseTable = 'old_survey
 {
     $tables = dbGetTablesLike("%old%\_{$sid}\_%");
     $result = [];
+
     foreach ($tables as $table) {
         $parts = explode("_", $table);
         $timestamp = $parts[count($parts) - 1];
@@ -1221,6 +1222,7 @@ function getTableArchivesAndTimestamps(int $sid, string $baseTable = 'old_survey
             $result[$timestamp]['cnt'] = (int) Yii::app()->db->createCommand("select count(*) as cnt from " . Yii::app()->db->quoteTableName($table))->queryScalar();
         }
     }
+
     $keys = array_keys($result);
     asort($keys);
     $finalResult = [];

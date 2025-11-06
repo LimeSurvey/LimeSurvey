@@ -106,7 +106,8 @@ class SurveyResponses implements CommandInterface
             throw new TransformerException();
         }
 
-        $this->transformerOutputSurveyResponses->fieldMap = createFieldMap($this->survey);
+            $this->transformerOutputSurveyResponses->fieldMap =
+                createFieldMap($this->survey, 'full', false, false);
 
         $data = [];
         $data['responses'] = $this->transformerOutputSurveyResponses->transform(
