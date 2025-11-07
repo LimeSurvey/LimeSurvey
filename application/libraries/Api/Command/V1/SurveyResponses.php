@@ -5,6 +5,7 @@ namespace LimeSurvey\Libraries\Api\Command\V1;
 use CDbException;
 use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
+use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use Permission;
 use Survey;
 use Answer;
@@ -62,61 +63,73 @@ class SurveyResponses implements CommandInterface
     public function run(Request $request)
     {
         try {
-            $surveyId = $this->getSurveyId($request);
-            if (!$this->permission->hasSurveyPermission($surveyId, 'responses')) {
-                return $this->responseFactory
-                    ->makeErrorUnauthorised();
-            }
-
-            $this->getSurvey($request);
-            $model = $this->getSurveyDynamicModel($request);
-            [$criteria, $sort] = $this->buildCriteria($request);
-            $pagination = $this->buildPagination($request);
-                $dataProvider = new \LSCActiveDataProvider(
-                    $model,
-                    array(
-                        'sort' => $sort,
-                        'criteria' => $criteria,
-                        'pagination' => $pagination,
-                    )
-                );
-
-            try {
-                $surveyResponses = $dataProvider->getData();
-            } catch (CDbException $e) {
-                // Since questions keys are column, if there's an invalid key sent,
-                // an exception will be thrown which will result in an error 500.
-                throw new TransformerException();
-            }
-
-            $this->transformerOutputSurveyResponses->fieldMap =
-                createFieldMap($this->survey, 'short', false, false);
-
-            $data = [];
-            $data['responses'] = $this->transformerOutputSurveyResponses->transform(
-                $surveyResponses,
-                ['survey' => $this->survey]
-            );
-            $data['surveyQuestions'] = $this->getQuestionFieldMap();
-            $data['_meta'] = [
-                'pagination' => [
-                    'pageSize' => $pagination['pageSize'],
-                    'currentPage' => $pagination['currentPage'],
-                    'totalItems' => $dataProvider->getTotalItemCount(),
-                    'totalPages' => ceil(
-                        $dataProvider->getTotalItemCount()
-                        / ($pagination['pageSize'] ?? 1)
-                    )
-                ],
-                'filters' => $request->getData('filters', []),
-                'sort' => $request->getData('sort', []),
-            ];
-            $data = $this->mapResponsesToQuestions($data);
+            $data = $this->process($request);
 
             return $this->responseFactory->makeSuccess(['responses' => $data]);
         } catch (TransformerException $e) {
             return $this->responseFactory->makeError('Invalid key sent');
+        } catch (PermissionDeniedException $e) {
+            return $this->responseFactory->makeErrorUnauthorised();
         }
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     * @throws TransformerException
+     */
+    public function process(Request $request): array
+    {
+        $surveyId = $this->getSurveyId($request);
+        if (!$this->permission->hasSurveyPermission($surveyId, 'responses')) {
+            throw new PermissionDeniedException();
+        }
+
+        $this->getSurvey($request);
+        $model = $this->getSurveyDynamicModel($request);
+        [$criteria, $sort] = $this->buildCriteria($request);
+        $pagination = $this->buildPagination($request);
+        $dataProvider = new \LSCActiveDataProvider(
+            $model,
+            array(
+                'sort' => $sort,
+                'criteria' => $criteria,
+                'pagination' => $pagination,
+            )
+        );
+
+        try {
+            $surveyResponses = $dataProvider->getData();
+        } catch (CDbException $e) {
+            // Since questions keys are column, if there's an invalid key sent,
+            // an exception will be thrown which will result in an error 500.
+            throw new TransformerException();
+        }
+
+            $this->transformerOutputSurveyResponses->fieldMap =
+                createFieldMap($this->survey, 'full', false, false);
+
+        $data = [];
+        $data['responses'] = $this->transformerOutputSurveyResponses->transform(
+            $surveyResponses,
+            ['survey' => $this->survey]
+        );
+        $data['surveyQuestions'] = $this->getQuestionFieldMap();
+        $data['_meta'] = [
+            'pagination' => [
+                'pageSize' => $pagination['pageSize'],
+                'currentPage' => $pagination['currentPage'],
+                'totalItems' => $dataProvider->getTotalItemCount(),
+                'totalPages' => ceil(
+                    $dataProvider->getTotalItemCount()
+                    / ($pagination['pageSize'] ?? 1)
+                )
+            ],
+            'filters' => $request->getData('filters', []),
+            'sort' => $request->getData('sort', []),
+        ];
+
+        return $this->mapResponsesToQuestions($data);
     }
 
     /**
