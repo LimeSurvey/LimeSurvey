@@ -34,6 +34,18 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.15.22 (build 251103) to 6.15.23 (build 251110) November 10, 2025
+-Fixed issue: Public survey page not displaying correctly if survey group ID is missing (#4513) (lajosarpad)
+-Fixed issue: Failure on survey list if language setting is missing (lajosarpad)
+-Fixed issue: Automatic field mappings in Central participant management were not stored/remembered (Carsten Schmitz)
+-Fixed issue #20335: Translate PersistErrorException message in LanguageSettings.php (#4510) (Richard)
+#Updated translation: Slovak by jelen1
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.15.21 (build 251028) to 6.15.22 (build 251103) November 3, 2025
 -Fixed issue: Survey template cannot be imported (Carsten Schmitz)
 -Fixed issue #20136: Token attributes logic with anonymous survey (#4358) (Denis Chenu)
