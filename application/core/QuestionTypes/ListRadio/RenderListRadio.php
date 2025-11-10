@@ -112,23 +112,6 @@ class RenderListRadio extends QuestionBaseRenderer
         $sRows = "";
 
         foreach ($this->renderRowsArray() as $iterator => $sRow) {
-            // counter of number of row by column. Is reset to zero each time a column is full.
-            $this->iRowCount++;
-
-            ////
-            // Open Column
-            // The column is opened if user set more than one column in question attribute
-            // and if this is the first answer row, or if the column has been closed and the row count reset before.
-            if ($this->iRowCount == 1) {
-                $sRows  .= Yii::app()->twigRenderer->renderQuestion(
-                    $this->getMainView() . '/columns/column_header',
-                    array('iColumnWidth' => $this->iColumnWidth),
-                    true
-                );
-                $this->bColumnIsOpen  = true; // If a column is not closed, it will be closed at the end of the process
-            }
-
-            ////
             // Insert row
             $sRows .= $sRow;
         }
