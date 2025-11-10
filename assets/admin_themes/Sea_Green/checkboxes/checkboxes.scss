@@ -1,0 +1,6 @@
+input[type=checkbox]:checked:after,
+.checkbox input[type=checkbox]:checked:after,
+.checkbox-inline input[type=checkbox]:checked:after {
+  background-color: $black;
+  border-color: $black;
+}

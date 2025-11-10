@@ -34,6 +34,122 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.15.21 (build 251028) to 6.15.22 (build 251103) November 3, 2025
+-Fixed issue: Survey template cannot be imported (Carsten Schmitz)
+-Fixed issue #20136: Token attributes logic with anonymous survey (#4358) (Denis Chenu)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
+Changes from 6.15.20 (build 251021) to 6.15.21 (build 251028) October 28, 2025
+-Fixed issue: Unresponsive react (lajosarpad)
+-Fixed issue: DB version update not possible with self-registering plugins (Carsten Schmitz)
+-Fixed issue #20307: Translate 'Create new...' in LayoutHelper.php. (#4483) (Richard)
+-Fixed issue #20287: Fix Attribute category being shown in Question settings (#4470) (Richard)
+-Fixed issue #20276: Placeholder fields on email templates for invitations/reminder are not populated (Carsten Schmitz)
+-Fixed issue #20161: Stored Cross-Site Scripting (SXSS) in admin portal (#4356) (Gabriel Jenik)
+-Fixed issue #20114: queXML export doesn't replace EM placeholders (#4460) (Adam Zammit)
+-Fixed issue #20089: HTML shown in notification after creating a user through User management (#4362) (Denis Chenu)
+-Fixed issue #20068: [security] LDAP Injection Vulnerability in AuthLDAP (#4250) (Denis Chenu)
+-Fixed issue #20056: debug = 1 still send deprecated error (#4363) (Denis Chenu)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.15.19 (build 251017) to 6.15.20 (build 251021) October 21, 2025
+-Fixed issue: incorrect timezone survey (#4482) (lajosarpad)
+-Fixed issue #CT-458: Refactored SQL command builders (#4473) (lajosarpad)
+-Fixed issue #20310: Create survey from dashboard skips initial settings (#4490) (Tim Willig)
+-Fixed issue #20309: Multiple choice "Other" option has styling issues (#4488) (Denis Chenu)
+#Updated translation: Japanese by d_inoue
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han, twilllig
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.15.18 (build 251016) to 6.15.19 (build 251017) October 17, 2025
+-Fixed issue: Time stamp not always UTC (lajosarpad)
+-Fixed issue #20308: Update bug with Postgres (lajosarpad)
+-Fixed issue #20214: Create new survey skips initial settings (#4471) (Tim Willig)
+#Updated translation: Japanese by d_inoue
+
+
+Changes from 6.15.17 (build 251013) to 6.15.18 (build 251016) October 16, 2025
+-Fixed issue #LE-429: Refactor timestamp format (#4479) (Ahmed Abd El-Azeem)
+-Fixed issue #LE-429: Optimized survey detail (#4476) (lajosarpad)
+-Fixed issue #18211: List (Radio) questions columns not in one (ul) tag (#3038) (Denis Chenu)
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Bengali by rhythms
+#Updated translation: Afrikaans by Satyajeetchauhan
+
+
+Changes from 6.15.16 (build 251006) to 6.15.17 (build 251013) October 13, 2025
+-Fixed issue: provide event so additional global general settings can be rendered through plugins (Patrick Teichmann)
+-Fixed issue #CT-1443: Added support for exporting and importing question theme name with txt (#4472) (lajosarpad)
+-Fixed issue #AT-1727: Clean up answer records when question type changes (#4464) (lajosarpad)
+-Fixed issue #20264: Bounce processing cannot match encrypted participant email addresses (#4440) (Gabriel Jenik)
+#Updated translation: Welsh by ChrisWilliams
+#Updated translation: Russian by alexez, c_schmitz, kvolk2lim, s.gorbatov, twilllig, vipgroup, watslaw
+#Updated translation: Portuguese (Brazil) by holch, perrang
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han, twilllig
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Arabic by falsumairi, Shatha
+
+
+Changes from 6.15.15 (build 250929) to 6.15.16 (build 251006) October 6, 2025
+-Fixed issue: Email index missing in plugin event (Carsten Schmitz)
+-Fixed issue #LE-428: Fixed a performance issue when displaying condition fields (#4453) (lajosarpad)
+-Fixed issue #20277: Error when adding survey participant attributes to create (#4454) (Gabriel Jenik)
+-Fixed issue #20276: Placeholder fields on send invitation emails are not populated (#4456) (Gabriel Jenik)
+-Fixed issue #20274: Issue when printing survey with empty date question (#4451) (Denis Chenu)
+-Fixed issue #20260: Survey progress bar breaks on back button (#4457) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by c_schmitz, holch, samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.15.14 (build 250924) to 6.15.15 (build 250929) September 29, 2025
++New feature: When sending batches of emails, make the current email index/count available in the plugin event (Carsten Schmitz)
+-Fixed issue #LE-413: Implemented a fix for response importer to support fields with hashtag in their name (#4446) (lajosarpad)
+-Fixed issue #20144: Attribute descriptions in old serialized format were not converted to new format, causing empty attributes (#4329) (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+
+
+Changes from 6.15.13 (build 250923) to 6.15.14 (build 250924) September 23, 2025
+-Fixed issue: The CSRF token could not be verified (Carsten Schmitz)
+#Updated translation: Welsh by AlfNathan, c_schmitz, ChrisWilliams
+#Updated translation: Galician by Calidonia, Gronnd, oslcixug
+
+
+Changes from 6.15.12 (build 250916) to 6.15.13 (build 250923) September 23, 2025
+-Fixed issue: Question text too small in question summary (Carsten Schmitz)
+-Fixed issue: Question group text too small in summary (Carsten Schmitz)
+-Fixed issue: Question group name not shown properly in question summary (Carsten Schmitz)
+-Fixed issue: Breadcrumb text too small (Carsten Schmitz)
+-Fixed issue #20271: [security] Reflected XSS in CSRF token handling (#4449) (Gabriel Jenik)
+-Fixed issue #20256: Date question doesn't show AM/PM correctly (#4431) (Gabriel Jenik)
+
+
 Changes from 6.15.11 (build 250909) to 6.15.12 (build 250916) September 16, 2025
 -Fixed issue: Offered encodings for file imports don't properly work (Carsten Schmitz)
 -Fixed issue #AT-1745: Storing answers from new editor (#4433) (Tim Willig)

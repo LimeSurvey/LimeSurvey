@@ -139,6 +139,11 @@ class GlobalSettings extends SurveyCommonAction
         App()->loadHelper("admin.htmleditor");
         $data['scripts'] = PrepareEditorScript(false, $this->getController());
 
+        // event to attach general settings defined by the event beforeGlobalGeneralSettings
+        $beforeGlobalGeneralSettings = new PluginEvent('beforeGlobalGeneralSettings');
+        App()->getPluginManager()->dispatchEvent($beforeGlobalGeneralSettings);
+        $data['globalGeneralSettings'] = $beforeGlobalGeneralSettings->get('globalGeneralSettings') ?? [];
+
         // Get current setting from DB
         $data['thischaracterset'] = getGlobalSetting('characterset');
         $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
@@ -434,6 +439,10 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('timeadjust', $savetime);
         SettingGlobal::setSetting('usercontrolSameGroupPolicy', strip_tags(Yii::app()->getRequest()->getPost('usercontrolSameGroupPolicy', '')));
 
+        // event to attach general settings defined by the event beforeGlobalGeneralSettings
+        $beforeGlobalGeneralSettings = new PluginEvent('beforeGlobalGeneralSettings');
+        App()->getPluginManager()->dispatchEvent($beforeGlobalGeneralSettings);
+
         $request = App()->request;
         Yii::app()->formExtensionService->applySave('globalsettings', $request);
 
@@ -549,7 +558,6 @@ class GlobalSettings extends SurveyCommonAction
             $this->getController()->redirect($this->getController()->createUrl('dashboard/view'));
         }
 
-        Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
         Yii::app()->clientScript->registerPackage('globalsidepanel');
 
         $aData['aDateFormatDetails'] = getDateFormatData(Yii::app()->session['dateformat']);

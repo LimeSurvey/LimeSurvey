@@ -1,7 +1,7 @@
 <?php
 /**
  * This view generate the 'general' tab inside global settings.
- *
+ * @var array $globalGeneralSettings array of settings to be fetched from the beforeGlobalGeneralSettings event
  */
 
 use LimeSurvey\Libraries\FormExtension\FormExtensionWidget;
@@ -372,6 +372,26 @@ Full lock - none of participants are allowed to take survey, even if they alread
             </div>
         <?php endif; ?>
     </div>
+    <?php foreach ($globalGeneralSettings as $globalGeneralSetting): ?>
+        <?php if ($globalGeneralSetting['type'] === 'ButtonGroupWidget') : ?>
+            <div class="mb-3">
+                <label class="col-12 form-label" for='<?= $globalGeneralSetting['name'] ?>'>
+                    <?= $globalGeneralSetting['label'] ?>:
+                </label>
+                <div class="col-12">
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => $globalGeneralSetting['name'],
+                        'checkedOption' => $globalGeneralSetting['checkedOption'],
+                        'selectOptions' => $globalGeneralSetting['selectOptions'],
+                        'htmlOptions'   => $globalGeneralSetting['htmlOptions'] ?? [],
+                    ]); ?>
+                </div>
+                <div class="col-12 form-label">
+                    <span class="hint"><?= $globalGeneralSetting['description'] ?></span>
+                </div>
+            </div>
+        <?php endif; ?>
+    <?php endforeach; ?>
 
     <div class="ls-flex-column ls-space padding left-5 right-5 col-md-7">
         <?= FormExtensionWidget::render(

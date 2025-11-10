@@ -49,7 +49,8 @@ $rest['v1/survey'] = [
     ]
 ];
 
-$rest['v1/survey-detail/$id'] = [
+$rest['v1/survey-detail/$id'] =
+$rest['v1/survey-detail/$id/ts/$ts'] = [
     'GET' => [
         'tag' => 'survey',
         'description' => 'Survey detail',
@@ -147,28 +148,6 @@ $rest['v1/survey-template/$id'] = [
 ];
 
 $rest['v1/survey-archives/$id'] = [
-    'GET' => [
-        'tag' => 'survey',
-        'description' => 'Survey archives',
-        'commandClass' => SurveyArchive::class,
-        'auth' => true,
-        'responses' => [
-            'success' => [
-                'code' => 200,
-                'description' => 'Success',
-                'content' => null,
-                'schema' => (new SchemaFactorySurveyArchive())->make()
-            ],
-            'not-found' => [
-                'code' => 404,
-                'description' => 'Not Found',
-                'schema' => $errorSchema
-            ]
-        ]
-    ]
-];
-
-$rest['v1/survey-archives/$id/$basetable'] = [
     'GET' => [
         'tag' => 'survey',
         'description' => 'Survey archives',
