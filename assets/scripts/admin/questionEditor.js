@@ -179,6 +179,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
       return null;
     }
     if (!scriptEditorInstance || scriptEditorContainerElement !== container) {
+      // Clean up previous instance bound to another container to avoid leaks
+      if (scriptEditorInstance && scriptEditorContainerElement && scriptEditorContainerElement !== container) {
+        try {
+          scriptEditorInstance.destroy();
+          scriptEditorInstance.container = null;
+        } catch (e) {
+          // no-op
+        }
+      }
       scriptEditorInstance = ace.edit(container);
       scriptEditorContainerElement = container;
       scriptEditorInstance.session.setMode('ace/mode/javascript');
