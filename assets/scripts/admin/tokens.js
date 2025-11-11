@@ -48,6 +48,8 @@ Tokens = {
 
          // When user change date
          $elDate.addEventListener('change', function (e) {
+             // ignore Yii triggered event, runs only when the user actually changes the value
+             if (!e.isTrusted) return;
              $elHiddenInput.value = $elDate.value;
          });
      },
