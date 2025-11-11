@@ -927,7 +927,9 @@ class Update_639 extends DatabaseUpdateBase
         foreach ($fields as $field) {
             $original = $record->{$field};
             foreach ($replacements as $old => $new) {
-                $record->{$field} = str_replace($old, $new, $record->{$field});
+                if ($record->{$field}) {
+                    $record->{$field} = str_replace($old, $new, $record->{$field});
+                }
             }
             if ($original !== $record->{$field}) {
                 $changed = true;

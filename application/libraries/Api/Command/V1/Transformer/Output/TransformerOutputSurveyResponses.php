@@ -4,6 +4,8 @@ namespace LimeSurvey\Libraries\Api\Command\V1\Transformer\Output;
 
 use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
+use Survey;
+use SurveyDynamic;
 
 class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
 {
@@ -15,18 +17,22 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
     public function __construct()
     {
         $this->setDataMap([
-            'id' => ['type' => 'int'],
+            'id'            => ['type' => 'int'],
             'startlanguage' => ['key' => 'language', 'type' => 'string'],
-            'seed' => ['key' => 'seed'],
-            'lastpage' => ['key' => 'lastPage'],
-            'submitdate' => [
-                'key' => 'submitDate',
+            'seed'          => ['key' => 'seed'],
+            'lastpage'      => ['key' => 'lastPage'],
+            'submitdate'    => [
+                'key'       => 'submitDate',
                 'formatter' => ['dateTimeToJson' => true]
             ],
-            'startdate' => ['key' => 'startDate'],
-            'ipaddr' => ['key' => 'ipAddr'],
-            'refurl' => ['key' => 'refUrl'],
-            'datestamp' => ['key' => 'dateLastAction'],
+            'startdate'     => ['key' => 'startDate'],
+            'ipaddr'        => ['key' => 'ipAddr'],
+            'refurl'        => ['key' => 'refUrl'],
+            'datestamp'     => ['key' => 'dateLastAction'],
+            'token'         => ['key' => 'token'],
+            'firstname'     => ['key' => 'firstName'],
+            'lastname'      => ['key' => 'lastName'],
+            'email'         => ['key' => 'email'],
         ]);
     }
 
@@ -46,7 +52,7 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
         $responses = [];
         if ($data !== null) {
             foreach ($data as $surveyResponse) {
-                $responses[] = $this->transformerResponseItem($surveyResponse);
+                $responses[] = $this->transformerResponseItem($surveyResponse, $options ?? []);
             }
         }
 
@@ -58,37 +64,54 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
     /**
      * Transforms survey menu items and puts them into the main survey menus,
      * organized by their unique names.
-     * @param array $surveyResponse
+     * @param SurveyDynamic $surveyResponse
+     * @param array $options
      * @return array
+     * @throws TransformerException
      */
-    private function transformerResponseItem($surveyResponse): array
+    private function transformerResponseItem(SurveyDynamic $surveyResponse, array $options): array
     {
+        $surveyResponseAttributes = $surveyResponse->attributes;
         $responses = [];
-        foreach ($surveyResponse as $key => $value) {
+
+        foreach ($surveyResponseAttributes as $key => $value) {
             if (str_contains($key, 'X')) {
-                list($survey, $group, $question) = explode("X", $key);
+                [$survey, $group, $question] = explode("X", $key);
                 $responses[$key] = [
-                    "key" => $key,
-                    "id" => $question,
-                    "gid" => $group,
-                    "sid" => $survey,
+                    "key"   => $key,
+                    "id"    => $question,
+                    "gid"   => $group,
+                    "sid"   => $survey,
                     "value" => $value
                 ];
-            } elseif (str_starts_with($key, "Q") && !empty($this->fieldMap[$key])) {
+            } elseif (!empty($this->fieldMap[$key]) && str_starts_with($key, "Q")) {
                 $responses[$key] = [
-                    "key" => $key,
-                    "id" => $this->fieldMap[$key]['qid'],
-                    "gid" => $this->fieldMap[$key]['gid'],
-                    "sid" => $this->fieldMap[$key]['sid'],
+                    "key"   => $key,
+                    "id"    => $this->fieldMap[$key]['qid'],
+                    "gid"   => $this->fieldMap[$key]['gid'],
+                    "sid"   => $this->fieldMap[$key]['sid'],
                     "value" => $value
                 ];
             }
         }
 
-        $surveyResponse = parent::transform($surveyResponse);
-        $surveyResponse['completed'] = !empty($surveyResponse['submitDate']);
-        $surveyResponse['answers'] = $responses;
+        $surveyResponseArray = parent::transform($surveyResponse);
+        if (!empty($options['survey'])) {
+            /** @var Survey $survey */
+            $survey = $options['survey'];
+            $hasToken = $survey->anonymized === "N"
+                && tableExists('tokens_' . $survey->sid)
+                && isset($surveyResponse->tokens);
+            if ($hasToken) {
+                $surveyResponseArray['firstName'] = $surveyResponse->getFirstNameForGrid();
+                $surveyResponseArray['lastName'] = $surveyResponse->getLastNameForGrid();
+                $surveyResponseArray['email'] = $surveyResponse->getEmailForGrid();
+            }
+        }
 
-        return $surveyResponse;
+        $surveyResponseArray['completed'] = !empty($surveyResponseArray['submitDate']);
+        $surveyResponseArray['answers'] = $responses;
+
+        return $surveyResponseArray;
     }
 }
