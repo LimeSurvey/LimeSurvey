@@ -107,7 +107,7 @@
                             <button
                                 type="button"
                                 class="btn btn-outline-secondary btn-sm script-editor-fullscreen"
-                                data-target-field-id="<?= $scriptFieldId; ?>"
+                                data-target-field-id="<?= CHtml::encode($scriptFieldId); ?>"
                                 data-modal-title="<?= CHtml::encode($scriptModalTitle); ?>"
                             >
                                 <span class="ri-fullscreen-line"></span>

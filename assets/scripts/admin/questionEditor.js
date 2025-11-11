@@ -101,10 +101,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const latestElements = fetchScriptModalElements();
         const editor = ensureScriptEditorInstance(latestElements ? latestElements.editorContainer : null);
         if (editor) {
-          window.setTimeout(() => {
-            editor.resize(true);
-            editor.focus();
-          }, 0);
+          editor.resize(true);
+          editor.focus();
           if (scriptEditorResizeHandler) {
             window.removeEventListener('resize', scriptEditorResizeHandler);
           }
@@ -200,26 +198,26 @@ $(document).on('ready pjax:scriptcomplete', function () {
     event.preventDefault();
     const targetFieldId = $(this).attr('data-target-field-id') || $(this).data('targetFieldId');
     if (!targetFieldId) {
-      console.warn('Script editor: missing target field id on trigger.');
+      console.ls.warn('Script editor: missing target field id on trigger.');
       return;
     }
 
     const targetElement = document.getElementById(targetFieldId);
     if (!targetElement) {
-      console.warn(`Script editor: target field ${targetFieldId} not found.`);
+      console.ls.warn(`Script editor: target field ${targetFieldId} not found.`);
       return;
     }
 
     const modalElements = prepareScriptModal();
     if (!modalElements || typeof bootstrap === 'undefined') {
-      console.error('Script editor modal is not available.');
+      console.ls.error('Script editor modal is not available.');
       return;
     }
 
     const modal = bootstrap.Modal.getOrCreateInstance(modalElements.element);
     const editor = ensureScriptEditorInstance(modalElements.editorContainer);
     if (!modal || !editor) {
-      console.error('Script editor modal is not available.');
+      console.ls.error('Script editor modal is not available.');
       return;
     }
 
@@ -263,7 +261,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   try {
     languageJson = JSON.parse(unescape(value));
   } catch (e) {
-    console.error('Could not parse language JSON - not on question editor page?');
+    console.ls.error('Could not parse language JSON - not on question editor page?');
     return;
   }
 
@@ -273,7 +271,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   /** @type {number} */
   const sid = parseInt($('input[name=sid]').val());
   if (isNaN(sid)) {
-    console.error('No survey id found - not on question editor page?');
+    console.ls.error('No survey id found - not on question editor page?');
     return;
   }
 
@@ -616,7 +614,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const rowId = `#row_${languages[x]}_${info[2]}_${info[3]}`;
         const $tablerow = $(rowId);
         if ($tablerow.length === 0) {
-          console.error('info', info);
+          console.ls.error('info', info);
           alert('Internal error: Could not find row to delete with id ' + rowId);
           throw 'abort';
         }
@@ -911,7 +909,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       error(jqXHR, textStatus, errorThrown) {
         $('#labelsetpreview').empty();
         showLabelSetAlert(languageJson.labelSetFail, 'danger');
-        console.error(errorThrown);
+        console.ls.error(errorThrown);
       },
     });
   }
@@ -1005,7 +1003,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       },
       error(jqXHR, textStatus, errorThrown) {
         showLabelSetAlert(languageJson.labelSetFail, 'danger');
-        console.error(errorThrown);
+        console.ls.error(errorThrown);
       },
       complete() {
         $('#labelsetsLoader').hide();
@@ -1163,7 +1161,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
       updateRowProperties();
       $('#labelsetbrowserModal').modal('hide');
       $('#current_scale_id').remove();
-    }).catch(error => console.error(error));
+    }).catch((error) => {
+      console.ls.error(error);
+    });
   }
 
   /**
@@ -1906,7 +1906,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $('#ls-loading').hide();
         // TODO: How to show internal errors?
         // eslint-disable-next-line no-alert
-        console.error(ex);
+        console.ls.error(ex);
         alert(`Internal error in updateQuestionAttributes: ${ex}`);
       }
     },
@@ -2128,7 +2128,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
             CKEDITOR.instances[instanceName].updateElement();
           }
         } catch(e) {
-          console.error('Seems no CKEDITOR4 is loaded');
+          console.ls.error('Seems no CKEDITOR4 is loaded');
         }
 
         $('#edit-question-form').serializeArray().forEach((x /*: {name: string, value: string} */) => {
