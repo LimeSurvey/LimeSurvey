@@ -15,8 +15,7 @@ class CopyQuestionGroup
 
     /**
      * @param QuestionGroup $questionGroup
-     * @param string|null $newQuestionGroupCode if set to null, the survey id of the given group will be used
-     * @param int $surveyId
+     * @param int $surveyId  the new survey id
      */
     public function __construct($questionGroup, $surveyId)
     {
@@ -30,10 +29,12 @@ class CopyQuestionGroup
      * It is possible to copy the question group to a different survey
      * by setting the surveyId.
      *
+     * @param bool $adaptLinks if true, links in the question group description will be adapted to the new survey id.
+     *
      * @return QuestionGroup
      * @throws \Exception
      */
-    public function copyQuestionGroup()
+    public function copyQuestionGroup($adaptLinks)
     {
         //copy the group
         $newQuestionGroup = new QuestionGroup();
@@ -44,11 +45,19 @@ class CopyQuestionGroup
         if (!$newQuestionGroup->save()) {
             throw new \Exception('Failed to copy question group');
         } else {
-            //copy questiongroup languages
+            //copy question group languages
             $questionGroupLanguages = QuestionGroupL10n::model()->findAllByAttributes(['gid' => $this->questionGroup->gid]);
             foreach ($questionGroupLanguages as $questionGroupLanguage) {
                 $newQuestionGroupLanguage = new QuestionGroupL10n();
                 $newQuestionGroupLanguage->attributes = $questionGroupLanguage->attributes;
+                if ($adaptLinks) {
+                    $newQuestionGroupLanguage->description = translateLinks(
+                        'survey',
+                        $this->questionGroup->sid, //old survey id
+                        $this->surveyId, //new survey id
+                        $questionGroupLanguage->description
+                    );
+                }
                 $newQuestionGroupLanguage->gid = $newQuestionGroup->gid;
                 $newQuestionGroupLanguage->save();
             }

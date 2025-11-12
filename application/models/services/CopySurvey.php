@@ -67,6 +67,7 @@ class CopySurvey
         }
         $destinationSurvey = $this->getValidSurveyId($destinationSurvey);
         $destinationSurvey->active = 'N'; //don't activate the survey
+        $destinationSurvey->owner_id = Yii::app()->session['loginID'];
         $destinationSurvey->datecreated = date("Y-m-d H:i:s");
         if (!$destinationSurvey->save()) {
             throw new \Exception(gt("Failed to copy survey"));
@@ -137,11 +138,31 @@ class CopySurvey
         );
         $cntCopiedLanguageSettings = 0;
         foreach ($sourceLanguageSettings as $sourceLanguageSetting) {
-            $destinationLanguageSetting = new SurveyLanguageSetting();
-            $destinationLanguageSetting->attributes = $sourceLanguageSetting->attributes;
-            $destinationLanguageSetting->surveyls_survey_id = $destinationSurvey->sid;
-            $destinationLanguageSetting->surveyls_language = $sourceLanguageSetting->surveyls_language;
-            if ($destinationLanguageSetting->save()) {
+            $destLangSet = new SurveyLanguageSetting();
+            $destLangSet->attributes = $sourceLanguageSetting->attributes;
+            if ($this->options->isResourcesAndLinks()) {
+                $destLangSet->surveyls_description = translateLinks(
+                   'survey',
+                   $this->sourceSurvey->sid,
+                   $destinationSurvey->sid,
+                   $destLangSet->surveyls_description
+               );
+                $destLangSet->surveyls_welcometext = translateLinks(
+                    'survey',
+                    $this->sourceSurvey->sid,
+                    $destinationSurvey->sid,
+                    $destLangSet->surveyls_welcometext
+                );
+                $destLangSet->surveyls_endtext = translateLinks(
+                    'survey',
+                    $this->sourceSurvey->sid,
+                    $destinationSurvey->sid,
+                    $destLangSet->surveyls_welcometext
+                );
+            }
+            $destLangSet->surveyls_survey_id = $destinationSurvey->sid;
+            $destLangSet->surveyls_language = $sourceLanguageSetting->surveyls_language;
+            if ($destLangSet->save()) {
                 $cntCopiedLanguageSettings++;
             }
         }
@@ -163,7 +184,7 @@ class CopySurvey
         $cntCopiedQuestionGroups = 0;
         foreach ($questionGroups as $questionGroup) {
             $copyQuestionGroup = new CopyQuestionGroup($questionGroup, $destinationSurvey->sid);
-            $destinationQuestionGroup = $copyQuestionGroup->copyQuestionGroup();
+            $destinationQuestionGroup = $copyQuestionGroup->copyQuestionGroup($this->options->isResourcesAndLinks());
             $mappingQuestionGroupIds[$questionGroup->gid] = $destinationQuestionGroup->gid;
             $cntCopiedQuestionGroups++;
         }
