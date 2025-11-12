@@ -3,11 +3,16 @@
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
 use LimeSurvey\Api\Transformer\Transformer;
+use Template;
+use TemplateManifest;
 
 class TransformerInputThemeSettings extends Transformer
 {
-    public function __construct()
+    public function __construct($surveyId)
     {
+//        Template::model()->find()
+//
+//        TemplateManifest::getOptionAttributes($themePath);
         $this->setDataMap([
             'templateName' => [
                 'key' => 'templateName',
@@ -15,6 +20,7 @@ class TransformerInputThemeSettings extends Transformer
                 'required'
             ],
             'font' => true,
+            'fontcolor' => true,
             'cssframework' => true,
             'backgroundimagefile' => true,
             'brandlogofile' => true,
