@@ -956,9 +956,7 @@ class Update_639 extends DatabaseUpdateBase
         ];
         $scripts = [];
         $responsesTables = $this->db->createCommand($this->scriptMapping['responses'])->queryAll();
-        if (!count($responsesTables)) {
-            return; //the script already ran
-        }
+
         foreach ($responsesTables as $responsesTable) {
             if (((strpos($responsesTable['old_name'], "old_") === false) && (strpos($responsesTable['old_name'], "timing") === false))) {
                 $parts = explode("_", $responsesTable['old_name']);

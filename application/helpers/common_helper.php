@@ -1338,6 +1338,7 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
             case \Question::QT_M_MULTIPLE_CHOICE:
             case \Question::QT_N_NUMERICAL:
             case \Question::QT_O_LIST_WITH_COMMENT:
+            case \Question::QT_EXCLAMATION_LIST_DROPDOWN:
                 $currentQuestion = null;
                 $length = strlen("{$sid}X{$gid}X{$qid}");
                 $hashPos = strpos($fieldName, '#');
@@ -1423,7 +1424,6 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
             case \Question::QT_U_HUGE_FREE_TEXT:
             case \Question::QT_X_TEXT_DISPLAY:
             case \Question::QT_Y_YES_NO_RADIO:
-            case \Question::QT_EXCLAMATION_LIST_DROPDOWN:
             case \Question::QT_VERTICAL_FILE_UPLOAD:
             case \Question::QT_ASTERISK_EQUATION:
                 $isRoot = ((strpos($tableName, "timings") !== false) || (($questions[0]->parent_qid ?? 0) == "0"));
