@@ -114,9 +114,6 @@ abstract class LSYii_Controller extends CController
             }
         }
 
-        // The following function (when called) includes FireBug Lite if true
-        defined('FIREBUG') or define('FIREBUG', Yii::app()->getConfig('use_firebug_lite'));
-
         // 1% chance of cleaning up the temp directory of old files (older than 1 day)
         if (rand(1, 100) == 1) {
             cleanTempDirectory();

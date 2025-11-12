@@ -3126,19 +3126,6 @@ function cleanTwigCacheDirectory()
     }
 }
 
-
-/**
- * This function checks if Firebug is enabled and registers the Firebug Lite script if it is.
- *
- * @return void
- */
-function useFirebug()
-{
-    if (FIREBUG == true) {
-        App()->getClientScript()->registerScriptFile('http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js');
-    }
-}
-
 /**
 * This is a convenience function for the coversion of datetime values
 *
