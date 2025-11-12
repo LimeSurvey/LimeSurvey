@@ -474,17 +474,18 @@ class QuickTranslationController extends LSBaseController
                 }
             }
             $sOutput = implode(' ', $sparts);
-        } catch (GoogleTranslate\Exception\TranslateErrorException $ge) {
-            // Get the error message and remove the key
+        } catch (\Exception $ge) {
+            // Get the error message and remove the key for security reasons
+            $errorMessage = $ge->getMessage();
             if ($translateApiKey) {
-                $errorMessage = str_replace($translateApiKey, '*****', $ge->getMessage());
+                $errorMessage = str_replace($translateApiKey, '*****', $errorMessage);
             }
 
             // Use regex to extract the first "message": "..." pattern
             if (preg_match('/"message"\s*:\s*"([^"]+)"/', $errorMessage, $matches)) {
                 $errorMessageText = $matches[1];
             } else {
-                $errorMessageText = "No message found.";
+                $errorMessageText = $errorMessage;
             }
         }
 
