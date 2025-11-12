@@ -40,6 +40,7 @@ return array(
     'GuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),
     'GuzzleHttp\\Promise\\' => array($vendorDir . '/guzzlehttp/promises/src'),
     'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
+    'GoogleTranslate\\' => array($vendorDir . '/viniciusgava/google-translate-api/src'),
     'GoldSpecDigital\\ObjectOrientedOAS\\' => array($vendorDir . '/goldspecdigital/oooas/src'),
     'Doctrine\\Deprecations\\' => array($vendorDir . '/doctrine/deprecations/src'),
     'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/src'),
