@@ -1339,7 +1339,7 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
             case \Question::QT_N_NUMERICAL:
             case \Question::QT_O_LIST_WITH_COMMENT:
             case \Question::QT_EXCLAMATION_LIST_DROPDOWN:
-            $currentQuestion = null;
+                $currentQuestion = null;
                 $length = strlen("{$sid}X{$gid}X{$qid}");
                 $hashPos = strpos($fieldName, '#');
                 foreach ($questions as $question) {
