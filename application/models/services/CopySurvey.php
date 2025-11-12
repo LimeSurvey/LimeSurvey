@@ -195,6 +195,7 @@ class CopySurvey
         $cntCopiedQuestions = 0;
         foreach ($questions as $question) {
             $copyQuestionValues = new CopyQuestionValues();
+            $copyQuestionValues->setSourceSurveyId($this->sourceSurvey->sid);
             $copyQuestionValues->setQuestiontoCopy($question);
             $copyQuestionValues->setQuestionGroupId($mapping['questionGroupIds'][$question->gid]);
             $copyQuestionValues->setOSurvey($destinationSurvey);
@@ -208,12 +209,13 @@ class CopySurvey
                 $copyQuestionTextValues[$questionL10n->language] = new \LimeSurvey\Datavalueobjects\CopyQuestionTextValues($questionText, $questionHelp);
             }
             $copyQuestionValues->setQuestionL10nData($copyQuestionTextValues);
-            $copyQuestion = new CopyQuestion($copyQuestionValues);
             $optionsCopyQuestion['copySubquestions'] = true;
             $optionsCopyQuestion['copyAnswerOptions'] = $this->options->isAnswerOptions();
             $optionsCopyQuestion['copyDefaultAnswers'] = false; //we have to do it separately here (id-mapping)
             $optionsCopyQuestion['copySettings'] = true;
-            if ($copyQuestion->copyQuestion($optionsCopyQuestion, $destinationSurvey->sid)) {
+            $optionsCopyQuestion['adjustLinks'] = $this->options->isResourcesAndLinks();
+            $copyQuestion = new CopyQuestion($copyQuestionValues, $optionsCopyQuestion);
+            if ($copyQuestion->copyQuestion($destinationSurvey->sid)) {
                 $destinationQuestion = $copyQuestion->getNewCopiedQuestion();
                 //change sid and gip for the new question
                 $destinationQuestion->sid = $destinationSurvey->sid;
