@@ -145,7 +145,7 @@
                         "questionI10N[$lang][script]",
                         $question->questionl10ns[$lang]->script,
                         [
-                            'id' => $scriptFieldId,
+                            'id' => CHtml::encode($scriptFieldId),
                             'rows' => '10',
                             'cols' => '20',
                             'data-filetype' => 'javascript',
