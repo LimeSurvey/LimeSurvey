@@ -3120,10 +3120,9 @@ function cleanAssetCacheDirectory($minutes = 1)
  */
 function cleanTwigCacheDirectory()
 {
-    $twigDir = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'twig_cache' . DIRECTORY_SEPARATOR;
-    foreach (glob($twigDir . '/*') as $dir) {
-        // Check if the directory is older than the threshold and is a directory
-        CFileHelper::removeDirectory($dir);
+    $twigDir = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'twig_cache';
+    if (is_dir($twigDir)) {
+        CFileHelper::removeDirectory($twigDir);
     }
 }
 
