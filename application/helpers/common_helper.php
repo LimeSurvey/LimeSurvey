@@ -3086,13 +3086,58 @@ function cleanTempDirectory()
         }
     }
     closedir($dp);
+    cleanAssetCacheDirectory(60 * 24);
 }
 
+/**
+ * This function cleans the asset directory by removing directories that are older than a certain threshold.
+ *
+ * @return void
+ */
+function cleanAssetCacheDirectory($minutes = 1)
+{
+    // Define the path to the assets directory
+    $assetsPath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
+
+    // Define the threshold for removing directories (in this case, 60 seconds ago)
+    $threshold = time() - 60;
+
+    // Loop through all directories in the assets directory
+    foreach (glob($assetsPath . '/*') as $dir) {
+        // Check if the directory is older than the threshold and is a directory
+        if (is_dir($dir) && filemtime($dir) < $threshold) {
+            // Remove the directory if it meets the criteria
+            CFileHelper::removeDirectory($dir);
+        }
+    }
+}
+
+/**
+ * This function removes the Twig cache directory by looping through all directories
+ * within the Twig cache directory and removing each directory.
+ *
+ * @return void
+ */
+function cleanTwigCacheDirectory()
+{
+    $twigDir = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'twig_cache' . DIRECTORY_SEPARATOR;
+    foreach (glob($twigDir . '/*') as $dir) {
+        // Check if the directory is older than the threshold and is a directory
+        CFileHelper::removeDirectory($dir);
+    }
+}
+
+
+/**
+ * This function checks if Firebug is enabled and registers the Firebug Lite script if it is.
+ *
+ * @return void
+ */
 function useFirebug()
 {
     if (FIREBUG == true) {
         App()->getClientScript()->registerScriptFile('http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js');
-    };
+    }
 }
 
 /**
