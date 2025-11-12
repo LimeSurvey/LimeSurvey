@@ -4,6 +4,27 @@ use Anper\Iuliia\Iuliia;
 
 class QuickTranslationController extends LSBaseController
 {
+    // Define the language code mappings from LimeSurvey to Google Translate API
+    // where the codes are different
+    public $languageCodeMappings = array(
+        'de-informal' => 'de',
+        'de-easy' => 'de',
+        'es-MX' => 'es',
+        'hat' => 'ht',
+        'he' => 'iw',
+        'ie' => 'ga',
+        'it-formal' => 'it',
+        'mya' => 'my',
+        'nb' => 'no',
+        'nl-informal' => 'nl',
+        'nn' => 'no',
+        'prs' => 'fa',
+        'swh' => 'sw',
+        'zh-Hans' => 'zh-CN',
+        'zh-Hant-HK' => 'zh-TW',
+        'zh-Hant-TW' => 'zh-TW',
+    );
+
     /**
      * Here we have to use the correct layout (NOT main.php)
      *
@@ -424,39 +445,17 @@ class QuickTranslationController extends LSBaseController
      */
     private function translateGoogleApi()
     {
-        $sBaselang   = Yii::app()->getRequest()->getPost('baselang', '');
-        $sTolang     = Yii::app()->getRequest()->getPost('tolang', '');
+        $sourceLanguage   = Yii::app()->getRequest()->getPost('baselang', '');
+        $destinationLanguage     = Yii::app()->getRequest()->getPost('tolang', '');
         $sToconvert  = Yii::app()->getRequest()->getPost('text', '');
 
-        $replacements = array(
-            'zh-Hans' => 'zh-CN',
-            'zh-Hant-HK' => 'zh-TW',
-            'zh-Hant-TW' => 'zh-TW',
-            'nl-informal' => 'nl',
-            'de-informal' => 'de',
-            'de-easy' => 'de',
-            'it-formal' => 'it',
-            'pt-BR' => 'pt',
-            'es-MX' => 'es',
-            'nb' => 'no',
-            'nn' => 'no',
-            'hat' => 'ht',
-        );
-        $sBaselang = isset($replacements[$sBaselang]) ? $replacements[$sBaselang] : $sBaselang;
-        $sTolang = isset($replacements[$sTolang]) ? $replacements[$sTolang] : $sTolang;
-
-        $error = false;
-
+        $replacements = $this->languageCodeMappings;
+        $sourceLanguage = isset($replacements[$sourceLanguage]) ? $replacements[$sourceLanguage] : $sourceLanguage;
+        $destinationLanguage = isset($replacements[$destinationLanguage]) ? $replacements[$destinationLanguage] : $destinationLanguage;
+        $translateApiKey = App()->getConfig('googletranslateapikey');
         try {
-            require_once(APPPATH . '/../vendor/gtranslate-api/GTranslate.php');
-            $gtranslate = new Gtranslate();
+            $gtranslate = new \GoogleTranslate\Client($translateApiKey);
             // use curl because http with fopen is disabled
-            $gtranslate->setRequestType('curl');
-            $objGt = $gtranslate;
-
-            // Gtranslate requires you to run function named XXLANG_to_XXLANG
-            $sProcedure = $sBaselang . "_to_" . $sTolang;
-
             $parts = LimeExpressionManager::SplitStringOnExpressions($sToconvert);
 
             $sparts = array();
@@ -464,26 +463,35 @@ class QuickTranslationController extends LSBaseController
                 if ($part[2] == 'EXPRESSION') {
                     $sparts[] = $part[0];
                 } else {
-                    $convertedPart = (string) $objGt->$sProcedure($part[0]);
+                    $convertedPart = $gtranslate->translate($part[0], $destinationLanguage, $sourceLanguage);
+
                     $convertedPart  = str_replace("<br>", "\r\n", $convertedPart);
                     $convertedPart  = html_entity_decode(stripcslashes($convertedPart));
-                    if ($sTolang == 'sr-Latn') {
+                    if ($destinationLanguage == 'sr-Latn') {
                         $convertedPart = Iuliia::translate($convertedPart, Iuliia::TELEGRAM);
                     }
                     $sparts[] = $convertedPart;
                 }
             }
             $sOutput = implode(' ', $sparts);
-        } catch (GTranslateException $ge) {
-            // Get the error message and build the ouput array
-            $error = true;
-            $sOutput = $ge->getMessage();
+        } catch (GoogleTranslate\Exception\TranslateErrorException $ge) {
+            // Get the error message and remove the key
+            if ($translateApiKey) {
+                $errorMessage = str_replace($translateApiKey, '*****', $ge->getMessage());
+            }
+
+            // Use regex to extract the first "message": "..." pattern
+            if (preg_match('/"message"\s*:\s*"([^"]+)"/', $errorMessage, $matches)) {
+                $errorMessageText = $matches[1];
+            } else {
+                $errorMessageText = "No message found.";
+            }
         }
 
         $aOutput = array(
-            'error'     =>  $error,
-            'baselang'  =>  $sBaselang,
-            'tolang'    =>  $sTolang,
+            'error'     =>  $errorMessageText,
+            'baselang'  =>  $sourceLanguage,
+            'tolang'    =>  $destinationLanguage,
             'converted' =>  $sOutput
         );
 
