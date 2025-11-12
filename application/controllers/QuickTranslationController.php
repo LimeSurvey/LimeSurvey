@@ -463,6 +463,8 @@ class QuickTranslationController extends LSBaseController
         $sourceLanguage = isset($replacements[$sourceLanguage]) ? $replacements[$sourceLanguage] : $sourceLanguage;
         $destinationLanguage = isset($replacements[$destinationLanguage]) ? $replacements[$destinationLanguage] : $destinationLanguage;
         $translateApiKey = App()->getConfig('googletranslateapikey');
+        $errorMessageText = false;
+        $sOutput = '';
         try {
             $gtranslate = new \GoogleTranslate\Client($translateApiKey);
             // use curl because http with fopen is disabled
