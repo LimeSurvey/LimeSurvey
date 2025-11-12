@@ -71,7 +71,7 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
      */
     private function fetchStatisticsOverview(): array
     {
-        $tableName = '{{survey_' . $this->surveyId . '}}';
+        $tableName = '{{responses_' . $this->surveyId . '}}';
 
         // Validate table exists and get schema
         $tableSchema = Yii::app()->db->schema->getTable($tableName);

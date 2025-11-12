@@ -379,7 +379,7 @@ function submittokens($quotaexit = false)
     }
     $clienttoken = $_SESSION['responses_' . $surveyid]['token'] ?? '';
 
-    $tokenused = ($_SESSION['survey_' . $surveyid]['tokenused'] ?? false);
+    $tokenused = ($_SESSION['responses_' . $surveyid]['tokenused'] ?? false);
 
     if (($clienttoken === '') && (!$tokenused) && ($thissurvey['access_mode'] !== SurveyAccessModeService::$ACCESS_TYPE_CLOSED)) {
         return; //optional

@@ -109,7 +109,7 @@ class DualScaleProcessor extends AbstractQuestionProcessor
         }
 
         $where = '';
-        $sql = 'SELECT ' . implode(",\n  ", $selects) . "\nFROM {{survey_{$this->surveyId}}}{$where}";
+        $sql = 'SELECT ' . implode(",\n  ", $selects) . "\nFROM {{responses_{$this->surveyId}}}{$where}";
 
         return [$sql, $aliasMap];
     }
