@@ -3100,7 +3100,7 @@ function cleanAssetCacheDirectory($minutes = 1)
     $assetsPath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
 
     // Define the threshold for removing directories (in this case, 60 seconds ago)
-    $threshold = time() - 60;
+    $threshold = time() - (60 * $minutes);
 
     // Loop through all directories in the assets directory
     foreach (glob($assetsPath . '/*') as $dir) {
