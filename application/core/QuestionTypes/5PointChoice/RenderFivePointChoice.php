@@ -29,6 +29,7 @@ class RenderFivePointChoice extends QuestionBaseRenderer
     public function getRows()
     {
         $aRows = [];
+        $sessionValue = $this->mSessionValue;
         for ($fp = 1; $fp <= 5; $fp++) {
             $aRows[] = array(
                 'name'                   => $this->sSGQA,
@@ -49,7 +50,7 @@ class RenderFivePointChoice extends QuestionBaseRenderer
                 'id'                     => $this->sSGQA,
                 'labelText'              => gT('No answer'),
                 'itemExtraClass'         => 'noanswer-item',
-                'checkedState'           => '',
+                'checkedState'           => $this->getIsNoAnswerChecked() ? ' CHECKED ' : '',
                 'checkconditionFunction' => $this->checkconditionFunction,
             );
         }

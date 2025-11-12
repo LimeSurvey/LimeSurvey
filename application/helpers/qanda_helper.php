@@ -2522,7 +2522,7 @@ function do_yesno($ia)
     if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         $noAnswer = true;
         if (empty($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]])) {
-            $naChecked = CHECKED;
+            $naChecked = getIsNoAnswerChecked($ia[1]) ? CHECKED : '';
         }
     }
 
@@ -2565,9 +2565,7 @@ function do_gender($ia)
     $displayType            = (int) $aQuestionAttributes['display_type'];
     if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         $noAnswer = true;
-        if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == '') {
-            $naChecked = CHECKED;
-        }
+        $naChecked = getIsNoAnswerChecked($ia[1]) ? CHECKED : '';
     }
 
     $noAnswer = $noAnswer ?? false;
@@ -2770,14 +2768,13 @@ function do_array_5point($ia)
 
         // ==>tds
         if (($isNotYes && $isNotS) && $showNoAnswer) {
-            $CHECKED = (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
             $answer_tds .= doRender('/survey/questions/answer/arrays/5point/rows/cells/answer_td_input', array(
                 'i' => "",
                 'labelText' => gT('No answer'),
                 'myfname' => $myfname,
                 'basename' => $ia[1],
                 'code' => '',
-                'CHECKED' => $CHECKED,
+                'CHECKED' => getIsNoAnswerChecked($myfname) ? CHECKED : '',
                 'checkconditionFunction' => $checkconditionFunction,
                 'value' => '',
                 ), true);
@@ -2941,7 +2938,6 @@ function do_array_10point($ia)
         }
 
         if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1) {
-            $CHECKED = (!isset($_SESSION['survey_' . $iSurveyId][$myfname]) || $_SESSION['survey_' . $iSurveyId][$myfname] == '') ? 'CHECKED' : '';
             $answer_tds .= doRender(
                 '/survey/questions/answer/arrays/10point/rows/cells/answer_td_input',
                 array(
@@ -2950,7 +2946,7 @@ function do_array_10point($ia)
                     'myfname' => $myfname,
                     'basename' => $ia[1],
                     'code' => '',
-                    'CHECKED' => $CHECKED,
+                    'CHECKED' => getIsNoAnswerChecked($myfname) ? CHECKED : '',
                     'value' => '',
                 ),
                 true
@@ -3062,7 +3058,7 @@ function do_array_yesnouncertain($ia)
             $Ychecked  = (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == 'Y') ? 'CHECKED' : '';
             $Uchecked  = (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == 'U') ? 'CHECKED' : '';
             $Nchecked  = (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == 'N') ? 'CHECKED' : '';
-            $NAchecked = (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
+            $NAchecked = getIsNoAnswerChecked($myfname) ? 'CHECKED' : '';;
 
             $sRows .= doRender('/survey/questions/answer/arrays/yesnouncertain/rows/answer_row', array(
                 'basename'               => $ia[1],
@@ -3165,7 +3161,7 @@ function do_array_increasesamedecrease($ia)
         $Ichecked       = (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == 'I') ? 'CHECKED' : '';
         $Schecked       = (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == 'S') ? 'CHECKED' : '';
         $Dchecked       = (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == 'D') ? 'CHECKED' : '';
-        $NAchecked      = (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
+        $NAchecked      = getIsNoAnswerChecked($myfname) ? 'CHECKED' : '';
         $no_answer      = (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) ? true : false;
 
         $sRows .= doRender('/survey/questions/answer/arrays/increasesamedecrease/rows/answer_row', array(
@@ -4390,7 +4386,6 @@ function do_arraycolumns($ia)
             $aData['labels'] = $labels;
             $aData['checkconditionFunction'] = $checkconditionFunction;
 
-            // TODO: What is this? What is happening here?
             foreach ($labels as $labelIdx => $ansrow) {
 
                 // create the html ids for the table rows, which are
@@ -4407,13 +4402,11 @@ function do_arraycolumns($ia)
                     ) {
                         $aData['checked'][$ansrow['code']][$ld] = CHECKED;
                     } elseif (
-                        !isset($_SESSION['survey_' . App()->getConfig('surveyID')][$myfname]) &&
+                        // no answer
+                        getIsNoAnswerChecked($myfname) &&
                         $ansrow['code'] == ''
                     ) {
                         $aData['checked'][$ansrow['code']][$ld] = CHECKED;
-                    // Humm.. (by lemeur), not sure this section can be reached
-                        // because I think $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] is always set (by save.php ??) !
-                        // should remove the !isset part I think !!
                     } else {
                         $aData['checked'][$ansrow['code']][$ld] = "";
                     }
@@ -4932,6 +4925,27 @@ function fillDate($dateString)
         default:
             return '';
     }
+}
+
+/**
+ * Check whether the "No Answer" option is selected for a given survey question.
+ *
+ * This function looks up the current survey session data
+ * and checks whether the given SGQA identifier code
+ * has a non-null value, indicating that the "No Answer" option has been checked.
+ *
+ * @param string $sSGQA The SGQA identifier of the question to check.
+ *
+ * @return bool True if the "No Answer" option is checked (non-null value found), false otherwise.
+ */
+function getIsNoAnswerChecked($sSGQA)
+{
+    $checked = false;
+    $surveySessionArray = @$_SESSION['survey_' . App()->getConfig('surveyID')];
+    if (array_key_exists($sSGQA, $surveySessionArray)) {
+        $checked = $surveySessionArray[$sSGQA] !== null;
+    }
+    return $checked;
 }
 
 /**

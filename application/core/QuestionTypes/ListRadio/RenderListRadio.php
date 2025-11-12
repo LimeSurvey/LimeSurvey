@@ -122,7 +122,7 @@ class RenderListRadio extends QuestionBaseRenderer
     {
         return Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/answer_row_noanswer', array(
             'name' => $this->sSGQA,
-            'check_ans' => '',
+            'check_ans' => $this->getIsNoAnswerChecked() ? CHECKED : '',
             'checkconditionFunction' => $this->checkconditionFunction,
             'iNbCols' => $this->iNbCols,
             'iCountAnswers' => $this->iCountAnswers,
