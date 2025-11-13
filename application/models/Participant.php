@@ -1479,15 +1479,19 @@ class Participant extends LSActiveRecord
      */
     private function updateTokenFieldProperties($surveyId, array $mappedAttributes)
     {
+        $tokenAttributes = Survey::model()->findByPk($surveyId)->tokenattributes;
+        $attributesChanged = false;
         foreach ($mappedAttributes as $key => $iIDAttributeCPDB) {
             if (is_numeric($iIDAttributeCPDB)) {
                 /* Update the attribute descriptions info */
-                $tokenAttributes = Survey::model()->findByPk($surveyId)->tokenattributes;
                 $tokenAttributes[$key]['cpdbmap'] = $iIDAttributeCPDB;
+                $attributesChanged = true;
+            }
+        }
+        if ($attributesChanged) {
                 Yii::app()->db
                     ->createCommand()
                     ->update('{{surveys}}', array("attributedescriptions" => json_encode($tokenAttributes)), 'sid = ' . $surveyId);
-            }
         }
     }
 

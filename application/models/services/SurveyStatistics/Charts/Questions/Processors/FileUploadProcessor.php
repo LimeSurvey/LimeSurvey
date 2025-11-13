@@ -57,7 +57,7 @@ class FileUploadProcessor extends AbstractQuestionProcessor
     {
         $sql = "SELECT SUM(" . Yii::app()->db->quoteColumnName($this->rt . '_filecount') . ") as sum,
                 AVG(" . Yii::app()->db->quoteColumnName($this->rt . '_filecount') . ") as avg 
-             FROM {{survey_{$this->surveyId}}}";
+             FROM {{responses_{$this->surveyId}}}";
 
         $row = Yii::app()->db->createCommand($sql)->queryRow();
 
@@ -69,7 +69,7 @@ class FileUploadProcessor extends AbstractQuestionProcessor
 
     protected function getFileStats(): array
     {
-        $sql = "SELECT " . Yii::app()->db->quoteColumnName($this->rt) . " as json FROM {{survey_{$this->surveyId}}}";
+        $sql = "SELECT " . Yii::app()->db->quoteColumnName($this->rt) . " as json FROM {{responses_{$this->surveyId}}}";
 
         $rows = Yii::app()->db->createCommand($sql)->queryAll();
 
