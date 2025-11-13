@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-11-11 23:16:56+00:00\n"
+"POT-Creation-Date: 2025-11-13 17:46:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -240,7 +240,7 @@ msgstr ""
 #: application/controllers/QuestionGroupsAdministrationController.php:242
 #: application/controllers/QuestionGroupsAdministrationController.php:314
 #: application/controllers/QuestionGroupsAdministrationController.php:351
-#: application/controllers/QuickTranslationController.php:102
+#: application/controllers/QuickTranslationController.php:133
 #: application/controllers/QuotasController.php:88
 #: application/controllers/QuotasController.php:163
 #: application/controllers/QuotasController.php:223
@@ -1395,11 +1395,11 @@ msgstr ""
 msgid "Base language"
 msgstr ""
 
-#: application/controllers/QuickTranslationController.php:55
+#: application/controllers/QuickTranslationController.php:86
 msgid "Invalid language"
 msgstr ""
 
-#: application/controllers/QuickTranslationController.php:91
+#: application/controllers/QuickTranslationController.php:122
 msgid "Saved"
 msgstr ""
 
@@ -4049,8 +4049,8 @@ msgid "Logout successful."
 msgstr ""
 
 #: application/controllers/admin/Authentication.php:300
-#: application/models/services/PasswordManagement.php:183
-#: application/models/services/PasswordManagement.php:188
+#: application/models/services/PasswordManagement.php:182
+#: application/models/services/PasswordManagement.php:187
 msgid "If the username and email address is valid a password reminder email has been sent to you. This email can only be requested once in %d minutes."
 msgstr ""
 
@@ -6539,6 +6539,7 @@ msgid "An error occurred when saving the sent date for this participant (ID: %s)
 msgstr ""
 
 #: application/controllers/admin/Tokens.php:1705
+#: application/views/quickTranslation/translateformheader_view.php:22
 msgid "Error message: %s"
 msgstr ""
 
@@ -17926,38 +17927,42 @@ msgid "An email with a generated link was sent to the user."
 msgstr ""
 
 #: application/models/services/PasswordManagement.php:157
-msgid "User data"
+msgid "Request to reset your password"
 msgstr ""
 
 #: application/models/services/PasswordManagement.php:167
 msgid "Username: %s"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:173
-msgid "Click here to set your password: "
+#: application/models/services/PasswordManagement.php:174
+msgid "You have requested to reset the password for your account."
 msgstr ""
 
 #: application/models/services/PasswordManagement.php:175
-msgid "Your link to reset password %s"
+msgid "To complete this process, please click on the following link: %s"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:185
+#: application/models/services/PasswordManagement.php:176
+msgid "If you did not request to reset your password, please ignore this email."
+msgstr ""
+
+#: application/models/services/PasswordManagement.php:184
 msgid "Email failed"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:225
+#: application/models/services/PasswordManagement.php:224
 msgid "Your login credentials have been reset"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:269
+#: application/models/services/PasswordManagement.php:268
 msgid "Hello %s,"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:271
+#: application/models/services/PasswordManagement.php:270
 msgid "This is an automated email to notify you that your login credentials for '%s' have been reset."
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:276
+#: application/models/services/PasswordManagement.php:275
 msgid "Here are your new credentials."
 msgstr ""
 
@@ -18054,7 +18059,7 @@ msgid "Survey language could not be created."
 msgstr ""
 
 #: application/models/services/SurveyAggregateService/LanguageSettings.php:136
-msgid "Failed saving language settings for survey #%s and language \"%s\""
+msgid "Failed saving language settings for survey ID %s and language \"%s\""
 msgstr ""
 
 #: application/models/services/SurveyCondition.php:278
@@ -25462,10 +25467,6 @@ msgstr ""
 
 #: application/views/quickTranslation/translateformheader_view.php:21
 msgid "There was an error using the Google API."
-msgstr ""
-
-#: application/views/quickTranslation/translateformheader_view.php:22
-msgid "Detailed Error"
 msgstr ""
 
 #: application/views/quickTranslation/translatetabs_view.php:21
