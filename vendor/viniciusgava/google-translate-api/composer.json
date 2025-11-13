@@ -1,0 +1,32 @@
+{
+    "name": "viniciusgava/google-translate-api",
+    "description": "Google translate API V2 client for PHP",
+    "license": "MIT",
+    "homepage": "https://github.com/viniciusgava/google-translate-php-client",
+    "keywords": ["google", "translate", "client", "adapter"],
+    "authors": [
+        {
+            "name": "Vinicius Gava",
+            "email": "gava.vinicius@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "GoogleTranslate\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "GoogleTranslate\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=7.2",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "*",
+        "phpunit/phpunit": "^8"
+    }
+}

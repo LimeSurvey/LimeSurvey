@@ -145,7 +145,7 @@ jobs:
           export MOZ_HEADLESS_WIDTH=1280
           export MOZ_HEADLESS_HEIGHT=1024
           java -jar selenium-server-standalone-3.9.1.jar &
-          sleep 1
+          timeout 10 bash -c 'until curl -s http://localhost:4444/wd/hub/status | grep -q "\"ready\":true"; do sleep 1; done' || { echo "Selenium failed to start within 10 seconds"; exit 1; }
 
       - name: Run functional tests
         env:

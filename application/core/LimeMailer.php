@@ -51,6 +51,9 @@ class LimeMailer extends PHPMailer
     /* @var string[] Array for barebone url and url */
     public $aUrlsPlaceholders = [];
 
+    /* @var integer $index Index of current email related to batch sending - starts from 0*/
+    public $index = 0;
+
     /*  @var string[] Array of replacements key was replaced by value */
     public $aReplacements = [];
 
@@ -518,13 +521,13 @@ class LimeMailer extends PHPMailer
             'survey' => $this->surveyId,
             'type' => $this->emailType,
             'model' => $model,
-            // This send array of array, different behaviour than in 3.X where it send array of string (Name <email>)
+            'index' => $this->index,
             'to' => $this->to,
             'subject' => $this->Subject,
             'body' => $this->Body,
             'from' => $this->getFrom(),
             'bounce' => $this->Sender,
-            /* plugin can update itself some value, then allowing to disable update by default event */
+            /* A plugin can update some value, then allowing to disable update by default event */
             /* PS : plugin MUST use $this->get('mailer') for better compatibility for each plugin …*/
             'updateDisable' => array(),
         );
@@ -587,7 +590,7 @@ class LimeMailer extends PHPMailer
 
     /**
      * Construct and do what must be done before sending a message
-     * @return boolean
+     * @return boolean True if sending was successful, false otherwise.
      */
     public function sendMessage()
     {

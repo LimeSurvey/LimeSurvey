@@ -1470,26 +1470,28 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Update stuff?
-     * If automapping is enabled then update the token field properties with the mapped CPDB field ID
-     * TODO: What is this?
+     * Updates the token attribute properties of a survey to include the mapping to Central Participant Database (CPDB) attributes.
+     * If automapping is enabled, this function updates the token field properties with the mapped CPDB field ID.
      *
-     * @param int $surveyId
-     * @param array $mappedAttributes
-     * @param integer $surveyId
+     * @param int   $surveyId         The ID of the survey.
+     * @param array $mappedAttributes An associative array where keys are token attribute field names and values are the corresponding CPDB attribute IDs.
      * @return void
      */
     private function updateTokenFieldProperties($surveyId, array $mappedAttributes)
     {
+        $tokenAttributes = Survey::model()->findByPk($surveyId)->tokenattributes;
+        $attributesChanged = false;
         foreach ($mappedAttributes as $key => $iIDAttributeCPDB) {
             if (is_numeric($iIDAttributeCPDB)) {
                 /* Update the attribute descriptions info */
-                $tokenAttributes = Survey::model()->findByPk($surveyId)->tokenattributes;
                 $tokenAttributes[$key]['cpdbmap'] = $iIDAttributeCPDB;
+                $attributesChanged = true;
+            }
+        }
+        if ($attributesChanged) {
                 Yii::app()->db
                     ->createCommand()
                     ->update('{{surveys}}', array("attributedescriptions" => json_encode($tokenAttributes)), 'sid = ' . $surveyId);
-            }
         }
     }
 
@@ -1598,7 +1600,7 @@ class Participant extends LSActiveRecord
             $aTokenAttributes[$key] = $iIDAttributeCPDB;
         }
 
-        $aTokenAttributes = serialize($aTokenAttributes);
+        $aTokenAttributes = json_encode($aTokenAttributes);
 
         Yii::app()->db
             ->createCommand()
@@ -1610,6 +1612,7 @@ class Participant extends LSActiveRecord
             addColumn("{{tokens_$surveyId}}", $key, $value['type']);
         }
         Yii::app()->db->schema->getTable("{{tokens_$surveyId}}", true); // Refresh schema cache just
+        Token::model($surveyId)->refreshMetaData(); // Refresh model meta data
 
         return array($addedAttributes, $addedAttributeIds);
     }

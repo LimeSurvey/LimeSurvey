@@ -15,23 +15,29 @@ use LimeSurvey\ObjectPatch\{
     Patcher
 };
 use Psr\Container\ContainerInterface;
+use LimeSurvey\Models\Services\SurveyDetailService;
+use Survey;
 
 class PatcherSurvey extends Patcher
 {
     protected SurveyResponse $surveyResponse;
+    protected SurveyDetailService $surveyDetailService;
 
     /**
      * Constructor
      *
      * @param ContainerInterface $diContainer
      * @param SurveyResponse $surveyResponse
+     * * @param SurveyDetailService $surveyDetailService
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function __construct(
         ContainerInterface $diContainer,
-        SurveyResponse $surveyResponse
+        SurveyResponse $surveyResponse,
+        SurveyDetailService $surveyDetailService
     ) {
         $this->surveyResponse = $surveyResponse;
+        $this->surveyDetailService = $surveyDetailService;
         $classes = [
             OpHandlerSurveyUpdate::class,
             OpHandlerLanguageSettingsUpdate::class,
@@ -75,6 +81,7 @@ class PatcherSurvey extends Patcher
     public function applyPatch($patch, $context = []): array
     {
         if (is_array($patch) && !empty($patch)) {
+            $entityMap = [];
             foreach ($patch as $patchOpData) {
                 $op = OpStandard::factory(
                     $patchOpData['entity'] ?? '',
@@ -86,9 +93,17 @@ class PatcherSurvey extends Patcher
                 try {
                     $response = $this->handleOp($op);
                     $this->surveyResponse->handleResponse($response);
+                    $entityMap[$patchOpData['entity']] = $patchOpData['id'] ?? null;
                 } catch (\Exception $e) {
                     $this->surveyResponse->handleException($e, $op);
                 }
+            }
+            $sid = \Yii::app()->getRequest()->getQuery('_id') ?? 0;
+            $survey = ($sid ? Survey::model()->findByPk($sid) : $this->surveyDetailService->getSurveyFromEntityMap($entityMap));
+            if ($survey) {
+                $survey->lastmodified = gmdate('Y-m-d H:i:s');
+                $survey->save();
+                $this->surveyDetailService->removeCache($survey->sid);
             }
         }
         return $this->surveyResponse->buildResponseObject();

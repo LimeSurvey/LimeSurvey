@@ -3,9 +3,9 @@
 <config>
     <!-- Metadata -->
     <metadata>
-        <name>listradio</name>
+        <name>questiontheme_example</name>
         <type>question_theme</type>
-        <title>List (Radio)</title>
+        <title>Custom List (Radio)</title>
         <creationDate>09/08/2018</creationDate>
         <author>LimeSurvey GmbH</author>
         <authorEmail>info@limesurvey.org</authorEmail>
@@ -14,7 +14,7 @@
         <license>GNU General Public License version 2 or later</license>
         <version>1.0</version>
         <apiVersion>1</apiVersion>
-        <description>List (radio) question type configuration</description>
+        <description>Custom List (radio) question type configuration - Shows option values along with the option text</description>
         <questionType>L</questionType>
         <group>Single choice questions</group>
         <subquestions>0</subquestions>
@@ -25,8 +25,7 @@
     </metadata>
 
     <compatibility>
-        <version>4.0</version>
-        <version>5.0</version>
+        <version>6.0</version>
     </compatibility>
 
     <!--
