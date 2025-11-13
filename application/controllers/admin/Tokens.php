@@ -288,7 +288,7 @@ class Tokens extends SurveyCommonAction
 
                                     if (!empty($record) && $record->emailstatus != 'bounced') {
                                         $record->emailstatus = 'bounced';
-                                        $record->save();
+                                        $record->save(true, ['emailstatus']);
                                         $bouncetotal++;
                                     }
 
@@ -2369,6 +2369,8 @@ class Tokens extends SurveyCommonAction
                             $aParams = array();
                             $oCriteria = new CDbCriteria();
                             $oCriteria->condition = "";
+
+                            // @todo If a field is encrypted, then the condition value also needs to be encrypted before comparison
                             foreach ($aFilterDuplicateFields as $field) {
                                 if (isset($aWriteArray[$field])) {
                                     $oCriteria->addCondition("{$field} = :{$field}");

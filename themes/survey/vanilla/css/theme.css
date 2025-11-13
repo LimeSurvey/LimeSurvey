@@ -237,12 +237,6 @@ body {
     margin: 0 auto;
 }
 
-.radio-list li {
-    display: block;
-    clear: both;
-    margin-right: 3rem;
-}
-
 .question-item .other-label {
     margin: 0px;
     padding: 0px;

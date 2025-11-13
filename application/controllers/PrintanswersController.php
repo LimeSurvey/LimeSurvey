@@ -195,7 +195,7 @@ class PrintanswersController extends LSYii_Controller
 
             Yii::app()->loadHelper('export');
 
-            $quexml = quexml_export($iSurveyID, $sLanguage, $sSRID);
+            $quexml = quexml_export($iSurveyID, $sLanguage, $sSRID, true);
 
             $quexmlpdf->create($quexmlpdf->createqueXML($quexml));
 

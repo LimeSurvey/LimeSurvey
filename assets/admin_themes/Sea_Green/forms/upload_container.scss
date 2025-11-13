@@ -1,0 +1,37 @@
+.upload-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed;
+  border-color: $g-400;
+  border-radius: $border-radius;
+  background-color: $white;
+  height: 150px;           /* Set a height so vertical centering is visible */
+  cursor: pointer;
+  transition: border-color 0.3s;
+  text-align: center;
+}
+
+.upload-label:hover {
+  border-color: $g-600; /* Gray-600 */
+}
+
+.upload-text {
+  color: $g-900;
+  font-weight: $font-weight-normal;
+}
+
+.upload-input {
+  visibility: hidden;
+  margin: 0;
+  padding: 0 !important;
+  width: 0;
+  height: 0;
+}
