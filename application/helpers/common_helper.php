@@ -3774,33 +3774,17 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
 
     //while ($qentry = $res->FetchRow())
     foreach ($result as $qentry) {
-        $answer = $qentry['answer'];
-        $code = $qentry['code'];
-        $qid = $qentry['qid'];
-        $language = $qentry['language'];
-
-        foreach ($fieldnames as $sOldFieldname => $sNewFieldname) {
-            $pattern = $sOldFieldname;
-            $replacement = $sNewFieldname;
-            $answer = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $answer);
+        $translatedAnswers = $qentry->answerl10ns;
+        foreach ($translatedAnswers as $translatedAnswer) {
+            $answer = $translatedAnswer->answer;
+            foreach ($fieldnames as $pattern => $replacement) {
+                $translatedAnswer->answer = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $translatedAnswer->answer);
+            }
+            if ($answer !== $translatedAnswer->answer) {
+                $translatedAnswer->save();
+            }
         }
-
-        if (strcmp((string) $answer, (string) $qentry['answer']) != 0) {
-            // Update Field
-
-            $data = array(
-            'answer' => $answer,
-            'qid' => $qid
-            );
-
-            $where = array(
-            'code' => $code,
-            'language' => $language
-            );
-
-            Answer::model()->updateRecord($data, $where);
-        } // Enf if modified
-    } // end while qentry
+    }
 }
 
 /**
