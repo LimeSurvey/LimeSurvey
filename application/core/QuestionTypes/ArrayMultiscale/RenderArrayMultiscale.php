@@ -327,7 +327,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                     // If value is empty, notset should be checked.
                     // string "0" should be considered as valid answer,
                     // so notset should not be checked in that case.
-                    if ($fname1value !== '0' && $this->getIsNoAnswerChecked($myfname1)) {
+                    if ($fname1value !== '0' && $this->isNoAnswerChecked($myfname1)) {
                         $aData['aSubQuestions'][$i]['myfname1_notset'] = CHECKED;
                     } else {
                         $aData['aSubQuestions'][$i]['myfname1_notset'] = "";

@@ -4932,18 +4932,18 @@ function fillDate($dateString)
  *
  * This function looks up the current survey session data
  * and checks whether the given SGQA identifier code
- * has a non-null value, indicating that the "No Answer" option has been checked.
+ * has a empty string value, indicating that the "No Answer" option has been checked.
  *
  * @param string $sSGQA The SGQA identifier of the question to check.
  *
- * @return bool True if the "No Answer" option is checked (non-null value found), false otherwise.
+ * @return bool True if the "No Answer" option is checked (empty string value found), false otherwise.
  */
 function getIsNoAnswerChecked($sSGQA)
 {
     $checked = false;
     $surveySessionArray = @$_SESSION['survey_' . App()->getConfig('surveyID')];
     if (array_key_exists($sSGQA, $surveySessionArray)) {
-        $checked = $surveySessionArray[$sSGQA] !== null;
+        $checked = $surveySessionArray[$sSGQA] === '';
     }
     return $checked;
 }

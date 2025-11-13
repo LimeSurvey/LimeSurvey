@@ -50,7 +50,7 @@ class RenderFivePointChoice extends QuestionBaseRenderer
                 'id'                     => $this->sSGQA,
                 'labelText'              => gT('No answer'),
                 'itemExtraClass'         => 'noanswer-item',
-                'checkedState'           => $this->getIsNoAnswerChecked() ? ' CHECKED ' : '',
+                'checkedState'           => $this->isNoAnswerChecked() ? ' CHECKED ' : '',
                 'checkconditionFunction' => $this->checkconditionFunction,
             );
         }

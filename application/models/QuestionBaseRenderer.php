@@ -447,24 +447,19 @@ abstract class QuestionBaseRenderer extends StaticModel
     }
 
     /**
-     * Determine whether the "No Answer" option is checked for a given survey question.
+     * Checks if the "No Answer" option is checked for a given survey question.
      *
-     * This function checks the survey session array to see if a response exists
-     * for the provided SGQA identifier code. If no
-     * identifier is passed, it defaults to using the object's `$sSGQA` property.
+     * Determines whether an empty string response exists in the survey session
+     * for the given SGQA identifier, indicating that "No Answer" was selected.
      *
-     * @param string|null $sSGQA Optional SGQA identifier. Defaults to the instance's `$sSGQA` if not provided.
-     *
-     * @return bool True if a non-null value is found in the survey session array for the SGQA, false otherwise.
+     * @param string|null $sSGQA Optional SGQA identifier. If null, uses the instance's $sSGQA property.
+     * @return bool True if "No Answer" is selected (empty string in session), false otherwise.
      */
-    public function getIsNoAnswerChecked($sSGQA = null)
+    protected function isNoAnswerChecked($sSGQA = null)
     {
         $sSGQA = $sSGQA ?: $this->sSGQA;
-        $checked = false;
-        if (array_key_exists($sSGQA, $this->aSurveySessionArray)) {
-            $checked = $this->aSurveySessionArray[$sSGQA] !== null;
-        }
-        return $checked;
+
+        return getIsNoAnswerChecked($sSGQA);
     }
 
     abstract public function getMainView();
