@@ -1058,28 +1058,42 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Make sure we don't save a new question group
-     * while the survey is active.
+     * Prepare question before saving.
+     * 
+     * - Block type changes on active surveys (keep original question type).
+     * - Update survey lastmodified timestamp when the question changes.
      *
      * @return bool
      */
     protected function beforeSave()
     {
-        if (parent::beforeSave()) {
-            /* No update when surey activated */
-            $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
-            if ($surveyIsActive) {
-                //don't override questiontype when survey is active, set it back to what it was...
-                $oActualValue = Question::model()->findByPk(array("qid" => $this->qid));
-                $this->type = $oActualValue->type;
-            }
-            if ($surveyIsActive && $this->getIsNewRecord()) {
-                return false;
-            }
-            return true;
-        } else {
+        if (!parent::beforeSave()) {
             return false;
         }
+
+        // Question isn't part of any Survey
+        if (empty($this->sid)) {
+            return true;
+        }
+
+        $survey = Survey::model()->findByPk($this->sid);
+
+        if ($survey !== null && $survey->isActive) {
+            // Survey is active, so question type should not be updated.
+            // Reset Question Type to original database value.
+            if (!$this->getIsNewRecord() && !empty($this->qid)) {
+                $originalQuestion = Question::model()->findByPk($this->qid);
+                if ($originalQuestion !== null) {
+                    // don't override questiontype when survey is active, set it back to what it was...
+                    $this->type = $originalQuestion->type;
+                }
+            }
+        }
+
+        Survey::model()->updateByPk(
+            $this-sid,
+            ['lastmodified' => gmdate('Y-m-d H:i:s')]
+        );
     }
 
     /**
