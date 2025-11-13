@@ -157,8 +157,57 @@ class CopySurvey
                     'survey',
                     $this->sourceSurvey->sid,
                     $destinationSurvey->sid,
-                    $destLangSet->surveyls_welcometext
+                    $destLangSet->surveyls_endtext
                 );
+                $destLangSet->surveyls_policy_notice = translateLinks(
+                    'survey',
+                    $this->sourceSurvey->sid,
+                    $destinationSurvey->sid,
+                    $destLangSet->surveyls_policy_notice
+                );
+                $destLangSet->surveyls_policy_error = translateLinks(
+                    'survey',
+                    $this->sourceSurvey->sid,
+                    $destinationSurvey->sid,
+                    $destLangSet->surveyls_policy_error
+                );
+                $destLangSet->surveyls_email_invite = translateLinks(
+                    'survey',
+                    $this->sourceSurvey->sid,
+                    $destinationSurvey->sid,
+                    $destLangSet->surveyls_email_invite
+                );
+                $destLangSet->surveyls_email_remind = translateLinks(
+                    'survey',
+                    $this->sourceSurvey->sid,
+                    $destinationSurvey->sid,
+                    $destLangSet->surveyls_email_remind
+                );
+                $destLangSet->surveyls_email_register = translateLinks(
+                    'survey',
+                    $this->sourceSurvey->sid,
+                    $destinationSurvey->sid,
+                    $destLangSet->surveyls_email_register
+                );
+                $destLangSet->surveyls_email_confirm = translateLinks(
+                    'survey',
+                    $this->sourceSurvey->sid,
+                    $destinationSurvey->sid,
+                    $destLangSet->surveyls_email_confirm
+                );
+                $destLangSet->email_admin_notification = translateLinks(
+                    'survey',
+                    $this->sourceSurvey->sid,
+                    $destinationSurvey->sid,
+                    $destLangSet->email_admin_notification
+                );
+                $destLangSet->email_admin_responses = translateLinks(
+                    'survey',
+                    $this->sourceSurvey->sid,
+                    $destinationSurvey->sid,
+                    $destLangSet->email_admin_responses
+                );
+                //todo attached files in attachments
             }
             $destLangSet->surveyls_survey_id = $destinationSurvey->sid;
             $destLangSet->surveyls_language = $sourceLanguageSetting->surveyls_language;
