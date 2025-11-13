@@ -4940,12 +4940,18 @@ function fillDate($dateString)
  */
 function getIsNoAnswerChecked($sSGQA)
 {
-    $checked = false;
-    $surveySessionArray = @$_SESSION['survey_' . App()->getConfig('surveyID')];
-    if (array_key_exists($sSGQA, $surveySessionArray)) {
-        $checked = $surveySessionArray[$sSGQA] === '';
+    $surveyId = App()->getConfig('surveyID');
+    if (
+        !isset($_SESSION['survey_' . $surveyId])
+        || !is_array($_SESSION['survey_' . $surveyId])
+    ) {
+        return false;
     }
-    return $checked;
+    $surveySessionArray = $_SESSION['survey_' . $surveyId];
+    if (!array_key_exists($sSGQA, $surveySessionArray)) {
+        return false;
+    }
+    return $surveySessionArray[$sSGQA] === '';
 }
 
 /**
