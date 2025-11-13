@@ -46,7 +46,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                     </div>
                     <div class="col-lg-6">
                         <div class="mb-3">
-                            <label for="separatorused" id="separatorused" class='form-label '>
+                            <label for="separatorused_1" id="separatorused" class='form-label '>
                                 <?php eT("Separator used:"); ?>
                             </label>
                             <div class="col-12">
@@ -58,7 +58,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                                 );
                                 ?>
 
-                                <select name="separatorused"  class="form-select">
+                                <select name="separatorused_1"  class="form-select">
                                     <option value="auto" selected="selected"><?php eT("(Autodetect)"); ?></option>
                                     <?php
                                     foreach ($separatorused as $key => $separator):
