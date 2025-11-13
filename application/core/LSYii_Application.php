@@ -64,8 +64,8 @@ class LSYii_Application extends CWebApplication
     /* @var integer| null the current userId for all action */
     private $currentUserId;
 
-    /* @var integer|null|false the current survey ID */
-    private static $surveyId;
+    /* @var integer|false the current survey ID */
+    private static $surveyId = false;
 
     /**
      *
@@ -605,7 +605,7 @@ class LSYii_Application extends CWebApplication
      */
      public static function getSurveyId($throwError = true)
      {
-         if (self::$surveyId) {
+         if (is_int(self::$surveyId)) {
              /* Survey is set and is valid */
              return self::$surveyId;
          }
@@ -617,28 +617,25 @@ class LSYii_Application extends CWebApplication
             )
          );
          if (!$surveyId) {
-             self::$surveyId = false;
-             return self::$surveyId;
+             return false;
          }
          $intSurveyId = intval($surveyId);
          if (strval($intSurveyId) !== strval($surveyId)) {
-             self::$surveyId = false;
              if ($throwError) {
                  throw new CHttpException(400, gT('Your request is invalid.'));
              }
-             return self::$surveyId;
+             return false;
         }
-        if (self::$surveyId !== false) {
-            /* surveyId is set and is an integer */
-            $survey = Survey::model()->findByPk($surveyId);
-            if ($survey) {
-                 self::$surveyId = $surveyId;
-            } else {
-                self::$surveyId = false;
+        $surveyId = intval($surveyId);
+        /* surveyId is set and is an integer */
+        $survey = Survey::model()->findByPk($surveyId);
+        if ($survey) {
+             self::$surveyId = $surveyId;
+        } else {
+            if ($throwError) {
+                throw new CHttpException(404, gT('Your request is invalid.'));
             }
-        }
-        if (self::$surveyId === false && $throwError) {
-             throw new CHttpException(404, gT('This survey does not exist.'));
+            return false;
         }
         return self::$surveyId;
     }
