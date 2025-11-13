@@ -26,11 +26,11 @@ echo viewHelper::getViewTestTag('importParticipants');
                 <div class="row ls-space margin top-25 bottom-25">
                     <div class="col-lg-6">
                         <div class="mb-3">
-                            <label for="characterset" id="characterset" class='form-label '>
+                            <label  for="characterset_1" id="characterset" class='form-label '>
                                 <?php eT("Character set of file:"); ?>
                             </label>
                             <div class="col-12">
-                                <select name="characterset"  class="form-select">
+                                <select  id="characterset_1" name="characterset"  class="form-select">
                                     <?php
                                     foreach (aEncodingsArray() as $key => $encoding):
                                         ?>
