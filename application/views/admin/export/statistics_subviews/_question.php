@@ -35,10 +35,10 @@
                     id='filter<?php echo $myfield; ?>'
                     name='summary[]'
                     value='<?php echo $myfield; ?>' <?php
-                    if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-                    || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-                    || array_search("P{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-                    || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+                    if (isset($summary) && (array_search("{$myfield}", $summary) !== FALSE
+                    || array_search("M{$myfield}", $summary) !== FALSE
+                    || array_search("P{$myfield}", $summary) !== FALSE
+                    || array_search("N{$myfield}", $summary) !== FALSE))
                     { echo " checked='checked'"; }
                     ?>
                     />
@@ -84,7 +84,7 @@
                         echo "<input type='checkbox'  name='summary[]' value='$myfield1'";
 
                         //check SGQA -> do we want to pre-check the checkbox?
-                        if (isset($summary) && (array_search("K{$surveyid}X{$flt[1]}X{$flt[0]}{$row['title']}", $summary) !== FALSE))
+                        if (isset($summary) && (array_search("$myfield1", $summary) !== FALSE))
                         {
                             echo " checked='checked'";
                         }
@@ -130,7 +130,7 @@
                     $myfield2 = "Q".$myfield.$row['title'];
                     echo "&nbsp;&nbsp; <input type='checkbox'  name='summary[]' value='$myfield2'";
 
-                    if (isset($summary) && (array_search("Q{$surveyid}X{$flt[1]}X{$flt[0]}{$row['title']}", $summary) !== FALSE))
+                    if (isset($summary) && (array_search($myfield2, $summary) !== FALSE))
                     {
                         echo " checked='checked'";
                     }
@@ -193,10 +193,10 @@
                         id='filter<?php echo $myfield; ?>'
                         name='summary[]'
                         value='N<?php echo $myfield; ?>' <?php
-                        if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-                        || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-                        || array_search("P{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-                        || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+                        if (isset($summary) && (array_search($myfield, $summary) !== FALSE
+                        || array_search("M{$myfield}", $summary) !== FALSE
+                        || array_search("P{$myfield}", $summary) !== FALSE
+                        || array_search("N{$myfield}", $summary) !== FALSE))
                         { echo " checked='checked'"; }
                         ?>
                         />
@@ -267,7 +267,7 @@
                 echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                 echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
 
-                if (isset($summary) && (array_search("D{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+                if (isset($summary) && (array_search($myfield2, $summary) !== FALSE))
                 {echo " checked='checked'";}
 
                 echo " />";
@@ -429,7 +429,7 @@
                     echo " />&nbsp;"
                     .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row[15])." - # ".$flt[3])
                     ."</div>\n"
-                    ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple' class='form-select'>\n";
+                    ."\t<select name='{$myfield}{$row[0]}[]' multiple='multiple' class='form-select'>\n";
 
                     //there are always exactly 5 values which have to be listed
                     for ($i=1; $i<=5; $i++)
@@ -470,7 +470,7 @@
                     echo " />&nbsp;"
                     .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row['question'])." - # ".$flt[3])
                     ."</div>\n"
-                    ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row['title']}[]' multiple='multiple' class='form-select'>\n";
+                    ."\t<select name='{$myfield2}[]' multiple='multiple' class='form-select'>\n";
 
                     //here wo loop through 10 entries to create a larger output form
                     for ($i=1; $i<=10; $i++)
@@ -510,7 +510,7 @@
                     .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row[15])." - # ".$flt[3])
                     ."\n"
                     ."</div>\n"
-                    ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple' class='form-select'>\n"
+                    ."\t<select name='{$myfield}{$row[0]}[]' multiple='multiple' class='form-select'>\n"
                     ."\t<option value='Y'";
 
                     //pre-select "yes"
@@ -557,7 +557,7 @@
                     .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row[15])." - # ".$flt[3])
                     ."\n"
                     ."</div>\n"
-                    ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'  class='form-select'>\n"
+                    ."\t<select name='{$myfield}{$row[0]}[]' multiple='multiple'  class='form-select'>\n"
                     ."\t<option value='I'";
 
                     if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("I", $_POST[$myfield2])) {echo " selected='selected' ";}
@@ -770,7 +770,7 @@
                     //for debugging only:
 
                     //creating form
-                    echo "\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row['title']}[]' multiple='multiple' class='form-select'>\n";
+                    echo "\t<select name='{$myfield}{$row['title']}[]' multiple='multiple' class='form-select'>\n";
 
                     //loop through all possible answers
                     foreach($fresult as $frow)
@@ -827,7 +827,7 @@
                     echo " />&nbsp;"
                     .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row->answerl10ns[$language]->answer)." - # ".$flt[3])
                     ."</div>\n"
-                    ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple='multiple' class='form-select'>\n";
+                    ."\t<select name='{$myfield3}[]' multiple='multiple' class='form-select'>\n";
 
                     //output lists of ranking items
                     foreach ($answers as $ans)
@@ -916,7 +916,7 @@
                     $fresult = Answer::model()->getQuestionsForStatistics('*', "qid='$flt[0]' AND language = '{$language}' AND scale_id = 0", 'sortorder, code');
 
                     //this is for debugging only
-                    echo "\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[4]}#0[]' multiple='multiple' class='form-select'>\n";
+                    echo "\t<select name='{$myfield2}[]' multiple='multiple' class='form-select'>\n";
 
                     //list answers
                     foreach($fresult as $frow)
@@ -977,7 +977,7 @@
                     $fresult = Answer::model()->getQuestionsForStatistics('*', "qid='$flt[0]' AND language = '$language' AND scale_id = 1", 'sortorder, code');
 
                     //this is for debugging only
-                    echo "\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[4]}#1[]' multiple='multiple' class='form-select'>\n";
+                    echo "\t<select name='{$myfield2}[]' multiple='multiple' class='form-select'>\n";
 
                     //list answers
                     foreach($fresult as $frow)
