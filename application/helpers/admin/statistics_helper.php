@@ -2547,39 +2547,10 @@ class statistics_helper
                     $gdata[] = "N/A";
                 }
             } else { // For multiple choice : we need total answered or viewed on all columns
-                if ($totalMultiAnswers !== false) {
+                if ($totalMultiAnswers === false) {
                     $totalMultiAnswers = $results; // By default all answers
                     if ($noncompleted) {
-                        $criteria = new CDbCriteria();
-                        foreach ($outputs['alist'] as $al) {
-                            $quotedColumnName = App()->db->quoteColumnName($al[2]);
-                            // Answered
-                            if ($noncompleted > 1 ) {
-                                // database can use blob due to encryption
-                                switch ($sDatabaseType) {
-                                    case 'mssql':
-                                    case 'sqlsrv':
-                                    case 'dblib':
-                                        $condition = $quotedColumnName . " IS NOT NULL AND CAST(" . $quotedColumnName ." as varchar) <> ''";
-                                        break;
-                                    case 'pgsql':
-                                    case 'mysql':
-                                    default:
-                                        $condition = $quotedColumnName . " IS NOT NULL AND " . $quotedColumnName ." <> ''";
-                                        break;
-                                }
-                            } else {
-                                // View
-                                $condition = $quotedColumnName . " IS NOT NULL";
-                            }
-                            $criteria->addCondition($condition, 'OR');
-                        }
-                        if (incompleteAnsFilterState() == "incomplete") {
-                            $criteria->addCondition("submitdate IS NULL");
-                        } elseif (incompleteAnsFilterState() == "complete") {
-                            $criteria->addCondition("submitdate IS NOT NULL");
-                        }
-                        $totalMultiAnswers = SurveyDynamic::model($surveyid)->count($criteria);
+                        $totalMultiAnswers = self::getMultiAnswered($surveyid, $outputs['alist'], $noncompleted);
                     }
                 }
                 //calculate percentage
@@ -4327,5 +4298,46 @@ class statistics_helper
             $reshtml = "<span style='cursor: pointer' title='" . $htmlhinttext . "'> \"$htmlhinttext\"</span>";
         }
         return $reshtml;
+    }
+
+    /*
+    * Get the number of anwered or seen for a multiple choice question
+    * @param integre $surveyid
+    * @param array : $answersList, @see $this->buildOutputList : array with [question code, question text, DB column] only DB column is used
+    * @param integer : $noncompleted : 0 mean didn't check, 1 displayed and 2 answered. For multiple choice : only one displayed or answered is needed
+    * @return integer
+    * */
+    private static function getMultiAnswered($surveyid, $answersList, $noncompleted)
+    {
+        $criteria = new CDbCriteria();
+        foreach ($answersList as $al) {
+            $quotedColumnName = App()->db->quoteColumnName($al[2]);
+            // Answered
+            if ($noncompleted > 1 ) {
+                // database can use blob due to encryption
+                switch ($sDatabaseType) {
+                    case 'mssql':
+                    case 'sqlsrv':
+                    case 'dblib':
+                        $condition = $quotedColumnName . " IS NOT NULL AND CAST(" . $quotedColumnName ." as varchar) <> ''";
+                        break;
+                    case 'pgsql':
+                    case 'mysql':
+                    default:
+                        $condition = $quotedColumnName . " IS NOT NULL AND " . $quotedColumnName ." <> ''";
+                        break;
+                }
+            } else {
+                // View
+                $condition = $quotedColumnName . " IS NOT NULL";
+            }
+            $criteria->addCondition($condition, 'OR');
+        }
+        if (incompleteAnsFilterState() == "incomplete") {
+            $criteria->addCondition("submitdate IS NULL");
+        } elseif (incompleteAnsFilterState() == "complete") {
+            $criteria->addCondition("submitdate IS NOT NULL");
+        }
+        return SurveyDynamic::model($surveyid)->count($criteria);
     }
 }
