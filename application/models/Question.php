@@ -1292,12 +1292,9 @@ class Question extends LSActiveRecord
         if ($this->parent_qid != 0) {
             /* Fix #15228: This survey throw a Error when try to print : seems subquestion gid can be outdated */
             // Use parents relation
-            if (!empty($this->parents)) { // Maybe need to throw error or find it if it's not set ?
-                return "{$this->parents->sid}X{$this->parents->gid}X{$this->parent_qid}";
-            }
-            return "{$this->sid}X{$this->gid}X{$this->parent_qid}";
+            return "Q{$this->parent_qid}";
         }
-        return "{$this->sid}X{$this->gid}X{$this->qid}";
+        return "Q{$this->qid}";
     }
 
     /**
