@@ -439,17 +439,30 @@ class QuestionGroup extends LSActiveRecord
      */
     protected function beforeSave()
     {
-        if (parent::beforeSave()) {
-            $survey = Survey::model()->findByPk($this->sid);
-            if (!empty($survey) && $survey->isActive && $this->getIsNewRecord()) {
-                /* And for multi lingual, when add a new language ? */
-                $this->addError('gid', gT("You can not add a group if survey is active."));
-                return false;
-            }
-            return true;
-        } else {
+       if (!parent::beforeSave()) {
+        return false;
+       }
+
+       if (!empty($this->sid)) {
+        $survey = Survey::model()->findByPk($this->sid);
+
+        $addingGroupToActiveSurvey = !empty($survey)
+            && $survey->isActive
+            && $this->getIsNewRecord();
+        
+        if ($addingGroupToActiveSurvey) {
+             /* And for multi lingual, when add a new language ? */
+            $this->addError('gid', gT("You can not add a group if survey is active."));
             return false;
         }
+
+        Survey::model()->updateByPk(
+            $this->sid,
+            ['lastmodified' => gmdate('Y-m-d H:i:s')]
+        );
+       }
+
+       return true;
     }
 
     /**
