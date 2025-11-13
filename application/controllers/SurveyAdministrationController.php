@@ -421,7 +421,7 @@ class SurveyAdministrationController extends LSBaseController
         $arrayed_data['title_bar']['title'] = gT('New survey');
 
         // topbar
-        $aData['topbar']['title'] = gT('Create, import, or copy survey');
+        $aData['topbar']['title'] = gT('Create or copy survey');
         $aData['topbar']['rightButtons'] = $this->renderPartial(
             'partial/topbarBtns_create_survey/rightSideButtons',
             [],

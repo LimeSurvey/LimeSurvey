@@ -167,26 +167,4 @@ $rest['v1/survey-archives/$id'] = [
     ]
 ];
 
-$rest['v1/action/survey-archives/id/$id/basetable/$basetable'] = [
-    'GET' => [
-        'tag' => 'survey',
-        'description' => 'Survey archives',
-        'commandClass' => SurveyArchive::class,
-        'auth' => true,
-        'responses' => [
-            'success' => [
-                'code' => 200,
-                'description' => 'Success',
-                'content' => null,
-                'schema' => (new SchemaFactorySurveyArchive())->make()
-            ],
-            'not-found' => [
-                'code' => 404,
-                'description' => 'Not Found',
-                'schema' => $errorSchema
-            ]
-        ]
-    ]
-];
-
 return $rest;
