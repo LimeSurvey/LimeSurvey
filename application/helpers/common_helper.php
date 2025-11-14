@@ -3126,8 +3126,8 @@ function cleanAssetCacheDirectory($minutes = 1)
 
     // Loop through all directories in the assets directory
     foreach (glob($assetsPath . '/*') as $dir) {
-        // Check if the directory is older than the threshold and is a directory
-        if (is_dir($dir) && filemtime($dir) < $threshold) {
+        // Check if the directory is older than the threshold and is a directory and not symlinked
+        if (is_dir($dir) && filemtime($dir) < $threshold && !is_link($dir)) {
             // Remove the directory if it meets the criteria
             CFileHelper::removeDirectory($dir);
         }
@@ -3149,6 +3149,8 @@ function cleanTwigCacheDirectory()
         return;
     }
 
+    // read and store the permissions of the Twig cache directory to apply it later
+    $oldPermissions = fileperms($twigDir);
     try {
         CFileHelper::removeDirectory($twigDir);
     } catch (Exception $e) {
@@ -3157,7 +3159,7 @@ function cleanTwigCacheDirectory()
     }
 
     // Recreate directory to avoid downstream failures expecting it present
-    if (!@mkdir($twigDir, 0775, true) && !is_dir($twigDir)) {
+    if (!@mkdir($twigDir, $oldPermissions, true) && !is_dir($twigDir)) {
         Yii::log("Failed to recreate Twig cache directory '{$twigDir}' after cleanup.", \CLogger::LEVEL_WARNING, 'application.cleanup');
     }
 }
