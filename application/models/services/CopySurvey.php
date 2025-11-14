@@ -145,11 +145,11 @@ class CopySurvey
             $destLangSet->attributes = $sourceLanguageSetting->attributes;
             if ($this->options->isResourcesAndLinks()) {
                 $destLangSet->surveyls_description = translateLinks(
-                   'survey',
-                   $this->sourceSurvey->sid,
-                   $destinationSurvey->sid,
-                   $destLangSet->surveyls_description
-               );
+                    'survey',
+                    $this->sourceSurvey->sid,
+                    $destinationSurvey->sid,
+                    $destLangSet->surveyls_description
+                );
                 $destLangSet->surveyls_welcometext = translateLinks(
                     'survey',
                     $this->sourceSurvey->sid,
@@ -353,7 +353,7 @@ class CopySurvey
         foreach ($assessments as $assessment) {
             $destinationAssessment = new Assessment();
             $destinationAssessment->attributes = $assessment->attributes;
-            if ($this->options->isResourcesAndLinks()){
+            if ($this->options->isResourcesAndLinks()) {
                 $destinationAssessment->message = translateLinks(
                     'survey',
                     $this->sourceSurvey->sid,
@@ -375,9 +375,9 @@ class CopySurvey
                     $langAssessment = new Assessment();
                     $langAssessment->attributes = $assessmentLangEntry->attributes;
                     $langAssessment->language = $assessmentLangEntry->language;
-                    if ($this->options->isResourcesAndLinks()){
+                    if ($this->options->isResourcesAndLinks()) {
                         $langAssessment->message = translateLinks(
-                          'survey',
+                            'survey',
                             $this->sourceSurvey->sid,
                             $destinationSurvey->sid,
                             $langAssessment->message
