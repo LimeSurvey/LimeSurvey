@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-11-13 17:46:01+00:00\n"
+"POT-Creation-Date: 2025-11-14 14:43:10+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -111,9 +111,9 @@ msgstr ""
 msgid "LimeSurvey online manual"
 msgstr ""
 
-#: application/controllers/AdminController.php:499
+#: application/controllers/AdminController.php:498
 #: application/extensions/AdminFooter/AdminFooter.php:30
-#: application/helpers/LayoutHelper.php:386
+#: application/helpers/LayoutHelper.php:385
 msgid "Version"
 msgstr ""
 
@@ -221,7 +221,8 @@ msgstr ""
 #: application/controllers/admin/dumpdb.php:110
 #: application/controllers/admin/globalsettings.php:37
 #: application/controllers/admin/globalsettings.php:62
-#: application/controllers/admin/globalsettings.php:86
+#: application/controllers/admin/globalsettings.php:85
+#: application/controllers/admin/globalsettings.php:95
 #: application/models/services/SurveyThemeConfiguration.php:35
 msgid "You do not have permission to access this page."
 msgstr ""
@@ -440,7 +441,7 @@ msgstr ""
 #: application/core/SurveyCommonAction.php:183
 #: application/core/SurveyCommonAction.php:706
 #: application/core/SurveyCommonAction.php:917
-#: application/helpers/LayoutHelper.php:451
+#: application/helpers/LayoutHelper.php:450
 msgid "Invalid survey ID"
 msgstr ""
 
@@ -1898,10 +1899,10 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_mainoptions.php:48
 #: application/views/admin/export/statistics_subviews/_mainoptions.php:66
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:14
-#: application/views/admin/globalsettings/_general.php:64
-#: application/views/admin/globalsettings/_general.php:326
-#: application/views/admin/globalsettings/_general.php:344
-#: application/views/admin/globalsettings/_general.php:362
+#: application/views/admin/globalsettings/_general.php:65
+#: application/views/admin/globalsettings/_general.php:328
+#: application/views/admin/globalsettings/_general.php:346
+#: application/views/admin/globalsettings/_general.php:364
 #: application/views/admin/globalsettings/_interfaces.php:39
 #: application/views/admin/globalsettings/_interfaces.php:53
 #: application/views/admin/globalsettings/_presentation.php:65
@@ -1986,11 +1987,11 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:36
 #: application/views/admin/globalsettings/_bounce.php:25
 #: application/views/admin/globalsettings/_email.php:83
-#: application/views/admin/globalsettings/_general.php:65
+#: application/views/admin/globalsettings/_general.php:66
 #: application/views/admin/globalsettings/_general.php:201
-#: application/views/admin/globalsettings/_general.php:327
-#: application/views/admin/globalsettings/_general.php:345
-#: application/views/admin/globalsettings/_general.php:363
+#: application/views/admin/globalsettings/_general.php:329
+#: application/views/admin/globalsettings/_general.php:347
+#: application/views/admin/globalsettings/_general.php:365
 #: application/views/admin/globalsettings/_interfaces.php:17
 #: application/views/admin/globalsettings/_interfaces.php:40
 #: application/views/admin/globalsettings/_interfaces.php:54
@@ -4049,8 +4050,8 @@ msgid "Logout successful."
 msgstr ""
 
 #: application/controllers/admin/Authentication.php:300
-#: application/models/services/PasswordManagement.php:182
-#: application/models/services/PasswordManagement.php:187
+#: application/models/services/PasswordManagement.php:181
+#: application/models/services/PasswordManagement.php:186
 msgid "If the username and email address is valid a password reminder email has been sent to you. This email can only be requested once in %d minutes."
 msgstr ""
 
@@ -4668,7 +4669,7 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:930
 #: application/core/SurveyCommonAction.php:489
 #: application/core/SurveyCommonAction.php:846
-#: application/helpers/LayoutHelper.php:135
+#: application/helpers/LayoutHelper.php:134
 #: application/helpers/common_helper.php:655
 #: application/helpers/questionHelper.php:1214
 #: application/views/admin/dataentry/content_view.php:237
@@ -6106,7 +6107,7 @@ msgid "You do not have permission to update survey settings."
 msgstr ""
 
 #: application/controllers/admin/SurveysGroupsController.php:340
-#: application/controllers/admin/globalsettings.php:568
+#: application/controllers/admin/globalsettings.php:577
 #: application/core/LsDefaultDataSets.php:838
 #: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:19
 #: application/models/Survey.php:2409 application/models/SurveysGroups.php:322
@@ -6951,71 +6952,71 @@ msgstr ""
 msgid "The database is too large to be downloaded. Please consider exporting it manually using your database client."
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:116
+#: application/controllers/admin/globalsettings.php:125
 #: application/core/LsDefaultDataSets.php:865
 #: application/views/dashboard/welcome.php:24
 msgid "Global settings"
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:209
+#: application/controllers/admin/globalsettings.php:218
 #: application/models/Response.php:202
 msgid "deleted"
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:331
-#: application/controllers/admin/globalsettings.php:336
+#: application/controllers/admin/globalsettings.php:340
+#: application/controllers/admin/globalsettings.php:345
 msgid "Warning! Invalid IP addresses have been excluded from '%s' setting."
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:331
+#: application/controllers/admin/globalsettings.php:340
 msgid "IP allowlist for administration login"
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:336
+#: application/controllers/admin/globalsettings.php:345
 msgid "IP allowlist for participants with access code"
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:384
+#: application/controllers/admin/globalsettings.php:393
 msgid "Warning! Admin bounce email was not saved because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:392
+#: application/controllers/admin/globalsettings.php:401
 msgid "Warning! Administrator email address was not saved because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:452
+#: application/controllers/admin/globalsettings.php:461
 msgid "Global settings were saved."
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:535
+#: application/controllers/admin/globalsettings.php:544
 msgid "Global survey settings were saved."
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:540
+#: application/controllers/admin/globalsettings.php:549
 msgid "Global survey settings could not be updated, please fix the following error:"
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:573
+#: application/controllers/admin/globalsettings.php:582
 msgid "Global survey settings"
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:610
+#: application/controllers/admin/globalsettings.php:619
 msgid "Test email from %s"
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:613
+#: application/controllers/admin/globalsettings.php:622
 msgid "This is a test email from %s"
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:639
+#: application/controllers/admin/globalsettings.php:648
 msgid "Email sent successfully"
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:641
+#: application/controllers/admin/globalsettings.php:650
 msgid "Email sending failure: %s"
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:679
+#: application/controllers/admin/globalsettings.php:688
 msgid "Failed login attempts of participants have been reset."
 msgstr ""
 
@@ -8285,7 +8286,7 @@ msgid "Show popups"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2770
-#: application/views/admin/globalsettings/_general.php:235
+#: application/views/admin/globalsettings/_general.php:236
 msgid "Popup"
 msgstr ""
 
@@ -8675,27 +8676,27 @@ msgid "Survey not found"
 msgstr ""
 
 #: application/core/SurveyCommonAction.php:469
-#: application/helpers/LayoutHelper.php:115
+#: application/helpers/LayoutHelper.php:114
 msgid "SSL not enforced"
 msgstr ""
 
 #: application/core/SurveyCommonAction.php:471
-#: application/helpers/LayoutHelper.php:117
+#: application/helpers/LayoutHelper.php:116
 msgid "Warning: Please enforce SSL encryption in Global settings/Security after SSL is properly configured for your webserver."
 msgstr ""
 
 #: application/core/SurveyCommonAction.php:487
-#: application/helpers/LayoutHelper.php:133
+#: application/helpers/LayoutHelper.php:132
 msgid "Activated"
 msgstr ""
 
 #: application/core/SurveyCommonAction.php:519
-#: application/helpers/LayoutHelper.php:168
+#: application/helpers/LayoutHelper.php:167
 msgid "Create new..."
 msgstr ""
 
 #: application/core/SurveyCommonAction.php:528
-#: application/helpers/LayoutHelper.php:177
+#: application/helpers/LayoutHelper.php:176
 #: application/helpers/SurveyThemeHelper.php:278
 #: application/helpers/admin/statistics_helper.php:3981
 #: application/helpers/admin/statistics_helper.php:4086
@@ -8709,12 +8710,12 @@ msgid "Survey"
 msgstr ""
 
 #: application/core/SurveyCommonAction.php:538
-#: application/helpers/LayoutHelper.php:187
+#: application/helpers/LayoutHelper.php:186
 msgid "Survey group"
 msgstr ""
 
 #: application/core/SurveyCommonAction.php:547
-#: application/helpers/LayoutHelper.php:196
+#: application/helpers/LayoutHelper.php:195
 #: application/views/surveyAdministration/partial/_modalImportSurvey.php:23
 #: application/views/surveyAdministration/partial/_modalImportSurvey.php:66
 #: application/views/surveyAdministration/tabImport_view.php:36
@@ -11007,15 +11008,15 @@ msgstr ""
 msgid "Uses left"
 msgstr ""
 
-#: application/helpers/common_helper.php:3291
+#: application/helpers/common_helper.php:3362
 msgid "Response data not found."
 msgstr ""
 
-#: application/helpers/common_helper.php:4377
+#: application/helpers/common_helper.php:4448
 msgid "SQL command failed: %s"
 msgstr ""
 
-#: application/helpers/common_helper.php:4584
+#: application/helpers/common_helper.php:4655
 msgid "(Automatic)"
 msgstr ""
 
@@ -16867,8 +16868,8 @@ msgstr ""
 
 #: application/models/Survey.php:1668
 #: application/models/SurveysGroupsettings.php:446
-#: application/views/admin/globalsettings/_general.php:272
-#: application/views/admin/globalsettings/_general.php:290
+#: application/views/admin/globalsettings/_general.php:274
+#: application/views/admin/globalsettings/_general.php:292
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:34
 #: application/views/admin/themes/templateeditor_preview.php:9
 msgid "Full"
@@ -17930,39 +17931,35 @@ msgstr ""
 msgid "Request to reset your password"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:167
-msgid "Username: %s"
-msgstr ""
-
-#: application/models/services/PasswordManagement.php:174
+#: application/models/services/PasswordManagement.php:173
 msgid "You have requested to reset the password for your account."
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:175
+#: application/models/services/PasswordManagement.php:174
 msgid "To complete this process, please click on the following link: %s"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:176
+#: application/models/services/PasswordManagement.php:175
 msgid "If you did not request to reset your password, please ignore this email."
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:184
+#: application/models/services/PasswordManagement.php:183
 msgid "Email failed"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:224
+#: application/models/services/PasswordManagement.php:223
 msgid "Your login credentials have been reset"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:268
+#: application/models/services/PasswordManagement.php:267
 msgid "Hello %s,"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:270
+#: application/models/services/PasswordManagement.php:269
 msgid "This is an automated email to notify you that your login credentials for '%s' have been reset."
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:275
+#: application/models/services/PasswordManagement.php:274
 msgid "Here are your new credentials."
 msgstr ""
 
@@ -18761,7 +18758,7 @@ msgid "Table prefix:"
 msgstr ""
 
 #: application/views/admin/databaseupdate/verify.php:14
-#: application/views/admin/globalsettings/_general.php:29
+#: application/views/admin/globalsettings/_general.php:30
 msgid "Site name:"
 msgstr ""
 
@@ -19795,7 +19792,7 @@ msgstr ""
 
 #: application/views/admin/globalsettings/_bounce.php:79
 #: application/views/admin/globalsettings/_email.php:166
-#: application/views/admin/globalsettings/_general.php:408
+#: application/views/admin/globalsettings/_general.php:410
 #: application/views/admin/globalsettings/_interfaces.php:61
 #: application/views/admin/globalsettings/_language.php:74
 #: application/views/admin/globalsettings/_presentation.php:146
@@ -19904,61 +19901,61 @@ msgstr ""
 msgid "Back to settings"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:40
+#: application/views/admin/globalsettings/_general.php:41
 msgid "Default theme:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:57
+#: application/views/admin/globalsettings/_general.php:58
 #: application/views/admin/user/personalsettings.php:424
 msgid "Create example question group and question:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:74
+#: application/views/admin/globalsettings/_general.php:75
 msgid "Administration theme:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:88
+#: application/views/admin/globalsettings/_general.php:89
 msgid "You can add your custom themes in upload/admintheme"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:97
+#: application/views/admin/globalsettings/_general.php:98
 msgid "Time difference (in hours):"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:106
+#: application/views/admin/globalsettings/_general.php:107
 msgid "Server time:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:108
+#: application/views/admin/globalsettings/_general.php:109
 msgid "Corrected time:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:116
+#: application/views/admin/globalsettings/_general.php:117
 msgid "Session lifetime for surveys (seconds):"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:127
+#: application/views/admin/globalsettings/_general.php:128
 msgid "IP Info DB API Key:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:136
+#: application/views/admin/globalsettings/_general.php:137
 msgid "Google Maps API key:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:145
+#: application/views/admin/globalsettings/_general.php:146
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:242
 msgid "Google Analytics Tracking ID:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:155
+#: application/views/admin/globalsettings/_general.php:156
 msgid "Google Translate API key:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:165
+#: application/views/admin/globalsettings/_general.php:166
 msgid "Character set for file import/export:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:189
+#: application/views/admin/globalsettings/_general.php:190
 msgid ""
 "Maintenance modes:\n"
 "Off\n"
@@ -19979,7 +19976,7 @@ msgid "Full lock"
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:212
-msgid "Clear assets cache:"
+msgid "Clear frontend cache:"
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:217
@@ -19990,71 +19987,71 @@ msgstr ""
 msgid "Default HTML editor mode:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:234
+#: application/views/admin/globalsettings/_general.php:235
 msgid "Inline"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:236
+#: application/views/admin/globalsettings/_general.php:237
 msgid "HTML source"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:246
+#: application/views/admin/globalsettings/_general.php:248
 msgid "Side-menu behaviour:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:253
+#: application/views/admin/globalsettings/_general.php:255
 msgid "Adaptive"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:254
+#: application/views/admin/globalsettings/_general.php:256
 msgid "Always open"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:255
+#: application/views/admin/globalsettings/_general.php:257
 msgid "Always closed"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:264
+#: application/views/admin/globalsettings/_general.php:266
 #: application/views/admin/user/personalsettings.php:259
 msgid "Question type selector:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:273
-#: application/views/admin/globalsettings/_general.php:291
+#: application/views/admin/globalsettings/_general.php:275
+#: application/views/admin/globalsettings/_general.php:293
 msgid "Simple"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:282
+#: application/views/admin/globalsettings/_general.php:284
 msgid "Template editor:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:300
+#: application/views/admin/globalsettings/_general.php:302
 msgid "Default breadcrumb mode:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:308
+#: application/views/admin/globalsettings/_general.php:310
 #: application/views/admin/user/personalsettings.php:359
 msgid "Short"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:309
+#: application/views/admin/globalsettings/_general.php:311
 #: application/views/admin/user/personalsettings.php:358
 msgid "Long"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:318
+#: application/views/admin/globalsettings/_general.php:320
 msgid "JS-Debug mode [Backend]:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:336
+#: application/views/admin/globalsettings/_general.php:338
 msgid "JS-Debug mode [Frontend]:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:355
+#: application/views/admin/globalsettings/_general.php:357
 msgid "Allow unstable extension updates:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_general.php:369
+#: application/views/admin/globalsettings/_general.php:371
 msgid "Enabling unstable updates will allow you to try alpha and beta versions of extensions. Talk to the extension author for more information."
 msgstr ""
 
@@ -21608,8 +21605,8 @@ msgstr ""
 msgid "Manage your key"
 msgstr ""
 
-#: application/views/admin/super/header.php:61
-#: application/views/layouts/header.php:65
+#: application/views/admin/super/header.php:60
+#: application/views/layouts/header.php:64
 #: application/views/quickTranslation/translatetabs_view.php:24
 msgid "Loading..."
 msgstr ""
@@ -23695,7 +23692,7 @@ msgid "Total screened out"
 msgstr ""
 
 #: application/views/admin/token/surveyParticipantView.php:75
-msgid "Total surveys completed"
+msgid "Total participants completed"
 msgstr ""
 
 #: application/views/admin/token/surveyParticipantView.php:144
