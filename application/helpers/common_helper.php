@@ -3075,7 +3075,7 @@ function cleanCacheTempDirectoryDaily()
     $assetsPath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
     // get the date from the first file/directory from the assets directory that is not a symbolic link
     $firstAssetFile = scandir($assetsPath)[2];
-    if ($firstAssetFile && file_exists($assetsPath. $firstAssetFile) && (filemtime($assetsPath. $firstAssetFile)) < (strtotime('-24 hours'))) {
+    if ($firstAssetFile && file_exists($assetsPath . $firstAssetFile) && (filemtime($assetsPath . $firstAssetFile)) < (strtotime('-24 hours'))) {
         // if older than 24 hours, clean the temp directory
         cleanCacheTempDirectory();
     }
