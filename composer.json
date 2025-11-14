@@ -45,7 +45,7 @@
 		"tiamo/spss": "dev-master",
 		"symfony/polyfill-mbstring": "^1.26",
 		"yiisoft/yii": "^1.1.26",
-		"phpmailer/phpmailer": "^6.6",
+		"phpmailer/phpmailer": "6.12.0",
 		"khaled.alshamaa/ar-php": "^6.3",
 		"tecnickcom/tcpdf": "^6.5",
 		"mk-j/php_xlsxwriter": "0.39",

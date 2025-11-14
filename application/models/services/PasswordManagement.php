@@ -154,7 +154,7 @@ class PasswordManagement
         $mailer = new \LimeMailer();
         $mailer->emailType = 'passwordreminderadminuser';
         $mailer->addAddress($this->user->email, $this->user->full_name);
-        $mailer->Subject = gT('User data');
+        $mailer->Subject = gT('Request to reset your password');
 
         /* Body construct */
         //before setting new validationKey and date,check when was the last attempt
@@ -170,11 +170,10 @@ class PasswordManagement
                 'admin/authentication/sa/newPassword/',
                 ['param' => $this->user->validation_key]
             );
-            $linkText = gT("Click here to set your password: ") . $linkToResetPage;
             $body = array();
-            $body[] = sprintf(gT('Your link to reset password %s'), \Yii::app()->getConfig('sitename'));
-            $body[] = $username;
-            $body[] = $linkText;
+            $body[] = gT('You have requested to reset the password for your account.');
+            $body[] = sprintf(gT('To complete this process, please click on the following link: %s') . "\n", $linkToResetPage);
+            $body[] = gt('If you did not request to reset your password, please ignore this email.') . "\n";
             $body = implode("\n", $body);
             $mailer->Body = $body;
             /* Go to send email and set password*/
