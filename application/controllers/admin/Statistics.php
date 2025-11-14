@@ -727,8 +727,8 @@ class Statistics extends SurveyCommonAction
                     $qid = $row['qid'];
                     $results = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid' ", 'question_order, title');
                     foreach ($results as $row1) {
-                        $summary[] = 'Q' . $row['qid'] . '_S' . $row1['title'] . '#0';
-                        $summary[] = 'Q' . $row['qid'] . '_S' . $row1['title'] . '#1';
+                        $summary[] = 'Q' . $row['qid'] . '_S' . $row1['qid'] . '#0';
+                        $summary[] = 'Q' . $row['qid'] . '_S' . $row1['qid'] . '#1';
                     }
 
                     break;
