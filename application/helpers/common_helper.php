@@ -3066,18 +3066,20 @@ function showJavaScript($sContent)
 }
 
 /**
- * Only clean temp directory if modification date of the first asset file found is older then 25 hours
+ * Only clean temp directory if modification date of any non-symlinked directory found is older then 25 hours
  *
  * @return void
  */
 function cleanCacheTempDirectoryDaily()
 {
     $assetsPath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
-    // get the date from the first file/directory from the assets directory that is not a symbolic link
-    $firstAssetFile = scandir($assetsPath)[2];
-    if ($firstAssetFile && file_exists($assetsPath . $firstAssetFile) && (filemtime($assetsPath . $firstAssetFile)) < (strtotime('-24 hours'))) {
-        // if older than 24 hours, clean the temp directory
-        cleanCacheTempDirectory();
+    $selectedDirectory = null;
+
+    foreach (glob($assetsPath . '/*') as $dir) {
+        if (is_dir($dir) && !is_link($dir) && (filemtime($dir) < (strtotime('-24 hours')))) {
+            cleanCacheTempDirectory();
+            break;
+        }
     }
 }
 
