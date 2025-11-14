@@ -1159,6 +1159,9 @@ class statistics_helper
         }*/
         else {
             //search for key
+            if (!isset($fieldmap[$rt])) {
+                return [];
+            }
             $fielddata = $fieldmap[$rt];
             if (!isset($fieldmap[$rt])) {
                 return [];
