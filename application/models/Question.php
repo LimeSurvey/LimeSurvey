@@ -1289,12 +1289,7 @@ class Question extends LSActiveRecord
 
     public function getBasicFieldName()
     {
-        if ($this->parent_qid != 0) {
-            /* Fix #15228: This survey throw a Error when try to print : seems subquestion gid can be outdated */
-            // Use parents relation
-            return "Q{$this->parent_qid}";
-        }
-        return "Q{$this->qid}";
+        return ($this->parent_qid != 0) ? "Q{$this->parent_qid}" : "Q{$this->qid}";
     }
 
     /**
