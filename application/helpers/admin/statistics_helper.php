@@ -1264,6 +1264,8 @@ class statistics_helper
                     list($qacode, $licode) = explode("_", (string) $qanswer);
 
                     $qresult = Question::model()->findAll(array('condition' => 'parent_qid=:parent_qid AND title=:title', 'params' => array(":parent_qid" => $qiqid, ':title' => $qanswer)));
+                    $atext = "";
+                    $ltext = "";
                     foreach ($qresult as $qrow) {
                         $fresult = Answer::model()->findAll(array('condition' => 'qid=:qid AND code=:code ND scale_id=0', 'params' => array(":qid" => $qiqid, ':code' => $licode)));
                         foreach ($fresult as $frow) {
@@ -1503,6 +1505,7 @@ class statistics_helper
         $responseModel = SurveyDynamic::model($surveyid);
 
         foreach ($outputs['alist'] as $al) {
+            $al2 = $al[2] ?? '';
             if ($noncompleted > 1 && $al[0] === '') {
                 continue;
             }
@@ -1510,12 +1513,12 @@ class statistics_helper
                 //handling for "other" option
                 if ($al[0] == gT("Other")) {
                     if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST) {
-                        $columnName = $al[2];
+                        $columnName = $al2;
                         $othEncrypted = getEncryptedCondition($responseModel, $columnName, '-oth-');
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($columnName) . "='$othEncrypted'";
                     } else {
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al2)." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al2)." LIKE '')";
                     }
                 }
 
@@ -1534,19 +1537,19 @@ class statistics_helper
                     //free text answers
                     if ($al[0] == "Answer") {
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al2)." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al2)." LIKE '')";
                     }
                     //"no answer" handling
                     elseif ($al[0] == "NoAnswer") {
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ( ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." = '')" : " (".Yii::app()->db->quoteColumnName($al[2])." LIKE ''))";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al2)." = '')" : " (".Yii::app()->db->quoteColumnName($al2)." LIKE ''))";
                     }
                 } elseif ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
                     $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ( ";
-                    $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." <> '')" : " (".Yii::app()->db->quoteColumnName($al[2])." NOT LIKE ''))";
+                    $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al2)." <> '')" : " (".Yii::app()->db->quoteColumnName($al2)." NOT LIKE ''))";
                 // all other question types
                 } else {
-                    $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al[2])." =";
+                    $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al2)." =";
                     //ranking question?
                     if (substr((string) $rt, 0, 1) == "R") {
                         $query .= " '$al[0]'";
@@ -1611,9 +1614,9 @@ class statistics_helper
             //"Answer" means that we show an option to list answer to "other" text field
             elseif (($al[0] === gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === "O" && $al[0] === gT("Comments")) || $outputs['qtype'] === "P") && count($al) > 2) {
                 if ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
-                    $sColumnName = $al[2] . "_Ccomment";
+                    $sColumnName = $al2 . "_Ccomment";
                 } else {
-                    $sColumnName = $al[2];
+                    $sColumnName = $al2;
                 }
                 $ColumnName_RM[] = $sColumnName;
                 if ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
@@ -1752,7 +1755,7 @@ class statistics_helper
         if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
             $criteria = new CDbCriteria();
             foreach ($outputs['alist'] as $al) {
-                $quotedColumnName = App()->db->quoteColumnName($al[2]);
+                $quotedColumnName = App()->db->quoteColumnName($al2);
                 if ($noncompleted > 1 ) {
                     // database can use blob due to encryption
                     switch ($sDatabaseType) {
@@ -2250,19 +2253,22 @@ class statistics_helper
             }
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
             if (isset($al[2]) && $al[2]) {
+                if ($al2[1] === 'Q') {
+                    $al2 = substr($al2, 1);
+                }
                 //handling for "other" option
                 if ($al[0] == gT("Other")) {
                     if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST) {
                         // It is better for single choice question types to filter on the number of '-oth-' entries, than to
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
                         /* This query selects a count of responses where "other" has been selected */
-                        $columnName = substr((string) $al[2], 0, strlen((string) $al[2]) - 5);
+                        $columnName = (string) $al2;
                         $othEncrypted = getEncryptedCondition($responseModel, $columnName, '-oth-');
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($columnName)."='{$othEncrypted}'";
                     } else {
                         //get data - select a count of responses where no answer is provided
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al2)." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al2)." LIKE '')";
                     }
                 }
 
@@ -2283,21 +2289,21 @@ class statistics_helper
                     //free text answers
                     if ($al[0] == "Answer") {
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al2)." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al2)." LIKE '')";
                     }
                     //"no answer" handling
                     elseif ($al[0] == "NoAnswer") {
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ( ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." = '')" : " (".Yii::app()->db->quoteColumnName($al[2])." LIKE ''))";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al2)." = '')" : " (".Yii::app()->db->quoteColumnName($al2)." LIKE ''))";
                     }
                 } elseif ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
                     $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ( ";
-                    $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." <> '')" : " (".Yii::app()->db->quoteColumnName($al[2])." NOT LIKE ''))";
+                    $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al2)." <> '')" : " (".Yii::app()->db->quoteColumnName($al2)." NOT LIKE ''))";
                 // all other question types
                 } else {
                     $value = (substr((string) $rt, 0, 1) == "R") ? $al[0] : 'Y';
-                    $encryptedValue = getEncryptedCondition($responseModel, $al[2], $value);
-                    $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al[2])." = '$encryptedValue'";
+                    $encryptedValue = getEncryptedCondition($responseModel, $al2, $value);
+                    $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al2)." = '$encryptedValue'";
                 }
             }    //end if -> alist set
             else {
@@ -2365,9 +2371,9 @@ class statistics_helper
             //"Answer" means that we show an option to list answer to "other" text field
             elseif (($al[0] === gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === "O" && $al[0] === gT("Comments")) || $outputs['qtype'] === "P") && count($al) > 2) {
                 if ($outputs['qtype'] == "P") {
-                    $sColumnName = $al[2] . "comment";
+                    $sColumnName = $al2 . "_Ccomment";
                 } else {
-                    $sColumnName = $al[2];
+                    $sColumnName = $al2;
                 }
                 $ColumnName_RM[] = $sColumnName;
                 if ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
@@ -2698,7 +2704,7 @@ class statistics_helper
         if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
             $criteria = new CDbCriteria();
             foreach ($outputs['alist'] as $al) {
-                $quotedColumnName = App()->db->quoteColumnName($al[2]);
+                $quotedColumnName = App()->db->quoteColumnName($al2);
                 if ($noncompleted > 1 ) {
                     // database can use blob due to encryption
                     switch ($sDatabaseType) {
@@ -3519,6 +3525,9 @@ class statistics_helper
 
         //loop through all selected questions
         foreach ($runthrough as $rt) {
+            if ($rt[1] === 'Q') {
+                $rt = substr($rt, 1);
+            }
             ////Step 1: Get information about this response field (SGQA) for the summary
             $outputs = $this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
             //$sOutputHTML .= $outputs['statisticsoutput']; // Nothing interesting for us in this output
@@ -3733,9 +3742,12 @@ class statistics_helper
 
             //loop through all selected questions
             foreach ($runthrough as $rt) {
+                if ($rt[1] === 'Q') {
+                    $rt = substr($rt, 1);
+                }
                 //Step 1: Get information about this response field (SGQA) for the summary
                 $outputs = $this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
-                $sOutputHTML .= $outputs['statisticsoutput'];
+                $sOutputHTML .= $outputs['statisticsoutput'] ?? '';
                 //2. Collect and Display results #######################################################################
                 if (isset($outputs['alist']) && $outputs['alist']) {
                     //Make sure there really is an answerlist, and if so:
@@ -4041,6 +4053,9 @@ class statistics_helper
 
             //loop through all selected questions
             foreach ($runthrough as $rt) {
+                if ($rt[1] === 'Q') {
+                    $rt = substr($rt, 1);
+                }
                 //Step 1: Get information about this response field (SGQA) for the summary
                 $outputs = $this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
                 $sOutputHTML .= $outputs['statisticsoutput'];
