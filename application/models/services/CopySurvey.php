@@ -83,7 +83,10 @@ class CopySurvey
 
         if ($this->options->isQuotas()) {
             $copySurveyQuotas = new CopySurveyQuotas($this->sourceSurvey, $destinationSurvey);
-            $copySurveyResult->setCntQuotas($copySurveyQuotas->copyQuotas($mappingGroupIdsAndQuestionIds['questionIds']));
+            $copySurveyResult->setCntQuotas($copySurveyQuotas->copyQuotas(
+                $mappingGroupIdsAndQuestionIds['questionIds'],
+                $this->options->isResourcesAndLinks()
+            ));
         }
 
         if ($this->options->isConditions()) {
@@ -345,11 +348,19 @@ class CopySurvey
     private function copySurveyAssessments($copySurveyResult, $destinationSurvey, $mappingGroupIds)
     {
         $cntCopiedAssessments = 0;
-        //only get assessment for the base language, as id+language is primary key...
+        //first get all assessments for the survey  for the base language, as id+language is primary key...
         $assessments = Assessment::model()->findAllByAttributes(['sid' => $this->sourceSurvey->sid, 'language' => $this->sourceSurvey->language]);
         foreach ($assessments as $assessment) {
             $destinationAssessment = new Assessment();
             $destinationAssessment->attributes = $assessment->attributes;
+            if ($this->options->isResourcesAndLinks()){
+                $destinationAssessment->message = translateLinks(
+                    'survey',
+                    $this->sourceSurvey->sid,
+                    $destinationSurvey->sid,
+                    $destinationAssessment->message
+                );
+            }
             $destinationAssessment->minimum = $assessment->minimum;
             $destinationAssessment->maximum = $assessment->maximum;
             $destinationAssessment->sid = $destinationSurvey->sid;
@@ -364,12 +375,19 @@ class CopySurvey
                     $langAssessment = new Assessment();
                     $langAssessment->attributes = $assessmentLangEntry->attributes;
                     $langAssessment->language = $assessmentLangEntry->language;
+                    if ($this->options->isResourcesAndLinks()){
+                        $langAssessment->message = translateLinks(
+                          'survey',
+                            $this->sourceSurvey->sid,
+                            $destinationSurvey->sid,
+                            $langAssessment->message
+                        );
+                    }
                     $langAssessment->minimum = $assessmentLangEntry->minimum;
                     $langAssessment->maximum = $assessmentLangEntry->maximum;
                     $langAssessment->sid = $destinationSurvey->sid;
                     $langAssessment->gid = $mappingGroupIds[$assessment->gid];
                     $langAssessment->id = $destinationAssessment->id;
-                    //var_dump($langAssessment->language . ' id: '. $langAssessment->id);
                     $langAssessment->save();
                 }
             }

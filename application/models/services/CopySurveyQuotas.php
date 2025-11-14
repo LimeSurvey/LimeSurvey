@@ -31,10 +31,11 @@ class CopySurveyQuotas
      * @param array $mappingQuestionIds A mapping of question IDs between the source and destination surveys.
      *              $mappingQuestionIds[sourceQuestionId] = destinationQuestionId;
      *              (e.g. $mappingQuestionIds[3520] = 7452;)
+     * @param bool $adaptLinks Whether to adapt links in the copied quotas.
      *
      * @return int amount of copied quotas
      */
-    public function copyQuotas($mappingQuestionIds)
+    public function copyQuotas($mappingQuestionIds, $adaptLinks = false)
     {
         // Get all quotas from the source survey
         $surveyQuotas = Quota::model()->findAllByAttributes(['sid' => $this->sourceSurvey->sid]);
@@ -53,6 +54,14 @@ class CopySurveyQuotas
                     foreach ($surveyQuotasLanguages as $quotaLanguage) {
                         $newQuotaLanguage = new QuotaLanguageSetting();
                         $newQuotaLanguage->attributes = $quotaLanguage->attributes;
+                        if ($adaptLinks) {
+                            $newQuotaLanguage->quotals_message = translateLinks(
+                                'survey',
+                                $this->sourceSurvey->sid,
+                                $this->destinationSurvey->sid,
+                                $newQuotaLanguage->quotals_message
+                            );
+                        }
                         $newQuotaLanguage->quotals_quota_id = $newQuota->id;
                         $newQuotaLanguage->save();
                     }
