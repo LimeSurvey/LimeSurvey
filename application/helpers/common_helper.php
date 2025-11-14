@@ -3067,7 +3067,7 @@ function showJavaScript($sContent)
 
 /**
  * Only clean temp directory if modification date of any non-symlinked directory found is older then 25 hours
- *
+ * Even if the setting is activated to only symlink assets, there are still some asset dirs that are not symlinked.
  * @return void
  */
 function cleanCacheTempDirectoryDaily()
