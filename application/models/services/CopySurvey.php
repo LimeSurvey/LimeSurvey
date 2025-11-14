@@ -207,7 +207,13 @@ class CopySurvey
                     $destinationSurvey->sid,
                     $destLangSet->email_admin_responses
                 );
-                //todo attached files in attachments
+                $destLangSet->attachments = translateLinks(
+                    'survey',
+                    $this->sourceSurvey->sid,
+                    $destinationSurvey->sid,
+                    $destLangSet->attachments,
+                    true
+                );
             }
             $destLangSet->surveyls_survey_id = $destinationSurvey->sid;
             $destLangSet->surveyls_language = $sourceLanguageSetting->surveyls_language;
