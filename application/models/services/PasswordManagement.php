@@ -164,7 +164,6 @@ class PasswordManagement
             $now = new DateTime();
             $this->user->last_forgot_email_password = $now->format('Y-m-d H:i:s');
             $this->user->save();
-            $username = sprintf(gT('Username: %s'), $this->user->users_name);
             /* Usage of Yii::app()->createAbsoluteUrl, disable publicurl, See mantis #19619 */
             $linkToResetPage = \Yii::app()->createAbsoluteUrl(
                 'admin/authentication/sa/newPassword/',
