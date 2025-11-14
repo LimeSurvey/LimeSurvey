@@ -3129,7 +3129,7 @@ function cleanAssetCacheDirectory($minutes = 1)
     // Loop through all directories in the assets directory
     foreach (glob($assetsPath . '/*') as $dir) {
         // Check if the directory is older than the threshold and is a directory and not symlinked
-        if (is_dir($dir) && filemtime($dir) < $threshold && !is_link($dir)) {
+        if (is_dir($dir) && filemtime($dir) < $threshold) {
             // Remove the directory if it meets the criteria
             CFileHelper::removeDirectory($dir);
         }
