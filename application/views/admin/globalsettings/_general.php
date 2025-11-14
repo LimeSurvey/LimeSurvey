@@ -209,7 +209,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <!-- Refresh assets -->
         <div class="mb-3">
             <label class="col-12 form-label" for='clearcache'>
-                <?php eT("Clear application cache:"); ?> <small>(<?php echo getGlobalSetting('customassetversionnumber'); ?>)</small>
+                <?php eT("Clear frontend cache:"); ?> <small>(<?php echo getGlobalSetting('customassetversionnumber'); ?>)</small>
             </label>
             <div class="col-12">
                 <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa" => "clearAssetsAndCache")); ?>"

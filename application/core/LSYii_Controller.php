@@ -114,9 +114,9 @@ abstract class LSYii_Controller extends CController
             }
         }
 
-        // 1% chance of cleaning up the temp directory of old files (older than 1 day)
+        // 1% chance of cleaning up the temp/cache directories of old files (older than 1 day)
         if (rand(1, 100) == 1) {
-            cleanTempDirectory();
+            cleanCacheTempDirectoryDaily();
         }
 
         //GlobalSettings Helper
