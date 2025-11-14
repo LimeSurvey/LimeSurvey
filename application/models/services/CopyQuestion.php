@@ -220,7 +220,7 @@ class CopyQuestion
                 $newSubquestLanguage->script = $subquestLanguage->script;
                 $newSubquestLanguage->qid = $copiedSubquestion->qid;
                 $newSubquestLanguage->language = $subquestLanguage->language;
-                if(!$newSubquestLanguage->save()){
+                if (!$newSubquestLanguage->save()) {
                     var_dump($newSubquestLanguage->getErrors());
                 }
             }
