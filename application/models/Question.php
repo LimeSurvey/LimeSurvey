@@ -104,7 +104,7 @@ class Question extends LSActiveRecord
     public $gid;
 
     /**
-     * Defaut relevance 
+     * Defaut relevance
      **/
     public $relevance = '';
 
@@ -117,7 +117,7 @@ class Question extends LSActiveRecord
 
     /**
      * Cached question theme instance.
-     * 
+     *
      * @var QuestionTheme
      */
     private $relatedQuestionTheme;
@@ -135,8 +135,8 @@ class Question extends LSActiveRecord
     {
         /**
          * The static model instance.
-         * 
-         * @var self $model 
+         *
+         * @var self $model
          */
         $model = parent::model($className);
         return $model;
@@ -168,7 +168,7 @@ class Question extends LSActiveRecord
 
     /**
      * Defines the relations for the Question ActiveRecord model.
-     * 
+     *
      * @inheritdoc
      *
      * @return array The relational rules for this model.
@@ -207,7 +207,7 @@ class Question extends LSActiveRecord
      * @param array  $params  Additional parameters for the relation query.
      *
      * @return mixed The related ActiveRecord object(s), or null if not found.
-     * 
+     *
      * @inheritdoc
      */
     public function getRelated($name, $refresh = false, $params = array())
@@ -432,7 +432,7 @@ class Question extends LSActiveRecord
      *
      * @param string|null $sLanguage              If you give a language then only the attributes for that language are returned
      * @param string|null $sQuestionThemeOverride Name of the question theme to use instead of the question's current theme
-     * 
+     *
      * @return array
      */
     public function getAdvancedSettingsWithValues($sLanguage = null, $sQuestionThemeOverride = null)
@@ -456,7 +456,7 @@ class Question extends LSActiveRecord
      * @param Question $oQuestion        The question instance used to resolve template attributes.
      *
      * @return array The (possibly modified) attribute definition list.
-     * 
+     *
      * @deprecated Use QuestionTheme::getAdditionalAttrFromExtendedTheme() to retrieve
      *             question theme attributes and QuestionAttributeHelper->mergeQuestionAttributes()
      *             to merge them with base attributes.
@@ -599,7 +599,7 @@ class Question extends LSActiveRecord
      * Delete all subquestions that belong to this question.
      *
      * @param ?array $exceptIds Don't delete subquestions with these ids.
-     * 
+     *
      * @return void
      */
     public function deleteAllSubquestions($exceptIds = [])
@@ -720,7 +720,7 @@ class Question extends LSActiveRecord
      * @param string|null $language Language code used for translation of labels.
      *
      * @return array The question type definitions.
-     * 
+     *
      * @deprecated Use QuestionTheme::findQuestionMetaDataForAllTypes() instead.
      */
     public static function typeList($language = null)
@@ -743,9 +743,9 @@ class Question extends LSActiveRecord
      * @param string $sType The question type identifier.
      *
      * @return string The question type name/description.
-     * 
+     *
      * @deprecated Use $this->questionType->description instead.
-     * 
+     *
      * @todo Move this logic to QuestionType or typeList.
      */
     public static function getQuestionTypeName($sType)
@@ -768,66 +768,66 @@ class Question extends LSActiveRecord
     public static function getQuestionClass($sType)
     {
         switch ($sType) {
-        case Question::QT_1_ARRAY_DUAL:
-            return 'array-flexible-dual-scale';
-        case Question::QT_5_POINT_CHOICE:
-            return 'choice-5-pt-radio';
-        case Question::QT_A_ARRAY_5_POINT:
-            return 'array-5-pt';
-        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
-            return 'array-10-pt';
-        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
-            return 'array-yes-uncertain-no';
-        case Question::QT_D_DATE:
-            return 'date';
-        case Question::QT_E_ARRAY_INC_SAME_DEC:
-            return 'array-increase-same-decrease';
-        case Question::QT_F_ARRAY:
-            return 'array-flexible-row';
-        case Question::QT_G_GENDER:
-            return 'gender';
-        case Question::QT_H_ARRAY_COLUMN:
-            return 'array-flexible-column';
-        case Question::QT_I_LANGUAGE:
-            return 'language';
-        case Question::QT_K_MULTIPLE_NUMERICAL:
-            return 'numeric-multi';
-        case Question::QT_L_LIST:
-            return 'list-radio';
-        case Question::QT_M_MULTIPLE_CHOICE:
-            return 'multiple-opt';
-        case Question::QT_N_NUMERICAL:
-            return 'numeric';
-        case Question::QT_O_LIST_WITH_COMMENT:
-            return 'list-with-comment';
-        case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
-            return 'multiple-opt-comments';
-        case Question::QT_Q_MULTIPLE_SHORT_TEXT:
-            return 'multiple-short-txt';
-        case Question::QT_R_RANKING:
-            return 'ranking';
-        case Question::QT_S_SHORT_FREE_TEXT:
-            return 'text-short';
-        case Question::QT_T_LONG_FREE_TEXT:
-            return 'text-long';
-        case Question::QT_U_HUGE_FREE_TEXT:
-            return 'text-huge';
-        case Question::QT_X_TEXT_DISPLAY:
-            return 'boilerplate';
-        case Question::QT_Y_YES_NO_RADIO:
-            return 'yes-no';
-        case Question::QT_EXCLAMATION_LIST_DROPDOWN:
-            return 'list-dropdown';
-        case Question::QT_COLON_ARRAY_NUMBERS:
-            return 'array-multi-flexi';
-        case Question::QT_SEMICOLON_ARRAY_TEXT:
-            return 'array-multi-flexi-text';
-        case Question::QT_VERTICAL_FILE_UPLOAD:
-            return 'upload-files';
-        case Question::QT_ASTERISK_EQUATION:
-            return 'equation';
-        default:
-            return 'generic_question'; // fallback
+            case Question::QT_1_ARRAY_DUAL:
+                return 'array-flexible-dual-scale';
+            case Question::QT_5_POINT_CHOICE:
+                return 'choice-5-pt-radio';
+            case Question::QT_A_ARRAY_5_POINT:
+                return 'array-5-pt';
+            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
+                return 'array-10-pt';
+            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
+                return 'array-yes-uncertain-no';
+            case Question::QT_D_DATE:
+                return 'date';
+            case Question::QT_E_ARRAY_INC_SAME_DEC:
+                return 'array-increase-same-decrease';
+            case Question::QT_F_ARRAY:
+                return 'array-flexible-row';
+            case Question::QT_G_GENDER:
+                return 'gender';
+            case Question::QT_H_ARRAY_COLUMN:
+                return 'array-flexible-column';
+            case Question::QT_I_LANGUAGE:
+                return 'language';
+            case Question::QT_K_MULTIPLE_NUMERICAL:
+                return 'numeric-multi';
+            case Question::QT_L_LIST:
+                return 'list-radio';
+            case Question::QT_M_MULTIPLE_CHOICE:
+                return 'multiple-opt';
+            case Question::QT_N_NUMERICAL:
+                return 'numeric';
+            case Question::QT_O_LIST_WITH_COMMENT:
+                return 'list-with-comment';
+            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
+                return 'multiple-opt-comments';
+            case Question::QT_Q_MULTIPLE_SHORT_TEXT:
+                return 'multiple-short-txt';
+            case Question::QT_R_RANKING:
+                return 'ranking';
+            case Question::QT_S_SHORT_FREE_TEXT:
+                return 'text-short';
+            case Question::QT_T_LONG_FREE_TEXT:
+                return 'text-long';
+            case Question::QT_U_HUGE_FREE_TEXT:
+                return 'text-huge';
+            case Question::QT_X_TEXT_DISPLAY:
+                return 'boilerplate';
+            case Question::QT_Y_YES_NO_RADIO:
+                return 'yes-no';
+            case Question::QT_EXCLAMATION_LIST_DROPDOWN:
+                return 'list-dropdown';
+            case Question::QT_COLON_ARRAY_NUMBERS:
+                return 'array-multi-flexi';
+            case Question::QT_SEMICOLON_ARRAY_TEXT:
+                return 'array-multi-flexi-text';
+            case Question::QT_VERTICAL_FILE_UPLOAD:
+                return 'upload-files';
+            case Question::QT_ASTERISK_EQUATION:
+                return 'equation';
+            default:
+                return 'generic_question'; // fallback
         };
     }
 
@@ -994,7 +994,8 @@ class Question extends LSActiveRecord
         // Sort by Answer's own sort order
         foreach ($answerOptions as $scaleId => $scaleArray) {
             usort(
-                $scaleArray, function ($a, $b) {
+                $scaleArray,
+                function ($a, $b) {
                     return $a->sortorder > $b->sortorder
                     ? 1
                     : ($a->sortorder < $b->sortorder ? -1 : 0);
@@ -1066,7 +1067,8 @@ class Question extends LSActiveRecord
             $aOrderedSubquestions = ls\mersenne\shuffle($aOrderedSubquestions);
         } else {
             usort(
-                $aOrderedSubquestions, function ($oQuestionA, $oQuestionB) {
+                $aOrderedSubquestions,
+                function ($oQuestionA, $oQuestionB) {
                     if ($oQuestionA->question_order == $oQuestionB->question_order) {
                         return 0;
                     }
@@ -1083,7 +1085,8 @@ class Question extends LSActiveRecord
             }
             //if  exclude_all_others is set then the related answer should keep its position at all times
             //thats why we have to re-position it if it has been randomized
-            if (($this->getQuestionAttribute('exclude_all_others') != '' && $this->getQuestionAttribute('random_order') == 1)
+            if (
+                ($this->getQuestionAttribute('exclude_all_others') != '' && $this->getQuestionAttribute('random_order') == 1)
                 && ($oSubquestion->title == $this->getQuestionAttribute('exclude_all_others'))
             ) {
                 $excludedSubquestionPosition = (safecount($aSubQuestions[$oSubquestion->scale_id]) - 1);
@@ -1404,7 +1407,8 @@ class Question extends LSActiveRecord
         }
 
         $dataProvider = new CActiveDataProvider(
-            'Question', array(
+            'Question',
+            array(
             'criteria' => $criteria,
             'sort' => $sort,
             'pagination' => array(
@@ -1431,7 +1435,7 @@ class Question extends LSActiveRecord
 
     /**
      * Prepare question before saving.
-     * 
+     *
      * - Block type changes on active surveys (keep original question type).
      * - Update survey lastmodified timestamp when the question changes.
      *
@@ -1466,6 +1470,8 @@ class Question extends LSActiveRecord
             $this->sid,
             ['lastmodified' => gmdate('Y-m-d H:i:s')]
         );
+
+        return true;
     }
 
     /**
@@ -1613,95 +1619,95 @@ class Question extends LSActiveRecord
         $type = $type ?? $this->type;
         LoadQuestionTypes::load($type);
         switch ($type) {
-        case Question::QT_X_TEXT_DISPLAY:
-            $oRenderer = new RenderBoilerplate($aFieldArray);
-            break;
-        case Question::QT_5_POINT_CHOICE:
-            $oRenderer = new RenderFivePointChoice($aFieldArray);
-            break;
-        case Question::QT_ASTERISK_EQUATION:
-            $oRenderer = new RenderEquation($aFieldArray);
-            break;
-        case Question::QT_D_DATE:
-            $oRenderer = new RenderDate($aFieldArray);
-            break;
-        case Question::QT_1_ARRAY_DUAL:
-            $oRenderer = new RenderArrayMultiscale($aFieldArray);
-            break;
-        case Question::QT_L_LIST:
-            $oRenderer = new RenderListRadio($aFieldArray);
-            break;
-        case Question::QT_EXCLAMATION_LIST_DROPDOWN:
-            $oRenderer = new RenderListDropdown($aFieldArray);
-            break;
-        case Question::QT_O_LIST_WITH_COMMENT:
-            $oRenderer = new RenderListComment($aFieldArray);
-            break;
-        case Question::QT_R_RANKING:
-            $oRenderer = new RenderRanking($aFieldArray);
-            break;
-        case Question::QT_M_MULTIPLE_CHOICE:
-            $oRenderer = new RenderMultipleChoice($aFieldArray);
-            break;
-        case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
-            $oRenderer = new RenderMultipleChoiceWithComments($aFieldArray);
-            break;
-        case Question::QT_I_LANGUAGE:
-            $oRenderer = new RenderLanguageSelector($aFieldArray);
-            break;
-        case Question::QT_Q_MULTIPLE_SHORT_TEXT:
-            $oRenderer = new RenderMultipleShortText($aFieldArray);
-            break;
-        case Question::QT_T_LONG_FREE_TEXT:
-            $oRenderer = new RenderLongFreeText($aFieldArray);
-            break;
-        case Question::QT_U_HUGE_FREE_TEXT:
-            $oRenderer = new RenderHugeFreeText($aFieldArray);
-            break;
-        case Question::QT_K_MULTIPLE_NUMERICAL:
-            $oRenderer = new RenderMultipleNumerical($aFieldArray);
-            break;
-        case Question::QT_A_ARRAY_5_POINT:
-            $oRenderer = new RenderArray5ChoiceQuestion($aFieldArray);
-            break;
-        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
-            $oRenderer = new RenderArray10ChoiceQuestion($aFieldArray);
-            break;
-        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
-            $oRenderer = new RenderArrayYesUncertainNo($aFieldArray);
-            break;
-        case Question::QT_E_ARRAY_INC_SAME_DEC:
-            $oRenderer = new RenderArrayOfIncSameDecQuestions($aFieldArray);
-            break;
-        case Question::QT_F_ARRAY:
-            $oRenderer = new RenderArrayFlexibleRow($aFieldArray);
-            break;
-        case Question::QT_G_GENDER:
-            $oRenderer = new RenderGenderDropdown($aFieldArray);
-            break;
-        case Question::QT_H_ARRAY_COLUMN:
-            $oRenderer = new RendererArrayFlexibleColumn($aFieldArray);
-            break;
-        case Question::QT_N_NUMERICAL:
-            $oRenderer = new RenderNumerical($aFieldArray);
-            break;
-        case Question::QT_S_SHORT_FREE_TEXT:
-            $oRenderer = new RenderShortFreeText($aFieldArray);
-            break;
-        case Question::QT_Y_YES_NO_RADIO:
-            $oRenderer = new RenderYesNoRadio($aFieldArray);
-            break;
-        case Question::QT_COLON_ARRAY_NUMBERS:
-            $oRenderer = new RenderArrayMultiFlexNumbers($aFieldArray);
-            break;
-        case Question::QT_SEMICOLON_ARRAY_TEXT:
-            $oRenderer = new RenderArrayMultiFlexText($aFieldArray);
-            break;
-        case Question::QT_VERTICAL_FILE_UPLOAD:
-            $oRenderer = new RenderFileUpload($aFieldArray);
-            break;
-        default:
-            throw new InvalidArgumentException('Missing question type in getRenderererObject');
+            case Question::QT_X_TEXT_DISPLAY:
+                $oRenderer = new RenderBoilerplate($aFieldArray);
+                break;
+            case Question::QT_5_POINT_CHOICE:
+                $oRenderer = new RenderFivePointChoice($aFieldArray);
+                break;
+            case Question::QT_ASTERISK_EQUATION:
+                $oRenderer = new RenderEquation($aFieldArray);
+                break;
+            case Question::QT_D_DATE:
+                $oRenderer = new RenderDate($aFieldArray);
+                break;
+            case Question::QT_1_ARRAY_DUAL:
+                $oRenderer = new RenderArrayMultiscale($aFieldArray);
+                break;
+            case Question::QT_L_LIST:
+                $oRenderer = new RenderListRadio($aFieldArray);
+                break;
+            case Question::QT_EXCLAMATION_LIST_DROPDOWN:
+                $oRenderer = new RenderListDropdown($aFieldArray);
+                break;
+            case Question::QT_O_LIST_WITH_COMMENT:
+                $oRenderer = new RenderListComment($aFieldArray);
+                break;
+            case Question::QT_R_RANKING:
+                $oRenderer = new RenderRanking($aFieldArray);
+                break;
+            case Question::QT_M_MULTIPLE_CHOICE:
+                $oRenderer = new RenderMultipleChoice($aFieldArray);
+                break;
+            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
+                $oRenderer = new RenderMultipleChoiceWithComments($aFieldArray);
+                break;
+            case Question::QT_I_LANGUAGE:
+                $oRenderer = new RenderLanguageSelector($aFieldArray);
+                break;
+            case Question::QT_Q_MULTIPLE_SHORT_TEXT:
+                $oRenderer = new RenderMultipleShortText($aFieldArray);
+                break;
+            case Question::QT_T_LONG_FREE_TEXT:
+                $oRenderer = new RenderLongFreeText($aFieldArray);
+                break;
+            case Question::QT_U_HUGE_FREE_TEXT:
+                $oRenderer = new RenderHugeFreeText($aFieldArray);
+                break;
+            case Question::QT_K_MULTIPLE_NUMERICAL:
+                $oRenderer = new RenderMultipleNumerical($aFieldArray);
+                break;
+            case Question::QT_A_ARRAY_5_POINT:
+                $oRenderer = new RenderArray5ChoiceQuestion($aFieldArray);
+                break;
+            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
+                $oRenderer = new RenderArray10ChoiceQuestion($aFieldArray);
+                break;
+            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
+                $oRenderer = new RenderArrayYesUncertainNo($aFieldArray);
+                break;
+            case Question::QT_E_ARRAY_INC_SAME_DEC:
+                $oRenderer = new RenderArrayOfIncSameDecQuestions($aFieldArray);
+                break;
+            case Question::QT_F_ARRAY:
+                $oRenderer = new RenderArrayFlexibleRow($aFieldArray);
+                break;
+            case Question::QT_G_GENDER:
+                $oRenderer = new RenderGenderDropdown($aFieldArray);
+                break;
+            case Question::QT_H_ARRAY_COLUMN:
+                $oRenderer = new RendererArrayFlexibleColumn($aFieldArray);
+                break;
+            case Question::QT_N_NUMERICAL:
+                $oRenderer = new RenderNumerical($aFieldArray);
+                break;
+            case Question::QT_S_SHORT_FREE_TEXT:
+                $oRenderer = new RenderShortFreeText($aFieldArray);
+                break;
+            case Question::QT_Y_YES_NO_RADIO:
+                $oRenderer = new RenderYesNoRadio($aFieldArray);
+                break;
+            case Question::QT_COLON_ARRAY_NUMBERS:
+                $oRenderer = new RenderArrayMultiFlexNumbers($aFieldArray);
+                break;
+            case Question::QT_SEMICOLON_ARRAY_TEXT:
+                $oRenderer = new RenderArrayMultiFlexText($aFieldArray);
+                break;
+            case Question::QT_VERTICAL_FILE_UPLOAD:
+                $oRenderer = new RenderFileUpload($aFieldArray);
+                break;
+            default:
+                throw new InvalidArgumentException('Missing question type in getRenderererObject');
                 break;
         };
 
@@ -1728,66 +1734,66 @@ class Question extends LSActiveRecord
         LoadQuestionTypes::load($type);
 
         switch ($type) {
-        case Question::QT_X_TEXT_DISPLAY:
-            return new DataSetBoilerplate($this->qid);
-        case Question::QT_5_POINT_CHOICE:
-            return new DataSetFivePointChoice($this->qid);
-        case Question::QT_ASTERISK_EQUATION:
-            return new DataSetEquation($this->qid);
-        case Question::QT_D_DATE:
-            return new DataSetDate($this->qid);
-        case Question::QT_1_ARRAY_DUAL:
-            return new DataSetArrayMultiscale($this->qid);
-        case Question::QT_L_LIST:
-            return new DataSetListRadio($this->qid);
-        case Question::QT_EXCLAMATION_LIST_DROPDOWN:
-            return new DataSetListDropdown($this->qid);
-        case Question::QT_O_LIST_WITH_COMMENT:
-            return new DataSetListWithComment($this->qid);
-        case Question::QT_R_RANKING:
-            return new DataSetRanking($this->qid);
-        case Question::QT_M_MULTIPLE_CHOICE:
-            return new DataSetMultipleChoice($this->qid);
-        case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
-            return new DataSetMultipleChoiceWithComments($this->qid);
-        case Question::QT_I_LANGUAGE:
-            return new DataSetLanguage($this->qid);
-        case Question::QT_Q_MULTIPLE_SHORT_TEXT:
-            return new DataSetMultipleShortText($this->qid);
-        case Question::QT_T_LONG_FREE_TEXT:
-            return new DataSetLongFreeText($this->qid);
-        case Question::QT_U_HUGE_FREE_TEXT:
-            return new DataSetHugeFreeText($this->qid);
-        case Question::QT_K_MULTIPLE_NUMERICAL:
-            return new DataSetMultipleNumerical($this->qid);
-        case Question::QT_A_ARRAY_5_POINT:
-            return new DataSetArray5ChoiceQuestion($this->qid);
-        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
-            return new DataSetArray10ChoiceQuestion($this->qid);
-        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
-            return new DataSetArrayYesUncertainNo($this->qid);
-        case Question::QT_E_ARRAY_INC_SAME_DEC:
-            return new DataSetArrayOfIncSameDecQuestions($this->qid);
-        case Question::QT_F_ARRAY:
-            return new DataSetArrayFlexibleRow($this->qid);
-        case Question::QT_G_GENDER:
-            return new DataSetGenderDropdown($this->qid);
-        case Question::QT_H_ARRAY_COLUMN:
-            return new DataSetArrayFlexibleColumn($this->qid);
-        case Question::QT_N_NUMERICAL:
-            return new DataSetNumerical($this->qid);
-        case Question::QT_S_SHORT_FREE_TEXT:
-            return new DataSetShortFreeText($this->qid);
-        case Question::QT_Y_YES_NO_RADIO:
-            return new DataSetYesNoRadio($this->qid);
-        case Question::QT_COLON_ARRAY_NUMBERS:
-            return new DataSetArrayMultiFlexNumbers($this->qid);
-        case Question::QT_SEMICOLON_ARRAY_TEXT:
-            return new DataSetArrayMultiFlexText($this->qid);
-        case Question::QT_VERTICAL_FILE_UPLOAD:
-            return new DataSetFileUpload($this->qid);
-        default:
-            throw new InvalidArgumentException('Missing question type in getDataSetObject');
+            case Question::QT_X_TEXT_DISPLAY:
+                return new DataSetBoilerplate($this->qid);
+            case Question::QT_5_POINT_CHOICE:
+                return new DataSetFivePointChoice($this->qid);
+            case Question::QT_ASTERISK_EQUATION:
+                return new DataSetEquation($this->qid);
+            case Question::QT_D_DATE:
+                return new DataSetDate($this->qid);
+            case Question::QT_1_ARRAY_DUAL:
+                return new DataSetArrayMultiscale($this->qid);
+            case Question::QT_L_LIST:
+                return new DataSetListRadio($this->qid);
+            case Question::QT_EXCLAMATION_LIST_DROPDOWN:
+                return new DataSetListDropdown($this->qid);
+            case Question::QT_O_LIST_WITH_COMMENT:
+                return new DataSetListWithComment($this->qid);
+            case Question::QT_R_RANKING:
+                return new DataSetRanking($this->qid);
+            case Question::QT_M_MULTIPLE_CHOICE:
+                return new DataSetMultipleChoice($this->qid);
+            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
+                return new DataSetMultipleChoiceWithComments($this->qid);
+            case Question::QT_I_LANGUAGE:
+                return new DataSetLanguage($this->qid);
+            case Question::QT_Q_MULTIPLE_SHORT_TEXT:
+                return new DataSetMultipleShortText($this->qid);
+            case Question::QT_T_LONG_FREE_TEXT:
+                return new DataSetLongFreeText($this->qid);
+            case Question::QT_U_HUGE_FREE_TEXT:
+                return new DataSetHugeFreeText($this->qid);
+            case Question::QT_K_MULTIPLE_NUMERICAL:
+                return new DataSetMultipleNumerical($this->qid);
+            case Question::QT_A_ARRAY_5_POINT:
+                return new DataSetArray5ChoiceQuestion($this->qid);
+            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
+                return new DataSetArray10ChoiceQuestion($this->qid);
+            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
+                return new DataSetArrayYesUncertainNo($this->qid);
+            case Question::QT_E_ARRAY_INC_SAME_DEC:
+                return new DataSetArrayOfIncSameDecQuestions($this->qid);
+            case Question::QT_F_ARRAY:
+                return new DataSetArrayFlexibleRow($this->qid);
+            case Question::QT_G_GENDER:
+                return new DataSetGenderDropdown($this->qid);
+            case Question::QT_H_ARRAY_COLUMN:
+                return new DataSetArrayFlexibleColumn($this->qid);
+            case Question::QT_N_NUMERICAL:
+                return new DataSetNumerical($this->qid);
+            case Question::QT_S_SHORT_FREE_TEXT:
+                return new DataSetShortFreeText($this->qid);
+            case Question::QT_Y_YES_NO_RADIO:
+                return new DataSetYesNoRadio($this->qid);
+            case Question::QT_COLON_ARRAY_NUMBERS:
+                return new DataSetArrayMultiFlexNumbers($this->qid);
+            case Question::QT_SEMICOLON_ARRAY_TEXT:
+                return new DataSetArrayMultiFlexText($this->qid);
+            case Question::QT_VERTICAL_FILE_UPLOAD:
+                return new DataSetFileUpload($this->qid);
+            default:
+                throw new InvalidArgumentException('Missing question type in getDataSetObject');
         };
     }
 
@@ -2152,7 +2158,7 @@ class Question extends LSActiveRecord
 
     /**
      * Returns the list of question types that are considered dual-scale.
-     * 
+     *
      * @return string[]
      */
     public function getDualScaleTypes()
