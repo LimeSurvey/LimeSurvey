@@ -1,17 +1,16 @@
 <?php
 
-/*
-* LimeSurvey
-* Copyright (C) 2013-2022 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*
-*/
+/**
+ * LimeSurvey
+ * Copyright (C) 2013-2022 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ */
 
 use LimeSurvey\Helpers\questionHelper;
 
@@ -36,16 +35,16 @@ use LimeSurvey\Helpers\questionHelper;
  * @property string $modulename
  * @property integer $same_script Whether the same script should be used for all languages
  *
- * @property Survey $survey
- * @property QuestionGroup $group
- * @property Question $parent
- * @property Question[] $subquestions
- * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
- * @property QuestionL10n[] $questionl10ns Question Languagesettings indexd by language code
- * @property string[] $quotableTypes Question types that can be used for quotas
- * @property Answer[] $answers
- * @property QuestionType $questionType
- * @property array $allSubQuestionIds QID-s of all question subquestions, empty array returned if no subquestions
+ * @property   Survey $survey
+ * @property   QuestionGroup $group
+ * @property   Question $parent
+ * @property   Question[] $subquestions
+ * @property   QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
+ * @property   QuestionL10n[] $questionl10ns Question Languagesettings indexd by language code
+ * @property   string[] $quotableTypes Question types that can be used for quotas
+ * @property   Answer[] $answers
+ * @property   QuestionType $questionType
+ * @property   array $allSubQuestionIds QID-s of all question subquestions, empty array returned if no subquestions
  * @inheritdoc
  */
 class Question extends LSActiveRecord
@@ -95,41 +94,85 @@ class Question extends LSActiveRecord
 
     const DEFAULT_QUESTION_THEME = 'core';  // The question theme name to use when no theme is specified
 
-    /** @var string $group_name Stock the active group_name for questions list filtering */
+    /**
+     * Stores the active group name used for question list filtering.
+     *
+     * @var string
+     */
     public $group_name;
+
     public $gid;
-    /** Defaut relevance **/
+
+    /**
+     * Defaut relevance
+     **/
     public $relevance = '';
-    /** defaut same_script , avoid public break during update **/
+
+    /**
+     * Default value for same_script; prevents breaking public behavior during updates.
+     *
+     * @var int
+     */
     public $same_script = 0;
 
-    /** @var QuestionTheme cached question theme*/
+    /**
+     * Cached question theme instance.
+     *
+     * @var QuestionTheme
+     */
     private $relatedQuestionTheme;
 
     /**
+     * Returns the static model instance of the specified AR class.
+     *
+     * @param string $className The active record class name.
+     *
      * @inheritdoc
-     * @return Question
+     *
+     * @return Question The static model instance.
      */
     public static function model($className = __CLASS__)
     {
-        /** @var self $model */
+        /**
+         * The static model instance.
+         *
+         * @var self $model
+         */
         $model = parent::model($className);
         return $model;
     }
 
-    /** @inheritdoc */
+    /**
+     * Returns the database table name for the Question model.
+     *
+     * @inheritdoc
+     *
+     * @return string The table name.
+     */
     public function tableName()
     {
         return '{{questions}}';
     }
 
-    /** @inheritdoc */
+    /**
+     * Returns the primary key for the Question model.
+     *
+     * @inheritdoc
+     *
+     * @return string The primary key column name.
+     */
     public function primaryKey()
     {
         return 'qid';
     }
 
-    /** @inheritdoc */
+    /**
+     * Defines the relations for the Question ActiveRecord model.
+     *
+     * @inheritdoc
+     *
+     * @return array The relational rules for this model.
+     */
     public function relations()
     {
         return array(
@@ -154,8 +197,18 @@ class Question extends LSActiveRecord
     }
 
     /**
+     * Returns a related AR object or list of objects.
+     *
+     * Overrides the default Yii getRelated() to use Survey::findByPkCache when
+     * requesting the 'survey' relation without refresh or extra parameters.
+     *
+     * @param string $name    The relation name to retrieve.
+     * @param bool   $refresh Whether to reload the relation from the database.
+     * @param array  $params  Additional parameters for the relation query.
+     *
+     * @return mixed The related ActiveRecord object(s), or null if not found.
+     *
      * @inheritdoc
-     * replace under condition $oQuestion->survey to use Survey::$findByPkCache
      */
     public function getRelated($name, $refresh = false, $params = array())
     {
@@ -166,7 +219,12 @@ class Question extends LSActiveRecord
     }
 
     /**
+     * Defines the validation rules for the Question model.
+     *
      * @inheritdoc
+     *
+     * @return array Validation rules for this model.
+     *
      * TODO: make it easy to read (if possible)
      */
     public function rules()
@@ -299,8 +357,9 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * return rules specific for activated survey
-     * @return array
+     * Returns validation rules that apply when the survey is active.
+     *
+     * @return array Validation rules for active surveys.
      */
     private function rulesForActiveSurvey()
     {
@@ -311,12 +370,14 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Rewrites sort order for questions in a group
+     * Rewrites the sort order for all top-level questions in a group.
      *
-     * @static
-     * @access public
-     * @param int $gid
-     * @param int $surveyid
+     * Questions in the given group for the given survey are reordered sequentially
+     * based on their current question_order value.
+     *
+     * @param int $gid      The question group ID.
+     * @param int $surveyid The survey ID the group belongs to.
+     *
      * @return void
      */
     public static function updateSortOrder($gid, $surveyid)
@@ -335,11 +396,15 @@ class Question extends LSActiveRecord
 
 
     /**
-     * Fix sort order for questions in a group
-     * All questions in the group will be assigned a sequential question order,
-     * starting in the specified value
-     * @param int $gid
-     * @param int $startingOrder   the starting question order.
+     * Fixes the sort order for questions in a group.
+     *
+     * All top-level questions (parent_qid = 0) in the given group will be assigned
+     * a sequential question_order value starting from the specified starting value.
+     *
+     * @param int $gid           The question group ID whose questions should be reordered.
+     * @param int $startingOrder The starting question_order value.
+     *
+     * @return void
      */
     public function updateQuestionOrder($gid, $startingOrder = 1)
     {
@@ -365,8 +430,9 @@ class Question extends LSActiveRecord
      * This function returns an array of the advanced attributes for the particular question
      * including their values set in the database
      *
-     * @param string|null $sLanguage If you give a language then only the attributes for that language are returned
-     * @param string|null $sQuestionThemeOverride   Name of the question theme to use instead of the question's current theme
+     * @param string|null $sLanguage              If you give a language then only the attributes for that language are returned
+     * @param string|null $sQuestionThemeOverride Name of the question theme to use instead of the question's current theme
+     *
      * @return array
      */
     public function getAdvancedSettingsWithValues($sLanguage = null, $sQuestionThemeOverride = null)
@@ -377,16 +443,23 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Add custom attributes (if there are any custom attributes). It also removes all attributeNames where inputType is
-     * empty. Otherwise (not adding and removing anything)it returns the incoming parameter $aAttributeNames.
+     * Adds custom template attributes to the base attribute list and removes
+     * attributes with an empty input type.
      *
-     * @param array $aAttributeNames  the values from getQuestionAttributesSettings($sType)
-     * @param array $aAttributeValues  $attributeValues['question_template'] != 'core', only if this is true the function changes something
-     * @param Question $oQuestion      this is needed to check if a questionTemplate has custom attributes
-     * @return mixed  returns the incoming parameter $aAttributeNames or
+     * If the question uses a non-core question template that defines custom
+     * attributes, those attributes are merged into the given attribute definition
+     * list. Attributes with an empty input type are removed. If no changes apply,
+     * the original attribute list is returned unchanged.
      *
-     * @deprecated use QuestionTheme::getAdditionalAttrFromExtendedTheme() to retrieve question theme attributes and
-     *             QuestionAttributeHelper->mergeQuestionAttributes() to merge with base attributes.
+     * @param array    $aAttributeNames  Base attribute definitions from getQuestionAttributesSettings($sType).
+     * @param array    $aAttributeValues Attribute values, including 'question_template'.
+     * @param Question $oQuestion        The question instance used to resolve template attributes.
+     *
+     * @return array The (possibly modified) attribute definition list.
+     *
+     * @deprecated Use QuestionTheme::getAdditionalAttrFromExtendedTheme() to retrieve
+     *             question theme attributes and QuestionAttributeHelper->mergeQuestionAttributes()
+     *             to merge them with base attributes.
      */
     public static function getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion)
     {
@@ -418,15 +491,27 @@ class Question extends LSActiveRecord
         return $aAttributeNames;
     }
 
+    /**
+     * Returns the type group for this question.
+     *
+     * This method is currently unused and not implemented. It exists for legacy
+     * compatibility with older LimeSurvey code paths.
+     *
+     * @return mixed|null Always returns null until implemented.
+     */
     public function getTypeGroup()
     {
     }
 
     /**
-     * TODO: replace this function call by $oSurvey->questions defining a relation in SurveyModel
-     * @param integer $sid
-     * @param integer $gid
-     * @return CDbDataReader
+     * Retrieves all top-level questions for a given survey and question group.
+     *
+     * TODO: replace this function call by $oSurvey->questions defining a relation in SurveyModel.
+     *
+     * @param int $sid The survey ID to fetch questions for.
+     * @param int $gid The question group ID within the survey.
+     *
+     * @return CDbDataReader The data reader for the matching questions.
      */
     public function getQuestions($sid, $gid)
     {
@@ -442,9 +527,10 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Delete a bunch of questions in one go
+     * Deletes one or multiple questions and all their related records.
      *
-     * @param mixed $questionsIds
+     * @param mixed $questionsIds A single question ID or an array of question IDs to delete.
+     *
      * @return void
      */
     public static function deleteAllById($questionsIds)
@@ -464,6 +550,7 @@ class Question extends LSActiveRecord
 
     /**
      * Deletes a question and ALL its relations (subquestions, answers, etc, etc)
+     *
      * @return bool
      * @throws CDbException
      */
@@ -496,7 +583,9 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * remove question from lastVisited
+     * Removes this question from the user's list of last visited questions.
+     *
+     * @return void
      */
     public function removeFromLastVisited()
     {
@@ -510,6 +599,7 @@ class Question extends LSActiveRecord
      * Delete all subquestions that belong to this question.
      *
      * @param ?array $exceptIds Don't delete subquestions with these ids.
+     *
      * @return void
      */
     public function deleteAllSubquestions($exceptIds = [])
@@ -525,8 +615,10 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Delete all question and its subQuestion Answers
-     * @param array $exceptIds Don't delete answers with these ids.
+     * Deletes all answers for this question and its subquestions.
+     *
+     * @param array $exceptIds Answer IDs that should not be deleted.
+     *
      * @return void
      */
     public function deleteAllAnswers(array $exceptIds = [])
@@ -546,11 +638,18 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * TODO: replace it everywhere by Answer::model()->findAll([Critieria Object])
-     * @param string $fields
-     * @param mixed $condition
-     * @param string|false $orderby
-     * @return array
+     * Retrieves question records (including translations) for use in statistics.
+     *
+     * This is a legacy helper and should be replaced by
+     * Answer::model()->findAll() with an explicit Criteria object.
+     *
+     * @param string       $fields    Unused legacy parameter (kept for backward compatibility).
+     * @param mixed        $condition The condition passed to the findAll() query.
+     * @param string|false $orderby   Optional SQL ORDER BY clause. If false, no ordering is applied.
+     *
+     * @return array An array of question attributes merged with their localized attributes.
+     *
+     * @todo Replace with Answer::model()->findAll([Criteria]) everywhere.
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby = false)
     {
@@ -567,9 +666,11 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * @param integer $surveyid
-     * @param string $language
-     * @return Question[]
+     * Returns all questions of the given survey, ordered by group and question order.
+     *
+     * @param int $surveyid The ID of the survey to fetch questions for.
+     *
+     * @return Question[] List of question models belonging to the survey.
      */
     public function getQuestionList($surveyid)
     {
@@ -586,8 +687,12 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * @return string
-     * NOTE: Not used anymore. Based on a deprecated method. Should be deprecated.
+     * Returns the description for the current question type.
+     *
+     * @return string The question type description.
+     *
+     * @deprecated This method is no longer used and is based on deprecated functionality.
+     *             Use $this->questionType->description instead.
      */
     public function getTypedesc()
     {
@@ -602,37 +707,46 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * This function contains the question type definitions.
-     * @param string $language Language for translation
-     * @return array The question type definitions
+     * Returns the question type definitions.
      *
-     * Explanation of questiontype array:
+     * Explanation of the question type array:
+     *  - description   : Question description
+     *  - subquestions  : 0 = does not support subquestions, x = number of subquestion scales
+     *  - answerscales  : 0 = does not need answers, x = number of answer scales
+     *                    (usually 1, but e.g. for dual scale questions set to 2)
+     *  - assessable    : 0 = does not support assessment values when editing answers,
+     *                    1 = supports assessment values
      *
-     * description : Question description
-     * subquestions : 0= Does not support subquestions x=Number of subquestion scales
-     * answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
-     * assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
-     * @deprecated use QuestionTheme::findQuestionMetaDataForAllTypes() instead
+     * @param string|null $language Language code used for translation of labels.
+     *
+     * @return array The question type definitions.
+     *
+     * @deprecated Use QuestionTheme::findQuestionMetaDataForAllTypes() instead.
      */
     public static function typeList($language = null)
     {
         $QuestionTypes = QuestionType::modelsAttributes($language);
 
         /**
-         * @todo Check if this actually does anything, since the values are arrays.
-         */
+ * Checks whether sorting the question types has any effect.
+ *
+ * @todo Verify if this actually does anything, since the values are arrays.
+ */
         asort($QuestionTypes);
 
         return $QuestionTypes;
     }
 
     /**
-     * This function return the name by question type
-     * @param string question type
-     * @return string Question type name
+     * Returns the human-readable name for the given question type.
      *
-     * Maybe move class in typeList ?
-     * @deprecated use $this->>questionType->description instead
+     * @param string $sType The question type identifier.
+     *
+     * @return string The question type name/description.
+     *
+     * @deprecated Use $this->questionType->description instead.
+     *
+     * @todo Move this logic to QuestionType or typeList.
      */
     public static function getQuestionTypeName($sType)
     {
@@ -641,12 +755,15 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * This function return the class by question type
-     * @param string question type
-     * @return string Question class to be added to the container
+     * Returns the CSS class name associated with the given question type.
      *
-     * Maybe move class in typeList ?
-     * //TODO move to QuestionType
+     * This class is used for rendering and layout in the question container.
+     *
+     * @param string $sType The question type identifier.
+     *
+     * @return string The CSS class name for the question type.
+     *
+     * @todo Move this logic to QuestionType or typeList.
      */
     public static function getQuestionClass($sType)
     {
@@ -714,7 +831,14 @@ class Question extends LSActiveRecord
         };
     }
 
-
+    /**
+     * Returns the rendered action buttons for this question in the question list.
+     *
+     * The buttons are rendered via the GridActionsWidget and include actions such as
+     * edit, preview, summary and delete, depending on the current permissions.
+     *
+     * @return string HTML markup for the question action buttons dropdown.
+     */
     public function getbuttons()
     {
         $url         = App()->createUrl("questionAdministration/view/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
@@ -783,6 +907,214 @@ class Question extends LSActiveRecord
         );
     }
 
+    /**
+     * Returns the ordered answers for this question.
+     *
+     * If a scale ID is provided, only answers for that scale are returned. Otherwise,
+     * answers for all scales are grouped and ordered according to the question settings.
+     *
+     * @param int|null    $scale_id Optional scale ID to filter answers by.
+     * @param string|null $language Optional language code used when ordering alphabetically.
+     *
+     * @return Answer[]|array<int, Answer[]> Ordered answer options.
+     */
+    public function getOrderedAnswers($scale_id = null, $language = null)
+    {
+        //reset answers set prior to this call
+        $aAnswerOptions = [
+            0 => []
+        ];
+
+        foreach ($this->answers as $oAnswer) {
+            if ($scale_id !== null && $oAnswer->scale_id != $scale_id) {
+                continue;
+            }
+            $aAnswerOptions[$oAnswer->scale_id][] = $oAnswer;
+        }
+
+
+        if ($scale_id !== null) {
+            return $aAnswerOptions[$scale_id];
+        }
+
+        $aAnswerOptions = $this->sortAnswerOptions($aAnswerOptions, $language);
+        return $aAnswerOptions;
+    }
+
+    /**
+     * Sorts the given answer options according to the question's ordering rules.
+     *
+     * Answer options may be sorted randomly, alphabetically (based on the survey language),
+     * or by their internal sort order depending on the question attributes.
+     *
+     * @param array<int, Answer[]> $answerOptions The answer options grouped by scale ID.
+     * @param string|null          $language      Optional language code used for alphabetical sorting.
+     *
+     * @return array<int, Answer[]> The sorted answer options.
+     */
+    private function sortAnswerOptions($answerOptions, $language = null)
+    {
+        // Sort randomly if applicable
+        if ($this->shouldOrderAnswersRandomly()) {
+            foreach ($answerOptions as $scaleId => $scaleArray) {
+                $keys = array_keys($scaleArray);
+                shuffle($keys); // See: https://forum.yiiframework.com/t/order-by-rand-and-total-posts/68099
+
+                $sortedScaleAnswers = array();
+                foreach ($keys as $key) {
+                    $sortedScaleAnswers[$key] = $scaleArray[$key];
+                }
+                $answerOptions[$scaleId] = $sortedScaleAnswers;
+            }
+            return $answerOptions;
+        }
+
+        // Sort alphabetically if applicable
+        if ($this->shouldOrderAnswersAlphabetically()) {
+            if (empty($language) || !in_array($language, $this->survey->allLanguages)) {
+                $language = $this->survey->language;
+            }
+            foreach ($answerOptions as $scaleId => $scaleArray) {
+                $sorted = array();
+                // We create an array sorted that will use the answer in the current language as value, and keep key
+                foreach ($scaleArray as $key => $answer) {
+                    $sorted[$key] = $answer->answerl10ns[$language]->answer;
+                }
+                LimeSurvey\Helpers\SortHelper::getInstance($language)->asort($sorted, LimeSurvey\Helpers\SortHelper::SORT_STRING);
+                // Now, we create a new array that store the old values of $answerOptions in the order of $sorted
+                $sortedScaleAnswers = array();
+                foreach ($sorted as $key => $answer) {
+                    $sortedScaleAnswers[] = $scaleArray[$key];
+                }
+                $answerOptions[$scaleId] = $sortedScaleAnswers;
+            }
+            return $answerOptions;
+        }
+
+        // Sort by Answer's own sort order
+        foreach ($answerOptions as $scaleId => $scaleArray) {
+            usort(
+                $scaleArray,
+                function ($a, $b) {
+                    return $a->sortorder > $b->sortorder
+                    ? 1
+                    : ($a->sortorder < $b->sortorder ? -1 : 0);
+                }
+            );
+            $answerOptions[$scaleId] = $scaleArray;
+        }
+        return $answerOptions;
+    }
+
+    /**
+     * Returns true if the answer options should be ordered randomly.
+     *
+     * @return bool
+     */
+    private function shouldOrderAnswersRandomly()
+    {
+        // Question types supporting both Random Order and Alphabetical Order should
+        // implement the 'answer_order' attribute instead of using separate attributes.
+        $answerOrder = $this->getQuestionAttribute('answer_order');
+        if (!is_null($answerOrder)) {
+            return $answerOrder == 'random';
+        }
+        return $this->getQuestionAttribute('random_order') == 1 && $this->getQuestionType()->subquestions == 0;
+    }
+
+    /**
+     * Returns true if the answer options should be ordered alphabetically.
+     *
+     * @return bool
+     */
+    private function shouldOrderAnswersAlphabetically()
+    {
+        // Question types supporting both Random Order and Alphabetical Order should
+        // implement the 'answer_order' attribute instead of using separate attributes.
+        $answerOrder = $this->getQuestionAttribute('answer_order');
+        if (!is_null($answerOrder)) {
+            return $answerOrder == 'alphabetical';
+        }
+        return $this->getQuestionAttribute('alphasort') == 1;
+    }
+
+    /**
+     * Returns the subquestions for this question in the correct display order.
+     *
+     * If the question attribute "random_order" is set, the subquestions are shuffled
+     * with a deterministic seed based on the survey ID. Otherwise they are ordered
+     * by their question_order property.
+     *
+     * @param int|null $scale_id Optional scale identifier (reserved for future use).
+     *
+     * @return Question[] Ordered list of subquestion models.
+     */
+    public function getOrderedSubQuestions($scale_id = null)
+    {
+
+
+        //reset subquestions set prior to this call
+        $aSubQuestions = [
+            0 => []
+        ];
+
+        $aOrderedSubquestions = $this->subquestions;
+
+        if ($this->getQuestionAttribute('random_order') == 1) {
+            include_once Yii::app()->basePath . '/libraries/MersenneTwister.php';
+            ls\mersenne\setSeed($this->sid);
+
+            $aOrderedSubquestions = ls\mersenne\shuffle($aOrderedSubquestions);
+        } else {
+            usort(
+                $aOrderedSubquestions,
+                function ($oQuestionA, $oQuestionB) {
+                    if ($oQuestionA->question_order == $oQuestionB->question_order) {
+                        return 0;
+                    }
+                    return $oQuestionA->question_order < $oQuestionB->question_order ? -1 : 1;
+                }
+            );
+        }
+
+
+        $excludedSubquestion = null;
+        foreach ($aOrderedSubquestions as $i => $oSubquestion) {
+            if ($scale_id !== null && $oSubquestion->scale_id != $scale_id) {
+                continue;
+            }
+            //if  exclude_all_others is set then the related answer should keep its position at all times
+            //thats why we have to re-position it if it has been randomized
+            if (
+                ($this->getQuestionAttribute('exclude_all_others') != '' && $this->getQuestionAttribute('random_order') == 1)
+                && ($oSubquestion->title == $this->getQuestionAttribute('exclude_all_others'))
+            ) {
+                $excludedSubquestionPosition = (safecount($aSubQuestions[$oSubquestion->scale_id]) - 1);
+                $excludedSubquestion = $oSubquestion;
+                continue;
+            }
+            $aSubQuestions[$oSubquestion->scale_id][] = $oSubquestion;
+        }
+
+        if ($excludedSubquestion != null) {
+            array_splice($aSubQuestions[$excludedSubquestion->scale_id], ($excludedSubquestion->question_order - 1), 0, [$excludedSubquestion]);
+        }
+
+        if ($scale_id !== null) {
+            return $aSubQuestions[$scale_id];
+        }
+
+        return $aSubQuestions;
+    }
+
+    /**
+     * Returns the HTML icon representing the question's mandatory status.
+     *
+     * Depending on the question type and the mandatory setting ("Y", "S", or neither),
+     * this method returns an HTML snippet containing the appropriate icon markup.
+     *
+     * @return string HTML markup for the mandatory indicator icon.
+     */
     public function getMandatoryIcon()
     {
         if ($this->type != Question::QT_X_TEXT_DISPLAY && $this->type != Question::QT_VERTICAL_FILE_UPLOAD) {
@@ -801,6 +1133,7 @@ class Question extends LSActiveRecord
 
     /**
      * Return other icon according to state
+     *
      * @return boolean
      */
     public function getOtherIcon()
@@ -816,6 +1149,7 @@ class Question extends LSActiveRecord
 
     /**
      * Return if question allow other
+     *
      * @return boolean
      */
     public function getAllowOther()
@@ -829,6 +1163,7 @@ class Question extends LSActiveRecord
     /**
      * Return if question has managed subquestions
      * usage in rules : allow set other even if existing subquestions 'other' exist (but deleted after)
+     *
      * @return boolean
      */
     public function getAllowSubquestions()
@@ -841,6 +1176,7 @@ class Question extends LSActiveRecord
 
     /**
      * Return true if the question type supports answer options
+     *
      * @return boolean
      */
     public function getAllowAnswerOptions()
@@ -852,9 +1188,15 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Get an new title/code for a question
-     * @param integer $index base for question code (example : inde of question when survey import)
-     * @return string|null : new title, null if impossible
+     * Generates a new valid title/code for the question.
+     *
+     * If the current title is invalid or conflicts with existing question codes,
+     * the method attempts to clean and regenerate it. Up to 10 attempts are made
+     * before giving up.
+     *
+     * @param int $index Base index for generating the question code (e.g., index during survey import).
+     *
+     * @return string|null The new title, or null if no valid title could be generated.
      */
     public function getNewTitle($index = 0)
     {
@@ -882,6 +1224,16 @@ class Question extends LSActiveRecord
         return $sNewTitle;
     }
 
+    /**
+     * Filters the query to load question and group translations for a given language.
+     *
+     * This scope modifies the query using `with()` so that both the questionl10ns and
+     * group relations are limited to the specified language.
+     *
+     * @param string $sLanguage The language code to filter the related records by.
+     *
+     * @return $this The current query object for method chaining.
+     */
     /*public function language($sLanguage)
     {
         $this->with(
@@ -891,8 +1243,14 @@ class Question extends LSActiveRecord
             )
         );
         return $this;
-    }*/
+    }
+     */
 
+    /**
+     * Returns the column configuration used for rendering the question list grid.
+     *
+     * @return array List of column definitions for the CGridView.
+     */
     public function getQuestionListColumns()
     {
         return array(
@@ -963,6 +1321,15 @@ class Question extends LSActiveRecord
         );
     }
 
+    /**
+     * Builds and returns a data provider for searching and listing questions.
+     *
+     * This method creates a CActiveDataProvider configured with sorting, filtering,
+     * and pagination options based on the current model attributes. It is used in
+     * admin grids to display and filter the list of questions belonging to a survey.
+     *
+     * @return CActiveDataProvider The data provider instance containing the search results.
+     */
     public function search()
     {
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
@@ -1039,17 +1406,26 @@ class Question extends LSActiveRecord
             $criteria->compare('g.gid', $this->gid, false, 'AND');
         }
 
-        $dataProvider = new CActiveDataProvider('Question', array(
+        $dataProvider = new CActiveDataProvider(
+            'Question',
+            array(
             'criteria' => $criteria,
             'sort' => $sort,
             'pagination' => array(
                 'pageSize' => $pageSize,
             ),
-        ));
+            )
+        );
         return $dataProvider;
     }
 
-    /** @inheritdoc */
+    /**
+     * Defines the named scopes available for this model.
+     *
+     * @inheritdoc
+     *
+     * @return array List of scope definitions indexed by scope name.
+     */
     public function scopes()
     {
         return array(
@@ -1059,7 +1435,7 @@ class Question extends LSActiveRecord
 
     /**
      * Prepare question before saving.
-     * 
+     *
      * - Block type changes on active surveys (keep original question type).
      * - Update survey lastmodified timestamp when the question changes.
      *
@@ -1091,7 +1467,7 @@ class Question extends LSActiveRecord
         }
 
         Survey::model()->updateByPk(
-            $this-sid,
+            $this - sid,
             ['lastmodified' => gmdate('Y-m-d H:i:s')]
         );
     }
@@ -1099,7 +1475,8 @@ class Question extends LSActiveRecord
     /**
      * Fix sub question of a parent question
      * Must be call after base language subquestion is set
-     * @todo : move other fix here ?
+     *
+     * @todo   : move other fix here ?
      * @return void
      */
     public function fixSubQuestions()
@@ -1117,23 +1494,37 @@ class Question extends LSActiveRecord
         QuestionL10n::model()->deleteAll($criteria);
 
         /* Delete invalid subquestions (not in primary language */
-        $validSubQuestion = Question::model()->findAll(array(
+        $validSubQuestion = Question::model()->findAll(
+            array(
             'select' => 'title',
             'condition' => 'parent_qid=:parent_qid',
             'params' => array('parent_qid' => $this->qid)
-        ));
+            )
+        );
         $criteria = new CDbCriteria();
         $criteria->compare('parent_qid', $this->qid);
         $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion, 'title', 'title'));
         Question::model()->deleteAll($criteria);
     }
-    /** @return string[] */
+
+    /**
+     * Returns the list of question types that support quotation in expressions.
+     *
+     * @return string[] Array of quotable question type identifiers.
+     */
     public static function getQuotableTypes()
     {
         return array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!', '*');
     }
 
-
+    /**
+     * Returns the basic field name used for identifying this question or subquestion.
+     *
+     * The field name follows the LimeSurvey format "{sid}X{gid}X{qid}". For
+     * subquestions, the parent_qid is used instead of the question's own qid.
+     *
+     * @return string The generated basic field name.
+     */
     public function getBasicFieldName()
     {
         if ($this->parent_qid != 0) {
@@ -1148,7 +1539,14 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * @return mixed
+     * Returns the value of a specific question attribute.
+     *
+     * Looks up the QuestionAttribute for the given attribute name and returns its
+     * stored value. If the attribute does not exist, null is returned.
+     *
+     * @param string $sAttribute The name of the attribute to retrieve.
+     *
+     * @return string|null The attribute value, or null if the attribute does not exist.
      */
     public function getQuestionAttribute($sAttribute)
     {
@@ -1166,7 +1564,13 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * @return null|QuestionType
+     * Retrieves the QuestionType model for this question and applies its settings.
+     *
+     * Looks up the QuestionType associated with the question's type value. If found,
+     * the type's configuration is applied to the current question instance before
+     * returning the model.
+     *
+     * @return QuestionType|null The matching QuestionType model, or null if none exists.
      */
     public function getQuestionType()
     {
@@ -1178,7 +1582,9 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * @return array
+     * Returns the IDs of all subquestions belonging to this question.
+     *
+     * @return int[] Array of subquestion qid values.
      */
     public function getAllSubQuestionIds()
     {
@@ -1191,6 +1597,21 @@ class Question extends LSActiveRecord
         return $result;
     }
 
+    /**
+     * Returns the renderer object for this question based on its type.
+     *
+     * If no type is provided, the question's own type is used. Depending on the
+     * question type, the corresponding renderer class is instantiated with the
+     * given field definition array. An InvalidArgumentException is thrown if no
+     * matching renderer exists for the given type.
+     *
+     * @param array       $aFieldArray Field definition and metadata used by the renderer.
+     * @param string|null $type        Optional question type identifier. Defaults to $this->type.
+     *
+     * @return object The renderer instance for the specified question type.
+     *
+     * @throws InvalidArgumentException If the question type is unknown or unsupported.
+     */
     public function getRenderererObject($aFieldArray, $type = null)
     {
         $type = $type ?? $this->type;
@@ -1291,6 +1712,20 @@ class Question extends LSActiveRecord
         return $oRenderer;
     }
 
+    /**
+     * Returns the DataSet object corresponding to the given question type.
+     *
+     * If no type is provided, the method uses the question's own type. Depending on
+     * the type, this method instantiates and returns the appropriate DataSet class.
+     * An InvalidArgumentException is thrown if no matching DataSet class exists
+     * for the given type.
+     *
+     * @param string|null $type Optional question type identifier. Defaults to $this->type.
+     *
+     * @return object An instance of a DataSet class matching the question type.
+     *
+     * @throws InvalidArgumentException If the question type is unknown or unsupported.
+     */
     public function getDataSetObject($type = null)
     {
         $type = $type ?? $this->type;
@@ -1361,8 +1796,11 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * @param array $data
-     * @return boolean|null
+     * Inserts a new record using the provided data.
+     *
+     * @param array $data Key-value pairs to assign to the new model instance.
+     *
+     * @return bool|null True if the record was saved, false if validation failed, or null on error.
      */
     public function insertRecords($data)
     {
@@ -1377,13 +1815,16 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * In some cases question have o wrong questio_sort=0, The sort number should always be
-     * greater then 0, starting with 1. For this reason, the question_order has to be checked
-     * for a specific group and question_sort has be set correctly.
+     * Ensures that question_order values for all questions in the given group start at 1
+     * and are greater than 0.
      *
-     * @param $questionGroupId
+     * Some questions may incorrectly have question_order = 0. This method finds all such
+     * questions (excluding subquestions) within the given group and assigns consecutive
+     * order values starting from START_SORTING_VALUE.
      *
-     * @return boolean true if sort numbers had to be set, false otherwise
+     * @param int $questionGroupId The ID of the question group to normalize question_order for.
+     *
+     * @return bool True if any sort numbers were updated, false if no changes were required.
      */
     public static function setQuestionOrderForGroup($questionGroupId)
     {
@@ -1414,7 +1855,7 @@ class Question extends LSActiveRecord
      * Returns the highest question_order value that exists for a questiongroup inside the related questions.
      * ($question->question_order).
      *
-     * @param int $questionGroupId  the question group id
+     * @param int $questionGroupId the question group id
      *
      * @return int|null question highest order number or null if there are no questions belonging to the group
      */
@@ -1433,10 +1874,15 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Increases all question_order numbers for questions belonging to the group by +1
+     * Increases the question_order value by +1 for all questions in the given group.
      *
-     * @param int $questionGroupId
-     * @param integer|null $after questionorder
+     * If $after is provided, only questions with a question_order greater than or equal
+     * to the given value are incremented.
+     *
+     * @param int      $questionGroupId The ID of the question group.
+     * @param int|null $after           Optional: only increment questions with an order >= this value.
+     *
+     * @return void
      */
     public static function increaseAllOrderNumbersForGroup($questionGroupId, $after = null)
     {
@@ -1453,16 +1899,24 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * @deprecated 5.3.x
-     * unknow usage
+     * Legacy stub for checking whether the question has subquestions.
+     *
+     * @deprecated since 5.3.x This method is no longer used and will be removed in a future release.
+     * @return     void
+     *
+     * Unknown usage; kept for backward compatibility.
      */
     public function getHasSubquestions()
     {
     }
 
     /**
-     * @deprecated 5.3.x
-     * unknow usage
+     * Legacy stub for checking whether the question has answer options.
+     *
+     * @deprecated since 5.3.x This method is no longer used and will be removed in a future release.
+     * @return     void
+     *
+     * Unknown usage; kept for backward compatibility.
      */
     public function getHasAnsweroptions()
     {
@@ -1470,6 +1924,7 @@ class Question extends LSActiveRecord
 
     /**
      * Check if this question have subquestion with other code
+     *
      * @return boolean
      */
     public function getHasOtherSubquestions()
@@ -1485,7 +1940,14 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Override update() method to "clean" subquestions after saving a parent question
+     * Updates the question and performs cleanup of related data.
+     *
+     * After successfully saving the parent question via the inherited update(),
+     * this method removes any invalid subquestions and answer options.
+     *
+     * @param array|null $attributes Attributes to update (passed to the parent implementation).
+     *
+     * @return bool True if the question was updated successfully, false otherwise.
      */
     public function update($attributes = null)
     {
@@ -1500,6 +1962,7 @@ class Question extends LSActiveRecord
 
     /**
      * Remove subquestion if needed when update question type
+     *
      * @return void
      */
     protected function removeInvalidSubquestions()
@@ -1520,6 +1983,7 @@ class Question extends LSActiveRecord
 
     /**
      * Removes all answer options if the question's type doesn't allow answer options.
+     *
      * @return void
      */
     protected function removeInvalidAnswerOptions()
@@ -1629,7 +2093,15 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Validates the question theme name, making sure it's not empty or 'core'
+     * Validates and resolves the question theme name.
+     *
+     * If the question has no type or is a subquestion, null is returned.
+     * If a custom theme name is set and exists for the given question type,
+     * that name is returned. Otherwise, the default theme name for the
+     * question type is returned. Returns null if no valid theme name can be
+     * determined.
+     *
+     * @return string|null The resolved valid theme name, or null if none applies.
      */
     public function questionThemeNameValidator()
     {
@@ -1672,7 +2144,9 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Is it a dual scale type.
+     * Returns whether the question is a dual-scale type.
+     *
+     * @return bool
      */
     public function getIsDualScale()
     {
@@ -1681,7 +2155,9 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Returns the question types that are dual scale.
+     * Returns the list of question types that are considered dual-scale.
+     *
+     * @return string[]
      */
     public function getDualScaleTypes()
     {
