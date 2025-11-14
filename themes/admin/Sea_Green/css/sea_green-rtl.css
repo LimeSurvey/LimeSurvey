@@ -17189,8 +17189,8 @@ body {
   content: "›";
   position: absolute;
   left: 16px;
-  color: #6b6f7b;
-  font-size: 14px;
+  color: #1E1E1E;
+  font-size: 0.9975rem;
 }
 
 .dropdown-submenu {
@@ -17207,6 +17207,12 @@ body {
   padding: 8px 0;
   line-height: 20px;
   list-style: none;
+}
+.dropdown-submenu.dropdown-submenu-left {
+  right: auto;
+  left: 100%;
+  margin-right: 0;
+  margin-left: 0;
 }
 
 .has-submenu:hover > .dropdown-submenu {
