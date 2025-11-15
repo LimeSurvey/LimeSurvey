@@ -133,13 +133,13 @@
                 </optgroup>
             </dropdownoptions>
         </font>
-        <cssframework type="dropdown" category="Simple options" width="12" title="Variations">Apple
+        <cssframework type="dropdown" category="Simple options" width="12" role="listbox" title="Variations" aria-label="Variations ">Apple
             <dropdownoptions>
-                <optgroup>
-                    <option data-value="css/variations/theme_apple.css" value="apple">Apple</option>
-                    <option data-value="css/variations/theme_blueberry.css" value="blueberry">Blueberry</option>
-                    <option data-value="css/variations/theme_grape.css" value="grape">Grape</option>
-                    <option data-value="css/variations/theme_mango.css" value="mango">Mango</option>
+                <optgroup role="group">
+                    <option role="option" data-value="css/variations/theme_apple.css" value="apple">Apple</option>
+                    <option  role="option" data-value="css/variations/theme_blueberry.css" value="blueberry">Blueberry</option>
+                    <option  role="option" data-value="css/variations/theme_grape.css" value="grape">Grape</option>
+                    <option role="option" data-value="css/variations/theme_mango.css" value="mango">Mango</option>
                 </optgroup>
             </dropdownoptions>
         </cssframework>
