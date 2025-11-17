@@ -1010,11 +1010,11 @@ class Update_639 extends DatabaseUpdateBase
                     $position++;
                 }
                 $commaSeparatedQIDs = implode(",", $qids);
-                $questions = Question::model()->findAll([
-                    'condition' => "sid = {$sid} and gid = {$gid} and (qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
+                $questions = Question::model()->with("answers")->findAll([
+                    'condition' => "sid = {$sid} and gid = {$gid} and (t.qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
                 ]);
             }
-            if (count($questions) || ((strpos($tableName, "timings") !== false) && ($split > 1))) {
+            if (isset($questions) && count($questions) || ((strpos($tableName, "timings") !== false) && ($split > 1))) {
                 $fieldMap[$tableName][$fieldName] = getFieldName($tableName, $fieldName, $questions, (int)$sid, (int)$gid);
             }
         }

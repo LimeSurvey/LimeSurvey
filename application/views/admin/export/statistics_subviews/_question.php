@@ -811,13 +811,14 @@
                 //loop through all answers. if there are 3 items to rate there will be 3 statistics
                 for ($i=1; $i<=$columnsCount; $i++)
                 {
+                    $j = $answers[$i - 1][2];
                     //adjust layout depending on counter
                     //if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
 
                     //myfield is the SGQ identifier
                     //myfield2 is just used as comment in HTML like "R40X34X1721-1"
-                    $myfield2 = "R" . $myfield . $i . "-" . strlen($i);
-                    $myfield3 = $myfield . $i;
+                    $myfield2 = "R" . $myfield . $j . "-" . strlen($j);
+                    $myfield3 = $myfield . "_R" . $j;
                     echo "<!-- $myfield2 --> ";
                     echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                     if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
@@ -830,7 +831,7 @@
                     echo " />&nbsp;"
                     .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row->answerl10ns[$language]->answer)." - # ".$flt[3])
                     ."</div>\n"
-                    ."\t<select name='Q{$flt[0]}_R{$answers[$i - 1][2]}[]' multiple='multiple' class='form-select'>\n";
+                    ."\t<select name='Q{$flt[0]}_R{$j}[]' multiple='multiple' class='form-select'>\n";
 
                     //output lists of ranking items
                     foreach ($answers as $ans)

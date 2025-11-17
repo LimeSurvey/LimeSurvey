@@ -1456,7 +1456,8 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                 break;
             case \Question::QT_R_RANKING:
                 $prefix = ((strpos($tableName, "timing") !== false) ? "C" : "R");
-                $newFieldName = "Q{$qid}_{$prefix}" . substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                $aid = $questions[0]->answers[(substr($fieldName, strlen("{$sid}X{$gid}X{$qid}")) - 1)]->aid;
+                $newFieldName = "Q{$qid}_{$prefix}" . $aid;
                 break;
         }
     }
@@ -1929,7 +1930,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => $i, "suffix" => "_R" .  $answers[$i - 1]->aid);
+                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => $answers[$i - 1]->aid, "suffix" => "_R" .  $answers[$i - 1]->aid);
                 if (isset($answerColumnDefinition)) {
                     $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                 }
