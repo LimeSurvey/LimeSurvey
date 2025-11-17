@@ -727,19 +727,19 @@ class Statistics extends SurveyCommonAction
                     $qid = $row['qid'];
                     $results = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid' ", 'question_order, title');
                     foreach ($results as $row1) {
-                        $summary[] = 'Q' . $row['qid'] . '_S' . $row1['title'] . '#0';
-                        $summary[] = 'Q' . $row['qid'] . '_S' . $row1['title'] . '#1';
+                        $summary[] = 'Q' . $row['qid'] . '_S' . $row1['qid'] . '#0';
+                        $summary[] = 'Q' . $row['qid'] . '_S' . $row1['qid'] . '#1';
                     }
 
                     break;
 
                 case Question::QT_R_RANKING: // Ranking
                     $qid = $row['qid'];
-                    $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' ", 'question_order');
+                    $results = Answer::model()->getQuestionsForStatistics('code', "qid='$qid' ", 'sortorder');
                     $count = count($results);
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
                     for ($i = 1; $i <= $count; $i++) {
-                        $summary[] = 'Q' . $row['qid'] . '_S' . $results[$i - 1]['qid'];
+                        $summary[] = $type . 'Q' . $row['qid'] . '_R' . $results[$i - 1]['aid'];
                     }
                     break;
 
@@ -764,7 +764,7 @@ class Statistics extends SurveyCommonAction
                 case Question::QT_S_SHORT_FREE_TEXT:
                 case Question::QT_T_LONG_FREE_TEXT: // Long free text
                 case Question::QT_N_NUMERICAL:
-                    $summary[] = 'Q' . $row['qid'];
+                    $summary[] = $type . 'Q' . $row['qid'];
                     break;
 
                     // Not shown (else would only show 'no answer' )

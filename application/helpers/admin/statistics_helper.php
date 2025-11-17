@@ -718,8 +718,8 @@ class statistics_helper
         // Ranking OPTION
         elseif ($sQuestionType == "R") {
             //getting the needed IDs somehow
-            $lengthofnumeral = substr($rt, strpos($rt, "-") + 1, 1);
-            $qqid = substr($rt, 1, strpos($rt, "-") - ($lengthofnumeral + 1));
+            $qqid = explode("_", substr($rt, 2))[0];
+            $lengthofnumeral = strlen(substr($rt, strpos($rt, "_R") + 2));
 
             $qqid = (int) $qqid;
 
@@ -872,7 +872,7 @@ class statistics_helper
             } else {
                 $showem = array();
                 $fld = $rt;
-                $fielddata = $fieldmap[$fld];
+                $fielddata = $fieldmap[($fld[1] === 'Q') ? substr($fld, 1) : $fld];
 
                 $qtitle = flattenText($fielddata['title']);
                 $qtype = $fielddata['type'];
@@ -935,7 +935,7 @@ class statistics_helper
                 }
 
                 //this field is queried using mathematical functions
-                $fieldname = $rt;
+                $fieldname = ($rt[1] === 'Q') ? substr($rt, 1) : $rt;
 
                 $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname);
                 //Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
@@ -1486,6 +1486,7 @@ class statistics_helper
      */
     protected function displaySimpleResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
+        $cn = (($rt[1] === 'Q') ? substr($rt, 1) : $rt);
         /* Set up required variables */
         $TotalCompleted = 0; //Count of actually completed answers
         $sDatabaseType = Yii::app()->db->getDriverName();
@@ -1504,6 +1505,17 @@ class statistics_helper
                 continue;
             }
             if (isset($al[2]) && $al[2]) {
+                $fields = [
+                    Yii::app()->db->quoteColumnName($cn)
+                ];
+                if ($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE || $outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
+                    $subquestions = Question::model()->findAll('parent_qid = :pqid', [':pqid' => substr($cn, 1)]);
+                    $fields = [];
+                    foreach ($subquestions as $subquestion) {
+                        $fields []= Yii::app()->db->quoteColumnName($cn . "_S" . $subquestion->qid);
+                    }
+                    $in = "(" . implode(",", $fields) . ")";
+                }
                 //handling for "other" option
                 if ($al[0] == gT("Other")) {
                     if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST) {
@@ -1512,7 +1524,7 @@ class statistics_helper
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($columnName) . "='$othEncrypted'";
                     } else {
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
+                        $query .= "not ('' in " . $in . ")";
                     }
                 }
 
@@ -1531,25 +1543,25 @@ class statistics_helper
                     //free text answers
                     if ($al[0] == "Answer") {
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn)." != ''" : "NOT (".Yii::app()->db->quoteColumnName($cn)." LIKE '')";
                     }
                     //"no answer" handling
                     elseif ($al[0] == "NoAnswer") {
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ( ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." = '')" : " (".Yii::app()->db->quoteColumnName($al[2])." LIKE ''))";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn)." = '')" : " (".Yii::app()->db->quoteColumnName($cn)." LIKE ''))";
                     }
                 } elseif ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
                     $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ( ";
-                    $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." <> '')" : " (".Yii::app()->db->quoteColumnName($al[2])." NOT LIKE ''))";
+                    $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn)." <> '')" : " (".Yii::app()->db->quoteColumnName($cn)." NOT LIKE ''))";
                 // all other question types
                 } else {
-                    $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al[2])." =";
                     //ranking question?
                     if (substr((string) $rt, 0, 1) == "R") {
-                        $query .= " '$al[0]'";
+                        $value = " '$al[0]'";
                     } else {
-                        $query .= " 'Y'";
+                        $value = " 'Y'";
                     }
+                    $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . $value . " IN " . $in;
                 }
             }    //end if -> alist set
 
