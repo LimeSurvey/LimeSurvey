@@ -956,6 +956,7 @@ class Update_639 extends DatabaseUpdateBase
         ];
         $scripts = [];
         $responsesTables = $this->db->createCommand($this->scriptMapping['responses'])->queryAll();
+        $unhandledTables = [];
 
         foreach ($responsesTables as $responsesTable) {
             if (((strpos($responsesTable['old_name'], "old_") === false) && (strpos($responsesTable['old_name'], "timing") === false))) {
@@ -963,7 +964,8 @@ class Update_639 extends DatabaseUpdateBase
             }
             $scripts[$responsesTable['old_name']] = [
                 'new_name' => $responsesTable['new_name'],
-                'old_name' => $responsesTable['old_name']
+                'old_name' => $responsesTable['old_name'],
+                'handled' => false
             ];
             $createTable = $this->adjustShowCreateTable($this->db->createCommand($this->showCreateTable($responsesTable['old_name']))->queryRow(), $responsesTable['old_name']);
             $scripts[$responsesTable['old_name']]['CREATE'] = $createTable["Create Table"];
@@ -974,7 +976,8 @@ class Update_639 extends DatabaseUpdateBase
         foreach ($timingsTables as $timingsTable) {
             $scripts[$timingsTable['old_name']] = [
                 'new_name' => $timingsTable['new_name'],
-                'old_name' => $timingsTable['old_name']
+                'old_name' => $timingsTable['old_name'],
+                'handled' => false
             ];
             $createTable = $this->adjustShowCreateTable($this->db->createCommand($this->showCreateTable($timingsTable['old_name']))->queryRow(), $responsesTable['old_name']);
             $scripts[$timingsTable['old_name']]['CREATE'] = $createTable["Create Table"];
@@ -1018,13 +1021,14 @@ class Update_639 extends DatabaseUpdateBase
                 $fieldMap[$tableName][$fieldName] = getFieldName($tableName, $fieldName, $questions, (int)$sid, (int)$gid);
             }
         }
+        $preinsert = "";
+        $postinsert = "";
+        if (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv'])) {
+            $preinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} ON;";
+            $postinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} OFF;";
+        }
         foreach ($fieldMap as $TABLE_NAME => $fields) {
-            $preinsert = "";
-            $postinsert = "";
-            if (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv'])) {
-                $preinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} ON;";
-                $postinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} OFF;";
-            }
+            $scripts[$TABLE_NAME]['handled'] = true;
             $scripts[$TABLE_NAME]['CREATE'] = str_replace("{$TABLE_NAME}", "{$scripts[$TABLE_NAME]['new_name']}", $scripts[$TABLE_NAME]['CREATE']);
             foreach ($fields as $oldField => $newField) {
                 $scripts[$TABLE_NAME]['CREATE'] = str_replace($leftSeparator . "{$oldField}" . $rightSeparator, $leftSeparator . "{$newField}" . $rightSeparator, $scripts[$TABLE_NAME]['CREATE']);
@@ -1215,6 +1219,14 @@ class Update_639 extends DatabaseUpdateBase
                 if ($this->fixText($group, $fields, $names) || $this->fixText($group, $fields, $additionalNames)) {
                     $group->save();
                 }
+            }
+        }
+
+        foreach ($scripts as $TABLE_NAME => $content) {
+            if (!$content['handled']) {
+                $scripts[$TABLE_NAME]['CREATE'] = str_replace("{$TABLE_NAME}", "{$scripts[$TABLE_NAME]['new_name']}", $scripts[$TABLE_NAME]['CREATE']);
+                $this->db->createCommand($scripts[$TABLE_NAME]['CREATE'])->execute();
+                $this->db->createCommand($scripts[$TABLE_NAME]['DROP'])->execute();
             }
         }
 
