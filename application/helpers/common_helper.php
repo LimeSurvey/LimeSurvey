@@ -3656,10 +3656,8 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
         $language = $qentry['surveyls_language'];
 
         foreach ($fieldnames as $sOldFieldname => $sNewFieldname) {
-            $pattern = $sOldFieldname;
-            $replacement = $sNewFieldname;
-            $urldescription = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $urldescription);
-            $endurl = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $endurl);
+            $urldescription = preg_replace('/\b' . preg_quote($sOldFieldname, '/') . '\b/', $sNewFieldname, $urldescription);
+            $endurl = preg_replace('/\b' . preg_quote($sOldFieldname, '/') . '\b/', $sNewFieldname, $endurl);
         }
 
         if (
@@ -3689,10 +3687,8 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
         $endurl = $qentry['quotals_url'];
 
         foreach ($fieldnames as $sOldFieldname => $sNewFieldname) {
-            $pattern = $sOldFieldname;
-            $replacement = $sNewFieldname;
-            $urldescription = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $urldescription);
-            $endurl = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $endurl);
+            $urldescription = preg_replace('/\b' . preg_quote($sOldFieldname, '/') . '\b/', $sNewFieldname, $urldescription);
+            $endurl = preg_replace('/\b' . preg_quote($sOldFieldname, '/') . '\b/', $sNewFieldname, $endurl);
         }
 
         if (strcmp((string) $urldescription, (string) $qentry['quotals_urldescrip']) != 0 || (strcmp((string) $endurl, (string) $qentry['quotals_url']) != 0)) {
