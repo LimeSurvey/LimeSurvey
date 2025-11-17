@@ -53,6 +53,8 @@ class CopySurvey
      *
      * @return CopySurveyResult  Returns results, success and error messages
      * @throws \Exception
+     *
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function copy()
     {
@@ -66,7 +68,7 @@ class CopySurvey
             $copySurveyResult->setWarnings(gt("The desired survey ID was already in use, therefore a random one was assigned."));
         }
         $destinationSurvey = $this->getValidSurveyId($destinationSurvey);
-        $destinationSurvey->active = 'N'; //don't activate the survey
+        $destinationSurvey->active = 'N'; //don't activate the survey !!!
         $destinationSurvey->owner_id = Yii::app()->session['loginID'];
         $destinationSurvey->datecreated = date("Y-m-d H:i:s");
         if (!$destinationSurvey->save()) {
@@ -131,6 +133,8 @@ class CopySurvey
      *
      * @param CopySurveyResult $copySurveyResult
      * @param Survey $destinationSurvey
+     *
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @return void
      */
     private function copySurveyLanguages($copySurveyResult, $destinationSurvey)
