@@ -3649,17 +3649,17 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     $oldsid = (int) $oldsid;
 
     # translate 'surveyls_urldescription' and 'surveyls_url' INSERTANS tags in surveyls
-    $result = SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $newsid . " AND (surveyls_urldescription LIKE '%Q%' OR surveyls_url LIKE '%Q%')");
+    $result = SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $newsid . " AND (surveyls_urldescription REGEXP 'Q[0-9]+' OR surveyls_url REGEXP 'Q[0-9]+')");
+
     foreach ($result as $qentry) {
         $urldescription = $qentry['surveyls_urldescription'];
         $endurl = $qentry['surveyls_url'];
         $language = $qentry['surveyls_language'];
 
         foreach ($fieldnames as $sOldFieldname => $sNewFieldname) {
-            $pattern = $sOldFieldname;
-            $replacement = $sNewFieldname;
-            $urldescription = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $urldescription);
-            $endurl = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $endurl);
+            $urldescription = preg_replace('/\b' . preg_quote($sOldFieldname, '/') . '\b/', $sNewFieldname, $urldescription);
+            $endurl = preg_replace('/\b' . preg_quote($sOldFieldname, '/') . '\b/', $sNewFieldname, $endurl);
+
         }
 
         if (
@@ -3683,16 +3683,14 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     } // end while qentry
 
     # translate 'quotals_urldescrip' and 'quotals_url' INSERTANS tags in quota_languagesettings
-    $result = QuotaLanguageSetting::model()->with('quota', array('condition' => 'sid=' . $newsid))->together()->findAll("(quotals_urldescrip LIKE '%Q%' OR quotals_url LIKE '%Q%')");
+    $result = QuotaLanguageSetting::model()->with('quota', array('condition' => 'sid=' . $newsid))->together()->findAll("(quotals_urldescrip REGEXP 'Q[0-9]+' OR quotals_url REGEXP 'Q[0-9]+')");
     foreach ($result as $qentry) {
         $urldescription = $qentry['quotals_urldescrip'];
         $endurl = $qentry['quotals_url'];
 
         foreach ($fieldnames as $sOldFieldname => $sNewFieldname) {
-            $pattern = $sOldFieldname;
-            $replacement = $sNewFieldname;
-            $urldescription = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $urldescription);
-            $endurl = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $endurl);
+            $urldescription = preg_replace('/\b' . preg_quote($sOldFieldname, '/') . '\b/', $sNewFieldname, $urldescription);
+            $endurl = preg_replace('/\b' . preg_quote($sOldFieldname, '/') . '\b/', $sNewFieldname, $endurl);
         }
 
         if (strcmp((string) $urldescription, (string) $qentry['quotals_urldescrip']) != 0 || (strcmp((string) $endurl, (string) $qentry['quotals_url']) != 0)) {
