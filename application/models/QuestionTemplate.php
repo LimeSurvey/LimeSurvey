@@ -16,10 +16,10 @@
 
 class QuestionTemplate extends CFormModel
 {
-    /** 
+    /**
      * The question associated with this template.
-     * 
-     * @var Question 
+     *
+     * @var Question
      */
     public $oQuestion;
 
@@ -38,25 +38,25 @@ class QuestionTemplate extends CFormModel
      * @var string|false
      */
     public $sTemplateFolderName;
-    
+
     /**
      * List of views supported by this template.
      * Example: $aViews['path/to/view'] === true
-     * 
+     *
      * @var array
      */
     public $aViews;
 
     /**
      *  XML configuration of the template.
-     * 
+     *
      * @var SimpleXMLElement
      */
     public $oConfig;
 
     /**
      * Whether the template provides custom attributes.
-     * 
+     *
      * @var bool
      */
     public $bHasCustomAttributes;
@@ -65,41 +65,41 @@ class QuestionTemplate extends CFormModel
      *  Custom attributes defined by the template.
      * Format: ['attributeName' => 'value']
      *
-     * @var array 
+     * @var array
      */
     public $aCustomAttributes;
 
     /**
      * Filesystem path to the template directory.
-     * 
+     *
      * @var string
      */
     private $sTemplatePath;
 
     /**
      * Public URL pointing to the template directory.
-     * 
+     *
      * @var string
      */
     private $sTemplateUrl;
 
     /**
      *  Filesystem path to the folder corresponding to the current question type.
-     * 
+     *
      * @var string
      */
     private $sTemplateQuestionPath;
 
     /**
      * Whether a configuration file exists for this template.
-     * 
+     *
      * @var bool
      */
     private $bHasConfigFile;
 
     /**
      * Filesystem path to the XML configuration file.
-     * 
+     *
      * @var string
      */
     private $xmlFile;
@@ -107,7 +107,7 @@ class QuestionTemplate extends CFormModel
     /**
      * Whether the core JavaScript for this question should be rendered.
      * (Scripts are registered in qanda.)
-     * 
+     *
      * @var bool
      */
     private $bLoadCoreJs;
@@ -115,14 +115,14 @@ class QuestionTemplate extends CFormModel
     /**
      * Whether the core CSS for this question should be rendered.
      * (Styles are registered in qanda.)
-     * 
+     *
      * @var bool
      */
     private $bLoadCoreCss;
 
     /**
      * Whether the core asset packages should be loaded.
-     * 
+     *
      * @var bool
      */
     private $bLoadCorePackage;
@@ -140,9 +140,9 @@ class QuestionTemplate extends CFormModel
      * Get a new instance of the template object
      * Each question on the page could have a different template.
      * So each question must have a new instance
-     * 
+     *
      * @param Question $oQuestion Question
-     * 
+     *
      * @return QuestionTemplate
      */
     public static function getNewInstance($oQuestion)
@@ -181,7 +181,7 @@ class QuestionTemplate extends CFormModel
      * Check if the question template offer a specific replacement for that view file.
      *
      * @param string $sView View File
-     * 
+     *
      * @return mixed
      */
     public function checkIfTemplateHasView($sView)
@@ -199,7 +199,7 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Retrieve the template base path if exist
-     * 
+     *
      * @return null|string
      */
     public function getTemplatePath()
@@ -228,7 +228,7 @@ class QuestionTemplate extends CFormModel
      * @return string|false  The folder name or false if no custom template is used.
      *
      * @inheritdoc
-     * 
+     *
      * @todo Consider returning an empty string instead of `false` to maintain a
      *       consistent return type (string). Currently this method returns either
      *       a string or false, which makes usage and type checking less predictable.
@@ -240,7 +240,7 @@ class QuestionTemplate extends CFormModel
             /**
              * Name of the question theme
              *
-             * @var string|null 
+             * @var string|null
              */
             $questionThemeName = $this->oQuestion->question_theme_name;
             $this->sTemplateFolderName = (!empty($questionThemeName) && $questionThemeName != 'core') ? $questionThemeName : false;
@@ -251,10 +251,10 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Register a core script file
-     * 
+     *
      * @param string $sFile Name of the file
      * @param int    $pos   Position
-     * 
+     *
      * @return void
      */
     public function registerScriptFile($sFile, $pos = CClientScript::POS_BEGIN)
@@ -266,10 +266,10 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Register a core script
-     * 
+     *
      * @param string $sScript Name of the script
      * @param int    $pos     Position
-     * 
+     *
      * @return void
      */
     public function registerScript($sScript, $pos = CClientScript::POS_BEGIN)
@@ -281,10 +281,10 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Register a core css file
-     * 
+     *
      * @param string $sCssFile Name of the CSS File
      * @param string $media    Media
-     * 
+     *
      * @return void
      */
     public function registerCssFile($sCssFile, $media = '')
@@ -296,9 +296,9 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Register a core package file
-     * 
+     *
      * @param string $sPackage Name of the package
-     * 
+     *
      * @return void
      */
     public function registerPackage($sPackage)
@@ -310,7 +310,7 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Return true if the core css should be loaded.
-     * 
+     *
      * @return boolean
      */
     public function templateLoadsCoreJs()
@@ -330,7 +330,7 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Return true if the core css should be loaded.
-     * 
+     *
      * @return boolean
      */
     public function templateLoadsCoreCss()
@@ -350,7 +350,7 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Return true if the core packages should be loaded.
-     * 
+     *
      * @return null|boolean
      */
     public function templateLoadsCorePackage()
@@ -371,7 +371,7 @@ class QuestionTemplate extends CFormModel
 
     /**
      * In the future, could retrieve data from DB
-     * 
+     *
      * @return void
      */
     public function setConfig()
@@ -422,7 +422,7 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Registers the assets.
-     * 
+     *
      * @return void
      */
     public function registerAssets()
@@ -439,7 +439,8 @@ class QuestionTemplate extends CFormModel
 
                 Yii::setPathOfAlias($questionTemplatePath, $this->sTemplateQuestionPath . '/assets'); // The package creation/publication need an alias
                 Yii::app()->clientScript->addPackage(
-                    $package, array(
+                    $package,
+                    array(
                     'basePath'    => $questionTemplatePath,
                     'css'         => $aCssFiles,
                     'js'          => $aJsFiles,
@@ -464,7 +465,7 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Returns the template URL.
-     * 
+     *
      * @return string
      */
     public function getTemplateUrl()
@@ -490,7 +491,7 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Returns the custom attributes.
-     * 
+     *
      * @return array|null
      */
     public function getCustomAttributes()
@@ -503,9 +504,9 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Called from admin, to generate the template list for a given question type
-     * 
+     *
      * @param string $type Question Type
-     * 
+     *
      * @return array
      * @todo   Move to QuestionTheme?
      * @todo   This is not the same as QuestionTheme::findQuestionMetaDataForAllTypes() which is the database layer
@@ -516,8 +517,8 @@ class QuestionTemplate extends CFormModel
         // todo: incorrect, this should check the filestructure instead of the database as this is the filestructure layer
         /**
          * QuestionTheme
-         *  
-         * @var QuestionTheme[] 
+         *
+         * @var QuestionTheme[]
          */
         $questionThemes = QuestionTheme::model()->findAllByAttributes(
             [],
@@ -544,9 +545,9 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Returns the folder name.
-     * 
+     *
      * @param string $type Type
-     * 
+     *
      * @return     string|null
      * @deprecated use QuestionTheme::getQuestionXMLPathForBaseType
      */
@@ -563,7 +564,7 @@ class QuestionTemplate extends CFormModel
     /**
      * Correspondence between question type and the view folder name
      * Rem: should be in question model. We keep it here for easy access
-     * 
+     *
      * @return     array
      * @deprecated
      */

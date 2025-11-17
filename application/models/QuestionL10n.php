@@ -27,7 +27,7 @@ class QuestionL10n extends LSActiveRecord
     /**
      * Returns the table name of this model.
      *
-     * @inheritdoc 
+     * @inheritdoc
      * @return     string
      */
     public function tableName()
@@ -35,10 +35,10 @@ class QuestionL10n extends LSActiveRecord
         return '{{question_l10ns}}';
     }
 
-    /** 
+    /**
      * Returns the primary key of this model.
      *
-     * @inheritdoc 
+     * @inheritdoc
      * @return     string
      */
     public function primaryKey()
@@ -48,9 +48,9 @@ class QuestionL10n extends LSActiveRecord
 
     /**
      * Returns the static model of the specified AR class.
-     * 
+     *
      * @param $className Classname
-     * 
+     *
      * @inheritdoc
      * @return     QuestionL10n
      */
@@ -59,7 +59,7 @@ class QuestionL10n extends LSActiveRecord
         /**
          * * Model
          *
-         *  @var self $model 
+         *  @var self $model
          */
         $model = parent::model($className);
         return $model;
@@ -67,8 +67,8 @@ class QuestionL10n extends LSActiveRecord
 
     /**
      * Returns the relations of this model.
-     *  
-     * @inheritdoc 
+     *
+     * @inheritdoc
      * @return     array
      * */
     public function relations()
@@ -83,7 +83,7 @@ class QuestionL10n extends LSActiveRecord
      * This defaultScope indexes the ActiveRecords given back by language
      * Important: This does not work if you want to retrieve records for more than one question at a time.
      * in that case reset disable the defaultScope by using MyModel::model()->resetScope()->findAll();
-     * 
+     *
      * @return array Scope that indexes the records by their language
      */
     public function defaultScope()
@@ -93,8 +93,8 @@ class QuestionL10n extends LSActiveRecord
 
     /**
      * Returns the validation rules for this model.
-     * 
-     * @inheritdoc 
+     *
+     * @inheritdoc
      * @return     array
      */
     public function rules()
