@@ -86,7 +86,7 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
             'SUM(CASE WHEN submitdate IS NULL THEN 1 ELSE 0 END) AS incompleteResponses',
             "SUM(CASE WHEN submitdate IS NOT NULL AND {$coalesceSql} IS NULL THEN 1 ELSE 0 END) AS completedWithoutAnswers",
             "SUM(CASE WHEN submitdate IS NULL AND {$coalesceSql} IS NULL THEN 1 ELSE 0 END) AS incompletedWithoutAnswers",
-            'ROUND(SUM(CASE WHEN submitdate IS NOT NULL THEN 1 ELSE 0 END) * 100.0 / COUNT(id), 2) AS completionRate',
+            'ROUND(SUM(CASE WHEN submitdate IS NOT NULL THEN 1 ELSE 0 END) * 100.0 / NULLIF(COUNT(id), 0), 2) AS completionRate',
         ];
 
         // datestamps is not enabled, therefor we cannot calculate avg completion time
