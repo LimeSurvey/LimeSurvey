@@ -1201,14 +1201,14 @@ class Update_639 extends DatabaseUpdateBase
             $surveyLanguageSettings = SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $sid);
             $fields = ['surveyls_urldescription', 'surveyls_url'];
             foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
-                if ($this->fixText($surveyLanguageSetting, $fields, $names) || $this->fixText($surveyLanguageSetting, $fields, $additionalNames)) {
+                if ($this->fixText($surveyLanguageSetting, $fields, $newFields) || $this->fixText($surveyLanguageSetting, $fields, $additionalNames)) {
                     $surveyLanguageSetting->save();
                 }
             }
             $fields = ['quotals_url', 'quotals_urldescrip'];
             $quotaLanguageSettings = QuotaLanguageSetting::model()->with('quota', array('condition' => 'sid=' . $sid))->together()->findAll();
             foreach ($quotaLanguageSettings as $quotaLanguageSetting) {
-                if ($this->fixText($quotaLanguageSetting, $fields, $names) || $this->fixText($quotaLanguageSetting, $fields, $additionalNames)) {
+                if ($this->fixText($quotaLanguageSetting, $fields, $newFields) || $this->fixText($quotaLanguageSetting, $fields, $additionalNames)) {
                     $quotaLanguageSetting->save();
                 }
             }
@@ -1216,7 +1216,7 @@ class Update_639 extends DatabaseUpdateBase
             $model = new QuestionGroupL10n();
             $groups = $model->resetScope()->findAll("gid in (" . implode(",", $gids) . ")");
             foreach ($groups as $group) {
-                if ($this->fixText($group, $fields, $names) || $this->fixText($group, $fields, $additionalNames)) {
+                if ($this->fixText($group, $fields, $newFields) || $this->fixText($group, $fields, $additionalNames)) {
                     $group->save();
                 }
             }
