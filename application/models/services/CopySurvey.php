@@ -324,17 +324,17 @@ class CopySurvey
      * @param Survey $destinationSurvey
      *
      * @return Survey
-     * @throws Exception
+     * @throws \Exception
      */
     private function getValidSurveyId(Survey $destinationSurvey)
     {
         $attempts = 0;
         /* Validate sid : > 1 and unique */
-        while (!$destinationSurvey->validate(array('sid'))) {
+        while (!$destinationSurvey->validate(['sid'])) {
             $attempts++;
             $destinationSurvey->sid = intval(randomChars(6, '123456789'));
             if ($attempts > CreateSurvey::ATTEMPTS_CREATE_SURVEY_ID) {
-                throw new Exception("Unable to get a valid survey ID after 50 attempts");
+                throw new \Exception("Unable to get a valid survey ID after 50 attempts");
             }
         }
 
