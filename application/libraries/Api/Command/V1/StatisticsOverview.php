@@ -79,7 +79,7 @@ class StatisticsOverview implements CommandInterface
     public function run(Request $request)
     {
         $this->surveyId = (int)$request->getData('_id');
-        $this->language = (string)$request->getData('language', 'en');
+        $this->language = $request->getData('language');
 
         // Check if user has permission to view statistics
         if (!$this->permission->hasSurveyPermission($this->surveyId, 'statistics')) {
