@@ -1,5 +1,6 @@
 {
     "require": {
-        "greew/oauth2-azure-provider": "^1.0"
+        "greew/oauth2-azure-provider": "^1.0",
+        "guzzlehttp/psr7": "2.4.5"
     }
 }
