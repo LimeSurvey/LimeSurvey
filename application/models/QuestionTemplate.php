@@ -16,46 +16,122 @@
 
 class QuestionTemplate extends CFormModel
 {
-    // Main variables
-    /** @var Question $oQuestion The current question */
+    /** 
+     * The question associated with this template.
+     * 
+     * @var Question 
+     */
     public $oQuestion;
-    /** @var boolean $bHasTemplate Does this question has a template? */
+
+    /**
+     * Whether this question has a template applied.
+     *
+     * @var bool
+     */
     public $bHasTemplate;
 
-    /** @var string $sTemplateFolderName The folder of the template
-     * applied to this question (if no template applied, it's false) */
+    /**
+     * The folder name of the template applied to this question.
+     *
+     * Returns the template folder name or false if no custom template is used.
+     *
+     * @var string|false
+     */
     public $sTemplateFolderName;
-    /** @var array $aViews Array of views the template can handle ($aViews['path_to_my_view']==true) */
+    
+    /**
+     * List of views supported by this template.
+     * Example: $aViews['path/to/view'] === true
+     * 
+     * @var array
+     */
     public $aViews;
-    /** @var SimpleXMLElement $oConfig */
+
+    /**
+     *  XML configuration of the template.
+     * 
+     * @var SimpleXMLElement
+     */
     public $oConfig;
-    /** @var boolean $bHasCustomAttributes Does the template provides custom attributes? */
+
+    /**
+     * Whether the template provides custom attributes.
+     * 
+     * @var bool
+     */
     public $bHasCustomAttributes;
-    /** @var array $aCustomAttributes array (attribute=>value) */
+
+    /**
+     *  Custom attributes defined by the template.
+     * Format: ['attributeName' => 'value']
+     *
+     * @var array 
+     */
     public $aCustomAttributes;
 
-    /** @var string $sTemplatePath The path to the template */
+    /**
+     * Filesystem path to the template directory.
+     * 
+     * @var string
+     */
     private $sTemplatePath;
-    /** @var string $sTemplateUrl */
+
+    /**
+     * Public URL pointing to the template directory.
+     * 
+     * @var string
+     */
     private $sTemplateUrl;
-    /** @var string $sTemplateQuestionPath The path to the folder corresponding
-     * to the current question type */
+
+    /**
+     *  Filesystem path to the folder corresponding to the current question type.
+     * 
+     * @var string
+     */
     private $sTemplateQuestionPath;
-    /** @var boolean $bHasConfigFile */
+
+    /**
+     * Whether a configuration file exists for this template.
+     * 
+     * @var bool
+     */
     private $bHasConfigFile;
-    /** @var string $xmlFile The path to the xml file */
+
+    /**
+     * Filesystem path to the XML configuration file.
+     * 
+     * @var string
+     */
     private $xmlFile;
-    /** @var boolean $bLoadCoreJs Should it render the core javascript of
-     * this question (script are registered in qanda) */
+
+    /**
+     * Whether the core JavaScript for this question should be rendered.
+     * (Scripts are registered in qanda.)
+     * 
+     * @var bool
+     */
     private $bLoadCoreJs;
-    /** @var boolean $bLoadCoreCss Should it render the core CSS of this question
-     * (script are registered in qanda) */
+
+    /**
+     * Whether the core CSS for this question should be rendered.
+     * (Styles are registered in qanda.)
+     * 
+     * @var bool
+     */
     private $bLoadCoreCss;
-    /** @var boolean $bLoadCorePackage Should it render the core packages
-     * of this question (script are registered in qanda) */
+
+    /**
+     * Whether the core asset packages should be loaded.
+     * 
+     * @var bool
+     */
     private $bLoadCorePackage;
 
-    /** @var QuestionTemplate $instance The instance of question template object */
+    /**
+     * Singleton instance of the question template.
+     *
+     * @var QuestionTemplate|null
+     */
     private static $instance;
 
 
@@ -64,7 +140,9 @@ class QuestionTemplate extends CFormModel
      * Get a new instance of the template object
      * Each question on the page could have a different template.
      * So each question must have a new instance
-     * @param Question $oQuestion
+     * 
+     * @param Question $oQuestion Question
+     * 
      * @return QuestionTemplate
      */
     public static function getNewInstance($oQuestion)
@@ -78,12 +156,17 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
-     * Get the current instance of template question object.
+     * Returns the current QuestionTemplate instance.
      *
-     * @param Question $oQuestion
-     * @return QuestionTemplate
-     * @internal param string $sTemplateName
-     * @internal param int $iSurveyId
+     * If no instance exists yet and a Question object is provided,
+     * a new instance will be created. If no Question is given and
+     * no instance exists, null is returned.
+     *
+     * @param Question|null $oQuestion Optional question used to initialize a new instance.
+     *
+     * @return QuestionTemplate|null  The existing or newly created template instance, or null.
+     *
+     * @inheritdoc
      */
     public static function getInstance($oQuestion = null)
     {
@@ -96,7 +179,9 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Check if the question template offer a specific replacement for that view file.
-     * @param string $sView
+     *
+     * @param string $sView View File
+     * 
      * @return mixed
      */
     public function checkIfTemplateHasView($sView)
@@ -114,6 +199,7 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Retrieve the template base path if exist
+     * 
      * @return null|string
      */
     public function getTemplatePath()
@@ -134,14 +220,28 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
-     * Get the template folder name
-     * @return false|string
+     * Returns the template folder name for the current question.
+     *
+     * Returns the explicit question theme name, or false if the question
+     * uses the core template or no custom theme is defined.
+     *
+     * @return string|false  The folder name or false if no custom template is used.
+     *
+     * @inheritdoc
+     * 
+     * @todo Consider returning an empty string instead of `false` to maintain a
+     *       consistent return type (string). Currently this method returns either
+     *       a string or false, which makes usage and type checking less predictable.
      */
     public function getQuestionTemplateFolderName()
     {
         if ($this->sTemplateFolderName === null) {
             $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid);
-            /** @var string|null */
+            /**
+             * Name of the question theme
+             *
+             * @var string|null 
+             */
             $questionThemeName = $this->oQuestion->question_theme_name;
             $this->sTemplateFolderName = (!empty($questionThemeName) && $questionThemeName != 'core') ? $questionThemeName : false;
         }
@@ -151,8 +251,11 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Register a core script file
-     * @param string $sFile
-     * @param int $pos
+     * 
+     * @param string $sFile Name of the file
+     * @param int    $pos   Position
+     * 
+     * @return void
      */
     public function registerScriptFile($sFile, $pos = CClientScript::POS_BEGIN)
     {
@@ -163,8 +266,11 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Register a core script
-     * @param string $sScript
-     * @param int $pos
+     * 
+     * @param string $sScript Name of the script
+     * @param int    $pos     Position
+     * 
+     * @return void
      */
     public function registerScript($sScript, $pos = CClientScript::POS_BEGIN)
     {
@@ -175,8 +281,11 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Register a core css file
-     * @param string $sCssFile
-     * @param string $media
+     * 
+     * @param string $sCssFile Name of the CSS File
+     * @param string $media    Media
+     * 
+     * @return void
      */
     public function registerCssFile($sCssFile, $media = '')
     {
@@ -187,7 +296,10 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Register a core package file
-     * @param string $sPackage
+     * 
+     * @param string $sPackage Name of the package
+     * 
+     * @return void
      */
     public function registerPackage($sPackage)
     {
@@ -198,7 +310,8 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Return true if the core css should be loaded.
-     * @return null|boolean
+     * 
+     * @return boolean
      */
     public function templateLoadsCoreJs()
     {
@@ -217,7 +330,8 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Return true if the core css should be loaded.
-     * @return null|boolean
+     * 
+     * @return boolean
      */
     public function templateLoadsCoreCss()
     {
@@ -236,6 +350,7 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Return true if the core packages should be loaded.
+     * 
      * @return null|boolean
      */
     public function templateLoadsCorePackage()
@@ -256,6 +371,8 @@ class QuestionTemplate extends CFormModel
 
     /**
      * In the future, could retrieve data from DB
+     * 
+     * @return void
      */
     public function setConfig()
     {
@@ -304,7 +421,9 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
-     *
+     * Registers the assets.
+     * 
+     * @return void
      */
     public function registerAssets()
     {
@@ -319,12 +438,14 @@ class QuestionTemplate extends CFormModel
                 $package              = 'question-template_' . $this->oQuestion->qid;
 
                 Yii::setPathOfAlias($questionTemplatePath, $this->sTemplateQuestionPath . '/assets'); // The package creation/publication need an alias
-                Yii::app()->clientScript->addPackage($package, array(
+                Yii::app()->clientScript->addPackage(
+                    $package, array(
                     'basePath'    => $questionTemplatePath,
                     'css'         => $aCssFiles,
                     'js'          => $aJsFiles,
                     'position'    => LSYii_ClientScript::POS_BEGIN
-                ));
+                    )
+                );
 
                 if (!YII_DEBUG || Yii::app()->getConfig('use_asset_manager')) {
                     Yii::app()->clientScript->registerPackage($package);
@@ -342,6 +463,8 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
+     * Returns the template URL.
+     * 
      * @return string
      */
     public function getTemplateUrl()
@@ -366,7 +489,9 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
-     * @return array
+     * Returns the custom attributes.
+     * 
+     * @return array|null
      */
     public function getCustomAttributes()
     {
@@ -378,16 +503,22 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Called from admin, to generate the template list for a given question type
-     * @param string $type
+     * 
+     * @param string $type Question Type
+     * 
      * @return array
-     * @todo Move to QuestionTheme?
-     * @todo This is not the same as QuestionTheme::findQuestionMetaDataForAllTypes() which is the database layer
-     * @todo this should check the filestructure instead of the database as this is the filestructure layer
+     * @todo   Move to QuestionTheme?
+     * @todo   This is not the same as QuestionTheme::findQuestionMetaDataForAllTypes() which is the database layer
+     * @todo   this should check the filestructure instead of the database as this is the filestructure layer
      */
     public static function getQuestionTemplateList($type)
     {
         // todo: incorrect, this should check the filestructure instead of the database as this is the filestructure layer
-        /** @var QuestionTheme[] */
+        /**
+         * QuestionTheme
+         *  
+         * @var QuestionTheme[] 
+         */
         $questionThemes = QuestionTheme::model()->findAllByAttributes(
             [],
             'question_type = :question_type',
@@ -412,8 +543,11 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
-     * @param string $type
-     * @return string|null
+     * Returns the folder name.
+     * 
+     * @param string $type Type
+     * 
+     * @return     string|null
      * @deprecated use QuestionTheme::getQuestionXMLPathForBaseType
      */
     public static function getFolderName($type)
@@ -429,7 +563,8 @@ class QuestionTemplate extends CFormModel
     /**
      * Correspondence between question type and the view folder name
      * Rem: should be in question model. We keep it here for easy access
-     * @return array
+     * 
+     * @return     array
      * @deprecated
      */
     public static function getTypeToFolder()
