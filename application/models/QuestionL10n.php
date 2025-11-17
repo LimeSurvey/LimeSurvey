@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -10,45 +10,67 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- *
  */
 
 /**
  * Class QuestionL10n
+ *
  * @property integer $id primary key
  * @property integer $qid question id
  * @property string $language Question language code. Note: There is a unique key on qid & language columns combined
  * @property string $question Question display text. The actual question.
  * @property string $help Question help-text for display
  * @property string $script Question script to be executed on runtime
- *
  */
 class QuestionL10n extends LSActiveRecord
 {
-    /** @inheritdoc */
+    /**
+     * Returns the table name of this model.
+     *
+     * @inheritdoc 
+     * @return     string
+     */
     public function tableName()
     {
         return '{{question_l10ns}}';
     }
 
-    /** @inheritdoc */
+    /** 
+     * Returns the primary key of this model.
+     *
+     * @inheritdoc 
+     * @return     string
+     */
     public function primaryKey()
     {
         return 'id';
     }
 
     /**
+     * Returns the static model of the specified AR class.
+     * 
+     * @param $className Classname
+     * 
      * @inheritdoc
-     * @return QuestionL10n
+     * @return     QuestionL10n
      */
     public static function model($className = __CLASS__)
     {
-        /** @var self $model */
+        /**
+         * * Model
+         *
+         *  @var self $model 
+         */
         $model = parent::model($className);
         return $model;
     }
 
-    /** @inheritdoc */
+    /**
+     * Returns the relations of this model.
+     *  
+     * @inheritdoc 
+     * @return     array
+     * */
     public function relations()
     {
         return array(
@@ -61,6 +83,7 @@ class QuestionL10n extends LSActiveRecord
      * This defaultScope indexes the ActiveRecords given back by language
      * Important: This does not work if you want to retrieve records for more than one question at a time.
      * in that case reset disable the defaultScope by using MyModel::model()->resetScope()->findAll();
+     * 
      * @return array Scope that indexes the records by their language
      */
     public function defaultScope()
@@ -68,7 +91,12 @@ class QuestionL10n extends LSActiveRecord
         return array('index' => 'language');
     }
 
-    /** @inheritdoc */
+    /**
+     * Returns the validation rules for this model.
+     * 
+     * @inheritdoc 
+     * @return     array
+     */
     public function rules()
     {
         $rules = array(
