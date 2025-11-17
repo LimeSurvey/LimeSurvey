@@ -42,7 +42,7 @@ class SurveyStatisticsGlance implements CommandInterface
         Permission $permission,
         FilterPatcher $responseFilterPatcher,
         ResponseFactory $responseFactory,
-        StatisticsService $statisticsService,
+        StatisticsService $statisticsService
     ) {
         $this->permission = $permission;
         $this->responseFactory = $responseFactory;
