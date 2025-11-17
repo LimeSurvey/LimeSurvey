@@ -602,7 +602,8 @@ class statistics_helper
         $subquestionText = "";
         $fieldmap = createFieldMap($survey, "full", false, false, $language);
         $letterIndex = strcspn($rt, '0123456789');
-        $sQuestionType = substr($rt, ($letterIndex > 1) ? 0 : 2, 1);
+        $isQuestionField = strpos(substr($rt, 0, 2), 'Q') !== false;
+        $sQuestionType = substr($rt, ($rt[1] === 'Q') ? 0 : 1, 1);
         $sDatabaseType = Yii::app()->db->getDriverName();
         $statisticsoutput = "";
         $qqid = "";
@@ -623,7 +624,7 @@ class statistics_helper
         //M - Multiple choice, therefore multiple fields - one for each answer
         if ($sQuestionType == "M" || $sQuestionType == "P") {
             //get SGQ data
-            $qqid = substr($rt, 2);
+            $qqid = substr($rt, $letterIndex);
 
             //select details for this question
             $nresult = Question::model()->find('parent_qid=0 AND qid=:qid', array(':qid' => $qqid));
@@ -1755,7 +1756,7 @@ class statistics_helper
         if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
             $criteria = new CDbCriteria();
             foreach ($outputs['alist'] as $al) {
-                $quotedColumnName = App()->db->quoteColumnName($al2);
+                $quotedColumnName = App()->db->quoteColumnName($al[2]);
                 if ($noncompleted > 1 ) {
                     // database can use blob due to encryption
                     switch ($sDatabaseType) {
@@ -3525,9 +3526,6 @@ class statistics_helper
 
         //loop through all selected questions
         foreach ($runthrough as $rt) {
-            if ($rt[1] === 'Q') {
-                $rt = substr($rt, 1);
-            }
             ////Step 1: Get information about this response field (SGQA) for the summary
             $outputs = $this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
             //$sOutputHTML .= $outputs['statisticsoutput']; // Nothing interesting for us in this output
