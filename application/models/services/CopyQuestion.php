@@ -205,7 +205,7 @@ class CopyQuestion
             $areSubquestionsCopied = $areSubquestionsCopied && $copiedSubquestion->save();
             $this->mappedSubquestionIds[$subquestion->qid] = $copiedSubquestion->qid; // map old subquestion id to new subquestion id
             foreach ($subquestion->questionl10ns as $subquestLanguage) {
-                $substituteSurveyInQuestionText = "test" ;
+                $substituteSurveyInQuestionText = $subquestLanguage->question;
                 if ($surveyId !== null && isset($this->copyOptions['adjustLinks']) && $this->copyOptions['adjustLinks']) {
                     $substituteSurveyInQuestionText = translateLinks(
                         'survey',
@@ -220,9 +220,7 @@ class CopyQuestion
                 $newSubquestLanguage->script = $subquestLanguage->script;
                 $newSubquestLanguage->qid = $copiedSubquestion->qid;
                 $newSubquestLanguage->language = $subquestLanguage->language;
-                if (!$newSubquestLanguage->save()) {
-                    var_dump($newSubquestLanguage->getErrors());
-                }
+                $newSubquestLanguage->save();
             }
         }
 
