@@ -956,7 +956,6 @@ class Update_639 extends DatabaseUpdateBase
         ];
         $scripts = [];
         $responsesTables = $this->db->createCommand($this->scriptMapping['responses'])->queryAll();
-        $unhandledTables = [];
 
         foreach ($responsesTables as $responsesTable) {
             if (((strpos($responsesTable['old_name'], "old_") === false) && (strpos($responsesTable['old_name'], "timing") === false))) {
