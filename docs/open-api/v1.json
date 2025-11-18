@@ -718,6 +718,127 @@
                 ]
             }
         },
+        "\/rest\/v1\/statistics-glance\/{_id}": {
+            "get": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Survey statistics at glance",
+                "operationId": "get.statistics-glance.id",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Survey Statistics Overview",
+                                    "description": "Survey Statistics Overview",
+                                    "type": "object",
+                                    "properties": {
+                                        "statistics": {
+                                            "type": "object",
+                                            "properties": {
+                                                "totalResponses": {
+                                                    "default": 0,
+                                                    "type": "integer"
+                                                },
+                                                "incompleteResponses": {
+                                                    "default": 0,
+                                                    "type": "integer"
+                                                },
+                                                "completedWithoutAnswers": {
+                                                    "default": 0,
+                                                    "type": "integer"
+                                                },
+                                                "incompletedWithoutAnswers": {
+                                                    "default": 0,
+                                                    "type": "integer"
+                                                },
+                                                "completionRate": {
+                                                    "default": "0.00",
+                                                    "type": "string"
+                                                },
+                                                "avgCompletionTime": {
+                                                    "default": "0.0000",
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Error",
+                                    "description": "Error",
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "data": {
+                                                    "type": "object"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Error",
+                                    "description": "Error",
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "data": {
+                                                    "type": "object"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "\/rest\/v1\/statistics\/{_id}": {
             "get": {
                 "tags": [
@@ -1112,6 +1233,786 @@
                     },
                     "401": {
                         "description": "Unauthorized",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Error",
+                                    "description": "Error",
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "data": {
+                                                    "type": "object"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "\/rest\/v1\/survey-detail\/{_id}\/ts\/{_ts}": {
+            "get": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Survey detail",
+                "operationId": "get.survey-detail",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path"
+                    },
+                    {
+                        "name": "_ts",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Survey Detail",
+                                    "description": "Survey Detail",
+                                    "type": "object",
+                                    "properties": {
+                                        "survey": {
+                                            "allOf": [
+                                                {
+                                                    "title": "Survey",
+                                                    "description": "Survey",
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "sid": {
+                                                            "type": "integer"
+                                                        },
+                                                        "gsid": {
+                                                            "type": "integer"
+                                                        },
+                                                        "active": {
+                                                            "default": false,
+                                                            "type": "boolean"
+                                                        },
+                                                        "expires": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "startDate": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "anonymized": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "saveTimings": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "datestamp": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "useCookie": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "allowRegister": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "htmlEmail": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "allowSave": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "autoNumberStart": {
+                                                            "default": 0,
+                                                            "type": "integer"
+                                                        },
+                                                        "autoRedirect": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "allowPrev": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "printAnswers": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "ipAddr": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "ipAnonymize": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "refUrl": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "dateCreated": {
+                                                            "format": "date-time",
+                                                            "type": "string"
+                                                        },
+                                                        "publicStatistics": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "publicGraphs": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "listPublic": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "sendConfirmation": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "tokenAnswersPersistence": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "assessments": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "useCaptcha": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "useTokens": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "bounceEmail": {
+                                                            "type": "string"
+                                                        },
+                                                        "attributeDescriptions": {
+                                                            "type": "string"
+                                                        },
+                                                        "emailResponseTo": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "emailNotificationTo": {
+                                                            "type": "string"
+                                                        },
+                                                        "tokenLength": {
+                                                            "type": "integer",
+                                                            "example": 15
+                                                        },
+                                                        "showXQuestions": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "showGroupInfo": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "showNoAnswer": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "showQNumCode": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "bounceTime": {
+                                                            "type": "integer"
+                                                        },
+                                                        "bounceProcessing": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "bounceAccountType": {
+                                                            "type": "string"
+                                                        },
+                                                        "bounceAccountHost": {
+                                                            "type": "string"
+                                                        },
+                                                        "bounceAccountPass": {
+                                                            "type": "string"
+                                                        },
+                                                        "bounceAccountEncryption": {
+                                                            "type": "string"
+                                                        },
+                                                        "bounceAccountUser": {
+                                                            "type": "string"
+                                                        },
+                                                        "showWelcome": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "showProgress": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "questionIndex": {
+                                                            "type": "integer"
+                                                        },
+                                                        "navigationDelay": {
+                                                            "type": "integer"
+                                                        },
+                                                        "noKeyboard": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "allowedItAfterCompletion": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "googleAnalyticsStyle": {
+                                                            "type": "integer"
+                                                        },
+                                                        "googleAnalyticsApiKey": {
+                                                            "type": "string"
+                                                        },
+                                                        "showSurveyPolicyNotice": {
+                                                            "type": "integer"
+                                                        },
+                                                        "defaultlanguage": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "sid": {
+                                                                    "type": "integer"
+                                                                },
+                                                                "language": {
+                                                                    "type": "string"
+                                                                },
+                                                                "title": {
+                                                                    "type": "string"
+                                                                },
+                                                                "description": {
+                                                                    "type": "string"
+                                                                },
+                                                                "welcomeText": {
+                                                                    "type": "string"
+                                                                },
+                                                                "endText": {
+                                                                    "type": "string"
+                                                                },
+                                                                "policyNotice": {
+                                                                    "type": "string"
+                                                                },
+                                                                "policyError": {
+                                                                    "type": "string"
+                                                                },
+                                                                "policyNoticeLabel": {
+                                                                    "type": "string"
+                                                                },
+                                                                "url": {
+                                                                    "type": "string"
+                                                                },
+                                                                "urlDescription": {
+                                                                    "type": "string"
+                                                                },
+                                                                "dateFormat": {
+                                                                    "type": "integer"
+                                                                },
+                                                                "numberFormat": {
+                                                                    "type": "integer"
+                                                                }
+                                                            }
+                                                        },
+                                                        "languages": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "allOf": [
+                                                                    {
+                                                                        "type": "string"
+                                                                    }
+                                                                ]
+                                                            }
+                                                        },
+                                                        "questionGroups": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "title": "Question Group",
+                                                                "description": "Question Group",
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "gid": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "sid": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "groupOrder": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "randomizationGroup": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "gRelevance": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "l10ns": {
+                                                                        "additionalProperties": {
+                                                                            "properties": {
+                                                                                "id": {
+                                                                                    "type": "integer"
+                                                                                },
+                                                                                "gid": {
+                                                                                    "type": "integer"
+                                                                                },
+                                                                                "group_order": {
+                                                                                    "type": "integer"
+                                                                                },
+                                                                                "groupName": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "description": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "language": {
+                                                                                    "type": "string"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    "questions": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "title": "Question",
+                                                                            "description": "Question",
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "qid": {
+                                                                                    "type": "integer"
+                                                                                },
+                                                                                "parentQid": {
+                                                                                    "default": 0,
+                                                                                    "type": "integer"
+                                                                                },
+                                                                                "sid": {
+                                                                                    "type": "integer"
+                                                                                },
+                                                                                "type": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "title": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "preg": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "other": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "mandatory": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "encrypted": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "questionOrder": {
+                                                                                    "default": 0,
+                                                                                    "type": "integer"
+                                                                                },
+                                                                                "scaleId": {
+                                                                                    "type": "integer"
+                                                                                },
+                                                                                "sameDefault": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "questionThemeName": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "moduleName": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "gid": {
+                                                                                    "default": 0,
+                                                                                    "type": "integer"
+                                                                                },
+                                                                                "relevance": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "sameScript": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "l10ns": {
+                                                                                    "additionalProperties": {
+                                                                                        "properties": {
+                                                                                            "id": {
+                                                                                                "type": "integer"
+                                                                                            },
+                                                                                            "qid": {
+                                                                                                "type": "integer"
+                                                                                            },
+                                                                                            "question": {
+                                                                                                "type": "string"
+                                                                                            },
+                                                                                            "script": {
+                                                                                                "type": "string"
+                                                                                            },
+                                                                                            "language": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                "answers": {
+                                                                                    "type": "array",
+                                                                                    "items": {
+                                                                                        "allOf": [
+                                                                                            {
+                                                                                                "title": "Answer",
+                                                                                                "description": "Answer",
+                                                                                                "type": "object",
+                                                                                                "properties": {
+                                                                                                    "aid": {
+                                                                                                        "type": "integer"
+                                                                                                    },
+                                                                                                    "qid": {
+                                                                                                        "type": "integer"
+                                                                                                    },
+                                                                                                    "code": {
+                                                                                                        "type": "string"
+                                                                                                    },
+                                                                                                    "sortOrder": {
+                                                                                                        "type": "integer"
+                                                                                                    },
+                                                                                                    "assessmentValue": {
+                                                                                                        "type": "integer"
+                                                                                                    },
+                                                                                                    "scaleId": {
+                                                                                                        "type": "integer"
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    }
+                                                                                },
+                                                                                "attributes": {
+                                                                                    "type": "object",
+                                                                                    "properties": {
+                                                                                        "_attributeName": {
+                                                                                            "title": "Question Attributes",
+                                                                                            "description": "Question Attributes",
+                                                                                            "type": "object",
+                                                                                            "properties": {
+                                                                                                "qid": {
+                                                                                                    "type": "integer"
+                                                                                                },
+                                                                                                "_lang": {
+                                                                                                    "title": "Question Attribute",
+                                                                                                    "description": "Question Attribute",
+                                                                                                    "type": "object",
+                                                                                                    "properties": {
+                                                                                                        "qaid": {
+                                                                                                            "type": "integer"
+                                                                                                        },
+                                                                                                        "attribute": {
+                                                                                                            "default": 0,
+                                                                                                            "type": "integer"
+                                                                                                        },
+                                                                                                        "value": {
+                                                                                                            "type": "string"
+                                                                                                        },
+                                                                                                        "language": {
+                                                                                                            "default": "",
+                                                                                                            "type": "string"
+                                                                                                        }
+                                                                                                    }
+                                                                                                },
+                                                                                                "": {
+                                                                                                    "title": "Question Attribute",
+                                                                                                    "description": "Question Attribute",
+                                                                                                    "type": "object",
+                                                                                                    "properties": {
+                                                                                                        "qaid": {
+                                                                                                            "type": "integer"
+                                                                                                        },
+                                                                                                        "attribute": {
+                                                                                                            "default": 0,
+                                                                                                            "type": "integer"
+                                                                                                        },
+                                                                                                        "value": {
+                                                                                                            "type": "string"
+                                                                                                        },
+                                                                                                        "language": {
+                                                                                                            "default": "",
+                                                                                                            "type": "string"
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        "created_at": {
+                                                            "format": "date-time",
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Error",
+                                    "description": "Error",
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "data": {
+                                                    "type": "object"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Error",
+                                    "description": "Error",
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "data": {
+                                                    "type": "object"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Survey update via RFC 6902 based patch",
+                "operationId": "patch.survey-detail",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path"
+                    },
+                    {
+                        "name": "_ts",
+                        "in": "path"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "title": "Survey Patch",
+                                "description": "Survey Patch",
+                                "type": "object",
+                                "properties": {
+                                    "patch": {
+                                        "type": "array",
+                                        "items": {
+                                            "allOf": [
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "entity": {
+                                                            "enum": [
+                                                                "survey",
+                                                                "languageSetting",
+                                                                "questionGroup",
+                                                                "questionGroupL10n",
+                                                                "question",
+                                                                "questionL10n",
+                                                                "questionAnswer",
+                                                                "questionAttribute"
+                                                            ],
+                                                            "type": "string"
+                                                        },
+                                                        "op": {
+                                                            "enum": [
+                                                                "update",
+                                                                "delete",
+                                                                "create"
+                                                            ],
+                                                            "type": "string"
+                                                        },
+                                                        "id": {
+                                                            "anyOf": [
+                                                                {
+                                                                    "type": "string"
+                                                                },
+                                                                {
+                                                                    "type": "object"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "props": {
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            },
+                            "examples": {
+                                "Example": {
+                                    "value": {
+                                        "patch": [
+                                            {
+                                                "entity": "survey",
+                                                "op": "update",
+                                                "id": 282267,
+                                                "props": {
+                                                    "anonymized": false,
+                                                    "language": "de-informal"
+                                                }
+                                            },
+                                            {
+                                                "entity": "languageSetting",
+                                                "op": "update",
+                                                "id": {
+                                                    "sid": 282267,
+                                                    "language": "de-informal"
+                                                },
+                                                "props": {
+                                                    "title": "Beispielfragebogen f\u00fcr Limesurvey EN\/FR\/DE - reverted"
+                                                }
+                                            },
+                                            {
+                                                "entity": "questionGroup",
+                                                "op": "update",
+                                                "id": {
+                                                    "gid": 1
+                                                },
+                                                "props": {
+                                                    "groupOrder": 1000
+                                                }
+                                            },
+                                            {
+                                                "entity": "questionGroupL10n",
+                                                "op": "update",
+                                                "id": {
+                                                    "gid": 1,
+                                                    "language": "de-informal"
+                                                },
+                                                "props": {
+                                                    "description": "r453q26ier steht die Beschreibung f\u00fcr die Gruppe der Textfragen. - edited"
+                                                }
+                                            },
+                                            {
+                                                "entity": "question",
+                                                "op": "update",
+                                                "id": 1,
+                                                "props": {
+                                                    "mandatory": true,
+                                                    "encrypted": true
+                                                }
+                                            },
+                                            {
+                                                "entity": "questionL10n",
+                                                "op": "update",
+                                                "id": {
+                                                    "id": 1,
+                                                    "language": "de-informal"
+                                                },
+                                                "props": {
+                                                    "question": "Kurzer freier Text - edited"
+                                                }
+                                            },
+                                            {
+                                                "entity": "questionAttribute",
+                                                "op": "update",
+                                                "id": 1,
+                                                "props": {
+                                                    "value": "1 - edited"
+                                                }
+                                            },
+                                            {
+                                                "entity": "questionAnswer",
+                                                "op": "update",
+                                                "id": {
+                                                    "aid": 15
+                                                },
+                                                "props": {
+                                                    "sortOrder": 1000
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Error",
+                                    "description": "Error",
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "data": {
+                                                    "type": "object"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "content": {
                             "application\/json": {
                                 "schema": {

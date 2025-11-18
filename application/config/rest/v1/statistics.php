@@ -1,11 +1,12 @@
 <?php
 
+use LimeSurvey\Libraries\Api\Command\V1\SurveyStatisticsGlance;
 use LimeSurvey\Libraries\Api\Rest\V1\SchemaFactory\SchemaFactorySurveyStatistics;
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{SchemaFactoryError,
     SchemaFactorySurveyPatch,
+    SchemaFactorySurveyStatisticsGlance,
     SchemaFactorySurveyStatisticsOverview,
-    SchemaFactorySurveyTemplate
-};
+    SchemaFactorySurveyTemplate};
 use LimeSurvey\Libraries\Api\Command\V1\Statistics;
 use LimeSurvey\Libraries\Api\Command\V1\StatisticsOverview;
 
@@ -37,6 +38,33 @@ $rest['v1/statistics-overview/$id'] = [
             ]
         ]
     ]
+];
+
+$rest['v1/statistics-glance/$id'] = [
+    'GET' => [
+        'tag' => 'survey',
+        'description' => 'Survey statistics at glance',
+        'commandClass' => SurveyStatisticsGlance::class,
+        'auth' => true,
+        'responses' => [
+            'success' => [
+                'code' => 200,
+                'description' => 'Success',
+                'content' => null,
+                'schema' => (new SchemaFactorySurveyStatisticsGlance())->make(),
+            ],
+            'unauthorized' => [
+                'code' => 401,
+                'description' => 'Unauthorized',
+                'schema' => $errorSchema
+            ],
+            'not-found' => [
+                'code' => 404,
+                'description' => 'Not Found',
+                'schema' => $errorSchema
+            ]
+        ]
+    ],
 ];
 
 $rest['v1/statistics/$id'] = [
