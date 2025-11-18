@@ -2245,7 +2245,10 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         //the new survey id
-        $newSurveyId = sanitize_int(App()->request->getPost('copysurveyid'), 1, 999999);
+        $rawNewSid = App()->request->getPost('copysurveyid');
+        $newSurveyId = ($rawNewSid === '' || $rawNewSid === null)
+            ? null
+            : sanitize_int($rawNewSid, 1, 999999);
 
         //the source survey id
         $sourceSurveyId = sanitize_int(App()->request->getPost('surveyIdToCopy'));
