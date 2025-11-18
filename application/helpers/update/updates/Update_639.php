@@ -206,7 +206,7 @@ class Update_639 extends DatabaseUpdateBase
         foreach ($questions as $q) {
             $qids[] = $q['qid'];
         }
-        $rawQuestions = Question::model()->findAllByPk($qids);
+        $rawQuestions = Question::model()->with('answers')->findAllByPk($qids);
         $qs = [];
         foreach ($rawQuestions as $rawQuestion) {
             $qs[$rawQuestion->qid] = $rawQuestion;
@@ -1013,8 +1013,8 @@ class Update_639 extends DatabaseUpdateBase
                     $position++;
                 }
                 $commaSeparatedQIDs = implode(",", $qids);
-                $questions = Question::model()->findAll([
-                    'condition' => "sid = {$sid} and gid = {$gid} and (qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
+                $questions = Question::model()->with('answers')->findAll([
+                    'condition' => "sid = {$sid} and gid = {$gid} and (t.qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
                 ]);
             }
             if (count($questions) || ((strpos($tableName, "timings") !== false) && ($split > 1))) {
@@ -1023,11 +1023,11 @@ class Update_639 extends DatabaseUpdateBase
         }
         $preinsert = "";
         $postinsert = "";
-        if (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv'])) {
-            $preinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} ON;";
-            $postinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} OFF;";
-        }
         foreach ($fieldMap as $TABLE_NAME => $fields) {
+            if (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv'])) {
+                $preinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} ON;";
+                $postinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} OFF;";
+            }
             $scripts[$TABLE_NAME]['handled'] = true;
             $scripts[$TABLE_NAME]['CREATE'] = str_replace("{$TABLE_NAME}", "{$scripts[$TABLE_NAME]['new_name']}", $scripts[$TABLE_NAME]['CREATE']);
             foreach ($fields as $oldField => $newField) {
@@ -1069,7 +1069,7 @@ class Update_639 extends DatabaseUpdateBase
                     $names[$oldName] = $fieldMap[$TABLE_NAME][$oldName];
                 }
                 $rawAdditionalNames = [];
-                $questions = Question::model()->findAll("sid = :sid", [
+                $questions = Question::model()->with('answers')->findAll("sid = :sid", [
                     ":sid" => $sid
                 ]);
                 $qids = [0];
@@ -1136,7 +1136,7 @@ class Update_639 extends DatabaseUpdateBase
         foreach ($passiveSurveys as $passiveSurvey) {
             $qids = [0];
             $gids = [0];
-            $questions = Question::model()->findAll("sid = :sid", [
+            $questions = Question::model()->with('answers')->findAll("sid = :sid", [
                 ":sid" => $passiveSurvey->sid
             ]);
             $rawAdditionalNames = [];
@@ -1168,8 +1168,8 @@ class Update_639 extends DatabaseUpdateBase
                             $position++;
                         }
                         $commaSeparatedQIDs = implode(",", $tempqids);
-                        $questionsTemp = Question::model()->findAll([
-                            'condition' => "sid = {$sid} and gid = {$gid} and (qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
+                        $questionsTemp = Question::model()->with('answers')->findAll([
+                            'condition' => "sid = {$sid} and gid = {$gid} and (t.qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
                         ]);
                         $prefix = Yii::app()->db->tablePrefix ?? "";
                         if (count($questionsTemp)) {
