@@ -92,14 +92,22 @@ class CopySurvey
         }
 
         if ($this->options->isConditions()) {
-            $this->copyConditions(
-                $mappingGroupIdsAndQuestionIds['questionIds'],
-                $mappingGroupIdsAndQuestionIds['questionGroupIds'],
-                $destinationSurvey->sid
-            );
+            $hasQuestionMap = !empty($mappingGroupIdsAndQuestionIds['questionIds']) && is_array($mappingGroupIdsAndQuestionIds['questionIds']);
+            $hasGroupMap = !empty($mappingGroupIdsAndQuestionIds['questionGroupIds']) && is_array($mappingGroupIdsAndQuestionIds['questionGroupIds']);
+            if ($hasQuestionMap && $hasGroupMap) {
+                $this->copyConditions(
+                    $mappingGroupIdsAndQuestionIds['questionIds'],
+                    $mappingGroupIdsAndQuestionIds['questionGroupIds'],
+                    $destinationSurvey->sid
+                );
+            } else {
+                $copySurveyResult->setWarnings(gT("Conditions were not copied because question/group mappings are missing."));
+                Question::model()->updateAll(['relevance' => '1'], 'sid=' . (int)$destinationSurvey->sid);
+                QuestionGroup::model()->updateAll(['grelevance' => '1'], 'sid=' . (int)$destinationSurvey->sid);
+            }
         } else {
-            Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $destinationSurvey->sid);
-            QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $destinationSurvey->sid);
+            Question::model()->updateAll(['relevance' => '1'], 'sid=' . (int)$destinationSurvey->sid);
+            QuestionGroup::model()->updateAll(['grelevance' => '1'], 'sid=' . (int)$destinationSurvey->sid);
         }
 
         if ($this->options->isResetStartAndEndDate()) {
