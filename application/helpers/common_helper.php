@@ -3649,7 +3649,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     $oldsid = (int) $oldsid;
 
     # translate 'surveyls_urldescription' and 'surveyls_url' INSERTANS tags in surveyls
-    $result = SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $newsid . " AND (surveyls_urldescription LIKE '%{$oldsid}X%' OR surveyls_url LIKE '%{$oldsid}X%')");
+    $result = SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $newsid . " AND (surveyls_urldescription LIKE '%Q%' OR surveyls_url LIKE '%Q%')");
     foreach ($result as $qentry) {
         $urldescription = $qentry['surveyls_urldescription'];
         $endurl = $qentry['surveyls_url'];
@@ -3683,7 +3683,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     } // end while qentry
 
     # translate 'quotals_urldescrip' and 'quotals_url' INSERTANS tags in quota_languagesettings
-    $result = QuotaLanguageSetting::model()->with('quota', array('condition' => 'sid=' . $newsid))->together()->findAll("(quotals_urldescrip LIKE '%{$oldsid}X%' OR quotals_url LIKE '%{$oldsid}X%')");
+    $result = QuotaLanguageSetting::model()->with('quota', array('condition' => 'sid=' . $newsid))->together()->findAll("(quotals_urldescrip LIKE '%Q%' OR quotals_url LIKE '%Q%')");
     foreach ($result as $qentry) {
         $urldescription = $qentry['quotals_urldescrip'];
         $endurl = $qentry['quotals_url'];
@@ -3774,33 +3774,17 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
 
     //while ($qentry = $res->FetchRow())
     foreach ($result as $qentry) {
-        $answer = $qentry['answer'];
-        $code = $qentry['code'];
-        $qid = $qentry['qid'];
-        $language = $qentry['language'];
-
-        foreach ($fieldnames as $sOldFieldname => $sNewFieldname) {
-            $pattern = $sOldFieldname;
-            $replacement = $sNewFieldname;
-            $answer = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $answer);
+        $translatedAnswers = $qentry->answerl10ns;
+        foreach ($translatedAnswers as $translatedAnswer) {
+            $answer = $translatedAnswer->answer;
+            foreach ($fieldnames as $pattern => $replacement) {
+                $translatedAnswer->answer = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $translatedAnswer->answer);
+            }
+            if ($answer !== $translatedAnswer->answer) {
+                $translatedAnswer->save();
+            }
         }
-
-        if (strcmp((string) $answer, (string) $qentry['answer']) != 0) {
-            // Update Field
-
-            $data = array(
-            'answer' => $answer,
-            'qid' => $qid
-            );
-
-            $where = array(
-            'code' => $code,
-            'language' => $language
-            );
-
-            Answer::model()->updateRecord($data, $where);
-        } // Enf if modified
-    } // end while qentry
+    }
 }
 
 /**
