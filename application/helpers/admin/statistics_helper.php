@@ -1508,14 +1508,6 @@ class statistics_helper
                 $fields = [
                     Yii::app()->db->quoteColumnName($cn)
                 ];
-                if ($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE || $outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
-                    $subquestions = Question::model()->findAll('parent_qid = :pqid', [':pqid' => substr($cn, 1)]);
-                    $fields = [];
-                    foreach ($subquestions as $subquestion) {
-                        $fields []= Yii::app()->db->quoteColumnName($cn . "_S" . $subquestion->qid);
-                    }
-                    $in = "(" . implode(",", $fields) . ")";
-                }
                 //handling for "other" option
                 if ($al[0] == gT("Other")) {
                     if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST) {
@@ -1523,8 +1515,7 @@ class statistics_helper
                         $othEncrypted = getEncryptedCondition($responseModel, $columnName, '-oth-');
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($columnName) . "='$othEncrypted'";
                     } else {
-                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ";
-                        $query .= "not ('' in " . $in . ")";
+                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al[2])." <> ''" ;
                     }
                 }
 
@@ -1556,12 +1547,12 @@ class statistics_helper
                 // all other question types
                 } else {
                     //ranking question?
+                    $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al[2])." =";
                     if (substr((string) $rt, 0, 1) == "R") {
-                        $value = " '$al[0]'";
+                        $query .= " '$al[0]'";
                     } else {
-                        $value = " 'Y'";
+                        $query .= " 'Y'";
                     }
-                    $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . $value . " IN " . $in;
                 }
             }    //end if -> alist set
 
