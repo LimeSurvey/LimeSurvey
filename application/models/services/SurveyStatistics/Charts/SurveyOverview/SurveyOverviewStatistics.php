@@ -40,12 +40,12 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
         $this->surveyId = $surveyId;
 
         $rows = $this->fetchStatisticsOverview();
-        $rows['completionRate'] = round($rows['completionRate'], 2);
+        $rows['completionRate'] = round($rows['completionRate'] ?? 0, 2);
         $rows['completedWithoutAnswers'] = (int)$rows['completedWithoutAnswers'];
         $rows['incompletedWithoutAnswers'] = (int)$rows['incompletedWithoutAnswers'];
         $rows['incompleteResponses'] = (int)$rows['incompleteResponses'];
         if ($rows['avgCompletionTime'] !== null) {
-            $rows['avgCompletionTime'] = round($rows['avgCompletionTime'], 2);
+            $rows['avgCompletionTime'] = round($rows['avgCompletionTime'] ?? 0, 2);
         }
 
         return new StatisticsChartDTO(
