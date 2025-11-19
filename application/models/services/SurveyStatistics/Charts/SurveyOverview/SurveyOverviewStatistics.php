@@ -40,12 +40,12 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
         $this->surveyId = $surveyId;
 
         $rows = $this->fetchStatisticsOverview();
-        $rows['completionRate'] = round($rows['completionRate'], 2);
+        $rows['completionRate'] = round($rows['completionRate'] ?? 0, 2);
         $rows['completedWithoutAnswers'] = (int)$rows['completedWithoutAnswers'];
         $rows['incompletedWithoutAnswers'] = (int)$rows['incompletedWithoutAnswers'];
         $rows['incompleteResponses'] = (int)$rows['incompleteResponses'];
         if ($rows['avgCompletionTime'] !== null) {
-            $rows['avgCompletionTime'] = round($rows['avgCompletionTime'], 2);
+            $rows['avgCompletionTime'] = round($rows['avgCompletionTime'] ?? 0, 2);
         }
 
         return new StatisticsChartDTO(
@@ -86,7 +86,7 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
             'SUM(CASE WHEN submitdate IS NULL THEN 1 ELSE 0 END) AS incompleteResponses',
             "SUM(CASE WHEN submitdate IS NOT NULL AND {$coalesceSql} IS NULL THEN 1 ELSE 0 END) AS completedWithoutAnswers",
             "SUM(CASE WHEN submitdate IS NULL AND {$coalesceSql} IS NULL THEN 1 ELSE 0 END) AS incompletedWithoutAnswers",
-            'ROUND(SUM(CASE WHEN submitdate IS NOT NULL THEN 1 ELSE 0 END) * 100.0 / COUNT(id), 2) AS completionRate',
+            'ROUND(SUM(CASE WHEN submitdate IS NOT NULL THEN 1 ELSE 0 END) * 100.0 / NULLIF(COUNT(id), 0), 2) AS completionRate',
         ];
 
         // datestamps is not enabled, therefor we cannot calculate avg completion time

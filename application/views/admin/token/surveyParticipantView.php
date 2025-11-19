@@ -72,7 +72,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                                 </div>
                                 <div class="row">
                                     <div class="col summary-detail">
-                                        <?php eT("Total surveys completed"); ?>
+                                        <?php eT("Total participants completed"); ?>
                                     </div>
                                     <div class="col">
                                         <?php echo $queries['completed']; ?>
