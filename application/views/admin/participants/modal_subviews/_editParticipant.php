@@ -88,7 +88,7 @@ Yii::app()->getController()->renderPartial(
         <?php if ($model->isOwnerOrSuperAdmin()): ?>
         <?php  ?>
             <div class='mb-3'>
-                <label class='form-label '><?php eT("Owner:"); ?></label>
+                <label class='form-label ' for="owner_uid"><?php eT("Owner:"); ?></label>
                 <?php
                     // When we add a new user, owner is default to current user
                     $selected = ($editType == 'add') ? Yii::app()->user->id : $model->owner_uid;
