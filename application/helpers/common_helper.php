@@ -1331,8 +1331,14 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
         $X = explode("X", $fieldName);
         $newFieldName = ((count($X) > 2) ? "Q" : "G") . $X[count($X) - 1];
     } else {
-        $qid = ($questions[0]->parent_qid ? $questions[0]->parent_qid :  $questions[0]->qid);
-        switch ($questions[0]->type) {
+        $rootQuestion = $questions[0];
+        $questionIndex = 0;
+        while (($rootQuestion->parent_qid) && ($questions[$questionIndex]->parent_qid) && ($questionIndex < count($questions))) {
+            $questionIndex++;
+        }
+        $rootQuestion = $questions[$questionIndex];
+        $qid = $rootQuestion->qid;
+        switch ($rootQuestion->type) {
             case \Question::QT_1_ARRAY_DUAL:
             case \Question::QT_5_POINT_CHOICE:
             case \Question::QT_L_LIST:
@@ -1427,8 +1433,8 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
             case \Question::QT_Y_YES_NO_RADIO:
             case \Question::QT_VERTICAL_FILE_UPLOAD:
             case \Question::QT_ASTERISK_EQUATION:
-                $isRoot = ((strpos($tableName, "timings") !== false) || (($questions[0]->parent_qid ?? 0) == "0"));
-                $newFieldName = ($isRoot ? "Q{$qid}" : "Q{$questions[0]->parent_qid}");
+                $isRoot = ((strpos($tableName, "timings") !== false) || (($rootQuestion->parent_qid ?? 0) == "0"));
+                $newFieldName = ($isRoot ? "Q{$qid}" : "Q{$rootQuestion->parent_qid}");
                 $suffix = "";
                 $isComment = false;
                 if (!$isRoot) {
