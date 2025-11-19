@@ -29,7 +29,7 @@ function runAction(el){
         form.append('<input type="hidden" name="uid" value="'+uid+'" />');
         form.append('<input type="hidden" name="action" value="'+action+'" />');
         form.append('<input type="hidden" name="user" value="'+user+'" />');
-        form.append('<input type="hidden" name="'+LS.data.csrfTokenName+'" value="'+LS.data.csrfToken+'" />');
+        form.append($("<input type='hidden'>").attr("name", LS.data.csrfTokenName).attr("value", LS.data.csrfToken));
         form.appendTo('body');
         form.submit();
 }
