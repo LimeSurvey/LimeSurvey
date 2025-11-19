@@ -1188,10 +1188,9 @@ function finalizeSurveyImportFile($newsid, $baselang)
 /**
  * Returns the tables which
  * @param int $sid
- * @param string $baseTable
  * @return array
  */
-function getTableArchivesAndTimestamps(int $sid, string $baseTable = 'old_survey')
+function getTableArchivesAndTimestamps(int $sid)
 {
     $tables = dbGetTablesLike("%old%\_{$sid}\_%");
     $result = [];
@@ -1208,7 +1207,7 @@ function getTableArchivesAndTimestamps(int $sid, string $baseTable = 'old_survey
         } else {
             $result[$timestamp]['tables'] .= ",{$table}";
         }
-        if (strpos($table, 'survey') !== false) {
+        if (strpos($table, 'responses') !== false) {
             $result[$timestamp]['cnt'] = (int) Yii::app()->db->createCommand("select count(*) as cnt from " . Yii::app()->db->quoteTableName($table))->queryScalar();
         }
     }
