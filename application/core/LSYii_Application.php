@@ -64,6 +64,9 @@ class LSYii_Application extends CWebApplication
     /* @var integer| null the current userId for all action */
     private $currentUserId;
 
+    /* @var integer|false the current survey ID */
+    private static $surveyId = false;
+
     /**
      *
      * Initiates the application
@@ -595,4 +598,45 @@ class LSYii_Application extends CWebApplication
         ]);
     }
 
+    /**
+     * Get survey survey id by param
+     * @param boolan throw error
+     * @return false|integer
+     */
+     public static function getSurveyId($throwError = true)
+     {
+         if (is_int(self::$surveyId)) {
+             /* Survey is set and is valid */
+             return self::$surveyId;
+         }
+         $surveyId = Yii::app()->request->getParam(
+            'sid',
+            Yii::app()->request->getParam(
+                'surveyid',
+                Yii::app()->request->getParam('surveyId')
+            )
+         );
+         if (!$surveyId) {
+             return false;
+         }
+         $intSurveyId = intval($surveyId);
+         if (strval($intSurveyId) !== strval($surveyId)) {
+             if ($throwError) {
+                 throw new CHttpException(400, gT('Your request is invalid.'));
+             }
+             return false;
+        }
+        $surveyId = intval($surveyId);
+        /* surveyId is set and is an integer */
+        $survey = Survey::model()->findByPk($surveyId);
+        if ($survey) {
+             self::$surveyId = $surveyId;
+        } else {
+            if ($throwError) {
+                throw new CHttpException(404, gT('Your request is invalid.'));
+            }
+            return false;
+        }
+        return self::$surveyId;
+    }
 }
