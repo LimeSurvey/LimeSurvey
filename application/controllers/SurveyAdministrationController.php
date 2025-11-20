@@ -47,6 +47,7 @@ class SurveyAdministrationController extends LSBaseController
                     'getCurrentEditorValues',
                     'getDataSecTextSettings',
                     'getDateFormatOptions',
+                    'updateAccessMode',
                     ''
                 ],
                 'users' => ['@'], //only login users
@@ -2054,7 +2055,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['moreInfo'] = $temp;
         }
 
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js');
         App()->getClientScript()->registerPackage('jquery-json');
 
         // override survey settings if global settings exist
@@ -3017,6 +3018,7 @@ class SurveyAdministrationController extends LSBaseController
         $condition = array('sid' => $iSurveyID, 'parent_qid' => 0);
         $sumcount3 = Question::model()->countByAttributes($condition); //Checked
         $sumcount2 = QuestionGroup::model()->countByAttributes(array('sid' => $iSurveyID));
+        $accessMode = $aSurveyInfo['access_mode'];
 
         //SURVEY SUMMARY
         $aAdditionalLanguages = $oSurvey->additionalLanguages;
@@ -3104,6 +3106,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $aData['sumcount3'] = $sumcount3;
         $aData['sumcount2'] = $sumcount2;
+        $aData['accessMode'] = $accessMode;
 
         if ($activated == "N") {
             $aData['activatedlang'] = gT("No");
@@ -3636,5 +3639,41 @@ class SurveyAdministrationController extends LSBaseController
                 'items' => $boxes
             )
         );
+    }
+
+    /**
+     * AJAX action to update survey access mode
+     */
+    public function actionUpdateAccessMode()
+    {
+        $surveyId = (int) Yii::app()->request->getPost('surveyId');
+        $accessMode = Yii::app()->request->getPost('accessMode');
+
+        if (!$surveyId || !$accessMode) {
+            $this->renderJSON(['success' => false, 'message' => 'Missing parameters']);
+            return;
+        }
+
+        try {
+            $surveyAccessModeService = new SurveyAccessModeService(
+                Permission::model(),
+                Survey::model(),
+                Yii::app()
+            );
+
+            $result = $surveyAccessModeService->changeAccessMode($surveyId, $accessMode);
+
+            if ($result) {
+                $this->renderJSON([
+                    'success' => true,
+                    'message' => 'Access mode updated successfully',
+                    'accessMode' => $accessMode
+                ]);
+            } else {
+                $this->renderJSON(['success' => false, 'message' => 'No changes made']);
+            }
+        } catch (Exception $e) {
+            $this->renderJSON(['success' => false, 'message' => $e->getMessage()]);
+        }
     }
 }
