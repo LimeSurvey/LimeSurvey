@@ -3923,14 +3923,22 @@ class LimeExpressionManager
             ];
 
             $this->knownVars[$sgqa] = $varInfo_Code;
-            $this->qcode2sgqa[$varName] = $sgqa;
+            if (!isset($this->qcode2sgqa[$varName])) {
+                $this->qcode2sgqa[$varName] = $sgqa;
+            }
             $this->jsVar2qid[$jsVarName] = $questionNum;
             $this->qcode2sgq[$fielddata['title']] = 'Q' . $questionNum;
 
             // Create JavaScript arrays
-            $this->alias2varName[$varName] = ['jsName' => $jsVarName, 'jsPart' => "'" . $varName . "':'" . $jsVarName . "'"];
-            $this->alias2varName[$sgqa] = ['jsName' => $jsVarName, 'jsPart' => "'" . $sgqa . "':'" . $jsVarName . "'"];
-            $this->alias2varName[$fielddata['title']] = ['jsName' => $jsVarName, 'jsPart' => "'" . $fielddata['title'] . "':'" . $jsVarName . "'"];
+            if (!isset($this->alias2varName[$varName])) {
+                $this->alias2varName[$varName] = ['jsName' => $jsVarName, 'jsPart' => "'" . $varName . "':'" . $jsVarName . "'"];
+            }
+            if (!isset($this->alias2varName[$sgqa])) {
+                $this->alias2varName[$sgqa] = ['jsName' => $jsVarName, 'jsPart' => "'" . $sgqa . "':'" . $jsVarName . "'"];
+            }
+            if (!isset($this->alias2varName[$fielddata['title']])) {
+                $this->alias2varName[$fielddata['title']] = ['jsName' => $jsVarName, 'jsPart' => "'" . $fielddata['title'] . "':'" . $jsVarName . "'"];
+            }
 
             $this->varNameAttr[$jsVarName] = "'" . $jsVarName . "':{ "
                 . "'jsName':'" . $jsVarName
