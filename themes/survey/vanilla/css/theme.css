@@ -820,6 +820,7 @@ label::after {
 
 .dropdown-item:focus, .dropdown-item:hover {
     background-color: #e9ecef !important;
+    color: #212529;
 }
 
 label {
