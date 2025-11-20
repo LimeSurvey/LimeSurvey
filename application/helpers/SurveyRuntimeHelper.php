@@ -228,7 +228,6 @@ class SurveyRuntimeHelper
                 }
                 if (isset($_SESSION[$this->LEMsessid]['token'])) {
                     $_SESSION[$this->LEMsessid]['tokenused'] = $_SESSION[$this->LEMsessid]['token'];
-                    unset($_SESSION[$this->LEMsessid]['token']);
                 }
                 $oSurveyResponse->save();
                 $survey = Survey::model()->findByPk($surveyid);
@@ -1651,7 +1650,7 @@ class SurveyRuntimeHelper
         if ($scenarios['captchaRequired']) {
             //Check if the Captcha was correct
             $captcha                        = Yii::app()->getController()->createAction('captcha');
-            $subscenarios['captchaCorrect'] = $captcha->validate(App()->getRequest()->getPost('loadsecurity'), false);
+            $subscenarios['captchaCorrect'] = $captcha->validate(App()->getRequest()->getPost('loadsecurity',''), false);
         } else {
             $subscenarios['captchaCorrect'] = true;
         }

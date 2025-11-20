@@ -444,7 +444,6 @@ class AdminController extends LSYii_Controller
         $aData['datepickerlang'] = "";
 
         $aData['sitename'] = Yii::app()->getConfig("sitename");
-        $aData['firebug'] = useFirebug();
 
         if (!empty(Yii::app()->session['dateformat'])) {
                     $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);

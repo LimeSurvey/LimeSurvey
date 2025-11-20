@@ -64,18 +64,27 @@ class GlobalSettings extends SurveyCommonAction
         phpinfo();
     }
 
+
     /**
-     * Refresh Assets
+     * Clears assets and cache directories.
+     *
+     * This function is used to refresh the assets and cache directories when necessary.
+     * It should only be accessible to people who have at least the permission to create or update themes.
+     *
+     * @return void
+     * @throws CHttpException If the user does not have the necessary permissions.
      */
-    public function refreshAssets()
+    public function clearAssetsAndCache()
     {
-        // Only people who can create or update themes should be allowed to refresh the assets
         if (Permission::model()->hasGlobalPermission('templates', 'create')) {
             SettingGlobal::increaseCustomAssetsversionnumber();
+            cleanAssetCacheDirectory();
+            cleanTwigCacheDirectory();
             $this->getController()->redirect(array("admin/globalsettings"));
+        } else {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
     }
-
     /**
      * Displays the settings.
      * @throws CHttpException

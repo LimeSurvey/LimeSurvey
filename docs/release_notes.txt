@@ -34,6 +34,36 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.15.23 (build 251110) to 6.15.24 (build 251117) November 17, 2025
+-Fixed issue: Refreshing the asset cache in global settings does not remove old asset files (#4524) (Carsten Schmitz)
+-Fixed issue #CT-1454: [security] Upgraded guzzle-psr7 version due to security reasons (#4467) (lajosarpad)
+-Fixed issue #20352: Confusing display of "Total surveys completed" in participant overview (Carsten Schmitz)
+-Fixed issue #20294: Quick-translate using Google translation API would not work with some languages (#4523) (Carsten Schmitz)
+-Fixed issue #20286: Bad wording in password reset email (Carsten Schmitz)
+-Fixed issue #20271: Reflected XSS in Lime Survey Version 6.15.10+250901 (#4518) (Gabriel Jenik)
+-Fixed issue #20267: "Total screened out" user counter does not update inside the participant view when quota is met (#4533) (Mohab Elsheikh)
+-Fixed issue #20253: Batch edit incorrectly changes timestamp of invited, reminded and completed (#4520) (Mohab Elsheikh)
+-Fixed issue #16116: Lack of freetype support shows no CAPTCHA and no alert (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.15.22 (build 251103) to 6.15.23 (build 251110) November 10, 2025
+-Fixed issue: Public survey page not displaying correctly if survey group ID is missing (#4513) (lajosarpad)
+-Fixed issue: Failure on survey list if language setting is missing (lajosarpad)
+-Fixed issue: Automatic field mappings in Central participant management were not stored/remembered (Carsten Schmitz)
+-Fixed issue #20335: Translate PersistErrorException message in LanguageSettings.php (#4510) (Richard)
+#Updated translation: Slovak by jelen1
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.15.21 (build 251028) to 6.15.22 (build 251103) November 3, 2025
 -Fixed issue: Survey template cannot be imported (Carsten Schmitz)
 -Fixed issue #20136: Token attributes logic with anonymous survey (#4358) (Denis Chenu)

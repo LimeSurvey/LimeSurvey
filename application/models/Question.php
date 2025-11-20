@@ -80,6 +80,17 @@ class Question extends LSActiveRecord
     const QT_COLON_ARRAY_NUMBERS = ':';
     const QT_SEMICOLON_ARRAY_TEXT = ';';
 
+    const ORDER_TYPES_SUBQUESTION = [
+        self::QT_M_MULTIPLE_CHOICE,
+        self::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS
+    ];
+    const ORDER_TYPES_ANSWER = [
+        self::QT_L_LIST,
+        self::QT_R_RANKING,
+        self::QT_EXCLAMATION_LIST_DROPDOWN,
+        self::QT_O_LIST_WITH_COMMENT
+    ];
+
     const START_SORTING_VALUE = 1; //this is the start value for question_order
 
     const DEFAULT_QUESTION_THEME = 'core';  // The question theme name to use when no theme is specified
@@ -772,184 +783,6 @@ class Question extends LSActiveRecord
         );
     }
 
-    /**
-     * get the ordered answers
-     * @param null|integer scale
-     * @param null|string $language
-     * @return array
-     */
-    public function getOrderedAnswers($scale_id = null, $language = null)
-    {
-        //reset answers set prior to this call
-        $aAnswerOptions = [
-            0 => []
-        ];
-
-        foreach ($this->answers as $oAnswer) {
-            if ($scale_id !== null && $oAnswer->scale_id != $scale_id) {
-                continue;
-            }
-            $aAnswerOptions[$oAnswer->scale_id][] = $oAnswer;
-        }
-
-
-        if ($scale_id !== null) {
-            return $aAnswerOptions[$scale_id];
-        }
-
-        $aAnswerOptions = $this->sortAnswerOptions($aAnswerOptions, $language);
-        return $aAnswerOptions;
-    }
-
-    /**
-     * Returns the specified answer options sorted according to the question attributes.
-     * Refactored from getOrderedAnswers();
-     * @param array<int,Answer[]> The answer options to sort
-     * @param null|string $language
-     * @return array<int,Answer[]>
-     */
-    private function sortAnswerOptions($answerOptions, $language = null)
-    {
-        // Sort randomly if applicable
-        if ($this->shouldOrderAnswersRandomly()) {
-            foreach ($answerOptions as $scaleId => $scaleArray) {
-                $keys = array_keys($scaleArray);
-                shuffle($keys); // See: https://forum.yiiframework.com/t/order-by-rand-and-total-posts/68099
-
-                $sortedScaleAnswers = array();
-                foreach ($keys as $key) {
-                    $sortedScaleAnswers[$key] = $scaleArray[$key];
-                }
-                $answerOptions[$scaleId] = $sortedScaleAnswers;
-            }
-            return $answerOptions;
-        }
-
-        // Sort alphabetically if applicable
-        if ($this->shouldOrderAnswersAlphabetically()) {
-            if (empty($language) || !in_array($language, $this->survey->allLanguages)) {
-                $language = $this->survey->language;
-            }
-            foreach ($answerOptions as $scaleId => $scaleArray) {
-                $sorted = array();
-                // We create an array sorted that will use the answer in the current language as value, and keep key
-                foreach ($scaleArray as $key => $answer) {
-                    $sorted[$key] = $answer->answerl10ns[$language]->answer;
-                }
-                LimeSurvey\Helpers\SortHelper::getInstance($language)->asort($sorted, LimeSurvey\Helpers\SortHelper::SORT_STRING);
-                // Now, we create a new array that store the old values of $answerOptions in the order of $sorted
-                $sortedScaleAnswers = array();
-                foreach ($sorted as $key => $answer) {
-                    $sortedScaleAnswers[] = $scaleArray[$key];
-                }
-                $answerOptions[$scaleId] = $sortedScaleAnswers;
-            }
-            return $answerOptions;
-        }
-
-        // Sort by Answer's own sort order
-        foreach ($answerOptions as $scaleId => $scaleArray) {
-            usort($scaleArray, function ($a, $b) {
-                return $a->sortorder > $b->sortorder
-                    ? 1
-                    : ($a->sortorder < $b->sortorder ? -1 : 0);
-            });
-            $answerOptions[$scaleId] = $scaleArray;
-        }
-        return $answerOptions;
-    }
-
-    /**
-     * Returns true if the answer options should be ordered randomly.
-     * @return bool
-     */
-    private function shouldOrderAnswersRandomly()
-    {
-        // Question types supporting both Random Order and Alphabetical Order should
-        // implement the 'answer_order' attribute instead of using separate attributes.
-        $answerOrder = $this->getQuestionAttribute('answer_order');
-        if (!is_null($answerOrder)) {
-            return $answerOrder == 'random';
-        }
-        return $this->getQuestionAttribute('random_order') == 1 && $this->getQuestionType()->subquestions == 0;
-    }
-
-    /**
-     * Returns true if the answer options should be ordered alphabetically.
-     * @return bool
-     */
-    private function shouldOrderAnswersAlphabetically()
-    {
-        // Question types supporting both Random Order and Alphabetical Order should
-        // implement the 'answer_order' attribute instead of using separate attributes.
-        $answerOrder = $this->getQuestionAttribute('answer_order');
-        if (!is_null($answerOrder)) {
-            return $answerOrder == 'alphabetical';
-        }
-        return $this->getQuestionAttribute('alphasort') == 1;
-    }
-
-    /**
-     * get subquestions fort the current question object in the right order
-     * @param int $random
-     * @param string $exclude_all_others
-     * @return array
-     */
-    public function getOrderedSubQuestions($scale_id = null)
-    {
-
-
-        //reset subquestions set prior to this call
-        $aSubQuestions = [
-            0 => []
-        ];
-
-        $aOrderedSubquestions = $this->subquestions;
-
-        if ($this->getQuestionAttribute('random_order') == 1) {
-            require_once(Yii::app()->basePath . '/libraries/MersenneTwister.php');
-            ls\mersenne\setSeed($this->sid);
-
-            $aOrderedSubquestions = ls\mersenne\shuffle($aOrderedSubquestions);
-        } else {
-            usort($aOrderedSubquestions, function ($oQuestionA, $oQuestionB) {
-                if ($oQuestionA->question_order == $oQuestionB->question_order) {
-                    return 0;
-                }
-                return $oQuestionA->question_order < $oQuestionB->question_order ? -1 : 1;
-            });
-        }
-
-
-        $excludedSubquestion = null;
-        foreach ($aOrderedSubquestions as $i => $oSubquestion) {
-            if ($scale_id !== null && $oSubquestion->scale_id != $scale_id) {
-                continue;
-            }
-            //if  exclude_all_others is set then the related answer should keep its position at all times
-            //thats why we have to re-position it if it has been randomized
-            if (
-                ($this->getQuestionAttribute('exclude_all_others') != '' && $this->getQuestionAttribute('random_order') == 1)
-                && ($oSubquestion->title == $this->getQuestionAttribute('exclude_all_others'))
-            ) {
-                $excludedSubquestionPosition = (safecount($aSubQuestions[$oSubquestion->scale_id]) - 1);
-                $excludedSubquestion = $oSubquestion;
-                continue;
-            }
-            $aSubQuestions[$oSubquestion->scale_id][] = $oSubquestion;
-        }
-
-        if ($excludedSubquestion != null) {
-            array_splice($aSubQuestions[$excludedSubquestion->scale_id], ($excludedSubquestion->question_order - 1), 0, [$excludedSubquestion]);
-        }
-
-        if ($scale_id !== null) {
-            return $aSubQuestions[$scale_id];
-        }
-
-        return $aSubQuestions;
-    }
-
     public function getMandatoryIcon()
     {
         if ($this->type != Question::QT_X_TEXT_DISPLAY && $this->type != Question::QT_VERTICAL_FILE_UPLOAD) {
@@ -1293,7 +1126,7 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * @return QuestionAttribute[]
+     * @return mixed
      */
     public function getQuestionAttribute($sAttribute)
     {

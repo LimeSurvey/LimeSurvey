@@ -35,7 +35,7 @@ var RoleControl = function () {
         form.attr('action', url);
         form.append('<input type="hidden" name="ptid" value="' + ptid + '" />');
         form.append('<input type="hidden" name="action" value="' + action + '" />');
-        form.append('<input type="hidden" name="YII_CSRF_TOKEN" value="' + LS.data.csrfToken + '" />');
+        form.append($("<input type='hidden'>").attr("name", LS.data.csrfTokenName).attr("value", LS.data.csrfToken));
         form.appendTo('body');
         form.submit();
     };

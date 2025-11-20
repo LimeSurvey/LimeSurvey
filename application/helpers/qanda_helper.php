@@ -17,6 +17,7 @@
 //if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
 /*
+ * @TODO: most functions here don't seem to be used anymore
 * Let's explain what this strange $ia var means
 *
 * The $ia string comes from the $_SESSION['responses_'.Yii::app()->getConfig('surveyID')]['insertarray'] variable which is built at the commencement of the survey.
@@ -674,7 +675,11 @@ function do_list_dropdown($ia)
     $other     = $oQuestion->other;
 
     // Getting answers
-    $ansresult = $oQuestion->getOrderedAnswers($aQuestionAttributes['random_order'], $aQuestionAttributes['alphasort']);
+    $diContainer = \LimeSurvey\DI::getContainer();
+    $questionOrderingService = $diContainer->get(
+        \LimeSurvey\Models\Services\QuestionOrderingService\QuestionOrderingService::class
+    );
+    $ansresult = $questionOrderingService->getOrderedAnswers($oQuestion);
 
     $dropdownSize = null;
 
@@ -897,7 +902,11 @@ function do_list_radio($ia)
     $other     = $oQuestion->other;
 
     // Getting answers
-    $ansresult = $oQuestion->getOrderedAnswers($aQuestionAttributes['random_order'], $aQuestionAttributes['alphasort']);
+    $diContainer = \LimeSurvey\DI::getContainer();
+    $questionOrderingService = $diContainer->get(
+        \LimeSurvey\Models\Services\QuestionOrderingService\QuestionOrderingService::class
+    );
+    $ansresult = $questionOrderingService->getOrderedAnswers($oQuestion);
     $anscount  = count($ansresult);
     $anscount  = ($other == 'Y') ? $anscount + 1 : $anscount; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
     $anscount  = (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) ? $anscount + 1 : $anscount; //Count up if "No answer" is showing
@@ -1114,7 +1123,11 @@ function do_listwithcomment($ia)
     $oQuestion           = Question::model()->findByPk(array('qid' => $ia[0], 'language' => $sSurveyLang)); // Getting question
 
     // Getting answers
-    $ansresult    = $oQuestion->getOrderedAnswers($aQuestionAttributes['random_order'], $aQuestionAttributes['alphasort']);
+    $diContainer = \LimeSurvey\DI::getContainer();
+    $questionOrderingService = $diContainer->get(
+        \LimeSurvey\Models\Services\QuestionOrderingService\QuestionOrderingService::class
+    );
+    $ansresult = $questionOrderingService->getOrderedAnswers($oQuestion);
     $anscount     = count($ansresult);
     $hint_comment = gT('Please enter your comment here');
 
@@ -1415,7 +1428,11 @@ function do_multiplechoice($ia)
     $other     = $oQuestion->other;
 
     // Getting answers
-    $aQuestions = $oQuestion->getOrderedSubQuestions($aQuestionAttributes['random_order'], $aQuestionAttributes['exclude_all_others']);
+    $diContainer = \LimeSurvey\DI::getContainer();
+    $questionOrderingService = $diContainer->get(
+        \LimeSurvey\Models\Services\QuestionOrderingService\QuestionOrderingService::class
+    );
+    $aQuestions = $questionOrderingService->getOrderedSubQuestions($oQuestion);
     $anscount  = count($aQuestions);
     $anscount  = ($other == 'Y') ? $anscount + 1 : $anscount; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
 

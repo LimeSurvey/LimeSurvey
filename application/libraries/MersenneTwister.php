@@ -7,9 +7,10 @@ namespace ls\mersenne;
  * If there is no seed, create a new one
  * Also inits the twister.
  * @param int $surveyid
+ * @param null|\Survey $survey (for testing purposes))
  * @return void
  */
-function setSeed($surveyid)
+function setSeed($surveyid, $survey = null)
 {
     /* In started survey : get seed from response table */
     if (isset($_SESSION['responses_' . $surveyid]['srid'])) {
@@ -24,7 +25,10 @@ function setSeed($surveyid)
     } else {
         $seed = mt_rand();
         /* On activated (but not started) survey : set seed in startingValues */
-        if (\Survey::model()->findByPk($surveyid)->getIsActive()) {
+        if (!$survey) {
+            $survey = \Survey::model()->findByPk($surveyid);
+        }
+        if ($survey->getIsActive()) {
             $table = \Yii::app()->db->schema->getTable('{{responses_' . $surveyid . '}}');
             if (isset($table->columns['seed'])) {
                 $_SESSION['responses_' . $surveyid]['startingValues']['seed'] = $seed;

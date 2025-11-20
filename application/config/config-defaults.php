@@ -313,15 +313,6 @@ $config['column_style'] = 'ul';
 */
 $config['hide_groupdescr_allinone'] = true;
 
-
-/**
-* use_firebug_lite
-* Use FireBug Lite for JavaScript and theme development and testing.
-* This allows you to use all the features of Firebug in any browser.
-* see http://getfirebug.com/lite.html for more info.
-*/
-$config['use_firebug_lite'] = false;
-
 /*
 * showaggregateddata
 * When activated there are additional values like arithmetic mean and standard deviation at statistics.

@@ -3269,33 +3269,111 @@ function showJavaScript($sContent)
 }
 
 /**
-* This function cleans files from the temporary directory being older than 1 day
-* @todo Make the days configurable
-*/
-function cleanTempDirectory()
+ * Only clean temp directory if modification date of any non-symlinked directory found is older then 25 hours
+ * Even if the setting is activated to only symlink assets, there are still some asset dirs that are not symlinked.
+ * @return void
+ */
+function cleanCacheTempDirectoryDaily()
+{
+    $assetsPath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
+    $selectedDirectory = null;
+
+    foreach (glob($assetsPath . '/*') as $dir) {
+        if (is_dir($dir) && !is_link($dir) && (filemtime($dir) < (strtotime('-24 hours')))) {
+            cleanCacheTempDirectory();
+            break;
+        }
+    }
+}
+
+/**
+ * Cleans the temporary directory by removing files older than 1 day.
+ * It also cleans the 'upload' subdirectory within the temporary directory.
+ * Additionally, it calls the 'cleanAssetCacheDirectory' function to clean the asset cache directory.
+ *
+ * @return void
+ */
+function cleanCacheTempDirectory()
 {
     $dir = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR;
     $dp = opendir($dir) or safeDie('Could not open temporary directory');
+
     while ($file = readdir($dp)) {
         if (is_file($dir . $file) && (filemtime($dir . $file)) < (strtotime('-1 days')) && $file != 'index.html' && $file != '.gitignore' && $file != 'readme.txt') {
             /** @scrutinizer ignore-unhandled */ @unlink($dir . $file);
         }
     }
+
     $dir = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR;
     $dp = opendir($dir) or safeDie('Could not open temporary upload directory');
+
     while ($file = readdir($dp)) {
         if (is_file($dir . $file) && (filemtime($dir . $file)) < (strtotime('-1 days')) && $file != 'index.html' && $file != '.gitignore' && $file != 'readme.txt') {
             /** @scrutinizer ignore-unhandled */ @unlink($dir . $file);
         }
     }
+
     closedir($dp);
+    cleanAssetCacheDirectory(60);
+}
+/**
+ * This function cleans the asset directory by removing directories that are older than a certain threshold.
+ *
+ * @return void
+ */
+function cleanAssetCacheDirectory($minutes = 1)
+{
+    // Define the path to the assets directory
+    $assetsPath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
+
+    // Define the threshold for removing directories (in this case, 60 seconds ago)
+    $threshold = time() - (60 * $minutes);
+
+    // Loop through all directories in the assets directory
+    foreach (glob($assetsPath . '*') as $path) {
+        // check if the directory is older than the threshold and the path is a symlink then delete it
+        if (is_link($path)
+            && filemtime($path) < $threshold) {
+            unlink($path);
+            continue;
+        }
+        // check if the directory is older than the threshold and the path is a directory then remove it
+        if (is_dir($path)
+            && filemtime($path) < $threshold) {
+            // Remove the directory and all its contents recursively
+            CFileHelper::removeDirectory($path);
+        }
+    }
 }
 
-function useFirebug()
+/**
+ * This function removes the Twig cache directory by looping through all directories
+ * within the Twig cache directory and removing each directory.
+ *
+ * @return void
+ */
+function cleanTwigCacheDirectory()
 {
-    if (FIREBUG == true) {
-        App()->getClientScript()->registerScriptFile('http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js');
-    };
+    $runtimePath = rtrim(Yii::app()->getRuntimePath(), DIRECTORY_SEPARATOR);
+    $twigDir = $runtimePath . DIRECTORY_SEPARATOR . 'twig_cache';
+
+    if (!is_dir($twigDir) || !is_writable($runtimePath)) {
+        return;
+    }
+
+    // read and store the permissions of the Twig cache directory to apply it later
+    $oldPermissions = fileperms($twigDir);
+    try {
+        CFileHelper::removeDirectory($twigDir);
+    } catch (Exception $e) {
+        Yii::log("Failed to remove Twig cache directory '{$twigDir}': " . $e->getMessage(), \CLogger::LEVEL_WARNING, 'application.cleanup');
+        return;
+    }
+
+    // Recreate directory to avoid downstream failures expecting it present
+    if (!@mkdir($twigDir, $oldPermissions, true) && !is_dir($twigDir)) {
+        Yii::log("Failed to recreate Twig cache directory '{$twigDir}' after cleanup.", \CLogger::LEVEL_WARNING, 'application.cleanup');
+    }
 }
 
 /**
