@@ -1320,10 +1320,11 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
  * @param array $questions a collection of questions containing a question and its subquestions
  * @param int $sid
  * @param int $gid
+ * @param bool $cd is it the condition designer
  * 
  * @return string the field's name
  */
-function getFieldName(string $tableName, string $fieldName, array $questions, int $sid, int $gid)
+function getFieldName(string $tableName, string $fieldName, array $questions, int $sid, int $gid, bool $cd = false)
 {
     $newFieldName = "";
     if (strpos($tableName, "timings") !== false) {
@@ -1462,7 +1463,8 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                 break;
             case \Question::QT_R_RANKING:
                 $prefix = ((strpos($tableName, "timing") !== false) ? "C" : "R");
-                $aid = $rootQuestion->answers[(substr($fieldName, strlen("{$sid}X{$gid}X{$qid}")) - 1)]->aid;
+                $index = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                $aid = $cd ? $index : $questions[0]->answers[(substr($fieldName, strlen("{$sid}X{$gid}X{$qid}")) - 1)]->aid;
                 $newFieldName = "Q{$qid}_{$prefix}" . $aid;
                 break;
         }
