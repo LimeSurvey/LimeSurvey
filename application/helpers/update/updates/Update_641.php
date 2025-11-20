@@ -1133,6 +1133,7 @@ class Update_641 extends DatabaseUpdateBase
 
         $passiveSurveys = Survey::model()->findAll("active <> 'Y'");
         foreach ($passiveSurveys as $passiveSurvey) {
+            $sid = $passiveSurvey->sid;
             $qids = [0];
             $gids = [0];
             $questions = Question::model()->with('answers')->findAll("sid = :sid", [
