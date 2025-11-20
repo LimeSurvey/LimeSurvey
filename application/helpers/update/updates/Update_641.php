@@ -19,7 +19,7 @@ use QuestionGroupL10n;
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
-class Update_639 extends DatabaseUpdateBase
+class Update_641 extends DatabaseUpdateBase
 {
     protected $scriptMapping;
 
