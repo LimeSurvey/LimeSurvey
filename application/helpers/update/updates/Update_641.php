@@ -1197,7 +1197,7 @@ class Update_639 extends DatabaseUpdateBase
                     $question->save();
                 }
             }
-            $surveyLanguageSettings = SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $sid);
+            $surveyLanguageSettings = SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $passiveSurvey->sid);
             $fields = ['surveyls_urldescription', 'surveyls_url'];
             foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
                 if ($this->fixText($surveyLanguageSetting, $fields, $newFields) || $this->fixText($surveyLanguageSetting, $fields, $additionalNames)) {
@@ -1205,7 +1205,7 @@ class Update_639 extends DatabaseUpdateBase
                 }
             }
             $fields = ['quotals_url', 'quotals_urldescrip'];
-            $quotaLanguageSettings = QuotaLanguageSetting::model()->with('quota', array('condition' => 'sid=' . $sid))->together()->findAll();
+            $quotaLanguageSettings = QuotaLanguageSetting::model()->with('quota', array('condition' => 'sid=' . $passiveSurvey->sid))->together()->findAll();
             foreach ($quotaLanguageSettings as $quotaLanguageSetting) {
                 if ($this->fixText($quotaLanguageSetting, $fields, $newFields) || $this->fixText($quotaLanguageSetting, $fields, $additionalNames)) {
                     $quotaLanguageSetting->save();
