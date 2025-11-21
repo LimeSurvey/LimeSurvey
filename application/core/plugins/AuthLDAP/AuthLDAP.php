@@ -117,6 +117,15 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         'allowInitialUser' => array(
             'type' => 'checkbox',
             'label' => 'Allow initial user to login via LDAP',
+        ),
+        // Need to be defined here otherwise saving does not work
+        'defaultRole' => array(
+            'type' => 'select',
+            'options' => array(),
+            'htmlOptions' => array('empty' => 'None'),
+            'default' => 'none', 
+            'label' => 'Select a default role for all LDAP users',
+            'help' => 'The role must have the "Use LDAP authentication" permission. Other global permissions are disabled.'
         )
     );
 
@@ -390,6 +399,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
     /**
      * Modified getPluginSettings since we have a select box that autosubmits
      * and we only want to show the relevant options.
+     * Also append existing roles as options during runtime.
      *
      * @param boolean $getValues
      * @return array
@@ -397,6 +407,15 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
     public function getPluginSettings($getValues = true)
     {
         $aPluginSettings = parent::getPluginSettings($getValues);
+        // Dynamically append available roles as options
+        $roles = $this->api->getRoles();
+        $roleOptions = array();
+        foreach ($roles as $role){
+            $roleOptions[$role->ptid] = $role->name;
+        }
+        
+        $aPluginSettings['defaultRole']['options'] = $roleOptions;
+
         if ($getValues) {
             $ldapmode = $aPluginSettings['ldapmode']['current'];
             $ldapver = $aPluginSettings['ldapversion']['current'];
@@ -486,6 +505,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         $bindpwd = $this->get('bindpwd');
         $groupsearchbase        = $this->get('groupsearchbase');
         $groupsearchfilter      = $this->get('groupsearchfilter');
+        $defaultrole   = $this->get('defaultRole');
 
         /* Get the conexion, createConnection return an error in array, never return false */
         $ldapconn = $this->createConnection();
@@ -590,6 +610,20 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             }
         }
         // If we made it here, authentication was a success and we do have a valid user
+        
+        // If requested assign role to user
+        if (!empty($defaultrole)){
+            // Ensure $defaultrole is a valid ptid 
+            // the id can be invalid if the role set as default is deleted and 
+            // the plugin settings are never saved after
+            $role = $this->api->getRole($defaultrole);
+            if ($role !== null) {
+                $this->api->addUserInRole($defaultrole, $user->uid);
+            }else{
+                $this->log("Trying to assign a non existend role. Check and save the LDAP Plugin Settings", \CLogger::LEVEL_WARNING);
+            }
+        }
+
         $this->pluginManager->dispatchEvent(new PluginEvent('newUserLogin', $this));
         /* Set the username as found in LimeSurvey */
         $this->setUsername($user->users_name);
