@@ -180,8 +180,7 @@ $(document).on('change', '#integrationPanelPager #pageSize', function () {
     $.fn.yiiGridView.update('urlparams', { data: { pageSize: $(this).val() } });
 });
 
-
-$(document).on('click', '#updateAccessModeBtn', function updateAccessMode(e) {
+$(document).on('click', '.updateAccessModeBtn', function updateAccessMode(e) {
     const newAccessMode = e.target.dataset.newaccessmode;
     const surveyId = e.target.dataset.surveyid;
     const button = document.getElementById('access-mode-dropdown');
