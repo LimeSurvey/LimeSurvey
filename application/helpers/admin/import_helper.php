@@ -1291,7 +1291,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                         $SurveyIntegrity->fixSurveyIntegrity();
                     }
                     // Activate the survey
-                    Yii::app()->loadHelper("admin/activate");
+                    Yii::app()->loadHelper("admin.activate");
                     $survey = Survey::model()->findByPk($aImportResults['newsid']);
                     $surveyActivator = new SurveyActivator($survey);
                     $surveyActivator->activate();
@@ -1315,7 +1315,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             // Step 3 - import the tokens file - if exists
             foreach ($files as $filename) {
                 if (pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lst') {
-                    Yii::app()->loadHelper("admin/token");
+                    Yii::app()->loadHelper("admin.token");
                     $aTokenImportResults = [];
                     if (Token::createTable($aImportResults['newsid'])) {
                         $aTokenCreateResults = array('tokentablecreated' => true);
@@ -3347,7 +3347,7 @@ function XMLImportTokens($sFullFilePath, $iSurveyID, $sCreateMissingAttributeFie
         $aTokenFieldNames = array_keys($aTokenFieldNames->columns);
         $aFieldsToCreate = array_diff($aXLMFieldNames, $aTokenFieldNames);
         if (!function_exists('db_upgrade_all')) {
-            Yii::app()->loadHelper('update/updatedb');
+            Yii::app()->loadHelper('update.updatedb');
         }
 
         foreach ($aFieldsToCreate as $sField) {

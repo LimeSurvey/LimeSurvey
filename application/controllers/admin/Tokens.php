@@ -1528,7 +1528,7 @@ class Tokens extends SurveyCommonAction
         $bIsInvitation = $sSubAction == 'invite';
 
         Yii::app()->loadHelper('surveytranslator');
-        Yii::app()->loadHelper('/admin/htmleditor');
+        Yii::app()->loadHelper('admin.htmleditor');
         Yii::app()->session['FileManagerContext'] = "edit:emailsettings:{$iSurveyId}";
         initKcfinder();
         Yii::app()->loadHelper('replacements');
