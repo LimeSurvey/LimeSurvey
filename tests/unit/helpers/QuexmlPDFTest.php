@@ -43,16 +43,19 @@ class QuexmlPDFTest extends TestBaseClass
         // Test question with date and time
         $element = $xpath->query("//response[@varName='q1']")[0];
         $value = $element->getAttribute("defaultValue");
+        $value = preg_replace('/\.000$/', '', $value); // for MSSQL Server
         $this->assertEquals($value, "2020-05-01 15:50:00", "Unexpected value in question with date and time");
 
         // Test question with time only
         $element = $xpath->query("//response[@varName='q2']")[0];
         $value = $element->getAttribute("defaultValue");
+        $value = preg_replace('/\.000$/', '', $value); // for MSSQL Server
         $this->assertEquals($value, "1970-01-01 15:55:00", "Unexpected value in question with time only");
 
         // Test question with date and time
         $element = $xpath->query("//response[@varName='q3']")[0];
         $value = $element->getAttribute("defaultValue");
+        $value = preg_replace('/\.000$/', '', $value); // for MSSQL Server
         $this->assertEquals($value, "2020-05-02 00:00:00", "Unexpected value in question with date only");
     }
 
