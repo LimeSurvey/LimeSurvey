@@ -402,7 +402,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $o2FA = $this->get2FAObject();
 
         $oTFAModel->uid = $iUserId;
-        $oTFAModel->secretKey = $o2FA->createSecret();
+        $oTFAModel->secretKey = $o2FA->createSecret(128);
         $sQRCodeContent = '<img src="' . $o2FA->getQRCodeImageAsDataUri('LimeSurvey - User ID: ' . Yii::app()->user->id, $oTFAModel->secretKey) . '">';
 
         return $this->renderPartial('_partial/create', [
