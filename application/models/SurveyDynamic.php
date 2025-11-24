@@ -83,6 +83,13 @@ class SurveyDynamic extends LSActiveRecord
         return '{{survey_' . self::$sid . '}}';
     }
 
+    public function rules()
+    {
+        return array(
+            array('startlanguage', 'required')
+        );
+    }
+
     /** @inheritdoc */
     public function relations()
     {
