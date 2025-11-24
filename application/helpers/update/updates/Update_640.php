@@ -21,7 +21,7 @@ class Update_640 extends DatabaseUpdateBase
             . $this->db->quoteColumnName("value") . ")
              SELECT
                 qa.qid,
-                'question_order' AS " . $this->db->quoteColumnName("attribute") . ",
+                'subquestion_order' AS " . $this->db->quoteColumnName("attribute") . ",
                 'random' AS " . $this->db->quoteColumnName("value") . "
              FROM {{question_attributes}} qa
              JOIN {{questions}} q ON qa.qid = q.qid
