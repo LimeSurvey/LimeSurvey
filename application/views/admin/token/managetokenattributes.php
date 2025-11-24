@@ -146,23 +146,29 @@
                                     <td class="text-nowrap">
                                         <?php
                                         $attributeType = $tokenValues['type'];
-                                        echo CHtml::hiddenField(
-                                                "type_{$sTokenField}",
-                                                $attributeType,
-                                                array('id' => "type_{$sTokenField}")
-                                        );
-                                        ?>
-                                        <span id="type_display_<?php echo $sTokenField; ?>">
-                                            <?php echo $attributeTypeDropdownArray[$attributeType]; ?>
-                                        </span>
-                                        <?php if($customAttribute): ?>
-                                            <a href='#' class='btn btn-sm btn-outline-secondary edit-attribute-type ms-1'
-                                               data-token-field='<?php echo $sTokenField; ?>'
-                                               data-bs-toggle='modal'
-                                               data-bs-target='#attributeTypeModal'
-                                               title='<?php eT("Edit attribute type"); ?>'>
-                                                <i class='ri-pencil-fill'></i>
-                                            </a>
+                                        if ($sLanguage == $oSurvey->language) :
+                                            echo CHtml::hiddenField(
+                                                    "type_{$sTokenField}",
+                                                    $attributeType,
+                                                    array('id' => "type_{$sTokenField}")
+                                            );
+                                            ?>
+                                            <span class="type_display_<?php echo $sTokenField; ?>">
+                                                <?php echo $attributeTypeDropdownArray[$attributeType]; ?>
+                                            </span>
+                                            <?php if($customAttribute): ?>
+                                                <a href='#' class='btn btn-sm btn-outline-secondary edit-attribute-type ms-1'
+                                                   data-token-field='<?php echo $sTokenField; ?>'
+                                                   data-bs-toggle='modal'
+                                                   data-bs-target='#attributeTypeModal'
+                                                   title='<?php eT("Edit attribute type"); ?>'>
+                                                    <i class='ri-pencil-fill'></i>
+                                                </a>
+                                            <?php endif; ?>
+                                        <?php else :?>
+                                            <span class="type_display_<?php echo $sTokenField;?> text-muted">
+                                                <?php echo $attributeTypeDropdownArray[$attributeType]; ?>
+                                            </span>
                                         <?php endif; ?>
                                     </td>
                                     <td><?php

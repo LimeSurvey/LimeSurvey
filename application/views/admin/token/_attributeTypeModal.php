@@ -167,7 +167,7 @@
 
             // Update the display text using the label from the dropdown array
             var displayText = attributeTypeLabels[selectedType] || attributeTypeLabels['TB'];
-            $('#type_display_' + currentTokenField).text(displayText);
+            $('.type_display_' + currentTokenField).text(displayText);
 
             // Close the modal
             $('#attributeTypeModal').modal('hide');
