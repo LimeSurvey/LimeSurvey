@@ -85,9 +85,8 @@ class SurveyDynamic extends LSActiveRecord
 
     public function rules()
     {
-        // Note: Validation rules only apply to fields that actually exist in the table
         return array(
-            array('startlanguage, startdate, datestamp', 'required')
+            array('startlanguage', 'required')
         );
     }
 
