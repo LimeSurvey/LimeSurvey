@@ -1528,13 +1528,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
         ];
         $dropdownItems[] = [
             'title' => gT('Share'),
-            'url' => App()->createUrl("/surveyAdministration/view", array('iSurveyID' => $this->sid)),
+            'url' => App()->createUrl("/surveyAdministration/view", ['iSurveyID' => $this->sid]),
             'enabledCondition' => $permissions['survey_update'],
         ];
         $dropdownItems[] = [
             'title' => gT('Copy'),
-            'url' => App()->createUrl("/surveyAdministration/newSurvey", ['tab' => 'copy']),
-
+            'url' => App()->createUrl("/surveyAdministration/newSurvey", ['tab' => 'copy', 'iSurveyID' => $this->sid]),
             'enabledCondition' => $permissions['survey_update'],
         ];
         $dropdownItems[] = [
@@ -1542,10 +1541,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'url' => App()->createUrl("/userManagement"),
             'enabledCondition' => $permissions['survey_update'],
         ];
-
         $dropdownItems[] = [
             'title' => gT('Delete'),
-            'url' => App()->createUrl("/surveyAdministration/delete", array('iSurveyID' => $this->sid)),
+            'url' => App()->createUrl("/surveyAdministration/delete", ['iSurveyID' => $this->sid]),
             'enabledCondition' => $permissions['survey_update'],
         ];
 

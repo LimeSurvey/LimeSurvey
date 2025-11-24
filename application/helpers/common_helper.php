@@ -111,6 +111,8 @@ function getSurveyList($bReturnArray = false)
     App()->setLanguage((Yii::app()->session['adminlang'] ?? 'en'));
     $surveynames = array();
 
+    $iSurveyId = sanitize_int(App()->request->getParam('iSurveyID'));
+
     if (is_null($cached)) {
         $criteria = new CDBCriteria();
         $criteria->select = ['sid','language', 'active', 'expires','startdate'];
@@ -145,6 +147,7 @@ function getSurveyList($bReturnArray = false)
     $activesurveys = '';
     $inactivesurveys = '';
     $expiredsurveys = '';
+    $selected = null;
     foreach ($surveynames as $sv) {
         $surveylstitle = CHtml::encode($sv['surveyls_title']) . " [" . $sv['sid'] . "]";
         if ($sv['active'] != 'Y') {
@@ -152,17 +155,29 @@ function getSurveyList($bReturnArray = false)
             if (Yii::app()->user->getId() == $sv['owner_id']) {
                 $inactivesurveys .= " class='mysurvey emphasis inactivesurvey'";
             }
+            if (!empty($iSurveyId) && $iSurveyId === $sv['sid']) {
+                $inactivesurveys .= " selected='selected'";
+                $selected = $sv['sid'];
+            }
             $inactivesurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
         } elseif ($sv['expires'] != '' && $sv['expires'] < dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) {
             $expiredsurveys .= "<option ";
             if (Yii::app()->user->getId() == $sv['owner_id']) {
                 $expiredsurveys .= " class='mysurvey emphasis expiredsurvey'";
             }
+            if (!empty($iSurveyId) && $iSurveyId === $sv['sid']) {
+                $expiredsurveys .= " selected='selected'";
+                $selected = $sv['sid'];
+            }
             $expiredsurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
         } else {
             $activesurveys .= "<option ";
             if (Yii::app()->user->getId() == $sv['owner_id']) {
                 $activesurveys .= " class='mysurvey emphasis activesurvey'";
+            }
+            if (!empty($iSurveyId) && $iSurveyId === $sv['sid']) {
+                $activesurveys .= " selected='selected'";
+                $selected = $sv['sid'];
             }
             $activesurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
         }
@@ -181,8 +196,7 @@ function getSurveyList($bReturnArray = false)
         $surveyselecter .= "<optgroup label='" . gT("Inactive") . "' class='inactivesurveyselect'>\n";
         $surveyselecter .= $inactivesurveys . "</optgroup>";
     }
-    $surveyselecter = "<option selected='selected' value=''>" . gT("Please choose...") . "</option>\n" . $surveyselecter;
-    return $surveyselecter;
+    return "<option" . (empty($selected) ? " selected='selected'" : '') . " value=''>" . gT("Please choose...") . "</option>\n" . $surveyselecter;
 }
 
 /**
