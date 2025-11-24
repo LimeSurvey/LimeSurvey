@@ -26,7 +26,7 @@ class SurveyDeactivate
     private ArchivedTableSettings $archivedResponseSettings;
     private SurveyLink $surveyLink;
     private SavedControl $savedControl;
-    protected Array $siddates;
+    protected array $siddates;
 
     public function setArchivedResponseSettings(ArchivedTableSettings $archivedResponseSettings)
     {
