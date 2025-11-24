@@ -1159,7 +1159,6 @@ class Tokens extends SurveyCommonAction
     {
         $iSurveyId = (int) $iSurveyId;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
@@ -1181,7 +1180,7 @@ class Tokens extends SurveyCommonAction
         $aData['surveyid'] = $iSurveyId;
         $aMandatoryAttributes = $oSurvey->getTokenEncryptionOptions();
         $aAttributes = getAttributeFieldNames($iSurveyId);
-        $aData['tokenfields'] = array_merge(array_keys($aMandatoryAttributes['columns']), $aAttributes);
+        $aData['tokenFields'] = array_merge(array_keys($aMandatoryAttributes['columns']), $aAttributes);
 
         $aMandatoryList = array();
         $aAttributesDesc = $oSurvey->decodedAttributedescriptions;
@@ -1199,15 +1198,15 @@ class Tokens extends SurveyCommonAction
         $aData['tokenfielddata'] = $aAttributesDesc;
         // Prepare token field list for dropDownList
         $tokenfieldlist = array();
-        foreach ($aData['tokenfields'] as $tokenfield) {
-            if (isset($aData['tokenfielddata'][$tokenfield]) && array_key_exists('description', $aData['tokenfielddata'][$tokenfield])) {
-                $description = $aData['tokenfielddata'][$tokenfield]['description'];
+        foreach ($aData['tokenFields'] as $tokenField) {
+            if (isset($aData['tokenfielddata'][$tokenField]) && array_key_exists('description', $aData['tokenfielddata'][$tokenField])) {
+                $description = $aData['tokenfielddata'][$tokenField]['description'];
             } else {
                 $description = "";
             }
-            $description = sprintf(gT("Attribute %s (%s)"), str_replace("attribute_", "", (string) $tokenfield), $description);
-            if (!in_array($tokenfield, $aMandatoryList)) {
-                $tokenfieldlist[] = array("id" => $tokenfield, "description" => $description);
+            $description = sprintf(gT("Attribute %s (%s)"), str_replace("attribute_", "", (string) $tokenField), $description);
+            if (!in_array($tokenField, $aMandatoryList)) {
+                $tokenfieldlist[] = array("id" => $tokenField, "description" => $description);
             }
         }
         $aData['tokenfieldlist'] = $tokenfieldlist;
@@ -1225,6 +1224,7 @@ class Tokens extends SurveyCommonAction
         foreach (ParticipantAttributeName::model()->getCPDBAttributes() as $aCPDBAttribute) {
             $aData['aCPDBAttributes'][$aCPDBAttribute['attribute_id']] = $aCPDBAttribute['attribute_name'];
         }
+        $aData['attributeTypeDropdownArray'] = ParticipantAttributeName::model()->getAttributeTypeDropdownArray();
 
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
@@ -1394,16 +1394,19 @@ class Tokens extends SurveyCommonAction
             } else {
                 $aOptionsBeforeChange[$fieldname]['encrypted'] = 'N';
             }
+
+            $request = App()->request;
             $fieldcontents[$fieldname] = [
-                'description'   => strip_tags(Yii::app()->request->getPost('description_' . $fieldname, '')),
-                'mandatory'     => Yii::app()->request->getPost('mandatory_' . $fieldname) == '1' ? 'Y' : 'N',
-                'encrypted'     => Yii::app()->request->getPost('encrypted_' . $fieldname) == '1' ? 'Y' : 'N',
-                'show_register' => Yii::app()->request->getPost('show_register_' . $fieldname) == '1' ? 'Y' : 'N',
-                'cpdbmap'       => Yii::app()->request->getPost('cpdbmap_' . $fieldname)
+                'description'   => strip_tags($request->getPost('description_' . $fieldname, '')),
+                'mandatory'     => $request->getPost('mandatory_' . $fieldname) == '1' ? 'Y' : 'N',
+                'encrypted'     => $request->getPost('encrypted_' . $fieldname) == '1' ? 'Y' : 'N',
+                'show_register' => $request->getPost('show_register_' . $fieldname) == '1' ? 'Y' : 'N',
+                'type'          => $request->getPost('type_' . $fieldname),
+                'cpdbmap'       => $request->getPost('cpdbmap_' . $fieldname)
             ];
             $aOptionsAfterChange[$fieldname]['encrypted'] = $fieldcontents[$fieldname]['encrypted'];
             foreach ($languages as $language) {
-                $fieldNameValue = Yii::app()->request->getPost("caption_" . $fieldname . "_" . $language);
+                $fieldNameValue = $request->getPost("caption_" . $fieldname . "_" . $language);
                 $captions[$language][$fieldname] = $fieldNameValue;
             }
         }
