@@ -86,7 +86,7 @@ class SurveyDynamic extends LSActiveRecord
     public function rules()
     {
         $rules[] = array('startlanguage', 'required');
-        // Suppose you check if a column exists in DB schema
+        // Some column exists may not exist in DB schema
         if (isset($this->tableSchema->columns['startdate'])) {
             $rules[] = array('startdate', 'required');
         }
