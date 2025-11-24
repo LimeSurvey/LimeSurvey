@@ -26,7 +26,7 @@ class TextProcessor extends AbstractQuestionProcessor
             $this->question['question'],
             $legend,
             $dataItems,
-            $count,
+            $this->calculateTotal($dataItems),
             ['question' => $this->question]
         );
     }
