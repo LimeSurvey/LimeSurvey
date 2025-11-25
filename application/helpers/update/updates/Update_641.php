@@ -8,15 +8,18 @@ class Update_641 extends DatabaseUpdateBase
 {
     /**
      * @inheritDoc
+     * Update description of bootswatch and bootswatch childs to open link in new windows
      * @throws CException
      */
     public function up()
     {
+        /* @var string the new description */
+        $newdescription = "{{gT(\"Based on BootsWatch Themes:\")}}<br><a href='https://bootswatch.com/3/' target='_blank' rel='external' title='{{gT(\"Visit Bootswatch page in a new window.\")}}'>{{gT(\"Visit Bootswatch page\")}} <i class='ri-external-link-line'></i><span class='visually-hidden'>{{gT(\"(Opens in a new window)\")}}</span></a>":
         // Update core theme
         $this->db->createCommand()->update(
             "{{templates}}",
             [
-                'description' => "{{gT(\"Based on BootsWatch Themes:\")<br><a href='https://bootswatch.com/3/' target='_blank' rel='external' title='{{gT(\"Visit Bootswatch page in a new window.\")}}'>{{gT(\"Visit Bootswatch page\")}} <i class='ri-external-link-line'></i><span class='visually-hidden'>{{gT(\"(Opens in a new window)\")}}</span></a>"
+                'description' => $newdescription
             ],
             "name = :name",
             [
@@ -27,7 +30,7 @@ class Update_641 extends DatabaseUpdateBase
         $this->db->createCommand()->update(
             "{{templates}}",
             [
-                'description' => "{{gT(\"Based on BootsWatch Themes:\")}}<br><a href='https://bootswatch.com/3/' target='_blank' rel='external' title='{{gT(\"Visit Bootswatch page in a new window.\")}}'>{{gT(\"Visit Bootswatch page\")}} <i class='ri-external-link-line'></i><span class='visually-hidden'>{{gT(\"(Opens in a new window)\")}}</span></a>"
+                'description' => $newdescription
             ],
             "description = :olddescription",
             [
@@ -38,7 +41,7 @@ class Update_641 extends DatabaseUpdateBase
         $this->db->createCommand()->update(
             "{{templates}}",
             [
-                'description' => "{{gT(\"Based on BootsWatch Themes:\")}}<br><a href='https://bootswatch.com/3/' target='_blank' rel='external' title='{{gT(\"Visit Bootswatch page in a new window.\")}}'>{{gT(\"Visit Bootswatch page\")}} <i class='ri-external-link-line'></i><span class='visually-hidden'>{{gT(\"(Opens in a new window)\")}}</span></a>"
+                'description' => $newdescription
             ],
             "description = :olddescription",
             [
