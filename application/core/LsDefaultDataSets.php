@@ -1007,6 +1007,27 @@ class LsDefaultDataSets
     }
 
 
+    /**
+     * Provides the default set of theme/template metadata used by the application.
+     *
+     * Each element is an associative array describing a template/theme and includes the following keys:
+     * - `name`: internal template identifier
+     * - `folder`: template folder name
+     * - `title`: human-readable title
+     * - `creation_date`: creation timestamp (YYYY-MM-DD HH:MM:SS)
+     * - `author`, `author_email`, `author_url`: author metadata
+     * - `copyright`: copyright notice
+     * - `license`: license information
+     * - `version`: template version
+     * - `api_version`: compatible API/version marker
+     * - `view_folder`: folder for view files
+     * - `files_folder`: folder for asset files
+     * - `description`: localized or HTML description
+     * - `last_update`: last update timestamp or null
+     * - `owner_id`: owner user id
+     * - `extends`: name of a parent template this one extends (empty if none)
+     *
+     * @return array[] Array of template metadata records.
     public static function getTemplatesData()
     {
         $returnArray = [];

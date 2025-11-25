@@ -7,9 +7,13 @@ use CException;
 class Update_641 extends DatabaseUpdateBase
 {
     /**
-     * @inheritDoc
-     * Update description of bootswatch and bootswatch childs to open link in new windows
-     * @throws CException
+     * Update bootswatch-related template descriptions so the Bootswatch link opens in a new window.
+     *
+     * Updates the core "bootswatch" template description and any templates whose description matches
+     * the previous BootsWatch description to a new HTML description that includes target="_blank"
+     * and accessible text for external links.
+     *
+     * @throws CException If a database update operation fails.
      */
     public function up()
     {
