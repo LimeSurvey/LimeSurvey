@@ -34,13 +34,13 @@ Yii::app()->getController()->renderPartial(
         );
     ?>
         <div class='mb-3'>
-            <label class='form-label '>
+            <label class='form-label ' for="Participant_firstname">
                 <?php eT('First name:'); ?>
             </label>
             <div class=''>
                 <?=$form->textField($model, 'firstname')?>
             </div>
-            <label class='form-label '>
+            <label class='form-label ' for="Participant_lastname">
                 <?php eT('Last name:'); ?>
             </label>
             <div class=''>
@@ -48,7 +48,7 @@ Yii::app()->getController()->renderPartial(
             </div>
         </div>
         <div class='mb-3'>
-            <label class='form-label '>
+            <label class='form-label ' for="Participant_email">
                 <?php eT('Email:'); ?>
             </label>
             <div class='0'>
@@ -56,7 +56,7 @@ Yii::app()->getController()->renderPartial(
             </div>
         </div>
         <div class='mb-3'>
-            <label class='form-label '><?php eT("Language:"); ?></label>
+            <label class='form-label ' for="Participant_language"><?php eT("Language:"); ?></label>
             <div class=''>
                 <?= $form->dropDownList(
                         $model,
@@ -88,7 +88,7 @@ Yii::app()->getController()->renderPartial(
         <?php if ($model->isOwnerOrSuperAdmin()): ?>
         <?php  ?>
             <div class='mb-3'>
-                <label class='form-label '><?php eT("Owner:"); ?></label>
+                <label class='form-label ' for="owner_uid"><?php eT("Owner:"); ?></label>
                 <?php
                     // When we add a new user, owner is default to current user
                     $selected = ($editType == 'add') ? Yii::app()->user->id : $model->owner_uid;
