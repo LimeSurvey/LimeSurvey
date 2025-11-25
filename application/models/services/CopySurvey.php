@@ -486,7 +486,11 @@ class CopySurvey
             if ($defaultAnswerRow['sqid'] === 0) {
                 $defaultAnswer->sqid = 0; //this is the case, when an answer option is the default...
             } else {
-                $defaultAnswer->sqid = $mappedSuquestionIds[$defaultAnswerRow['sqid']];
+                if (isset($mappedSuquestionIds[$defaultAnswerRow['sqid']])) {
+                    $defaultAnswer->sqid = $mappedSuquestionIds[$defaultAnswerRow['sqid']];
+                } else {
+                    continue; //in this case there is already broken data in db, so we skip this row
+                }
             }
             $defaultAnswer->scale_id = $defaultAnswerRow['scale_id'];
             $defaultAnswer->specialtype = $defaultAnswerRow['specialtype'];
