@@ -1402,6 +1402,7 @@ class Tokens extends SurveyCommonAction
                 'encrypted'     => $request->getPost('encrypted_' . $fieldname) == '1' ? 'Y' : 'N',
                 'show_register' => $request->getPost('show_register_' . $fieldname) == '1' ? 'Y' : 'N',
                 'type'          => $request->getPost('type_' . $fieldname),
+                'type_options'  => $request->getPost('type_options_' . $fieldname, '[]'),
                 'cpdbmap'       => $request->getPost('cpdbmap_' . $fieldname)
             ];
             $aOptionsAfterChange[$fieldname]['encrypted'] = $fieldcontents[$fieldname]['encrypted'];

@@ -13,7 +13,11 @@
 
     <div class="row">
         <div class="col-12 content-right">
-            <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributedescriptions/surveyid/{$surveyid}"), 'post'); ?>
+            <?php echo CHtml::form(
+                    array("admin/tokens/sa/updatetokenattributedescriptions/surveyid/{$surveyid}"),
+                    'post',
+                    ['id' => 'manage_token_attributes_form']
+            ); ?>
             <div>
                 <ul class="nav nav-tabs">
                     <?php $c = true; ?>
@@ -54,6 +58,7 @@
                                         'encrypted' => 'N',
                                         'show_register' => 'N',
                                         'type' => 'TB',
+                                        'type_options' => '[]',
                                         'cpdbmap' => ''
                                 ];
 
@@ -146,25 +151,32 @@
                                     <td class="text-nowrap">
                                         <?php
                                         $attributeType = $tokenValues['type'];
+                                        $attributeTypeOptions = $tokenValues['type_options'];
                                         if ($sLanguage == $oSurvey->language) :
                                             echo CHtml::hiddenField(
                                                     "type_{$sTokenField}",
                                                     $attributeType,
                                                     array('id' => "type_{$sTokenField}")
                                             );
+                                            echo CHtml::hiddenField(
+                                                    "type_options_{$sTokenField}",
+                                                    $attributeTypeOptions
+                                            );
                                             ?>
-                                            <span class="type_display_<?php echo $sTokenField; ?>">
-                                                <?php echo $attributeTypeDropdownArray[$attributeType]; ?>
-                                            </span>
-                                            <?php if($customAttribute): ?>
-                                                <a href='#' class='btn btn-sm btn-outline-secondary edit-attribute-type ms-1'
-                                                   data-token-field='<?php echo $sTokenField; ?>'
-                                                   data-bs-toggle='modal'
-                                                   data-bs-target='#attributeTypeModal'
-                                                   title='<?php eT("Edit attribute type"); ?>'>
-                                                    <i class='ri-pencil-fill'></i>
-                                                </a>
-                                            <?php endif; ?>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="type_display_<?php echo $sTokenField; ?> me-1">
+                                                    <?php echo $attributeTypeDropdownArray[$attributeType]; ?>
+                                                </span>
+                                                <?php if($customAttribute): ?>
+                                                    <a href='#' class='btn btn-sm btn-outline-secondary edit-attribute-type'
+                                                       data-token-field='<?php echo $sTokenField; ?>'
+                                                       data-bs-toggle='modal'
+                                                       data-bs-target='#attributeTypeModal'
+                                                       title='<?php eT("Edit attribute type"); ?>'>
+                                                        <i class='ri-pencil-fill'></i>
+                                                    </a>
+                                                <?php endif; ?>
+                                            </div>
                                         <?php else :?>
                                             <span class="type_display_<?php echo $sTokenField;?> text-muted">
                                                 <?php echo $attributeTypeDropdownArray[$attributeType]; ?>
