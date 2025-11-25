@@ -265,6 +265,10 @@ class viewHelper
     public static function purified($sHtml)
     {
         $oPurifier = new CHtmlPurifier();
+        $oPurifier->options = array(
+            'HTML.TargetBlank' => true,
+            'Attr.AllowedRel' => ['external', 'noreferrer', 'noopener'],
+        );
         return $oPurifier->purify($sHtml);
     }
 
