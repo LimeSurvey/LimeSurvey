@@ -93,4 +93,16 @@ class SurveyDetailService
         }
         return null;
     }
+
+    /**
+     * Updates survey's lastmodified timestamp & clears details cache
+     * @param Survey $survey
+     * @return void
+     */
+    public function updateSurveyLastModified($survey)
+    {
+        $survey->lastmodified = gmdate('Y-m-d H:i:s');
+        $survey->save();
+        $this->removeCache($survey->sid);
+    }
 }
