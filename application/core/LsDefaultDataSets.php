@@ -1008,7 +1008,7 @@ class LsDefaultDataSets
 
 
     /**
-     * Provides the default set of theme/template metadata used by the application.
+     * Provides the default set of theme/template metadata used by the application to update database.
      *
      * Each element is an associative array describing a template/theme and includes the following keys:
      * - `name`: internal template identifier
@@ -1028,6 +1028,7 @@ class LsDefaultDataSets
      * - `extends`: name of a parent template this one extends (empty if none)
      *
      * @return array[] Array of template metadata records.
+     */
     public static function getTemplatesData()
     {
         $returnArray = [];
