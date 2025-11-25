@@ -26,7 +26,7 @@ class Update_641 extends DatabaseUpdateBase
                 ':name' => 'bootswatch'
             ]
         );
-        // Update extended theme based on description : can be updated via XML file before import
+        // Update extended theme based on description : can be updated via XML file before import. The description use XML tiwg file directly
         $this->db->createCommand()->update(
             "{{templates}}",
             [
@@ -34,19 +34,7 @@ class Update_641 extends DatabaseUpdateBase
             ],
             "description = :olddescription",
             [
-                // Done by XML
                 ':olddescription' => "{{gT(\"Based on BootsWatch Themes:\")}} <br><a href='https://bootswatch.com/3/'>{{gT(\"Visit Bootswatch page\")}}</a> "
-            ]
-        );
-        $this->db->createCommand()->update(
-            "{{templates}}",
-            [
-                'description' => $newdescription
-            ],
-            "description = :olddescription",
-            [
-                // Potential when extend
-                ':olddescription' => gT("Based on BootsWatch Themes:") . "<br><a href='https://bootswatch.com/3/'>" . gT("Visit Bootswatch page") . "</a> "
             ]
         );
     }
