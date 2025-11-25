@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from  (build ssue) to 6.16.1 (build 251125) November 25, 2025
+-Fixed issue: Warning for invalid DateTime object on first opening of administration if debug mode is active (Carsten Schmitz)
+-Fixed issue: Broken token session (#4570) (lajosarpad)
+-Fixed issue: Access mode dropdown button works after activation (#4560) (lajosarpad)
+-Fixed issue #20365: Getting an error when trying to upgrade to 6.16.0+251120 using Postgres (Carsten Schmitz)
+-Fixed issue #20361: Bootstrap dropdown selected hover style issue (#4556) (Tõnis Ormisson)
+-Fixed issue #20355: Not able to upgrade to newer version when running on MSSQL DBMS (lajosarpad)
+-Fixed issue #15355: TCPDF doesn't remove temporary files used for images (Carsten Schmitz)
+
+
 Changes from 6.15.24 (build 251117) to 6.16.0 (build 251120) November 20, 2025
 +New feature #20341: Added full-screen question script editor (#4515) (Tõnis Ormisson)
 +New feature #AT-1415: introducing new option Random A-Z/Z-A for answer options/subquestion order setting (#4466)
