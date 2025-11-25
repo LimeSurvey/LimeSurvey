@@ -107,11 +107,11 @@ function quoteText($sText, $sEscapeMode = 'html')
 function getSurveyList($bReturnArray = false)
 {
     static $cached = null;
-    $timeadjust = getGlobalSetting('timeadjust');
+    $timeadjust = App()->getConfig('timeadjust');
     App()->setLanguage((Yii::app()->session['adminlang'] ?? 'en'));
     $surveynames = array();
 
-    $iSurveyId = sanitize_int(App()->request->getParam('iSurveyID'));
+    $iSurveyId = App()->getSurveyId(false);
 
     if (is_null($cached)) {
         $criteria = new CDBCriteria();
