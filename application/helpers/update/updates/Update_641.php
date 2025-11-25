@@ -14,8 +14,8 @@ class Update_641 extends DatabaseUpdateBase
     public function up()
     {
         /* @var string the new description */
-        $newdescription = "{{gT(\"Based on BootsWatch Themes:\")}}<br><a href='https://bootswatch.com/3/' target='_blank' rel='external' title='{{gT(\"Visit Bootswatch page in a new window.\")}}'>{{gT(\"Visit Bootswatch page\")}} <i class='ri-external-link-line'></i><span class='visually-hidden'>{{gT(\"(Opens in a new window)\")}}</span></a>":
-        // Update core theme
+        $newdescription = "{{gT(\"Based on BootsWatch Themes:\")}}<br><a href='https://bootswatch.com/3/' target='_blank' rel='external' title='{{gT(\"Visit Bootswatch page in a new window.\")}}'>{{gT(\"Visit Bootswatch page\")}} <i class='ri-external-link-line'></i><span class='visually-hidden'>{{gT(\"(Opens in a new window)\")}}</span></a>";
+        // Update core theme : always since it's core
         $this->db->createCommand()->update(
             "{{templates}}",
             [
@@ -26,7 +26,7 @@ class Update_641 extends DatabaseUpdateBase
                 ':name' => 'bootswatch'
             ]
         );
-        // Update extended theme based on description
+        // Update extended theme based on description : can be updated via XML file before import
         $this->db->createCommand()->update(
             "{{templates}}",
             [
@@ -45,7 +45,7 @@ class Update_641 extends DatabaseUpdateBase
             ],
             "description = :olddescription",
             [
-                // Done when install via LsDefaultDataSets : if superadmin language was updated : didn't update
+                // Potential when extend
                 ':olddescription' => gT("Based on BootsWatch Themes:") . "<br><a href='https://bootswatch.com/3/'>" . gT("Visit Bootswatch page") . "</a> "
             ]
         );
