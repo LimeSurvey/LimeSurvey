@@ -56,7 +56,35 @@
                 {% set registerKey = "register_" ~ key %}
                 <label for="{{ registerKey }}" class='{{ aSurveyInfo.class.registerformextraslabel }} control-label '> {{ aExtraAttribute.caption }} {% if aExtraAttribute.mandatory == 'Y' %}{{ include('./subviews/registration/required.twig') }}{% endif %}</label>
                 <div {{ aSurveyInfo.attr.registerformcolrowcdiv }} >
-                    {{ C.Html.textField(registerKey, aSurveyInfo.aAttribute[key],({'id' : registerKey,'class' : 'form-control ls-important-field'})) }}
+                    {% if aExtraAttribute.type == 'DD' %}
+                        {# Dropdown #}
+                        {{ C.Html.dropDownList(registerKey, aSurveyInfo.aAttribute[key], aExtraAttribute.type_options, {'id': registerKey, 'class': 'form-select ls-important-field'}) }}
+                    {% elseif aExtraAttribute.type == 'DP' %}
+                        {# Date Picker #}
+                        <div id="{{ registerKey }}_datetimepicker" class="input-group answer-item date-timepicker-group" data-basename="{{ registerKey }}">
+                            {{ C.Html.textField(registerKey, aSurveyInfo.aAttribute[key], {
+                                'id': registerKey,
+                                'class': 'form-control date-control date ls-important-field',
+                                'data-locale': aSurveyInfo.surveyls_language|default('en'),
+                                'data-format': aSurveyInfo.surveyls_dateformat_js,
+                                'data-showclear': '1',
+                                'data-allowinputtoggle': '1',
+                                'data-theme': 'light',
+                            }) }}
+                            <div class="input-group-addon btn btn-primary datepicker-icon">
+                                <i class="fa fa-calendar ri-calendar-2-fill" aria-hidden="true"></i>
+                                <span class="visually-hidden">{{ gT("Open date/time selector") }}</span>
+                            </div>
+                        </div>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                initDatePicker(document.getElementById('{{ registerKey }}'));
+                            });
+                        </script>
+                    {% else %}
+                        {# Text Box (TB) - default #}
+                        {{ C.Html.textField(registerKey, aSurveyInfo.aAttribute[key], {'id': registerKey, 'class': 'form-control ls-important-field'}) }}
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
