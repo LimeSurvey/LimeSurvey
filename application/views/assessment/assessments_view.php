@@ -11,7 +11,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
 ?>
   <div class="side-body">
     <?=viewHelper::getViewTestTag('surveyAssessments');?>
-      <h3 class="page-title"><?=gT("Assessments")?></h3>
+      <h3 class="page-title" aria-level="1"><?=gT("Assessments")?></h3>
         <?php
             $messageLink = gT("Assessment mode for this survey is not activated.").'<br/>'
                 . gT("If you want to activate it, click here:").'<br/>'
