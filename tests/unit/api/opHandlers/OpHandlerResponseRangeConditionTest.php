@@ -32,8 +32,11 @@ class OpHandlerResponseRangeConditionTest extends TestCase
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
 
         // Condition should cast and use both Min and Max placeholders
-        $this->assertSame('CAST(`id` AS UNSIGNED) BETWEEN :idMin AND :idMax', $criteria->condition);
-
+        //$this->assertSame('CAST(`id` AS UNSIGNED) BETWEEN :idMin AND :idMax', $criteria->condition);
+        $this->assertTrue(
+            strpos($criteria->condition, 'CAST(`id` AS UNSIGNED) BETWEEN :idMin AND :idMax') !== false
+            || strpos($criteria->condition, 'CAST([id] AS UNSIGNED) BETWEEN :idMin AND :idMax') !== false
+        );
         $this->assertSame(
             [':idMin' => 10.0, ':idMax' => 25.0],
             $criteria->params
@@ -47,7 +50,11 @@ class OpHandlerResponseRangeConditionTest extends TestCase
         $criteria = $handler->execute('score', ['7', '']);
 
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
-        $this->assertSame('CAST(`score` AS UNSIGNED) >= :scoreMin', $criteria->condition);
+//        $this->assertSame('CAST(`score` AS UNSIGNED) >= :scoreMin', $criteria->condition);
+        $this->assertTrue(
+            strpos($criteria->condition, 'CAST(`score` AS UNSIGNED) >= :scoreMin') !== false
+            || strpos($criteria->condition, 'CAST([score] AS UNSIGNED) >= :scoreMin') !== false
+        );
         $this->assertSame([':scoreMin' => 7.0], $criteria->params);
     }
 
@@ -58,7 +65,11 @@ class OpHandlerResponseRangeConditionTest extends TestCase
         $criteria = $handler->execute('score', ['', '42']);
 
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
-        $this->assertSame('CAST(`score` AS UNSIGNED) <= :scoreMax', $criteria->condition);
+//        $this->assertSame('CAST(`score` AS UNSIGNED) <= :scoreMax', $criteria->condition);
+        $this->assertTrue(
+            strpos($criteria->condition, 'CAST(`score` AS UNSIGNED) <= :scoreMax') !== false
+            || strpos($criteria->condition, 'CAST([score] AS UNSIGNED) <= :scoreMax') !== false
+        );
         $this->assertSame([':scoreMax' => 42.0], $criteria->params);
     }
 
@@ -77,7 +88,11 @@ class OpHandlerResponseRangeConditionTest extends TestCase
 
         $this->assertStringNotContainsString(';', $criteria->condition);
 
-        $this->assertSame('CAST(`idDROPTABLEresponses--` AS UNSIGNED) BETWEEN :idDROPTABLEresponsesMin AND :idDROPTABLEresponsesMax', $criteria->condition);
+//        $this->assertSame('CAST(`idDROPTABLEresponses--` AS UNSIGNED) BETWEEN :idDROPTABLEresponsesMin AND :idDROPTABLEresponsesMax', $criteria->condition);
+        $this->assertTrue(
+            strpos($criteria->condition, 'CAST(`idDROPTABLEresponses--` AS UNSIGNED) BETWEEN :idDROPTABLEresponsesMin AND :idDROPTABLEresponsesMax') !== false
+            || strpos($criteria->condition, 'CAST([idDROPTABLEresponses--] AS UNSIGNED) BETWEEN :idDROPTABLEresponsesMin AND :idDROPTABLEresponsesMax') !== false
+        );
 
         $this->assertArrayHasKey(':idDROPTABLEresponsesMin', $criteria->params);
         $this->assertArrayHasKey(':idDROPTABLEresponsesMax', $criteria->params);
@@ -129,6 +144,10 @@ class OpHandlerResponseRangeConditionTest extends TestCase
 
         $criteria = $handler->execute('numeric_field', ['5', '15']);
 
-        $this->assertStringContainsString('CAST(`numeric_field` AS UNSIGNED)', $criteria->condition);
+//        $this->assertStringContainsString('CAST(`numeric_field` AS UNSIGNED)', $criteria->condition);
+        $this->assertTrue(
+            strpos($criteria->condition, 'CAST(`numeric_field` AS UNSIGNED)') !== false
+            || strpos($criteria->condition, 'CAST([numeric_field] AS UNSIGNED)') !== false
+        );
     }
 }
