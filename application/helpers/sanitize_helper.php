@@ -470,7 +470,7 @@ function check($input, $flags, $min = '', $max = '')
  *
  * This function removes any characters that are not letters (a-z), numbers (0-9),
  * or hyphens (-) from the input string. It is case-insensitive in its matching.
- * @deprecated 7.0 Use LSYii_Validations::languageCodeFilter
+ * @todo deprecated 7.0 Use LSYii_Validations::languageCodeFilter
  *
  * @param string $codetosanitize The language code string to sanitize.
  * @return string The sanitized language code containing only alphanumeric characters and hyphens.
@@ -487,7 +487,7 @@ function sanitize_languagecode($codetosanitize)
  * This function takes a space-separated string of language codes, splits them into an array,
  * sanitizes each individual language code by removing all non-alphanumeric and non-dash characters,
  * and then rejoins them back into a space-separated string.
- * @deprecated 7.0 Use LSYii_Validations::multiLanguageCodeFilter
+ * @todo deprecated 7.0 Use LSYii_Validations::multiLanguageCodeFilter
  *
  * @param string $codestringtosanitize A space-separated string of language codes to sanitize.
  * @return string A space-separated string of sanitized language codes containing only alphanumeric characters and hyphens.
