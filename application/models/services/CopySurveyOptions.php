@@ -95,12 +95,12 @@ class CopySurveyOptions
         $this->permissions = $permissions;
     }
 
-    public function isResetStartAndEndDate(): bool
+    public function isStartAndEndDate(): bool
     {
         return $this->resetStartAndEndDate;
     }
 
-    public function setResetStartAndEndDate(bool $resetStartAndEndDate): void
+    public function setStartAndEndDate(bool $resetStartAndEndDate): void
     {
         $this->resetStartAndEndDate = $resetStartAndEndDate;
     }

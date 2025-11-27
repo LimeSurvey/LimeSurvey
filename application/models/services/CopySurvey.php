@@ -110,8 +110,8 @@ class CopySurvey
             QuestionGroup::model()->updateAll(['grelevance' => '1'], 'sid=' . (int)$destinationSurvey->sid);
         }
 
-        if ($this->options->isResetStartAndEndDate()) {
-            //reset start and end dates
+        if (!$this->options->isStartAndEndDate()) {
+            //reset start and end dates when option is not selected
             $destinationSurvey->startdate = null;
             $destinationSurvey->expires = null;
             $destinationSurvey->save();
