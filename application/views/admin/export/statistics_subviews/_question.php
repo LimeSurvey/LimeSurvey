@@ -176,7 +176,7 @@
                 {echo " checked='checked'";}
 
                 echo " />&nbsp;"
-                .$flt[3]."&nbsp;".$oStatisticsHelper::_showSpeaker($niceqtext)
+                .$flt[3]." - "."&nbsp;".$oStatisticsHelper::_showSpeaker($niceqtext)
                 ."<br />\n"
                 ."\t<span class='smalltext'>".gT("Responses containing").":</span>
                 </div>\n"
@@ -427,7 +427,7 @@
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$flt[3]." - ".$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row[15])." - # ".$flt[3])
+                    .$flt[3]." - ".$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row[15]))
                     ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple' class='form-select'>\n";
 
@@ -468,7 +468,7 @@
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$flt[3]." - ".$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row['question'])." - # ".$flt[3])
+                    .$flt[3]." - ".$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row['question']))
                     ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row['title']}[]' multiple='multiple' class='form-select'>\n";
 
@@ -507,7 +507,7 @@
                     {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$flt[3]." - ".$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row[15])." - # ".$flt[3])
+                    .$flt[3]." - ".$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row[15]))
                     ."\n"
                     ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple' class='form-select'>\n"
@@ -554,7 +554,7 @@
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$flt[3]." - ".$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row[15])." - # ".$flt[3])
+                    .$flt[3]." - ".$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row[15]))
                     ."\n"
                     ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'  class='form-select'>\n"
@@ -750,7 +750,7 @@
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$flt[3]." - ".$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row['question'])." - # ".$flt[3])
+                    .$flt[3]." - ".$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row['question']))
                     ."</div>\n";
 
                     /*
@@ -825,7 +825,7 @@
                     if (isset($summary) && array_search($myfield2, $summary) !== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$flt[3]." - ".$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row->answerl10ns[$language]->answer)." - # ".$flt[3])
+                    .$flt[3]." - ".$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row->answerl10ns[$language]->answer))
                     ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple='multiple' class='form-select'>\n";
 
