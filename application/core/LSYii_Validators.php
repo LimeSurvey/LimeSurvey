@@ -200,7 +200,7 @@ class LSYii_Validators extends CValidator
      *
      * @param mixed $value The language string to filter. Can be any type, but only strings are processed.
      *
-     * @return string The filtered language string containing only alphanumeric characters and hyphens.
+     * @return string The filtered language string containing only characters and hyphens.
      *                Returns an empty string if the input is empty or not a string.
      */
     public static function languageCodeFilter($value)
@@ -210,7 +210,7 @@ class LSYii_Validators extends CValidator
             return '';
         }
         // Maybe use the array of language ?
-        return preg_replace('/[^a-z0-9-]/i', '', $value);
+        return preg_replace('/[^a-z-]/i', '', $value);
     }
 
 
