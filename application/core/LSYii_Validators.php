@@ -174,6 +174,19 @@ class LSYii_Validators extends CValidator
         return $sNewValue;
     }
 
+    /**
+     * Function for backward compatiblity -see languageCodeFilter()
+     *
+     * @param mixed $value The language string to filter. Can be any type, but only strings are processed.
+     *
+     * @return string The filtered language string containing only alphanumeric characters and hyphens.
+     *                Returns an empty string if the input is empty or not a string.
+     * @deprecated 7.0.0 Use languageCodeFilter() instead
+     */
+    public function languageFilter($value)
+    {
+        return self::languageCodeFilter($value);
+    }
 
     /**
      * Filters a language string by removing invalid characters.
@@ -202,6 +215,21 @@ class LSYii_Validators extends CValidator
 
 
     /**
+     * Function for backward compatiblity
+     *
+     * @param mixed $value The multi-language string to filter. Should be a space-separated list of language codes.
+     *                      Can be any type, but only strings are processed.
+     * @return string The filtered multi-language string containing only valid language codes separated by spaces.
+     *                Duplicate codes are removed. Returns an empty string if the input is empty or not a string.
+     * @deprecated 7.0.0 Use multiLanguageCodeFilter() instead
+     */
+    public function multiLanguageFilter($value)
+    {
+        return self::multiLanguageCodeFilter($value);
+    }
+
+
+    /**
      * Filters a multi-language string by removing invalid characters from each language code.
      *
      * This method processes a space-separated string of language codes, applying language code
@@ -213,7 +241,6 @@ class LSYii_Validators extends CValidator
      *
      * @param mixed $value The multi-language string to filter. Should be a space-separated list of language codes.
      *                      Can be any type, but only strings are processed.
-     *
      * @return string The filtered multi-language string containing only valid language codes separated by spaces.
      *                Duplicate codes are removed. Returns an empty string if the input is empty or not a string.
      */
