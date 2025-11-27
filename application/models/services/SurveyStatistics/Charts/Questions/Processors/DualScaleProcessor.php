@@ -9,7 +9,7 @@ class DualScaleProcessor extends AbstractQuestionProcessor
 {
     public function rt(): void
     {
-        $this->rt = $this->surveyId . 'X' . $this->question['gid'] . 'X' . $this->question['qid'];
+        $this->rt = 'Q' . $this->question['qid'];
     }
 
     public function process()
@@ -88,7 +88,7 @@ class DualScaleProcessor extends AbstractQuestionProcessor
             $subCode = $sq['title'];
 
             foreach ([0, 1] as $scaleId) {
-                $field = $this->rt . $subCode . '#' . $scaleId;
+                $field = $this->rt . "_S" . $sq['qid'] . '#' . $scaleId;
                 $col   = $db->quoteColumnName($field);
 
                 // answers
