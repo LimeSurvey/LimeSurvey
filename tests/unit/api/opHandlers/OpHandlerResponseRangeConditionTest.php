@@ -54,6 +54,7 @@ class OpHandlerResponseRangeConditionTest extends TestCase
         $this->assertTrue(
             strpos($criteria->condition, 'CAST(`score` AS UNSIGNED) >= :scoreMin') !== false
             || strpos($criteria->condition, 'CAST([score] AS UNSIGNED) >= :scoreMin') !== false
+            || strpos($criteria->condition, 'CAST("score" AS UNSIGNED) >= :scoreMin') !== false
         );
         $this->assertSame([':scoreMin' => 7.0], $criteria->params);
     }
@@ -69,6 +70,7 @@ class OpHandlerResponseRangeConditionTest extends TestCase
         $this->assertTrue(
             strpos($criteria->condition, 'CAST(`score` AS UNSIGNED) <= :scoreMax') !== false
             || strpos($criteria->condition, 'CAST([score] AS UNSIGNED) <= :scoreMax') !== false
+            || strpos($criteria->condition, 'CAST("score" AS UNSIGNED) <= :scoreMax') !== false
         );
         $this->assertSame([':scoreMax' => 42.0], $criteria->params);
     }
@@ -92,6 +94,7 @@ class OpHandlerResponseRangeConditionTest extends TestCase
         $this->assertTrue(
             strpos($criteria->condition, 'CAST(`idDROPTABLEresponses--` AS UNSIGNED) BETWEEN :idDROPTABLEresponsesMin AND :idDROPTABLEresponsesMax') !== false
             || strpos($criteria->condition, 'CAST([idDROPTABLEresponses--] AS UNSIGNED) BETWEEN :idDROPTABLEresponsesMin AND :idDROPTABLEresponsesMax') !== false
+            || strpos($criteria->condition, 'CAST("idDROPTABLEresponses--" AS UNSIGNED) BETWEEN :idDROPTABLEresponsesMin AND :idDROPTABLEresponsesMax') !== false
         );
 
         $this->assertArrayHasKey(':idDROPTABLEresponsesMin', $criteria->params);
@@ -148,6 +151,7 @@ class OpHandlerResponseRangeConditionTest extends TestCase
         $this->assertTrue(
             strpos($criteria->condition, 'CAST(`numeric_field` AS UNSIGNED)') !== false
             || strpos($criteria->condition, 'CAST([numeric_field] AS UNSIGNED)') !== false
+            || strpos($criteria->condition, 'CAST("numeric_field" AS UNSIGNED)') !== false
         );
     }
 }

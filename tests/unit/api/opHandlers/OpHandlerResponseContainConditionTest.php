@@ -91,6 +91,7 @@ class OpHandlerResponseContainConditionTest extends TestCase
         $this->assertTrue(
             strpos($criteria->condition, '`nameDROPTABLEresponses--` LIKE :match') !== false
             || strpos($criteria->condition, '[nameDROPTABLEresponses--] LIKE :match') !== false
+            || strpos($criteria->condition, '"nameDROPTABLEresponses--" LIKE :match') !== false
         );
         $this->assertSame([':match' => '%ok%'], $criteria->params);
     }

@@ -36,6 +36,7 @@ class OpHandlerResponseMultiSelectConditionTest extends TestCase
         $this->assertTrue(
             strpos($criteria->condition, '`status` IN (:value0)') !== false
             || strpos($criteria->condition, '[status] IN (:value0)') !== false
+            || strpos($criteria->condition, '"status" IN (:value0)') !== false
         );
         // Params
         $this->assertSame([':value0' => 'active'], $criteria->params);
@@ -50,6 +51,7 @@ class OpHandlerResponseMultiSelectConditionTest extends TestCase
         $this->assertTrue(
             strpos($criteria->condition, '`category` IN (:value0, :value1, :value2)') !== false
             || strpos($criteria->condition, '[category] IN (:value0, :value1, :value2)') !== false
+            || strpos($criteria->condition, '"category" IN (:value0, :value1, :value2)') !== false
         );
         $this->assertSame(
             [':value0' => 'A', ':value1' => 'B', ':value2' => 'C'],
@@ -67,6 +69,7 @@ class OpHandlerResponseMultiSelectConditionTest extends TestCase
         $this->assertTrue(
             strpos($criteria->condition, '`statusDROPTABLEusers--` IN (:value0)') !== false
             || strpos($criteria->condition, '[statusDROPTABLEusers--] IN (:value0)') !== false
+            || strpos($criteria->condition, '"statusDROPTABLEusers--" IN (:value0)') !== false
         );
         $this->assertSame([':value0' => 'ok'], $criteria->params);
     }

@@ -34,7 +34,8 @@ class OpHandlerResponseDateRangeConditionTest extends TestCase
 //        $this->assertSame('`created_at` BETWEEN :created_atMin AND :created_atMax', $criteria->condition);
         $this->assertTrue(
             $criteria->condition === '`created_at` BETWEEN :created_atMin AND :created_atMax'
-            || $criteria->condition === '[created_at] BETWEEN :created_atMin AND :created_atMax',
+            || $criteria->condition === '[created_at] BETWEEN :created_atMin AND :created_atMax'
+            || $criteria->condition === '"created_at" BETWEEN :created_atMin AND :created_atMax',
             "Unexpected condition: {$criteria->condition}"
         );
         $this->assertSame(
@@ -56,7 +57,8 @@ class OpHandlerResponseDateRangeConditionTest extends TestCase
         //$this->assertSame('`updated_at` >= :updated_atMin', $criteria->condition);
         $this->assertTrue(
             $criteria->condition === '`updated_at` >= :updated_atMin'
-            || $criteria->condition === '[updated_at] >= :updated_atMin',
+            || $criteria->condition === '[updated_at] >= :updated_atMin'
+            || $criteria->condition === '"updated_at" >= :updated_atMin',
             "Unexpected condition: {$criteria->condition}"
         );
         $this->assertSame([':updated_atMin' => '2023-01-15 00:00:00'], $criteria->params);
@@ -72,7 +74,8 @@ class OpHandlerResponseDateRangeConditionTest extends TestCase
         //$this->assertSame('`updated_at` <= :updated_atMax', $criteria->condition);
         $this->assertTrue(
             $criteria->condition === '`updated_at` <= :updated_atMax'
-            || $criteria->condition === '[updated_at] <= :updated_atMax',
+            || $criteria->condition === '[updated_at] <= :updated_atMax'
+            || $criteria->condition === '"updated_at" <= :updated_atMax',
             "Unexpected condition: {$criteria->condition}"
         );
         $this->assertSame([':updated_atMax' => '2023-01-31 23:59:59'], $criteria->params);
@@ -92,7 +95,8 @@ class OpHandlerResponseDateRangeConditionTest extends TestCase
         //$this->assertSame('`ts` <= :tsMax', $criteria->condition);
         $this->assertTrue(
             $criteria->condition === '`ts` <= :tsMax'
-            || $criteria->condition === '[ts] <= :tsMax',
+            || $criteria->condition === '[ts] <= :tsMax'
+            || $criteria->condition === '"ts" <= :tsMax',
             "Unexpected condition: {$criteria->condition}"
         );
         $this->assertSame([':tsMax' => '2024-07-10 23:59:59'], $criteria->params);
@@ -108,7 +112,8 @@ class OpHandlerResponseDateRangeConditionTest extends TestCase
         //$this->assertSame('`ts` >= :tsMin', $criteria->condition);
         $this->assertTrue(
             $criteria->condition === '`ts` >= :tsMin'
-            || $criteria->condition === '[ts] >= :tsMin',
+            || $criteria->condition === '[ts] >= :tsMin'
+            || $criteria->condition === '"ts" >= :tsMin',
             "Unexpected condition: {$criteria->condition}"
         );
         $this->assertSame([':tsMin' => '2024-07-01 00:00:00'], $criteria->params);
@@ -152,7 +157,8 @@ class OpHandlerResponseDateRangeConditionTest extends TestCase
         //$this->assertSame('`created_atDROPtable--` BETWEEN :created_atDROPtableMin AND :created_atDROPtableMax', $criteria->condition);
         $this->assertTrue(
             $criteria->condition === '`created_atDROPtable--` BETWEEN :created_atDROPtableMin AND :created_atDROPtableMax'
-            || $criteria->condition === '[created_atDROPtable--] BETWEEN :created_atDROPtableMin AND :created_atDROPtableMax',
+            || $criteria->condition === '[created_atDROPtable--] BETWEEN :created_atDROPtableMin AND :created_atDROPtableMax'
+            || $criteria->condition === '"created_atDROPtable--" BETWEEN :created_atDROPtableMin AND :created_atDROPtableMax',
             "Unexpected condition: {$criteria->condition}"
         );
         $this->assertSame(
