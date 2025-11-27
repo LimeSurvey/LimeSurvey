@@ -175,11 +175,11 @@ class LSYii_Validators extends CValidator
     }
 
     /**
-     * Function for backward compatibility -see languageCodeFilter()
+     * Function for backward compatibility - see languageCodeFilter()
      *
      * @param mixed $value The language string to filter. Can be any type, but only strings are processed.
      *
-     * @return string The filtered language string containing only characters and hyphens.
+     * @return string The filtered language string containing only letters and hyphens.
      *                Returns an empty string if the input is empty or not a string.
      * @deprecated 7.0.0 Use languageCodeFilter() instead
      */
@@ -215,7 +215,7 @@ class LSYii_Validators extends CValidator
 
 
     /**
-     * Function for backward compatibility
+     * Function for backward compatibility - see multiLanguageCodeFilter()
      *
      * @param mixed $value The multi-language string to filter. Should be a space-separated list of language codes.
      *                      Can be any type, but only strings are processed.

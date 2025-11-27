@@ -473,7 +473,7 @@ function check($input, $flags, $min = '', $max = '')
  * @todo deprecated 7.0.0 Use LSYii_Validators::languageCodeFilter
  *
  * @param string $codetosanitize The language code string to sanitize.
- * @return string The sanitized language code containing only characters and hyphens.
+ * @return string The sanitized language code containing only letters and hyphens.
  */
 function sanitize_languagecode($codetosanitize)
 {
