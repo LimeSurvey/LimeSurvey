@@ -87,10 +87,10 @@ class LSYii_Validators extends CValidator
             }
         }
         if ($this->isLanguage) {
-            $object->$attribute = $this->languageFilter($object->$attribute);
+            $object->$attribute = $this->languageCodeFilter($object->$attribute);
         }
         if ($this->isLanguageMulti) {
-            $object->$attribute = $this->multiLanguageFilter($object->$attribute);
+            $object->$attribute = $this->multiLanguageCodeFilter($object->$attribute);
         }
         if (!$this->allowDataUri) {
             $object->$attribute = $this->dataUriFilter($object->$attribute);
@@ -174,36 +174,60 @@ class LSYii_Validators extends CValidator
         return $sNewValue;
     }
 
+
     /**
-     * Defines the customs validation rule for language string
+     * Filters a language string by removing invalid characters.
      *
-     * @param mixed $value
-     * @return string
+     * This method validates and sanitizes a language code string by removing all characters
+     * except alphanumeric characters (a-z, 0-9) and hyphens (-). This ensures the value
+     * conforms to standard language code formats (e.g., 'en', 'en-US', 'zh-Hans').
+     *
+     * Note: This function does NOT check if the language code is available in
+     * the general or restricted  list of language codes in LimeSurvey
+     *
+     * @param mixed $value The language string to filter. Can be any type, but only strings are processed.
+     *
+     * @return string The filtered language string containing only alphanumeric characters and hyphens.
+     *                Returns an empty string if the input is empty or not a string.
      */
-    public function languageFilter($value)
+    public static function languageCodeFilter($value)
     {
         /* No need to filter empty $value */
-        if (empty($value)) {
-            return strval($value);
+        if (empty(trim($value)) || !is_string($value)) {
+            return '';
         }
         // Maybe use the array of language ?
         return preg_replace('/[^a-z0-9-]/i', '', (string) $value);
     }
 
+
     /**
-     * Defines the customs validation rule for multi language string
+     * Filters a multi-language string by removing invalid characters from each language code.
      *
-     * @param mixed $value
-     * @return string
+     * This method processes a space-separated string of language codes, applying language code
+     * filtering to each individual code. It removes duplicates and empty values, then rejoins
+     * the filtered codes back into a space-separated string.
+     *
+     * Note: This function does NOT check if the language codes are available in
+     * the general or restricted list of language codes in LimeSurvey.
+     *
+     * @param mixed $value The multi-language string to filter. Should be a space-separated list of language codes.
+     *                      Can be any type, but only strings are processed.
+     *
+     * @return string The filtered multi-language string containing only valid language codes separated by spaces.
+     *                Duplicate codes are removed. Returns an empty string if the input is empty or not a string.
      */
-    public function multiLanguageFilter($value)
+    public function multiLanguageCodeFilter($value)
     {
         /* No need to filter empty $value */
-        if (empty($value)) {
-            return strval($value);
+        if (empty(trim($value)) || !is_string($value)) {
+            return '';
         }
         $aValue = explode(" ", trim((string) $value));
-        $aValue = array_map("sanitize_languagecode", $aValue);
+        $aValue = array_map([self::class, 'languageCodeFilter'], $aValue);
+        // remove empty or duplicate values
+        $aValue = array_filter(array_unique($aValue));
+        // join back
         return implode(" ", $aValue);
     }
 

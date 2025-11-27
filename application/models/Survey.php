@@ -217,7 +217,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $this->template = 'inherit';
         /* default language */
         $validator = new LSYii_Validators();
-        $this->language = $validator->languageFilter(App()->getConfig('defaultlang'));
+        $this->language = $validator->languageCodeFilter(App()->getConfig('defaultlang'));
         /* default user */
         $this->owner_id = 1;
         $this->admin = App()->getConfig('siteadminname');
