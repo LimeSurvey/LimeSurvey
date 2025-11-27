@@ -43,7 +43,7 @@ class SortingStrategyMockSetFactory
         // Set sid property
         $mockSet->question->sid = 12345;
         // Set type property to a valid question type
-        $mockSet->question->type = Question::QT_A_ARRAY_5_POINT;
+        $mockSet->question->type = Question::QT_L_LIST;
 
         return $mockSet;
     }
