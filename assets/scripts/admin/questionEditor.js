@@ -37,7 +37,7 @@ declare var CKEDITOR: any
 // flowlint unclear-type: error
 
 // Globals for jshint.
-/* globals $, _, alert, document, CKEDITOR */
+/* globals $, _, alert, document, CKEDITOR, ace, bootstrap */
 
 // NB: All public functions are in LS.questionEditor.
 var LS = LS || {};
@@ -68,6 +68,198 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
   }
 
+  let scriptEditorInstance = null;
+  let scriptEditorTarget = null;
+  let scriptEditorContainerElement = null;
+  let scriptEditorResizeHandler = null;
+
+  function fetchScriptModalElements() {
+    const element = document.getElementById('question-script-modal');
+    if (!element) {
+      return null;
+    }
+    const titleElement = element.querySelector('.modal-title');
+    const defaultTitle = element.getAttribute('data-default-title') || (titleElement ? titleElement.textContent : '');
+    const editorContainer = document.getElementById('question-script-modal-editor');
+
+    return {
+      element,
+      titleElement,
+      defaultTitle,
+      editorContainer
+    };
+  }
+
+  function prepareScriptModal() {
+    const elements = fetchScriptModalElements();
+    if (!elements) {
+      return null;
+    }
+
+    if (elements.element.dataset.scriptEditorBound !== 'true') {
+      elements.element.addEventListener('shown.bs.modal', () => {
+        const latestElements = fetchScriptModalElements();
+        const editor = ensureScriptEditorInstance(latestElements ? latestElements.editorContainer : null);
+        if (editor) {
+          editor.resize(true);
+          editor.focus();
+          if (scriptEditorResizeHandler) {
+            window.removeEventListener('resize', scriptEditorResizeHandler);
+          }
+          const debouncedResize = _.debounce(() => {
+            if (scriptEditorInstance) {
+              scriptEditorInstance.resize(true);
+            }
+          }, 150);
+          scriptEditorResizeHandler = () => {
+            debouncedResize();
+          };
+          window.addEventListener('resize', scriptEditorResizeHandler);
+        }
+      });
+
+      elements.element.addEventListener('hide.bs.modal', () => {
+        if (!scriptEditorTarget) {
+          return;
+        }
+        const latestElements = fetchScriptModalElements();
+        const editor = ensureScriptEditorInstance(latestElements ? latestElements.editorContainer : null);
+        if (!editor) {
+          return;
+        }
+
+        const $target = $(scriptEditorTarget);
+        if ($target.prop('readonly') === true) {
+          return;
+        }
+
+        const newValue = editor.getValue();
+
+        try {
+          if (typeof $target.ace === 'function' && $target.ace('check')) {
+            $target.ace('val', newValue);
+          } else {
+            $target.val(newValue);
+          }
+        } catch (err) {
+          $target.val(newValue);
+        }
+
+        $target.trigger('change');
+
+        try {
+          scriptEditorTarget.dispatchEvent(new Event('input', { bubbles: true }));
+        } catch (err) {
+          const inputEvent = document.createEvent('Event');
+          inputEvent.initEvent('input', true, false);
+          scriptEditorTarget.dispatchEvent(inputEvent);
+        }
+      });
+
+      elements.element.addEventListener('hidden.bs.modal', () => {
+        scriptEditorTarget = null;
+        const latestElements = fetchScriptModalElements();
+        if (latestElements && latestElements.titleElement) {
+          latestElements.titleElement.textContent = latestElements.defaultTitle;
+        }
+        if (scriptEditorResizeHandler) {
+          window.removeEventListener('resize', scriptEditorResizeHandler);
+          scriptEditorResizeHandler = null;
+        }
+      });
+
+      elements.element.dataset.scriptEditorBound = 'true';
+    }
+
+    return elements;
+  }
+
+  function ensureScriptEditorInstance(container) {
+    if (!container || typeof ace === 'undefined') {
+      return null;
+    }
+    if (!scriptEditorInstance || scriptEditorContainerElement !== container) {
+      // Clean up previous instance bound to another container to avoid leaks
+      if (scriptEditorInstance && scriptEditorContainerElement && scriptEditorContainerElement !== container) {
+        try {
+          scriptEditorInstance.destroy();
+          scriptEditorInstance.container = null;
+        } catch (e) {
+          // no-op
+        }
+      }
+      scriptEditorInstance = ace.edit(container);
+      scriptEditorContainerElement = container;
+      scriptEditorInstance.session.setMode('ace/mode/javascript');
+      scriptEditorInstance.setOptions({
+        wrap: true,
+        tabSize: 4,
+        useSoftTabs: true,
+        highlightActiveLine: true
+      });
+    }
+    return scriptEditorInstance;
+  }
+
+  prepareScriptModal();
+
+  $(document).off('click.scriptEditor', '.script-editor-fullscreen').on('click.scriptEditor', '.script-editor-fullscreen', function (event) {
+    event.preventDefault();
+    const targetFieldId = $(this).attr('data-target-field-id') || $(this).data('targetFieldId');
+    if (!targetFieldId) {
+      console.ls.warn('Script editor: missing target field id on trigger.');
+      return;
+    }
+
+    const targetElement = document.getElementById(targetFieldId);
+    if (!targetElement) {
+      console.ls.warn(`Script editor: target field ${targetFieldId} not found.`);
+      return;
+    }
+
+    const modalElements = prepareScriptModal();
+    if (!modalElements || typeof bootstrap === 'undefined') {
+      console.ls.error('Script editor modal is not available.');
+      return;
+    }
+
+    const modal = bootstrap.Modal.getOrCreateInstance(modalElements.element);
+    const editor = ensureScriptEditorInstance(modalElements.editorContainer);
+    if (!modal || !editor) {
+      console.ls.error('Script editor modal is not available.');
+      return;
+    }
+
+    scriptEditorTarget = targetElement;
+    const $target = $(targetElement);
+    let currentValue = '';
+
+    try {
+      if (typeof $target.ace === 'function' && $target.ace('check')) {
+        currentValue = $target.ace('val');
+      } else {
+        currentValue = $target.val();
+      }
+    } catch (err) {
+      currentValue = $target.val();
+    }
+
+    editor.session.setValue(currentValue || '');
+    editor.session.getUndoManager().reset();
+    editor.clearSelection();
+    editor.gotoLine(1, 0, false);
+
+    const readOnly = $target.prop('readonly') === true;
+    editor.setReadOnly(readOnly);
+
+    if (modalElements.titleElement) {
+      const titleFromButton = $(this).attr('data-modal-title') || $(this).data('modalTitle');
+      modalElements.titleElement.textContent = titleFromButton || modalElements.defaultTitle;
+    }
+
+    modal.show();
+  });
+
   // TODO: Remove this when Vue topbar is removed.
   $('#vue-topbar-container').hide();
 
@@ -78,7 +270,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   try {
     languageJson = JSON.parse(unescape(value));
   } catch (e) {
-    console.error('Could not parse language JSON - not on question editor page?');
+    console.ls.error('Could not parse language JSON - not on question editor page?');
     return;
   }
 
@@ -88,7 +280,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   /** @type {number} */
   const sid = parseInt($('input[name=sid]').val());
   if (isNaN(sid)) {
-    console.error('No survey id found - not on question editor page?');
+    console.ls.error('No survey id found - not on question editor page?');
     return;
   }
 
@@ -431,7 +623,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const rowId = `#row_${languages[x]}_${info[2]}_${info[3]}`;
         const $tablerow = $(rowId);
         if ($tablerow.length === 0) {
-          console.error('info', info);
+          console.ls.error('info', info);
           alert('Internal error: Could not find row to delete with id ' + rowId);
           throw 'abort';
         }
@@ -726,7 +918,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       error(jqXHR, textStatus, errorThrown) {
         $('#labelsetpreview').empty();
         showLabelSetAlert(languageJson.labelSetFail, 'danger');
-        console.error(errorThrown);
+        console.ls.error(errorThrown);
       },
     });
   }
@@ -820,7 +1012,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       },
       error(jqXHR, textStatus, errorThrown) {
         showLabelSetAlert(languageJson.labelSetFail, 'danger');
-        console.error(errorThrown);
+        console.ls.error(errorThrown);
       },
       complete() {
         $('#labelsetsLoader').hide();
@@ -978,7 +1170,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
       updateRowProperties();
       $('#labelsetbrowserModal').modal('hide');
       $('#current_scale_id').remove();
-    }).catch(error => console.error(error));
+    }).catch((error) => {
+      console.ls.error(error);
+    });
   }
 
   /**
@@ -1721,7 +1915,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $('#ls-loading').hide();
         // TODO: How to show internal errors?
         // eslint-disable-next-line no-alert
-        console.error(ex);
+        console.ls.error(ex);
         alert(`Internal error in updateQuestionAttributes: ${ex}`);
       }
     },
@@ -1943,7 +2137,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
             CKEDITOR.instances[instanceName].updateElement();
           }
         } catch(e) {
-          console.error('Seems no CKEDITOR4 is loaded');
+          console.ls.error('Seems no CKEDITOR4 is loaded');
         }
 
         $('#edit-question-form').serializeArray().forEach((x /*: {name: string, value: string} */) => {

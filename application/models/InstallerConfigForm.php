@@ -122,6 +122,9 @@ class InstallerConfigForm extends CFormModel
     public $phpGdHasJpegSupport = false;
 
     /** @var bool */
+    public $phpGdHasFreeTypeSupport = false;
+
+    /** @var bool */
     public $isPhpLdapPresent = false;
 
     /** @var bool */
@@ -224,6 +227,7 @@ class InstallerConfigForm extends CFormModel
         if (function_exists('gd_info')) {
             $gdInfo = gd_info();
             $this->phpGdHasJpegSupport = !empty($gdInfo['JPEG Support']);
+            $this->phpGdHasFreeTypeSupport = !empty($gdInfo['FreeType Support']);
             $this->isPhpGdPresent = true;
         }
         $this->isPhpVersionOK = version_compare(PHP_VERSION, self::MINIMUM_PHP_VERSION, '>=');

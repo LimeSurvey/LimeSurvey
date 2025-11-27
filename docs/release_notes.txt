@@ -34,6 +34,82 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.15.24 (build 251117) to 6.16.0 (build 251120) November 20, 2025
++New feature #20341: Added full-screen question script editor (#4515) (Tõnis Ormisson)
++New feature #AT-1415: introducing new option Random A-Z/Z-A for answer options/subquestion order setting (#4466)
++New feature #LE-86: include last modified date in survey list boxes (#4463)
+-Fixed issue: Expression manager substr() function crashing out if a non-integer text is given for start/length (Carsten Schmitz)
+-Fixed issue #LE-429: Survey detail performance is enhanced with a caching mechanism (lajosarpad)
+-Fixed issue: Supporting the timestamp value consistently (Ahmed Abd El-Azeem)
+-Fixed issue #LE-285: ensure tokensTable creation upon allowRegister toggle (#4372) (haythem chibani)
+-Fixed issue #LE-257: Ensured that participants can be restored even if we have an empty participants table (#4338) (lajosarpad)
+-Fixed issue #CT-1301: Ensured that the survey name and the expiry show up dynamically (#4462) (lajosarpad)
+-Fixed issue #AT-1746: Show correct active item in new side menu (#4504) (Tim Willig)
+-Fixed issue #20279: Error page didn't get theme option (#4469) (Denis Chenu)
+-Fixed issue: open and closed access modes not being set without deactivation
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation content from new editor in editorTranslations.php
+
+Changes from 6.15.23 (build 251110) to 6.15.24 (build 251117) November 17, 2025
+-Fixed issue: Refreshing the asset cache in global settings does not remove old asset files (#4524) (Carsten Schmitz)
+-Fixed issue #CT-1454: [security] Upgraded guzzle-psr7 version due to security reasons (#4467) (lajosarpad)
+-Fixed issue #20352: Confusing display of "Total surveys completed" in participant overview (Carsten Schmitz)
+-Fixed issue #20294: Quick-translate using Google translation API would not work with some languages (#4523) (Carsten Schmitz)
+-Fixed issue #20286: Bad wording in password reset email (Carsten Schmitz)
+-Fixed issue #20271: Reflected XSS in Lime Survey Version 6.15.10+250901 (#4518) (Gabriel Jenik)
+-Fixed issue #20267: "Total screened out" user counter does not update inside the participant view when quota is met (#4533) (Mohab Elsheikh)
+-Fixed issue #20253: Batch edit incorrectly changes timestamp of invited, reminded and completed (#4520) (Mohab Elsheikh)
+-Fixed issue #16116: Lack of freetype support shows no CAPTCHA and no alert (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.15.22 (build 251103) to 6.15.23 (build 251110) November 10, 2025
+-Fixed issue: Public survey page not displaying correctly if survey group ID is missing (#4513) (lajosarpad)
+-Fixed issue: Failure on survey list if language setting is missing (lajosarpad)
+-Fixed issue: Automatic field mappings in Central participant management were not stored/remembered (Carsten Schmitz)
+-Fixed issue #20335: Translate PersistErrorException message in LanguageSettings.php (#4510) (Richard)
+#Updated translation: Slovak by jelen1
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.15.21 (build 251028) to 6.15.22 (build 251103) November 3, 2025
+-Fixed issue: Survey template cannot be imported (Carsten Schmitz)
+-Fixed issue #20136: Token attributes logic with anonymous survey (#4358) (Denis Chenu)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
+Changes from 6.15.20 (build 251021) to 6.15.21 (build 251028) October 28, 2025
+-Fixed issue: Unresponsive react (lajosarpad)
+-Fixed issue: DB version update not possible with self-registering plugins (Carsten Schmitz)
+-Fixed issue #20307: Translate 'Create new...' in LayoutHelper.php. (#4483) (Richard)
+-Fixed issue #20287: Fix Attribute category being shown in Question settings (#4470) (Richard)
+-Fixed issue #20276: Placeholder fields on email templates for invitations/reminder are not populated (Carsten Schmitz)
+-Fixed issue #20161: Stored Cross-Site Scripting (SXSS) in admin portal (#4356) (Gabriel Jenik)
+-Fixed issue #20114: queXML export doesn't replace EM placeholders (#4460) (Adam Zammit)
+-Fixed issue #20089: HTML shown in notification after creating a user through User management (#4362) (Denis Chenu)
+-Fixed issue #20068: [security] LDAP Injection Vulnerability in AuthLDAP (#4250) (Denis Chenu)
+-Fixed issue #20056: debug = 1 still send deprecated error (#4363) (Denis Chenu)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 6.15.19 (build 251017) to 6.15.20 (build 251021) October 21, 2025
 -Fixed issue: incorrect timezone survey (#4482) (lajosarpad)
 -Fixed issue #CT-458: Refactored SQL command builders (#4473) (lajosarpad)
