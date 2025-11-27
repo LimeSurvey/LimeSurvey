@@ -142,7 +142,8 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                                value="<?php echo isset($completed) ? $completed : '' ?>"
                                                                name="completed-date"
                                                                data-locale="<?php echo $locale ?>"
-                                                               data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                                               data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                                               data-theme="light">
                                                         <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                                     </div>
                                                 </div>
@@ -329,7 +330,8 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                        value="<?php echo isset($sent) && $sent != 'N' ? $sent : '' ?>"
                                                        name="sent-date"
                                                        data-locale="<?php echo $locale ?>"
-                                                       data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                                       data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                                       data-theme="light">
                                                 <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                             </div>
                                         </div>
@@ -381,7 +383,8 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                        value="<?php echo isset($remindersent) && $remindersent != 'N' ? $remindersent : '' ?>"
                                                        name="remind-date"
                                                        data-locale="<?php echo $locale ?>"
-                                                       data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                                       data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                                       data-theme="light">
                                                 <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                             </div>
                                         </div>
@@ -436,7 +439,8 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <div id="validfrom_datetimepicker" class="input-group date">
                                     <input class="YesNoDatePicker form-control" id="validfrom" type="text" value="<?php echo isset($validfrom) ? $validfrom : '' ?>" name="validfrom"
                                            data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
-                                           data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                                           data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>"
+                                           data-theme="light">
                                     <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                     </div>
                                 </div>
@@ -452,7 +456,8 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <div id="validuntil_datetimepicker" class="input-group date">
                                     <input class="YesNoDatePicker form-control" id="validuntil" type="text" value="<?php echo isset($validuntil) ? $validuntil : '' ?>" name="validuntil"
                                            data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
-                                           data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                                           data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>"
+                                           data-theme="light">
                                     <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                     </div>
                                 </div>
@@ -461,25 +466,56 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                     </div>
                 </div>
 
-                <!-- Custom attibutes -->
+                <!-- Custom attributes  -->
                 <div id="custom" class="tab-pane fade">
                     <!-- Attributes -->
-                    <?php foreach ($attrfieldnames as $attr_name => $attr_description): ?>
+                    <?php foreach ($attrfieldnames as $attrName => $attrDescription): ?>
+                    <?php $inputValue = isset($$attrName) ? $$attrName : null ?>
                         <div class="ex-form-group mb-3 col-6">
-                            <label class="form-label" for='<?php echo $attr_name; ?>'>
-                                <?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:
+                            <label class="form-label" for='<?php echo $attrName; ?>'>
+                                <?php echo $attrDescription['description'] . ($attrDescription['mandatory'] == 'Y' ? '*' : '') ?>:
                             </label>
                             <div class="">
-                                <input
-                                    class='form-control<?= $attr_description['mandatory'] == 'Y' ? ' mandatory-attribute' : '' ?>'
-                                    type='text'
-                                    size='55'
-                                    id='<?php echo $attr_name; ?>'
-                                    name='<?php echo $attr_name; ?>'
-                                    value='<?php if (isset($$attr_name)) {
-                                        echo htmlspecialchars((string) $$attr_name, ENT_QUOTES, 'utf-8');
-                                    } ?>'
-                                />
+                                <?php
+                                switch ($attrDescription['type']) {
+                                    case 'DD':
+                                        // Drop down
+                                        $this->renderPartial(
+                                                '/admin/token/modal_subviews/tokenformSelect',
+                                                [
+                                                        'attrDescription' => $attrDescription,
+                                                        'attrName' => $attrName,
+                                                        'inputValue' => $inputValue
+                                                ]
+                                        );
+                                        break;
+
+                                    case 'DP':
+                                        // Date
+                                        $this->renderPartial(
+                                                '/admin/token/modal_subviews/tokenformDateInput',
+                                                [
+                                                        'attrDescription' => $attrDescription,
+                                                        'attrName' => $attrName,
+                                                        'inputValue' => $inputValue,
+                                                        'jsDate' => $dateformatdetails['jsdate'],
+                                                ]
+                                        );
+                                        break;
+
+                                    default:
+                                        // Text
+                                        $this->renderPartial(
+                                                '/admin/token/modal_subviews/tokenformTextInput',
+                                                [
+                                                        'attrDescription' => $attrDescription,
+                                                        'attrName' => $attrName,
+                                                        'inputValue' => $inputValue
+                                                ]
+                                        );
+                                        break;
+                                }
+                                ?>
                             </div>
                         </div>
                     <?php endforeach; ?>

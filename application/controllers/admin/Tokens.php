@@ -2815,6 +2815,18 @@ class Tokens extends SurveyCommonAction
                 if (array_key_exists('description', $aAttrData) && $aAttrData['description'] == '') {
                     $aAttrData['description'] = $sField;
                 }
+                // Decode type_options if it exists and is a JSON string
+                if (array_key_exists('type_options', $aAttrData) && is_string($aAttrData['type_options'])) {
+                    $decodedOptions = json_decode($aAttrData['type_options'], true);
+                    if (json_last_error() === JSON_ERROR_NONE && is_array($decodedOptions)) {
+                        // Convert numeric array to associative array with values as both keys and values
+                        $formattedOptions = [];
+                        foreach ($decodedOptions as $option) {
+                            $formattedOptions[$option] = $option;
+                        }
+                        $aAttrData['type_options'] = $formattedOptions;
+                    }
+                }
                 $aData['attrfieldnames'][(string) $sField] = $aAttrData;
             }
         }

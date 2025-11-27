@@ -58,7 +58,11 @@
                 <div {{ aSurveyInfo.attr.registerformcolrowcdiv }} >
                     {% if aExtraAttribute.type == 'DD' %}
                         {# Dropdown #}
-                        {{ C.Html.dropDownList(registerKey, aSurveyInfo.aAttribute[key], aExtraAttribute.type_options, {'id': registerKey, 'class': 'form-select ls-important-field'}) }}
+                        {% if aExtraAttribute.mandatory == 'Y' %}
+                            {{ C.Html.dropDownList(registerKey, aSurveyInfo.aAttribute[key], aExtraAttribute.type_options, {'id': registerKey, 'class': 'form-select ls-important-field'}) }}
+                        {% else %}
+                            {{ C.Html.dropDownList(registerKey, aSurveyInfo.aAttribute[key], {'' : ''}|merge(aExtraAttribute.type_options), {'id': registerKey, 'class': 'form-select ls-important-field'}) }}
+                        {% endif %}
                     {% elseif aExtraAttribute.type == 'DP' %}
                         {# Date Picker #}
                         <div id="{{ registerKey }}_datetimepicker" class="input-group answer-item date-timepicker-group" data-basename="{{ registerKey }}">

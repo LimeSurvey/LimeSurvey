@@ -303,7 +303,8 @@ class DateTimePicker extends CInputWidget
         ) ? 'true' : 'false';
         $stepping = $this->getValue('data-stepping', $this->htmlOptions, 1);
         $stepping = $stepping != 0 ? $stepping : 1;
-
+        $theme = $this->getValue('data-theme', $this->htmlOptions, null);
+        $themeValue = $theme !== null ? "'$theme'" : "(document.body.hasAttribute('data-thememode') ? document.body.getAttribute('data-thememode') : 'auto')";
         $localization = $this->getLocalizationOptionsString();
         $calendarComponents = $this->getComponentsOptionsString();
         $icons = $this->getCustomIconsString();
@@ -320,7 +321,7 @@ class DateTimePicker extends CInputWidget
                     close: $close,
                 },
                 sideBySide: $sideBySide,
-                theme : (document.body.hasAttribute('data-thememode')) ? document.body.getAttribute('data-thememode') : 'auto'
+                theme : $themeValue,
             },
             stepping: $stepping
         }";
