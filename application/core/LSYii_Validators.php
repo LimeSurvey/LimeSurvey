@@ -217,7 +217,7 @@ class LSYii_Validators extends CValidator
      * @return string The filtered multi-language string containing only valid language codes separated by spaces.
      *                Duplicate codes are removed. Returns an empty string if the input is empty or not a string.
      */
-    public function multiLanguageCodeFilter($value)
+    public static function multiLanguageCodeFilter($value)
     {
         /* No need to filter empty $value */
         if (empty(trim($value)) || !is_string($value)) {
