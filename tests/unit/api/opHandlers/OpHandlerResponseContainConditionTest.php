@@ -107,7 +107,7 @@ class OpHandlerResponseContainConditionTest extends TestCase
         $criteria = $handler->execute(['fieldA', 'fieldB', 'fieldC'], 'shared');
 
         //$pattern = '/`fieldA` LIKE :match0.*OR.*`fieldB` LIKE :match1.*OR.*`fieldC` LIKE :match2/s';
-        $pattern = '/(?:`|\[")fieldA(?:`|\]")\s+LIKE\s+:match0.*?\s+OR\s+(?:`|\[")fieldB(?:`|\]")\s+LIKE\s+:match1.*?\s+OR\s+(?:`|\[")fieldC(?:`|\]")\s+LIKE\s+:match2/s';
+        $pattern = '/(?:"|`|\[)?fieldA(?:"|`|\])?\s+LIKE\s+:match0.*?\s+OR\s+(?:"|`|\[)?fieldB(?:"|`|\])?\s+LIKE\s+:match1.*?\s+OR\s+(?:"|`|\[)?fieldC(?:"|`|\])?\s+LIKE\s+:match2/s';
         $this->assertTrue(
             (bool)preg_match($pattern, $criteria->condition),
             "Failed asserting OR chain uses unique indexed placeholders: {$criteria->condition}"
