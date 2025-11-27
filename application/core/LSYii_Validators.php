@@ -197,7 +197,7 @@ class LSYii_Validators extends CValidator
             return '';
         }
         // Maybe use the array of language ?
-        return preg_replace('/[^a-z0-9-]/i', '', (string) $value);
+        return preg_replace('/[^a-z0-9-]/i', '', $value);
     }
 
 
@@ -223,7 +223,7 @@ class LSYii_Validators extends CValidator
         if (!is_string($value) || empty(trim($value))) {
             return '';
         }
-        $aValue = explode(" ", trim((string) $value));
+        $aValue = explode(" ", trim($value));
         $aValue = array_map([self::class, 'languageCodeFilter'], $aValue);
         // remove empty or duplicate values
         $aValue = array_filter(array_unique($aValue));
