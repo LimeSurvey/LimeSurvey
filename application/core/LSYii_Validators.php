@@ -175,11 +175,11 @@ class LSYii_Validators extends CValidator
     }
 
     /**
-     * Function for backward compatiblity -see languageCodeFilter()
+     * Function for backward compatibility -see languageCodeFilter()
      *
      * @param mixed $value The language string to filter. Can be any type, but only strings are processed.
      *
-     * @return string The filtered language string containing only alphanumeric characters and hyphens.
+     * @return string The filtered language string containing only characters and hyphens.
      *                Returns an empty string if the input is empty or not a string.
      * @deprecated 7.0.0 Use languageCodeFilter() instead
      */
@@ -192,7 +192,7 @@ class LSYii_Validators extends CValidator
      * Filters a language string by removing invalid characters.
      *
      * This method validates and sanitizes a language code string by removing all characters
-     * except alphanumeric characters (a-z, 0-9) and hyphens (-). This ensures the value
+     * except letters (a-z) and hyphens (-). This ensures the value
      * conforms to standard language code formats (e.g., 'en', 'en-US', 'zh-Hans').
      *
      * Note: This function does NOT check if the language code is available in
@@ -200,7 +200,7 @@ class LSYii_Validators extends CValidator
      *
      * @param mixed $value The language string to filter. Can be any type, but only strings are processed.
      *
-     * @return string The filtered language string containing only characters and hyphens.
+     * @return string The filtered language string containing only letters and hyphens.
      *                Returns an empty string if the input is empty or not a string.
      */
     public static function languageCodeFilter($value)
@@ -215,7 +215,7 @@ class LSYii_Validators extends CValidator
 
 
     /**
-     * Function for backward compatiblity
+     * Function for backward compatibility
      *
      * @param mixed $value The multi-language string to filter. Should be a space-separated list of language codes.
      *                      Can be any type, but only strings are processed.
