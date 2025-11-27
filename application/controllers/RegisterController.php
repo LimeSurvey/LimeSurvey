@@ -246,9 +246,17 @@ class RegisterController extends LSYii_Controller
         }
         $aFieldValue = $this->getFieldValue($iSurveyId);
         $aRegisterAttributes = $this->getExtraAttributeInfo($iSurveyId);
-        foreach($aRegisterAttributes as $attrId => $attrConfig) {
-            if(array_key_exists('type_options', $attrConfig) && is_string($attrConfig['type_options']) && trim($attrConfig['type_options']) !== '' && trim($attrConfig['type_options']) !== '[]') {
-                $aRegisterAttributes[$attrId]['type_options'] = json_decode($attrConfig['type_options'], true);
+        foreach ($aRegisterAttributes as $attrId => $attrConfig) {
+            if (
+                array_key_exists('type_options', $attrConfig)
+                && is_string($attrConfig['type_options'])
+                && trim($attrConfig['type_options']) !== ''
+                && trim($attrConfig['type_options']) !== '[]'
+            ) {
+                $aRegisterAttributes[$attrId]['type_options'] = json_decode(
+                    $attrConfig['type_options'],
+                    true
+                );
                 // Transform array so values become keys (to save the actual string instead of index)
                 if (is_array($aRegisterAttributes[$attrId]['type_options'])) {
                     $aRegisterAttributes[$attrId]['type_options'] = array_combine(
