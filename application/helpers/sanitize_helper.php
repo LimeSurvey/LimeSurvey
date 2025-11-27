@@ -107,14 +107,20 @@ function nice_addslashes($string)
 }
 
 
-/**
- * Function: sanitize_filename
- * Returns a sanitized string, typically for URLs.
+/ **
+ * Produce a filesystem- and URL-safe filename by removing or replacing unsafe characters.
  *
- * Parameters:
- *     $string - The string to sanitize.
- *     $force_lowercase - Force the string to lowercase?
- *     $alphanumeric - If set to *true*, will remove all non-alphanumeric characters.
+ * Replaces a wide set of unsafe characters with hyphens, strips smart quotes, removes
+ * leading dots and dashes, optionally collapses repeated separators, preserves and
+ * limits the extension while truncating the base name to fit within 255 bytes,
+ * optionally restricts to alphanumeric characters, and can force lowercase.
+ *
+ * @param string $filename The input filename to sanitize.
+ * @param bool $force_lowercase If true, convert the result to lowercase.
+ * @param bool $alphanumeric If true, remove all non-alphanumeric characters from the result.
+ * @param bool $beautify If true, collapse repeated separators and normalize spacing.
+ * @param bool $directory If true, treat the input as a directory name (no extension handling).
+ * @return string The sanitized filename suitable for files or URL segments (max 255 bytes, extension preserved when present).
  */
 function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = false, $beautify = true, $directory = false)
 {
@@ -427,12 +433,14 @@ function check_system_string($input, $min = '', $max = '')
 
 // glue together all the other functions
 /**
- * @param $input
- * @param $flags
- * @param string $min
- * @param string $max
- * @return bool
- * @throws Exception
+ * Validate that a value conforms to the given sanitization flags and optional bounds.
+ *
+ * @param mixed $input The value to validate.
+ * @param int $flags Bitmask of sanitization flags to check (e.g. PARANOID, INT, FLOAT, HTML, LDAP, SYSTEM, UTF8).
+ * @param string $min Optional minimum bound applied to relevant sanitizers.
+ * @param string $max Optional maximum bound applied to relevant sanitizers.
+ * @return bool `true` if the input already satisfies the requested sanitization and bounds, `false` otherwise.
+ * @throws Exception If the UTF8 flag is requested (UTF8 not supported).
  */
 function check($input, $flags, $min = '', $max = '')
 {
@@ -466,14 +474,13 @@ function check($input, $flags, $min = '', $max = '')
 }
 
 /**
- * Sanitizes a language code by removing all non-alphanumeric and non-dash characters.
+ * Reduce the input to letters (a–z) and hyphens only.
  *
- * This function removes any characters that are not letters (a-z), numbers (0-9),
- * or hyphens (-) from the input string. It is case-insensitive in its matching.
- * @todo deprecated 7.0.0 Use LSYii_Validators::languageCodeFilter
+ * Preserves the original letter case and removes all other characters (including digits and underscores).
  *
- * @param string $codetosanitize The language code string to sanitize.
- * @return string The sanitized language code containing only letters and hyphens.
+ * @deprecated 7.0.0 Use LSYii_Validators::languageCodeFilter instead.
+ * @param string $codetosanitize The language code to sanitize.
+ * @return string The sanitized language code containing only ASCII letters (a–z, case preserved) and hyphens.
  */
 function sanitize_languagecode($codetosanitize)
 {
@@ -482,15 +489,13 @@ function sanitize_languagecode($codetosanitize)
 
 
 /**
- * Sanitizes a space-separated string of language codes.
+ * Sanitizes a space-separated list of language codes.
  *
- * This function takes a space-separated string of language codes, splits them into an array,
- * sanitizes each individual language code by removing all non-alphanumeric and non-dash characters,
- * and then rejoins them back into a space-separated string.
- * @todo deprecated 7.0.0 Use LSYii_Validators::multiLanguageCodeFilter
+ * Each code is reduced to contain only ASCII letters (a–z, case-insensitive) and hyphens; the sanitized codes are returned joined by single spaces.
  *
- * @param string $codestringtosanitize A space-separated string of language codes to sanitize.
- * @return string A space-separated string of sanitized language codes containing only alphanumeric characters and hyphens.
+ * @param string $codestringtosanitize Space-separated language codes to sanitize.
+ * @return string Space-separated sanitized language codes containing only letters and hyphens.
+ * @deprecated 7.0.0 Use LSYii_Validators::multiLanguageCodeFilter instead.
  */
 function sanitize_languagecodeS($codestringtosanitize)
 {

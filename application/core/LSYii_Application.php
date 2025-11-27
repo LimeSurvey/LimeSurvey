@@ -311,11 +311,11 @@ class LSYii_Application extends CWebApplication
     }
 
     /**
-     * For future use, cache the language app wise as well.
+     * Sets the application's current language and caches it in the session.
      *
-     * @access public
-     * @param string $sLanguage
-     * @return void
+     * When an explicit `lang` request parameter is present on authentication routes, that value takes precedence.
+     *
+     * @param string $sLanguage The language code to apply; it will be normalized and stored in session.
      */
     public function setLanguage($sLanguage)
     {

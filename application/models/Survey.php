@@ -200,6 +200,15 @@ class Survey extends LSActiveRecord implements PermissionInterface
         unset(self::$findByPkCache[$this->sid]);
     }
 
+    /**
+     * Initialize survey attributes with sensible defaults for new records.
+     *
+     * Sets default values for email format, response format, token encryption options,
+     * template inheritance, language (from application default, validated), owner and
+     * administrator contact information. If a global Google Analytics key is configured,
+     * the survey is marked to use the global key. When running outside the console,
+     * owner and admin contact values are taken from the current user when available.
+     */
     private function setAttributeDefaults()
     {
         // Set the default values

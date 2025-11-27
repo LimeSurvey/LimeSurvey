@@ -70,6 +70,17 @@ class LSYii_Validators extends CValidator
         return;
     }
 
+    /**
+     * Validate and sanitize a model attribute according to the validator's flags.
+     *
+     * Applies configured filters to the specified attribute on the provided object:
+     * XSS filtering, URL safety checks (clears unsafe or trivial http/https values),
+     * language-code normalization, multi-language normalization, and optional data-URI removal.
+     * The attribute value is modified in-place.
+     *
+     * @param object $object The model or object that contains the attribute to validate.
+     * @param string $attribute The name of the attribute to validate and sanitize.
+     */
     protected function validateAttribute($object, $attribute)
     {
         if ($this->xssfilter) {
@@ -125,11 +136,14 @@ class LSYii_Validators extends CValidator
     }
 
     /**
-     * Remove any script or dangerous HTML
-     *
-     * @param null|string $value
-     * @return string
-     */
+         * Sanitizes a value by removing scripts and dangerous HTML while preserving template expressions.
+         *
+         * Purifies HTML content and normalizes URL-encoded braces so expression tokens enclosed in `{}` remain intact.
+         * Within expression tokens, string literals are also purified but non-string tokens are left unchanged.
+         *
+         * @param null|string $value The input value to sanitize; null or empty input is returned as an empty string.
+         * @return string The sanitized string with dangerous HTML removed and expression content preserved. 
+         */
     public function xssFilter($value)
     {
         /* No need to filter empty $value */
@@ -175,12 +189,10 @@ class LSYii_Validators extends CValidator
     }
 
     /**
-     * Function for backward compatibility - see languageCodeFilter()
+     * Backward-compatible wrapper that filters a language code to letters (a–z) and hyphens.
      *
-     * @param mixed $value The language string to filter. Can be any type, but only strings are processed.
-     *
-     * @return string The filtered language string containing only letters and hyphens.
-     *                Returns an empty string if the input is empty or not a string.
+     * @param mixed $value The language value to filter; only string inputs are processed.
+     * @return string The filtered language string containing only letters and hyphens; returns an empty string for non-string or empty input.
      * @deprecated 7.0.0 Use languageCodeFilter() instead
      */
     public function languageFilter($value)
@@ -189,19 +201,13 @@ class LSYii_Validators extends CValidator
     }
 
     /**
-     * Filters a language string by removing invalid characters.
+     * Produce a language code string containing only letters and hyphens.
      *
-     * This method validates and sanitizes a language code string by removing all characters
-     * except letters (a-z) and hyphens (-). This ensures the value
-     * conforms to standard language code formats (e.g., 'en', 'en-US', 'zh-Hans').
+     * Removes all characters except ASCII letters (a–z, case-insensitive) and hyphens from the input.
+     * Does not validate whether the resulting code exists in LimeSurvey's language lists.
      *
-     * Note: This function does NOT check if the language code is available in
-     * the general or restricted  list of language codes in LimeSurvey
-     *
-     * @param mixed $value The language string to filter. Can be any type, but only strings are processed.
-     *
-     * @return string The filtered language string containing only letters and hyphens.
-     *                Returns an empty string if the input is empty or not a string.
+     * @param mixed $value The value to filter; only string inputs are processed.
+     * @return string The sanitized language code, or an empty string if the input is not a non-empty string.
      */
     public static function languageCodeFilter($value)
     {
@@ -215,12 +221,10 @@ class LSYii_Validators extends CValidator
 
 
     /**
-     * Function for backward compatibility - see multiLanguageCodeFilter()
+     * Backward-compatible wrapper that filters a space-separated list of language codes.
      *
-     * @param mixed $value The multi-language string to filter. Should be a space-separated list of language codes.
-     *                      Can be any type, but only strings are processed.
-     * @return string The filtered multi-language string containing only valid language codes separated by spaces.
-     *                Duplicate codes are removed. Returns an empty string if the input is empty or not a string.
+     * @param mixed $value The multi-language value to filter; only string inputs are processed.
+     * @return string The filtered multi-language string containing only valid language codes separated by single spaces. Duplicate codes are removed; returns an empty string for non-string or empty input.
      * @deprecated 7.0.0 Use multiLanguageCodeFilter() instead
      */
     public function multiLanguageFilter($value)

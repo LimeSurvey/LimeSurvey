@@ -29,14 +29,17 @@ class ExpressionValidate extends SurveyCommonAction
         throw new CHttpException(400);
     }
 
-    /**
-     * Check the Expression in quota
-     * @param integer $iSurveyId : the survey ID : can be sid/surveyid url GET parameters
-     * @param integer $quota : the quota id
-     * @param string $lang : the survey language, optional : if not set get all language of survey
+    / **
+     * Render a validation preview of quota expressions for a survey.
      *
-     * @author Denis Chenu
-     * @version 1.0
+     * Collects quota fields (name, message, URL, and URL description) for either a single language
+     * or all languages of the specified survey, converts them to HTML expressions, and renders the
+     * validation list view.
+     *
+     * @param int $iSurveyId The survey primary key (survey ID).
+     * @param int $quota The quota ID to validate.
+     * @param string|null $lang Optional language code to restrict validation to a single language; when null, all survey languages are used.
+     * @throws CHttpException Thrown with HTTP 401 when the current user lacks read permission for quotas.
      */
     public function quota($iSurveyId, $quota, $lang = null)
     {
