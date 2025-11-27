@@ -42,8 +42,9 @@ class SortingStrategyMockSetFactory
 
         // Set sid property
         $mockSet->question->sid = 12345;
-        // Set type property to a valid question type
-        $mockSet->question->shouldReceive('__get')
+
+        // Mock getAttribute method (used by CActiveRecord's __get)
+        $mockSet->question->shouldReceive('getAttribute')
             ->with('type')
             ->andReturn(Question::QT_L_LIST);
 
