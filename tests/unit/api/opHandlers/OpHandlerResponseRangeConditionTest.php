@@ -36,6 +36,7 @@ class OpHandlerResponseRangeConditionTest extends TestCase
         $this->assertTrue(
             strpos($criteria->condition, 'CAST(`id` AS UNSIGNED) BETWEEN :idMin AND :idMax') !== false
             || strpos($criteria->condition, 'CAST([id] AS UNSIGNED) BETWEEN :idMin AND :idMax') !== false
+            || strpos($criteria->condition, 'CAST("id" AS UNSIGNED) BETWEEN :idMin AND :idMax') !== false
         );
         $this->assertSame(
             [':idMin' => 10.0, ':idMax' => 25.0],
