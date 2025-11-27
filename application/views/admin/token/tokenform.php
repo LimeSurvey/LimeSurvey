@@ -470,54 +470,18 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div id="custom" class="tab-pane fade">
                     <!-- Attributes -->
                     <?php foreach ($attrfieldnames as $attrName => $attrDescription): ?>
-                    <?php $inputValue = isset($$attrName) ? $$attrName : null ?>
-                        <div class="ex-form-group mb-3 col-6">
-                            <label class="form-label" for='<?php echo $attrName; ?>'>
-                                <?php echo $attrDescription['description'] . ($attrDescription['mandatory'] == 'Y' ? '*' : '') ?>:
-                            </label>
-                            <div class="">
-                                <?php
-                                switch ($attrDescription['type']) {
-                                    case 'DD':
-                                        // Drop down
-                                        $this->renderPartial(
-                                                '/admin/token/modal_subviews/tokenformSelect',
-                                                [
-                                                        'attrDescription' => $attrDescription,
-                                                        'attrName' => $attrName,
-                                                        'inputValue' => $inputValue
-                                                ]
-                                        );
-                                        break;
-
-                                    case 'DP':
-                                        // Date
-                                        $this->renderPartial(
-                                                '/admin/token/modal_subviews/tokenformDateInput',
-                                                [
-                                                        'attrDescription' => $attrDescription,
-                                                        'attrName' => $attrName,
-                                                        'inputValue' => $inputValue,
-                                                        'jsDate' => $dateformatdetails['jsdate'],
-                                                ]
-                                        );
-                                        break;
-
-                                    default:
-                                        // Text
-                                        $this->renderPartial(
-                                                '/admin/token/modal_subviews/tokenformTextInput',
-                                                [
-                                                        'attrDescription' => $attrDescription,
-                                                        'attrName' => $attrName,
-                                                        'inputValue' => $inputValue
-                                                ]
-                                        );
-                                        break;
-                                }
-                                ?>
-                            </div>
-                        </div>
+                        <?php $inputValue = isset($$attrName) ? $$attrName : null ?>
+                        <?php
+                        $this->renderPartial(
+                                '/admin/token/attribute_subviews/tokenformAttributesWrapper',
+                                [
+                                        'attrDescription' => $attrDescription,
+                                        'attrName' => $attrName,
+                                        'inputValue' => $inputValue,
+                                        'jsDate' => $dateformatdetails['jsdate'],
+                                ]
+                        );
+                        ?>
                     <?php endforeach; ?>
                 </div>
             </div>
