@@ -39,7 +39,8 @@ class SortingStrategy
     private function shouldOrderRandomly(Question $question, string $context = 'answers'): bool
     {
         if ($context === 'answers') {
-            return $question->getQuestionAttribute('random_order') == 1
+            return ($question->getQuestionAttribute('random_order') == 1
+                    && $this->answersRandomizable($question))
                 || $question->getQuestionAttribute('answer_order') === 'random';
         }
 
@@ -64,5 +65,26 @@ class SortingStrategy
         }
 
         return in_array($orderAttribute, ['alphabetical', 'random_alphabetical']);
+    }
+
+    /**
+     * Checks if answers can be randomized for the given question type.
+     *
+     * Determines whether the question type supports answer randomization.
+     * Currently returns false only for Array (F) and Array Dual Scale (1) question types.
+     *
+     * @param Question $question The question model to check
+     * @return bool True if the question type supports answer randomization, false otherwise
+     */
+    private function answersRandomizable(Question $question)
+    {
+        if (
+            Question::QT_F_ARRAY == $question->type
+            || Question::QT_1_ARRAY_DUAL == $question->type
+        ) {
+            return false;
+        }
+
+        return true;
     }
 }
