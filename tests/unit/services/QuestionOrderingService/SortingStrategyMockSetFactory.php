@@ -29,6 +29,11 @@ class SortingStrategyMockSetFactory
             ->byDefault()
             ->andReturn(null);
 
+        // Mock getMetaData to prevent CActiveRecord calls
+        $mockSet->question->shouldReceive('getMetaData')
+            ->byDefault()
+            ->andReturn(Mockery::mock('CActiveRecordMetaData'));
+
         // Set survey property directly
         $mockSet->question->survey = (object)[
             'language' => 'en',
@@ -37,6 +42,8 @@ class SortingStrategyMockSetFactory
 
         // Set sid property
         $mockSet->question->sid = 12345;
+        // Set type property to a valid question type
+        $mockSet->question->type = Question::QT_A_ARRAY_5_POINT;
 
         return $mockSet;
     }
