@@ -38,6 +38,7 @@ class OpHandlerResponseContainConditionTest extends TestCase
         $this->assertTrue(
             strpos($criteria->condition, '`status` LIKE :match') !== false
             || strpos($criteria->condition, '[status] LIKE :match') !== false
+            || strpos($criteria->condition, '"status" LIKE :match') !== false
         );
         $this->assertSame([':match' => '%active%'], $criteria->params);
     }
@@ -55,11 +56,13 @@ class OpHandlerResponseContainConditionTest extends TestCase
         $this->assertTrue(
             strpos($criteria->condition, '`first_name` LIKE :match0') !== false
             || strpos($criteria->condition, '[first_name] LIKE :match0') !== false
+            || strpos($criteria->condition, '"first_name" LIKE :match0') !== false
         );
         $this->assertStringContainsString(' OR ', $criteria->condition);
         $this->assertTrue(
             strpos($criteria->condition, '`last_name` LIKE :match1') !== false
             || strpos($criteria->condition, '[last_name] LIKE :match1') !== false
+            || strpos($criteria->condition, '"last_name" LIKE :match1') !== false
         );
 
         $this->assertSame(
