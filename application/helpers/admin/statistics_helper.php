@@ -425,12 +425,12 @@ function buildSelects($allfields, $surveyid, $language)
             elseif ($firstletter == "|") {
                 // no. of files greater than
                 if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
-                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1) . "_filecount") . " > " . sanitize_int($_POST[$pv]);
+                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1) . "_Cfilecount") . " > " . sanitize_int($_POST[$pv]);
                 }
 
                 // no. of files less than
                 if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
-                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1) . "_filecount") . " < " . sanitize_int($_POST[$pv]);
+                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1) . "_Cfilecount") . " < " . sanitize_int($_POST[$pv]);
                 }
             }
 
@@ -771,7 +771,7 @@ class statistics_helper
             // 1) Total number of files uploaded
             // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn t upload any)
             $fieldname = substr($rt, 1, strlen($rt));
-            $query = "SELECT SUM(" . Yii::app()->db->quoteColumnName($fieldname . '_filecount') . ") as sum, AVG(" . Yii::app()->db->quoteColumnName($fieldname . '_filecount') . ") as avg FROM {{responses_$surveyid}}";
+            $query = "SELECT SUM(" . Yii::app()->db->quoteColumnName($fieldname . '_Cfilecount') . ") as sum, AVG(" . Yii::app()->db->quoteColumnName($fieldname . '_Cfilecount') . ") as avg FROM {{responses_$surveyid}}";
             $rows = Yii::app()->db->createCommand($query)->query();
 
             $showem = array();
