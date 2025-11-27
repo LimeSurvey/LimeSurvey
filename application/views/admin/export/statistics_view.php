@@ -72,8 +72,8 @@ echo viewHelper::getViewTestTag('statisticsIndex');
                         'oStatisticsHelper' => $oStatisticsHelper,
                         'language' => $language,
                         'submitted' => $submitted,
-                        'dshresults' => $dshresults,
-                        'dshresults2' => $dshresults2
+                        'dshresults' => $dshresults ?? '',
+                        'dshresults2' => $dshresults2 ?? ''
                     ),
                     true
                 )
