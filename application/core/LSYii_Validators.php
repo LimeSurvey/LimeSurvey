@@ -87,10 +87,10 @@ class LSYii_Validators extends CValidator
             }
         }
         if ($this->isLanguage) {
-            $object->$attribute = $this->languageCodeFilter($object->$attribute);
+            $object->$attribute = self::languageCodeFilter($object->$attribute);
         }
         if ($this->isLanguageMulti) {
-            $object->$attribute = $this->multiLanguageCodeFilter($object->$attribute);
+            $object->$attribute = self::multiLanguageCodeFilter($object->$attribute);
         }
         if (!$this->allowDataUri) {
             $object->$attribute = $this->dataUriFilter($object->$attribute);
@@ -193,7 +193,7 @@ class LSYii_Validators extends CValidator
     public static function languageCodeFilter($value)
     {
         /* No need to filter empty $value */
-        if (empty(trim($value)) || !is_string($value)) {
+        if (!is_string($value) || empty(trim($value))) {
             return '';
         }
         // Maybe use the array of language ?
@@ -220,7 +220,7 @@ class LSYii_Validators extends CValidator
     public static function multiLanguageCodeFilter($value)
     {
         /* No need to filter empty $value */
-        if (empty(trim($value)) || !is_string($value)) {
+        if (!is_string($value) || empty(trim($value))) {
             return '';
         }
         $aValue = explode(" ", trim((string) $value));
