@@ -2192,7 +2192,7 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the Survey that participants belong
-     * @param array|int $aTokenQueryProperties of participant properties used to query the participant, or the token id as an integer
+     * @param struct|int $aTokenQueryProperties of participant properties used to query the participant, or the token id as an integer
      * @param struct $aTokenData An array with the particular fieldnames as keys and their values to set on that particular Participant
      * @return array Result of the change action
      */
