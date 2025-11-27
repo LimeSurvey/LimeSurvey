@@ -232,6 +232,9 @@ class CopySurvey
             }
             $destLangSet->surveyls_survey_id = $destinationSurvey->sid;
             $destLangSet->surveyls_language = $sourceLanguageSetting->surveyls_language;
+            if ($destLangSet->surveyls_alias !== null) {
+                $destLangSet->surveyls_alias = null;
+            }
             if ($destLangSet->save()) {
                 $cntCopiedLanguageSettings++;
             }
