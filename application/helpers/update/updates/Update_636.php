@@ -10,7 +10,7 @@ class Update_636 extends DatabaseUpdateBase
         if (!in_array('access_mode', $columnNames)) {
             addColumn('{{surveys}}', 'access_mode', "string(1) DEFAULT 'O'");
             $sids = [];
-            foreach (dbGetTablesLike('%token%') as $table) {
+            foreach (dbGetTablesLike('tokens\_%') as $table) {
                 if (strpos($table, "old") === false) {
                     $split = explode("_", $table);
                     $sids[] = $split[count($split) - 1];

@@ -45,9 +45,14 @@ Tokens = {
                  $elHiddenInput.value = 'N';
              }
          });
-
+         let initialized = false;
          // When user change date
          $elDate.addEventListener('change', function (e) {
+             // skip the first change (triggered on init)
+             if (!initialized) {
+                 initialized = true;
+                 return;
+             }
              $elHiddenInput.value = $elDate.value;
          });
      },

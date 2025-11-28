@@ -57,7 +57,7 @@
                         <?php endforeach; ?>
                     </div>
 
-                    <input type="hidden" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= App()->request->csrfToken ?>"/>
+                    <input type="hidden" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= CHtml::encode(App()->request->csrfToken) ?>"/>
                 </div>
                 <div class="modal-footer">
                     <button id="<?= $modalId ?>-cancel" type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
