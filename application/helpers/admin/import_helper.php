@@ -4352,7 +4352,7 @@ function importDefaultValues(SimpleXMLElement $xml, $aLanguagesSupported, $aQIDR
             }
 
             if (!isset($xml->defaultvalue_l10ns->rows->row)) {
-                if (!in_array($insertdata['language'], $aLanguagesSupported)) {
+                if (!in_array($insertdata['language'] ?? '', $aLanguagesSupported)) {
                     continue;
                 }
 
