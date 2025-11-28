@@ -39,8 +39,18 @@ class SortingStrategy
     private function shouldOrderRandomly(Question $question, string $context = 'answers'): bool
     {
         if ($context === 'answers') {
-            return $question->getQuestionAttribute('random_order') == 1
-                || $question->getQuestionAttribute('answer_order') === 'random';
+            // New answer_order attribute takes precedence where available
+            if ($question->getQuestionAttribute('answer_order') === 'random') {
+                return true;
+            }
+
+            // random_order must not shuffle answer options when the question
+            // type also has subquestions (e.g. array grids); there it is
+            // meant for subquestion rows only.
+            $questionType = $question->getQuestionType();
+            $hasSubquestions = $questionType && (int)$questionType->subquestions > 0;
+
+            return !$hasSubquestions && $question->getQuestionAttribute('random_order') == 1;
         }
 
         // For subquestions

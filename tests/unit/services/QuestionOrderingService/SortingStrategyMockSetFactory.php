@@ -29,6 +29,11 @@ class SortingStrategyMockSetFactory
             ->byDefault()
             ->andReturn(null);
 
+        // Default question type without subquestions (e.g. list radio)
+        $mockSet->question->shouldReceive('getQuestionType')
+            ->byDefault()
+            ->andReturn((object)['subquestions' => 0]);
+
         // Set survey property directly
         $mockSet->question->survey = (object)[
             'language' => 'en',

@@ -53,6 +53,26 @@ class SortingStrategyTest extends TestBaseClass
     }
 
     /**
+     * @testdox determine() does not randomize answers when random_order is set but question has subquestions
+     */
+    public function testDetermineReturnsNormalForAnswersWhenQuestionHasSubquestions()
+    {
+        $mockQuestion = $this->createQuestionMock();
+
+        $mockQuestion->shouldReceive('getQuestionAttribute')
+            ->with('random_order')
+            ->andReturn(1);
+
+        $mockQuestion->shouldReceive('getQuestionType')
+            ->andReturn((object)['subquestions' => 1]);
+
+        $strategy = new SortingStrategy();
+        $result = $strategy->determine($mockQuestion, 'answers');
+
+        $this->assertEquals('normal', $result);
+    }
+
+    /**
      * @testdox determine() returns 'random' when answer_order is set to 'random'
      */
     public function testDetermineReturnsRandomWhenRandomOrderIsSet2()
