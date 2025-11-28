@@ -36,7 +36,7 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                     </div>
                     <div class="col-12">
                         <button class="btn btn-primary" type="button" id="searchParameterButton"><?= gT('Search', 'unescaped') ?></button>
-                        <a href="<?= $updateUrl ?>" class="btn btn-warning"><?= gT('Reset') ?></a>
+                        <a href="<?= $updateUrl ?>" class="btn btn-warning" role="button"><?= gT('Reset') ?></a>
                     </div>
                 </div>
             </div>
