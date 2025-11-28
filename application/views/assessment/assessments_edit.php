@@ -80,7 +80,7 @@
                             $position = 0;
                             ?>
                             <li role="presentation" class="nav-item">
-                                <a class="nav-link <?= ($assessmentlang == $baselang ? 'active' : '') ?>" data-bs-toggle="tab" href="#tablang<?= $assessmentlang ?>">
+                                <a class="nav-link <?= ($assessmentlang == $baselang ? 'active' : '') ?>"  role="tab" data-bs-toggle="tab" href="#tablang<?= $assessmentlang ?>">
                                     <?php
                                     echo getLanguageNameFromCode($assessmentlang, false);
                                     if ($assessmentlang == $baselang) {
