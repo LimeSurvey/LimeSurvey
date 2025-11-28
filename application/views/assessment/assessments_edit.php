@@ -108,7 +108,7 @@
                                     <label class='form-label col-12' for='name_<?= $assessmentlang ?>'>
                                         <?php eT("Heading"); ?>:</label>
                                     <div class='col-12'>
-                                        <input class='form-control' type='text' name='name_<?= $assessmentlang ?>' id='name_<?= $assessmentlang ?>>' size='80' value='<?= $heading ?>'/>
+                                        <input class='form-control' type='text' name='name_<?= $assessmentlang ?>' id='name_<?= $assessmentlang ?>' size='80' value='<?= $heading ?>'/>
                                     </div>
                                 </div>
                                 <div class='mb-3 col-12'>
