@@ -76,7 +76,7 @@ class SortingStrategy
      * @param Question $question The question model to check
      * @return bool True if the question type supports answer randomization, false otherwise
      */
-    private function answersRandomizable(Question $question) : bool
+    private function answersRandomizable(Question $question): bool
     {
         return !in_array($question->type, [
             Question::QT_F_ARRAY,
