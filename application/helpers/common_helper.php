@@ -1333,10 +1333,14 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
     } else {
         $rootQuestion = $questions[0];
         $questionIndex = 0;
-        while (($rootQuestion->parent_qid) && ($questions[$questionIndex]->parent_qid) && ($questionIndex < count($questions))) {
+        while ($questionIndex < count($questions)) {
+            if (!$questions[$questionIndex]->parent_qid) {
+                if ($rootQuestion->parent_qid || ($rootQuestion->qid < $questions[$questionIndex]->qid)) {
+                    $rootQuestion = $questions[$questionIndex];
+                }
+            }
             $questionIndex++;
         }
-        $rootQuestion = $questions[$questionIndex];
         $qid = $rootQuestion->qid;
         switch ($rootQuestion->type) {
             case \Question::QT_1_ARRAY_DUAL:
