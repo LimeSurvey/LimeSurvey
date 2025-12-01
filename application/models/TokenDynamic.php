@@ -123,7 +123,7 @@ class TokenDynamic extends LSActiveRecord
      * (some older tokens tables dont' get udated properly)
      *
      * This method should be moved to db update for 2.05 version so it runs only
-     * once per survey participants table / backup survey participants table
+     * once per survey participant list / backup survey participant list
      */
     public function checkColumns()
     {
@@ -135,7 +135,7 @@ class TokenDynamic extends LSActiveRecord
         $missingcolumns = array_diff($columncheck, $columns);
         //Some columns are missing - we need to create them
         if (count($missingcolumns) > 0) {
-            Yii::app()->loadHelper('update/updatedb'); //Load the admin helper to allow column creation
+            Yii::app()->loadHelper('update.updatedb'); //Load the admin helper to allow column creation
             $columninfo = array(
                     'validfrom' => 'datetime',
                     'validuntil' => 'datetime',
@@ -155,7 +155,7 @@ class TokenDynamic extends LSActiveRecord
             foreach ($columns as $columnname) {
                 $definition = $tableSchema->getColumn($columnname);
                 if ($definition->allowNull != true) {
-                    Yii::app()->loadHelper('update/updatedb'); //Load the admin helper to allow column creation
+                    Yii::app()->loadHelper('update.updatedb'); //Load the admin helper to allow column creation
                     Yii::app()->db->createCommand()->alterColumn($sTableName, $columnname, "string({$definition->size}})");
                     Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
                 }
@@ -867,12 +867,12 @@ class TokenDynamic extends LSActiveRecord
                 'data-bs-toggle'  => "modal",
                 'data-bs-target'  => '#confirmation-modal',
                 'data-btnclass' => 'btn-danger',
-                'data-message'    => gt('Do you really want to delete this participant'),
+                'data-message'    => gT('Do you really want to delete this participant'),
                 'data-post-url'   => App()->createUrl("/admin/tokens/sa/deleteToken", [
                     "sid"   => self::$sid,
                     "sItem" => $this->tid
                 ]),
-                'data-btntext'    => gt('Delete'),
+                'data-btntext'    => gT('Delete'),
             ],
             'enabledCondition' => $permission_tokens_delete
         ];

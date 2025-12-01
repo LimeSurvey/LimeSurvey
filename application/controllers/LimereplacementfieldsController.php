@@ -258,6 +258,7 @@ class LimeReplacementFieldsController extends LSBaseController
         $oSurvey = Survey::model()->findByPk($surveyid);
         $replFields = array();
 
+        $fieldtype = str_replace('_', '-', $fieldtype);
         if ($fieldtype === 'globalSurveySettings') {
             $replFields['TOKEN:FIRSTNAME'] = gT("First name of the participant");
             $replFields['TOKEN:LASTNAME'] = gT("Last name of the participant");
@@ -346,8 +347,8 @@ class LimeReplacementFieldsController extends LSBaseController
             $replFields['ADMINEMAIL'] = gT("Email address of the survey administrator");
             return array($replFields, false);
         } elseif (
-            strpos($fieldtype, 'email_invitation') !== false
-            || strpos($fieldtype, 'email_reminder') !== false
+            strpos($fieldtype, 'email-invitation') !== false
+            || strpos($fieldtype, 'email-reminder') !== false
         ) {
             // these 2 fields are supported by email-inv and email-rem
             // but not email-reg for the moment

@@ -23,7 +23,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                         <li role="presentation" class="nav-item">
                             <button class="nav-link <?php echo $key == 0 ? 'active' : 'tab_action_hide_on_inherit'; ?>" data-bs-target="#category-<?php echo $key; ?>"
                                     aria-controls="category-<?php echo $key; ?>" role="tab" data-bs-toggle="tab" aria-selected="<?php echo $key == 0 ? 'true' : 'false'; ?>">
-                                <?php echo $category; ?>
+                                <?php eT($category); ?>  
                             </button>
                         </li>
                     <?php endforeach; ?>

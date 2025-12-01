@@ -42,9 +42,6 @@ class RemoteControl extends SurveyCommonAction
                 $cur_path = get_include_path();
                 set_include_path($cur_path . PATH_SEPARATOR . APPPATH . 'helpers');
                 // Yii::import was causing problems for some odd reason
-                require_once('Zend/XmlRpc/Server.php');
-                require_once('Zend/XmlRpc/Server/Exception.php');
-                require_once('Zend/XmlRpc/Value/Exception.php');
                 $this->xmlrpc = new Zend_XmlRpc_Server();
                 $this->xmlrpc->sendArgumentsToAllMethods(false);
                 Yii::import('application.libraries.LSZend_XmlRpc_Response_Http');
@@ -89,7 +86,6 @@ class RemoteControl extends SurveyCommonAction
                 $this->renderWrappedTemplate('remotecontrol', array('index_view'), $aData);
             }
         }
-        Yii::app()->session->destroy();
     }
 
     /**
@@ -108,8 +104,6 @@ class RemoteControl extends SurveyCommonAction
             if ($RPCType == 'xml') {
                 $cur_path = get_include_path();
                 set_include_path($cur_path . PATH_SEPARATOR . APPPATH . 'helpers');
-                require_once('Zend/XmlRpc/Client.php');
-
                 $client = new Zend_XmlRpc_Client($serverUrl);
                 // Increase timeout (default is 10 seconds). Importing the survey may take a while.
                 $client->getHttpClient()->setConfig(['timeout' => 300]);

@@ -100,9 +100,9 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
 </div>
 
 {# Ajaxify cannot handle an element that is a direct child of body, so => create simple wrapper section #}
-<article>
+<div>
 
-    <div id="{{ aSurveyInfo.id.dynamicreload }}">
+    <div id="{{ aSurveyInfo.id.dynamicreload }}" role="none">
         {% block body %}
             {# Bootstrap Navigation Bar: the top menu #}
             {% block nav_bar %}
@@ -112,10 +112,10 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
 
             {# Replace the content block #}
             {% block content %}
-                <div class="container-md">
+                <div class="container-md" role="none">
                     {{ registerTemplateCssFile('./css/survey-list.css') }}
 
-                    <div class="{{ aSurveyInfo.class.surveylistrow }} row"
+                    <main role="main" class="{{ aSurveyInfo.class.surveylistrow }} row"
                          id="{{ aSurveyInfo.id.surveylistrow }}" {{ aSurveyInfo.attr.surveylistrow }}>
                         <div class="col-12">
                             {# include the alert for no JavaScript #}
@@ -123,7 +123,7 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
                             <div class="row justify-content-center mb-3">
                                 <div
                                     id="{{ aSurveyInfo.id.surveylistrowjumbotron }}" {{ aSurveyInfo.attr.surveylistrowjumbotron }}>
-                                    <div class="img-fluid mx-auto d-block">
+                                    <div class="img-fluid mx-auto d-block" role="img" aria-label="{{gT("LimeSurvey Logo")}}">
                                         {{ include('./ls_logo_svg.twig') }}
                                     </div>
                                     <span class="text-center h3">{{ aSurveyInfo.sSiteName }}</span>
@@ -140,10 +140,10 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
                             <div class="row">
                                 <div
                                     class="{{ aSurveyInfo.class.surveylistrowdiva }} col-12" {{ aSurveyInfo.attr.surveylistrowdiva }}>
-                                    <div
-                                        class='{{ aSurveyInfo.class.surveylistrowdivadiv }} form-heading' {{ aSurveyInfo.attr.surveylistrowdivadiv }}>
+                                    <h2
+                                        class='{{ aSurveyInfo.class.surveylistrowdivadiv }} form-heading my-0' {{ aSurveyInfo.attr.surveylistrowdivadiv }}>
                                         {{ gT("The following surveys are available:") }}
-                                    </div>
+                                    </h2>
                                 </div>
                             </div>
 
@@ -176,20 +176,20 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </main>
 
-                    <div id="{{ aSurveyInfo.id.surveylistfooter }}"
+                    <footer role="contentinfo" id="{{ aSurveyInfo.id.surveylistfooter }}"
                          class="{{ aSurveyInfo.class.surveylistfooter }}" {{ aSurveyInfo.attr.surveylistfooter }}>
                         <div
                             class="{{ aSurveyInfo.class.surveylistfootercont }}" {{ aSurveyInfo.attr.surveylistfootercont }}>
                             <div {{ aSurveyInfo.attr.surveylistfootercontp }} class="row">
                                 <div class="col-6 col-md-12">
                                     <a {{ aSurveyInfo.attr.surveylistfootercontpaa }}>
-                                        {{ image("./files/poweredby.png", "LimeSurvey Survey Software", {class: 'img-fluid'}) }}
+                                        {{ image("./files/poweredby.png", gT("Proudly powered by LimeSurvey"), {class: 'img-fluid'}) }}
                                     </a>
                                 </div>
                                 <div class="col-12 d-block d-sm-none d-md-block text-center">
-                                    <a {{ aSurveyInfo.attr.surveylistfootercontpab }}>
+                                    <a {{ aSurveyInfo.attr.surveylistfootercontpab }} class="text-decoration-underline">
                                         The Online Survey Tool
                                     </a>
                                     - Free & Open Source
@@ -201,7 +201,7 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </footer>
                 </div>
             {% endblock %}
 
@@ -220,7 +220,7 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
 
         {% endblock %}
     </div>
-</article>
+</div>
 {% block footer %}
     {{ include('./subviews/footer/footer.twig') }}
 {% endblock %}

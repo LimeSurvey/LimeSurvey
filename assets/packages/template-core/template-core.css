@@ -79,9 +79,9 @@ li.checkbox-text-item {
 .checkbox-item input[type="checkbox"] {
     /*give near same position to real button (except in td : can fix but not needed )*/
     display: inline-block;
-    height: 17px;
+    height: 23px;
     position: absolute;
-    width: 17px;
+    width: 23px;
 }
 
 .dir-ltr .radio-item input[type="radio"],
@@ -194,16 +194,16 @@ table.ls-answers input[type="radio"] {
     padding-left: 0;
 }
 
-/* show partially visually-hidden inside table */
+/* show partially visually-hidden inside table : give more size for focus-visble (set to 3px i template-core)*/
 .radio-item .ls-label-xs-visibility,
 .checkbox-item .ls-label-xs-visibility {
     display: inline-block;
     position: relative;
     overflow: hidden;
-    width: 17px;
-    height: 17px;
-    line-height: 21px;
-    text-indent: 21px;
+    width: 23px;
+    height: 23px;
+    line-height: 27px;
+    text-indent: 27px;
 }
 
 .dir-ltr .radio-item .ls-label-xs-visibility,
@@ -222,11 +222,15 @@ table.ls-answers input[type="radio"] {
 .dir-ltr .radio-item label.ls-label-xs-visibility::before,
 .dir-ltr .checkbox-item label.ls-label-xs-visibility::before {
     margin-left: 0;
+    left:3px;
+    top:3px;
 }
 
 .dir-rtl .radio-item label.ls-label-xs-visibility::before,
 .dir-rtl .checkbox-item label.ls-label-xs-visibility::before {
     margin-right: 0;
+    right:3px;
+    top:3px;
 }
 
 .dir-ltr .radio-item label.ls-label-xs-visibility::after,
@@ -240,13 +244,28 @@ table.ls-answers input[type="radio"] {
     margin-right: 0;
     padding-right: 0;
 }
-
 .checkbox-item label.ls-label-xs-visibility::after {
-    line-height: 17px;
-    width: 17px;
+    line-height: 15px;
     text-align: center;
     text-indent: 0;
 }
+.dir-ltr .checkbox-item label.ls-label-xs-visibility::after {
+    left:4px;
+    top:4px;
+}
+.dir-ltr .radio-item label.ls-label-xs-visibility::after {
+    left:6px;
+    top:6px;
+}
+.dir-rtl .checkbox-item label.ls-label-xs-visibility::after {
+    left:4px;
+    top:4px;
+}
+.dir-rtl .radio-item label.ls-label-xs-visibility::after {
+    left:6px;
+    top:6px;
+}
+
 
 /* Hide the other content inside visually-hidden */
 .radio-item label.ls-label-xs-visibility>*,
@@ -277,9 +296,7 @@ table.ls-answers input[type="radio"] {
 Max width before this PARTICULAR table gets nasty
 For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)
 */
-@media
-only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px)  {
+@media only screen and (max-width: 767px) {
     table.ls-answers,table.ls-answers thead,table.ls-answers tbody,table.ls-answers th,table.ls-answers td,table.ls-answers tr {display: block;}
     .dir-ltr table.ls-answers,.dir-ltr table.ls-answers thead,.dir-ltr table.ls-answers tbody,.dir-ltr table.ls-answers th,.dir-ltr table.ls-answers td,table.ls-answers tr {text-align:left;}
     .dir-rtl table.ls-answers,.dir-rtl table.ls-answers thead,.dir-rtl table.ls-answers tbody,.dir-rtl table.ls-answers th,.dir-rtl table.ls-answers td,table.ls-answers tr {text-align:right;}

@@ -301,6 +301,7 @@ class TemplateConfiguration extends TemplateConfig
         $criteria = new CDbCriteria();
         $criteria->addCondition('sid=:sid');
         $criteria->params = array('sid' => $iSurveyId);
+
         $oTemplateConfigurations = self::model()->findAll($criteria);
 
         if ($bInherited) { // inherited values
@@ -742,8 +743,8 @@ class TemplateConfiguration extends TemplateConfig
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
             'linkAttributes'   => [
                 'title'            => sprintf(gT('Type in the new name to extend %s'), $templateName),
-                'data-button-no'   => gt('Cancel'),
-                'data-button-yes'  => gt('Extend'),
+                'data-button-no'   => gT('Cancel'),
+                'data-button-yes'  => gT('Extend'),
                 'data-text'        => gT('Please type in the new theme name above.'),
                 'data-post'        => json_encode([
                     "copydir" => $templateName,
@@ -766,8 +767,8 @@ class TemplateConfiguration extends TemplateConfig
                                     $templateName != App()->getConfig('defaulttheme'),
             'linkAttributes'   => [
                 'title'            => gT('Uninstall this theme'),
-                'data-button-no'   => gt('Cancel'),
-                'data-button-yes'  => gt('Uninstall'),
+                'data-button-no'   => gT('Cancel'),
+                'data-button-yes'  => gT('Uninstall'),
                 'data-text'        => gT('This will reset all the specific configurations of this theme.')
                                          . '<br>' . gT('Do you want to continue?'),
                 'data-post'        => json_encode([ "templatename" => $templateName ]),
@@ -784,8 +785,8 @@ class TemplateConfiguration extends TemplateConfig
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
             'linkAttributes'   => [
                 'title'            => gT('Reset this theme'),
-                'data-button-no'   => gt('Cancel'),
-                'data-button-yes'  => gt('Reset'),
+                'data-button-no'   => gT('Cancel'),
+                'data-button-yes'  => gT('Reset'),
                 'data-text'        => gT('This will reload the configuration file of this theme.') . '<br>' . gT('Do you want to continue?'),
                 'data-post'        => json_encode([ "templatename" => $templateName ]),
                 'data-button-type' => "btn-warning"
@@ -1246,7 +1247,7 @@ class TemplateConfiguration extends TemplateConfig
      * Also triggers inheritence checks
      * @return void
      */
-    protected function setOptions()
+    public function setOptions()
     {
         $this->oOptions = new stdClass();
         if (!empty($this->options)) {
@@ -1607,28 +1608,31 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Returns the html to render the previewimage of the template
-     * @return array|mixed|string|null
+     * Returns the html to render the previewimage of the template.
+     * Pass $justTheUrl = true to return just the URL of the preview image
+     * @param bool $justTheUrl
+     * @return string
      */
-    public function getPreview()
+    public function getPreview($justTheUrl = false)
     {
+        $previewUrl = '';
         if (empty($this->sPreviewImgTag)) {
             if (is_a($this->template, 'Template')) {
                 $sTemplateFileFolder = Template::getTemplatesFileFolder($this->template->name);
                 $previewPath         = Template::getTemplatePath($this->template->name) . '/' . $sTemplateFileFolder;
 
                 if ($previewPath && file_exists($previewPath . '/preview.png')) {
-                    $previewUrl = Template::getTemplateURL($this->template->name) . $sTemplateFileFolder;
+                    $previewUrl = Template::getTemplateURL($this->template->name) . $sTemplateFileFolder . '/preview.png';
                     $this->sPreviewImgTag = '<img src="' .
                         $previewUrl .
-                        '/preview.png" alt="template preview" height="200" class="img-thumbnail p-0 rounded-0" />';
+                        '" alt="template preview" height="200" class="img-thumbnail p-0 rounded-0" />';
                 }
             } else {
                 $this->sPreviewImgTag = '<em>' . gT('No preview available') . '</em>';
             }
         }
 
-        return $this->sPreviewImgTag;
+        return $justTheUrl ? $previewUrl : $this->sPreviewImgTag;
     }
 
     /**

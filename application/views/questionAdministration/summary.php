@@ -3,14 +3,37 @@
 <div class="summary-table">
 
     <!-- Summary Table -->
+        <!-- Question -->
+        <div class="row">
+            <div class="col-2">
+                <strong>
+                    <?php eT("Question:"); ?>
+                </strong>
+            </div>
+            <div class="col-10"><strong>
+                <?php
+                    templatereplace(
+                        $question->questionl10ns[$question->survey->language]->question,
+                        array('QID' => $question->qid),
+                        $aReplacementData,
+                        'Unspecified',
+                        false,
+                        $question->qid
+                    );
+                    echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
+                ?></strong>
+            </div>
+        </div>     
         <!-- Question Group -->
+         
         <div class="row">
             <div class="col-2">
                 <strong>
                     <?php eT('Question group:');?>&nbsp;&nbsp;&nbsp;
                 </strong>
             </div>
-            <div class="col-10"><em><?php echo flattenText($question->group->group_name);?></em> (ID:<?php echo $question->group->gid;?>)</div>
+            <div class="col-10"><em><?php
+            echo flattenText($question->group->questiongroupl10ns[$question->survey->language]->group_name);?></em> (ID:<?php echo $question->group->gid;?>)</div>
         </div>
 
         <!-- Code -->
@@ -30,28 +53,6 @@
                             : (<i><?php eT("Optional Question"); ?></i>)
                     <?php endif; ?>
                 <?php endif; ?>
-            </div>
-        </div>
-
-        <!-- Question -->
-        <div class="row">
-            <div class="col-2">
-                <strong>
-                    <?php eT("Question:"); ?>
-                </strong>
-            </div>
-            <div class="col-10">
-                <?php
-                    templatereplace(
-                        $question->questionl10ns[$question->survey->language]->question,
-                        array('QID' => $question->qid),
-                        $aReplacementData,
-                        'Unspecified',
-                        false,
-                        $question->qid
-                    );
-                    echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
-                ?>
             </div>
         </div>
 
@@ -116,8 +117,8 @@
             </div>
             <div class="col-10">
                 <span class='statusentryhighlight'>
-                    <?php eT("Warning"); ?>:
-                    <?php eT("You need to add answer options to this question"); ?>
+                    <?php eT("Warning:"); ?>
+                    <?php eT("You need to add answer options to this question."); ?>
                 </span>
             </div>
         </div>
@@ -129,8 +130,8 @@
                 <div class="col-2"></div>
                 <div class="col-10">
                     <span class='statusentryhighlight'>
-                        <?php eT("Warning"); ?>:
-                        <?php eT("You need to add subquestions to this question"); ?>
+                        <?php eT("Warning:"); ?>
+                        <?php eT("You need to add subquestions to this question."); ?>
                     </span>
                 </div>
             </div>

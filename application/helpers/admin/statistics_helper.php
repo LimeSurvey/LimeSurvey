@@ -409,7 +409,7 @@ function buildSelects($allfields, $surveyid, $language)
 
                 //N - Numerical input
                 //K - Multiple numerical input
-            elseif ($firstletter == "N" || $firstletter == "K") {
+            elseif ($firstletter == "N" || $firstletter == "K" || $firstletter == ":") {
                 //value greater than
                 if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
                     $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1)) . " > " . sanitize_float($_POST[$pv]);
@@ -856,7 +856,8 @@ class statistics_helper
 
         //N = Numerical input
         //K = Multiple numerical input
-        elseif ($sQuestionType == "N" || $sQuestionType == "K") {
+        //: = Array (Numbers) - Only when using "Text Input"
+        elseif ($sQuestionType == "N" || $sQuestionType == "K" || $sQuestionType == ":") {
             //NUMERICAL TYPE
             //Zero handling
             $excludezeros = 1;
@@ -876,6 +877,11 @@ class statistics_helper
                 if (substr($rt, 0, 1) == "K") {
                     //put single items in brackets at output
                     $qtitle .= " [" . $fielddata['subquestion'] . "]";
+                } elseif ($sQuestionType == ":") {
+                    //put single items in brackets at output
+                    list($myans, $mylabel) = explode("_", (string) $fielddata['aid']);
+                    $qtitle .= "[$myans][$mylabel]";
+                    $qquestion .= $linefeed . "[" . $fielddata['subquestion1'] . "] [" . $fielddata['subquestion2'] . "]";
                 }
 
                 //outputting
@@ -929,6 +935,14 @@ class statistics_helper
                 $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname);
                 //Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
                 $query .= " FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($fieldname) . " IS NOT NULL";
+
+                // Array (Numbers) DB columns are not numeric, so empty answers (shown, but empty) are
+                // empty strings, not nulls.
+                /** @todo: Fix the DB schema to use numeric columns Array (Numbers)? */
+                if ($sQuestionType == ':') {
+                    $query .= " AND " . Yii::app()->db->quoteColumnName($fieldname) . " <> ''";
+                }
+
                 //special treatment for MS SQL databases
                 if ($sDatabaseType === 'mssql' || $sDatabaseType === 'sqlsrv' || $sDatabaseType === 'dblib') {
                     //no NULL/empty values please
@@ -1469,6 +1483,8 @@ class statistics_helper
         $sDatabaseType = Yii::app()->db->getDriverName();
         $astatdata = array();
         $sColumnName = null;
+        /* show non completed (no way to set in simple result) */
+        $noncompleted = App()->getRequest()->getParam('noncompleted');
 
         //loop though the array which contains all answer data
         $ColumnName_RM = array();
@@ -1476,7 +1492,9 @@ class statistics_helper
         $responseModel = SurveyDynamic::model($surveyid);
 
         foreach ($outputs['alist'] as $al) {
-
+            if ($noncompleted > 1 && $al[0] === '') {
+                continue;
+            }
             if (isset($al[2]) && $al[2]) {
                 //handling for "other" option
                 if ($al[0] == gT("Other")) {
@@ -1499,8 +1517,9 @@ class statistics_helper
                 * Q = Multiple short text
                 */
                 elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
-                    $sDatabaseType = Yii::app()->db->getDriverName();
-
+                    if ($noncompleted > 1 && $al[0] === 'NoAnswer') {
+                        continue;
+                    }
                     //free text answers
                     if ($al[0] == "Answer") {
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
@@ -1529,7 +1548,6 @@ class statistics_helper
             else {
                 if ($al[0] != "") {
                     //get more data
-                    $sDatabaseType = Yii::app()->db->getDriverName();
                     if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
                         // mssql cannot compare text blobs so we have to cast here
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE cast(".Yii::app()->db->quoteColumnName($rt)." as varchar)= '$al[0]'";
@@ -1697,7 +1715,7 @@ class statistics_helper
             //if (isset($_POST[''noncompleted']) and ($_POST['noncompleted'] == 1) && (isset(Yii::app()->getConfig('showaggregateddata')) && Yii::app()->getConfig('showaggregateddata') == 0))
             // TIBO: TODO WE MUST SKIP THE FOLLOWING SECTION FOR TYPE A and 5 when
             // showaggreagated data is set and set to 1
-            if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == 1)) {
+            if ($noncompleted) {
                 //counter
                 $i = 0;
 
@@ -1723,7 +1741,25 @@ class statistics_helper
         if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
             $criteria = new CDbCriteria();
             foreach ($outputs['alist'] as $al) {
-                $criteria->addCondition(Yii::app()->db->quoteColumnName($al[2]) . " IS NULL");
+                $quotedColumnName = App()->db->quoteColumnName($al[2]);
+                if ($noncompleted > 1 ) {
+                    // database can use blob due to encryption
+                    switch ($sDatabaseType) {
+                        case 'mssql':
+                        case 'sqlsrv':
+                        case 'dblib':
+                            $condition = $quotedColumnName . " IS NULL OR CAST(" . $quotedColumnName ." as varchar) = ''";
+                            break;
+                        case 'pgsql':
+                        case 'mysql':
+                        default:
+                            $condition = $quotedColumnName . " IS NULL OR " . $quotedColumnName ." = ''";
+                            break;
+                    }
+                } else {
+                    $condition = $quotedColumnName . " IS NULL";
+                }
+                $criteria->addCondition($condition);
             }
             if (incompleteAnsFilterState() == "incomplete") {
                 $criteria->addCondition("submitdate IS NULL");
@@ -1731,7 +1767,7 @@ class statistics_helper
                 $criteria->addCondition("submitdate IS NOT NULL");
             }
             $multiNotDisplayed = SurveyDynamic::model($surveyid)->count($criteria);
-            if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == 1)) {
+            if ($noncompleted) {
                 //counter
                 $i = 0;
                 while (isset($gdata[$i])) {
@@ -2154,7 +2190,7 @@ class statistics_helper
         $TotalIncomplete    = 0;
 
         $sColumnName = null;
-
+        $noncompleted = App()->getRequest()->getPost('noncompleted');
         if ($usegraph == 1 && $outputType != 'html') {
             //for creating graphs we need some more scripts which are included here
             require_once(APPPATH . '/../vendor/pchart/pChart.class.php');
@@ -2207,6 +2243,9 @@ class statistics_helper
         $responseModel = SurveyDynamic::model($surveyid);
 
         foreach ($outputs['alist'] as $al) {
+            if ($noncompleted > 1 && $al[0] === '') {
+                continue;
+            }
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
             if (isset($al[2]) && $al[2]) {
                 //handling for "other" option
@@ -2234,6 +2273,9 @@ class statistics_helper
                 * Q = Multiple short text
                 */
                 elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
+                    if ($noncompleted > 1 && $al[0] === 'NoAnswer') {
+                        continue;
+                    }
                     $sDatabaseType = Yii::app()->db->getDriverName();
 
                     //free text answers
@@ -2256,7 +2298,6 @@ class statistics_helper
                     $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al[2])." = '$encryptedValue'";
                 }
             }    //end if -> alist set
-
             else {
                 if ($al[0] != "") {
                     //get more data
@@ -2303,7 +2344,6 @@ class statistics_helper
 
             //check for any "sql" that has been passed from another script
             if (!empty($sql)) {$query .= " AND $sql"; }
-
             //get data
             try {
                 $row = Yii::app()->db->createCommand($query)->queryScalar();
@@ -2311,18 +2351,14 @@ class statistics_helper
                 $row = 0;
                 Yii::app()->setFlashMessage('Faulty query: '.htmlspecialchars($query), 'error');
             }
-
             //store temporarily value of answer count of question type '5' and 'A'.
             $tempcount = -1; //count can't be less han zero
-
             //increase counter
             $TotalCompleted += $row;
-
             //"no answer" handling
             if ($al[0] === "") {
                 $fname = gT("No answer");
             }
-
             //"other" handling
             //"Answer" means that we show an option to list answer to "other" text field
             elseif (($al[0] === gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === "O" && $al[0] === gT("Comments")) || $outputs['qtype'] === "P") && count($al) > 2) {
@@ -2341,7 +2377,7 @@ class statistics_helper
                     . gT("Browse") . "' id='$sColumnName' />";
                 }
 
-                if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'pdf') {
+                if ($browse === true && !empty($_POST['showtextinline']) && $outputType == 'pdf') {
                     $headPDF2 = array();
                     $headPDF2[] = array(gT("ID"), gT("Response"));
                     $result2 = $this->_listcolumn($surveyid, $sColumnName);
@@ -2351,7 +2387,7 @@ class statistics_helper
                     }
                 }
 
-                if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'xls') {
+                if ($browse === true && !empty($_POST['showtextinline']) && $outputType == 'xls') {
                     $headXLS = array();
                     $headXLS[] = array(gT("ID"), gT("Response"));
 
@@ -2391,7 +2427,7 @@ class statistics_helper
                 $bAnswer = true; // For view
                 $bSum    = false;
 
-                if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'pdf') {
+                if ($browse === true && !empty($_POST['showtextinline']) && $outputType == 'pdf') {
                     $headPDF2 = array();
                     $headPDF2[] = array(gT("ID"), gT("Response"));
                     $tablePDF2 = array();
@@ -2499,8 +2535,7 @@ class statistics_helper
                 //answer text
                 $fname = "$al[1] ($al[0])";
             }
-
-            //are there some results to play with?
+             //are there some results to play with?
             if ($results > 0) {
                 //calculate percentage
                 $gdata[] = ($row / $results) * 100;
@@ -2576,7 +2611,6 @@ class statistics_helper
                 $lblPercent[$flatLabel] = $lbl[$flatLabel];
             }
         }    //end foreach -> loop through answer data
-
         //no filtering of incomplete answers and NO multiple option questions
         //if ((incompleteAnsFilterState() != "complete") and ($outputs['qtype'] != "M") and ($outputs['qtype'] != "P"))
         //error_log("TIBO ".print_r($showaggregated_indice_table,true));
@@ -2585,10 +2619,9 @@ class statistics_helper
             //if (isset($_POST[''noncompleted']) and ($_POST['noncompleted'] == 1) && (isset(Yii::app()->getConfig('showaggregateddata')) && Yii::app()->getConfig('showaggregateddata') == 0))
             // TIBO: TODO WE MUST SKIP THE FOLLOWING SECTION FOR TYPE A and 5 when
             // showaggreagated data is set and set to 1
-            if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == 1)) {
+            if ($noncompleted) {
                 //counter
                 $i = 0;
-
                 while (isset($gdata[$i])) {
                     if (isset($showaggregated_indice_table[$i]) && $showaggregated_indice_table[$i] == "aggregated") {
                         // do nothing, we don't rewrite aggregated results
@@ -2600,12 +2633,10 @@ class statistics_helper
                             $gdata[$i] = $TotalCompleted !== 0 ? ($grawdata[$i] / $TotalCompleted) * 100 : 0;
                         }
                     }
-
                     //increase counter
                     $i++;
                 }    //end while (data available)
             }    //end if -> noncompleted checked
-
             //noncompleted is NOT checked
             else {
                 //calculate total number of incompleted records
@@ -2665,7 +2696,25 @@ class statistics_helper
         if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
             $criteria = new CDbCriteria();
             foreach ($outputs['alist'] as $al) {
-                $criteria->addCondition(Yii::app()->db->quoteColumnName($al[2]) . " IS NULL");
+                $quotedColumnName = App()->db->quoteColumnName($al[2]);
+                if ($noncompleted > 1 ) {
+                    // database can use blob due to encryption
+                    switch ($sDatabaseType) {
+                        case 'mssql':
+                        case 'sqlsrv':
+                        case 'dblib':
+                            $condition = $quotedColumnName . " IS NULL OR CAST(" . $quotedColumnName ." as varchar) = ''";
+                            break;
+                        case 'pgsql':
+                        case 'mysql':
+                        default:
+                            $condition = $quotedColumnName . " IS NULL OR " . $quotedColumnName ." = ''";
+                            break;
+                    }
+                } else {
+                    $condition = $quotedColumnName . " IS NULL";
+                }
+                $criteria->addCondition($condition);
             }
             if (incompleteAnsFilterState() == "incomplete") {
                 $criteria->addCondition("submitdate IS NULL");
@@ -2673,7 +2722,7 @@ class statistics_helper
                 $criteria->addCondition("submitdate IS NOT NULL");
             }
             $multiNotDisplayed = SurveyDynamic::model($surveyid)->count($criteria);
-            if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == 1)) {
+            if ($noncompleted) {
                 //counter
                 $i = 0;
                 while (isset($gdata[$i])) {
@@ -3365,7 +3414,7 @@ class statistics_helper
                 $iMaxLabelLength = 0;
 
                 // add "Not completed or Not displayed" label if missing
-                if (isset($_POST['noncompleted']) && $_POST['noncompleted'] == 0 && count($labels) > count($aGraphLabels)) {
+                if (!is_null($noncompleted) && $noncompleted == 0 && count($labels) > count($aGraphLabels)) {
                     $aGraphLabels[] = gT("Not completed or Not displayed");
                 }
 
@@ -4090,6 +4139,11 @@ class statistics_helper
         if ($fielddata['sid'] !== $sid || $fielddata['fieldname'] !== $field) {
             //get data
             $criteria->addCondition(Yii::app()->db->quoteColumnName($fielddata['fieldname']) . " IS NOT null");
+            // Array (Numbers) DB columns are not numeric, so empty answers (shown, but empty) are
+            // empty strings, not nulls.
+            if ($fielddata['type'] == ':') {
+                $criteria->addCondition($fielddata['fieldname'] . " <> ''");
+            }
             //NO ZEROES
             if (!$excludezeros) {
                 $criteria->addCondition(Yii::app()->db->quoteColumnName($fielddata['fieldname']) . " != 0");
@@ -4186,7 +4240,7 @@ class statistics_helper
         } elseif (incompleteAnsFilterState() == "complete") {
             $search['condition'] .= " AND submitdate is not null";
         }
-
+        $noncompleted = App()->getRequest()->getPost('noncompleted');
         //Look for any selects/filters set in the original statistics query, and apply them to the column listing
         if (isset(Yii::app()->session['statistics_selects_' . $surveyid]) && is_array(Yii::app()->session['statistics_selects_' . $surveyid])) {
             foreach (Yii::app()->session['statistics_selects_' . $surveyid] as $sql) {
@@ -4200,10 +4254,15 @@ class statistics_helper
             } else {
                 $sortby = Yii::app()->db->quoteColumnName($sortby);
             }
-
+            //Converts text sorting into numerical sorting
             if ($sorttype == 'N') {
                 $sortby = "($sortby * 1)";
-            } //Converts text sorting into numerical sorting
+            }
+            // Avoid bad sortmethod parameter (mantis #20145)
+            $sortmethod = strtoupper($sortmethod);
+            if ($sortmethod && !in_array($sortmethod, ['ASC', 'DESC'])) {
+                $sortmethod = "";
+            }
             $search['order'] = $sortby . ' ' . $sortmethod;
         }
         $results = SurveyDynamic::model($surveyid)->findAll($search);

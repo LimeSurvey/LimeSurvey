@@ -122,6 +122,9 @@ class InstallerConfigForm extends CFormModel
     public $phpGdHasJpegSupport = false;
 
     /** @var bool */
+    public $phpGdHasFreeTypeSupport = false;
+
+    /** @var bool */
     public $isPhpLdapPresent = false;
 
     /** @var bool */
@@ -212,6 +215,7 @@ class InstallerConfigForm extends CFormModel
         $this->isPhpMbStringPresent = extension_loaded('mbstring');
         $this->isPhpFileInfoPresent = extension_loaded('fileinfo');
         $this->isPhpZlibPresent =  extension_loaded('zlib');
+        $this->isPhpGdPresent =  extension_loaded('gd');
         $this->isPhpJsonPresent = function_exists('json_encode');
         $this->isMemoryLimitOK = $this->checkMemoryLimit();
         $this->isPhpLdapPresent = extension_loaded('ldap');
@@ -223,6 +227,7 @@ class InstallerConfigForm extends CFormModel
         if (function_exists('gd_info')) {
             $gdInfo = gd_info();
             $this->phpGdHasJpegSupport = !empty($gdInfo['JPEG Support']);
+            $this->phpGdHasFreeTypeSupport = !empty($gdInfo['FreeType Support']);
             $this->isPhpGdPresent = true;
         }
         $this->isPhpVersionOK = version_compare(PHP_VERSION, self::MINIMUM_PHP_VERSION, '>=');
@@ -244,6 +249,8 @@ class InstallerConfigForm extends CFormModel
             or !$this->isPhpMbStringPresent
             or !$this->isPhpFileInfoPresent
             or !$this->isPhpZlibPresent
+            or !$this->isPhpGdPresent
+            or !$this->isPhpZipPresent
             or !$this->isPhpJsonPresent
         ) {
             return false;

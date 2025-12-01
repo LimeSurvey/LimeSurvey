@@ -71,14 +71,52 @@ class Plugin extends LSActiveRecord
      */
     public function setLoadError(array $error)
     {
+        if (!function_exists('gT')) {
+            \Yii::app()->loadHelper('common');
+        }
         // NB: Don't use ActiveRecord here, since it will trigger events and
         // load the plugin system all over again.
         // TODO: Works on all SQL systems?
-        $sql = sprintf(
-            "UPDATE {{plugins}} SET load_error = 1, load_error_message = '%s' WHERE id = " . $this->id,
-            addslashes($error['message'] . ' ' . $error['file'])
+        $sql = "UPDATE {{plugins}} SET load_error = 1, load_error_message = :error_message WHERE id = :id";
+        $params = [
+            ':error_message' => $error['message'] . ' ' . $error['file'],
+            ':id' => $this->id
+        ];
+        $rowNumber = \Yii::app()->db->createCommand($sql)->bindValues($params)->execute();
+
+        $message = sprintf(
+            "Plugin %s (%s) deactivated with error “%s” at file %s",
+            $this->name,
+            $this->id,
+            $error['message'],
+            $error['file']
         );
-        return \Yii::app()->db->createCommand($sql)->execute();
+        Yii::log(
+            $message,
+            CLogger::LEVEL_ERROR,
+            'application.model.plugin.setLoadError'
+        );
+
+        $body = sprintf(gT("Plugin error on %s"), App()->getConfig('sitename')) . "\n";
+        $body .= sprintf(
+            gT("Plugin %s (%s) deactivated with error “%s” at file %s"),
+            $this->name,
+            $this->id,
+            $error['message'],
+            $error['file']
+        );
+        $mailer = new \LimeMailer();
+        $mailer->emailType = "pluginsetloaderror";
+        $mailer->isHtml(false);
+        $mailer->Subject = gT("[Error] Plugin deactivated in LimeSurvey", "unescaped");
+        $mailer->Body = $body;
+        $mailer->addAddress(App()->getConfig('siteadminemail'), App()->getConfig('siteadminname'));
+        try {
+            $mailer->sendMessage();
+        } catch (\Exception $e) {
+            // Must be loggued by LimeMailer : it's an issue from LimeMailer
+        }
+        return $rowNumber;
     }
 
     /**
@@ -365,8 +403,8 @@ class Plugin extends LSActiveRecord
                     'data-bs-target'  => '#confirmation-modal',
                     'data-btnclass'   => 'btn-success',
                     'type'            => 'submit',
-                    'data-btntext'    => gt("Activate"),
-                    'data-title'      => gt('Activate plugin'),
+                    'data-btntext'    => gT("Activate"),
+                    'data-title'      => gT('Activate plugin'),
                     'data-message'    => gT("Are you sure you want to activate this plugin?"),
                     'data-post-url'   => $activateUrl,
                     'data-post-datas' => json_encode(['pluginId' => $this->id]),
@@ -383,8 +421,8 @@ class Plugin extends LSActiveRecord
                     'data-bs-target'  => '#confirmation-modal',
                     'data-btnclass'   => 'btn-danger',
                     'type'            => 'submit',
-                    'data-btntext'    => gt("Deactivate"),
-                    'data-title'      => gt('Deactivate plugin'),
+                    'data-btntext'    => gT("Deactivate"),
+                    'data-title'      => gT('Deactivate plugin'),
                     'data-message'    => gT("Are you sure you want to deactivate this plugin?"),
                     'data-post-url'   => $deactivateUrl,
                     'data-post-datas' => json_encode(['pluginId' => $this->id]),
@@ -401,8 +439,8 @@ class Plugin extends LSActiveRecord
                     'data-bs-target'  => '#confirmation-modal',
                     'data-btnclass'   => 'btn-danger',
                     'type'            => 'submit',
-                    'data-btntext'    => gt("Uninstall"),
-                    'data-title'      => gt('Uninstall plugin'),
+                    'data-btntext'    => gT("Uninstall"),
+                    'data-title'      => gT('Uninstall plugin'),
                     'data-message'    => gT("Are you sure you want to uninstall this plugin?"),
                     'data-post-url'   => $uninstallUrl,
                     'data-post-datas' => json_encode(['pluginId' => $this->id]),

@@ -45,9 +45,14 @@ Tokens = {
                  $elHiddenInput.value = 'N';
              }
          });
-
+         let initialized = false;
          // When user change date
          $elDate.addEventListener('change', function (e) {
+             // skip the first change (triggered on init)
+             if (!initialized) {
+                 initialized = true;
+                 return;
+             }
              $elHiddenInput.value = $elDate.value;
          });
      },
@@ -61,6 +66,18 @@ Tokens = {
              } else {
                  $elHiddenInput.value = 'N';
              }
+         });
+     },
+     DatePicker: function (el) {
+         var $elDate = el.querySelector('.DatePicker'), // date time picker element
+             $elHiddenInput = el.querySelector('.selector_submitField'); // input form
+
+         // Generate the date time picker
+         initDatePicker($elDate);
+
+         // When user change date
+         $elDate.addEventListener('change', function (e) {
+             $elHiddenInput.value = $elDate.value;
          });
      }
  };
@@ -208,8 +225,14 @@ function validateNotEmptyTokenForm() {
     }
     var isFormEmpty = $('#email').val() == '' && $('#firstname').val() == '' && $('#lastname').val() == '';
     if (isFormEmpty) {
-        const modal = new bootstrap.Modal(document.getElementById('emptyTokenConfirmationModal'));
+        const modalElement = document.getElementById('emptyTokenConfirmationModal');
+        const modal = new bootstrap.Modal(modalElement);
+        modalElement.addEventListener('hidden.bs.modal', function () {
+            // Enable the Save and Close button
+            $("#save-and-close-button").removeClass("disabled");
+        });
         modal.show();
+        $('#ls-loading').hide();
         return false;
     }
     return true;
@@ -234,7 +257,7 @@ $(document).on('ready pjax:scriptcomplete', function(){
         initValidFromValidUntilPickers();
     }
 
-    var modal = $('#massive-actions-modal-edit-0');
+    var modal = $('#massive-actions-modal-token-grid-edit-0');
     if (modal.length) {
         modal.on('shown.bs.modal', function () {
             $('.yes-no-date-container').each(function(i,el){
@@ -243,6 +266,10 @@ $(document).on('ready pjax:scriptcomplete', function(){
 
             $('.yes-no-container').each(function(i,el){
                 Tokens.YesNo(el);
+            });
+
+            $('.date-picker-container').each(function(i,el){
+                Tokens.DatePicker(el);
             });
         });
     }
@@ -368,6 +395,7 @@ $(document).on('ready pjax:scriptcomplete', function(){
      * Confirm save empty token
      */
     $("#save-empty-token").off('click.token-save').on('click.token-save', function() {
+        $('#ls-loading').show();
         $('#edittoken').trigger('submit', {confirm_empty_save: true});
     });
 

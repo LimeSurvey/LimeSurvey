@@ -51,6 +51,9 @@ class LimeMailer extends PHPMailer
     /* @var string[] Array for barebone url and url */
     public $aUrlsPlaceholders = [];
 
+    /* @var integer $index Index of current email related to batch sending - starts from 0*/
+    public $index = 0;
+
     /*  @var string[] Array of replacements key was replaced by value */
     public $aReplacements = [];
 
@@ -176,6 +179,7 @@ class LimeMailer extends PHPMailer
                 break;
             case self::MethodSmtp:
                 $this->IsSMTP();
+                $this->SMTPKeepAlive = true;
                 if ($emailsmtpdebug > 0) {
                     $this->SMTPDebug = $emailsmtpdebug;
                 }
@@ -222,6 +226,8 @@ class LimeMailer extends PHPMailer
      */
     public function init()
     {
+        // Make sure that any existing SMTP connection is closed
+        $this->smtpClose();
         $this->debug = [];
         $this->ContentType = self::CONTENT_TYPE_PLAINTEXT;
         $this->clearCustomHeaders();
@@ -333,10 +339,18 @@ class LimeMailer extends PHPMailer
     }
 
     /**
-     * set the rawSubject and rawBody according to type
-     * See if must throw error without
-     * @param string|null $emailType set the rawSubject and rawBody at same time
-     * @param string|null $language forced language
+     * Sets the email type and raw content for a survey email.
+     *
+     * This function sets the email type, determines the appropriate language,
+     * and retrieves the raw subject and body content for the specified email type
+     * from the survey language settings.
+     *
+     * @param string $emailType The type of email (e.g., 'invite', 'remind', 'register', etc.)
+     * @param string|null $language The language code for the email content. If null, it will use the token's language or the survey's default language.
+     *
+     * @throws \CException If the survey ID is not set
+     *
+     * @return void
      */
     public function setTypeWithRaw($emailType, $language = null)
     {
@@ -368,7 +382,6 @@ class LimeMailer extends PHPMailer
         $attributeSubject = "{$emailColumns[$emailType]}_subj";
         $this->rawSubject = $oSurveyLanguageSetting->{$attributeSubject};
         $this->rawBody = $oSurveyLanguageSetting->{$emailColumns[$emailType]};
-        /* Attahcment can be done here, but relevance must be tested just before send … */
     }
     /**
      * @inheritdoc
@@ -508,13 +521,13 @@ class LimeMailer extends PHPMailer
             'survey' => $this->surveyId,
             'type' => $this->emailType,
             'model' => $model,
-            // This send array of array, different behaviour than in 3.X where it send array of string (Name <email>)
+            'index' => $this->index,
             'to' => $this->to,
             'subject' => $this->Subject,
             'body' => $this->Body,
             'from' => $this->getFrom(),
             'bounce' => $this->Sender,
-            /* plugin can update itself some value, then allowing to disable update by default event */
+            /* A plugin can update some value, then allowing to disable update by default event */
             /* PS : plugin MUST use $this->get('mailer') for better compatibility for each plugin …*/
             'updateDisable' => array(),
         );
@@ -577,7 +590,7 @@ class LimeMailer extends PHPMailer
 
     /**
      * Construct and do what must be done before sending a message
-     * @return boolean
+     * @return boolean True if sending was successful, false otherwise.
      */
     public function sendMessage()
     {
@@ -624,7 +637,7 @@ class LimeMailer extends PHPMailer
             $this->setError(gT('Email was not sent because demo-mode is activated.'));
             return false;
         }
-
+        $this->addCustomHeader("X-messagetype", $this->emailType);
         // If the email method is set to "Plugin", we need to dispatch an event to that specific plugin
         // so it can perform it's logic without depending on the more generic "beforeEmail" event.
         if (Yii::app()->getConfig('emailmethod') == self::MethodPlugin) {
@@ -1001,17 +1014,16 @@ class LimeMailer extends PHPMailer
     }
 
     /**
-    * Validate an list of email addresses - either as array or as semicolon-limited text
-    * @return string List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
-    * @param string $aEmailAddressList  Email address to check
-    * @param string|callable $patternselect Which pattern to use (default to static::$validator)
-    * @returns array
-    */
+     * Validate a list of email addresses - either as array or as comma or semicolon-limited text
+     * @param string|string[] $aEmailAddressList  Email address to check
+     * @param string|callable $patternselect Which pattern to use (default to static::$validator)
+     * @return string[]|false List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
+     */
     public static function validateAddresses($aEmailAddressList, $patternselect = null)
     {
         $aOutList = [];
         if (!is_array($aEmailAddressList)) {
-            $aEmailAddressList = explode(';', $aEmailAddressList);
+            $aEmailAddressList = preg_split("/(,|;)/", (string) $aEmailAddressList);
         }
 
         foreach ($aEmailAddressList as $sEmailAddress) {

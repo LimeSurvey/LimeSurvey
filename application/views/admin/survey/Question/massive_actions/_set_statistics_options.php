@@ -20,7 +20,7 @@
                     '0' => gT('Off'),
                 ],
                 'htmlOptions'   => [
-                    'class' => 'custom-data attributes-to-update bootstrap-switch-integer'
+                    'class' => 'custom-data attributes-to-update'
                 ],
             ]); ?>
         </div>
@@ -37,7 +37,7 @@
                     '0' => gT('Off'),
                 ],
                 'htmlOptions'   => [
-                    'class' => 'custom-data attributes-to-update bootstrap-switch-integer'
+                    'class' => 'custom-data attributes-to-update'
                 ],
             ]); ?>
         </div>

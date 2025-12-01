@@ -96,7 +96,7 @@ class ResponsesController extends LSBaseController
             $quexmlpdf->setLanguage($sBrowseLanguage);
             set_time_limit(120);
             App()->loadHelper('export');
-            $quexml = quexml_export($surveyId, $sBrowseLanguage, $id);
+            $quexml = quexml_export($surveyId, $sBrowseLanguage, $id, false);
             $quexmlpdf->create($quexmlpdf->createqueXML($quexml));
             $quexmlpdf->write_out("$surveyId-$id-queXML.pdf");
         } else {
@@ -406,10 +406,12 @@ class ResponsesController extends LSBaseController
      * @param int $surveyId
      * @return void
      */
-    public function actionBrowse(int $surveyId): void
+    public function actionBrowse(int $surveyId = 0, int $surveyid = 0): void
     {
+        // Force it to accept `surveyid` as well, to maintain consistency with other menu entries.
+        $surveyId = !empty($surveyId) ? $surveyId : (!empty($surveyid) ? $surveyid : null);
         // logging for webserver when parameter is somehting like $surveyid=125<script ...
-        if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
+        if (!is_numeric($surveyId)) {
             throw new CHttpException(403, gT("Invalid survey ID"));
         }
         $survey = Survey::model()->findByPk($surveyId);
@@ -667,7 +669,7 @@ class ResponsesController extends LSBaseController
 
         $resultErrors = $this->deleteResponse($surveyId, $responseId);
         if ($resultErrors['numberOfErrors'] > 0 || $resultErrors['numberOfTimingErrors']) {
-            $message = gt('Response could not be deleted');
+            $message = gT('Response could not be deleted');
             App()->user->setFlash('error', $message);
             $this->redirect(["responses/browse", "surveyId" => $surveyId]);
         }
@@ -1049,7 +1051,7 @@ class ResponsesController extends LSBaseController
     {
         if (!isset($surveyId)) {
             App()->setFlashMessage(gT("Invalid survey ID"), 'warning');
-            $this->redirect(["admin/index"]);
+            $this->redirect(["dashboard/view"]);
         }
 
         $thissurvey = getSurveyInfo($surveyId);
@@ -1062,7 +1064,7 @@ class ResponsesController extends LSBaseController
 
         if (!$thissurvey) {
             App()->setFlashMessage(gT("Invalid survey ID"), 'warning');
-            $this->redirect(["admin/index"]);
+            $this->redirect(["dashboard/view"]);
         } elseif ($thissurvey['active'] !== 'Y') {
             App()->setFlashMessage(gT("This survey has not been activated. There are no results to browse."), 'warning');
             $this->redirect(["surveyAdministration/view/surveyid/{$surveyId}"]);
