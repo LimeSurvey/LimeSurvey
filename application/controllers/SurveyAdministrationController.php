@@ -2370,7 +2370,7 @@ class SurveyAdministrationController extends LSBaseController
             App()->user->setFlash('error', gT("Error while copying the survey."));
         }
 
-        $copiedSurvey = $copyResults->getCopiedSurvey();
+        $redirectUrl = App()->request->urlReferrer;
         if ($copiedSurvey !== null) {
             $redirectUrl = App()->createUrl("surveyAdministration/view/", ["iSurveyID" => $copiedSurvey->sid]);
             if ((App()->getConfig("editorEnabled")) && $copiedSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
@@ -2378,7 +2378,7 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
 
-        $this->redirect($redirectUrl ?? App()->request->urlReferrer);
+        $this->redirect($redirectUrl);
     }
 
     public function actionImport()
