@@ -65,7 +65,7 @@ class CopySurvey
         }
         $copySurveyResult = new CopySurveyResult();
         if (Survey::model()->findByPk($destinationSurvey->sid) !== null) {
-            $copySurveyResult->setWarnings(gt("The desired survey ID was already in use, therefore a random one was assigned."));
+            $copySurveyResult->setWarnings(gT("The desired survey ID was already in use, therefore a random one was assigned."));
         }
         $destinationSurvey = $this->getValidSurveyId($destinationSurvey);
         $destinationSurvey->active = 'N'; //don't activate the survey !!!
