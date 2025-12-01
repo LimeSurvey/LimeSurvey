@@ -22,7 +22,7 @@ use LimeSurvey\Models\Services\CopySurveyResult;
         <p>
         <?php
         foreach ($copyResults->getErrors() as $sErrorMessage) {
-            echo $sErrorMessage;
+            echo CHtml::encode($sErrorMessage);
         } ?>
         </p>
         <!-- buttons -->
