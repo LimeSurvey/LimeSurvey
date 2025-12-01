@@ -1541,7 +1541,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'linkAttributes'   => [
                 'data-bs-toggle' => "modal",
                 'data-bs-target' => "#copySurvey_modal",
-                'onclick' => "copySurveyOptions($this->sid)",
+                'onclick' => "copySurveyOptions(" . (int)$this->sid . ")",
             ],
             'enabledCondition' => $permissions['survey_update'],
         ];

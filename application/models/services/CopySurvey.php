@@ -65,14 +65,14 @@ class CopySurvey
         }
         $copySurveyResult = new CopySurveyResult();
         if (Survey::model()->findByPk($destinationSurvey->sid) !== null) {
-            $copySurveyResult->setWarnings(gt("The desired survey ID was already in use, therefore a random one was assigned."));
+            $copySurveyResult->setWarnings(gT("The desired survey ID was already in use, therefore a random one was assigned."));
         }
         $destinationSurvey = $this->getValidSurveyId($destinationSurvey);
         $destinationSurvey->active = 'N'; //don't activate the survey !!!
         $destinationSurvey->owner_id = Yii::app()->session['loginID'];
         $destinationSurvey->datecreated = date("Y-m-d H:i:s");
         if (!$destinationSurvey->save()) {
-            throw new \Exception(gt("Failed to copy survey"));
+            throw new \Exception(gT("Failed to copy survey"));
         }
 
         $copySurveyResult->setCopiedSurvey($destinationSurvey);
