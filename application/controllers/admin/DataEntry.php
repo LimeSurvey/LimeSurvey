@@ -1038,7 +1038,7 @@ class DataEntry extends SurveyCommonAction
                         break;
                     case Question::QT_VERTICAL_FILE_UPLOAD: //FILE UPLOAD
                         $questionInput = "<table class='table'>\n";
-                        if ($fname['aid'] !== 'filecount' && isset($idrow[$fname['fieldname'] . '_filecount']) && ($idrow[$fname['fieldname'] . '_filecount'] > 0)) {
+                        if ($fname['aid'] !== 'filecount' && isset($idrow[$fname['fieldname'] . '_Cfilecount']) && ($idrow[$fname['fieldname'] . '_Cfilecount'] > 0)) {
                             //file metadata
                             $metadata = json_decode((string) $idrow[$fname['fieldname']], true);
                             for ($i = 0; ($i < $qidattributes['max_num_of_files']) && isset($metadata[$i]); $i++) {
@@ -1063,7 +1063,7 @@ class DataEntry extends SurveyCommonAction
                         $questionInput .= '<script type="text/javascript">
                             $(function() {
                                 $(".' . $baseFieldName . '").keyup(function() {
-                                    var filecount = $("#' . $baseFieldName . '_filecount").val();
+                                    var filecount = $("#' . $baseFieldName . '_Cfilecount").val();
                                     var jsonstr = "[";
                                     var i;
                                     for (i = 0; i < filecount; i++)
@@ -1640,7 +1640,7 @@ class DataEntry extends SurveyCommonAction
                     $oResponse->$fieldname = $thisvalue;
                     break;
                 case Question::QT_VERTICAL_FILE_UPLOAD:
-                    if (strpos((string) $irow['fieldname'], '_filecount')) {
+                    if (strpos((string) $irow['fieldname'], '_Cfilecount')) {
                         if (empty($thisvalue)) {
                             $oResponse->$fieldname = null;
                             break;
@@ -1837,7 +1837,7 @@ class DataEntry extends SurveyCommonAction
                             // can't add '' in Date column
                             // Do nothing
                         } elseif ($irow['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {
-                            if (!strpos((string) $irow['fieldname'], "_filecount")) {
+                            if (!strpos((string) $irow['fieldname'], "_Cfilecount")) {
                                 $json = $_POST[$fieldname];
                                 $phparray = json_decode(stripslashes((string) $json));
                                 $filecount = 0;

@@ -2395,7 +2395,7 @@ class LimeExpressionManager
             }
 
             // min_num_of_files
-            // Validation:= sq_filecount >= value (which could be an expression).
+            // Validation:= sq_Cfilecount >= value (which could be an expression).
             if (isset($qattr['min_num_of_files']) && trim((string) $qattr['min_num_of_files']) != '' && trim((string) $qattr['min_num_of_files']) != '0') {
                 $min_num_of_files = $qattr['min_num_of_files'];
 
@@ -2403,7 +2403,7 @@ class LimeExpressionManager
                 $sgqa = $qinfo['sgqa'];
                 switch ($type) {
                     case Question::QT_VERTICAL_FILE_UPLOAD: //List - dropdown
-                        $eqn = "(" . $sgqa . "_filecount.NAOK >= (" . $min_num_of_files . "))";
+                        $eqn = "(" . $sgqa . "_Cfilecount.NAOK >= (" . $min_num_of_files . "))";
                         break;
                     default:
                         break;
@@ -2424,14 +2424,14 @@ class LimeExpressionManager
                 $min_num_of_files = '';
             }
             // max_num_of_files
-            // Validation:= sq_filecount <= value (which could be an expression).
+            // Validation:= sq_Cfilecount <= value (which could be an expression).
             if (isset($qattr['max_num_of_files']) && trim((string) $qattr['max_num_of_files']) != '') {
                 $max_num_of_files = $qattr['max_num_of_files'];
                 $eqn = '';
                 $sgqa = $qinfo['sgqa'];
                 switch ($type) {
                     case Question::QT_VERTICAL_FILE_UPLOAD: //List - dropdown
-                        $eqn = "(is_empty(" . $sgqa . "_filecount.NAOK) || " . $sgqa . "_filecount.NAOK <= (" . $max_num_of_files . "))";
+                        $eqn = "(is_empty(" . $sgqa . "_Cfilecount.NAOK) || " . $sgqa . "_Cfilecount.NAOK <= (" . $max_num_of_files . "))";
                         break;
                     default:
                         break;
@@ -3599,7 +3599,7 @@ class LimeExpressionManager
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text                 // note does not have javatbd equivalent - so array filters don't work on it
                 case Question::QT_R_RANKING: // Ranking STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
-                    $csuffix = $fielddata['aid'];
+                    $csuffix = $fielddata['csuffix'] ?? $fielddata['aid'];
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['subquestion'];
                     // In M and P , we use $question (sub question) for shown. With other : we show to the user 'other_replace_text' if it's set. see #13505
@@ -8623,7 +8623,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             }
                             break;
                         case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
-                            if (!preg_match('/_filecount$/', $sq)) {
+                            if (!preg_match('/_Cfilecount$/', $sq)) {
                                 $json = $value;
                                 $aFiles = json_decode((string) $json);
                                 // if the files have not been saved already,
