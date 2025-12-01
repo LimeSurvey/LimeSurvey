@@ -122,7 +122,12 @@ class CopyQuestion
         $this->newQuestion->gid = $groupId;
         $this->newQuestion->question_order = $this->copyQuestionValues->getQuestionPositionInGroup();
         $this->newQuestion->qid = null;
-        $this->newQuestion->sid = $surveyId;
+        if ($surveyId!= null) {
+            $this->newQuestion->sid = $surveyId;
+        } else {
+            $this->newQuestion->sid = $this->copyQuestionValues->getOSurvey()->sid;
+        }
+
 
         return $this->newQuestion->save();
     }
