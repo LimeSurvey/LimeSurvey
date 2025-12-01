@@ -72,7 +72,7 @@ class CopySurvey
         $destinationSurvey->owner_id = Yii::app()->session['loginID'];
         $destinationSurvey->datecreated = date("Y-m-d H:i:s");
         if (!$destinationSurvey->save()) {
-            throw new \Exception(gt("Failed to copy survey"));
+            throw new \Exception(gT("Failed to copy survey"));
         }
 
         $copySurveyResult->setCopiedSurvey($destinationSurvey);
