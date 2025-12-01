@@ -4432,7 +4432,7 @@ function do_arraycolumns($ia)
 
                 // AnswerCode
                 foreach ($anscode as $j => $ld) {
-                    $myfname = $ia[1] . "S" . $ld;
+                    $myfname = $ia[1] . "_S" . $ld;
                     $aData['aQuestions'][$j]['myfname'] = $myfname;
                     if (
                         isset($_SESSION['responses_' . App()->getConfig('surveyID')][$myfname]) &&
