@@ -2319,7 +2319,7 @@ class SurveyAdministrationController extends LSBaseController
         $option = $request->getPost('copySurveyConditions');
         $optionsDataContainer->setConditions(isset($option) && $option == "1");
 
-        $option = $request->getPost('resetStartEndDate');
+        $option = $request->getPost('copyStartEndDate');
         $optionsDataContainer->setStartAndEndDate(isset($option) && $option == "1");
 
         $option = $request->getPost('resetResponseStartId');

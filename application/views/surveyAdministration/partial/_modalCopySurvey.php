@@ -63,8 +63,8 @@
 
                         <!-- Reset start/end date/time -->
                         <div class="form-check">
-                            <input name="resetStartEndDate" type="checkbox" value="1">
-                            <label class=" form-label reg16" for='resetStartEndDate'><?php echo  eT("Start/end date/time"); ?> </label>
+                            <input name="copyStartEndDate" type="checkbox" value="1">
+                            <label class=" form-label reg16" for='copyStartEndDate'><?php echo  eT("Start/end date/time"); ?> </label>
                         </div>
 
                         <div class="form-check">
