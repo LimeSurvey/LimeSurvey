@@ -1797,7 +1797,7 @@ function copyFromOneTableToTheOther($source, $destination, $preserveIDs = false)
     }
     $timings = count($columns) ? Yii::app()->db->createCommand("INSERT INTO " . Yii::app()->db->quoteTableName($destination) . "(" . implode(",", $columns) . ") SELECT " . implode(",", $columns) . " FROM " . Yii::app()->db->quoteTableName($source))->execute() : 0;
     if ((!$preserveIDs) && (strpos($destination, 'timings') !== false)) {
-        $oldResponsesTable = str_replace('_timings', '', $source);
+        $oldResponsesTable = str_replace('_timings', '_responses', $source);
         $command = "
             SELECT t1.id as rid, t2.id as tid
             FROM {$oldResponsesTable} t1
@@ -1805,7 +1805,7 @@ function copyFromOneTableToTheOther($source, $destination, $preserveIDs = false)
             ON t1.id = t2.id
             order by t1.id
         ";
-        $newResponsesTable = str_replace('_timings', '', $destination);
+        $newResponsesTable = str_replace('timings', 'responses', $destination);
         $rawResults = Yii::app()->db->createCommand($command)->queryAll();
         $offset = 0;
         foreach ($rawResults as $rawResult) {
