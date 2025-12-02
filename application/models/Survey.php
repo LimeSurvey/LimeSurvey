@@ -1538,7 +1538,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         ];
         $dropdownItems[] = [
             'title' => gT('Add user'),
-            'url' => App()->createUrl("/userManagement"),
+            'url' => App()->createUrl('/surveyPermissions/index', ['surveyid' => $this->sid]),
             'enabledCondition' => $permissions['survey_update'],
         ];
 
