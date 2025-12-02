@@ -55,7 +55,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     $aCriticalDBVersions = array(310, 400, 450, 600);
     $aAllUpdates         = range($iOldDBVersion + 1, Yii::app()->getConfig('dbversionnumber'));
 
-    // Try to aquire database update lock
+    // Try to acquire database update lock
     if (!getDatabaseUpdateLock()) {
         return false;
     }
@@ -175,6 +175,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
  */
 function getDatabaseUpdateLock()
 {
+    static $pLock = null;
     $pLock = @fopen(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'dbupdate.lock', 'w+');
     if (!$pLock) {
         return false;
@@ -182,6 +183,8 @@ function getDatabaseUpdateLock()
     if (flock($pLock, LOCK_EX | LOCK_NB)) {
         return true;
     }
+    fclose($pLock);
+    $pLock = null;
     return false;
 }
 
