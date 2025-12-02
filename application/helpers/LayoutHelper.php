@@ -62,7 +62,6 @@ class LayoutHelper
         $aData['datepickerlang'] = "";
 
         $aData['sitename'] = Yii::app()->getConfig("sitename");
-        $aData['firebug'] = useFirebug();
 
         if (!empty(Yii::app()->session['dateformat'])) {
             $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);

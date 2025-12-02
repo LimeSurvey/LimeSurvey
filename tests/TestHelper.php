@@ -35,7 +35,7 @@ class TestHelper extends TestCase
         Yii::import('application.helpers.update.updatedb_helper', true);
         Yii::import('application.helpers.update.update_helper', true);
         Yii::import('application.helpers.SurveyRuntimeHelper', true);
-        Yii::app()->loadHelper('admin/activate');
+        Yii::app()->loadHelper('admin.activate');
     }
 
     /**

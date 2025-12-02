@@ -260,7 +260,7 @@ class remotecontrol_handle
                 if (!in_array($sImportDataType, array('lsa', 'csv', 'txt', 'lss'))) {
                     return array('status' => 'Invalid extension');
                 }
-                Yii::app()->loadHelper('admin/import');
+                Yii::app()->loadHelper('admin.import');
                 // First save the data to a temporary file
                 $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40) . '.' . $sImportDataType;
                 file_put_contents($sFullFilePath, base64_decode(chunk_split($sImportData)));
@@ -335,7 +335,7 @@ class remotecontrol_handle
                 'error' => "No data from survey"
             );
         }
-        Yii::app()->loadHelper('admin/import');
+        Yii::app()->loadHelper('admin.import');
         $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, $DestSurveyID, $btranslinksfields);
         if (empty($aImportResults['newsid'])) {
             return array(
@@ -521,7 +521,7 @@ class remotecontrol_handle
             return array('status' => 'Error: Survey already active');
         }
         // Check consistency for groups and questions
-        Yii::app()->loadHelper('admin/activate');
+        Yii::app()->loadHelper('admin.activate');
         $checkHasGroup = checkHasGroup($iSurveyID);
         $checkGroup = checkGroup($iSurveyID);
         if ($checkHasGroup !== false || $checkGroup !== false) {
@@ -572,7 +572,7 @@ class remotecontrol_handle
      */
     public function export_statistics($sSessionKey, $iSurveyID, $docType = 'pdf', $sLanguage = null, $graph = '0', $groupIDs = null)
     {
-        Yii::app()->loadHelper('admin/statistics');
+        Yii::app()->loadHelper('admin.statistics');
 
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
@@ -3013,7 +3013,7 @@ class remotecontrol_handle
             }
             $aAttributeFields = array_unique($aAttributeFields);
         }
-        Yii::app()->loadHelper('admin/token');
+        Yii::app()->loadHelper('admin.token');
         if (Token::createTable($iSurveyID, $aAttributeFields)) {
             return array('status' => 'OK');
         } else {
@@ -3044,7 +3044,7 @@ class remotecontrol_handle
      */
     public function mail_registered_participants($sSessionKey, $iSurveyID, $overrideAllConditions = array())
     {
-        Yii::app()->loadHelper('admin/token');
+        Yii::app()->loadHelper('admin.token');
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
         }
@@ -3139,7 +3139,7 @@ class remotecontrol_handle
      */
     public function invite_participants($sSessionKey, $iSurveyID, $aTokenIds = null, $bEmail = true, $continueOnError = false)
     {
-        Yii::app()->loadHelper('admin/token');
+        Yii::app()->loadHelper('admin.token');
         if (!$this->_checkSessionKey($sSessionKey)) {
                     return array('status' => self::INVALID_SESSION_KEY);
         }
@@ -3212,7 +3212,7 @@ class remotecontrol_handle
      */
     public function remind_participants($sSessionKey, $iSurveyID, $iMinDaysBetween = null, $iMaxReminders = null, $aTokenIds = false, $continueOnError = false)
     {
-        Yii::app()->loadHelper('admin/token');
+        Yii::app()->loadHelper('admin.token');
         if (!$this->_checkSessionKey($sSessionKey)) {
                     return array('status' => self::INVALID_SESSION_KEY);
         }
@@ -3607,7 +3607,7 @@ class remotecontrol_handle
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) {
             return array('status' => 'No permission');
         }
-        Yii::app()->loadHelper('admin/exportresults');
+        Yii::app()->loadHelper('admin.exportresults');
         if (!tableExists($survey->responsesTableName)) {
             return array('status' => 'No Data, survey table does not exist.');
         }
@@ -3693,7 +3693,7 @@ class remotecontrol_handle
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
         }
-        Yii::app()->loadHelper('admin/exportresults');
+        Yii::app()->loadHelper('admin.exportresults');
         if (!tableExists($survey->responsesTableName)) {
             return array('status' => 'No Data, survey table does not exist.');
         }
