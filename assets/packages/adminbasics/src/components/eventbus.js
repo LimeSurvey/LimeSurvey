@@ -1,42 +1,100 @@
 'use strict'
-import Vue from 'vue';
 
-Vue.config.devtools = true;
-class EventBus extends Vue {
+/**
+ * Vanilla JavaScript EventBus implementation
+ * Replaces Vue-based EventBus with similar API
+ */
+class EventBus {
+    constructor() {
+        this.events = {};
+        this.eventsBound = {};
+    }
 
+    /**
+     * Get all bound events
+     * @return {object} Events bound map
+     */
     $getEventsBound() {
         return this.eventsBound;
     }
 
-    // Override Vue's $emit to call a logger for any event emitted.
+    /**
+     * Emit an event with arguments
+     * @param {string} event - Event name
+     * @param {...*} args - Arguments to pass to listeners
+     */
     $emit(event, ...args) {
         console.ls.log("Emitting -> ", event, ...args);
-        if(this.eventsBound != undefined && this.eventsBound[event] != undefined) {
+
+        if (this.eventsBound[event] !== undefined) {
             this.eventsBound[event].forEach(element => {
-                // element[0](...args);
+                // Placeholder for tracking - kept from original
             });
         }
-        return super.$emit(event, ...args);
-    }
-    // Override Vue's $on to call a logger for any event bound.
-    $on(event, ...args) {
-        this.eventsBound = this.eventsBound || {};
-        this.eventsBound[event] = this.eventsBound[event] || [];
-        this.eventsBound[event].push(args);
-        console.ls.log("Binding -> ", event, ...args);
-        return super.$on(event, ...args);
+
+        if (this.events[event]) {
+            this.events[event].forEach(callback => {
+                try {
+                    callback(...args);
+                } catch (error) {
+                    console.error(`Error in event handler for ${event}:`, error);
+                }
+            });
+        }
+
+        return this;
     }
 
-    // Override Vue's $emit to call a logger for any event bound.
-    $off(event, ...args) {
-        this.eventsBound = this.eventsBound || {};
-        if(this.eventsBound[event] != undefined ) {
-            this.eventsBound[event] = this.eventsBound[event].filter((arg) => {
-                args.indexOf(arg) == -1;
-            });
+    /**
+     * Register an event listener
+     * @param {string} event - Event name
+     * @param {function} callback - Callback function
+     */
+    $on(event, callback) {
+        if (!this.events[event]) {
+            this.events[event] = [];
         }
-        console.ls.log("Remove Binding -> ", event, ...args);
-        return super.$off(event, ...args);
+
+        this.events[event].push(callback);
+
+        // Track bound events
+        this.eventsBound[event] = this.eventsBound[event] || [];
+        this.eventsBound[event].push([callback]);
+
+        console.ls.log("Binding -> ", event, callback);
+
+        return this;
+    }
+
+    /**
+     * Unregister an event listener
+     * @param {string} event - Event name
+     * @param {function} callback - Callback function to remove (optional)
+     */
+    $off(event, callback) {
+        if (!this.events[event]) {
+            return this;
+        }
+
+        if (callback) {
+            // Remove specific callback
+            this.events[event] = this.events[event].filter(cb => cb !== callback);
+
+            // Update eventsBound tracking
+            if (this.eventsBound[event] !== undefined) {
+                this.eventsBound[event] = this.eventsBound[event].filter((arg) => {
+                    return arg[0] !== callback;
+                });
+            }
+        } else {
+            // Remove all callbacks for this event
+            delete this.events[event];
+            delete this.eventsBound[event];
+        }
+
+        console.ls.log("Remove Binding -> ", event, callback);
+
+        return this;
     }
 }
 
