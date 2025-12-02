@@ -26,7 +26,6 @@ const babelify = require('babelify');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const browserify = require('browserify');
-const header = require('gulp-header');
 const fs = require('fs');
 
 function js_minify() {
@@ -65,7 +64,11 @@ function scss_transpile() {
 function scss_minify() {
     let plugins = [
         autoprefixer(),
-        cssnano()
+        cssnano({
+        preset: ['default', {
+            colormin: false
+        }]
+    })
     ];
     return scss_transpile()
         .pipe(dest('assets/bootstrap_5/build/css'))
@@ -77,7 +80,11 @@ function scss_minify() {
 function scss_minify_rtl() {
     let plugins = [
         autoprefixer(),
-        cssnano()
+        cssnano({
+        preset: ['default', {
+            colormin: false
+        }]
+    })
     ];
     return scss_transpile()
         .pipe(rtlcss())
@@ -102,7 +109,11 @@ exports.build = parallel(
 function theme() {
     let plugins = [
         autoprefixer(),
-        cssnano()
+        cssnano({
+        preset: ['default', {
+            colormin: false
+        }]
+    })
     ];
     return src(['assets/admin_themes/Sea_Green/sea_green.scss'])
         .pipe(sass())
@@ -115,7 +126,11 @@ function theme() {
 function theme_rtl() {
     let plugins = [
         autoprefixer(),
-        cssnano()
+        cssnano({
+        preset: ['default', {
+            colormin: false
+        }]
+    })
     ];
     return src(['assets/admin_themes/Sea_Green/sea_green.scss'])
         .pipe(sass())
@@ -150,7 +165,11 @@ function survey_theme_fruity() {
     ];
     let plugins = [
         autoprefixer(),
-        cssnano()
+        cssnano({
+        preset: ['default', {
+            colormin: false
+        }]
+    })
     ];
     let variationsFiles = variations.map(variation => {
         let variationName = variation[0];
@@ -182,7 +201,11 @@ function survey_theme_ls6() {
     ];
     let plugins = [
         autoprefixer(),
-        // cssnano()
+        // cssnano({
+    //     preset: ['default', {
+    //         colormin: false
+    //     }]
+    // })
     ];
 
     let variationsFiles = variations.map(variation => {
@@ -207,7 +230,11 @@ function survey_theme_ls6_rtl() {
     ];
     let plugins = [
         autoprefixer(),
-        // cssnano()
+        // cssnano({
+    //     preset: ['default', {
+    //         colormin: false
+    //     }]
+    // })
     ];
 
     let variationsFiles = variations.map(variation => {
@@ -245,7 +272,7 @@ function survey_theme_ls6_js() {
         // buffer
         .pipe(buffer())
         // distination
-        .pipe(header(fs.readFileSync('assets/survey_themes/fruity_twentythree/theme_js_disclaimer.js')))
+        .pipe(replace(/^/, fs.readFileSync('assets/survey_themes/fruity_twentythree/theme_js_disclaimer.js')))
         .pipe(dest('themes/survey/fruity_twentythree/scripts/'));
 }
 

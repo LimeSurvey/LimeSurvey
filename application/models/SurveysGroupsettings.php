@@ -120,7 +120,7 @@ class SurveysGroupsettings extends LSActiveRecord
     public function save($runValidation = true, $attributes = null)
     {
         unset(self::$aSurveysGroupSettings[$this->gsid]);
-        parent::save($runValidation, $attributes);
+        return parent::save($runValidation, $attributes);
     }
     /**
      * @return array relational rules.
@@ -315,7 +315,7 @@ class SurveysGroupsettings extends LSActiveRecord
                 self::$aSurveysGroupSettings[$iSurveyGroupId] = SurveysGroupsettings::model()->with('SurveysGroups')->findByPk($iSurveyGroupId);
             } else {
                 //this is the default group setting with gsid=0 !!!
-                self::$aSurveysGroupSettings[$iSurveyGroupId] = SurveysGroupsettings::model()->findByPk($iSurveyGroupId);
+                self::$aSurveysGroupSettings[$iSurveyGroupId] = SurveysGroupsettings::model()->findByPk(0);
             }
         }
         $model = self::$aSurveysGroupSettings[$iSurveyGroupId];

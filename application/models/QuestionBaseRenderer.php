@@ -40,6 +40,7 @@ abstract class QuestionBaseRenderer extends StaticModel
     protected $aScripts = [];
     protected $aScriptFiles = [];
     protected $aStyles = [];
+    protected $questionOrderingService;
 
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
@@ -79,6 +80,10 @@ abstract class QuestionBaseRenderer extends StaticModel
                 'SGQ' => null,
             ));
         }
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $this->questionOrderingService = $diContainer->get(
+            \LimeSurvey\Models\Services\QuestionOrderingService\QuestionOrderingService::class
+        );
     }
 
     protected function getTimeSettingRender()
@@ -134,7 +139,7 @@ abstract class QuestionBaseRenderer extends StaticModel
         $time_limit_warning_display_time = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_display_time']['value'], 0));
         $time_limit_warning_2_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_message']['value'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
 
-        $time_limit_message_delay = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_delay']['value'], 1000));
+        $time_limit_message_delay = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_delay']['value'], 1)) * 1000;
         $time_limit_warning_2_display_time = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_display_time']['value'], 0));
         $time_limit_message_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_style']['value'], '');
         $time_limit_message_class = "d-none ls-timer-content ls-timer-message ls-no-js-hidden";
@@ -249,15 +254,22 @@ abstract class QuestionBaseRenderer extends StaticModel
         return $result;
     }
 
-    protected function setSubquestions($scale_id = null)
+    protected function setSubquestions($scaleId = null)
     {
-
-        $this->aSubQuestions = $this->oQuestion->getOrderedSubQuestions($scale_id);
+        $this->aSubQuestions = $this->questionOrderingService->getOrderedSubQuestions(
+            $this->oQuestion,
+            $scaleId,
+            $this->sLanguage
+        );
     }
 
-    protected function setAnsweroptions($scale_id = null)
+    protected function setAnsweroptions($scaleId = null)
     {
-        $this->aAnswerOptions = $this->oQuestion->getOrderedAnswers($scale_id, $this->sLanguage);
+        $this->aAnswerOptions = $this->questionOrderingService->getOrderedAnswers(
+            $this->oQuestion,
+            $scaleId,
+            $this->sLanguage
+        );
     }
 
     protected function getAnswerCount($iScaleId = 0)

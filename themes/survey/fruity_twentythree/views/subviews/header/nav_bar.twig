@@ -18,7 +18,7 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
 #}
 {% if not aSurveyInfo.popupPreview %}
     <!-- Bootstrap Navigation Bar -->
-    <div id="survey-nav" class="navbar fixed-top">
+    <header role="banner" id="survey-nav" class="navbar fixed-top">
         <div class="container-fluid col-xl-8">
             {% if( aSurveyInfo.options.brandlogo == "on") %}
                 <div class="navbar-brand logo-container d-none d-md-block">
@@ -32,10 +32,10 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
                     aSurveyInfo.options.showclearall == 'on') or
                     aSurveyInfo.aQuestionIndex.bShow == true or
                     aSurveyInfo.alanguageChanger.show == true) %}
-                    <div id="navbar-toggler" class="navbar-toggler" data-bs-toggle="dropdown"
+                    <button id="navbar-toggler" class="navbar-toggler" data-bs-toggle="dropdown"
                         data-bs-auto-close="outside" aria-expanded="false">
                         <span class="ri-more-fill"></span>
-                    </div>
+                    </button>
                     <ul id="main-dropdown" class="dropdown-menu dropdown-menu-end" aria-labelledby="navbar-toggler">
                         {{ include('./subviews/navigation/language_changer_top_menu.twig') }}
                         {% if( aSurveyInfo.aNavigator.load.show == "Y" or
@@ -53,5 +53,5 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
             </div>
             <ul id="back-content" class="d-none"></ul>
         </div>
-    </div>
+    </header>
 {% endif %}

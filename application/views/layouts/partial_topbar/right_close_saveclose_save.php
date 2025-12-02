@@ -14,7 +14,7 @@ if ($isCloseBtn) {
             'id' => 'close-button',
             'text' => gT('Close'),
             'icon' => 'ri-close-fill',
-            'link' => $backUrl ?? Yii::app()->createUrl('admin/index'),
+            'link' => $backUrl ?? Yii::app()->createUrl('dashboard/view'),
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',
             ],

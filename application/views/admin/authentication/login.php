@@ -70,8 +70,8 @@ echo viewHelper::getViewTestTag('login');
                         $aLangList = getLanguageDataRestricted(true);
                         $languageData = [];
 
-                        $reqLang = App()->request->getParam('lang');
-                        if ($reqLang === null) {
+                        $reqLang = \LSYii_Validators::languageCodeFilter(App()->request->getParam('lang'));
+                        if (!isset($aLangList[$reqLang]) || $reqLang === '') {
                             $languageData['default'] = gT('Default');
                         } else {
                             $languageData[$reqLang] = html_entity_decode(
@@ -91,7 +91,7 @@ echo viewHelper::getViewTestTag('login');
                             ) . " - " . $aLanguage['description'];
                         }
 
-
+                        echo '<div id="language-selector">';
                         echo CHtml::label(gT('Language'), 'loginlang');
 
                         $this->widget('yiiwheels.widgets.select2.WhSelect2', [
@@ -105,7 +105,7 @@ echo viewHelper::getViewTestTag('login');
                             ]
                         ]);
                         ?>
-
+                        </div>
                         <?php
                         if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true) { ?>
                             <p><?php

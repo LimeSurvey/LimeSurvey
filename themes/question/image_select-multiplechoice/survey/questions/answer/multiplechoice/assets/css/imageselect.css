@@ -55,11 +55,7 @@ li.imageselect-listitem .imageselect-container .imageselect-label:after{
     display: none;
 }
 li.imageselect-listitem .imageselect-container .imageselect-checkbox{
-    visibility: hidden;
-    position: relative;
-    top: 5px;
-    left:5px;
-    z-index:-1;
+    position:relative /* This set a bad positoion for image (leave place for input) but leave it for theme compatbility issue ##18211 */
 }
 li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checked+label{
     border: 18px solid hsla(198,50%,30%,0.9);

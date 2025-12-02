@@ -246,7 +246,7 @@ class Quota extends LSActiveRecord
                 'data-message'   => gT("Are you sure you want to delete the selected quotas?"),
                 'data-bs-target' => "#confirmation-modal",
                 'data-btnclass'  => 'btn-danger',
-                'data-btntext'   => gt('Delete'),
+                'data-btntext'   => gT('Delete'),
                 'data-post-datas' => $deletePostData
             ]
         ];

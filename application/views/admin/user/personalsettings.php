@@ -87,6 +87,7 @@ echo $oQuestionSelector->getModal();
 
 <div class="container">
     <?php echo TbHtml::form($this->createUrl("/admin/user/sa/personalsettings"), 'post', ['class' => 'form44 ', 'id' => 'personalsettings', 'autocomplete' => "off"]); ?>
+    <?php echo TbHtml::hiddenField('action', 'savepersonalsettings'); ?>
     <div class="row">
         <div class="col-12">
             <ul class="nav nav-tabs" role="tablist">
@@ -344,6 +345,24 @@ echo $oQuestionSelector->getModal();
                                 ?>
                             </div>
                         </div>
+                        <div class="col-12 col-lg-6">
+                            <!-- Breadcrumb mode -->
+                            <div class="mb-3">
+                                <?php echo TbHtml::label(gT("Breadcrumb mode:"), 'breadcrumbMode', ['class' => " form-label"]); ?>
+                                <div class="">
+                                    <?php echo TbHtml::dropDownList(
+                                        'breadcrumbMode',
+                                        ($aUserSettings['breadcrumbMode'] ?? 'default'),
+                                        [
+                                            'default' => gT("Default"),
+                                            'long'    => gT("Long"),
+                                            'short'   => gT("Short"),
+                                        ],
+                                        ['class' => "form-select"]
+                                    ); ?>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Show script field in question editor -->
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">
@@ -429,12 +448,8 @@ echo $oQuestionSelector->getModal();
             </div>
         </div>
     </div>
-
     <!-- Buttons -->
-    <p>
-        <?php echo TbHtml::hiddenField('action', 'savepersonalsettings'); ?>
-        <?php echo TbHtml::submitButton(gT("Save settings", 'unescaped'), ['class' => 'd-none']); ?>
-    </p>
+    <?php echo TbHtml::submitButton(gT("Save settings", 'unescaped'), ['class' => 'd-none']); ?>
     <?php echo TbHtml::endForm(); ?>
 
 </div>

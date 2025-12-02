@@ -37,9 +37,8 @@ class OptoutController extends LSYii_Controller
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
 
-        //IF there is no survey ID, redirect back to the default public page
-        if (!$iSurveyID) {
-            $this->redirect(array('/'));
+        if (!filter_var($iSurveyID, FILTER_VALIDATE_INT) || !$sToken) {
+            throw new CHttpException(400, gT('Invalid request.'));
         }
 
         $oSurvey = Survey::model()->findByPk($iSurveyID);
@@ -118,13 +117,13 @@ class OptoutController extends LSYii_Controller
             $participant = $blacklistHandler->getCentralParticipantFromToken($token);
 
             if (!empty($participant) && $participant->blacklisted != 'Y') {
-                $message = gT('Please confirm that you want to be removed from the central participants list for this site.');
+                $message = gT('Please confirm that you want to be removed from the central participant list for this site.');
                 $link = Yii::app()->createUrl('optout/removetokens', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken, 'global' => true));
             } elseif (!$optedOutFromSurvey) {
                 $message = gT('Please confirm that you want to opt out of this survey by clicking the button below.') . '<br>' . gT("After confirmation you won't receive any invitations or reminders for this survey anymore.");
                 $link = Yii::app()->createUrl('optout/removetokens', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken));
             } else {
-                $message = gT('You have already been removed from the central participants list for this site.');
+                $message = gT('You have already been removed from the central participant list for this site.');
             }
             $tokenAttributes = $token->getAttributes();
             if (!empty($participant)) {
@@ -136,7 +135,7 @@ class OptoutController extends LSYii_Controller
     }
 
     /**
-     * This function is run when opting out of an individual survey participants table. The other function /optout/participants
+     * This function is run when opting out of an individual survey participant list. The other function /optout/participants
      * opts the user out of ALL survey invitations from the system
      */
     public function actionremovetokens()

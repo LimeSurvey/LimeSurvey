@@ -18,7 +18,7 @@ class SurveyIndex extends CAction
 
     public function run()
     {
-        useFirebug();
+
         $this->action();
     }
 
@@ -176,6 +176,12 @@ class SurveyIndex extends CAction
                 // #16142 quick fix : unset invalid token
                 $token = null;
             }
+        }
+
+        // If the session was already initiated before accessing the survey with a token,
+        // add it to the session to be taken into account.
+        if (empty($_SESSION['survey_' . $surveyid]['token']) && $token) {
+            $_SESSION['survey_' . $surveyid]['token'] = $token;
         }
 
         $this->loadLimesurveyLang($surveyid);

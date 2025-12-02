@@ -54,11 +54,14 @@ class EditorLinkController extends LSYii_Controller
         $this->setAuthenticationInitCookie();
         $editorUrl = Yii::app()->request->getQuery(
             'url',
-            Yii::app()->request->baseUrl
-                . static::REACT_APP_BASE_PATH
+            rtrim(
+                Yii::app()->request->baseUrl
+                . static::REACT_APP_BASE_PATH,
+                '/'
+            )
         );
         $editorRoute = Yii::app()->request->getQuery('route');
-        $url = $editorUrl . $editorRoute;
+        $url = $editorUrl . '/' . $editorRoute;
         $this->redirect($url);
     }
 
@@ -91,7 +94,7 @@ class EditorLinkController extends LSYii_Controller
         );
 
         $cookie = new CHttpCookie($cookieName, $cookieDataJson);
-        $cookie->expire = time() + (60 * 2); // 2 minutes
+        $cookie->expire = time() + 10;
 
         Yii::app()->request->cookies[$cookieName] = $cookie;
     }

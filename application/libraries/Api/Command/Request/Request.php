@@ -15,6 +15,7 @@ class Request
     public function __construct($data)
     {
         $this->data = $data;
+        $this->data['filesGlobal'] = $_FILES;
     }
 
     /**
@@ -27,5 +28,15 @@ class Request
         return $key && isset($this->data[$key])
             ? $this->data[$key]
             : $defaultValue;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    public function setData($key, $value)
+    {
+        $this->data[$key] = $value;
     }
 }

@@ -46,6 +46,9 @@ function subval_sort($a, $subkey, $order)
  */
 class ParticipantsAction extends SurveyCommonAction
 {
+    /** @var AjaxHelper $ajaxHelper */
+    protected $ajaxHelper;
+
     /**********************************************BASIC SETTINGS AND METHODS***********************************************/
 
     public function runWithParams($params)
@@ -370,7 +373,6 @@ class ParticipantsAction extends SurveyCommonAction
         $searchstring = $request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
         Yii::app()->clientScript->registerPackage('bootstrap-datetimepicker');
-        Yii::app()->clientScript->registerPackage('bootstrap-switch');
 
         // check global and custom permissions and pass them to $aData
         $aData['permissions'] = permissionsAsArray(
@@ -440,7 +442,7 @@ class ParticipantsAction extends SurveyCommonAction
         if ($selectoption == 'po') {
             $deletedParticipants = Participant::model()->deleteParticipants($participantIds, !$deletePermission);
         } elseif ($selectoption == 'ptt') {
-            // Deletes from central and survey participants table
+            // Deletes from central and survey participant list
             $deletedParticipants = Participant::model()->deleteParticipantToken($participantIds);
         } elseif ($selectoption == 'ptta') {
             // Deletes from central , token and assosiated responses as well
@@ -781,7 +783,6 @@ class ParticipantsAction extends SurveyCommonAction
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
         );
         $aData['topbar'] = $this->getTopBarComponents($title, false, false);
-        Yii::app()->clientScript->registerPackage('bootstrap-switch');
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'importCSV'), $aData);
     }
 
@@ -1300,7 +1301,6 @@ class ParticipantsAction extends SurveyCommonAction
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
         );
         $aData['topbar'] = $this->getTopBarComponents($title, false, false);
-        Yii::app()->clientScript->registerPackage('bootstrap-switch');
 
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'blacklist'), $aData);
     }
@@ -1394,7 +1394,6 @@ class ParticipantsAction extends SurveyCommonAction
         $searchstring = Yii::app()->request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
         // loads the participant panel view and display participant view
-        Yii::app()->clientScript->registerPackage('bootstrap-switch');
 
         $aData['massiveAction'] = App()->getController()->renderPartial(
             '/admin/participants/massive_actions/_selector_attribute',
@@ -1404,7 +1403,6 @@ class ParticipantsAction extends SurveyCommonAction
         );
         $aData['topbar'] = $this->getTopBarComponents($title, false, true);
 
-        Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'attributeControl'), $aData);
     }
 
@@ -2002,7 +2000,6 @@ class ParticipantsAction extends SurveyCommonAction
         $aData['pageSizeShareParticipantView'] = Yii::app()->user->getState('pageSizeShareParticipantView');
         $searchstring = Yii::app()->request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
-        App()->getClientScript()->registerPackage('bootstrap-switch');
 
         $aData['massiveAction'] = App()->getController()->renderPartial('/admin/participants/massive_actions/_selector_share', array(), true, false);
         $aData['topbar'] = $this->getTopBarComponents($title, false, false);
@@ -2488,7 +2485,7 @@ class ParticipantsAction extends SurveyCommonAction
         $response = Participant::model()->copyToCentral((int) Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);
 
         echo "<p>";
-        printf(gT("%s participants have been copied to the central participants table"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>&nbsp;");
+        printf(gT("%s participants have been copied to the central participant list"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>&nbsp;");
         echo "</p>";
         if ($response['duplicate'] > 0) {
             echo "<p>";
@@ -2550,7 +2547,7 @@ class ParticipantsAction extends SurveyCommonAction
 
         // TODO: This code can't be reached
         echo "<p>";
-        printf(gT("%s participants have been copied to the survey survey participants table"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>");
+        printf(gT("%s participants have been copied to the survey participant list"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>");
         echo "</p>";
         if ($response['duplicate'] > 0) {
             echo "<p>";
@@ -2708,7 +2705,7 @@ class ParticipantsAction extends SurveyCommonAction
         );
 
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $aData['subaction'] = gt('Add participants to central database');
+        $aData['subaction'] = gT('Add participants to central database');
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $topbarData = TopbarConfiguration::getSurveyTopbarData($oSurvey->sid);
         $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
@@ -2780,7 +2777,7 @@ class ParticipantsAction extends SurveyCommonAction
     private function getTopBarComponents($title, $ownsAddParticipantsButton, $ownsAddAttributeButton)
     {
         $topBarConf['title'] = $title;
-        $topBarConf['backLink'] = App()->createUrl('admin/index');
+        $topBarConf['backLink'] = App()->createUrl('dashboard/view');
 
         $topBarConf['middleButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/participants/partial/topbarBtns/leftSideButtons',

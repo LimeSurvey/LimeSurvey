@@ -176,8 +176,8 @@ var AdvancedRankingQuestion = function (options) {
 
     fixChoiceListHeight = function() {
         //Keep the target field as big as the source field
-        var minHeight = $('#sortable-choice-' + questionId).height();
-        var minWidth = $('#sortable-choice-' + questionId).width();
+        var minHeight = $('#sortable-choice-' + questionId).actual('height');
+        var minWidth = $('#sortable-choice-' + questionId).actual('width');
         $('#sortable-choice-' + questionId).css('min-height', minHeight);
         $('#sortable-rank-' + questionId).css('min-height', minHeight);
         $('#sortable-choice-' + questionId).css('min-width', minWidth);

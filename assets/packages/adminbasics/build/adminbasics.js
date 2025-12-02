@@ -17915,22 +17915,10 @@
 	const globalWindowMethods = {
 	  // TODO: It seems below two functions are not used and can be deleted. Please confirm.
 	  renderBootstrapSwitch: () => {
-	    try {
-	      if (!$('[data-is-bootstrap-switch]').parent().hasClass('bootstrap-switch-container')) {
-	        $('[data-is-bootstrap-switch]').bootstrapSwitch({
-	          onInit: () => adminCoreLSConsole.log("BootstrapSwitch Initialized")
-	        });
-	      }
-	    } catch (e) {
-	      adminCoreLSConsole.error(e);
-	    }
+	    adminCoreLSConsole.warn('LS.renderBootstrapSwitch is deprecated.');
 	  },
 	  unrenderBootstrapSwitch: () => {
-	    try {
-	      $('[data-is-bootstrap-switch]').bootstrapSwitch('destroy');
-	    } catch (e) {
-	      adminCoreLSConsole.error(e);
-	    }
+	    adminCoreLSConsole.warn('LS.unrenderBootstrapSwitch is deprecated.');
 	  },
 	  // ==================================================================================
 	  validatefilename: (form, strmessage) => {
@@ -19323,8 +19311,8 @@
 	            if ($form.data('isvuecomponent') == true) {
 	              LS.EventBus.$emit('componentFormSubmit', button);
 	            } else {
-	              $form.find('[type="submit"]').first().trigger('click');
 	              displayLoadingState(this);
+	              $form.find('[type="submit"]').first().trigger('click');
 	            }
 	          },
 	          on: 'click'
@@ -20995,7 +20983,7 @@
 	        }
 	        formObject.append('<input name="' + key + '" value="' + value + '" type="' + type + '" ' + (htmlClass ? 'class="' + htmlClass + '"' : '') + ' />');
 	      }
-	      formObject.append('<input name="' + LS.data.csrfTokenName + '" value="' + LS.data.csrfToken + '" type="hidden" />');
+	      formObject.append($("<input type='hidden'>").attr("name", LS.data.csrfTokenName).attr("value", LS.data.csrfToken));
 	      modalObject.find('.modal-body').append(formObject);
 	      modalObject.find('.modal-body').append('<p>' + confirmText + '</p>');
 	      if (showTextArea !== '') {
