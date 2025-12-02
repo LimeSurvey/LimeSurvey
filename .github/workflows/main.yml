@@ -33,7 +33,7 @@ jobs:
           sudo apt update
           sudo apt -y install php${{ matrix.php-versions }}
           sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php7.4-ldap php7.4-gd php7.4-intl php7.4-zip php7.4-mysql php7.4-xml php7.4-curl php7.4-mbstring php7.4-sqlite3 libapache2-mod-php7.4 -y
+          sudo apt --fix-broken install php php8.1-ldap php8.1-gd php8.1-intl php8.1-zip php8.1-mysql php8.1-xml php8.1-curl php8.1-mbstring php8.1-sqlite3 libapache2-mod-php8.1 -y
           sudo apt --fix-broken install php php8.3-ldap php8.3-gd php8.3-intl php8.3-zip php8.3-mysql php8.3-xml php8.3-curl php8.3-mbstring php8.3-sqlite3 libapache2-mod-php8.3 -y
           sudo update-alternatives --set php /usr/bin/php8.3
 
@@ -119,7 +119,7 @@ jobs:
           wget -O - localhost
           #sudo tail -n 500 /var/log/apache2/error.log || true
           #sudo tail -n 500 /var/log/nginx/error.log || true
-          #sudo tail -n 500 /var/log/php7.4-fpm.log || true
+          #sudo tail -n 500 /var/log/php8.1-fpm.log || true
           #sudo tail -n 500 /var/log/php8.3-fpm.log || true
           # NOTE: php --version might not be the same as setup in apache. Use fwrite(STDERR, phpversion()); in index.php to be sure.
           #which php
@@ -181,7 +181,7 @@ jobs:
           touch enabletests
           composer install -vvv
           sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php-mysql php8.3-mysql php7.4-mysql -y
+          sudo apt --fix-broken install php php-mysql php8.3-mysql php8.1-mysql -y
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
           chmod -R 777 ./themes
