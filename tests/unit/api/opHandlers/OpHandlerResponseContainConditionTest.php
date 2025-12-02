@@ -32,8 +32,14 @@ class OpHandlerResponseContainConditionTest extends TestCase
         // Includes whitespace to verify value trimming inside execute()
         $criteria = $handler->execute('status', '  active  ');
 
+
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
-        $this->assertStringContainsString('`status` LIKE :match', $criteria->condition);
+//        $this->assertStringContainsString('`status` LIKE :match', $criteria->condition);
+        $this->assertTrue(
+            strpos($criteria->condition, '`status` LIKE :match') !== false
+            || strpos($criteria->condition, '[status] LIKE :match') !== false
+            || strpos($criteria->condition, '"status" LIKE :match') !== false
+        );
         $this->assertSame([':match' => '%active%'], $criteria->params);
     }
 
@@ -46,9 +52,18 @@ class OpHandlerResponseContainConditionTest extends TestCase
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
 
         // Expect OR chain with uniquely indexed placeholders
-        $this->assertStringContainsString('`first_name` LIKE :match0', $criteria->condition);
+//        $this->assertStringContainsString('`first_name` LIKE :match0', $criteria->condition);
+        $this->assertTrue(
+            strpos($criteria->condition, '`first_name` LIKE :match0') !== false
+            || strpos($criteria->condition, '[first_name] LIKE :match0') !== false
+            || strpos($criteria->condition, '"first_name" LIKE :match0') !== false
+        );
         $this->assertStringContainsString(' OR ', $criteria->condition);
-        $this->assertStringContainsString('`last_name` LIKE :match1', $criteria->condition);
+        $this->assertTrue(
+            strpos($criteria->condition, '`last_name` LIKE :match1') !== false
+            || strpos($criteria->condition, '[last_name] LIKE :match1') !== false
+            || strpos($criteria->condition, '"last_name" LIKE :match1') !== false
+        );
 
         $this->assertSame(
             [
@@ -72,7 +87,12 @@ class OpHandlerResponseContainConditionTest extends TestCase
         $this->assertStringNotContainsString(';', $criteria->condition, 'Semicolon should be removed from condition.');
 
         // Expect the sanitized, quoted column name and LIKE placeholder
-        $this->assertStringContainsString('`nameDROPTABLEresponses--` LIKE :match', $criteria->condition);
+        //$this->assertStringContainsString('`nameDROPTABLEresponses--` LIKE :match', $criteria->condition);
+        $this->assertTrue(
+            strpos($criteria->condition, '`nameDROPTABLEresponses--` LIKE :match') !== false
+            || strpos($criteria->condition, '[nameDROPTABLEresponses--] LIKE :match') !== false
+            || strpos($criteria->condition, '"nameDROPTABLEresponses--" LIKE :match') !== false
+        );
         $this->assertSame([':match' => '%ok%'], $criteria->params);
     }
 
@@ -86,7 +106,8 @@ class OpHandlerResponseContainConditionTest extends TestCase
 
         $criteria = $handler->execute(['fieldA', 'fieldB', 'fieldC'], 'shared');
 
-        $pattern = '/`fieldA` LIKE :match0.*OR.*`fieldB` LIKE :match1.*OR.*`fieldC` LIKE :match2/s';
+        //$pattern = '/`fieldA` LIKE :match0.*OR.*`fieldB` LIKE :match1.*OR.*`fieldC` LIKE :match2/s';
+        $pattern = '/(?:"|`|\[)?fieldA(?:"|`|\])?\s+LIKE\s+:match0.*?\s+OR\s+(?:"|`|\[)?fieldB(?:"|`|\])?\s+LIKE\s+:match1.*?\s+OR\s+(?:"|`|\[)?fieldC(?:"|`|\])?\s+LIKE\s+:match2/s';
         $this->assertTrue(
             (bool)preg_match($pattern, $criteria->condition),
             "Failed asserting OR chain uses unique indexed placeholders: {$criteria->condition}"

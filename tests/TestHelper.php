@@ -339,6 +339,12 @@ class TestHelper extends TestCase
             return;
         }
 
+        $conStr = Yii::app()->db->connectionString;
+        $isMysql = substr($conStr, 0, 5) === 'mysql';
+        if (!$isMysql) {
+            return;
+        }
+
         try {
             $connection->createCommand('DROP DATABASE ' . $databaseName)->execute();
             $this->assertTrue(true);

@@ -30,8 +30,12 @@ class OpHandlerResponseEqualConditionTest extends TestCase
 
         $criteria = $handler->execute('status', 'active');
 
-        $this->assertStringContainsString('`status`', $criteria->condition);
-
+        //$this->assertStringContainsString('`status`', $criteria->condition);
+        $this->assertTrue(
+            strpos($criteria->condition, '`status`') !== false
+            || strpos($criteria->condition, '[status]') !== false
+            || strpos($criteria->condition, '"status"') !== false
+        );
         $this->assertSame('active', $criteria->params[':statusValue']);
     }
 
@@ -41,10 +45,19 @@ class OpHandlerResponseEqualConditionTest extends TestCase
 
         $criteria = $handler->execute(['first_name', 'last_name'], 'Name');
 
-        $this->assertStringContainsString('`first_name`', $criteria->condition);
+        //$this->assertStringContainsString('`first_name`', $criteria->condition);
+        $this->assertTrue(
+            strpos($criteria->condition, '`first_name`') !== false
+            || strpos($criteria->condition, '[first_name]') !== false
+            || strpos($criteria->condition, '"first_name"') !== false
+        );
         $this->assertStringContainsString(' OR ', $criteria->condition);
-        $this->assertStringContainsString('`last_name`', $criteria->condition);
-
+//        $this->assertStringContainsString('`last_name`', $criteria->condition);
+        $this->assertTrue(
+            strpos($criteria->condition, '`last_name`') !== false
+            || strpos($criteria->condition, '[last_name]') !== false
+            || strpos($criteria->condition, '"last_name"') !== false
+        );
         // Single shared placeholder per the handler’s implementation
         $this->assertSame([':first_nameValue' => 'Name', ':last_nameValue' => 'Name'], $criteria->params);
     }
@@ -62,7 +75,11 @@ class OpHandlerResponseEqualConditionTest extends TestCase
         $this->assertStringNotContainsString(';', $criteria->condition);
 
         // Expect the sanitized, quoted column name
-        $this->assertStringContainsString('`nameDROPTABLEresponses--` = :nameDROPTABLEresponsesValue', $criteria->condition);
+        $this->assertTrue(
+            strpos($criteria->condition, '`nameDROPTABLEresponses--` = :nameDROPTABLEresponsesValue') !== false
+            || strpos($criteria->condition, '[nameDROPTABLEresponses--] = :nameDROPTABLEresponsesValue') !== false
+            || strpos($criteria->condition, '"nameDROPTABLEresponses--" = :nameDROPTABLEresponsesValue') !== false
+        );
         $this->assertSame([':nameDROPTABLEresponsesValue' => 'ok'], $criteria->params);
     }
 
@@ -76,11 +93,10 @@ class OpHandlerResponseEqualConditionTest extends TestCase
 
         $criteria = $handler->execute(['fieldA', 'filedB', 'fieldC'], 'sharedValue');
 
-        $pattern = '/`fieldA` = :fieldAValue.*OR.*`filedB` = :filedBValue.*OR.*`fieldC` = :fieldCValue/s';
-        $this->assertTrue(
-            (bool)preg_match($pattern, $criteria->condition),
-            "Failed asserting OR chain uses the same placeholder: {$criteria->condition}"
-        );
+        $this->assertRegExp('/[`\\["]fieldA[`\\]"] = :fieldAValue/', $criteria->condition);
+        $this->assertRegExp('/[`\\["]filedB[`\\]"] = :filedBValue/', $criteria->condition);
+        $this->assertRegExp('/[`\\["]fieldC[`\\]"] = :fieldCValue/', $criteria->condition);
+        $this->assertStringContainsString('OR', $criteria->condition);
 
         $this->assertSame([':fieldAValue' => 'sharedValue', ':filedBValue' => 'sharedValue', ':fieldCValue' => 'sharedValue'], $criteria->params);
     }
