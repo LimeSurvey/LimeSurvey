@@ -3889,16 +3889,21 @@ function addRegexpCondition(array $fields, $pattern = 'Q[0-9]+')
             break;
         case 'pgsql':
             foreach ($fields as $field) {
-                $conditions[] = "REGEXP_COUNT($field, '$pattern') > 0";
+                $conditions[] = "$field ~ '$pattern'";
             }
             break;
         case 'mssql':
         case 'sqlsrv':
-            $pattern = str_replace('+', '%', $pattern);
+        case 'dblib':
             foreach ($fields as $field) {
-                $conditions[] = "$field LIKE '$pattern'";
+                $conditions[] = "$field LIKE '%$pattern%'";
             }
             break;
+        default:
+            Yii::log('Unsupported database driver for REGEXP: ' . Yii::app()->db->getDriverName(), \CLogger::LEVEL_WARNING);
+            foreach ($fields as $field) {
+                $conditions[] = "$field LIKE '%$pattern%'";
+            }
     }
 
     return '(' . implode(' OR ', $conditions) . ')';
