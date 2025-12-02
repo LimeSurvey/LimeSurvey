@@ -52,7 +52,7 @@ class OpHandlerResponseEqualConditionTest extends TestCase
             || strpos($criteria->condition, '"first_name"') !== false
         );
         $this->assertStringContainsString(' OR ', $criteria->condition);
-//        $this->assertStringContainsString('`last_name`', $criteria->condition);
+        //$this->assertStringContainsString('`last_name`', $criteria->condition);
         $this->assertTrue(
             strpos($criteria->condition, '`last_name`') !== false
             || strpos($criteria->condition, '[last_name]') !== false

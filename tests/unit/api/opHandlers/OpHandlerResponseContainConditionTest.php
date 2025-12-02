@@ -31,10 +31,9 @@ class OpHandlerResponseContainConditionTest extends TestCase
 
         // Includes whitespace to verify value trimming inside execute()
         $criteria = $handler->execute('status', '  active  ');
-
-
+      
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
-//        $this->assertStringContainsString('`status` LIKE :match', $criteria->condition);
+        //$this->assertStringContainsString('`status` LIKE :match', $criteria->condition);
         $this->assertTrue(
             strpos($criteria->condition, '`status` LIKE :match') !== false
             || strpos($criteria->condition, '[status] LIKE :match') !== false
@@ -52,7 +51,7 @@ class OpHandlerResponseContainConditionTest extends TestCase
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
 
         // Expect OR chain with uniquely indexed placeholders
-//        $this->assertStringContainsString('`first_name` LIKE :match0', $criteria->condition);
+        //$this->assertStringContainsString('`first_name` LIKE :match0', $criteria->condition);
         $this->assertTrue(
             strpos($criteria->condition, '`first_name` LIKE :match0') !== false
             || strpos($criteria->condition, '[first_name] LIKE :match0') !== false
