@@ -1085,7 +1085,7 @@ class LsDefaultDataSets
             'api_version'   => '3.0',
             'view_folder'   => 'views',
             'files_folder'  => 'files',
-            'description'   => "{{gT(\"Based on BootsWatch Themes:\")}}<br><a href='https://bootswatch.com/3/' target='_blank' rel='external' title='{{gT(\"Visit Bootswatch page in a new window.\")}}'>{{gT(\"Visit Bootswatch page\")}} <i class='ri-external-link-line'></i><span class='visually-hidden'>{{gT(\"(Opens in a new window)\")}}</span></a>",
+            'description'   => '{{gT("Based on BootsWatch Themes:")}}<br><a href=\'https://bootswatch.com/3/\' target=\'_blank\' rel=\'external\' title=\'{{gT("Visit Bootswatch page in a new window.")}}\'>{{gT("Visit Bootswatch page")}} <i class=\'ri-external-link-line\'></i><span class=\'visually-hidden\'>{{gT("(Opens in a new window)")}}</span></a>',
             'last_update'   => null,
             'owner_id'      => 1,
             'extends'       => 'vanilla',
