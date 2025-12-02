@@ -40,7 +40,7 @@ class InstallerConfigForm extends CFormModel
     public const DB_TYPE_ODBC = 'odbc';
 
     public const MINIMUM_MEMORY_LIMIT = 128;
-    public const MINIMUM_PHP_VERSION = '7.4.0';
+    public const MINIMUM_PHP_VERSION = '8.1.29';
 
     // Database
     /** @var string $dbtype */

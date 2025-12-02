@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.3']
+        php-versions: ['8.1', '8.3']
     # Env vars for this job
     env:
       DBENGINE: INNODB
@@ -111,7 +111,7 @@ jobs:
       # for debugging
      # - name: Setup upterm session
      #   uses: lhotari/action-upterm@v1
-     #   if: ${{ contains(matrix.php-versions, '7.4') }}
+     #   if: ${{ contains(matrix.php-versions, '8.1') }}
 
       - name: Test the server
         run: |
@@ -165,7 +165,7 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.3']
+        php-versions: ['8.1', '8.3']
     env:
       DBENGINE: INNODB
     steps:
@@ -220,7 +220,7 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.3']
+        php-versions: ['8.1', '8.3']
     steps:
       - uses: actions/checkout@v4
 
@@ -251,7 +251,7 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.3']
+        php-versions: ['8.1', '8.3']
     steps:
       - uses: actions/checkout@v4
 
