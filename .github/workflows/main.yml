@@ -180,7 +180,7 @@ jobs:
           touch enabletests
           composer install -vvv
           sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php-mysql php8.3-mysql php8.1-mysql -y
+          sudo apt --fix-broken install php php${{ matrix.php-versions }}-mysql php${{ matrix.php-versions }}-xml -y
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
           chmod -R 777 ./themes
