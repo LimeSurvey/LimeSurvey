@@ -40,6 +40,7 @@ abstract class QuestionBaseRenderer extends StaticModel
     protected $aScripts = [];
     protected $aScriptFiles = [];
     protected $aStyles = [];
+    protected $questionOrderingService;
 
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
@@ -47,13 +48,13 @@ abstract class QuestionBaseRenderer extends StaticModel
         $this->sSGQA = $this->aFieldArray[1];
         $this->oQuestion = Question::model()->findByPk($aFieldArray[0]);
         $this->bRenderDirect = $bRenderDirect;
-        $this->sLanguage = $this->setDefaultIfEmpty(@$aFieldArray['language'], @$_SESSION['survey_' . $this->oQuestion->sid]['s_lang']);
+        $this->sLanguage = $this->setDefaultIfEmpty(@$aFieldArray['language'], @$_SESSION['responses_' . $this->oQuestion->sid]['s_lang']);
         if (!$this->sLanguage) {
                 $this->sLanguage = $this->oQuestion->survey->language;
         }
 
         $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid);
-        $this->aSurveySessionArray = @$_SESSION['survey_' . $this->oQuestion->sid];
+        $this->aSurveySessionArray = @$_SESSION['responses_' . $this->oQuestion->sid];
         $this->mSessionValue = @$this->setDefaultIfEmpty($this->aSurveySessionArray[$this->sSGQA], '');
 
         $oQuestionTemplate = QuestionTemplate::getNewInstance($this->oQuestion);
@@ -68,7 +69,7 @@ abstract class QuestionBaseRenderer extends StaticModel
                 [
                     'QID' => $this->oQuestion->qid,
                     'GID' => $this->oQuestion->gid,
-                    'SGQ' => $this->oQuestion->sid . "X" . $this->oQuestion->gid . "X" . $this->oQuestion->qid,
+                    'SGQ' => "Q" . $this->oQuestion->qid,
                 ]
             );
             $this->addScript('QuestionStoredScript-' . $this->oQuestion->qid, $sScriptRendered, LSYii_ClientScript::POS_POSTSCRIPT);
@@ -79,6 +80,10 @@ abstract class QuestionBaseRenderer extends StaticModel
                 'SGQ' => null,
             ));
         }
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $this->questionOrderingService = $diContainer->get(
+            \LimeSurvey\Models\Services\QuestionOrderingService\QuestionOrderingService::class
+        );
     }
 
     protected function getTimeSettingRender()
@@ -101,16 +106,16 @@ abstract class QuestionBaseRenderer extends StaticModel
         /* Registering script : don't go to EM : no need usage of ls_json_encode */
         App()->getClientScript()->registerScript("LSVarLangTimer", "LSvar.lang.timer=" . json_encode($langTimer) . ";", CClientScript::POS_BEGIN);
         /**
-         * The following lines cover for previewing questions, because no $_SESSION['survey_'.$surveyId]['fieldarray'] exists.
+         * The following lines cover for previewing questions, because no $_SESSION['responses_'.$surveyId]['fieldarray'] exists.
          * This just stops error messages occuring
          */
-        if (!isset($_SESSION['survey_' . $surveyId]['fieldarray'])) {
-            $_SESSION['survey_' . $surveyId]['fieldarray'] = [];
+        if (!isset($_SESSION['responses_' . $surveyId]['fieldarray'])) {
+            $_SESSION['responses_' . $surveyId]['fieldarray'] = [];
         }
         /* End */
 
         //Used to count how many timer questions in a page, and ensure scripts only load once
-        $_SESSION['survey_' . $oSurvey->sid]['timercount'] = (isset($_SESSION['survey_' . $oSurvey->sid]['timercount'])) ? $_SESSION['survey_' . $oSurvey->sid]['timercount']++ : 1;
+        $_SESSION['responses_' . $oSurvey->sid]['timercount'] = (isset($_SESSION['responses_' . $oSurvey->sid]['timercount'])) ? $_SESSION['responses_' . $oSurvey->sid]['timercount']++ : 1;
 
         /* Work in all mode system : why disable it ? */
         //~ if ($thissurvey['format'] != "S")
@@ -167,8 +172,8 @@ abstract class QuestionBaseRenderer extends StaticModel
         $time_limit_warning_2_message = str_replace("{TIME}", $timer_html, $time_limit_warning_2_message);
 
         $timersessionname = "timer_question_" . $oQuestion->qid;
-        if (isset($_SESSION['survey_' . $surveyId][$timersessionname])) {
-            $time_limit = $_SESSION['survey_' . $surveyId][$timersessionname];
+        if (isset($_SESSION['responses_' . $surveyId][$timersessionname])) {
+            $time_limit = $_SESSION['responses_' . $surveyId][$timersessionname];
         }
 
         $disable = null;
@@ -184,11 +189,11 @@ abstract class QuestionBaseRenderer extends StaticModel
             true
         );
 
-        if ($_SESSION['survey_' . $oSurvey->sid]['timercount'] < 2) {
+        if ($_SESSION['responses_' . $oSurvey->sid]['timercount'] < 2) {
             $iAction = '';
             if ($oSurvey->format == "G") {
                 $qcount = 0;
-                foreach ($_SESSION['survey_' . $oSurvey->sid]['fieldarray'] as $ib) {
+                foreach ($_SESSION['responses_' . $oSurvey->sid]['fieldarray'] as $ib) {
                     if ($ib[5] == $oQuestion->gid) {
                         $qcount++;
                     }
@@ -249,15 +254,22 @@ abstract class QuestionBaseRenderer extends StaticModel
         return $result;
     }
 
-    protected function setSubquestions($scale_id = null)
+    protected function setSubquestions($scaleId = null)
     {
-
-        $this->aSubQuestions = $this->oQuestion->getOrderedSubQuestions($scale_id);
+        $this->aSubQuestions = $this->questionOrderingService->getOrderedSubQuestions(
+            $this->oQuestion,
+            $scaleId,
+            $this->sLanguage
+        );
     }
 
-    protected function setAnsweroptions($scale_id = null)
+    protected function setAnsweroptions($scaleId = null)
     {
-        $this->aAnswerOptions = $this->oQuestion->getOrderedAnswers($scale_id, $this->sLanguage);
+        $this->aAnswerOptions = $this->questionOrderingService->getOrderedAnswers(
+            $this->oQuestion,
+            $scaleId,
+            $this->sLanguage
+        );
     }
 
     protected function getAnswerCount($iScaleId = 0)
@@ -272,7 +284,7 @@ abstract class QuestionBaseRenderer extends StaticModel
 
     protected function getFromSurveySession($sIndex, $default = "")
     {
-        return $_SESSION['survey_' . $this->oQuestion->sid][$sIndex] ?? $default;
+        return $_SESSION['responses_' . $this->oQuestion->sid][$sIndex] ?? $default;
     }
 
     protected function applyPackages()
@@ -334,7 +346,7 @@ abstract class QuestionBaseRenderer extends StaticModel
     */
     public function getCurrentRelevecanceClass($myfname)
     {
-        $aSurveySessionArray = $_SESSION["survey_{$this->oQuestion->sid}"];
+        $aSurveySessionArray = $_SESSION["responses_{$this->oQuestion->sid}"];
         $relevanceStatus = !isset($aSurveySessionArray['relevanceStatus'][$myfname]) || $aSurveySessionArray['relevanceStatus'][$myfname];
         if ($relevanceStatus) {
             return "";
