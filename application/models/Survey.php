@@ -1536,18 +1536,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'submenu' => true,
             'title' => gT('Copy'),
             'submenu_items' => $this->getSubmenuItemsCopy($permissions['survey_update']),
-            'title' => gT('Quick copy'),
-            'url' => App()->createUrl("/surveyAdministration/copySimple", ['surveyIdToCopy' => $this->sid]),
-            'enabledCondition' => $permissions['survey_update'],
-        ];
-        $dropdownItems[] = [
-            'title' => gT('Custom copy'),
-            'linkAttributes'   => [
-                'data-bs-toggle' => "modal",
-                'data-bs-target' => "#copySurvey_modal",
-                'onclick' => "copySurveyOptions(" . (int)$this->sid . ")",
-            ],
-            'enabledCondition' => $permissions['survey_update'],
         ];
         $dropdownItems[] = [
             'title' => gT('Add user'),
@@ -1569,12 +1557,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $submenuItems = [];
         $submenuItems[] = [
             'title' => gT('Quick copy'),
-            'url' => App()->createUrl("/surveyAdministration/newSurvey", ['tab' => 'copy']),
+            'url' => App()->createUrl("/surveyAdministration/copySimple", ['surveyIdToCopy' => $this->sid]),
             'enabledCondition' => $enableCondition,
         ];
         $submenuItems[] = [
             'title' => gT('Custom copy'),
-            'url' => App()->createUrl("/surveyAdministration/newSurvey", ['tab' => 'copy']),
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-bs-target' => "#copySurvey_modal",
+                'onclick' => "copySurveyOptions(" . (int)$this->sid . ")",
+            ],
             'enabledCondition' => $enableCondition,
         ];
         return $submenuItems;
