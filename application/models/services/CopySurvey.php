@@ -443,7 +443,7 @@ class CopySurvey
             //the $oldQuestionId contains the question id from the old question id
             //and could in addition contain a subquestion code or answer option code
             //cut out the question id, which is at the beginning of $oldQuestionId
-            $appendSubQuestionOrAnswerOption = substr($oldQuestionId, strlen((string) $conditionRow['qid']));
+            $appendSubQuestionOrAnswerOption = substr($oldQuestionId, strlen((string) $conditionRow['cqid']));
             $addPlusSign = "";
             if (preg_match("/^\+/", $conditionRow['cfieldname'])) {
                 $addPlusSign = "+";
