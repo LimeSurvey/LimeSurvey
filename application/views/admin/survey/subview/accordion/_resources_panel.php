@@ -47,7 +47,7 @@ var sAddParam = '';
             ?>
         </div>
         <div class="col-md-auto mb-3">
-            <a href="<?php echo $this->createUrl('admin/export/sa/resources/export/survey/surveyid/'.$surveyid); ?>" target="_blank" class="btn btn-outline-secondary">
+            <a href="<?php echo $this->createUrl('admin/export/sa/resources/export/survey/surveyid/'.$surveyid); ?>" target="_blank" class="btn btn-outline-secondary" role="button">
                 <span class="ri-upload-fill"></span>
                 <?php eT("Export resources as ZIP archive") ?>
             </a>
