@@ -55,4 +55,99 @@ LS.actionDropdown = {
     },
 };
 
+/**
+* Submenu positioning:
+* Opens submenus on the right by default; if there is not enough space
+* on the right, they are switched to open on the left (.dropdown-submenu-left).
+*/
+(function() {
+    'use strict';
+    function adjustSubmenuPosition(dropdownElement) {
+        if (!dropdownElement) {
+            return;
+        }
+
+        const submenuItems = dropdownElement.querySelectorAll('.has-submenu');
+        submenuItems.forEach(function(item) {
+            const submenu = item.querySelector('.dropdown-submenu');
+            const trigger = item.querySelector('[data-bs-toggle="dropdown-submenu"]');
+
+            if (!submenu || !trigger) {
+                return;
+            }
+
+            // Remove any existing listener to avoid duplicates
+            trigger.removeEventListener('mouseenter', trigger._handleMouseEnter);
+
+            // Define and store the handler
+            trigger._handleMouseEnter = function() {
+                // Reset before measuring so we use the default (right) position first
+                submenu.classList.remove('dropdown-submenu-left');
+
+                // Force a reflow to ensure the submenu is positioned
+                void submenu.offsetHeight;
+
+                // Small delay to ensure submenu is in the layout and can be measured
+                setTimeout(function() {
+                    const rect = submenu.getBoundingClientRect();
+                    const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+                    // If the submenu overflows the right edge, switch it to the left side
+                    if (rect.right > viewportWidth) {
+                        submenu.classList.add('dropdown-submenu-left');
+                    }
+                }, 10);
+            };
+
+            trigger.addEventListener('mouseenter', trigger._handleMouseEnter);
+        });
+    }
+
+
+    function initSubmenuPositioningForAll() {
+        const actionDropdowns = document.querySelectorAll('.ls-action_dropdown');
+
+        actionDropdowns.forEach(function(wrapper) {
+            const toggle = wrapper.querySelector('[data-bs-toggle="dropdown"]');
+            if (!toggle) {
+                return;
+            }
+
+            // When the main dropdown is shown, configure submenus
+            wrapper.addEventListener('shown.bs.dropdown', function() {
+                // Get the toggle ID to find the corresponding menu
+                const toggleId = toggle.getAttribute('data-ls-dropdown-toggle-id');
+                if (!toggleId) {
+                    return;
+                }
+
+                // Find the dropdown menu that was moved to body
+                const dropdownMenu = document.querySelector(`.dropdown-menu[data-for-ls-dropdown-toggle-id="${toggleId}"]`);
+
+                if (dropdownMenu) {
+                    adjustSubmenuPosition(dropdownMenu);
+                }
+            });
+
+            // On window resize, if the dropdown is open, recalculate submenu positions
+            window.addEventListener('resize', function() {
+                const toggleId = toggle.getAttribute('data-ls-dropdown-toggle-id');
+                if (!toggleId) {
+                    return;
+                }
+
+                const dropdownMenu = document.querySelector(`.dropdown-menu[data-for-ls-dropdown-toggle-id="${toggleId}"].show`);
+                if (dropdownMenu) {
+                    adjustSubmenuPosition(dropdownMenu);
+                }
+            });
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSubmenuPositioningForAll);
+    } else {
+        initSubmenuPositioningForAll();
+    }
+})();
+
 LS.actionDropdown.create();
