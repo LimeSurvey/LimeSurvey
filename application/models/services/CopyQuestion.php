@@ -220,6 +220,7 @@ class CopyQuestion
                     );
                 }
                 $newSubquestLanguage = new \QuestionL10n();
+                $newSubquestLanguage->attributes = $subquestLanguage->attributes; //if new attributes are added in future
                 $newSubquestLanguage->help = $subquestLanguage->help;
                 $newSubquestLanguage->question = $substituteSurveyInQuestionText;
                 $newSubquestLanguage->script = $subquestLanguage->script;
