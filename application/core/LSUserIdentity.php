@@ -157,7 +157,7 @@ class LSUserIdentity extends CUserIdentity
 
         // Perform language settings
         if (App()->request->getPost('loginlang', 'default') != 'default') {
-            $user->lang = sanitize_languagecode(App()->request->getPost('loginlang'));
+            $user->lang = \LSYii_Validators::languageCodeFilter(App()->request->getPost('loginlang'));
             $user->save();
             $sLanguage = $user->lang;
         } elseif ($user->lang == 'auto' || $user->lang == '') {

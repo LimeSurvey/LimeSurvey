@@ -1231,7 +1231,7 @@ class Export extends SurveyCommonAction
                 $quexmlpdf->$method(Yii::app()->request->getPost($s));
             }
 
-            $lang = sanitize_languagecode(
+            $lang = \LSYii_Validators::languageCodeFilter(
                 Yii::app()->request->getPost('save_language')
             );
 

@@ -131,7 +131,7 @@ class StatisticsUserController extends SurveyController
         if ($sLanguage == null || !in_array($sLanguage, $survey->allLanguages)) {
             $sLanguage = $survey->language;
         } else {
-            $sLanguage = sanitize_languagecode($sLanguage);
+            $sLanguage = \LSYii_Validators::languageCodeFilter($sLanguage);
         }
         //set survey language for translations
         SetSurveyLanguage($iSurveyID, $sLanguage);

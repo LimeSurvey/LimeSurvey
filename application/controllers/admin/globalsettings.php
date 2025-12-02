@@ -285,8 +285,8 @@ class GlobalSettings extends SurveyCommonAction
             $sendingrate = 60;
         }
 
-        $defaultlang = sanitize_languagecode(Yii::app()->getRequest()->getPost('defaultlang'));
-        $aRestrictToLanguages = explode(' ', (string) sanitize_languagecodeS(Yii::app()->getRequest()->getPost('restrictToLanguages')));
+        $defaultlang = \LSYii_Validators::languageCodeFilter(Yii::app()->getRequest()->getPost('defaultlang'));
+        $aRestrictToLanguages = explode(' ', (string) LSYii_Validators::multiLanguageCodeFilter((Yii::app()->getRequest()->getPost('restrictToLanguages')));
         if (!in_array($defaultlang, $aRestrictToLanguages)) {
             // Force default language in restrictToLanguages
             $aRestrictToLanguages[] = $defaultlang;

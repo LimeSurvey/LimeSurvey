@@ -678,7 +678,7 @@ class Tokens extends SurveyCommonAction
                 'email' => $request->getPost('email'),
                 'emailstatus' => $request->getPost('emailstatus'),
                 'token' => $sanitizedtoken,
-                'language' => sanitize_languagecode($request->getPost('language')),
+                'language' => \LSYii_Validators::languageCodeFilter($request->getPost('language')),
                 'sent' => $request->getPost('sent'),
                 'remindersent' => $request->getPost('remindersent'),
                 'completed' => $request->getPost('completed'),
@@ -1020,7 +1020,7 @@ class Tokens extends SurveyCommonAction
             $aData['lastname'] = App()->request->getPost('lastname');
             $aData['email'] = App()->request->getPost('email');
             $aData['token'] = '';
-            $aData['language'] = sanitize_languagecode(App()->request->getPost('language'));
+            $aData['language'] = \LSYii_Validators::languageCodeFilter(App()->request->getPost('language'));
             $aData['sent'] = 'N';
             $aData['remindersent'] = 'N';
             $aData['completed'] = 'N';
@@ -1820,7 +1820,7 @@ class Tokens extends SurveyCommonAction
             $oTokenLanguages = Token::model($iSurveyId)->findAll(array('select' => 'language', 'group' => 'language'));
             $aFilterByLanguage = array('' => gT('All'));
             foreach ($oTokenLanguages as $oTokenLanguage) {
-                $sLanguageCode = sanitize_languagecode($oTokenLanguage->language);
+                $sLanguageCode = \LSYii_Validators::languageCodeFilter($oTokenLanguage->language);
                 $aFilterByLanguage[$sLanguageCode] = getLanguageNameFromCode($sLanguageCode, false);
             }
             // The following array does not seem to be used at all by the view, yet
