@@ -1,6 +1,6 @@
 <?php
 // Translation-source for new editor.
-// Updated on 2025-06-23 07:48:17
+// Updated on 2025-11-28 11:37:00
 gT('%d answer options');
 gT('%s bytes');
 gT('1 answer option');
@@ -299,3 +299,40 @@ gT('Rotate');
 gT('Saving...');
 gT('Unable to save image settings. Please try again.');
 gT('Zoom');
+gT('Adjust the color of buttons and the progress bar');
+gT('Adjust the color of buttons and the progress bar in dark mode');
+gT('Adjust the color of your survey questions');
+gT('Alternate cell background color for better detectability');
+gT('An update is available. You will be redirected to the admin panel to perform the update.');
+gT('Anyone with link');
+gT('Anyone with the link to this survey can access.');
+gT('Arrow right');
+gT('Asterisk');
+gT('Change or upload a new icon');
+gT('Change the background color of your survey');
+gT('Change the corner radius (rounding) of buttons');
+gT('Check');
+gT('Check circle');
+gT('Check square');
+gT('Chevron circle right');
+gT('Corner radius');
+gT('Cross-hover in array-questions');
+gT('Dark mode');
+gT('Display options');
+gT('Fix number values automatically');
+gT('Full width');
+gT('Highlight the whole row and column on hover');
+gT('Link with access code');
+gT('Note:');
+gT('Only participants with the link and access code can access.');
+gT('participants.');
+gT('Plus');
+gT('Resistance');
+gT('Select how you want to share your survey');
+gT('Star');
+gT('Theme color');
+gT('This question uses a customized condition. If you create a condition using this editor the current customized condition will be overwritten.');
+gT('Times');
+gT('Use the full width or create a left/right border');
+gT('You do not have participants yet. Create or restore archived participants under ');
+gT('You still have a participants list for your survey. You can remove it under ');

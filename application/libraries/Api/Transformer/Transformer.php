@@ -22,6 +22,8 @@ class Transformer implements TransformerInterface
     /** @var ?Registry */
     public $registry;
 
+    public int $surveyId;
+
     /**
      * Transform data
      *
@@ -39,6 +41,9 @@ class Transformer implements TransformerInterface
      */
     public function transform($data, $options = [])
     {
+        if ($options['surveyId'] ?? false) {
+            $this->surveyId = $options['surveyId'];
+        }
         $data = $data ?? [];
         $options = $options ?? [];
         $dataMap = $this->getDataMap();
@@ -348,7 +353,11 @@ class Transformer implements TransformerInterface
      */
     public function getDataMap()
     {
-        return $this->dataMap ? $this->dataMap : [];
+        $dataMap = $this->dataMap ?: [];
+        if (isset($this->surveyId) && (empty($dataMap['surveyId']))) {
+            $dataMap['surveyId'] = $this->surveyId;
+        }
+        return $dataMap;
     }
 
     /**
