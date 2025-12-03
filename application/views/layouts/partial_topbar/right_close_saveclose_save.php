@@ -16,7 +16,7 @@ if ($isCloseBtn) {
             'icon' => 'ri-close-fill',
             'link' => $backUrl ?? Yii::app()->createUrl('dashboard/view'),
             'htmlOptions' => [
-                'class' => 'btn btn-outline-secondary',
+                'class' => 'btn btn-outline-secondary' ,'role' => 'button',
             ],
         ]
     );
