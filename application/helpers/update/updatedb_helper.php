@@ -55,17 +55,17 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     $aCriticalDBVersions = array(310, 400, 450, 600);
     $aAllUpdates         = range($iOldDBVersion + 1, Yii::app()->getConfig('dbversionnumber'));
 
-    // Try to acquire database update lock
-    if (!getDatabaseUpdateLock()) {
-        return false;
-    }
-
     // If trying to update silenty check if it is really possible
     if ($bSilent && (count(array_intersect($aCriticalDBVersions, $aAllUpdates)) > 0)) {
         return false;
     }
-    // If DBVersion is older than 184 don't allow database update
+    // If DBVersion is older than 132 don't allow database update
     if ($iOldDBVersion < 132) {
+        return false;
+    }
+
+    // Try to acquire database update lock
+    if (!getDatabaseUpdateLock()) {
         return false;
     }
 
