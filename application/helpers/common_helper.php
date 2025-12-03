@@ -3792,10 +3792,9 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
 
     # translate 'description' INSERTANS tags in groups
     $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
-    $cond = addRegexpCondition(['description', 'group_name'], $pattern = 'Q[0-9]+');
     $sql = "SELECT g.gid, language, group_name, description from $quotedGroups g
     join {{group_l10ns}} l on g.gid=l.gid
-    WHERE sid=" . $newsid . " AND " . $cond;
+    WHERE sid=" . $newsid . " AND description REGEXP 'Q[0-9]+' OR group_name REGEXP 'Q[0-9]+'";
     $res = Yii::app()->db->createCommand($sql)->query();
 
     //while ($qentry = $res->FetchRow())
@@ -3826,10 +3825,9 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     } // end while qentry
 
     # translate 'question' and 'help' INSERTANS tags in questions
-    $cond = addRegexpCondition(['question', 'help'], $pattern = 'Q[0-9]+');
     $sql = "SELECT l.id, question, help from {{questions}} q
     join {{question_l10ns}} l on q.qid=l.qid
-    WHERE sid=" . $newsid . " AND " . $cond;
+    WHERE sid=" . $newsid . " AND (question REGEXP 'Q[0-9]+' OR help REGEXP 'Q[0-9]+')";
     $result = Yii::app()->db->createCommand($sql)->query();
     $aResultData = $result->readAll();
     foreach ($aResultData as $qentry) {
@@ -3874,39 +3872,6 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
             }
         }
     }
-}
-
-function addRegexpCondition(array $fields, $pattern = 'Q[0-9]+')
-{
-    $conditions = [];
-
-    switch (Yii::app()->db->getDriverName()) {
-        case 'mysqli':
-        case 'mysql':
-            foreach ($fields as $field) {
-                $conditions[] = "$field REGEXP '$pattern'";
-            }
-            break;
-        case 'pgsql':
-            foreach ($fields as $field) {
-                $conditions[] = "$field ~ '$pattern'";
-            }
-            break;
-        case 'mssql':
-        case 'sqlsrv':
-        case 'dblib':
-            foreach ($fields as $field) {
-                $conditions[] = "$field LIKE '%$pattern%'";
-            }
-            break;
-        default:
-            Yii::log('Unsupported database driver for REGEXP: ' . Yii::app()->db->getDriverName(), \CLogger::LEVEL_WARNING);
-            foreach ($fields as $field) {
-                $conditions[] = "$field LIKE '%$pattern%'";
-            }
-    }
-
-    return '(' . implode(' OR ', $conditions) . ')';
 }
 
 /**
