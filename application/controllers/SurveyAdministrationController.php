@@ -5,6 +5,7 @@ use LimeSurvey\Models\Services\FileUploadService;
 use LimeSurvey\Models\Services\FilterImportedResources;
 use LimeSurvey\Models\Services\GroupHelper;
 use LimeSurvey\Models\Services\SurveyAccessModeService;
+use LimeSurvey\Models\Services\SurveyDetailService;
 
 /**
  * Class SurveyAdministrationController
@@ -2307,6 +2308,8 @@ class SurveyAdministrationController extends LSBaseController
             if (!empty($aImportResults['newsid']) && $copyResources) {
                 $resourceCopier = new CopySurveyResources();
                 [, $errorFilesInfo] = $resourceCopier->copyResources($iSurveyID, $aImportResults['newsid']);
+                $surveyDetailService = new SurveyDetailService();
+                $surveyDetailService->removeCache($aImportResults['newsid']);
                 if (!empty($errorFilesInfo)) {
                     $aImportResults['importwarnings'][] = gT("Some resources could not be copied from the source survey");
                 }
