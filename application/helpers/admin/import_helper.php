@@ -3444,6 +3444,10 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                             }
                         }
                         try {
+                            // Very old survey archives may not have a startdate field
+                            if (in_array('startdate', $DestinationFields) && !isset($aInsertData['startdate'])) {
+                                $aInsertData['startdate'] = date('1980-01-01 00:00:00');
+                            }
                             SurveyDynamic::sid($iSurveyID);
                             $response = new SurveyDynamic();
                             $response->setAttributes($aInsertData, false);
