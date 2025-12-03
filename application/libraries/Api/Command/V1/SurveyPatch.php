@@ -48,8 +48,7 @@ class SurveyPatch implements CommandInterface
         $patch = $request->getData('patch');
 
         $patcher = $this->diFactory->make(
-            PatcherSurvey::class,
-            ['surveyId' => (int) $id]
+            PatcherSurvey::class
         );
         try {
             $returnedData = $patcher->applyPatch($patch, ['id' => $id]);
