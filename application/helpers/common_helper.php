@@ -3736,7 +3736,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     $oldsid = (int) $oldsid;
 
     # translate 'surveyls_urldescription' and 'surveyls_url' INSERTANS tags in surveyls
-    $result = SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $newsid . " AND (surveyls_urldescription LIKE '%Q%' OR surveyls_url LIKE '%Q%')");
+    $result = SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $newsid . " AND (surveyls_urldescription LIKE '%{$oldsid}X%' OR surveyls_url LIKE '%{$oldsid}X%')");
     foreach ($result as $qentry) {
         $urldescription = $qentry['surveyls_urldescription'];
         $endurl = $qentry['surveyls_url'];
@@ -3770,7 +3770,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     } // end while qentry
 
     # translate 'quotals_urldescrip' and 'quotals_url' INSERTANS tags in quota_languagesettings
-    $result = QuotaLanguageSetting::model()->with('quota', array('condition' => 'sid=' . $newsid))->together()->findAll("(quotals_urldescrip LIKE '%Q%' OR quotals_url LIKE '%Q%')");
+    $result = QuotaLanguageSetting::model()->with('quota', array('condition' => 'sid=' . $newsid))->together()->findAll("(quotals_urldescrip LIKE '%{$oldsid}X%' OR quotals_url LIKE '%{$oldsid}X%')");
     foreach ($result as $qentry) {
         $urldescription = $qentry['quotals_urldescrip'];
         $endurl = $qentry['quotals_url'];
@@ -3792,10 +3792,9 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
 
     # translate 'description' INSERTANS tags in groups
     $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
-    $cond = addRegexpCondition(['description', 'group_name'], $pattern = 'Q[0-9]+');
     $sql = "SELECT g.gid, language, group_name, description from $quotedGroups g
     join {{group_l10ns}} l on g.gid=l.gid
-    WHERE sid=" . $newsid . " AND " . $cond;
+    WHERE sid=" . $newsid . " AND description LIKE '%{$oldsid}X%' OR group_name LIKE '%{$oldsid}X%'";
     $res = Yii::app()->db->createCommand($sql)->query();
 
     //while ($qentry = $res->FetchRow())
@@ -3826,10 +3825,9 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     } // end while qentry
 
     # translate 'question' and 'help' INSERTANS tags in questions
-    $cond = addRegexpCondition(['question', 'help'], $pattern = 'Q[0-9]+');
     $sql = "SELECT l.id, question, help from {{questions}} q
     join {{question_l10ns}} l on q.qid=l.qid
-    WHERE sid=" . $newsid . " AND " . $cond;
+    WHERE sid=" . $newsid . " AND (question LIKE '%{$oldsid}X%' OR help LIKE '%{$oldsid}X%')";
     $result = Yii::app()->db->createCommand($sql)->query();
     $aResultData = $result->readAll();
     foreach ($aResultData as $qentry) {
@@ -3863,50 +3861,33 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
 
     //while ($qentry = $res->FetchRow())
     foreach ($result as $qentry) {
-        $translatedAnswers = $qentry->answerl10ns;
-        foreach ($translatedAnswers as $translatedAnswer) {
-            $answer = $translatedAnswer->answer;
-            foreach ($fieldnames as $pattern => $replacement) {
-                $translatedAnswer->answer = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $translatedAnswer->answer);
-            }
-            if ($answer !== $translatedAnswer->answer) {
-                $translatedAnswer->save();
-            }
+        $answer = $qentry['answer'];
+        $code = $qentry['code'];
+        $qid = $qentry['qid'];
+        $language = $qentry['language'];
+
+        foreach ($fieldnames as $sOldFieldname => $sNewFieldname) {
+            $pattern = $sOldFieldname;
+            $replacement = $sNewFieldname;
+            $answer = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $answer);
         }
-    }
-}
 
-function addRegexpCondition(array $fields, $pattern = 'Q[0-9]+')
-{
-    $conditions = [];
+        if (strcmp((string) $answer, (string) $qentry['answer']) != 0) {
+            // Update Field
 
-    switch (Yii::app()->db->getDriverName()) {
-        case 'mysqli':
-        case 'mysql':
-            foreach ($fields as $field) {
-                $conditions[] = "$field REGEXP '$pattern'";
-            }
-            break;
-        case 'pgsql':
-            foreach ($fields as $field) {
-                $conditions[] = "$field ~ '$pattern'";
-            }
-            break;
-        case 'mssql':
-        case 'sqlsrv':
-        case 'dblib':
-            foreach ($fields as $field) {
-                $conditions[] = "$field LIKE '%$pattern%'";
-            }
-            break;
-        default:
-            Yii::log('Unsupported database driver for REGEXP: ' . Yii::app()->db->getDriverName(), \CLogger::LEVEL_WARNING);
-            foreach ($fields as $field) {
-                $conditions[] = "$field LIKE '%$pattern%'";
-            }
-    }
+            $data = array(
+            'answer' => $answer,
+            'qid' => $qid
+            );
 
-    return '(' . implode(' OR ', $conditions) . ')';
+            $where = array(
+            'code' => $code,
+            'language' => $language
+            );
+
+            Answer::model()->updateRecord($data, $where);
+        } // Enf if modified
+    } // end while qentry
 }
 
 /**
