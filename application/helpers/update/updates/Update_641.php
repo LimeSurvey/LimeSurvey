@@ -798,11 +798,11 @@ class Update_641 extends DatabaseUpdateBase
                 FROM information_schema.columns
                 WHERE TABLE_CATALOG = current_database() AND (
                       (
-                          COLUMN_NAME ~ '^[0-9]*X[0-9]*X[0-9]*(.*)$' AND
+                          (COLUMN_NAME ~ '^[0-9]*X[0-9]*X[0-9]*(.*)$') AND
                           (TABLE_NAME LIKE '%survey%')
                       ) OR
                       (
-                          COLUMN_NAME ~ '^[0-9]*X[0-9]*(X[0-9]*)?(.*)$'
+                          (COLUMN_NAME ~ '^[0-9]*X[0-9]*(X[0-9]*)?(.*)$') AND
                           (TABLE_NAME LIKE '%survey%')
                       )
                 )
