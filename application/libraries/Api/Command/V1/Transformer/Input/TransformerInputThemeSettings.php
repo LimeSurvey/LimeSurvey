@@ -17,8 +17,11 @@ class TransformerInputThemeSettings extends Transformer
                 $surveyId = (int)$surveyId;
                 $templateConfiguration = Template::getTemplateConfiguration(null, $surveyId, null, true);
                 $optionAttributes = TemplateManifest::getOptionAttributes($templateConfiguration->path);
-                foreach ($optionAttributes as $key => $attribute) {
-                    $dynamicDataMap[$key] = true;
+                $dynamicDataMap = [];
+                if ($optionAttributes) {
+                    foreach ($optionAttributes as $key => $attribute) {
+                        $dynamicDataMap[$key] = true;
+                    }
                 }
             }
         }
