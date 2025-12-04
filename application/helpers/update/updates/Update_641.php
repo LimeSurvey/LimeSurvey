@@ -1086,46 +1086,41 @@ class Update_641 extends DatabaseUpdateBase
                 foreach ($additionalNameKeys as $additionalNameKey) {
                     $additionalNames[$additionalNameKey] = $rawAdditionalNames[$additionalNameKey];
                 }
-                $conditions = Condition::model()->findAll("qid in (" . implode(",", $qids) . ")");
-                $fields = ["cfieldname", "value"];
-                foreach ($conditions as $condition) {
-                    if ($this->fixText($condition, $fields, $names) || $this->fixText($condition, $fields, $additionalNames)) {
-                        $condition->save();
-                    }
-                }
-                $localizedQuestions = QuestionL10n::model()->findAll("qid in (" . implode(",", $qids) . ")");
-                $fields = ["question", "script"];
-                foreach ($localizedQuestions as $localizedQuestion) {
-                    if ($this->fixText($localizedQuestion, $fields, $names) || $this->fixText($localizedQuestion, $fields, $additionalNames)) {
-                        $localizedQuestion->save();
-                    }
-                }
-                $fields = ["title", "relevance"];
-                foreach ($questions as $question) {
-                    if ($this->fixText($question, $fields, $names) || $this->fixText($question, $fields, $additionalNames)) {
-                        $question->save();
-                    }
-                }
-                $surveyLanguageSettings = SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $sid);
-                $fields = ['surveyls_urldescription', 'surveyls_url'];
-                foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
-                    if ($this->fixText($surveyLanguageSetting, $fields, $names) || $this->fixText($surveyLanguageSetting, $fields, $additionalNames)) {
-                        $surveyLanguageSetting->save();
-                    }
-                }
-                $fields = ['quotals_url', 'quotals_urldescrip'];
-                $quotaLanguageSettings = QuotaLanguageSetting::model()->with('quota', array('condition' => 'sid=' . $sid))->together()->findAll();
-                foreach ($quotaLanguageSettings as $quotaLanguageSetting) {
-                    if ($this->fixText($quotaLanguageSetting, $fields, $names) || $this->fixText($quotaLanguageSetting, $fields, $additionalNames)) {
-                        $quotaLanguageSetting->save();
-                    }
-                }
-                $fields = ['description', 'group_name'];
-                $model = new QuestionGroupL10n();
-                $groups = $model->resetScope()->findAll("gid in (" . implode(",", $gids) . ")");
-                foreach ($groups as $group) {
-                    if ($this->fixText($group, $fields, $names) || $this->fixText($group, $fields, $additionalNames)) {
-                        $group->save();
+                $entityFields = [
+                    [
+                        'entities' => Condition::model()->findAll("qid in (" . implode(",", $qids) . ")"),
+                        'fields' => ['cfieldname', 'value']
+                    ],
+                    [
+                        'entities' => QuestionL10n::model()->findAll("qid in (" . implode(",", $qids) . ")"),
+                        'fields' => ["question", "script"]
+                    ],
+                    [
+                        'entities' => $questions,
+                        'fields' => ['title', 'relevance']
+                    ],
+                    [
+                        'entities' => SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $sid),
+                        'fields' => ['surveyls_urldescription', 'surveyls_url']
+                    ],
+                    [
+                        'entities' => QuotaLanguageSetting::model()->with('quota', ['condition' => 'sid=' . $sid])->together()->findAll(),
+                        'fields' => ['quotals_url', 'quotals_urldescrip']
+                    ],
+                    [
+                        'entities' => (new QuestionGroupL10n())->resetScope()->findAll("gid in (" . implode(",", $gids) . ")"),
+                        'fields' => ['description', 'group_name']
+                    ]
+                ];
+                foreach ($entityFields as $ef) {
+                    foreach ($ef['entities'] as $entity) {
+                        $save = [
+                            $this->fixText($entity, $ef['fields'], $names),
+                            $this->fixText($entity, $ef['fields'], $additionalNames)
+                        ];
+                        if ($save[0] || $save[1]) {
+                            $entity->save();
+                        }
                     }
                 }
             }
@@ -1178,46 +1173,41 @@ class Update_641 extends DatabaseUpdateBase
                     }
                 }
             }
-            $conditions = Condition::model()->findAll("qid in (" . implode(",", $qids) . ")");
-            $fields = ["cfieldname", "value"];
-            foreach ($conditions as $condition) {
-                if ($this->fixText($condition, $fields, $newFields) || $this->fixText($condition, $fields, $additionalNames)) {
-                    $condition->save();
-                }
-            }
-            $localizedQuestions = QuestionL10n::model()->findAll("qid in (" . implode(",", $qids) . ")");
-            $fields = ["question", "script"];
-            foreach ($localizedQuestions as $localizedQuestion) {
-                if ($this->fixText($localizedQuestion, $fields, $newFields) || $this->fixText($localizedQuestion, $fields, $additionalNames)) {
-                    $localizedQuestion->save();
-                }
-            }
-            $fields = ["title", "relevance"];
-            foreach ($questions as $question) {
-                if ($this->fixText($question, $fields, $newFields) || $this->fixText($question, $fields, $additionalNames)) {
-                    $question->save();
-                }
-            }
-            $surveyLanguageSettings = SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $sid);
-            $fields = ['surveyls_urldescription', 'surveyls_url'];
-            foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
-                if ($this->fixText($surveyLanguageSetting, $fields, $newFields) || $this->fixText($surveyLanguageSetting, $fields, $additionalNames)) {
-                    $surveyLanguageSetting->save();
-                }
-            }
-            $fields = ['quotals_url', 'quotals_urldescrip'];
-            $quotaLanguageSettings = QuotaLanguageSetting::model()->with('quota', array('condition' => 'sid=' . $sid))->together()->findAll();
-            foreach ($quotaLanguageSettings as $quotaLanguageSetting) {
-                if ($this->fixText($quotaLanguageSetting, $fields, $newFields) || $this->fixText($quotaLanguageSetting, $fields, $additionalNames)) {
-                    $quotaLanguageSetting->save();
-                }
-            }
-            $fields = ['description', 'group_name'];
-            $model = new QuestionGroupL10n();
-            $groups = $model->resetScope()->findAll("gid in (" . implode(",", $gids) . ")");
-            foreach ($groups as $group) {
-                if ($this->fixText($group, $fields, $newFields) || $this->fixText($group, $fields, $additionalNames)) {
-                    $group->save();
+            $entityFields = [
+                [
+                    'entities' => Condition::model()->findAll("qid in (" . implode(",", $qids) . ")"),
+                    'fields' => ['cfieldname', 'value']
+                ],
+                [
+                    'entities' => QuestionL10n::model()->findAll("qid in (" . implode(",", $qids) . ")"),
+                    'fields' => ["question", "script"]
+                ],
+                [
+                    'entities' => $questions,
+                    'fields' => ['title', 'relevance']
+                ],
+                [
+                    'entities' => SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $sid),
+                    'fields' => ['surveyls_urldescription', 'surveyls_url']
+                ],
+                [
+                    'entities' => QuotaLanguageSetting::model()->with('quota', ['condition' => 'sid=' . $sid])->together()->findAll(),
+                    'fields' => ['quotals_url', 'quotals_urldescrip']
+                ],
+                [
+                    'entities' => (new QuestionGroupL10n())->resetScope()->findAll("gid in (" . implode(",", $gids) . ")"),
+                    'fields' => ['description', 'group_name']
+                ]
+            ];
+            foreach ($entityFields as $ef) {
+                foreach ($ef['entities'] as $entity) {
+                    $save = [
+                        $this->fixText($entity, $ef['fields'], $newFields),
+                        $this->fixText($entity, $ef['fields'], $additionalNames)
+                    ];
+                    if ($save[0] || $save[1]) {
+                        $entity->save();
+                    }
                 }
             }
         }
