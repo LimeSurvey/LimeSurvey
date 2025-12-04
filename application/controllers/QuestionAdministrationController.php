@@ -836,7 +836,7 @@ class QuestionAdministrationController extends LSBaseController
         list($oSubquestion->title, $newPosition) = $this->calculateNextCode($stringCodes);
 
         $activated = false; // You can't add ne subquestion when survey is active
-        Yii::app()->loadHelper('admin/htmleditor'); // Prepare the editor helper for the view
+        Yii::app()->loadHelper('admin.htmleditor'); // Prepare the editor helper for the view
 
         $view = 'subquestionRow.twig';
         $aData = array(
@@ -883,7 +883,7 @@ class QuestionAdministrationController extends LSBaseController
         list($answerOption->code, $newPosition) = $this->calculateNextCode($stringCodes);
 
         $activated = false; // You can't add ne subquestion when survey is active
-        Yii::app()->loadHelper('admin/htmleditor'); // Prepare the editor helper for the view
+        Yii::app()->loadHelper('admin.htmleditor'); // Prepare the editor helper for the view
 
         $view = 'answerOptionRow.twig';
         $aData = array(
@@ -1159,7 +1159,7 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         // load import_helper and import the file
-        App()->loadHelper('admin/import');
+        App()->loadHelper('admin.import');
         $aImportResults = [];
         if (strtolower($sExtension) === 'lsq') {
             $aImportResults = XMLImportQuestion(

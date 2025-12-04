@@ -1686,7 +1686,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $success = false;
         if (($surveyId > 0) && ($questionId > 0)) {
-            App()->loadHelper('admin/activate');
+            App()->loadHelper('admin.activate');
             fixNumbering($questionId, $surveyId);
             $success = true;
         }
@@ -1722,7 +1722,7 @@ class SurveyAdministrationController extends LSBaseController
         $oSurvey = Survey::model()->findByPk($surveyId);
         $aSurveysettings = getSurveyInfo($surveyId);
 
-        Yii::app()->loadHelper("admin/activate");
+        Yii::app()->loadHelper("admin.activate");
         $failedgroupcheck = checkGroup($surveyId);
         $failedcheck = checkQuestions($surveyId, $surveyId);
         $error = "";
@@ -2279,7 +2279,7 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
 
-        App()->loadHelper('admin/import');
+        App()->loadHelper('admin.import');
         if (!$aData['bFailed']) {
             $copyResources = App()->request->getPost('copysurveytranslinksfields') == '1';
             $translateLinks = $copyResources;
@@ -2401,7 +2401,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['bFailed'] = true;
         }
 
-        App()->loadHelper('admin/import');
+        App()->loadHelper('admin.import');
 
         if (!$aData['bFailed']) {
             $aImportResults = importSurveyFile($sFullFilepath, (App()->request->getPost('translinksfields') == '1'));

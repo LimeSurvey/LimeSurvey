@@ -43,7 +43,7 @@ class MultipleChoiceProcessor extends AbstractQuestionProcessor
             $this->question['question'],
             $legend,
             $dataItems,
-            null,
+            $this->calculateTotal($dataItems),
             ['question' => $this->question]
         );
     }
