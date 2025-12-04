@@ -1447,14 +1447,11 @@ function polyfillSUBSTRING_INDEX($driver)
             break;
         case 'mssql':
         case 'sqlsrv':
-            Yii::app()->db->createCommand(
-                <<<EOD
-    IF OBJECT_ID('dbo.SUBSTRING_INDEX') IS NOT NULL
-      DROP FUNCTION SUBSTRING_INDEX
-        EOD
-            )->execute();
-            Yii::app()->db->createCommand(
-                <<<EOD
+            Yii::app()->db->createCommand("
+                IF OBJECT_ID('dbo.SUBSTRING_INDEX') IS NOT NULL
+                DROP FUNCTION SUBSTRING_INDEX
+        ")->execute();
+            Yii::app()->db->createCommand("
                     CREATE FUNCTION dbo.SUBSTRING_INDEX (
                         @str NVARCHAR(4000),
                         @delim NVARCHAR(1),
@@ -1469,14 +1466,13 @@ function polyfillSUBSTRING_INDEX($driver)
                   (
                     ((
                     SELECT  @delim + x.XmlCol.value(N'(text())[1]', N'NVARCHAR(4000)') AS '*'
-                    FROM    @XmlSourceString.nodes(N'(root/row)[position() <= sql:variable("@count")]') x(XmlCol)
+                    FROM    @XmlSourceString.nodes(N'(root/row)[position() <= sql:variable(\"@count\")]') x(XmlCol)
                     FOR XML PATH(N''), TYPE
                     ).value(N'.', N'NVARCHAR(4000)')),
                   1, 1, N''
                   );
                   END
-        EOD
-            )->execute();
+            ")->execute();
             break;
     }
 }
