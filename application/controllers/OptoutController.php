@@ -50,7 +50,7 @@ class OptoutController extends LSYii_Controller
         if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode) {
             $sBaseLanguage = $oSurvey->language;
         } else {
-            $sBaseLanguage = sanitize_languagecode($sLanguageCode);
+            $sBaseLanguage = \LSYii_Validators::languageCodeFilter($sLanguageCode);
         }
 
         Yii::app()->setLanguage($sBaseLanguage);
@@ -98,7 +98,7 @@ class OptoutController extends LSYii_Controller
         if (!isset($languageCode) || $languageCode == "" || !$languageCode) {
             $baseLanguage = $survey->language;
         } else {
-            $baseLanguage = sanitize_languagecode($languageCode);
+            $baseLanguage = \LSYii_Validators::languageCodeFilter($languageCode);
         }
 
         Yii::app()->setLanguage($baseLanguage);
@@ -162,7 +162,7 @@ class OptoutController extends LSYii_Controller
         if (!isset($language) || $language == "" || !$language) {
             $baseLanguage = $survey->language;
         } else {
-            $baseLanguage = sanitize_languagecode($language);
+            $baseLanguage = \LSYii_Validators::languageCodeFilter($language);
         }
 
         Yii::app()->setLanguage($baseLanguage);
