@@ -101,9 +101,7 @@ class PatcherSurvey extends Patcher
             $sid = \Yii::app()->getRequest()->getQuery('_id') ?? 0;
             $survey = ($sid ? Survey::model()->findByPk($sid) : $this->surveyDetailService->getSurveyFromEntityMap($entityMap));
             if ($survey) {
-                $survey->lastmodified = gmdate('Y-m-d H:i:s');
-                $survey->save();
-                $this->surveyDetailService->removeCache($survey->sid);
+                $this->surveyDetailService->updateSurveyLastModified($survey);
             }
         }
         return $this->surveyResponse->buildResponseObject();

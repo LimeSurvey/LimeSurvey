@@ -33,7 +33,7 @@ class RankingProcessor extends AbstractQuestionProcessor
             $legend[] = 'NoAnswer';
             $dataItems[] = ['key' => 'NoAnswer', 'value' => 0, 'title' => 'No answer'];
 
-            $charts[] = new StatisticsChartDTO($title, $legend, $dataItems, null, ['question' => $this->question]);
+            $charts[] = new StatisticsChartDTO($title, $legend, $dataItems, $this->calculateTotal($dataItems), ['question' => $this->question]);
             $i++;
         }
 

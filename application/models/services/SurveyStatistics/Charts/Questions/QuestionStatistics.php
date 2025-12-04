@@ -31,6 +31,7 @@ class QuestionStatistics implements StatisticsChartInterface
     {
         $this->factories = [
             Question::QT_M_MULTIPLE_CHOICE => fn() => new MultipleChoiceProcessor(),
+            Question::QT_N_NUMERICAL => fn() => new MultipleChoiceProcessor(),
             Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS => fn() => new MultipleChoiceProcessor(),
             Question::QT_T_LONG_FREE_TEXT => fn() => new TextProcessor(),
             Question::QT_S_SHORT_FREE_TEXT => fn() => new TextProcessor(),
@@ -46,15 +47,25 @@ class QuestionStatistics implements StatisticsChartInterface
             Question::QT_Q_MULTIPLE_SHORT_TEXT => fn() => null,
             Question::QT_SEMICOLON_ARRAY_TEXT => fn() => null,
             Question::QT_X_TEXT_DISPLAY => fn() => null,
+            Question::QT_COLON_ARRAY_NUMBERS => fn() => null,
+            Question::QT_O_LIST_WITH_COMMENT => fn() => null,
 
             // Single option with multiple graphs for each subquestion
             Question::QT_A_ARRAY_5_POINT => fn() => new SingleOptionMultipleChartsProcessor(),
+            Question::QT_E_ARRAY_INC_SAME_DEC => fn() => new SingleOptionMultipleChartsProcessor(),
             Question::QT_B_ARRAY_10_CHOICE_QUESTIONS => fn() => new SingleOptionMultipleChartsProcessor(),
             Question::QT_C_ARRAY_YES_UNCERTAIN_NO => fn() => new SingleOptionMultipleChartsProcessor(),
             Question::QT_F_ARRAY => fn() => new SingleOptionMultipleChartsProcessor(),
             Question::QT_H_ARRAY_COLUMN => fn() => new SingleOptionMultipleChartsProcessor(),
 
-            'default' => fn() => new SingleOptionProcessor(),
+            Question::QT_G_GENDER => fn() => new SingleOptionProcessor(),
+            Question::QT_Y_YES_NO_RADIO => fn() => new SingleOptionProcessor(),
+            Question::QT_I_LANGUAGE => fn() => new SingleOptionProcessor(),
+            Question::QT_5_POINT_CHOICE => fn() => new SingleOptionProcessor(),
+            Question::QT_L_LIST => fn() => new SingleOptionProcessor(),
+            Question::QT_EXCLAMATION_LIST_DROPDOWN => fn() => new SingleOptionProcessor(),
+
+            'default' => fn() => null,
         ];
     }
 

@@ -34,7 +34,7 @@ class questionHelper
      * Return all the definitions of Question attributes core+extended value
      * @return array[]
      *
-     *@deprecated  used only as fall back method
+     *@deprecated  used only as fall back method and for import/exports of LS v1 and for Survey Logic File
      * use QuestionAttribute::getQuestionAttributesSettings function to get attributes
      */
     public static function getAttributesDefinitions()
@@ -849,16 +849,37 @@ class questionHelper
         );
 
         self::$attributes["answer_order"] = array(
-            "types" => Question::QT_L_LIST . Question::QT_R_RANKING . Question::QT_EXCLAMATION_LIST_DROPDOWN,
+            "types" => Question::QT_L_LIST . Question::QT_R_RANKING . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_O_LIST_WITH_COMMENT,
             'category' => gT('Display'),
             'sortorder' => 100,
             'inputtype' => 'singleselect',
-            'options' => array('normal' => gT('Normal'), 'random' => gT("Random"), 'alphabetical' => gT("Alphabetical")),
+            'options' => array(
+                'normal' => gT('Normal'),
+                'random' => gT("Random"),
+                'alphabetical' => gT("Alphabetical"),
+                'random_alphabetical' => gT("Random A-Z/Z-A")
+            ),
             //1=>gT('Randomize on each page load')  // Shnoulle : replace by yes till we have only one solution
             //2=>gT('Randomize once on survey start')  //Mdekker: commented out as code to handle this was removed in refactoring
             'default' => 0,
             "help" => gT('Present answer options in normal, random or alphabetical order'),
             "caption" => gT('Answer options order')
+        );
+
+        self::$attributes["subquestion_order"] = array(
+            "types" => Question::QT_M_MULTIPLE_CHOICE . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
+            'category' => gT('Display'),
+            'sortorder' => 100,
+            'inputtype' => 'singleselect',
+            'options' => array(
+                'normal' => gT('Normal'),
+                'random' => gT("Random"),
+                'alphabetical' => gT("Alphabetical"),
+                'random_alphabetical' => gT("Random A-Z/Z-A")
+            ),
+            'default' => 'normal',
+            "help" => gT('Present subquestions in normal, random or alphabetical order'),
+            "caption" => gT('Subquestions order')
         );
 
         self::$attributes["showpopups"] = array(
