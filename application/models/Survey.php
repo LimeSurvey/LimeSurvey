@@ -1534,6 +1534,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $dropdownItems[] = [
             'submenu' => true,
             'title' => gT('Copy'),
+            'enabledCondition' => $permissions['survey_update'],
             'submenu_items' => $this->getSubmenuItemsCopy($permissions['survey_update']),
         ];
         $dropdownItems[] = [
