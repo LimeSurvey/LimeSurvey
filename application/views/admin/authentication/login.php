@@ -70,8 +70,8 @@ echo viewHelper::getViewTestTag('login');
                         $aLangList = getLanguageDataRestricted(true);
                         $languageData = [];
 
-                        $reqLang = App()->request->getParam('lang');
-                        if ($reqLang === null) {
+                        $reqLang = \LSYii_Validators::languageCodeFilter(App()->request->getParam('lang'));
+                        if (!isset($aLangList[$reqLang]) || $reqLang === '') {
                             $languageData['default'] = gT('Default');
                         } else {
                             $languageData[$reqLang] = html_entity_decode(
