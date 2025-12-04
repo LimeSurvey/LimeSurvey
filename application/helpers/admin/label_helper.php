@@ -97,7 +97,7 @@ function insertlabelset()
     $labelSet = new LabelSet();
     $labelSet->label_name = $postlabel_name;
     $labelSet->owner_id = App()->user->getId();
-    $labelSet->languages = LSYii_Validators::multiLanguageCodeFilter((implode(' ', Yii::app()->getRequest()->getPost('languageids', array('en'))));
+    $labelSet->languages = LSYii_Validators::multiLanguageCodeFilter(implode(' ', Yii::app()->getRequest()->getPost('languageids', array('en'))));
     if (!$labelSet->save()) {
         Yii::app()->session['flashmessage'] = gT("Inserting the label set failed.");
     } else {
