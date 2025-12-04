@@ -549,7 +549,7 @@ class Statistics extends SurveyCommonAction
         $aData['success'] = 1;
 
         if (isset($_POST['cmd']) && isset($_POST['id'])) {
-            $sStatisticsLanguage = \LSYii_Validators::languageCodeFilter($_POST['sStatisticsLanguage']);
+            $sStatisticsLanguage = \LSYii_Validators::languageCodeFilter($_POST['sStatisticsLanguage'] ?? '');
             $sQCode = $_POST['id'];
             if (!is_numeric(substr((string) $sQCode, 0, 1))) {
                 // Strip first char when not numeric (probably T or D)

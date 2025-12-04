@@ -286,7 +286,7 @@ class GlobalSettings extends SurveyCommonAction
         }
 
         $defaultlang = \LSYii_Validators::languageCodeFilter(Yii::app()->getRequest()->getPost('defaultlang'));
-        $aRestrictToLanguages = explode(' ', (string) LSYii_Validators::multiLanguageCodeFilter((Yii::app()->getRequest()->getPost('restrictToLanguages'))));
+        $aRestrictToLanguages = explode(' ', (string) LSYii_Validators::multiLanguageCodeFilter(Yii::app()->getRequest()->getPost('restrictToLanguages')));
         if (!in_array($defaultlang, $aRestrictToLanguages)) {
             // Force default language in restrictToLanguages
             $aRestrictToLanguages[] = $defaultlang;

@@ -936,7 +936,7 @@ function returnGlobal($stringname, $bRestrictToString = false)
         }
     } elseif ($stringname == "lang" || $stringname == "adminlang") {
         if ($bUrlParamIsArray) {
-            return array_map("sanitize_languagecode", $urlParam);
+            return array_map(['\\LSYii_Validators', 'languageCodeFilter'], $urlParam);
         } else {
             return \LSYii_Validators::languageCodeFilter($urlParam);
         }

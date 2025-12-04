@@ -156,7 +156,10 @@ class LSUserIdentity extends CUserIdentity
         Yii::app()->session['session_hash'] = hash('sha256', getGlobalSetting('SessionName') . $user->users_name . $user->uid);
 
         // Perform language settings
-        if (App()->request->getPost('loginlang', 'default') != 'default') {
+        if (
+            App()->request->getPost('loginlang', 'default') != 'default'
+            && \LSYii_Validators::languageCodeFilter(App()->request->getPost('loginlang')) != ''
+        ) {
             $user->lang = \LSYii_Validators::languageCodeFilter(App()->request->getPost('loginlang'));
             $user->save();
             $sLanguage = $user->lang;
