@@ -18,11 +18,11 @@ class ArrayNumbersProcessor extends AbstractQuestionProcessor
         $charts = [];
         [$min, $max, $step] = $this->getValues();
         $values = [];
+        $groups = [];
 
         for ($i = $min; $i <= $max; $i += $step) {
             $values[] = $i;
         }
-
 
         foreach ($this->question['subQuestions'] as $o) {
             $groups[$o['scale_id']][] = $o['qid'];
