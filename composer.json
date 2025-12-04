@@ -67,7 +67,7 @@
         "vendor-dir": "vendor",
         "bin-dir": "vendor/bin",
 		"platform": {
-			"php": "7.4.0"
+			"php": "8.1.29"
 		}
     },
     "require-dev": {
