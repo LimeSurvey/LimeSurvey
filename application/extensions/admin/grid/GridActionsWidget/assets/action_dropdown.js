@@ -119,6 +119,12 @@ LS.actionDropdown = {
                     return;
                 }
 
+                // Avoid duplicate listeners
+                if (wrapper.hasAttribute('data-submenu-positioning-initialized')) {
+                    return;
+                }
+                wrapper.setAttribute('data-submenu-positioning-initialized', 'true');
+
                 // When the main dropdown is shown, configure submenus
                 wrapper.addEventListener('shown.bs.dropdown', function() {
                     // Get the toggle ID to find the corresponding menu
