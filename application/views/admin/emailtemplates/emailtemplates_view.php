@@ -24,7 +24,7 @@ var LS = LS || {};  // namespace
 
 ?>
 <div class="side-body">
-    <h3 aria-level="1"  ><?php eT("Edit email templates"); ?></h3>
+    <h1 class="h3"  ><?php eT("Edit email templates"); ?></h1>
     <div class="row">
         <div class="col-12 content-right">
             <?php echo CHtml::form(['admin/emailtemplates/sa/update/surveyid/' . $surveyid], 'post', ['name' => 'emailtemplates', 'class' => '', 'id' => 'emailtemplates']); ?>
@@ -72,7 +72,7 @@ var LS = LS || {};  // namespace
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" aria-level="2"><?= gT("Choose file to add") ?></h5>
+                <h2 class="modal-title"><?= gT("Choose file to add") ?></h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="padding: 0;">
