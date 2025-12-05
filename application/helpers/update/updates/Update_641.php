@@ -1118,7 +1118,7 @@ class Update_641 extends DatabaseUpdateBase
                         'fields' => ['surveyls_urldescription', 'surveyls_url']
                     ],
                     [
-                        'entities' => QuotaLanguageSetting::model()->with('quota', ['condition' => 'sid=' . $sid])->together()->findAll(),
+                        'entities' => QuotaLanguageSetting::model()->with(['quota' => ['condition' => 'sid=' . $sid]])->together()->findAll(),
                         'fields' => ['quotals_url', 'quotals_urldescrip']
                     ],
                     [
@@ -1227,7 +1227,7 @@ class Update_641 extends DatabaseUpdateBase
                     'fields' => ['surveyls_urldescription', 'surveyls_url']
                 ],
                 [
-                    'entities' => QuotaLanguageSetting::model()->with('quota', ['condition' => 'sid=' . $sid])->together()->findAll(),
+                    'entities' => QuotaLanguageSetting::model()->with(['quota' => ['condition' => 'sid=' . $sid]])->together()->findAll(),
                     'fields' => ['quotals_url', 'quotals_urldescrip']
                 ],
                 [
