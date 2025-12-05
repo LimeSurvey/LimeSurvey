@@ -16511,11 +16511,6 @@ body {
   flex-direction: column;
 }
 
-.modal-header .btn-close:focus {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
-}
-
 .container-40 {
   padding: 0 40px;
   width: 100%;
@@ -17516,6 +17511,7 @@ body {
 }
 .modal-header .btn-close:focus {
   box-shadow: none;
+  outline: 2px solid currentColor;
 }
 .modal-header .btn-close:hover {
   background-color: #EEEFF7;
