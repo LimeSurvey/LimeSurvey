@@ -60,6 +60,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'createsample',
+                    'ariaLabel' => gT('Create example question group and question'),
                     'checkedOption' => App()->getConfig('createsample'),
                     'selectOptions' => [
                         '1' => gT('On'),
@@ -196,6 +197,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'maintenancemode',
+                    'ariaLabel' => gT('Maintenance mode'),
                     'checkedOption' => $thismaintenancemode,
                     'selectOptions' => [
                         "off"  => gT("Off", 'unescaped'),
@@ -230,6 +232,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
                     'ext.ButtonGroupWidget.ButtonGroupWidget',
                     [
                         'name'          => 'defaulthtmleditormode',
+                        'ariaLabel' => gT('Default HTML editor mode'),
                         'checkedOption' => $thisdefaulthtmleditormode,
                         'selectOptions' => [
                             "inline" => gT("Inline", 'unescaped'),
@@ -250,6 +253,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             <div class='col-md-4'>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'sideMenuBehaviour',
+                    'ariaLabel' => gT('Side-menu behaviour'),
                     'checkedOption' => $sideMenuBehaviour,
                     'selectOptions' => [
                         "adaptive"     => gT("Adaptive", 'unescaped'),
@@ -269,6 +273,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'defaultquestionselectormode',
+                    'ariaLabel' => gT('Question type selector'),
                     'checkedOption' => $thisdefaultquestionselectormode,
                     'selectOptions' => [
                         "default" => gT("Full", 'unescaped'),
@@ -287,6 +292,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'defaultthemeteeditormode',
+                    'ariaLabel' => gT('Template editor'),
                     'checkedOption' => $thisdefaultthemeteeditormode,
                     'selectOptions' => [
                         "default" => gT("Full", 'unescaped'),
@@ -305,6 +311,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'defaultBreadcrumbMode',
+                    'ariaLabel' => gT('Default breadcrumb mode'),
                     'checkedOption' => $defaultBreadcrumbMode,
                     'selectOptions' => [
                         "short" => gT("Short", 'unescaped'),
@@ -323,6 +330,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'javascriptdebugbcknd',
+                    'ariaLabel' => gT('JS-Debug mode [Backend]'),
                     'checkedOption' => App()->getConfig('javascriptdebugbcknd'),
                     'selectOptions' => [
                         '1' => gT('On'),
@@ -341,6 +349,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'javascriptdebugfrntnd',
+                    'ariaLabel' => gT('JS-Debug mode [Frontend]'),
                     'checkedOption' => App()->getConfig('javascriptdebugfrntnd'),
                     'selectOptions' => [
                         '1' => gT('On'),
@@ -359,6 +368,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 <div class="col-12">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name' => 'allow_unstable_extension_update',
+                        'ariaLabel' => gT('Allow unstable extension updates'),
                         'checkedOption' => App()->getConfig('allow_unstable_extension_update'),
                         'selectOptions' => [
                             '1' => gT('On'),
