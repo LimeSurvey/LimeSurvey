@@ -82,6 +82,9 @@ LS.actionDropdown = {
 
                 // Define and store the handler
                 trigger._handleMouseEnter = function() {
+
+                    //make the submenu invisible before we show it (avoid showing it on the wrong side)
+                    submenu.style.visibility = 'hidden';
                     // Reset before measuring so we use the default (right) position first
                     submenu.classList.remove('dropdown-submenu-left');
 
@@ -96,7 +99,10 @@ LS.actionDropdown = {
                         if (rect.right > viewportWidth) {
                             submenu.classList.add('dropdown-submenu-left');
                         }
-                    }, 5);
+
+                        // Now show it instantly without flicker
+                        submenu.style.visibility = '';
+                    }, 3);
                 };
 
                 trigger.addEventListener('mouseenter', trigger._handleMouseEnter);
