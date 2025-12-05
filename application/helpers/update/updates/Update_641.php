@@ -722,10 +722,11 @@ class Update_641 extends DatabaseUpdateBase
                 SELECT TABLE_NAME AS old_name, REPLACE(TABLE_NAME, 'survey', 'responses') AS new_name
                 FROM information_schema.tables
                 WHERE TABLE_CATALOG = current_database() AND
-                      REGEXP_COUNT(TABLE_NAME, '^.*survey_[0-9]*(_[0-9]*)?$') > 0;
+                      TABLE_NAME ~ '^.*survey_[0-9]*(_[0-9]*)?$';
                 ";
             case 'mssql':
             case 'sqlsrv':
+            case 'dblib':
                 return "
                 SELECT TABLE_NAME AS old_name, REPLACE(TABLE_NAME, 'survey', 'responses') AS new_name
                 FROM information_schema.tables
@@ -759,6 +760,7 @@ class Update_641 extends DatabaseUpdateBase
                 ";
             case 'mssql':
             case 'sqlsrv':
+            case 'dblib':
                 return "
                 SELECT TABLE_NAME AS old_name, REPLACE(REPLACE(TABLE_NAME, '_timings', ''), 'survey', 'timings') AS new_name
                 FROM information_schema.tables
@@ -796,11 +798,11 @@ class Update_641 extends DatabaseUpdateBase
                 FROM information_schema.columns
                 WHERE TABLE_CATALOG = current_database() AND (
                       (
-                          REGEXP_COUNT(COLUMN_NAME, '^[0-9]*X[0-9]*X[0-9]*(.*)$') > 0 AND
+                          (COLUMN_NAME ~ '^[0-9]*X[0-9]*X[0-9]*(.*)$') AND
                           (TABLE_NAME LIKE '%survey%')
                       ) OR
                       (
-                          REGEXP_COUNT(COLUMN_NAME, '^[0-9]*X[0-9]*(X[0-9]*)?(.*)$') > 0 AND
+                          (COLUMN_NAME ~ '^[0-9]*X[0-9]*(X[0-9]*)?(.*)$') AND
                           (TABLE_NAME LIKE '%survey%')
                       )
                 )
@@ -808,6 +810,7 @@ class Update_641 extends DatabaseUpdateBase
                 ";
             case 'mssql':
             case 'sqlsrv':
+            case 'dblib':
                 return "
                 SELECT TABLE_NAME, COLUMN_NAME
                 FROM information_schema.columns
@@ -834,6 +837,7 @@ class Update_641 extends DatabaseUpdateBase
                 return "SELECT show_create_table('" . $tableName . "') AS \"Create Table\"";
             case 'mssql':
             case 'sqlsrv':
+            case 'dblib':
                 return "
                 SELECT
                 	'CREATE TABLE '  + SCHEMA_NAME(t.schema_id) + '.' + t.name + ' (' +
@@ -891,6 +895,7 @@ class Update_641 extends DatabaseUpdateBase
         switch (Yii::app()->db->getDriverName()) {
             case 'mssql':
             case 'sqlsrv':
+            case 'dblib':
                 $script["Create Table"] = str_replace("[id] int NOT NULL PRIMARY KEY", "[id] int IDENTITY(1, 1) PRIMARY KEY", $script["Create Table"]);
                 break;
         }
@@ -907,6 +912,7 @@ class Update_641 extends DatabaseUpdateBase
                 return "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_CATALOG = current_database() AND TABLE_NAME = '{$tableName}'";
             case 'mssql':
             case 'sqlsrv':
+            case 'dblib':
                 return "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_CATALOG = db_name() AND TABLE_NAME = '{$tableName}'";
             default:
                 return "";
