@@ -43,7 +43,7 @@
             </div>
         </div>
         {# Participants email #}
-        <div class='{{ aSurveyInfo.class.registerformcolrowc }} row' {{ aSurveyInfo.attr.registerformcolrowc }}>
+        <div class='{{ aSurveyInfo.class.registerformcolrowc }} row mb-3' {{ aSurveyInfo.attr.registerformcolrowc }}>
             <label {{ aSurveyInfo.attr.registerformcolrowclabel }} class='{{ aSurveyInfo.class.registerformcolrowclabel }}  control-label'> {{ gT("E-mail") }} {{ include('./subviews/registration/required.twig') }}</label>
             <div {{ aSurveyInfo.attr.registerformcolrowcdiv }}  >
                 {{ C.Html.emailField('register_email', aSurveyInfo.sEmail, ({'id' : 'register_email','class' : 'form-control ls-important-field','required' : true, 'placeholder' : gT('Enter e-mail address')})) }}
@@ -52,7 +52,7 @@
 
         {# Loop to add extra attributes #}
         {% for key, aExtraAttribute in aSurveyInfo.aExtraAttributes  %}
-            <div class=' {{ aSurveyInfo.class.registerformextras }} row' {{ aSurveyInfo.attr.registerformextras }} >
+            <div class=' {{ aSurveyInfo.class.registerformextras }} row mb-3' {{ aSurveyInfo.attr.registerformextras }} >
                 {% set registerKey = "register_" ~ key %}
                 <label for="{{ registerKey }}" class='{{ aSurveyInfo.class.registerformextraslabel }} control-label '> {{ aExtraAttribute.caption }} {% if aExtraAttribute.mandatory == 'Y' %}{{ include('./subviews/registration/required.twig') }}{% endif %}</label>
                 <div {{ aSurveyInfo.attr.registerformcolrowcdiv }} >
