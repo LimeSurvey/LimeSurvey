@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use DefaultValueL10n;
 use Yii;
 use Question;
 use QuestionTheme;
@@ -15,6 +16,9 @@ use QuestionL10n;
 use SurveyLanguageSetting;
 use QuotaLanguageSetting;
 use QuestionGroupL10n;
+use Assessment;
+use DefaultValue;
+use AnswerL10n;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -1073,11 +1077,15 @@ class Update_641 extends DatabaseUpdateBase
                 ]);
                 $qids = [0];
                 $gids = [0];
+                $aids = [0];
                 foreach ($questions as $question) {
                     $rawAdditionalNames["{$question->sid}X{$question->gid}X{$question->qid}"] = "Q{$question->qid}";
                     $qids[] = $question->qid;
                     if (!in_array($question->gid, $gids)) {
                         $gids[] = (int)$question->gid;
+                    }
+                    foreach ($question->answers as $answer) {
+                        $aids []= $answer->aid;
                     }
                 }
                 $additionalNameKeys = array_keys($rawAdditionalNames);
@@ -1086,6 +1094,12 @@ class Update_641 extends DatabaseUpdateBase
                 foreach ($additionalNameKeys as $additionalNameKey) {
                     $additionalNames[$additionalNameKey] = $rawAdditionalNames[$additionalNameKey];
                 }
+                $defaultValues = DefaultValue::model()->findAll("qid in (" . implode(",", $qids) . ")");
+                $dvids = [0];
+                foreach ($defaultValues as $defaultValue) {
+                    $dvids []= $defaultValue->dvid;
+                }
+                $default10ns = DefaultValueL10n::model()->findAll("dvid in (" . implode(",", $dvids) . ")");
                 $entityFields = [
                     [
                         'entities' => Condition::model()->findAll("qid in (" . implode(",", $qids) . ")"),
@@ -1110,6 +1124,18 @@ class Update_641 extends DatabaseUpdateBase
                     [
                         'entities' => (new QuestionGroupL10n())->resetScope()->findAll("gid in (" . implode(",", $gids) . ")"),
                         'fields' => ['description', 'group_name']
+                    ],
+                    [
+                        'entities' => Assessment::model()->findAll("sid = " . $sid),
+                        'fields' => ['name', 'message']
+                    ],
+                    [
+                        'entities' => $default10ns,
+                        'fields' => ['defaultvalue']
+                    ],
+                    [
+                        'entities' => AnswerL10n::model()->findAll("aid in (" . implode(",", $aids) . ")"),
+                        'fields' => ['answer']
                     ]
                 ];
                 foreach ($entityFields as $ef) {
@@ -1131,6 +1157,7 @@ class Update_641 extends DatabaseUpdateBase
             $sid = $passiveSurvey->sid;
             $qids = [0];
             $gids = [0];
+            $aids = [0];
             $questions = Question::model()->with('answers')->findAll("sid = :sid", [
                 ":sid" => $passiveSurvey->sid
             ]);
@@ -1140,6 +1167,9 @@ class Update_641 extends DatabaseUpdateBase
                 $qids[] = $question->qid;
                 if (!in_array($question->gid, $gids)) {
                     $gids[] = (int)$question->gid;
+                }
+                foreach ($question->answers as $answer) {
+                    $aids []= $answer->aid;
                 }
             }
             $additionalNameKeys = array_keys($rawAdditionalNames);
@@ -1173,6 +1203,12 @@ class Update_641 extends DatabaseUpdateBase
                     }
                 }
             }
+            $defaultValues = DefaultValue::model()->findAll("qid in (" . implode(",", $qids) . ")");
+            $dvids = [0];
+            foreach ($defaultValues as $defaultValue) {
+                $dvids []= $defaultValue->dvid;
+            }
+            $default10ns = DefaultValueL10n::model()->findAll("dvid in (" . implode(",", $dvids) . ")");
             $entityFields = [
                 [
                     'entities' => Condition::model()->findAll("qid in (" . implode(",", $qids) . ")"),
@@ -1197,8 +1233,20 @@ class Update_641 extends DatabaseUpdateBase
                 [
                     'entities' => (new QuestionGroupL10n())->resetScope()->findAll("gid in (" . implode(",", $gids) . ")"),
                     'fields' => ['description', 'group_name']
+                ],
+                [
+                    'entities' => Assessment::model()->findAll("sid = " . $sid),
+                    'fields' => ['name', 'message']
+                ],
+                [
+                    'entities' => $default10ns,
+                    'fields' => ['defaultvalue']
+                ],
+                [
+                    'entities' => AnswerL10n::model()->findAll("aid in (" . implode(",", $aids) . ")"),
+                    'fields' => ['answer']
                 ]
-            ];
+        ];
             foreach ($entityFields as $ef) {
                 foreach ($ef['entities'] as $entity) {
                     $save = [
