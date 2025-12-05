@@ -1085,7 +1085,7 @@ class Update_641 extends DatabaseUpdateBase
                         $gids[] = (int)$question->gid;
                     }
                     foreach ($question->answers as $answer) {
-                        $aids []= $answer->aid;
+                        $aids[] = $answer->aid;
                     }
                 }
                 $additionalNameKeys = array_keys($rawAdditionalNames);
@@ -1097,7 +1097,7 @@ class Update_641 extends DatabaseUpdateBase
                 $defaultValues = DefaultValue::model()->findAll("qid in (" . implode(",", $qids) . ")");
                 $dvids = [0];
                 foreach ($defaultValues as $defaultValue) {
-                    $dvids []= $defaultValue->dvid;
+                    $dvids[] = $defaultValue->dvid;
                 }
                 $default10ns = DefaultValueL10n::model()->findAll("dvid in (" . implode(",", $dvids) . ")");
                 $entityFields = [
@@ -1169,7 +1169,7 @@ class Update_641 extends DatabaseUpdateBase
                     $gids[] = (int)$question->gid;
                 }
                 foreach ($question->answers as $answer) {
-                    $aids []= $answer->aid;
+                    $aids[] = $answer->aid;
                 }
             }
             $additionalNameKeys = array_keys($rawAdditionalNames);
@@ -1206,7 +1206,7 @@ class Update_641 extends DatabaseUpdateBase
             $defaultValues = DefaultValue::model()->findAll("qid in (" . implode(",", $qids) . ")");
             $dvids = [0];
             foreach ($defaultValues as $defaultValue) {
-                $dvids []= $defaultValue->dvid;
+                $dvids[] = $defaultValue->dvid;
             }
             $default10ns = DefaultValueL10n::model()->findAll("dvid in (" . implode(",", $dvids) . ")");
             $entityFields = [
@@ -1246,7 +1246,7 @@ class Update_641 extends DatabaseUpdateBase
                     'entities' => AnswerL10n::model()->findAll("aid in (" . implode(",", $aids) . ")"),
                     'fields' => ['answer']
                 ]
-        ];
+            ];
             foreach ($entityFields as $ef) {
                 foreach ($ef['entities'] as $entity) {
                     $save = [
