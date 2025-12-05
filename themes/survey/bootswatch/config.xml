@@ -17,12 +17,12 @@
         <author>LimeSurvey GmbH</author>
         <authorEmail>info@limesurvey.org</authorEmail>
         <authorUrl>http://www.limesurvey.org</authorUrl>
-        <copyright>Copyright (C) 2005 - 2019 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <copyright>Copyright (C) 2005 - 2025 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
         <version>3.0</version>
         <apiVersion>3</apiVersion>
-        <description><![CDATA[{{gT("Based on BootsWatch Themes:")}} <br><a href='https://bootswatch.com/3/'>{{gT("Visit Bootswatch page")}}</a> ]]></description>
-        <lastUpdate>2019-10-24 12:00:00</lastUpdate>
+        <description><![CDATA[{{gT("Based on BootsWatch Themes:")}} <br><a href='https://bootswatch.com/3/' target='_blank' rel='external' title='{{gT("Visit Bootswatch page in a new window.")}}'>{{gT("Visit Bootswatch page")}} <i class='ri-external-link-line'></i><span class='visually-hidden'>({{gT("Opens in a new window")}})</span></a> ]]></description>
+        <lastUpdate>2025-11-25 11:35:00</lastUpdate>
         <extends>vanilla</extends>
     </metadata>
 
