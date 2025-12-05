@@ -16495,6 +16495,39 @@ body {
   flex-direction: column;
 }
 
+.navbar .btn-create {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+a:focus {
+  outline: 2px solid currentColor !important;
+  outline-offset: 2px !important;
+}
+
+.navbar .navbar-nav {
+  column-gap: 1rem;
+}
+
+.navbar .navbar-nav .nav-link {
+  padding: unset !important;
+}
+
+.navbar .badge {
+  margin-left: 1rem;
+}
+
+.modal-header .btn-close:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
 .container-40 {
   padding: 0 40px;
   width: 100%;
@@ -17682,6 +17715,10 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 #breadcrumb-container {
   width: 100%;
+}
+
+ol.breadcrumb.title-bar-breadcrumb a:focus {
+  outline-offset: -2px !important;
 }
 
 .footer {

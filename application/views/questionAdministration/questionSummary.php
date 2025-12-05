@@ -13,7 +13,7 @@
     if ($question->qid !== 0): ?>
             <!-- Question summary -->
             <div class="pagetitle">
-                <span class="h1"><?php
+                <span class="h1" role="heading" aria-level="1"><?php
                     eT('Question summary'); ?>&nbsp;</span>
                 <small>
                     <em>
