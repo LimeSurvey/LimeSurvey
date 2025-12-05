@@ -17,6 +17,10 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
     define('K_TCPDF_EXTERNAL_CONFIG', true);
 }
 
+if (!defined('K_PATH_CACHE')) {
+    define('K_PATH_CACHE', Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR);
+}
+
 # include TCPDF
 require(APPPATH . 'config/tcpdf' . EXT);
 

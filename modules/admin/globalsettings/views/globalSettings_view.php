@@ -48,7 +48,8 @@ echo viewHelper::getViewTestTag('globalsettings');
                 'aListOfThemeObjects' => $aListOfThemeObjects,
                 'aEncodings'          => $aEncodings,
                 'thischaracterset'    => $thischaracterset,
-                'sideMenuBehaviour'   => $sideMenuBehaviour
+                'sideMenuBehaviour'   => $sideMenuBehaviour,
+                'globalGeneralSettings' => $globalGeneralSettings,
             ]
         ); ?>
     </div>

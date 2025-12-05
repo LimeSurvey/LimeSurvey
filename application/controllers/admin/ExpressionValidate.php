@@ -46,8 +46,7 @@ class ExpressionValidate extends SurveyCommonAction
         }
         $iQuotaId = $quota;
         if (is_string($lang)) {
-            $oValidator = new LSYii_Validators();
-            $aLangs = array($oValidator->languageFilter($lang));
+            $aLangs = array(\LSYii_Validators::languageCodeFilter($lang));
         } else {
             $aLangs = $oSurvey->allLanguages;
         }

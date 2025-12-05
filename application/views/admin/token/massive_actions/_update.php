@@ -60,7 +60,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "completed-switch",
                                         'id'            => "massedit_completed-switch",
-                                        'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch bootstrap-switch-integer", 'disabled' => true],
+                                        'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch", 'disabled' => true],
                                         'checkedOption' => 0,
                                         'selectOptions' => [
                                             '1' => gT('Yes'),
@@ -78,7 +78,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                         [
                                             'name'        => "completed-switch",
                                             'id'          => "massedit_completed-switch",
-                                            'htmlOptions' => ['class' => "YesNoSwitch bootstrap-switch-integer", 'disabled' => true],
+                                            'htmlOptions' => ['class' => "YesNoSwitch", 'disabled' => true],
                                             'checkedOption'       => 0,
                                             'selectOptions' => [
                                                 '1' => gT('Yes'),
@@ -183,7 +183,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "sent-switch",
                                         'id'            => "massedit_sent-switch",
-                                        'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch bootstrap-switch-integer", 'disabled' => true],
+                                        'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch", 'disabled' => true],
                                         'checkedOption' => 0,
                                         'selectOptions' => [
                                             '1' => gT('Yes'),
@@ -194,7 +194,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "sent-switch",
                                         'id'            => "massedit_sent-switch",
-                                        'htmlOptions'   => ['class' => "YesNoSwitch bootstrap-switch-integer", 'disabled' => true],
+                                        'htmlOptions'   => ['class' => "YesNoSwitch", 'disabled' => true],
                                         'checkedOption' => 0,
                                         'selectOptions' => [
                                             '1' => gT('Yes'),
@@ -234,7 +234,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "remind-switch",
                                         'id'            => "massedit_remind-switch",
-                                        'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch bootstrap-switch-integer", 'disabled' => true],
+                                        'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch", 'disabled' => true],
                                         'checkedOption' => 0,
                                         'selectOptions' => [
                                             '1' => gT('Yes'),
@@ -245,7 +245,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "sent-switch",
                                         'id'            => "massedit_sent-switch",
-                                        'htmlOptions'   => ['class' => "YesNoSwitch bootstrap-switch-integer", 'disabled' => true],
+                                        'htmlOptions'   => ['class' => "YesNoSwitch", 'disabled' => true],
                                         'checkedOption' => 0,
                                         'selectOptions' => [
                                             '1' => gT('Yes'),
@@ -326,7 +326,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                     <label class="col-md-3 form-label" for='massedit_validuntil'><?php eT('Until:'); ?></label>
                     <div class="col-md-8 has-feedback date-picker-container">
                         <div id="massedit_validuntil_datetimepicker" class="input-group date">
-                            <input class="DatePicker form-control action_datepickerUpdateHiddenField" id="massedit_validuntil" type="text" value="lskeep" name="validuntil_date" data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm" data-locale="<?php echo $locale ?>" disabled>
+                            <input class="DatePicker form-control action_datepickerUpdateHiddenField" id="massedit_validuntil" type="text" value="" name="validuntil_date" data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm" data-locale="<?php echo $locale ?>" disabled>
                             <span class="input-group-text"><span class="ri-calendar-2-fill"></span></span>
                         </div>
                         <input id="sbmtvaliduntil" type="hidden" name="validuntil" value="lskeep" class="custom-data selector_submitField" />
@@ -403,11 +403,6 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
         var myFormGroup = $(this).closest('.ex-form-group');
         
         myFormGroup.find('input:not(.action_check_to_keep_old_value),select:not(.action_check_to_keep_old_value)').prop('disabled', currentValue)
-
-        if(myFormGroup.find('.bootstrap-switch-container').length > 0){
-            myFormGroup.find('.bootstrap-switch-container input[type=checkbox]').bootstrapSwitch('disabled', currentValue);
-
-        }
 
         if(currentValue){
             myFormGroup.find('.selector_submitField').val('lskeep');
