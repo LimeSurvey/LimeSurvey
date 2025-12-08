@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -1681,7 +1681,7 @@ function upgradeTemplateTables304($oDB)
         'author'                 => 'LimeSurvey GmbH',
         'author_email'           => 'info@limesurvey.org',
         'author_url'             => 'https://www.limesurvey.org/',
-        'copyright'              => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\r\nAll rights reserved.',
+        'copyright'              => 'Copyright (C) 2007-2026 The LimeSurvey Project Team\r\nAll rights reserved.',
         'license'                => 'License: GNU/GPL License v2 or later, see LICENSE.php\r\n\r\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
         'version'                => '1.0',
         'api_version'            => '3.0',
@@ -1701,7 +1701,7 @@ function upgradeTemplateTables304($oDB)
         'author'                 => 'LimeSurvey GmbH',
         'author_email'           => 'info@limesurvey.org',
         'author_url'             => 'https://www.limesurvey.org/',
-        'copyright'              => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\r\nAll rights reserved.',
+        'copyright'              => 'Copyright (C) 2007-2026 The LimeSurvey Project Team\r\nAll rights reserved.',
         'license'                => 'License: GNU/GPL License v2 or later, see LICENSE.php\r\n\r\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
         'version'                => '1.0',
         'api_version'            => '3.0',
@@ -1723,7 +1723,7 @@ function upgradeTemplateTables304($oDB)
         'author'                 => 'LimeSurvey GmbH',
         'author_email'           => 'info@limesurvey.org',
         'author_url'             => 'https://www.limesurvey.org/',
-        'copyright'              => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\r\nAll rights reserved.',
+        'copyright'              => 'Copyright (C) 2007-2026 The LimeSurvey Project Team\r\nAll rights reserved.',
         'license'                => 'License: GNU/GPL License v2 or later, see LICENSE.php\r\n\r\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
         'version'                => '1.0',
         'api_version'            => '3.0',
