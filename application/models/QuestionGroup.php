@@ -1,18 +1,18 @@
 <?php
 
-/*
-* LimeSurvey
-* Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*
-*    Files Purpose: lots of common functions
-*/
+/**
+ * LimeSurvey
+ * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ *    Files Purpose: lots of common functions
+ */
 
 use LimeSurvey\Models\Services\Exception\{
     NotFoundException,
@@ -43,30 +43,56 @@ class QuestionGroup extends LSActiveRecord
     public $description;
 
     /**
+     * Returns the static model instance of the specified AR class.
+     *
+     * @param string $className The active record class name.
+     *
      * @inheritdoc
-     * @return QuestionGroup
+     *
+     * @return QuestionGroup The static model instance.
      */
     public static function model($className = __CLASS__)
     {
-        /** @var self $model */
+        /**
+         * The static model instance.
+         *
+         * @var self $model
+         */
         $model = parent::model($className);
         return $model;
     }
 
-    /** @inheritdoc */
+    /**
+     * Returns the database table name for the QuestionGroup model.
+     *
+     * @inheritdoc
+     *
+     * @return string The table name.
+     */
     public function tableName()
     {
         return '{{groups}}';
     }
 
-    /** @inheritdoc */
+    /**
+     * Returns the primary key column for the QuestionGroup model.
+     *
+     * @inheritdoc
+     *
+     * @return string The primary key column name.
+     */
     public function primaryKey()
     {
         return 'gid';
     }
 
-
-    /** @inheritdoc */
+    /**
+     * Defines the validation rules for the QuestionGroup model.
+     *
+     * @inheritdoc
+     *
+     * @return array Validation rules for this model.
+     */
     public function rules()
     {
         return [
@@ -76,7 +102,13 @@ class QuestionGroup extends LSActiveRecord
         ];
     }
 
-    /** @inheritdoc */
+    /**
+     * Defines the relations for the QuestionGroup ActiveRecord model.
+     *
+     * @inheritdoc
+     *
+     * @return array The relational rules for this model.
+     */
     public function relations()
     {
         return array(
@@ -95,8 +127,15 @@ class QuestionGroup extends LSActiveRecord
 
 
     /**
-     * @param integer $iSurveyId
-     * @param int $position
+     * Recalculates and updates the group_order for all groups in a survey.
+     *
+     * Groups are ordered by their current group_order and group_name, and
+     * then assigned consecutive group_order values starting from $position.
+     *
+     * @param int $iSurveyId The survey ID.
+     * @param int $position  The starting group_order value.
+     *
+     * @return void
      */
     public function updateGroupOrder($iSurveyId, $position = 0)
     {
@@ -119,6 +158,16 @@ class QuestionGroup extends LSActiveRecord
         }
     }
 
+    /**
+     * Normalizes group and question order for all languages in the survey.
+     *
+     * For each language, group_order and question_order are reassigned sequentially
+     * starting from 1 to ensure consistent ordering.
+     *
+     * @param int $surveyid The survey ID whose group and question order should be cleaned.
+     *
+     * @return void
+     */
     public function cleanOrder($surveyid)
     {
         $iSurveyId = (int) $surveyid;
@@ -146,13 +195,17 @@ class QuestionGroup extends LSActiveRecord
             }
         }
     }
+
     /**
-     * Insert an array into the groups table
-     * Returns false if insertion fails, otherwise the new GID
+     * Inserts a new question group from the given data array.
      *
-     * @param array $data
-     * @return bool|int
-     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
+     * Returns false if insertion fails, otherwise the new group ID (gid).
+     *
+     * @param array $data Attribute values for the new group.
+     *
+     * @return bool|int False on failure, or the new group ID on success.
+     *
+     * @deprecated Since 2018-02-03. Use `$model->attributes = $data` and `$model->save()` instead.
      */
     public function insertRecords($data)
     {
@@ -168,12 +221,18 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
-     * Deletes a question group and all its dependencies.
-     * Returns affected rows of question group table (should be 1 or null)
-     * @param integer $groupId
-     * @param integer|null $surveyId deprecated
-     * @throw Exception
-     * @return int|null
+     * Deletes a question group and all its dependent records.
+     *
+     * This will also delete related questions, assessments and localized
+     * group records. The survey must not be active.
+     *
+     * @param int      $groupId  The ID of the group to delete.
+     * @param int|null $surveyId Deprecated. The survey ID is derived from the group.
+     *
+     * @throws NotFoundException    If the group cannot be found.
+     * @throws BadRequestException  If the survey is active.
+     *
+     * @return int|null Number of affected rows in the group table, or null.
      */
     public static function deleteWithDependency($groupId, $surveyId = null)
     {
@@ -195,11 +254,12 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
-     * Get group description
+     * Returns the localized description of a question group.
      *
-     * @param int $iGroupId
-     * @param string $sLanguage
-     * @return string
+     * @param int    $iGroupId  The group ID.
+     * @param string $sLanguage The language code.
+     *
+     * @return string The localized group description.
      */
     public function getGroupDescription($iGroupId, $sLanguage)
     {
@@ -207,10 +267,11 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
-     * Get the internationalized group name from the L10N Table
+     * Returns the localized group name from the L10N table.
      *
-     * @param string $sLanguage
-     * @return string
+     * @param string $sLanguage The language code.
+     *
+     * @return string The localized group name, or an empty string if not found.
      */
     public function getGroupNameI10N($sLanguage)
     {
@@ -221,10 +282,11 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
-     * Get the internationalized group description from the L10N Table
+     * Returns the localized group description from the L10N table.
      *
-     * @param string $sLanguage
-     * @return string
+     * @param string $sLanguage The language code.
+     *
+     * @return string The localized description, or an empty string if not found.
      */
     public function getGroupDescriptionI10N($sLanguage)
     {
@@ -235,8 +297,11 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
-     * @param integer $groupId
-     * @return array
+     * Returns the IDs of all top-level questions in the given group.
+     *
+     * @param int $groupId The group ID.
+     *
+     * @return int[] List of question IDs.
      */
     private static function getQuestionIdsInGroup($groupId)
     {
@@ -257,9 +322,12 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
-     * @param mixed|array $condition
-     * @param string[]|false $order
-     * @return CDbDataReader
+     * Returns all groups matching the given condition.
+     *
+     * @param mixed          $condition The condition passed to the query builder.
+     * @param string[]|false $order     Optional ORDER BY clause(s), or false for no explicit order.
+     *
+     * @return CDbDataReader The data reader for the query result.
      */
     public function getAllGroups($condition, $order = false)
     {
@@ -274,7 +342,12 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
-     * @return string
+     * Returns the rendered action buttons for this question group.
+     *
+     * The buttons are rendered through the GridActionsWidget and include actions like
+     * edit, add question, group summary and delete (depending on permissions).
+     *
+     * @return string HTML markup for the group action dropdown.
      */
     public function getbuttons()
     {
@@ -350,12 +423,14 @@ class QuestionGroup extends LSActiveRecord
                 ),
                 'data-btnclass'  => 'btn-danger',
                 'data-btntext'   => gT('Delete'),
-                'data-onclick'  => '(function() { ' . CHtml::encode(convertGETtoPOST(
-                    App()->createUrl(
-                        "questionGroupsAdministration/delete/",
-                        ["gid" => $this->gid, "surveyid" => $this->sid]
+                'data-onclick'  => '(function() { ' . CHtml::encode(
+                    convertGETtoPOST(
+                        App()->createUrl(
+                            "questionGroupsAdministration/delete/",
+                            ["gid" => $this->gid, "surveyid" => $this->sid]
+                        )
                     )
-                )) . '})'
+                ) . '})'
             ]
         ];
         return App()->getController()->widget(
@@ -367,7 +442,9 @@ class QuestionGroup extends LSActiveRecord
 
 
     /**
-     * @return CActiveDataProvider
+     * Creates a data provider for listing question groups in the admin interface.
+     *
+     * @return CActiveDataProvider The data provider for this model.
      */
     public function search()
     {
@@ -397,7 +474,9 @@ class QuestionGroup extends LSActiveRecord
         $criteria->params = (array(':surveyid' => $this->sid, ':language' => $this->language));
         $criteria->compare('group_name', $this->group_name, true);
 
-        $dataProvider = new CActiveDataProvider(get_class($this), array(
+        $dataProvider = new CActiveDataProvider(
+            get_class($this),
+            array(
             'criteria' => $criteria,
 
             'sort' => $sort,
@@ -405,12 +484,15 @@ class QuestionGroup extends LSActiveRecord
             'pagination' => array(
                 'pageSize' => $pageSize,
             ),
-        ));
+            )
+        );
         return $dataProvider;
     }
 
-    /*
-     * Get primary Question group title
+    /**
+     * Returns the primary (base language) title of the question group.
+     *
+     * @return string The group name in the survey base language.
      */
     public function getPrimaryTitle()
     {
@@ -420,8 +502,10 @@ class QuestionGroup extends LSActiveRecord
         return $oQuestionGroup->questiongroupl10ns[$baselang]->group_name;
     }
 
-    /*
-     * Get primary Question group description
+    /**
+     * Returns the primary (base language) description of the question group.
+     *
+     * @return string The group description in the survey base language.
      */
     public function getPrimaryDescription()
     {
@@ -436,41 +520,64 @@ class QuestionGroup extends LSActiveRecord
      * while the survey is active.
      *
      * @inheritdoc
+     *
+     * @return bool False if saving should be cancelled, true otherwise.
      */
     protected function beforeSave()
     {
-        if (parent::beforeSave()) {
-            $survey = Survey::model()->findByPk($this->sid);
-            if (!empty($survey) && $survey->isActive && $this->getIsNewRecord()) {
-                /* And for multi lingual, when add a new language ? */
-                $this->addError('gid', gT("You can not add a group if survey is active."));
-                return false;
-            }
-            return true;
-        } else {
+        if (!parent::beforeSave()) {
             return false;
         }
+
+        if (!empty($this->sid)) {
+            $survey = Survey::model()->findByPk($this->sid);
+
+            $addingGroupToActiveSurvey = !empty($survey)
+            && $survey->isActive
+            && $this->getIsNewRecord();
+
+            if ($addingGroupToActiveSurvey) {
+                /* And for multi lingual, when add a new language ? */
+                  $this->addError('gid', gT("You can not add a group if survey is active."));
+                  return false;
+            }
+
+            Survey::model()->updateByPk(
+                $this->sid,
+                ['lastmodified' => gmdate('Y-m-d H:i:s')]
+            );
+        }
+
+        return true;
     }
 
     /**
      * Returns the first question group in the survey
-     * @param int $surveyId
+     *
+     * @param int $surveyId The ID of the survey to search in.
+     *
      * @return QuestionGroup
      */
     public static function getFirstGroup($surveyId)
     {
         $criteria = new CDbCriteria();
         $criteria->addCondition('sid = ' . $surveyId);
-        $criteria->mergeWith(array(
+        $criteria->mergeWith(
+            array(
             'order' => 'gid DESC'
-        ));
+            )
+        );
         return self::model()->find($criteria);
     }
 
-    /*
-     * Used in frontend helper, buildsurveysession.
-     * @param int $surveyid
-     * @return int
+    /**
+     * Returns the number of groups in a survey that do not contain any questions.
+     *
+     * Used in the frontend helper (buildsurveysession).
+     *
+     * @param int $surveyid The survey ID.
+     *
+     * @return int The number of empty groups.
      */
     public static function getTotalGroupsWithoutQuestions($surveyid)
     {
@@ -492,9 +599,13 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
-     * Used in frontend helper, buildsurveysession.
-     * @param int $surveyid
-     * @return int
+     * Returns the number of groups in a survey that contain at least one question.
+     *
+     * Used in the frontend helper (buildsurveysession).
+     *
+     * @param int $surveyid The survey ID.
+     *
+     * @return int The number of non-empty groups.
      */
     public static function getTotalGroupsWithQuestions($surveyid)
     {
@@ -517,11 +628,17 @@ class QuestionGroup extends LSActiveRecord
 
     /**
      * Returns all group questions (including subquestions)
+     *
      * @return Question[]
      */
     public function getAllQuestions()
     {
-        /** @var Question[] $questions */
+
+        /**
+         * Questions
+         *
+         * @var Question[]
+         */
         $questions = Question::model()->findAllByAttributes(['gid' => $this->gid]);
         return $questions;
     }
