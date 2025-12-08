@@ -1198,7 +1198,10 @@ class Update_641 extends DatabaseUpdateBase
                         ]);
                         $prefix = Yii::app()->db->tablePrefix ?? "";
                         if (count($questionsTemp)) {
-                            $newFields[$oldField] = getFieldName($prefix . "survey_" . $passiveSurvey->sid, $oldField, $questionsTemp, (int)$sid, (int)$gid);
+                            $newFieldName = getFieldName($prefix . "survey_" . $passiveSurvey->sid, $oldField, $questionsTemp, (int)$sid, (int)$gid);
+                            if ($newFieldName) {
+                                $newFields[$oldField] = $newFieldName;
+                            }
                         }
                     }
                 }

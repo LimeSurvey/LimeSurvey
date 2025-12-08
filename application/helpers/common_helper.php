@@ -1389,7 +1389,7 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                 $currentQuestion = null;
                 $excludeSubquestion = false;
                 foreach ($questions as $question) {
-                    if ($question->title === $code) {
+                    if (($question->title === $code) || ($code === "")) {
                         $currentQuestion = $question;
                     } elseif (in_array($code, ["other", "comment", "othercomment", $question->title . "other", $question->title . "comment", $question->title . "othercomment"])) {
                         $currentQuestion = $question;
