@@ -465,7 +465,7 @@ class LimeMailer extends PHPMailer
      */
     public function addDebug($str, $level = 0)
     {
-        $this->debug[] = rtrim((string) $str) . "\n";
+        $this->debug[] = '['. date('Y-m-d H:i:s'). "] ". rtrim((string) $str) . "\n";
     }
 
     /**
