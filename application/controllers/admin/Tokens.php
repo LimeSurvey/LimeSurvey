@@ -1616,7 +1616,14 @@ class Tokens extends SurveyCommonAction
                             sprintf(gT("Invalid language %s for token ID: %s."), $emrow['language'], $emrow['tid'])
                         );
                     }
-                    $mail = \LimeMailer::getInstance();
+                    if ($mail->Mailer != 'smtp') {
+                        // If not SMTP, get a fresh instance
+                        $mail = \LimeMailer::getInstance();
+                    } else {
+                        $mail->clearCustomHeaders();
+                        $mail->clearAddresses();
+                        $mail->clearAttachments();
+                    }
                     if ($this->tokenIsSetInEmailCache($iSurveyId, $emrow['tid'], $bIsInvitation)) {
                         // The email has already been send this session, skip.
                         // Happens if user reloads page or double clicks on "Send".
@@ -1697,13 +1704,13 @@ class Tokens extends SurveyCommonAction
                             }
                         }
                         $tokenoutput .= $stringInfo . "<br />\n";
-                        if (Yii::app()->getConfig("emailsmtpdebug") > 1) {
+                        if (Yii::app()->getConfig("emailsmtpdebug") > 1 && ($mail->Mailer != 'smtp')) {
                             $tokenoutput .= $mail->getDebug('html');
                         }
                         $tokenoutput .= $tokenSaveError;
                     } else {
                         $tokenoutput .= $stringInfo . CHtml::tag("span", array('class' => "text-danger"), sprintf(gT("Error message: %s"), $mail->getError())) . "<br>\n";
-                        if (Yii::app()->getConfig("emailsmtpdebug") > 0) {
+                        if (Yii::app()->getConfig("emailsmtpdebug") > 1 && ($mail->Mailer != 'smtp')) {
                             $tokenoutput .= $mail->getDebug('html');
                         }
                         $bSendError = true;
@@ -1714,6 +1721,9 @@ class Tokens extends SurveyCommonAction
                 // Closes a still active SMTP connection if it exists
                 $mail->smtpClose();
                 $aViewUrls = array();
+                if (Yii::app()->getConfig("emailsmtpdebug") > 1 && ($mail->Mailer == 'smtp')) {
+                    $tokenoutput .= $mail->getDebug('html');
+                }
                 $aData['tokenoutput'] = $tokenoutput;
 
                 if ($ctcount > $emcount) {
