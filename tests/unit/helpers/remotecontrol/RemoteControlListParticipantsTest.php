@@ -95,7 +95,7 @@ class RemoteControlListParticipantsTest extends TestBaseClass
         ];
 
         // for MSSQL Server
-        if (substr(App()->db->connectionString, 0, 6) === 'sqlsrv') {
+        if (in_array(App()->db->driverName, ['mssql','sqlsrv'])) {
             $list[0]['validuntil'] = preg_replace('/\.000$/', '', $list[0]['validuntil']);
             $list[0]['validfrom'] = preg_replace('/\.000$/', '', $list[0]['validfrom']);
         }
@@ -317,7 +317,7 @@ class RemoteControlListParticipantsTest extends TestBaseClass
         ];
 
         // for MSSQL Server
-        if (substr(App()->db->connectionString, 0, 6) === 'sqlsrv') {
+        if (in_array(App()->db->driverName, ['mssql','sqlsrv'])) {
             $list[0]['validuntil'] = preg_replace('/\.000$/', '', $list[0]['validuntil']);
             $list[0]['validfrom'] = preg_replace('/\.000$/', '', $list[0]['validfrom']);
         }
