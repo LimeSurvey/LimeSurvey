@@ -17569,6 +17569,7 @@ body {
 }
 .modal-header .btn-close:focus {
   box-shadow: none;
+  outline: 2px solid currentColor;
 }
 .modal-header .btn-close:hover {
   background-color: #EEEFF7;
