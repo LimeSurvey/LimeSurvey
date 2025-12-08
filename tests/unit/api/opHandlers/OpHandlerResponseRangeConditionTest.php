@@ -57,13 +57,6 @@ class OpHandlerResponseRangeConditionTest extends TestCondition
         $criteria = $handler->execute('score', ['', '42']);
 
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
-//        $this->assertSame('CAST(`score` AS UNSIGNED) <= :scoreMax', $criteria->condition);
-        $this->assertTrue(
-            strpos($criteria->condition, 'CAST(`score` AS UNSIGNED) <= :scoreMax') !== false
-            || strpos($criteria->condition, 'CAST([score] AS UNSIGNED) <= :scoreMax') !== false
-            || strpos($criteria->condition, 'CAST("score" AS UNSIGNED) <= :scoreMax') !== false
-        );
-
         $this->assertFieldConditions($criteria->condition, 'CAST([0] AS UNSIGNED) <= :scoreMax', ['score']);
         $this->assertSame([':scoreMax' => 42.0], $criteria->params);
     }

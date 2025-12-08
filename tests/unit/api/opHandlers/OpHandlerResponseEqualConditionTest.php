@@ -37,13 +37,6 @@ class OpHandlerResponseEqualConditionTest extends TestCondition
         $handler = new EqualConditionHandler();
         $criteria = $handler->execute(['first_name', 'last_name'], 'Name');
 
-        //$this->assertStringContainsString('`first_name`', $criteria->condition);
-        $this->assertTrue(
-            strpos($criteria->condition, '`first_name`') !== false
-            || strpos($criteria->condition, '[first_name]') !== false
-            || strpos($criteria->condition, '"first_name"') !== false
-        );
-
         $this->assertFieldConditions(
             $criteria->condition,
             '[0] = :first_nameValue OR [1] = :last_nameValue',

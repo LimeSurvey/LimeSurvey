@@ -63,7 +63,6 @@ class OpHandlerResponseDateRangeConditionTest extends TestCondition
         $criteria = $handler->execute('updated_at', ['', '2023-01-31']);
 
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
-        //$this->assertSame('`updated_at` <= :updated_atMax', $criteria->condition);
         $this->assertFieldConditions($criteria->condition, '[0] <= :updated_atMax', ['updated_at']);
         $this->assertSame([':updated_atMax' => '2023-01-31 23:59:59'], $criteria->params);
     }
@@ -78,7 +77,6 @@ class OpHandlerResponseDateRangeConditionTest extends TestCondition
 
         // Bad min date; good max date
         $criteria = $handler->execute('ts', ['07/01/2024', '2024-07-10']);
-
         $this->assertFieldConditions($criteria->condition, '[0] <= :tsMax', ['ts']);
         $this->assertSame([':tsMax' => '2024-07-10 23:59:59'], $criteria->params);
     }
@@ -89,7 +87,6 @@ class OpHandlerResponseDateRangeConditionTest extends TestCondition
 
         // Good min date; bad max date
         $criteria = $handler->execute('ts', ['2024-07-01', '07-31-2024']);
-
         $this->assertFieldConditions($criteria->condition, '[0] >= :tsMin', ['ts']);
         $this->assertSame([':tsMin' => '2024-07-01 00:00:00'], $criteria->params);
     }
@@ -129,12 +126,10 @@ class OpHandlerResponseDateRangeConditionTest extends TestCondition
         $criteria = $handler->execute('created_at`; DROP  table--', ['2024-06-01', '2024-06-02']);
 
         $this->assertStringNotContainsString(';', $criteria->condition);
-        //$this->assertSame('`created_atDROPtable--` BETWEEN :created_atDROPtableMin AND :created_atDROPtableMax', $criteria->condition);
-        $this->assertTrue(
-            $criteria->condition === '`created_atDROPtable--` BETWEEN :created_atDROPtableMin AND :created_atDROPtableMax'
-            || $criteria->condition === '[created_atDROPtable--] BETWEEN :created_atDROPtableMin AND :created_atDROPtableMax'
-            || $criteria->condition === '"created_atDROPtable--" BETWEEN :created_atDROPtableMin AND :created_atDROPtableMax',
-            "Unexpected condition: {$criteria->condition}"
+        $this->assertFieldConditions(
+            $criteria->condition,
+            '[0] BETWEEN :created_atDROPtableMin AND :created_atDROPtableMax',
+            ['created_atDROPtable--']
         );
         $this->assertSame(
             [

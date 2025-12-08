@@ -11,7 +11,7 @@ class TestCondition extends TestCase
         $separators = [
             ['`', '`'],
             ['[', ']'], // MSSQL
-            ['"', '"']  // PostgresSQL
+            ['"', '"']  // PostgreSQL
         ];
         foreach ($separators as $sep) {
             $condition = $pattern;
@@ -19,7 +19,7 @@ class TestCondition extends TestCase
                 $placeholder = "[{$key}]";
                 $condition = str_replace($placeholder, $sep[0] . $fieldname . $sep[1], $condition);
             }
-            if (strpos($condition, $criteriaCondition) !== false) {
+            if (strpos($criteriaCondition, $condition) !== false) {
                 return $this->assertTrue(true);
             }
         }
