@@ -3,9 +3,9 @@
 namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\ContainConditionHandler;
-use PHPUnit\Framework\TestCase;
+use ls\tests\TestCondition;
 
-class OpHandlerResponseContainConditionTest extends TestCase
+class OpHandlerResponseContainConditionTest extends TestCondition
 {
     public function testCanHandleContain(): void
     {

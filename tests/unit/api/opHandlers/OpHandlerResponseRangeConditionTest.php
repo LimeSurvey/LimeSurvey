@@ -3,9 +3,9 @@
 namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\RangeConditionHandler;
-use PHPUnit\Framework\TestCase;
+use ls\tests\TestCondition;
 
-class OpHandlerResponseRangeConditionTest extends TestCase
+class OpHandlerResponseRangeConditionTest extends TestCondition
 {
     public function testCanHandleRange(): void
     {

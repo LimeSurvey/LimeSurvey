@@ -3,9 +3,9 @@
 namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\MultiSelectConditionHandler;
-use PHPUnit\Framework\TestCase;
+use ls\tests\TestCondition;
 
-class OpHandlerResponseMultiSelectConditionTest extends TestCase
+class OpHandlerResponseMultiSelectConditionTest extends TestCondition
 {
     public function testCanHandleRecognizesOperationCaseInsensitive(): void
     {

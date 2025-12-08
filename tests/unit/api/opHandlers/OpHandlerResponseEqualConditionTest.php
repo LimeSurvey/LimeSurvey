@@ -3,9 +3,9 @@
 namespace api\opHandlers;
 
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\EqualConditionHandler;
-use PHPUnit\Framework\TestCase;
+use ls\tests\TestCondition;
 
-class OpHandlerResponseEqualConditionTest extends TestCase
+class OpHandlerResponseEqualConditionTest extends TestCondition
 {
     public function testCanHandleEqual(): void
     {
