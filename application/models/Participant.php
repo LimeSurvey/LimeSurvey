@@ -1504,7 +1504,7 @@ class Participant extends LSActiveRecord
      * @return boolean
      * @throws CPDBException with error message
      */
-    private function checkColumnDuplicates($surveyId, array $newAttributes)
+    private function checkColumnDuplicates(int $surveyId, array $newAttributes)
     {
         $tokenTableSchema = Yii::app()->db
             ->schema
@@ -1527,94 +1527,239 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Create new "fields"? in which table?
+     * Handles the creation of new token attributes by adding them to survey descriptions
+     * and creating corresponding columns.
      *
-     * @param int $surveyId
-     * @param array $newAttributes
-     * @return array [addedAttributes, addedAttributeIds]
+     * This function orchestrates the process of adding new participant attributes to a survey by:
+     * 1. Adding the attributes to the survey's attribute descriptions in the database
+     * 2. Creating corresponding columns in the survey's token table
+     *
+     * @param int $surveyId The ID of the survey to which the new token attributes will be added.
+     * @param array $newAttributes An array of participant attribute IDs from the CPDB to be added as token attributes.
+     *
+     * @return array A two-element array containing:
+     *               - [0] array $addedAttributes: Array of participant attribute IDs that were successfully added.
+     *               - [1] array $addedAttributeIds: Array of token field names (e.g., 'attribute_1', 'attribute_2') for the added attributes.
      */
-    private function createColumnsInTokenTable($surveyId, array $newAttributes)
+    private function handleNewTokenAttributes(int $surveyId, array $newAttributes) : array
     {
+        [
+            $addedAttributes,
+            $addedAttributeIds,
+        ] = $this->addNewAttributesToSurveysAttributeDescriptions(
+            $surveyId,
+            $newAttributes
+        );
+        $this->createColumnsInTokenTable($addedAttributeIds, $surveyId);
+
+        return [$addedAttributes, $addedAttributeIds];
+    }
+
+    /**
+     * Adds new participant attributes to the survey's attribute descriptions.
+     *
+     * This function retrieves participant attribute information from the CPDB (Central Participant Database),
+     * creates field definitions for new token attributes, and updates the survey's attributedescriptions field
+     * in the database. It handles attribute names in multiple languages and supports dropdown type attributes
+     * with their associated options.
+     *
+     * @param int $surveyId The ID of the survey to which attributes will be added.
+     * @param array $newAttributes An array of participant attribute IDs from the CPDB to be added as token attributes.
+     *
+     * @return array A two-element array containing:
+     *               - [0] array $addedAttributes: Array of participant attribute IDs that were successfully added.
+     *               - [1] array $addedAttributeIds: Array of token field names (e.g., 'attribute_1', 'attribute_2') for the added attributes.
+     */
+    private function addNewAttributesToSurveysAttributeDescriptions(int $surveyId, array $newAttributes): array
+    {
+        if (empty($newAttributes)) {
+            return [[], []];
+        }
+
         // Get default language
         $surveyInfo = getSurveyInfo($surveyId);
-        $defaultsurveylang = $surveyInfo['surveyls_language'];
+        $defaultSurveyLang = $surveyInfo['surveyls_language'];
+        $adminLang = App()->session['adminlang'];
 
-        //Will contain serialised info for the surveys.attributedescriptions field
-        $fieldcontents = array();
+        // Fetch all attribute data in a single query
+        $attributeData = $this->fetchAttributeData($newAttributes);
 
-        // ??
-        $fields = array();
+        // Fetch dropdown options for all DD type attributes in a single query
+        $dropdownOptions = $this->fetchDropdownOptions($newAttributes);
 
-        //Will contain the actual field name of any new token attribute fields
-        $addedAttributes = array();
+        // Build field contents
+        $fieldContents = [];
+        $addedAttributes = [];
+        $addedAttributeIds = [];
 
-        //Will contain the description of any new token attribute fields
-        $addedAttributeIds = array();
-
-        foreach ($newAttributes as $value) {
-            $newfieldname = 'attribute_' . $value;
-            $fields[$newfieldname] = array('type' => 'string'); // TODO: Always string??
-            $attname = Yii::app()->db
-                ->createCommand()
-                ->select('{{participant_attribute_names_lang}}.attribute_name, {{participant_attribute_names_lang}}.lang')
-                ->from('{{participant_attribute_names}}')
-                ->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')
-                ->where('{{participant_attribute_names}}.attribute_id = :attrid ')
-                ->bindParam(":attrid", $value, PDO::PARAM_INT);
-
-            $attributename = $attname->queryAll();
-            foreach ($attributename as $att) {
-                $languages[$att['lang']] = $att['attribute_name'];
+        foreach ($newAttributes as $attributeId) {
+            if (!isset($attributeData[$attributeId])) {
+                continue; // Skip if attribute data not found
             }
 
-            //Check first for the default survey language
-            if (isset($languages[$defaultsurveylang])) {
-                $newname = $languages[$defaultsurveylang];
-            } elseif (isset($languages[Yii::app()->session['adminlang']])) {
-                $newname = $languages[Yii::app()->session['adminlang']];
-            } else {
-                $newname = $attributename[0]['attribute_name']; //Choose the first item in the list
-            }
+            $newFieldName = 'attribute_' . $attributeId;
+            $languages = $attributeData[$attributeId]['languages'];
+            $attributeType = $attributeData[$attributeId]['type'];
 
-            $fieldcontents[$newfieldname] = array(
-                "description" => $newname,
-                "mandatory" => "N",
-                "encrypted" => "N",
-                "show_register" => "N"
-            );
-            array_push($addedAttributeIds, 'attribute_' . $value);
-            array_push($addedAttributes, $value);
+            // Determine the best language match
+            $newName = $this->selectBestLanguageName($languages, $defaultSurveyLang, $adminLang);
+
+            // Get dropdown options if applicable
+            $dropdownOptionsJson = ($attributeType === 'DD' && isset($dropdownOptions[$attributeId]))
+                ? json_encode($dropdownOptions[$attributeId])
+                : '[]';
+
+            $fieldContents[$newFieldName] = [
+                'description' => $newName,
+                'mandatory' => 'N',
+                'encrypted' => 'N',
+                'show_register' => 'N',
+                'type' => $attributeType,
+                'type_options' => $dropdownOptionsJson
+            ];
+
+            $addedAttributeIds[] = $newFieldName;
+            $addedAttributes[] = $attributeId;
         }
 
-        //Update the attributedescriptions in the survey table to include the newly created attributes
-        $previousatt = Yii::app()->db
+        // Update the survey's attribute descriptions
+        $this->updateSurveyAttributeDescriptions($surveyId, $fieldContents);
+
+        return [$addedAttributes, $addedAttributeIds];
+    }
+
+    /**
+     * Fetches attribute data for multiple attributes in a single query.
+     *
+     * @param array $attributeIds Array of attribute IDs to fetch.
+     * @return array Associative array with attribute IDs as keys and their data as values.
+     */
+    private function fetchAttributeData(array $attributeIds): array
+    {
+        $attributeNames = App()->db
+            ->createCommand()
+            ->select([
+                '{{participant_attribute_names}}.attribute_id',
+                '{{participant_attribute_names}}.attribute_type',
+                '{{participant_attribute_names_lang}}.attribute_name',
+                '{{participant_attribute_names_lang}}.lang'
+            ])
+            ->from('{{participant_attribute_names}}')
+            ->join(
+                '{{participant_attribute_names_lang}}',
+                '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id'
+            )
+            ->where(['in', '{{participant_attribute_names}}.attribute_id', $attributeIds])
+            ->queryAll();
+
+        $result = [];
+        foreach ($attributeNames as $row) {
+            $attrId = $row['attribute_id'];
+            if (!isset($result[$attrId])) {
+                $result[$attrId] = [
+                    'type' => $row['attribute_type'],
+                    'languages' => []
+                ];
+            }
+            $result[$attrId]['languages'][$row['lang']] = $row['attribute_name'];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Fetches dropdown options for multiple attributes in a single query.
+     *
+     * @param array $attributeIds Array of attribute IDs to fetch dropdown options for.
+     * @return array Associative array with attribute IDs as keys and arrays of option values.
+     */
+    private function fetchDropdownOptions(array $attributeIds): array
+    {
+        $options = App()->db
+            ->createCommand()
+            ->select(['attribute_id', 'value'])
+            ->from('{{participant_attribute_values}}')
+            ->where(['in', 'attribute_id', $attributeIds])
+            ->queryAll();
+
+        $result = [];
+        foreach ($options as $option) {
+            $result[$option['attribute_id']][] = $option['value'];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Selects the best language name based on priority: default survey language, admin language, or first available.
+     *
+     * @param array $languages Associative array of language codes to attribute names.
+     * @param string $defaultSurveyLang The default survey language code.
+     * @param string $adminLang The admin language code.
+     * @return string The selected attribute name.
+     */
+    private function selectBestLanguageName(array $languages, string $defaultSurveyLang, string $adminLang): string
+    {
+        if (isset($languages[$defaultSurveyLang])) {
+            return $languages[$defaultSurveyLang];
+        }
+
+        if (isset($languages[$adminLang])) {
+            return $languages[$adminLang];
+        }
+
+        return reset($languages) ?: '';
+    }
+
+    /**
+     * Updates the survey's attribute descriptions with new field contents.
+     *
+     * @param int $surveyId The survey ID.
+     * @param array $fieldContents New field contents to merge with existing attributes.
+     * @return void
+     */
+    private function updateSurveyAttributeDescriptions(int $surveyId, array $fieldContents): void
+    {
+        $tokenAttributes = App()->db
             ->createCommand()
             ->select('attributedescriptions')
-            ->where("sid = :sid")
             ->from('{{surveys}}')
-            ->bindParam(":sid", $surveyId, PDO::PARAM_INT);
-        $aTokenAttributes = $previousatt->queryRow();
-        $aTokenAttributes = decodeTokenAttributes($aTokenAttributes['attributedescriptions'] ?? '');
+            ->where('sid = :sid', [':sid' => $surveyId])
+            ->queryScalar();
 
-        foreach ($fieldcontents as $key => $iIDAttributeCPDB) {
-            $aTokenAttributes[$key] = $iIDAttributeCPDB;
-        }
+        $tokenAttributes = decodeTokenAttributes($tokenAttributes ?? '');
+        $tokenAttributes = array_merge($tokenAttributes, $fieldContents);
 
-        $aTokenAttributes = json_encode($aTokenAttributes);
-
-        Yii::app()->db
+        App()->db
             ->createCommand()
-            ->update('{{surveys}}', array("attributedescriptions" => $aTokenAttributes), 'sid = ' . intval($surveyId)); // load description in the surveys table
+            ->update(
+                '{{surveys}}',
+                ['attributedescriptions' => json_encode($tokenAttributes)],
+                'sid = :sid',
+                [':sid' => $surveyId]
+            );
+    }
 
-        //Actually create the fields in the tokens table
-        Yii::app()->loadHelper('update/updatedb');
-        foreach ($fields as $key => $value) {
-            addColumn("{{tokens_$surveyId}}", $key, $value['type']);
+    /**
+     * Creates new columns in the survey's token table for participant attributes.
+     *
+     * This function adds new attribute columns to the tokens table for a specific survey,
+     * then refreshes the database schema cache and model metadata to ensure the new
+     * columns are recognized by the application.
+     *
+     * @param array $addedAttributeIds An array of attribute field names (e.g., 'attribute_1', 'attribute_2') to be added as columns in the token table.
+     * @param int $surveyId The ID of the survey whose token table will be modified.
+     *
+     * @return void
+     */
+    private function createColumnsInTokenTable(array $addedAttributeIds, int $surveyId) : void
+    {
+        App()->loadHelper('update/updatedb');
+        foreach ($addedAttributeIds as $attributeId) {
+            addColumn("{{tokens_$surveyId}}", $attributeId, 'string');
         }
-        Yii::app()->db->schema->getTable("{{tokens_$surveyId}}", true); // Refresh schema cache just
+        App()->db->schema->getTable("{{tokens_$surveyId}}", true); // Refresh schema cache just
         Token::model($surveyId)->refreshMetaData(); // Refresh model meta data
-
-        return array($addedAttributes, $addedAttributeIds);
     }
 
     /**
@@ -1766,7 +1911,7 @@ class Participant extends LSActiveRecord
      *                createautomap - If true, rename the fieldnames of automapped attributes so that in future they are automatically mapped
      * @return array
      */
-    public function copyCPDBAttributesToTokens($surveyId, array $participantIds, array $mappedAttributes, array $newAttributes, array $options)
+    public function copyCPDBAttributesToTokens(int $surveyId, array $participantIds, array $mappedAttributes, array $newAttributes, array $options)
     {
         Yii::app()->loadHelper('common');
 
@@ -1788,8 +1933,7 @@ class Participant extends LSActiveRecord
         // Check for duplicates. Will throw CPDBException if duplicate is found.
         $this->checkColumnDuplicates($surveyId, $newAttributes);
 
-        // TODO: Why use two variables for this?
-        [$addedAttributes, $addedAttributeIds] = $this->createColumnsInTokenTable($surveyId, $newAttributes);
+        [$addedAttributes, $addedAttributeIds] = $this->handleNewTokenAttributes($surveyId, $newAttributes);
 
         //Write each participant to the survey survey participant list
         [$successful, $duplicate, $blacklistSkipped] = $this->writeParticipantsToTokenTable(
