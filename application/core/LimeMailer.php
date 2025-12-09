@@ -175,15 +175,15 @@ class LimeMailer extends PHPMailer
             case self::MethodSmtp:
                 $this->IsSMTP();
                 $this->SMTPKeepAlive = true;
+                $this->Debugoutput = function ($str, $level) {
+                    $this->addDebug($str);
+                };
                 if ($emailsmtpdebug > 0) {
                     if ($emailsmtpdebug == 1) {
-                        // Set the correct debug level for PHPMailer
+                        // Map "On errors" to PHPMailer debug level 2
                         $emailsmtpdebug = 2;
                     }
                     $this->SMTPDebug = $emailsmtpdebug;
-                    $this->Debugoutput = function ($str, $level) {
-                        $this->addDebug($str);
-                    };
                 }
                 if (strpos((string) $emailsmtphost, ':') > 0) {
                     $this->Host = substr((string) $emailsmtphost, 0, strpos((string) $emailsmtphost, ':'));
