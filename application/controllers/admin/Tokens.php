@@ -1616,14 +1616,7 @@ class Tokens extends SurveyCommonAction
                             sprintf(gT("Invalid language %s for token ID: %s."), $emrow['language'], $emrow['tid'])
                         );
                     }
-                    if ($mail->Mailer != 'smtp') {
-                        // If not SMTP, get a fresh instance
-                        $mail = \LimeMailer::getInstance();
-                    } else {
-                        $mail->clearCustomHeaders();
-                        $mail->clearAddresses();
-                        $mail->clearAttachments();
-                    }
+                    $mail = \LimeMailer::getInstance();
                     if ($this->tokenIsSetInEmailCache($iSurveyId, $emrow['tid'], $bIsInvitation)) {
                         // The email has already been send this session, skip.
                         // Happens if user reloads page or double clicks on "Send".

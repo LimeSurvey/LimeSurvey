@@ -227,8 +227,9 @@ class LimeMailer extends PHPMailer
     public function init()
     {
         // Make sure that any existing SMTP connection is closed
-        $this->smtpClose();
-        $this->debug = [];
+        if ($this->Mailer != 'smtp') {
+            $this->debug = [];
+        }
         $this->ContentType = self::CONTENT_TYPE_PLAINTEXT;
         $this->clearCustomHeaders();
         $this->clearAddresses();
@@ -650,7 +651,9 @@ class LimeMailer extends PHPMailer
                 return $event->get('error') == null;
             }
         }
-
+        if ($this->Mailer == 'smtp') {
+            $this->addDebug("Opening connection to SMTP server...");
+        }
         return parent::Send();
     }
 
