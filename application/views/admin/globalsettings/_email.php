@@ -82,7 +82,8 @@
                     'selectOptions' => [
                         "0" => gT("Off", 'unescaped'),
                         "1" => gT("On errors", 'unescaped'),
-                        "2" => gT("Always", 'unescaped')
+                        "2" => gT("Always", 'unescaped'),
+                        "3" => gT("Always with connection details", 'unescaped')
                     ]
                 ]); ?>
             </div>

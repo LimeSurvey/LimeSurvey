@@ -158,11 +158,6 @@ class LimeMailer extends PHPMailer
         /* Default language to current one */
         $this->mailLanguage = Yii::app()->getLanguage();
 
-        $this->SMTPDebug = Yii::app()->getConfig("emailsmtpdebug");
-        $this->Debugoutput = function ($str, $level) {
-            $this->addDebug($str);
-        };
-
         if (Yii::app()->getConfig('demoMode')) {
             /* in demo mode no need to do something else */
             return;
@@ -181,7 +176,14 @@ class LimeMailer extends PHPMailer
                 $this->IsSMTP();
                 $this->SMTPKeepAlive = true;
                 if ($emailsmtpdebug > 0) {
+                    if ($emailsmtpdebug == 1) {
+                        // Set the correct debug level for PHPMailer
+                        $emailsmtpdebug = 2;
+                    }
                     $this->SMTPDebug = $emailsmtpdebug;
+                    $this->Debugoutput = function ($str, $level) {
+                        $this->addDebug($str);
+                    };
                 }
                 if (strpos((string) $emailsmtphost, ':') > 0) {
                     $this->Host = substr((string) $emailsmtphost, 0, strpos((string) $emailsmtphost, ':'));
@@ -650,9 +652,6 @@ class LimeMailer extends PHPMailer
                 $this->ErrorInfo = $event->get('error');
                 return $event->get('error') == null;
             }
-        }
-        if ($this->Mailer == 'smtp') {
-            $this->addDebug("Opening connection to SMTP server...");
         }
         return parent::Send();
     }
