@@ -27,6 +27,8 @@ class Update_641 extends DatabaseUpdateBase
 {
     protected $scriptMapping;
 
+    protected $questionCodes = [];
+
     /**
      * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
      *
@@ -948,6 +950,48 @@ class Update_641 extends DatabaseUpdateBase
         return $changed;
     }
 
+    /**
+     * Checks for insertans tags and replaces them with titles
+     * @param LSActiveRecord $record the record whose insertans is to be handled
+     * @param mixed $fields the fields where it may occur
+     * @param mixed $sid the id of the survey
+     * @return bool whether we changed the record
+     */
+    protected function handleInsertans(LSActiveRecord &$record, $fields, $sid)
+    {
+        $changed = false;
+        $txtInsertans = "{INSERTANS:";
+        foreach ($fields as $field) {
+            $insertansPos = strpos($record->{$field} ?? "", $txtInsertans);
+            if ($insertansPos !== false) {
+                $changed = true;
+                if (empty($this->questionCodes[$sid])) {
+                    $this->questionCodes[$sid] = [];
+                    $questions = Question::model()->findAll("sid = :sid", [":sid" => $sid]);
+                    foreach ($questions as $question) {
+                        $this->questionCodes[$sid][$question->qid] = $question->title;
+                    }
+                }
+                $insertansParts = explode($txtInsertans, $record->{$field});
+                for ($index = (($insertansPos === 0) ? 0 : 1); $index < count($insertansParts); $index++) {
+                    $curlyPosition = strpos($insertansParts[$index], "}");
+                    $rawField = substr($insertansParts[$index], 0, $curlyPosition);
+                    $content = (strlen($insertansParts[$index]) === $curlyPosition) ? "" : substr($insertansParts[$index], $curlyPosition + 1);
+                    $subField = substr($rawField, strpos($rawField, "X") + 1);
+                    $title = substr($subField, strpos($subField, "X") + 1);
+                    if (preg_match('/[a-zA-Z]/i', $title, $match)) {
+                        $title = substr($title, strpos($title, $match[0]));
+                    } else {
+                        $title = $this->questionCodes[$sid][$title] ?? "";
+                    }
+                    $insertansParts[$index] = $title . ".shown" . $content;
+                }
+                $record->{$field} = implode($insertansParts);
+            }
+        }
+        return $changed;
+    }
+
     /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
     public function up()
     {
@@ -1147,10 +1191,11 @@ class Update_641 extends DatabaseUpdateBase
                 foreach ($entityFields as $ef) {
                     foreach ($ef['entities'] as $entity) {
                         $save = [
+                            $this->handleInsertans($entity, $ef['fields'], $sid),
                             $this->fixText($entity, $ef['fields'], $names),
                             $this->fixText($entity, $ef['fields'], $additionalNames)
                         ];
-                        if ($save[0] || $save[1]) {
+                        if ($save[0] || $save[1] || $save[2]) {
                             $entity->save();
                         }
                     }
@@ -1259,10 +1304,11 @@ class Update_641 extends DatabaseUpdateBase
             foreach ($entityFields as $ef) {
                 foreach ($ef['entities'] as $entity) {
                     $save = [
-                        $this->fixText($entity, $ef['fields'], $newFields),
+                        $this->handleInsertans($entity, $ef['fields'], $sid),
+                        $this->fixText($entity, $ef['fields'], $names),
                         $this->fixText($entity, $ef['fields'], $additionalNames)
                     ];
-                    if ($save[0] || $save[1]) {
+                    if ($save[0] || $save[1] || $save[2]) {
                         $entity->save();
                     }
                 }
