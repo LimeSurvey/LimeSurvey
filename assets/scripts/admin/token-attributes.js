@@ -21,9 +21,9 @@ $(document).ready(function () {
     // Toggle dropdown options visibility
     function toggleDropdownOptions(type) {
         if (type === 'DD') {
-            $('#dropdownOptionsContainer').show();
+            $('#dropdownOptionsContainer').removeClass('d-none');
         } else {
-            $('#dropdownOptionsContainer').hide();
+            $('#dropdownOptionsContainer').addClass('d-none');
             $('#dropdownOptionsList').empty();
             optionCounter = 0;
         }
@@ -48,6 +48,9 @@ $(document).ready(function () {
                 </div>
             `;
         $('#dropdownOptionsList').append(optionHtml);
+
+        // Focus the newly added input field
+        $('#' + optionId + ' .dropdown-option-input').focus();
     }
 
     /**

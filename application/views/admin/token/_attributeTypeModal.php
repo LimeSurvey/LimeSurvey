@@ -30,7 +30,7 @@
                     ?>
                 </div>
 
-                <div id="dropdownOptionsContainer" style="display: none;">
+                <div id="dropdownOptionsContainer" class="d-none">
                     <div class="mb-3">
                         <label class="form-label">
                             <?php eT('Dropdown fields'); ?>
@@ -38,7 +38,7 @@
                         <div id="dropdownOptionsList">
                             <!-- Options will be added here dynamically -->
                         </div>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" id="addDropdownOption">
+                        <button type="button" class="btn btn-sm btn-link" id="addDropdownOption">
                             <i class="ri-add-line"></i> <?php eT('Add dropdown field'); ?>
                         </button>
                     </div>

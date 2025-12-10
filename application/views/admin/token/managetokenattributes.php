@@ -168,7 +168,7 @@
                                                     <?php echo $attributeTypeDropdownArray[$attributeType]; ?>
                                                 </span>
                                                 <?php if($customAttribute): ?>
-                                                    <a href='#' class='btn btn-sm btn-outline-secondary edit-attribute-type'
+                                                    <a href='#' class='btn btn-sm btn-outline-secondary edit-attribute-type ms-2'
                                                        data-token-field='<?php echo $sTokenField; ?>'
                                                        data-bs-toggle='modal'
                                                        data-bs-target='#attributeTypeModal'
