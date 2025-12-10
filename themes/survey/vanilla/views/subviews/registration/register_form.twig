@@ -57,18 +57,15 @@
                 <div {{ aSurveyInfo.attr.registerformcolrowcdiv }} >
                     {% if aExtraAttribute.type == 'DD' and aExtraAttribute.type_options is defined %}
                         {# Dropdown #}
-                        {% if aExtraAttribute.mandatory == 'Y' %}
-                            {% if aExtraAttribute.type_options is iterable and aExtraAttribute.type_options|length > 0 %}
+                        {% if aExtraAttribute.type_options is iterable and aExtraAttribute.type_options|length > 0 %}
+                            {% if aExtraAttribute.mandatory == 'Y' %}
                                 {{ C.Html.dropDownList(registerKey, aSurveyInfo.aAttribute[key], aExtraAttribute.type_options, {'id': registerKey, 'class': 'form-select ls-important-field'}) }}
                             {% else %}
-                                {{ C.Html.dropDownList(registerKey, aSurveyInfo.aAttribute[key], {}, {'id': registerKey, 'class': 'form-select ls-important-field'}) }}
+                                {{ C.Html.dropDownList(registerKey, aSurveyInfo.aAttribute[key], {'' : ''}|merge(aExtraAttribute.type_options), {'id': registerKey, 'class': 'form-select ls-important-field'}) }}
                             {% endif %}
                         {% else %}
-                            {% if aExtraAttribute.type_options is iterable and aExtraAttribute.type_options|length > 0 %}
-                                {{ C.Html.dropDownList(registerKey, aSurveyInfo.aAttribute[key], {'' : ''}|merge(aExtraAttribute.type_options), {'id': registerKey, 'class': 'form-select ls-important-field'}) }}
-                            {% else %}
-                                {{ C.Html.dropDownList(registerKey, aSurveyInfo.aAttribute[key], {'' : ''}, {'id': registerKey, 'class': 'form-select ls-important-field'}) }}
-                            {% endif %}
+                            {# Fall back to text field when options are missing #}
+                            {{ C.Html.textField(registerKey, aSurveyInfo.aAttribute[key], {'id': registerKey, 'class': 'form-control ls-important-field'}) }}
                         {% endif %}
                     {% elseif aExtraAttribute.type == 'DP' %}
                         {# Date Picker #}
