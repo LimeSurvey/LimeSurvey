@@ -97,9 +97,9 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
             <?php // If this is a surveyspecific settings page, offer the possibility to do a full inheritance of the parent template ?>
             <?php if ($bInherit) : ?>
                 <div class='row' id="general_inherit_active">
-                    <label for='simple_edit_options_general_inherit' class='form-label'><?php echo gT("Inherit everything"); ?></label>
-                    <div class='col-12'>
-                        <div class="btn-group" role="group">
+                    <label id="inherit_label_announcement" class='form-label'><?php echo gT("Inherit everything"); ?></label>
+                    <div class='col-12' role="radiogroup" aria-labelledby="inherit_label_announcement">
+                        <div class="btn-group">
                             <input id="general_inherit_on" name='general_inherit' type='radio' value='on' class='btn-check selector_option_general_inherit '
                                    data-id='simple_edit_options_general_inherit'/>
                             <label for="general_inherit_on" class="btn btn-outline-secondary">
@@ -138,7 +138,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                     ?>
                     <?php if (array_key_exists('category', $attribute) && $category === $attribute['category']) : ?>
                         <div class="col-<?= $attribute['width'] ?>">
-                            <label for="simple_edit_options_<?= $attributeKey ?>" class="form-label">
+                            <label for="simple_edit_options_<?=$attributeKey ?>" id="lbl_simple_edit_options_<?=$attributeKey ?>" class="form-label">
                                 <?= gT($attribute['title']) ?>
                             </label>
                             <?php if ($attribute['type'] === 'buttons') : ?>
@@ -159,8 +159,8 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                     }
                                 }
                                 ?>
-                                <div class="col-12">
-                                    <div class="btn-group" role="group">
+                                <div class="col-12" role="radiogroup" aria-labelledby="lbl_simple_edit_options_<?=$attributeKey ?>">
+                                    <div class="btn-group">
                                         <?php foreach ($options as $optionKey => $optionValue) : ?>
                                             <?php $id = $attributeKey . "_" . $optionKey; ?>
                                             <input id="<?= $id ?>" type="radio" name="<?= $attributeKey ?>" value="<?= $optionKey ?>"
@@ -334,7 +334,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                             </div>
                             <div class="col-8">
                                 <span id="fileselector_frontend">
-                                    <label class="btn btn-outline-secondary" for="upload_image_frontend">
+                                    <label class="btn btn-outline-secondary" for="upload_image_frontend" role="button" tabindex="0">
                                     <input class="d-none" id="upload_image_frontend" name="upload_image_frontend" type="file">
                                         <i class="ri-upload-fill ls-space margin right-10"></i>
                                         <?php eT("Upload"); ?>
