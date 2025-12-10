@@ -42,7 +42,7 @@ $(document).ready(function () {
         let optionHtml = `
                 <div class="input-group mb-2" id="${optionId}">
                     <input type="text" class="form-control dropdown-option-input" value="${value}">
-                    <span class="input-group-text remove-option" type="button" data-option-id="${optionId}">
+                    <button class="input-group-text remove-option" type="button" data-option-id="${optionId}">
                         <i class="ri-delete-bin-fill"></i>
                     </button>
                 </div>
