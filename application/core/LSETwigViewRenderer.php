@@ -302,20 +302,8 @@ window.addEventListener('message', function(event) {
         if ($this->getPathOfFile($sView . '.twig', null, $extraPath, $sDirName)) {
             // We're not using the Yii Theming system, so we don't use parent::renderFile
             // current controller properties will be accessible as {{ this.property }}
-           //  aData and surveyInfo variables are accessible from question type twig files
+                        //  aData and surveyInfo variables are accessible from question type twig files
             $aData['aData'] = $aData;
-
-            $oQuestionModel = $oQuestionTemplate->oQuestion;
-            // Expose Question model's attributes as 'question'
-            $aData['question'] = $oQuestionModel->attributes;
-
-            // Use the cached helper to get attributes efficiently and correctly for the current language
-            $sCurrentLanguage = App()->language;
-
-            $questionAttributes = QuestionAttribute::model()->getQuestionAttributes($oQuestionModel, $sCurrentLanguage);
-            $aData['questionAttributes'] = $questionAttributes;
-            $aData['question_text'] = $oQuestionModel->questionl10ns[$sCurrentLanguage]->question;
-            $aData['question_help'] = $oQuestionModel->questionl10ns[$sCurrentLanguage]->help;
 
             // check if this method is called from theme editor
             if (empty($aData['bIsThemeEditor'])) {
