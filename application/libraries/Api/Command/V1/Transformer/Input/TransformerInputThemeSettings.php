@@ -31,19 +31,7 @@ class TransformerInputThemeSettings extends Transformer
                     'key'  => 'templateName',
                     'type' => 'string',
                     'required'
-                ],
-                'font'                     => true,
-                'fontcolor'                => true,
-                'cssframework'             => true,
-                'backgroundimagefile'      => true,
-                'brandlogofile'            => true,
-                'hideprivacyinfo'          => true,
-                'showpopups'               => true,
-                'showclearall'             => true,
-                'questionhelptextposition' => true,
-                'fixnumauto'               => true,
-                'backgroundimage'          => true,
-                'brandlogo'                => true
+                ]
             ],
             $dynamicDataMap ?? []
         );
