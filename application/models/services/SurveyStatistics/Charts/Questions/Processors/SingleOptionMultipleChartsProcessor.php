@@ -45,7 +45,7 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
             [$legend, $items] = $this->buildItemsFromCodes($rt, $codes, $codes);
             $title = $this->question['question'] . '(' . $subQuestion['question'] . ')';
 
-            $charts[] = new StatisticsChartDTO($title, $legend, $items, null, ['question' => $this->question]);
+            $charts[] = new StatisticsChartDTO($title, $legend, $items, $this->calculateTotal($items), ['question' => $this->question]);
         }
 
         return $charts;
@@ -62,7 +62,7 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
             [$legend, $items] = $this->buildItemsFromCodes($rt, $codes, $labels);
             $title = $this->question['question'] . "[{$subQuestion['question']}]";
 
-            $charts[] = new StatisticsChartDTO($title, $legend, $items, null, ['question' => $this->question]);
+            $charts[] = new StatisticsChartDTO($title, $legend, $items, $this->calculateTotal($items), ['question' => $this->question]);
         }
 
         return $charts;
@@ -77,7 +77,7 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
             $rt = $this->rt . "_S" . $subQuestion['qid'];
             [$legend, $items] = $this->buildItemsFromCodes($rt, $codes, $labels);
 
-            $charts[] = new StatisticsChartDTO($title, $legend, $items, null, ['question' => $this->question]);
+            $charts[] = new StatisticsChartDTO($title, $legend, $items, $this->calculateTotal($items), ['question' => $this->question]);
         }
 
         return $charts;
@@ -89,7 +89,7 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
         $stats = [];
 
         foreach ($this->question['subQuestions'] as $subQuestion) {
-            $title = $mainQuestionTitle . "[{$subQuestion['question']}";
+            $title = $mainQuestionTitle . "[{$subQuestion['question']}]";
             $legend = [];
             $items = [];
 
@@ -99,7 +99,7 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
                 $items[] = ['key' => $subQuestion['title'], 'value' => $count, 'title' => $subQuestion['question']];
             }
 
-            $stats[] = new StatisticsChartDTO($title, $legend, $items, null, ['question' => $this->question]);
+            $stats[] = new StatisticsChartDTO($title, $legend, $items, $this->calculateTotal($items), ['question' => $this->question]);
         }
 
         return $stats;

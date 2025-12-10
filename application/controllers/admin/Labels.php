@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2023 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -124,7 +124,7 @@ class Labels extends SurveyCommonAction
         $uploadValidator->redirectOnError('the_file', \Yii::app()->createUrl("/admin/labels/sa/newlabelset"));
 
         if ($action == 'importlabels') {
-            Yii::app()->loadHelper('admin/import');
+            Yii::app()->loadHelper('admin.import');
 
             $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
             $aPathInfo = pathinfo((string) $_FILES['the_file']['name']);
@@ -333,7 +333,7 @@ class Labels extends SurveyCommonAction
     public function process()
     {
         $action = App()->getRequest()->getParam('action');
-        Yii::app()->loadHelper('admin/label');
+        Yii::app()->loadHelper('admin.label');
         if ($action == "updateset") {
             $lid = $this->validateLabelSetId(App()->getRequest()->getPost('lid'), 'update');
             updateset($lid);

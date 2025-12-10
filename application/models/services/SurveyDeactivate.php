@@ -60,7 +60,12 @@ class SurveyDeactivate
         $this->siddates = [];
     }
 
-    protected function getSiddate(int $iSurveyID)
+    /**
+     * Gets a string of the form of <sid>_<timestamp>
+     * @param int $iSurveyID
+     * @return string
+     */
+    protected function getSiddate(int $iSurveyID): string
     {
         if (!isset($this->siddates[$iSurveyID])) {
             $date = date('YmdHis', time());

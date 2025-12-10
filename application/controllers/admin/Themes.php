@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -189,7 +189,7 @@ class Themes extends SurveyCommonAction
         // It's not going to fail, but it's checking for a permission with an empty templatename.
         // Surely it works as expected, but it would be nice if the code was clearer.
         if (Permission::model()->hasGlobalPermission('templates', 'import') || Permission::model()->hasTemplatePermission($sTemplateName)) {
-            App()->loadHelper('admin/template');
+            App()->loadHelper('admin.template');
             // NB: lid = label id
             $lid = returnGlobal('lid');
             if ($action == 'templateuploadimagefile') {
@@ -736,7 +736,7 @@ JAVASCRIPT
 
             if ($newname && $copydir) {
                 // Copies all the files from one template directory to a new one
-                Yii::app()->loadHelper('admin/template');
+                Yii::app()->loadHelper('admin.template');
                 $newdirname  = Yii::app()->getConfig('userthemerootdir') . "/" . $newname;
                 $copydirname = getTemplatePath($copydir);
                 $oFileHelper = new CFileHelper();
@@ -778,7 +778,7 @@ JAVASCRIPT
     {
         $templatename = trim(Yii::app()->request->getPost('templatename', ''));
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
-            Yii::app()->loadHelper("admin/template");
+            Yii::app()->loadHelper("admin.template");
 
             Yii::import('application.helpers.SurveyThemeHelper');
             if (Template::checkIfTemplateExists($templatename) && !SurveyThemeHelper::isStandardTemplate($templatename)) {
@@ -914,7 +914,7 @@ JAVASCRIPT
             $jsfiles              = $oEditedTemplate->getValidScreenFiles("js");
 
             if ($action == "templatesavechanges" && $changedtext) {
-                Yii::app()->loadHelper('admin/template');
+                Yii::app()->loadHelper('admin.template');
                 $changedtext = str_replace("\r\n", "\n", $changedtext);
 
 
@@ -1014,7 +1014,7 @@ JAVASCRIPT
     {
         $tempdir = Yii::app()->getConfig("tempdir");
         $tempurl = Yii::app()->getConfig("tempurl");
-        Yii::app()->loadHelper("admin/template");
+        Yii::app()->loadHelper("admin.template");
         $aData = array();
         $time = date("ymdHis");
         // Prepare textarea class for optional javascript
@@ -1117,7 +1117,7 @@ JAVASCRIPT
 
         //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');
-        Yii::app()->loadHelper('admin/template');
+        Yii::app()->loadHelper('admin.template');
 
         $files        = $oEditedTemplate->getValidScreenFiles("view", $screenname);
         $sLayoutFile  = $oEditedTemplate->getLayoutForScreen($screenname);

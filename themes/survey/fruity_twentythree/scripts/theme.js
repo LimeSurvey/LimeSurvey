@@ -1,7 +1,7 @@
 /*
     LimeSurvey
     Copyright (C) 2007-2023
-    The LimeSurvey Project Team / Patrick Teichmann
+    The LimeSurvey Project Team
     All rights reserved.
     License: GNU/GPL License v3 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant
@@ -1047,7 +1047,7 @@ window.ArrayScripts = ArrayScripts;
 /*
     LimeSurvey
     Copyright (C) 2007-2023
-    The LimeSurvey Project Team / Patrick Teichmann
+    The LimeSurvey Project Team
     All rights reserved.
     License: GNU/GPL License v3 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant

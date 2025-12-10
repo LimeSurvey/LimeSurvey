@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -1607,7 +1607,7 @@ class Participant extends LSActiveRecord
             ->update('{{surveys}}', array("attributedescriptions" => $aTokenAttributes), 'sid = ' . intval($surveyId)); // load description in the surveys table
 
         //Actually create the fields in the tokens table
-        Yii::app()->loadHelper('update/updatedb');
+        Yii::app()->loadHelper('update.updatedb');
         foreach ($fields as $key => $value) {
             addColumn("{{tokens_$surveyId}}", $key, $value['type']);
         }

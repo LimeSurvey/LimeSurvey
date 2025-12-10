@@ -2,7 +2,7 @@
 
 /**
  * LimeSurvey
- * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -23,7 +23,6 @@ use LimeSurvey\Menu\Menu;
  */
 class UpdateCheck extends PluginBase
 {
-
     /**
      * Where to save plugin settings etc.
      * @var string
@@ -43,8 +42,15 @@ class UpdateCheck extends PluginBase
         $this->subscribe('beforePluginManagerMenuRender');
     }
 
+
     /**
-     * After super admin log in, check date of next update check and set flag.
+     * Checks if an extension update check is due after a super admin successfully logs in.
+     *
+     * This method is triggered after a successful user login. It verifies if the current user
+     * has super admin permissions. If so, it retrieves the timestamp of the last extension update
+     * check and compares it with the current date and time. If the next scheduled check date has
+     * passed or is today, a flag is set in the session to trigger an extension update check.
+     *
      * @return void
      */
     public function afterSuccessfulLogin()
@@ -52,7 +58,8 @@ class UpdateCheck extends PluginBase
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             // NB: $nextCheck will be set to "now" if next_extension_update_check is empty.
             // Hence it needs to be initialised *before* today.
-            $nextCheck = new DateTime($this->get('next_extension_update_check'));
+            $value = $this->get('next_extension_update_check');
+            $nextCheck = $value ? new DateTime($value) : new DateTime();
             $today = new DateTime("now");
             if ($nextCheck <= $today) {
                 // Set flag.

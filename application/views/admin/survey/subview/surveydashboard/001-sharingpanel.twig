@@ -88,8 +88,8 @@
                             <i class="{{ accessModeIcon }}"></i> {{ accessModeText }}
                         </button>
                          <ul class="dropdown-menu" aria-labelledby="access-mode-dropdown">
-                            <li><a id="updateAccessModeBtn" data-surveyid="{{ oSurvey.sid }}" data-newaccessmode="O" class="dropdown-item" href="#"><i class="ri-global-line"></i> {{ gT("Anyone with link") }}</a></li>
-                            <li><a id="updateAccessModeBtn" data-surveyid="{{ oSurvey.sid }}" data-newaccessmode="C" class="dropdown-item" href="#"><i class="ri-lock-2-line"></i> {{ gT("Link with access code") }}</a></li>
+                            <li><a data-surveyid="{{ oSurvey.sid }}" data-newaccessmode="O" class="dropdown-item updateAccessModeBtn" href="#"><i class="ri-global-line"></i> {{ gT("Anyone with link") }}</a></li>
+                            <li><a data-surveyid="{{ oSurvey.sid }}" data-newaccessmode="C" class="dropdown-item updateAccessModeBtn" href="#"><i class="ri-lock-2-line"></i> {{ gT("Link with access code") }}</a></li>
                         </ul>
                     </div>
                 </div>

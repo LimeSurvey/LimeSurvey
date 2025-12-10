@@ -63,7 +63,7 @@ class DualScaleProcessor extends AbstractQuestionProcessor
                 $dataItems[] = ['key' => 'NoAnswer', 'value' => $blankCnt, 'title' => 'No answer'];
 
                 $title = "{$qTitleBase} [{$scaleName[$scaleId]}] [{$subLabel}]";
-                $charts[] = new StatisticsChartDTO($title, $legend, $dataItems, null, ['question' => $this->question]);
+                $charts[] = new StatisticsChartDTO($title, $legend, $dataItems, $this->calculateTotal($dataItems), ['question' => $this->question]);
             }
         }
 

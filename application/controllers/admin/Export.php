@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2017 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -106,7 +106,7 @@ class Export extends SurveyCommonAction
             $this->getController()->redirect($this->getController()->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
         }
 
-        Yii::app()->loadHelper("admin/exportresults");
+        Yii::app()->loadHelper("admin.exportresults");
 
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . '/exportresults.js');
 
@@ -420,7 +420,7 @@ class Export extends SurveyCommonAction
         }
         App()->setLanguage($sLanguage);
 
-        Yii::app()->loadHelper("admin/exportresults");
+        Yii::app()->loadHelper("admin.exportresults");
         viewHelper::disableHtmlLogging();
 
         if ($subaction == 'dldata') {
