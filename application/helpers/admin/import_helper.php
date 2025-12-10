@@ -2963,6 +2963,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $insertdata['sid'] = $iNewSID; // remap the survey ID
             // now translate any links
+            $insertdata['message'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['message']);
+
             $result = Assessment::model()->insertRecords($insertdata);
             if (!$result) {
                 throw new Exception(gT("Error") . ": Failed to insert data[11]<br />");
@@ -3049,6 +3051,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             unset($insertdata['quotals_id']);
             $quotaLanguagesSetting = new QuotaLanguageSetting('import');
             $quotaLanguagesSetting->setAttributes($insertdata, false);
+
+            $quotaLanguagesSetting['quotals_urldescrip'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['quotals_urldescrip']);
+            $quotaLanguagesSetting['quotals_url'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['quotals_url']);
+
             if (!$quotaLanguagesSetting->save()) {
                 $header = sprintf(gT("Unable to insert quota language settings for quota %s"), $insertdata['quotals_quota_id']);
                 if (isset($insertdata['quotals_language'])) {

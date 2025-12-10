@@ -2874,6 +2874,13 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
         return $sString;
     }
     $iOldSurveyID = (int) $iOldSurveyID;
+    $iNewSurveyID = (int) $iNewSurveyID;
+
+    if (strpos($sString, '{INSERTANS:') !== false) {
+        $sString = translateInsertans($sString, $iOldSurveyID, $iNewSurveyID);
+    }
+
+    $iOldSurveyID = (int) $iOldSurveyID;
     $iNewSurveyID = (int) $iNewSurveyID; // To avoid injection of a /e regex modifier without having to check all execution paths
     if ($sType == 'survey') {
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_:])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
@@ -5469,4 +5476,47 @@ function csvEscape($string)
     $string = '"' . str_replace('"', '""', $string) . '"';
 
     return $string;
+}
+
+/**
+ * Translate INSERTANS tags in text content from old survey ID to new survey ID
+ * @param string $text The text containing INSERTANS tags
+ * @param int $oldSid The old survey ID (to identify which tags to replace)
+ * @param int $newSid The new survey ID (to replace with)
+ * @param array|null $questionCodes Optional pre-loaded question codes array for the NEW survey
+ * @return string The translated text
+ */
+function translateInsertans($text, $oldSid, $newSid)
+{
+    if (strpos($text, '{INSERTANS:') === false) {
+        return $text;
+    }
+
+    $txtInsertans = "{INSERTANS:";
+
+    // Load question codes for the NEW survey
+    $questionCodes = [];
+    $questions = Question::model()->findAll("sid = :sid", [":sid" => $oldSid]);
+    foreach ($questions as $question) {
+        $questionCodes[$question->qid] = $question->title;
+    }
+
+    $insertansPos = strpos($text ?? "", $txtInsertans);
+    if ($insertansPos !== false) {
+        $insertansParts = explode($txtInsertans, $text);
+        for ($index = 1; $index < count($insertansParts); $index++) {
+            $curlyPosition = strpos($insertansParts[$index], "}");
+            $rawField = substr($insertansParts[$index], 0, $curlyPosition);
+            $content = (strlen($insertansParts[$index]) === $curlyPosition) ? "" : substr($insertansParts[$index], $curlyPosition + 1);
+            $subField = substr($rawField, strpos($rawField, "X") + 1);
+            $title = substr($subField, strpos($subField, "X") + 1);
+            if (preg_match('/[a-zA-Z]/i', $title, $match)) {
+                $title = substr($title, strpos($title, $match[0]));
+            } else {
+                $title = $questionCodes[$title] ?? "";
+            }
+            $insertansParts[$index] = $title . ".shown" . $content;
+        }
+        return implode($insertansParts);
+    }
 }
