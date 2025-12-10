@@ -112,6 +112,19 @@
             <expression></expression>
         </attribute>
         <attribute>
+            <name>keep_codes_order</name>
+            <category>Display</category>
+            <sortorder>101</sortorder>
+            <inputtype>text</inputtype>
+            <default></default>
+            <help>Semicolon-separated list of subquestion codes that keep their original database position when items are randomized</help>
+            <caption>Keep codes at original positions</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
             <name>hide_tip</name>
             <category>Display</category>
             <sortorder>100</sortorder>

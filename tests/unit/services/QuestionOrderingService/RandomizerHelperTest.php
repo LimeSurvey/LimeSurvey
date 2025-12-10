@@ -5,6 +5,7 @@ namespace ls\tests\unit\services\QuestionOrderingService;
 use ls\tests\TestBaseClass;
 use LimeSurvey\Models\Services\QuestionOrderingService\RandomizerHelper;
 use Mockery;
+use Question;
 
 class RandomizerHelperTest extends TestBaseClass
 {
@@ -227,5 +228,95 @@ class RandomizerHelperTest extends TestBaseClass
         }
         sort($scale1Titles);
         $this->assertEquals(['SQ3', 'SQ4'], $scale1Titles);
+    }
+
+    /**
+     * @testdox applyRandomSorting() for answers keeps specified codes at original positions
+     */
+    public function testApplyRandomSortingForAnswersKeepsCodesInPlace()
+    {
+        // Answers in original DB order: A, B, C, D, E
+        $item1 = (object)['id' => 1, 'scale_id' => 0, 'code' => 'A'];
+        $item2 = (object)['id' => 2, 'scale_id' => 0, 'code' => 'B'];
+        $item3 = (object)['id' => 3, 'scale_id' => 0, 'code' => 'C'];
+        $item4 = (object)['id' => 4, 'scale_id' => 0, 'code' => 'D'];
+        $item5 = (object)['id' => 5, 'scale_id' => 0, 'code' => 'E'];
+
+        $groupedItems = [
+            0 => [$item1, $item2, $item3, $item4, $item5]
+        ];
+
+        // Mock question with keep_codes_order configured
+        $question = Mockery::mock(Question::class)->makePartial();
+        $question->shouldReceive('getQuestionAttribute')
+            ->with('keep_codes_order')
+            ->andReturn('A;C');
+
+        $helper = new RandomizerHelper();
+        $result = $helper->applyRandomSorting($groupedItems, $question, 'answers');
+
+        // Structure and contents preserved
+        $this->assertCount(1, $result);
+        $this->assertCount(5, $result[0]);
+        $codes = array_map(function ($item) {
+            return $item->code;
+        }, $result[0]);
+        sort($codes);
+        $this->assertEquals(['A', 'B', 'C', 'D', 'E'], $codes);
+
+        // A and C must keep their original positions (indexes 0 and 2)
+        $this->assertEquals('A', $result[0][0]->code);
+        $this->assertEquals('C', $result[0][2]->code);
+    }
+
+    /**
+     * @testdox applyRandomSortingToSubquestions() keeps specified codes at original positions
+     */
+    public function testApplyRandomSortingToSubquestionsKeepsCodesInPlace()
+    {
+        // Subquestions in original DB order: SQ1, SQ2, SQ3, SQ4
+        $subq1 = (object)['scale_id' => 0, 'title' => 'SQ1', 'question_order' => 1];
+        $subq2 = (object)['scale_id' => 0, 'title' => 'SQ2', 'question_order' => 2];
+        $subq3 = (object)['scale_id' => 0, 'title' => 'SQ3', 'question_order' => 3];
+        $subq4 = (object)['scale_id' => 0, 'title' => 'SQ4', 'question_order' => 4];
+
+        $groupedSubquestions = [
+            0 => [$subq1, $subq2, $subq3, $subq4]
+        ];
+
+        // Mock question with keep_codes_order for subquestions
+        $question = Mockery::mock(Question::class)->makePartial();
+        $question->sid = 12345;
+        $question->shouldReceive('getQuestionAttribute')
+            ->with('exclude_all_others')
+            ->andReturn(null);
+        $question->shouldReceive('getQuestionAttribute')
+            ->with('keep_codes_order')
+            ->andReturn('SQ1;SQ4');
+
+        // Mock survey required for initialize()
+        $mockSet = $this->mockSetFactory->make();
+
+        $helper = new RandomizerHelper();
+        $result = $helper->applyRandomSortingToSubquestions(
+            $groupedSubquestions,
+            $question,
+            $mockSet->survey
+        );
+
+        // Structure and contents preserved
+        $this->assertCount(1, $result);
+        $this->assertCount(4, $result[0]);
+
+        $titles = array_map(function ($item) {
+            return $item->title;
+        }, $result[0]);
+        $sortedTitles = $titles;
+        sort($sortedTitles);
+        $this->assertEquals(['SQ1', 'SQ2', 'SQ3', 'SQ4'], $sortedTitles);
+
+        // SQ1 and SQ4 must keep their original positions (indexes 0 and 3)
+        $this->assertEquals('SQ1', $result[0][0]->title);
+        $this->assertEquals('SQ4', $result[0][3]->title);
     }
 }
