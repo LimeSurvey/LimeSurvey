@@ -55,12 +55,20 @@
                 {% set registerKey = "register_" ~ key %}
                 <label for="{{ registerKey }}" class='{{ aSurveyInfo.class.registerformextraslabel }} control-label '> {{ aExtraAttribute.caption }} {% if aExtraAttribute.mandatory == 'Y' %}{{ include('./subviews/registration/required.twig') }}{% endif %}</label>
                 <div {{ aSurveyInfo.attr.registerformcolrowcdiv }} >
-                    {% if aExtraAttribute.type == 'DD' %}
+                    {% if aExtraAttribute.type == 'DD' and aExtraAttribute.type_options is defined %}
                         {# Dropdown #}
                         {% if aExtraAttribute.mandatory == 'Y' %}
-                            {{ C.Html.dropDownList(registerKey, aSurveyInfo.aAttribute[key], aExtraAttribute.type_options, {'id': registerKey, 'class': 'form-select ls-important-field'}) }}
+                            {% if aExtraAttribute.type_options is iterable and aExtraAttribute.type_options|length > 0 %}
+                                {{ C.Html.dropDownList(registerKey, aSurveyInfo.aAttribute[key], aExtraAttribute.type_options, {'id': registerKey, 'class': 'form-select ls-important-field'}) }}
+                            {% else %}
+                                {{ C.Html.dropDownList(registerKey, aSurveyInfo.aAttribute[key], {}, {'id': registerKey, 'class': 'form-select ls-important-field'}) }}
+                            {% endif %}
                         {% else %}
-                            {{ C.Html.dropDownList(registerKey, aSurveyInfo.aAttribute[key], {'' : ''}|merge(aExtraAttribute.type_options), {'id': registerKey, 'class': 'form-select ls-important-field'}) }}
+                            {% if aExtraAttribute.type_options is iterable and aExtraAttribute.type_options|length > 0 %}
+                                {{ C.Html.dropDownList(registerKey, aSurveyInfo.aAttribute[key], {'' : ''}|merge(aExtraAttribute.type_options), {'id': registerKey, 'class': 'form-select ls-important-field'}) }}
+                            {% else %}
+                                {{ C.Html.dropDownList(registerKey, aSurveyInfo.aAttribute[key], {'' : ''}, {'id': registerKey, 'class': 'form-select ls-important-field'}) }}
+                            {% endif %}
                         {% endif %}
                     {% elseif aExtraAttribute.type == 'DP' %}
                         {# Date Picker #}
