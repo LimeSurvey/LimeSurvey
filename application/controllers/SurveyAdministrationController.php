@@ -5,6 +5,7 @@ use LimeSurvey\Models\Services\FileUploadService;
 use LimeSurvey\Models\Services\FilterImportedResources;
 use LimeSurvey\Models\Services\GroupHelper;
 use LimeSurvey\Models\Services\SurveyAccessModeService;
+use LimeSurvey\Models\Services\SurveyDetailService;
 
 /**
  * Class SurveyAdministrationController
@@ -1632,20 +1633,9 @@ class SurveyAdministrationController extends LSBaseController
         $ok = Yii::app()->request->getPost('ok');
 
         if ($ok == '') {
-            if (!empty(Yii::app()->session->get('sNewSurveyTableName'))) {
-                Yii::app()->session->remove('sNewSurveyTableName');
-            }
-
-            if (!empty(Yii::app()->session->get('NewSIDDate'))) {
-                Yii::app()->session->remove('NewSIDDate');
-            }
-
-            Yii::app()->session->add('sNewSurveyTableName', Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}");
-            Yii::app()->session->add('NewSIDDate', "{$iSurveyID}_{$date}");
-
             $aData['date'] = $date;
             $aData['dbprefix'] = Yii::app()->db->tablePrefix;
-            $aData['sNewSurveyTableName'] = Yii::app()->session->get('sNewSurveyTableName');
+            $aData['sNewSurveyTableName'] = Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}";
             $aData['step1'] = true;
         } else {
             try {
@@ -1696,7 +1686,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $success = false;
         if (($surveyId > 0) && ($questionId > 0)) {
-            App()->loadHelper('admin/activate');
+            App()->loadHelper('admin.activate');
             fixNumbering($questionId, $surveyId);
             $success = true;
         }
@@ -1732,7 +1722,7 @@ class SurveyAdministrationController extends LSBaseController
         $oSurvey = Survey::model()->findByPk($surveyId);
         $aSurveysettings = getSurveyInfo($surveyId);
 
-        Yii::app()->loadHelper("admin/activate");
+        Yii::app()->loadHelper("admin.activate");
         $failedgroupcheck = checkGroup($surveyId);
         $failedcheck = checkQuestions($surveyId, $surveyId);
         $error = "";
@@ -2289,7 +2279,7 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
 
-        App()->loadHelper('admin/import');
+        App()->loadHelper('admin.import');
         if (!$aData['bFailed']) {
             $copyResources = App()->request->getPost('copysurveytranslinksfields') == '1';
             $translateLinks = $copyResources;
@@ -2318,6 +2308,8 @@ class SurveyAdministrationController extends LSBaseController
             if (!empty($aImportResults['newsid']) && $copyResources) {
                 $resourceCopier = new CopySurveyResources();
                 [, $errorFilesInfo] = $resourceCopier->copyResources($iSurveyID, $aImportResults['newsid']);
+                $surveyDetailService = new SurveyDetailService();
+                $surveyDetailService->removeCache($aImportResults['newsid']);
                 if (!empty($errorFilesInfo)) {
                     $aImportResults['importwarnings'][] = gT("Some resources could not be copied from the source survey");
                 }
@@ -2409,7 +2401,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['bFailed'] = true;
         }
 
-        App()->loadHelper('admin/import');
+        App()->loadHelper('admin.import');
 
         if (!$aData['bFailed']) {
             $aImportResults = importSurveyFile($sFullFilepath, (App()->request->getPost('translinksfields') == '1'));

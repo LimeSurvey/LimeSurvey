@@ -216,8 +216,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         /* default template */
         $this->template = 'inherit';
         /* default language */
-        $validator = new LSYii_Validators();
-        $this->language = $validator->languageFilter(App()->getConfig('defaultlang'));
+        $this->language = \LSYii_Validators::languageCodeFilter(App()->getConfig('defaultlang'));
         /* default user */
         $this->owner_id = 1;
         $this->admin = App()->getConfig('siteadminname');
@@ -1539,7 +1538,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         ];
         $dropdownItems[] = [
             'title' => gT('Add user'),
-            'url' => App()->createUrl("/userManagement"),
+            'url' => App()->createUrl('/surveyPermissions/index', ['surveyid' => $this->sid]),
             'enabledCondition' => $permissions['survey_update'],
         ];
 

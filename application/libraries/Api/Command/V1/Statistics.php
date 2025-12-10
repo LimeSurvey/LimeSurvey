@@ -67,7 +67,7 @@ class Statistics implements CommandInterface
         }
 
         try {
-            $this->statisticsService->setSurvey($surveyId, $request->getData('language') ?? 'en');
+            $this->statisticsService->setSurvey($surveyId, $request->getData('language'));
 
             if ($this->getFilters()->count() > 0) {
                 $this->statisticsService->setFilters($this->filters);
@@ -102,7 +102,7 @@ class Statistics implements CommandInterface
 
         foreach ($filterMap as $key => $method) {
             $value = $params[$key] ?? null;
-            if (!empty($value)) {
+            if ($value !== null) {
                 $this->filters->$method(
                     $key === 'completed' ? $value === 'true' : (int)$value
                 );

@@ -203,6 +203,16 @@ abstract class AbstractQuestionProcessor
     }
 
     /**
+     * @param array $data
+     * @param string $key
+     * @return float|int
+     */
+    protected function calculateTotal($data, $key = 'value')
+    {
+        return array_sum(array_column($data, $key));
+    }
+
+    /**
      * Process a question into one or more statistics charts.
      *
      * @return StatisticsChartDTO[]|StatisticsChartDTO
