@@ -166,19 +166,24 @@ class SurveyThemeConfiguration
      /**
      * Returns the theme option attributes with custom format for react
      *
-     * @param array $optionAttributes
+     * @param array $themeData
      * @return array
      */
-    public function getSurveyThemeOptionsAttributes($optionAttributes): array
+    public function getSurveyThemeOptionsAttributes($themeData): array
     {
-        $attributes = $optionAttributes;
-        foreach ($optionAttributes as $key => $optionAttribute) {
+        $attributesReact = $themeData['aOptionAttributes']['optionOrderReact'];
+        $attributesCore = $themeData['aOptionAttributes']['optionAttributes'];
+        $currentThemeOptions = $themeData['aTemplateConfiguration']['options'];
+        $resolvedThemeOptions = $themeData['aTemplateConfiguration']['options'];
+        $parentThemeOptions = $themeData['aTemplateConfiguration']['oParentOptions'];
+        $attributesCompleteData = [];
+        foreach ($attributesReact as $key => $optionAttribute) {
             if ($optionAttribute['type'] === 'dropdown') {
-                $attributes[$key]['dropdownoptions'] = $this->extractDropdownOptions($optionAttribute['dropdownoptions']);
+                $attributesCompleteData[$key]['dropdownoptions'] = $this->extractDropdownOptions($optionAttribute['dropdownoptions']);
             }
         }
 
-        return $attributes;
+        return $themeData;
     }
 
      /**
