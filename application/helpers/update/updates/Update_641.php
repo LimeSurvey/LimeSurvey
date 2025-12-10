@@ -973,7 +973,7 @@ class Update_641 extends DatabaseUpdateBase
                     }
                 }
                 $insertansParts = explode($txtInsertans, $record->{$field});
-                for ($index = (($insertansPos === 0) ? 0 : 1); $index < count($insertansParts); $index++) {
+                for ($index = 1; $index < count($insertansParts); $index++) {
                     $curlyPosition = strpos($insertansParts[$index], "}");
                     $rawField = substr($insertansParts[$index], 0, $curlyPosition);
                     $content = (strlen($insertansParts[$index]) === $curlyPosition) ? "" : substr($insertansParts[$index], $curlyPosition + 1);
