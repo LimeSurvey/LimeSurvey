@@ -11,7 +11,6 @@ App()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', [
     'pluginOptions' => [
         'format' => $jsDate,
         'allowInputToggle' => true,
-        'showClear' => true,
         'theme' => 'light',
         'locale' => convertLStoDateTimePickerLocale(
             Yii::app()->session['adminlang']
