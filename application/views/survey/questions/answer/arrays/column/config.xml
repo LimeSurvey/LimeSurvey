@@ -88,7 +88,7 @@
             <sortorder>101</sortorder>
             <inputtype>text</inputtype>
             <default></default>
-            <help>Semicolon-separated list of subquestion codes that keep their original database position when items are randomized</help>
+            <help>Semicolon-separated list of subquestion codes that keep their original database position when subquestions are randomized</help>
             <caption>Keep codes at original positions</caption>
             <i18n></i18n>
             <readonly></readonly>
