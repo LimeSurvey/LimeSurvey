@@ -8,9 +8,9 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="attribute_type_modal">
+                <h2 class="modal-title h5" id="attributeTypeModalLabel">
                     <?php eT('Attribute type'); ?>
-                </h5>
+                </h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
             </div>
