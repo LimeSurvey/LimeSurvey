@@ -1754,7 +1754,7 @@ class Participant extends LSActiveRecord
      */
     private function createColumnsInTokenTable(array $addedAttributeIds, int $surveyId): void
     {
-        App()->loadHelper('update/updatedb');
+        App()->loadHelper('update.updatedb');
         foreach ($addedAttributeIds as $attributeId) {
             addColumn("{{tokens_$surveyId}}", $attributeId, 'string');
         }
