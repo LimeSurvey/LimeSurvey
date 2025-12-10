@@ -37,67 +37,9 @@ class RandomizerHelper
             return $this->applyRandomSortingToSubquestions($groupedItems, $question);
         }
 
-        // For answers, optionally keep specific codes at their original positions
-        $keepCodesRaw = $question->getQuestionAttribute('keep_codes_order');
-        $keepCodes = [];
-        if ($keepCodesRaw !== null && trim((string) $keepCodesRaw) !== '') {
-            $keepCodes = array_filter(
-                array_map('trim', explode(';', (string) $keepCodesRaw)),
-                function ($code) {
-                    return $code !== '';
-                }
-            );
-        }
+        $keepCodes = $this->getKeepCodes($question);
 
-        foreach ($groupedItems as $scaleId => $scaleArray) {
-            if (empty($scaleArray)) {
-                $groupedItems[$scaleId] = [];
-                continue;
-            }
-
-            // If no codes are configured to be kept in place, fully shuffle
-            if (empty($keepCodes)) {
-                $keys = array_keys($scaleArray);
-                shuffle($keys);
-
-                $sortedItems = [];
-                foreach ($keys as $key) {
-                    $sortedItems[] = $scaleArray[$key];
-                }
-                $groupedItems[$scaleId] = $sortedItems;
-                continue;
-            }
-
-            // Split into fixed and floating answers based on code
-            $fixedByIndex = [];
-            $floating = [];
-            foreach ($scaleArray as $index => $answer) {
-                if (in_array($answer->code, $keepCodes, true)) {
-                    $fixedByIndex[$index] = $answer;
-                } else {
-                    $floating[] = $answer;
-                }
-            }
-
-            if (!empty($floating)) {
-                shuffle($floating);
-            }
-
-            // Rebuild array: fixed codes stay at original index, others fill remaining slots
-            $sortedItems = [];
-            $floatingIndex = 0;
-            $total = count($scaleArray);
-            for ($i = 0; $i < $total; $i++) {
-                if (array_key_exists($i, $fixedByIndex)) {
-                    $sortedItems[] = $fixedByIndex[$i];
-                } else {
-                    $sortedItems[] = $floating[$floatingIndex++];
-                }
-            }
-
-            $groupedItems[$scaleId] = $sortedItems;
-        }
-        return $groupedItems;
+        return $this->applyRandomSortingToAnswers($groupedItems, $keepCodes);
     }
 
     /**
@@ -134,32 +76,127 @@ class RandomizerHelper
             );
         }
 
-        // Read optional list of codes to keep at their original positions
-        $keepCodesRaw = $question->getQuestionAttribute('keep_codes_order');
-        $keepCodes = [];
-        if ($keepCodesRaw !== null && trim((string) $keepCodesRaw) !== '') {
-            $keepCodes = array_filter(
-                array_map('trim', explode(';', (string) $keepCodesRaw)),
-                function ($code) {
-                    return $code !== '';
-                }
+        $keepCodes = $this->getKeepCodes($question);
+        $groupedSubquestions = $this->applyRandomSortingToSubquestionGroups(
+            $groupedSubquestions,
+            $keepCodes
+        );
+
+        // Reinsert excluded subquestion if needed
+        if ($excludedSubquestion !== null) {
+            $scaleId = $excludedSubquestion->scale_id;
+            array_splice(
+                $groupedSubquestions[$scaleId],
+                ($excludedSubquestion->question_order - 1),
+                0,
+                [$excludedSubquestion]
             );
         }
 
-        // Apply random sorting to each scale group
+        return $groupedSubquestions;
+    }
+
+    /**
+     * Extract and normalize keep_codes_order for a question.
+     *
+     * @param Question $question
+     * @return string[]
+     */
+    private function getKeepCodes(Question $question): array
+    {
+        $keepCodesRaw = $question->getQuestionAttribute('keep_codes_order');
+        if ($keepCodesRaw === null || trim((string) $keepCodesRaw) === '') {
+            return [];
+        }
+
+        return array_filter(
+            array_map('trim', explode(';', (string) $keepCodesRaw)),
+            function ($code) {
+                return $code !== '';
+            }
+        );
+    }
+
+    /**
+     * Apply random sorting to grouped answers, respecting keep_codes_order.
+     *
+     * @param array $groupedItems
+     * @param string[] $keepCodes
+     * @return array
+     */
+    private function applyRandomSortingToAnswers(array $groupedItems, array $keepCodes): array
+    {
+        foreach ($groupedItems as $scaleId => $scaleArray) {
+            if (empty($scaleArray)) {
+                $groupedItems[$scaleId] = [];
+                continue;
+            }
+
+            if (empty($keepCodes)) {
+                $keys = array_keys($scaleArray);
+                shuffle($keys);
+
+                $sortedItems = [];
+                foreach ($keys as $key) {
+                    $sortedItems[] = $scaleArray[$key];
+                }
+                $groupedItems[$scaleId] = $sortedItems;
+                continue;
+            }
+
+            $fixedByIndex = [];
+            $floating = [];
+            foreach ($scaleArray as $index => $answer) {
+                if (in_array($answer->code, $keepCodes, true)) {
+                    $fixedByIndex[$index] = $answer;
+                } else {
+                    $floating[] = $answer;
+                }
+            }
+
+            if (!empty($floating)) {
+                shuffle($floating);
+            }
+
+            $sortedItems = [];
+            $floatingIndex = 0;
+            $total = count($scaleArray);
+            for ($i = 0; $i < $total; $i++) {
+                if (array_key_exists($i, $fixedByIndex)) {
+                    $sortedItems[] = $fixedByIndex[$i];
+                } else {
+                    $sortedItems[] = $floating[$floatingIndex++];
+                }
+            }
+
+            $groupedItems[$scaleId] = $sortedItems;
+        }
+
+        return $groupedItems;
+    }
+
+    /**
+     * Apply random sorting to grouped subquestions, respecting keep_codes_order.
+     *
+     * @param array $groupedSubquestions
+     * @param string[] $keepCodes
+     * @return array
+     */
+    private function applyRandomSortingToSubquestionGroups(
+        array $groupedSubquestions,
+        array $keepCodes
+    ): array {
         foreach ($groupedSubquestions as $scaleId => &$scaleArray) {
             if (empty($scaleArray)) {
                 $scaleArray = [];
                 continue;
             }
 
-            // If no codes are configured to be kept in place, fully shuffle
             if (empty($keepCodes)) {
                 $scaleArray = \ls\mersenne\shuffle($scaleArray);
                 continue;
             }
 
-            // Split into fixed and floating subquestions based on title/code
             $fixedByIndex = [];
             $floating = [];
             foreach ($scaleArray as $index => $subquestion) {
@@ -174,7 +211,6 @@ class RandomizerHelper
                 $floating = \ls\mersenne\shuffle($floating);
             }
 
-            // Rebuild array: fixed codes stay at original index, others fill remaining slots
             $sortedSubquestions = [];
             $floatingIndex = 0;
             $total = count($scaleArray);
@@ -187,17 +223,6 @@ class RandomizerHelper
             }
 
             $scaleArray = $sortedSubquestions;
-        }
-
-        // Reinsert excluded subquestion if needed
-        if ($excludedSubquestion !== null) {
-            $scaleId = $excludedSubquestion->scale_id;
-            array_splice(
-                $groupedSubquestions[$scaleId],
-                ($excludedSubquestion->question_order - 1),
-                0,
-                [$excludedSubquestion]
-            );
         }
 
         return $groupedSubquestions;
