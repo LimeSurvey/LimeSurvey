@@ -155,8 +155,7 @@
                                         if ($sLanguage == $oSurvey->language) :
                                             echo CHtml::hiddenField(
                                                     "type_{$sTokenField}",
-                                                    $attributeType,
-                                                    array('id' => "type_{$sTokenField}")
+                                                    $attributeType
                                             );
                                             echo CHtml::hiddenField(
                                                     "type_options_{$sTokenField}",
