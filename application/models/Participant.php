@@ -1541,7 +1541,7 @@ class Participant extends LSActiveRecord
      *               - [0] array $addedAttributes: Array of participant attribute IDs that were successfully added.
      *               - [1] array $addedAttributeIds: Array of token field names (e.g., 'attribute_1', 'attribute_2') for the added attributes.
      */
-    private function handleNewTokenAttributes(int $surveyId, array $newAttributes) : array
+    private function handleNewTokenAttributes(int $surveyId, array $newAttributes): array
     {
         [
             $addedAttributes,
@@ -1752,7 +1752,7 @@ class Participant extends LSActiveRecord
      *
      * @return void
      */
-    private function createColumnsInTokenTable(array $addedAttributeIds, int $surveyId) : void
+    private function createColumnsInTokenTable(array $addedAttributeIds, int $surveyId): void
     {
         App()->loadHelper('update/updatedb');
         foreach ($addedAttributeIds as $attributeId) {
