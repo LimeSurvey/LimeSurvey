@@ -20,6 +20,7 @@
     <div>
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
             'name'          => 'bounceaccounttype',
+            'ariaLabel'=> gT('Server type'),
             'checkedOption' => getGlobalSetting('bounceaccounttype'),
             'selectOptions' => [
                 "off"  => gT("Off", 'unescaped'),
@@ -60,6 +61,7 @@
     <div>
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
             'name'          => 'bounceencryption',
+            'ariaLabel'=> gT('Encryption type'),
             'checkedOption' => strtolower((string) getGlobalSetting('bounceencryption')),
             'selectOptions' => [
                 "off" => gT("Off (unsafe)", 'unescaped'),
