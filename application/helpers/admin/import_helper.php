@@ -81,8 +81,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
         $aDataL10n = array();
 
         if (!isset($xml->group_l10ns->rows->row)) {
-            $aDataL10n['group_name'] = $insertdata['group_name'];
-            $aDataL10n['description'] = $insertdata['description'];
+            $aDataL10n['group_name'] = convertLegacyInsertans($insertdata['group_name'], $iOldSID);
+            $aDataL10n['description'] = convertLegacyInsertans($insertdata['description'], $iOldSID);
             $aDataL10n['language'] = $insertdata['language'];
             unset($insertdata['group_name']);
             unset($insertdata['description']);
@@ -94,6 +94,10 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             $questionGroup->group_order = $insertdata['group_order'];
             $questionGroup->randomization_group = $insertdata['randomization_group'];
             $questionGroup->grelevance = $insertdata['grelevance'];
+
+            $questionGroup->description = convertLegacyInsertans($questionGroup->description, $iOldSID);
+            $questionGroup->group_name = convertLegacyInsertans($questionGroup->group_name, $iOldSID);
+
             if (!$questionGroup->save()) {
                 throw new Exception(gT("Error") . ": Failed to insert data [3]<br />");
             }
@@ -106,6 +110,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
         if (!empty($aDataL10n)) {
             $aDataL10n['gid'] = $aGIDReplacements[$oldgid];
             $oQuestionGroupL10n = new QuestionGroupL10n();
+
             $oQuestionGroupL10n->setAttributes($aDataL10n, false);
             $oQuestionGroupL10n->save();
         }
@@ -394,7 +399,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 
             if (!isset($xml->answer_l10ns->rows->row)) {
                 $oAnswerL10n = new AnswerL10n();
-                $oAnswerL10n->answer = $insertdata['answer'];
+                $oAnswerL10n->answer = convertLegacyInsertans($insertdata['answer'], $iOldSID);
                 $oAnswerL10n->language = $insertdata['language'];
                 unset($insertdata['answer']);
                 unset($insertdata['language']);
@@ -2223,6 +2228,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
         $surveyLanguageSetting = new SurveyLanguageSetting();
         $surveyLanguageSetting->setAttributes($insertdata, false);
+
+        $surveyLanguageSetting->surveyls_urldescription = convertLegacyInsertans($surveyLanguageSetting->surveyls_urldescription, $iOldSID);
+        $surveyLanguageSetting->surveyls_url = convertLegacyInsertans($surveyLanguageSetting->surveyls_url, $iOldSID);
+
         try {
             // Clear alias if it was already in use
             $surveyLanguageSetting->checkAliasUniqueness();
@@ -2235,6 +2244,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 unset($surveyLanguageSetting->surveyls_alias);
                 $surveyLanguageSetting->clearErrors('surveyls_alias');
             }
+
             if (!$surveyLanguageSetting->save()) {
                 $errors = $surveyLanguageSetting->errors;
                 // Clean up 
@@ -2392,6 +2402,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $oQuestionL10n->question = $insertdata['question'];
                 $oQuestionL10n->help = $insertdata['help'];
                 $oQuestionL10n->language = $insertdata['language'];
+
+                $oQuestionL10n->question = convertLegacyInsertans($oQuestionL10n->question, $iOldSID);
+                $oQuestionL10n->script = convertLegacyInsertans($oQuestionL10n->script, $iOldSID);
+
                 unset($insertdata['question']);
                 unset($insertdata['help']);
                 unset($insertdata['language']);
@@ -2965,6 +2979,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             // now translate any links
             $insertdata['message'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['message']);
 
+            $insertdata['message'] = convertLegacyInsertans($insertdata['message'], $iOldSID);
+
             $result = Assessment::model()->insertRecords($insertdata);
             if (!$result) {
                 throw new Exception(gT("Error") . ": Failed to insert data[11]<br />");
@@ -3054,6 +3070,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $quotaLanguagesSetting['quotals_urldescrip'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['quotals_urldescrip']);
             $quotaLanguagesSetting['quotals_url'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['quotals_url']);
+
+
+            $quotaLanguagesSetting['quotals_urldescrip'] = convertLegacyInsertans($insertdata['quotals_urldescrip'], $iOldSID);
+            $quotaLanguagesSetting['quotals_url'] = convertLegacyInsertans($insertdata['quotals_url'], $iOldSID);
 
             if (!$quotaLanguagesSetting->save()) {
                 $header = sprintf(gT("Unable to insert quota language settings for quota %s"), $insertdata['quotals_quota_id']);
@@ -3834,6 +3854,7 @@ function TSVImportSurvey($sFullFilePath)
     // Set survey group id to 1. Makes no sense to import it without the actual survey group.
     $surveyinfo['gsid'] = 1;
 
+
     if (array_key_exists('sid', $surveyinfo)) {
         $iNewSID = $surveyinfo['sid'];
     } else {
@@ -3888,7 +3909,7 @@ function TSVImportSurvey($sFullFilePath)
                 $sGroupseq = (!empty($row['type/scale']) ? $row['type/scale'] : 'G' . $iGroupcounter++);
                 $group['group_name'] = $gname;
                 $group['grelevance'] = ($row['relevance'] ?? '');
-                $group['description'] = ($row['text'] ?? '');
+                $group['description'] = isset($row['text']) ? convertLegacyInsertans($row['text'], $surveyinfo['sid']) : '';
                 $group['language'] = $glang;
                 $group['randomization_group'] = ($row['random_group'] ?? '');
 
@@ -4094,7 +4115,7 @@ function TSVImportSurvey($sFullFilePath)
                 $answer = array();
                 $answer['qid'] = $qid;
                 $answer['code'] = ($row['name'] ?? 'A' . $aseq);
-                $answer['answer'] = ($row['text'] ?? '');
+                $answer['answer'] = isset($row['text']) ? convertLegacyInsertans($row['text'], $surveyinfo['sid']) : '';
                 $answer['scale_id'] = ($row['type/scale'] ?? 0);
                 $answer['language'] = ($row['language'] ?? $baselang);
                 $answer['assessment_value'] = (int) ($row['assessment_value'] ?? '');
@@ -4109,7 +4130,7 @@ function TSVImportSurvey($sFullFilePath)
                 $assessment['name'] = $row['name'] ?? '';
                 $assessment['minimum'] = $row['min_num_value'] ?? '';
                 $assessment['maximum'] = $row['max_num_value'] ?? '';
-                $assessment['message'] = $row['text'] ?? '';
+                $assessment['message'] = isset($row['text']) ? convertLegacyInsertans($row['text'], $surveyinfo['sid']) : '';
                 $assessment['language'] = $row['language'] ?? '';
                 $assessment['id'] = $row['id'] ?? '';
                 $assessments[] = $assessment;
@@ -4139,8 +4160,8 @@ function TSVImportSurvey($sFullFilePath)
                 $quota_languagesetting['quotals_language'] = $row['language'] ?? '';
                 //$quota_languagesetting['quotals_name'] = isset($row['name'])?$row['name']:'';
                 $quota_languagesetting['quotals_message'] = $row['relevance'] ?? '';
-                $quota_languagesetting['quotals_url'] = $row['text'] ?? '';
-                $quota_languagesetting['quotals_urldescrip'] = $row['help'] ?? '';
+                $quota_languagesetting['quotals_url'] = isset($row['text']) ? convertLegacyInsertans($row['text'], $surveyinfo['sid']) : '';
+                $quota_languagesetting['quotals_urldescrip'] = isset($row['help']) ? convertLegacyInsertans($row['help'], $surveyinfo['sid']) : '';
                 $quota_languagesettings[] = $quota_languagesetting;
                 break;
             case 'C':

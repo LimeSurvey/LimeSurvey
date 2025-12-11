@@ -2876,10 +2876,6 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
     $iOldSurveyID = (int) $iOldSurveyID;
     $iNewSurveyID = (int) $iNewSurveyID;
 
-    if (strpos($sString, '{INSERTANS:') !== false) {
-        $sString = translateInsertans($sString, $iOldSurveyID, $iNewSurveyID);
-    }
-
     $iOldSurveyID = (int) $iOldSurveyID;
     $iNewSurveyID = (int) $iNewSurveyID; // To avoid injection of a /e regex modifier without having to check all execution paths
     if ($sType == 'survey') {
@@ -5479,24 +5475,48 @@ function csvEscape($string)
 }
 
 /**
- * Translate INSERTANS tags in text content from old survey ID to new survey ID
+ * Convert legacy INSERTANS tags to modern question code references
+ *
+ * Converts {INSERTANS:SIDXGIDXQID} format to questionTitle.shown format
+ * Examples:
+ * - {INSERTANS:554233X11X1} → G01Q02.shown (if QID 1 exists)
+ * - {INSERTANS:554233X11X11} → .shown (if QID 11 doesn't exist)
+ * - {INSERTANS:554233X11X1someText} → someText.shown (if QID 1 exists)
+ * - {INSERTANS:554233X11X11someText} → .shown (if QID 11 doesn't exist)
+ * - {INSERTANS:554233X11Xother} → other.shown (letters only)
+ *
  * @param string $text The text containing INSERTANS tags
- * @param int $oldSid The old survey ID (to identify which tags to replace)
- * @param int $newSid The new survey ID (to replace with)
- * @param array|null $questionCodes Optional pre-loaded question codes array for the NEW survey
- * @return string The translated text
+ * @param int $oldSid The old survey ID to look up questions from
+ * @return string The text with INSERTANS tags converted
  */
-function translateInsertans($text, $oldSid, $newSid)
+function convertLegacyInsertans($text, $oldSid)
 {
-    if (strpos($text, '{INSERTANS:') === false) {
+    $txtInsertans = "{INSERTANS:";
+
+    if (strpos($text, $txtInsertans) === false) {
         return $text;
     }
 
-    $txtInsertans = "{INSERTANS:";
+    // 1. Extract QIDs after last X
+    preg_match_all('/\{INSERTANS:([^}]*)\}/', $text, $blocks);
 
-    // Load question codes for the NEW survey
+    $qids = [];
+    foreach ($blocks[1] as $block) {
+        preg_match('/X(\d+)(?!.*X)/', $block, $m);
+        $qids[] = $m[1];
+    }
+    $qids = array_unique($qids);
+
+    if (empty($qids)) {
+        return $text;
+    }
+
     $questionCodes = [];
-    $questions = Question::model()->findAll("sid = :sid", [":sid" => $oldSid]);
+    $questions = Question::model()->findAll(
+        "sid = :sid AND qid IN (" . implode(',', array_unique($qids)) . ")",
+        [":sid" => $oldSid]
+    );
+
     foreach ($questions as $question) {
         $questionCodes[$question->qid] = $question->title;
     }
@@ -5510,8 +5530,11 @@ function translateInsertans($text, $oldSid, $newSid)
             $content = (strlen($insertansParts[$index]) === $curlyPosition) ? "" : substr($insertansParts[$index], $curlyPosition + 1);
             $subField = substr($rawField, strpos($rawField, "X") + 1);
             $title = substr($subField, strpos($subField, "X") + 1);
-            if (preg_match('/[a-zA-Z]/i', $title, $match)) {
-                $title = substr($title, strpos($title, $match[0]));
+            if (preg_match('/^(\d+)([a-zA-Z].*)$/', $title, $match)) {
+                $qid = (int) $match[1];
+                $title = $match[2];
+                if(!isset($questionCodes[$qid]))
+                    $title = "";
             } else {
                 $title = $questionCodes[$title] ?? "";
             }
@@ -5519,4 +5542,6 @@ function translateInsertans($text, $oldSid, $newSid)
         }
         return implode($insertansParts);
     }
+
+    return $text;
 }
