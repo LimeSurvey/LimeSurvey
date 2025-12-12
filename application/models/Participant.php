@@ -2069,33 +2069,15 @@ class Participant extends LSActiveRecord
         $aTokenAttributes = decodeTokenAttributes($survey->attributedescriptions ?? '');
         $aAutoMapped = $survey->getCPDBMappings();
 
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $attributeService = $diContainer->get(
+            LimeSurvey\Models\Services\ParticipantsAttributeService::class
+        );
+
         /* Create CPDB attributes */
         if (!empty($aAttributesToBeCreated)) {
             foreach ($aAttributesToBeCreated as $key => $value) {
-                //creating new central attribute
-                /* $key is the fieldname from the survey participant list (ie "attribute_1")
-                 * $value is the 'friendly name' for the attribute (ie "Gender")
-                 */
-                $insertnames = [
-                    'attribute_type' => 'TB',
-                    'visible'        => 'Y',
-                    'encrypted'      => $aTokenAttributes[$key]['encrypted'],
-                    'defaultname'    => $value
-                ];
-                $oParticipantAttributeNames = new ParticipantAttributeName();
-                $oParticipantAttributeNames->setAttributes($insertnames, false);
-                if (!$oParticipantAttributeNames->save()) {
-                    throw new CHttpException(500, CHtml::errorSummary($oParticipantAttributeNames));
-                }
-                $attid[$key] = $oParticipantAttributeNames->getPrimaryKey();
-                $insertnameslang = [
-                    'attribute_id'   => $attid[$key],
-                    'attribute_name' => urldecode((string) $value),
-                    'lang'           => Yii::app()->session['adminlang']
-                ];
-                $oParticipantAttributeNamesLang = new ParticipantAttributeNameLang();
-                $oParticipantAttributeNamesLang->setAttributes($insertnameslang, false);
-                $oParticipantAttributeNamesLang->save(false);
+                $attid[$key] = $attributeService->saveParticipantAttribute($aTokenAttributes[$key], urldecode((string) $value));
             }
         }
 

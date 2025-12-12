@@ -3331,14 +3331,14 @@ class Tokens extends SurveyCommonAction
     private function decodeAttributeSelectOptions($attrData)
     {
         if (array_key_exists('type_options', $attrData) && is_string($attrData['type_options'])) {
-            $decodedOptions = json_decode($attrData['type_options'], true);
-            if (json_last_error() === JSON_ERROR_NONE && is_array($decodedOptions)) {
-                // Convert numeric array to associative array with values as both keys and values
-                $formattedOptions = [];
-                foreach ($decodedOptions as $option) {
-                    $formattedOptions[$option] = $option;
-                }
-                $attrData['type_options'] = $formattedOptions;
+            $diContainer = \LimeSurvey\DI::getContainer();
+            $attributeService = $diContainer->get(
+                LimeSurvey\Models\Services\ParticipantsAttributeService::class
+            );
+            $decodedOptions = $attributeService->decodeJsonEncodedTypeOptions($attrData['type_options']);
+
+            if (!empty($decodedOptions)) {
+                $attrData['type_options'] = $decodedOptions;
             }
         }
 

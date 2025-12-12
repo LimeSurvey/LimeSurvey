@@ -190,7 +190,9 @@
                                         }
                                         else
                                         {
-                                            echo $aCPDBAttributes[$tokenValues['cpdbmap']];
+                                            if (array_key_exists($tokenValues['cpdbmap'], $aCPDBAttributes)) {
+                                                echo $aCPDBAttributes[$tokenValues['cpdbmap']];
+                                            }
                                         }
                                     ?></td>
                                     <td>
