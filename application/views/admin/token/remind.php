@@ -20,7 +20,17 @@
                     </div>
                 <?php endif; ?>
             <?php endif; ?>
-
+            <?php if (count($warnings)): ?>
+                <div class="alert alert-warning">
+                    <ul class='list-unstyled'>
+                    <?php foreach($warnings as $warning): ?>
+                        <li>
+                            <?= $warning ?>
+                        </li>
+                    <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
             <?php echo CHtml::form(array("admin/tokens/sa/email/action/remind/surveyid/{$surveyid}"), 'post', array('id' => 'sendreminder', 'class' => '')); ?>
             <div class="row">
                 <div class="col-md-6">
