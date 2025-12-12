@@ -33,14 +33,14 @@ class ArrayNumberCheckboxTest extends TestBaseClassWeb
             ]
         );
         // Get questions.
-        $questionObjects = \Question::model()->findAll("sid = :sid AND parent_qid = 0",array(":sid"=>self::$surveyId));
+        $questionObjects = \Question::model()->findAll("sid = :sid",array(":sid"=>self::$surveyId));
         $questions = [];
         foreach ($questionObjects as $q) {
             $questions[$q->title] = $q;
         }
         /* Used vars */
         $checkboxQuestion = $questions["question"];
-        $checkboxBaseSGQ = $checkboxQuestion->sid."X".$checkboxQuestion->gid."X".$checkboxQuestion->qid;
+        $checkboxBaseSGQ = "Q".$checkboxQuestion->qid;
         $relevanceJsQuestion = $questions["QHiddenJS"];
         $relevancePHPQuestion = $questions["QHiddenPHP"];
         try {
@@ -56,9 +56,9 @@ class ArrayNumberCheckboxTest extends TestBaseClassWeb
             $this->assertEquals('count(self) : 0', $countJsText);
 
             // Click on 3 checkbox, count
-            self::$webDriver->findElement(WebDriverBy::cssSelector('#javatbd'.$checkboxBaseSGQ.'SY002 .answer_cell_SX002'))->click(); // Click the cell (js must click the checkbox), and td hide the real checkbox
-            self::$webDriver->findElement(WebDriverBy::cssSelector('#javatbd'.$checkboxBaseSGQ.'SY003 .answer_cell_SX001'))->click(); 
-            self::$webDriver->findElement(WebDriverBy::cssSelector('#javatbd'.$checkboxBaseSGQ.'SY003 .answer_cell_SX002'))->click();
+            self::$webDriver->findElement(WebDriverBy::cssSelector('#javatbd'.$checkboxBaseSGQ.'_S' . $questions['SY002']->qid . ' .answer_cell_S' . $questions['SX002']->qid))->click(); // Click the cell (js must click the checkbox), and td hide the real checkbox
+            self::$webDriver->findElement(WebDriverBy::cssSelector('#javatbd'.$checkboxBaseSGQ.'_S' . $questions['SY003']->qid . ' .answer_cell_S' . $questions['SX001']->qid))->click(); 
+            self::$webDriver->findElement(WebDriverBy::cssSelector('#javatbd'.$checkboxBaseSGQ.'_S' . $questions['SY003']->qid . ' .answer_cell_S' . $questions['SX002']->qid))->click();
 
             // relevanceJsQuestion be shown
             $elementsRelevance = self::$webDriver->findElements(
@@ -71,7 +71,7 @@ class ArrayNumberCheckboxTest extends TestBaseClassWeb
             $this->assertEquals('count(self) : 3', $countJsText);
 
             // Hide element again
-            self::$webDriver->findElement(WebDriverBy::cssSelector('#javatbd'.$checkboxBaseSGQ.'SY003 .answer_cell_SX002'))->click();
+            self::$webDriver->findElement(WebDriverBy::cssSelector('#javatbd'.$checkboxBaseSGQ.'_S' . $questions['SY003']->qid . ' .answer_cell_S' . $questions['SX002']->qid))->click();
             // Check the count
             $countJs = self::$webDriver->findElement(WebDriverBy::id('countJs'));
             $countJsText = $countJs->getText();
@@ -95,7 +95,7 @@ class ArrayNumberCheckboxTest extends TestBaseClassWeb
             $prev->click();
 
             // Show (mandatory element)
-            self::$webDriver->findElement(WebDriverBy::cssSelector('label[for="cbox'.$checkboxBaseSGQ.'SY003_SX002"]'))->click();
+            self::$webDriver->findElement(WebDriverBy::cssSelector('label[for="cbox'.$checkboxBaseSGQ.'_S' . $questions['SY003']->qid . '_S' . $questions['SX002']->qid . '"]'))->click();
             // Try to move next (must be disable)
             $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $submit->click();

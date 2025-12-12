@@ -149,7 +149,7 @@ class Quota extends LSActiveRecord
 
     public function getCompleteCount()
     {
-        if (!tableExists("survey_{$this->sid}")) {
+        if (!tableExists("responses_{$this->sid}")) {
             return null;
         }
         /* Must control if column name exist (@todo : move this to QuotaMember::model(), even with deactivated survey*/

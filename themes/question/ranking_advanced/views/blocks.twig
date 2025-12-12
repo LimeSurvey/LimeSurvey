@@ -7,7 +7,7 @@
             {% set index = 0 %}
             {% for ansrow in  answers %}
                 {% set index = index + 1 %}
-                <div id="javatbd{{rankingName}}{{ansrow.code}}" class="ls-choice answer-item sortable-item sortable-enable sortable-button ls-flex sortable-block grabable" data-value="{{ansrow.code}}">
+                <div id="javatbd{{rankingName}}_R{{ansrow.aid}}" class="ls-choice answer-item sortable-item sortable-enable sortable-button ls-flex sortable-block grabable" data-value="{{ansrow.code}}">
                     <div class="sortable-block-content">
                     {% if show_handle is same as('yes') %} 
                         <i class="fa fa-bars bigIcons grabable selector__dragHandle "></i>
