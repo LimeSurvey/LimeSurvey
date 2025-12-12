@@ -4174,7 +4174,7 @@ function TSVImportSurvey($sFullFilePath)
                 $answer = array();
                 $answer['qid'] = $qid;
                 $answer['code'] = ($row['name'] ?? 'A' . $aseq);
-                $answer['answer'] = isset($row['text']) ? convertLegacyInsertans($row['text'], $surveyinfo['sid']) : '';
+                $answer['answer'] = ($row['text'] ?? '');
                 $answer['scale_id'] = ($row['type/scale'] ?? 0);
                 $answer['language'] = ($row['language'] ?? $baselang);
                 $answer['assessment_value'] = (int) ($row['assessment_value'] ?? '');
@@ -4189,7 +4189,7 @@ function TSVImportSurvey($sFullFilePath)
                 $assessment['name'] = $row['name'] ?? '';
                 $assessment['minimum'] = $row['min_num_value'] ?? '';
                 $assessment['maximum'] = $row['max_num_value'] ?? '';
-                $assessment['message'] = isset($row['text']) ? convertLegacyInsertans($row['text'], $surveyinfo['sid']) : '';
+                $assessment['message'] = $assessment['message'] = $row['text'] ?? '';
                 $assessment['language'] = $row['language'] ?? '';
                 $assessment['id'] = $row['id'] ?? '';
                 $assessments[] = $assessment;
@@ -4219,8 +4219,8 @@ function TSVImportSurvey($sFullFilePath)
                 $quota_languagesetting['quotals_language'] = $row['language'] ?? '';
                 //$quota_languagesetting['quotals_name'] = isset($row['name'])?$row['name']:'';
                 $quota_languagesetting['quotals_message'] = $row['relevance'] ?? '';
-                $quota_languagesetting['quotals_url'] = isset($row['text']) ? convertLegacyInsertans($row['text'], $surveyinfo['sid']) : '';
-                $quota_languagesetting['quotals_urldescrip'] = isset($row['help']) ? convertLegacyInsertans($row['help'], $surveyinfo['sid']) : '';
+                $quota_languagesetting['quotals_url'] = $row['text'] ?? '';
+                $quota_languagesetting['quotals_urldescrip'] = $row['help'] ?? '';
                 $quota_languagesettings[] = $quota_languagesetting;
                 break;
             case 'C':
