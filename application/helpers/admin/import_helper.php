@@ -94,7 +94,6 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             $questionGroup->group_order = $insertdata['group_order'];
             $questionGroup->randomization_group = $insertdata['randomization_group'];
             $questionGroup->grelevance = $insertdata['grelevance'];
-
             if (!$questionGroup->save()) {
                 throw new Exception(gT("Error") . ": Failed to insert data [3]<br />");
             }
@@ -107,7 +106,6 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
         if (!empty($aDataL10n)) {
             $aDataL10n['gid'] = $aGIDReplacements[$oldgid];
             $oQuestionGroupL10n = new QuestionGroupL10n();
-
             $oQuestionGroupL10n->setAttributes($aDataL10n, false);
             $oQuestionGroupL10n->save();
         }
@@ -2228,7 +2226,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
         $surveyLanguageSetting = new SurveyLanguageSetting();
         $surveyLanguageSetting->setAttributes($insertdata, false);
-
         try {
             // Clear alias if it was already in use
             $surveyLanguageSetting->checkAliasUniqueness();
@@ -2241,7 +2238,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 unset($surveyLanguageSetting->surveyls_alias);
                 $surveyLanguageSetting->clearErrors('surveyls_alias');
             }
-
             if (!$surveyLanguageSetting->save()) {
                 $errors = $surveyLanguageSetting->errors;
                 // Clean up 
@@ -2411,7 +2407,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $oQuestionL10n->question = $insertdata['question'];
                 $oQuestionL10n->help = $insertdata['help'];
                 $oQuestionL10n->language = $insertdata['language'];
-
                 unset($insertdata['question']);
                 unset($insertdata['help']);
                 unset($insertdata['language']);
@@ -3038,9 +3033,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $insertdata['sid'] = $iNewSID; // remap the survey ID
             // now translate any links
-            $insertdata['message'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['message']);
-
-            $insertdata['message'] = convertLegacyInsertans($insertdata['message'], $iNewSID, $surveyQidMap);
+            $insertdata['message'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['message']), $iNewSID, $surveyQidMap);
 
             $result = Assessment::model()->insertRecords($insertdata);
             if (!$result) {
@@ -3129,12 +3122,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $quotaLanguagesSetting = new QuotaLanguageSetting('import');
             $quotaLanguagesSetting->setAttributes($insertdata, false);
 
-            $quotaLanguagesSetting['quotals_urldescrip'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['quotals_urldescrip']);
-            $quotaLanguagesSetting['quotals_url'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['quotals_url']);
-
-
-            $quotaLanguagesSetting['quotals_urldescrip'] = convertLegacyInsertans($insertdata['quotals_urldescrip'], $iNewSID, $surveyQidMap);
-            $quotaLanguagesSetting['quotals_url'] = convertLegacyInsertans($insertdata['quotals_url'], $iNewSID, $surveyQidMap);
+            $quotaLanguagesSetting['quotals_urldescrip'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['quotals_urldescrip']), $iNewSID, $surveyQidMap);
+            $quotaLanguagesSetting['quotals_url'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['quotals_url']), $iNewSID, $surveyQidMap);
 
             if (!$quotaLanguagesSetting->save()) {
                 $header = sprintf(gT("Unable to insert quota language settings for quota %s"), $insertdata['quotals_quota_id']);
@@ -3915,7 +3904,6 @@ function TSVImportSurvey($sFullFilePath)
     // Set survey group id to 1. Makes no sense to import it without the actual survey group.
     $surveyinfo['gsid'] = 1;
 
-
     if (array_key_exists('sid', $surveyinfo)) {
         $iNewSID = $surveyinfo['sid'];
     } else {
@@ -3970,7 +3958,7 @@ function TSVImportSurvey($sFullFilePath)
                 $sGroupseq = (!empty($row['type/scale']) ? $row['type/scale'] : 'G' . $iGroupcounter++);
                 $group['group_name'] = $gname;
                 $group['grelevance'] = ($row['relevance'] ?? '');
-                $group['description'] = isset($row['text']) ? convertLegacyInsertans($row['text'], $surveyinfo['sid']) : '';
+                $group['description'] = ($row['text'] ?? '');
                 $group['language'] = $glang;
                 $group['randomization_group'] = ($row['random_group'] ?? '');
 
@@ -4191,7 +4179,7 @@ function TSVImportSurvey($sFullFilePath)
                 $assessment['name'] = $row['name'] ?? '';
                 $assessment['minimum'] = $row['min_num_value'] ?? '';
                 $assessment['maximum'] = $row['max_num_value'] ?? '';
-                $assessment['message'] = $assessment['message'] = $row['text'] ?? '';
+                $assessment['message'] = $row['text'] ?? '';
                 $assessment['language'] = $row['language'] ?? '';
                 $assessment['id'] = $row['id'] ?? '';
                 $assessments[] = $assessment;
