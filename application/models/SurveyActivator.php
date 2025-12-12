@@ -186,7 +186,7 @@ class SurveyActivator
                 case Question::QT_M_MULTIPLE_CHOICE:
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                 case Question::QT_O_LIST_WITH_COMMENT:
-                    if ($aRow['aid'] != 'other' && strpos((string) $aRow['aid'], 'comment') === false && strpos((string) $aRow['aid'], 'othercomment') === false) {
+                    if ($aRow['aid'] != 'Cother' && strpos((string) $aRow['aid'], 'comment') === false) {
                         $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)") ;
                     } else {
                         $aTableDefinition[$aRow['fieldname']] = "text";
