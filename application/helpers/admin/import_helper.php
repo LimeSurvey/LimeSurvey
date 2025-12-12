@@ -2660,7 +2660,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
         foreach ($record['fields'] as $fieldEntry) {
             foreach ($fieldEntry as $fieldName => $fieldValue) {
-                $model->$fieldName = $fieldValue;
+                $model->$fieldName = convertLegacyInsertans($fieldValue, $iNewSID, $surveyQidMap);
             }
         }
 
