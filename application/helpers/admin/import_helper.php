@@ -2253,7 +2253,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 throw new Exception(gT("Error: Failed to import survey language settings.") . " " . $errorsStr);
             }
 
-            // need update after converts legacy INSERTANS
+            // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
             $pendingInsertansUpdates[] = [
                 'model' => 'SurveyLanguageSetting',
                 'id' => ['surveyls_survey_id', $iNewSID],
@@ -2475,6 +2475,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
                 $oQuestionL10n->save();
 
+                // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
                 $pendingInsertansUpdates[] = [
                     'model' => 'QuestionL10n',
                     'id' => ['id', $oQuestionL10n->id],
@@ -2622,6 +2623,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
                 $oQuestionL10n->save();
 
+                // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
                 $pendingInsertansUpdates[] = [
                     'model' => 'QuestionL10n',
                     'id' => ['id', $oQuestionL10n->id],
@@ -2646,7 +2648,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         $surveyQidMap = $surveyQidMap + array_flip($aQIDReplacements);
     }
 
-    // should be handled here to avoid too many database updates ($pendingInsertansUpdates)
+    // Batch process INSERTANS conversions to minimize database writes
     foreach ($pendingInsertansUpdates as $record) {
 
         $modelClass = $record['model'];
