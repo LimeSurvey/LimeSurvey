@@ -5478,45 +5478,27 @@ function csvEscape($string)
  * Converts {INSERTANS:SIDXGIDXQID} format to questionTitle.shown format
  * Examples:
  * - {INSERTANS:554233X11X1} → G01Q02.shown (if QID 1 exists)
- * - {INSERTANS:554233X11X11} → .shown (if QID 11 doesn't exist)
+ * - {INSERTANS:554233X11X11} → {INSERTANS:554233X11X11} (if QID 11 doesn't exist)
  * - {INSERTANS:554233X11X1someText} → someText.shown (if QID 1 exists)
- * - {INSERTANS:554233X11X11someText} → .shown (if QID 11 doesn't exist)
- * - {INSERTANS:554233X11Xother} → other.shown (letters only)
+ * - {INSERTANS:554233X11X11someText} → {INSERTANS:554233X11X11someText} (if QID 11 doesn't exist)
  *
  * @param string $text The text containing INSERTANS tags
  * @param int $oldSid The old survey ID to look up questions from
  * @return string The text with INSERTANS tags converted
  */
-function convertLegacyInsertans($text, $oldSid)
+function convertLegacyInsertans($text, $newSid, $newOldSurveyQuestionMap = [])
 {
     $txtInsertans = "{INSERTANS:";
 
-    if (strpos($text, $txtInsertans) === false) {
-        return $text;
-    }
-
-    // 1. Extract QIDs after last X
-    preg_match_all('/\{INSERTANS:([^}]*)\}/', $text, $blocks);
-
-    $qids = [];
-    foreach ($blocks[1] as $block) {
-        preg_match('/X(\d+)(?!.*X)/', $block, $m);
-        $qids[] = $m[1];
-    }
-    $qids = array_unique($qids);
-
-    if (empty($qids)) {
+    if (!str_contains($text, $txtInsertans)) {
         return $text;
     }
 
     $questionCodes = [];
-    $questions = Question::model()->findAll(
-        "sid = :sid AND qid IN (" . implode(',', array_unique($qids)) . ")",
-        [":sid" => $oldSid]
-    );
+    $questions = Question::model()->findAll('sid = :sid', [':sid' =>$newSid]);
 
     foreach ($questions as $question) {
-        $questionCodes[$question->qid] = $question->title;
+        $questionCodes[$newOldSurveyQuestionMap[$question->qid]] = $question->title;
     }
 
     $insertansPos = strpos($text ?? "", $txtInsertans);
@@ -5536,8 +5518,9 @@ function convertLegacyInsertans($text, $oldSid)
             } else {
                 $title = $questionCodes[$title] ?? "";
             }
-            $insertansParts[$index] = $title . ".shown" . $content;
+            $insertansParts[$index] = !empty($title) ?  $title . ".shown" . $content : $txtInsertans . $rawField . '}' . $content;
         }
+
         return implode($insertansParts);
     }
 
