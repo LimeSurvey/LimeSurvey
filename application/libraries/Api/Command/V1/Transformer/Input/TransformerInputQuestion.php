@@ -16,7 +16,7 @@ class TransformerInputQuestion extends Transformer
             'sid' => ['type' => 'int'],
             'type' => [
                 'required' => 'create',
-                'length' => ['min' => 1, 'max' => 1]
+                'length' => ['min' => 1, 'max' => 2]
             ],
             'title' => [
                 'required' => 'create',
