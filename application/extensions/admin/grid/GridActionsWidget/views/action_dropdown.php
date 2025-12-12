@@ -1,6 +1,7 @@
 <?php
 /**
  * @var array $dropdownItems
+ * @var int $id
  */
 
 ?>
@@ -12,23 +13,51 @@
     <ul id="<?= 'dropdownmenu_' . $id; ?>" class="dropdown-menu">
         <?php foreach ($dropdownItems as $dropdownItem) : ?>
             <?php $enabledCondition = $dropdownItem['enabledCondition'] ?? true ?>
-            <li>
-                <div data-bs-toggle="tooltip" title="<?= $dropdownItem['tooltip'] ?? '' ?>">
-                    <a id="<?= $dropdownItem['linkId'] ?? '' ?>"
-                       class="dropdown-item <?= $enabledCondition ? "" : "disabled" ?> <?= $dropdownItem['linkClass'] ?? '' ?>"
-                       href="<?= $dropdownItem['url'] ?? '#' ?>"
-                       role="button"
-                        <?php if (isset($dropdownItem['linkAttributes']) && is_array($dropdownItem['linkAttributes'])) : ?>
-                            <?php foreach ($dropdownItem['linkAttributes'] as $attribute => $value) : ?>
-                                <?= "$attribute='$value'" ?>
-                            <?php endforeach; ?>
-                        <?php endif; ?>>
-                        <?php if (isset($dropdownItem['iconClass'])) : ?>
-                            <i class="<?= $dropdownItem["iconClass"] ?>"></i>
-                        <?php endif; ?>
-                        <?= $dropdownItem['title'] ?>
-                    </a>
-                </div>
+            <?php
+            if (isset($dropdownItem['submenu']) && $dropdownItem['submenu']) { ?>
+                <li class="has-submenu">
+                <a href="#" class="dropdown-item d-flex justify-content-between align-items-center"
+                   data-bs-toggle="dropdown-submenu" role="button" aria-expanded="false">
+                    <?= $dropdownItem['title'] ?>
+                </a>
+                <ul class="dropdown-submenu">
+                    <?php
+                    foreach ($dropdownItem['submenu_items'] as $subItem) { ?>
+                        <li>
+                            <?php
+                            $this->render('dropdown_item',
+                                [
+                                    'tooltip' => $subItem['tooltip'] ?? '',
+                                    'title' => $subItem['title'],
+                                    'linkId' => $subItem['linkId'] ?? '',
+                                    'linkClass' => $subItem['linkClass'] ?? '',
+                                    'url' => $subItem['url'] ?? '#',
+                                    'iconClass' => $subItem["iconClass"] ?? null,
+                                    'linkAttributes' => $subItem['linkAttributes'] ?? null,
+                                    'enabledCondition' => $enabledCondition,
+                                ]
+                            ); ?>
+                        </li>
+                    <?php }
+                    ?>
+                </ul>
+                <?php
+            } else { ?>
+                <li>
+                <?php $this->render('dropdown_item',
+                    [
+                        'tooltip' => $dropdownItem['tooltip'] ?? '',
+                        'title' => $dropdownItem['title'],
+                        'linkId' => $dropdownItem['linkId'] ?? '',
+                        'linkClass' => $dropdownItem['linkClass'] ?? '',
+                        'url' => $dropdownItem['url'] ?? '#',
+                        'iconClass' => $dropdownItem["iconClass"] ?? null,
+                        'linkAttributes' => $dropdownItem['linkAttributes'] ?? null,
+                        'enabledCondition' => $enabledCondition,
+                    ]
+                );
+            }
+            ?>
             </li>
         <?php endforeach; ?>
     </ul>
