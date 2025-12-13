@@ -8600,10 +8600,10 @@ vue-loader@^15.7.0:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
-vue-localstorage@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/vue-localstorage/-/vue-localstorage-0.5.0.tgz#e2e46fc6241b61036cb6059b14ed4399dee35eca"
-  integrity sha512-oXSh9TEN79Q9wdYIG17xHPes6huJPa8YCR9EY+U0vPphI64CCSMw9XtghAZnFwdoHgPdbTmwT1sQhXcGmyNFjw==
+vue-localstorage@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/vue-localstorage/-/vue-localstorage-0.6.2.tgz#7f84c99f4ce0b6be23b16c1fab194d4d67182456"
+  integrity sha512-29YQVVkIdoS6BZBCJAyu9d0OR0eKSm5gk5OjsLssV1+NM4zJnf9cxhN1AVeXkUHJLqOonECweuaR8PZ2x307dw==
 
 vue-style-loader@^4.1.0:
   version "4.1.3"
