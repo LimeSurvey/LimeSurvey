@@ -5494,7 +5494,12 @@ function convertLegacyInsertans($text, $newSid, $newOldSurveyQuestionMap = [])
     }
 
     $questionCodes = [];
-    $questions = Question::model()->findAll('sid = :sid', [':sid' =>$newSid]);
+    $newQids = array_keys($newOldSurveyQuestionMap);
+
+    $questions = Question::model()->findAll(
+        'sid = :sid AND qid IN (' . implode(',', array_map('intval', $newQids)) . ')',
+        [':sid' => $newSid]
+    );
 
     foreach ($questions as $question) {
         $questionCodes[$newOldSurveyQuestionMap[$question->qid]] = $question->title;
