@@ -39,6 +39,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
         throw new Exception('This is not a valid LimeSurvey group structure XML file.');
     }
 
+    $pendingInsertansUpdates = [];
+    $surveyQidMap = []; // Map of old question ids to new question ids ([odlQid => newQid])
+
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
     $aQuestionCodeReplacements = array();
@@ -229,6 +232,17 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             if (isset($oQuestionL10n)) {
                 $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
                 $oQuestionL10n->save();
+
+                // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
+                $pendingInsertansUpdates[] = [
+                    'model' => 'QuestionL10n',
+                    'id' => ['id', $oQuestionL10n->id],
+                    'fields' => [
+                        ['question' => $oQuestionL10n->question],
+                        ['help' => $oQuestionL10n->help]
+                    ],
+                ];
+
                 unset($oQuestionL10n);
             }
             // Set a warning if question title was updated
@@ -239,6 +253,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 unset($sOldTitle);
             }
         }
+        $surveyQidMap = array_flip($aQIDReplacements);
     }
 
     // Import subquestions -------------------------------------------------------
@@ -337,6 +352,16 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             if (isset($oQuestionL10n)) {
                 $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
                 $oQuestionL10n->save();
+
+                // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
+                $pendingInsertansUpdates[] = [
+                   'model' => 'QuestionL10n',
+                    'id' => ['id', $oQuestionL10n->id],
+                    'fields' => [
+                        ['question' => $oQuestionL10n->question],
+                        ['help' => $oQuestionL10n->help]
+                    ],
+                ];
                 unset($oQuestionL10n);
             }
 
@@ -348,8 +373,29 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 unset($sOldTitle);
             }
         }
+        $surveyQidMap = array_merge($surveyQidMap, array_flip($aQIDReplacements));
     }
 
+    // Batch process INSERTANS conversions to minimize database writes
+    foreach ($pendingInsertansUpdates as $record) {
+
+        $modelClass = $record['model'];
+        [$idField, $idValue] = $record['id'];
+
+        $model = $modelClass::model()->findByAttributes([$idField => $idValue]);
+
+        if (!$model) {
+            continue;
+        }
+
+        foreach ($record['fields'] as $fieldEntry) {
+            foreach ($fieldEntry as $fieldName => $fieldValue) {
+                $model->$fieldName = convertLegacyInsertans($fieldValue, $iNewSID, $surveyQidMap);
+            }
+        }
+
+        $model->save(false);
+    }
 
     //  Import question_l10ns
     if (isset($xml->question_l10ns->rows->row)) {
@@ -361,8 +407,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             unset($insertdata['id']);
             // now translate any links
             // TODO: Should this depend on $bTranslateLinksFields?
-            $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
-            $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+            $insertdata['question'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']), $iNewSID, $surveyQidMap);
+            $insertdata['help'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']), $iNewSID, $surveyQidMap);
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']];
             } else {
