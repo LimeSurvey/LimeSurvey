@@ -2368,7 +2368,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     /** @var Question[] */
     $importedQuestions = [];
     $surveyQidMap = [];
-    $surveyFieldnameMap = [];
     if (isset($xml->questions)) {
         // There could be surveys without a any questions.
         foreach ($xml->questions->rows->row as $row) {
@@ -2451,8 +2450,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 $results['questions']++;
                 $importedQuestions[$aQIDReplacements[$iOldQID]] = $oQuestion;
-
-                $surveyFieldnameMap ["$iOldSID" . 'X' . $iOldGID . 'X' . $iOldQID] = "$iNewSID" . 'X' . "$aGIDReplacements[$iOldGID]" . 'X' . "$aQIDReplacements[$iOldQID]";
             }
 
             // If translate links is disabled, check for old links.
@@ -2587,8 +2584,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 $results['subquestions']++;
                 $importedSubQuestions[$aQIDReplacements[$iOldQID]] = $oQuestion;
-
-                $surveyFieldnameMap ["$iOldSID" . 'X' . $iOldGID . 'X' . $iOldQID] = "$iNewSID" . 'X' . "$aGIDReplacements[$iOldGID]" . 'X' . "$aQIDReplacements[$iOldQID]";
             }
 
             if (($scaleID = intval($insertdata['scale_id'])) > 0) {
