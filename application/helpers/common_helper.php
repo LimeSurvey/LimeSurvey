@@ -5496,6 +5496,9 @@ function convertLegacyInsertans($text, $newSid, $newOldSurveyQuestionMap = [])
     $questionCodes = [];
     $newQids = array_keys($newOldSurveyQuestionMap);
 
+    if(empty($newQids))
+        return $text;
+
     $questions = Question::model()->findAll(
         'sid = :sid AND qid IN (' . implode(',', array_map('intval', $newQids)) . ')',
         [':sid' => $newSid]
