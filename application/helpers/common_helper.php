@@ -5482,28 +5482,19 @@ function csvEscape($string)
  * - {INSERTANS:554233X11X11someText} → {INSERTANS:554233X11X11someText} (if QID 11 doesn't exist)
  *
  * @param string $text The text containing INSERTANS tags
- * @param int $oldSid The old survey ID to look up questions from
+ * @param array $questions The list of all questions
+ * @param array $newOldSurveyQuestionMap The mapping between the old question IDs and the new question IDs in the new survey
  * @return string The text with INSERTANS tags converted
  */
-function convertLegacyInsertans($text, $newSid, $newOldSurveyQuestionMap = [])
+function convertLegacyInsertans(string $text, array $questions = [], $newOldSurveyQuestionMap = [])
 {
     $txtInsertans = "{INSERTANS:";
 
-    if (!str_contains($text, $txtInsertans)) {
+    if (!str_contains($text, $txtInsertans) || empty($questions) || empty($newOldSurveyQuestionMap)) {
         return $text;
     }
 
     $questionCodes = [];
-    $newQids = array_keys($newOldSurveyQuestionMap);
-
-    if(empty($newQids))
-        return $text;
-
-    $questions = Question::model()->findAll(
-        'sid = :sid AND qid IN (' . implode(',', array_map('intval', $newQids)) . ')',
-        [':sid' => $newSid]
-    );
-
     foreach ($questions as $question) {
         $questionCodes[$newOldSurveyQuestionMap[$question->qid]] = $question->title;
     }
@@ -5518,9 +5509,9 @@ function convertLegacyInsertans($text, $newSid, $newOldSurveyQuestionMap = [])
             $subField = substr($rawField, strpos($rawField, "X") + 1);
             $title = substr($subField, strpos($subField, "X") + 1);
             if (preg_match('/^(\d+)([a-zA-Z].*)$/', $title, $match)) {
-                $qid = (int) $match[1];
+                $oldQid = (int) $match[1];
                 $title = $match[2];
-                if(!isset($questionCodes[$qid]))
+                if(!isset($questionCodes[$oldQid]))
                     $title = "";
             } else {
                 $title = $questionCodes[$title] ?? "";
