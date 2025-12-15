@@ -4595,7 +4595,7 @@ function getInsertansSignature($modelClass, $model, $fields)
 
     return [
         'model' => $modelClass,
-        'id' => $idCriteria,
+        'criteria' => $idCriteria,
         'fields' => $fieldsArray
     ];
 }
@@ -4615,7 +4615,7 @@ function processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQu
 {
     foreach ($pendingInsertansUpdates as $record) {
         $modelClass = $record['model'];
-        $idCriteria = $record['id'];
+        $idCriteria = $record['criteria'];
 
         $models = $modelClass::model()->findAllByAttributes($idCriteria);
 
