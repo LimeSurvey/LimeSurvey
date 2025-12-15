@@ -2318,7 +2318,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
             $pendingInsertansUpdates[] = [
                 'model' => 'SurveyLanguageSetting',
-                'id' => ['surveyls_survey_id', $iNewSID],
+                'id' => [
+                    ['surveyls_survey_id' => $iNewSID, 'surveyls_language' => $surveyLanguageSetting->surveyls_language]
+                ],
                 'fields' => [
                     ['surveyls_urldescription' => $surveyLanguageSetting->surveyls_urldescription],
                     ['surveyls_url' => $surveyLanguageSetting->surveyls_url]
@@ -4607,20 +4609,36 @@ function processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQu
 {
     foreach ($pendingInsertansUpdates as $record) {
         $modelClass = $record['model'];
-        [$idField, $idValue] = $record['id'];
+        $idCriteria = $record['id'];
 
-        $model = $modelClass::model()->findByAttributes([$idField => $idValue]);
+        // Determine if we have multiple criteria
+        if (is_array($idCriteria[0])) {
+            // Multiple criteria => may return multiple models
+            $models = [];
+            foreach ($idCriteria as $criteria) {
+                $foundModels = $modelClass::model()->findAllByAttributes($criteria);
+                if ($foundModels) {
+                    $models = array_merge($models, $foundModels);
+                }
+            }
+        } else {
+            // Single criteria => only one model expected
+            [$idField, $idValue] = $idCriteria;
+            $model = $modelClass::model()->findByAttributes([$idField => $idValue]);
+            $models = $model ? [$model] : [];
+        }
 
-        if (!$model) {
+        if (empty($models)) {
             continue;
         }
 
-        foreach ($record['fields'] as $fieldEntry) {
-            foreach ($fieldEntry as $fieldName => $fieldValue) {
-                $model->$fieldName = convertLegacyInsertans($fieldValue, $allImportedQuestions, $surveyQidMap);
+        foreach ($models as $model) {
+            foreach ($record['fields'] as $fieldEntry) {
+                foreach ($fieldEntry as $fieldName => $fieldValue) {
+                    $model->$fieldName = convertLegacyInsertans($fieldValue, $allImportedQuestions, $surveyQidMap);
+                }
             }
+            $model->save(false);
         }
-
-        $model->save(false);
     }
 }
