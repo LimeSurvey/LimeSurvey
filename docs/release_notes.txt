@@ -34,6 +34,21 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.16.2 (build 251209) to 6.16.3 (build 251215) December 15, 2025
++New feature: Ability to include connection details in SMTP log (Carsten Schmitz)
+-Fixed issue: Status of ComfortUpdate key not properly shown in top menu info box (Carsten Schmitz)
+-Fixed issue: Show SMTP log only on errors was not working properly (#4607) (Carsten Schmitz)
+-Fixed issue #AT-1880: Chart array numbers not showing and wrong output for array flexible (Stefan K)
+-Fixed issue #20384: [security] XSS Vulnerability in question editor (#4617) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1, VBraun
+#Updated translation: Czech (Informal) by jelen1, VBraun
+
+
 Changes from 6.16.1 (build 251125) to 6.16.2 (build 251209) December 9, 2025
 -Fixed issue: a11y missing aria-label for radio button and missing role for list in globalsettings (#4600) (Anblik Audit Team)
 -Fixed issue: SMTP not being kept alive. When SMTP is kept alive the SMTP debug log only needs to show once (Carsten Schmitz)
