@@ -4619,23 +4619,21 @@ function processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQu
 
         $models = $modelClass::model()->findAllByAttributes($idCriteria);
 
-        if (empty($models)) {
-            continue;
-        }
-
-        foreach ($models as $model) {
-            $changed = false;
-            foreach ($record['fields'] as $fieldEntry) {
-                foreach ($fieldEntry as $fieldName => $fieldValue) {
-                    $convertedValue = convertLegacyInsertans($fieldValue, $allImportedQuestions, $surveyQidMap);
-                    if ($fieldValue != $convertedValue) {
-                        $model->$fieldName = $convertedValue;
-                        $changed = true;
+        if(!empty($models)) {
+            foreach ($models as $model) {
+                $changed = false;
+                foreach ($record['fields'] as $fieldEntry) {
+                    foreach ($fieldEntry as $fieldName => $fieldValue) {
+                        $convertedValue = convertLegacyInsertans($fieldValue, $allImportedQuestions, $surveyQidMap);
+                        if ($fieldValue != $convertedValue) {
+                            $model->$fieldName = $convertedValue;
+                            $changed = true;
+                        }
                     }
                 }
-            }
-            if ($changed) {
-                $model->save(false);
+                if ($changed) {
+                    $model->save(false);
+                }
             }
         }
     }
