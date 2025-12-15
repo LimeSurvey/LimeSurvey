@@ -5,33 +5,36 @@
 import StateManager from '../StateManager.js';
 import UIHelpers from '../UIHelpers.js';
 
-const SideMenu = (function() {
-    'use strict';
+class SideMenu {
+    constructor() {
+        this.container = null;
+        this.isLoading = true;
 
-    let container = null;
-    let isLoading = true;
+        // Bind methods
+        this.handleMenuItemClick = this.handleMenuItemClick.bind(this);
+    }
 
     /**
      * Render the side menu
      * @param {HTMLElement} containerEl
      * @param {boolean} loading
      */
-    function render(containerEl, loading) {
-        container = containerEl;
+    render(containerEl, loading) {
+        this.container = containerEl;
 
-        if (!container) return;
+        if (!this.container) return;
 
         // Menus are loaded from SideMenuData.basemenus in Sidebar.init()
         // Don't make extra AJAX calls - just render what's in state
-        isLoading = false;
-        renderMenu();
+        this.isLoading = false;
+        this.renderMenu();
     }
 
     /**
      * Render the menu content
      */
-    function renderMenu() {
-        if (!container) return;
+    renderMenu() {
+        if (!this.container) return;
 
         const sidemenus = StateManager.get('sidemenus') || [];
 
@@ -44,25 +47,25 @@ const SideMenu = (function() {
 
         let html = '<div class="ls-flex-column menu-pane overflow-enabled ls-space all-0 py-4 bg-white">';
 
-        if (isLoading) {
+        if (this.isLoading) {
             html += UIHelpers.createLoaderWidget('sidemenuLoaderWidget', '');
         } else if (sortedMenus.length >= 2) {
             // First menu (usually main settings)
             html += '<div title="' + UIHelpers.escapeHtml(sortedMenus[0].title) + '" id="' + sortedMenus[0].id + '" class="ls-flex-row wrap ls-space padding all-0">';
-            html += renderSubmenu(sortedMenus[0]);
+            html += this.renderSubmenu(sortedMenus[0]);
             html += '</div>';
 
             // Second menu (with label)
             html += '<div title="' + UIHelpers.escapeHtml(sortedMenus[1].title) + '" id="' + sortedMenus[1].id + '" class="ls-flex-row wrap ls-space padding all-0">';
             html += '<label class="menu-label mt-3 p-2 ls-survey-menu-item">' + UIHelpers.escapeHtml(sortedMenus[1].title) + '</label>';
-            html += renderSubmenu(sortedMenus[1]);
+            html += this.renderSubmenu(sortedMenus[1]);
             html += '</div>';
         }
 
         html += '</div>';
 
-        container.innerHTML = html;
-        bindEvents();
+        this.container.innerHTML = html;
+        this.bindEvents();
         UIHelpers.redoTooltips();
     }
 
@@ -71,7 +74,7 @@ const SideMenu = (function() {
      * @param {Object} menu
      * @returns {string}
      */
-    function renderSubmenu(menu) {
+    renderSubmenu(menu) {
         if (!menu || !menu.entries) return '';
 
         const sortedEntries = LS.ld.orderBy(
@@ -82,8 +85,8 @@ const SideMenu = (function() {
 
         let html = '<ul class="list-group subpanel col-12 level-' + (menu.level || 0) + '">';
 
-        sortedEntries.forEach(function(menuItem) {
-            const linkClass = getLinkClass(menuItem);
+        sortedEntries.forEach((menuItem) => {
+            const linkClass = this.getLinkClass(menuItem);
             const href = menuItem.disabled ? '#' : menuItem.link;
             const target = menuItem.link_external === true ? '_blank' : '';
             const tooltip = menuItem.disabled ? menuItem.disabled_tooltip : UIHelpers.reConvertHTML(menuItem.menu_description);
@@ -121,7 +124,7 @@ const SideMenu = (function() {
      * @param {Object} menuItem
      * @returns {string}
      */
-    function getLinkClass(menuItem) {
+    getLinkClass(menuItem) {
         let classes = 'nowrap ';
         classes += menuItem.pjax ? 'pjax ' : ' ';
         classes += StateManager.get('lastMenuItemOpen') === menuItem.id ? 'selected ' : ' ';
@@ -135,36 +138,37 @@ const SideMenu = (function() {
     /**
      * Bind event handlers
      */
-    function bindEvents() {
-        if (!container) return;
+    bindEvents() {
+        if (!this.container) return;
 
         // Menu item click
-        $(container).off('click', '.list-group-item').on('click', '.list-group-item', function(e) {
-            const $this = $(this);
-            const menuItemId = $this.data('menu-item-id');
-            const menuId = $this.data('menu-id');
-
-            if ($this.hasClass('disabled')) {
-                e.preventDefault();
-                return false;
-            }
-
-            // Update state
-            StateManager.commit('lastMenuItemOpen', {
-                id: menuItemId,
-                menu_id: menuId
-            });
-
-            // Re-render to update selected state
-            renderMenu();
-
-            // Allow default link behavior (pjax will handle it)
-        });
+        $(this.container).off('click', '.list-group-item').on('click', '.list-group-item', this.handleMenuItemClick);
     }
 
-    return {
-        render: render
-    };
-})();
+    /**
+     * Handle menu item click
+     */
+    handleMenuItemClick(e) {
+        const $this = $(e.currentTarget);
+        const menuItemId = $this.data('menu-item-id');
+        const menuId = $this.data('menu-id');
+
+        if ($this.hasClass('disabled')) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Update state
+        StateManager.commit('lastMenuItemOpen', {
+            id: menuItemId,
+            menu_id: menuId
+        });
+
+        // Re-render to update selected state
+        this.renderMenu();
+
+        // Allow default link behavior (pjax will handle it)
+    }
+}
 
 export default SideMenu;

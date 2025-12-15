@@ -9,23 +9,42 @@ import SideMenu from './SideMenu.js';
 import QuickMenu from './QuickMenu.js';
 import QuestionExplorer from './QuestionExplorer.js';
 
-const Sidebar = (function() {
-    'use strict';
+class Sidebar {
+    constructor() {
+        this.container = null;
+        this.sideBarWidth = '315';
+        this.isMouseDown = false;
+        this.isMouseDownTimeOut = null;
+        this.smallScreenHidden = false;
+        this.showLoader = false;
+        this.loading = true;
 
-    let container = null;
-    let sideBarWidth = '315';
-    let isMouseDown = false;
-    let isMouseDownTimeOut = null;
-    let smallScreenHidden = false;
-    let showLoader = false;
-    let loading = true;
+        // Component instances
+        this.sideMenu = new SideMenu();
+        this.quickMenu = new QuickMenu();
+        this.questionExplorer = new QuestionExplorer();
+
+        // Bind methods
+        this.handleMouseDown = this.handleMouseDown.bind(this);
+        this.handleMouseUp = this.handleMouseUp.bind(this);
+        this.handleMouseLeave = this.handleMouseLeave.bind(this);
+        this.handleMouseMove = this.handleMouseMove.bind(this);
+        this.handleQuestionGroupOrderChange = this.handleQuestionGroupOrderChange.bind(this);
+        this.controlActiveLink = this.controlActiveLink.bind(this);
+        this.handleUpdateSideBar = this.handleUpdateSideBar.bind(this);
+        this.handleVueReloadRemote = this.handleVueReloadRemote.bind(this);
+        this.handleVueRedraw = this.handleVueRedraw.bind(this);
+        this.handlePjaxSend = this.handlePjaxSend.bind(this);
+        this.handlePjaxRefresh = this.handlePjaxRefresh.bind(this);
+        this.handleStateChange = this.handleStateChange.bind(this);
+    }
 
     /**
      * Initialize the sidebar
      * @param {HTMLElement} containerEl
      */
-    function init(containerEl) {
-        container = containerEl;
+    init(containerEl) {
+        this.container = containerEl;
 
         // Set initial collapse state for mobile
         if (window.innerWidth < 768) {
@@ -37,60 +56,67 @@ const Sidebar = (function() {
 
         // Initialize sidebar width (always as a number)
         if (StateManager.getComputed('isCollapsed')) {
-            sideBarWidth = 98;
+            this.sideBarWidth = 98;
         } else {
             const savedWidth = StateManager.get('sidebarwidth');
-            sideBarWidth = typeof savedWidth === 'string' ? parseInt(savedWidth) : savedWidth;
+            this.sideBarWidth = typeof savedWidth === 'string' ? parseInt(savedWidth) : savedWidth;
         }
 
         // Subscribe to state changes to keep sideBarWidth in sync
-        StateManager.subscribe(function(key, newValue, oldValue) {
-            if (key === 'sidebarwidth' && !StateManager.getComputed('isCollapsed')) {
-                // Ensure we store as a number
-                sideBarWidth = typeof newValue === 'string' ? parseInt(newValue) : newValue;
-                // Update the DOM directly for smooth resize
-                const sidebar = document.getElementById('sidebar');
-                if (sidebar && !isMouseDown) {
-                    sidebar.style.width = sideBarWidth + 'px';
-                }
-            } else if (key === 'isCollapsed') {
-                if (newValue) {
-                    sideBarWidth = 98;
-                } else {
-                    const savedWidth = StateManager.get('sidebarwidth');
-                    sideBarWidth = typeof savedWidth === 'string' ? parseInt(savedWidth) : savedWidth;
-                }
-                render();
-            }
-        });
+        StateManager.subscribe(this.handleStateChange);
 
         // Process base menus from SideMenuData
         if (window.SideMenuData && window.SideMenuData.basemenus) {
-            LS.ld.each(window.SideMenuData.basemenus, setBaseMenuPosition);
+            LS.ld.each(window.SideMenuData.basemenus, (entries, position) => {
+                this.setBaseMenuPosition(entries, position);
+            });
         }
 
-        render();
-        bindEvents();
-        calculateHeight();
+        this.render();
+        this.bindEvents();
+        this.calculateHeight();
 
         // Initial data load - check if menus are already loaded from basemenus
         const sidemenus = StateManager.get('sidemenus');
         if (sidemenus && sidemenus.length > 0) {
             // Menus already loaded from basemenus, no need to show loading
-            loading = false;
+            this.loading = false;
         } else {
-            loading = true;
+            this.loading = true;
         }
-        renderContent();
+        this.renderContent();
 
         // Trigger sidebar mounted event
         $(document).trigger('sidebar:mounted');
     }
 
     /**
+     * Handle state changes
+     */
+    handleStateChange(key, newValue, oldValue) {
+        if (key === 'sidebarwidth' && !StateManager.getComputed('isCollapsed')) {
+            // Ensure we store as a number
+            this.sideBarWidth = typeof newValue === 'string' ? parseInt(newValue) : newValue;
+            // Update the DOM directly for smooth resize
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar && !this.isMouseDown) {
+                sidebar.style.width = this.sideBarWidth + 'px';
+            }
+        } else if (key === 'isCollapsed') {
+            if (newValue) {
+                this.sideBarWidth = 98;
+            } else {
+                const savedWidth = StateManager.get('sidebarwidth');
+                this.sideBarWidth = typeof savedWidth === 'string' ? parseInt(savedWidth) : savedWidth;
+            }
+            this.render();
+        }
+    }
+
+    /**
      * Set base menu position
      */
-    function setBaseMenuPosition(entries, position) {
+    setBaseMenuPosition(entries, position) {
         const orderedEntries = LS.ld.orderBy(
             entries,
             function(a) { return parseInt(a.order || 999999); },
@@ -110,7 +136,7 @@ const Sidebar = (function() {
     /**
      * Calculate sidebar height based on viewport
      */
-    function calculateHeight() {
+    calculateHeight() {
         const height = $('#in_survey_common').height();
         if (height) {
             StateManager.commit('changeSideBarHeight', height);
@@ -120,8 +146,8 @@ const Sidebar = (function() {
     /**
      * Get current sidebar width (returns numeric value without 'px')
      */
-    function getSideBarWidth() {
-        const width = StateManager.getComputed('isCollapsed') ? 98 : sideBarWidth;
+    getSideBarWidth() {
+        const width = StateManager.getComputed('isCollapsed') ? 98 : this.sideBarWidth;
         // Ensure we always return a number by parsing if needed
         return typeof width === 'string' ? parseInt(width) : width;
     }
@@ -129,7 +155,7 @@ const Sidebar = (function() {
     /**
      * Calculate sidebar menu height
      */
-    function calculateSideBarMenuHeight() {
+    calculateSideBarMenuHeight() {
         const currentSideBar = StateManager.get('sideBarHeight');
         return LS.ld.min([currentSideBar, Math.floor(screen.height * 2)]) + 'px';
     }
@@ -137,32 +163,32 @@ const Sidebar = (function() {
     /**
      * Toggle collapse state
      */
-    function toggleCollapse() {
+    toggleCollapse() {
         const isCollapsed = StateManager.get('isCollapsed');
         StateManager.commit('changeIsCollapsed', !isCollapsed);
 
         if (StateManager.getComputed('isCollapsed')) {
-            sideBarWidth = 98;
+            this.sideBarWidth = 98;
         } else {
             const savedWidth = StateManager.get('sidebarwidth');
-            sideBarWidth = typeof savedWidth === 'string' ? parseInt(savedWidth) : savedWidth;
+            this.sideBarWidth = typeof savedWidth === 'string' ? parseInt(savedWidth) : savedWidth;
         }
 
-        render();
+        this.render();
     }
 
     /**
      * Toggle small screen hidden state
      */
-    function toggleSmallScreenHide() {
-        smallScreenHidden = !smallScreenHidden;
-        render();
+    toggleSmallScreenHide() {
+        this.smallScreenHidden = !this.smallScreenHidden;
+        this.render();
     }
 
     /**
      * Change current tab
      */
-    function changeCurrentTab(tab) {
+    changeCurrentTab(tab) {
         // Normalize tab name - 'structure' is alias for 'questiontree'
         if (tab === 'structure') {
             tab = 'questiontree';
@@ -173,21 +199,21 @@ const Sidebar = (function() {
         }
 
         StateManager.commit('changeCurrentTab', tab);
-        render();
+        this.render();
     }
 
     /**
      * Handle mouse down for resize
      */
-    function handleMouseDown(e) {
+    handleMouseDown(e) {
         if (UIHelpers.useMobileView()) {
             StateManager.commit('changeIsCollapsed', false);
-            smallScreenHidden = !smallScreenHidden;
-            render();
+            this.smallScreenHidden = !this.smallScreenHidden;
+            this.render();
             return;
         }
 
-        isMouseDown = !StateManager.getComputed('isCollapsed');
+        this.isMouseDown = !StateManager.getComputed('isCollapsed');
         $('#sidebar').removeClass('transition-animate-width');
         $('#pjax-content').removeClass('transition-animate-width');
     }
@@ -195,12 +221,12 @@ const Sidebar = (function() {
     /**
      * Handle mouse up for resize
      */
-    function handleMouseUp(e) {
-        if (isMouseDown) {
-            isMouseDown = false;
-            const widthNum = typeof sideBarWidth === 'string' ? parseInt(sideBarWidth) : sideBarWidth;
+    handleMouseUp(e) {
+        if (this.isMouseDown) {
+            this.isMouseDown = false;
+            const widthNum = typeof this.sideBarWidth === 'string' ? parseInt(this.sideBarWidth) : this.sideBarWidth;
             if (widthNum < 250 && !StateManager.getComputed('isCollapsed')) {
-                toggleCollapse();
+                this.toggleCollapse();
                 StateManager.commit('changeSidebarwidth', 340);
             } else {
                 StateManager.commit('changeSidebarwidth', widthNum);
@@ -213,10 +239,10 @@ const Sidebar = (function() {
     /**
      * Handle mouse leave for resize
      */
-    function handleMouseLeave(e) {
-        if (isMouseDown) {
-            isMouseDownTimeOut = setTimeout(function() {
-                handleMouseUp(e);
+    handleMouseLeave(e) {
+        if (this.isMouseDown) {
+            this.isMouseDownTimeOut = setTimeout(() => {
+                this.handleMouseUp(e);
             }, 1000);
         }
     }
@@ -224,8 +250,8 @@ const Sidebar = (function() {
     /**
      * Handle mouse move for resize
      */
-    function handleMouseMove(e) {
-        if (!isMouseDown) return;
+    handleMouseMove(e) {
+        if (!this.isMouseDown) return;
 
         const isRTL = StateManager.getComputed('isRTL');
 
@@ -239,29 +265,29 @@ const Sidebar = (function() {
                 StateManager.commit('maxSideBarWidth', true);
                 return;
             }
-            sideBarWidth = (window.innerWidth - e.pageX) - 8;
+            this.sideBarWidth = (window.innerWidth - e.pageX) - 8;
         } else {
             if (e.clientX > screen.width / 2) {
                 StateManager.commit('maxSideBarWidth', true);
                 return;
             }
-            sideBarWidth = e.pageX - 4;
+            this.sideBarWidth = e.pageX - 4;
         }
 
-        StateManager.commit('changeSidebarwidth', sideBarWidth);
+        StateManager.commit('changeSidebarwidth', this.sideBarWidth);
         StateManager.commit('maxSideBarWidth', false);
 
-        window.clearTimeout(isMouseDownTimeOut);
-        isMouseDownTimeOut = null;
+        window.clearTimeout(this.isMouseDownTimeOut);
+        this.isMouseDownTimeOut = null;
 
         // Update sidebar width in real-time (sideBarWidth is a number, add px)
-        $('#sidebar').css('width', sideBarWidth + 'px');
+        $('#sidebar').css('width', this.sideBarWidth + 'px');
     }
 
     /**
      * Control active link highlighting
      */
-    function controlActiveLink() {
+    controlActiveLink() {
         const currentUrl = window.location.href;
         const sidemenus = StateManager.get('sidemenus') || [];
         const collapsedmenus = StateManager.get('collapsedmenus') || [];
@@ -342,26 +368,26 @@ const Sidebar = (function() {
     /**
      * Handle question group order change
      */
-    function handleQuestionGroupOrderChange() {
-        showLoader = true;
-        render();
+    handleQuestionGroupOrderChange() {
+        this.showLoader = true;
+        this.render();
 
         const questiongroups = StateManager.get('questiongroups');
         const surveyid = StateManager.get('surveyid');
 
         Actions.updateQuestionGroupOrder(questiongroups, surveyid)
-            .then(function() {
+            .then(() => {
                 return Actions.getQuestions();
             })
-            .then(function() {
-                showLoader = false;
-                render();
+            .then(() => {
+                this.showLoader = false;
+                this.render();
             })
-            .catch(function(error) {
+            .catch((error) => {
                 console.ls.error('questiongroups updating error!', error);
-                Actions.getQuestions().then(function() {
-                    showLoader = false;
-                    render();
+                Actions.getQuestions().then(() => {
+                    this.showLoader = false;
+                    this.render();
                 });
             });
     }
@@ -369,91 +395,114 @@ const Sidebar = (function() {
     /**
      * Bind event handlers
      */
-    function bindEvents() {
+    bindEvents() {
         // Window resize
-        window.addEventListener('resize', LS.ld.debounce(calculateHeight, 300));
+        window.addEventListener('resize', LS.ld.debounce(() => this.calculateHeight(), 300));
 
         // Body mouse move for resize
-        $('body').on('mousemove', handleMouseMove);
+        $('body').on('mousemove', this.handleMouseMove);
 
         // Custom events
-        $(document).on('vue-sidemenu-update-link', controlActiveLink);
-
-        $(document).on('vue-reload-remote', function() {
-            Actions.getQuestions();
-            Actions.collectMenus();
-            StateManager.commit('newToggleKey');
-        });
-
-        $(document).on('vue-redraw', function() {
-            Actions.getQuestions();
-            Actions.collectMenus();
-        });
-
-        $(document).on('pjax:send', function() {
-            if (UIHelpers.useMobileView() && smallScreenHidden) {
-                smallScreenHidden = false;
-                render();
-            }
-        });
-
-        $(document).on('pjax:refresh', controlActiveLink);
+        $(document).on('vue-sidemenu-update-link', this.controlActiveLink);
+        $(document).on('vue-reload-remote', this.handleVueReloadRemote);
+        $(document).on('vue-redraw', this.handleVueRedraw);
+        $(document).on('pjax:send', this.handlePjaxSend);
+        $(document).on('pjax:refresh', this.handlePjaxRefresh);
 
         // EventBus equivalent for updateSideBar
-        $(document).on('updateSideBar', function(e, payload) {
-            loading = true;
-            renderContent();
+        $(document).on('updateSideBar', this.handleUpdateSideBar);
+    }
 
-            const promises = [Promise.resolve()];
+    /**
+     * Handle vue-reload-remote event
+     */
+    handleVueReloadRemote() {
+        Actions.getQuestions();
+        Actions.collectMenus();
+        StateManager.commit('newToggleKey');
+    }
 
-            if (payload && payload.updateQuestions) {
-                promises.push(Actions.getQuestions());
-            }
-            if (payload && payload.collectMenus) {
-                promises.push(Actions.collectMenus());
-            }
-            if (payload && payload.activeMenuIndex) {
-                controlActiveLink();
-            }
+    /**
+     * Handle vue-redraw event
+     */
+    handleVueRedraw() {
+        Actions.getQuestions();
+        Actions.collectMenus();
+    }
 
-            Promise.all(promises)
-                .catch(function(errors) {
-                    console.ls.error(errors);
-                })
-                .finally(function() {
-                    loading = false;
-                    renderContent();
-                });
-        });
+    /**
+     * Handle pjax:send event
+     */
+    handlePjaxSend() {
+        if (UIHelpers.useMobileView() && this.smallScreenHidden) {
+            this.smallScreenHidden = false;
+            this.render();
+        }
+    }
+
+    /**
+     * Handle pjax:refresh event
+     */
+    handlePjaxRefresh() {
+        this.controlActiveLink();
+    }
+
+    /**
+     * Handle updateSideBar event
+     */
+    handleUpdateSideBar(e, payload) {
+        this.loading = true;
+        this.renderContent();
+
+        const promises = [Promise.resolve()];
+
+        if (payload && payload.updateQuestions) {
+            promises.push(Actions.getQuestions());
+        }
+        if (payload && payload.collectMenus) {
+            promises.push(Actions.collectMenus());
+        }
+        if (payload && payload.activeMenuIndex) {
+            this.controlActiveLink();
+        }
+
+        Promise.all(promises)
+            .catch((errors) => {
+                console.ls.error(errors);
+            })
+            .finally(() => {
+                this.loading = false;
+                this.renderContent();
+            });
     }
 
     /**
      * Render the sidebar HTML
      */
-    function render() {
-        if (!container) return;
+    render() {
+        if (!this.container) return;
 
         const isCollapsed = StateManager.getComputed('isCollapsed');
         const currentTab = StateManager.get('currentTab');
         const isRTL = StateManager.getComputed('isRTL');
         const inSurveyViewHeight = StateManager.get('inSurveyViewHeight');
-        const currentSidebarWidth = getSideBarWidth();
+        const currentSidebarWidth = this.getSideBarWidth();
 
         let classes = 'd-flex col-lg-4 ls-ba position-relative transition-animate-width';
-        if (smallScreenHidden) {
+        if (this.smallScreenHidden) {
             classes += ' toggled';
         }
 
-        const showMainContent = (UIHelpers.useMobileView() && smallScreenHidden) || !UIHelpers.useMobileView();
-        const showPlaceholder = UIHelpers.useMobileView() && smallScreenHidden;
-        const showResizeOverlay = isMouseDown;
+        const showMainContent = (UIHelpers.useMobileView() && this.smallScreenHidden) || !UIHelpers.useMobileView();
+        const showPlaceholder = UIHelpers.useMobileView() && this.smallScreenHidden;
+        const showResizeOverlay = this.isMouseDown;
 
         let html = '<div id="sidebar" class="' + classes + '" style="width: ' + currentSidebarWidth + 'px; max-height: ' + inSurveyViewHeight + 'px; display: flex;">';
 
         if (showMainContent) {
             // Loader overlay
-            if (showLoader) {
-                html += '<div class="sidebar_loader" style="width: ' + getSideBarWidth() + 'px; height: ' + $('#sidebar').height() + 'px;">' +
+            if (this.showLoader) {
+                html += '<div class="sidebar_loader" style="width: ' + this.getSideBarWidth() + 'px; height: ' + $('#sidebar').height() + 'px;">' +
                     '<div class="ls-flex ls-flex-column fill align-content-center align-items-center">' +
                         '<i class="ri-loader-2-fill remix-2x remix-spin"></i>' +
                     '</div>' +
@@ -464,20 +513,20 @@ const Sidebar = (function() {
             html += '<div class="mainMenu col-12 position-relative">';
 
             // Sidebar state toggle (tabs)
-            html += renderStateToggle(isCollapsed, currentTab, isRTL);
+            html += this.renderStateToggle(isCollapsed, currentTab, isRTL);
 
             // Side menu content
-            html += '<div id="sidemenu-container" class="slide-fade" style="display: ' + (!isCollapsed && currentTab === 'settings' ? 'block' : 'none') + '; min-height: ' + calculateSideBarMenuHeight() + ';"></div>';
+            html += '<div id="sidemenu-container" class="slide-fade" style="display: ' + (!isCollapsed && currentTab === 'settings' ? 'block' : 'none') + '; min-height: ' + this.calculateSideBarMenuHeight() + ';"></div>';
 
             // Question explorer content
-            html += '<div id="questionexplorer-container" class="slide-fade" style="display: ' + (!isCollapsed && currentTab === 'questiontree' ? 'block' : 'none') + '; min-height: ' + calculateSideBarMenuHeight() + ';"></div>';
+            html += '<div id="questionexplorer-container" class="slide-fade" style="display: ' + (!isCollapsed && currentTab === 'questiontree' ? 'block' : 'none') + '; min-height: ' + this.calculateSideBarMenuHeight() + ';"></div>';
 
             // Quick menu (collapsed state)
             html += '<div id="quickmenu-container" style="display: ' + (isCollapsed ? 'block' : 'none') + ';"></div>';
 
             // Resize handle
-            if ((UIHelpers.useMobileView() && !smallScreenHidden) || !UIHelpers.useMobileView()) {
-                html += '<div class="resize-handle ls-flex-column" style="height: ' + calculateSideBarMenuHeight() + ';">';
+            if ((UIHelpers.useMobileView() && !this.smallScreenHidden) || !UIHelpers.useMobileView()) {
+                html += '<div class="resize-handle ls-flex-column" style="height: ' + this.calculateSideBarMenuHeight() + ';">';
                 if (!isCollapsed) {
                     html += '<button class="btn resize-btn" type="button">' +
                         '<svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">' +
@@ -504,19 +553,19 @@ const Sidebar = (function() {
 
         html += '</div>'; // #sidebar
 
-        container.innerHTML = html;
+        this.container.innerHTML = html;
 
         // Bind internal events after render
-        bindInternalEvents();
+        this.bindInternalEvents();
 
         // Render sub-components
-        renderContent();
+        this.renderContent();
     }
 
     /**
      * Render state toggle (tabs)
      */
-    function renderStateToggle(isCollapsed, currentTab, isRTL) {
+    renderStateToggle(isCollapsed, currentTab, isRTL) {
         let html = '<div class="ls-space col-12">';
         html += '<div class="ls-flex-row align-content-space-between align-items-flex-end ls-space padding left-0 bottom-0 top-0">';
 
@@ -551,21 +600,21 @@ const Sidebar = (function() {
     /**
      * Render content for sub-components
      */
-    function renderContent() {
+    renderContent() {
         const sidemenuContainer = document.getElementById('sidemenu-container');
         const questionExplorerContainer = document.getElementById('questionexplorer-container');
         const quickmenuContainer = document.getElementById('quickmenu-container');
 
         if (sidemenuContainer) {
-            SideMenu.render(sidemenuContainer, loading);
+            this.sideMenu.render(sidemenuContainer, this.loading);
         }
 
         if (questionExplorerContainer) {
-            QuestionExplorer.render(questionExplorerContainer, loading, handleQuestionGroupOrderChange);
+            this.questionExplorer.render(questionExplorerContainer, this.loading, this.handleQuestionGroupOrderChange);
         }
 
         if (quickmenuContainer) {
-            QuickMenu.render(quickmenuContainer, loading);
+            this.quickMenu.render(quickmenuContainer, this.loading);
         }
 
         // Re-initialize tooltips
@@ -575,37 +624,37 @@ const Sidebar = (function() {
     /**
      * Bind internal events after render
      */
-    function bindInternalEvents() {
+    bindInternalEvents() {
         // Tab switching
-        $(container).off('click', '.sidebar-tab-link').on('click', '.sidebar-tab-link', function(e) {
+        $(this.container).off('click', '.sidebar-tab-link').on('click', '.sidebar-tab-link', (e) => {
             e.preventDefault();
-            const tab = $(this).data('tab');
-            changeCurrentTab(tab);
+            const tab = $(e.currentTarget).data('tab');
+            this.changeCurrentTab(tab);
         });
 
         // Expand button (collapsed state)
-        $(container).off('click', '.expand-sidebar-btn').on('click', '.expand-sidebar-btn', function(e) {
+        $(this.container).off('click', '.expand-sidebar-btn').on('click', '.expand-sidebar-btn', (e) => {
             e.preventDefault();
-            toggleCollapse();
+            this.toggleCollapse();
         });
 
         // Resize handle
-        $(container).off('mousedown', '.resize-btn').on('mousedown', '.resize-btn', handleMouseDown);
-        $(container).off('mouseup').on('mouseup', handleMouseUp);
-        $(container).off('mouseleave', '#sidebar').on('mouseleave', '#sidebar', handleMouseLeave);
+        $(this.container).off('mousedown', '.resize-btn').on('mousedown', '.resize-btn', this.handleMouseDown);
+        $(this.container).off('mouseup').on('mouseup', this.handleMouseUp);
+        $(this.container).off('mouseleave', '#sidebar').on('mouseleave', '#sidebar', this.handleMouseLeave);
 
         // Placeholder click (mobile)
-        $(container).off('click', '.scoped-placeholder-greyed-area').on('click', '.scoped-placeholder-greyed-area', toggleSmallScreenHide);
+        $(this.container).off('click', '.scoped-placeholder-greyed-area').on('click', '.scoped-placeholder-greyed-area', () => this.toggleSmallScreenHide());
     }
 
     /**
      * Update sidebar (called externally)
      */
-    function update(options) {
+    update(options) {
         options = options || {};
 
-        loading = true;
-        renderContent();
+        this.loading = true;
+        this.renderContent();
 
         const promises = [];
 
@@ -617,27 +666,19 @@ const Sidebar = (function() {
         }
 
         Promise.all(promises)
-            .then(function() {
+            .then(() => {
                 if (options.activeMenuIndex) {
-                    controlActiveLink();
+                    this.controlActiveLink();
                 }
             })
-            .catch(function(error) {
+            .catch((error) => {
                 console.ls.error(error);
             })
-            .finally(function() {
-                loading = false;
-                renderContent();
+            .finally(() => {
+                this.loading = false;
+                this.renderContent();
             });
     }
-
-    return {
-        init: init,
-        render: render,
-        update: update,
-        toggleCollapse: toggleCollapse,
-        controlActiveLink: controlActiveLink
-    };
-})();
+}
 
 export default Sidebar;

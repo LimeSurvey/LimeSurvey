@@ -24,6 +24,12 @@ const init = () => {
         return null;
     }
 
+    // Validate LS global
+    if (!window.LS || typeof window.LS.globalUserId === 'undefined') {
+        console.error('LS.globalUserId not found');
+        return null;
+    }
+
     // Create user ID for store
     let userid = window.GlobalSideMenuData.sgid
         ? LS.globalUserId + '-' + window.GlobalSideMenuData.sgid

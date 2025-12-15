@@ -5,33 +5,36 @@
 import StateManager from '../StateManager.js';
 import UIHelpers from '../UIHelpers.js';
 
-const QuickMenu = (function() {
-    'use strict';
+class QuickMenu {
+    constructor() {
+        this.container = null;
+        this.isLoading = true;
 
-    let container = null;
-    let isLoading = true;
+        // Bind methods
+        this.handleMenuItemClick = this.handleMenuItemClick.bind(this);
+    }
 
     /**
      * Render the quick menu
      * @param {HTMLElement} containerEl
      * @param {boolean} loading
      */
-    function render(containerEl, loading) {
-        container = containerEl;
+    render(containerEl, loading) {
+        this.container = containerEl;
 
-        if (!container) return;
+        if (!this.container) return;
 
         // Menus are loaded from SideMenuData.basemenus in Sidebar.init()
         // Don't make extra AJAX calls - just render what's in state
-        isLoading = false;
-        renderMenu();
+        this.isLoading = false;
+        this.renderMenu();
     }
 
     /**
      * Render the menu content
      */
-    function renderMenu() {
-        if (!container) return;
+    renderMenu() {
+        if (!this.container) return;
 
         const collapsedmenus = StateManager.get('collapsedmenus') || [];
 
@@ -44,16 +47,16 @@ const QuickMenu = (function() {
 
         let html = '<div class="ls-flex-column fill">';
 
-        if (isLoading) {
+        if (this.isLoading) {
             html += UIHelpers.createLoaderWidget('quickmenuLoadingIcon', 'loader-quickmenu');
         } else {
-            sortedMenus.forEach(function(menu) {
+            sortedMenus.forEach((menu) => {
                 html += '<div class="ls-space margin top-10" title="' + UIHelpers.escapeHtml(menu.title) + '">';
                 html += '<div class="btn-group-vertical ls-space padding right-10">';
 
-                const sortedEntries = sortMenuEntries(menu.entries);
-                sortedEntries.forEach(function(menuItem) {
-                    html += renderMenuItem(menuItem);
+                const sortedEntries = this.sortMenuEntries(menu.entries);
+                sortedEntries.forEach((menuItem) => {
+                    html += this.renderMenuItem(menuItem);
                 });
 
                 html += '</div>';
@@ -63,8 +66,8 @@ const QuickMenu = (function() {
 
         html += '</div>';
 
-        container.innerHTML = html;
-        bindEvents();
+        this.container.innerHTML = html;
+        this.bindEvents();
         UIHelpers.redoTooltips();
     }
 
@@ -73,7 +76,7 @@ const QuickMenu = (function() {
      * @param {Array} entries
      * @returns {Array}
      */
-    function sortMenuEntries(entries) {
+    sortMenuEntries(entries) {
         return LS.ld.orderBy(
             entries,
             function(a) { return parseInt(a.ordering || 999999); },
@@ -86,8 +89,8 @@ const QuickMenu = (function() {
      * @param {Object} menuItem
      * @returns {string}
      */
-    function renderMenuItem(menuItem) {
-        const classes = compileEntryClasses(menuItem);
+    renderMenuItem(menuItem) {
+        const classes = this.compileEntryClasses(menuItem);
         const tooltip = UIHelpers.reConvertHTML(menuItem.menu_description);
         const target = menuItem.link_external ? '_blank' : '_self';
 
@@ -99,7 +102,7 @@ const QuickMenu = (function() {
             ' data-menu-item-id="' + menuItem.id + '">';
 
         // Render icon based on type
-        html += renderIcon(menuItem);
+        html += this.renderIcon(menuItem);
 
         html += '</a>';
 
@@ -111,7 +114,7 @@ const QuickMenu = (function() {
      * @param {Object} menuItem
      * @returns {string}
      */
-    function renderIcon(menuItem) {
+    renderIcon(menuItem) {
         const iconType = menuItem.menu_icon_type;
         const icon = menuItem.menu_icon;
 
@@ -133,7 +136,7 @@ const QuickMenu = (function() {
      * @param {Object} menuItem
      * @returns {string}
      */
-    function compileEntryClasses(menuItem) {
+    compileEntryClasses(menuItem) {
         let classes = '';
 
         if (StateManager.get('lastMenuItemOpen') === menuItem.id) {
@@ -152,27 +155,28 @@ const QuickMenu = (function() {
     /**
      * Bind event handlers
      */
-    function bindEvents() {
-        if (!container) return;
+    bindEvents() {
+        if (!this.container) return;
 
         // Menu item click
-        $(container).off('click', '.btn').on('click', '.btn', function() {
-            const menuItemId = $(this).data('menu-item-id');
-
-            // Update state
-            StateManager.commit('lastMenuItemOpen', {
-                id: menuItemId,
-                menu_id: null
-            });
-
-            // Re-render to update selected state
-            renderMenu();
-        });
+        $(this.container).off('click', '.btn').on('click', '.btn', this.handleMenuItemClick);
     }
 
-    return {
-        render: render
-    };
-})();
+    /**
+     * Handle menu item click
+     */
+    handleMenuItemClick(e) {
+        const menuItemId = $(e.currentTarget).data('menu-item-id');
+
+        // Update state
+        StateManager.commit('lastMenuItemOpen', {
+            id: menuItemId,
+            menu_id: null
+        });
+
+        // Re-render to update selected state
+        this.renderMenu();
+    }
+}
 
 export default QuickMenu;

@@ -6,59 +6,59 @@ import StateManager from '../StateManager.js';
 import Actions from '../Actions.js';
 import UIHelpers from '../UIHelpers.js';
 
-const QuestionExplorer = (function() {
-    'use strict';
+class QuestionExplorer {
+    constructor() {
+        this.container = null;
+        this.onOrderChange = null;
 
-    let container = null;
-    let onOrderChange = null;
-
-    // Drag and drop state - matching Vue component data()
-    let active = [];
-    let questiongroupDragging = false;
-    let draggedQuestionGroup = null;
-    let questionDragging = false;
-    let draggedQuestion = null;
-    let draggedQuestionsGroup = null;
-    let orderChanged = false; // Track if order actually changed during drag
+        // Drag and drop state - matching Vue component data()
+        this.active = [];
+        this.questiongroupDragging = false;
+        this.draggedQuestionGroup = null;
+        this.questionDragging = false;
+        this.draggedQuestion = null;
+        this.draggedQuestionsGroup = null;
+        this.orderChanged = false; // Track if order actually changed during drag
+    }
 
     /**
      * Render the question explorer
      */
-    function render(containerEl, loading, orderChangeCallback) {
-        container = containerEl;
-        onOrderChange = orderChangeCallback;
+    render(containerEl, loading, orderChangeCallback) {
+        this.container = containerEl;
+        this.onOrderChange = orderChangeCallback;
 
-        if (!container) return;
+        if (!this.container) return;
 
-        active = StateManager.get('questionGroupOpenArray') || [];
+        this.active = StateManager.get('questionGroupOpenArray') || [];
 
-        renderExplorer();
+        this.renderExplorer();
     }
 
     /**
      * Check if group is open
      */
-    function isOpen(gid) {
-        if (questiongroupDragging === true) return false;
-        return LS.ld.indexOf(active, gid) !== -1;
+    isOpen(gid) {
+        if (this.questiongroupDragging === true) return false;
+        return LS.ld.indexOf(this.active, gid) !== -1;
     }
 
     /**
      * Check if group is active
      */
-    function isActive(gid) {
+    isActive(gid) {
         return gid == StateManager.get('lastQuestionGroupOpen');
     }
 
     /**
      * Get question group item classes - matching Vue questionGroupItemClasses()
      */
-    function questionGroupItemClasses(questiongroup) {
+    questionGroupItemClasses(questiongroup) {
         var classes = '';
-        classes += isOpen(questiongroup.gid) ? ' selected ' : ' ';
-        classes += isActive(questiongroup.gid) ? ' activated ' : ' ';
-        if (draggedQuestionGroup !== null) {
-            classes += draggedQuestionGroup.gid === questiongroup.gid ? ' dragged' : ' ';
+        classes += this.isOpen(questiongroup.gid) ? ' selected ' : ' ';
+        classes += this.isActive(questiongroup.gid) ? ' activated ' : ' ';
+        if (this.draggedQuestionGroup !== null) {
+            classes += this.draggedQuestionGroup.gid === questiongroup.gid ? ' dragged' : ' ';
         }
         return classes;
     }
@@ -66,11 +66,11 @@ const QuestionExplorer = (function() {
     /**
      * Get question item classes - matching Vue questionItemClasses()
      */
-    function questionItemClasses(question) {
+    questionItemClasses(question) {
         var classes = '';
         classes += StateManager.get('lastQuestionOpen') === question.qid ? 'selected activated' : 'selected ';
-        if (draggedQuestion !== null) {
-            classes += draggedQuestion.qid === question.qid ? ' dragged' : ' ';
+        if (this.draggedQuestion !== null) {
+            classes += this.draggedQuestion.qid === question.qid ? ' dragged' : ' ';
         }
         return classes;
     }
@@ -78,8 +78,8 @@ const QuestionExplorer = (function() {
     /**
      * Render the explorer content - matching Vue template exactly
      */
-    function renderExplorer() {
-        if (!container) return;
+    renderExplorer() {
+        if (!this.container) return;
 
         var questiongroups = StateManager.get('questiongroups') || [];
         var allowOrganizer = StateManager.get('allowOrganizer') === null ? 1 :  StateManager.get('allowOrganizer') === 1;
@@ -119,7 +119,7 @@ const QuestionExplorer = (function() {
 
         var createQuestionTooltip = UIHelpers.translate(createQuestionAllowed ? '' : 'deactivateSurvey');
         html += '<div class="create-question px-3" data-bs-toggle="tooltip" data-bs-placement="top" title="' + createQuestionTooltip + '">';
-        html += '<a id="adminsidepanel__sidebar--selectorCreateQuestion" href="' + createFullQuestionLink(createQuestionLink) + '" class="btn btn-primary pjax ' + createQuestionAllowedClass + '">';
+        html += '<a id="adminsidepanel__sidebar--selectorCreateQuestion" href="' + this.createFullQuestionLink(createQuestionLink) + '" class="btn btn-primary pjax ' + createQuestionAllowedClass + '">';
         html += '<i class="ri-add-circle-fill"></i>&nbsp;' + UIHelpers.translate('createQuestion');
         html += '</a>';
         html += '</div>';
@@ -137,20 +137,20 @@ const QuestionExplorer = (function() {
         html += '<div class="ls-flex-row ls-space padding all-0">';
         html += '<ul class="list-group col-12 questiongroup-list-group">';
 
-        orderedQuestionGroups.forEach(function(questiongroup) {
-            html += renderQuestionGroup(questiongroup, allowOrganizer, surveyIsActive, itemWidth);
+        orderedQuestionGroups.forEach((questiongroup) => {
+            html += this.renderQuestionGroup(questiongroup, allowOrganizer, surveyIsActive, itemWidth);
         });
 
         html += '</ul>';
         html += '</div>';
         html += '</div>';
 
-        container.innerHTML = html;
-        bindEvents();
+        this.container.innerHTML = html;
+        this.bindEvents();
         UIHelpers.redoTooltips();
     }
 
-    function createFullQuestionLink(baseLink) {
+    createFullQuestionLink(baseLink) {
         if (!baseLink) return '#';
         if (LS.reparsedParameters && LS.reparsedParameters().combined && LS.reparsedParameters().combined.gid) {
             return baseLink + '&gid=' + LS.reparsedParameters().combined.gid;
@@ -161,10 +161,10 @@ const QuestionExplorer = (function() {
     /**
      * Render question group - matching Vue template
      */
-    function renderQuestionGroup(questiongroup, allowOrganizer, surveyIsActive, itemWidth) {
-        var classes = 'list-group-item ls-flex-column' + questionGroupItemClasses(questiongroup);
-        var isGroupOpen = isOpen(questiongroup.gid);
-        var groupActivated = isActive(questiongroup.gid);
+    renderQuestionGroup(questiongroup, allowOrganizer, surveyIsActive, itemWidth) {
+        var classes = 'list-group-item ls-flex-column' + this.questionGroupItemClasses(questiongroup);
+        var isGroupOpen = this.isOpen(questiongroup.gid);
+        var groupActivated = this.isActive(questiongroup.gid);
 
         var html = '<li class="' + classes + '" data-gid="' + questiongroup.gid + '">';
 
@@ -240,7 +240,7 @@ const QuestionExplorer = (function() {
 
         // Questions list (if open) - matching Vue transition
         if (isGroupOpen && questiongroup.questions) {
-            html += renderQuestionsList(questiongroup, allowOrganizer, surveyIsActive, itemWidth);
+            html += this.renderQuestionsList(questiongroup, allowOrganizer, surveyIsActive, itemWidth);
         }
 
         html += '</li>';
@@ -250,7 +250,7 @@ const QuestionExplorer = (function() {
     /**
      * Render questions list
      */
-    function renderQuestionsList(questiongroup, allowOrganizer, surveyIsActive, itemWidth) {
+    renderQuestionsList(questiongroup, allowOrganizer, surveyIsActive, itemWidth) {
         var orderedQuestions = LS.ld.orderBy(
             questiongroup.questions,
             function(a) { return UIHelpers.parseIntOr(a.question_order, 999999); },
@@ -259,8 +259,8 @@ const QuestionExplorer = (function() {
 
         var html = '<ul class="list-group background-muted padding-left question-question-list" style="padding-right:15px">';
 
-        orderedQuestions.forEach(function(question) {
-            html += renderQuestion(question, questiongroup, allowOrganizer, surveyIsActive, itemWidth);
+        orderedQuestions.forEach((question) => {
+            html += this.renderQuestion(question, questiongroup, allowOrganizer, surveyIsActive, itemWidth);
         });
 
         html += '</ul>';
@@ -270,8 +270,8 @@ const QuestionExplorer = (function() {
     /**
      * Render single question - matching Vue template exactly
      */
-    function renderQuestion(question, questiongroup, allowOrganizer, surveyIsActive, itemWidth) {
-        var classes = 'list-group-item question-question-list-item ls-flex-row align-itmes-flex-start ' + questionItemClasses(question);
+    renderQuestion(question, questiongroup, allowOrganizer, surveyIsActive, itemWidth) {
+        var classes = 'list-group-item question-question-list-item ls-flex-row align-itmes-flex-start ' + this.questionItemClasses(question);
         var itemActivated = StateManager.get('lastQuestionOpen') === question.qid;
         // Always show dropdown HTML, use CSS/JS hover to control visibility
         var showDropdown = true;
@@ -349,33 +349,33 @@ const QuestionExplorer = (function() {
     /**
      * Add to active array
      */
-    function addActive(questionGroupId) {
-        if (!isOpen(questionGroupId)) {
-            active.push(questionGroupId);
+    addActive(questionGroupId) {
+        if (!this.isOpen(questionGroupId)) {
+            this.active.push(questionGroupId);
         }
-        StateManager.commit('questionGroupOpenArray', active);
+        StateManager.commit('questionGroupOpenArray', this.active);
     }
 
     /**
      * Toggle question group - matching Vue toggleQuestionGroup()
      */
-    function toggleQuestionGroup(questiongroup) {
-        if (!isOpen(questiongroup.gid)) {
-            addActive(questiongroup.gid);
+    toggleQuestionGroup(questiongroup) {
+        if (!this.isOpen(questiongroup.gid)) {
+            this.addActive(questiongroup.gid);
             StateManager.commit('lastQuestionGroupOpen', questiongroup);
         } else {
-            var newActive = active.filter(function(gid) { return gid !== questiongroup.gid; });
-            active = newActive.slice();
-            StateManager.commit('questionGroupOpenArray', active);
+            var newActive = this.active.filter(function(gid) { return gid !== questiongroup.gid; });
+            this.active = newActive.slice();
+            StateManager.commit('questionGroupOpenArray', this.active);
         }
-        renderExplorer();
+        this.renderExplorer();
     }
 
     /**
      * Open question - matching Vue openQuestion()
      */
-    function openQuestion(question) {
-        addActive(question.gid);
+    openQuestion(question) {
+        this.addActive(question.gid);
         StateManager.commit('lastQuestionOpen', question);
         $(document).trigger('pjax:load', { url: question.link });
     }
@@ -383,62 +383,62 @@ const QuestionExplorer = (function() {
     /**
      * Collapse all
      */
-    function collapseAll() {
-        active = [];
-        StateManager.commit('questionGroupOpenArray', active);
-        renderExplorer();
+    collapseAll() {
+        this.active = [];
+        StateManager.commit('questionGroupOpenArray', this.active);
+        this.renderExplorer();
     }
 
     /**
      * Bind events
      */
-    function bindEvents() {
-        if (!container) return;
-        var $container = $(container);
+    bindEvents() {
+        if (!this.container) return;
+        var $container = $(this.container);
 
         $container.off('.qe');
 
         // Toggle organizer
-        $container.on('click.qe', '.toggle-organizer-btn', function(e) {
+        $container.on('click.qe', '.toggle-organizer-btn', (e) => {
             e.preventDefault();
 
             // Update server and re-render
-            Actions.unlockLockOrganizer().then(function() {
+            Actions.unlockLockOrganizer().then(() => {
                 // Toggle the state locally
-                renderExplorer();
+                this.renderExplorer();
             });
         });
 
         // Collapse all
-        $container.on('click.qe', '.collapse-all-btn', function(e) {
+        $container.on('click.qe', '.collapse-all-btn', (e) => {
             e.preventDefault();
-            collapseAll();
+            this.collapseAll();
         });
 
         // Toggle question group
-        $container.on('click.qe', '.toggle-questiongroup', function(e) {
+        $container.on('click.qe', '.toggle-questiongroup', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            var gid = $(this).data('gid');
+            var gid = $(e.currentTarget).data('gid');
             var questiongroups = StateManager.get('questiongroups') || [];
             var group = questiongroups.find(function(g) { return g.gid === gid; });
             if (group) {
-                toggleQuestionGroup(group);
+                this.toggleQuestionGroup(group);
             }
         });
 
         // Question link click - matching Vue @click.stop.prevent="openQuestion(question)"
-        $container.on('click.qe', '.question-link', function(e) {
+        $container.on('click.qe', '.question-link', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            var qid = $(this).data('qid');
-            var gid = $(this).data('gid');
+            var qid = $(e.currentTarget).data('qid');
+            var gid = $(e.currentTarget).data('gid');
             var questiongroups = StateManager.get('questiongroups') || [];
             var group = questiongroups.find(function(g) { return g.gid === gid; });
             if (group && group.questions) {
                 var question = group.questions.find(function(q) { return q.qid === qid; });
                 if (question) {
-                    openQuestion(question);
+                    this.openQuestion(question);
                 }
             }
         });
@@ -463,84 +463,84 @@ const QuestionExplorer = (function() {
         });
 
         // Drag events
-        bindDragEvents($container);
+        this.bindDragEvents($container);
     }
 
     /**
      * Bind drag events - matching Vue drag methods exactly
      * IMPORTANT: Avoid calling renderExplorer() during active drag to maintain smooth operation
      */
-    function bindDragEvents($container) {
+    bindDragEvents($container) {
         // Question group drag start - matching startDraggingGroup
-        $container.on('dragstart.qe', '.questiongroup-drag-handle[draggable="true"]', function(e) {
-            var gid = $(this).data('gid');
+        $container.on('dragstart.qe', '.questiongroup-drag-handle[draggable="true"]', (e) => {
+            var gid = $(e.currentTarget).data('gid');
             var questiongroups = StateManager.get('questiongroups') || [];
-            draggedQuestionGroup = questiongroups.find(function(g) { return g.gid === gid; });
-            questiongroupDragging = true;
-            orderChanged = false; // Reset flag at start of drag
+            this.draggedQuestionGroup = questiongroups.find(function(g) { return g.gid === gid; });
+            this.questiongroupDragging = true;
+            this.orderChanged = false; // Reset flag at start of drag
             e.originalEvent.dataTransfer.setData('text/plain', 'node');
             // Add dragged class directly without re-rendering
-            $(this).closest('.list-group-item').addClass('dragged');
+            $(e.currentTarget).closest('.list-group-item').addClass('dragged');
         });
 
         // Question group drag end - matching endDraggingGroup
-        $container.on('dragend.qe', '.questiongroup-drag-handle', function() {
-            if (draggedQuestionGroup !== null) {
-                draggedQuestionGroup = null;
-                questiongroupDragging = false;
+        $container.on('dragend.qe', '.questiongroup-drag-handle', () => {
+            if (this.draggedQuestionGroup !== null) {
+                this.draggedQuestionGroup = null;
+                this.questiongroupDragging = false;
                 // Only trigger order update if order actually changed
-                if (orderChanged && onOrderChange) {
-                    onOrderChange();
+                if (this.orderChanged && this.onOrderChange) {
+                    this.onOrderChange();
                 }
-                orderChanged = false; // Reset flag
-                renderExplorer();
+                this.orderChanged = false; // Reset flag
+                this.renderExplorer();
             }
         });
 
         // Question group dragenter - matching dragoverQuestiongroup
-        $container.on('dragenter.qe', '.list-group-item[data-gid]', function(e) {
+        $container.on('dragenter.qe', '.list-group-item[data-gid]', (e) => {
             e.preventDefault();
-            var gid = $(this).data('gid');
+            var gid = $(e.currentTarget).data('gid');
             var questiongroups = StateManager.get('questiongroups') || [];
             var questiongroupObject = questiongroups.find(function(g) { return g.gid === gid; });
 
-            if (questiongroupDragging && draggedQuestionGroup && questiongroupObject) {
+            if (this.questiongroupDragging && this.draggedQuestionGroup && questiongroupObject) {
                 var targetPosition = parseInt(questiongroupObject.group_order);
-                var currentPosition = parseInt(draggedQuestionGroup.group_order);
+                var currentPosition = parseInt(this.draggedQuestionGroup.group_order);
                 if (Math.abs(targetPosition - currentPosition) === 1) {
                     questiongroupObject.group_order = currentPosition;
-                    draggedQuestionGroup.group_order = targetPosition;
+                    this.draggedQuestionGroup.group_order = targetPosition;
                     StateManager.commit('updateQuestiongroups', questiongroups);
-                    orderChanged = true; // Mark that order has changed
+                    this.orderChanged = true; // Mark that order has changed
                     // Don't re-render during drag - wait for dragend
                 }
-            } else if (questionDragging && draggedQuestion && questiongroupObject) {
+            } else if (this.questionDragging && this.draggedQuestion && questiongroupObject) {
                 if (window.SideMenuData.isActive) return;
 
-                addActive(questiongroupObject.gid);
+                this.addActive(questiongroupObject.gid);
 
-                if (draggedQuestion.gid !== questiongroupObject.gid) {
-                    var removedFromInitial = LS.ld.remove(draggedQuestionsGroup.questions, function(q) {
-                        return q.qid === draggedQuestion.qid;
+                if (this.draggedQuestion.gid !== questiongroupObject.gid) {
+                    var removedFromInitial = LS.ld.remove(this.draggedQuestionsGroup.questions, (q) => {
+                        return q.qid === this.draggedQuestion.qid;
                     });
 
                     if (removedFromInitial.length > 0) {
-                        draggedQuestion.question_order = null;
-                        questiongroupObject.questions.push(draggedQuestion);
-                        draggedQuestion.gid = questiongroupObject.gid;
+                        this.draggedQuestion.question_order = null;
+                        questiongroupObject.questions.push(this.draggedQuestion);
+                        this.draggedQuestion.gid = questiongroupObject.gid;
 
-                        if (questiongroupObject.group_order > draggedQuestionsGroup.group_order) {
-                            draggedQuestion.question_order = 0;
+                        if (questiongroupObject.group_order > this.draggedQuestionsGroup.group_order) {
+                            this.draggedQuestion.question_order = 0;
                             LS.ld.each(questiongroupObject.questions, function(q) {
                                 q.question_order = parseInt(q.question_order) + 1;
                             });
                         } else {
-                            draggedQuestion.question_order = draggedQuestionsGroup.questions.length + 1;
+                            this.draggedQuestion.question_order = this.draggedQuestionsGroup.questions.length + 1;
                         }
 
-                        draggedQuestionsGroup = questiongroupObject;
+                        this.draggedQuestionsGroup = questiongroupObject;
                         StateManager.commit('updateQuestiongroups', questiongroups);
-                        orderChanged = true; // Mark that order has changed
+                        this.orderChanged = true; // Mark that order has changed
                         // Don't re-render during drag - wait for dragend
                     }
                 }
@@ -548,58 +548,58 @@ const QuestionExplorer = (function() {
         });
 
         // Question drag start - matching startDraggingQuestion
-        $container.on('dragstart.qe', '.question-drag-handle[draggable="true"]', function(e) {
-            var qid = $(this).data('qid');
-            var gid = $(this).data('gid');
+        $container.on('dragstart.qe', '.question-drag-handle[draggable="true"]', (e) => {
+            var qid = $(e.currentTarget).data('qid');
+            var gid = $(e.currentTarget).data('gid');
             var questiongroups = StateManager.get('questiongroups') || [];
             var group = questiongroups.find(function(g) { return g.gid === gid; });
 
             if (group && group.questions) {
-                draggedQuestion = group.questions.find(function(q) { return q.qid === qid; });
-                draggedQuestionsGroup = group;
-                questionDragging = true;
-                orderChanged = false; // Reset flag at start of drag
+                this.draggedQuestion = group.questions.find(function(q) { return q.qid === qid; });
+                this.draggedQuestionsGroup = group;
+                this.questionDragging = true;
+                this.orderChanged = false; // Reset flag at start of drag
                 e.originalEvent.dataTransfer.setData('application/node', 'node');
                 // Add dragged class directly without re-rendering
-                $(this).closest('.question-question-list-item').addClass('dragged');
+                $(e.currentTarget).closest('.question-question-list-item').addClass('dragged');
             }
         });
 
         // Question drag end - matching endDraggingQuestion
-        $container.on('dragend.qe', '.question-drag-handle', function() {
-            if (questionDragging) {
-                questionDragging = false;
-                draggedQuestion = null;
-                draggedQuestionsGroup = null;
+        $container.on('dragend.qe', '.question-drag-handle', () => {
+            if (this.questionDragging) {
+                this.questionDragging = false;
+                this.draggedQuestion = null;
+                this.draggedQuestionsGroup = null;
                 // Only trigger order update if order actually changed
-                if (orderChanged && onOrderChange) {
-                    onOrderChange();
+                if (this.orderChanged && this.onOrderChange) {
+                    this.onOrderChange();
                 }
-                orderChanged = false; // Reset flag
-                renderExplorer();
+                this.orderChanged = false; // Reset flag
+                this.renderExplorer();
             }
         });
 
         // Question dragenter - matching dragoverQuestion
-        $container.on('dragenter.qe', '.question-question-list-item', function(e) {
+        $container.on('dragenter.qe', '.question-question-list-item', (e) => {
             e.preventDefault();
-            var qid = $(this).data('qid');
-            var gid = $(this).data('gid');
+            var qid = $(e.currentTarget).data('qid');
+            var gid = $(e.currentTarget).data('gid');
 
-            if (questionDragging && draggedQuestion) {
-                if (window.SideMenuData.isActive && draggedQuestion.gid !== gid) return;
+            if (this.questionDragging && this.draggedQuestion) {
+                if (window.SideMenuData.isActive && this.draggedQuestion.gid !== gid) return;
 
                 var questiongroups = StateManager.get('questiongroups') || [];
                 var group = questiongroups.find(function(g) { return g.gid === gid; });
 
                 if (group && group.questions) {
                     var questionObject = group.questions.find(function(q) { return q.qid === qid; });
-                    if (questionObject && questionObject.qid !== draggedQuestion.qid) {
+                    if (questionObject && questionObject.qid !== this.draggedQuestion.qid) {
                         var orderSwap = questionObject.question_order;
-                        questionObject.question_order = draggedQuestion.question_order;
-                        draggedQuestion.question_order = orderSwap;
+                        questionObject.question_order = this.draggedQuestion.question_order;
+                        this.draggedQuestion.question_order = orderSwap;
                         StateManager.commit('updateQuestiongroups', questiongroups);
-                        orderChanged = true; // Mark that order has changed
+                        this.orderChanged = true; // Mark that order has changed
                         // Don't re-render during drag - wait for dragend
                     }
                 }
@@ -611,10 +611,6 @@ const QuestionExplorer = (function() {
             e.preventDefault();
         });
     }
-
-    return {
-        render: render
-    };
-})();
+}
 
 export default QuestionExplorer;

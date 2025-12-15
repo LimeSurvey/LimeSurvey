@@ -86,8 +86,9 @@ const Lsadminsidepanel = function(userid, surveyid) {
             StateManager.commit('setAllowOrganizer', 1);
         }
 
-        // Initialize sidebar component
-        Sidebar.init(containerEl);
+        // Initialize sidebar component (now as a class)
+        const sidebar = new Sidebar();
+        sidebar.init(containerEl);
 
         // Bind Vue-style events
         $(document).on('vue-redraw', function() {
@@ -96,7 +97,7 @@ const Lsadminsidepanel = function(userid, surveyid) {
 
         $(document).trigger('vue-reload-remote');
 
-        return Sidebar;
+        return sidebar;
     }
 
     /**

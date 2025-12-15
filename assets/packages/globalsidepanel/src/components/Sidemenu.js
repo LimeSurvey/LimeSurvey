@@ -31,7 +31,8 @@ class Sidemenu {
     render() {
         if (!this.container) return;
 
-        const level = this.menu.level || 0;
+        const level = this.menu && typeof this.menu.level !== 'undefined'
+            ? this.menu.level : 0;
 
         this.container.innerHTML = `
             <ul class="list-group subpanel col-12 level-${level}">
@@ -115,6 +116,9 @@ class Sidemenu {
     }
 
     attachEventListeners() {
+        if (!this.container) {
+            return;
+        }
         const menuItems = this.container.querySelectorAll('[data-menu-item]');
         menuItems.forEach(item => {
             item.addEventListener('click', (e) => {
