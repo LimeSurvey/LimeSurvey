@@ -209,7 +209,8 @@ $(document).ready(function() {
         surveyid = window.SideMenuData.surveyid;
     }
 
-    window.adminsidepanel = window.adminsidepanel || Lsadminsidepanel(window.LS.globalUserId, surveyid);
+    const userid = (window.LS && window.LS.globalUserId) ? window.LS.globalUserId : null;
+    window.adminsidepanel = window.adminsidepanel || Lsadminsidepanel(userid, surveyid);
 
     window.adminsidepanel();
 });
