@@ -236,7 +236,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
                 $pendingInsertansUpdates[] = [
                     'model' => 'QuestionL10n',
-                    'id' => ['id', $oQuestionL10n->id],
+                    'id' => ['id' => $oQuestionL10n->id, 'language' => $oQuestionL10n->language],
                     'fields' => [
                         ['question' => $oQuestionL10n->question],
                         ['help' => $oQuestionL10n->help]
@@ -256,7 +256,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
     }
 
     // Import subquestions -------------------------------------------------------
-    /* /** @var Question[] */
+    /** @var Question[] */
     $importedSubQuestions = [];
     if (isset($xml->subquestions)) {
         foreach ($xml->subquestions->rows->row as $row) {
@@ -357,7 +357,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
                 $pendingInsertansUpdates[] = [
                    'model' => 'QuestionL10n',
-                    'id' => ['id', $oQuestionL10n->id],
+                    'id' => ['id' => $oQuestionL10n->id, 'language' => $oQuestionL10n->language],
                     'fields' => [
                         ['question' => $oQuestionL10n->question],
                         ['help' => $oQuestionL10n->help]
@@ -754,7 +754,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
             $pendingInsertansUpdates[] = [
                 'model' => 'QuestionL10n',
-                'id' => ['id', $oQuestionL10n->id],
+                'id' => ['id' => $oQuestionL10n->id, 'language' => $oQuestionL10n->language],
                 'fields' => [
                     ['question' => $oQuestionL10n->question],
                     ['help' => $oQuestionL10n->help]
@@ -876,7 +876,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
                 $pendingInsertansUpdates[] = [
                     'model' => 'QuestionL10n',
-                    'id' => ['id', $oQuestionL10n->id],
+                    'id' => ['id' => $oQuestionL10n->id, 'language' => $oQuestionL10n->language],
                     'fields' => [
                         ['question' => $oQuestionL10n->question],
                         ['help' => $oQuestionL10n->help]
@@ -2319,7 +2319,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $pendingInsertansUpdates[] = [
                 'model' => 'SurveyLanguageSetting',
                 'id' => [
-                    ['surveyls_survey_id' => $iNewSID, 'surveyls_language' => $surveyLanguageSetting->surveyls_language]
+                    'surveyls_survey_id' => $iNewSID,
+                    'surveyls_language' => $surveyLanguageSetting->surveyls_language
                 ],
                 'fields' => [
                     ['surveyls_urldescription' => $surveyLanguageSetting->surveyls_urldescription],
@@ -2537,7 +2538,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
                 $pendingInsertansUpdates[] = [
                     'model' => 'QuestionL10n',
-                    'id' => ['id', $oQuestionL10n->id],
+                    'id' => ['id' => $oQuestionL10n->id, 'language' => $oQuestionL10n->language],
                     'fields' => [
                         ['question' => $oQuestionL10n->question],
                         ['help' => $oQuestionL10n->help]
@@ -2681,7 +2682,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
                 $pendingInsertansUpdates[] = [
                     'model' => 'QuestionL10n',
-                    'id' => ['id', $oQuestionL10n->id],
+                    'id' => ['id' => $oQuestionL10n->id, 'language' => $oQuestionL10n->language],
                     'fields' => [
                         ['question' => $oQuestionL10n->question],
                         ['help' => $oQuestionL10n->help]
@@ -4611,34 +4612,26 @@ function processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQu
         $modelClass = $record['model'];
         $idCriteria = $record['id'];
 
-        // Determine if we have multiple criteria
-        if (is_array($idCriteria[0])) {
-            // Multiple criteria => may return multiple models
-            $models = [];
-            foreach ($idCriteria as $criteria) {
-                $foundModels = $modelClass::model()->findAllByAttributes($criteria);
-                if ($foundModels) {
-                    $models = array_merge($models, $foundModels);
-                }
-            }
-        } else {
-            // Single criteria => only one model expected
-            [$idField, $idValue] = $idCriteria;
-            $model = $modelClass::model()->findByAttributes([$idField => $idValue]);
-            $models = $model ? [$model] : [];
-        }
+        $models = $modelClass::model()->findAllByAttributes($idCriteria);
 
         if (empty($models)) {
             continue;
         }
 
         foreach ($models as $model) {
+            $changed = false;
             foreach ($record['fields'] as $fieldEntry) {
                 foreach ($fieldEntry as $fieldName => $fieldValue) {
-                    $model->$fieldName = convertLegacyInsertans($fieldValue, $allImportedQuestions, $surveyQidMap);
+                    $convertedValue = convertLegacyInsertans($fieldValue, $allImportedQuestions, $surveyQidMap);
+                    if ($fieldValue != $convertedValue) {
+                        $model->$fieldName = $convertedValue;
+                        $changed = true;
+                    }
                 }
             }
-            $model->save(false);
+            if ($changed) {
+                $model->save(false);
+            }
         }
     }
 }
