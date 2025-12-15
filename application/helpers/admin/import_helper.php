@@ -234,14 +234,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 $oQuestionL10n->save();
 
                 // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
-                $pendingInsertansUpdates[] = [
-                    'model' => 'QuestionL10n',
-                    'id' => ['id' => $oQuestionL10n->id, 'language' => $oQuestionL10n->language],
-                    'fields' => [
-                        ['question' => $oQuestionL10n->question],
-                        ['help' => $oQuestionL10n->help]
-                    ],
-                ];
+                if ($signature = getInsertansSignature('QuestionL10n', $oQuestionL10n, ['question', 'help'])) {
+                    $pendingInsertansUpdates[] = $signature;
+                }
 
                 unset($oQuestionL10n);
             }
@@ -355,14 +350,10 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 $oQuestionL10n->save();
 
                 // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
-                $pendingInsertansUpdates[] = [
-                   'model' => 'QuestionL10n',
-                    'id' => ['id' => $oQuestionL10n->id, 'language' => $oQuestionL10n->language],
-                    'fields' => [
-                        ['question' => $oQuestionL10n->question],
-                        ['help' => $oQuestionL10n->help]
-                    ],
-                ];
+                if ($signature = getInsertansSignature('QuestionL10n', $oQuestionL10n, ['question', 'help'])) {
+                    $pendingInsertansUpdates[] = $signature;
+                }
+
                 unset($oQuestionL10n);
             }
 
@@ -752,14 +743,9 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             $oQuestionL10n->save();
 
             // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
-            $pendingInsertansUpdates[] = [
-                'model' => 'QuestionL10n',
-                'id' => ['id' => $oQuestionL10n->id, 'language' => $oQuestionL10n->language],
-                'fields' => [
-                    ['question' => $oQuestionL10n->question],
-                    ['help' => $oQuestionL10n->help]
-                ],
-            ];
+            if ($signature = getInsertansSignature('QuestionL10n', $oQuestionL10n, ['question', 'help'])) {
+                $pendingInsertansUpdates[] = $signature;
+            }
 
             unset($oQuestionL10n);
         }
@@ -874,14 +860,9 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 $oQuestionL10n->save();
 
                 // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
-                $pendingInsertansUpdates[] = [
-                    'model' => 'QuestionL10n',
-                    'id' => ['id' => $oQuestionL10n->id, 'language' => $oQuestionL10n->language],
-                    'fields' => [
-                        ['question' => $oQuestionL10n->question],
-                        ['help' => $oQuestionL10n->help]
-                    ],
-                ];
+                if ($signature = getInsertansSignature('QuestionL10n', $oQuestionL10n, ['question', 'help'])) {
+                    $pendingInsertansUpdates[] = $signature;
+                }
 
                 unset($oQuestionL10n);
             }
@@ -2316,17 +2297,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
 
             // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
-            $pendingInsertansUpdates[] = [
-                'model' => 'SurveyLanguageSetting',
-                'id' => [
-                    'surveyls_survey_id' => $iNewSID,
-                    'surveyls_language' => $surveyLanguageSetting->surveyls_language
-                ],
-                'fields' => [
-                    ['surveyls_urldescription' => $surveyLanguageSetting->surveyls_urldescription],
-                    ['surveyls_url' => $surveyLanguageSetting->surveyls_url]
-                ],
-            ];
+            if ($signature = getInsertansSignature('SurveyLanguageSetting', $surveyLanguageSetting, ['surveyls_urldescription', 'surveyls_url'])) {
+                $pendingInsertansUpdates[] = $signature;
+            }
         } catch (CDbException $e) {
             throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid.");
         }
@@ -2536,14 +2509,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $oQuestionL10n->save();
 
                 // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
-                $pendingInsertansUpdates[] = [
-                    'model' => 'QuestionL10n',
-                    'id' => ['id' => $oQuestionL10n->id, 'language' => $oQuestionL10n->language],
-                    'fields' => [
-                        ['question' => $oQuestionL10n->question],
-                        ['help' => $oQuestionL10n->help]
-                    ],
-                ];
+                if ($signature = getInsertansSignature('QuestionL10n', $oQuestionL10n, ['question', 'help'])) {
+                    $pendingInsertansUpdates[] = $signature;
+                }
 
                 unset($oQuestionL10n);
             }
@@ -2680,14 +2648,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $oQuestionL10n->save();
 
                 // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
-                $pendingInsertansUpdates[] = [
-                    'model' => 'QuestionL10n',
-                    'id' => ['id' => $oQuestionL10n->id, 'language' => $oQuestionL10n->language],
-                    'fields' => [
-                        ['question' => $oQuestionL10n->question],
-                        ['help' => $oQuestionL10n->help]
-                    ],
-                ];
+                if ($signature = getInsertansSignature('QuestionL10n', $oQuestionL10n, ['question', 'help'])) {
+                    $pendingInsertansUpdates[] = $signature;
+                }
 
                 unset($oQuestionL10n);
             }
@@ -4593,6 +4556,48 @@ function fileCsvToUtf8($fullfilepath, $encoding = 'auto')
     /* Return the tempory ressource */
     rewind($tmp);
     return $tmp;
+}
+
+/**
+ * Generates the INSERTANS conversion queue signature for a model
+ *
+ * Different models have different primary key structures:
+ * - QuestionL10n: ['id' => id, 'language' => language]
+ * - SurveyLanguageSetting: ['surveyls_survey_id' => sid, 'surveyls_language' => language]
+ *
+ * @param string $modelClass The model class name
+ * @param mixed $model The model instance or data
+ * @param array $fields Array of field names to convert
+ * @return array|null The queue signature or null if model type not supported
+ */
+function getInsertansSignature($modelClass, $model, $fields)
+{
+    $idCriteria = [];
+
+    switch ($modelClass) {
+        case 'QuestionL10n':
+            $idCriteria = ['id' => $model->id, 'language' => $model->language];
+            break;
+        case 'SurveyLanguageSetting':
+            $idCriteria = [
+                'surveyls_survey_id' => $model->surveyls_survey_id,
+                'surveyls_language' => $model->surveyls_language
+            ];
+            break;
+        default:
+            return null;
+    }
+
+    $fieldsArray = [];
+    foreach ($fields as $field) {
+        $fieldsArray[] = [$field => $model->$field];
+    }
+
+    return [
+        'model' => $modelClass,
+        'id' => $idCriteria,
+        'fields' => $fieldsArray
+    ];
 }
 
 /**
