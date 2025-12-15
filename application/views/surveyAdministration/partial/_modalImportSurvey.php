@@ -63,9 +63,23 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
-                <input type='submit' id="import-submit" class="btn btn-info col-3" value='<?php eT("Import survey"); ?>' />
+                <input type='submit' id="import-submit" class="btn btn-info" value='<?php eT("Import survey"); ?>' />
             </div>
             </form>
         </div>
     </div>
 </div>
+
+<?php
+App()->getClientScript()->registerScript('ImportSurveyModal', "
+$('#importsurvey').on('submit', function(e) {
+    // Use a small timeout to allow client-side validation to run.
+    // If validation fails, the form submission is cancelled before the spinner is shown.
+    setTimeout(function() {
+        if (!e.isDefaultPrevented()) {
+            $('#ls-loading').show();
+        }
+    }, 100);
+});
+", LSYii_ClientScript::POS_END);
+?>
