@@ -3328,18 +3328,19 @@ class Tokens extends SurveyCommonAction
      * @param array $attrData The attribute data array that may contain a 'type_options' key with JSON string value
      * @return array The modified attribute data array with decoded and formatted type_options, or the original array if no changes were made
      */
-    private function decodeAttributeSelectOptions($attrData)
+    private function decodeAttributeSelectOptions(array $attrData)
     {
         if (array_key_exists('type_options', $attrData) && is_string($attrData['type_options'])) {
-            $diContainer = \LimeSurvey\DI::getContainer();
-            $attributeService = $diContainer->get(
-                LimeSurvey\Models\Services\ParticipantsAttributeService::class
-            );
-            $decodedOptions = $attributeService->decodeJsonEncodedTypeOptions($attrData['type_options']);
-
-            if (!empty($decodedOptions)) {
-                $attrData['type_options'] = $decodedOptions;
+            static $attributeService = null;
+            if ($attributeService === null) {
+                $diContainer = \LimeSurvey\DI::getContainer();
+                $attributeService = $diContainer->get(
+                    LimeSurvey\Models\Services\ParticipantsAttributeService::class
+                );
             }
+            $decodedOptions = $attributeService->decodeJsonEncodedTypeOptions($attrData['type_options']);
+            // Always normalize to array for downstream form rendering (even if empty / invalid -> []).
+            $attrData['type_options'] = $decodedOptions;
         }
 
         return $attrData;

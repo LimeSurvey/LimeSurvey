@@ -135,9 +135,9 @@
                                     {
                                         echo "
                                         <td>", htmlspecialchars((string) $tokenValues['description'], ENT_QUOTES, 'UTF-8'), "</td>
-                                        <td>", $tokenValues['mandatory'] == 'Y' ? eT('Yes') : eT('No'), "</td>
-                                        <td>", $tokenValues['encrypted'] == 'Y' ? eT('Yes') : eT('No'), "</td>
-                                        <td>", $tokenValues['show_register'] == 'Y' ? eT('Yes') : eT('No'), "</td>";
+                                        <td>", $tokenValues['show_register'] == 'Y' ? gT('Yes') : gT('No'), "</td>
+                                        <td>", $tokenValues['mandatory'] == 'Y' ? gT('Yes') : gT('No'), "</td>
+                                        <td>", $tokenValues['encrypted'] == 'Y' ? gT('Yes') : gT('No'), "</td>";
                                     }; ?>
                                     <td>
                                         <?php

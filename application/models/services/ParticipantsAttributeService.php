@@ -101,10 +101,11 @@ class ParticipantsAttributeService
         string $attributeName,
         int $attributeId
     ): void {
+        $adminLang = App()->session['adminlang'] ?? App()->getConfig('defaultlang');
         $insertData = [
             'attribute_id' => $attributeId,
             'attribute_name' => $attributeName,
-            'lang' => App()->session['adminlang']
+            'lang' => $adminLang
         ];
         $model = clone $this->modelParticipantAttributeLang;
         $model->setAttributes($insertData, false);
@@ -129,8 +130,12 @@ class ParticipantsAttributeService
         array $attributeData
     ): void {
         if ($attributeData['type'] == 'DD') {
+            $typeOptions = array_key_exists(
+                'type_options',
+                $attributeData
+            ) ? $attributeData['type_options'] : '[]';
             $decodedOptions = $this->decodeJsonEncodedTypeOptions(
-                $attributeData['type_options']
+                $typeOptions
             );
             foreach ($decodedOptions as $option) {
                 $model = clone $this->modelParticipantAttributeValue;
@@ -149,7 +154,7 @@ class ParticipantsAttributeService
      * @param string $jsonEncodedOptions JSON string to decode
      * @return array Decoded array or empty array if invalid JSON or not an array
      */
-    public function decodeJsonEncodedTypeOptions(string $jsonEncodedOptions)
+    public function decodeJsonEncodedTypeOptions(string $jsonEncodedOptions): array
     {
         $decodedOptions = [];
 
