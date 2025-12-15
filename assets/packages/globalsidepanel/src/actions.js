@@ -62,6 +62,11 @@ class Actions {
 
     getMenus() {
         return new Promise((resolve, reject) => {
+            if (!window.GlobalSideMenuData || !window.GlobalSideMenuData.getUrl) {
+                reject({ success: false, error: 'GlobalSideMenuData.getUrl not found' });
+                return;
+            }
+
             this.get(window.GlobalSideMenuData.getUrl).then(
                 result => {
                     LOG.log("menues", result);

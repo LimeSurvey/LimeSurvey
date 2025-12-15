@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "build": "npm run dev && npm run prod",
-    "prod": "NODE_ENV=production webpack --config webpack.config.js",
-    "dev": "NODE_ENV=development webpack --config webpack.config.js",
-    "watch": "NODE_ENV=development webpack --config webpack.config.js --watch"
+      "prod": "cross-env NODE_ENV=production webpack --config webpack.config.js",
+      "dev": "cross-env NODE_ENV=development webpack --config webpack.config.js",
+      "watch": "cross-env NODE_ENV=development webpack --config webpack.config.js --watch"
   },
   "dependencies": {
     "core-js": "^3.38.1"
@@ -15,6 +15,7 @@
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.4",
     "babel-loader": "^9.2.1",
+    "cross-env": "^7.0.3",
     "webpack": "^5.95.0",
     "webpack-cli": "^5.1.4"
   },

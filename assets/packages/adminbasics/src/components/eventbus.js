@@ -26,12 +26,6 @@ class EventBus {
     $emit(event, ...args) {
         console.ls.log("Emitting -> ", event, ...args);
 
-        if (this.eventsBound[event] !== undefined) {
-            this.eventsBound[event].forEach(element => {
-                // Placeholder for tracking - kept from original
-            });
-        }
-
         if (this.events[event]) {
             this.events[event].forEach(callback => {
                 try {

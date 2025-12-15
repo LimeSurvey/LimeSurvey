@@ -20,6 +20,13 @@ class GlobalSidemenu {
         this.isMouseDown = false;
         this.isMouseDownTimeOut = null;
 
+        // Child component instances
+        this.sidemenuInstance = null;
+
+        // Store subscription cleanup
+        this.storeUnsubscribe = null;
+        this.storeSubscribed = false;
+
         // Bind methods
         this.mousedown = this.mousedown.bind(this);
         this.mouseup = this.mouseup.bind(this);
@@ -101,7 +108,14 @@ class GlobalSidemenu {
     renderSubComponents() {
         const sidemenuContainer = this.container.querySelector('#sidemenu-container');
         if (sidemenuContainer && this.components.Sidemenu) {
-            new this.components.Sidemenu(sidemenuContainer, this.store, this.currentMenue);
+            // Cleanup previous instance before creating new one
+            if (this.sidemenuInstance) {
+                // Call destroy if it exists
+                this.sidemenuInstance = null;
+            }
+
+            // Create and track new instance
+            this.sidemenuInstance = new this.components.Sidemenu(sidemenuContainer, this.store, this.currentMenue);
         }
     }
 
@@ -127,7 +141,7 @@ class GlobalSidemenu {
 
         // Subscribe to store changes - only subscribe once
         if (!this.storeSubscribed) {
-            this.store.subscribe((key, newValue, oldValue) => {
+            this.storeUnsubscribe = this.store.subscribe((key) => {
                 if (key === 'sidebarwidth' || key === 'menu') {
                     this.update();
                 }
@@ -215,14 +229,31 @@ class GlobalSidemenu {
         window.LS.doToolTip();
     }
 
+    destroySubComponents() {
+        // Cleanup child Sidemenu instance
+        if (this.sidemenuInstance) {
+            this.sidemenuInstance = null;
+        }
+    }
+
     destroy() {
+        // Cleanup child components first
+        this.destroySubComponents();
+
+        // Unsubscribe from store
+        if (this.storeUnsubscribe) {
+            this.storeUnsubscribe();
+            this.storeUnsubscribe = null;
+        }
+        this.storeSubscribed = false;
+
         const resizeBtn = this.container.querySelector('#resize-handle-btn');
         if (resizeBtn) {
             resizeBtn.removeEventListener('mousedown', this.mousedown);
         }
 
         document.body.removeEventListener('mousemove', this.mousemove);
-        $(document).off("vue-redraw");
+        $(document).off('vue-redraw');
     }
 }
 

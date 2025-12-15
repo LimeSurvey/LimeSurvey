@@ -11,9 +11,11 @@
  */
 export function createDefaultState(userid, surveyid) {
     // Calculate default sidebar width
-    let sidebarWidth = $('#vue-apps-main-container').width() * 0.33;
-    if ($('#vue-apps-main-container').width() > 1400) {
-        sidebarWidth = $('#vue-apps-main-container').width() * 0.25;
+    const container = $('#vue-apps-main-container');
+    const containerWidth = container.length ? container.width() : 1200;
+    let sidebarWidth = containerWidth * 0.33;
+    if (containerWidth > 1400) {
+        sidebarWidth = containerWidth * 0.25;
     }
 
     return {
@@ -158,14 +160,18 @@ export function createGetters(StateManager) {
     return {
         substractContainer: function() {
             const state = StateManager.get();
-            const bodyWidth = (1 - (parseInt(state.sidebarwidth) / $('#vue-apps-main-container').width())) * 100;
-            const collapsedBodyWidth = (1 - (parseInt('98px') / $('#vue-apps-main-container').width())) * 100;
+            const container = $('#vue-apps-main-container');
+            const containerWidth = container.length ? container.width() : window.innerWidth;
+            const bodyWidth = (1 - (parseInt(state.sidebarwidth) / containerWidth)) * 100;
+            const collapsedBodyWidth = (1 - (98 / containerWidth)) * 100;
             return Math.floor(state.isCollapsed ? collapsedBodyWidth : bodyWidth) + '%';
         },
         sideBarSize: function() {
             const state = StateManager.get();
-            const sidebarWidth = (parseInt(state.sidebarwidth) / $('#vue-apps-main-container').width()) * 100;
-            const collapsedSidebarWidth = (parseInt(98) / $('#vue-apps-main-container').width()) * 100;
+            const container = $('#vue-apps-main-container');
+            const containerWidth = container.length ? container.width() : window.innerWidth;
+            const sidebarWidth = (parseInt(state.sidebarwidth) / containerWidth) * 100;
+            const collapsedSidebarWidth = (98 / containerWidth) * 100;
             return Math.ceil(state.isCollapsed ? collapsedSidebarWidth : sidebarWidth) + '%';
         },
         isRTL: function() {
