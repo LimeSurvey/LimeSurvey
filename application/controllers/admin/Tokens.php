@@ -1697,14 +1697,13 @@ class Tokens extends SurveyCommonAction
                             }
                         }
                         $tokenoutput .= $stringInfo . "<br />\n";
-                        if (Yii::app()->getConfig("emailsmtpdebug") > 1) {
-                            $tokenoutput .= $mail->getDebug('html');
-                        }
                         $tokenoutput .= $tokenSaveError;
                     } else {
                         $tokenoutput .= $stringInfo . CHtml::tag("span", array('class' => "text-danger"), sprintf(gT("Error message: %s"), $mail->getError())) . "<br>\n";
+                        // If there is an error show the debug information right after the error message
                         if (Yii::app()->getConfig("emailsmtpdebug") > 0) {
                             $tokenoutput .= $mail->getDebug('html');
+                            $mail->debug = [];
                         }
                         $bSendError = true;
                     }
@@ -1713,6 +1712,9 @@ class Tokens extends SurveyCommonAction
                 }
                 // Closes a still active SMTP connection if it exists
                 $mail->smtpClose();
+                if (Yii::app()->getConfig("emailsmtpdebug") > 1 && ($mail->Mailer == 'smtp')) {
+                    $tokenoutput .= $mail->getDebug('html');
+                }
                 $aViewUrls = array();
                 $aData['tokenoutput'] = $tokenoutput;
 
