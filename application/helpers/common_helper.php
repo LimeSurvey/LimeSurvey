@@ -5486,9 +5486,10 @@ function csvEscape($string)
  * @param array $newOldSurveyQuestionMap The mapping between the old question IDs and the new question IDs in the new survey
  * @return string The text with INSERTANS tags converted
  */
-function convertLegacyInsertans(string $text, array $questions = [], $newOldSurveyQuestionMap = [])
+function convertLegacyInsertans($text, array $questions = [], $newOldSurveyQuestionMap = [])
 {
     $txtInsertans = "{INSERTANS:";
+    $text = $text ?? "";
 
     if (!str_contains($text, $txtInsertans) || empty($questions) || empty($newOldSurveyQuestionMap)) {
         return $text;
@@ -5499,7 +5500,7 @@ function convertLegacyInsertans(string $text, array $questions = [], $newOldSurv
         $questionCodes[$newOldSurveyQuestionMap[$question->qid]] = $question->title;
     }
 
-    $insertansPos = strpos($text ?? "", $txtInsertans);
+    $insertansPos = strpos($text, $txtInsertans);
     if ($insertansPos !== false) {
         $insertansParts = explode($txtInsertans, $text);
         for ($index = 1; $index < count($insertansParts); $index++) {
