@@ -29,7 +29,7 @@ class CopySurveyTest extends TestBaseClass
         $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
             $survey,
             $optionsDataContainer,
-            ''
+            null
         );
         $result = $copySurveyService->copy();
 
