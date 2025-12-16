@@ -372,6 +372,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 
     // Batch process INSERTANS conversions to minimize database writes
     processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQuestions, $newOldQidMapping);
+    savePendingInsertansUpdates($pendingInsertansUpdates);
 
     //  Import question_l10ns
     if (isset($xml->question_l10ns->rows->row)) {
@@ -882,6 +883,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
     // Batch process INSERTANS conversions to minimize database writes
     processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQuestions, $newOldQidMapping);
+    savePendingInsertansUpdates($pendingInsertansUpdates);
 
     //  Import question_l10ns
     if (isset($xml->question_l10ns->rows->row)) {
@@ -2670,6 +2672,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
     // Batch process INSERTANS conversions to minimize database writes
     processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQuestions, $newOldQidMapping);
+    savePendingInsertansUpdates($pendingInsertansUpdates);
 
     //  Import question_l10ns
     if (isset($xml->question_l10ns->rows->row)) {
@@ -4611,8 +4614,9 @@ function getInsertansSignature($modelClass, $model, $fields)
  * @param array $surveyQidMap Map of old question IDs to new question IDs
  * @return void
  */
-function processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQuestions, $surveyQidMap)
+function processPendingInsertansUpdates(&$pendingInsertansUpdates, $allImportedQuestions, $surveyQidMap)
 {
+    $onlyChangedModels = [];
     foreach ($pendingInsertansUpdates as $record) {
         $modelClass = $record['model'];
         $idCriteria = $record['criteria'];
@@ -4632,9 +4636,18 @@ function processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQu
                     }
                 }
                 if ($changed) {
-                    $model->save(false);
+                    $onlyChangedModels [] = $model;
                 }
             }
         }
     }
+    $pendingInsertansUpdates = $onlyChangedModels;
+}
+
+function savePendingInsertansUpdates($pendingInsertansUpdates)
+{
+    foreach ($pendingInsertansUpdates as $model) {
+        $model->save(false);
+    }
+    unset($pendingInsertansUpdates);
 }
