@@ -39,6 +39,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
         throw new Exception('This is not a valid LimeSurvey group structure XML file.');
     }
 
+    // This array will collect all records that need INSERTANS conversion
+    $pendingInsertansUpdates = [];
+
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
     $aQuestionCodeReplacements = array();
@@ -212,7 +215,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 }
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 $results['questions']++;
-                $importedQuestions[$aQIDReplacements[$iOldQID]] = $oQuestion;
+                $importedQuestions[$oQuestion->qid] = $oQuestion;
             }
 
             // If translate links is disabled, check for old links.
@@ -229,6 +232,12 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             if (isset($oQuestionL10n)) {
                 $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
                 $oQuestionL10n->save();
+
+                // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
+                if ($signature = getInsertansSignature('QuestionL10n', $oQuestionL10n, ['question', 'help'])) {
+                    $pendingInsertansUpdates[] = $signature;
+                }
+
                 unset($oQuestionL10n);
             }
             // Set a warning if question title was updated
@@ -242,6 +251,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
     }
 
     // Import subquestions -------------------------------------------------------
+    /** @var Question[] */
+    $importedSubQuestions = [];
     if (isset($xml->subquestions)) {
         foreach ($xml->subquestions->rows->row as $row) {
             $insertdata = array();
@@ -321,7 +332,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                     throw new Exception(gT("Error while saving: ") . print_r($oQuestion->errors, true));
                 }
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
-                ;
+                $importedSubQuestions[$oQuestion->qid] = $oQuestion;
                 $results['questions']++;
             }
 
@@ -337,6 +348,12 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             if (isset($oQuestionL10n)) {
                 $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
                 $oQuestionL10n->save();
+
+                // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
+                if ($signature = getInsertansSignature('QuestionL10n', $oQuestionL10n, ['question', 'help'])) {
+                    $pendingInsertansUpdates[] = $signature;
+                }
+
                 unset($oQuestionL10n);
             }
 
@@ -350,6 +367,12 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
         }
     }
 
+    $newOldQidMapping = array_flip($aQIDReplacements);
+    $allImportedQuestions = $importedQuestions + $importedSubQuestions;
+
+    // Batch process INSERTANS conversions to minimize database writes
+    processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQuestions, $newOldQidMapping);
+    savePendingInsertansUpdates($pendingInsertansUpdates);
 
     //  Import question_l10ns
     if (isset($xml->question_l10ns->rows->row)) {
@@ -361,8 +384,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             unset($insertdata['id']);
             // now translate any links
             // TODO: Should this depend on $bTranslateLinksFields?
-            $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
-            $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+            $insertdata['question'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']), $allImportedQuestions, $newOldQidMapping);
+            $insertdata['help'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']), $allImportedQuestions, $newOldQidMapping);
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']];
             } else {
@@ -601,6 +624,9 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
 
+    // This array will collect all records that need INSERTANS conversion
+    $pendingInsertansUpdates = [];
+
     $results['defaultvalues'] = 0;
     $results['answers'] = 0;
     $results['question_attributes'] = 0;
@@ -637,6 +663,8 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
         $aLanguagesSupported[] = (string) $language;
     }
 
+    $importedQuestions = array();
+
     foreach ($xml->questions->rows->row as $row) {
         $insertdata = array();
         foreach ($row as $key => $value) {
@@ -647,7 +675,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
         $insertdata['sid'] = $iNewSID;
         $insertdata['gid'] = $iNewGID;
         $insertdata['question_order'] = $newquestionorder;
-        $iOldQID = $insertdata['qid']; // save the old qid
+        $iOldQID = (int)$insertdata['qid']; // save the old qid
         unset($insertdata['qid']);
 
         // now translate any links
@@ -705,7 +733,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
             switchMSSQLIdentityInsert('questions', false);
             $aQIDReplacements[$iOldQID] = $oQuestion->qid;
-
+            $importedQuestions[$oQuestion->qid] = $oQuestion;
             $newqid = $oQuestion->qid;
         }
 
@@ -714,11 +742,19 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
         if (isset($oQuestionL10n)) {
             $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
             $oQuestionL10n->save();
+
+            // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
+            if ($signature = getInsertansSignature('QuestionL10n', $oQuestionL10n, ['question', 'help'])) {
+                $pendingInsertansUpdates[] = $signature;
+            }
+
             unset($oQuestionL10n);
         }
     }
 
     // Import subquestions -------------------------------------------------------
+    $importedSubQuestions = array();
+
     if (isset($xml->subquestions)) {
         foreach ($xml->subquestions->rows->row as $row) {
             $insertdata = array();
@@ -740,7 +776,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             $iOldSID = $insertdata['sid'];
             $insertdata['sid'] = $iNewSID;
             $insertdata['gid'] = $iNewGID;
-            $iOldQID = (int) $insertdata['qid'];
+            $iOldQID = (int)$insertdata['qid'];
             unset($insertdata['qid']); // save the old qid
             $insertdata['parent_qid'] = $aQIDReplacements[(int) $insertdata['parent_qid']]; // remap the parent_qid
             if (!isset($insertdata['help'])) {
@@ -808,7 +844,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 }
 
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
-
+                $importedSubQuestions[$oQuestion->qid] = $oQuestion;
                 $results['questions']++;
             }
 
@@ -823,6 +859,12 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             if (isset($oQuestionL10n)) {
                 $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
                 $oQuestionL10n->save();
+
+                // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
+                if ($signature = getInsertansSignature('QuestionL10n', $oQuestionL10n, ['question', 'help'])) {
+                    $pendingInsertansUpdates[] = $signature;
+                }
+
                 unset($oQuestionL10n);
             }
 
@@ -836,6 +878,13 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
         }
     }
 
+    $newOldQidMapping = array_flip($aQIDReplacements);
+    $allImportedQuestions = $importedQuestions + $importedSubQuestions;
+
+    // Batch process INSERTANS conversions to minimize database writes
+    processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQuestions, $newOldQidMapping);
+    savePendingInsertansUpdates($pendingInsertansUpdates);
+
     //  Import question_l10ns
     if (isset($xml->question_l10ns->rows->row)) {
         foreach ($xml->question_l10ns->rows->row as $row) {
@@ -846,8 +895,8 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             unset($insertdata['id']);
             // now translate any links
             // TODO: Should this depend on $options['translinkfields']?
-            $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
-            $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+            $insertdata['question'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']), $allImportedQuestions, $newOldQidMapping);
+            $insertdata['help'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']), $allImportedQuestions, $newOldQidMapping);
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']];
             } else {
@@ -1988,6 +2037,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         return $results;
     }
 
+    // This array will collect all records that need INSERTANS conversion
+    $pendingInsertansUpdates = [];
+
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
     $aQuestionCodeReplacements = array();
@@ -2241,6 +2293,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 }
                 throw new Exception(gT("Error: Failed to import survey language settings.") . " " . $errorsStr);
             }
+
+            // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
+            if ($signature = getInsertansSignature('SurveyLanguageSetting', $surveyLanguageSetting, ['surveyls_urldescription', 'surveyls_url'])) {
+                $pendingInsertansUpdates[] = $signature;
+            }
         } catch (CDbException $e) {
             throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid.");
         }
@@ -2370,11 +2427,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $insertdata['mandatory'] = 'N';
             }
 
-            $iOldSID = $insertdata['sid'];
-            $iOldGID = $insertdata['gid'];
+            $iOldSID = (int)$insertdata['sid'];
+            $iOldGID = (int)$insertdata['gid'];
             $insertdata['sid'] = $iNewSID;
             $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
-            $iOldQID = $insertdata['qid']; // save the old qid
+            $iOldQID = (int)$insertdata['qid']; // save the old qid
             $oldQIDGIDMap[$iOldQID] = $iOldGID;
             unset($insertdata['qid']);
 
@@ -2431,7 +2488,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 }
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 $results['questions']++;
-                $importedQuestions[$aQIDReplacements[$iOldQID]] = $oQuestion;
+                $importedQuestions[$oQuestion->qid] = $oQuestion;
             }
 
             // If translate links is disabled, check for old links.
@@ -2448,6 +2505,12 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (isset($oQuestionL10n)) {
                 $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
                 $oQuestionL10n->save();
+
+                // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
+                if ($signature = getInsertansSignature('QuestionL10n', $oQuestionL10n, ['question', 'help'])) {
+                    $pendingInsertansUpdates[] = $signature;
+                }
+
                 unset($oQuestionL10n);
             }
             // Set a warning if question title was updated
@@ -2552,7 +2615,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 }
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 $results['subquestions']++;
-                $importedSubQuestions[$aQIDReplacements[$iOldQID]] = $oQuestion;
+                $importedSubQuestions[$oQuestion->qid] = $oQuestion;
             }
 
             if (($scaleID = intval($insertdata['scale_id'])) > 0) {
@@ -2581,6 +2644,12 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (isset($oQuestionL10n)) {
                 $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
                 $oQuestionL10n->save();
+
+                // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
+                if ($signature = getInsertansSignature('QuestionL10n', $oQuestionL10n, ['question', 'help'])) {
+                    $pendingInsertansUpdates[] = $signature;
+                }
+
                 unset($oQuestionL10n);
             }
 
@@ -2593,6 +2662,13 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
         }
     }
+
+    $newOldQidMapping = array_flip($aQIDReplacements);
+    $allImportedQuestions = $importedQuestions + $importedSubQuestions;
+
+    // Batch process INSERTANS conversions to minimize database writes
+    processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQuestions, $newOldQidMapping);
+    savePendingInsertansUpdates($pendingInsertansUpdates);
 
     //  Import question_l10ns
     if (isset($xml->question_l10ns->rows->row)) {
@@ -2617,6 +2693,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (!empty($oQuestion->parentqid)) {
                 $aQuestionsMapping['Q' . array_search($oQuestion->parent_qid, $aQIDReplacements) . '_S' . $iOldQID] = 'Q' . $oQuestion->parent_qid . '_S' . $oQuestion->qid;
             }
+
+            $insertdata['question'] = convertLegacyInsertans($insertdata['question'], $allImportedQuestions, $newOldQidMapping);
+            $insertdata['help'] = convertLegacyInsertans($insertdata['help'], $allImportedQuestions, $newOldQidMapping);
+            
             $oQuestionL10n = new QuestionL10n();
             $oQuestionL10n->setAttributes($insertdata, false);
             $oQuestionL10n->save();
@@ -2959,6 +3039,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $insertdata['sid'] = $iNewSID; // remap the survey ID
             // now translate any links
+            $insertdata['message'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['message']), $allImportedQuestions, $newOldQidMapping);
+
             $result = Assessment::model()->insertRecords($insertdata);
             if (!$result) {
                 throw new Exception(gT("Error") . ": Failed to insert data[11]<br />");
@@ -3045,6 +3127,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             unset($insertdata['quotals_id']);
             $quotaLanguagesSetting = new QuotaLanguageSetting('import');
             $quotaLanguagesSetting->setAttributes($insertdata, false);
+
+            $quotaLanguagesSetting['quotals_urldescrip'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['quotals_urldescrip']), $allImportedQuestions, $newOldQidMapping);
+            $quotaLanguagesSetting['quotals_url'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['quotals_url']), $allImportedQuestions, $newOldQidMapping);
+
             if (!$quotaLanguagesSetting->save()) {
                 $header = sprintf(gT("Unable to insert quota language settings for quota %s"), $insertdata['quotals_quota_id']);
                 if (isset($insertdata['quotals_language'])) {
@@ -4473,4 +4559,95 @@ function fileCsvToUtf8($fullfilepath, $encoding = 'auto')
     /* Return the tempory ressource */
     rewind($tmp);
     return $tmp;
+}
+
+/**
+ * Generates the INSERTANS conversion queue signature for a model
+ *
+ * Different models have different primary key structures:
+ * - QuestionL10n: ['id' => id, 'language' => language]
+ * - SurveyLanguageSetting: ['surveyls_survey_id' => sid, 'surveyls_language' => language]
+ *
+ * @param string $modelClass The model class name
+ * @param mixed $model The model instance or data
+ * @param array $fields Array of field names to convert
+ * @return array|null The queue signature or null if model type not supported
+ */
+function getInsertansSignature($modelClass, $model, $fields)
+{
+    $idCriteria = [];
+
+    switch ($modelClass) {
+        case 'QuestionL10n':
+            $idCriteria = ['id' => $model->id, 'language' => $model->language];
+            break;
+        case 'SurveyLanguageSetting':
+            $idCriteria = [
+                'surveyls_survey_id' => $model->surveyls_survey_id,
+                'surveyls_language' => $model->surveyls_language
+            ];
+            break;
+        default:
+            return null;
+    }
+
+    $fieldsArray = [];
+    foreach ($fields as $field) {
+        $fieldsArray[] = [$field => $model->$field];
+    }
+
+    return [
+        'model' => $modelClass,
+        'criteria' => $idCriteria,
+        'fields' => $fieldsArray
+    ];
+}
+
+/**
+ * Processes pending INSERTANS conversions for queued records
+ *
+ * This function handles the batch processing of INSERTANS tag conversions
+ * that need to be deferred until all question IDs are mapped.
+ *
+ * @param array $pendingInsertansUpdates Array of records with INSERTANS tags to convert
+ * @param int $iNewSID The new survey ID
+ * @param array $surveyQidMap Map of old question IDs to new question IDs
+ * @return void
+ */
+function processPendingInsertansUpdates(&$pendingInsertansUpdates, $allImportedQuestions, $surveyQidMap)
+{
+    $onlyChangedModels = [];
+    foreach ($pendingInsertansUpdates as $record) {
+        $modelClass = $record['model'];
+        $idCriteria = $record['criteria'];
+
+        $models = $modelClass::model()->findAllByAttributes($idCriteria);
+
+        if(!empty($models)) {
+            foreach ($models as $model) {
+                $changed = false;
+                foreach ($record['fields'] as $fieldEntry) {
+                    foreach ($fieldEntry as $fieldName => $fieldValue) {
+                        $convertedValue = convertLegacyInsertans($fieldValue, $allImportedQuestions, $surveyQidMap);
+                        if ($fieldValue != $convertedValue) {
+                            $model->$fieldName = $convertedValue;
+                            $changed = true;
+                        }
+                    }
+                }
+                if ($changed) {
+                    $onlyChangedModels [] = $model;
+                }
+            }
+        }
+    }
+    $pendingInsertansUpdates = $onlyChangedModels;
+}
+
+function savePendingInsertansUpdates($pendingInsertansUpdates)
+{
+    foreach ($pendingInsertansUpdates as $model) {
+        $model->save(false);
+    }
+    unset($pendingInsertansUpdates);
 }

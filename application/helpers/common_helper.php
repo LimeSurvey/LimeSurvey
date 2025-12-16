@@ -5517,3 +5517,58 @@ function csvEscape($string)
 
     return $string;
 }
+
+/**
+ * Convert legacy INSERTANS tags to modern question code references
+ *
+ * Converts {INSERTANS:SIDXGIDXQID} format to questionTitle.shown format
+ * Examples:
+ * - {INSERTANS:554233X11X1} → G01Q02.shown (if QID 1 exists)
+ * - {INSERTANS:554233X11X11} → {INSERTANS:554233X11X11} (if QID 11 doesn't exist)
+ * - {INSERTANS:554233X11X1someText} → someText.shown (if QID 1 exists)
+ * - {INSERTANS:554233X11X11someText} → {INSERTANS:554233X11X11someText} (if QID 11 doesn't exist)
+ *
+ * @param string $text The text containing INSERTANS tags
+ * @param array $questions The list of all questions
+ * @param array $newOldSurveyQuestionMap The mapping between the old question IDs and the new question IDs in the new survey
+ * @return string The text with INSERTANS tags converted
+ */
+function convertLegacyInsertans($text, array $questions = [], $newOldSurveyQuestionMap = [])
+{
+    $txtInsertans = "{INSERTANS:";
+    $text = $text ?? "";
+
+    if (!str_contains($text, $txtInsertans) || empty($questions) || empty($newOldSurveyQuestionMap)) {
+        return $text;
+    }
+
+    $questionCodes = [];
+    foreach ($questions as $question) {
+        $questionCodes[$newOldSurveyQuestionMap[$question->qid]] = $question->title;
+    }
+
+    $insertansPos = strpos($text, $txtInsertans);
+    if ($insertansPos !== false) {
+        $insertansParts = explode($txtInsertans, $text);
+        for ($index = 1; $index < count($insertansParts); $index++) {
+            $curlyPosition = strpos($insertansParts[$index], "}");
+            $rawField = substr($insertansParts[$index], 0, $curlyPosition);
+            $content = (strlen($insertansParts[$index]) === $curlyPosition) ? "" : substr($insertansParts[$index], $curlyPosition + 1);
+            $subField = substr($rawField, strpos($rawField, "X") + 1);
+            $title = substr($subField, strpos($subField, "X") + 1);
+            if (preg_match('/^(\d+)([a-zA-Z].*)$/', $title, $match)) {
+                $oldQid = (int) $match[1];
+                $title = $match[2];
+                if(!isset($questionCodes[$oldQid]))
+                    $title = "";
+            } else {
+                $title = $questionCodes[$title] ?? "";
+            }
+            $insertansParts[$index] = !empty($title) ?  $title . ".shown" . $content : $txtInsertans . $rawField . '}' . $content;
+        }
+
+        return implode($insertansParts);
+    }
+
+    return $text;
+}
