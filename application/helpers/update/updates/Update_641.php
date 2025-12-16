@@ -1305,7 +1305,7 @@ class Update_641 extends DatabaseUpdateBase
                 foreach ($ef['entities'] as $entity) {
                     $save = [
                         $this->handleInsertans($entity, $ef['fields'], $sid),
-                        $this->fixText($entity, $ef['fields'], $names),
+                        $this->fixText($entity, $ef['fields'], $newFields),
                         $this->fixText($entity, $ef['fields'], $additionalNames)
                     ];
                     if ($save[0] || $save[1] || $save[2]) {
