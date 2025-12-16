@@ -171,19 +171,22 @@ class SurveyThemeConfiguration
      */
     public function getSurveyThemeOptionsAttributes($themeData): array
     {
-        $attributesReact = $themeData['aOptionAttributes']['optionOrderReact'];
+        $attributesReact = $themeData['aOptionAttributes']['optionsOrderReact'];
         $attributesCore = $themeData['aOptionAttributes']['optionAttributes'];
         $currentThemeOptions = $themeData['aTemplateConfiguration']['options'];
-        $resolvedThemeOptions = $themeData['aTemplateConfiguration']['options'];
-        $parentThemeOptions = $themeData['aTemplateConfiguration']['oParentOptions'];
+        $parentThemeOptions = $themeData['oParentOptions'];
         $attributesCompleteData = [];
+        // build default dropdownarray if the dropdown is not specified
         foreach ($attributesReact as $key => $optionAttribute) {
-            if ($optionAttribute['type'] === 'dropdown') {
-                $attributesCompleteData[$key]['dropdownoptions'] = $this->extractDropdownOptions($optionAttribute['dropdownoptions']);
+            $attributesCompleteData[$key] = $attributesCore[$key];
+            $attributesCompleteData[$key]['currentValue'] = $currentThemeOptions->$key;
+            $attributesCompleteData[$key]['parentValue'] = $parentThemeOptions[$key];
+            if ($attributesCompleteData[$key]['type'] === 'dropdown') {
+                $attributesCompleteData[$key]['dropdownoptions'] = $this->extractDropdownOptions($attributesCompleteData[$key]['dropdownoptions']);
             }
         }
 
-        return $themeData;
+        return $attributesCompleteData;
     }
 
      /**

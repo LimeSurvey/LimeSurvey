@@ -410,11 +410,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $themeData = $this->surveyThemeConfiguration->updateCommon($themeConfiguration, $survey->sid, $survey->gsid);
         // parse themeOptions to object
         $themeData['aTemplateConfiguration']['options'] = json_decode($themeData['aTemplateConfiguration']['options']);
-        $aThemeSettings = $themeData;
-
-        $aThemeSettingAttributes = $themeData['aOptionAttributes'];
-        $aThemeSettingAttributes['optionAttributes'] = $this->surveyThemeConfiguration->getSurveyThemeOptionsAttributes($themeData);
-
+        $aThemeSettings = $this->surveyThemeConfiguration->getSurveyThemeOptionsAttributes($themeData);
         $sTemplatePreview = $themeConfiguration->getPreview(true);
     }
 }
