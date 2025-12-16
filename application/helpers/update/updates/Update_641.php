@@ -1157,7 +1157,7 @@ class Update_641 extends DatabaseUpdateBase
                     ],
                     [
                         'entities' => QuestionL10n::model()->findAll("qid in (" . implode(",", $qids) . ")"),
-                        'fields' => ["question", "script"]
+                        'fields' => ["question", "script", "help"]
                     ],
                     [
                         'entities' => $questions,
@@ -1270,7 +1270,7 @@ class Update_641 extends DatabaseUpdateBase
                 ],
                 [
                     'entities' => QuestionL10n::model()->findAll("qid in (" . implode(",", $qids) . ")"),
-                    'fields' => ["question", "script"]
+                    'fields' => ["question", "script", "help"]
                 ],
                 [
                     'entities' => $questions,
