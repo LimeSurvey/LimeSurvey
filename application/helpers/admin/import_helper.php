@@ -4684,7 +4684,6 @@ function fixText($convertedValue, $allImportedQuestions, $oldNewFieldRoot)
             while (($position + $limit < strlen($convertedValue)) && ($convertedValue[$position + $limit] !== ' ') && (ctype_alnum($convertedValue[$position + $limit]))) {
                 $limit++;
             }
-            $limit++;
             $found = false;
             while (!$found) {
                 $candidate = trim(substr($convertedValue, $position, $limit));
