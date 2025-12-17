@@ -5536,9 +5536,8 @@ function csvEscape($string)
 function convertLegacyInsertans($text, array $questions = [], $newOldSurveyQuestionMap = [])
 {
     $txtInsertans = "{INSERTANS:";
-    $text = $text ?? "";
 
-    if (!str_contains($text, $txtInsertans) || empty($questions) || empty($newOldSurveyQuestionMap)) {
+    if (empty($text) || !str_contains($text, $txtInsertans) || empty($questions) || empty($newOldSurveyQuestionMap)) {
         return $text;
     }
 
