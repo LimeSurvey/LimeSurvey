@@ -42,7 +42,10 @@ module.exports = {
                             ['@babel/preset-env', {
                                 targets: {
                                     browsers: ['> 1%', 'last 2 versions']
-                                }
+                                },
+                                // Inject polyfills from core-js v3 automatically based on usage
+                                useBuiltIns: 'usage',
+                                corejs: 3
                             }]
                         ]
                     }

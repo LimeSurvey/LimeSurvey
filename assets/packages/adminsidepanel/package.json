@@ -13,7 +13,7 @@
     "core-js": "^3.33.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.0",
+    "@babel/core": "^7.23.2",
     "@babel/preset-env": "^7.22.0",
     "babel-loader": "^9.1.0",
     "css-loader": "^6.8.0",
@@ -23,7 +23,7 @@
     "sass": "^1.69.0",
     "sass-loader": "^13.3.0",
     "terser-webpack-plugin": "^5.3.0",
-    "webpack": "^5.89.0",
+    "webpack": "^5.94.0",
     "webpack-cli": "^5.1.0"
   },
   "browserslist": [

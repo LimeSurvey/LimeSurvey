@@ -232,6 +232,9 @@ class GlobalSidemenu {
     destroySubComponents() {
         // Cleanup child Sidemenu instance
         if (this.sidemenuInstance) {
+            if (typeof this.sidemenuInstance.destroy === 'function') {
+                this.sidemenuInstance.destroy();
+            }
             this.sidemenuInstance = null;
         }
     }

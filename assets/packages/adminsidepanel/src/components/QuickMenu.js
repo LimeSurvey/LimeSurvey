@@ -120,12 +120,12 @@ class QuickMenu {
 
         switch (iconType) {
             case 'fontawesome':
-                return '<i class="quickmenuIcon fa fa-' + icon + '"></i>';
+                return '<i class="quickmenuIcon fa fa-' + UIHelpers.escapeHtml(icon) + '"></i>';
             case 'image':
-                return '<img width="32px" src="' + icon + '" />';
+                return '<img width="32px" src="' + UIHelpers.escapeHtml(icon) + '" />';
             case 'iconclass':
             case 'remix':
-                return '<i class="quickmenuIcon ' + icon + '"></i>';
+                return '<i class="quickmenuIcon ' + UIHelpers.escapeHtml(icon) + '"></i>';
             default:
                 return '';
         }

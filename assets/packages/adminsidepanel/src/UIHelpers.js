@@ -127,12 +127,12 @@ const UIHelpers = (function() {
 
         switch (iconType) {
             case 'fontawesome':
-                return '<i class="fa fa-' + icon + '">&nbsp;</i>';
+                return '<i class="fa fa-' + escapeHtml(icon) + '">&nbsp;</i>';
             case 'image':
-                return '<img width="32px" src="' + icon + '" />';
+                return '<img width="32px" src="' + escapeHtml(icon) + '" />';
             case 'iconclass':
             case 'remix':
-                return '<i class="' + icon + '">&nbsp;</i>';
+                return '<i class="' + escapeHtml(icon) + '">&nbsp;</i>';
             default:
                 return '';
         }
@@ -148,9 +148,9 @@ const UIHelpers = (function() {
         id = id || 'loader-' + Math.floor(1000 * Math.random());
         extraClass = extraClass || '';
 
-        return '<div id="' + id + '" class="loader--loaderWidget ls-flex ls-flex-column align-content-center align-items-center" style="min-height: 100%;">' +
+        return '<div id="' + escapeHtml(id) + '" class="loader--loaderWidget ls-flex ls-flex-column align-content-center align-items-center" style="min-height: 100%;">' +
             '<div class="ls-flex align-content-center align-items-center">' +
-                '<div class="loader-adminpanel text-center ' + extraClass + '">' +
+                '<div class="loader-adminpanel text-center ' + escapeHtml(extraClass) + '">' +
                     '<div class="contain-pulse animate-pulse">' +
                         '<div class="square"></div>' +
                         '<div class="square"></div>' +
