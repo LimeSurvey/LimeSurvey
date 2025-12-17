@@ -4674,8 +4674,10 @@ function fixText($convertedValue, $allImportedQuestions, $oldNewFieldRoot)
         $qid = $parts[2];
         $rawQuestions = Question::model()->findAll(":qid in (qid, parent_qid)", [":qid" => $qid]);
         $questions = [];
-        foreach ($rawQuestions as $rawQuestion) {
-            $questions[] = $rawQuestion;
+        foreach ($allImportedQuestions as $q) {
+            if (in_array($qid, [$q->qid, $q->parent_qid])) {
+                $questions[] = $q;
+            }
         }
         $convertedValue = str_replace($old, $new, $convertedValue);
         while (($position = strpos($convertedValue, $new)) !== false) {
