@@ -2012,6 +2012,7 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
  * @param int|null $iDesiredSurveyId The desired ID for the new survey (optional)
  * @param bool $bTranslateInsertansTags Whether to translate insertans tags (default true)
  * @param bool $bConvertInvalidQuestionCodes Whether to convert invalid question codes (default true)
+ * @param bool $supportArchivedFields whether we are looking for old fieldnames
  * @return array An array containing the results of the import process, including:
  *               - 'error': Any error message if the import failed
  *               - 'newsid': The ID of the newly created survey
@@ -2020,7 +2021,7 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
  *               - 'importwarnings': An array of warning messages
  * @todo Use transactions to prevent orphaned data and clean rollback on errors
  */
-function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = null, $iDesiredSurveyId = null, $bTranslateInsertansTags = true, $bConvertInvalidQuestionCodes = true)
+function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = null, $iDesiredSurveyId = null, $bTranslateInsertansTags = true, $bConvertInvalidQuestionCodes = true, $supportArchivedFields = true)
 {
     $isCopying = ($sNewSurveyName != null);
     Yii::app()->loadHelper('database');
@@ -2039,6 +2040,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
     // This array will collect all records that need INSERTANS conversion
     $pendingInsertansUpdates = [];
+    $oldNewFieldRoots = [];
 
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
@@ -2486,6 +2488,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 if (!$oQuestion->save()) {
                     throw new Exception(gT("Error while saving: ") . print_r($oQuestion->errors, true));
                 }
+                if ($supportArchivedFields) {
+                    $oldNewFieldRoots["{$iOldSID}X{$iOldGID}X{$iOldQID}"] = "{$oQuestion->sid}X{$oQuestion->gid}X{$oQuestion->qid}";
+                }
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 $results['questions']++;
                 $importedQuestions[$oQuestion->qid] = $oQuestion;
@@ -2667,7 +2672,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     $allImportedQuestions = $importedQuestions + $importedSubQuestions;
 
     // Batch process INSERTANS conversions to minimize database writes
-    processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQuestions, $newOldQidMapping);
+    processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
     savePendingInsertansUpdates($pendingInsertansUpdates);
 
     //  Import question_l10ns
@@ -4610,11 +4615,12 @@ function getInsertansSignature($modelClass, $model, $fields)
  * that need to be deferred until all question IDs are mapped.
  *
  * @param array $pendingInsertansUpdates Array of records with INSERTANS tags to convert
- * @param int $iNewSID The new survey ID
+ * @param array $allImportedQuestions The cached imported questions
  * @param array $surveyQidMap Map of old question IDs to new question IDs
+ * @param array $oldNewFieldRoot Mapping between old and new representations of deprecated fieldname roots
  * @return void
  */
-function processPendingInsertansUpdates(&$pendingInsertansUpdates, $allImportedQuestions, $surveyQidMap)
+function processPendingInsertansUpdates(&$pendingInsertansUpdates, $allImportedQuestions, $surveyQidMap, $oldNewFieldRoot = [])
 {
     $onlyChangedModels = [];
     foreach ($pendingInsertansUpdates as $record) {
@@ -4628,10 +4634,15 @@ function processPendingInsertansUpdates(&$pendingInsertansUpdates, $allImportedQ
                 $changed = false;
                 foreach ($record['fields'] as $fieldEntry) {
                     foreach ($fieldEntry as $fieldName => $fieldValue) {
-                        $convertedValue = convertLegacyInsertans($fieldValue, $allImportedQuestions, $surveyQidMap);
-                        if ($fieldValue != $convertedValue) {
-                            $model->$fieldName = $convertedValue;
-                            $changed = true;
+                        if ($fieldValue) {
+                            $convertedValue = convertLegacyInsertans($fieldValue, $allImportedQuestions, $surveyQidMap);
+                            if (count($oldNewFieldRoot)) {
+                                $convertedValue = fixText($convertedValue, $allImportedQuestions, $oldNewFieldRoot);
+                            }
+                            if ($fieldValue != $convertedValue) {
+                                $model->$fieldName = $convertedValue;
+                                $changed = true;
+                            }
                         }
                     }
                 }
@@ -4642,6 +4653,51 @@ function processPendingInsertansUpdates(&$pendingInsertansUpdates, $allImportedQ
         }
     }
     $pendingInsertansUpdates = $onlyChangedModels;
+}
+
+/**
+ * Fixes old fieldname references
+ * @param mixed $convertedValue the input
+ * @param mixed $allImportedQuestions the cached questions
+ * @param mixed $oldNewFieldRoot the old and new fieldname mappings in the old format
+ * @return string the result
+ */
+function fixText($convertedValue, $allImportedQuestions, $oldNewFieldRoot)
+{
+    if (!$convertedValue) {
+        return $convertedValue;
+    }
+    foreach ($oldNewFieldRoot as $old => $new) {
+        $parts = explode("X", $new);
+        $sid = $parts[0];
+        $gid = $parts[1];
+        $qid = $parts[2];
+        $rawQuestions = Question::model()->findAll(":qid in (qid, parent_qid)", [":qid" => $qid]);
+        $questions = [];
+        foreach ($rawQuestions as $rawQuestion) {
+            $questions[] = $rawQuestion;
+        }
+        $convertedValue = str_replace($old, $new, $convertedValue);
+        while (($position = strpos($convertedValue, $new)) !== false) {
+            $limit = $position + strlen($new);
+            while (($position + $limit < strlen($convertedValue)) && ($convertedValue[$position + $limit] !== ' ') && (ctype_alnum($convertedValue[$position + $limit]))) {
+                $limit++;
+            }
+            $limit++;
+            $found = false;
+            while (!$found) {
+                $candidate = trim(substr($convertedValue, $position, $limit));
+                $fieldName = getFieldName("{responses_" . $sid . "}", $candidate, $questions, $sid, $gid);
+                if ($fieldName !== $candidate) {
+                    $found = true;
+                    $convertedValue = str_replace($candidate, $fieldName, $convertedValue);
+                } else {
+                    $limit--;
+                }
+            }
+        }
+    }
+    return $convertedValue;
 }
 
 function savePendingInsertansUpdates($pendingInsertansUpdates)
