@@ -21,10 +21,11 @@ use LimeSurvey\Models\Services\SurveyAccessModeService;
  * @param string  $sFullFilePath The full filepath of the uploaded file
  * @param integer $iNewSID       The new survey ID - the page will always be added after the last page in the survey
  * @param boolean $bTranslateLinksFields
+ * @param bool $supportArchivedFields whether we are looking for old fieldnames
  *
  * @return mixed
  */
-function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
+function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $supportArchivedFields = true)
 {
     $sBaseLanguage         = Survey::model()->findByPk($iNewSID)->language;
     if (\PHP_VERSION_ID < 80000) {
@@ -41,6 +42,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 
     // This array will collect all records that need INSERTANS conversion
     $pendingInsertansUpdates = [];
+    $oldNewFieldRoots = [];
 
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
@@ -223,6 +225,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 if (!$oQuestion->save()) {
                     throw new Exception(gT("Error while saving: ") . print_r($oQuestion->errors, true));
                 }
+                if ($supportArchivedFields) {
+                    $oldNewFieldRoots["{$iOldSID}X{$oldgid}X{$iOldQID}"] = "{$oQuestion->sid}X{$oQuestion->gid}X{$oQuestion->qid}";
+                }
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 $results['questions']++;
                 $importedQuestions[$oQuestion->qid] = $oQuestion;
@@ -391,7 +396,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
     $allImportedQuestions = $importedQuestions + $importedSubQuestions;
 
     // Batch process INSERTANS conversions to minimize database writes
-    processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQuestions, $newOldQidMapping);
+    processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
     savePendingInsertansUpdates($pendingInsertansUpdates);
 
     //  Import question_l10ns
