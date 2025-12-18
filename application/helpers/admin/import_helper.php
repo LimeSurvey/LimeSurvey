@@ -270,6 +270,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
         }
     }
 
+    $oldNewFieldRoots = sortByKeyLengthDescending($oldNewFieldRoots);
+
     // Import subquestions -------------------------------------------------------
     /** @var Question[] */
     $importedSubQuestions = [];
@@ -2594,6 +2596,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $aQuestionsMapping['Q' . $iOldQID] = 'Q' . $oQuestion->qid;
         }
     }
+
+    $oldNewFieldRoots = sortByKeyLengthDescending($oldNewFieldRoots);
 
     // Import subquestions -------------------------------------------------------
     /** @var Question[] */

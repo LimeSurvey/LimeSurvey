@@ -5571,3 +5571,21 @@ function convertLegacyInsertans($text, array $questions = [], $newOldSurveyQuest
 
     return $text;
 }
+
+/**
+ * Sort an array by keys descendingly
+ * @param mixed $input
+ * @return array
+ */
+function sortByKeyLengthDescending($input)
+{
+    $keys = array_keys($input);
+    usort($keys, function($a, $b) {
+        return strlen($b) - strlen($a);
+    });
+    $output = [];
+    foreach ($keys as $key) {
+        $output[$key] = $input[$key];
+    }
+    return $output;
+}
