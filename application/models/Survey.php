@@ -2128,15 +2128,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         $criteria = new CDbCriteria();
         $criteria->select = Yii::app()->db->quoteColumnName('t.*');
-        $criteria->with = array(
-            'survey.groups',
-        );
         if (Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib') {
-            $criteria->order = Yii::app()->db->quoteColumnName('t.question_order');
+            $criteria->join = 'INNER JOIN {{groups}} grp ON grp.gid = t.gid';
+            $criteria->order = Yii::app()->db->quoteColumnName('grp.group_order') . ',' . Yii::app()->db->quoteColumnName('t.question_order');
         } else {
+            $criteria->with = array('survey.groups');
             $criteria->order = Yii::app()->db->quoteColumnName('groups.group_order') . ',' . Yii::app()->db->quoteColumnName('t.question_order');
+            $criteria->addCondition('groups.gid=t.gid', 'AND');
         }
-        $criteria->addCondition('groups.gid=t.gid', 'AND');
         return $criteria;
     }
 

@@ -47,14 +47,14 @@ var sAddParam = '';
             ?>
         </div>
         <div class="col-md-auto mb-3">
-            <a href="<?php echo $this->createUrl('admin/export/sa/resources/export/survey/surveyid/'.$surveyid); ?>" target="_blank" class="btn btn-outline-secondary">
+            <a href="<?php echo $this->createUrl('admin/export/sa/resources/export/survey/surveyid/' . $surveyid); ?>" target="_blank" class="btn btn-outline-secondary">
                 <span class="ri-upload-fill"></span>
                 <?php eT("Export resources as ZIP archive") ?>
             </a>
-            <a class="btn btn-outline-secondary" href="" target='_blank' data-bs-toggle="modal" data-bs-target="#importRessourcesModal">
+            <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#importRessourcesModal">
                 <span class="ri-download-fill"></span>
                 <?php eT("Import resources ZIP archive"); ?>
-            </a>
+            </button>
         </div>
         <div class="col-12 file-manager">
             <iframe
