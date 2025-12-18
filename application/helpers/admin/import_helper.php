@@ -395,10 +395,6 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
     $newOldQidMapping = array_flip($aQIDReplacements);
     $allImportedQuestions = $importedQuestions + $importedSubQuestions;
 
-    // Batch process INSERTANS conversions to minimize database writes
-    processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
-    savePendingInsertansUpdates($pendingInsertansUpdates);
-
     //  Import question_l10ns
     if (isset($xml->question_l10ns->rows->row)) {
         foreach ($xml->question_l10ns->rows->row as $row) {
@@ -420,6 +416,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
             $oQuestionL10n = new QuestionL10n();
             $oQuestionL10n->setAttributes($insertdata, false);
             $oQuestionL10n->save();
+            if ($signature = getInsertansSignature('QuestionL10n', $oQuestionL10n)) {
+                $pendingInsertansUpdates[] = $signature;
+            }
         }
     }
 
@@ -572,6 +571,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
 
     // Import defaultvalues ------------------------------------------------------
     importDefaultValues($xml, $importlanguages, $aQIDReplacements, $results, $allImportedQuestions, $newOldQidMapping);
+    // Batch process INSERTANS conversions to minimize database writes
+    processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
+    savePendingInsertansUpdates($pendingInsertansUpdates);
 
     // Import conditions --------------------------------------------------------------
     if (isset($xml->conditions)) {
@@ -3123,7 +3125,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $insertdata['sid'] = $iNewSID; // remap the survey ID
             // now translate any links
-            $insertdata['message'] = fixText(convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['message']), $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
+            $insertdata['message'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['message']), $allImportedQuestions, $newOldQidMapping);
 
             $result = Assessment::model()->insertRecords($insertdata);
             if (!$result) {
