@@ -10,7 +10,7 @@
         <div class="row">
             <!-- Title or breadcrumb -->
             <div class="ls-breadcrumb col-12">
-                <h1 class="align-items-center d-flex">
+                <h1 role="presentation"class="align-items-center d-flex">
                     <?php
                         if ($titleBackLink !== null) {
                             echo '<a class="h1" href="'.$titleBackLink.'">
