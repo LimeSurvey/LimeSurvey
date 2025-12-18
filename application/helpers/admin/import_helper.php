@@ -605,7 +605,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 $insertdata["method"] = '==';
             }
 
-            $insertdata['value'] = convertLegacyInsertans($insertdata['value']?? "", $allImportedQuestions, $newOldQidMapping);
+            $insertdata['value'] = fixText(convertLegacyInsertans($insertdata['value']?? "", $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
+            $insertdata['cfieldname'] = fixText($insertdata['cfieldname']?? "", $allImportedQuestions, $oldNewFieldRoots);
 
             // now translate any links
             Yii::app()->db->createCommand()->insert('{{conditions}}', $insertdata);
