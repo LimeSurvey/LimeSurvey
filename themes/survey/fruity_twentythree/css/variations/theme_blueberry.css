@@ -2473,7 +2473,7 @@ textarea.form-control-lg {
 .form-floating > .form-control::placeholder {
   color: transparent;
 }
-.form-floating > .form-control:not(:-moz-placeholder) {
+.form-floating > .form-control:not(:-moz-placeholder-shown) {
   padding-top: 1.625rem;
   padding-bottom: 0.625rem;
 }
@@ -2489,7 +2489,7 @@ textarea.form-control-lg {
   padding-top: 1.625rem;
   padding-bottom: 0.625rem;
 }
-.form-floating > .form-control:not(:-moz-placeholder) ~ label {
+.form-floating > .form-control:not(:-moz-placeholder-shown) ~ label {
   opacity: 0.65;
   transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
 }
@@ -13431,6 +13431,10 @@ table > tbody > tr > td.ddprefix {
   text-align: left;
 }
 
+.ls-answers.semantic-differential-list tbody .answertext {
+  text-align: right;
+}
+
 /**
  * On big screen only, iPad and up
  */
@@ -15481,8 +15485,12 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
   table.ls-answers tbody .control-label {
     text-align: left;
   }
-  table.ls-answers .answertextright {
+  table.ls-answers:not(.semantic-differential-list) tbody .answertextright {
     text-align: right;
+  }
+  table.ls-answers.semantic-differential-list tbody .answertextright,
+  table.ls-answers.semantic-differential-list tbody .answertext {
+    text-align: left;
   }
   /* Show the label */
   table.ls-answers .ls-label-xs-visibility {
