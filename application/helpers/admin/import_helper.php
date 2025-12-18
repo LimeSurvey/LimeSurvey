@@ -3110,7 +3110,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $insertdata['sid'] = $iNewSID; // remap the survey ID
             // now translate any links
-            $insertdata['message'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['message']), $allImportedQuestions, $newOldQidMapping);
+            $insertdata['message'] = fixText(convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['message']), $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots, true);
 
             $result = Assessment::model()->insertRecords($insertdata);
             if (!$result) {
@@ -4747,7 +4747,7 @@ function processPendingInsertansUpdates(&$pendingInsertansUpdates, $allImportedQ
  * @param mixed $oldNewFieldRoot the old and new fieldname mappings in the old format
  * @return string the result
  */
-function fixText($convertedValue, $allImportedQuestions, $oldNewFieldRoot)
+function fixText($convertedValue, $allImportedQuestions, $oldNewFieldRoot, $debug = false)
 {
     if (!$convertedValue) {
         return $convertedValue;
@@ -4765,7 +4765,7 @@ function fixText($convertedValue, $allImportedQuestions, $oldNewFieldRoot)
         }
         $convertedValue = str_replace($old, $new, $convertedValue);
         while (($position = strpos($convertedValue, $new)) !== false) {
-            $limit = $position + strlen($new);
+            $limit = strlen($new);
             while (($position + $limit < strlen($convertedValue)) && ($convertedValue[$position + $limit] !== ' ') && (ctype_alnum($convertedValue[$position + $limit]))) {
                 $limit++;
             }
