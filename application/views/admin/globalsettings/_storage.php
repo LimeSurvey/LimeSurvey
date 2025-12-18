@@ -13,7 +13,7 @@
             <label class="form-label"  for='global-settings-calculate-storage'><?=gT("Recalculates the storage used by all your files in the upload folders")?></label>
             <div class="">
                 <input type='hidden' name='global-settings-storage-url' value='<?php echo Yii::app()->createUrl('admin/globalsettings', array('sa' => 'getStorageData')); ?>' />
-                <a id='global-settings-calculate-storage' class='btn btn-outline-secondary '>
+                <a id='global-settings-calculate-storage' class='btn btn-outline-secondary ' tabindex="0">
                     <i class="ri-settings-5-fill"></i>&nbsp;
                     <?php eT('Calculate storage');?>
                 </a>
