@@ -443,6 +443,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
             if (!isset($xml->answer_l10ns->rows->row)) {
                 $oAnswerL10n = new AnswerL10n();
                 $oAnswerL10n->answer = convertLegacyInsertans($insertdata['answer'], $allImportedQuestions, $newOldQidMapping);
+                $oAnswerL10n->answer = fixText(convertLegacyInsertans($insertdata['answer'], $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
                 $oAnswerL10n->language = $insertdata['language'];
                 unset($insertdata['answer']);
                 unset($insertdata['language']);
@@ -478,7 +479,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 continue; //Skip invalid answer ID
             }
 
-            $insertdata['answer'] = convertLegacyInsertans($insertdata['answer'] ?? "", $allImportedQuestions, $newOldQidMapping);
+            $insertdata['answer'] = fixText(convertLegacyInsertans($insertdata['answer'], $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
 
             $oAnswerL10n = new AnswerL10n();
             $oAnswerL10n->setAttributes($insertdata, false);
@@ -4799,7 +4800,7 @@ function fixText($convertedValue, $allImportedQuestions, $oldNewFieldRoot)
         $convertedValue = str_replace($old, $new, $convertedValue);
         while (($position = strpos($convertedValue, $new)) !== false) {
             $limit = strlen($new);
-            while (($position + $limit < strlen($convertedValue)) && ($convertedValue[$position + $limit] !== ' ') && (ctype_alnum($convertedValue[$position + $limit]))) {
+            while (($position + $limit < strlen($convertedValue)) && (($convertedValue[$position + $limit] === '_') || ($convertedValue[$position + $limit] !== ' ') && ($convertedValue[$position + $limit] !== '_') && (ctype_alnum($convertedValue[$position + $limit])))) {
                 $limit++;
             }
             $found = false;
