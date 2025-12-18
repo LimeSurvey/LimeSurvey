@@ -3068,6 +3068,15 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     $insertdata['cfieldname'] = $aQuestionsMapping[$insertdata['cfieldname']];
                 }
             }
+            $insertdata['value'] = fixText(
+                convertLegacyInsertans(
+                    $insertdata['value'],
+                    $allImportedQuestions,
+                    $newOldQidMapping
+                ),
+                $allImportedQuestions,
+                $oldNewFieldRoots
+            );
             // Now process the value and replace @sgqa@ codes
             if (preg_match("/^@(.*)@$/", (string) $insertdata["value"], $cfieldnameInCondValue)) {
                 if (isset($aOldNewFieldmap[$cfieldnameInCondValue[1]])) {
