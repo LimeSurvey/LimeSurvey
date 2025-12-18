@@ -3089,8 +3089,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 }
             }
 
-            $insertdata['value'] = convertLegacyInsertans($insertdata['value'] ?? "", $allImportedQuestions, $newOldQidMapping);
-
             // now translate any links
             $result = Condition::model()->insertRecords($insertdata);
             if (!$result) {
