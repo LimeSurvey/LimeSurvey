@@ -3123,7 +3123,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $insertdata['sid'] = $iNewSID; // remap the survey ID
             // now translate any links
-            $insertdata['message'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['message']), $allImportedQuestions, $newOldQidMapping);
+            $insertdata['message'] = fixText(convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['message']), $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
 
             $result = Assessment::model()->insertRecords($insertdata);
             if (!$result) {
