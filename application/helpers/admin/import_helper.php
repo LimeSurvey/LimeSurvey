@@ -2995,7 +2995,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
 
     // Import defaultvalues ------------------------------------------------------
-    importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results, $importedQuestions, $newOldQidMapping);
+    importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
 
     $aOldNewFieldmap = reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements);
 
@@ -4513,7 +4513,7 @@ function createXMLfromData($aData = array())
  * @param array &$results
  * @return void
  */
-function importDefaultValues(SimpleXMLElement $xml, $aLanguagesSupported, $aQIDReplacements, array &$results, $allImportedQuestions = [] , $newOldQidMapping = [])
+function importDefaultValues(SimpleXMLElement $xml, $aLanguagesSupported, $aQIDReplacements, array &$results, $allImportedQuestions = [] , $newOldQidMapping = [], $oldNewFieldRoots = [])
 {
     // Default value id replacements
     $aDvidReplacements = [];
@@ -4596,7 +4596,7 @@ function importDefaultValues(SimpleXMLElement $xml, $aLanguagesSupported, $aQIDR
             $insertdata['dvid'] = $aDvidReplacements[$insertdata['dvid']];
             unset($insertdata['id']);
 
-            $insertdata['defaultvalue'] = convertLegacyInsertans($insertdata['defaultvalue'] ?? "", $allImportedQuestions, $newOldQidMapping);
+            $insertdata['defaultvalue'] = fixText(convertLegacyInsertans($insertdata['defaultvalue'] ?? "", $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
 
             $oDefaultValueL10n = new DefaultValueL10n();
             $oDefaultValueL10n->setAttributes($insertdata, false);
