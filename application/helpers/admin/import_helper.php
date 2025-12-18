@@ -2825,7 +2825,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     $insertdata['answer'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['answer']);
                 }
                 $oAnswerL10n = new AnswerL10n();
-                $oAnswerL10n->answer = convertLegacyInsertans($insertdata['answer'], $allImportedQuestions, $newOldQidMapping);
+                $oAnswerL10n->answer = fixText(convertLegacyInsertans($insertdata['answer'], $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
                 $oAnswerL10n->language = $insertdata['language'];
                 unset($insertdata['answer']);
                 unset($insertdata['language']);
@@ -2876,7 +2876,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 continue; //Skip invalid answer ID
             }
 
-            $insertdata['answer'] = convertLegacyInsertans($insertdata['answer'] ?? "", $allImportedQuestions, $newOldQidMapping);
+            $insertdata['answer'] = fixText(convertLegacyInsertans($insertdata['answer'] ?? "", $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
 
             $oAnswerL10n = new AnswerL10n();
             $oAnswerL10n->setAttributes($insertdata, false);
