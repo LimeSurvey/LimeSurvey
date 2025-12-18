@@ -4751,7 +4751,7 @@ function processPendingInsertansUpdates(&$pendingInsertansUpdates, $allImportedQ
                     if ($fieldValue) {
                         $convertedValue = convertLegacyInsertans($fieldValue, $allImportedQuestions, $surveyQidMap);
                         if (count($oldNewFieldRoot)) {
-                            $convertedValue = fixText($convertedValue, $allImportedQuestions, $oldNewFieldRoot, $fieldName === "group_name");
+                            $convertedValue = fixText($convertedValue, $allImportedQuestions, $oldNewFieldRoot);
                         }
                         if ($fieldValue != $convertedValue) {
                             $model->$fieldName = $convertedValue;
@@ -4775,7 +4775,7 @@ function processPendingInsertansUpdates(&$pendingInsertansUpdates, $allImportedQ
  * @param mixed $oldNewFieldRoot the old and new fieldname mappings in the old format
  * @return string the result
  */
-function fixText($convertedValue, $allImportedQuestions, $oldNewFieldRoot, $debug = false)
+function fixText($convertedValue, $allImportedQuestions, $oldNewFieldRoot)
 {
     if (!$convertedValue) {
         return $convertedValue;
