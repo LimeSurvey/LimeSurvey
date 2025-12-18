@@ -405,9 +405,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
             unset($insertdata['id']);
             // now translate any links
             // TODO: Should this depend on $bTranslateLinksFields?
-            $insertdata['question'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']), $allImportedQuestions, $newOldQidMapping);
-            $insertdata['help'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']), $allImportedQuestions, $newOldQidMapping);
-            $insertdata['script'] = convertLegacyInsertans($insertdata['script'] ?? "", $allImportedQuestions, $newOldQidMapping);
+            $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
+            $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']];
             } else {
@@ -442,7 +442,6 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
 
             if (!isset($xml->answer_l10ns->rows->row)) {
                 $oAnswerL10n = new AnswerL10n();
-                $oAnswerL10n->answer = convertLegacyInsertans($insertdata['answer'], $allImportedQuestions, $newOldQidMapping);
                 $oAnswerL10n->answer = fixText(convertLegacyInsertans($insertdata['answer'], $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
                 $oAnswerL10n->language = $insertdata['language'];
                 unset($insertdata['answer']);
@@ -888,7 +887,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 $results['questions']++;
 
                 // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
-                if ($signature = getInsertansSignature('QuestionGroup', $oQuestion)) {
+                if ($signature = getInsertansSignature('Question', $oQuestion)) {
                     $pendingInsertansUpdates[] = $signature;
                 }
             }
@@ -3126,7 +3125,20 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $insertdata['sid'] = $iNewSID; // remap the survey ID
             // now translate any links
-            $insertdata['message'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['message']), $allImportedQuestions, $newOldQidMapping);
+            $insertdata['message'] = fixText(
+                convertLegacyInsertans(
+                    translateLinks(
+                        'survey',
+                        $iOldSID,
+                        $iNewSID,
+                        $insertdata['message'] ?? ""
+                    ),
+                    $allImportedQuestions,
+                    $newOldQidMapping
+                ),
+                $allImportedQuestions,
+                $oldNewFieldRoots
+            );
 
             $result = Assessment::model()->insertRecords($insertdata);
             if (!$result) {
@@ -3226,7 +3238,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                             'survey',
                             $iOldSID,
                             $iNewSID,
-                            $insertdata[$field]
+                            $insertdata[$field] ?? ""
                         ),
                         $allImportedQuestions,
                         $newOldQidMapping
