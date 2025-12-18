@@ -7,7 +7,7 @@
 
 ?>
 
-<label><?php eT('Overview'); ?></label>
+<label role="heading" aria-level="2"><?php eT('Overview'); ?></label>
 <table class='table table-striped table-bordered'>
     <tfoot>
         <tr>
