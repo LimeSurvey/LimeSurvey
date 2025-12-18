@@ -2736,10 +2736,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     $newOldQidMapping = array_flip($aQIDReplacements);
     $allImportedQuestions = $importedQuestions + $importedSubQuestions;
 
-    // Batch process INSERTANS conversions to minimize database writes
-    processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
-    savePendingInsertansUpdates($pendingInsertansUpdates);
-
     //  Import question_l10ns
     if (isset($xml->question_l10ns->rows->row)) {
         foreach ($xml->question_l10ns->rows->row as $row) {
@@ -3188,6 +3184,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $results['quotamembers']++;
         }
     }
+
+    // Batch process INSERTANS conversions to minimize database writes
+    processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
+    savePendingInsertansUpdates($pendingInsertansUpdates);
 
     // Import quota_languagesettings----------------------------------------------
     if (isset($xml->quota_languagesettings)) {
@@ -4740,15 +4740,15 @@ function processPendingInsertansUpdates(&$pendingInsertansUpdates, $allImportedQ
                 $changed = false;
                 foreach ($record['fields'] as $fieldName => $fieldValue) {
                     if ($fieldValue) {
-                            $convertedValue = convertLegacyInsertans($fieldValue, $allImportedQuestions, $surveyQidMap);
-                            if (count($oldNewFieldRoot)) {
-                                $convertedValue = fixText($convertedValue, $allImportedQuestions, $oldNewFieldRoot);
-                            }
-                            if ($fieldValue != $convertedValue) {
-                                $model->$fieldName = $convertedValue;
-                                $changed = true;
-                            }
+                        $convertedValue = convertLegacyInsertans($fieldValue, $allImportedQuestions, $surveyQidMap);
+                        if (count($oldNewFieldRoot)) {
+                            $convertedValue = fixText($convertedValue, $allImportedQuestions, $oldNewFieldRoot, $fieldName === "group_name");
                         }
+                        if ($fieldValue != $convertedValue) {
+                            $model->$fieldName = $convertedValue;
+                            $changed = true;
+                        }
+                    }
                 }
                 if ($changed) {
                     $onlyChangedModels [] = $model;
@@ -4766,7 +4766,7 @@ function processPendingInsertansUpdates(&$pendingInsertansUpdates, $allImportedQ
  * @param mixed $oldNewFieldRoot the old and new fieldname mappings in the old format
  * @return string the result
  */
-function fixText($convertedValue, $allImportedQuestions, $oldNewFieldRoot)
+function fixText($convertedValue, $allImportedQuestions, $oldNewFieldRoot, $debug = false)
 {
     if (!$convertedValue) {
         return $convertedValue;
@@ -4784,7 +4784,7 @@ function fixText($convertedValue, $allImportedQuestions, $oldNewFieldRoot)
         }
         $convertedValue = str_replace($old, $new, $convertedValue);
         while (($position = strpos($convertedValue, $new)) !== false) {
-            $limit = $position + strlen($new);
+            $limit = strlen($new);
             while (($position + $limit < strlen($convertedValue)) && ($convertedValue[$position + $limit] !== ' ') && (ctype_alnum($convertedValue[$position + $limit]))) {
                 $limit++;
             }
