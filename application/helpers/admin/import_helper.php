@@ -2760,13 +2760,17 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $aQuestionsMapping['Q' . array_search($oQuestion->parent_qid, $aQIDReplacements) . '_S' . $iOldQID] = 'Q' . $oQuestion->parent_qid . '_S' . $oQuestion->qid;
             }
 
-            $insertdata['question'] = convertLegacyInsertans($insertdata['question'] ?? "", $allImportedQuestions, $newOldQidMapping);
-            $insertdata['help'] = convertLegacyInsertans($insertdata['help'] ?? "", $allImportedQuestions, $newOldQidMapping);
-            $insertdata['script'] = convertLegacyInsertans($insertdata['script'] ?? "", $allImportedQuestions, $newOldQidMapping);
+            $insertdata['question'] = $insertdata['question'] ?? "";
+            $insertdata['help'] = $insertdata['help'] ?? "";
+            $insertdata['script'] = $insertdata['script'] ?? "";
 
             $oQuestionL10n = new QuestionL10n();
             $oQuestionL10n->setAttributes($insertdata, false);
             $oQuestionL10n->save();
+            // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
+            if ($signature = getInsertansSignature('QuestionL10n', $oQuestionL10n)) {
+                $pendingInsertansUpdates[] = $signature;
+            }
 
             // If translate links is disabled, check for old links.
             if (!$bTranslateInsertansTags) {
