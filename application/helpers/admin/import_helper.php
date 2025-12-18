@@ -3199,8 +3199,22 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $quotaLanguagesSetting = new QuotaLanguageSetting('import');
             $quotaLanguagesSetting->setAttributes($insertdata, false);
 
-            $quotaLanguagesSetting['quotals_urldescrip'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['quotals_urldescrip']), $allImportedQuestions, $newOldQidMapping);
-            $quotaLanguagesSetting['quotals_url'] = convertLegacyInsertans(translateLinks('survey', $iOldSID, $iNewSID, $insertdata['quotals_url']), $allImportedQuestions, $newOldQidMapping);
+            foreach (['quotals_urldescrip', 'quotals_url'] as $field) {
+                $quotaLanguagesSetting[$field] = fixText(
+                    convertLegacyInsertans(
+                        translateLinks(
+                            'survey',
+                            $iOldSID,
+                            $iNewSID,
+                            $insertdata[$field]
+                        ),
+                        $allImportedQuestions,
+                        $newOldQidMapping
+                    ),
+                    $allImportedQuestions,
+                    $oldNewFieldRoots
+                );
+            }
 
             if (!$quotaLanguagesSetting->save()) {
                 $header = sprintf(gT("Unable to insert quota language settings for quota %s"), $insertdata['quotals_quota_id']);
