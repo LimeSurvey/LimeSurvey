@@ -1108,9 +1108,17 @@ class Update_641 extends DatabaseUpdateBase
                 SELECT {$from}
                 FROM {$TABLE_NAME};
             ";
-            $this->db->createCommand($scripts[$TABLE_NAME]['CREATE'])->execute();
-            $this->db->createCommand($preinsert . $scripts[$TABLE_NAME]['INSERT'] . $postinsert)->execute();
-            $this->db->createCommand($scripts[$TABLE_NAME]['DROP'])->execute();
+            try {
+                $this->db->createCommand($scripts[$TABLE_NAME]['CREATE'])->execute();
+                $this->db->createCommand($preinsert . $scripts[$TABLE_NAME]['INSERT'] . $postinsert)->execute();
+                $this->db->createCommand($scripts[$TABLE_NAME]['DROP'])->execute();
+            } catch (\Exception $ex) {
+                if (strpos($TABLE_NAME, "old") !== false) {
+                    continue;
+                } else {
+                    throw $ex;
+                }
+            }
             if (count($fieldMap[$TABLE_NAME]) && (strpos($TABLE_NAME, "survey") !== false) && (strpos($TABLE_NAME, "timing") === false)) {
                 $keys = array_keys($fieldMap[$TABLE_NAME]);
                 arsort($keys);
