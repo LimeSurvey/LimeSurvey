@@ -9,7 +9,7 @@
     <input type="hidden" id="<?=$fn?>_show_comment"      value="<?=$qidattributes['show_comment']?>" />
     <input type="hidden" id="<?=$fn?>_show_title"        value="<?=$qidattributes['show_title']?>" />
     <input type="hidden" id="<?=$fn?>_licount"           value="0" />
-    <input type="hidden" id="<?=$fn?>_filecount"         value="0" />
+    <input type="hidden" id="<?=$fn?>_Cfilecount"         value="0" />
 
     <!-- The upload button -->
     <div class="upload-div">

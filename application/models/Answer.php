@@ -184,7 +184,7 @@ class Answer extends LSActiveRecord
     {
         $criteria = new CDbCriteria();
         $criteria->compare('question.sid', $newsid);
-        $criteria->with = ['answerl10ns' => array('condition' => "answer like '%{INSERTANS::{$oldsid}X%'"), 'question'];
+        $criteria->with = ['answerl10ns' => array('condition' => "answer like '%{INSERTANS::Q%'"), 'question'];
         return $this->findAll($criteria);
     }
 

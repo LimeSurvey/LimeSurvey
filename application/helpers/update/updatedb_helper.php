@@ -297,13 +297,13 @@ function decryptResponseTables450($oDB)
         ->where('active =:active', ['active' => 'Y'])
         ->queryAll();
     foreach ($surveys as $survey) {
-        $tableExists = tableExists("{{survey_{$survey['sid']}}}");
+        $tableExists = tableExists("{{responses_{$survey['sid']}}}");
         if (!$tableExists) {
             continue;
         }
         $responsesCount = $oDB->createCommand()
             ->select('count(*)')
-            ->from("{{survey_{$survey['sid']}}}")
+            ->from("{{responses_{$survey['sid']}}}")
             ->queryScalar();
         if ($responsesCount) {
             $maxRows = 100;
@@ -313,7 +313,7 @@ function decryptResponseTables450($oDB)
                 $offset = $i * $maxRows;
                 $responses = $oDB->createCommand()
                     ->select('*')
-                    ->from("{{survey_{$survey['sid']}}}")
+                    ->from("{{responses_{$survey['sid']}}}")
                     ->offset($offset)
                     ->limit($maxRows)
                     ->queryAll();
@@ -329,7 +329,7 @@ function decryptResponseTables450($oDB)
                     if ($recryptedResponse) {
                         // use createUpdateCommand() because the update() function does not properly escape auto generated params causing errors
                         $criteria = $oDB->getCommandBuilder()->createCriteria('id=:id', ['id' => $response['id']]);
-                        $oDB->getCommandBuilder()->createUpdateCommand("{{survey_{$survey['sid']}}}", $recryptedResponse, $criteria)->execute();
+                        $oDB->getCommandBuilder()->createUpdateCommand("{{responses_{$survey['sid']}}}", $recryptedResponse, $criteria)->execute();
                     }
                 }
             }
@@ -2416,12 +2416,12 @@ function upgradeSurveyTables164()
         return "Database Error";
     } else {
         foreach ($aResult as $sv) {
-            $sSurveyTableName = 'survey_' . $sv['sid'];
+            $sSurveyTableName = 'responses_' . $sv['sid'];
             $aColumnNames = $aColumnNamesIterator = Yii::app()->db->schema->getTable('{{' . $sSurveyTableName . '}}')->columnNames;
             if (!in_array('token', $aColumnNames)) {
-                addColumn('{{survey_' . $sv['sid'] . '}}', 'token', 'string(36)');
+                addColumn('{{responses_' . $sv['sid'] . '}}', 'token', 'string(36)');
             } else {
-                alterColumn('{{survey_' . $sv['sid'] . '}}', 'token', 'string(36)');
+                alterColumn('{{responses_' . $sv['sid'] . '}}', 'token', 'string(36)');
             }
         }
     }
