@@ -209,9 +209,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['attributeDescriptions'] = $data->getDecodedAttributedescriptions();
 
         $survey['themesettings'] = [];
-        $survey['themesettingattributes'] = [];
         $survey['templatePreview'] = '';
-        $this->transformThemeSettings($survey['themesettings'], $survey['themesettingattributes'], $survey['templatePreview'], $data);
+        $this->transformThemeSettings($survey['themesettings'], $survey['templatePreview'], $data);
 
         return $survey;
     }
@@ -398,12 +397,11 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     /**
      * Prepares theme settings necessary values, including inheritance
      * @param-out array<array-key, mixed> $aThemeSettings
-     * @param-out array<mixed> $aThemesettingattributes
      * @param-out string $sTemplatePreview
      * @param Survey $survey
      * @return void
      */
-    private function transformThemeSettings(array &$aThemeSettings, array &$aThemeSettingAttributes, string &$sTemplatePreview, $survey)
+    private function transformThemeSettings(array &$aThemeSettings, string &$sTemplatePreview, $survey)
     {
         $themeConfiguration = TemplateConfiguration::getInstance(null, null, $survey->sid);
         // loads all information available for the theme including inheritance

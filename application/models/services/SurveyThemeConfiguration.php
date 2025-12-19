@@ -176,13 +176,25 @@ class SurveyThemeConfiguration
         $currentThemeOptions = $themeData['aTemplateConfiguration']['options'];
         $parentThemeOptions = $themeData['oParentOptions'];
         $attributesCompleteData = [];
-        // build default dropdownarray if the dropdown is not specified
+        $imageDefaultDropDown = [];
+        $iterator = 0;
+        foreach ($themeData['aTemplateConfiguration']['imageFileList'] as $imageData) {
+            $imageDefaultDropDown[$iterator]['value'] = $imageData['filepath'];
+            $imageDefaultDropDown[$iterator]['label'] = $imageData['filename'];
+            $imageDefaultDropDown[$iterator]['group'] = $imageData['group'];
+            $imageDefaultDropDown[$iterator]['imagePreviewPath'] = $imageData['preview'];
+            $imageDefaultDropDown[$iterator]['imageOriginPath'] = $imageData['filepathOptions'];
+            $iterator++;
+        }
         foreach ($attributesReact as $key => $optionAttribute) {
             $attributesCompleteData[$key] = $attributesCore[$key];
             $attributesCompleteData[$key]['currentValue'] = $currentThemeOptions->$key;
             $attributesCompleteData[$key]['parentValue'] = $parentThemeOptions[$key];
             if ($attributesCompleteData[$key]['type'] === 'dropdown') {
                 $attributesCompleteData[$key]['dropdownoptions'] = $this->extractDropdownOptions($attributesCompleteData[$key]['dropdownoptions']);
+                if (empty($attributesCompleteData[$key]['dropdownoptions'])) {
+                    $attributesCompleteData[$key]['dropdownoptions'] = $imageDefaultDropDown;
+                }
             }
         }
 
