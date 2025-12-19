@@ -28,6 +28,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
     private $o2FA = null;
 
+
     /** @inheritdoc **/
     public $allowedPublicMethods = [
         'userindex',
@@ -85,6 +86,16 @@ class TwoFactorAdminLogin extends AuthPluginBase
                 'md5' => 'MD5',
             ],
             'help' => 'Please keep in mind, that most tools only work with SHA1 hashing.'
+        ),
+        'SecretLength' => array(
+            'type' => 'int',
+            'label' => 'Secret length',
+            'default' => '',
+            'htmlOptions' => [
+                'min' => 128,
+                'placeholder' => 128
+            ],
+            'help' => 'Length of the secret in bits. Minimum and default are 128.'
         ),
         'separatorYubi' => array(
             'type' => 'separator',
@@ -402,7 +413,11 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $o2FA = $this->get2FAObject();
 
         $oTFAModel->uid = $iUserId;
-        $oTFAModel->secretKey = $o2FA->createSecret(128);
+        $SecretLength = intval($this->get('SecretLength', null, null, ''));
+        if ($SecretLength < 128) {
+            $SecretLength = 128;
+        }
+        $oTFAModel->secretKey = $o2FA->createSecret($SecretLength);
         $sQRCodeContent = '<img src="' . $o2FA->getQRCodeImageAsDataUri('LimeSurvey - User ID: ' . Yii::app()->user->id, $oTFAModel->secretKey) . '">';
 
         return $this->renderPartial('_partial/create', [
