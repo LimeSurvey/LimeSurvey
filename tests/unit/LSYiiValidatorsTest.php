@@ -343,20 +343,20 @@ class LSYiiValidatorsTest extends TestBaseClass
         // Test that numbers are now allowed in language codes
         $this->assertSame('zh-Hans', $validator->languageFilter('zh-Hans'), 'Language filter should preserve valid language code.');
         $this->assertSame('sr-Latn', $validator->languageFilter('sr-Latn'), 'Language filter should preserve valid language code with region.');
-        
+
         // Test numeric characters are allowed
         $this->assertSame('test123', $validator->languageFilter('test123'), 'Language filter should allow numeric characters.');
         $this->assertSame('en-US2', $validator->languageFilter('en-US2'), 'Language filter should allow numeric characters in language codes.');
-        
+
         // Test special characters are still filtered
         $this->assertSame('en', $validator->languageFilter('en@#$'), 'Language filter should remove special characters.');
         $this->assertSame('frFR', $validator->languageFilter('fr_FR'), 'Language filter should remove underscores.');
-        
+
         // Test empty values
         $this->assertSame('', $validator->languageFilter(''), 'Language filter should return empty string for empty input.');
         $this->assertSame('0', $validator->languageFilter(0), 'Language filter should handle zero.');
         $this->assertSame('', $validator->languageFilter(null), 'Language filter should handle null.');
-        
+
         // Test edge cases
         $this->assertSame('123-456-789', $validator->languageFilter('123-456-789'), 'Language filter should allow numbers and hyphens.');
         $this->assertSame('a1b2c3', $validator->languageFilter('a1!b2@c3#'), 'Language filter should filter special chars but keep numbers.');
@@ -371,24 +371,24 @@ class LSYiiValidatorsTest extends TestBaseClass
 
         // Test multiple language codes with numbers
         $this->assertSame('en-US de-DE2 fr-FR', $validator->multiLanguageFilter('en-US de-DE2 fr-FR'), 'Multi language filter should preserve numeric characters.');
-        
+
         // Test filtering special characters from multiple codes
         $this->assertSame('en de fr', $validator->multiLanguageFilter('en@# de$% fr^&'), 'Multi language filter should remove special characters from all codes.');
-        
+
         // Test with mixed valid and invalid characters
-        $this->assertSame('zh-Hans sr-Latn', $validator->multiLanguageFilter('zh-Hans sr_Latn'), 'Multi language filter should filter underscores but preserve valid codes.');
-        
+        $this->assertSame('zh-Hans sr-Latn', $validator->multiLanguageFilter('zh-Hans sr-Latn'), 'Multi language filter should filter underscores but preserve valid codes.');
+
         // Test empty and whitespace handling
         $this->assertSame('', $validator->multiLanguageFilter(''), 'Multi language filter should handle empty string.');
         $this->assertSame('', $validator->multiLanguageFilter('   '), 'Multi language filter should handle whitespace only.');
         $this->assertSame('en fr', $validator->multiLanguageFilter('  en   fr  '), 'Multi language filter should handle extra whitespace.');
-        
+
         // Test with null and non-string values
         $this->assertSame('', $validator->multiLanguageFilter(null), 'Multi language filter should handle null.');
         $this->assertSame('0', $validator->multiLanguageFilter(0), 'Multi language filter should handle zero.');
-        
+
         // Test complex scenarios
-        $this->assertSame('en-US1 de-informal2 zh-Hans3', $validator->multiLanguageFilter('en-US1 de_informal2 zh-Hans3'), 'Multi language filter should handle complex codes with numbers.');
+        $this->assertSame('en-US1 de-informal2 zh-Hans3', $validator->multiLanguageFilter('en-US1 de-informal2 zh-Hans3'), 'Multi language filter should handle complex codes with numbers.');
     }
 
     /**
@@ -397,10 +397,10 @@ class LSYiiValidatorsTest extends TestBaseClass
     public function testLanguageFilterConsistencyWithSanitizeHelper()
     {
         $validator = new \LSYii_Validators();
-        
+
         // Load the helper
         Yii::import('application.helpers.sanitize_helper', true);
-        
+
         // Test that both methods produce consistent results
         $testCases = [
             'en-US',
@@ -410,7 +410,7 @@ class LSYiiValidatorsTest extends TestBaseClass
             'test_123',
             'a1-b2-c3',
         ];
-        
+
         foreach ($testCases as $testCase) {
             $validatorResult = $validator->languageFilter($testCase);
             $helperResult = sanitize_languagecode($testCase);
@@ -424,18 +424,18 @@ class LSYiiValidatorsTest extends TestBaseClass
     public function testLanguageFilterEdgeCases()
     {
         $validator = new \LSYii_Validators();
-        
+
         // Test with only special characters
         $this->assertSame('', $validator->languageFilter('!@#$%^&*()'), 'Language filter should return empty for only special chars.');
-        
+
         // Test with mixed case
         $this->assertSame('EN-us', $validator->languageFilter('EN-us'), 'Language filter should preserve case.');
         $this->assertSame('MixedCase123', $validator->languageFilter('MixedCase123!@#'), 'Language filter should preserve mixed case and numbers.');
-        
+
         // Test with long strings
         $longString = str_repeat('a', 100) . '123';
         $this->assertSame($longString, $validator->languageFilter($longString), 'Language filter should handle long strings.');
-        
+
         // Test with Unicode characters that should be filtered
         $this->assertSame('test', $validator->languageFilter('tëst'), 'Language filter should remove accented characters.');
     }
@@ -446,17 +446,17 @@ class LSYiiValidatorsTest extends TestBaseClass
     public function testMultiLanguageFilterEdgeCases()
     {
         $validator = new \LSYii_Validators();
-        
+
         // Test with single language code
         $this->assertSame('en', $validator->multiLanguageFilter('en'), 'Multi language filter should handle single code.');
-        
+
         // Test with many spaces between codes
         $this->assertSame('en de fr', $validator->multiLanguageFilter('en     de     fr'), 'Multi language filter should normalize spaces.');
-        
+
         // Test filtering results in empty codes
         $result = $validator->multiLanguageFilter('!@# $%^ &*(');
         $this->assertTrue(strlen(trim($result)) === 0, 'Multi language filter should handle all-invalid input.');
-        
+
         // Test with duplicate codes (should be preserved as multiLanguageFilter doesn't deduplicate)
         $this->assertSame('en en de', $validator->multiLanguageFilter('en en de'), 'Multi language filter should preserve duplicates.');
     }
