@@ -201,6 +201,7 @@ class SortingStrategyTest extends TestBaseClass
 
         $mockQuestion->shouldReceive('getQuestionAttribute')
             ->with('subquestion_order')
+203r .sed-tmp
             ->andReturn('normal');
 
         $strategy = new SortingStrategy();
