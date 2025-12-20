@@ -175,7 +175,7 @@ class SortingStrategyTest extends TestBaseClass
 
     /**
      * @testdox determine() for subquestions returns 'normal' when random_order is 0
-      */
+     */
     public function testDetermineForSubquestionsReturnsRandomWhenSubquestionOrderIsNormal()
     {
         // Create mock Question using Mockery
@@ -201,7 +201,6 @@ class SortingStrategyTest extends TestBaseClass
 
         $mockQuestion->shouldReceive('getQuestionAttribute')
             ->with('subquestion_order')
-203r .sed-tmp
             ->andReturn('normal');
 
         $strategy = new SortingStrategy();

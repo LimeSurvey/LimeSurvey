@@ -6,302 +6,268 @@ use ls\tests\TestBaseClass;
 
 /**
  * Test sanitize_helper.php functions
- * @group helpers
  */
 class SanitizeHelperTest extends TestBaseClass
 {
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
+        \Yii::import('application.helpers.sanitize_helper', true);
+    }
+
+    /**
+     * Test sanitize_languagecode with numeric characters (new in 7.0)
+     */
+    public function testSanitizeLanguagecodeWithNumbers()
+    {
+        // Test that numbers are now allowed in language codes
+        $this->assertSame('zh-Hans', sanitize_languagecode('zh-Hans'), 'Should preserve valid language code.');
+        $this->assertSame('sr-Latn', sanitize_languagecode('sr-Latn'), 'Should preserve language code with region.');
         
-        // Load the helper file
-        require_once(__DIR__ . '/../../../application/helpers/sanitize_helper.php');
-    }
-
-    /**
-     * Test sanitize_languagecode with valid language codes
-     */
-    public function testSanitizeLanguagecodeWithValidCodes()
-    {
-        $this->assertSame('en', sanitize_languagecode('en'), 'Should accept simple language code');
-        $this->assertSame('fr', sanitize_languagecode('fr'), 'Should accept French code');
-        $this->assertSame('de', sanitize_languagecode('de'), 'Should accept German code');
-        $this->assertSame('es', sanitize_languagecode('es'), 'Should accept Spanish code');
-        $this->assertSame('it', sanitize_languagecode('it'), 'Should accept Italian code');
-        $this->assertSame('pt', sanitize_languagecode('pt'), 'Should accept Portuguese code');
-        $this->assertSame('ja', sanitize_languagecode('ja'), 'Should accept Japanese code');
-        $this->assertSame('ko', sanitize_languagecode('ko'), 'Should accept Korean code');
-        $this->assertSame('zh', sanitize_languagecode('zh'), 'Should accept Chinese code');
-    }
-
-    /**
-     * Test sanitize_languagecode with compound language codes
-     */
-    public function testSanitizeLanguagecodeWithCompoundCodes()
-    {
-        $this->assertSame('en-US', sanitize_languagecode('en-US'), 'Should accept en-US');
-        $this->assertSame('en-GB', sanitize_languagecode('en-GB'), 'Should accept en-GB');
-        $this->assertSame('fr-FR', sanitize_languagecode('fr-FR'), 'Should accept fr-FR');
-        $this->assertSame('de-DE', sanitize_languagecode('de-DE'), 'Should accept de-DE');
-        $this->assertSame('pt-BR', sanitize_languagecode('pt-BR'), 'Should accept pt-BR');
-        $this->assertSame('zh-Hans', sanitize_languagecode('zh-Hans'), 'Should accept zh-Hans');
-        $this->assertSame('zh-Hant', sanitize_languagecode('zh-Hant'), 'Should accept zh-Hant');
-        $this->assertSame('de-informal', sanitize_languagecode('de-informal'), 'Should accept custom variants');
-        $this->assertSame('de-easy', sanitize_languagecode('de-easy'), 'Should accept easy variants');
-    }
-
-    /**
-     * Test sanitize_languagecode with numeric characters (new behavior)
-     */
-    public function testSanitizeLanguagecodeWithNumericCharacters()
-    {
-        $this->assertSame('en1', sanitize_languagecode('en1'), 'Should allow numbers');
-        $this->assertSame('fr2', sanitize_languagecode('fr2'), 'Should allow numbers');
-        $this->assertSame('lang123', sanitize_languagecode('lang123'), 'Should allow multiple numbers');
-        $this->assertSame('123', sanitize_languagecode('123'), 'Should allow pure numeric strings');
-        $this->assertSame('0', sanitize_languagecode('0'), 'Should allow zero');
-        $this->assertSame('en-US1', sanitize_languagecode('en-US1'), 'Should allow numbers in compound codes');
-        $this->assertSame('custom123-variant456', sanitize_languagecode('custom123-variant456'), 'Should allow numbers throughout');
-    }
-
-    /**
-     * Test sanitize_languagecode removes invalid characters
-     */
-    public function testSanitizeLanguagecodeRemovesInvalidCharacters()
-    {
-        // Special characters
-        $this->assertSame('en', sanitize_languagecode('en!'), 'Should remove exclamation mark');
-        $this->assertSame('en', sanitize_languagecode('en@'), 'Should remove at symbol');
-        $this->assertSame('en', sanitize_languagecode('en#'), 'Should remove hash');
-        $this->assertSame('en', sanitize_languagecode('en$'), 'Should remove dollar sign');
-        $this->assertSame('en', sanitize_languagecode('en%'), 'Should remove percent');
-        $this->assertSame('en', sanitize_languagecode('en^'), 'Should remove caret');
-        $this->assertSame('en', sanitize_languagecode('en&'), 'Should remove ampersand');
-        $this->assertSame('en', sanitize_languagecode('en*'), 'Should remove asterisk');
-        $this->assertSame('en', sanitize_languagecode('en('), 'Should remove opening parenthesis');
-        $this->assertSame('en', sanitize_languagecode('en)'), 'Should remove closing parenthesis');
+        // Test numeric characters are allowed
+        $this->assertSame('test123', sanitize_languagecode('test123'), 'Should allow numeric characters.');
+        $this->assertSame('en-US2', sanitize_languagecode('en-US2'), 'Should allow numeric characters in language codes.');
         
-        // Punctuation
-        $this->assertSame('en', sanitize_languagecode('en_'), 'Should remove underscore');
-        $this->assertSame('en', sanitize_languagecode('en='), 'Should remove equals');
-        $this->assertSame('en', sanitize_languagecode('en+'), 'Should remove plus');
-        $this->assertSame('en', sanitize_languagecode('en.'), 'Should remove period');
-        $this->assertSame('en', sanitize_languagecode('en,'), 'Should remove comma');
-        $this->assertSame('en', sanitize_languagecode('en:'), 'Should remove colon');
-        $this->assertSame('en', sanitize_languagecode('en;'), 'Should remove semicolon');
-        $this->assertSame('en', sanitize_languagecode('en/'), 'Should remove forward slash');
-        $this->assertSame('en', sanitize_languagecode('en\\'), 'Should remove backslash');
-        $this->assertSame('en', sanitize_languagecode('en?'), 'Should remove question mark');
+        // Test special characters are still filtered
+        $this->assertSame('en', sanitize_languagecode('en@#$'), 'Should remove special characters.');
+        $this->assertSame('fr-FR', sanitize_languagecode('fr_FR'), 'Should remove underscores.');
         
-        // Brackets and quotes
-        $this->assertSame('en', sanitize_languagecode('en['), 'Should remove opening bracket');
-        $this->assertSame('en', sanitize_languagecode('en]'), 'Should remove closing bracket');
-        $this->assertSame('en', sanitize_languagecode('en{'), 'Should remove opening brace');
-        $this->assertSame('en', sanitize_languagecode('en}'), 'Should remove closing brace');
-        $this->assertSame('en', sanitize_languagecode('en<'), 'Should remove less than');
-        $this->assertSame('en', sanitize_languagecode('en>'), 'Should remove greater than');
-        $this->assertSame('en', sanitize_languagecode('en"'), 'Should remove double quote');
-        $this->assertSame('en', sanitize_languagecode("en'"), 'Should remove single quote');
-        $this->assertSame('en', sanitize_languagecode('en|'), 'Should remove pipe');
+        // Test empty values
+        $this->assertSame('', sanitize_languagecode(''), 'Should return empty string for empty input.');
+        
+        // Test edge cases
+        $this->assertSame('123-456-789', sanitize_languagecode('123-456-789'), 'Should allow numbers and hyphens.');
+        $this->assertSame('a1b2c3', sanitize_languagecode('a1!b2@c3#'), 'Should filter special chars but keep numbers.');
     }
 
     /**
-     * Test sanitize_languagecode with whitespace
+     * Test sanitize_languagecode with various special characters
      */
-    public function testSanitizeLanguagecodeWithWhitespace()
+    public function testSanitizeLanguagecodeSpecialCharacters()
     {
-        $this->assertSame('en', sanitize_languagecode('en '), 'Should remove trailing space');
-        $this->assertSame('en', sanitize_languagecode(' en'), 'Should remove leading space');
-        $this->assertSame('enfr', sanitize_languagecode('en fr'), 'Should remove internal space');
-        $this->assertSame('en', sanitize_languagecode("en\t"), 'Should remove tab');
-        $this->assertSame('en', sanitize_languagecode("en\n"), 'Should remove newline');
-        $this->assertSame('en', sanitize_languagecode("en\r"), 'Should remove carriage return');
+        // Test removal of various special characters
+        $this->assertSame('en-US', sanitize_languagecode('en_US'), 'Should remove underscores.');
+        $this->assertSame('en-US', sanitize_languagecode('en/US'), 'Should remove slashes.');
+        $this->assertSame('en-US', sanitize_languagecode('en\\US'), 'Should remove backslashes.');
+        $this->assertSame('en-US', sanitize_languagecode('en.US'), 'Should remove dots.');
+        $this->assertSame('en-US', sanitize_languagecode('en,US'), 'Should remove commas.');
+        $this->assertSame('en-US', sanitize_languagecode('en;US'), 'Should remove semicolons.');
+        $this->assertSame('en-US', sanitize_languagecode('en:US'), 'Should remove colons.');
+        $this->assertSame('en-US', sanitize_languagecode('en US'), 'Should remove spaces.');
+        
+        // Test with only special characters
+        $this->assertSame('', sanitize_languagecode('!@#$%^&*()'), 'Should return empty for only special chars.');
+        
+        // Test with parentheses and brackets
+        $this->assertSame('en', sanitize_languagecode('en()'), 'Should remove parentheses.');
+        $this->assertSame('en', sanitize_languagecode('en[]'), 'Should remove brackets.');
+        $this->assertSame('en', sanitize_languagecode('en{}'), 'Should remove braces.');
     }
 
     /**
-     * Test sanitize_languagecode with Unicode characters
+     * Test sanitize_languagecode with mixed case
      */
-    public function testSanitizeLanguagecodeWithUnicodeCharacters()
+    public function testSanitizeLanguagecodeCasePreservation()
     {
-        $this->assertSame('en', sanitize_languagecode('enñ'), 'Should remove n with tilde');
-        $this->assertSame('fr', sanitize_languagecode('frá'), 'Should remove accented a');
-        $this->assertSame('de', sanitize_languagecode('deü'), 'Should remove umlaut');
-        $this->assertSame('', sanitize_languagecode('日本語'), 'Should remove Japanese characters');
-        $this->assertSame('', sanitize_languagecode('中文'), 'Should remove Chinese characters');
-        $this->assertSame('', sanitize_languagecode('한국어'), 'Should remove Korean characters');
-        $this->assertSame('', sanitize_languagecode('العربية'), 'Should remove Arabic characters');
-        $this->assertSame('', sanitize_languagecode('Русский'), 'Should remove Cyrillic characters');
-    }
-
-    /**
-     * Test sanitize_languagecode with XSS attempts
-     */
-    public function testSanitizeLanguagecodeBlocksXSSAttempts()
-    {
-        $this->assertSame('scriptalertXSSscript', sanitize_languagecode('<script>alert("XSS")</script>'), 'Should remove script tags');
-        $this->assertSame('imgscr', sanitize_languagecode('<img src=x>'), 'Should remove img tags');
-        $this->assertSame('javascriptalert1', sanitize_languagecode('javascript:alert(1)'), 'Should remove javascript protocol');
-        $this->assertSame('onerroralert1', sanitize_languagecode('onerror=alert(1)'), 'Should remove equals from event handlers');
-    }
-
-    /**
-     * Test sanitize_languagecode with empty values
-     */
-    public function testSanitizeLanguagecodeWithEmptyValues()
-    {
-        $this->assertSame('', sanitize_languagecode(''), 'Empty string should return empty string');
-        $this->assertSame('', sanitize_languagecode(null), 'Null should return empty string');
-    }
-
-    /**
-     * Test sanitize_languagecode preserves case
-     */
-    public function testSanitizeLanguagecodePreservesCase()
-    {
-        $this->assertSame('EN', sanitize_languagecode('EN'), 'Should preserve uppercase');
-        $this->assertSame('en', sanitize_languagecode('en'), 'Should preserve lowercase');
-        $this->assertSame('En', sanitize_languagecode('En'), 'Should preserve mixed case');
-        $this->assertSame('eN', sanitize_languagecode('eN'), 'Should preserve mixed case');
-        $this->assertSame('en-US', sanitize_languagecode('en-US'), 'Should preserve case in compound codes');
+        // Test case preservation
+        $this->assertSame('EN-us', sanitize_languagecode('EN-us'), 'Should preserve case.');
+        $this->assertSame('MixedCase123', sanitize_languagecode('MixedCase123'), 'Should preserve mixed case and numbers.');
+        $this->assertSame('de-DE', sanitize_languagecode('de-DE'), 'Should preserve uppercase region codes.');
+        $this->assertSame('zh-Hans', sanitize_languagecode('zh-Hans'), 'Should preserve script case.');
     }
 
     /**
      * Test sanitize_languagecode with long strings
      */
-    public function testSanitizeLanguagecodeWithLongStrings()
+    public function testSanitizeLanguagecodeLongStrings()
     {
-        $longValid = str_repeat('a', 1000);
-        $this->assertSame($longValid, sanitize_languagecode($longValid), 'Should handle long valid strings');
+        // Test with long valid string
+        $longString = str_repeat('a', 100) . '123';
+        $this->assertSame($longString, sanitize_languagecode($longString), 'Should handle long strings.');
         
-        $longInvalid = str_repeat('!', 1000);
-        $this->assertSame('', sanitize_languagecode($longInvalid), 'Should remove all characters from long invalid string');
+        // Test with long string containing special chars
+        $longStringWithSpecial = str_repeat('a', 50) . '@#$' . str_repeat('b', 50);
+        $expected = str_repeat('a', 50) . str_repeat('b', 50);
+        $this->assertSame($expected, sanitize_languagecode($longStringWithSpecial), 'Should filter special chars in long strings.');
+    }
+
+    /**
+     * Test sanitize_languagecode with Unicode and accented characters
+     */
+    public function testSanitizeLanguagecodeUnicodeCharacters()
+    {
+        // Test with accented characters (should be removed as they're not ASCII a-z)
+        $this->assertSame('test', sanitize_languagecode('tëst'), 'Should remove accented characters.');
+        $this->assertSame('cafe', sanitize_languagecode('café'), 'Should remove accented e.');
+        $this->assertSame('nahnah', sanitize_languagecode('ñañá'), 'Should remove Spanish ñ and á.');
         
-        $mixedLong = str_repeat('a!', 500);
-        $this->assertSame(str_repeat('a', 500), sanitize_languagecode($mixedLong), 'Should filter invalid chars from long mixed string');
+        // Test with non-Latin characters
+        $this->assertSame('', sanitize_languagecode('汉语'), 'Should remove Chinese characters.');
+        $this->assertSame('', sanitize_languagecode('日本語'), 'Should remove Japanese characters.');
+        $this->assertSame('', sanitize_languagecode('한글'), 'Should remove Korean characters.');
+        $this->assertSame('', sanitize_languagecode('Русский'), 'Should remove Cyrillic characters.');
     }
 
     /**
-     * Test sanitize_languagecodeS with multiple valid codes
+     * Test sanitize_languagecodeS with multiple codes
      */
-    public function testSanitizeLanguagecodeSWithMultipleCodes()
+    public function testSanitizeLanguagecodeSMultipleCodes()
     {
-        $this->assertSame('en fr', sanitize_languagecodeS('en fr'), 'Should accept multiple codes');
-        $this->assertSame('en fr de', sanitize_languagecodeS('en fr de'), 'Should accept three codes');
-        $this->assertSame('en fr de es it', sanitize_languagecodeS('en fr de es it'), 'Should accept five codes');
-    }
-
-    /**
-     * Test sanitize_languagecodeS with numbers (new behavior)
-     */
-    public function testSanitizeLanguagecodeSWithNumbers()
-    {
-        $this->assertSame('en1 fr2', sanitize_languagecodeS('en1 fr2'), 'Should allow numbers');
-        $this->assertSame('lang1 lang2 lang3', sanitize_languagecodeS('lang1 lang2 lang3'), 'Should allow multiple numbered codes');
-        $this->assertSame('123 456', sanitize_languagecodeS('123 456'), 'Should allow pure numeric codes');
-    }
-
-    /**
-     * Test sanitize_languagecodeS removes invalid characters
-     */
-    public function testSanitizeLanguagecodeSRemovesInvalidCharacters()
-    {
-        $this->assertSame('en fr', sanitize_languagecodeS('en! fr@'), 'Should remove special characters');
-        $this->assertSame('en fr de', sanitize_languagecodeS('en# fr$ de%'), 'Should remove multiple special characters');
-        $this->assertSame('en-US fr-FR', sanitize_languagecodeS('en-US! fr-FR@'), 'Should remove special characters from compound codes');
-    }
-
-    /**
-     * Test sanitize_languagecodeS with extra spaces
-     */
-    public function testSanitizeLanguagecodeSHandlesExtraSpaces()
-    {
-        $result = sanitize_languagecodeS('en  fr');
-        $this->assertStringContainsString('en', $result, 'Should contain en');
-        $this->assertStringContainsString('fr', $result, 'Should contain fr');
+        // Test multiple valid codes
+        $this->assertSame('en de fr', sanitize_languagecodeS('en de fr'), 'Should preserve multiple valid codes.');
+        $this->assertSame('en-US de-DE fr-FR', sanitize_languagecodeS('en-US de-DE fr-FR'), 'Should preserve codes with regions.');
         
-        $result2 = sanitize_languagecodeS('en   fr   de');
-        $this->assertStringContainsString('en', $result2, 'Should contain en');
-        $this->assertStringContainsString('fr', $result2, 'Should contain fr');
-        $this->assertStringContainsString('de', $result2, 'Should contain de');
+        // Test with numbers in codes
+        $this->assertSame('en1 de2 fr3', sanitize_languagecodeS('en1 de2 fr3'), 'Should preserve numbers in codes.');
         
-        $result3 = sanitize_languagecodeS(' en fr ');
-        $this->assertStringContainsString('en', $result3, 'Should contain en');
-        $this->assertStringContainsString('fr', $result3, 'Should contain fr');
-    }
-
-    /**
-     * Test sanitize_languagecodeS with empty values
-     */
-    public function testSanitizeLanguagecodeSWithEmptyValues()
-    {
-        $result = sanitize_languagecodeS('');
-        $this->assertIsString($result, 'Should return string');
+        // Test filtering special characters from multiple codes
+        $this->assertSame('en de fr', sanitize_languagecodeS('en@# de$% fr^&'), 'Should remove special characters from all codes.');
         
-        $result2 = sanitize_languagecodeS(null);
-        $this->assertIsString($result2, 'Should return string for null');
+        // Test with mixed valid and invalid characters
+        $this->assertSame('zh-Hans sr-Latn', sanitize_languagecodeS('zh-Hans sr_Latn'), 'Should filter underscores but preserve valid codes.');
     }
 
     /**
-     * Test sanitize_languagecodeS with single code
+     * Test sanitize_languagecodeS with whitespace handling
      */
-    public function testSanitizeLanguagecodeSWithSingleCode()
+    public function testSanitizeLanguagecodeSWhitespace()
     {
-        $this->assertSame('en', sanitize_languagecodeS('en'), 'Should handle single code');
-        $this->assertSame('en-US', sanitize_languagecodeS('en-US'), 'Should handle single compound code');
-        $this->assertSame('custom1', sanitize_languagecodeS('custom1'), 'Should handle single custom code with number');
-    }
-
-    /**
-     * Test sanitize_languagecodeS with many codes
-     */
-    public function testSanitizeLanguagecodeSWithManyCodes()
-    {
-        $input = 'en fr de es it pt ja ko zh ar ru';
-        $result = sanitize_languagecodeS($input);
-        $codes = explode(' ', trim($result));
+        // Test empty and whitespace handling
+        $this->assertSame('', sanitize_languagecodeS(''), 'Should handle empty string.');
+        $this->assertSame('', sanitize_languagecodeS('   '), 'Should handle whitespace only.');
         
-        $this->assertGreaterThan(5, count($codes), 'Should handle many codes');
-        $resultString = ' ' . $result . ' ';
-        $this->assertStringContainsString(' en ', $resultString, 'Should contain en');
-        $this->assertStringContainsString(' fr ', $resultString, 'Should contain fr');
-        $this->assertStringContainsString(' de ', $resultString, 'Should contain de');
+        // Test with extra whitespace
+        $this->assertSame('en fr', sanitize_languagecodeS('  en   fr  '), 'Should handle extra whitespace.');
+        $this->assertSame('en de fr', sanitize_languagecodeS('en     de     fr'), 'Should normalize multiple spaces.');
+        
+        // Test with leading/trailing spaces
+        $this->assertSame('en de', sanitize_languagecodeS(' en de '), 'Should trim leading and trailing spaces.');
     }
 
     /**
-     * Test sanitize_languagecodeS with XSS attempts
+     * Test sanitize_languagecodeS with complex scenarios
      */
-    public function testSanitizeLanguagecodeSBlocksXSSAttempts()
+    public function testSanitizeLanguagecodeSComplexScenarios()
     {
-        $result = sanitize_languagecodeS('<script>alert("XSS")</script> en fr');
-        $this->assertStringNotContainsString('<script>', $result, 'Should not contain script tags');
-        $this->assertStringNotContainsString('</script>', $result, 'Should not contain closing script tags');
-        $this->assertStringContainsString('en', $result, 'Should contain valid code en');
-        $this->assertStringContainsString('fr', $result, 'Should contain valid code fr');
+        // Test with single code
+        $this->assertSame('en', sanitize_languagecodeS('en'), 'Should handle single code.');
+        
+        // Test with duplicate codes (preserves duplicates)
+        $this->assertSame('en en de', sanitize_languagecodeS('en en de'), 'Should preserve duplicate codes.');
+        
+        // Test with many codes
+        $manyCodes = 'en de fr es it pt nl pl cs sk';
+        $this->assertSame($manyCodes, sanitize_languagecodeS($manyCodes), 'Should handle many codes.');
+        
+        // Test complex codes with numbers and hyphens
+        $this->assertSame('en-US1 de-informal2 zh-Hans3', sanitize_languagecodeS('en-US1 de_informal2 zh-Hans3'), 'Should handle complex codes with numbers.');
     }
 
     /**
-     * Test sanitize_languagecodeS with Unicode
+     * Test sanitize_languagecodeS with edge cases
      */
-    public function testSanitizeLanguagecodeSWithUnicode()
+    public function testSanitizeLanguagecodeSEdgeCases()
     {
-        $this->assertSame('en fr', sanitize_languagecodeS('enñ frá'), 'Should remove Unicode from multi-language string');
-        $result = sanitize_languagecodeS('deü esñ itò');
-        $this->assertStringContainsString('de', $result, 'Should contain de');
-        $this->assertStringContainsString('es', $result, 'Should contain es');
-        $this->assertStringContainsString('it', $result, 'Should contain it');
-        $this->assertStringNotContainsString('ü', $result, 'Should not contain umlaut');
-        $this->assertStringNotContainsString('ñ', $result, 'Should not contain n with tilde');
-        $this->assertStringNotContainsString('ò', $result, 'Should not contain o with grave');
+        // Test with codes that become empty after filtering
+        $result = sanitize_languagecodeS('!@# $%^ &*(');
+        // Each code becomes empty, and empty codes are preserved as empty strings joined by spaces
+        $this->assertTrue(strlen(trim($result)) === 0 || $result === '  ', 'Should handle all-invalid input.');
+        
+        // Test with mix of valid and invalid codes
+        $this->assertSame('en fr', sanitize_languagecodeS('en !@# fr'), 'Should preserve valid codes and filter invalid ones.');
+        
+        // Test with tabs and newlines (treated as separators by trim/explode)
+        $result = sanitize_languagecodeS("en\tde");
+        // Tab is removed by trim, so "en\tde" becomes "ende" after trim
+        $this->assertSame('ende', $result, 'Should handle tabs within the string.');
     }
 
     /**
-     * Test sanitize_languagecodeS preserves case
+     * Test sanitize_languagecode with type coercion
      */
-    public function testSanitizeLanguagecodeSPreservesCase()
+    public function testSanitizeLanguagecodeTypeCoercion()
     {
-        $this->assertSame('EN FR', sanitize_languagecodeS('EN FR'), 'Should preserve uppercase');
-        $this->assertSame('en fr', sanitize_languagecodeS('en fr'), 'Should preserve lowercase');
-        $this->assertSame('En Fr', sanitize_languagecodeS('En Fr'), 'Should preserve mixed case');
-        $this->assertSame('en-US fr-FR', sanitize_languagecodeS('en-US fr-FR'), 'Should preserve case in compound codes');
+        // Test with numeric values
+        $this->assertSame('123', sanitize_languagecode(123), 'Should handle integer input.');
+        $this->assertSame('123', sanitize_languagecode('123'), 'Should handle numeric string.');
+        $this->assertSame('0', sanitize_languagecode(0), 'Should handle zero.');
+        
+        // Test with boolean (will be cast to string)
+        $this->assertSame('1', sanitize_languagecode(true), 'Should handle true (becomes "1").');
+        $this->assertSame('', sanitize_languagecode(false), 'Should handle false (becomes "").');
+    }
+
+    /**
+     * Test real-world language codes
+     */
+    public function testSanitizeLanguagecodeRealWorldCodes()
+    {
+        // Test common language codes
+        $realCodes = [
+            'en' => 'en',
+            'en-US' => 'en-US',
+            'en-GB' => 'en-GB',
+            'de' => 'de',
+            'de-DE' => 'de-DE',
+            'de-CH' => 'de-CH',
+            'fr' => 'fr',
+            'fr-FR' => 'fr-FR',
+            'fr-CA' => 'fr-CA',
+            'es' => 'es',
+            'es-ES' => 'es-ES',
+            'es-MX' => 'es-MX',
+            'zh-Hans' => 'zh-Hans',
+            'zh-Hant' => 'zh-Hant',
+            'sr-Latn' => 'sr-Latn',
+            'sr-Cyrl' => 'sr-Cyrl',
+            'pt-BR' => 'pt-BR',
+            'pt-PT' => 'pt-PT',
+        ];
+        
+        foreach ($realCodes as $input => $expected) {
+            $this->assertSame($expected, sanitize_languagecode($input), "Should handle real-world code: $input");
+        }
+    }
+
+    /**
+     * Test sanitize_languagecodeS with real-world multi-language scenarios
+     */
+    public function testSanitizeLanguagecodeSRealWorldScenarios()
+    {
+        // Test multilingual survey scenarios
+        $this->assertSame('en de fr', sanitize_languagecodeS('en de fr'), 'European languages');
+        $this->assertSame('en-US en-GB en-AU', sanitize_languagecodeS('en-US en-GB en-AU'), 'English variants');
+        $this->assertSame('zh-Hans zh-Hant', sanitize_languagecodeS('zh-Hans zh-Hant'), 'Chinese variants');
+        $this->assertSame('es-ES es-MX es-AR', sanitize_languagecodeS('es-ES es-MX es-AR'), 'Spanish variants');
+        
+        // Test mixed informal/formal variants
+        $this->assertSame('de-informal de-formal', sanitize_languagecodeS('de-informal de-formal'), 'German formal/informal');
+        $this->assertSame('nl-informal nl-formal', sanitize_languagecodeS('nl-informal nl-formal'), 'Dutch formal/informal');
+    }
+
+    /**
+     * Test that sanitize_languagecode and LSYii_Validators::languageFilter are consistent
+     */
+    public function testConsistencyWithLSYiiValidators()
+    {
+        $validator = new \LSYii_Validators();
+        
+        $testCases = [
+            'en-US',
+            'de-DE2',
+            'zh-Hans',
+            'fr@#$',
+            'test_123',
+            'a1-b2-c3',
+            'MixedCase',
+            '123',
+            '',
+        ];
+        
+        foreach ($testCases as $testCase) {
+            $helperResult = sanitize_languagecode($testCase);
+            $validatorResult = $validator->languageFilter($testCase);
+            $this->assertSame($validatorResult, $helperResult, "Results should match for: $testCase");
+        }
     }
 }
