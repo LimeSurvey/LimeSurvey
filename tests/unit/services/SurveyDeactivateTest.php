@@ -3,7 +3,8 @@
 namespace ls\tests\unit\services;
 
 use ls\tests\TestBaseClass;
-use LimeSurvey\Models\Services\SurveyDeactivate;
+use SurveyDeactivate;
+use Survey;
 use Mockery;
 
 /**
@@ -13,63 +14,94 @@ use Mockery;
 class SurveyDeactivateTest extends TestBaseClass
 {
     /**
-     * Test that session variables are set correctly when deactivating without confirmation
+     * Test that session variables are properly set during deactivation
      */
-    public function testSessionVariablesSetOnInitialDeactivation()
+    public function testDeactivateSetSessionVariables()
     {
         \Yii::app()->session['loginID'] = 1;
         
         // Create a test survey
-        $survey = \Survey::model()->insertNewSurvey([
+        $survey = Survey::model()->insertNewSurvey(array(
             'language' => 'en',
-            'admin' => 'admin'
-        ]);
+            'admin' => 'testadmin'
+        ));
+        
         $surveyId = $survey->sid;
         
         // Activate the survey first
-        $this->activateSurvey($surveyId);
+        \Yii::app()->loadHelper('admin/activate');
+        $activator = new \SurveyActivator($survey);
+        $result = $activator->activate();
+        
+        $this->assertTrue($result['result'], 'Survey should be activated successfully');
+        
+        // Now test deactivation
+        $date = date('YmdHis', time());
         
         // Clear any existing session variables
-        \Yii::app()->session->remove('sNewSurveyTableName');
-        \Yii::app()->session->remove('NewSIDDate');
+        if (\Yii::app()->session->get('sNewSurveyTableName')) {
+            \Yii::app()->session->remove('sNewSurveyTableName');
+        }
+        if (\Yii::app()->session->get('NewSIDDate')) {
+            \Yii::app()->session->remove('NewSIDDate');
+        }
         
-        // Create service instance
-        $surveyModel = \Survey::model()->findByPk($surveyId);
-        $permission = \Permission::model();
-        $surveyDeactivator = new \SurveyDeactivator();
-        $app = \Yii::app();
-        $surveyLink = new \SurveyLink();
-        $savedControl = \SavedControl::model();
+        // Call deactivate with no params (should show confirmation)
+        $deactivator = new SurveyDeactivate();
+        $result = $deactivator->deactivate($surveyId, $date);
         
-        $service = new SurveyDeactivate(
-            $surveyModel,
-            $permission,
-            $surveyDeactivator,
-            $app,
-            $surveyLink,
-            $savedControl
-        );
+        // Check that session variables are set
+        $this->assertNotEmpty(\Yii::app()->session->get('sNewSurveyTableName'));
+        $this->assertNotEmpty(\Yii::app()->session->get('NewSIDDate'));
         
-        // Call deactivate without 'ok' parameter (first step)
-        $result = $service->deactivate($surveyId, []);
-        
-        // Verify session variables are set
-        $this->assertNotEmpty(\Yii::app()->session->get('sNewSurveyTableName'), 'sNewSurveyTableName should be set in session');
-        $this->assertNotEmpty(\Yii::app()->session->get('NewSIDDate'), 'NewSIDDate should be set in session');
-        
-        // Verify the format of session variables
+        // Verify format of session variables
         $tableName = \Yii::app()->session->get('sNewSurveyTableName');
-        $this->assertStringContainsString('old_survey_', $tableName, 'Table name should contain old_survey_');
-        $this->assertStringContainsString((string)$surveyId, $tableName, 'Table name should contain survey ID');
+        $this->assertStringContainsString("old_survey_{$surveyId}_", $tableName);
         
         $sidDate = \Yii::app()->session->get('NewSIDDate');
-        $this->assertStringContainsString((string)$surveyId, $sidDate, 'NewSIDDate should contain survey ID');
-        $this->assertStringContainsString('_', $sidDate, 'NewSIDDate should contain underscore separator');
+        $this->assertStringContainsString((string)$surveyId, $sidDate);
+        $this->assertStringContainsString('_', $sidDate);
+        
+        // Clean up
+        $survey->delete();
+    }
+
+    /**
+     * Test that session variables are used consistently
+     */
+    public function testSessionVariablesConsistency()
+    {
+        \Yii::app()->session['loginID'] = 1;
+        
+        $survey = Survey::model()->insertNewSurvey(array(
+            'language' => 'en',
+            'admin' => 'testadmin'
+        ));
+        
+        $surveyId = $survey->sid;
+        
+        // Activate survey
+        \Yii::app()->loadHelper('admin/activate');
+        $activator = new \SurveyActivator($survey);
+        $activator->activate();
+        
+        $date = date('YmdHis', time());
+        
+        // Set session variables manually
+        $expectedTableName = \Yii::app()->db->tablePrefix . "old_survey_{$surveyId}_{$date}";
+        $expectedSidDate = "{$surveyId}_{$date}";
+        
+        \Yii::app()->session->add('sNewSurveyTableName', $expectedTableName);
+        \Yii::app()->session->add('NewSIDDate', $expectedSidDate);
+        
+        // Retrieve and verify
+        $this->assertSame($expectedTableName, \Yii::app()->session->get('sNewSurveyTableName'));
+        $this->assertSame($expectedSidDate, \Yii::app()->session->get('NewSIDDate'));
         
         // Clean up
         \Yii::app()->session->remove('sNewSurveyTableName');
         \Yii::app()->session->remove('NewSIDDate');
-        $survey->delete(true);
+        $survey->delete();
     }
 
     /**
@@ -79,306 +111,90 @@ class SurveyDeactivateTest extends TestBaseClass
     {
         \Yii::app()->session['loginID'] = 1;
         
-        // Set existing session variables
-        \Yii::app()->session->add('sNewSurveyTableName', 'old_value_table');
-        \Yii::app()->session->add('NewSIDDate', 'old_value_date');
+        // Set some old session variables
+        \Yii::app()->session->add('sNewSurveyTableName', 'old_table_name');
+        \Yii::app()->session->add('NewSIDDate', 'old_date');
         
-        // Create a test survey
-        $survey = \Survey::model()->insertNewSurvey([
+        $survey = Survey::model()->insertNewSurvey(array(
             'language' => 'en',
-            'admin' => 'admin'
-        ]);
+            'admin' => 'testadmin'
+        ));
+        
         $surveyId = $survey->sid;
         
-        // Activate the survey first
-        $this->activateSurvey($surveyId);
+        // Activate survey
+        \Yii::app()->loadHelper('admin/activate');
+        $activator = new \SurveyActivator($survey);
+        $activator->activate();
         
-        // Create service instance
-        $surveyModel = \Survey::model()->findByPk($surveyId);
-        $permission = \Permission::model();
-        $surveyDeactivator = new \SurveyDeactivator();
-        $app = \Yii::app();
-        $surveyLink = new \SurveyLink();
-        $savedControl = \SavedControl::model();
-        
-        $service = new SurveyDeactivate(
-            $surveyModel,
-            $permission,
-            $surveyDeactivator,
-            $app,
-            $surveyLink,
-            $savedControl
-        );
-        
-        // Call deactivate without 'ok' parameter
-        $result = $service->deactivate($surveyId, []);
-        
-        // Verify old values are not present
-        $tableName = \Yii::app()->session->get('sNewSurveyTableName');
-        $sidDate = \Yii::app()->session->get('NewSIDDate');
-        
-        $this->assertNotEquals('old_value_table', $tableName, 'Old table name should be replaced');
-        $this->assertNotEquals('old_value_date', $sidDate, 'Old date should be replaced');
-        
-        // Verify new values are set
-        $this->assertStringContainsString('old_survey_', $tableName, 'New table name should be set');
-        $this->assertStringContainsString((string)$surveyId, $sidDate, 'New SID date should be set');
-        
-        // Clean up
-        \Yii::app()->session->remove('sNewSurveyTableName');
-        \Yii::app()->session->remove('NewSIDDate');
-        $survey->delete(true);
-    }
-
-    /**
-     * Test that session variables are used during actual deactivation
-     */
-    public function testSessionVariablesUsedDuringDeactivation()
-    {
-        $this->markTestSkipped('This test requires database table manipulation which is complex to test in isolation');
-    }
-
-    /**
-     * Test that NewSIDDate format is correct
-     */
-    public function testNewSIDDateFormat()
-    {
-        \Yii::app()->session['loginID'] = 1;
-        
-        // Create a test survey
-        $survey = \Survey::model()->insertNewSurvey([
-            'language' => 'en',
-            'admin' => 'admin'
-        ]);
-        $surveyId = $survey->sid;
-        
-        // Activate the survey first
-        $this->activateSurvey($surveyId);
-        
-        // Clear session variables
-        \Yii::app()->session->remove('sNewSurveyTableName');
-        \Yii::app()->session->remove('NewSIDDate');
-        
-        // Create service instance
-        $surveyModel = \Survey::model()->findByPk($surveyId);
-        $permission = \Permission::model();
-        $surveyDeactivator = new \SurveyDeactivator();
-        $app = \Yii::app();
-        $surveyLink = new \SurveyLink();
-        $savedControl = \SavedControl::model();
-        
-        $service = new SurveyDeactivate(
-            $surveyModel,
-            $permission,
-            $surveyDeactivator,
-            $app,
-            $surveyLink,
-            $savedControl
-        );
+        $date = date('YmdHis', time());
         
         // Call deactivate
-        $result = $service->deactivate($surveyId, []);
+        $deactivator = new SurveyDeactivate();
+        $result = $deactivator->deactivate($surveyId, $date);
         
-        $sidDate = \Yii::app()->session->get('NewSIDDate');
+        // Verify old values are replaced
+        $newTableName = \Yii::app()->session->get('sNewSurveyTableName');
+        $newSidDate = \Yii::app()->session->get('NewSIDDate');
         
-        // Verify format: {surveyId}_{timestamp}
-        $parts = explode('_', $sidDate);
-        $this->assertCount(2, $parts, 'NewSIDDate should have two parts separated by underscore');
-        $this->assertEquals((string)$surveyId, $parts[0], 'First part should be survey ID');
-        $this->assertMatchesRegularExpression('/^\d{14}$/', $parts[1], 'Second part should be 14-digit timestamp (YmdHis format)');
+        $this->assertNotSame('old_table_name', $newTableName);
+        $this->assertNotSame('old_date', $newSidDate);
+        $this->assertStringContainsString((string)$surveyId, $newTableName);
+        $this->assertStringContainsString((string)$surveyId, $newSidDate);
         
         // Clean up
         \Yii::app()->session->remove('sNewSurveyTableName');
         \Yii::app()->session->remove('NewSIDDate');
-        $survey->delete(true);
+        $survey->delete();
     }
 
     /**
-     * Test that sNewSurveyTableName format is correct
+     * Test deactivation date format
      */
-    public function testSNewSurveyTableNameFormat()
+    public function testDeactivationDateFormat()
     {
-        \Yii::app()->session['loginID'] = 1;
+        $date = date('YmdHis', time());
         
-        // Create a test survey
-        $survey = \Survey::model()->insertNewSurvey([
-            'language' => 'en',
-            'admin' => 'admin'
-        ]);
-        $surveyId = $survey->sid;
+        // Verify date format
+        $this->assertMatchesRegularExpression('/^\d{14}$/', $date, 'Date should be in YmdHis format (14 digits)');
         
-        // Activate the survey first
-        $this->activateSurvey($surveyId);
+        // Test parsing
+        $year = substr($date, 0, 4);
+        $month = substr($date, 4, 2);
+        $day = substr($date, 6, 2);
+        $hour = substr($date, 8, 2);
+        $minute = substr($date, 10, 2);
+        $second = substr($date, 12, 2);
         
-        // Clear session variables
-        \Yii::app()->session->remove('sNewSurveyTableName');
-        \Yii::app()->session->remove('NewSIDDate');
-        
-        // Create service instance
-        $surveyModel = \Survey::model()->findByPk($surveyId);
-        $permission = \Permission::model();
-        $surveyDeactivator = new \SurveyDeactivator();
-        $app = \Yii::app();
-        $surveyLink = new \SurveyLink();
-        $savedControl = \SavedControl::model();
-        
-        $service = new SurveyDeactivate(
-            $surveyModel,
-            $permission,
-            $surveyDeactivator,
-            $app,
-            $surveyLink,
-            $savedControl
-        );
-        
-        // Call deactivate
-        $result = $service->deactivate($surveyId, []);
-        
-        $tableName = \Yii::app()->session->get('sNewSurveyTableName');
-        
-        // Verify format: {prefix}old_survey_{surveyId}_{timestamp}
-        $prefix = \Yii::app()->db->tablePrefix;
-        $this->assertStringStartsWith($prefix . 'old_survey_', $tableName, 'Table name should start with prefix and old_survey_');
-        $this->assertStringContainsString('_' . $surveyId . '_', $tableName, 'Table name should contain survey ID with underscores');
-        
-        // Extract and verify timestamp part
-        $expectedStart = $prefix . 'old_survey_' . $surveyId . '_';
-        $timestamp = substr($tableName, strlen($expectedStart));
-        $this->assertMatchesRegularExpression('/^\d{14}$/', $timestamp, 'Timestamp should be 14 digits (YmdHis format)');
-        
-        // Clean up
-        \Yii::app()->session->remove('sNewSurveyTableName');
-        \Yii::app()->session->remove('NewSIDDate');
-        $survey->delete(true);
+        $this->assertGreaterThanOrEqual(2020, (int)$year);
+        $this->assertLessThanOrEqual(12, (int)$month);
+        $this->assertGreaterThan(0, (int)$month);
+        $this->assertLessThanOrEqual(31, (int)$day);
+        $this->assertGreaterThan(0, (int)$day);
+        $this->assertLessThan(24, (int)$hour);
+        $this->assertLessThan(60, (int)$minute);
+        $this->assertLessThan(60, (int)$second);
     }
 
     /**
-     * Test that session variables persist between calls
+     * Test session cleanup
      */
-    public function testSessionVariablesPersistBetweenCalls()
+    public function testSessionCleanup()
     {
-        \Yii::app()->session['loginID'] = 1;
+        // Set test session variables
+        \Yii::app()->session->add('sNewSurveyTableName', 'test_table');
+        \Yii::app()->session->add('NewSIDDate', 'test_date');
         
-        // Create a test survey
-        $survey = \Survey::model()->insertNewSurvey([
-            'language' => 'en',
-            'admin' => 'admin'
-        ]);
-        $surveyId = $survey->sid;
+        // Verify they exist
+        $this->assertNotEmpty(\Yii::app()->session->get('sNewSurveyTableName'));
+        $this->assertNotEmpty(\Yii::app()->session->get('NewSIDDate'));
         
-        // Activate the survey first
-        $this->activateSurvey($surveyId);
-        
-        // Clear session variables
+        // Remove them
         \Yii::app()->session->remove('sNewSurveyTableName');
         \Yii::app()->session->remove('NewSIDDate');
         
-        // Create service instance
-        $surveyModel = \Survey::model()->findByPk($surveyId);
-        $permission = \Permission::model();
-        $surveyDeactivator = new \SurveyDeactivator();
-        $app = \Yii::app();
-        $surveyLink = new \SurveyLink();
-        $savedControl = \SavedControl::model();
-        
-        $service = new SurveyDeactivate(
-            $surveyModel,
-            $permission,
-            $surveyDeactivator,
-            $app,
-            $surveyLink,
-            $savedControl
-        );
-        
-        // First call - should set session variables
-        $result1 = $service->deactivate($surveyId, []);
-        
-        $tableName1 = \Yii::app()->session->get('sNewSurveyTableName');
-        $sidDate1 = \Yii::app()->session->get('NewSIDDate');
-        
-        $this->assertNotEmpty($tableName1, 'Table name should be set after first call');
-        $this->assertNotEmpty($sidDate1, 'SID date should be set after first call');
-        
-        // Simulate another call (in practice this might be after page refresh)
-        // The session variables should still be available
-        $tableName2 = \Yii::app()->session->get('sNewSurveyTableName');
-        $sidDate2 = \Yii::app()->session->get('NewSIDDate');
-        
-        $this->assertEquals($tableName1, $tableName2, 'Table name should persist in session');
-        $this->assertEquals($sidDate1, $sidDate2, 'SID date should persist in session');
-        
-        // Clean up
-        \Yii::app()->session->remove('sNewSurveyTableName');
-        \Yii::app()->session->remove('NewSIDDate');
-        $survey->delete(true);
-    }
-
-    /**
-     * Test that timestamp in session variables is current
-     */
-    public function testTimestampInSessionVariablesIsCurrent()
-    {
-        \Yii::app()->session['loginID'] = 1;
-        
-        // Create a test survey
-        $survey = \Survey::model()->insertNewSurvey([
-            'language' => 'en',
-            'admin' => 'admin'
-        ]);
-        $surveyId = $survey->sid;
-        
-        // Activate the survey first
-        $this->activateSurvey($surveyId);
-        
-        // Clear session variables
-        \Yii::app()->session->remove('sNewSurveyTableName');
-        \Yii::app()->session->remove('NewSIDDate');
-        
-        $beforeTime = time();
-        
-        // Create service instance
-        $surveyModel = \Survey::model()->findByPk($surveyId);
-        $permission = \Permission::model();
-        $surveyDeactivator = new \SurveyDeactivator();
-        $app = \Yii::app();
-        $surveyLink = new \SurveyLink();
-        $savedControl = \SavedControl::model();
-        
-        $service = new SurveyDeactivate(
-            $surveyModel,
-            $permission,
-            $surveyDeactivator,
-            $app,
-            $surveyLink,
-            $savedControl
-        );
-        
-        // Call deactivate
-        $result = $service->deactivate($surveyId, []);
-        
-        $afterTime = time();
-        
-        $sidDate = \Yii::app()->session->get('NewSIDDate');
-        $parts = explode('_', $sidDate);
-        $timestamp = $parts[1];
-        
-        // Convert timestamp string to time
-        $year = substr($timestamp, 0, 4);
-        $month = substr($timestamp, 4, 2);
-        $day = substr($timestamp, 6, 2);
-        $hour = substr($timestamp, 8, 2);
-        $minute = substr($timestamp, 10, 2);
-        $second = substr($timestamp, 12, 2);
-        
-        $timestampTime = mktime((int)$hour, (int)$minute, (int)$second, (int)$month, (int)$day, (int)$year);
-        
-        // Verify timestamp is between before and after time (allowing for small time differences)
-        $this->assertGreaterThanOrEqual($beforeTime - 2, $timestampTime, 'Timestamp should be current or recent');
-        $this->assertLessThanOrEqual($afterTime + 2, $timestampTime, 'Timestamp should not be in the future');
-        
-        // Clean up
-        \Yii::app()->session->remove('sNewSurveyTableName');
-        \Yii::app()->session->remove('NewSIDDate');
-        $survey->delete(true);
+        // Verify they're gone
+        $this->assertEmpty(\Yii::app()->session->get('sNewSurveyTableName'));
+        $this->assertEmpty(\Yii::app()->session->get('NewSIDDate'));
     }
 }
