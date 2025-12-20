@@ -342,7 +342,6 @@ class LSYiiValidatorsTest extends TestBaseClass
 
         $this->assertSame('<strong>strong </strong>', $validator->xssFilter('<strong>strong <style>'), 'Unexpected filtered broken HTML tags.');
     }
-}
 
     /**
      * Test languageFilter with numeric characters (new behavior)
@@ -497,3 +496,4 @@ class LSYiiValidatorsTest extends TestBaseClass
         
         $survey->delete(true);
     }
+}

@@ -16,7 +16,7 @@ class SurveyDeactivateTest extends TestBaseClass
     /**
      * Test that session variables are properly set during deactivation
      */
-    public function testDeactivateSetsSess ionVariables()
+    public function testDeactivateSetSessionVariables()
     {
         \Yii::app()->session['loginID'] = 1;
         
