@@ -343,3 +343,157 @@ class LSYiiValidatorsTest extends TestBaseClass
         $this->assertSame('<strong>strong </strong>', $validator->xssFilter('<strong>strong <style>'), 'Unexpected filtered broken HTML tags.');
     }
 }
+
+    /**
+     * Test languageFilter with numeric characters (new behavior)
+     */
+    public function testLanguageFilterWithNumericCharacters()
+    {
+        $validator = new \LSYii_Validators();
+        
+        // Language codes with numbers should be preserved
+        $this->assertSame('zh-Hans1', $validator->languageFilter('zh-Hans1'));
+        $this->assertSame('test123', $validator->languageFilter('test123'));
+        $this->assertSame('lang2', $validator->languageFilter('lang2'));
+        $this->assertSame('en-US2', $validator->languageFilter('en-US2'));
+        
+        // Mixed with invalid characters
+        $this->assertSame('test123', $validator->languageFilter('test@123'));
+        $this->assertSame('zh-Hans1', $validator->languageFilter('zh-Hans1!'));
+    }
+
+    /**
+     * Test languageFilter edge cases
+     */
+    public function testLanguageFilterEdgeCases()
+    {
+        $validator = new \LSYii_Validators();
+        
+        // Empty values
+        $this->assertSame('', $validator->languageFilter(''));
+        $this->assertSame('0', $validator->languageFilter(0));
+        $this->assertSame('', $validator->languageFilter(null));
+        $this->assertSame('', $validator->languageFilter(false));
+        
+        // Whitespace
+        $this->assertSame('en', $validator->languageFilter(' en '));
+        $this->assertSame('en-US', $validator->languageFilter('  en-US  '));
+        
+        // Only invalid characters
+        $this->assertSame('', $validator->languageFilter('@#$%'));
+        $this->assertSame('', $validator->languageFilter('ñáéíóú'));
+    }
+
+    /**
+     * Test multiLanguageFilter with numeric characters
+     */
+    public function testMultiLanguageFilterWithNumericCharacters()
+    {
+        $validator = new \LSYii_Validators();
+        
+        // Multiple languages with numbers
+        $this->assertSame('en1 de2 fr3', $validator->multiLanguageFilter('en1 de2 fr3'));
+        $this->assertSame('zh-Hans1 en-US2', $validator->multiLanguageFilter('zh-Hans1 en-US2'));
+        
+        // With invalid characters
+        $this->assertSame('test1 lang2', $validator->multiLanguageFilter('test1@# lang2!'));
+    }
+
+    /**
+     * Test multiLanguageFilter edge cases
+     */
+    public function testMultiLanguageFilterEdgeCases()
+    {
+        $validator = new \LSYii_Validators();
+        
+        // Empty values
+        $this->assertSame('', $validator->multiLanguageFilter(''));
+        $this->assertSame('0', $validator->multiLanguageFilter(0));
+        $this->assertSame('', $validator->multiLanguageFilter(null));
+        
+        // Multiple spaces
+        $this->assertSame('en de fr', $validator->multiLanguageFilter('en  de   fr'));
+        
+        // Leading/trailing spaces
+        $this->assertSame('en de', $validator->multiLanguageFilter('  en de  '));
+        
+        // Only invalid characters separated by spaces
+        $result = $validator->multiLanguageFilter('@#$ %^& *()');
+        $this->assertSame('', $result);
+    }
+
+    /**
+     * Test that languageFilter and multiLanguageFilter work together with Survey model
+     */
+    public function testLanguageFiltersWithNumericInSurveyModel()
+    {
+        \Yii::app()->session['loginID'] = 1;
+        
+        // Test language with numbers
+        $survey = \Survey::model()->insertNewSurvey(array('language' => 'zh-Hans1'));
+        $this->assertSame('zh-Hans1', $survey->language, 'Language codes with numbers should be preserved');
+        
+        // Test additional languages with numbers
+        $survey->additional_languages = 'en1 de2 fr3';
+        $survey->save();
+        $this->assertSame('en1 de2 fr3', $survey->additional_languages, 'Multi-language codes with numbers should be preserved');
+        
+        // Test filtering invalid characters but keeping numbers
+        $survey->language = 'test123!@#';
+        $survey->save();
+        $this->assertSame('test123', $survey->language, 'Invalid characters should be removed but numbers kept');
+        
+        $survey->delete(true);
+    }
+
+    /**
+     * Test validateAttribute applies languageFilter correctly
+     */
+    public function testValidateAttributeWithLanguageFilter()
+    {
+        \Yii::app()->session['loginID'] = 1;
+        
+        $validator = new \LSYii_Validators();
+        $validator->isLanguage = true;
+        
+        // Create a simple object to validate
+        $survey = \Survey::model()->insertNewSurvey(array('language' => 'en'));
+        
+        // Test with numeric language code
+        $survey->language = 'zh-Hans123';
+        $validator->validateAttribute($survey, 'language');
+        $this->assertSame('zh-Hans123', $survey->language);
+        
+        // Test with invalid characters
+        $survey->language = 'test@#$123';
+        $validator->validateAttribute($survey, 'language');
+        $this->assertSame('test123', $survey->language);
+        
+        $survey->delete(true);
+    }
+
+    /**
+     * Test validateAttribute applies multiLanguageFilter correctly
+     */
+    public function testValidateAttributeWithMultiLanguageFilter()
+    {
+        \Yii::app()->session['loginID'] = 1;
+        
+        $validator = new \LSYii_Validators();
+        $validator->isLanguageMulti = true;
+        
+        // Create a simple object to validate
+        $survey = \Survey::model()->insertNewSurvey(array('language' => 'en'));
+        
+        // Test with numeric language codes
+        $survey->additional_languages = 'en1 de2 fr3';
+        $validator->validateAttribute($survey, 'additional_languages');
+        $this->assertSame('en1 de2 fr3', $survey->additional_languages);
+        
+        // Test with invalid characters
+        $survey->additional_languages = 'test1@# lang2! code3$';
+        $validator->validateAttribute($survey, 'additional_languages');
+        $this->assertSame('test1 lang2 code3', $survey->additional_languages);
+        
+        $survey->delete(true);
+    }
