@@ -388,11 +388,13 @@ class TwoFactorAdminLogin extends AuthPluginBase
     //################ Direct access methods ###############
 
     /**
-     * Renders the content of the modal to create a 2FA key registration
+     * Renders modal content for creating a new 2FA key for a user.
      *
-     * @param PluginEvent $oEvent
-     * @param CHttpRequest $oRequest
-     * @return string
+     * Generates a secret (respecting the SecretLength setting, minimum 128 bits), builds a QR code data URI for the secret, and returns the rendered partial HTML. If the caller lacks permission to create keys for the target user, renders an error partial.
+     *
+     * @param PluginEvent $oEvent The plugin event that triggered this call.
+     * @param CHttpRequest $oRequest The current HTTP request.
+     * @return string Rendered HTML of the modal content or an error partial.
      */
     public function directCallCreateNewKey($oEvent, $oRequest)
     {
