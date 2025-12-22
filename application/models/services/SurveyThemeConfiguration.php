@@ -188,6 +188,7 @@ class SurveyThemeConfiguration
         }
         foreach ($attributesReact as $key => $optionAttribute) {
             $attributesCompleteData[$key] = $attributesCore[$key];
+            $attributesCompleteData[$key]['category'] = $optionAttribute['category'];
             $attributesCompleteData[$key]['currentValue'] = $currentThemeOptions->$key;
             $attributesCompleteData[$key]['parentValue'] = $parentThemeOptions[$key];
             if ($attributesCompleteData[$key]['type'] === 'dropdown') {
