@@ -312,8 +312,14 @@ window.addEventListener('message', function(event) {
             // Use the cached helper to get attributes efficiently and correctly for the current language
             $sCurrentLanguage = App()->language;
 
-            $questionAttributes = QuestionAttribute::model()->getQuestionAttributes($oQuestionModel, $sCurrentLanguage);
-            $aData['questionAttributes'] = $questionAttributes;
+            $questionAttributesRaw = QuestionAttribute::model()->getQuestionAttributes($oQuestionModel, $sCurrentLanguage);
+            if ($questionAttributesRaw === false) {
+                $questionAttributesRaw = [];
+            }
+
+            $aData['sCurrentLanguage'] = $sCurrentLanguage;
+            $aData['questionAttributesI18n'] = $questionAttributesRaw;
+            $aData['questionAttributes'] = $this->resolveI18nQuestionAttributesForLanguage($questionAttributesRaw, $sCurrentLanguage);
             $aData['question_text'] = $oQuestionModel->questionl10ns[$sCurrentLanguage]->question;
             $aData['question_help'] = $oQuestionModel->questionl10ns[$sCurrentLanguage]->help;
 
@@ -331,6 +337,30 @@ window.addEventListener('message', function(event) {
         } else {
             return App()->getController()->renderPartial($sView, $aData, true);
         }
+    }
+
+    /**
+     * Resolve i18n question attribute values for a single language.
+     *
+     * The QuestionAttribute model returns i18n values as arrays keyed by language, even if a single language is
+     * requested. For Twig templates, it is more convenient to work with scalar values for the current language.
+     *
+     * @param array $questionAttributes
+     * @param string $language
+     * @return array
+     */
+    private function resolveI18nQuestionAttributesForLanguage(array $questionAttributes, $language)
+    {
+        $resolved = [];
+        foreach ($questionAttributes as $name => $value) {
+            if (is_array($value)) {
+                $resolved[$name] = array_key_exists($language, $value) ? $value[$language] : (count($value) ? reset($value) : '');
+                continue;
+            }
+            $resolved[$name] = $value;
+        }
+
+        return $resolved;
     }
 
     /**
