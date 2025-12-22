@@ -73,6 +73,19 @@
             <readonly_when_active></readonly_when_active>
         </attribute>
         <attribute>
+            <name>other_input_size</name>
+            <category>Display</category>
+            <sortorder>140</sortorder>
+            <inputtype>integer</inputtype>
+            <default></default>
+            <help>Set the size of the &#039;Other:&#039; input. The input will be displayed approximately this size in width.</help>
+            <caption>&#039;Other:&#039; text input box size</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
             <name>other_position</name>
             <category>Display</category>
             <sortorder>150</sortorder>
@@ -318,6 +331,19 @@
             <default>0</default>
             <help>Allow only numerical input for &#039;Other&#039; text</help>
             <caption>Numbers only for &#039;Other&#039;</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>other_maximum_chars</name>
+            <category>Input</category>
+            <sortorder>141</sortorder>
+            <inputtype>integer</inputtype>
+            <default></default>
+            <help>Maximum characters allowed for &#039;Other:&#039; option</help>
+            <caption>&#039;Other:&#039; option maximum characters</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
