@@ -12999,13 +12999,31 @@ a:hover {
   border-bottom-right-radius: 0;
 }
 
-.ls-answers label, .answer-item label, .control-label {
+.ls-answers label, .answer-item label, .control-label, .ls-answers .othertext-right-label {
   font-weight: 600;
   font-size: 1.14rem;
   line-height: 20px;
 }
-.ls-answers label .radio-label, .answer-item label .radio-label, .control-label .radio-label {
+.ls-answers label .radio-label, .answer-item label .radio-label, .control-label .radio-label, .ls-answers .othertext-right-label .radio-label {
   padding-left: 12px;
+}
+
+.ls-answers.answers-list .answer-item .othertext-right-label {
+  color: #6E748C;
+}
+
+.no-left-othertext .othertext-label-checkox-container {
+  padding-right: 0;
+}
+.no-left-othertext .control-label {
+  padding: 0;
+}
+.no-left-othertext .other-text-item {
+  padding-left: calc(var(--bs-gutter-x) * 0.2);
+}
+
+.ls-input-sized .other-text-item.col {
+  flex-grow: 0;
 }
 
 textarea {
