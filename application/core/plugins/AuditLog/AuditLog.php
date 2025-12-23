@@ -680,8 +680,8 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
             $oldAttributes = $oldSurvey->getAttributes();
 
             // Prevent non-superadmins from disabling auditing for a survey
-            $oCurrentUser = $this->api->getCurrentUser();
-            if (isset($newAttributes['auditing']) && isset($oldAttributes['auditing'])
+            if ($oCurrentUser !== null 
+                && isset($newAttributes['auditing']) && isset($oldAttributes['auditing'])
                 && $newAttributes['auditing'] != $oldAttributes['auditing']
                 && (int)$newAttributes['auditing'] === 0
                 && !Permission::model()->hasGlobalPermission('superadmin', 'read', $oCurrentUser->uid)
