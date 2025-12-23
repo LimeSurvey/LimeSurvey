@@ -682,52 +682,5 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         if (!$this->checkSetting('AuditLog_Log_SurveySettings') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
             return;
         }
-
-        $oCurrentUser = $this->api->getCurrentUser();
-        if (!is_null($oModifiedSurvey)) {
-            $newAttributes = $oModifiedSurvey->getAttributes();
-            $oldSurvey = Survey::model()->find('sid = :sid', array(':sid' => $iSurveyID));
-
-            $oldAttributes = $oldSurvey->getAttributes();
-
-            // Prevent unauthorized users from disabling auditing for a survey
-            $oCurrentUser = $this->api->getCurrentUser();
-            $allowNonSuperDisable = isset($this->getPluginSettings(true)['AuditLog_AllowNonSuperadminDisable']['current']) && $this->getPluginSettings(true)['AuditLog_AllowNonSuperadminDisable']['current'] == 1;
-
-            if (isset($newAttributes['auditing']) && isset($oldAttributes['auditing'])
-                && $newAttributes['auditing'] != $oldAttributes['auditing']
-                && (int)$newAttributes['auditing'] === 0
-            ) {
-                // If feature is disabled, only superadmins may do this
-                if (!$allowNonSuperDisable && ($oCurrentUser === null || !Permission::model()->hasGlobalPermission('superadmin', 'read', $oCurrentUser->uid))) {
-                    // Revert the change and show an error message
-                    $oModifiedSurvey->auditing = $oldAttributes['auditing'];
-                    $newAttributes['auditing'] = $oldAttributes['auditing'];
-                    App()->setFlashMessage(gT('You are not allowed to disable the audit log for this survey.'), 'error');
-                }
-
-                // If feature enabled, allow non-superadmins only if they have surveysettings update permission
-                if ($allowNonSuperDisable && ($oCurrentUser === null || !Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update', $oCurrentUser->uid)) && !Permission::model()->hasGlobalPermission('superadmin', 'read', $oCurrentUser->uid)) {
-                    // Revert the change and show an error message
-                    $oModifiedSurvey->auditing = $oldAttributes['auditing'];
-                    $newAttributes['auditing'] = $oldAttributes['auditing'];
-                    App()->setFlashMessage(gT('You are not allowed to disable the audit log for this survey.'), 'error');
-                }
-            }
-
-            $diff = array_diff_assoc($newAttributes, $oldAttributes);
-            if (count($diff) > 0) {
-                $oAutoLog = $this->api->newModel($this, 'log');
-                $oAutoLog->uid = $oCurrentUser->uid;
-                $oAutoLog->entity = 'survey';
-                $oAutoLog->entityid = $iSurveyID;
-                $oAutoLog->action = 'update';
-                $oAutoLog->oldvalues = json_encode(array_diff_assoc($oldAttributes, $newAttributes));
-                $oAutoLog->newvalues = json_encode($diff);
-                #$oAutoLog->fields=json_encode($diff);
-                $oAutoLog->fields = implode(',', array_keys($diff));
-                $oAutoLog->save();
-            }
-        }
     }
 }
