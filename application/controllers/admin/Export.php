@@ -225,12 +225,19 @@ class Export extends SurveyCommonAction
             $data['topBar']['showExportButton'] = true;
             $data['topBar']['showCloseButton'] = true;
 
+            $closeUrl = Yii::app()->getConfig('editorEnabled')
+                ? Yii::app()->createUrl(
+                    'editorLink/index',
+                    ['route' => 'responses/' . $survey->sid . '/results/responses']
+                )
+                : Yii::app()->createUrl('responses/browse', ['surveyId' => $survey->sid]);
+
             $data['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
                 '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
                 [
                     'showExportButton' => true,
                     'showCloseButton' => true,
-                    'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $survey->sid])
+                    'closeUrl' => $closeUrl
                 ],
                 true
             );
