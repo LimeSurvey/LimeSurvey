@@ -25,7 +25,12 @@ if (isset($expertstats) && $expertstats === true) {
             'id' => 'simple-mode',
             'text' => gT("Simple mode"),
             'icon' => 'ri-bar-chart-fill',
-            'link' => Yii::app()->createUrl('/admin/statistics/sa/simpleStatistics/surveyid/' . $surveyid),
+            'link' => App()->getConfig('editorEnabled')
+                ? Yii::app()->createUrl(
+                    'editorLink/index',
+                    ['route' => 'responses/' . $surveyid . '/results/statistics']
+                )
+                : Yii::app()->createUrl('/admin/statistics/sa/simpleStatistics/surveyid/' . $surveyid),
             'htmlOptions' => [
                 'class' => 'btn btn-info',
             ],
@@ -67,7 +72,12 @@ $this->widget(
         'id' => 'close-button',
         'text' => gT("Close"),
         'icon' => 'ri-close-fill',
-        'link' => Yii::app()->createUrl("surveyAdministration/view", ["surveyid" => $surveyid]),
+        'link' => App()->getConfig('editorEnabled')
+            ? Yii::app()->createUrl(
+                'editorLink/index',
+                ['route' => 'responses/' . $surveyid . '/results/statistics']
+            )
+            : Yii::app()->createUrl("surveyAdministration/view", ["surveyid" => $surveyid]),
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',
         ],
