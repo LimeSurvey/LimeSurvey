@@ -9,7 +9,7 @@ echo viewHelper::getViewTestTag('addQuota');
 <div class='side-body'>
     <div class="row">
         <div class="col-12 content-right">
-            <h3>
+            <h3 aria-level="1">
                 <?php eT("New quota");?>
             </h3>
             <?php $this->renderPartial('/quotas/_form',
