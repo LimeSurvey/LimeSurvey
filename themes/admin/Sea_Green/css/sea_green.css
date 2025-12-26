@@ -16534,6 +16534,12 @@ body {
   flex-direction: column;
 }
 
+#surveythemes h2, #surveythemes .h2 {
+  font-weight: 500;
+  font-size: 0.9975rem;
+  line-height: 20px;
+}
+
 .container-40 {
   padding: 0 40px;
   width: 100%;

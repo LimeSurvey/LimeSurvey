@@ -37,7 +37,7 @@ echo viewHelper::getViewTestTag('templateOptions');
     <div class="tab-content">
         <div id="surveythemes" class="tab-pane active">
             <div class="list-surveys">
-                <h3><?= gT('Installed survey themes:') ?></h3>
+                <h2><?= gT('Installed survey themes:') ?></h2>
                 <?php $this->renderPartial('./surveythemelist', [
                         'oSurveyTheme' => $oSurveyTheme,
                         'pageSize'     => $pageSize
