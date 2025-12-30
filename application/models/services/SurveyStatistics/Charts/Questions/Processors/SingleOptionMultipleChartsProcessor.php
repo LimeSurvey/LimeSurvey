@@ -89,7 +89,6 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
         $stats = [];
 
         foreach ($this->question['subQuestions'] as $subQuestion) {
-
             $title = $mainQuestionTitle . "[{$subQuestion['question']}]";
             $legend = [];
             $items = [];
