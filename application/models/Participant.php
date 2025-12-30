@@ -292,6 +292,7 @@ class Participant extends LSActiveRecord
         if ($this->userHasPermissionToEdit()) {
             $inputHtml = App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                 'name'          => 'blacklisted_' . $this->participant_id,
+                'ariaLabel'    => gT('Blocklisted'),
                 'checkedOption' => $this->blacklisted === "Y" ? "1" : "0",
                 'selectOptions' => [
                     '1' => gT('Yes'),
