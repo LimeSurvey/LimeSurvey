@@ -189,7 +189,7 @@ class SurveyThemeConfiguration
         foreach ($attributesReact as $key => $optionAttribute) {
             $attributesCompleteData[$key] = $attributesCore[$key];
             $attributesCompleteData[$key]['category'] = $optionAttribute['category'];
-            $attributesCompleteData[$key]['currentValue'] = $currentThemeOptions->$key;
+            $attributesCompleteData[$key]['currentValue'] = $currentThemeOptions->$key ?? 'inherit';
             $attributesCompleteData[$key]['parentValue'] = $parentThemeOptions[$key];
             if ($attributesCompleteData[$key]['type'] === 'dropdown') {
                 $attributesCompleteData[$key]['dropdownoptions'] = $this->extractDropdownOptions($attributesCompleteData[$key]['dropdownoptions']);
