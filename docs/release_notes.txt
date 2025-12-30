@@ -34,6 +34,61 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.16.2 (build 251209) to 6.16.3 (build 251215) December 15, 2025
++New feature: Ability to include connection details in SMTP log (Carsten Schmitz)
+-Fixed issue: Status of ComfortUpdate key not properly shown in top menu info box (Carsten Schmitz)
+-Fixed issue: Show SMTP log only on errors was not working properly (#4607) (Carsten Schmitz)
+-Fixed issue #AT-1880: Chart array numbers not showing and wrong output for array flexible (Stefan K)
+-Fixed issue #20384: [security] XSS Vulnerability in question editor (#4617) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1, VBraun
+#Updated translation: Czech (Informal) by jelen1, VBraun
+
+
+Changes from 6.16.1 (build 251125) to 6.16.2 (build 251209) December 9, 2025
+-Fixed issue: a11y missing aria-label for radio button and missing role for list in globalsettings (#4600) (Anblik Audit Team)
+-Fixed issue: SMTP not being kept alive. When SMTP is kept alive the SMTP debug log only needs to show once (Carsten Schmitz)
+-Fixed issue: Missing bracket for F or H array question type in statistics (#4590) (Stefan K)
+-Fixed issue: Import survey button cutting off longer captions (Carsten Schmitz)
+-Fixed issue: Cannot import very old survey achives because of missing startdate field (Carsten Schmitz)
+-Fixed issue: A11y survey participants / send email invitation 1 fixes (#4491) (Anblik Audit Team)
+-Fixed issue: A11y supply aria level for modal title in panel integration(#4584) (Anblik Audit Team)
+-Fixed issue: A11y import and export resources buttons have incorrect tag assigned to them (#4589) (Anblik Audit Team)
+-Fixed issue: A11y for survey participants export dialog (#4500) (Anblik Audit Team)
+-Fixed issue: A11y for survey participants bounce settings (#4506) (Anblik Audit Team)
+-Fixed issue: A11y for survey participants / send email invitation 2 (#4493) (Anblik Audit Team)
+-Fixed issue: A11y for radio buttons in participant view (#4521) (Anblik Audit Team)
+-Fixed issue: A11y for import resources modal as well as focus indicator for all modal close buttons (#4594) (Anblik Audit Team)
+-Fixed issue: A11y for headers in edit email templates (#4502) (Anblik Audit Team)
+-Fixed issue: A11y for add/edit participant form labels (#4547) (Anblik Audit Team)
+-Fixed issue: A11y for add participants to CPDB (#4496) (Anblik Audit Team)
+-Fixed issue: A11y for  survey participants pages CSV upload and manage attributes (#4497) (Anblik Audit Team)
+-Fixed issue: A11y added heading tag for description in survey group form (#4596) (Anblik Audit Team)
+-Fixed issue: A11y added correct role to assessment language tabs and fixed label for assesment name (#4583) (Anblik Audit Team)
+-Fixed issue #20381: Easy to put an invalid email when installing the app (#4598) (Denis Chenu)
+-Fixed issue #20375: Error - "Cannot access offset of type array on array" when invalid lang param is used (#4578) (Carsten Schmitz)
+-Fixed issue #20370: Randomization of answer options in Array and Array Dual Scale (#4581) (Tim Willig)
+-Fixed issue #20369: "Add user" button on list surveys view leads to general user management view instead of survey permissions view (#4566) (Richard)
+-Fixed issue #20359: XML-RPC signature missmatch for set_participant_p… (#4550) (Chema Molins)
+-Fixed issue #20150: Wrong statistics result on multiple choice question type (#4429) (Denis Chenu)
+-Fixed issue #19859: Cannot import very old survey achives because of empty startdate field (Carsten Schmitz)
+-Fixed issue #14762: No accessible title or label for progressbar (#4551) (Carsten Schmitz)
+#Updated translation: Swahili by FredaM
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: Georgian by Tchumbura
+#Updated translation: French (France) by arnaud21, b00z00, DenisChenu, frederic93190, jayce, nathalieH971, riqcles
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, VBraun
+
+
 Changes from  (build ssue) to 6.16.1 (build 251125) November 25, 2025
 -Fixed issue: Warning for invalid DateTime object on first opening of administration if debug mode is active (Carsten Schmitz)
 -Fixed issue: Broken token session (#4570) (lajosarpad)
