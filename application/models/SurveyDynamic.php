@@ -618,6 +618,18 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * @return string
      */
+    public function getEmailForGrid()
+    {
+        // decrypt token information ( if needed )
+        $tokens = $this->tokens;
+        if (is_object($tokens)) {
+            return $tokens->email;
+        }
+    }
+
+    /**
+     * @return string
+     */
     public function getTokenForGrid()
     {
         if (is_object($this->tokens) && !is_null($this->tokens->tid)) {

@@ -46,34 +46,6 @@ HTML;
     </div>
 </div>
 HTML;
-            case $input instanceof ButtonSwitchInput:
-                $helpDiv = $this->bakeHelpDiv($input->getHelp());
-                [$tooltipText, $tooltipTrigger] = $this->bakeTooltip($input->getTooltip());
-                $widget = App()->getController()->widget(
-                    'yiiwheels.widgets.switch.WhSwitch',
-                    [
-                        'name'        => $input->getName(),
-                        'id'          => $input->getName(),
-                        'value'       => $input->getValue(),
-                        'onLabel'     => gT('On'),
-                        'offLabel'    => gT('Off'),
-                        'htmlOptions' => [
-                            'disabled' => $input->isDisabled(),
-                            //'data-bs-toggle' => $input->getTooltip() ? 'tooltip' : null,
-                            //'title' => $input->getTooltip()
-                        ]
-                    ],
-                    true
-                );
-                return <<<HTML
-<div class="row ls-space margin top-10">
-    <div class="form-group col-xs-12">
-        <label class="col-sm-12 control-label" for="{$input->getName()}">{$input->getLabel()}</label>
-        <div {$tooltipTrigger} {$tooltipText} class="col-sm-12">{$widget}</div>
-        {$helpDiv}
-    </div>
-</div>
-HTML;
             default:
                 return parent::run($input);
         }

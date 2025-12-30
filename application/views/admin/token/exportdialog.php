@@ -1,6 +1,6 @@
 <!-- Token export options -->
 <div class='side-body'>
-    <h3><?php eT("Survey participant export options"); ?></h3>
+    <h3 aria-level="2"><?php eT("Survey participant export options"); ?></h3>
     <div class="row">
         <div class="col-12 content-right">
             <?php echo CHtml::form(array("admin/tokens/sa/exportdialog/surveyid/$surveyid"), 'post',array('class'=>'form-core settingswidget ','id'=>'bouncesettings','name'=>'frmeditquestion')); ?>
@@ -31,6 +31,7 @@
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                 'name' => 'invitationstatus',
                                 'checkedOption'=> 0 ,
+                                'ariaLabel'=>gT('Invitation status'),
                                 'selectOptions'=>array(
                                     "0"=>gT("All",'unescaped'),
                                     "1"=>gT("Invited",'unescaped'),
@@ -49,6 +50,7 @@
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                 'name' => 'reminderstatus',
                                 'checkedOption'=> 0 ,
+                                'ariaLabel'=>gT('Reminder status'),
                                 'selectOptions'=>array(
                                     "0"=>gT("All",'unescaped'),
                                     "1"=>gT("Reminder(s) sent",'unescaped'),
@@ -80,13 +82,13 @@
                             <?php eT('Filter by email address:'); ?>
                         </label>
                         <div class="default controls">
-                            <input type="text" class="form-control" value="" name="filteremail" id="filteremail" />
+                            <input type="text" class="form-control" value="" name="filteremail" id="filteremail" aria-describedby="filteremailhelp" />
                         </div>
                         <?php
                         $this->widget('ext.AlertWidget.AlertWidget', [
                             'text' => gT('Only export entries which contain this string in the email address.'),
                             'type' => 'info',
-                            'htmlOptions' => ['class' => 'mt-1'],
+                            'htmlOptions' => ['class' => 'mt-1' ,'id' => 'filteremailhelp'],
                         ]);
                         ?>
 
@@ -102,6 +104,7 @@
                         <div class="default controls">
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                 'name' => 'tokendeleteexported',
+                                'ariaLabel' => gT('Delete exported participants'),
                                 'checkedOption' => 0,
                                 'selectOptions' => [
                                     '1' => gT('On'),
@@ -126,6 +129,7 @@
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                 'name' => 'maskequations',
                                 'checkedOption' => 1,
+                                'ariaLabel' => gT('Quote equations'),
                                 'selectOptions' => [
                                     '1' => gT('On'),
                                     '0' => gT('Off'),

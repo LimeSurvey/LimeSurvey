@@ -85,7 +85,7 @@ class InstallerConfigForm extends CFormModel
     /** @var string $adminName */
     public $adminName = 'Administrator';
     /** @var string $adminEmail */
-    public $adminEmail = 'your-email@example.net';
+    public $adminEmail = '';
     /** @var string $siteName */
     public $siteName = 'LimeSurvey';
     /** @var string $surveylang */
@@ -120,6 +120,9 @@ class InstallerConfigForm extends CFormModel
 
     /** @var bool */
     public $phpGdHasJpegSupport = false;
+
+    /** @var bool */
+    public $phpGdHasFreeTypeSupport = false;
 
     /** @var bool */
     public $isPhpLdapPresent = false;
@@ -224,6 +227,7 @@ class InstallerConfigForm extends CFormModel
         if (function_exists('gd_info')) {
             $gdInfo = gd_info();
             $this->phpGdHasJpegSupport = !empty($gdInfo['JPEG Support']);
+            $this->phpGdHasFreeTypeSupport = !empty($gdInfo['FreeType Support']);
             $this->isPhpGdPresent = true;
         }
         $this->isPhpVersionOK = version_compare(PHP_VERSION, self::MINIMUM_PHP_VERSION, '>=');

@@ -1501,10 +1501,10 @@ class statistics_helper
                     if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST) {
                         $columnName = substr((string) $al[2], 0, strlen((string) $al[2]) - 5);
                         $othEncrypted = getEncryptedCondition($responseModel, $columnName, '-oth-');
-                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($columnName)."='$othEncrypted'";
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($columnName) . "='$othEncrypted'";
                     } else {
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2]) . " != ''" : "NOT (" . Yii::app()->db->quoteColumnName($al[2]) . " LIKE '')";
                     }
                 }
 
@@ -1523,19 +1523,19 @@ class statistics_helper
                     //free text answers
                     if ($al[0] == "Answer") {
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2]) . " != ''" : "NOT (" . Yii::app()->db->quoteColumnName($al[2]) . " LIKE '')";
                     }
                     //"no answer" handling
                     elseif ($al[0] == "NoAnswer") {
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." = '')" : " (".Yii::app()->db->quoteColumnName($al[2])." LIKE ''))";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2]) . " = '')" : " (" . Yii::app()->db->quoteColumnName($al[2]) . " LIKE ''))";
                     }
                 } elseif ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
                     $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( ";
-                    $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." <> '')" : " (".Yii::app()->db->quoteColumnName($al[2])." NOT LIKE ''))";
+                    $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2]) . " <> '')" : " (" . Yii::app()->db->quoteColumnName($al[2]) . " NOT LIKE ''))";
                 // all other question types
                 } else {
-                    $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al[2])." =";
+                    $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($al[2]) . " =";
                     //ranking question?
                     if (substr((string) $rt, 0, 1) == "R") {
                         $query .= " '$al[0]'";
@@ -1550,9 +1550,9 @@ class statistics_helper
                     //get more data
                     if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
                         // mssql cannot compare text blobs so we have to cast here
-                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE cast(".Yii::app()->db->quoteColumnName($rt)." as varchar)= '$al[0]'";
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE cast(" . Yii::app()->db->quoteColumnName($rt) . " as varchar)= '$al[0]'";
                     } else {
-                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($rt)." = '$al[0]'";
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($rt) . " = '$al[0]'";
                     }
                 } else {
                     // This is for the 'NoAnswer' case
@@ -1566,17 +1566,21 @@ class statistics_helper
                     if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
                         // mssql cannot compare text blobs so we have to cast here
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
-                            . "cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = '' "
-                            . "OR cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = ' ' )";
+                            . "cast(" . Yii::app()->db->quoteColumnName($rt) . " as varchar) = '' "
+                            . "OR cast(" . Yii::app()->db->quoteColumnName($rt) . " as varchar) = ' ' )";
                     } else {
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
-                            . " ".Yii::app()->db->quoteColumnName($rt)." = '' "
-                            . "OR ".Yii::app()->db->quoteColumnName($rt)." = ' ') ";
+                            . " " . Yii::app()->db->quoteColumnName($rt) . " = '' "
+                            . "OR " . Yii::app()->db->quoteColumnName($rt) . " = ' ') ";
                     }
                 }
             }
 
-            if (incompleteAnsFilterState() == "incomplete") {$query .= " AND submitdate is null"; } elseif (incompleteAnsFilterState() == "complete") {$query .= " AND submitdate is not null"; }
+            if (incompleteAnsFilterState() == "incomplete") {
+                $query .= " AND submitdate is null";
+            } elseif (incompleteAnsFilterState() == "complete") {
+                $query .= " AND submitdate is not null";
+            }
 
             //check for any "sql" that has been passed from another script
             if (!empty($sql)) {
@@ -1739,34 +1743,7 @@ class statistics_helper
 
         // For multi question type, we have to check non completed with ALL sub question set to NULL
         if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
-            $criteria = new CDbCriteria();
-            foreach ($outputs['alist'] as $al) {
-                $quotedColumnName = App()->db->quoteColumnName($al[2]);
-                if ($noncompleted > 1 ) {
-                    // database can use blob due to encryption
-                    switch ($sDatabaseType) {
-                        case 'mssql':
-                        case 'sqlsrv':
-                        case 'dblib':
-                            $condition = $quotedColumnName . " IS NULL OR CAST(" . $quotedColumnName ." as varchar) = ''";
-                            break;
-                        case 'pgsql':
-                        case 'mysql':
-                        default:
-                            $condition = $quotedColumnName . " IS NULL OR " . $quotedColumnName ." = ''";
-                            break;
-                    }
-                } else {
-                    $condition = $quotedColumnName . " IS NULL";
-                }
-                $criteria->addCondition($condition);
-            }
-            if (incompleteAnsFilterState() == "incomplete") {
-                $criteria->addCondition("submitdate IS NULL");
-            } elseif (incompleteAnsFilterState() == "complete") {
-                $criteria->addCondition("submitdate IS NOT NULL");
-            }
-            $multiNotDisplayed = SurveyDynamic::model($surveyid)->count($criteria);
+            $multiNotDisplayed = self::getMultiNotDisplayed($surveyid, $outputs['alist'], $noncompleted);
             if ($noncompleted) {
                 //counter
                 $i = 0;
@@ -2188,6 +2165,8 @@ class statistics_helper
         $tempdir            = Yii::app()->getConfig("tempdir");
         $astatdata          = array();
         $TotalIncomplete    = 0;
+        /* @var int|false total for multiple choice, if int : is set (used in foreach) */
+        $totalMultiAnswers = false;
 
         $sColumnName = null;
         $noncompleted = App()->getRequest()->getPost('noncompleted');
@@ -2256,11 +2235,11 @@ class statistics_helper
                         /* This query selects a count of responses where "other" has been selected */
                         $columnName = substr((string) $al[2], 0, strlen((string) $al[2]) - 5);
                         $othEncrypted = getEncryptedCondition($responseModel, $columnName, '-oth-');
-                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($columnName)."='{$othEncrypted}'";
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($columnName) . "='{$othEncrypted}'";
                     } else {
                         //get data - select a count of responses where no answer is provided
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2]) . " != ''" : "NOT (" . Yii::app()->db->quoteColumnName($al[2]) . " LIKE '')";
                     }
                 }
 
@@ -2281,21 +2260,21 @@ class statistics_helper
                     //free text answers
                     if ($al[0] == "Answer") {
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2]) . " != ''" : "NOT (" . Yii::app()->db->quoteColumnName($al[2]) . " LIKE '')";
                     }
                     //"no answer" handling
                     elseif ($al[0] == "NoAnswer") {
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." = '')" : " (".Yii::app()->db->quoteColumnName($al[2])." LIKE ''))";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2]) . " = '')" : " (" . Yii::app()->db->quoteColumnName($al[2]) . " LIKE ''))";
                     }
                 } elseif ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
                     $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( ";
-                    $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." <> '')" : " (".Yii::app()->db->quoteColumnName($al[2])." NOT LIKE ''))";
+                    $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2]) . " <> '')" : " (" . Yii::app()->db->quoteColumnName($al[2]) . " NOT LIKE ''))";
                 // all other question types
                 } else {
                     $value = (substr((string) $rt, 0, 1) == "R") ? $al[0] : 'Y';
                     $encryptedValue = getEncryptedCondition($responseModel, $al[2], $value);
-                    $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al[2])." = '$encryptedValue'";
+                    $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($al[2]) . " = '$encryptedValue'";
                 }
             }    //end if -> alist set
             else {
@@ -2305,9 +2284,9 @@ class statistics_helper
                     $encryptedValue = getEncryptedCondition($responseModel, $rt, $al[0]);
                     if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
                         // mssql cannot compare text blobs so we have to cast here
-                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE cast(".Yii::app()->db->quoteColumnName($rt)." as varchar)= '$encryptedValue'";
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE cast(" . Yii::app()->db->quoteColumnName($rt) . " as varchar)= '$encryptedValue'";
                     } else {
-                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($rt)." = '$encryptedValue'";
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($rt) . " = '$encryptedValue'";
                     }
                 } else {
                     // This is for the 'NoAnswer' case
@@ -2323,33 +2302,39 @@ class statistics_helper
                         //$query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE (".sanitize_int($rt)." IS NULL "
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
                         //                                    . "OR cast(".sanitize_int($rt)." as varchar) = '' "
-                        . "cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = '' "
-                        . "OR cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = ' ' )";
+                        . "cast(" . Yii::app()->db->quoteColumnName($rt) . " as varchar) = '' "
+                        . "OR cast(" . Yii::app()->db->quoteColumnName($rt) . " as varchar) = ' ' )";
                     } elseif ($sDatabaseType == 'pgsql') {
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
                         //                                    . "OR ".sanitize_int($rt)." = '' "
-                        . " ".Yii::app()->db->quoteColumnName($rt)."::text = '' "
-                        . "OR ".Yii::app()->db->quoteColumnName($rt)."::text = ' ') ";
+                        . " " . Yii::app()->db->quoteColumnName($rt) . "::text = '' "
+                        . "OR " . Yii::app()->db->quoteColumnName($rt) . "::text = ' ') ";
                     } else {
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
                         //                                    . "OR ".sanitize_int($rt)." = '' "
-                        . " ".Yii::app()->db->quoteColumnName($rt)." = '' "
-                        . "OR ".Yii::app()->db->quoteColumnName($rt)." = ' ') ";
+                        . " " . Yii::app()->db->quoteColumnName($rt) . " = '' "
+                        . "OR " . Yii::app()->db->quoteColumnName($rt) . " = ' ') ";
                     }
                 }
             }
 
             //check filter option
-            if (incompleteAnsFilterState() == "incomplete") {$query .= " AND submitdate is null"; } elseif (incompleteAnsFilterState() == "complete") {$query .= " AND submitdate is not null"; }
+            if (incompleteAnsFilterState() == "incomplete") {
+                $query .= " AND submitdate is null";
+            } elseif (incompleteAnsFilterState() == "complete") {
+                $query .= " AND submitdate is not null";
+            }
 
             //check for any "sql" that has been passed from another script
-            if (!empty($sql)) {$query .= " AND $sql"; }
+            if (!empty($sql)) {
+                $query .= " AND $sql";
+            }
             //get data
             try {
                 $row = Yii::app()->db->createCommand($query)->queryScalar();
             } catch (Exception $ex) {
                 $row = 0;
-                Yii::app()->setFlashMessage('Faulty query: '.htmlspecialchars($query), 'error');
+                Yii::app()->setFlashMessage('Faulty query: ' . htmlspecialchars($query), 'error');
             }
             //store temporarily value of answer count of question type '5' and 'A'.
             $tempcount = -1; //count can't be less han zero
@@ -2377,7 +2362,7 @@ class statistics_helper
                     . gT("Browse") . "' id='$sColumnName' />";
                 }
 
-                if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'pdf') {
+                if ($browse === true && !empty($_POST['showtextinline']) && $outputType == 'pdf') {
                     $headPDF2 = array();
                     $headPDF2[] = array(gT("ID"), gT("Response"));
                     $result2 = $this->_listcolumn($surveyid, $sColumnName);
@@ -2387,7 +2372,7 @@ class statistics_helper
                     }
                 }
 
-                if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'xls') {
+                if ($browse === true && !empty($_POST['showtextinline']) && $outputType == 'xls') {
                     $headXLS = array();
                     $headXLS[] = array(gT("ID"), gT("Response"));
 
@@ -2427,7 +2412,7 @@ class statistics_helper
                 $bAnswer = true; // For view
                 $bSum    = false;
 
-                if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'pdf') {
+                if ($browse === true && !empty($_POST['showtextinline']) && $outputType == 'pdf') {
                     $headPDF2 = array();
                     $headPDF2[] = array(gT("ID"), gT("Response"));
                     $tablePDF2 = array();
@@ -2535,17 +2520,29 @@ class statistics_helper
                 //answer text
                 $fname = "$al[1] ($al[0])";
             }
-             //are there some results to play with?
-            if ($results > 0) {
+            if (($outputs['qtype'] != Question::QT_M_MULTIPLE_CHOICE) and ($outputs['qtype'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
+                //are there some results to play with?
+                if ($results > 0) {
+                    //calculate percentage
+                    $gdata[] = ($row / $results) * 100;
+                } else {
+                    //no data!
+                    $gdata[] = "N/A";
+                }
+            } else { // For multiple choice : we need total answered or viewed on all columns
+                if ($totalMultiAnswers === false) {
+                    $totalMultiAnswers = $results; // By default all answers
+                    if ($noncompleted) {
+                        $totalMultiAnswers = self::getMultiAnswered($surveyid, $outputs['alist'], $noncompleted);
+                    }
+                }
                 //calculate percentage
-                $gdata[] = ($row / $results) * 100;
+                if ($totalMultiAnswers > 0) {
+                    $gdata[] = ($row / $totalMultiAnswers) * 100;
+                } else { //no data!
+                    $gdata[] = "N/A";
+                }
             }
-            //no results
-            else {
-                //no data!
-                $gdata[] = "N/A";
-            }
-
             //put absolute data into array
             $grawdata[] = $row;
 
@@ -2694,74 +2691,55 @@ class statistics_helper
 
         // For multi question type, we have to check non completed with ALL sub question set to NULL
         if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
-            $criteria = new CDbCriteria();
-            foreach ($outputs['alist'] as $al) {
-                $quotedColumnName = App()->db->quoteColumnName($al[2]);
-                if ($noncompleted > 1 ) {
-                    // database can use blob due to encryption
-                    switch ($sDatabaseType) {
-                        case 'mssql':
-                        case 'sqlsrv':
-                        case 'dblib':
-                            $condition = $quotedColumnName . " IS NULL OR CAST(" . $quotedColumnName ." as varchar) = ''";
-                            break;
-                        case 'pgsql':
-                        case 'mysql':
-                        default:
-                            $condition = $quotedColumnName . " IS NULL OR " . $quotedColumnName ." = ''";
-                            break;
-                    }
-                } else {
-                    $condition = $quotedColumnName . " IS NULL";
-                }
-                $criteria->addCondition($condition);
-            }
-            if (incompleteAnsFilterState() == "incomplete") {
-                $criteria->addCondition("submitdate IS NULL");
-            } elseif (incompleteAnsFilterState() == "complete") {
-                $criteria->addCondition("submitdate IS NOT NULL");
-            }
-            $multiNotDisplayed = SurveyDynamic::model($surveyid)->count($criteria);
-            if ($noncompleted) {
-                //counter
-                $i = 0;
-                while (isset($gdata[$i])) {
-                    //we want to have some "real" data here
-                    if ($gdata[$i] != "N/A") {
-                        //calculate percentage
-                        if ($results > $multiNotDisplayed) {
-                            $gdata[$i] = ($grawdata[$i] / ($results - $multiNotDisplayed)) * 100;
-                        } else {
-                            $gdata[$i] = "N/A";
+            if ($noncompleted < 2) {
+                $criteria = new CDbCriteria();
+                if ($noncompleted) {
+                    foreach ($outputs['alist'] as $al) {
+                        $quotedColumnName = App()->db->quoteColumnName($al[2]);
+                        switch ($sDatabaseType) {
+                            case 'mssql':
+                            case 'sqlsrv':
+                            case 'dblib':
+                                $condition = "$quotedColumnName IS NOT NULL AND CAST($quotedColumnName as VARCHAR)= ''";
+                                break;
+                            default:
+                                $condition = "$quotedColumnName IS NOT NULL AND $quotedColumnName  = ''";
                         }
+                        $criteria->addCondition($condition);
                     }
-                    $i++;
+                    $fname = gT("Not completed");
+                } else {
+                    foreach ($outputs['alist'] as $al) {
+                        $quotedColumnName = App()->db->quoteColumnName($al[2]);
+                        switch ($sDatabaseType) {
+                            case 'mssql':
+                            case 'sqlsrv':
+                            case 'dblib':
+                                $condition = "$quotedColumnName IS NULL OR CAST($quotedColumnName as VARCHAR)= ''";
+                                break;
+                            default:
+                                $condition = "$quotedColumnName IS NULL OR $quotedColumnName  = ''";
+                        }
+                        $criteria->addCondition($condition);
+                    }
+                    $fname = gT("Not completed or Not displayed");
                 }
-            } else {
-                // Add a line with not displayed %
-                if ($multiNotDisplayed > 0) {
-                    if ((incompleteAnsFilterState() != "complete")) {
-                        $fname = gT("Not completed or Not displayed");
-                    } else {
-                        $fname = gT("Not displayed");
-                    }
-                    $label[] = $fname;
-                    $lbl[$fname] = $multiNotDisplayed;
-                    //we need some data
-                    if ($results > 0) {
-                        //calculate percentage
-                        $gdata[] = ($multiNotDisplayed / $results) * 100;
-                    }
-                    //no data :(
-                    else {
-                        $gdata[] = "N/A";
-                    }
-                    //put data of incompleted records into array
-                    $grawdata[] = $multiNotDisplayed;
+                if (incompleteAnsFilterState() == "incomplete") {
+                    $criteria->addCondition("submitdate IS NULL");
+                } elseif (incompleteAnsFilterState() == "complete") {
+                    $criteria->addCondition("submitdate IS NOT NULL");
                 }
+                $totalNoAnswers = SurveyDynamic::model($surveyid)->count($criteria);
+                $label[] = $fname;
+                $lbl[$fname] = $totalNoAnswers;
+                if ($totalMultiAnswers > 0) {
+                    $gdata[] = ($totalNoAnswers / $totalMultiAnswers) * 100;
+                } else {
+                    $gdata[] = "N/A";
+                }
+                $grawdata[] = $totalNoAnswers;
             }
         }
-
         // Columns
         $statsColumns = $_POST['stats_columns'];
 
@@ -3090,6 +3068,9 @@ class statistics_helper
         $aData['showaggregateddata'] = false;
 
         $aData['sumallitems']             = array_sum($grawdata);
+        if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
+            $aData['sumallitems']             = $totalMultiAnswers;
+        }
         $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_gross_total', $aData, true);
 
         //only show additional values when this setting is enabled
@@ -4300,5 +4281,85 @@ class statistics_helper
             $reshtml = "<span style='cursor: pointer' title='" . $htmlhinttext . "'> \"$htmlhinttext\"</span>";
         }
         return $reshtml;
+    }
+
+    /*
+    * Get the number of anwered or seen for a multiple choice question
+    * @param integre $surveyid
+    * @param array : $answersList, @see $this->buildOutputList : array with [question code, question text, DB column] only DB column is used
+    * @param integer : $noncompleted : 0 mean didn't check, 1 displayed and 2 answered. For multiple choice : only one displayed or answered is needed
+    * @return integer
+    * */
+    private static function getMultiAnswered($surveyid, $answersList, $noncompleted)
+    {
+        $criteria = new CDbCriteria();
+        foreach ($answersList as $al) {
+            $quotedColumnName = App()->db->quoteColumnName($al[2]);
+            // Answered
+            if ($noncompleted > 1) {
+                // database can use blob due to encryption
+                switch (App()->db->getDriverName()) {
+                    case 'mssql':
+                    case 'sqlsrv':
+                    case 'dblib':
+                        $condition = $quotedColumnName . " IS NOT NULL AND CAST(" . $quotedColumnName . " as varchar) <> ''";
+                        break;
+                    case 'pgsql':
+                    case 'mysql':
+                    default:
+                        $condition = $quotedColumnName . " IS NOT NULL AND " . $quotedColumnName . " <> ''";
+                        break;
+                }
+            } else {
+                // View
+                $condition = $quotedColumnName . " IS NOT NULL";
+            }
+            $criteria->addCondition($condition, 'OR');
+        }
+        if (incompleteAnsFilterState() == "incomplete") {
+            $criteria->addCondition("submitdate IS NULL");
+        } elseif (incompleteAnsFilterState() == "complete") {
+            $criteria->addCondition("submitdate IS NOT NULL");
+        }
+        return SurveyDynamic::model($surveyid)->count($criteria);
+    }
+
+    /*
+    * Get the number of anwered or seen for a multiple choice question
+    * @param integre $surveyid
+    * @param array : $answersList, @see $this->buildOutputList : array with [question code, question text, DB column] only DB column is used
+    * @param integer : $noncompleted : 0 mean didn't check, 1 displayed and 2 answered. For multiple choice : only one displayed or answered is needed
+    * @return integer
+    * */
+    private static function getMultiNotDisplayed($surveyid, $answersList, $noncompleted)
+    {
+        $criteria = new CDbCriteria();
+        foreach ($answersList as $al) {
+            $quotedColumnName = App()->db->quoteColumnName($al[2]);
+            if ($noncompleted > 1) {
+                // database can use blob due to encryption
+                switch (App()->db->getDriverName()) {
+                    case 'mssql':
+                    case 'sqlsrv':
+                    case 'dblib':
+                        $condition = $quotedColumnName . " IS NULL OR CAST(" . $quotedColumnName . " as varchar) = ''";
+                        break;
+                    case 'pgsql':
+                    case 'mysql':
+                    default:
+                        $condition = $quotedColumnName . " IS NULL OR " . $quotedColumnName . " = ''";
+                        break;
+                }
+            } else {
+                $condition = $quotedColumnName . " IS NULL";
+            }
+            $criteria->addCondition($condition);
+        }
+        if (incompleteAnsFilterState() == "incomplete") {
+            $criteria->addCondition("submitdate IS NULL");
+        } elseif (incompleteAnsFilterState() == "complete") {
+            $criteria->addCondition("submitdate IS NOT NULL");
+        }
+        return SurveyDynamic::model($surveyid)->count($criteria);
     }
 }
