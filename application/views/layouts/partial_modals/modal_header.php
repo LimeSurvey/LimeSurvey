@@ -3,6 +3,6 @@
 ?>
 
 <div class="modal-header">
-    <div class="h1 modal-title" aria-level="2"><?php echo $modalTitle; ?></div>
+    <h2 class="h1 modal-title"><?php echo $modalTitle; ?></h2>
     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 </div>

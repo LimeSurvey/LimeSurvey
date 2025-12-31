@@ -30,7 +30,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
         <?php
         } else {
         ?>
-            <h2><?php eT("Assessment rules");?></h2>
+            <h2 class="h4"><?php eT("Assessment rules");?></h2>
             <div class="row">
                 <a href="#" id="loadEditUrl_forModalView" data-editurl="<?=$this->createUrl("assessment/edit/", ["surveyid" => $surveyid]);?>"></a>
                 <?php
