@@ -7,7 +7,7 @@
  */
 ?>
 <div class='side-body'>
-    <h3 aria-level="1"><?php eT("Manage attribute fields"); ?></h3>
+    <h1 class="h3"><?php eT("Manage attribute fields"); ?></h1>
 
     <div class="row">
         <div class="col-12 content-right">
@@ -171,7 +171,7 @@
         </div>
     </div>
 
-    <h3 aria-level="2"><?php eT("Add/delete survey participant attributes"); ?></h3>
+    <h2 class="h3"><?php eT("Add/delete survey participant attributes"); ?></h2>
 
     <div class="row">
         <div class="col-12 content-right">

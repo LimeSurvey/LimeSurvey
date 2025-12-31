@@ -5,7 +5,7 @@
 ?>
 
 <div class='side-body'>
-    <h3 aria-level="1"><?php eT("Send email reminder"); ?></h3>
+    <h1 class="h3"><?php eT("Send email reminder"); ?></h1>
     <div class="row">
         <div class="col-12 content-right">
             <?php echo PrepareEditorScript(true, $this); ?>
