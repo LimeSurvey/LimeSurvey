@@ -1,5 +1,5 @@
 <div class='side-body'>
-    <h3><?php eT("Bounce settings"); ?></h3>
+    <h2 class="h3"><?php eT("Bounce settings"); ?></h2>
     <div class="row">
         <div class="col-12">
             <div id='bouncesettingsdiv'>
@@ -26,6 +26,7 @@
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                         'name' => 'bounceprocessing',
                                         'value'=> $settings['bounceprocessing'] ,
+                                        'ariaLabel'=> gT('Used bounce settings'),
                                         'checkedOption'=> $settings['bounceprocessing'] ,
                                         'selectOptions' => array(
                                             "N" => gT("None", 'unescaped'),
@@ -47,6 +48,7 @@
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                         'name' => 'bounceaccounttype',
                                         'checkedOption'=> $settings['bounceaccounttype'] ,
+                                        'ariaLabel'=> gT('Server type'),
                                         'selectOptions' => array(
                                             "IMAP" => gT("IMAP", 'unescaped'),
                                             "POP" => gT("POP", 'unescaped')
@@ -97,6 +99,7 @@
                                 <div class="default controls">
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                         'name' => 'bounceaccountencryption',
+                                        'ariaLabel'=> gT('Encryption type'),
                                         'checkedOption'=> strtolower((string) $settings['bounceaccountencryption']),
                                         'selectOptions' => array(
                                             "off" => gT("Off (unsafe)", 'unescaped'),

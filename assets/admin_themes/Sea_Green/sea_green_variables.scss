@@ -6,6 +6,7 @@ $grape-light  : #D3C5FA; // background secondary
 $litschi      : #FF9AA2; // background secondary
 $blueberry    : #A3C8FF; // background passive
 $orange       : #FFBA68; // tertiary
+$orange-light : #fff1e0; // background tertiary
 $banana       : #FFE872; // tertiary
 $apple        : #B2FF8E; // tertiary
 $success      : #4DD753; // success
@@ -34,18 +35,20 @@ $g-300        : #DDDEE8;
 $g-200        : #EEEFF7;
 $g-100        : #F9F9FB;
 
-$theme-colors: (
-    "primary":    $active-green,
-    "secondary":  $g-600,
-    "success":    $success,
-    "danger":     $error,
-    "warning":    $warning,
-    "info":       $grape,
-    "light":      $g-200,
-    "g-800":      $g-800,
-    "dark":       $g-900,
-    "black60":    $black60,
-    "cancel":     $g-600, // replace with secondary
+$theme-colors : (
+    "primary": $active-green,
+    "secondary": $g-600,
+    "success": $success,
+    "danger": $error,
+    "warning": $warning,
+    "info": $grape,
+    "light": $g-200,
+    "g-800": $g-800,
+    "dark": $g-900,
+    "black60": $black60,
+    "cancel": $g-600, // replace with secondary
+    "orange-light": $orange-light,
+    "orange": $orange
 );
 
 $border-radius: 4px;
