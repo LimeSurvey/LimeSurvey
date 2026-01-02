@@ -22,6 +22,7 @@
         &:focus {
             box-shadow : none;
             outline    : 2px solid currentColor;
+            outline-offset:2px;
         }
         &:hover {
             background-color : $g-200;
@@ -41,9 +42,4 @@
 
 #selector__exportTypeSelector-modal .modal-dialog {
     border : 1px solid $g-900;
-}
-
-.modal-header .btn-close:focus {
-    outline:2px solid currentColor;
-    outline-offset:2px;
 }
