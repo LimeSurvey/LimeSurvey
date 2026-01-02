@@ -16,18 +16,23 @@ class SortingStrategyMockSetFactory
     {
         $mockSet = new \stdClass();
 
-        // Create mock Question
-        $mockSet->question = Mockery::mock(Question::class);
+        // Create mock Question with makePartial to allow real methods
+        $mockSet->question = Mockery::mock(Question::class)->makePartial();
 
         // Set up common method expectations
         $mockSet->question->shouldReceive('getQuestionAttribute')
             ->byDefault()
             ->andReturn(null);
 
-        // Allow setAttribute method to be called
-        $mockSet->question->shouldReceive('setAttribute')
-            ->byDefault()
-            ->andReturn(null);
+        // Mock getAttribute to return type
+        $mockSet->question->shouldReceive('getAttribute')
+            ->with('type')
+            ->andReturn(Question::QT_L_LIST);
+
+        // Mock hasAttribute to return true for type
+        $mockSet->question->shouldReceive('hasAttribute')
+            ->with('type')
+            ->andReturn(true);
 
         // Set survey property directly
         $mockSet->question->survey = (object)[
