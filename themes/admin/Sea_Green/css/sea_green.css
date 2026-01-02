@@ -17581,6 +17581,9 @@ a {
   color: #14AE5C;
   font-weight: 500;
 }
+a:focus {
+  outline: 2px solid currentColor !important;
+}
 
 .has-link {
   cursor: pointer;
