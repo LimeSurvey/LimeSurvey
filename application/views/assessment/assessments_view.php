@@ -11,7 +11,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
 ?>
   <div class="side-body">
     <?=viewHelper::getViewTestTag('surveyAssessments');?>
-      <h1 class="page-title" aria-level="1"><?=gT("Assessments")?></h1>
+      <h1 class="page-title h3" ><?=gT("Assessments")?></h1>
         <?php
             $messageLink = gT("Assessment mode for this survey is not activated.").'<br/>'
                 . gT("If you want to activate it, click here:").'<br/>'
@@ -30,7 +30,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
         <?php
         } else {
         ?>
-            <h2 class="h4"><?php eT("Assessment rules");?></h2>
+            <h2><?php eT("Assessment rules");?></h2>
             <div class="row">
                 <a href="#" id="loadEditUrl_forModalView" data-editurl="<?=$this->createUrl("assessment/edit/", ["surveyid" => $surveyid]);?>"></a>
                 <?php
