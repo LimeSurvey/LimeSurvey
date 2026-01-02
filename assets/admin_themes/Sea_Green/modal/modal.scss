@@ -1,42 +1,46 @@
 .modal-content {
-  background-color: $white;
-  border: none;
-  box-shadow: none;
-  border-radius: 0px;
+    background-color : $white;
+    border           : none;
+    box-shadow       : none;
+    border-radius    : 0px;
 }
+
 .modal-backdrop {
-  background-color: $black;
+    background-color : $black;
 }
+
 .modal-header {
-  border-bottom: none;
-  .btn-close {
-    align-self: flex-start;
-    margin: 0 -0.75rem -0.75rem auto;
-    color: $g-900;
-    width: 0.75em;
-    height: 0.75em;
-    opacity: 1;
-    font-size: $btn-font-size-sm;
-    &:focus {
-      box-shadow: none;
+    border-bottom : none;
+    .btn-close {
+        align-self : flex-start;
+        margin     : 0 -0.75rem -0.75rem auto;
+        color      : $g-900;
+        width      : 0.75em;
+        height     : 0.75em;
+        opacity    : 1;
+        font-size  : $btn-font-size-sm;
+        &:focus {
+            box-shadow : none;
+            outline    : 2px solid currentColor;
+        }
+        &:hover {
+            background-color : $g-200;
+        }
     }
-    &:hover {
-      background-color: $g-200;
-    }
-  }
 }
+
 .modal-title {
-  color: $g-900;
-  line-height: $line-height-26;
+    color       : $g-900;
+    line-height : $line-height-26;
 }
 
 .modal-footer {
-  border-top: none;
-  padding: $modal-inner-padding;
+    border-top : none;
+    padding    : $modal-inner-padding;
 }
 
 #selector__exportTypeSelector-modal .modal-dialog {
-  border : 1px solid $g-900;
+    border : 1px solid $g-900;
 }
 
 .modal-header .btn-close:focus {

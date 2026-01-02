@@ -37,7 +37,7 @@ var UserManagement = function () {
         form.append('<input type="hidden" name="userid" value="' + userid + '" />');
         form.append('<input type="hidden" name="action" value="' + action + '" />');
         form.append('<input type="hidden" name="user" value="' + user + '" />');
-        form.append('<input type="hidden" name="YII_CSRF_TOKEN" value="' + LS.data.csrfToken + '" />');
+        form.append($("<input type='hidden'>").attr("name", LS.data.csrfTokenName).attr("value", LS.data.csrfToken));
         form.appendTo('body');
         form.submit();
     };
@@ -99,7 +99,7 @@ var UserManagement = function () {
                         $('#UserManagement-action-modal').find('.modal-content').html(result.html);
                         if (!result.hasOwnProperty('html')) {
                             triggerModalClose();
-                            window.LS.ajaxAlerts(result.message, 'success', {showCloseButton: true});
+                            window.LS.ajaxAlerts(result.message, 'success', {showCloseButton: true, useHtml: true, showIcon: true});
                             if (result.hasOwnProperty('href')) {
                                 setTimeout(function() {
                                     const modalSize = result.hasOwnProperty('modalsize') ? result.modalsize : '';
