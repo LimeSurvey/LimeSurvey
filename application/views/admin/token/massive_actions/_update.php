@@ -60,6 +60,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "completed-switch",
                                         'id'            => "massedit_completed-switch",
+                                        'ariaLabel'     => gT('Completed?'),
                                         'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch", 'disabled' => true],
                                         'checkedOption' => 0,
                                         'selectOptions' => [
@@ -182,6 +183,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 <?php if ($oSurvey->anonymized !== 'Y') : ?>
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "sent-switch",
+                                        'ariaLabel'     => gT('Invitation sent?'),
                                         'id'            => "massedit_sent-switch",
                                         'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch", 'disabled' => true],
                                         'checkedOption' => 0,
@@ -234,6 +236,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "remind-switch",
                                         'id'            => "massedit_remind-switch",
+                                        'ariaLabel'     => gT('Reminder sent?'),
                                         'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch", 'disabled' => true],
                                         'checkedOption' => 0,
                                         'selectOptions' => [
@@ -326,7 +329,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                     <label class="col-md-3 form-label" for='massedit_validuntil'><?php eT('Until:'); ?></label>
                     <div class="col-md-8 has-feedback date-picker-container">
                         <div id="massedit_validuntil_datetimepicker" class="input-group date">
-                            <input class="DatePicker form-control action_datepickerUpdateHiddenField" id="massedit_validuntil" type="text" value="lskeep" name="validuntil_date" data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm" data-locale="<?php echo $locale ?>" disabled>
+                            <input class="DatePicker form-control action_datepickerUpdateHiddenField" id="massedit_validuntil" type="text" value="" name="validuntil_date" data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm" data-locale="<?php echo $locale ?>" disabled>
                             <span class="input-group-text"><span class="ri-calendar-2-fill"></span></span>
                         </div>
                         <input id="sbmtvaliduntil" type="hidden" name="validuntil" value="lskeep" class="custom-data selector_submitField" />
