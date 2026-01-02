@@ -647,7 +647,7 @@ class SurveyDynamic extends LSActiveRecord
      */
     public function getDefaultColumns()
     {
-        return array('id', 'token', 'submitdate', 'lastpage', 'startlanguage', 'completed', 'seed');
+        return array('id', 'token', 'submitdate', 'lastpage', 'startlanguage', 'completed', 'seed', 'quota_exit');
     }
 
     /**

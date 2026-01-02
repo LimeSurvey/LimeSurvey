@@ -622,6 +622,11 @@ class Quotas
                 $thissurvey['aQuotas']['hiddeninputs'] .= '<input type="hidden" name="' . $field . '"   value="' . $post . '" />';
             }
         }
+
+        // Update the response's "quota_exit" attribute with the ID of the matched quota
+        $oResponse->quota_exit = $aMatchedQuota['id'];
+        $oResponse->save(false, ['quota_exit']);
+
         //field,post in aSurveyInfo.aQuotas.aPostedQuotaFields %}
         if ($closeSurvey) {
             killSurveySession($surveyid);
