@@ -188,7 +188,7 @@ class RenderListRadio extends QuestionBaseRenderer
             'answer_other' => $answer_other,
             'myfname' => $myfname,
             'othertext' => $otherTextLeft,
-            'othertextRight' => $otherTextRight,
+            'otherTextRight' => $otherTextRight,
             'otherItemExtraClass' => $otherItemExtraClass,
             'checkedState' => $checkedState,
             'oth_checkconditionFunction' => $oth_checkconditionFunction . '(this.value, this.name, this.type)',
