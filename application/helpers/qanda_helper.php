@@ -2686,6 +2686,8 @@ function do_array_5point($ia)
         } else {
             $answerwidth = $answerwidth / 2;
         }
+        // Add a class so we can style the left side text differently when there is a right side text
+        $coreClass .= " semantic-differential-list";
     }
     $cellwidth = $columnswidth / $colCount;
 
