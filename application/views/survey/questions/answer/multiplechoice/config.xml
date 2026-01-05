@@ -245,7 +245,7 @@
         <attribute>
             <name>other_maximum_chars</name>
             <category>Input</category>
-            <sortorder>141</sortorder>
+            <sortorder>100</sortorder>
             <inputtype>integer</inputtype>
             <default></default>
             <help>Maximum characters allowed for &#039;Other:&#039; option</help>
@@ -417,7 +417,7 @@
         <!-- Other Attributes START -->
         <attribute>
             <name>other_numbers_only</name>
-            <category>Logic</category>
+            <category>Other</category>
             <sortorder>100</sortorder>
             <inputtype>switch</inputtype>
             <options>
