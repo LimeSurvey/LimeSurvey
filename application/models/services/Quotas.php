@@ -571,8 +571,7 @@ class Quotas
             ], true)
         ) {
             // Update the response's "quota_exit" attribute with the ID of the matched quota
-            $oResponse->quota_exit = $aMatchedQuota['id'];
-            $oResponse->save(false, ['quota_exit']);
+            self::updateResponseQuotaExit($oResponse, $aMatchedQuota['id']);
 
             if ($sClientToken) {
                 submittokens(true);
@@ -648,5 +647,11 @@ class Quotas
             ['oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey],
             false
         );
+    }
+
+    public static function updateResponseQuotaExit(Response $response, ?int $quotaId): void
+    {
+        $response->quota_exit = $quotaId;
+        $response->save(false, ['quota_exit']);
     }
 }
