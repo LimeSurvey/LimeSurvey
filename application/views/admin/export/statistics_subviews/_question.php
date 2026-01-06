@@ -415,7 +415,7 @@
                 {
                     $qid = $row['qid'];
                     $row = array_values($row);
-                    $myfield2 = $myfield.$row[4];
+                    $myfield2 = $myfield . "_S" . $qid;
                     echo "<!-- $myfield2 - ";
 
                     if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
@@ -494,7 +494,7 @@
                 foreach($result[$key1] as $row)
                 {
                     $row=array_values($row);
-                    $myfield2 = $myfield . "$row[4]";
+                    $myfield2 = $myfield . "_S$row[0]";
                     echo "<!-- $myfield2 - ";
 
                     if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
@@ -511,7 +511,7 @@
                     .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row[15])." - # ".$flt[3])
                     ."\n"
                     ."</div>\n"
-                    ."\t<select name='Q{$flt[0]}_S{$row['qid']}[]' multiple='multiple' class='form-select'>\n"
+                    ."\t<select name='Q{$flt[0]}_S{$row[0]}[]' multiple='multiple' class='form-select'>\n"
                     ."\t<option value='Y'";
 
                     //pre-select "yes"
@@ -542,8 +542,8 @@
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 foreach($result[$key1] as $row)
                 {
+                    $myfield2 = $myfield . "_S" . $row['qid'];
                     $row=array_values($row);
-                    $myfield2 = $myfield . "$row[4]";
                     echo "<!-- $myfield2 - ";
 
                     if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
@@ -558,7 +558,7 @@
                     .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row[15])." - # ".$flt[3])
                     ."\n"
                     ."</div>\n"
-                    ."\t<select name='Q{$flt[0]}_S{$row['qid']}[]' multiple='multiple'  class='form-select'>\n"
+                    ."\t<select name='Q{$flt[0]}_S{$row[0]}[]' multiple='multiple'  class='form-select'>\n"
                     ."\t<option value='I'";
 
                     if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("I", $_POST[$myfield2])) {echo " selected='selected' ";}
@@ -685,7 +685,7 @@
                             * - greater than
                             * - less than
                             */
-                            $myfield1 = $myfield . "_S" . $row['qid'] . "_S" . $frow['qid'];
+                            $myfield1 = substr($myfield, 1) . "_S" . $row['qid'] . "_S" . $frow['qid'];
                             $myfield2 = $myfield1 . "G";
                             $myfield3 = $myfield1 . "L";
                             if ($counter2 == 4) {
