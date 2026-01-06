@@ -3,7 +3,7 @@
 /** @var string $attrName */
 /** @var string $inputValue */
 /** @var string $jsDate */
-$elementId = 'attribute_select_'. $attrName;
+$elementId = 'attribute_date_'. $attrName;
 App()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', [
     'name' => $attrName,
     'id' => $elementId,
