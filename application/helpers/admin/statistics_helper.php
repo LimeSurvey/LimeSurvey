@@ -2025,7 +2025,7 @@ class statistics_helper
         //-------------------------- PCHART OUTPUT ----------------------------
         $letterPosition = strcspn($rt, '0123456789');
         $qqid = substr($rt, $letterPosition - 1);
-        $actualQID = substr(explode("_", $qqid)[0], $letterPosition);
+        $actualQID = substr(explode("_", $qqid)[0], 1);
         $attrQid = $outputs['parentqid'] > 0 ? $outputs['parentqid'] : $actualQID; // use parentqid if exists
         $aattr = QuestionAttribute::model()->getQuestionAttributes($attrQid);
 
