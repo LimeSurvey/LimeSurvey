@@ -215,4 +215,140 @@ class ParticipantAttributeServiceTest extends TestBaseClass
         $this->assertIsArray($decoded);
         $this->assertEmpty($decoded);
     }
+
+
+    /**
+     * @testdox normalizeAttributeDataset() fills in missing keys with default values
+     */
+    public function testNormalizeAttributeDatasetWithMissingKeys()
+    {
+        $mockSet = (new ParticipantAttributeMockSetFactory())->make();
+        $participantAttributeService = (new ParticipantAttributeFactory())->make($mockSet);
+
+        $partialData = [
+            'type' => 'DD',
+            'encrypted' => 'Y'
+        ];
+
+        $normalized = $participantAttributeService->normalizeAttributeDataset($partialData);
+
+        $this->assertEquals('DD', $normalized['type']);
+        $this->assertEquals('Y', $normalized['encrypted']);
+        $this->assertEquals('', $normalized['description']);
+        $this->assertEquals('N', $normalized['mandatory']);
+        $this->assertEquals('Y', $normalized['show_register']);
+        $this->assertEquals('[]', $normalized['type_options']);
+        $this->assertEquals('', $normalized['cpdbmap']);
+    }
+
+    /**
+     * @testdox normalizeAttributeDataset() preserves existing values
+     */
+    public function testNormalizeAttributeDatasetPreservesExistingValues()
+    {
+        $mockSet = (new ParticipantAttributeMockSetFactory())->make();
+        $participantAttributeService = (new ParticipantAttributeFactory())->make($mockSet);
+
+        $completeData = [
+            'description' => 'Custom description',
+            'mandatory' => 'Y',
+            'encrypted' => 'Y',
+            'show_register' => 'N',
+            'type' => 'DD',
+            'type_options' => '["Option 1","Option 2"]',
+            'cpdbmap' => 'custom_map'
+        ];
+
+        $normalized = $participantAttributeService->normalizeAttributeDataset($completeData);
+
+        $this->assertEquals($completeData, $normalized);
+    }
+
+    /**
+     * @testdox normalizeAttributeDataset() normalizes boolean-like values to Y/N
+     */
+    public function testNormalizeAttributeDatasetNormalizesBooleanValues()
+    {
+        $mockSet = (new ParticipantAttributeMockSetFactory())->make();
+        $participantAttributeService = (new ParticipantAttributeFactory())->make($mockSet);
+
+        $dataWithVariousBooleans = [
+            'mandatory' => true,
+            'encrypted' => 1,
+            'show_register' => 'y'
+        ];
+
+        $normalized = $participantAttributeService->normalizeAttributeDataset($dataWithVariousBooleans);
+
+        $this->assertEquals('Y', $normalized['mandatory']);
+        $this->assertEquals('Y', $normalized['encrypted']);
+        $this->assertEquals('Y', $normalized['show_register']);
+
+        $dataWithFalsyValues = [
+            'mandatory' => false,
+            'encrypted' => 0,
+            'show_register' => 'N'
+        ];
+
+        $normalized = $participantAttributeService->normalizeAttributeDataset($dataWithFalsyValues);
+
+        $this->assertEquals('N', $normalized['mandatory']);
+        $this->assertEquals('N', $normalized['encrypted']);
+        $this->assertEquals('N', $normalized['show_register']);
+    }
+
+    /**
+     * @testdox normalizeAttributeDataset() converts array type_options to JSON string
+     */
+    public function testNormalizeAttributeDatasetConvertsArrayToJson()
+    {
+        $mockSet = (new ParticipantAttributeMockSetFactory())->make();
+        $participantAttributeService = (new ParticipantAttributeFactory())->make($mockSet);
+
+        $dataWithArrayOptions = [
+            'type_options' => ['Option 1', 'Option 2', 'Option 3']
+        ];
+
+        $normalized = $participantAttributeService->normalizeAttributeDataset($dataWithArrayOptions);
+
+        $this->assertIsString($normalized['type_options']);
+        $decoded = json_decode($normalized['type_options'], true);
+        $this->assertEquals(['Option 1', 'Option 2', 'Option 3'], $decoded);
+    }
+
+    /**
+     * @testdox normalizeAttributeDataset() replaces invalid JSON with empty array
+     */
+    public function testNormalizeAttributeDatasetReplacesInvalidJson()
+    {
+        $mockSet = (new ParticipantAttributeMockSetFactory())->make();
+        $participantAttributeService = (new ParticipantAttributeFactory())->make($mockSet);
+
+        $dataWithInvalidJson = [
+            'type_options' => 'not valid json'
+        ];
+
+        $normalized = $participantAttributeService->normalizeAttributeDataset($dataWithInvalidJson);
+
+        $this->assertEquals('[]', $normalized['type_options']);
+    }
+
+    /**
+     * @testdox normalizeAttributeDataset() handles empty array input
+     */
+    public function testNormalizeAttributeDatasetHandlesEmptyArray()
+    {
+        $mockSet = (new ParticipantAttributeMockSetFactory())->make();
+        $participantAttributeService = (new ParticipantAttributeFactory())->make($mockSet);
+
+        $normalized = $participantAttributeService->normalizeAttributeDataset([]);
+
+        $this->assertEquals('', $normalized['description']);
+        $this->assertEquals('N', $normalized['mandatory']);
+        $this->assertEquals('N', $normalized['encrypted']);
+        $this->assertEquals('Y', $normalized['show_register']);
+        $this->assertEquals('TB', $normalized['type']);
+        $this->assertEquals('[]', $normalized['type_options']);
+        $this->assertEquals('', $normalized['cpdbmap']);
+    }
 }

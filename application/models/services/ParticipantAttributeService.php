@@ -52,6 +52,7 @@ class ParticipantAttributeService
         array $attributeData,
         string $attributeName
     ): int {
+        $attributeData = $this->normalizeAttributeDataset($attributeData);
         $attributeId = $this->saveParticipantAttributeName(
             $attributeData,
             $attributeName
@@ -178,5 +179,48 @@ class ParticipantAttributeService
         }
 
         return $decodedOptions;
+    }
+
+    /**
+     * Normalizes attribute data by ensuring all required keys exist with default values.
+     *
+     * This method validates and fills in missing attribute data keys with sensible defaults
+     * to ensure consistent data structure when creating or updating participant attributes.
+     *
+     * @param array $attributeData The attribute data to normalize
+     * @return array The normalized attribute data with all required keys
+     */
+    public function normalizeAttributeDataset(array $attributeData): array
+    {
+        $defaults = [
+            'description' => '',
+            'mandatory' => 'N',
+            'encrypted' => 'N',
+            'show_register' => 'Y',
+            'type' => 'TB',
+            'type_options' => '[]',
+            'cpdbmap' => ''
+        ];
+
+        // Merge with defaults, keeping existing values
+        $normalized = array_merge($defaults, $attributeData);
+
+        // Ensure boolean-like values are normalized to Y/N
+        $normalized['mandatory'] = in_array($normalized['mandatory'], ['Y', 'y', '1', 1, true], true) ? 'Y' : 'N';
+        $normalized['encrypted'] = in_array($normalized['encrypted'], ['Y', 'y', '1', 1, true], true) ? 'Y' : 'N';
+        $normalized['show_register'] = in_array($normalized['show_register'], ['Y', 'y', '1', 1, true], true) ? 'Y' : 'N';
+
+        // Ensure type_options is a valid JSON string
+        if (!is_string($normalized['type_options'])) {
+            $normalized['type_options'] = json_encode($normalized['type_options']);
+        }
+
+        // Validate type_options is valid JSON
+        json_decode($normalized['type_options']);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            $normalized['type_options'] = '[]';
+        }
+
+        return $normalized;
     }
 }
