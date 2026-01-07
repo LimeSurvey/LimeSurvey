@@ -1,8 +1,20 @@
+<?php
+/** @var int $attribute_id */
+/** @var string $attribute_type */
+/** @var string $core_attribute */
+/** @var string $defaultname */
+/** @var string $encrypted */
+/** @var string $name */
+/** @var string $value */
+/** @var string $visible */
+
+$elementId = 'attribute_date_'. $name;
+?>
 <div class="mb-3">
-    <label class="form-label" for="datepickerInputField_[<?=CHtml::encode($name)?>]"><?php echo $defaultname; ?></label>
+    <label class="form-label" for="<?=CHtml::encode($elementId)?>"><?php echo $defaultname; ?></label>
     <?php
     $dateFormatDetails = getDateFormatData(App()->session['dateformat']);
-    $elementId = 'attribute_date_'. $name;
+
     App()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', [
             'name' => $name,
             'id' => $elementId,
@@ -28,5 +40,4 @@
             }
         });
     </script>
-
 </div>
