@@ -21,25 +21,13 @@ class ParticipantAttributeMockSetFactory
             ? $init->modelParticipantAttributeName
             : $this->getMockParticipantAttributeName();
 
-        $mockSet->modelParticipantAttributeName = ($init && isset($init->modelParticipantAttributeName))
-            ? $init->modelParticipantAttributeName
-            : $this->getMockModelParticipantAttributeName($mockSet->modelParticipantAttributeName);
-
         $mockSet->modelParticipantAttributeNameLang = ($init && isset($init->modelParticipantAttributeNameLang))
             ? $init->modelParticipantAttributeNameLang
             : $this->getMockParticipantAttributeNameLang();
 
-        $mockSet->modelParticipantAttributeNameLang = ($init && isset($init->modelParticipantAttributeNameLang))
-            ? $init->modelParticipantAttributeNameLang
-            : $this->getMockModelParticipantAttributeNameLang($mockSet->modelParticipantAttributeNameLang);
-
         $mockSet->modelParticipantAttributeValue = ($init && isset($init->modelParticipantAttributeValue))
             ? $init->modelParticipantAttributeValue
             : $this->getMockParticipantAttributeValue();
-
-        $mockSet->modelParticipantAttributeValue = ($init && isset($init->modelParticipantAttributeValue))
-            ? $init->modelParticipantAttributeValue
-            : $this->getMockModelParticipantAttributeValue($mockSet->modelParticipantAttributeValue);
 
         return $mockSet;
     }
