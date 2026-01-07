@@ -3337,7 +3337,7 @@ class Tokens extends SurveyCommonAction
             if ($attributeService === null) {
                 $diContainer = \LimeSurvey\DI::getContainer();
                 $attributeService = $diContainer->get(
-                    LimeSurvey\Models\Services\ParticipantsAttributeService::class
+                    LimeSurvey\Models\Services\ParticipantAttributeService::class
                 );
             }
             $decodedOptions = $attributeService->decodeJsonEncodedTypeOptions($attrData['type_options']);

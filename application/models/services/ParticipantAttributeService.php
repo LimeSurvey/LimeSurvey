@@ -16,7 +16,7 @@ use ParticipantAttributeValue;
  * (see ParticipantsAction.php and Participant.php)
  * which should be moved in here.
  */
-class ParticipantsAttributeService
+class ParticipantAttributeService
 {
     private ParticipantAttributeName $modelParticipantAttributeName;
     private ParticipantAttributeNameLang $modelParticipantAttributeLang;

@@ -2072,7 +2072,7 @@ class Participant extends LSActiveRecord
 
         $diContainer = \LimeSurvey\DI::getContainer();
         $attributeService = $diContainer->get(
-            LimeSurvey\Models\Services\ParticipantsAttributeService::class
+            LimeSurvey\Models\Services\ParticipantAttributeService::class
         );
 
         /* Create CPDB attributes */
