@@ -969,10 +969,6 @@ class Tokens extends SurveyCommonAction
             $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
 
-        /*if (!$survey->hasTokensTable) {
-            // If no tokens table exists
-            $this->newParticipantTable($iSurveyId);
-        }*/
         Yii::app()->loadHelper("surveytranslator");
 
 
@@ -1081,6 +1077,9 @@ class Tokens extends SurveyCommonAction
             } elseif ($cntAttributeErrors > 0) { // attribute validation errors
                 $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'], App()->language);
                 $aData['aAttributeFields'] = getParticipantAttributes($iSurveyId);
+                foreach ($aData['aAttributeFields'] as $attrName => $attrData) {
+                    $aData['aAttributeFields'][$attrName] = $this->decodeAttributeSelectOptions($attrData);
+                }
 
                 $aData['showSaveButton'] = true;
                 $aData['topBar']['name'] = 'tokensTopbar_view';
@@ -1127,7 +1126,9 @@ class Tokens extends SurveyCommonAction
 
             $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'], App()->language);
             $aData['aAttributeFields'] = getParticipantAttributes($iSurveyId);
-
+            foreach ($aData['aAttributeFields'] as $attrName => $attrData) {
+                $aData['aAttributeFields'][$attrName] = $this->decodeAttributeSelectOptions($attrData);
+            }
             $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
                 '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
                 [
@@ -1159,7 +1160,6 @@ class Tokens extends SurveyCommonAction
     {
         $iSurveyId = (int) $iSurveyId;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
@@ -1181,7 +1181,7 @@ class Tokens extends SurveyCommonAction
         $aData['surveyid'] = $iSurveyId;
         $aMandatoryAttributes = $oSurvey->getTokenEncryptionOptions();
         $aAttributes = getAttributeFieldNames($iSurveyId);
-        $aData['tokenfields'] = array_merge(array_keys($aMandatoryAttributes['columns']), $aAttributes);
+        $aData['tokenFields'] = array_merge(array_keys($aMandatoryAttributes['columns']), $aAttributes);
 
         $aMandatoryList = array();
         $aAttributesDesc = $oSurvey->decodedAttributedescriptions;
@@ -1199,15 +1199,15 @@ class Tokens extends SurveyCommonAction
         $aData['tokenfielddata'] = $aAttributesDesc;
         // Prepare token field list for dropDownList
         $tokenfieldlist = array();
-        foreach ($aData['tokenfields'] as $tokenfield) {
-            if (isset($aData['tokenfielddata'][$tokenfield]) && array_key_exists('description', $aData['tokenfielddata'][$tokenfield])) {
-                $description = $aData['tokenfielddata'][$tokenfield]['description'];
+        foreach ($aData['tokenFields'] as $tokenField) {
+            if (isset($aData['tokenfielddata'][$tokenField]) && array_key_exists('description', $aData['tokenfielddata'][$tokenField])) {
+                $description = $aData['tokenfielddata'][$tokenField]['description'];
             } else {
                 $description = "";
             }
-            $description = sprintf(gT("Attribute %s (%s)"), str_replace("attribute_", "", (string) $tokenfield), $description);
-            if (!in_array($tokenfield, $aMandatoryList)) {
-                $tokenfieldlist[] = array("id" => $tokenfield, "description" => $description);
+            $description = sprintf(gT("Attribute %s (%s)"), str_replace("attribute_", "", (string) $tokenField), $description);
+            if (!in_array($tokenField, $aMandatoryList)) {
+                $tokenfieldlist[] = array("id" => $tokenField, "description" => $description);
             }
         }
         $aData['tokenfieldlist'] = $tokenfieldlist;
@@ -1225,6 +1225,7 @@ class Tokens extends SurveyCommonAction
         foreach (ParticipantAttributeName::model()->getCPDBAttributes() as $aCPDBAttribute) {
             $aData['aCPDBAttributes'][$aCPDBAttribute['attribute_id']] = $aCPDBAttribute['attribute_name'];
         }
+        $aData['attributeTypeDropdownArray'] = ParticipantAttributeName::model()->getAttributeTypeDropdownArray();
 
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
@@ -1394,16 +1395,20 @@ class Tokens extends SurveyCommonAction
             } else {
                 $aOptionsBeforeChange[$fieldname]['encrypted'] = 'N';
             }
+
+            $request = App()->request;
             $fieldcontents[$fieldname] = [
-                'description'   => strip_tags(Yii::app()->request->getPost('description_' . $fieldname, '')),
-                'mandatory'     => Yii::app()->request->getPost('mandatory_' . $fieldname) == '1' ? 'Y' : 'N',
-                'encrypted'     => Yii::app()->request->getPost('encrypted_' . $fieldname) == '1' ? 'Y' : 'N',
-                'show_register' => Yii::app()->request->getPost('show_register_' . $fieldname) == '1' ? 'Y' : 'N',
-                'cpdbmap'       => Yii::app()->request->getPost('cpdbmap_' . $fieldname)
+                'description'   => strip_tags($request->getPost('description_' . $fieldname, '')),
+                'mandatory'     => $request->getPost('mandatory_' . $fieldname) == '1' ? 'Y' : 'N',
+                'encrypted'     => $request->getPost('encrypted_' . $fieldname) == '1' ? 'Y' : 'N',
+                'show_register' => $request->getPost('show_register_' . $fieldname) == '1' ? 'Y' : 'N',
+                'type'          => $request->getPost('type_' . $fieldname),
+                'type_options'  => $request->getPost('type_options_' . $fieldname, '[]'),
+                'cpdbmap'       => $request->getPost('cpdbmap_' . $fieldname)
             ];
             $aOptionsAfterChange[$fieldname]['encrypted'] = $fieldcontents[$fieldname]['encrypted'];
             foreach ($languages as $language) {
-                $fieldNameValue = Yii::app()->request->getPost("caption_" . $fieldname . "_" . $language);
+                $fieldNameValue = $request->getPost("caption_" . $fieldname . "_" . $language);
                 $captions[$language][$fieldname] = $fieldNameValue;
             }
         }
@@ -2813,6 +2818,7 @@ class Tokens extends SurveyCommonAction
                 if (array_key_exists('description', $aAttrData) && $aAttrData['description'] == '') {
                     $aAttrData['description'] = $sField;
                 }
+                $aAttrData = $this->decodeAttributeSelectOptions($aAttrData);
                 $aData['attrfieldnames'][(string) $sField] = $aAttrData;
             }
         }
@@ -3311,5 +3317,34 @@ class Tokens extends SurveyCommonAction
         $survey->tokenencryptionoptions = ls_json_encode($tokenencryptionoptions);
         Token::createTable($survey->sid);
         LimeExpressionManager::setDirtyFlag();
+    }
+
+    /**
+     * Decodes and formats attribute select options from JSON string to associative array.
+     *
+     * This method checks if the 'type_options' key exists in the provided attribute data array
+     * and if it contains a JSON string. If so, it decodes the JSON and converts a numeric array
+     * into an associative array where each value serves as both the key and value. This is useful
+     * for formatting select/dropdown options for form rendering.
+     *
+     * @param array $attrData The attribute data array that may contain a 'type_options' key with JSON string value
+     * @return array The modified attribute data array with decoded and formatted type_options, or the original array if no changes were made
+     */
+    private function decodeAttributeSelectOptions(array $attrData)
+    {
+        if (array_key_exists('type_options', $attrData) && is_string($attrData['type_options'])) {
+            static $attributeService = null;
+            if ($attributeService === null) {
+                $diContainer = \LimeSurvey\DI::getContainer();
+                $attributeService = $diContainer->get(
+                    LimeSurvey\Models\Services\ParticipantAttributeService::class
+                );
+            }
+            $decodedOptions = $attributeService->decodeJsonEncodedTypeOptions($attrData['type_options']);
+            // Always normalize to array for downstream form rendering (even if empty / invalid -> []).
+            $attrData['type_options'] = $decodedOptions;
+        }
+
+        return $attrData;
     }
 }
