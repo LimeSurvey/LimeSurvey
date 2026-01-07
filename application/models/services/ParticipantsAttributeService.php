@@ -8,6 +8,14 @@ use ParticipantAttributeName;
 use ParticipantAttributeNameLang;
 use ParticipantAttributeValue;
 
+/**
+ * Service class for managing participant attributes.
+ * All dependencies are injected to enable mocking.
+ *
+ * There is still plenty of attribute related functions scattered in the codebase
+ * (see ParticipantsAction.php and Participant.php)
+ * which should be moved in here.
+ */
 class ParticipantsAttributeService
 {
     private ParticipantAttributeName $modelParticipantAttributeName;
