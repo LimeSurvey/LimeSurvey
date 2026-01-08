@@ -171,14 +171,15 @@ class SurveyThemeConfiguration
      */
     public function getSurveyThemeOptionsAttributes($themeData): array
     {
-        $attributesReact = $themeData['aOptionAttributes']['optionsOrderReact'];
-        $attributesCore = $themeData['aOptionAttributes']['optionAttributes'];
-        $currentThemeOptions = $themeData['aTemplateConfiguration']['options'];
-        $parentThemeOptions = $themeData['oParentOptions'];
+        $attributesReact = $themeData['aOptionAttributes']['optionsOrderReact'] ?? [];
+        $attributesCore = $themeData['aOptionAttributes']['optionAttributes'] ?? [];
+        $currentThemeOptions = $themeData['aTemplateConfiguration']['options'] ?? [];
+        $parentThemeOptions = $themeData['oParentOptions'] ?? [];
         $attributesCompleteData = [];
         $imageDefaultDropDown = [];
         $iterator = 0;
-        foreach ($themeData['aTemplateConfiguration']['imageFileList'] as $imageData) {
+        $imageFileList = $themeData['aTemplateConfiguration']['imageFileList'] ?? [];
+        foreach ($imageFileList as $imageData) {
             $imageDefaultDropDown[$iterator]['value'] = $imageData['filepath'];
             $imageDefaultDropDown[$iterator]['label'] = $imageData['filename'];
             $imageDefaultDropDown[$iterator]['group'] = $imageData['group'];
@@ -187,15 +188,28 @@ class SurveyThemeConfiguration
             $iterator++;
         }
         foreach ($attributesReact as $key => $optionAttribute) {
+            if (!isset($attributesCore[$key])) {
+                continue;
+            }
+
             $attributesCompleteData[$key] = $attributesCore[$key];
             $attributesCompleteData[$key]['category'] = $optionAttribute['category'];
             $attributesCompleteData[$key]['currentValue'] = $currentThemeOptions->$key ?? 'inherit';
             $attributesCompleteData[$key]['parentValue'] = $parentThemeOptions[$key];
-            if ($attributesCompleteData[$key]['type'] === 'dropdown') {
+            if (
+                $attributesCompleteData[$key]['type'] === 'dropdown'
+                // "checkicon" is of type "icon" but has dropdown options
+                || !empty($attributesCompleteData[$key]['dropdownoptions'])
+            ) {
                 $attributesCompleteData[$key]['dropdownoptions'] = $this->extractDropdownOptions($attributesCompleteData[$key]['dropdownoptions']);
                 if (empty($attributesCompleteData[$key]['dropdownoptions'])) {
                     $attributesCompleteData[$key]['dropdownoptions'] = $imageDefaultDropDown;
                 }
+            }
+
+            // TODO: incorporate this option type into the theme properly
+            if (in_array($key, ['brandlogofile', 'backgroundimagefile'])) {
+                $attributesCompleteData[$key]['hasFileUpload'] = true;
             }
         }
 
