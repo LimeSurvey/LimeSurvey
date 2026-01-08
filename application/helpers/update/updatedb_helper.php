@@ -297,13 +297,13 @@ function decryptResponseTables450($oDB)
         ->where('active =:active', ['active' => 'Y'])
         ->queryAll();
     foreach ($surveys as $survey) {
-        $tableExists = tableExists("{{responses_{$survey['sid']}}}");
+        $tableExists = tableExists("{{survey_{$survey['sid']}}}");
         if (!$tableExists) {
             continue;
         }
         $responsesCount = $oDB->createCommand()
             ->select('count(*)')
-            ->from("{{responses_{$survey['sid']}}}")
+            ->from("{{survey_{$survey['sid']}}}")
             ->queryScalar();
         if ($responsesCount) {
             $maxRows = 100;
@@ -313,7 +313,7 @@ function decryptResponseTables450($oDB)
                 $offset = $i * $maxRows;
                 $responses = $oDB->createCommand()
                     ->select('*')
-                    ->from("{{responses_{$survey['sid']}}}")
+                    ->from("{{survey_{$survey['sid']}}}")
                     ->offset($offset)
                     ->limit($maxRows)
                     ->queryAll();
@@ -329,7 +329,7 @@ function decryptResponseTables450($oDB)
                     if ($recryptedResponse) {
                         // use createUpdateCommand() because the update() function does not properly escape auto generated params causing errors
                         $criteria = $oDB->getCommandBuilder()->createCriteria('id=:id', ['id' => $response['id']]);
-                        $oDB->getCommandBuilder()->createUpdateCommand("{{responses_{$survey['sid']}}}", $recryptedResponse, $criteria)->execute();
+                        $oDB->getCommandBuilder()->createUpdateCommand("{{survey_{$survey['sid']}}}", $recryptedResponse, $criteria)->execute();
                     }
                 }
             }
