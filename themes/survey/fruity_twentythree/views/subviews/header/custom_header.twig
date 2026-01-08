@@ -41,6 +41,10 @@
         color: {{ aSurveyInfo.options.fontcolor  }};
     }
 
+    .question-container {
+        background-color: {{ aSurveyInfo.options.questionbackgroundcolor  }};
+    }
+
     {% set checkicon = '"\\' ~  aSurveyInfo.options.checkicon   ~ '"' %}
     .checkbox-item input[type="checkbox"]:checked + label::after, .checkbox-item input[type="radio"]:checked + label::after {
         content: {{ checkicon }};
@@ -144,6 +148,36 @@
             animation-name: {{ aSurveyInfo.options.bodyanimation  }};
             animation-duration: {{ bodyanimationduration }}ms;
             animation-fill-mode: both;
+        }
+    {% endif %}
+
+    {% if (aSurveyInfo.options.cornerradius == 1 ) %}
+        {% set cornerradius = '0px' %}
+    {% endif %}
+    {% if (aSurveyInfo.options.cornerradius == 3 ) %}
+        {% set cornerradius = '20px' %}
+    {% endif %}
+        {% if (aSurveyInfo.options.cornerradius != 2 ) %}
+        .question-container,
+        .form-control,
+        .form-select,
+        .btn,
+        .yesno-button.btn-group > .btn:not(:last-child),
+        .yesno-button.btn-group > .btn,
+        .gender-button.btn-group > .btn:not(:last-child),
+        .gender-button.btn-group > .btn {
+            border-radius: {{ cornerradius }};
+        }
+
+        .input-group:not(.has-validation) > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu),
+        .input-group:not(.has-validation) > .dropdown-toggle:nth-last-child(n+3) {
+            border-top-left-radius: {{ cornerradius }};
+            border-bottom-left-radius: {{ cornerradius }};
+        }
+
+        .input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+            border-top-right-radius: {{ cornerradius }};
+            border-bottom-right-radius: {{ cornerradius }};
         }
     {% endif %}
 </style>
