@@ -2416,17 +2416,16 @@ function upgradeSurveyTables164()
         return "Database Error";
     } else {
         foreach ($aResult as $sv) {
-            $sSurveyTableName = 'responses_' . $sv['sid'];
+            $sSurveyTableName = 'survey_' . $sv['sid'];
             $aColumnNames = $aColumnNamesIterator = Yii::app()->db->schema->getTable('{{' . $sSurveyTableName . '}}')->columnNames;
             if (!in_array('token', $aColumnNames)) {
-                addColumn('{{responses_' . $sv['sid'] . '}}', 'token', 'string(36)');
+                addColumn('{{survey_' . $sv['sid'] . '}}', 'token', 'string(36)');
             } else {
-                alterColumn('{{responses_' . $sv['sid'] . '}}', 'token', 'string(36)');
+                alterColumn('{{survey_' . $sv['sid'] . '}}', 'token', 'string(36)');
             }
         }
     }
 }
-
 
 function upgradeSurveys156()
 {
