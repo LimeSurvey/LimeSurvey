@@ -1316,7 +1316,7 @@ function do_ranking($ia)
 
     $thisvalue = "";
     for ($i = 1; $i <= $iMaxLine; $i++) {
-        $myfname = $ia[1] . "_R" . $aAnswers[$i]->aid;
+        $myfname = $ia[1] . "_R" . $aAnswers[$i - 1]->aid;
         $labeltext = ($i == 1) ? gT('First choice') : sprintf(gT('Choice of rank %s'), $i);
         $aItemData = [];
 
