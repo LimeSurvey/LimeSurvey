@@ -174,6 +174,9 @@ class SurveyActivator
                 case "lastpage":
                     $aTableDefinition[$aRow['fieldname']] = "integer";
                     break;
+                case "quota_exit":
+                    $aTableDefinition[$aRow['fieldname']] = "integer";
+                    break;
                 case Question::QT_N_NUMERICAL:
                 case Question::QT_K_MULTIPLE_NUMERICAL:
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "decimal (30,10)");
