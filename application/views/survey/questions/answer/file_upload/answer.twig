@@ -28,7 +28,7 @@
         </a>
     </div>
     <input type='hidden' id='java{{ fileid }}' name='{{ fileid }}' value='{{ value|escape("html_attr") }}' />
-    <input type='hidden' id='java{{ fileid }}_filecount' name='{{ fileid }}_filecount' value="{{ filecountvalue }}" />
+    <input type='hidden' id='java{{ fileid }}_Cfilecount' name='{{ fileid }}_Cfilecount' value="{{ filecountvalue }}" />
     <div id='{{ fileid }}_uploadedfiles' class="d-none">
         <table width="100%" class="question uploadedfiles">
             <thead>
@@ -95,7 +95,7 @@
     
     $(document).on("ready pjax:scriptcomplete", function(){
         var fieldname = "{{fileid}}",
-            filecount = $("#"+fieldname+"_filecount").val(),
+            filecount = $("#"+fieldname+"_Cfilecount").val(),
             showTitle = "{{showTitle}}",
             showComment = "{{showComment}}";
         window.uploadQuestionController_{{ fileid }}.displayUploadedFiles( filecount, fieldname, showTitle, showComment);
@@ -124,7 +124,7 @@
         }
 
         $("#{{fileid}}").val(JSON.stringify(jsonArray));
-        $("#{{fileid}}_filecount").val(filecount);
+        $("#{{fileid}}_Cfilecount").val(filecount);
     });
 </script>
 

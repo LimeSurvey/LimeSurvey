@@ -2427,7 +2427,6 @@ function upgradeSurveyTables164()
     }
 }
 
-
 function upgradeSurveys156()
 {
     $sSurveyQuery = "SELECT * FROM {{surveys_languagesettings}}";

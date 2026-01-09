@@ -493,7 +493,7 @@ class PrintableSurvey extends SurveyCommonAction
                     //END OF GETTING CONDITIONS
 
                     $qid = $arQuestion['qid'];
-                    $fieldname = "$surveyid" . "X" . "$gid" . "X" . "$qid";
+                    $fieldname = "Q" . "$qid";
 
                     if (isset($showsgqacode) && $showsgqacode == true) {
                         $arQuestion['question'] = $arQuestion['question'] . "<br />" . gT("ID:") . " $fieldname <br />" .
@@ -655,7 +655,7 @@ class PrintableSurvey extends SurveyCommonAction
                                     $qidattributes["printable_help"][$sLanguageCode] = gT("Other");
                                 }
                                 //                    $printablesurveyoutput .="\t".$wrapper['item-start']."\t\t".self::inputTypeImage('radio' , gT("Other"))."\n\t\t\t".gT("Other")."\n\t\t\t<input type='text' size='30' readonly='readonly' />\n".$wrapper['item-end'];
-                                $question['answer'] .= $wrapper['item-start-other'] . self::inputTypeImage('radio', gT($qidattributes["printable_help"][$sLanguageCode])) . ' ' . gT($qidattributes["printable_help"][$sLanguageCode]) . self::addsgqacode(" (-oth-)") . "\n\t\t\t" . self::inputTypeImage('other') . self::addsgqacode(" (" . $arQuestion['sid'] . "X" . $arQuestion['gid'] . "X" . $arQuestion['qid'] . "other)") . "\n" . $wrapper['item-end'];
+                                $question['answer'] .= $wrapper['item-start-other'] . self::inputTypeImage('radio', gT($qidattributes["printable_help"][$sLanguageCode])) . ' ' . gT($qidattributes["printable_help"][$sLanguageCode]) . self::addsgqacode(" (-oth-)") . "\n\t\t\t" . self::inputTypeImage('other') . self::addsgqacode(" (" . "Q" . $arQuestion['qid'] . "_Cother)") . "\n" . $wrapper['item-end'];
                             }
                             $question['answer'] .= $wrapper['whole-end'];
                             //Let's break the presentation into columns.
@@ -673,7 +673,7 @@ class PrintableSurvey extends SurveyCommonAction
                             $question['answer'] .= "\t</ul>\n";
 
                             $question['answer'] .= "\t<div class=\"comment\">\n\t\t" . gT("Make a comment on your choice here:") . "\n";
-                            $question['answer'] .= "\t\t" . self::inputTypeImage('textarea', gT("Make a comment on your choice here:"), 50, 8) . self::addsgqacode(" (" . $arQuestion['sid'] . "X" . $arQuestion['gid'] . "X" . $arQuestion['qid'] . "comment)") . "\n\t</div>\n";
+                            $question['answer'] .= "\t\t" . self::inputTypeImage('textarea', gT("Make a comment on your choice here:"), 50, 8) . self::addsgqacode(" (" . "Q" . $arQuestion['qid'] . "_Ccomment)") . "\n\t</div>\n";
                             break;
 
                             // ==================================================================

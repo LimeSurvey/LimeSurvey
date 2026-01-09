@@ -77,7 +77,7 @@ class DailyActivityStatistics implements StatisticsChartInterface
     {
         $command = Yii::app()->db->createCommand()
             ->select(['DATE(submitdate) as response_date', 'COUNT(id) as responses', 'GROUP_CONCAT(id) as response_ids'])
-            ->from("{{survey_$surveyId}}")
+            ->from("{{responses_$surveyId}}")
             ->where('submitdate IS NOT NULL AND submitdate >= :startDate', [':startDate' => $startDate->format('Y-m-d 00:00:00')]);
 
 
