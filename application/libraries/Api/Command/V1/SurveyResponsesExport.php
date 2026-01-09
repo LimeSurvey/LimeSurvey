@@ -56,13 +56,6 @@ class SurveyResponsesExport implements CommandInterface
      */
     protected ExportSurveyResultsService $exportSurvey;
 
-    /**
-     * Formatting options that control export behaviour (CSV separator, selected columns, etc.).
-     *
-     * @var FormattingOptions
-     */
-    protected FormattingOptions $formattingOptions;
-
 
     /**
      * Allowed export formats.
@@ -78,6 +71,7 @@ class SurveyResponsesExport implements CommandInterface
      * @param Survey $survey Survey model/service used to fetch surveys
      * @param Permission $permission Permission helper for checking access
      * @param ResponseFactory $responseFactory Factory to create API responses
+     * @param ExportSurveyResultsService $exportSurvey Service responsible for exporting survey results
      */
     public function __construct(
         Survey $survey,
@@ -88,9 +82,7 @@ class SurveyResponsesExport implements CommandInterface
         $this->permission = $permission;
         $this->survey = $survey;
         $this->responseFactory = $responseFactory;
-        // No DI for ExportSurveyResultsService and FormattingOptions yet
         $this->exportSurvey = $exportSurvey;
-        $this->formattingOptions = new FormattingOptions();
     }
 
     /**
@@ -141,7 +133,7 @@ class SurveyResponsesExport implements CommandInterface
 
         [$type, $language] = $this->getExportRequestData($request);
 
-        return $this->exportSurvey->exportResponses($surveyId, $language, $type, $this->formattingOptions);
+        return $this->exportSurvey->exportResponses($surveyId, $type, $language);
     }
 
     /**
@@ -159,12 +151,8 @@ class SurveyResponsesExport implements CommandInterface
             throw new InvalidArgumentException('Invalid export format specified');
         }
 
-        $this->formattingOptions->csvFieldSeparator = $request->getData('separator', ',');
-        $this->formattingOptions->selectedColumns = $request->getData('columns', '');
-
         $language = $request->getData('language', $this->surveyModel->language);
-        $this->formattingOptions->output = 'display';
 
-        return compact('type', 'language');
+        return [$type, $language];
     }
 }
