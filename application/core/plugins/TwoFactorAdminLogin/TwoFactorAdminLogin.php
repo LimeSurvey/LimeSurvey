@@ -28,6 +28,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
     private $o2FA = null;
 
+
     /** @inheritdoc **/
     public $allowedPublicMethods = [
         'userindex',
@@ -85,6 +86,16 @@ class TwoFactorAdminLogin extends AuthPluginBase
                 'md5' => 'MD5',
             ],
             'help' => 'Please keep in mind, that most tools only work with SHA1 hashing.'
+        ),
+        'SecretLength' => array(
+            'type' => 'int',
+            'label' => 'Secret length',
+            'default' => '',
+            'htmlOptions' => [
+                'min' => 128,
+                'placeholder' => 128
+            ],
+            'help' => 'Length of the secret in bits. Minimum and default are 128.'
         ),
         'separatorYubi' => array(
             'type' => 'separator',
@@ -377,11 +388,13 @@ class TwoFactorAdminLogin extends AuthPluginBase
     //################ Direct access methods ###############
 
     /**
-     * Renders the content of the modal to create a 2FA key registration
+     * Renders modal content for creating a new 2FA key for a user.
      *
-     * @param PluginEvent $oEvent
-     * @param CHttpRequest $oRequest
-     * @return string
+     * Generates a secret (respecting the SecretLength setting, minimum 128 bits), builds a QR code data URI for the secret, and returns the rendered partial HTML. If the caller lacks permission to create keys for the target user, renders an error partial.
+     *
+     * @param PluginEvent $oEvent The plugin event that triggered this call.
+     * @param CHttpRequest $oRequest The current HTTP request.
+     * @return string Rendered HTML of the modal content or an error partial.
      */
     public function directCallCreateNewKey($oEvent, $oRequest)
     {
@@ -402,7 +415,11 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $o2FA = $this->get2FAObject();
 
         $oTFAModel->uid = $iUserId;
-        $oTFAModel->secretKey = $o2FA->createSecret();
+        $SecretLength = intval($this->get('SecretLength', null, null, ''));
+        if ($SecretLength < 128) {
+            $SecretLength = 128;
+        }
+        $oTFAModel->secretKey = $o2FA->createSecret($SecretLength);
         $sQRCodeContent = '<img src="' . $o2FA->getQRCodeImageAsDataUri('LimeSurvey - User ID: ' . Yii::app()->user->id, $oTFAModel->secretKey) . '">';
 
         return $this->renderPartial('_partial/create', [

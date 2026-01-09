@@ -88,15 +88,17 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
         $mainQuestionTitle = $this->question['question'];
         $stats = [];
 
+        $codes = array_map(fn($data) => $data['code'], $this->answers);
+        $labels  = array_map(fn($data) => $data['answer'], $this->answers);
         foreach ($this->question['subQuestions'] as $subQuestion) {
-            $title = $mainQuestionTitle . "[{$subQuestion['question']}";
+            $rt = $this->rt . $subQuestion['title'];
+
+            $title = $mainQuestionTitle . "[{$subQuestion['question']}]";
             $legend = [];
             $items = [];
 
             if ((int)$subQuestion['scale_id'] === 0) {
-                $count = $this->getResponseCount($this->rt . $subQuestion['title']);
-                $legend[] = $subQuestion['question'];
-                $items[] = ['key' => $subQuestion['title'], 'value' => $count, 'title' => $subQuestion['question']];
+                [$legend, $items] = $this->buildItemsFromCodes($rt, $codes, $labels);
             }
 
             $stats[] = new StatisticsChartDTO($title, $legend, $items, $this->calculateTotal($items), ['question' => $this->question]);

@@ -30,7 +30,7 @@ class Update_641 extends DatabaseUpdateBase
                 ':name' => 'bootswatch'
             ]
         );
-        // Update extended theme based on description : can be updated via XML file before import. The description use XML tiwg file directly
+        // Update extended theme based on description : can be updated via XML file before import. The description use XML twig file directly
         $this->db->createCommand()->update(
             "{{templates}}",
             [

@@ -44,6 +44,7 @@
                                 <div>
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "bypassbademails",
+                                        'ariaLabel'    => gT("Bypass participants with failing email addresses"),
                                         'checkedOption' => '1',
                                         'selectOptions' => [
                                             '1' => gT('On'),
@@ -67,6 +68,7 @@
                                 <div>
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "bypassdatecontrol",
+                                        'ariaLabel'    => gT("Bypass date control before sending email"),
                                         'checkedOption' => '0',
                                         'selectOptions' => [
                                             '1' => gT('On'),
