@@ -9,21 +9,21 @@ class XlsxExportWriter implements ExportWriterInterface
     /**
      * Export survey responses to XLSX format.
      *
+     * Can generate content in-memory or write to a file depending on outputMode.
+     *
      * @param array $responses The survey responses data
      * @param array $surveyQuestions The survey questions field map
-     * @param array $metadata Additional metadata (survey ID, language, etc.)
-     * @return array Export result with file path and metadata
-     * @throws RuntimeException If file cannot be created
+     * @param array $metadata Additional metadata (survey ID, language, outputMode, etc.)
+     * @return array Export result with content/filePath and metadata
+     * @throws RuntimeException If content cannot be generated or file cannot be created
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function export(array $responses, array $surveyQuestions, array $metadata): array
     {
         $surveyId = $metadata['surveyId'];
         $timestamp = date('YmdHis');
-
-        $tempDir = sys_get_temp_dir();
         $filename = "survey_{$surveyId}_responses_{$timestamp}.xlsx";
-        $filePath = $tempDir . DIRECTORY_SEPARATOR . $filename;
+        $outputMode = $metadata['outputMode'] ?? 'memory';
 
         // Build spreadsheet data
         $data = [];
@@ -66,21 +66,36 @@ class XlsxExportWriter implements ExportWriterInterface
             $data[] = $row;
         }
 
-        // Create XLSX file using a simple XML-based approach
-        $this->createXlsxFile($filePath, $data);
-
-        return [
-            'filePath' => $filePath,
-            'filename' => $filename,
-            'mimeType' => $this->getMimeType(),
-            'extension' => $this->getFileExtension(),
-            'size' => filesize($filePath),
-            'responseCount' => count($responses)
-        ];
+        // Create XLSX file/content based on output mode
+        if ($outputMode === 'file') {
+            $tempDir = sys_get_temp_dir();
+            $filePath = $tempDir . DIRECTORY_SEPARATOR . $filename;
+            $this->createXlsxFile($filePath, $data);
+            return [
+                'content' => null,
+                'filePath' => $filePath,
+                'filename' => $filename,
+                'mimeType' => $this->getMimeType(),
+                'extension' => $this->getFileExtension(),
+                'size' => filesize($filePath),
+                'responseCount' => count($responses)
+            ];
+        } else {
+            $content = $this->createXlsxContent($data);
+            return [
+                'content' => $content,
+                'filePath' => null,
+                'filename' => $filename,
+                'mimeType' => $this->getMimeType(),
+                'extension' => $this->getFileExtension(),
+                'size' => strlen($content),
+                'responseCount' => count($responses)
+            ];
+        }
     }
 
     /**
-     * Create XLSX file from data array.
+     * Create XLSX file at specified path from data array.
      *
      * @param string $filePath
      * @param array $data
@@ -95,6 +110,52 @@ class XlsxExportWriter implements ExportWriterInterface
             throw new RuntimeException("Unable to create XLSX file: $filePath");
         }
 
+        $this->addXlsxFilesToZip($zip, $data);
+        $zip->close();
+    }
+
+    /**
+     * Create XLSX content from data array.
+     *
+     * @param array $data
+     * @return string The XLSX file content
+     * @throws RuntimeException
+     */
+    private function createXlsxContent(array $data): string
+    {
+        // Create a temporary file for the ZIP
+        $tempFile = tempnam(sys_get_temp_dir(), 'xlsx_');
+
+        // Create a simple XLSX structure using ZIP
+        $zip = new \ZipArchive();
+        if ($zip->open($tempFile, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== true) {
+            throw new RuntimeException("Unable to create XLSX content");
+        }
+
+        $this->addXlsxFilesToZip($zip, $data);
+        $zip->close();
+
+        // Read the content and clean up
+        $content = file_get_contents($tempFile);
+        unlink($tempFile);
+
+        if ($content === false) {
+            throw new RuntimeException("Unable to read XLSX content");
+        }
+
+        return $content;
+    }
+
+    /**
+     * Add all necessary files to XLSX ZIP archive.
+     *
+     * @param \ZipArchive $zip
+     * @param array $data
+     * @return void
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
+    private function addXlsxFilesToZip(\ZipArchive $zip, array $data): void
+    {
         // Add [Content_Types].xml
         $contentTypes = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . "\n";
         $contentTypes .= '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">';
@@ -156,8 +217,6 @@ class XlsxExportWriter implements ExportWriterInterface
         $worksheet .= '</sheetData>';
         $worksheet .= '</worksheet>';
         $zip->addFromString('xl/worksheets/sheet1.xml', $worksheet);
-
-        $zip->close();
     }
 
     /**

@@ -2,28 +2,25 @@
 
 namespace LimeSurvey\Models\Services\Export;
 
-use RuntimeException;
-
 class XlsExportWriter implements ExportWriterInterface
 {
     /**
      * Export survey responses to XLS format (Excel 97-2003).
      *
+     * Can generate content in-memory or write to a file depending on outputMode.
+     *
      * @param array $responses The survey responses data
      * @param array $surveyQuestions The survey questions field map
-     * @param array $metadata Additional metadata (survey ID, language, etc.)
-     * @return array Export result with file path and metadata
-     * @throws RuntimeException If file cannot be created
+     * @param array $metadata Additional metadata (survey ID, language, outputMode, etc.)
+     * @return array Export result with content/filePath and metadata
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function export(array $responses, array $surveyQuestions, array $metadata): array
     {
         $surveyId = $metadata['surveyId'];
         $timestamp = date('YmdHis');
-
-        $tempDir = sys_get_temp_dir();
         $filename = "survey_{$surveyId}_responses_{$timestamp}.xls";
-        $filePath = $tempDir . DIRECTORY_SEPARATOR . $filename;
+        $outputMode = $metadata['outputMode'] ?? 'memory';
 
         // Build HTML table that Excel can read as XLS
         $html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">';
@@ -75,18 +72,33 @@ class XlsExportWriter implements ExportWriterInterface
 
         $html .= '</table></body></html>';
 
-        if (file_put_contents($filePath, $html) === false) {
-            throw new RuntimeException("Unable to create export file: $filePath");
+        // Handle output mode
+        if ($outputMode === 'file') {
+            $tempDir = sys_get_temp_dir();
+            $filePath = $tempDir . DIRECTORY_SEPARATOR . $filename;
+            if (file_put_contents($filePath, $html) === false) {
+                throw new \RuntimeException("Unable to create export file: $filePath");
+            }
+            return [
+                'content' => null,
+                'filePath' => $filePath,
+                'filename' => $filename,
+                'mimeType' => $this->getMimeType(),
+                'extension' => $this->getFileExtension(),
+                'size' => strlen($html),
+                'responseCount' => count($responses)
+            ];
+        } else {
+            return [
+                'content' => $html,
+                'filePath' => null,
+                'filename' => $filename,
+                'mimeType' => $this->getMimeType(),
+                'extension' => $this->getFileExtension(),
+                'size' => strlen($html),
+                'responseCount' => count($responses)
+            ];
         }
-
-        return [
-            'filePath' => $filePath,
-            'filename' => $filename,
-            'mimeType' => $this->getMimeType(),
-            'extension' => $this->getFileExtension(),
-            'size' => filesize($filePath),
-            'responseCount' => count($responses)
-        ];
     }
 
     /**

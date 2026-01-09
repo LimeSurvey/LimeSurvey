@@ -31,9 +31,9 @@ class SurveyResponsesExport implements CommandInterface
     /**
      * The loaded Survey instance for the current request.
      *
-     * @var Survey
+     * @var Survey|null
      */
-    protected Survey $surveyModel;
+    protected $surveyModel;
 
     /**
      * Factory used to build API responses.
@@ -151,7 +151,7 @@ class SurveyResponsesExport implements CommandInterface
             throw new InvalidArgumentException('Invalid export format specified');
         }
 
-        $language = $request->getData('language', $this->surveyModel->language);
+        $language = $request->getData('language', $this->surveyModel ? $this->surveyModel->language : null);
 
         return [$type, $language];
     }

@@ -9,25 +9,37 @@ class CsvExportWriter implements ExportWriterInterface
     /**
      * Export survey responses to CSV format.
      *
+     * Can generate content in-memory or write to a file depending on outputMode.
+     *
      * @param array $responses The survey responses data
      * @param array $surveyQuestions The survey questions field map
-     * @param array $metadata Additional metadata (survey ID, language, etc.)
-     * @return array Export result with file path and metadata
-     * @throws RuntimeException If file cannot be created
+     * @param array $metadata Additional metadata (survey ID, language, outputMode, etc.)
+     * @return array Export result with content/filePath and metadata
+     * @throws RuntimeException If content cannot be generated or file cannot be created
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function export(array $responses, array $surveyQuestions, array $metadata): array
     {
         $surveyId = $metadata['surveyId'];
         $timestamp = date('YmdHis');
-
-        $tempDir = sys_get_temp_dir();
         $filename = "survey_{$surveyId}_responses_{$timestamp}.csv";
-        $filePath = $tempDir . DIRECTORY_SEPARATOR . $filename;
+        $outputMode = $metadata['outputMode'] ?? 'memory';
 
-        $handle = fopen($filePath, 'w');
-        if ($handle === false) {
-            throw new RuntimeException("Unable to create export file: $filePath");
+        // Determine output destination
+        if ($outputMode === 'file') {
+            $tempDir = sys_get_temp_dir();
+            $filePath = $tempDir . DIRECTORY_SEPARATOR . $filename;
+            $handle = fopen($filePath, 'w');
+            if ($handle === false) {
+                throw new RuntimeException("Unable to create export file: $filePath");
+            }
+        } else {
+            // Use memory stream for in-memory generation
+            $handle = fopen('php://temp', 'r+');
+            if ($handle === false) {
+                throw new RuntimeException("Unable to create memory stream for CSV export");
+            }
+            $filePath = null;
         }
 
         try {
@@ -73,16 +85,40 @@ class CsvExportWriter implements ExportWriterInterface
                 fputcsv($handle, $row);
             }
 
-            return [
-                'filePath' => $filePath,
-                'filename' => $filename,
-                'mimeType' => $this->getMimeType(),
-                'extension' => $this->getFileExtension(),
-                'size' => filesize($filePath),
-                'responseCount' => count($responses)
-            ];
-        } finally {
+            // Prepare return value based on output mode
+            if ($outputMode === 'file') {
+                $size = ftell($handle);
+                fclose($handle);
+                return [
+                    'content' => null,
+                    'filePath' => $filePath,
+                    'filename' => $filename,
+                    'mimeType' => $this->getMimeType(),
+                    'extension' => $this->getFileExtension(),
+                    'size' => $size,
+                    'responseCount' => count($responses)
+                ];
+            } else {
+                // Get the content from the stream
+                rewind($handle);
+                $content = stream_get_contents($handle);
+                fclose($handle);
+                return [
+                    'content' => $content,
+                    'filePath' => null,
+                    'filename' => $filename,
+                    'mimeType' => $this->getMimeType(),
+                    'extension' => $this->getFileExtension(),
+                    'size' => strlen($content),
+                    'responseCount' => count($responses)
+                ];
+            }
+        } catch (\Exception $e) {
             fclose($handle);
+            if ($outputMode === 'file' && $filePath && file_exists($filePath)) {
+                unlink($filePath);
+            }
+            throw $e;
         }
     }
 
