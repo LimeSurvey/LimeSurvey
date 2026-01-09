@@ -28,6 +28,7 @@
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'overwritefiles',
+                    'ariaLabel'=> gT('Overwrite files with the same name'),
                     'checkedOption' => App()->getConfig('overwritefiles') === 'Y' ? '1' : 0,
                     'selectOptions' => [
                         '1' => gT('On'),
