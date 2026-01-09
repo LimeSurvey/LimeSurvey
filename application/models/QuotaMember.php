@@ -108,7 +108,6 @@ class QuotaMember extends LSActiveRecord
                 case "A":
                 case "B":
                     $temp = explode('-', $this->code);
-                    $cihld = Question::model()->find('parent_qid = :parent_qid and title = :code', [':parent_qid' => $this->qid, ':code' => $temp[0]]);
                     $sFieldName = 'Q' . $this->qid . '_S' . $temp[0];
                     $sValue = $temp[1];
                     break;
