@@ -10,11 +10,11 @@ use LimeSurvey\Models\Services\Export\ExportWriterInterface;
 use LimeSurvey\Models\Services\Export\CsvExportWriter;
 use LimeSurvey\Models\Services\Export\XlsxExportWriter;
 use LimeSurvey\Models\Services\Export\XlsExportWriter;
-use LimeSurvey\Models\Services\Export\PdfExportWriter;
 use LimeSurvey\Models\Services\Export\HtmlExportWriter;
 use RuntimeException;
 use Survey;
 use Answer;
+use SurveyDynamic;
 
 class ExportSurveyResultsService
 {
@@ -66,12 +66,19 @@ class ExportSurveyResultsService
      * @param int $surveyId The survey ID
      * @param string $exportType The export format (csv, xlsx, xls, pdf, html)
      * @param string|null $language The language code for the export
-     * @return array Export result with file path and metadata
+     * @param string $outputMode Output mode: 'memory' (default) or 'file'
+     * @param int $chunkSize Number of responses to fetch per chunk (default 100)
+     * @return array Export result with content/filePath and metadata
      * @throws InvalidArgumentException If the export type is not supported
      * @throws RuntimeException If survey is not found or responses cannot be fetched
      */
-    public function exportResponses($surveyId, $exportType, $language = null)
-    {
+    public function exportResponses(
+        $surveyId,
+        $exportType,
+        $language = null,
+        $outputMode = 'memory',
+        $chunkSize = 100
+    ) {
         if (!in_array($exportType, $this->supportedExportTypes)) {
             throw new InvalidArgumentException("Unsupported export type: $exportType");
         }
@@ -88,8 +95,8 @@ class ExportSurveyResultsService
             $language = $survey->language;
         }
 
-        // Fetch survey responses
-        $responsesData = $this->fetchSurveyResponses($surveyId);
+        // Fetch survey responses in chunks
+        $responsesData = $this->fetchSurveyResponsesInChunks($surveyId, $chunkSize);
 
         // Get the appropriate export writer
         $writer = $this->getExportWriter($exportType);
@@ -98,7 +105,8 @@ class ExportSurveyResultsService
         $metadata = [
             'surveyId' => $surveyId,
             'language' => $language,
-            'exportType' => $exportType
+            'exportType' => $exportType,
+            'outputMode' => $outputMode
         ];
 
         // Delegate to the writer
@@ -160,6 +168,109 @@ class ExportSurveyResultsService
             'responses' => $mappedData,
             'surveyQuestions' => $surveyQuestions
         ];
+    }
+
+    /**
+     * Fetch survey responses in chunks to avoid memory bloat.
+     *
+     * @param int $surveyId
+     * @param int $chunkSize Number of responses per chunk (default 100)
+     * @return array Array with 'responses' and 'surveyQuestions' keys
+     * @throws RuntimeException If responses cannot be fetched
+     */
+    protected function fetchSurveyResponsesInChunks($surveyId, $chunkSize = 100)
+    {
+        // Generate field map for questions (do this once)
+        $this->transformerOutputSurveyResponses->fieldMap =
+            createFieldMap($this->survey, 'full', false, false);
+
+        // Get question field map (do this once)
+        $surveyQuestions = $this->getQuestionFieldMap();
+
+        // Get total count of responses
+        $totalCount = $this->getTotalResponseCount($surveyId);
+
+        // Fetch all responses in chunks using for loop
+        $allResponses = [];
+        for ($offset = 0; $offset < $totalCount; $offset += $chunkSize) {
+            $chunk = $this->fetchResponseChunk($surveyId, $offset, $chunkSize);
+            $processedChunk = $this->processResponseChunk($chunk, $surveyQuestions);
+            $allResponses = array_merge($allResponses, $processedChunk);
+        }
+
+        return [
+            'responses' => $allResponses,
+            'surveyQuestions' => $surveyQuestions
+        ];
+    }
+
+    /**
+     * Get the total count of survey responses.
+     *
+     * @param int $surveyId
+     * @return int Total number of responses
+     * @throws RuntimeException If count cannot be fetched
+     */
+    protected function getTotalResponseCount($surveyId)
+    {
+        $model = SurveyDynamic::model($surveyId);
+
+        try {
+            return (int) $model->count();
+        } catch (CDbException $e) {
+            throw new RuntimeException("Unable to get response count: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Fetch a single chunk of survey responses.
+     *
+     * @param int $surveyId
+     * @param int $offset Starting position
+     * @param int $limit Number of responses to fetch
+     * @return array Array of survey response objects
+     * @throws RuntimeException If responses cannot be fetched
+     */
+    protected function fetchResponseChunk($surveyId, $offset, $limit)
+    {
+        $model = \SurveyDynamic::model($surveyId);
+
+        $criteria = new \LSDbCriteria();
+        $criteria->limit = $limit;
+        $criteria->offset = $offset;
+
+        $dataProvider = new \LSCActiveDataProvider(
+            $model,
+            array(
+                'criteria' => $criteria,
+                'pagination' => false
+            )
+        );
+
+        try {
+            return $dataProvider->getData();
+        } catch (CDbException $e) {
+            throw new RuntimeException("Unable to fetch survey responses: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Process a chunk of responses (transform and map to questions).
+     *
+     * @param array $chunk Array of raw survey response objects
+     * @param array $surveyQuestions Question field map
+     * @return array Processed and mapped responses
+     */
+    protected function processResponseChunk(array $chunk, array $surveyQuestions)
+    {
+        // Transform responses
+        $transformedResponses = $this->transformerOutputSurveyResponses->transform(
+            $chunk,
+            ['survey' => $this->survey]
+        );
+
+        // Map responses to questions
+        return $this->mapResponsesToQuestions($transformedResponses, $surveyQuestions);
     }
 
     /**
@@ -282,8 +393,6 @@ class ExportSurveyResultsService
                 return new XlsxExportWriter();
             case 'xls':
                 return new XlsExportWriter();
-            case 'pdf':
-                return new PdfExportWriter();
             case 'html':
                 return new HtmlExportWriter();
             default:
