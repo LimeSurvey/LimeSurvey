@@ -14,6 +14,7 @@ class XlsxExportWriter implements ExportWriterInterface
      * @param array $metadata Additional metadata (survey ID, language, etc.)
      * @return array Export result with file path and metadata
      * @throws RuntimeException If file cannot be created
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function export(array $responses, array $surveyQuestions, array $metadata): array
     {
@@ -84,6 +85,7 @@ class XlsxExportWriter implements ExportWriterInterface
      * @param string $filePath
      * @param array $data
      * @throws RuntimeException
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     private function createXlsxFile(string $filePath, array $data): void
     {
