@@ -2126,7 +2126,7 @@ class DataEntry extends SurveyCommonAction
         $survey = Survey::model()->findByPk($surveyid);
         $lang = $_GET['lang'] ?? null;
         if (isset($lang)) {
-            $lang = sanitize_languagecode($lang);
+            $lang = \LSYii_Validators::languageCodeFilter($lang);
         }
         $aViewUrls = array();
 
