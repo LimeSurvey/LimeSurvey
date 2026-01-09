@@ -99,7 +99,7 @@ class SurveyTimingDynamic extends LSActiveRecord
                 ->queryRow();
             if ($queryAvg['count']) {
                 $statistics['avgmin'] = (int) ($queryAvg['avg'] / 60);
-                $statistics['avgsec'] = $queryAvg['avg'] % 60;
+                $statistics['avgsec'] = (int) $queryAvg['avg'] % 60;
                 $statistics['count'] = $queryAvg['count'];
                 $queryAll = Yii::app()->db->createCommand()
                     ->select("interviewtime")
@@ -111,9 +111,9 @@ class SurveyTimingDynamic extends LSActiveRecord
                 $middleval = intval($statistics['count'] / 2);
                 $statistics['middleval'] = $middleval;
                 if ($statistics['count'] % 2 && $statistics['count'] > 1) {
-                    $median = ($queryAll[$middleval]['interviewtime'] + $queryAll[$middleval - 1]['interviewtime']) / 2;
+                    $median = (int)(($queryAll[$middleval]['interviewtime'] + $queryAll[$middleval - 1]['interviewtime']) / 2);
                 } else {
-                    $median = $queryAll[$middleval]['interviewtime'];
+                    $median = (int)$queryAll[$middleval]['interviewtime'];
                 }
                 $statistics['median'] = $median;
                 $statistics['allmin'] = (int) ($median / 60);
