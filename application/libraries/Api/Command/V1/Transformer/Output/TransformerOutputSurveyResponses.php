@@ -115,10 +115,12 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
         // These values are used when datestamp setting is off.
         // We convert them to null for API consistency.
         foreach (['submitDate', 'dateLastAction', 'startDate'] as $dateField) {
-            if (in_array($surveyResponseArray[$dateField], [
+            if (
+                in_array($surveyResponseArray[$dateField], [
                 '1980-01-01T00:00:00.000Z',
                 '1980-01-01 00:00:00',
-            ])) {
+                ])
+            ) {
                 $surveyResponseArray[$dateField] = null;
             }
         }
