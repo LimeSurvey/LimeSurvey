@@ -59,8 +59,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     if ($bSilent && (count(array_intersect($aCriticalDBVersions, $aAllUpdates)) > 0)) {
         return false;
     }
-    // If DBVersion is older than 184 don't allow database update
+    // If DBVersion is older than 132 don't allow database update
     if ($iOldDBVersion < 132) {
+        return false;
+    }
+
+    // Try to acquire database update lock
+    if (!getDatabaseUpdateLock()) {
         return false;
     }
 
@@ -139,6 +144,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     if (method_exists(Yii::app()->cache, 'gc')) {
         Yii::app()->cache->gc();
     }
+    // It seems that clearing the asset cache  also clears the schema cache
+    // So increase the asset version number to force this
+    SettingGlobal::increaseCustomAssetsversionnumber();
 
     // Inform superadmin about update
     $superadmins = User::model()->getSuperAdmins();
@@ -155,6 +163,29 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
     Yii::app()->setConfig('Updating', false);
     return true;
+}
+
+/**
+ * This function sets the database update lock.
+ * The database update lock is used to prevent another process / client to start
+ * another (silent or not) database update while an existing one is still running.
+ * The lock is automatically released if the current process finishes
+ *
+ * @return boolean True if the lock was established, otherwise false
+ */
+function getDatabaseUpdateLock()
+{
+    static $pLock = null;
+    $pLock = @fopen(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'dbupdate.lock', 'w+');
+    if (!$pLock) {
+        return false;
+    }
+    if (flock($pLock, LOCK_EX | LOCK_NB)) {
+        return true;
+    }
+    fclose($pLock);
+    $pLock = null;
+    return false;
 }
 
 /**
