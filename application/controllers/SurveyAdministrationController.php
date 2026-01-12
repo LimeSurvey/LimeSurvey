@@ -2284,6 +2284,7 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         if ((App()->getConfig("editorEnabled")) && ($copiedSurvey !== null)) {
+            $copiedSurvey->setOptions();
             if ($copiedSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
                 $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $copiedSurvey->sid]);
             }
@@ -2373,6 +2374,7 @@ class SurveyAdministrationController extends LSBaseController
         $redirectUrl = App()->request->urlReferrer;
         if ($copiedSurvey !== null) {
             $redirectUrl = App()->createUrl("surveyAdministration/view/", ["iSurveyID" => $copiedSurvey->sid]);
+            $copiedSurvey->setOptions();
             if ((App()->getConfig("editorEnabled")) && $copiedSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
                 $redirectUrl = App()->createUrl("editorLink/index", ["route" => "survey/" . $copiedSurvey->sid]);
             }
