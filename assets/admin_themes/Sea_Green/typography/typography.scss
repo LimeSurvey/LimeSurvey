@@ -54,8 +54,12 @@ dl {
 
 // LINKS
 a {
-  color: $link-color;
-  font-weight: $font-weight-500;
+  color       : $link-color;
+  font-weight : $font-weight-500;
+
+  &:focus {
+    outline : 2px solid currentColor !important;
+  }
 }
 
 .has-link {
