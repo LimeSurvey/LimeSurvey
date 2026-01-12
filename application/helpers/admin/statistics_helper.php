@@ -3215,8 +3215,7 @@ class statistics_helper
 
         //-------------------------- PCHART OUTPUT ----------------------------
         $qsid = $surveyid;
-        $qqid = substr($rt, strcspn($rt, '0123456789'));
-        $qqid = explode("_", $qqid)[0];
+        $qqid = explode("_", substr($rt, strcspn($rt, '0123456789')))[0];
         $attrQid = $outputs['parentqid'] > 0 ? $outputs['parentqid'] : $qqid; // use parentqid if exists
         $aattr = QuestionAttribute::model()->getQuestionAttributes($attrQid);
 
