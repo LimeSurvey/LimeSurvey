@@ -60,7 +60,7 @@ abstract class AbstractQuestionProcessor
     /**
      * Build the identifier for current question.
      *
-     * Ex: sidXgidXqid
+     * Ex: Qqid
      */
     public function rt(): void
     {
