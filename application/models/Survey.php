@@ -146,6 +146,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property SurveyLanguageSetting $defaultlanguage
  * @property SurveysGroups $surveygroup
  * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
+ * @property string $lastmodified date as SQL datetime (YYYY-MM-DD HH:mm:ss)
  * @method mixed active()
  */
 class Survey extends LSActiveRecord implements PermissionInterface
@@ -216,8 +217,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         /* default template */
         $this->template = 'inherit';
         /* default language */
-        $validator = new LSYii_Validators();
-        $this->language = $validator->languageFilter(App()->getConfig('defaultlang'));
+        $this->language = \LSYii_Validators::languageCodeFilter(App()->getConfig('defaultlang'));
         /* default user */
         $this->owner_id = 1;
         $this->admin = App()->getConfig('siteadminname');
@@ -801,6 +801,15 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Returns true if the survey has participants
+     * @return boolean
+     */
+    public function hasTokens()
+    {
+        return $this->getHasTokensTable() && (TokenDynamic::model($this->sid)->find('1=1') !== null);
+    }
+
+    /**
      * Wheteher the survey responses (data) table exists in DB
      * @return boolean
      */
@@ -941,6 +950,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         if (!isset($aData['datecreated'])) {
             $aData['datecreated'] = date('Y-m-d H:i:s');
+        }
+        if (!isset($aData['lastmodified'])) {
+            $aData['lastmodified'] = $aData['datecreated'];
         }
         if (isset($aData['wishSID'])) {
             $aData['sid'] = $aData['wishSID'];
@@ -1413,6 +1425,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Use the creation date for old entries when the last modified date is unavailable
+     */
+    public function getLastModifiedDate()
+    {
+        $shifted = self::shiftedDateTime($this->lastmodified);
+
+        return $shifted ? $shifted->format('d.m.Y') : null;
+    }
+
+    /**
      * @return int|string
      */
     public function getCountFullAnswers()
@@ -1512,13 +1534,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
         ];
         $dropdownItems[] = [
             'title' => gT('Copy'),
-            'url' => App()->createUrl("/surveyAdministration/newSurvey#copy"),
+            'url' => App()->createUrl("/surveyAdministration/newSurvey", ['tab' => 'copy']),
 
             'enabledCondition' => $permissions['survey_update'],
         ];
         $dropdownItems[] = [
             'title' => gT('Add user'),
-            'url' => App()->createUrl("/userManagement"),
+            'url' => App()->createUrl('/surveyPermissions/index', ['surveyid' => $this->sid]),
             'enabledCondition' => $permissions['survey_update'],
         ];
 
@@ -1565,7 +1587,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
         ];
         $items[] = [
             'title' => gT('Statistics'),
-            'url' => App()->createUrl('admin/statistics/sa/simpleStatistics', ['surveyid' => $this->sid]),
+            'url' => App()->getConfig('editorEnabled')
+                ? App()->createUrl('editorLink/index', ['route' => 'responses/' . $this->sid])
+                : App()->createUrl('admin/statistics/sa/simpleStatistics', ['surveyid' => $this->sid]),
             'iconClass' => 'ri-bar-chart-2-line',
             'enabledCondition' =>
                 $this->active === "Y"
@@ -1635,6 +1659,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getAdditionalColumns(): array
     {
         $additionalColumns = [
+            'lastModified' => [
+                'header'            => gT('Last modified'),
+                'name'              => 'lastModified',
+                'value'             => '$data->lastModifiedDate',
+                'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
+            ],
             'group' => [
                 'header'            => gT('Group'),
                 'name'              => 'group',
@@ -2099,15 +2130,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         $criteria = new CDbCriteria();
         $criteria->select = Yii::app()->db->quoteColumnName('t.*');
-        $criteria->with = array(
-            'survey.groups',
-        );
         if (Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib') {
-            $criteria->order = Yii::app()->db->quoteColumnName('t.question_order');
+            $criteria->join = 'INNER JOIN {{groups}} grp ON grp.gid = t.gid';
+            $criteria->order = Yii::app()->db->quoteColumnName('grp.group_order') . ',' . Yii::app()->db->quoteColumnName('t.question_order');
         } else {
+            $criteria->with = array('survey.groups');
             $criteria->order = Yii::app()->db->quoteColumnName('groups.group_order') . ',' . Yii::app()->db->quoteColumnName('t.question_order');
+            $criteria->addCondition('groups.gid=t.gid', 'AND');
         }
-        $criteria->addCondition('groups.gid=t.gid', 'AND');
         return $criteria;
     }
 
@@ -2563,5 +2593,20 @@ class Survey extends LSActiveRecord implements PermissionInterface
             return new DateTime($datetime);
         }
         return null;
+    }
+
+    /**
+     * This method is invoked before saving a record (after validation, if any).
+     * The default implementation raises the {@link onBeforeSave} event.
+     * You may override this method to do any preparation work for record saving.
+     * Use {@link isNewRecord} to determine whether the saving is
+     * for inserting or updating record.
+     * Make sure you call the parent implementation so that the event is raised properly.
+     * @return boolean whether the saving should be executed. Defaults to true.
+     */
+    protected function beforeSave()
+    {
+        $this->lastmodified = gmdate('Y-m-d H:i:s');
+        return parent::beforeSave();
     }
 }

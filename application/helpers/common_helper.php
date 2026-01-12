@@ -27,6 +27,9 @@ Yii::import('application.helpers.sanitize_helper', true);
  */
 function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = null)
 {
+    if (($sToTranslate == '')) {
+        return '';
+    }
     return quoteText(Yii::t('', $sToTranslate, array(), null, $sLanguage), $sEscapeMode);
 }
 
@@ -1681,7 +1684,16 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
 
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => $abrow['title'], "scale_id" => 0);
+                $fieldmap[$fieldname] = array(
+                    "fieldname" => $fieldname,
+                    'type' => $arow['type'],
+                    'sid' => $surveyid,
+                    "gid" => $arow['gid'],
+                    "qid" => $arow['qid'],
+                    "sqid" => $abrow['qid'],
+                    "aid" => $abrow['title'],
+                    "scale_id" => 0,
+                );
                 if (isset($answerColumnDefinition)) {
                     $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                 }
@@ -1705,7 +1717,16 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => $abrow['title'], "scale_id" => 1);
+                $fieldmap[$fieldname] = array(
+                    "fieldname" => $fieldname,
+                    'type' => $arow['type'],
+                    'sid' => $surveyid,
+                    "gid" => $arow['gid'],
+                    "qid" => $arow['qid'],
+                    "sqid" => $abrow['qid'],
+                    "aid" => $abrow['title'],
+                    "scale_id" => 1,
+                );
                 if (isset($answerColumnDefinition)) {
                     $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                 }
@@ -2463,6 +2484,55 @@ function rmdirr($dirname)
 }
 
 /**
+ * Removes a directory recursively with adjustment to not throw error on empty directories.
+ * @param string $directory to be deleted recursively.
+ * @param array $options for the directory removal. Valid options are:
+ * <ul>
+ * <li>traverseSymlinks: boolean, whether symlinks to the directories should be traversed too.
+ * Defaults to `false`, meaning that the content of the symlinked directory would not be deleted.
+ * Only symlink would be removed in that default case.</li>
+ * </ul>
+ * @link CFileHelper::removeDirectory()
+ */
+function removeDirectoryCustom($directory, $options = [])
+{
+    if (!isset($options['traverseSymlinks'])) {
+        $options['traverseSymlinks'] = false;
+    }
+
+    $itemsWithoutDot = glob($directory . DIRECTORY_SEPARATOR . '*', GLOB_MARK);
+    $itemsWithoutDot = $itemsWithoutDot === false ? [] : $itemsWithoutDot;
+    $itemsWithDot = glob($directory . DIRECTORY_SEPARATOR . '.*', GLOB_MARK);
+    $itemsWithDot = $itemsWithDot === false ? [] : $itemsWithDot;
+    $items = array_merge(
+        $itemsWithoutDot,
+        $itemsWithDot
+    );
+    foreach ($items as $item) {
+        if (basename($item) === '.' || basename($item) === '..') {
+            continue;
+        }
+        if (substr($item, -1) == DIRECTORY_SEPARATOR) {
+            if (!$options['traverseSymlinks'] && is_link(rtrim($item, DIRECTORY_SEPARATOR))) {
+                unlink(rtrim($item, DIRECTORY_SEPARATOR));
+            } else {
+                removeDirectoryCustom($item, $options);
+            }
+        } else {
+            unlink($item);
+        }
+    }
+    if (is_dir($directory = rtrim($directory, '\\/'))) {
+        if (is_link($directory)) {
+            unlink($directory);
+        } else {
+            rmdir($directory);
+        }
+    }
+}
+
+
+/**
 * This function removes surrounding and masking quotes from the CSV field
 *
 * @param mixed $field
@@ -3063,33 +3133,109 @@ function showJavaScript($sContent)
 }
 
 /**
-* This function cleans files from the temporary directory being older than 1 day
-* @todo Make the days configurable
-*/
-function cleanTempDirectory()
+ * Only clean temp directory if modification date of any non-symlinked directory found is older then 25 hours
+ * Even if the setting is activated to only symlink assets, there are still some asset dirs that are not symlinked.
+ * @return void
+ */
+function cleanCacheTempDirectoryDaily()
+{
+    $assetsPath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
+    $selectedDirectory = null;
+
+    foreach (glob($assetsPath . '/*') as $dir) {
+        if (is_dir($dir) && !is_link($dir) && (filemtime($dir) < (strtotime('-24 hours')))) {
+            cleanCacheTempDirectory();
+            break;
+        }
+    }
+}
+
+/**
+ * Cleans the temporary directory by removing files older than 1 day.
+ * It also cleans the 'upload' subdirectory within the temporary directory.
+ * Additionally, it calls the 'cleanAssetCacheDirectory' function to clean the asset cache directory.
+ *
+ * @return void
+ */
+function cleanCacheTempDirectory()
 {
     $dir = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR;
     $dp = opendir($dir) or safeDie('Could not open temporary directory');
+
     while ($file = readdir($dp)) {
         if (is_file($dir . $file) && (filemtime($dir . $file)) < (strtotime('-1 days')) && $file != 'index.html' && $file != '.gitignore' && $file != 'readme.txt') {
             /** @scrutinizer ignore-unhandled */ @unlink($dir . $file);
         }
     }
+
     $dir = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR;
     $dp = opendir($dir) or safeDie('Could not open temporary upload directory');
+
     while ($file = readdir($dp)) {
         if (is_file($dir . $file) && (filemtime($dir . $file)) < (strtotime('-1 days')) && $file != 'index.html' && $file != '.gitignore' && $file != 'readme.txt') {
             /** @scrutinizer ignore-unhandled */ @unlink($dir . $file);
         }
     }
+
     closedir($dp);
+    cleanAssetCacheDirectory(60);
+}
+/**
+ * This function cleans the asset directory by removing directories that are older than a certain threshold.
+ *
+ * @return void
+ */
+function cleanAssetCacheDirectory($minutes = 1)
+{
+    // Define the path to the assets directory
+    $assetsPath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
+
+    // Define the threshold for removing directories (in this case, 60 seconds ago)
+    $threshold = time() - (60 * $minutes);
+
+    // Loop through all directories in the assets directory
+    foreach (glob($assetsPath . '*') as $path) {
+        // check if the directory is older than the threshold and the path is a symlink then delete it
+        if (is_link($path) && filemtime($path) < $threshold) {
+            unlink($path);
+            continue;
+        }
+        // check if the directory is older than the threshold and the path is a directory then remove it
+        if (is_dir($path) && filemtime($path) < $threshold) {
+            // Remove the directory and all its contents recursively
+            removeDirectoryCustom($path);
+        }
+    }
 }
 
-function useFirebug()
+/**
+ * This function removes the Twig cache directory by looping through all directories
+ * within the Twig cache directory and removing each directory.
+ *
+ * @return void
+ */
+function cleanTwigCacheDirectory()
 {
-    if (FIREBUG == true) {
-        App()->getClientScript()->registerScriptFile('http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js');
-    };
+    $runtimePath = rtrim(Yii::app()->getRuntimePath(), DIRECTORY_SEPARATOR);
+    $twigDir = $runtimePath . DIRECTORY_SEPARATOR . 'twig_cache';
+
+    if (!is_dir($twigDir) || !is_writable($runtimePath)) {
+        return;
+    }
+
+    // read and store the permissions of the Twig cache directory to apply it later
+    $oldPermissions = fileperms($twigDir);
+    try {
+        CFileHelper::removeDirectory($twigDir);
+    } catch (Exception $e) {
+        Yii::log("Failed to remove Twig cache directory '{$twigDir}': " . $e->getMessage(), \CLogger::LEVEL_WARNING, 'application.cleanup');
+        return;
+    }
+
+    // Recreate directory to avoid downstream failures expecting it present
+    if (!@mkdir($twigDir, $oldPermissions, true) && !is_dir($twigDir)) {
+        Yii::log("Failed to recreate Twig cache directory '{$twigDir}' after cleanup.", \CLogger::LEVEL_WARNING, 'application.cleanup');
+    }
 }
 
 /**

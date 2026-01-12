@@ -1203,55 +1203,33 @@ function finalizeSurveyImportFile($newsid, $baselang)
  */
 function getTableArchivesAndTimestamps(int $sid, string $baseTable = 'old_survey')
 {
-    switch (Yii::app()->db->getDriverName()) {
-        case 'mysqli':
-        case 'mysql':
-                return (array) Yii::app()->db->createCommand("
-                SELECT GROUP_CONCAT(t1.TABLE_NAME) AS tables, SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1) AS timestamp, MAX(t2.TABLE_ROWS) AS cnt
-                FROM information_schema.tables t1
-                JOIN information_schema.tables t2
-                ON t1.TABLE_SCHEMA = t2.TABLE_SCHEMA AND
-                   t2.TABLE_NAME LIKE CONCAT('%{$baseTable}_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
-                WHERE t1.TABLE_SCHEMA = DATABASE() AND
-                      t1.TABLE_NAME LIKE '%old%' AND
-                      t1.TABLE_NAME LIKE '%{$sid}%'
-                GROUP BY SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1)
-            ")->queryAll();
-        case 'pgsql':
-            polyfillSUBSTRING_INDEX(Yii::app()->db->getDriverName());
-            return (array) Yii::app()->db->createCommand("
-            SELECT array_to_string(array_agg(t1.TABLE_NAME), ',') AS tables, SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1) AS timestamp, replace((regexp_split_to_array(XMLSERIALIZE(DOCUMENT query_to_xml(format('select count(*) as cnt from %I', t2.table_name), false, true, '') as text), '>'::text))[3], '</cnt', '') AS cnt
-            FROM information_schema.tables t1
-            JOIN information_schema.tables t2
-            ON t1.TABLE_CATALOG = t2.TABLE_CATALOG AND
-               t2.TABLE_NAME LIKE CONCAT('%{$baseTable}_{$sid}_', SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1))
-            WHERE t1.TABLE_CATALOG = current_database() AND
-                  t1.TABLE_NAME LIKE '%old%' AND
-                  t1.TABLE_NAME LIKE '%{$sid}%'
-            GROUP BY SUBSTRING_INDEX(t1.TABLE_NAME, '_', -1), t2.table_name;
-            ")->queryAll();
-        case 'mssql':
-        case 'sqlsrv':
-            return (array) Yii::app()->db->createCommand("
-                SELECT STRING_AGG(t1.TABLE_NAME, ',') AS tables, substring(t1.TABLE_NAME, len(t1.TABLE_NAME) - charindex('_', reverse(t1.TABLE_NAME)) + 2, 2000) AS timestamp,
-				(
-        		    SELECT TOP 1 p.rows
-			    	FROM sys.tables t
-	    			JOIN sys.partitions p
-    				ON p.object_id = t.object_id
-		    		WHERE t2.TABLE_NAME = t.[name]
-				) AS cnt
-                FROM information_schema.tables t1
-                JOIN information_schema.tables t2
-                ON t1.TABLE_CATALOG = t2.TABLE_CATALOG AND
-                   t2.TABLE_NAME LIKE CONCAT('%{$baseTable}_{$sid}_', substring(t1.TABLE_NAME, len(t1.TABLE_NAME) - charindex('_', reverse(t1.TABLE_NAME)) + 2, 2000))
-                WHERE t1.TABLE_CATALOG = db_name() AND
-                      t1.TABLE_NAME LIKE '%old%' AND
-                      t1.TABLE_NAME LIKE '%{$sid}%'
-                GROUP BY t2.TABLE_NAME, substring(t1.TABLE_NAME, len(t1.TABLE_NAME) - charindex('_', reverse(t1.TABLE_NAME)) + 2, 2000)
-            ")->queryAll();
-        default: return [];
+    $tables = dbGetTablesLike("%old%\_{$sid}\_%");
+    $result = [];
+
+    foreach ($tables as $table) {
+        $parts = explode("_", $table);
+        $timestamp = $parts[count($parts) - 1];
+        if (!isset($result[$timestamp])) {
+            $result[$timestamp] = [
+                'tables' => $table,
+                'timestamp' => $timestamp,
+                'cnt' => 0
+            ];
+        } else {
+            $result[$timestamp]['tables'] .= ",{$table}";
+        }
+        if (strpos($table, 'survey') !== false) {
+            $result[$timestamp]['cnt'] = (int) Yii::app()->db->createCommand("select count(*) as cnt from " . Yii::app()->db->quoteTableName($table))->queryScalar();
+        }
     }
+
+    $keys = array_keys($result);
+    asort($keys);
+    $finalResult = [];
+    foreach ($keys as $key) {
+        $finalResult [] = $result[$key];
+    }
+    return $finalResult;
 }
 
 /**
@@ -1313,7 +1291,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                         $SurveyIntegrity->fixSurveyIntegrity();
                     }
                     // Activate the survey
-                    Yii::app()->loadHelper("admin/activate");
+                    Yii::app()->loadHelper("admin.activate");
                     $survey = Survey::model()->findByPk($aImportResults['newsid']);
                     $surveyActivator = new SurveyActivator($survey);
                     $surveyActivator->activate();
@@ -1337,7 +1315,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             // Step 3 - import the tokens file - if exists
             foreach ($files as $filename) {
                 if (pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lst') {
-                    Yii::app()->loadHelper("admin/token");
+                    Yii::app()->loadHelper("admin.token");
                     $aTokenImportResults = [];
                     if (Token::createTable($aImportResults['newsid'])) {
                         $aTokenCreateResults = array('tokentablecreated' => true);
@@ -1410,33 +1388,34 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
             case 'mysqli':
             case 'mysql':
             case 'pgsql':
-            $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " AS SELECT " . implode(",", $columns) . " FROM " . Yii::app()->db->quoteTableName($pattern) . $whereClause;
-            break;
+                $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " AS SELECT " . implode(",", $columns) . " FROM " . Yii::app()->db->quoteTableName($pattern) . $whereClause;
+                break;
             case 'mssql':
             case 'sqlsrv':
-            $command = "SELECT " . implode(",", $columns) . " into " . Yii::app()->db->quoteTableName($table) . " FROM " . Yii::app()->db->quoteTableName($pattern) . $whereClause;
-            break;
+                $command = "SELECT " . implode(",", $columns) . " into " . Yii::app()->db->quoteTableName($table) . " FROM " . Yii::app()->db->quoteTableName($pattern) . $whereClause;
+                break;
         }
     } else {
         $command = "";
         switch (Yii::app()->db->getDriverName()) {
             case 'mysqli':
             case 'mysql':
-            $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " LIKE " . Yii::app()->db->quoteTableName($pattern) . ";";
-            break;
+                $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " LIKE " . Yii::app()->db->quoteTableName($pattern) . ";";
+                break;
             case 'pgsql':
-            $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " (LIKE " . Yii::app()->db->quoteTableName($pattern) . " INCLUDING ALL);";
-            break;
+                $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " (LIKE " . Yii::app()->db->quoteTableName($pattern) . " INCLUDING ALL);";
+                break;
             case 'mssql':
             case 'sqlsrv':
-            $command = "SELECT * into " . Yii::app()->db->quoteTableName($table) . " FROM " . Yii::app()->db->quoteTableName($pattern) . " where 1=0";
-            break;
+                $command = "SELECT * into " . Yii::app()->db->quoteTableName($table) . " FROM " . Yii::app()->db->quoteTableName($pattern) . " where 1=0";
+                break;
         }
     }
     return Yii::app()->db->createCommand($command)->execute();
 }
 
-function polyfillSUBSTRING_INDEX($driver) {
+function polyfillSUBSTRING_INDEX($driver)
+{
     switch ($driver) {
         case 'pgsql':
             Yii::app()->db->createCommand('CREATE OR REPLACE FUNCTION public.SUBSTRING_INDEX (
@@ -1465,17 +1444,14 @@ function polyfillSUBSTRING_INDEX($driver) {
                 CALLED ON NULL INPUT
                 SECURITY INVOKER
                 COST 5;')->execute();
-        break;
+            break;
         case 'mssql':
-            case 'sqlsrv':
-                Yii::app()->db->createCommand(
-    <<<EOD
-    IF OBJECT_ID('dbo.SUBSTRING_INDEX') IS NOT NULL
-      DROP FUNCTION SUBSTRING_INDEX
-    EOD
-                )->execute();
-                Yii::app()->db->createCommand(
-    <<<EOD
+        case 'sqlsrv':
+            Yii::app()->db->createCommand("
+                IF OBJECT_ID('dbo.SUBSTRING_INDEX') IS NOT NULL
+                DROP FUNCTION SUBSTRING_INDEX
+        ")->execute();
+            Yii::app()->db->createCommand("
                     CREATE FUNCTION dbo.SUBSTRING_INDEX (
                         @str NVARCHAR(4000),
                         @delim NVARCHAR(1),
@@ -1490,16 +1466,14 @@ function polyfillSUBSTRING_INDEX($driver) {
                   (
                     ((
                     SELECT  @delim + x.XmlCol.value(N'(text())[1]', N'NVARCHAR(4000)') AS '*'
-                    FROM    @XmlSourceString.nodes(N'(root/row)[position() <= sql:variable("@count")]') x(XmlCol)
+                    FROM    @XmlSourceString.nodes(N'(root/row)[position() <= sql:variable(\"@count\")]') x(XmlCol)
                     FOR XML PATH(N''), TYPE
                     ).value(N'.', N'NVARCHAR(4000)')),
                   1, 1, N''
                   );
                   END
-    EOD
-                )->execute();
-        break;
-    
+            ")->execute();
+            break;
     }
 }
 
@@ -1516,7 +1490,7 @@ function generateTemporaryTableCreate(string $source, string $destination, int $
     switch (Yii::app()->db->getDriverName()) {
         case 'mysqli':
         case 'mysql':
-        return  "
+            return  "
             CREATE TEMPORARY TABLE {$destination}
             SELECT *
             FROM (
@@ -1530,8 +1504,8 @@ function generateTemporaryTableCreate(string $source, string $destination, int $
             ) t;
         ";
         case 'pgsql':
-        polyfillSUBSTRING_INDEX(Yii::app()->db->getDriverName());
-        return "
+            polyfillSUBSTRING_INDEX(Yii::app()->db->getDriverName());
+            return "
             CREATE TEMPORARY TABLE {$destination}
             AS
             SELECT *
@@ -1547,9 +1521,9 @@ function generateTemporaryTableCreate(string $source, string $destination, int $
         ";
         case 'mssql':
         case 'sqlsrv':
-        polyfillSUBSTRING_INDEX(Yii::app()->db->getDriverName());
-        $destination .= "_" . $sid;
-        return "
+            polyfillSUBSTRING_INDEX(Yii::app()->db->getDriverName());
+            $destination .= "_" . $sid;
+            return "
             SELECT *
             INTO {$destination}
             FROM (
@@ -1579,12 +1553,12 @@ function generateTemporaryTableDrop(string $name, int $sid)
     switch (Yii::app()->db->getDriverName()) {
         case 'mysqli':
         case 'mysql':
-        return "DROP TEMPORARY TABLE {$name};";
+            return "DROP TEMPORARY TABLE {$name};";
         case 'pgsql':
-        return "DROP TABLE {$name};";
+            return "DROP TABLE {$name};";
         case 'mssql':
         case 'sqlsrv':
-        return "DROP TABLE {$name}_{$sid};";
+            return "DROP TABLE {$name}_{$sid};";
     }
     //unsupported
     return '';
@@ -1623,7 +1597,7 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
     switch (Yii::app()->db->getDriverName()) {
         case 'mysqli':
         case 'mysql':
-        $command = "
+            $command = "
         SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
         FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
         JOIN " . Yii::app()->db->tablePrefix . "questions new_q
@@ -1668,8 +1642,8 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
               )
         ;
         "
-        ;
-        break;
+            ;
+            break;
         case 'pgsql':
             $command = "
             SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
@@ -1717,7 +1691,7 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
             ;
             "
             ;
-        break;
+            break;
         case 'mssql':
         case 'sqlsrv':
             $command = "
@@ -1828,7 +1802,7 @@ function getDeactivatedArchives($sid)
     switch (Yii::app()->db->getDriverName()) {
         case 'mysqli':
         case 'mysql':
-        $command = "
+            $command = "
         SELECT n, GROUP_CONCAT(TABLE_NAME) AS table_name
         FROM
         (SELECT n, TABLE_NAME
@@ -1847,9 +1821,9 @@ function getDeactivatedArchives($sid)
         ORDER BY TABLE_NAME) t
         GROUP BY n;
         ";
-        break;
+            break;
         case 'pgsql':
-        $command = "
+            $command = "
         SELECT n, array_to_string(array_agg(TABLE_NAME), ',') AS table_name
         FROM
         (SELECT n, TABLE_NAME
@@ -1869,10 +1843,10 @@ function getDeactivatedArchives($sid)
         GROUP BY n;
             "
             ;
-        break;
+            break;
         case 'mssql':
         case 'sqlsrv':
-        $command = "
+            $command = "
 		SELECT n, STRING_AGG(TABLE_NAME, ',') AS table_name
         FROM
         (SELECT n, TABLE_NAME
@@ -1891,8 +1865,8 @@ function getDeactivatedArchives($sid)
         ) t
         GROUP BY n;
         "
-        ;
-        break;
+            ;
+            break;
     }
     $rawResults = Yii::app()->db->createCommand($command)->queryAll();
     $results = [];
@@ -2064,7 +2038,7 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
         $beforeDataEntryImport->set('oModel', $targetResponse);
         App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
 
-        if ($targetResponse->validate()){
+        if ($targetResponse->validate()) {
             $batchData[] = $dataRow;
         }
         if (count($batchData) % 500 === 0) {
@@ -2380,11 +2354,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             if (!$surveyLanguageSetting->save()) {
                 $errors = $surveyLanguageSetting->errors;
-                // Clean up 
+                // Clean up
                 Survey::model()->deleteSurvey($iNewSID);
                 $errorsStr = '';
                 foreach ($errors as $attribute => $error) {
-                    $errorsStr.= $error[0]. "\n";
+                    $errorsStr .= $error[0] . "\n";
                 }
                 throw new Exception(gT("Error: Failed to import survey language settings.") . " " . $errorsStr);
             }
@@ -3369,7 +3343,7 @@ function XMLImportTokens($sFullFilePath, $iSurveyID, $sCreateMissingAttributeFie
         $aTokenFieldNames = array_keys($aTokenFieldNames->columns);
         $aFieldsToCreate = array_diff($aXLMFieldNames, $aTokenFieldNames);
         if (!function_exists('db_upgrade_all')) {
-            Yii::app()->loadHelper('update/updatedb');
+            Yii::app()->loadHelper('update.updatedb');
         }
 
         foreach ($aFieldsToCreate as $sField) {
@@ -3466,6 +3440,10 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                             }
                         }
                         try {
+                            // Very old survey archives may not have a startdate field or no values in the startdate field.
+                            if (in_array('startdate', $DestinationFields) && (!isset($aInsertData['startdate']) || empty($aInsertData['startdate']))) {
+                                $aInsertData['startdate'] = date('1980-01-01 00:00:00');
+                            }
                             SurveyDynamic::sid($iSurveyID);
                             $response = new SurveyDynamic();
                             $response->setAttributes($aInsertData, false);
@@ -4034,6 +4012,7 @@ function TSVImportSurvey($sFullFilePath)
                 $question['encrypted'] = ($row['encrypted'] ?? 'N');
                 $lastother = $question['other'] = ($row['other'] ?? 'N'); // Keep trace of other settings for sub question
                 $question['same_default'] = ($row['same_default'] ?? 0);
+                $question['question_theme_name'] = ($row['question_theme_name'] ?? '');
                 $question['same_script'] = ($row['same_script'] ?? 0);
                 $question['parent_qid'] = 0;
 
@@ -4079,6 +4058,7 @@ function TSVImportSurvey($sFullFilePath)
                         case 'mandatory':
                         case 'other':
                         case 'same_default':
+                        case 'question_theme_name':
                         case 'same_script':
                         case 'default':
                             break;

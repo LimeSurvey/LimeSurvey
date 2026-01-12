@@ -29,4 +29,14 @@ class Request
             ? $this->data[$key]
             : $defaultValue;
     }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    public function setData($key, $value)
+    {
+        $this->data[$key] = $value;
+    }
 }

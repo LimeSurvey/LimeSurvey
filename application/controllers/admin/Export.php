@@ -106,7 +106,7 @@ class Export extends SurveyCommonAction
             $this->getController()->redirect($this->getController()->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
         }
 
-        Yii::app()->loadHelper("admin/exportresults");
+        Yii::app()->loadHelper("admin.exportresults");
 
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . '/exportresults.js');
 
@@ -420,7 +420,7 @@ class Export extends SurveyCommonAction
         }
         App()->setLanguage($sLanguage);
 
-        Yii::app()->loadHelper("admin/exportresults");
+        Yii::app()->loadHelper("admin.exportresults");
         viewHelper::disableHtmlLogging();
 
         if ($subaction == 'dldata') {

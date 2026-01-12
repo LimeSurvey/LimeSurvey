@@ -15,6 +15,7 @@ use LimeSurvey\Models\Services\Exception\{
     PermissionDeniedException
 };
 use User;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 /**
  * Service GeneralSettings
@@ -33,6 +34,7 @@ class GeneralSettings
     private PluginManager $pluginManager;
     private LanguageConsistency $languageConsistency;
     private User $modelUser;
+    private SurveyAccessModeService $surveyAccessModeService;
     private $restMode = false;
 
     public const FIELD_TYPE_YN = 'yesorno';
@@ -49,7 +51,8 @@ class GeneralSettings
         CHttpSession $session,
         PluginManager $pluginManager,
         LanguageConsistency $languageConsistency,
-        User $modelUser
+        User $modelUser,
+        SurveyAccessModeService $surveyAccessModeService
     ) {
         $this->modelPermission = $modelPermission;
         $this->modelSurvey = $modelSurvey;
@@ -58,6 +61,7 @@ class GeneralSettings
         $this->pluginManager = $pluginManager;
         $this->languageConsistency = $languageConsistency;
         $this->modelUser = $modelUser;
+        $this->surveyAccessModeService = $surveyAccessModeService;
     }
 
     /**
@@ -176,7 +180,12 @@ class GeneralSettings
                 $survey
             );
 
-            if (!$survey->save()) {
+            $saved = $survey->save();
+            if (array_key_exists('allowregister', $input)) {
+                $this->ensureTokensTableExistance($survey);
+            }
+
+            if (!$saved) {
                 $e = new PersistErrorException(
                     sprintf(
                         'Failed saving general settings for survey #%s',
@@ -633,5 +642,25 @@ class GeneralSettings
         }
 
         return $result;
+    }
+
+    /**
+     * Ensure the tokens table exists for a survey.
+     *
+     * @param Survey $survey
+     *
+     * @return void
+     */
+    private function ensureTokensTableExistance(Survey $survey): void
+    {
+        $survey->setOptions($survey->gsid);
+        $isSurveyActive = $survey->getIsActive();
+        $isOpenAccessMode = $survey->access_mode === SurveyAccessModeService::$ACCESS_TYPE_OPEN;
+        $publicRegistrationAllowed = $survey->getIsAllowRegister();
+        $hasTokensTable = $survey->hasTokensTable;
+
+        if ($isSurveyActive && $isOpenAccessMode && $publicRegistrationAllowed && !$hasTokensTable) {
+            $this->surveyAccessModeService->newParticipantTable($survey, true);
+        }
     }
 }

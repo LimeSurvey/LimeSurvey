@@ -147,7 +147,7 @@ class DataEntry extends SurveyCommonAction
     {
         $filePath = $this->moveUploadedFile($aData);
 
-        Yii::app()->loadHelper('admin/import');
+        Yii::app()->loadHelper('admin.import');
         // Fill option
         $aOptions = array();
         $aOptions['bDeleteFistLine'] = !(bool) Yii::app()->request->getPost('dontdeletefirstline');

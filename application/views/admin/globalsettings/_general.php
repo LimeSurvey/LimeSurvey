@@ -1,7 +1,8 @@
 <?php
+
 /**
  * This view generate the 'general' tab inside global settings.
- *
+ * @var array $globalGeneralSettings array of settings to be fetched from the beforeGlobalGeneralSettings event
  */
 
 use LimeSurvey\Libraries\FormExtension\FormExtensionWidget;
@@ -59,6 +60,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'createsample',
+                    'ariaLabel' => gT('Create example question group and question'),
                     'checkedOption' => App()->getConfig('createsample'),
                     'selectOptions' => [
                         '1' => gT('On'),
@@ -75,14 +77,14 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             </label>
             <div class="col-12">
                 <select class="form-select" name="admintheme" id="admintheme">
-                    <?php foreach ($aListOfThemeObjects as $templatename => $templateconfig): ?>
+                    <?php foreach ($aListOfThemeObjects as $templatename => $templateconfig) : ?>
                         <option value='<?php echo CHtml::encode($templatename); ?>' <?php echo ($thisadmintheme == $templatename) ? "selected='selected'" : "" ?> >
                             <?php echo CHtml::encode($templateconfig->metadata->name); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
             </div>
-            <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')): ?>
+            <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) : ?>
                 <div class="col-12 form-label ">
                     <span class="hint">
                     <?php eT("You can add your custom themes in upload/admintheme"); ?>
@@ -110,7 +112,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             </div>
         </div>
 
-        <?php if (isset(Yii::app()->session->connectionID)): ?>
+        <?php if (isset(Yii::app()->session->connectionID)) : ?>
             <div class="mb-3">
                 <label class="col-12 form-label" for='iSessionExpirationTime'>
                     <?php eT("Session lifetime for surveys (seconds):"); ?>
@@ -166,11 +168,11 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             </label>
             <div class='col-12'>
                 <select class='form-select' name='characterset' id='characterset'>
-                    <?php foreach ($aEncodings as $code => $charset): ?>
+                    <?php foreach ($aEncodings as $code => $charset) : ?>
                         <option value='<?php echo $code; ?>'
-                            <?php if (array_key_exists($thischaracterset, $aEncodings) && $code == $thischaracterset): ?>
+                            <?php if (array_key_exists($thischaracterset, $aEncodings) && $code == $thischaracterset) : ?>
                                 selected='selected'
-                            <?php elseif (!array_key_exists($thischaracterset, $aEncodings) && $code == "auto"): ?>
+                            <?php elseif (!array_key_exists($thischaracterset, $aEncodings) && $code == "auto") : ?>
                                 selected='selected'
                             <?php endif; ?>
                         >
@@ -189,13 +191,13 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             <label class="col-12 form-label" for="maintenancemode" title="<?php echo gT('Maintenance modes:
 Off
 Soft lock - participants are able to finish started surveys, no new participants are allowed
-Full lock - none of participants are allowed to take survey, even if they already started to take it'
-            ); ?> ">
+Full lock - none of participants are allowed to take survey, even if they already started to take it'); ?> ">
                 <?php eT("Maintenance mode:"); ?>
             </label>
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'maintenancemode',
+                    'ariaLabel' => gT('Maintenance mode'),
                     'checkedOption' => $thismaintenancemode,
                     'selectOptions' => [
                         "off"  => gT("Off", 'unescaped'),
@@ -208,13 +210,13 @@ Full lock - none of participants are allowed to take survey, even if they alread
 
         <!-- Refresh assets -->
         <div class="mb-3">
-            <label class="col-12 form-label" for='refreshassets'>
-                <?php eT("Clear assets cache:"); ?> <small>(<?php echo getGlobalSetting('customassetversionnumber'); ?>)</small>
+            <label class="col-12 form-label" for='clearcache'>
+                <?php eT("Clear frontend cache:"); ?> <small>(<?php echo getGlobalSetting('customassetversionnumber'); ?>)</small>
             </label>
             <div class="col-12">
-                <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa" => "refreshAssets")); ?>"
+                <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa" => "clearAssetsAndCache")); ?>"
                    class="btn btn-outline-dark btn-large">
-                   	<?php eT("Clear now"); ?>
+                    <?php eT("Clear now"); ?>
                 </a>
             </div>
         </div>
@@ -226,16 +228,19 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
             </label>
             <div class="col-12">
-                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
+                <?php $this->widget(
+                    'ext.ButtonGroupWidget.ButtonGroupWidget',
                     [
                         'name'          => 'defaulthtmleditormode',
+                        'ariaLabel' => gT('Default HTML editor mode'),
                         'checkedOption' => $thisdefaulthtmleditormode,
                         'selectOptions' => [
                             "inline" => gT("Inline", 'unescaped'),
                             "popup"  => gT("Popup", 'unescaped'),
                             "none"   => gT("HTML source", 'unescaped')
                         ]
-                    ]); ?>
+                    ]
+                ); ?>
             </div>
         </div>
 
@@ -248,6 +253,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             <div class='col-md-4'>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'sideMenuBehaviour',
+                    'ariaLabel' => gT('Side-menu behaviour'),
                     'checkedOption' => $sideMenuBehaviour,
                     'selectOptions' => [
                         "adaptive"     => gT("Adaptive", 'unescaped'),
@@ -267,6 +273,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'defaultquestionselectormode',
+                    'ariaLabel' => gT('Question type selector'),
                     'checkedOption' => $thisdefaultquestionselectormode,
                     'selectOptions' => [
                         "default" => gT("Full", 'unescaped'),
@@ -285,6 +292,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'defaultthemeteeditormode',
+                    'ariaLabel' => gT('Template editor'),
                     'checkedOption' => $thisdefaultthemeteeditormode,
                     'selectOptions' => [
                         "default" => gT("Full", 'unescaped'),
@@ -303,6 +311,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'defaultBreadcrumbMode',
+                    'ariaLabel' => gT('Default breadcrumb mode'),
                     'checkedOption' => $defaultBreadcrumbMode,
                     'selectOptions' => [
                         "short" => gT("Short", 'unescaped'),
@@ -321,6 +330,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'javascriptdebugbcknd',
+                    'ariaLabel' => gT('JS-Debug mode [Backend]'),
                     'checkedOption' => App()->getConfig('javascriptdebugbcknd'),
                     'selectOptions' => [
                         '1' => gT('On'),
@@ -339,6 +349,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'javascriptdebugfrntnd',
+                    'ariaLabel' => gT('JS-Debug mode [Frontend]'),
                     'checkedOption' => App()->getConfig('javascriptdebugfrntnd'),
                     'selectOptions' => [
                         '1' => gT('On'),
@@ -349,7 +360,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         </div>
 
         <!-- Allow unstable extension updates (only visible for super admin)-->
-        <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')): ?>
+        <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) : ?>
             <div class="mb-3">
                 <label class="col-12 form-label" for='allow_unstable_extension_update'>
                     <?php eT('Allow unstable extension updates:'); ?>
@@ -357,6 +368,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 <div class="col-12">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name' => 'allow_unstable_extension_update',
+                        'ariaLabel' => gT('Allow unstable extension updates'),
                         'checkedOption' => App()->getConfig('allow_unstable_extension_update'),
                         'selectOptions' => [
                             '1' => gT('On'),
@@ -372,6 +384,26 @@ Full lock - none of participants are allowed to take survey, even if they alread
             </div>
         <?php endif; ?>
     </div>
+    <?php foreach ($globalGeneralSettings as $globalGeneralSetting) : ?>
+        <?php if ($globalGeneralSetting['type'] === 'ButtonGroupWidget') : ?>
+            <div class="mb-3">
+                <label class="col-12 form-label" for='<?= $globalGeneralSetting['name'] ?>'>
+                    <?= $globalGeneralSetting['label'] ?>:
+                </label>
+                <div class="col-12">
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => $globalGeneralSetting['name'],
+                        'checkedOption' => $globalGeneralSetting['checkedOption'],
+                        'selectOptions' => $globalGeneralSetting['selectOptions'],
+                        'htmlOptions'   => $globalGeneralSetting['htmlOptions'] ?? [],
+                    ]); ?>
+                </div>
+                <div class="col-12 form-label">
+                    <span class="hint"><?= $globalGeneralSetting['description'] ?></span>
+                </div>
+            </div>
+        <?php endif; ?>
+    <?php endforeach; ?>
 
     <div class="ls-flex-column ls-space padding left-5 right-5 col-md-7">
         <?= FormExtensionWidget::render(
@@ -383,7 +415,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
 </div>
 </div>
 
-<?php if (Yii::app()->getConfig("demoMode") == true): ?>
+<?php if (Yii::app()->getConfig("demoMode") == true) : ?>
     <p>
         <?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?>
     </p>

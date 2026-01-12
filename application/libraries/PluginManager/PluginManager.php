@@ -503,7 +503,7 @@ class PluginManager extends \CApplicationComponent
         // If DB version is less than 165 : plugins table don't exist. 175 update it (boolean to integer for active).
         $dbVersion = \SettingGlobal::model()->find("stg_name=:name", array(':name' => 'DBVersion')); // Need table SettingGlobal, but settings from DB is set only in controller, not in App, see #11294
         // @todo This previous line seems to be an unnecessary query on every page load, better would be to make the settings available to console command properly, see #11291
-        if ($dbVersion && $dbVersion->stg_value >= 165) {
+        if ($dbVersion && $dbVersion->stg_value >= 401) {
             $pluginModel = Plugin::model();
             if ($dbVersion->stg_value >= 411) {
                 /* Before DB 411 version, unable to set order, must check to load before upgrading */

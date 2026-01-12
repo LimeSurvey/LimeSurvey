@@ -61,7 +61,7 @@ $hideCryptedFilter = $survey->oOptions->crypt_method == 'H';
                     'classes' => 'selector__action-change-display-mode'
                 ]
             ]); ?>
-            <input type="hidden" name="<?= App()->request->csrfTokenName ?>" value="<?= App()->request->csrfToken ?>"/>
+            <input type="hidden" name="<?= App()->request->csrfTokenName ?>" value="<?= CHtml::encode(App()->request->csrfToken) ?>"/>
             <input type="submit" class="d-none" name="submit" value="submit"/>
         </div>
     </form>
