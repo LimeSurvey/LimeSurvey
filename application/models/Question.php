@@ -183,7 +183,7 @@ class Question extends LSActiveRecord
             array('question_order', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('scale_id', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('same_default', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
-            array('type', 'length', 'min' => 1, 'max' => 1),
+            array('type', 'length', 'min' => 1, 'max' => 2),
             array('relevance', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
             array('preg', 'safe'),
             array('modulename', 'length', 'max' => 255),
