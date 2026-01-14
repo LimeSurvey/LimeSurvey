@@ -17496,6 +17496,7 @@ body {
 .modal-header .btn-close:focus {
   box-shadow: none;
   outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 .modal-header .btn-close:hover {
   background-color: #EEEFF7;
@@ -17579,6 +17580,9 @@ dl dt {
 a {
   color: #14AE5C;
   font-weight: 500;
+}
+a:focus {
+  outline: 2px solid currentColor !important;
 }
 
 .has-link {
