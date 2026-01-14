@@ -1,15 +1,15 @@
 # LimeSurvey LANGUAGE FILE.
-# Copyright (C) 2025 LimeSurvey
+# Copyright (C) 2026 LimeSurvey
 # This file is distributed under the same license as the LimeSurvey package.
 msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2025-12-15 12:01:36+00:00\n"
+"POT-Creation-Date: 2026-01-13 10:31:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2025-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2026-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LimeSurvey Team <c_schmitz@users.sourceforge.net>\n"
 "X-Poedit-KeywordsList: gT;ngT:1,2;eT;neT:1,2\n"
@@ -928,7 +928,7 @@ msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:491
 #: application/core/LsDefaultDataSets.php:52
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:243
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:254
 #: application/views/admin/dataentry/vvimport.php:28
 #: application/views/admin/export/exportresult_panels/_general.php:4
 #: application/views/admin/globalsettings/globalSettings_view.php:15
@@ -1139,8 +1139,8 @@ msgstr ""
 #: application/controllers/admin/PluginManagerController.php:323
 #: application/controllers/admin/PluginManagerController.php:403
 #: application/controllers/admin/PluginManagerController.php:751
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:427
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:509
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:444
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:526
 #: application/core/plugins/TwoFactorAdminLogin/views/index.php:12
 #: application/helpers/admin/ajax_helper.php:176
 msgid "No permission"
@@ -1192,7 +1192,7 @@ msgstr ""
 #: application/controllers/survey/SurveyIndex.php:111
 #: application/controllers/survey/SurveyIndex.php:292
 #: application/controllers/survey/SurveyIndex.php:294
-#: application/views/admin/participants/blacklist_view.php:141
+#: application/views/admin/participants/blacklist_view.php:147
 #: application/views/surveyAdministration/partial/topbar_tokens/tokensInvRemDropdownItems.php:49
 #: application/views/userManagement/index.php:18
 msgid "We are sorry but you don't have permissions to do this."
@@ -2700,12 +2700,12 @@ msgstr ""
 #: application/views/admin/expressions/test/surveyLogicForm.php:59
 #: application/views/admin/expressions/test/surveyLogicForm.php:73
 #: application/views/admin/participants/blacklist_view.php:25
-#: application/views/admin/participants/blacklist_view.php:38
-#: application/views/admin/participants/blacklist_view.php:55
-#: application/views/admin/participants/blacklist_view.php:72
-#: application/views/admin/participants/blacklist_view.php:89
-#: application/views/admin/participants/blacklist_view.php:106
-#: application/views/admin/participants/blacklist_view.php:123
+#: application/views/admin/participants/blacklist_view.php:39
+#: application/views/admin/participants/blacklist_view.php:57
+#: application/views/admin/participants/blacklist_view.php:75
+#: application/views/admin/participants/blacklist_view.php:93
+#: application/views/admin/participants/blacklist_view.php:111
+#: application/views/admin/participants/blacklist_view.php:129
 #: application/views/admin/participants/massive_actions/_update.php:61
 #: application/views/admin/participants/modal_subviews/_addToSurvey.php:47
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:81
@@ -2715,12 +2715,12 @@ msgstr ""
 #: application/views/admin/token/managetokenattributes.php:126
 #: application/views/admin/token/managetokenattributes.php:127
 #: application/views/admin/token/managetokenattributes.php:128
-#: application/views/admin/token/massive_actions/_update.php:67
-#: application/views/admin/token/massive_actions/_update.php:85
-#: application/views/admin/token/massive_actions/_update.php:190
-#: application/views/admin/token/massive_actions/_update.php:201
-#: application/views/admin/token/massive_actions/_update.php:241
-#: application/views/admin/token/massive_actions/_update.php:252
+#: application/views/admin/token/massive_actions/_update.php:68
+#: application/views/admin/token/massive_actions/_update.php:86
+#: application/views/admin/token/massive_actions/_update.php:192
+#: application/views/admin/token/massive_actions/_update.php:203
+#: application/views/admin/token/massive_actions/_update.php:244
+#: application/views/admin/token/massive_actions/_update.php:255
 #: application/views/admin/token/tokenform.php:115
 #: application/views/admin/token/tokenform.php:130
 #: application/views/admin/token/tokenform.php:300
@@ -2853,12 +2853,12 @@ msgstr ""
 #: application/views/admin/expressions/test/surveyLogicForm.php:58
 #: application/views/admin/expressions/test/surveyLogicForm.php:72
 #: application/views/admin/participants/blacklist_view.php:25
-#: application/views/admin/participants/blacklist_view.php:37
-#: application/views/admin/participants/blacklist_view.php:54
-#: application/views/admin/participants/blacklist_view.php:71
-#: application/views/admin/participants/blacklist_view.php:88
-#: application/views/admin/participants/blacklist_view.php:105
-#: application/views/admin/participants/blacklist_view.php:122
+#: application/views/admin/participants/blacklist_view.php:38
+#: application/views/admin/participants/blacklist_view.php:56
+#: application/views/admin/participants/blacklist_view.php:74
+#: application/views/admin/participants/blacklist_view.php:92
+#: application/views/admin/participants/blacklist_view.php:110
+#: application/views/admin/participants/blacklist_view.php:128
 #: application/views/admin/participants/massive_actions/_update.php:61
 #: application/views/admin/participants/modal_subviews/_addToSurvey.php:46
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:80
@@ -2868,12 +2868,12 @@ msgstr ""
 #: application/views/admin/token/managetokenattributes.php:126
 #: application/views/admin/token/managetokenattributes.php:127
 #: application/views/admin/token/managetokenattributes.php:128
-#: application/views/admin/token/massive_actions/_update.php:66
-#: application/views/admin/token/massive_actions/_update.php:84
-#: application/views/admin/token/massive_actions/_update.php:189
-#: application/views/admin/token/massive_actions/_update.php:200
-#: application/views/admin/token/massive_actions/_update.php:240
-#: application/views/admin/token/massive_actions/_update.php:251
+#: application/views/admin/token/massive_actions/_update.php:67
+#: application/views/admin/token/massive_actions/_update.php:85
+#: application/views/admin/token/massive_actions/_update.php:191
+#: application/views/admin/token/massive_actions/_update.php:202
+#: application/views/admin/token/massive_actions/_update.php:243
+#: application/views/admin/token/massive_actions/_update.php:254
 #: application/views/admin/token/tokenform.php:114
 #: application/views/admin/token/tokenform.php:129
 #: application/views/admin/token/tokenform.php:299
@@ -3043,7 +3043,7 @@ msgstr ""
 #: application/views/admin/labels/editlabel_view.php:79
 #: application/views/admin/labels/partials/topbarBtns_newimport/rightSideButtons.php:10
 #: application/views/admin/labels/partials/topbarBtns_singlelabelset/rightSideButtons.php:42
-#: application/views/admin/participants/blacklist_view.php:134
+#: application/views/admin/participants/blacklist_view.php:140
 #: application/views/admin/participants/modal_subviews/_editAttribute.php:246
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:7
 #: application/views/admin/super/fullpagebar_view.php:111
@@ -3621,14 +3621,14 @@ msgid "You do not have permission to view this user group."
 msgstr ""
 
 #: application/controllers/UserGroupController.php:156
-#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:208
+#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:210
 #: application/core/QuestionTypes/ListDropdown/RenderListDropdown.php:72
 #: application/core/QuestionTypes/RankingStyle/RenderRanking.php:76
 #: application/helpers/common_helper.php:184
 #: application/helpers/common_helper.php:653
 #: application/helpers/qanda_helper.php:726
 #: application/helpers/qanda_helper.php:1329
-#: application/helpers/qanda_helper.php:3503
+#: application/helpers/qanda_helper.php:3505
 #: application/views/admin/dataentry/content_view.php:138
 #: application/views/admin/dataentry/content_view.php:149
 #: application/views/admin/super/permissions/addGroupForm.php:12
@@ -4497,9 +4497,9 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:1235
 #: application/controllers/admin/DataEntry.php:1271
 #: application/core/QuestionTypes/5PointChoice/RenderFivePointChoice.php:50
-#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:164
-#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:225
-#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:297
+#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:166
+#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:227
+#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:299
 #: application/core/QuestionTypes/ListDropdown/RenderListDropdown.php:206
 #: application/core/QuestionTypes/ListWithComment/RenderListComment.php:62
 #: application/core/QuestionTypes/ListWithComment/RenderListComment.php:117
@@ -4515,15 +4515,15 @@ msgstr ""
 #: application/helpers/qanda_helper.php:831
 #: application/helpers/qanda_helper.php:1172
 #: application/helpers/qanda_helper.php:1230
-#: application/helpers/qanda_helper.php:2734
-#: application/helpers/qanda_helper.php:2793
-#: application/helpers/qanda_helper.php:2914
-#: application/helpers/qanda_helper.php:2966
-#: application/helpers/qanda_helper.php:3328
-#: application/helpers/qanda_helper.php:3380
-#: application/helpers/qanda_helper.php:3520
-#: application/helpers/qanda_helper.php:4350
-#: application/helpers/qanda_helper.php:4351
+#: application/helpers/qanda_helper.php:2736
+#: application/helpers/qanda_helper.php:2795
+#: application/helpers/qanda_helper.php:2916
+#: application/helpers/qanda_helper.php:2968
+#: application/helpers/qanda_helper.php:3330
+#: application/helpers/qanda_helper.php:3382
+#: application/helpers/qanda_helper.php:3522
+#: application/helpers/qanda_helper.php:4352
+#: application/helpers/qanda_helper.php:4353
 #: application/helpers/userstatistics_helper.php:642
 #: application/helpers/userstatistics_helper.php:677
 #: application/helpers/userstatistics_helper.php:1368
@@ -9081,19 +9081,19 @@ msgstr ""
 msgid "Check password when use “Save and return later” feature"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:192
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:203
 msgid "2FA key (optional)"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:219
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:230
 msgid "Authentication method not supported"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:225
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:236
 msgid "Incorrect 2FA key"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:254
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:265
 #: application/views/admin/authentication/forgotpassword.php:15
 #: application/views/admin/authentication/login.php:17
 #: application/views/admin/authentication/newPassword.php:17
@@ -9101,51 +9101,51 @@ msgstr ""
 msgid "Administration"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:263
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:274
 msgid "2FA settings"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:442
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:459
 msgid "Invalid auth type"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:449
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:466
 msgid "Please enter a confirmation key"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:455
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:472
 msgid "The confirmation key is not correct."
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:464
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:491
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:481
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:508
 msgid "The two-factor authentication key could not be stored."
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:466
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:493
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:483
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:510
 msgid "Two-factor method successfully stored"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:472
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:489
 msgid "Please enter a YubiKey OTP"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:479
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:496
 msgid "The YubiKey OTP is not correct."
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:513
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:533
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:530
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:550
 msgid "Successfully deleted"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:513
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:533
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:530
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:550
 msgid "Deletion failed"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:529
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:546
 msgid "No 2FA key set for user ID %s"
 msgstr ""
 
@@ -13832,30 +13832,30 @@ msgstr ""
 msgid "Click to set the location or drag and drop the pin. You may may also enter coordinates"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3239
+#: application/helpers/qanda_helper.php:3241
 msgid "A table with a subquestion on each row. You have to select your answer."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3243
+#: application/helpers/qanda_helper.php:3245
 msgid "A table with a subquestion on each row. The answer options are contained in the table header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3297
+#: application/helpers/qanda_helper.php:3299
 msgid "After the answer options a cell does give some information."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3569
+#: application/helpers/qanda_helper.php:3571
 msgid "A table of subquestions on each cell. The subquestion texts are in the column header and relate the particular row header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3628
+#: application/helpers/qanda_helper.php:3630
 msgid "Each answer may only be a number."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3640
-#: application/helpers/qanda_helper.php:3673
-#: application/helpers/qanda_helper.php:3711
-#: application/helpers/qanda_helper.php:3716
+#: application/helpers/qanda_helper.php:3642
+#: application/helpers/qanda_helper.php:3675
+#: application/helpers/qanda_helper.php:3713
+#: application/helpers/qanda_helper.php:3718
 #: application/models/Assessment.php:149 application/models/Survey.php:1701
 #: application/views/admin/export/generatestats/_statisticsoutput_answer.php:55
 #: application/views/admin/export/generatestats/_statisticsoutput_gross_total.php:27
@@ -13863,45 +13863,45 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3647
-#: application/helpers/qanda_helper.php:3685
+#: application/helpers/qanda_helper.php:3649
+#: application/helpers/qanda_helper.php:3687
 msgid "Grand total"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3661
+#: application/helpers/qanda_helper.php:3663
 msgid "The last row shows the total for the column."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3694
+#: application/helpers/qanda_helper.php:3696
 msgid "The last column shows the total for the row."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3733
+#: application/helpers/qanda_helper.php:3735
 msgid "The last row shows the total for the column and the last column shows the total for the row."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3968
+#: application/helpers/qanda_helper.php:3970
 msgid "A table of subquestions on each cell. The subquestion texts are in the colum header and concern the row header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4020
+#: application/helpers/qanda_helper.php:4022
 msgid "Please check the matching combinations."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4031
+#: application/helpers/qanda_helper.php:4033
 msgid "Please enter only numbers."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4038
+#: application/helpers/qanda_helper.php:4040
 msgid "Please select an answer for each combination."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4463
+#: application/helpers/qanda_helper.php:4465
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4467
-#: application/helpers/qanda_helper.php:4848
+#: application/helpers/qanda_helper.php:4469
+#: application/helpers/qanda_helper.php:4850
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
@@ -18135,7 +18135,7 @@ msgstr ""
 
 #: application/models/Token.php:104 application/models/TokenDynamic.php:718
 #: application/views/admin/token/dummytokenform.php:96
-#: application/views/admin/token/massive_actions/_update.php:309
+#: application/views/admin/token/massive_actions/_update.php:312
 #: application/views/admin/token/tokenform.php:434
 msgid "Valid from"
 msgstr ""
@@ -18157,13 +18157,15 @@ msgid "Quota out"
 msgstr ""
 
 #: application/models/TokenDynamic.php:680
-#: application/views/admin/token/massive_actions/_update.php:178
+#: application/views/admin/token/massive_actions/_update.php:179
+#: application/views/admin/token/massive_actions/_update.php:186
 #: application/views/admin/token/tokenform.php:269
 msgid "Invitation sent?"
 msgstr ""
 
 #: application/models/TokenDynamic.php:688
-#: application/views/admin/token/massive_actions/_update.php:228
+#: application/views/admin/token/massive_actions/_update.php:230
+#: application/views/admin/token/massive_actions/_update.php:239
 #: application/views/admin/token/tokenform.php:345
 msgid "Reminder sent?"
 msgstr ""
@@ -18174,6 +18176,7 @@ msgstr ""
 
 #: application/models/TokenDynamic.php:703
 #: application/views/admin/token/massive_actions/_update.php:53
+#: application/views/admin/token/massive_actions/_update.php:63
 #: application/views/admin/token/tokenform.php:95
 msgid "Completed?"
 msgstr ""
@@ -19405,7 +19408,7 @@ msgstr ""
 #: application/views/admin/dataentry/active_html_view.php:69
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:52
 #: application/views/admin/pluginmanager/overview.php:30
-#: application/views/admin/token/massive_actions/_update.php:156
+#: application/views/admin/token/massive_actions/_update.php:157
 #: application/views/admin/token/tokenform.php:232
 msgid "Email:"
 msgstr ""
@@ -19941,7 +19944,7 @@ msgstr ""
 
 #: application/views/admin/export/spss_view.php:46
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:59
-#: application/views/admin/token/massive_actions/_update.php:142
+#: application/views/admin/token/massive_actions/_update.php:143
 #: application/views/admin/token/tokenform.php:216
 #: application/views/survey/system/LanguageChanger/LanguageChanger.php:16
 #: tmp/runtime/twig_cache/d0/d01a93c0881d33a1c5a5f6c3dea0b35c.php:59
@@ -21426,24 +21429,48 @@ msgstr ""
 msgid "Blocklist all current surveys for participant once the global field is set:"
 msgstr ""
 
-#: application/views/admin/participants/blacklist_view.php:47
+#: application/views/admin/participants/blacklist_view.php:35
+msgid "Blocklist all current surveys for participant once the global field is set"
+msgstr ""
+
+#: application/views/admin/participants/blacklist_view.php:48
 msgid "Blocklist participant for any new added survey once the global field is set:"
 msgstr ""
 
-#: application/views/admin/participants/blacklist_view.php:64
+#: application/views/admin/participants/blacklist_view.php:53
+msgid "Blocklist participant for any new added survey once the global field is set"
+msgstr ""
+
+#: application/views/admin/participants/blacklist_view.php:66
 msgid "Prevent blocklisted participants from being added to a survey:"
 msgstr ""
 
-#: application/views/admin/participants/blacklist_view.php:81
+#: application/views/admin/participants/blacklist_view.php:71
+msgid "Prevent blocklisted participants from being added to a survey"
+msgstr ""
+
+#: application/views/admin/participants/blacklist_view.php:84
 msgid "Hide blocklisted participants:"
 msgstr ""
 
-#: application/views/admin/participants/blacklist_view.php:98
+#: application/views/admin/participants/blacklist_view.php:89
+msgid "Hide blocklisted participants"
+msgstr ""
+
+#: application/views/admin/participants/blacklist_view.php:102
 msgid "Delete globally blocklisted participant from the database:"
 msgstr ""
 
-#: application/views/admin/participants/blacklist_view.php:115
+#: application/views/admin/participants/blacklist_view.php:107
+msgid "Delete globally blocklisted participant from the database"
+msgstr ""
+
+#: application/views/admin/participants/blacklist_view.php:120
 msgid "Allow participant to remove himself/herself from blocklist:"
+msgstr ""
+
+#: application/views/admin/participants/blacklist_view.php:125
+msgid "Allow participant to remove himself/herself from blocklist"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:20
@@ -21586,7 +21613,7 @@ msgstr ""
 #: application/views/admin/surveymenu/massive_action/_update.php:16
 #: application/views/admin/surveymenu_entries/massive_action/_update.php:16
 #: application/views/admin/token/massive_actions/_update.php:41
-#: application/views/admin/token/massive_actions/_update.php:356
+#: application/views/admin/token/massive_actions/_update.php:359
 msgid "Modify"
 msgstr ""
 
@@ -21682,14 +21709,14 @@ msgid "Basic attributes"
 msgstr ""
 
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:38
-#: application/views/admin/token/massive_actions/_update.php:116
+#: application/views/admin/token/massive_actions/_update.php:117
 #: application/views/admin/token/tokenform.php:160
 #: tmp/runtime/twig_cache/9f/9fc70fe470f19e4d143273cb6f45d6f2.php:83
 msgid "First name:"
 msgstr ""
 
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:44
-#: application/views/admin/token/massive_actions/_update.php:129
+#: application/views/admin/token/massive_actions/_update.php:130
 #: application/views/admin/token/tokenform.php:174
 #: tmp/runtime/twig_cache/9f/9fc70fe470f19e4d143273cb6f45d6f2.php:106
 msgid "Last name:"
@@ -24067,7 +24094,7 @@ msgid "Email address:"
 msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:76
-#: application/views/admin/token/massive_actions/_update.php:295
+#: application/views/admin/token/massive_actions/_update.php:298
 #: application/views/admin/token/tokenform.php:408
 msgid "Uses left:"
 msgstr ""
@@ -24085,7 +24112,7 @@ msgid "hh:mm"
 msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:119
-#: application/views/admin/token/massive_actions/_update.php:326
+#: application/views/admin/token/massive_actions/_update.php:329
 #: application/views/admin/token/tokenform.php:449
 msgid "Until:"
 msgstr ""
@@ -24320,12 +24347,12 @@ msgstr ""
 msgid "Additional attributes"
 msgstr ""
 
-#: application/views/admin/token/massive_actions/_update.php:164
+#: application/views/admin/token/massive_actions/_update.php:165
 #: application/views/admin/token/tokenform.php:250
 msgid "Email status:"
 msgstr ""
 
-#: application/views/admin/token/massive_actions/_update.php:281
+#: application/views/admin/token/massive_actions/_update.php:284
 #: application/views/admin/token/tokenform.php:399
 msgid "Reminder count:"
 msgstr ""
