@@ -15,6 +15,7 @@ use QuestionL10n;
 use Survey;
 use Permission;
 use SurveyLanguageSetting;
+use Template;
 use Yii;
 
 /**
@@ -74,6 +75,9 @@ class CopySurvey
         if (!$destinationSurvey->save()) {
             throw new \Exception(gT("Failed to copy survey"));
         }
+
+        //this call is necessary to prevent errors when copying the survey with the configured template
+        Template::model()->getTemplateConfiguration(null, $destinationSurvey->sid)->getApiVersion();
 
         $copySurveyResult->setCopiedSurvey($destinationSurvey);
 
