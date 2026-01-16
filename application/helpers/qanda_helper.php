@@ -4336,12 +4336,11 @@ function do_arraycolumns($ia)
             $labels[] = array('answer' => gT('No answer'), 'code' => '');
         }
 
-        if ($aQuestionAttributes['random_order'] == 1) {
-            $sOrder = dbRandom();
-        } else {
-            $sOrder = 'question_order';
-        }
-        $aQuestions = Question::model()->findAll(array('order' => $sOrder, 'condition' => 'parent_qid=:parent_qid', 'params' => array(':parent_qid' => $ia[0])));
+        $question = Question::model()->findByPk($ia[0]);
+        $orderingService = \LimeSurvey\DI::getContainer()->get(
+            \LimeSurvey\Models\Services\QuestionOrderingService\QuestionOrderingService::class
+        );
+        $aQuestions = $orderingService->getOrderedSubQuestions($question, 0, $sSurveyLanguage);
         $anscount = count($aQuestions);
 
         $aData = [];
