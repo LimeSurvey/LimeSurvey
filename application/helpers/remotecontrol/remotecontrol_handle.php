@@ -3936,9 +3936,10 @@ class remotecontrol_handle
      * @param array $aParticipants
      * [[0] => ["email"=>"dummy-02222@limesurvey.com","firstname"=>"max","lastname"=>"mustermann"]]
      * @param bool $update
+     * @param bool $remove
      * @return array with status
      */
-    public function cpd_importParticipants($sSessionKey, $participants, $update = false)
+    public function cpd_importParticipants($sSessionKey, $participants, $update = false, $remove = false)
     {
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
@@ -3947,7 +3948,8 @@ class remotecontrol_handle
         $aDefaultFields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted');
         $aResponse = array(
             'ImportCount' => 0,
-            'UpdateCount' => 0
+            'UpdateCount' => 0,
+            'RemoveCount' => 0
         );
 
         $aAttributeRecords = ParticipantAttributeName::model()
@@ -4033,6 +4035,14 @@ class remotecontrol_handle
             }
         }
 
+        // Remove param is set to True
+        // Remove all participants whose ID does not appear in the import list.
+        if ($remove) {
+    		$participantsId = array_column($participants, 'participant_id');
+    		$criteria = new CDbCriteria();
+    		$criteria->addNotInCondition('participant_id', $participantsId);
+    		$aResponse['RemoveCount'] = Participant::model()->deleteAll($criteria);
+        }
         return $aResponse;
     }
 
