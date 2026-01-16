@@ -3137,13 +3137,12 @@ function do_array_increasesamedecrease($ia)
     $cellwidth = round(((100 - $answerwidth) / $cellwidth), 1); // convert number of columns to percentage of table width
 
     $sSurveyLanguage = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
-    // Get questions and answers by defined order
-    if ($aQuestionAttributes['random_order'] == 1) {
-        $sOrder = dbRandom();
-    } else {
-        $sOrder = 'question_order';
-    }
-    $aSubquestions = Question::model()->findAll(array('order' => $sOrder, 'condition' => 'parent_qid=:parent_qid AND scale_id=0', 'params' => array(':parent_qid' => $ia[0])));
+    // Get subquestions through ordering service so keep_codes_order is respected
+    $question = Question::model()->findByPk($ia[0]);
+    $orderingService = \LimeSurvey\DI::getContainer()->get(
+        \LimeSurvey\Models\Services\QuestionOrderingService\QuestionOrderingService::class
+    );
+    $aSubquestions = $orderingService->getOrderedSubQuestions($question, 0, $sSurveyLanguage);
     $anscount       = count($aSubquestions);
     $fn             = 1;
     $odd_even       = '';
