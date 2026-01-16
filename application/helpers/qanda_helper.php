@@ -3401,8 +3401,13 @@ function do_array_texts($ia)
     }
     $columnswidth = 100 - ($answerwidth);
 
-    $aSubquestionsX = Question::model()->findAll(array('order' => 'question_order', 'condition' => 'parent_qid=:parent_qid AND scale_id=1', 'params' => array(':parent_qid' => $ia[0])));
+    $question = Question::model()->findByPk($ia[0]);
+    $orderingService = \LimeSurvey\DI::getContainer()->get(
+        \LimeSurvey\Models\Services\QuestionOrderingService\QuestionOrderingService::class
+    );
+
     $sSurveyLanguage = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
+    $aSubquestionsX = $orderingService->getOrderedSubQuestions($question, 1, $sSurveyLanguage);
     $labelans     = [];
 
     foreach ($aSubquestionsX as $oSubquestion) {
@@ -3429,13 +3434,8 @@ function do_array_texts($ia)
 
 
         $sSurveyLanguage = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
-        // Get questions and answers by defined order
-        if ($aQuestionAttributes['random_order'] == 1) {
-            $sOrder = dbRandom();
-        } else {
-            $sOrder = 'question_order';
-        }
-        $aQuestionsY = Question::model()->findAll(array('order' => $sOrder, 'condition' => 'parent_qid=:parent_qid AND scale_id=0', 'params' => array(':parent_qid' => $ia[0])));
+        // Get questions and answers by defined order via ordering service (respects keep_codes_order)
+        $aQuestionsY = $orderingService->getOrderedSubQuestions($question, 0, $sSurveyLanguage);
         $anscount   = count($aQuestionsY);
         $fn         = 1;
 
