@@ -3615,8 +3615,6 @@ function do_array_multiflexi($ia)
     $answertypeclass            = "";
     $caption                    = gT("A table of subquestions on each cell. The subquestion texts are in the colum header and concern the row header.");
     $checkconditionFunction     = "fixnum_checkconditions";
-    $minvalue                   = '';
-    $maxvalue                   = '';
 
     /*
     * Question Attributes
@@ -3722,8 +3720,12 @@ function do_array_multiflexi($ia)
     }
 
     $columnswidth   = 100 - ($answerwidth);
-    $aQuestions = Question::model()->findAll(array('order' => 'question_order', 'condition' => 'parent_qid=:parent_qid AND scale_id=1', 'params' => array(':parent_qid' => $ia[0])));
+    $question = Question::model()->findByPk($ia[0]);
+    $orderingService = \LimeSurvey\DI::getContainer()->get(
+        \LimeSurvey\Models\Services\QuestionOrderingService\QuestionOrderingService::class
+    );
     $sSurveyLanguage = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
+    $aQuestions = $orderingService->getOrderedSubQuestions($question, 1, $sSurveyLanguage);
     $labelans       = [];
     $labelcode      = [];
 
@@ -3747,13 +3749,8 @@ function do_array_multiflexi($ia)
         }
 
         $sSurveyLanguage = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
-        // Get questions and answers by defined order
-        if ($aQuestionAttributes['random_order'] == 1) {
-            $sOrder = dbRandom();
-        } else {
-            $sOrder = 'question_order';
-        }
-        $aSubquestions = Question::model()->findAll(array('order' => $sOrder, 'condition' => 'parent_qid=:parent_qid AND scale_id=0', 'params' => array(':parent_qid' => $ia[0])));
+        // Get questions and answers by defined order via ordering service (respects keep_codes_order)
+        $aSubquestions = $orderingService->getOrderedSubQuestions($question, 0, $sSurveyLanguage);
 
 
         if (trim($aQuestionAttributes['parent_order'] != '')) {
