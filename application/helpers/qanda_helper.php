@@ -2646,30 +2646,17 @@ function do_array_5point($ia)
         //Question is not mandatory
         ++$colCount; // add another column
     }
+    $sSurveyLanguage = $_SESSION['survey_' . App()->getConfig('surveyID')]['s_lang'];
 
     // Get questions and answers by defined order
-    $hasRandomOrder = (bool) $aQuestionAttributes['random_order'];
-
-    if ($hasRandomOrder) {
-        $sOrder = dbRandom();
-    } else {
-        $sOrder = 'question_order';
-    }
-
-    $parentQuestionID = $ia[0];
-    $aSubquestions = Question::model()->findAll(
-        array(
-            'order' => $sOrder,
-            'condition' => 'parent_qid=:parent_qid AND scale_id=0',
-            'params' => array(
-                ':parent_qid' => $parentQuestionID
-            )
-        )
+    $question = Question::model()->findByPk($ia[0]);
+    $orderingService = \LimeSurvey\DI::getContainer()->get(
+        \LimeSurvey\Models\Services\QuestionOrderingService\QuestionOrderingService::class
     );
+    $aSubquestions = $orderingService->getOrderedSubQuestions($question, 0, $sSurveyLanguage);
 
     $fn            = 1;
     $sColumns      = $sHeaders = $sRows = $answer_tds = '';
-    $sSurveyLanguage = $_SESSION['survey_' . App()->getConfig('surveyID')]['s_lang'];
 
     // Check if any subquestion use suffix/prefix
     $right_exists  = false;
