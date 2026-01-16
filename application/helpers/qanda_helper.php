@@ -2844,7 +2844,6 @@ function do_array_10point($ia)
     $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && ($ia[6] == 'Y' || $ia[6] == 'S')) ? explode("|", (string) $aLastMoveResult['unansweredSQs']) : [];
     $coreClass = "ls-answers subquestion-list questions-list radio-array";
 
-    $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     if (ctype_digit(trim((string) $aQuestionAttributes['answer_width']))) {
@@ -2859,13 +2858,16 @@ function do_array_10point($ia)
     }
     $cellwidth = round(((100 - $answerwidth) / $cellwidth), 1); // convert number of columns to percentage of table width
 
-    // Get questions and answers by defined order
-    if ($aQuestionAttributes['random_order'] == 1) {
-        $sOrder = dbRandom();
-    } else {
-        $sOrder = 'question_order';
-    }
-    $aSubquestions = Question::model()->findAll(array('order' => $sOrder, 'condition' => 'parent_qid=:parent_qid AND scale_id=0', 'params' => array(':parent_qid' => $ia[0])));
+    // Get subquestions using ordering service so keep_codes_order is respected
+    $question = Question::model()->findByPk($ia[0]);
+    $iSurveyId = $question->sid;
+    $survey = $question->survey;
+    $sSurveyLanguage = isset($_SESSION['survey_' . $iSurveyId]) ? $_SESSION['survey_' . $iSurveyId]['s_lang'] : $survey->language;
+
+    $orderingService = \LimeSurvey\DI::getContainer()->get(
+        \LimeSurvey\Models\Services\QuestionOrderingService\QuestionOrderingService::class
+    );
+    $aSubquestions = $orderingService->getOrderedSubQuestions($question, 0, $sSurveyLanguage);
 
     $fn = 1;
     $odd_even = '';
@@ -2923,8 +2925,6 @@ function do_array_10point($ia)
 
     $sRows = '';
     $inputnames = [];
-    $iSurveyId = Question::model()->findByPk($ia[0])->sid;
-    $sSurveyLanguage = isset($_SESSION['survey_' . $iSurveyId]) ? $_SESSION['survey_' . $iSurveyId]['s_lang'] : Question::model()->findByPk($ia[0])->survey->language;
     foreach ($aSubquestions as $j => $ansrow) {
         $myfname = $ia[1] . $ansrow['title'];
         $answertext = $ansrow->questionl10ns[$sSurveyLanguage]->question;
