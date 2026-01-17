@@ -43,3 +43,73 @@
 #selector__exportTypeSelector-modal .modal-dialog {
     border : 1px solid $g-900;
 }
+
+.modal-dialog {
+  .modal-content {
+    background-color: $g-200;
+    padding: 20px;
+  }
+  .modal-header {
+    padding: 5px 20px;
+
+  }
+  .modal-body {
+    padding-bottom: 0;
+  }
+  .table {
+      color: black;
+      border-radius: 4px;
+      border: solid 2px rgb(39 39 39 / 15%);
+      box-shadow: 0px 10px 13px -7px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+
+      td {
+        padding: 12px 0px !important;
+      }
+      td:not(:first-child), th:not(:first-child) {
+        text-align: center;
+      }
+      thead > tr > th {
+        border-bottom: 1px solid #9DA1B2;
+        font-weight: 500;
+      }
+      tbody td {
+        border: 0;
+        border: none;
+        border-style: none;
+      }
+      tbody tr:hover {
+        cursor: pointer;
+        background-color: $g-200;
+
+        i:before {
+          color: var(--bs-primary);
+        }
+      }
+      thead th:first-child, .table tbody td:first-child {
+        padding-left: 10px !important;
+      }
+
+      i:before {
+        display: inline-block;
+        vertical-align: middle;
+        color: grey;
+        font-size: 1.5em;
+        padding-left: 5px;
+      }
+      input[type='checkbox']:before,
+      input[type='checkbox']:after {
+        color: black;
+        border-color: black;
+        background-color: white;
+      }
+  }
+
+  .modal-footer {
+    padding-top: 0;
+    display: block;
+  }
+  .selector--exitForm {
+    background-color: white;
+  }
+}
