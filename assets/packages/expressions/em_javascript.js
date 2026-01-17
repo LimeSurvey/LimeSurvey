@@ -51,8 +51,8 @@ function checkconditions(value, name, type, evt_type)
 
     var questionCode;
     if(typeof name !== 'undefined') {
-        var parts = name.split('X');
-        questionCode = parts[2];
+        var parts = name.split('_');
+        questionCode = parts[0].substring(1);
         var LEMvarNameAttr = LEMvarNameAttr || {};
         if (LEMvarNameAttr['java' + name] != undefined) {
             questionCode = '' + LEMvarNameAttr['java' + name].qid;

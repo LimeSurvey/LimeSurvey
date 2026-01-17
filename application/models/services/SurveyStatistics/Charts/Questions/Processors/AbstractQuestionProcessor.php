@@ -60,12 +60,12 @@ abstract class AbstractQuestionProcessor
     /**
      * Build the identifier for current question.
      *
-     * Ex: sidXgidXqid
+     * Ex: Qqid
      */
     public function rt(): void
     {
         if (!empty($this->question)) {
-            $this->rt = $this->question['sid'] . 'X' . $this->question['gid'] . 'X' . $this->question['qid'];
+            $this->rt = 'Q' . $this->question['qid'];
         }
     }
 

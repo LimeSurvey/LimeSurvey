@@ -102,6 +102,6 @@ class VerificationController extends LSYii_Controller
         ImageDestroy($im);
 
         // Add the answer to the session
-        $_SESSION['survey_' . $iSurveyID]['secanswer'] = $num1 + $num2;
+        $_SESSION['responses_' . $iSurveyID]['secanswer'] = $num1 + $num2;
     }
 }

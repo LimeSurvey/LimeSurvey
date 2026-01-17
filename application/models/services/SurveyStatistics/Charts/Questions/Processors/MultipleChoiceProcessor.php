@@ -9,19 +9,18 @@ class MultipleChoiceProcessor extends AbstractQuestionProcessor
 {
     public function rt(): void
     {
-        $this->rt = $this->question['sid'] . 'X' . $this->question['gid'] . 'X' . $this->question['qid'];
+        $this->rt = 'Q' . $this->question['qid'];
     }
 
     public function process()
     {
-        $this->rt();
 
         $legend = [];
         $dataItems = [];
         $field = null;
 
         foreach ($this->question['subQuestions'] ?? [] as $subQuestion) {
-            $field = $this->rt . $subQuestion['title'];
+            $field = $this->rt . "_S" . $subQuestion['qid'];
             $legend[] = $subQuestion['question'];
 
             $count = $this->getResponseCount($field);
@@ -33,7 +32,7 @@ class MultipleChoiceProcessor extends AbstractQuestionProcessor
         }
 
         if ($this->question['other'] === Question::QT_Y_YES_NO_RADIO) {
-            $field = $this->rt . 'other';
+            $field = $this->rt . '_Cother';
             $legend[] = 'other';
             $count = $this->getResponseCount($field);
             $dataItems[] = ['key' => 'other', 'title' => 'Other', 'value' => $count];

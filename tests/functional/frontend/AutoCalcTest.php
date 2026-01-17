@@ -42,23 +42,23 @@ class AutoCalcTest extends TestBaseClassWeb
             // Get first page.
             self::$webDriver->get($url);
 
-            $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['CenterID']->qid;
+            $sgqa = 'Q' . $questions['CenterID']->qid;
             $centerIdInput = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa));
             $centerIdInput->sendKeys('90');
 
-            $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['MinimumDataOnly']->qid . 'N';
+            $sgqa = 'Q' . $questions['MinimumDataOnly']->qid . '_CN';
             $minimumDataOnlyNo = self::$webDriver->findElement(WebDriverBy::id('javatbd' . $sgqa));
             $minimumDataOnlyNo->click();
 
-            $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['weight']->qid;
+            $sgqa = 'Q' . $questions['weight']->qid;
             $weightInput = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa));
             $weightInput->sendKeys('90');
 
-            $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['height']->qid;
+            $sgqa = 'Q' . $questions['height']->qid;
             $heightInput = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa));
             $heightInput->sendKeys('50');
 
-            $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['BMIReport']->qid;
+            $sgqa = 'Q' . $questions['BMIReport']->qid;
             $bmiReport = self::$webDriver->findElement(WebDriverBy::id('ls-question-text-' . $sgqa));
             $bmi = $bmiReport->getText();
 

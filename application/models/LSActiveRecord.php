@@ -304,7 +304,7 @@ class LSActiveRecord extends CActiveRecord
                     $aAttributes[] = $attribute;
                 }
             }
-        } elseif ($sClassName == 'SurveyDynamic' || $sClassName == 'Response_' . $iSurveyId) {
+        } elseif ($sClassName == 'SurveyDynamic' || $sClassName == 'Response_' . $iSurveyId || $sClassName == 'Survey_' . $iSurveyId) {
             // response attributes
             $aAttributes = Response::getEncryptedAttributes($iSurveyId);
         }

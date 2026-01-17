@@ -41,7 +41,7 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
         $codes = array_map('strval', range(1, $max));
 
         foreach ($this->question['subQuestions'] as $subQuestion) {
-            $rt = $this->rt . $subQuestion['title'];
+            $rt = $this->rt . "_S" . $subQuestion['qid'];
             [$legend, $items] = $this->buildItemsFromCodes($rt, $codes, $codes);
             $title = $this->question['question'] . '(' . $subQuestion['question'] . ')';
 
@@ -58,7 +58,7 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
         $charts = [];
 
         foreach ($this->question['subQuestions'] as $subQuestion) {
-            $rt = $this->rt . $subQuestion['title'];
+            $rt = $this->rt . "_S" . $subQuestion['qid'];
             [$legend, $items] = $this->buildItemsFromCodes($rt, $codes, $labels);
             $title = $this->question['question'] . "[{$subQuestion['question']}]";
 
@@ -74,7 +74,7 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
             $title = $this->question['question'] . "[{$subQuestion['question']}]";
             $codes = ['I', 'S', 'D'];
             $labels = ['Increase', 'Same', 'Decrease'];
-            $rt = $this->rt . $subQuestion['title'];
+            $rt = $this->rt . "_S" . $subQuestion['qid'];
             [$legend, $items] = $this->buildItemsFromCodes($rt, $codes, $labels);
 
             $charts[] = new StatisticsChartDTO($title, $legend, $items, $this->calculateTotal($items), ['question' => $this->question]);
@@ -88,17 +88,15 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
         $mainQuestionTitle = $this->question['question'];
         $stats = [];
 
-        $codes = array_map(fn($data) => $data['code'], $this->answers);
-        $labels  = array_map(fn($data) => $data['answer'], $this->answers);
         foreach ($this->question['subQuestions'] as $subQuestion) {
-            $rt = $this->rt . $subQuestion['title'];
-
             $title = $mainQuestionTitle . "[{$subQuestion['question']}]";
             $legend = [];
             $items = [];
 
             if ((int)$subQuestion['scale_id'] === 0) {
-                [$legend, $items] = $this->buildItemsFromCodes($rt, $codes, $labels);
+                $count = $this->getResponseCount($this->rt . "_S" . $subQuestion['qid']);
+                $legend[] = $subQuestion['question'];
+                $items[] = ['key' => $subQuestion['title'], 'value' => $count, 'title' => $subQuestion['question']];
             }
 
             $stats[] = new StatisticsChartDTO($title, $legend, $items, $this->calculateTotal($items), ['question' => $this->question]);
