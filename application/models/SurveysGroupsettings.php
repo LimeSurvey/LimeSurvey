@@ -67,7 +67,7 @@ class SurveysGroupsettings extends LSActiveRecord
     protected $optionAttributesChar     = array('anonymized', 'savetimings', 'datestamp', 'usecookie', 'allowregister', 'allowsave', 'autoredirect', 'allowprev', 'printanswers',
                                                 'ipaddr','ipanonymize', 'refurl', 'publicstatistics', 'publicgraphs', 'listpublic', 'htmlemail', 'sendconfirmation', 'tokenanswerspersistence',
                                                 'assessments', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'nokeyboard',
-                                                'alloweditaftercompletion');
+                                                'alloweditaftercompletion','crypt_method');
     protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto');
 
     public $showInherited = 1;
@@ -110,7 +110,7 @@ class SurveysGroupsettings extends LSActiveRecord
 			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence,
 			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto,
 			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress,
-			questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on' => 'search'),
+			questionindex, navigationdelay, nokeyboard, alloweditaftercompletion, crypt_method', 'safe', 'on' => 'search'),
         );
     }
 
@@ -187,6 +187,7 @@ class SurveysGroupsettings extends LSActiveRecord
             'navigationdelay' => 'Navigationdelay',
             'nokeyboard' => 'Nokeyboard',
             'alloweditaftercompletion' => 'Alloweditaftercompletion',
+            'crypt_method' => 'Crypt method',
         );
     }
 
@@ -253,6 +254,7 @@ class SurveysGroupsettings extends LSActiveRecord
         $criteria->compare('navigationdelay', $this->navigationdelay);
         $criteria->compare('nokeyboard', $this->nokeyboard, true);
         $criteria->compare('alloweditaftercompletion', $this->alloweditaftercompletion, true);
+        $criteria->compare('crypt_method', $this->crypt_method, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -448,6 +450,12 @@ class SurveysGroupsettings extends LSActiveRecord
             return str_replace(array('B', 'D', 'N', 'X'), array(gT("Show both"), gT("Show group description only"), gT("Show group name only"), gT("Hide both")), (string) $value);
         } elseif ($attribute == 'showqnumcode') {
             return str_replace(array('B', 'C', 'N', 'X'), array(gT("Show both"), gT("Show question code only"), gT("Show question number only"), gT("Hide both")), (string) $value);
+        } elseif ($attribute == 'crypt_method') {
+            return str_replace(
+                array('B', 'H'),
+                array(gT("Basic"), gT("Hardened")),
+                (string) $value
+            );
         } elseif ($value == 'N' || $value == 'Y') {
             return str_replace(array('Y', 'N'), array(gT("On"), gT("Off")), (string) $value);
         }
