@@ -89,13 +89,13 @@ class RandomizerHelper
         foreach ($groupedSubquestions as $scaleId => &$scaleArray) {
             $scaleArray = \ls\mersenne\shuffle($scaleArray);
         }
-
         // Reinsert excluded subquestion if needed
         if ($excludedSubquestion !== null) {
             $scaleId = $excludedSubquestion->scale_id;
+
             array_splice(
                 $groupedSubquestions[$scaleId],
-                ($excludedSubquestion->question_order - 1),
+                ($excludedSubquestion->question_order),
                 0,
                 [$excludedSubquestion]
             );
