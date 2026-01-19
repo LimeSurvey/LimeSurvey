@@ -34,6 +34,31 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.16.3 (build 251215) to 6.16.4 (build 260113) January 13, 2026
+-Fixed issue: single- and multiple-choice questions other field is not centered with its textbox (Patrick Teichmann)
+-Fixed issue: in surveytaking, reduced whitespace between navbar and content (Patrick Teichmann)
+-Fixed issue: logo not displayed in mobile view for surveys (#4630) (Patrick Teichmann)
+-Fixed issue: Added .dotx as valid resource upload extension (Carsten Schmitz)
+-Fixed issue: A11y for survey participants mass edit toggle buttons and modal close button (#4485) (Anblik Audit Team)
+-Fixed issue: A11y for messagebox and focused links (#4507) (Anblik Audit Team)
+-Fixed issue: A11y for central participants db blocklist settings and CSV import (#4531) (Anblik Audit Team)
+-Fixed issue: A11y for Assessments page (#4575) (Anblik Audit Team)
+-Fixed issue: A11y for Email templates settings (#4503) (Anblik Audit Team)
+-Fixed issue #LX-7: Wrong semantic differential label alignment (#4629) (Gabriel Jenik)
+-Fixed issue #20390: [security] Prevent XSS phishing by navigating browser tabs (#4652) (Denis Chenu)
+-Fixed issue #20383: Expression manager javascript substr function does not work with a zero for start parameter (#4608) (Matthew)
+-Fixed issue #20366: [security] TwoFactorAdminLogin should create secret with minimum 128 bits (#4639) (Denis Chenu)
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by BloomingPrime, Han
+#Updated translation: Dutch (Informal) by BloomingPrime, Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.16.2 (build 251209) to 6.16.3 (build 251215) December 15, 2025
 +New feature: Ability to include connection details in SMTP log (Carsten Schmitz)
 -Fixed issue: Status of ComfortUpdate key not properly shown in top menu info box (Carsten Schmitz)
