@@ -89,7 +89,7 @@ class RandomizerHelper
         foreach ($groupedSubquestions as $scaleId => &$scaleArray) {
             $scaleArray = \ls\mersenne\shuffle($scaleArray);
         }
-        foreach($excludedSubquestions as $excludedSubquestion) {
+        foreach ($excludedSubquestions as $excludedSubquestion) {
             $scaleId = $excludedSubquestion->scale_id;
             array_splice(
                 $groupedSubquestions[$scaleId],
@@ -118,10 +118,10 @@ class RandomizerHelper
             return [$excludedSubquestions, $groupedSubquestions];
         }
         /* @var array of code tfor exclude */
-        $excludeAllOthersTitle = explode(";",$excludeAllOthers);
+        $excludeAllOthersTitle = explode(";", $excludeAllOthers);
         foreach ($groupedSubquestions as $scaleId => $scaleArray) {
             foreach ($scaleArray as $key => $subquestion) {
-                if (in_array($subquestion->title,$excludeAllOthersTitle)) {
+                if (in_array($subquestion->title, $excludeAllOthersTitle)) {
                     $subquestion->question_order = $key;
                     $excludedSubquestions[] = $subquestion;
                     $groupedSubquestions[$scaleId][$key] = null;
