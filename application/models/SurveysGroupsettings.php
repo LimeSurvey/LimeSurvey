@@ -50,6 +50,7 @@
  * @property string $nokeyboard
  * @property string $alloweditaftercompletion
  * @property string $ipanonymize
+ * @property string $savequotaexit
  */
 class SurveysGroupsettings extends LSActiveRecord
 {
@@ -67,7 +68,7 @@ class SurveysGroupsettings extends LSActiveRecord
     protected $optionAttributesChar     = array('anonymized', 'savetimings', 'datestamp', 'usecookie', 'allowregister', 'allowsave', 'autoredirect', 'allowprev', 'printanswers',
                                                 'ipaddr','ipanonymize', 'refurl', 'publicstatistics', 'publicgraphs', 'listpublic', 'htmlemail', 'sendconfirmation', 'tokenanswerspersistence',
                                                 'assessments', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'nokeyboard',
-                                                'alloweditaftercompletion');
+                                                'alloweditaftercompletion', 'savequotaexit');
     protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto');
 
     public $showInherited = 1;
@@ -98,7 +99,7 @@ class SurveysGroupsettings extends LSActiveRecord
         return array(
             array('autonumber_start, showsurveypolicynotice, tokenlength, questionindex, navigationdelay, owner_id', 'numerical', 'integerOnly' => true),
             array('admin', 'length', 'max' => 50),
-            array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, nokeyboard, alloweditaftercompletion, ipanonymize', 'length', 'max' => 1),
+            array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, nokeyboard, alloweditaftercompletion, ipanonymize, savequotaexit', 'length', 'max' => 1),
             array('adminemail, bounce_email', 'length', 'max' => 255),
             array('template', 'length', 'max' => 100),
             array('expires, startdate, datecreated, attributedescriptions, emailresponseto, emailnotificationto', 'safe'),
@@ -110,7 +111,7 @@ class SurveysGroupsettings extends LSActiveRecord
 			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence,
 			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto,
 			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress,
-			questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on' => 'search'),
+			questionindex, navigationdelay, nokeyboard, alloweditaftercompletion, savequotaexit', 'safe', 'on' => 'search'),
         );
     }
 
@@ -162,6 +163,7 @@ class SurveysGroupsettings extends LSActiveRecord
             'printanswers' => 'Printanswers',
             'ipaddr' => 'Ipaddr',
             'refurl' => 'Refurl',
+            'savequotaexit' => 'Savequotaexit',
             'datecreated' => 'Datecreated',
             'showsurveypolicynotice' => 'Showsurveypolicynotice',
             'publicstatistics' => 'Publicstatistics',
@@ -228,6 +230,7 @@ class SurveysGroupsettings extends LSActiveRecord
         $criteria->compare('printanswers', $this->printanswers, true);
         $criteria->compare('ipaddr', $this->ipaddr, true);
         $criteria->compare('refurl', $this->refurl, true);
+        $criteria->compare('savequotaexit', $this->savequotaexit, true);
         $criteria->compare('datecreated', $this->datecreated, true);
         $criteria->compare('showsurveypolicynotice', $this->showsurveypolicynotice);
         $criteria->compare('publicstatistics', $this->publicstatistics, true);

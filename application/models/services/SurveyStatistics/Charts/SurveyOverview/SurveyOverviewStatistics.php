@@ -29,7 +29,7 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
     /** @var array Allowed system fields that should be excluded from answer checking */
     private const SYSTEM_FIELDS = [
         'id', 'submitdate', 'lastpage', 'startlanguage',
-        'seed', 'startdate', 'datestamp', 'token',
+        'seed', 'startdate', 'datestamp', 'token', 'quota_exit',
     ];
 
     /**

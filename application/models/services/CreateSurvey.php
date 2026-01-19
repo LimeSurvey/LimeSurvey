@@ -197,6 +197,7 @@ class CreateSurvey
         $this->survey->ipaddr = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->ipanonymize = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->refurl = self::STRING_SHORT_VALUE_INHERIT;
+        $this->survey->savequotaexit = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->usecookie = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->emailnotificationto = 'inherit';
         $this->survey->allowregister = self::STRING_SHORT_VALUE_INHERIT;

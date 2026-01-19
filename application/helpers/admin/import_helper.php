@@ -2014,6 +2014,7 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
             'seed',
             'startdate',
             'datestamp',
+            'quota_exit',
             'version_number'
         ];
 
@@ -2025,6 +2026,11 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
         if (isset($targetSchema->columns['datestamp']) && empty($targetResponse['datestamp'])) {
             $targetResponse->{'datestamp'} = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
             $dataRow['datestamp'] = $targetResponse->{'datestamp'};
+        }
+
+        if (isset($targetSchema->columns['quota_exit']) && empty($targetResponse['quota_exit'])) {
+            $targetResponse->{'quota_exit'} = null;
+            $dataRow['quota_exit'] = $targetResponse->{'quota_exit'};
         }
 
         foreach ($additionalFields as $additionalField) {

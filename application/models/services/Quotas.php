@@ -651,7 +651,9 @@ class Quotas
 
     public static function updateResponseQuotaExit(Response $response, ?int $quotaId): void
     {
-        $response->quota_exit = $quotaId;
-        $response->save(false, ['quota_exit']);
+        if ($response->hasAttribute('quota_exit')) {
+            $response->quota_exit = $quotaId;
+            $response->save(false, ['quota_exit']);
+        }
     }
 }

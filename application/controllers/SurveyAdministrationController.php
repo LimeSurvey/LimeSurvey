@@ -3057,6 +3057,9 @@ class SurveyAdministrationController extends LSBaseController
         if ($oSurvey->emailresponseto != '') {
             $surveysummary2[] = gT("Detailed email notification with response data is sent to:") . ' ' . htmlspecialchars((string)$aSurveyInfo['emailresponseto']);
         }
+        if ($oSurvey->isSaveQuotaExit) {
+            $surveysummary2[] = gT("Matched quota ID will be saved.");
+        }
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         if (trim((string)$oSurvey->startdate) != '') {

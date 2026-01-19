@@ -138,18 +138,20 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
         }
         $filterableColumns['completed'] = gT("completed");
 
-        if (!isset($filteredColumns) || in_array('quota_exit', $filteredColumns)) {
-            $aColumns[] = [
-                'header' => gT("Quota exit"),
-                'name'   => 'quota_exit',
-                'type'   => 'number',
-                'filter' => TbHtml::textField(
-                    'SurveyDynamic[quota_exit]',
-                    $model->quota_exit
-                )
-            ];
+        if ($model->hasAttribute('quota_exit')) {
+            if (!isset($filteredColumns) || in_array('quota_exit', $filteredColumns)) {
+                $aColumns[] = [
+                    'header' => gT("Quota exit"),
+                    'name'   => 'quota_exit',
+                    'type'   => 'number',
+                    'filter' => TbHtml::textField(
+                        'SurveyDynamic[quota_exit]',
+                        $model->quota_exit
+                    )
+                ];
+            }
+            $filterableColumns['quota_exit'] = gT("Quota exit");
         }
-        $filterableColumns['quota_exit'] = gT("Quota exit");
 
         //add token to top of list if survey is not private
         if ($bHaveToken) {

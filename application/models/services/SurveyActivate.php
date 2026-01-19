@@ -66,7 +66,8 @@ class SurveyActivate
                 'ipaddr',
                 'ipanonymize',
                 'refurl',
-                'savetimings'
+                'savetimings',
+                'savequotaexit'
             ];
             foreach ($fields as $field) {
                 $survey->{$field} = $survey->aOptions[$field];

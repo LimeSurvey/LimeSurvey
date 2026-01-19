@@ -4618,6 +4618,7 @@ class LimeExpressionManager
         $LEM->surveyOptions['timeadjust'] = (isset($aSurveyOptions['timeadjust']) ? $aSurveyOptions['timeadjust'] : 0);
         $LEM->surveyOptions['tempdir'] = (isset($aSurveyOptions['tempdir']) ? $aSurveyOptions['tempdir'] : '/temp/');
         $LEM->surveyOptions['token'] = (isset($aSurveyOptions['token']) ? $aSurveyOptions['token'] : null);
+        $LEM->surveyOptions['savequotaexit'] = (isset($aSurveyOptions['savequotaexit']) ? $aSurveyOptions['savequotaexit'] : false);
         $LEM->debugLevel = $debugLevel;
         $_SESSION[$LEM->sessid]['LEMdebugLevel'] = $debugLevel; // need acces to SESSSION to decide whether to cache serialized instance of $LEM
         switch ($surveyMode) {

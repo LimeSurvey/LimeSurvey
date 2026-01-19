@@ -780,6 +780,7 @@ class SurveyRuntimeHelper
             'radix'                       => $radix,
             'refurl'                      => (($this->aSurveyInfo['refurl'] == "Y" && isset($_SESSION[$this->LEMsessid]['refurl'])) ? $_SESSION[$this->LEMsessid]['refurl'] : null),
             'savetimings'                 => ($this->aSurveyInfo['savetimings'] == "Y"),
+            'savequotaexit'               => ($this->aSurveyInfo['savequotaexit'] == "Y"),
             'surveyls_dateformat'         => $this->aSurveyInfo['surveyls_dateformat'] ?? 1,
             'startlanguage'               => (App()->language ?? $this->aSurveyInfo['language']),
             'target'                      => Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $this->aSurveyInfo['sid'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR,

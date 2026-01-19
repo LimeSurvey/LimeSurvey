@@ -131,6 +131,21 @@ $googleAnalyticsStyleOptions = array(
                     ]); ?>
                 </div>
             </div>
+
+            <!-- Save quota exit -->
+            <div class="ex-form-group mb-3">
+                <label class=" form-label" for='savequotaexit'><?php eT("Save quota exit:"); ?></label>
+                <div>
+                    <?php
+                    $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'savequotaexit',
+                        'checkedOption' => $oSurvey->savequotaexit,
+                        'selectOptions' => ($bShowInherited)
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->savequotaexit . " ᴵ"])
+                            : $optionsOnOff,
+                    ]); ?>
+                </div>
+            </div>
             <?php if ($oSurvey->isActive) : ?>
                 <div class="ls-option-disabled"></div>
             <?php endif; ?>
