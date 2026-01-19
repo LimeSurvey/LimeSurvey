@@ -69,7 +69,7 @@ class RandomizerHelper
         // Check for excluded subquestion before randomization
         /* @param string|null $excludeAllOthers */
         $excludeAllOthers = $question->getQuestionAttribute('exclude_all_others');
-        $excludedSubquestion = null;
+        $excludedSubquestions = [];
 
         if (
             $excludeAllOthers !== '' && $excludeAllOthers !== null &&
