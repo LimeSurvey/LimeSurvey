@@ -2354,6 +2354,8 @@ class SurveyAdministrationController extends LSBaseController
             $this->redirect(App()->request->urlReferrer);
         }
         $optionsDataContainer = new CopySurveyOptions();
+        //start and enddate should be copied in the simple copy process
+        $optionsDataContainer->setStartAndEndDate(true);
         $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
             $survey,
             $optionsDataContainer,
