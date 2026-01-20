@@ -484,6 +484,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                         'attrName' => $attrName,
                                         'inputValue' => $inputValue,
                                         'jsDate' => $dateformatdetails['jsdate'],
+                                        'addClass' => 'col-6',
                                 ]
                         );
                         ?>

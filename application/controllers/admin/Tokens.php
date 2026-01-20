@@ -1077,10 +1077,6 @@ class Tokens extends SurveyCommonAction
             } elseif ($cntAttributeErrors > 0) { // attribute validation errors
                 $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'], App()->language);
                 $aData['aAttributeFields'] = getParticipantAttributes($iSurveyId);
-                foreach ($aData['aAttributeFields'] as $attrName => $attrData) {
-                    $aData['aAttributeFields'][$attrName] = $this->decodeAttributeSelectOptions($attrData);
-                }
-
                 $aData['showSaveButton'] = true;
                 $aData['topBar']['name'] = 'tokensTopbar_view';
                 $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
@@ -1126,9 +1122,6 @@ class Tokens extends SurveyCommonAction
 
             $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'], App()->language);
             $aData['aAttributeFields'] = getParticipantAttributes($iSurveyId);
-            foreach ($aData['aAttributeFields'] as $attrName => $attrData) {
-                $aData['aAttributeFields'][$attrName] = $this->decodeAttributeSelectOptions($attrData);
-            }
             $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
                 '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
                 [
@@ -2818,7 +2811,7 @@ class Tokens extends SurveyCommonAction
                 if (array_key_exists('description', $aAttrData) && $aAttrData['description'] == '') {
                     $aAttrData['description'] = $sField;
                 }
-                $aAttrData = $this->decodeAttributeSelectOptions($aAttrData);
+                $aAttrData = decodeAttributeSelectOptions($aAttrData);
                 $aData['attrfieldnames'][(string) $sField] = $aAttrData;
             }
         }
@@ -3317,34 +3310,5 @@ class Tokens extends SurveyCommonAction
         $survey->tokenencryptionoptions = ls_json_encode($tokenencryptionoptions);
         Token::createTable($survey->sid);
         LimeExpressionManager::setDirtyFlag();
-    }
-
-    /**
-     * Decodes and formats attribute select options from JSON string to associative array.
-     *
-     * This method checks if the 'type_options' key exists in the provided attribute data array
-     * and if it contains a JSON string. If so, it decodes the JSON and converts a numeric array
-     * into an associative array where each value serves as both the key and value. This is useful
-     * for formatting select/dropdown options for form rendering.
-     *
-     * @param array $attrData The attribute data array that may contain a 'type_options' key with JSON string value
-     * @return array The modified attribute data array with decoded and formatted type_options, or the original array if no changes were made
-     */
-    private function decodeAttributeSelectOptions(array $attrData)
-    {
-        if (array_key_exists('type_options', $attrData) && is_string($attrData['type_options'])) {
-            static $attributeService = null;
-            if ($attributeService === null) {
-                $diContainer = \LimeSurvey\DI::getContainer();
-                $attributeService = $diContainer->get(
-                    LimeSurvey\Models\Services\ParticipantAttributeService::class
-                );
-            }
-            $decodedOptions = $attributeService->decodeJsonEncodedTypeOptions($attrData['type_options']);
-            // Always normalize to array for downstream form rendering (even if empty / invalid -> []).
-            $attrData['type_options'] = $decodedOptions;
-        }
-
-        return $attrData;
     }
 }

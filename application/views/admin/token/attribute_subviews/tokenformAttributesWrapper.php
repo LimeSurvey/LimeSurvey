@@ -3,15 +3,29 @@
 /** @var string $attrName */
 /**  @var $inputValue */
 /** @var string $jsDate */
+/** @var string $addClass */
+/** @var boolean $batchEdit */
+$batchEdit = isset($batchEdit) && $batchEdit;
 ?>
 
 
-    <div class="ex-form-group mb-3 col-6">
-        <label class="form-label" for='<?php echo $attrName; ?>'>
-            <?php echo $attrDescription['description'] . ($attrDescription['mandatory'] == 'Y' ? '*' : '') ?>:
-        </label>
-        <div class="">
-            <?php
+    <div class="ex-form-group mb-3 <?= $addClass ?>">
+        <?php if ($batchEdit): ?>
+            <div class="col-md-1">
+                <label class="">
+
+                    <input type="checkbox" class="action_check_to_keep_old_value"></input>
+                </label>
+            </div>
+                <label class="col-md-3 form-label" for='massedit_<?php echo $attrName; ?>'><?php echo $attrDescription['description'] . ($attrDescription['mandatory'] == 'Y' ? '*' : '') ?>:</label>
+            <div class="col-md-8">
+        <?php else: ?>
+            <label class="form-label" for='<?php echo $attrName; ?>'>
+                <?php echo $attrDescription['description'] . ($attrDescription['mandatory'] == 'Y' ? '*' : '') ?>:
+            </label>
+            <div class="">
+        <?php endif;?>
+        <?php
             switch ($attrDescription['type']) {
                 case 'DD':
                     // Drop down
@@ -20,7 +34,8 @@
                         [
                             'attrDescription' => $attrDescription,
                             'attrName' => $attrName,
-                            'inputValue' => $inputValue
+                            'inputValue' => $inputValue,
+                            'batchEdit' => $batchEdit,
                         ]
                     );
                     break;
@@ -34,6 +49,7 @@
                             'attrName' => $attrName,
                             'inputValue' => $inputValue,
                             'jsDate' => $jsDate,
+                            'batchEdit' => $batchEdit,
                         ]
                     );
                     break;
@@ -45,11 +61,12 @@
                         [
                             'attrDescription' => $attrDescription,
                             'attrName' => $attrName,
-                            'inputValue' => $inputValue
+                            'inputValue' => $inputValue,
+                            'batchEdit' => $batchEdit,
                         ]
                     );
                     break;
             }
-            ?>
+        ?>
         </div>
     </div>

@@ -3,11 +3,20 @@
 /** @var string $attrName */
 /** @var string $inputValue */
 /** @var string $jsDate */
-$elementId = 'attribute_date_'. $attrName;
+/** @var boolean $batchEdit */
+$batchEdit = isset($batchEdit) && $batchEdit;
+$inputClass = $batchEdit ? 'custom-data selector_submitField' : '';
+$inputClass .=  $attrDescription['mandatory'] == 'Y' ? ' mandatory-attribute' : '';
+$elementId = ($batchEdit ? 'massedit_' : 'attribute_date_') . $attrName;
+
 App()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', [
     'name' => $attrName,
     'id' => $elementId,
     'value' => $inputValue ?? '',
+    'htmlOptions' => [
+        'disabled' => $batchEdit,
+        'class' => $inputClass,
+    ],
     'pluginOptions' => [
         'format' => $jsDate,
         'allowInputToggle' => true,

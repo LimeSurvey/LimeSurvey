@@ -79,7 +79,8 @@ class DateTimePicker extends CInputWidget
             $this->htmlOptions['data-' . $key] = $pluginOption;
         }
         $this->htmlOptions['data-td-target'] = '#' . $this->mainId;
-        $this->htmlOptions['class'] = 'form-control';
+        $customClass = $this->getValue('class', $this->htmlOptions, '');
+        $this->htmlOptions['class'] = 'form-control ' . $customClass;
         $this->format = $this->getValue('data-format', $this->htmlOptions, 'DD.MM.YYYY HH:mm');
     }
 

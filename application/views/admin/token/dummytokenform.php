@@ -150,6 +150,7 @@
                                     'attrName' => $attrName,
                                     'inputValue' => null,
                                     'jsDate' => $dateformatdetails['jsdate'],
+                                    'addClass' => 'col-6',
                             ]
                     );
                     ?>
