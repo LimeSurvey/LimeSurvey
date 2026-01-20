@@ -93,7 +93,7 @@ class CopyQuestion
 
             ////copy question settings (generalsettings and advanced settings)
             if ($this->copyOptions['copySettings']) {
-                $this->copyQuestionsSettings($this->copyQuestionValues->getQuestiontoCopy()->qid);
+                $this->copyQuestionsSettings($this->copyQuestionValues->getQuestiontoCopy()->qid, $surveyId);
             }
         }
         return $copySuccessful;
@@ -305,12 +305,13 @@ class CopyQuestion
      * Copies the question settings (general_settings (on the left in questioneditor) and advanced settings (bottom)
      *
      * @param $questionIdToCopy
+     * @param $surveyId int The id of the survey to which the question should be copied.
      *
      * * @before $this->newQuestion must exist and should not be null
      *
      * @return boolean True if settings are copied, false otherwise
      */
-    private function copyQuestionsSettings($questionIdToCopy)
+    private function copyQuestionsSettings($questionIdToCopy, $surveyId = null)
     {
         $settingsFromQuestionToCopy = \QuestionAttribute::model()->findAllByAttributes(['qid' => $questionIdToCopy]);
         $areSettingsCopied = false;
@@ -321,6 +322,15 @@ class CopyQuestion
                 $newSetting->attributes = $settingToCopy->attributes;
                 $newSetting->qaid = null;  //create new id
                 $newSetting->qid = $this->newQuestion->qid;
+                if (($surveyId !== null) && ($settingToCopy->attribute === 'image')) {
+                    //change the image path to the new survey id
+                    $newSetting->value = translateLinks(
+                        'survey',
+                        $this->copyQuestionValues->getSourceSurveyId(), //oldID
+                        $surveyId, //newId
+                        $settingToCopy->value, //the original value
+                    );
+                }
                 $areSettingsCopied = $areSettingsCopied && $newSetting->save();
             }
         }
