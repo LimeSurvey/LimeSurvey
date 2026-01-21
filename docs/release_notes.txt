@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v6.x!
+Welcome to LimeSurvey v7.0.0-beta1!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied,
 including, but not limited to, the implied warranties of merchantability and fitness for a particular
@@ -15,7 +15,7 @@ HOW TO INSTALL
 This release does have the following requirements:
 
 *MySQL 5.5.3 or later OR Microsoft SQL Server 2005 or later OR Postgres 8.1 or later
-*PHP 7.0.0 or later with the following modules/libraries enabled:
+*PHP 8.1.29 or later with the following modules/libraries enabled:
     *mbstring (Multibyte String Functions) extension library
     *PDO database driver for MySQL (pdo_mysql or pdo_mysqli) or Postgres (pdo_pgsql) or MSSQL (pdo_sqlsrv for Windows and pdo_dblib for Linux)
 
@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from  6.x to 7.0.0-beta1 (build 260121) January 21, 2026
++New feature: Response table name & schema changes (#4557) (lajosarpad)
++New feature #20387: Keep certain subquestions/answer options at original positions on randomization (#4613) (Tõnis Ormisson)
+
+
 Changes from 6.16.3 (build 251215) to 6.16.4 (build 260113) January 13, 2026
 -Fixed issue: single- and multiple-choice questions other field is not centered with its textbox (Patrick Teichmann)
 -Fixed issue: in surveytaking, reduced whitespace between navbar and content (Patrick Teichmann)
