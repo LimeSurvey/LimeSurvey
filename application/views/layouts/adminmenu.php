@@ -8,7 +8,7 @@
  * @var array $extraMenus   //menu items fetched from plugins
  */
 ?>
-<?php /* Register needed script used at different point even if not needed in loaed page see #20391 */
+<?php /* Register needed script used at different point even if not needed in loaded page see #20391 */
 	App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
 ?>
 <!-- admin menu bar -->
