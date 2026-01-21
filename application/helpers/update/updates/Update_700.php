@@ -23,7 +23,7 @@ use AnswerL10n;
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
-class Update_641 extends DatabaseUpdateBase
+class Update_700 extends DatabaseUpdateBase
 {
     protected $scriptMapping;
 
