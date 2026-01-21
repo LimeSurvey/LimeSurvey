@@ -24,22 +24,14 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
             'class' => 'application.extensions.admin.grid.CLSYiiPager',
         ],
         'massiveActionTemplate' => $massiveAction,
-        'summaryText' => html_entity_decode(
-    gT('Displaying {start}-{end} of {count} result(s).') . ' ' . 
-    sprintf(
-        gT('%s <span id="rows-per-page-label">rows per page</span>'),
-        CHtml::dropDownList(
-            'pageSize',
-            $pageSize,
-            Yii::app()->params['pageSizeOptions'],
-            array(
-                'class' => 'changePageSize form-select',
-                'style' => 'display: inline; width: auto',
-                'aria-labelledby' => 'rows-per-page-label',
-            )
-        )
-    )
-),
+        'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(gT('%s rows per page'),
+                CHtml::dropDownList(
+                    'pageSize',
+                    $pageSize,
+                    Yii::app()->params['pageSizeOptions'],
+                    array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
+                )
+            ),
         'columns' => [
             [
                 'id' => 'id',
