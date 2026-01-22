@@ -18,7 +18,7 @@
                 <li class="has-submenu">
                 <a href="#" class="dropdown-item d-flex justify-content-between align-items-center"
                    data-bs-toggle="dropdown-submenu" role="button" aria-expanded="false">
-                    <?= $dropdownItem['title'] ?>
+                    <?= CHtml::encode($dropdownItem['title']) ?>
                 </a>
                 <ul class="dropdown-submenu">
                     <?php
