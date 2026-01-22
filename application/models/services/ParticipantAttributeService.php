@@ -223,4 +223,79 @@ class ParticipantAttributeService
 
         return $normalized;
     }
+
+    /**
+     * Used by registration form
+     * we get array of attribute names and their values
+     * we figure out the type and convert the date if type is DP (date picker)
+     * we replace the converted date in the array and return it back
+     * @param array $attributes
+     * @return array
+     */
+    public function prepareAttributesForSave(
+        array $attributes,
+        string $fromFormat,
+        array $registerAttributesInfo
+    ) {
+        foreach ($attributes as $attrKey => $attrValue) {
+            if (array_key_exists($attrKey, $registerAttributesInfo)) {
+                $attrInfo = $registerAttributesInfo[$attrKey];
+                if (
+                    array_key_exists('type', $attrInfo)
+                    && $attrInfo['type'] === 'DP'
+                ) {
+                    // convert date if attribute type is DP
+                    $convertedDate = $this->convertDateToStoreFormat($attrValue, $fromFormat);
+                    if ($convertedDate) {
+                        $attributes[$attrKey] = $convertedDate;
+                    }
+                }
+            }
+        }
+        return $attributes;
+    }
+
+
+    /**
+     * Converts a date attribute value to standard datetime format (Y-m-d H:i:s).
+     *
+     * If the attribute type is 'DP' (Date Picker), the value is converted to the standard
+     * datetime format. If the conversion fails, an empty string is returned.
+     *
+     * @param array $attributeData Array containing attribute metadata, including 'type' key
+     * @param mixed $attributeValue The attribute value to be converted
+     * @return string The converted datetime string in 'Y-m-d H:i:s' format, or the original value if not a date type, or empty string if conversion fails
+     */
+    public function convertDateAttribute(array $attributeData, $attributeValue) : string
+    {
+        $dateFormat = getDateFormatData(App()->session['dateformat']);
+        if (array_key_exists('type', $attributeData) && $attributeData['type'] == 'DP') {
+            $date = $this->convertDateToStoreFormat($attributeValue, $dateFormat['phpdate']);
+            $attributeValue = $date === false ? '' : $date;
+        }
+
+        return $attributeValue;
+    }
+
+    /**
+     * Converts a date string from a specified format to the standard storage format.
+     *
+     * This method takes a date string in a given format and converts it to the standard
+     * datetime format used for database storage (Y-m-d H:i:s). If the conversion fails
+     * due to an invalid date string or format mismatch, false is returned.
+     *
+     * @param string $dateString The date string to be converted
+     * @param string $fromFormat The PHP date format string that describes the input date format
+     * @return string|false The converted datetime string in 'Y-m-d H:i:s' format, or false if conversion fails
+     */
+    private function convertDateToStoreFormat($dateString, $fromFormat)
+    {
+        $convertedDateObj = \DateTime::createFromFormat(
+            $fromFormat,
+            $dateString
+        );
+        return $convertedDateObj ? $convertedDateObj->format(
+            'Y-m-d H:i:s'
+        ) : false;
+    }
 }

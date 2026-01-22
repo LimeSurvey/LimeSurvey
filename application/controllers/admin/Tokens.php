@@ -510,6 +510,10 @@ class Tokens extends SurveyCommonAction
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')) {
             // CHECK TO SEE IF A Survey participant list EXISTS FOR THIS SURVEY
             if (tableExists('{{tokens_' . $iSurveyId . '}}')) {
+                $diContainer = \LimeSurvey\DI::getContainer();
+                $attributeService = $diContainer->get(
+                    LimeSurvey\Models\Services\ParticipantAttributeService::class
+                );
                 // First we create the array of fields to update
                 $aData = array();
                 $aResults['global']['result'] = true;
@@ -565,7 +569,7 @@ class Tokens extends SurveyCommonAction
                             Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
                             $this->getController()->refresh();
                         }
-                        $aData[$attr_name] = $value;
+                        $aData[$attr_name] = $attributeService->convertDateAttribute($desc, $value);
                     }
                 }
 
@@ -645,6 +649,10 @@ class Tokens extends SurveyCommonAction
         $request = App()->request;
         $subAction = $request->getPost('subaction');
         if ($subAction == 'inserttoken') {
+            $diContainer = \LimeSurvey\DI::getContainer();
+            $attributeService = $diContainer->get(
+                LimeSurvey\Models\Services\ParticipantAttributeService::class
+            );
             $this->verifyAndCreateTokenTable($survey);
 
             // TODO: This part could be refactored into function like "insertToken()"
@@ -700,7 +708,10 @@ class Tokens extends SurveyCommonAction
                     App()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
                     $this->getController()->refresh();
                 }
-                $aData[$attr_name] = App()->getRequest()->getPost($attr_name);
+                $aData[$attr_name] = $attributeService->convertDateAttribute(
+                    $desc,
+                    App()->getRequest()->getPost($attr_name)
+                );
             }
 
             if (!empty($sanitizedtoken) && Token::model($iSurveyId)->findByToken($sanitizedtoken)) {
@@ -852,6 +863,10 @@ class Tokens extends SurveyCommonAction
             $udresult = Token::model($iSurveyId)->findAll("tid <> :tid and token <> '' and token = :token", [':tid' => $iTokenId, ':token' => $sSanitizedToken]);
             $sOutput = '';
             if (count($udresult) == 0) {
+                $diContainer = \LimeSurvey\DI::getContainer();
+                $attributeService = $diContainer->get(
+                    LimeSurvey\Models\Services\ParticipantAttributeService::class
+                );
                 $thissurvey = getSurveyInfo($iSurveyId);
                 $aAdditionalAttributeFields = $thissurvey['attributedescriptions'];
                 foreach ($aAdditionalAttributeFields as $attr_name => $desc) {
@@ -866,7 +881,10 @@ class Tokens extends SurveyCommonAction
                             $redirect = false; /* Do not redirecty to allow editing */
                         }
                     }
-                    $aTokenData[$attr_name] = $request->getPost($attr_name);
+                    $aTokenData[$attr_name] = $attributeService->convertDateAttribute(
+                        $desc,
+                        $request->getPost($attr_name)
+                    );
                 }
 
                 if (!empty($sOutput)) {
@@ -971,7 +989,6 @@ class Tokens extends SurveyCommonAction
 
         Yii::app()->loadHelper("surveytranslator");
 
-
         $aData = array();
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
@@ -992,6 +1009,10 @@ class Tokens extends SurveyCommonAction
         );
 
         if (!empty($subaction) && $subaction == 'add') {
+            $diContainer = \LimeSurvey\DI::getContainer();
+            $attributeService = $diContainer->get(
+                LimeSurvey\Models\Services\ParticipantAttributeService::class
+            );
             $this->verifyAndCreateTokenTable($survey);
 
             $message = '';
@@ -1033,7 +1054,7 @@ class Tokens extends SurveyCommonAction
                     Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
                     $cntAttributeErrors += 1;
                 }
-                $aData[$attr_name] = $value;
+                $aData[$attr_name] = $attributeService->convertDateAttribute($desc, $value);
             }
 
             $aData['amount'] = (int) App()->request->getPost('amount');

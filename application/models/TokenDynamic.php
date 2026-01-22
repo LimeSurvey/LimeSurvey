@@ -566,6 +566,12 @@ class TokenDynamic extends LSActiveRecord
         return $this->getYesNoDateFormated($field);
     }
 
+    public function getCustomDateAttrFormatted($attrName)
+    {
+        $field = $this->{$attrName};
+        return $this->getYesNoDateFormated($field);
+    }
+
     /**
      * @param string $field
      * @return string
@@ -746,11 +752,19 @@ class TokenDynamic extends LSActiveRecord
         // Custom attributes
         foreach ($aCustomAttributes as $sColName => $oColumn) {
             $desc = ($oColumn['description'] != '') ? $oColumn['description'] : $sColName;
+            if(array_key_exists('type', $oColumn) && $oColumn['type'] == 'DP') {
+                $value = '$data->getCustomDateAttrFormatted(\'' . $sColName . '\')';
+                $type = 'raw';
+            }else{
+                $value = '$data->' . $sColName;
+                $type = 'longtext';
+            }
+
             $aCustomAttributesCols[] = array(
                 'header' => $desc . $this->setEncryptedAttributeLabel(self::$sid, 'Token', $sColName), // $aAttributedescriptions->$sColName->description,
                 'name' => $sColName,
-                'type' => 'longtext',
-                'value' => '$data->' . $sColName,
+                'type' => $type,
+                'value' => $value,
                 'headerHtmlOptions' => array('class' => ''),
                 'htmlOptions' => array('class' => ''),
             );

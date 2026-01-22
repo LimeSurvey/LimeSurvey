@@ -8,6 +8,7 @@ $batchEdit = isset($batchEdit) && $batchEdit;
 $inputClass = $batchEdit ? 'custom-data selector_submitField' : '';
 $inputClass .=  $attrDescription['mandatory'] == 'Y' ? ' mandatory-attribute' : '';
 $elementId = ($batchEdit ? 'massedit_' : 'attribute_date_') . $attrName;
+$inputValue = $batchEdit ? 'lskeep' : (!empty($inputValue) ? convertToGlobalSettingFormat($inputValue) : $inputValue);
 
 App()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', [
     'name' => $attrName,
@@ -22,7 +23,7 @@ App()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', [
         'allowInputToggle' => true,
         'theme' => 'light',
         'locale' => convertLStoDateTimePickerLocale(
-            Yii::app()->session['adminlang']
+            App()->session['adminlang']
         )
     ]
 ]);

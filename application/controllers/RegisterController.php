@@ -383,6 +383,16 @@ class RegisterController extends LSYii_Controller
             $oToken->email = $aFieldValue['sEmail'];
             $oToken->emailstatus = 'OK';
             $oToken->language = $sLanguage;
+
+            $diContainer = \LimeSurvey\DI::getContainer();
+            $attributeService = $diContainer->get(
+                LimeSurvey\Models\Services\ParticipantAttributeService::class
+            );
+            $aFieldValue['aAttribute'] = $attributeService->prepareAttributesForSave(
+                $aFieldValue['aAttribute'],
+                getDateFormatData($aSurveyInfo['surveyls_dateformat'])['phpdate'],
+                $aSurveyInfo['attributedescriptions']
+            );
             $oToken->setAttributes($aFieldValue['aAttribute']);
             if ($aSurveyInfo['startdate']) {
                 $oToken->validfrom = $aSurveyInfo['startdate'];
