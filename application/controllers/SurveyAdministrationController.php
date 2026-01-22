@@ -2255,8 +2255,10 @@ class SurveyAdministrationController extends LSBaseController
         $copyResults = $copySurveyService->copy();
 
         $copiedSurvey = $copyResults->getCopiedSurvey();
-        $groupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
-        $this->resetExpressionManager($copiedSurvey, $groupList);
+        if ($copiedSurvey !== null) {
+            $groupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
+            $this->resetExpressionManager($copiedSurvey, $groupList);
+        }
 
         $aData = [];
         $aData['copyResults'] = $copyResults;
@@ -2364,8 +2366,10 @@ class SurveyAdministrationController extends LSBaseController
         $copyResults = $copySurveyService->copy();
 
         $copiedSurvey = $copyResults->getCopiedSurvey();
-        $groupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
-        $this->resetExpressionManager($copiedSurvey, $groupList);
+        if ($copiedSurvey !== null) {
+            $groupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
+            $this->resetExpressionManager($copiedSurvey, $groupList);
+        }
 
         if (empty($copyResults->getErrors())) {
             App()->user->setFlash('success', gT("Survey copied successfully."));

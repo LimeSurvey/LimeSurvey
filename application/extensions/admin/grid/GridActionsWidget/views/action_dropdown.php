@@ -34,7 +34,7 @@
                                     'url' => $subItem['url'] ?? '#',
                                     'iconClass' => $subItem["iconClass"] ?? null,
                                     'linkAttributes' => $subItem['linkAttributes'] ?? null,
-                                    'enabledCondition' => $enabledCondition,
+                                    'enabledCondition' => $subItem['enabledCondition'],
                                 ]
                             ); ?>
                         </li>
