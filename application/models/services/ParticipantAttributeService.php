@@ -266,7 +266,7 @@ class ParticipantAttributeService
      * @param mixed $attributeValue The attribute value to be converted
      * @return string The converted datetime string in 'Y-m-d H:i:s' format, or the original value if not a date type, or empty string if conversion fails
      */
-    public function convertDateAttribute(array $attributeData, $attributeValue) : string
+    public function convertDateAttribute(array $attributeData, $attributeValue): string
     {
         $dateFormat = getDateFormatData(App()->session['dateformat']);
         if (array_key_exists('type', $attributeData) && $attributeData['type'] == 'DP') {

@@ -752,10 +752,10 @@ class TokenDynamic extends LSActiveRecord
         // Custom attributes
         foreach ($aCustomAttributes as $sColName => $oColumn) {
             $desc = ($oColumn['description'] != '') ? $oColumn['description'] : $sColName;
-            if(array_key_exists('type', $oColumn) && $oColumn['type'] == 'DP') {
+            if (array_key_exists('type', $oColumn) && $oColumn['type'] == 'DP') {
                 $value = '$data->getCustomDateAttrFormatted(\'' . $sColName . '\')';
                 $type = 'raw';
-            }else{
+            } else {
                 $value = '$data->' . $sColName;
                 $type = 'longtext';
             }
