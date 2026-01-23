@@ -26,11 +26,11 @@ echo viewHelper::getViewTestTag('importParticipants');
                 <div class="row ls-space margin top-25 bottom-25">
                     <div class="col-lg-6">
                         <div class="mb-3">
-                            <label  for="characterset_1" id="characterset" class='form-label '>
+                            <label  for="characterset"  class='form-label '>
                                 <?php eT("Character set of file:"); ?>
                             </label>
                             <div class="col-12">
-                                <select  id="characterset_1" name="characterset"  class="form-select">
+                                <select  id="characterset" id="characterset" name="characterset"  class="form-select">
                                     <?php
                                     foreach (aEncodingsArray() as $key => $encoding):
                                         ?>
@@ -46,7 +46,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                     </div>
                     <div class="col-lg-6">
                         <div class="mb-3">
-                            <label for="separatorused_1" id="separatorused" class='form-label '>
+                            <label for="separatorused" class='form-label '>
                                 <?php eT("Separator used:"); ?>
                             </label>
                             <div class="col-12">
@@ -58,7 +58,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                                 );
                                 ?>
 
-                                <select name="separatorused_1"  class="form-select">
+                                <select name="separatorused" id="separatorused" class="form-select">
                                     <option value="auto" selected="selected"><?php eT("(Autodetect)"); ?></option>
                                     <?php
                                     foreach ($separatorused as $key => $separator):
