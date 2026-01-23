@@ -10,9 +10,9 @@ echo viewHelper::getViewTestTag('surveyQuotas');
 <div class='side-body'>
     <div class="row">
         <div class="col-12 content-right">
-            <h3 aria-level="1">
+            <h1 class="h3">
                 <?php eT("Survey quotas");?>
-            </h3>
+            </h1>
             <?php
             $massiveAction = '';
             if ($oDataProvider->itemCount > 0) {
