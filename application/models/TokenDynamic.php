@@ -583,7 +583,7 @@ class TokenDynamic extends LSActiveRecord
                 $field     = '<span class="text-danger">' . gT('Quota out') . '</span>';
             } elseif ($field != 'Y') {
                 $fieldDate = convertToGlobalSettingFormat($field);
-                $field     = '<span class="text-success">' . $fieldDate . '</span>';
+                $field     = '<span class="text-success">' . CHtml::encode($fieldDate) . '</span>';
             } else {
                 $field     = '<span class="text-success ri-check-fill"></span>';
             }
