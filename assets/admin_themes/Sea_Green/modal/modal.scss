@@ -38,3 +38,7 @@
 #selector__exportTypeSelector-modal .modal-dialog {
   border : 1px solid $g-900;
 }
+.modal-header .btn-close:focus{
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}

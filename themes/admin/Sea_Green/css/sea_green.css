@@ -16352,11 +16352,6 @@ body {
   flex-direction: column;
 }
 
-.modal-header .btn-close:focus {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
-}
-
 .container-40 {
   padding: 0 40px;
   width: 100%;
@@ -17361,6 +17356,11 @@ body {
 
 #selector__exportTypeSelector-modal .modal-dialog {
   border: 1px solid #1E1E1E;
+}
+
+.modal-header .btn-close:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 
 body {
