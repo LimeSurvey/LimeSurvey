@@ -1159,12 +1159,17 @@ class SurveyRuntimeHelper
         // Don't test if save is allowed … maybe must be done
         if ($this->aSurveyInfo['active'] == "Y") {
             $bAnonymized            = $this->aSurveyInfo["anonymized"] == 'Y';
+            /* @var boolean $bTokenAnswerPersitance : Survey can use answer persistence */
             $bTokenAnswerPersitance = $this->aSurveyInfo['tokenanswerspersistence'] == 'Y' && $this->iSurveyid != null && tableExists('tokens_' . $this->iSurveyid);
-
+            /* @var boolean $bNoTokenFreeAccess : Survey allow free access with token and token are not set */
+            $bNoTokenFreeAccess = empty($_SESSION[$this->LEMsessid]['token']) && ($this->aSurveyInfo['access_mode'] !== SurveyAccessModeService::$ACCESS_TYPE_CLOSED);
             // must do this here to process the POSTed values
             $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false); // by jumping to current step, saves data so far
 
-            if (!isset($_SESSION[$this->LEMsessid]['scid']) && (!$bTokenAnswerPersitance || $bAnonymized)) {
+            if (
+                !isset($_SESSION[$this->LEMsessid]['scid']) // Already saved, no need to show form again
+                 && (!($bTokenAnswerPersitance && !$bNoTokenFreeAccess) || $bAnonymized) // Use Token answer persistance Have token
+                ){
                 if (!isset($this->aSurveyInfo['EM']['ScriptsAndHiddenInputs'])) {
                     $this->aSurveyInfo['EM']['ScriptsAndHiddenInputs'] = "<!-- emScriptsAndHiddenInputs -->";
                 }
