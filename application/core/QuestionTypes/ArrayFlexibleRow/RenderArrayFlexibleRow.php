@@ -297,7 +297,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     'ld'                     => '',
                     'code' => $oAnswer->code,
                     'label'                  => gT('No answer'),
-                    'checked'                => (is_null($value) || $value === '') ? 'checked' : '',
+                    'checked' => $this->isNoAnswerChecked($myfname) ? 'checked' : '',
                 );
             }
 
