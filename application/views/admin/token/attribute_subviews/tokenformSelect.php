@@ -7,11 +7,7 @@ $batchEdit = isset($batchEdit) && $batchEdit;
 $inputClass = $batchEdit ? ' custom-data selector_submitField' : '';
 $inputClass .=  $attrDescription['mandatory'] == 'Y' ? ' mandatory-attribute' : '';
 $id = $batchEdit ? 'massedit_' . $attrName : $attrName;
-$inputValue = $batchEdit ? 'lskeep' : (isset($inputValue) ? htmlspecialchars(
-    (string)$inputValue,
-    ENT_QUOTES,
-    'utf-8'
-) : null);
+$inputValue = $batchEdit ? 'lskeep' : (isset($inputValue) ? (string)$inputValue : '');
 $emptyOptionValue = $batchEdit ? 'lskeep' : '';
 ?>
 <select
