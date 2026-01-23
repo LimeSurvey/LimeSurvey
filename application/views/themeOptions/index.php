@@ -17,19 +17,19 @@
 echo viewHelper::getViewTestTag('templateOptions');
 ?>
 <div class="list-themes">
-    <ul class="nav nav-tabs" id="themelist">
+    <ul class="nav nav-tabs" id="themelist" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" href="#surveythemes" data-bs-toggle="tab">
+            <a class="nav-link active" href="#surveythemes" data-bs-toggle="tab" role="tab">
                 <?php eT('Survey themes'); ?>
             </a>
         </li>
         <li>
-            <a class="nav-link" href="#adminthemes" data-bs-toggle="tab">
+            <a class="nav-link" href="#adminthemes" data-bs-toggle="tab" role="tab">
                 <?php eT('Admin themes'); ?>
             </a>
         </li>
         <li>
-            <a class="nav-link" href="#questionthemes" data-bs-toggle="tab">
+            <a class="nav-link" href="#questionthemes" data-bs-toggle="tab" role="tab">
                 <?php eT('Question themes'); ?>
             </a>
         </li>
