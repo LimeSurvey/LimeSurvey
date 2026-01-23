@@ -257,14 +257,20 @@ class ParticipantAttributeService
 
 
     /**
-     * Converts a date attribute value to standard datetime format (Y-m-d H:i:s).
+     * Converts a date attribute value to standard storage format if it's a date picker type.
      *
-     * If the attribute type is 'DP' (Date Picker), the value is converted to the standard
-     * datetime format. If the conversion fails, an empty string is returned.
+     * This method checks if the attribute is a date picker (DP) type and converts its value
+     * from the user's session date format to the standard database storage format (Y-m-d).
+     * For non-date attributes, the original value is returned unchanged. If the date conversion
+     * fails, an empty string is returned.
      *
-     * @param array $attributeData Array containing attribute metadata, including 'type' key
-     * @param mixed $attributeValue The attribute value to be converted
-     * @return string The converted datetime string in 'Y-m-d H:i:s' format, or the original value if not a date type, or empty string if conversion fails
+     * @param array $attributeData Array containing attribute metadata with keys:
+     *                            - 'type': The attribute type (e.g., 'DP' for date picker)
+     * @param mixed $attributeValue The attribute value to be converted. Expected to be a date string
+     *                             if the attribute type is 'DP', otherwise can be any value.
+     * @return string The converted date string in 'Y-m-d' format if type is 'DP' and conversion succeeds,
+     *                an empty string if type is 'DP' but conversion fails, or the original value cast
+     *                to string for non-date types.
      */
     public function convertDateAttribute(array $attributeData, $attributeValue): string
     {
@@ -281,12 +287,12 @@ class ParticipantAttributeService
      * Converts a date string from a specified format to the standard storage format.
      *
      * This method takes a date string in a given format and converts it to the standard
-     * datetime format used for database storage (Y-m-d H:i:s). If the conversion fails
+     * datetime format used for database storage (Y-m-d). If the conversion fails
      * due to an invalid date string or format mismatch, false is returned.
      *
      * @param string $dateString The date string to be converted
      * @param string $fromFormat The PHP date format string that describes the input date format
-     * @return string|false The converted datetime string in 'Y-m-d H:i:s' format, or false if conversion fails
+     * @return string|false The converted datetime string in 'Y-m-d' format, or false if conversion fails
      */
     private function convertDateToStoreFormat($dateString, $fromFormat)
     {
@@ -295,7 +301,7 @@ class ParticipantAttributeService
             $dateString
         );
         return $convertedDateObj ? $convertedDateObj->format(
-            'Y-m-d H:i:s'
+            'Y-m-d'
         ) : false;
     }
 }
