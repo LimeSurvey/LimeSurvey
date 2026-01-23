@@ -27,6 +27,7 @@
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'emailmethod',
+                    'ariaLabel' => 'Email method',
                     'checkedOption' => Yii::app()->getConfig('emailmethod'),
                     'selectOptions' => [
                         LimeMailer::MethodMail => "PHP",
@@ -41,8 +42,8 @@
         <div class="mb-3">
             <label class="  form-label" for="emailsmtphost"><?php eT("SMTP host:"); ?></label>
             <div class="">
-                <input class="form-control" type='text' size='50' id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars((string) getGlobalSetting('emailsmtphost')); ?>"/>
-                <span class="hint"><?php printf(gT("Enter your hostname and port, e.g.: %s"), "smtp.example.org:25"); ?></span>
+                <input class="form-control" type='text' aria-describedby="desc_email1" size='50' id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars((string) getGlobalSetting('emailsmtphost')); ?>"/>
+                <span class="hint" id="desc_email1" ><?php printf(gT("Enter your hostname and port, e.g.: %s"), "smtp.example.org:25"); ?></span>
             </div>
         </div>
         <div class="mb-3">
@@ -63,6 +64,7 @@
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
                     array(
                         'name' => 'emailsmtpssl',
+                        'ariaLabel' => 'SMTP encryption',   
                         'checkedOption' => getGlobalSetting('emailsmtpssl'),
                         'selectOptions' => array(
                             "" => gT("Off (unsafe)", 'unescaped'),
@@ -78,6 +80,7 @@
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'emailsmtpdebug',
+                    'ariaLabel' => 'SMTP debug mode',
                     'checkedOption' => getGlobalSetting('emailsmtpdebug'),
                     'selectOptions' => [
                         "0" => gT("Off", 'unescaped'),
