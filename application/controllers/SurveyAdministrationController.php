@@ -2044,7 +2044,6 @@ class SurveyAdministrationController extends LSBaseController
             $aData['moreInfo'] = $temp;
         }
 
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js');
         App()->getClientScript()->registerPackage('jquery-json');
 
         // override survey settings if global settings exist
