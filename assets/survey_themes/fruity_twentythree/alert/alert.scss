@@ -94,3 +94,14 @@ $alert-status : (
     height : 300px;
 }
 
+.modal-header .btn-close:focus{
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+.alert-dismissible .btn-close:focus{
+    outline: 2px solid currentColor !important;
+    outline-offset: 2px;
+}
+
+
