@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-01-23 08:56:55+00:00\n"
+"POT-Creation-Date: 2026-01-23 09:15:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20566,9 +20566,6 @@ msgid ""
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:195
-msgid "Maintenance mode:"
-msgstr ""
-
 #: application/views/admin/globalsettings/_general.php:200
 msgid "Maintenance mode"
 msgstr ""
@@ -20582,7 +20579,7 @@ msgid "Full lock"
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:214
-msgid "Clear frontend cache:"
+msgid "Clear frontend cache"
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:219
@@ -20590,9 +20587,6 @@ msgid "Clear now"
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:227
-msgid "Default HTML editor mode:"
-msgstr ""
-
 #: application/views/admin/globalsettings/_general.php:235
 msgid "Default HTML editor mode"
 msgstr ""
@@ -20606,9 +20600,6 @@ msgid "HTML source"
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:251
-msgid "Side-menu behaviour:"
-msgstr ""
-
 #: application/views/admin/globalsettings/_general.php:256
 msgid "Side-menu behaviour"
 msgstr ""
@@ -20626,10 +20617,6 @@ msgid "Always closed"
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:270
-#: application/views/admin/user/personalsettings.php:259
-msgid "Question type selector:"
-msgstr ""
-
 #: application/views/admin/globalsettings/_general.php:276
 msgid "Question type selector"
 msgstr ""
@@ -20640,17 +20627,11 @@ msgid "Simple"
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:289
-msgid "Template editor:"
-msgstr ""
-
 #: application/views/admin/globalsettings/_general.php:295
 msgid "Template editor"
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:308
-msgid "Default breadcrumb mode:"
-msgstr ""
-
 #: application/views/admin/globalsettings/_general.php:314
 msgid "Default breadcrumb mode"
 msgstr ""
@@ -20666,25 +20647,16 @@ msgid "Long"
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:327
-msgid "JS-Debug mode [Backend]:"
-msgstr ""
-
 #: application/views/admin/globalsettings/_general.php:333
 msgid "JS-Debug mode [Backend]"
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:346
-msgid "JS-Debug mode [Frontend]:"
-msgstr ""
-
 #: application/views/admin/globalsettings/_general.php:352
 msgid "JS-Debug mode [Frontend]"
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:366
-msgid "Allow unstable extension updates:"
-msgstr ""
-
 #: application/views/admin/globalsettings/_general.php:371
 msgid "Allow unstable extension updates"
 msgstr ""
@@ -25193,6 +25165,10 @@ msgstr ""
 
 #: application/views/admin/user/personalsettings.php:247
 msgid "Sourcecode editor"
+msgstr ""
+
+#: application/views/admin/user/personalsettings.php:259
+msgid "Question type selector:"
 msgstr ""
 
 #: application/views/admin/user/personalsettings.php:266
