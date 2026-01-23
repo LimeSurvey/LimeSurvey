@@ -15,7 +15,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'surveyPreview_require_Auth',
-                        'ariaLabel'=> gT('Survey preview only for administration users'),
+                        'ariaLabel'=> gT('Survey preview only for administration users:'),
                         'checkedOption' => App()->getConfig('surveyPreview_require_Auth'),
                         'selectOptions' => [
                             '1' => gT('On'),
@@ -31,7 +31,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'filterxsshtml',
-                        'ariaLabel'=> gT('Filter HTML for XSS'),
+                        'ariaLabel'=> gT('Filter HTML for XSS:'),
                         'checkedOption' => App()->getConfig('filterxsshtml'),
                         'selectOptions' => [
                             '1' => gT('On'),
@@ -54,7 +54,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'disablescriptwithxss',
-                        'ariaLabel'=> gT('Disable question script for XSS restricted user'),
+                        'ariaLabel'=> gT('Disable question script for XSS restricted user:'),
                         'checkedOption' => App()->getConfig('disablescriptwithxss'),
                         'selectOptions' => [
                             '1' => gT('On'),
@@ -78,7 +78,7 @@
                 <div class="">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'usercontrolSameGroupPolicy',
-                        'ariaLabel'=> gT('Group member can only see own group'),
+                        'ariaLabel'=> gT('Group member can only see own group:'),
                         'id'            => 'usercontrolSameGroupPolicy',
                         'checkedOption' => App()->getConfig('usercontrolSameGroupPolicy'),
                         'selectOptions' => [
@@ -98,7 +98,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'x_frame_options',
-                        'ariaLabel'=> gT('IFrame embedding allowed'),
+                        'ariaLabel'=> gT('IFrame embedding allowed:'),
                         'checkedOption' => Yii::app()->getConfig('x_frame_options'),
                         'selectOptions' => [
                             "allow"      => gT("Allow", 'unescaped'),
@@ -118,7 +118,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'force_ssl',
-                        'ariaLabel'=> gT('Force HTTPS'),
+                        'ariaLabel'=> gT('Force HTTPS:'),
                         'checkedOption' => App()->getConfig('force_ssl'),
                         'selectOptions' => [
                             "on"  => gT("On", 'unescaped'),
