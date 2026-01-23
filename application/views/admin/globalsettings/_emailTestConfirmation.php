@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h5  aria-level="2" class="modal-title"><?php eT("Test email settings"); ?></h5>
+    <h2 class="modal-title h5"><?php eT("Test email settings"); ?></h2>
     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 </div>
 <div class="modal-body">
