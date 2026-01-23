@@ -568,8 +568,16 @@ class TokenDynamic extends LSActiveRecord
 
     public function getCustomDateAttrFormatted($attrName)
     {
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $attributeService = $diContainer->get(
+            LimeSurvey\Models\Services\ParticipantAttributeService::class
+        );
         $field = $this->{$attrName};
-        return $this->getYesNoDateFormated($field);
+        return $attributeService->convertDateAttributeToDisplayFormat(
+            0,
+            $field,
+            false
+        );
     }
 
     /**

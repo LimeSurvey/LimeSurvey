@@ -338,18 +338,23 @@ class ParticipantAttributeService
      *
      * @param int $attributeId The ID of the participant attribute
      * @param mixed $value The attribute value to be converted
+     * @param bool $checkForType Whether to check the attribute type and convert only if it's a date picker (DP) type. Default is true.
      * @return mixed The converted date string in the user's preferred format if type is 'DP' and value is in Y-m-d format,
      *                or the original value for non-date types or invalid dates.
      */
-    public function convertDateAttributeToDisplayFormat(int $attributeId, $value)
+    public function convertDateAttributeToDisplayFormat(int $attributeId, $value, $checkForType = true)
     {
-        $attributeType = $this->getParticipantAttributeNameType($attributeId);
-
-        if ($attributeType !== 'DP' || empty($value)) {
-            return $value;
+        if ($checkForType) {
+            $attributeType = $this->getParticipantAttributeNameType($attributeId);
+            if ($attributeType !== 'DP' || empty($value)) {
+                return $value;
+            }
         }
 
         // Check if the value is in Y-m-d format
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
+            return $value;
+        }
         $dateObj = \DateTime::createFromFormat('Y-m-d', $value);
         if ($dateObj === false || $dateObj->format('Y-m-d') !== $value) {
             return $value;
