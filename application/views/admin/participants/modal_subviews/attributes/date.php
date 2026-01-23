@@ -9,6 +9,7 @@
 /** @var string $visible */
 
 $name = CHtml::encode($name);
+$defaultname = CHtml::encode($defaultname);
 $elementId = 'Attributes_'. $name;
 $inputName = "Attributes[$name]";
 ?>
