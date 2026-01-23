@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-01-23 08:56:15+00:00\n"
+"POT-Creation-Date: 2026-01-23 08:56:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21428,49 +21428,31 @@ msgid "Map participant attributes"
 msgstr ""
 
 #: application/views/admin/participants/blacklist_view.php:30
-msgid "Blocklist all current surveys for participant once the global field is set:"
-msgstr ""
-
 #: application/views/admin/participants/blacklist_view.php:35
 msgid "Blocklist all current surveys for participant once the global field is set"
 msgstr ""
 
 #: application/views/admin/participants/blacklist_view.php:48
-msgid "Blocklist participant for any new added survey once the global field is set:"
-msgstr ""
-
 #: application/views/admin/participants/blacklist_view.php:53
-msgid "Blocklist participant for any new added survey once the global field is set"
+msgid "Blocklist all newly created surveys for participant once the global field is set"
 msgstr ""
 
 #: application/views/admin/participants/blacklist_view.php:66
-msgid "Prevent blocklisted participants from being added to a survey:"
-msgstr ""
-
 #: application/views/admin/participants/blacklist_view.php:71
 msgid "Prevent blocklisted participants from being added to a survey"
 msgstr ""
 
 #: application/views/admin/participants/blacklist_view.php:84
-msgid "Hide blocklisted participants:"
-msgstr ""
-
 #: application/views/admin/participants/blacklist_view.php:89
 msgid "Hide blocklisted participants"
 msgstr ""
 
 #: application/views/admin/participants/blacklist_view.php:102
-msgid "Delete globally blocklisted participant from the database:"
-msgstr ""
-
 #: application/views/admin/participants/blacklist_view.php:107
 msgid "Delete globally blocklisted participant from the database"
 msgstr ""
 
 #: application/views/admin/participants/blacklist_view.php:120
-msgid "Allow participant to remove himself/herself from blocklist:"
-msgstr ""
-
 #: application/views/admin/participants/blacklist_view.php:125
 msgid "Allow participant to remove himself/herself from blocklist"
 msgstr ""
