@@ -28,6 +28,7 @@
                 <?php endif;?>
             >
                 <a href="#"
+            role="Button"
                    class="dropdown-item"
                     <?php if(!empty($aAction['disabled'])) : ?>
                         data-disabled='1'
