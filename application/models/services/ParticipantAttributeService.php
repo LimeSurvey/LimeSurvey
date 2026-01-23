@@ -15,12 +15,17 @@ use ParticipantAttributeValue;
  * There is still plenty of attribute related functions scattered in the codebase
  * (see ParticipantsAction.php and Participant.php)
  * which should be moved in here.
+ * 
+ * This service class also deals with attributes of survey participants (tokens)
+ * which are related to CPDB attributes but still stored differently.
  */
 class ParticipantAttributeService
 {
     private ParticipantAttributeName $modelParticipantAttributeName;
     private ParticipantAttributeNameLang $modelParticipantAttributeLang;
     private ParticipantAttributeValue $modelParticipantAttributeValue;
+
+    private $attributeTypes = null;
 
     public function __construct(
         ParticipantAttributeName $modelParticipantAttributeName,
@@ -303,5 +308,78 @@ class ParticipantAttributeService
         return $convertedDateObj ? $convertedDateObj->format(
             'Y-m-d'
         ) : false;
+    }
+
+    /**
+     * Converts a CPDB (Central Participant Database) date attribute to standard storage format.
+     *
+     * This method retrieves the attribute type by ID and converts date picker (DP) values
+     * from the user's session date format to the standard database storage format (Y-m-d).
+     * For non-date attributes, the original value is returned unchanged.
+     *
+     * @param int $attributeId The ID of the participant attribute
+     * @param mixed $attributeValue The attribute value to be converted
+     * @return string The converted date string in 'Y-m-d' format if type is 'DP' and conversion succeeds,
+     *                an empty string if type is 'DP' but conversion fails, or the original value for non-date types.
+     */
+    public function convertCPDBDateToStoreFormat($attributeId, $attributeValue)
+    {
+        $attributeType = $this->getParticipantAttributeNameType($attributeId);
+        $attributeData = ['type' => $attributeType];
+        return $this->convertDateAttribute($attributeData, $attributeValue);
+    }
+
+    /**
+     * Converts a date attribute from storage format to display format.
+     *
+     * This method retrieves the attribute type by ID and converts date picker (DP) values
+     * from the standard database storage format (Y-m-d) to the user's session date format.
+     * For non-date attributes, the original value is returned unchanged.
+     *
+     * @param int $attributeId The ID of the participant attribute
+     * @param mixed $value The attribute value to be converted
+     * @return mixed The converted date string in the user's preferred format if type is 'DP' and value is in Y-m-d format,
+     *                or the original value for non-date types or invalid dates.
+     */
+    public function convertDateAttributeToDisplayFormat(int $attributeId, $value)
+    {
+        $attributeType = $this->getParticipantAttributeNameType($attributeId);
+
+        if ($attributeType !== 'DP' || empty($value)) {
+            return $value;
+        }
+
+        // Check if the value is in Y-m-d format
+        $dateObj = \DateTime::createFromFormat('Y-m-d', $value);
+        if ($dateObj === false || $dateObj->format('Y-m-d') !== $value) {
+            return $value;
+        }
+
+        // Convert to user's preferred date format
+        $dateFormat = getDateFormatData(App()->session['dateformat']);
+        return $dateObj->format($dateFormat['phpdate']);
+    }
+
+    /**
+     * Retrieves the attribute type for a given participant attribute ID.
+     *
+     * This method uses lazy loading to cache all attribute types on first call,
+     * then returns the type for the requested attribute ID from the cache.
+     * The cache persists for the lifetime of the service instance.
+     *
+     * @param int $attributeId The ID of the participant attribute
+     * @return string|null The attribute type (e.g., 'DD', 'TB', 'DP') if found, null if the attribute ID doesn't exist
+     */
+    public function getParticipantAttributeNameType($attributeId)
+    {
+        if ($this->attributeTypes === null) {
+            $allAttributes = $this->modelParticipantAttributeName->findAll();
+            $this->attributeTypes = [];
+            foreach ($allAttributes as $attribute) {
+                $this->attributeTypes[$attribute->attribute_id] = $attribute->attribute_type;
+            }
+        }
+        
+        return $this->attributeTypes[$attributeId] ?? null;
     }
 }

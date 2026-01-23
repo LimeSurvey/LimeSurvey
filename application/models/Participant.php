@@ -262,6 +262,10 @@ class Participant extends LSActiveRecord
      */
     public function getParticipantAttribute($attributeTextId, $attribute_id = false)
     {
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $attributeService = $diContainer->get(
+            LimeSurvey\Models\Services\ParticipantAttributeService::class
+        );
         if ($attribute_id == false) {
             [, $attribute_id] = explode('_', $attributeTextId);
         }
@@ -269,7 +273,10 @@ class Participant extends LSActiveRecord
         $participantAttributes = ParticipantAttribute::model()->getAttributeInfo($this->participant_id);
         foreach ($participantAttributes as $singleAttribute) {
             if ($singleAttribute['attribute_id'] == $attribute_id) {
-                return $singleAttribute->decrypt()['value'];
+                return $attributeService->convertDateAttributeToDisplayFormat(
+                    $attribute_id,
+                    $singleAttribute->decrypt()['value']
+                );
             }
         }
         return "";
