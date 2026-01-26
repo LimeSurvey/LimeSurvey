@@ -7,7 +7,7 @@
   "main": "LSRTLPlugin.js",
   "license": "GPL-2.0-or-later",
   "dependencies": {
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.23",
     "rtlcss": "^3.5.0"
   },
   "devDependencies": {
