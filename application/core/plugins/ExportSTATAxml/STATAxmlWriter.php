@@ -162,6 +162,8 @@ class STATAxmlWriter extends Writer
                 $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_S_SHORT_FREE_TEXT;
             } elseif ($aQuestion['varname'] == 'refurl') {
                 $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_S_SHORT_FREE_TEXT;
+            } elseif ($aQuestion['varname'] == 'quota_exit') {
+                $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_N_NUMERICAL;
             } elseif ($aQuestion['varname'] == 'lastpage') {
                 $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_N_NUMERICAL;
             }

@@ -123,6 +123,7 @@ class SurveysGroupCreatorTest extends TestCase
             'printanswers',
             'ipaddr',
             'refurl',
+            'savequotaexit',
             'datecreated',
             'showsurveypolicynotice',
             'publicstatistics',

@@ -556,18 +556,26 @@ class Quotas
         $sUrlDescription = $event->get('urldescrip', $aMatchedQuota['quotals_urldescrip']);
         $sAction = (int) $event->get('action', $aMatchedQuota['action']);
         // close the survey only when the action is a terminate type or when confirmquota is called as move action
+        /**
+         * @todo: 2026-01-05: Is confirmquota action still used?
+         *        The "confirmquota" button was commented out on commit 9e678fb (Ticket #14652)
+         */
         $closeSurvey = ($sAction !== Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS || App()->getRequest()->getPost('move') === 'confirmquota');
         $sAutoloadUrl = $event->get('autoloadurl', $aMatchedQuota['autoload_url']);
-        // Doing the action and show the page
+        // If action is Terminate, stamp the quota id in the response and marks tokens as completed
         if (
-            $sClientToken
-            && in_array($sAction, [
+            in_array($sAction, [
                 Quota::TERMINATE_VISIBLE_QUOTA_QUESTIONS,
                 Quota::TERMINATE_VISIBLE_AND_HIDDEN_QUOTA_QUESTIONS,
                 Quota::TERMINATE_ALL_PAGES
             ], true)
         ) {
-            submittokens(true);
+            // Update the response's "quota_exit" attribute with the ID of the matched quota
+            self::updateResponseQuotaExit($oResponse, $aMatchedQuota['id']);
+
+            if ($sClientToken) {
+                submittokens(true);
+            }
         }
         // Construct the default message
         $sMessage = templatereplace(
@@ -622,6 +630,7 @@ class Quotas
                 $thissurvey['aQuotas']['hiddeninputs'] .= '<input type="hidden" name="' . $field . '"   value="' . $post . '" />';
             }
         }
+
         //field,post in aSurveyInfo.aQuotas.aPostedQuotaFields %}
         if ($closeSurvey) {
             killSurveySession($surveyid);
@@ -638,5 +647,13 @@ class Quotas
             ['oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey],
             false
         );
+    }
+
+    public static function updateResponseQuotaExit(Response $response, ?int $quotaId): void
+    {
+        if ($response->hasAttribute('quota_exit')) {
+            $response->quota_exit = $quotaId;
+            $response->save(false, ['quota_exit']);
+        }
     }
 }
