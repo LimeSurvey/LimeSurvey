@@ -1163,6 +1163,13 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
                 $sValue = convertDateTimeFormat($sValue, "Y-m-d H:i:s", $dateformatdetails['phpdate'] . ' H:i:s');
             }
             break;
+        case 'quota_exit':
+            // Try to get quota name
+            $quota = Quota::model()->findByAttributes(['sid' => $iSurveyID, 'id' => $sValue]);
+            if ($quota) {
+                $this_answer = $quota->name;
+            }
+            break;
     }
     if (isset($this_answer)) {
         return $this_answer . " [$sValue]";
