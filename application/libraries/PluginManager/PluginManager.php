@@ -698,6 +698,7 @@ class PluginManager extends \CApplicationComponent
             'UpdateCheck',
             'AzureOAuthSMTP',
             'GoogleOAuthSMTP',
+            'ReactEditor'
         ];
     }
 
