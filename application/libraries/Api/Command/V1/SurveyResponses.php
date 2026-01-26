@@ -215,5 +215,4 @@ class SurveyResponses implements CommandInterface
 
         return $paginationDefault;
     }
-
 }

@@ -3,6 +3,7 @@
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses;
 
 use Answer;
+use Question;
 use Survey;
 use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurveyResponses;
 
@@ -31,6 +32,8 @@ trait ResponseMappingTrait
                             'aid' => $item['aid'] ?? null,
                             'sqid' => $item['sqid'] ?? null,
                             'scaleid' => $item['scale_id'] ?? null,
+                            'title' => $item['title'] ?? null,
+                            'question' => $item['question'] ?? null,
                         ];
                     }
                     return null;
@@ -79,8 +82,10 @@ trait ResponseMappingTrait
         $surveyId = $this->survey->sid;
 
         if (!isset($answersCache[$surveyId])) {
+            /** @var Question[] $questions */
+            /** @psalm-suppress UndefinedMagicPropertyFetch */
             $questions = $this->survey->questions;
-            $questionIds = array_map(function (\Question $q): int {
+            $questionIds = array_map(function (Question $q): int {
                 return $q->qid;
             }, $questions);
 

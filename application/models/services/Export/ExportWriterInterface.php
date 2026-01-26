@@ -27,6 +27,31 @@ interface ExportWriterInterface
     public function export(array $responses, array $surveyQuestions, array $metadata): array;
 
     /**
+     * Initialize the writer for chunked export.
+     *
+     * @param array $surveyQuestions The survey questions field map (for headers)
+     * @param array $metadata Additional metadata (surveyId, language, etc.)
+     * @return void
+     */
+    public function init(array $surveyQuestions, array $metadata): void;
+
+    /**
+     * Write a chunk of responses.
+     *
+     * @param array $responses Chunk of survey responses data
+     * @param array $surveyQuestions The survey questions field map
+     * @return void
+     */
+    public function writeChunk(array $responses, array $surveyQuestions): void;
+
+    /**
+     * Finalize the export and return the result.
+     *
+     * @return array Export result with content/filePath and metadata
+     */
+    public function finalize(): array;
+
+    /**
      * Get the file extension for this export format.
      *
      * @return string File extension (e.g., 'csv', 'xlsx', 'pdf')

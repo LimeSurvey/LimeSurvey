@@ -4,18 +4,17 @@ namespace LimeSurvey\Libraries\Api\Command\V1;
 
 use Exception;
 use InvalidArgumentException;
+use LimeSurvey\Api\Command\CommandInterface;
+use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\Command\Response\ResponseFactory;
 use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use LimeSurvey\Models\Services\ExportSurveyResultsService;
+use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use Permission;
 use RuntimeException;
 use Survey;
-use LimeSurvey\Api\Command\{CommandInterface,
-    Request\Request,
-    Response\Response,
-    Response\ResponseFactory
-};
-use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
 class SurveyResponsesExport implements CommandInterface
 {
@@ -56,14 +55,12 @@ class SurveyResponsesExport implements CommandInterface
      */
     protected ExportSurveyResultsService $exportSurvey;
 
-
     /**
      * Allowed export formats.
      *
      * @var string[]
      */
-    private array $allowedFormats = ['csv', 'xlsx', 'xls', 'pdf', 'html'];
-
+    private array $allowedFormats = ['csv', 'html'];
 
     /**
      * SurveyResponsesExport constructor.
@@ -92,9 +89,9 @@ class SurveyResponsesExport implements CommandInterface
     public function run(Request $request)
     {
         try {
-            $data = $this->process($request);
-
-            return $this->responseFactory->makeSuccess(['responses' => $data]);
+            $exportData = $this->process($request);
+            $this->streamFile($exportData);
+            return $this->responseFactory->makeSuccess();
         } catch (TransformerException $e) {
             return $this->responseFactory->makeError('Invalid key sent');
         } catch (PermissionDeniedException $e) {
@@ -108,7 +105,7 @@ class SurveyResponsesExport implements CommandInterface
      * Process the export request and perform the export.
      *
      * @param Request $request
-     * @return array The exported responses (format depends on ExportSurveyResultsService)
+     * @return array The export data with content/filePath and metadata
      *
      * @throws PermissionDeniedException
      * @throws RuntimeException
@@ -133,7 +130,8 @@ class SurveyResponsesExport implements CommandInterface
 
         [$type, $language] = $this->getExportRequestData($request);
 
-        return $this->exportSurvey->exportResponses($surveyId, $type, $language);
+        // Use file output mode for better memory efficiency with large exports
+        return $this->exportSurvey->exportResponses($surveyId, $type, $language, 'file');
     }
 
     /**
@@ -146,7 +144,6 @@ class SurveyResponsesExport implements CommandInterface
     protected function getExportRequestData(Request $request): array
     {
         $type = $request->getData('type', 'csv');
-        // Correct the in_array check: ensure we throw if the requested type is not in allowedFormats
         if (!in_array($type, $this->allowedFormats)) {
             throw new InvalidArgumentException('Invalid export format specified');
         }
@@ -154,5 +151,39 @@ class SurveyResponsesExport implements CommandInterface
         $language = $request->getData('language', $this->surveyModel ? $this->surveyModel->language : null);
 
         return [$type, $language];
+    }
+
+    /**
+     * Stream the exported file for download.
+     *
+     * @param array $exportData Export data from the export service
+     * @return never
+     */
+    protected function streamFile(array $exportData)
+    {
+        $filename = $exportData['filename'] ?? 'export.' . ($exportData['extension'] ?? 'csv');
+        $mimeType = $exportData['mimeType'] ?? 'application/octet-stream';
+        $content = $exportData['content'] ?? null;
+        $filePath = $exportData['filePath'] ?? null;
+
+        if (ob_get_level()) {
+            ob_end_clean();
+        }
+
+        header('Content-Type: ' . $mimeType);
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Cache-Control: private, max-age=0, must-revalidate');
+        header('Pragma: public');
+
+        if ($filePath !== null && file_exists($filePath)) {
+            header('Content-Length: ' . filesize($filePath));
+            readfile($filePath);
+            unlink($filePath);
+        } elseif ($content !== null) {
+            header('Content-Length: ' . strlen($content));
+            echo $content;
+        }
+
+        exit;
     }
 }
