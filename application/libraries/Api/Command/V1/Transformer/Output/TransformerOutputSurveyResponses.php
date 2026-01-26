@@ -11,6 +11,9 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
 {
     public array $fieldMap = [];
 
+    /** @var bool|null Pre-cached token table existence check */
+    public ?bool $hasTokenTable = null;
+
     /**
      * Construct
      */
@@ -99,8 +102,10 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
         if (!empty($options['survey'])) {
             /** @var Survey $survey */
             $survey = $options['survey'];
+            // Use cached value if available, otherwise check (for backward compatibility)
+            $tokenTableExists = $this->hasTokenTable ?? tableExists('tokens_' . $survey->sid);
             $hasToken = $survey->anonymized === "N"
-                && tableExists('tokens_' . $survey->sid)
+                && $tokenTableExists
                 && isset($surveyResponse->tokens);
             if ($hasToken) {
                 $surveyResponseArray['firstName'] = $surveyResponse->getFirstNameForGrid();
