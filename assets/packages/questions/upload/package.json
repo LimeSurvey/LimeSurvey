@@ -31,7 +31,7 @@
         "terser": "^5.14.2"
     },
     "dependencies": {
-        "lodash": "^4.17.4",
+        "lodash": "^4.17.23",
         "rollup": "^2.6.1"
     }
 }
