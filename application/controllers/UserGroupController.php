@@ -393,7 +393,7 @@ class UserGroupController extends LSBaseController
         $aRet = [];
 
         if (!Permission::model()->hasGlobalPermission('usergroups', 'read')) {
-            $aRet['errorMsg'] = gT('Access denied');
+            $aRet['errorMsg'] = gT('Access denied!');
             $aRet['redirectPath'] = 'userGroup/viewGroup/ugid/' . $userGroupId;
             return $aRet;
         }

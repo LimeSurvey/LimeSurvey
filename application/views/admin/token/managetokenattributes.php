@@ -195,7 +195,7 @@
                 <p>
                     <label for="deleteattribute"><?php eT('Delete this attribute:'); ?></label>
                     <div class=''>
-                        <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','description'),array('empty' => gT('(None)','unescaped'), 'class'=>'form-select')); ?>
+                        <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','description'),array('empty' => gT('(none)','unescaped'), 'class'=>'form-select')); ?>
                     </div>
                 </p>
                 <p>
