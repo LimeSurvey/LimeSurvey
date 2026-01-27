@@ -77,22 +77,22 @@ class CopyQuestion
             );
 
             //copy subquestions
-            if (isset($this->copyOptions['copySubquestions'])) {
+            if (isset($this->copyOptions['copySubquestions']) && $this->copyOptions['copySubquestions']) {
                 $this->copyQuestionsSubQuestions($this->copyQuestionValues->getQuestiontoCopy()->qid, $surveyId);
             }
 
             //copy answer options
-            if (isset($this->copyOptions['copyAnswerOptions'])) {
+            if (isset($this->copyOptions['copyAnswerOptions']) && $this->copyOptions['copyAnswerOptions']) {
                 $this->copyQuestionsAnswerOptions($this->copyQuestionValues->getQuestiontoCopy()->qid);
             }
 
             //copy default answers
-            if (isset($this->copyOptions['copyDefaultAnswers'])) {
+            if (isset($this->copyOptions['copyDefaultAnswers']) && $this->copyOptions['copyDefaultAnswers']) {
                 $this->copyQuestionsDefaultAnswers($this->copyQuestionValues->getQuestiontoCopy()->qid);
             }
 
             //copy question settings (generalsettings and advanced settings)
-            if (isset($this->copyOptions['copySettings'])) {
+            if (isset($this->copyOptions['copySettings']) && $this->copyOptions['copySettings']) {
                 $this->copyQuestionsSettings($this->copyQuestionValues->getQuestiontoCopy()->qid, $surveyId);
             }
         }
