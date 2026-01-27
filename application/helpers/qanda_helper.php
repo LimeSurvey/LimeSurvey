@@ -3238,11 +3238,9 @@ function do_array($ia)
     if ($aQuestionAttributes['use_dropdown'] == 1) {
         $useDropdownLayout = true;
         $coreClass .= " dropdown-array";
-        $caption           = gT("A table with a subquestion on each row. You have to select your answer.");
     } else {
         $useDropdownLayout = false;
         $coreClass .= " radio-array";
-        $caption           = gT("A table with a subquestion on each row. The answer options are contained in the table header.");
     }
 
     if (ctype_digit(trim((string) $aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings'] != "")) {
@@ -3296,7 +3294,6 @@ function do_array($ia)
 
         if ($right_exists) {
             ++$numrows;
-            $caption .= gT("After the answer options a cell does give some information.");
         }
         if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
             ++$numrows;
@@ -3568,7 +3565,6 @@ function do_array_texts($ia)
     $coreClass                  = "ls-answers subquestion-list questions-list text-array";
     $extraclass                 = "";
     $coreRowClass               = "subquestion-list questions-list";
-    $caption                    = gT("A table of subquestions on each cell. The subquestion texts are in the column header and relate the particular row header.");
 
     if ($thissurvey['nokeyboard'] == 'Y') {
         includeKeypad();
@@ -3627,7 +3623,6 @@ function do_array_texts($ia)
 
         $coreClass .= " number-array";
         $coreRowClass .= " number-list";
-        $caption    .= gT("Each answer may only be a number.");
         $col_head    = '';
         switch ($aQuestionAttributes['show_totals']) {
             case 'R':
@@ -3660,7 +3655,6 @@ function do_array_texts($ia)
                         true
                     );
                 };
-                $caption .= gT("The last row shows the total for the column.");
                 break;
 
             case 'C':
@@ -3693,7 +3687,6 @@ function do_array_texts($ia)
                         true
                     );
                 };
-                $caption .= gT("The last column shows the total for the row.");
                 break;
 
             case 'B':
@@ -3732,7 +3725,6 @@ function do_array_texts($ia)
                         true
                     );
                 };
-                $caption .= gT("The last row shows the total for the column and the last column shows the total for the row.");
                 break;
         };
 
@@ -3967,7 +3959,6 @@ function do_array_multiflexi($ia)
     $coreRowClass = "subquestion-list questions-list";
     $extraclass                 = "";
     $answertypeclass            = "";
-    $caption                    = gT("A table of subquestions on each cell. The subquestion texts are in the colum header and concern the row header.");
     $checkconditionFunction     = "fixnum_checkconditions";
     $minvalue                   = '';
     $maxvalue                   = '';
@@ -4019,7 +4010,6 @@ function do_array_multiflexi($ia)
         $answertypeclass     = " checkbox-item";
         $coreClass          .= " checkbox-array";
         $coreRowClass .= " checkbox-list";
-        $caption            .= gT("Please check the matching combinations.");
         $textAlignment       = 'center';
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . "array-number-checkbox.js", CClientScript::POS_BEGIN);
         App()->getClientScript()->registerScript("doArrayNumberCheckbox", "doArrayNumberCheckbox();\n", LSYii_ClientScript::POS_POSTSCRIPT);
@@ -4030,14 +4020,12 @@ function do_array_multiflexi($ia)
         $coreClass          .= " text-array number-array";
         $coreRowClass .= " text-list number-list";
         $extraclass         .= " numberonly";
-        $caption            .= gT("Please enter only numbers.");
     } else {
         $layout = "dropdown";
         $answertypeclass     = " ls-dropdown-item";
         
         $coreClass          .= " dropdown-array";
         $coreRowClass .= " dropdown-list";
-        $caption            .= gT("Please select an answer for each combination.");
     }
 
     if (ctype_digit(trim((string) $aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings'] != "")) {

@@ -10,7 +10,7 @@
 ?>
 <div class='side-body'>
     <h3>
-        <?php eT('Activate Survey'); ?> (<?php echo $oSurvey->currentLanguageSettings->surveyls_title; ?>)
+        <?php eT('Activate survey'); ?> (<?php echo $oSurvey->currentLanguageSettings->surveyls_title; ?>)
     </h3>
     <div class="row">
         <div class="col-12 col-xl-10">
