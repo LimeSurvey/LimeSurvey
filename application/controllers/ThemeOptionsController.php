@@ -744,7 +744,7 @@ class ThemeOptionsController extends LSBaseController
         } else {
             // Title concatenation
             $templateName = $model->template_name;
-            $pageTitle = sprintf('Survey options for theme %s (global level)', $templateName);
+            $pageTitle = sprintf(gT('Survey options for theme %s (global level)'), $templateName);
             if (!is_null($sid)) {
                 $pageTitle = sprintf(gT("Survey options for theme %s and survey ID %s"), $templateName, $sid);
             } elseif (!is_null($gsid)) {
