@@ -305,9 +305,17 @@ class ParticipantAttributeService
             $fromFormat,
             $dateString
         );
-        return $convertedDateObj ? $convertedDateObj->format(
-            'Y-m-d'
-        ) : false;
+        if (!$convertedDateObj) {
+            return false;
+        }
+        $errors = \DateTime::getLastErrors();
+        if (
+            !empty($errors['warning_count'])
+            || !empty($errors['error_count'])
+        ) {
+            return false;
+        }
+        return $convertedDateObj->format('Y-m-d');
     }
 
     /**
