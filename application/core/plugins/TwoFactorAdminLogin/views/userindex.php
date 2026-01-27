@@ -46,7 +46,7 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
                     data-confirmtext="<?=gT('Are you sure you want to remove two-factor authentication (2FA) for your account?')?>"
                     data-buttons='{"confirm_cancel": "<?=gT('No, cancel', 'js')?>", "confirm_ok": "<?=gT('Yes, I am sure', 'js')?>"}'
                     data-uid="<?=$oTFAModel->uid?>"
-                    data-errortext="<?=gT('An error has occured, and the key could not be deleted.')?>"
+                    data-errortext="<?=gT('An error has occurred, and the key could not be deleted.')?>"
                 ><?=gT("Remove 2FA")?></a>
             <?php } ?>
             <a

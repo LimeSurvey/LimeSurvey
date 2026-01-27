@@ -102,7 +102,7 @@ var RoleControl = function () {
                     window.LS.ajaxAlerts(result.errors, 'danger', {inline: '#RoleControl--errors'});
                 },
                 error: function () {
-                    window.LS.ajaxAlerts('An error occured while trying to save, please reload the page Code:1571314170100', 'danger', {showCloseButton: true});
+                    window.LS.ajaxAlerts('An error occurred while trying to save, please reload the page Code:1571314170100', 'danger', {showCloseButton: true});
                 }
             });
         });
