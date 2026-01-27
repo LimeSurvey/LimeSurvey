@@ -181,7 +181,8 @@ class ParticipantAttributeService
                     if (!is_scalar($option)) {
                         continue;
                     }
-                    $decodedOptions[$option] = $option;
+                    $stringOption = (string)$option;
+                    $decodedOptions[$stringOption] = $stringOption;
                 }
             }
         }
