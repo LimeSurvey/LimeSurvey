@@ -635,7 +635,7 @@ function graphQuery(id, cmd, success) {
 
 function ajaxError() {
     // TODO: Use NotifyFader?
-    alert("An error occurred! Please reload the page!");
+    alert("An error occured! Please reload the page!");
 }
 
 function selectCheckboxes(Div, CheckBoxName, Button) {

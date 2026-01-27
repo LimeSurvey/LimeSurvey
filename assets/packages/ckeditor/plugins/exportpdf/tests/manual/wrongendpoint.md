@@ -9,7 +9,7 @@
 
   **Expected:**
 
-  * Warning notification with `Error occurred.` message appeared.
+  * Warning notification with `Error occured.` message appeared.
   * Button is clickable.
   * File wasn't downloaded.
 

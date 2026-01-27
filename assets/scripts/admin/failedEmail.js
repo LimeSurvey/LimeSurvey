@@ -83,7 +83,7 @@ var FailedEmail = function () {
                     }
                 },
                 error: function (xhr, status, error) {
-                    alert('An error occurred while trying to save, please reload the page Code:1658139259132\n' +
+                    alert('An error occured while trying to save, please reload the page Code:1658139259132\n' +
                         'status: ' + status + '\n' +
                         'error: ' + error + '\n' +
                         'message: ' + xhr.responseText);
