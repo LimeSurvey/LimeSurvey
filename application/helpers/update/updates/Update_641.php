@@ -15,7 +15,7 @@ class Update_641 extends DatabaseUpdateBase
                 'version' => '1.0.0',
                 'load_error' => 0,
                 'load_error_message' => null,
-                'priority' => 1,
+                'priority' => 0,
             ]
         );
     }
