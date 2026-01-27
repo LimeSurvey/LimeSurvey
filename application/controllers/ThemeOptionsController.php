@@ -750,7 +750,6 @@ class ThemeOptionsController extends LSBaseController
             } elseif (!is_null($gsid)) {
                 $pageTitle = sprintf(gT("Survey options for theme %s and survey group ID %s"), $templateName, $gsid);
             }
-            $pageTitle = $basePageTitle;
             $data['topbar']['title'] = $pageTitle;
             $isCloseBtn = true;
         }
