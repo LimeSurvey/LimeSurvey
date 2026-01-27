@@ -15,7 +15,7 @@ use ParticipantAttributeValue;
  * There is still plenty of attribute related functions scattered in the codebase
  * (see ParticipantsAction.php and Participant.php)
  * which should be moved in here.
- * 
+ *
  * This service class also deals with attributes of survey participants (tokens)
  * which are related to CPDB attributes but still stored differently.
  */
@@ -384,7 +384,7 @@ class ParticipantAttributeService
                 $this->attributeTypes[$attribute->attribute_id] = $attribute->attribute_type;
             }
         }
-        
+
         return $this->attributeTypes[$attributeId] ?? null;
     }
 }
