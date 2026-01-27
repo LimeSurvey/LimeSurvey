@@ -9,8 +9,15 @@ class ReactEditor extends PluginBase
      */
     public function init()
     {
+        $this->subscribe('beforeDeactivate');
         $this->subscribe('beforeControllerAction', 'initEditor');
         $this->subscribe('beforeControllerAction', 'registerSurveyRedirect');
+    }
+
+    public function beforeDeactivate()
+    {
+        $this->getEvent()->set('success', false);
+        $this->getEvent()->set('message', gT('Core plugin can not be disabled.'));
     }
 
     public function initEditor()
