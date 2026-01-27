@@ -4,7 +4,7 @@
  * Edit multiple tokens
  */
 $iSurveyId = (int) Yii::app()->request->getParam('surveyid');
-$attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
+$customAttributes = getParticipantAttributes($iSurveyId);
 $aCoreTokenFields = array('validfrom', 'validuntil', 'firstname', 'lastname', 'emailstatus', 'token', 'language', 'sent', 'remindersent', 'completed', 'usesleft');
 $oSurvey = Survey::model()->findByPk($iSurveyId);
 $sCointainerClass = ($oSurvey->anonymized != 'Y' ?  'yes-no-date-container' : 'yes-no-container');
@@ -14,7 +14,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
 <form class="custom-modal-datas form form-horizontal makeDisabledInputsTransparent">
     <div id='updateTokens'>
         <!-- Tabs -->
-        <?php if (count($attrfieldnames) > 0) : ?>
+        <?php if (count($customAttributes) > 0) : ?>
             <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
                 <!-- Common  -->
                 <li role="presentation" class="nav-item">
@@ -362,19 +362,20 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                     <div class="col-md-11"></div>
                 </div>
                 <!-- Attributes -->
-                <?php foreach ($attrfieldnames as $attr_name => $attr_description) : ?>
-                    <div class="ex-form-group mb-3 row">
-                        <div class="col-md-1">
-                            <label class="">
-
-                                <input type="checkbox" class="action_check_to_keep_old_value"></input>
-                            </label>
-                        </div>
-                        <label class="col-md-3 form-label" for='massedit_<?php echo $attr_name; ?>'><?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:</label>
-                        <div class="col-md-8">
-                            <input type='text' class="form-control custom-data selector_submitField" size='55' id='massedit_<?php echo $attr_name; ?>' disabled name='<?php echo $attr_name; ?>' value='lskeep' />
-                        </div>
-                    </div>
+                <?php foreach ($customAttributes as $attrName => $attrDescription) : ?>
+                    <?php
+                    $this->renderPartial(
+                        '/admin/token/attribute_subviews/tokenformAttributesWrapper',
+                        [
+                            'attrDescription' => $attrDescription,
+                            'attrName' => $attrName,
+                            'inputValue' => '',
+                            'jsDate' => $dateformatdetails['jsdate'],
+                            'addClass' => 'row',
+                            'batchEdit' => true,
+                        ]
+                    );
+                    ?>
                 <?php endforeach; ?>
             </div>
         </div>

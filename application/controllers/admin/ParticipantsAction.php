@@ -699,6 +699,11 @@ class ParticipantsAction extends SurveyCommonAction
     public function updateParticipant($aData, array $extraAttributes = array())
     {
         $participant = Participant::model()->findByPk($aData['participant_id']);
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $attributeService = $diContainer->get(
+            LimeSurvey\Models\Services\ParticipantAttributeService::class
+        );
+
 
         // Abort if not found (internal error)
         if (empty($participant)) {
@@ -722,7 +727,10 @@ class ParticipantsAction extends SurveyCommonAction
             $attribute = ParticipantAttribute::model();
             $attribute->attribute_id = $attribute_id;
             $attribute->participant_id = $aData['participant_id'];
-            $attribute->value = $attributeValue;
+            $attribute->value = $attributeService->convertCPDBDateToStoreFormat(
+                $attribute_id,
+                $attributeValue
+            );
             $attribute->encrypt();
             $attribute->updateParticipantAttributeValue($attribute->attributes);
         }
@@ -740,6 +748,10 @@ class ParticipantsAction extends SurveyCommonAction
     public function addParticipant($aData, array $extraAttributes = array())
     {
         if (Permission::model()->hasGlobalPermission('participantpanel', 'create')) {
+            $diContainer = \LimeSurvey\DI::getContainer();
+            $attributeService = $diContainer->get(
+                LimeSurvey\Models\Services\ParticipantAttributeService::class
+            );
             $uuid = Participant::genUuid();
             $aData['participant_id'] = $uuid;
             $aData['owner_uid'] = Yii::app()->user->id;
@@ -754,7 +766,10 @@ class ParticipantsAction extends SurveyCommonAction
                     $attribute = ParticipantAttribute::model();
                     $attribute->attribute_id = $attribute_id;
                     $attribute->participant_id = $uuid;
-                    $attribute->value = $attributeValue;
+                    $attribute->value = $attributeService->convertCPDBDateToStoreFormat(
+                        $attribute_id,
+                        $attributeValue
+                    );
                     $attribute->encrypt();
                     $attribute->updateParticipantAttributeValue($attribute->attributes);
                 }

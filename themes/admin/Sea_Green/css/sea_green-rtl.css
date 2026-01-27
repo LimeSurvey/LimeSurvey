@@ -17052,7 +17052,7 @@ body {
 .btn-link {
   color: #14AE5C;
 }
-.btn-link:hover, .btn-link:focus {
+.btn-link:hover, .btn-link:focus, .btn-link:active, .btn-link:active:focus {
   color: #14AE5C;
 }
 
