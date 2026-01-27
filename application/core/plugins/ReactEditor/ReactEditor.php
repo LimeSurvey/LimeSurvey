@@ -1,65 +1,35 @@
 <?php
 
+use LimeSurvey\Models\Services\EditorService;
 
 class ReactEditor extends PluginBase
 {
-
-    /**
-     * Where to save plugin settings etc.
-     * @var string
-     */
-    protected $storage = 'DbStorage';
-
-    /** @inheritdoc this plugin didn't have any public method */
-    public $allowedPublicMethods = array('checkAll');
-
     /**
      * @return void
      */
     public function init()
     {
         $this->subscribe('beforeControllerAction', 'initEditor');
-        $this->subscribe('beforeControllerAction', 'redirectQEAfterSurveyCreation');
+        $this->subscribe('beforeControllerAction', 'registerSurveyRedirect');
     }
 
-    /**
-     * Init editor functionality
-     */
     public function initEditor()
     {
-        SettingsUser::setUserSetting('editorEnabled', true); // for testing
-
-        $editorConfig = new EditorConfig(
+        EditorService::initEditorApp(
             SettingsUser::getUserSettingValue('editorEnabled')
         );
-        $editorConfig->initAppConfig();
-        $editorRedirector = new EditorRedirector();
-        $editorRedirector->handleRedirect();
     }
 
-    /**
-     * Override the redirect URL to QE after creating the survey.
-     *
-     * @return void
-     * @throws CException
-     */
-    public function redirectQEAfterSurveyCreation()
+    public function registerSurveyRedirect()
     {
-        $editorEnabled = SettingsUser::getUserSettingValue('editorEnabled');
+        $controller = $this->getEvent()->get('controller');
+        $action = $this->getEvent()->get('action');
 
-        if (
-            $editorEnabled
-            && $this->getEvent()->get('controller') == 'surveyAdministration'
-            && $this->getEvent()->get('action') == 'newSurvey'
-        ) {
-            //Override the submit event for the #addnewsurvey form
-            App()->clientScript->registerScriptFile(
-                App()->assetManager->publish(
-                    dirname(__FILE__) . '/js'
-                ) . '/redirectToQEAfterSurvey.js',
-                LSYii_ClientScript::POS_END
-            );
-        }
+        EditorService::registerSurveyRedirect(
+            SettingsUser::getUserSettingValue('editorEnabled'),
+            $controller,
+            $action
+        );
     }
 
 }
