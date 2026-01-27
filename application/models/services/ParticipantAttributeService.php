@@ -178,6 +178,9 @@ class ParticipantAttributeService
             if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
                 // Convert numeric array to associative array with values as both keys and values
                 foreach ($decoded as $option) {
+                    if (!is_scalar($option)) {
+                        continue;
+                    }
                     $decodedOptions[$option] = $option;
                 }
             }
