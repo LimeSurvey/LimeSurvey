@@ -216,7 +216,7 @@ class EmCacheSurveyTest extends TestBaseClassWeb
 
             // Get all answers.
             $dbo = \Yii::app()->getDb();
-            $query = sprintf('SELECT * FROM {{survey_%d}}', self::$surveyId);
+            $query = sprintf('SELECT * FROM {{responses_%d}}', self::$surveyId);
             $result = $dbo->createCommand($query)->queryAll();
             $this->assertCount(1, $result);
             $this->assertEquals('bla bla bla', $result[0][$sgqa]);

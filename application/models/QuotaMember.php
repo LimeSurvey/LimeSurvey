@@ -2,7 +2,7 @@
 
 /*
    * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013-2026 The LimeSurvey Project Team
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
    * LimeSurvey is free software. This version may have been modified pursuant
@@ -97,17 +97,18 @@ class QuotaMember extends LSActiveRecord
                 case "G":
                 case "Y":
                 case "*":
-                    $sFieldName = $this->sid . 'X' . $this->question->gid . 'X' . $this->qid;
+                    $sFieldName = 'Q' . $this->qid;
                     $sValue = $this->code;
                     break;
                 case "M":
-                    $sFieldName = $this->sid . 'X' . $this->question->gid . 'X' . $this->qid . $this->code;
+                    $child = Question::model()->find('parent_qid = :parent_qid and title = :code', [':parent_qid' => $this->qid, ':code' => $this->code]);
+                    $sFieldName = 'Q' . $this->qid . '_S' . $child->qid;
                     $sValue = "Y";
                     break;
                 case "A":
                 case "B":
                     $temp = explode('-', $this->code);
-                    $sFieldName = $this->sid . 'X' . $this->question->gid . 'X' . $this->qid . $temp[0];
+                    $sFieldName = 'Q' . $this->qid . '_S' . $temp[0];
                     $sValue = $temp[1];
                     break;
                 default:

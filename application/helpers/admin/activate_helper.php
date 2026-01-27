@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -65,7 +65,7 @@ function fixNumbering($iQuestionID, $iSurveyID)
         foreach ($aSwitcher as $aSwitch) {
             $sQuery = "UPDATE {{conditions}}
             SET cqid=$iNewQID,
-            cfieldname='" . str_replace("X" . $iQuestionID, "X" . $iNewQID, (string) $aSwitch['cfieldname']) . "'
+            cfieldname='" . str_replace("Q" . $iQuestionID, "Q" . $iNewQID, str_replace("_S" . $iQuestionID, "_S" . $iNewQID, (string) $aSwitch['cfieldname'])) . "'
             WHERE cqid=$iQuestionID";
             Yii::app()->db->createCommand($sQuery)->query();
         }

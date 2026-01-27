@@ -461,8 +461,8 @@ class ResponsesController extends LSBaseController
             }
 
             // Model filters
-            if (isset($_SESSION['survey_' . $surveyId])) {
-                $sessionSurveyArray = App()->session->get('survey_' . $surveyId);
+            if (isset($_SESSION['responses_' . $surveyId])) {
+                $sessionSurveyArray = App()->session->get('responses_' . $surveyId);
                 $visibleColumns = $sessionSurveyArray['filteredColumns'] ?? null;
                 if (!empty($visibleColumns)) {
                     $model->setAttributes($visibleColumns, false);
@@ -489,7 +489,7 @@ class ResponsesController extends LSBaseController
             }
 
             // Sets which columns to filter
-            $filteredColumns = !empty(isset($_SESSION['survey_' . $surveyId]['filteredColumns'])) ? $_SESSION['survey_' . $surveyId]['filteredColumns'] : null;
+            $filteredColumns = !empty(isset($_SESSION['responses_' . $surveyId]['filteredColumns'])) ? $_SESSION['responses_' . $surveyId]['filteredColumns'] : null;
             $aData['filteredColumns'] = $filteredColumns;
 
             // rendering
@@ -580,9 +580,9 @@ class ResponsesController extends LSBaseController
                             $aFilteredColumns[] = $sColumn;
                         }
                     }
-                    $_SESSION['survey_' . $surveyId]['filteredColumns'] = $aFilteredColumns;
+                    $_SESSION['responses_' . $surveyId]['filteredColumns'] = $aFilteredColumns;
                 } else {
-                    $_SESSION['survey_' . $surveyId]['filteredColumns'] = [];
+                    $_SESSION['responses_' . $surveyId]['filteredColumns'] = [];
                 }
             }
         }

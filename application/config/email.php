@@ -3,7 +3,7 @@
 }
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -44,7 +44,11 @@ $config['emailsmtpuser']      = ''; // SMTP authorisation username - only set th
 $config['emailsmtppassword']  = ''; // SMTP authorisation password - empty password is not allowed
 $config['emailsmtpssl']       = ''; // Set this to 'ssl' to use SSL/TLS or 'tls' to use StartTLS for SMTP connection
 
-$config['emailsmtpdebug']     = 0; // Settings this to 1 activates SMTP debug mode
+$config['emailsmtpdebug']     = 0; // Activate display of SMTP log when sending invitations/reminders
+                                   // 0 = off
+                                   // 1 = SMTP client/server messages, but only on errors
+                                   // 2 = SMTP client/server messages
+                                   // 3 = SMTP connection/client/server messages
 
 $config['maxemails']          = 50; // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 

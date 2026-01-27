@@ -5,6 +5,7 @@ use LimeSurvey\Models\Services\FileUploadService;
 use LimeSurvey\Models\Services\FilterImportedResources;
 use LimeSurvey\Models\Services\GroupHelper;
 use LimeSurvey\Models\Services\SurveyAccessModeService;
+use LimeSurvey\Models\Services\SurveyDetailService;
 
 /**
  * Class SurveyAdministrationController
@@ -1634,7 +1635,7 @@ class SurveyAdministrationController extends LSBaseController
         if ($ok == '') {
             $aData['date'] = $date;
             $aData['dbprefix'] = Yii::app()->db->tablePrefix;
-            $aData['sNewSurveyTableName'] = Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}";
+            $aData['sNewSurveyTableName'] = Yii::app()->db->tablePrefix . "old_responses_{$iSurveyID}_{$date}";
             $aData['step1'] = true;
         } else {
             try {
@@ -2307,6 +2308,8 @@ class SurveyAdministrationController extends LSBaseController
             if (!empty($aImportResults['newsid']) && $copyResources) {
                 $resourceCopier = new CopySurveyResources();
                 [, $errorFilesInfo] = $resourceCopier->copyResources($iSurveyID, $aImportResults['newsid']);
+                $surveyDetailService = new SurveyDetailService();
+                $surveyDetailService->removeCache($aImportResults['newsid']);
                 if (!empty($errorFilesInfo)) {
                     $aImportResults['importwarnings'][] = gT("Some resources could not be copied from the source survey");
                 }
@@ -3105,7 +3108,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $aData['activated'] = $activated;
         if ($oSurvey->isActive) {
-            $aData['surveydb'] = Yii::app()->db->tablePrefix . "survey_" . $iSurveyID;
+            $aData['surveydb'] = Yii::app()->db->tablePrefix . "responses_" . $iSurveyID;
         }
 
         $aData['warnings'] = [];

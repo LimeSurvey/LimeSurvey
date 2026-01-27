@@ -165,11 +165,11 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $anscount = count($this->aSubQuestions[0]);
 
         foreach ($this->aSubQuestions[0] as $i => $oQuestionRow) {
-            $myfname = $this->sSGQA . $oQuestionRow->title;
-            $myfname0 = $this->sSGQA . $oQuestionRow->title . "#0";
-            $myfid0 = $this->sSGQA . $oQuestionRow->title . "_0";
-            $myfname1 = $this->sSGQA . $oQuestionRow->title . "#1";
-            $myfid1 = $this->sSGQA . $oQuestionRow->title . "_1";
+            $myfname = $this->sSGQA . '_S' . $oQuestionRow->qid;
+            $myfname0 = $this->sSGQA . '_S' . $oQuestionRow->qid . "#0";
+            $myfid0 = $this->sSGQA . '_S' . $oQuestionRow->qid . "_0";
+            $myfname1 = $this->sSGQA . '_S' . $oQuestionRow->qid . "#1";
+            $myfid1 = $this->sSGQA . '_S' . $oQuestionRow->qid . "_1";
             $sActualAnswer0 = $this->setDefaultIfEmpty($this->getFromSurveySession($myfname0), "");
             $sActualAnswer1 = $this->setDefaultIfEmpty($this->getFromSurveySession($myfname1), "");
 
@@ -236,11 +236,11 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                 $answertextcenter = "";
             }
 
-            $myfname = $this->sSGQA . $oQuestionRow->title;
-            $myfname0 = $this->sSGQA . $oQuestionRow->title . '#0';
-            $myfid0 = $this->sSGQA . $oQuestionRow->title . '_0';
-            $myfname1 = $this->sSGQA . $oQuestionRow->title . '#1'; // new multi-scale-answer
-            $myfid1 = $this->sSGQA . $oQuestionRow->title . '_1';
+            $myfname = $this->sSGQA . '_S' . $oQuestionRow->qid;
+            $myfname0 = $this->sSGQA . '_S' . $oQuestionRow->qid . '#0';
+            $myfid0 = $this->sSGQA . '_S' . $oQuestionRow->qid . '_0';
+            $myfname1 = $this->sSGQA . '_S' . $oQuestionRow->qid . '#1'; // new multi-scale-answer
+            $myfid1 = $this->sSGQA . '_S' . $oQuestionRow->qid . '_1';
 
             $aData['aSubQuestions'][$i]['title'] = $oQuestionRow->title;
             $aData['aSubQuestions'][$i]['myfname'] = $myfname;
@@ -289,7 +289,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                 // if second label set is used
 
                     if (!empty($this->getFromSurveySession($myfname1))) {
-                        //$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
+                        //$answer .= $_SESSION['responses_'.Yii::app()->getConfig('surveyID')][$myfname1];
                         $aData['aSubQuestions'][$i]['sessionfname1'] = $this->getFromSurveySession($myfname1);
                     } else {
                         $aData['aSubQuestions'][$i]['sessionfname1'] = '';

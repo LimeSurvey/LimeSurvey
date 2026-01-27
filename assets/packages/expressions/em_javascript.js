@@ -1,6 +1,6 @@
 /*
  * This file is part of LimeSurvey
- * Copyright (C) 2007-2018 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -51,8 +51,8 @@ function checkconditions(value, name, type, evt_type)
 
     var questionCode;
     if(typeof name !== 'undefined') {
-        var parts = name.split('X');
-        questionCode = parts[2];
+        var parts = name.split('_');
+        questionCode = parts[0].substring(1);
         var LEMvarNameAttr = LEMvarNameAttr || {};
         if (LEMvarNameAttr['java' + name] != undefined) {
             questionCode = '' + LEMvarNameAttr['java' + name].qid;
@@ -3084,7 +3084,7 @@ function substr (str, start, len) {
     // allow access of binary (see file_get_contents()) by: charCodeAt(x) & 0xFF (see https://developer.mozilla.org/En/Using_XMLHttpRequest ) or require conversion first?
 
     // ensure that start/len are integers (even when strings are given)
-    if (!Number.isInteger(Number(start) || !Number.isInteger(Number(len)))) {
+    if (!Number.isInteger(Number(start)) || !Number.isInteger(Number(len))) {
        return false;
     }
 

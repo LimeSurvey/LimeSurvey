@@ -2,7 +2,7 @@
 
 /*
    * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013-2026 The LimeSurvey Project Team
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
    * LimeSurvey is free software. This version may have been modified pursuant
@@ -444,7 +444,7 @@ class TokenDynamic extends LSActiveRecord
         }
         $command = Yii::app()->db->createCommand()
             ->select('COUNT(token)')
-            ->from('{{survey_' . intval(self::$sid) . '}}')
+            ->from('{{responses_' . intval(self::$sid) . '}}')
             ->where('token=:token')
             ->bindParam(':token', $sToken, PDO::PARAM_STR);
 

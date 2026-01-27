@@ -7,7 +7,7 @@ var  doMultipleChoiceWithComments = function(qID,when)
   if(when=='checked')
   {
     question.on('click','input:checkbox',function(event){
-      var commentinput=$("#answer"+$(this)[0].name+"comment");
+      var commentinput=$("#answer"+$(this)[0].name+"_Ccomment");
       if(!$(this)[0].checked){
         commentinput.val("");
         commentinput.triggerHandler("keyup");
@@ -16,7 +16,7 @@ var  doMultipleChoiceWithComments = function(qID,when)
       }
     });
     question.on('keyup focusout',':not(.other-item) input:text',function(event){
-      var checkboxinput=$("#answer"+$(this)[0].name.replace("comment",""));
+      var checkboxinput=$("#answer"+$(this)[0].name.replace("_Ccomment",""));
       if($(this)[0].value==""){
         // Do nothing in this case - if the question is mandatory, it should still be possible to
         // submit a checked box without a comment.
@@ -26,7 +26,7 @@ var  doMultipleChoiceWithComments = function(qID,when)
       checkboxinput.trigger("change");
     });
     question.on('focusout','.other-item .comment-item input:text',function(event){
-      var otherinput=$("#answer"+$(this)[0].name.replace("comment",""));
+      var otherinput=$("#answer"+$(this)[0].name.replace("_Ccomment",""));
       if($(this)[0].value==""){
         otherinput.val("");
         otherinput.triggerHandler("keyup");
@@ -69,7 +69,7 @@ var  doMultipleChoiceWithComments = function(qID,when)
       checkboxinput.trigger("change");
     });
     question.on('focusout','.other-item .comment-item input:text',function(event){
-      var otherinput=$("#answer"+$(this)[0].name.replace("comment",""));
+      var otherinput=$("#answer"+$(this)[0].name.replace("_Ccomment",""));
       if(!$(this)[0].value==""){
         otherinput.val("");
         otherinput.triggerHandler("keyup");

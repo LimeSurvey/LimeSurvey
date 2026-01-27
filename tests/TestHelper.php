@@ -78,9 +78,7 @@ class TestHelper extends TestCase
         $this->assertNotEmpty($group);
 
         $sgqa = sprintf(
-            '%sX%sX%s',
-            $surveyId,
-            $group->gid,
+            'Q%s',
             $question->qid
         );
 
@@ -168,8 +166,8 @@ class TestHelper extends TestCase
     public function deactivateSurvey($surveyId)
     {
         $date     = date('YmdHis');
-        $oldSurveyTableName = Yii::app()->db->tablePrefix . "survey_{$surveyId}";
-        $newSurveyTableName = Yii::app()->db->tablePrefix . "old_survey_{$surveyId}_{$date}";
+        $oldSurveyTableName = Yii::app()->db->tablePrefix . "responses_{$surveyId}";
+        $newSurveyTableName = Yii::app()->db->tablePrefix . "old_responses_{$surveyId}_{$date}";
         Yii::app()->db->createCommand()->renameTable($oldSurveyTableName, $newSurveyTableName);
         $survey = \Survey::model()->findByPk($surveyId);
         $survey->active = 'N';
@@ -332,6 +330,13 @@ class TestHelper extends TestCase
         if (is_null($connection)) {
             $connection = Yii::app()->getDb();
         }
+
+        $conStr = Yii::app()->db->connectionString;
+        $isMysql = substr($conStr, 0, 5) === 'mysql';
+        if (!$isMysql) {
+            return;
+        }
+
         try {
             $connection->createCommand('DROP DATABASE ' . $databaseName)->execute();
             $this->assertTrue(true);

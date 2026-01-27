@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -45,6 +45,8 @@ class LSYii_HtmlPurifier extends CHtmlPurifier
             'Output.FlashCompat' => true,
             'Attr.EnableID' => true, // Allow to set id
             'Attr.AllowedFrameTargets' => array('_blank', '_self'),
+            'HTML.TargetNoopener' => true,
+            'HTML.TargetNoreferrer' => true,
             'URI.AllowedSchemes' => array(
                 'http' => true,
                 'https' => true,

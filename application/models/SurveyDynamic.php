@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -80,7 +80,7 @@ class SurveyDynamic extends LSActiveRecord
     /** @inheritdoc */
     public function tableName()
     {
-        return '{{survey_' . self::$sid . '}}';
+        return '{{responses_' . self::$sid . '}}';
     }
 
     /** @inheritdoc */
@@ -167,8 +167,8 @@ class SurveyDynamic extends LSActiveRecord
         }
         $alias = $this->getTableAlias();
 
-        $newCriteria->join = "LEFT JOIN " . $this->survey->tokensTableName . " survey_timings ON $alias.id = survey_timings.id";
-        $newCriteria->select = 'survey_timings.*'; // Otherwise we don't get records from the survey participant list
+        $newCriteria->join = "LEFT JOIN " . $this->survey->tokensTableName . " timings ON $alias.id = timings.id";
+        $newCriteria->select = 'timings.*'; // Otherwise we don't get records from the survey participants list
         $newCriteria->mergeWith($criteria);
 
         return $newCriteria;
@@ -222,7 +222,7 @@ class SurveyDynamic extends LSActiveRecord
                           ELSE 0
                  END) AS cntpartial',
             );
-        $result = Yii::app()->db->createCommand()->select($select)->from('{{survey_' . $sid . '}}')->queryRow();
+        $result = Yii::app()->db->createCommand()->select($select)->from('{{responses_' . $sid . '}}')->queryRow();
         return $result;
     }
 

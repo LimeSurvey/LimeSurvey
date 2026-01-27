@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2014 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2014 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -32,7 +32,7 @@ class UploaderController extends SurveyController
             throw new CHttpException(400);
         }
 
-        $sLanguage = Yii::app()->session['survey_' . $surveyid]['s_lang'] ?? "";
+        $sLanguage = Yii::app()->session['responses_' . $surveyid]['s_lang'] ?? "";
         Yii::app()->setLanguage($sLanguage);
         $uploaddir = Yii::app()->getConfig("uploaddir");
         $tempdir = Yii::app()->getConfig("tempdir");
@@ -51,7 +51,7 @@ class UploaderController extends SurveyController
         // Using 'futmp_'.randomChars(15).'_'.$pathinfo['extension'] for filename, then remove all other characters
         $sFileGetContentFiltered = preg_replace('/[^a-zA-Z0-9_]/', '', (string) $sFileGetContent);
         $sFileNameFiltered = preg_replace('/[^a-zA-Z0-9_]/', '', (string) $sFileName);
-        $sFieldNameFiltered = preg_replace('/[^X0-9]/', '', (string) $sFieldName);
+        $sFieldNameFiltered = preg_replace('/[^Q0-9]/', '', (string) $sFieldName);
         if ($sFileGetContent != $sFileGetContentFiltered || $sFileName != $sFileNameFiltered || $sFieldName != $sFieldNameFiltered) {
             // If one seems to be a hack: Bad request
             throw new CHttpException(400); // See for debug > 1
@@ -144,11 +144,11 @@ class UploaderController extends SurveyController
             $size = $_FILES['uploadfile']['size'] / 1024;
             $preview = Yii::app()->session['preview'];
             /* Find the question by sFieldName : must be a upload question type, and id is end of sFieldName in $surveyid*/
-            $aFieldName = explode("X", $sFieldName);
-            if (empty($aFieldName[2]) || !ctype_digit($aFieldName[2])) {
+            $qid = substr(explode("_", $sFieldName)[0], 1);
+            if (empty($qid) || !ctype_digit($qid)) {
                 throw new CHttpException(400);
             }
-            $oQuestion = self::getQuestion($surveyid, $aFieldName[2]);
+            $oQuestion = self::getQuestion($surveyid, $qid);
             $aAttributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion);
             $maxfilesize = min(intval($aAttributes['max_filesize']), getMaximumFileUploadSize() / 1024);
             if ($maxfilesize <= 0) {
@@ -190,7 +190,7 @@ class UploaderController extends SurveyController
             $event = new PluginEvent('beforeProcessFileUpload');
             /* Current state */
             $event->set('surveyId', $surveyid);
-            $event->set('responseId', Yii::app()->session['survey_' . $surveyid]['srid'] ?? null); // NULL if not exist
+            $event->set('responseId', Yii::app()->session['responses_' . $surveyid]['srid'] ?? null); // NULL if not exist
             $event->set('qid', $oQuestion->qid);
             $event->set('preview', $preview);
             $event->set('fieldname', $sFieldName);

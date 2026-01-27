@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2017 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -295,7 +295,7 @@ class Export extends SurveyCommonAction
         }
 
         if (Yii::app()->request->getPost('response_id')) {
-                    $sFilter = "{{survey_{$iSurveyID}}}.id=" . (int) Yii::app()->request->getPost('response_id');
+                    $sFilter = "{{responses_{$iSurveyID}}}.id=" . (int) Yii::app()->request->getPost('response_id');
         } elseif (App()->request->getQuery('statfilter') && is_array(Yii::app()->session['statistics_selects_' . $iSurveyID])) {
             $sFilter = Yii::app()->session['statistics_selects_' . $iSurveyID];
         } else {
@@ -619,7 +619,7 @@ class Export extends SurveyCommonAction
             $aData['display']['menu_bars']['browse'] = gT("Export VV file");
             $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
 
-            $surveytable = "{{survey_$iSurveyId}}";
+            $surveytable = "{{responses_$iSurveyId}}";
             // Control if fieldcode are unique
             $fieldnames = App()->db->schema->getTable($surveytable)->getColumnNames();
             foreach ($fieldnames as $field) {
@@ -675,7 +675,7 @@ class Export extends SurveyCommonAction
             $this->addHeaders($fileName, "text/tab-separated-values", 0);
 
             $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
-            $surveytable = "{{survey_$iSurveyId}}";
+            $surveytable = "{{responses_$iSurveyId}}";
 
             $fieldnames = App()->db->schema->getTable($surveytable)->getColumnNames();
 
@@ -1088,7 +1088,7 @@ class Export extends SurveyCommonAction
         unlink($sLSSFileName);
 
         if ($survey->isActive) {
-            getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID, 'Responses', 'responses', $sLSRFileName, false);
+            getXMLDataSingleTable($iSurveyID, 'responses_' . $iSurveyID, 'Responses', 'responses', $sLSRFileName, false);
             $zip->addFromString('survey_' . $iSurveyID . '_responses.lsr', file_get_contents($sLSRFileName));
             unlink($sLSRFileName);
         }
@@ -1100,7 +1100,7 @@ class Export extends SurveyCommonAction
         }
 
         if (isset($survey->hasTimingsTable) && $survey->hasTimingsTable == 'Y') {
-            getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID . '_timings', 'Timings', 'timings', $sLSIFileName);
+            getXMLDataSingleTable($iSurveyID, 'timings_' . $iSurveyID, 'Timings', 'timings', $sLSIFileName);
             $zip->addFromString('survey_' . $iSurveyID . '_timings.lsi', file_get_contents($sLSIFileName));
             unlink($sLSIFileName);
         }

@@ -202,8 +202,8 @@ class SurveyThemeConfiguration
         $attributes['imageFileList'] = $aTemplateAttribute['imageFileList'];
 
         $aOptionAttributes = TemplateManifest::getOptionAttributes($oTemplate->path);
-        $fontsDropdownString = $aOptionAttributes['optionAttributes']['font']['dropdownoptions'];
-        $cssframeworkDropdownString = $aOptionAttributes['optionAttributes']['cssframework']['dropdownoptions'];
+        $fontsDropdownString = $aOptionAttributes['optionAttributes']['font']['dropdownoptions'] ?? '';
+        $cssframeworkDropdownString = $aOptionAttributes['optionAttributes']['cssframework']['dropdownoptions'] ?? '';
 
         $attributes['fonts'] = $this->extractDropdownOptions($fontsDropdownString);
         $attributes['cssframework'] = $this->extractDropdownOptions($cssframeworkDropdownString);

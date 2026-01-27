@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -255,13 +255,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
             return false;
         }
         if ($recursive) {
-            //delete the survey_$iSurveyID table
-            if (tableExists("{{survey_" . $this->sid . "}}")) {
-                Yii::app()->db->createCommand()->dropTable("{{survey_" . $this->sid . "}}");
+            //delete the responses_$iSurveyID table
+            if (tableExists("{{responses_" . $this->sid . "}}")) {
+                Yii::app()->db->createCommand()->dropTable("{{responses_" . $this->sid . "}}");
             }
-            //delete the survey_$iSurveyID_timings table
-            if (tableExists("{{survey_" . $this->sid . "_timings}}")) {
-                Yii::app()->db->createCommand()->dropTable("{{survey_" . $this->sid . "_timings}}");
+            //delete the timings_$iSurveyID table
+            if (tableExists("{{timings_" . $this->sid . "}}")) {
+                Yii::app()->db->createCommand()->dropTable("{{timings_" . $this->sid . "}}");
             }
             //delete the tokens_$iSurveyID table
             if (tableExists("{{tokens_" . $this->sid . "}}")) {
@@ -384,8 +384,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $sLang = Yii::app()->request->getParam('lang');
         } else {
             // SESSION
-            if (isset(Yii::app()->session['survey_' . $this->sid]['s_lang'])) {
-                $sLang = Yii::app()->session['survey_' . $this->sid]['s_lang'];
+            if (isset(Yii::app()->session['responses_' . $this->sid]['s_lang'])) {
+                $sLang = Yii::app()->session['responses_' . $this->sid]['s_lang'];
             }
         }
         return $sLang;
@@ -774,7 +774,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getTimingsTableName()
     {
-        return "{{survey_" . $this->primaryKey . "_timings}}";
+        return "{{timings_" . $this->primaryKey . "}}";
     }
 
     /**
@@ -783,7 +783,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getResponsesTableName()
     {
-        return '{{survey_' . $this->primaryKey . '}}';
+        return '{{responses_' . $this->primaryKey . '}}';
     }
 
 
@@ -2128,15 +2128,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         $criteria = new CDbCriteria();
         $criteria->select = Yii::app()->db->quoteColumnName('t.*');
-        $criteria->with = array(
-            'survey.groups',
-        );
         if (Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib') {
-            $criteria->order = Yii::app()->db->quoteColumnName('t.question_order');
+            $criteria->join = 'INNER JOIN {{groups}} grp ON grp.gid = t.gid';
+            $criteria->order = Yii::app()->db->quoteColumnName('grp.group_order') . ',' . Yii::app()->db->quoteColumnName('t.question_order');
         } else {
+            $criteria->with = array('survey.groups');
             $criteria->order = Yii::app()->db->quoteColumnName('groups.group_order') . ',' . Yii::app()->db->quoteColumnName('t.question_order');
+            $criteria->addCondition('groups.gid=t.gid', 'AND');
         }
-        $criteria->addCondition('groups.gid=t.gid', 'AND');
         return $criteria;
     }
 

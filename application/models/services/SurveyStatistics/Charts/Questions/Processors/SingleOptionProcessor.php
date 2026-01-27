@@ -22,7 +22,7 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
      */
     public function rt(): void
     {
-        $this->rt = $this->surveyId . 'X' . $this->question['gid'] . 'X' . $this->question['qid'];
+        $this->rt = 'Q' . $this->question['qid'];
     }
 
     /**
@@ -77,7 +77,7 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
      */
     private function addOtherOption(array &$legend, array &$dataItems): void
     {
-        $mfield = $this->rt . 'other';
+        $mfield = $this->rt . '_Cother';
         $legend[] = 'other';
         $count = $this->getResponseCount($mfield);
         $dataItems[] = [
@@ -93,7 +93,7 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
      */
     private function addCommentOption(array &$legend, array &$dataItems): void
     {
-        $mfield = $this->rt . 'comment';
+        $mfield = $this->rt . '_Ccomment';
         $legend[] = 'comment';
         $count = $this->getResponseCount($mfield);
         $dataItems[] = [
