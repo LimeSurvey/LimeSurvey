@@ -60,7 +60,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'pdfshowsurveytitle',
-                        'ariaLabel'=> gT('Show survey title in export PDFs'),
+                        'ariaLabel'=> gT('Show survey title in export PDFs:'),
                         'checkedOption' => App()->getConfig('pdfshowsurveytitle') === 'Y' ? '1' : 0,
                         'selectOptions' => [
                             '1' => gT('On'),
@@ -75,7 +75,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'pdfshowheader',
-                        'ariaLabel'=> gT('Show header in answers export PDFs'),
+                        'ariaLabel'=> gT('Show header in answers export PDFs:'),
                         'checkedOption' => App()->getConfig('pdfshowheader') === 'Y' ? '1' : 0,
                         'selectOptions' => [
                             '1' => gT('On'),
@@ -104,7 +104,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'bPdfQuestionBold',
-                        'ariaLabel'=> gT('PDF questions in bold'),
+                        'ariaLabel'=> gT('PDF questions in bold:'),
                         'checkedOption' => App()->getConfig('bPdfQuestionBold'),
                         'selectOptions' => [
                             '1' => gT('On'),
@@ -119,7 +119,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'bPdfQuestionBorder',
-                        'ariaLabel'=> gT('Borders around questions in PDF'),
+                        'ariaLabel'=> gT('Borders around questions in PDF:'),
                         'checkedOption' => App()->getConfig('bPdfQuestionBorder'),
                         'selectOptions' => [
                             '1' => gT('On'),
@@ -134,7 +134,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'bPdfResponseBorder',
-                        'ariaLabel'=> gT('Borders around responses in PDF'),
+                        'ariaLabel'=> gT('Borders around responses in PDF:'),
                         'checkedOption' => App()->getConfig('bPdfResponseBorder'),
                         'selectOptions' => [
                             '1' => gT('On'),

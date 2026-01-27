@@ -18,7 +18,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'sendadmincreationemail',
-                        'ariaLabel'=> gT('Send email to new user administrators'),
+                        'ariaLabel'=> gT('Send email to new user administrators:'),
                         'checkedOption' => $sSendAdminCreationEmail ?? 0,
                         'selectOptions' => [
                             '1' => gT('On'),
