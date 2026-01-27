@@ -416,7 +416,7 @@ class QuotasController extends LSBaseController
             }
         } else {
             /* 403 error ? */
-            Yii::app()->user->setFlash('error', gT("Access denied."));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
     }

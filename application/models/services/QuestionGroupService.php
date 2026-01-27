@@ -577,7 +577,7 @@ class QuestionGroupService
             )
         ) {
             throw new PermissionDeniedException(
-                gT('Access denied')
+                gT('Access denied!')
             );
         }
     }

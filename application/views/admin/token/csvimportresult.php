@@ -63,7 +63,7 @@
                                     <?php } ?>
                                     <?php if (!empty($aDuplicateList)) { ?>
                                 <li>
-                                        <?php printf(gT("%s duplicate records removed"), count($aDuplicateList)); ?>
+                                        <?php printf(gT("%s duplicate records skipped"), count($aDuplicateList)); ?>
                                     [<a href='#' onclick='$("#duplicateslist").toggle();'><?php eT("List"); ?></a>]
                                     <div class='badtokenlist well' id='duplicateslist' style='display: none;'>
                                         <ul class="list-unstyled">

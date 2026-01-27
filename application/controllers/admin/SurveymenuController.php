@@ -65,7 +65,7 @@ class SurveymenuController extends SurveyCommonAction
     public function update($id = 0)
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
         $id = (int) $id;
@@ -135,7 +135,7 @@ class SurveymenuController extends SurveyCommonAction
     public function batchEdit()
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
@@ -193,7 +193,7 @@ class SurveymenuController extends SurveyCommonAction
     public function massDelete()
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'delete')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
@@ -242,7 +242,7 @@ class SurveymenuController extends SurveyCommonAction
     public function delete()
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'delete')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
         $debug = App()->getConfig('debug');
@@ -288,7 +288,7 @@ class SurveymenuController extends SurveyCommonAction
         $this->requirePostRequest();
 
         if (!(Permission::model()->hasGlobalPermission('settings', 'delete') && Permission::model()->hasGlobalPermission('settings', 'update'))) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 

@@ -744,15 +744,13 @@ class ThemeOptionsController extends LSBaseController
         } else {
             // Title concatenation
             $templateName = $model->template_name;
-            $basePageTitle = sprintf('Survey options for theme %s', $templateName);
+            $pageTitle = sprintf('Survey options for theme %s (global level)', $templateName);
             if (!is_null($sid)) {
-                $addictionalSubtitle = gT(" for survey ID: $sid");
+                $pageTitle = sprintf(gT("Survey options for theme %s and survey ID %s"), $templateName, $sid);
             } elseif (!is_null($gsid)) {
-                $addictionalSubtitle = gT(" for survey group id: $gsid");
-            } else {
-                $addictionalSubtitle = gT(" global level");
+                $pageTitle = sprintf(gT("Survey options for theme %s and survey group ID %s"), $templateName, $gsid);
             }
-            $pageTitle = $basePageTitle . " (" . $addictionalSubtitle . " )";
+            $pageTitle = $basePageTitle;
             $data['topbar']['title'] = $pageTitle;
             $isCloseBtn = true;
         }
