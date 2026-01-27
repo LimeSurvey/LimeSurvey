@@ -111,7 +111,7 @@ class Expressions extends SurveyCommonAction
         $language = Yii::app()->request->getParam('lang', null);
 
         if ($language !== null) {
-            $language = sanitize_languagecode($language);
+            $language = \LSYii_Validators::languageCodeFilter($language);
         }
 
         $aData['lang'] = $language;
