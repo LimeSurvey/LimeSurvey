@@ -71,7 +71,7 @@
 !/plugins/Demo/
 
 # ignore editor contents - reserved for future use
-/editor/*
+# /editor/*
 
 #ignore old styles
 /styles/
