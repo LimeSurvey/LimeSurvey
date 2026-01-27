@@ -100,7 +100,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         $file = end($fileInfo);
         Yii::app()->user->setFlash(
             'error',
-            gT('An non-recoverable error happened during the update. Error details:')
+            gT('An non-recoverable error occured during the update. Error details:')
             . '<p>'
             . htmlspecialchars($e->getMessage())
             . '</p><br />'
