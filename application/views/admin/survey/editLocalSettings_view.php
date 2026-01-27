@@ -32,8 +32,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
     <div class="row mb-3">
         <div class="col-lg-6">
             <!-- Survey title -->
-            <label class=" question-group-title form-label" for="short_title_
-            <?php echo $aSurveyLanguageSettings['surveyls_language']; ?>">
+            <label class=" question-group-title form-label" for="short_title_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>">
                 <?php eT("Survey title:"); ?>
             </label>
             <?php echo CHtml::textField(
@@ -49,7 +48,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
     <div class="row mb-3">
         <div class="col-lg-4">
             <!-- Date format -->
-            <label class="form-label "><?php eT("Date format:"); ?></label>
+            <label class="form-label " for="dateformat_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>"><?php eT("Date format:"); ?></label>
             <select size='1' id='dateformat_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>' 
                     name='dateformat_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>' class="form-select">
                 <?php foreach (getDateFormatData(0, Yii::app()->session['adminlang']) as $index => $dateformatdata) : ?>
