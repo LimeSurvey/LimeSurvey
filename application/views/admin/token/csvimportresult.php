@@ -91,7 +91,7 @@
 
                                     <?php if (!empty($aInvalidEmailList)) { ?>
                                 <li>
-                                        <?php printf(gT("%s records with invalid email address removed"), count($aInvalidEmailList)); ?>
+                                        <?php printf(gT("%s records with invalid email address skipped"), count($aInvalidEmailList)); ?>
                                     [<a href='#' onclick='$("#invalidemaillist").toggle();'><?php eT("List"); ?></a>]
                                     <div class='badtokenlist well' id='invalidemaillist' style='display: none;'>
                                         <ul class="list-unstyled">
