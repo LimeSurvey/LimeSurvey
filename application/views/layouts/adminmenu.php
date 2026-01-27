@@ -67,6 +67,8 @@
                 <?php App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'importSurveyFileUpload.js', LSYii_ClientScript::POS_BEGIN); ?>
                 <?php $this->renderPartial("/surveyAdministration/partial/_modalImportSurvey", []);?>
 
+                <?php App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'copySurvey.js', LSYii_ClientScript::POS_BEGIN); ?>
+
                 <li
                     class="nav-item d-flex"><a
                         href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>"
