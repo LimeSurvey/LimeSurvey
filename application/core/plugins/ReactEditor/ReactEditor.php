@@ -23,7 +23,7 @@ class ReactEditor extends PluginBase
     public function initEditor()
     {
         EditorService::initEditorApp(
-            SettingsUser::getUserSettingValue('editorEnabled')
+            SettingsUser::getUserSettingValue('editorEnabled') ?? true
         );
     }
 
@@ -33,7 +33,7 @@ class ReactEditor extends PluginBase
         $action = $this->getEvent()->get('action');
 
         EditorService::registerSurveyRedirect(
-            SettingsUser::getUserSettingValue('editorEnabled'),
+            SettingsUser::getUserSettingValue('editorEnabled') ?? true,
             $controller,
             $action
         );
