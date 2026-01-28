@@ -60,7 +60,8 @@
 		"doctrine/annotations": "~1.10",
 		"anper/iuliia": "^1.2",
 		"shardj/zf1-future": "^1.24",
-		"viniciusgava/google-translate-api": "^3.1"
+		"viniciusgava/google-translate-api": "^3.1",
+		"greew/oauth2-azure-provider": "^1.0"
 	},
     "config": {
         "vendor-dir": "vendor",

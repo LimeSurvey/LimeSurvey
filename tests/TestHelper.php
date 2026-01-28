@@ -35,7 +35,7 @@ class TestHelper extends TestCase
         Yii::import('application.helpers.update.updatedb_helper', true);
         Yii::import('application.helpers.update.update_helper', true);
         Yii::import('application.helpers.SurveyRuntimeHelper', true);
-        Yii::app()->loadHelper('admin/activate');
+        Yii::app()->loadHelper('admin.activate');
     }
 
     /**
@@ -332,6 +332,13 @@ class TestHelper extends TestCase
         if (is_null($connection)) {
             $connection = Yii::app()->getDb();
         }
+
+        $conStr = Yii::app()->db->connectionString;
+        $isMysql = substr($conStr, 0, 5) === 'mysql';
+        if (!$isMysql) {
+            return;
+        }
+
         try {
             $connection->createCommand('DROP DATABASE ' . $databaseName)->execute();
             $this->assertTrue(true);
