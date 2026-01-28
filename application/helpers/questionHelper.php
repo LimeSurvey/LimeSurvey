@@ -847,7 +847,6 @@ class questionHelper
             "help" => gT('Present subquestions/answer options in random order'),
             "caption" => gT('Random order')
         );
-
         self::$attributes["answer_order"] = array(
             "types" => Question::QT_L_LIST . Question::QT_R_RANKING . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_O_LIST_WITH_COMMENT,
             'category' => gT('Display'),
@@ -864,6 +863,31 @@ class questionHelper
             'default' => 0,
             "help" => gT('Present answer options in normal, random or alphabetical order'),
             "caption" => gT('Answer options order')
+        );
+
+        self::$attributes["keep_codes_order"] = array(
+            "types" => Question::QT_L_LIST
+                . Question::QT_R_RANKING
+                . Question::QT_EXCLAMATION_LIST_DROPDOWN
+                . Question::QT_O_LIST_WITH_COMMENT
+                . Question::QT_A_ARRAY_5_POINT
+                . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS
+                . Question::QT_C_ARRAY_YES_UNCERTAIN_NO
+                . Question::QT_E_ARRAY_INC_SAME_DEC
+                . Question::QT_F_ARRAY
+                . Question::QT_H_ARRAY_COLUMN
+                . Question::QT_K_MULTIPLE_NUMERICAL
+                . Question::QT_M_MULTIPLE_CHOICE
+                . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS
+                . Question::QT_Q_MULTIPLE_SHORT_TEXT
+                . Question::QT_1_ARRAY_DUAL
+                . Question::QT_COLON_ARRAY_NUMBERS
+                . Question::QT_SEMICOLON_ARRAY_TEXT,
+            'category' => gT('Display'),
+            'sortorder' => 101,
+            'inputtype' => 'text',
+            "help" => gT('Semicolon-separated list of codes that keep their original database position when items are randomized.'),
+            "caption" => gT('Keep codes at original positions')
         );
 
         self::$attributes["subquestion_order"] = array(

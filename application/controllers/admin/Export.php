@@ -225,12 +225,14 @@ class Export extends SurveyCommonAction
             $data['topBar']['showExportButton'] = true;
             $data['topBar']['showCloseButton'] = true;
 
-            $closeUrl = Yii::app()->getConfig('editorEnabled')
-                ? Yii::app()->createUrl(
-                    'editorLink/index',
-                    ['route' => 'responses/' . $survey->sid . '/results/responses']
-                )
-                : Yii::app()->createUrl('responses/browse', ['surveyId' => $survey->sid]);
+            // If editor is enabled, redirect to editor results list
+            $editorEnabled = Yii::app()->getConfig('editorEnabled');
+            if ($editorEnabled) {
+                $closeUrl = Yii::app()->createUrl('editorLink/index', ['route' => 'responses/' . $survey->sid . '/results/list']);
+            } else {
+                // Default redirect to responses browse
+                $closeUrl = Yii::app()->createUrl('responses/browse', ['surveyId' => $survey->sid]);
+            }
 
             $data['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
                 '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
