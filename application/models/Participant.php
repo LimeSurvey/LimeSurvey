@@ -292,6 +292,7 @@ class Participant extends LSActiveRecord
         if ($this->userHasPermissionToEdit()) {
             $inputHtml = App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                 'name'          => 'blacklisted_' . $this->participant_id,
+                'ariaLabel'    => gT('Blocklisted'),
                 'checkedOption' => $this->blacklisted === "Y" ? "1" : "0",
                 'selectOptions' => [
                     '1' => gT('Yes'),
@@ -1607,7 +1608,7 @@ class Participant extends LSActiveRecord
             ->update('{{surveys}}', array("attributedescriptions" => $aTokenAttributes), 'sid = ' . intval($surveyId)); // load description in the surveys table
 
         //Actually create the fields in the tokens table
-        Yii::app()->loadHelper('update/updatedb');
+        Yii::app()->loadHelper('update.updatedb');
         foreach ($fields as $key => $value) {
             addColumn("{{tokens_$surveyId}}", $key, $value['type']);
         }
