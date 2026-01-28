@@ -1,6 +1,6 @@
-$(document).on('ready pjax:scriptcomplete', function() {
+$(document).on('ready pjax:scriptcomplete', function () {
     $('#addnewsurvey').unbind('submit');
-    $('#addnewsurvey').on('submit', function(event) {
+    $('#addnewsurvey').on('submit', function (event) {
         event.preventDefault();
         var form = this;
         var data = $(form).serializeArray();
@@ -9,7 +9,7 @@ $(document).on('ready pjax:scriptcomplete', function() {
             url: uri,
             method: 'POST',
             data: data,
-            success: function(result) {
+            success: function (result) {
                 if (result.redirecturl != undefined) {
                     const urlParams = new URLSearchParams(result.redirecturl.split('?')[1]);
                     const sid1 = urlParams.get('surveyid');
@@ -20,7 +20,7 @@ $(document).on('ready pjax:scriptcomplete', function() {
                     window.location.reload();
                 }
             },
-            error: function(result) {
+            error: function (result) {
                 console.log({
                     result: result
                 });

@@ -12,7 +12,6 @@ class EditorConfig
     public function __construct(bool $isQuestionEditorEnabled = true)
     {
         $this->isQuestionEditorEnabled = $isQuestionEditorEnabled;
-
     }
 
     /**
@@ -36,7 +35,6 @@ class EditorConfig
                 $surveyId = EditorRequestHelper::findSurveyId();
                 if (!$surveyId) {
                     $result = true;
-
                 } else {
                     $survey = \Survey::model()->findByPk($surveyId);
                     if (
