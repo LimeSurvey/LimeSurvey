@@ -1,10 +1,11 @@
 <?php
-/**@var $modalTitle string  */
+/**@var $modalTitle string */
+
 ?>
 
 <div class="modal-header">
-    <h2 class="modal-title h1">
+    <h5 class="modal-title">
         <?php echo $modalTitle; ?>
-    </h2>
-    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" role="button"></button>
 </div>

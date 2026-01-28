@@ -17590,6 +17590,11 @@ body {
   border: 1px solid #1E1E1E;
 }
 
+.modal-header .btn-close:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
 body {
   color: #1E1E1E;
   font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
