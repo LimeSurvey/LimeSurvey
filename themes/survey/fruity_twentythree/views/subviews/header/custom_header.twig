@@ -14,6 +14,11 @@
     If you extend a template, and want to add custom headers (js, css, scripts, meta etc), you'd rather do it here.
     This file is empty in Vanilla, and contains the code for the background option in Fruity
 #}
+{% if (aSurveyInfo.options.notables == "2" ) %}
+    {{ registerTemplateCssFile('./css/noTablesGeneral.css') }}
+{% elseif (aSurveyInfo.options.notables == "1" ) %}
+    {{ registerTemplateCssFile('./css/noTablesOnMobile.css') }}
+{% endif %}
 
 {# Custom backgroud option #}
 <style>
