@@ -81,6 +81,10 @@
         <showpopups type="buttons" category="Simple options" width="4" title="Show popups" options="1|0|-1"
                     optionlabels="Popup|On page|No">1
         </showpopups>
+        <notables type="buttons" category="Simple options" width="4" title="Wrap tables" options="2|1|0"
+                  optionlabels="Always on|Small screens|Off">1
+        </notables>
+
         <showclearall type="buttons" category="Simple options" width="4" title="Show 'Clear all' button" options="on|off"
                       optionlabels="Yes|No">off
         </showclearall>
