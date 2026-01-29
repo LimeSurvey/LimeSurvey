@@ -579,7 +579,11 @@ class Template extends LSActiveRecord
             return self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML, true);
         }
 
-        if (empty(self::$instance) || ! self::isCorrectInstance($sTemplateName)) {
+        if (
+            empty(self::$instance)
+            || !(self::$instance->sid === $iSurveyId && self::$instance->gsid === $iSurveyGroupId)
+            || !self::isCorrectInstance($sTemplateName)
+        ) {
             self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML);
             self::$instance->prepareTemplateRendering($sTemplateName, $iSurveyId);
         }
