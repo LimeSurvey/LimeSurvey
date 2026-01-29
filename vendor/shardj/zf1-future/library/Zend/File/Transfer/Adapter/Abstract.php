@@ -90,7 +90,7 @@ abstract class Zend_File_Transfer_Adapter_Abstract
      *         type,            - Mime type of this file
      *         size,            - Filesize in bytes
      *         tmp_name,        - Internalally temporary filename for uploaded files
-     *         error,           - Error which has occurred
+     *         error,           - Error which has occured
      *         destination,     - New destination for this file
      *         validators,      - Set validator names for this file
      *         files            - Set file names for this file

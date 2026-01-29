@@ -31,7 +31,7 @@
                   <!-- Browse uploaded resources -->
                     <div class="row mb-2">
                         <div class="col-8 offset-2">
-                            <?php echo CHtml::dropDownList('type', 'files', array('files' => gT('Files', 'unescaped'), 'flash' => gT('Flash', 'unescaped'), 'images' => gT('Images', 'unescaped')), array('class' => ' form-select')); ?>
+                            <?php echo CHtml::dropDownList('type', 'files', array('files' => gT('Files', 'unescaped'), 'flash' => gT('Flash', 'unescaped'), 'images' => gT('Images', 'unescaped')), array('class' => 'form-select')); ?>
                         </div>
                     </div>
                 <div class="row mb-2">

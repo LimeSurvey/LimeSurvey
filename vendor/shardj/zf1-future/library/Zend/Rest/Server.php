@@ -524,7 +524,7 @@ class Zend_Rest_Server implements Zend_Server_Interface
         } elseif (($exception !== null) || 'rest' == $function) {
             $xmlResponse->appendChild(
                 $dom->createElement(
-                    'message', 'An unknown error occurred. Please try again.'
+                    'message', 'An unknown error occured. Please try again.'
                 )
             );
         } else {
