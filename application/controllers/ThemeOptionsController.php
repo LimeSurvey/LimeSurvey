@@ -350,7 +350,7 @@ class ThemeOptionsController extends LSBaseController
         if (isset($_POST['TemplateConfiguration'])) {
             $model->attributes = $_POST['TemplateConfiguration'];
             if ($model->save()) {
-                $cacheFile = \Yii::app()->getConfig('uploaddir') . "/surveys/" . $sid .'/survey-detail.html';
+                $cacheFile = \Yii::app()->getConfig('uploaddir') . "/surveys/" . $sid . '/survey-detail.html';
                 // Remove cache file when themeOptions are changed, so it's newly generated
                 // TODO: when proper caching takes place, replace this with cache invalidation
                 if (file_exists($cacheFile)) {
