@@ -12,7 +12,7 @@ Yii::app()->getController()->renderPartial(
     array('name' => 'UserManagement--modalform', 'id' => 'UserManagement--modalform')
 ); ?>
 <div class="modal-body">
-    <div class="container">
+    <div class="container p-0">
         <input type="hidden" name="userid" value="<?php echo $oUser->uid; ?>"/>
         <div class="mb-3">
             <button id="UserManagement--action-userthemepermissions-select-all" class="btn btn-outline-secondary">
@@ -48,9 +48,9 @@ Yii::app()->getController()->renderPartial(
     </div>
 </div>
 <div class="modal-footer modal-footer-buttons">
-    <button class="btn btn-cancel selector--exitForm" id="exitForm"><?= gT('Cancel') ?></button>
     <button type="submit" class="btn btn-primary selector--submitForm" id="submitForm">
         <?=gT('Save')?>
     </button>
+    <button class="btn btn-light selector--exitForm" id="exitForm"><?= gT('Cancel') ?></button>
 </div>
 </form>
