@@ -19,23 +19,30 @@
             <div id="upload-form-container">
 
               <!-- Form browselabelresources -->
-              <?php echo CHtml::form(Yii::app()->baseUrl.'/vendor/kcfinder/browse.php?language='.sTranslateLangCode2CK(App()->language), 'get', array('id'=>'browselabelresources','class'=>'form30','name'=>'browselabelresources','target'=>'_blank')); ?>
+              <?php echo CHtml::form(
+                  Yii::app()->baseUrl . '/vendor/kcfinder/browse.php?language=' . sTranslateLangCode2CK(App()->language),
+                  'get',
+                  array('id' => 'browselabelresources',
+                    'class' => 'form30',
+                    'name' => 'browselabelresources',
+                    'target' => '_blank')
+              ); ?>
 
                   <!-- Browse uploaded resources -->
                     <div class="row mb-2">
                         <div class="col-8 offset-2">
-                            <?php echo CHtml::dropDownList('type', 'files', array('files' => gT('Files','unescaped'), 'flash' => gT('Flash','unescaped'), 'images' => gT('Images','unescaped')), array('class'=>' form-select') ); ?>
+                            <?php echo CHtml::dropDownList('type', 'files', array('files' => gT('Files', 'unescaped'), 'flash' => gT('Flash', 'unescaped'), 'images' => gT('Images', 'unescaped')), array('class' => ' form-select')); ?>
                         </div>
                     </div>
                 <div class="row mb-2">
                     <div class="">
-                      <input type='submit' class="btn btn-outline-secondary" value="<?php eT(" Browse uploaded resources ") ?>" />
+                      <input type='submit' class="btn btn-outline-secondary" value="<?php eT("Browse uploaded resources") ?>" />
                     </div>
                 </div>
                   <!-- Export resources as ZIP archive -->
                 <div class="row mb-2">
                     <div class="">
-                    <button class="btn btn-outline-secondary" <?php echo hasResources($lid, 'label')===false ? ' disabled="disabled"' : '' ?> onclick='window.open("
+                    <button class="btn btn-outline-secondary" <?php echo hasResources($lid, 'label') === false ? ' disabled="disabled"' : '' ?> onclick='window.open("
                     <?php echo $this->createUrl("/admin/export/sa/resources/export/label/lid/$lid"); ?>", "_blank")'>
                         <?php eT("Export resources as ZIP archive") ?>
                     </button>
@@ -57,9 +64,9 @@
                         'name' => 'importlabelresources',
                         'enctype' => 'multipart/form-data',
                         'onsubmit' => 'return window.LS.validatefilename(this, "' . gT(
-                                'Please select a file to import!',
-                                'js'
-                            ) . '");'
+                            'Please select a file to import!',
+                            'js'
+                        ) . '");'
                     )
                 );
                 ?>
@@ -96,7 +103,7 @@
                 </div>
             </div>
               <input type='hidden' name='lid' value='<?php
-              echo $lid; ?>'/>
+                echo $lid; ?>'/>
               <input type='hidden' name='action' value='importlabelresources'/>
               <?= CHtml::endForm(); ?>
             </div>

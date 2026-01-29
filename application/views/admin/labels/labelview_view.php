@@ -42,7 +42,7 @@
             type="hidden"
             id="add-label-input-javascript-datas"
             data-url="<?= $addRowUrl ?>"
-            data-errormessage="An error occured while processing the ajax request."
+            data-errormessage="An error occurred while processing the ajax request."
             data-languages='<?= json_encode($lslanguages) ?>'
             data-lid="<?= $lid ?>"
         />

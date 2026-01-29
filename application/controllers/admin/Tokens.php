@@ -562,7 +562,7 @@ class Tokens extends SurveyCommonAction
                     if (trim(Yii::app()->request->getPost($attr_name, 'lskeep')) != 'lskeep') {
                         $value = App()->request->getPost($attr_name, '');
                         if ($desc['mandatory'] == 'Y' && trim($value) == '') {
-                            Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
+                            Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty.'), $desc['description']), 'error');
                             $this->getController()->refresh();
                         }
                         $aData[$attr_name] = $value;
@@ -697,7 +697,7 @@ class Tokens extends SurveyCommonAction
                 }
                 $value = App()->getRequest()->getPost($attr_name, '');
                 if ($desc['mandatory'] == 'Y' && trim($value) == '') {
-                    App()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
+                    App()->setFlashMessage(sprintf(gT('%s cannot be left empty.'), $desc['description']), 'error');
                     $this->getController()->refresh();
                 }
                 $aData[$attr_name] = App()->getRequest()->getPost($attr_name);
@@ -1034,7 +1034,7 @@ class Tokens extends SurveyCommonAction
             foreach ($attrfieldnames as $attr_name => $desc) {
                 $value = App()->request->getPost($attr_name, '');
                 if ($desc['mandatory'] == 'Y' && trim($value) == '') {
-                    Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
+                    Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty.'), $desc['description']), 'error');
                     $cntAttributeErrors += 1;
                 }
                 $aData[$attr_name] = $value;

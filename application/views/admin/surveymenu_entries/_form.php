@@ -139,7 +139,7 @@ Yii::app()->getController()->renderPartial(
                 <li class="list-group-item col-md-6">
                     <div class="form-check">
                         <input id="add-survey-id" type="checkbox" data-value='["survey", "sid"]' class="form-check-input checkbox selector__dataOptionModel" data-priority="3" data-option='["render","link","data","surveyid"]' />
-                        <label class="form-check-label" for="add-survey-id"><?=gT("Add SurveyId to link")?></label>
+                        <label class="form-check-label" for="add-survey-id"><?=gT("Add survey ID to link")?></label>
                     </div>
                 </li>
                 <li class="list-group-item col-md-6">

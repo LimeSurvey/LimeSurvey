@@ -627,7 +627,7 @@ class ParticipantsAction extends SurveyCommonAction
                 [':can_edit' => '1']
             ))
         ) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
             return;
         }

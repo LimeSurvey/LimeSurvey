@@ -108,7 +108,7 @@ class Zend_Pdf_Resource_Image_Jpeg extends Zend_Pdf_Resource_Image
             $nextBlock = fread($imageFile, $byteCount);
             if ($nextBlock === false) {
                 require_once 'Zend/Pdf/Exception.php';
-                throw new Zend_Pdf_Exception( "Error occured while '$imageFileName' file reading." );
+                throw new Zend_Pdf_Exception( "Error occurred while '$imageFileName' file reading." );
             }
 
             $this->_resource->value .= $nextBlock;
@@ -117,7 +117,7 @@ class Zend_Pdf_Resource_Image_Jpeg extends Zend_Pdf_Resource_Image
 
         if ($byteCount !== 0) {
             require_once 'Zend/Pdf/Exception.php';
-            throw new Zend_Pdf_Exception( "Error occured while '$imageFileName' file reading." );
+            throw new Zend_Pdf_Exception( "Error occurred while '$imageFileName' file reading." );
         }
         fclose($imageFile);
         $this->_resource->skipFilters();
