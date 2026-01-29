@@ -5,7 +5,7 @@ $count = 0;
 <div id='edit-group' class='side-body'>
     <div class="row">
         <div class="col-12 content-right">
-            <div class="pagetitle h1"><?php eT("Edit Group"); ?></div>
+            <div class="pagetitle h1"><?php eT("Edit group"); ?></div>
             <ul class="nav nav-tabs" id="edit-group-language-selection">
                 <?php foreach ($tabtitles as $i => $eachtitle): ?>
                     <li role="presentation" class="nav-item">

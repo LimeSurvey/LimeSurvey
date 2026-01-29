@@ -81,7 +81,7 @@ class ConditionsAction extends SurveyCommonAction
         $this->nonStringComparisonOperators = array(
             "<"  => gT("Less than"),
             "<=" => gT("Less than or equal to"),
-            "==" => gT("equals"),
+            "==" => gT("Equals"),
             "!=" => gT("Not equal to"),
             ">=" => gT("Greater than or equal to"),
             ">"  => gT("Greater than"),

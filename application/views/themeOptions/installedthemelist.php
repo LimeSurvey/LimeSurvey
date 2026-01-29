@@ -62,7 +62,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
             'value'       => '($data->core_theme == 1) ? gT("Core theme") : gT("User theme")',
             'type'        => 'raw',
             'htmlOptions' => ['class' => 'col-lg-2'],
-            "filter"      => [1 => gT("Core Theme"), 0 => gT('User theme')]
+            "filter"      => [1 => gT("Core theme"), 0 => gT('User theme')]
         ],
 
         [

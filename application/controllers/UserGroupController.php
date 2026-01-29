@@ -488,7 +488,7 @@ class UserGroupController extends LSBaseController
                 App()->user->setFlash('success', $emailSendingResults);
             } catch (Exception $e) {
                 // TODO: Show error message?
-                App()->user->setFlash('error', gT("Error: no email has been send."));
+                App()->user->setFlash('error', gT("Error: No email has been sent."));
             }
             $this->redirect($redirectUrl);
             App()->end(); // redirect end : add it here for clarity
