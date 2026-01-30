@@ -15,6 +15,8 @@
 
     <compatibility>
         <version>6.0</version>
+        <version>5.0</version>
+        <version>4.0</version>
     </compatibility>
 
     <updaters>

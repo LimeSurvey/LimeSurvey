@@ -1,0 +1,32 @@
+#feature_preview_modal {
+    z-index: 20001;
+}
+
+#feature_preview_modal .modal-title {
+    font-size: 1.8em;
+}
+
+.card.card-beta-feature {
+    border: none;
+    color: #000000;
+}
+
+.card.card-beta-feature .card-title {
+   font-size: 1.3em;
+}
+
+.card.card-beta-feature .card-icon {
+    font-size: 2em;
+}
+
+p#good-to-know span {
+    color: #FF515F;
+}
+
+.hint-text {
+    background-color: #F9F9FB;
+}
+
+.hint-text-box {
+    margin-top: 35px;
+}
