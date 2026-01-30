@@ -8,7 +8,9 @@
  * @var array $extraMenus   //menu items fetched from plugins
  */
 ?>
-
+<?php /* Register needed script used at different point even if not needed in loaded page see #20391 */
+	App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
+?>
 <!-- admin menu bar -->
 <nav class="navbar navbar-expand-md">
     <div class="container-fluid">
@@ -61,18 +63,11 @@
                 <!-- Prepended extra menus from plugins -->
                 <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => true, 'prependedMenu' => true]); ?>
 
-                <!--
-                <li class="nav-item">
-                    <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" class="nav-link">
-                        <button type="button" class="btn btn-info btn-create" data-bs-toggle="tooltip"
-                                data-bs-placement="bottom" title="<?= gT('Create survey') ?>">
-                            <i class="ri-add-line"></i>
-                        </button>
-                    </a>
-                </li>
-                -->
+                <!-- Render the modal for importing a survey -->
+                <?php App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'importSurveyFileUpload.js', LSYii_ClientScript::POS_BEGIN); ?>
+                <?php $this->renderPartial("/surveyAdministration/partial/_modalImportSurvey", []);?>
 
-                <!-- Surveys menus -->
+                <?php App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'copySurvey.js', LSYii_ClientScript::POS_BEGIN); ?>
 
                 <li
                     class="nav-item d-flex"><a

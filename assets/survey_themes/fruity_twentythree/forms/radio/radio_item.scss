@@ -104,6 +104,15 @@ table.ls-answers .radio-item .ls-label-xs-visibility {
     position: relative;
     padding-left: 8px;
 }
+
+.radio-item .othertext-label-checkox-container {
+  align-self: center ;
+  label {
+    vertical-align: unset;
+    margin-bottom: 0;
+  }
+}
+
 .radio-item label::before {
     content: "";
     display: inline-block;

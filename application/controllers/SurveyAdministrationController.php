@@ -1,5 +1,6 @@
 <?php
 
+use LimeSurvey\Models\Services\CopySurveyOptions;
 use LimeSurvey\Models\Services\CopySurveyResources;
 use LimeSurvey\Models\Services\FileUploadService;
 use LimeSurvey\Models\Services\FilterImportedResources;
@@ -47,6 +48,7 @@ class SurveyAdministrationController extends LSBaseController
                     'getCurrentEditorValues',
                     'getDataSecTextSettings',
                     'getDateFormatOptions',
+                    'updateAccessMode',
                     ''
                 ],
                 'users' => ['@'], //only login users
@@ -65,6 +67,7 @@ class SurveyAdministrationController extends LSBaseController
             'postOnly + copy'
         ];
     }
+
     /**
      * SurveyAdministrationController constructor.
      * @param $id
@@ -369,7 +372,7 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
-     * This function prepares the view for a new survey
+     * This function prepares the classic view for a new survey
      *
      * @return void
      */
@@ -384,7 +387,6 @@ class SurveyAdministrationController extends LSBaseController
         $survey->setToInherit();
 
         App()->getClientScript()->registerPackage('jquery-json');
-        App()->getClientScript()->registerPackage('bootstrap-switch');
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin.htmleditor');
 
@@ -422,7 +424,7 @@ class SurveyAdministrationController extends LSBaseController
         $arrayed_data['title_bar']['title'] = gT('New survey');
 
         // topbar
-        $aData['topbar']['title'] = gT('Create, import, or copy survey');
+        $aData['topbar']['title'] = gT('Create survey');
         $aData['topbar']['rightButtons'] = $this->renderPartial(
             'partial/topbarBtns_create_survey/rightSideButtons',
             [],
@@ -1632,20 +1634,9 @@ class SurveyAdministrationController extends LSBaseController
         $ok = Yii::app()->request->getPost('ok');
 
         if ($ok == '') {
-            if (!empty(Yii::app()->session->get('sNewSurveyTableName'))) {
-                Yii::app()->session->remove('sNewSurveyTableName');
-            }
-
-            if (!empty(Yii::app()->session->get('NewSIDDate'))) {
-                Yii::app()->session->remove('NewSIDDate');
-            }
-
-            Yii::app()->session->add('sNewSurveyTableName', Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}");
-            Yii::app()->session->add('NewSIDDate', "{$iSurveyID}_{$date}");
-
             $aData['date'] = $date;
             $aData['dbprefix'] = Yii::app()->db->tablePrefix;
-            $aData['sNewSurveyTableName'] = Yii::app()->session->get('sNewSurveyTableName');
+            $aData['sNewSurveyTableName'] = Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}";
             $aData['step1'] = true;
         } else {
             try {
@@ -1696,7 +1687,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $success = false;
         if (($surveyId > 0) && ($questionId > 0)) {
-            App()->loadHelper('admin/activate');
+            App()->loadHelper('admin.activate');
             fixNumbering($questionId, $surveyId);
             $success = true;
         }
@@ -1732,7 +1723,7 @@ class SurveyAdministrationController extends LSBaseController
         $oSurvey = Survey::model()->findByPk($surveyId);
         $aSurveysettings = getSurveyInfo($surveyId);
 
-        Yii::app()->loadHelper("admin/activate");
+        Yii::app()->loadHelper("admin.activate");
         $failedgroupcheck = checkGroup($surveyId);
         $failedcheck = checkQuestions($surveyId, $surveyId);
         $error = "";
@@ -2055,9 +2046,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['moreInfo'] = $temp;
         }
 
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerPackage('jquery-json');
-        App()->getClientScript()->registerPackage('bootstrap-switch');
 
         // override survey settings if global settings exist
         $templateData['showqnumcode']   = getGlobalSetting('showqnumcode') !== 'choose' ? getGlobalSetting('showqnumcode') : $survey->showqnumcode;
@@ -2219,186 +2208,257 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
-     * Function responsible to import/copy a survey based on $action.
-     *
-     * @todo this should be separated in two actions import and copy ...
+     * Function responsible to copy a survey.
      *
      * @access public
      * @return void
+     * @throws CException
+     * @throws Exception
      */
     public function actionCopy()
     {
         //everybody who has permission to create surveys
         if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(Yii::app()->request->urlReferrer);
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
+        }
+        $surveyId = sanitize_int(App()->request->getPost('surveyIdToCopy'));
+        $survey = Survey::model()->findByPk($surveyId);
+        if (!$survey) {
+            App()->user->setFlash('error', gT("Survey does not exist."));
+            $this->redirect(App()->request->urlReferrer);
+        }
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'export')) {
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
         }
 
-        //maybe thing about permission check for copy surveys
-        //at the moment dropDown selection shows only surveys for the user he owns himself ...
-        $action = Yii::app()->request->getPost('action');
-        $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
+        //the new survey id
+        $rawNewSid = App()->request->getPost('copysurveyid');
+        $newSurveyId = ($rawNewSid === '' || $rawNewSid === null)
+            ? null
+            : sanitize_int($rawNewSid, 1, 999999);
+
+        //the source survey id
+        $sourceSurveyId = sanitize_int(App()->request->getPost('surveyIdToCopy'));
+
+        $sourceSurvey = Survey::model()->findByPk($sourceSurveyId);
+
+        $options = $this->getPostParamsForCopySurvey(App()->request);
+        $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
+            $sourceSurvey,
+            $options,
+            $newSurveyId,
+        );
+
+        $copyResults = $copySurveyService->copy();
+
+        $copiedSurvey = $copyResults->getCopiedSurvey();
+        if ($copiedSurvey !== null) {
+            $groupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
+            $this->resetExpressionManager($copiedSurvey, $groupList);
+        }
+
         $aData = [];
+        $aData['copyResults'] = $copyResults;
 
-        if ($action == "importsurvey" || $action == "copysurvey") {
-            // Start the HTML
-            $sExtension = "";
+        if ($copiedSurvey !== null) {
+            $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $copiedSurvey->sid]);
+            $aData['sLinkApplyThemeOptions'] = 'surveyAdministration/applythemeoptions/surveyid/' . $copiedSurvey->sid;
+            $questionGroupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
 
-            if ($action == 'importsurvey') {
-                $aData['sHeader'] = gT("Import survey data");
-                $aData['sSummaryHeader'] = gT("Survey structure import summary");
-                $aPathInfo = pathinfo((string) $_FILES['the_file']['name']);
+            // Make the link point to the first group/question if available
+            if (!empty($questionGroupList)) {
+                $oFirstGroup = $questionGroupList[0];
+                $oFirstQuestion = Question::model()->primary()->findByAttributes(
+                    ['gid' => $oFirstGroup->gid],
+                    ['order' => 'question_order ASC']
+                );
 
-                if (isset($aPathInfo['extension'])) {
-                    $sExtension = $aPathInfo['extension'];
-                }
-            } elseif ($action == 'copysurvey') {
-                $aData['sHeader'] = gT("Copy survey");
-                $aData['sSummaryHeader'] = gT("Survey copy summary");
-            }
-
-            // Start traitment and messagebox
-            $aData['bFailed'] = false; // Put a var for continue
-            $sFullFilepath = '';
-            if ($action == 'importsurvey') {
-                $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(30) . '.' . $sExtension;
-                if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-                    $aData['sErrorMessage'] = sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024) . '<br>';
-                    $aData['bFailed'] = true;
-                } elseif (!in_array(strtolower($sExtension), array('lss', 'txt', 'tsv', 'lsa'))) {
-                    $aData['sErrorMessage'] = sprintf(gT("Import failed. You specified an invalid file type '%s'."), CHtml::encode($sExtension));
-                    $aData['bFailed'] = true;
-                } elseif ($aData['bFailed'] || !@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
-                    $aData['sErrorMessage'] = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
-                    $aData['bFailed'] = true;
-                }
-            } elseif ($action == 'copysurvey') {
-                $iSurveyID = sanitize_int(App()->request->getPost('copysurveylist'));
-                $aExcludes = array();
-                if (Yii::app()->request->getPost('copysurveyexcludequotas') == "1") {
-                    $aExcludes['quotas'] = true;
-                }
-
-                if (Yii::app()->request->getPost('copysurveyexcludepermissions') == "1") {
-                    $aExcludes['permissions'] = true;
-                }
-
-                if (Yii::app()->request->getPost('copysurveyexcludeanswers') == "1") {
-                    $aExcludes['answers'] = true;
-                }
-
-                if (Yii::app()->request->getPost('copysurveyresetconditions') == "1") {
-                    $aExcludes['conditions'] = true;
-                }
-
-                if (Yii::app()->request->getPost('copysurveyresetstartenddate') == "1") {
-                    $aExcludes['dates'] = true;
-                }
-
-                if (Yii::app()->request->getPost('copysurveyresetresponsestartid') == "1") {
-                    $aExcludes['reset_response_id'] = true;
-                }
-
-                if (!$iSurveyID) {
-                    $aData['sErrorMessage'] = gT("No survey ID has been provided. Cannot copy survey");
-                    $aData['bFailed'] = true;
-                } elseif (!Survey::model()->findByPk($iSurveyID)) {
-                    $aData['sErrorMessage'] = gT("Invalid survey ID");
-                    $aData['bFailed'] = true;
-                } elseif (
-                    !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')
-                    &&    !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')
-                ) {
-                    $aData['sErrorMessage'] = gT("We are sorry but you don't have permissions to do this.");
-                    $aData['bFailed'] = true;
-                } else {
-                    Yii::app()->loadHelper('export');
-                    $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
-                    if (empty(Yii::app()->request->getPost('copysurveyname'))) {
-                        $sourceSurvey = Survey::model()->findByPk($iSurveyID);
-                        $sNewSurveyName = $sourceSurvey->currentLanguageSettings->surveyls_title;
-                    } else {
-                        $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
-                    }
-                }
-            }
-
-            // Now, we have the survey : start importing
-            Yii::app()->loadHelper('admin/import');
-
-            if ($action == 'importsurvey' && !$aData['bFailed']) {
-                $aImportResults = importSurveyFile($sFullFilepath, (Yii::app()->request->getPost('translinksfields') == '1'));
-                if (is_null($aImportResults)) {
-                    $aImportResults = array(
-                        'error' => gT("Unknown error while reading the file, no survey created.")
-                    );
-                }
-            } elseif ($action == 'copysurvey' && !$aData['bFailed']) {
-                $copyResources = Yii::app()->request->getPost('copysurveytranslinksfields') == '1';
-                $translateLinks = $copyResources;
-                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, sanitize_int(App()->request->getParam('copysurveyid'), '1', '999999'), $translateLinks);
-                if (isset($aExcludes['conditions'])) {
-                    Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $aImportResults['newsid']);
-                    QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $aImportResults['newsid']);
-                }
-
-                if (isset($aExcludes['reset_response_id'])) {
-                    $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
-                    $oSurvey->autonumber_start = 0;
-                    $oSurvey->save();
-                }
-
-                if (!isset($aExcludes['permissions'])) {
-                    Permission::model()->copySurveyPermissions($iSurveyID, $aImportResults['newsid']);
-                }
-
-                if (!empty($aImportResults['newsid']) && $copyResources) {
-                    $resourceCopier = new CopySurveyResources();
-                    [, $errorFilesInfo] = $resourceCopier->copyResources($iSurveyID, $aImportResults['newsid']);
-                    if (!empty($errorFilesInfo)) {
-                        $aImportResults['importwarnings'][] = gT("Some resources could not be copied from the source survey");
-                    }
-                }
-            } else {
-                $aData['bFailed'] = true;
-            }
-
-            // If the import failed, set the status and error message in order to keep consistency with other errors
-            if (!empty($aImportResults['error'])) {
-                $aData['sErrorMessage'] = $aImportResults['error'];
-                $aData['bFailed'] = true;
-            }
-
-            if ($action == 'importsurvey' && isset($sFullFilepath) && file_exists($sFullFilepath)) {
-                unlink($sFullFilepath);
-            }
-
-            if (!$aData['bFailed'] && isset($aImportResults)) {
-                $aData['aImportResults'] = $aImportResults;
-                $aData['action'] = $action;
-                if (isset($aImportResults['newsid'])) {
-                    // Set link pointing to survey administration overview. This link will be updated if the survey has groups
-                    $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $aImportResults['newsid']]);
-                    $aData['sLinkApplyThemeOptions'] = 'surveyAdministration/applythemeoptions/surveyid/' . $aImportResults['newsid'];
-                }
+                $aData['sLink'] = $this->getSurveyAndSidemenueDirectionURL(
+                    $copiedSurvey->sid,
+                    $oFirstGroup->gid,
+                    !empty($oFirstQuestion) ? $oFirstQuestion->qid : null,
+                    'structure'
+                );
             }
         }
+
+        if ((App()->getConfig("editorEnabled")) && ($copiedSurvey !== null)) {
+            $copiedSurvey->setOptions();
+            if ($copiedSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
+                $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $copiedSurvey->sid]);
+            }
+        }
+        $this->aData = $aData;
+
+        $this->render('copySurveyResult_view', $this->aData);
+    }
+
+    /**
+     * Initialises the necessary options.
+     *
+     * @param $request
+     * @return CopySurveyOptions
+     */
+    private function getPostParamsForCopySurvey($request): CopySurveyOptions
+    {
+        $optionsDataContainer = new CopySurveyOptions();
+
+        //Survey resource files and adapt links
+        $option = $request->getPost('copyResourcesAndLinks');
+        $optionsDataContainer->setResourcesAndLinks(isset($option) && $option == "1");
+
+        $option = $request->getPost('copySurveyQuotas');
+        $optionsDataContainer->setQuotas(isset($option) && $option == "1");
+
+        $option = $request->getPost('copySurveyPermissions');
+        $optionsDataContainer->setPermissions(isset($option) && $option == "1");
+
+        $option = $request->getPost('copyAnswerOptions');
+        $optionsDataContainer->setAnswerOptions(isset($option) && $option == "1");
+
+        $option = $request->getPost('copySurveyConditions');
+        $optionsDataContainer->setConditions(isset($option) && $option == "1");
+
+        $option = $request->getPost('copyStartEndDate');
+        $optionsDataContainer->setStartAndEndDate(isset($option) && $option == "1");
+
+        $option = $request->getPost('resetResponseStartId');
+        $optionsDataContainer->setResetResponseStartId(isset($option) && $option == "1");
+
+        return $optionsDataContainer;
+    }
+
+    /**
+     * @param int $surveyIdToCopy
+     * @return void
+     * @throws Exception
+     */
+    public function actionCopySimple($surveyIdToCopy)
+    {
+        //everybody who has permission to create surveys
+        if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
+        }
+
+        $surveyId = sanitize_int($surveyIdToCopy);
+        $survey = Survey::model()->findByPk($surveyId);
+        if (!$survey) {
+            App()->user->setFlash('error', gT("Survey does not exist."));
+            $this->redirect(App()->request->urlReferrer);
+        }
+
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'export')) {
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
+        }
+        $optionsDataContainer = new CopySurveyOptions();
+        //start and enddate should be copied in the simple copy process
+        $optionsDataContainer->setStartAndEndDate(true);
+        $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
+            $survey,
+            $optionsDataContainer,
+        );
+
+        $copyResults = $copySurveyService->copy();
+
+        $copiedSurvey = $copyResults->getCopiedSurvey();
+        if ($copiedSurvey !== null) {
+            $groupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
+            $this->resetExpressionManager($copiedSurvey, $groupList);
+        }
+
+        if (empty($copyResults->getErrors())) {
+            App()->user->setFlash('success', gT("Survey copied successfully."));
+        } else {
+            App()->user->setFlash('error', gT("Error while copying the survey."));
+        }
+
+        $redirectUrl = App()->request->urlReferrer;
+        if ($copiedSurvey !== null) {
+            $redirectUrl = App()->createUrl("surveyAdministration/view/", ["iSurveyID" => $copiedSurvey->sid]);
+            $copiedSurvey->setOptions();
+            if ((App()->getConfig("editorEnabled")) && $copiedSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
+                $redirectUrl = App()->createUrl("editorLink/index", ["route" => "survey/" . $copiedSurvey->sid]);
+            }
+        }
+
+        $this->redirect($redirectUrl);
+    }
+
+    public function actionImport()
+    {
+        //everybody who has permission to create surveys
+        if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
+        }
+
+        $aData = [];
+        $sExtension = "";
+
+        $aData['sHeader'] = gT("Import survey data");
+        $aData['sSummaryHeader'] = gT("Survey structure import summary");
+        $aData['textCompleted'] = gT("Import of survey is completed.");
+        $aPathInfo = pathinfo((string) $_FILES['the_file']['name']);
+
+        if (isset($aPathInfo['extension'])) {
+            $sExtension = $aPathInfo['extension'];
+        }
+
+        $aData['bFailed'] = false;
+
+        $sFullFilepath = App()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(30) . '.' . $sExtension;
+        if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
+            $aData['sErrorMessage'] = sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024) . '<br>';
+            $aData['bFailed'] = true;
+        } elseif (!in_array(strtolower($sExtension), array('lss', 'txt', 'tsv', 'lsa'))) {
+            $aData['sErrorMessage'] = sprintf(gT("Import failed. You specified an invalid file type '%s'."), CHtml::encode($sExtension));
+            $aData['bFailed'] = true;
+        } elseif ($aData['bFailed'] || !@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
+            $aData['sErrorMessage'] = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
+            $aData['bFailed'] = true;
+        }
+
+        App()->loadHelper('admin.import');
+
+        if (!$aData['bFailed']) {
+            $aImportResults = importSurveyFile($sFullFilepath, (App()->request->getPost('translinksfields') == '1'));
+            if (is_null($aImportResults)) {
+                $aImportResults = array(
+                    'error' => gT("Unknown error while reading the file, no survey created.")
+                );
+            }
+        } else {
+            $aData['bFailed'] = true;
+        }
+
+        // If the import failed, set the status and error message in order to keep consistency with other errors
+        if (!empty($aImportResults['error'])) {
+            $aData['sErrorMessage'] = $aImportResults['error'];
+            $aData['bFailed'] = true;
+        }
+
+        if (isset($sFullFilepath) && file_exists($sFullFilepath)) {
+            unlink($sFullFilepath);
+        }
+
+        if (!$aData['bFailed'] && isset($aImportResults)) {
+            $aData['aImportResults'] = $aImportResults;
+            if (isset($aImportResults['newsid'])) {
+                // Set link pointing to survey administration overview. This link will be updated if the survey has groups
+                $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $aImportResults['newsid']]);
+                $aData['sLinkApplyThemeOptions'] = 'surveyAdministration/applythemeoptions/surveyid/' . $aImportResults['newsid'];
+            }
+        }
+
         if (!empty($aImportResults['newsid'])) {
             $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
-            LimeExpressionManager::SetDirtyFlag();
-            LimeExpressionManager::singleton();
-            // Why this @ !
-            LimeExpressionManager::SetSurveyId($aImportResults['newsid']);
-            LimeExpressionManager::RevertUpgradeConditionsToRelevance($aImportResults['newsid']);
-            LimeExpressionManager::UpgradeConditionsToRelevance($aImportResults['newsid']);
-            @LimeExpressionManager::StartSurvey($oSurvey->sid, 'survey', $oSurvey->attributes, true);
-            LimeExpressionManager::StartProcessingPage(true, true);
             $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $aImportResults['newsid']]);
-            foreach ($aGrouplist as $aGroup) {
-                LimeExpressionManager::StartProcessingGroup($aGroup['gid'], $oSurvey->anonymized != 'Y', $aImportResults['newsid']);
-                LimeExpressionManager::FinishProcessingGroup();
-            }
-            LimeExpressionManager::FinishProcessingPage();
+
+            $this->resetExpressionManager($oSurvey, $aGrouplist);
 
             // Make the link point to the first group/question if available
             if (!empty($aGrouplist)) {
@@ -2540,6 +2600,34 @@ class SurveyAdministrationController extends LSBaseController
     /** ************************************************************************************************************ */
     /**                      The following functions could be moved to model or service classes                      */
     /** **********************************************************************************************************++ */
+
+    /**
+     * Reset expression manager values
+     *
+     * @param Survey $oSurvey
+     * @param array $aGrouplist
+     * @return void
+     */
+    private function resetExpressionManager($oSurvey, $aGrouplist)
+    {
+        LimeExpressionManager::SetDirtyFlag();
+        LimeExpressionManager::singleton();
+        // Why this @ !
+        LimeExpressionManager::SetSurveyId($oSurvey->sid);
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance($oSurvey->sid);
+        LimeExpressionManager::UpgradeConditionsToRelevance($oSurvey->sid);
+        @LimeExpressionManager::StartSurvey($oSurvey->sid, 'survey', $oSurvey->attributes, true);
+        LimeExpressionManager::StartProcessingPage(true, true);
+        foreach ($aGrouplist as $aGroup) {
+            LimeExpressionManager::StartProcessingGroup(
+                $aGroup['gid'],
+                $oSurvey->anonymized != 'Y',
+                $oSurvey->sid
+            );
+            LimeExpressionManager::FinishProcessingGroup();
+        }
+        LimeExpressionManager::FinishProcessingPage();
+    }
 
     /**
      * Try to get the get-parameter from request.
@@ -2943,6 +3031,7 @@ class SurveyAdministrationController extends LSBaseController
         $condition = array('sid' => $iSurveyID, 'parent_qid' => 0);
         $sumcount3 = Question::model()->countByAttributes($condition); //Checked
         $sumcount2 = QuestionGroup::model()->countByAttributes(array('sid' => $iSurveyID));
+        $accessMode = $aSurveyInfo['access_mode'];
 
         //SURVEY SUMMARY
         $aAdditionalLanguages = $oSurvey->additionalLanguages;
@@ -3030,6 +3119,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $aData['sumcount3'] = $sumcount3;
         $aData['sumcount2'] = $sumcount2;
+        $aData['accessMode'] = $accessMode;
 
         if ($activated == "N") {
             $aData['activatedlang'] = gT("No");
@@ -3562,5 +3652,41 @@ class SurveyAdministrationController extends LSBaseController
                 'items' => $boxes
             )
         );
+    }
+
+    /**
+     * AJAX action to update survey access mode
+     */
+    public function actionUpdateAccessMode()
+    {
+        $surveyId = (int) Yii::app()->request->getPost('surveyId');
+        $accessMode = Yii::app()->request->getPost('accessMode');
+
+        if (!$surveyId || !$accessMode) {
+            $this->renderJSON(['success' => false, 'message' => 'Missing parameters']);
+            return;
+        }
+
+        try {
+            $surveyAccessModeService = new SurveyAccessModeService(
+                Permission::model(),
+                Survey::model(),
+                Yii::app()
+            );
+
+            $result = $surveyAccessModeService->changeAccessMode($surveyId, $accessMode);
+
+            if ($result) {
+                $this->renderJSON([
+                    'success' => true,
+                    'message' => 'Access mode updated successfully',
+                    'accessMode' => $accessMode
+                ]);
+            } else {
+                $this->renderJSON(['success' => false, 'message' => 'No changes made']);
+            }
+        } catch (Exception $e) {
+            $this->renderJSON(['success' => false, 'message' => $e->getMessage()]);
+        }
     }
 }

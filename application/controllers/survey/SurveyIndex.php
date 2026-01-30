@@ -18,7 +18,7 @@ class SurveyIndex extends CAction
 
     public function run()
     {
-        useFirebug();
+
         $this->action();
     }
 

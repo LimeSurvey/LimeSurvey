@@ -10,7 +10,7 @@ echo viewHelper::getViewTestTag('globalsettings');
 <script type="text/javascript">
     var msgCantRemoveDefaultLanguage = '<?php eT("You can't remove the default language.", 'js'); ?>';
 </script>
-<ul class="nav nav-tabs" id="settingTabs">
+<ul class="nav nav-tabs" id="settingTabs" role="tablist">
     <li role="presentation" class="nav-item"><a role="tab" class="nav-link active" data-bs-toggle="tab" href='#overview'><?php eT("Overview"); ?></a></li>
     <li role="presentation" class="nav-item"><a role="tab" class="nav-link" data-bs-toggle="tab" href='#general'><?php eT("General"); ?></a></li>
     <li role="presentation" class="nav-item"><a role="tab" class="nav-link" data-bs-toggle="tab" href='#email'><?php eT("Email settings"); ?></a></li>
@@ -48,7 +48,8 @@ echo viewHelper::getViewTestTag('globalsettings');
                 'aListOfThemeObjects' => $aListOfThemeObjects,
                 'aEncodings'          => $aEncodings,
                 'thischaracterset'    => $thischaracterset,
-                'sideMenuBehaviour'   => $sideMenuBehaviour
+                'sideMenuBehaviour'   => $sideMenuBehaviour,
+                'globalGeneralSettings' => $globalGeneralSettings,
             ]
         ); ?>
     </div>

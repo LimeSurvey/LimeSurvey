@@ -668,7 +668,7 @@ class UpdateForm extends CFormModel
      */
     private function createDbBackup()
     {
-        Yii::app()->loadHelper("admin/backupdb");
+        Yii::app()->loadHelper("admin.backupdb");
         $backupDb = new stdClass();
         $basefilename = dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . '_' . md5(uniqid(rand(), true));
         $baseSqlFileName = "backup_db_" . randomChars(20) . "_" . dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . ".sql";
