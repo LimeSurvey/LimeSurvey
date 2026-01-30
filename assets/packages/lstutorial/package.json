@@ -35,7 +35,7 @@
     "uglifycss": "^0.0.29"
   },
   "dependencies": {
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "popper.js": "^1.15.0"
   },
   "browserslist": "> 0.25%, not dead"
