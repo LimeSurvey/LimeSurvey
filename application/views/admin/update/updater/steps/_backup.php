@@ -6,7 +6,7 @@
  * @var string $basefilename the base file name of the backup file
  * @var string $tempdir the temp dir where the backup file is saved
  */
-$downloadString = gT('Download this file');
+$downloadString = gT('Download file');
 ?>
 
 <h3 class="maintitle"><?php eT('Creating file backup')?></h3>

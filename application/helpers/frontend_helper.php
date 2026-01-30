@@ -739,7 +739,7 @@ function submitfailed($errormsg = '', $query = null)
     global $surveyid;
 
     $completed = "<p><span class='ri-error-warning-fill'></span>&nbsp;<strong>"
-    . gT("Did Not Save") . "</strong></p>"
+    . gT("Responses were not saved") . "</strong></p>"
     . "<p>"
     . gT("An unexpected error has occurred and your responses cannot be saved.")
     . "</p>";
@@ -764,7 +764,7 @@ function submitfailed($errormsg = '', $query = null)
             . $query . "\n\n";
         }
         if (!empty($errormsg)) {
-            $email .= gT("ERROR MESSAGE", "unescaped") . ":\n"
+            $email .= gT("Error message", "unescaped") . ":\n"
                . $errormsg . "\n\n";
         }
 

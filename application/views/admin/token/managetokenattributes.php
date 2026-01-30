@@ -37,7 +37,7 @@
                                     <th><?php eT("Field description"); ?></th>
                                     <th><?php eT("Show during registration?") ?></th>
                                     <th><?php eT("Mandatory during registration?"); ?></th>
-                                    <th title="<?php !$bEncrypted ? eT("Encryption is disabled because Sodium library isn't installed") : ''; ?>"><?php eT("Encrypted?"); ?></th>
+                                    <th title="<?php !$bEncrypted ? eT("Encryption is disabled because Sodium library isn't installed") : ''; ?>"><?php eT("Encrypted"); ?></th>
                                     <th><?php eT("Field caption"); ?></th>
                                     <th><?php eT("CPDB mapping"); ?></th>
                                     <th><?php eT("Example data"); ?></th>
@@ -195,7 +195,7 @@
                 <p>
                     <label for="deleteattribute"><?php eT('Delete this attribute:'); ?></label>
                     <div class=''>
-                        <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','description'),array('empty' => gT('(None)','unescaped'), 'class'=>'form-select')); ?>
+                        <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','description'),array('empty' => gT('(none)','unescaped'), 'class'=>'form-select')); ?>
                     </div>
                 </p>
                 <p>
