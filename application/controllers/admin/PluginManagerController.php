@@ -417,7 +417,7 @@ class PluginManagerController extends SurveyCommonAction
             }
             $this->getController()->redirect($url);
         } else {
-            Yii::app()->user->setFlash('error', sprintf(gT('Found no plugin with id %d'), $pluginId));
+            Yii::app()->user->setFlash('error', sprintf(gT('Found no plugin with ID %d'), $pluginId));
             $this->getController()->redirect($url);
         }
     }
@@ -485,7 +485,7 @@ class PluginManagerController extends SurveyCommonAction
         if (empty($plugin)) {
             Yii::app()->setFlashMessage(
                 sprintf(
-                    gT('Found no plugin with id %d.'),
+                    gT('Found no plugin with ID %d'),
                     $pluginId
                 ),
                 'error'

@@ -103,7 +103,7 @@ class UserGroupController extends LSBaseController
     {
         $ugid = (int)$ugid;
         if (empty($ugid)) {
-            throw new CHttpException(400, gT('GroupId missing'));
+            throw new CHttpException(400, gT('Group ID missing'));
         }
 
         $userGroup = UserGroup::model()->findByPk($ugid);

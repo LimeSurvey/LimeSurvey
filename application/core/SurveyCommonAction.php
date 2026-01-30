@@ -1078,7 +1078,7 @@ class SurveyCommonAction extends CAction
                         // Extension forbidden
                         $aErrorFilesInfo[] = array(
                         "filename" => $direntry,
-                        "status" => gT("Forbidden Extension")
+                        "status" => gT("Forbidden extension")
                         );
                     }
                     unlink($extractdir . "/" . $direntry);

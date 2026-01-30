@@ -905,7 +905,7 @@ class ResponsesController extends LSBaseController
             if ($fielddetails['type'] === 'page_time') {
                 $fnames[] = [$fielddetails['fieldname'], gT('Group') . ": " . $fielddetails['group_name']];
                 $aData['columns'][] = [
-                    'header' => gT('Group: ') . $fielddetails['group_name'],
+                    'header' => sprintf('Group: %s', $fielddetails['group_name']),
                     'name'   => $fielddetails['fieldname']
                 ];
             }
