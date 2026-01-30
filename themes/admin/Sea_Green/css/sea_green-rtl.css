@@ -16511,11 +16511,6 @@ body {
   flex-direction: column;
 }
 
-.modal-header .btn-close {
-  outline: currentColor;
-  outline-offset: 2px;
-}
-
 .container-40 {
   padding: 0 40px;
   width: 100%;
