@@ -17423,6 +17423,41 @@ body {
   vertical-align: bottom;
 }
 
+/* Submenu */
+.has-submenu > a::after {
+  content: "›";
+  position: absolute;
+  left: 16px;
+  color: #1E1E1E;
+  font-size: 0.9975rem;
+}
+
+.dropdown-submenu {
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  z-index: 1000;
+  font-size: 0.9975rem;
+  background-color: #fff;
+  border: 1.33px solid #1E1E1E;
+  box-shadow: -4px 4px 0 #EEEFF7;
+  border-radius: 4px;
+  padding: 8px 0;
+  line-height: 20px;
+  list-style: none;
+}
+.dropdown-submenu.dropdown-submenu-left {
+  right: auto;
+  left: 100%;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.has-submenu:hover > .dropdown-submenu {
+  display: block;
+}
+
 .btn-circle {
   width: 44px;
   height: 44px;
@@ -17517,6 +17552,7 @@ body {
 .modal-header .btn-close:focus {
   box-shadow: none;
   outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 .modal-header .btn-close:hover {
   background-color: #EEEFF7;
@@ -17534,6 +17570,11 @@ body {
 
 #selector__exportTypeSelector-modal .modal-dialog {
   border: 1px solid #1E1E1E;
+}
+
+.modal-header .btn-close:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 
 body {
@@ -17613,6 +17654,33 @@ a {
 .has-link a {
   color: #1E1E1E;
   font-weight: 400;
+}
+
+.reg12 {
+  color: #6E748C;
+  font-weight: 400;
+  font-size: 0.855rem;
+  line-height: 16px;
+  letter-spacing: -0.5px;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.reg16 {
+  color: #1E1E1E;
+  font-weight: 400;
+  font-size: 1.14rem;
+  line-height: 20px;
+  letter-spacing: -0.272px;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.semibold12 {
+  color: #1E1E1E;
+  font-weight: 600;
+  font-size: 0.855rem;
+  line-height: 16px;
+  letter-spacing: -0.204px;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 .tooltip {
