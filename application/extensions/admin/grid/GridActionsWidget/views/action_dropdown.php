@@ -6,7 +6,7 @@
 
 ?>
 <div id="<?= 'dropdown_' . $id; ?>" class="dropdown ls-action_dropdown">
-    <button class="ls-dropdown-toggle" data-bs-toggle="dropdown" type="button"
+    <button class="ls-dropdown-toggle"  aria-label="<?= gT('Action Menu'); ?>" data-bs-toggle="dropdown" type="button"
             aria-expanded="false">
         <i class="ri-more-fill"></i>
     </button>
