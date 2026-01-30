@@ -99,7 +99,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($answer_l10ns as $answer) { ?>
-                                <li>AID:<?php echo $answer['aid']; ?> <?php eT("ID:"); ?><?php echo $answer['id']; ?> <?php eT("Reason:"); ?><?php echo $answer['reason']; ?></li><?php
+                                <li>AID:<?php echo $answer['aid']; ?> <?php printf(gT("ID: %s"), $answer['id']); ?> <?php eT("Reason:"); ?><?php echo $answer['reason']; ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -159,7 +159,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($question_l10ns as $question) { ?>
-                                <li>QID:<?php echo $question['qid']; ?><?php eT("ID:"); ?><?php echo $question['id']; ?> <?php eT("Reason:"); ?><?php echo $question['reason']; ?></li><?php
+                                <li>QID:<?php echo $question['qid']; ?><?php printf(gT("ID: %s"), $question['id']); ?> <?php eT("Reason:"); ?><?php echo $question['reason']; ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -207,7 +207,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($group_l10ns as $group) { ?>
-                                <li>GID:<?php echo $group['gid']; ?><?php eT("ID:"); ?><?php echo $group['id']; ?> <?php eT("Reason:"); ?><?php echo $group['reason']; ?></li><?php
+                                <li>GID:<?php echo $group['gid']; ?><?php printf(gT("ID: %s"), $group['id']); ?> <?php eT("Reason:"); ?><?php echo $group['reason']; ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -312,55 +312,55 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     ]);
                     ?>
                 <?php } else { ?>
-                <?php echo CHtml::form(["admin/checkintegrity", 'sa' => 'fixredundancy'], 'post'); ?>
+                    <?php echo CHtml::form(["admin/checkintegrity", 'sa' => 'fixredundancy'], 'post'); ?>
             <ul id="data-redundancy-list" class='data-redundancy-list list-unstyled'>
-                <?php
-                if (isset($redundantsurveytables)) { ?>
+                    <?php
+                    if (isset($redundantsurveytables)) { ?>
                     <li><?php eT("The following old survey response tables exist and may be deleted if no longer required:"); ?>
                         <ul class='response-tables-list list-unstyled'>
-                            <?php
-                            foreach ($redundantsurveytables as $surveytable) { ?>
+                                <?php
+                                foreach ($redundantsurveytables as $surveytable) { ?>
                                 <li>
                                     <input type='checkbox' id='cbox_<?php echo $surveytable['table'] ?>' value='<?php echo $surveytable['table'] ?>' name='oldsmultidelete[]' onclick="toggleDisableState(this)"/>
                                     <label for='cbox_<?php echo $surveytable['table'] ?>'><?php echo $surveytable['details'] ?></label>
                                 </li>
-                                <?php
-                            } ?>
+                                    <?php
+                                } ?>
                         </ul>
                     </li>
-                    <?php
-                } ?>
+                        <?php
+                    } ?>
 
-                <?php
-                if (isset($redundanttokentables) && count($redundanttokentables) > 0) { ?>
+                    <?php
+                    if (isset($redundanttokentables) && count($redundanttokentables) > 0) { ?>
                     <li><?php eT("The following old participant lists exist and may be deleted if no longer required:"); ?>
                         <ul class='token-tables-list list-unstyled'>
-                            <?php
-                            foreach ($redundanttokentables as $tokentable) { ?>
+                                <?php
+                                foreach ($redundanttokentables as $tokentable) { ?>
                                 <li>
                                     <input type='checkbox' id='cbox_<?php echo $tokentable['table'] ?>' value='<?php echo $tokentable['table'] ?>' name='oldsmultidelete[]'/>
                                     <label for='cbox_<?php echo $tokentable['table'] ?>'><?php echo $tokentable['details'] ?></label>
                                 </li>
-                                <?php
-                            } ?>
+                                    <?php
+                                } ?>
                         </ul>
                     </li>
-                    <?php
-                } ?>
+                        <?php
+                    } ?>
             </ul>
              <input type='hidden' name='ok' value='Y' />
             <button id='delete-checked-items-button' type='submit' name='ok' value='Y'
                     class="btn btn-danger mb-2"><?php
                     eT("Delete checked items!"); ?>
             </button>
-            <?php
-            $this->widget('ext.AlertWidget.AlertWidget', [
-                'text' => gT("Note that you cannot undo a delete if you proceed. The data will be gone."),
-                'type' => 'warning',
-            ]);
-            ?>
+                    <?php
+                    $this->widget('ext.AlertWidget.AlertWidget', [
+                    'text' => gT("Note that you cannot undo a delete if you proceed. The data will be gone."),
+                    'type' => 'warning',
+                    ]);
+                    ?>
             </form><?php
-            } ?>
+                } ?>
         </div>
     </div>
 </div>

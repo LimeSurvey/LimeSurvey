@@ -107,7 +107,7 @@ class AdminController extends LSYii_Controller
             }
             $sURL = $sURL['url'];
         } else {
-            $sTitle = gT('Main Admin Screen');
+            $sTitle = gT('Main admin screen');
             $sURL = $this->createUrl('/admin');
         }
         $sOutput .= '<input type="submit" value="' . $sTitle . '" onclick=\'window.open("' . $sURL . '", "_top")\' /><br /><br />' . "\n";

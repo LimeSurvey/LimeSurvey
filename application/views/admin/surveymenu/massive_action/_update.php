@@ -24,7 +24,7 @@
                     <input type="checkbox" class="action_check_to_keep_old_value"></input>
                 </label>
             </div>
-            <label class="col-md-3 form-label"  for='menu_id'><?php eT("Position?"); ?></label>
+            <label class="col-md-3 form-label"  for='menu_id'><?php eT("Position:"); ?></label>
             <div class="col-md-8">
                 <?php echo TbHtml::dropDownList('position', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getPositionOptions()), ['disabled'=>'disabled','class'=>'form-select custom-data selector_submitField'] );?>
             </div>
@@ -36,7 +36,7 @@
                     <input type="checkbox" class="action_check_to_keep_old_value"></input>
                 </label>
             </div>
-            <label class="col-md-3 form-label"  for='menu_class'><?php eT("Parent menu?"); ?></label>
+            <label class="col-md-3 form-label"  for='menu_class'><?php eT("Parent menu:"); ?></label>
             <div class="col-md-8">
                     <?php echo TbHtml::dropDownList('parent_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getMenuIdOptions()), ['disabled'=>'disabled','class'=>'form-select custom-data selector_submitField'] );?>
                 </div>
@@ -49,7 +49,7 @@
                         <input type="checkbox" class="action_check_to_keep_old_value"></input>
                     </label>
                 </div>
-                <label class="col-md-3 form-label"  for='permission'><?php eT("Survey?"); ?></label>
+                <label class="col-md-3 form-label"  for='permission'><?php eT("Survey:"); ?></label>
                 <div class="col-md-8">
                     <?php echo TbHtml::dropDownList('survey_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getSurveyIdOptions()), ['disabled'=>'disabled','class'=>'form-select custom-data selector_submitField'] );?>
             </div>
@@ -61,7 +61,7 @@
                     <input type="checkbox" class="action_check_to_keep_old_value"></input>
                 </label>
             </div>
-            <label class="col-md-3 form-label"  for='permission_grade'><?php eT("User?"); ?></label>
+            <label class="col-md-3 form-label"  for='permission_grade'><?php eT("User:"); ?></label>
             <div class="col-md-8">
                 <?php echo TbHtml::dropDownList('user_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getUserIdOptions()), ['disabled'=>'disabled','class'=>'form-select custom-data selector_submitField'] );?>
             </div>

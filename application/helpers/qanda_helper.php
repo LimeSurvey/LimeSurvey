@@ -395,7 +395,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     $surveyId = App()->getConfig('surveyID');
     $langTimer = array(
         'hours' => gT("hours"),
-        'mins' => gT("mins"),
+        'mins' => gT("minutes"),
         'seconds' => gT("seconds"),
     );
     /* Registering script : don't go to EM : no need usage of ls_json_encode */

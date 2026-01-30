@@ -536,7 +536,7 @@ export default {
                                         </li>
                                         <div v-else-if="key === 'language' && Array.isArray(value)">
                                             <li role="separator" class="dropdown-divider"  ></li>
-                                            <li class="dropdown-header">Survey logic file</li>
+                                            <li class="dropdown-header">Survey logic overview</li>
                                             <li v-for="language in value" >
                                                 <a class="dropdown-item" :id="language.id" :href="language.url">
                                                   <span :class="language.icon"></span>

@@ -122,10 +122,10 @@
                                 </a>
                             </li>
 
-                            <!-- Show Survey logic file -->
+                            <!-- Show Survey logic overview -->
                             <li class="dropdown-item">
                                 <a href="<?php echo $this->createUrl('admin/expressions/sa/surveyLogicForm'); ?>">
-                                    <?php eT("Show survey logic file"); ?>
+                                    <?php eT("Show survey logic overview"); ?>
                                 </a>
                             </li>
                         </ul>

@@ -20,7 +20,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                         <?php eT("Total Imported files"); ?>: <?php echo count($aImportedFilesInfo); ?><br/>
                     </p>
                     <p>
-                        <strong><?php eT("Imported Files List") ?>:</strong>
+                        <strong><?php eT("Imported files list") ?>:</strong>
                     </p>
                     <p>
                         <ul>
@@ -55,7 +55,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                         <?php eT("Total Errors"); ?>: <?php echo count($aErrorFilesInfo); ?><br/>
                     </p>
                     <p>
-                        <strong><?php eT("Imported Files List"); ?>:</strong>
+                        <strong><?php eT("Imported files list"); ?>:</strong>
                     </p>
                     <p>
                     <ul>

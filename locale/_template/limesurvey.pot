@@ -1108,7 +1108,7 @@ msgstr ""
 #: application/controllers/admin/Export.php:80
 #: application/core/SurveyCommonAction.php:154
 #: application/helpers/export_helper.php:2219
-msgid "Invalid question id"
+msgid "Invalid question ID"
 msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:314
@@ -1583,7 +1583,7 @@ msgstr ""
 #: application/controllers/ResponsesController.php:148
 #: application/controllers/ResponsesController.php:1078
 #: application/controllers/admin/DataEntry.php:556
-msgid "Invalid response id."
+msgid "Invalid response ID"
 msgstr ""
 
 #: application/controllers/ResponsesController.php:187
@@ -5270,7 +5270,7 @@ msgstr ""
 #: application/controllers/admin/Labels.php:291
 #: application/controllers/admin/Labels.php:308
 #: tmp/runtime/twig_cache/0e/0ec1f59cfff0250f960bfec504e75986.php:119
-msgid "Label sets list"
+msgid "Label set list"
 msgstr ""
 
 #: application/controllers/admin/Labels.php:340

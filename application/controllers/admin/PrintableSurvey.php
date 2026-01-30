@@ -496,7 +496,7 @@ class PrintableSurvey extends SurveyCommonAction
                     $fieldname = "Q" . "$qid";
 
                     if (isset($showsgqacode) && $showsgqacode == true) {
-                        $arQuestion['question'] = $arQuestion['question'] . "<br />" . gT("ID:") . " $fieldname <br />" .
+                        $arQuestion['question'] = $arQuestion['question'] . "<br />" . sprintf(gT("ID: %s"), $fieldname) . " <br />" .
                             gT("Question code:") . " " . $arQuestion['title'];
                     }
 
