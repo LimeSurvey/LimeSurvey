@@ -6,6 +6,9 @@ use Survey;
 
 class SurveyDetailService
 {
+    private const CACHE_DIR = '/tmp/limesurvey-cache';
+    private const CACHE_DURATION = 3600;
+
     /**
      * Gets the cache path of a survey
      * @param int $surveyId
@@ -14,28 +17,30 @@ class SurveyDetailService
      */
     protected function getCachePath(int $surveyId, bool $root = false)
     {
-        return \Yii::app()->getConfig('uploaddir') . "/surveys/" . $surveyId . ($root ? '' : '/survey-detail.html');
+        return self::CACHE_DIR . ($root ? '' : '/survey-detail-' . $surveyId . '.json');
     }
 
     /**
      * Gets the survey cache if exists and false otherwise
      * @param int $surveyId
      * @param bool $clearCache
-     * @return bool|string
+     * @return bool|array
      */
     public function getCache(int $surveyId, bool $clearCache = false)
     {
         if ($clearCache) {
             $this->removeCache($surveyId);
-        }
-        if (!file_exists($this->getCachePath($surveyId))) {
             return false;
         }
-        if (time() - filemtime($this->getCachePath($surveyId)) > 3600) {
+        $cachePath = $this->getCachePath($surveyId);
+        if (!file_exists($cachePath)) {
+            return false;
+        }
+        if (time() - filemtime($cachePath) > self::CACHE_DURATION) {
             $this->removeCache($surveyId);
             return false;
         }
-        return json_decode(file_get_contents($this->getCachePath($surveyId)), true);
+        return json_decode(file_get_contents($cachePath), true);
     }
 
     /**
@@ -46,8 +51,9 @@ class SurveyDetailService
      */
     public function saveCache(int $surveyId, array $content)
     {
-        if (!is_dir($this->getCachePath($surveyId, true))) {
-            mkdir($this->getCachePath($surveyId, true));
+        $cacheDir = $this->getCachePath($surveyId, true);
+        if (!is_dir($cacheDir)) {
+            mkdir($cacheDir, 0755, true);
         }
         file_put_contents($this->getCachePath($surveyId), json_encode($content));
     }
@@ -59,8 +65,9 @@ class SurveyDetailService
      */
     public function removeCache(int $surveyId)
     {
-        if (file_exists($this->getCachePath($surveyId))) {
-            unlink($this->getCachePath($surveyId));
+        $cachePath = $this->getCachePath($surveyId);
+        if (file_exists($cachePath)) {
+            unlink($cachePath);
         }
     }
 
