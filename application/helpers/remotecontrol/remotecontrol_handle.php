@@ -2922,18 +2922,18 @@ class remotecontrol_handle
         }
     }
 
-/**
- * Get list the ids and info of administration user(s) (RPC function)
- *
- * Returns array of ids and info.
- *
- * Failure status : Invalid user id, Invalid username, No users found, Invalid session key, Permission denied (super admin is required)
- *
- * @param string $sSessionKey Auth credentials
- * @param int $uid Optional; ID of the user
- * @param string $username Optional; name of the user
- * @return array The list of users in case of success
- */
+    /**
+     * Get list the ids and info of administration user(s) (RPC function)
+     *
+     * Returns array of ids and info.
+     *
+     * Failure status : Invalid user id, Invalid username, No users found, Invalid session key, Permission denied (super admin is required)
+     *
+     * @param string $sSessionKey Auth credentials
+     * @param int $uid Optional; ID of the user
+     * @param string $username Optional; name of the user
+     * @return array The list of users in case of success
+     */
     public function list_users($sSessionKey = null, $uid = null, $username = null)
     {
         if ($this->_checkSessionKey($sSessionKey)) {
@@ -2960,11 +2960,42 @@ class remotecontrol_handle
                     return array('status' => 'No users found');
                 }
 
+                $basePermissions = Permission::model()->getGlobalBasePermissions();
+                $availableActions = array('create', 'read', 'update', 'delete', 'import', 'export');
+
                 foreach ($users as $user) {
                     $attributes = $user->attributes;
-                    $attributes['permissions'] = array();
+                    // The "permissions" array will reflect the permissions stored for the user in
+                    // the permissions table, including global, survey and template permissions.
+                    // The global permissions in particular may not be the effective ones if the user
+                    // has roles assigned.
+                    $attributes['permissions'] = [];
                     foreach ($user->permissions as $permission) {
                         $attributes['permissions'][] = $permission->attributes;
+                    }
+                    // Calculate effective global permissions
+                    // These permissions may not match the stored permissions if the user has roles assigned.
+                    $attributes['effective_global_permissions'] = [];
+                    foreach ($basePermissions as $permissionName => $permission) {
+                        $attributes['effective_global_permissions'][$permissionName] = [];
+                        foreach ($availableActions as $action) {
+                            if (isset($permission[$action]) && $permission[$action]) {
+                                $attributes['effective_global_permissions'][$permissionName][$action] = Permission::model()->hasGlobalPermission($permissionName, $action, $user->uid);
+                            } else {
+                                $attributes['effective_global_permissions'][$permissionName][$action] = false;
+                            }
+                        }
+                    }
+                    $attributes['roles'] = [];
+                    $roles = $user->roles;
+                    if (count($roles) > 0) {
+                        foreach ($roles as $role) {
+                            $attributes['roles'][] = [
+                                'role_id' => $role->ptid,
+                                'name' => $role->name,
+                                'description' => $role->description,
+                            ];
+                        }
                     }
                     unset($attributes['password']);
                     $data[] = $attributes;
