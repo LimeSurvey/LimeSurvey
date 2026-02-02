@@ -71,7 +71,9 @@ class CopySurvey
         $destinationSurvey = $this->getValidSurveyId($destinationSurvey);
         $destinationSurvey->active = 'N'; //don't activate the survey !!!
         $destinationSurvey->owner_id = Yii::app()->session['loginID'];
+        //reset creation date and last modified date for the copied survey (cache issues...)
         $destinationSurvey->datecreated = date("Y-m-d H:i:s");
+        $destinationSurvey->lastmodified = date("Y-m-d H:i:s");
         if (!$destinationSurvey->save()) {
             throw new \Exception(gT("Failed to copy survey"));
         }
