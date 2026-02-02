@@ -1,8 +1,8 @@
 <?php
-/**
+
 $saveUrl = \Yii::app()->createUrl(
-    "plugins/direct/plugin/LimeSurveyProfessional/function/saveFeatureOptInOut"
-);**/
+    "plugins/direct/plugin/ReactEditor/function/saveActivateDeactivate",
+);
 
 $saveURL = ""; //todo: replace with actual save URL
 
@@ -84,7 +84,7 @@ $cssUrl = \Yii::app()->assetManager->publish(
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-info" data-bs-dismiss="modal">
+                <button type="button" id="saveOnOffReactApp" class="btn btn-info" data-bs-dismiss="modal">
                     <?= gT('Confirm')?>
                 </button>
             </div>

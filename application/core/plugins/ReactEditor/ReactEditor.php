@@ -2,6 +2,7 @@
 
 class ReactEditor extends \PluginBase
 {
+    const STG_NAME_REACT_EDITOR = "reactEditor";
 
     protected $storage = 'DbStorage';
 
@@ -16,6 +17,7 @@ class ReactEditor extends \PluginBase
     {
         $this->subscribe('beforeControllerAction');
         $this->subscribe('beforeAdminMenuRender');
+        $this->subscribe('newDirectRequest');
     }
 
     /**
@@ -58,6 +60,10 @@ class ReactEditor extends \PluginBase
      */
     public function renderActivateEditorModal()
     {
+
+        $assetsUrl = \Yii::app()->assetManager->publish(dirname(__FILE__) . '/js');
+        \Yii::app()->clientScript->registerScriptFile($assetsUrl . '/activateEditor.js');
+
         $modalHtml = $this->renderPartial(
             '_modalActivateDeactivateEditor', [
             'activated' => true
@@ -107,6 +113,46 @@ EOT,
         );
     }
 
+    public function newDirectRequest()
+    {
+        $event = $this->getEvent();
+        if ($event->get('target') != 'ReactEditor') {
+            return;
+        }
+
+        $action = $event->get('function');
+
+        if ($action === 'saveActivateDeactivate') {
+            //save the new value for the user in settings_user
+            //get current user id
+            $userId =App()->user->id;
+            $optIn = isset($_POST['optin']) ? (int)$_POST['optin'] : -1;
+            //update or insert entry in settings_user
+            if($optIn === 1 || $optIn === 0) {
+                $userSetting = SettingsUser::model()->findByAttributes(
+                    [
+                        'user_id' => $userId,
+                        "stg_name" => self::STG_NAME_REACT_EDITOR
+                    ]
+                );
+                if ($userSetting === null) {
+                    //default value from config was used, create a new entry for the user
+                    $userSetting = new SettingsUser();
+                    $userSetting->uid = $userId;
+                    $userSetting->stg_name = self::STG_NAME_REACT_EDITOR;
+                    $userSetting->stg_value = $optIn;
+                    $userSetting->save();
+                } else {
+                    //here we can simply update the value
+                    $userSetting->stg_value = $optIn;
+                    $userSetting->save();
+                }
+            }
+
+        }
+
+
+    }
 
 
 }
