@@ -70,6 +70,18 @@ class SurveySidemenuWidget extends WhSelect2
         }
     }
 
+    /**
+     * Builds the side menu structure for the current survey.
+     *
+     * The returned array contains panels (e.g. 'menu', 'settings', 'presentation'), each mapping to an ordered list
+     * of menu items. Each menu item includes:
+     * - `name`: display title for the menu item,
+     * - `url`: generated URL for the item,
+     * - optionally `disabled`: boolean indicating the item is inactive.
+     *
+     * Items without a corresponding survey menu entry are omitted.
+     *
+     * @return array Associative array of panels to arrays of menu items.
     public function getSideMenu()
     {
         $oSurvey = Survey::model()->findByPk($this->sid);
