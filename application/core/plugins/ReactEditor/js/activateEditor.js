@@ -2,7 +2,7 @@
 
 $(document).ready(function () {
     //todo we decided to use the switch again as a trigger
-    $(document).on("click", "#saveOnOffReactApp", function () {
+    $(document).on("change", "#editor-switch-btn", function () {
         let newValue = $(this).find('.btn-check:checked').val();
 
         //save feature optin status to db
@@ -15,12 +15,12 @@ $(document).ready(function () {
             if (newValue === "1") {
                 successMessage = $('#successMsgFeatureOptin').val();
             }
-            $('#feature_preview_modal').modal('hide');
+            $('#activate_editor').modal('hide');
             LS.ajaxAlerts(successMessage, 'alert-success', {showCloseButton: true});
             // Wait 2 seconds before reloading
-            setTimeout(function() {
+           /* setTimeout(function() {
                 window.location.reload();
-            }, 2000);
+            }, 2000); */
         });
     });
 });

@@ -24,9 +24,11 @@ p#good-to-know span {
 }
 
 .hint-text {
-    background-color: #F9F9FB;
+    background-color: #a3afad;
+    border-radius: 3px;
 }
 
 .hint-text-box {
     margin-top: 35px;
+    border-radius: 3px;
 }

@@ -17370,12 +17370,23 @@ body {
 .btn-group-purple .btn-check:active + .btn-outline-secondary, .btn-group-purple .btn-check:checked + .btn-outline-secondary, .btn-group-purple .btn-outline-secondary.active, .btn-group-purple .btn-outline-secondary.dropdown-toggle.show, .btn-group-purple .btn-outline-secondary:active {
   background-color: #8146F6;
   border-color: #8146F6;
+  border: 3px solid #8146F6;
   color: #fff;
 }
 .btn-group-purple .btn-check:active + .btn-outline-secondary.disabled, .btn-group-purple .btn-check:active + .btn-outline-secondary[disabled], .btn-group-purple .btn-check:checked + .btn-outline-secondary.disabled, .btn-group-purple .btn-check:checked + .btn-outline-secondary[disabled], .btn-group-purple .btn-outline-secondary.active.disabled, .btn-group-purple .btn-outline-secondary.active[disabled], .btn-group-purple .btn-outline-secondary.dropdown-toggle.show.disabled, .btn-group-purple .btn-outline-secondary.dropdown-toggle.show[disabled], .btn-group-purple .btn-outline-secondary:active.disabled, .btn-group-purple .btn-outline-secondary:active[disabled] {
   border-color: #9094A7;
   background-color: #D3D5DA;
   color: #9094A7;
+}
+.btn-group-purple .btn-check:active + .btn-outline-secondary:focus,
+.btn-group-purple .btn-check:checked + .btn-outline-secondary:focus,
+.btn-group-purple .btn-outline-secondary.active:focus,
+.btn-group-purple .btn-outline-secondary.dropdown-toggle.show:focus,
+.btn-group-purple .btn-outline-secondary:active:focus,
+.btn-group-purple .btn-outline-secondary:active,
+.btn-group-purple .btn-check:focus + .btn-outline-secondary,
+.btn-group-purple .btn-outline-secondary:hover {
+  box-shadow: none;
 }
 
 .dropdown-menu {

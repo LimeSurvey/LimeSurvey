@@ -83,11 +83,6 @@ $cssUrl = \Yii::app()->assetManager->publish(
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" id="saveOnOffReactApp" class="btn btn-info" data-bs-dismiss="modal">
-                    <?= gT('Confirm')?>
-                </button>
-            </div>
         </div>
     </div>
 </div>

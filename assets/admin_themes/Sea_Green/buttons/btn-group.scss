@@ -67,6 +67,7 @@
   .btn-check:active+.btn-outline-secondary, .btn-check:checked+.btn-outline-secondary, .btn-outline-secondary.active, .btn-outline-secondary.dropdown-toggle.show, .btn-outline-secondary:active {
     background-color: $grape;
     border-color: $grape;
+    border: 3px solid $grape;
     color: $white;
 
     &.disabled, &[disabled] {
@@ -74,5 +75,17 @@
       background-color: $g-400;
       color: $g-600;
     }
+  }
+
+  .btn-check:active+.btn-outline-secondary:focus,
+  .btn-check:checked+.btn-outline-secondary:focus,
+  .btn-outline-secondary.active:focus,
+  .btn-outline-secondary.dropdown-toggle.show:focus,
+  .btn-outline-secondary:active:focus,
+  .btn-outline-secondary:active,
+  .btn-check:focus+.btn-outline-secondary,
+  .btn-outline-secondary:hover
+  {
+    box-shadow: none;
   }
 }
