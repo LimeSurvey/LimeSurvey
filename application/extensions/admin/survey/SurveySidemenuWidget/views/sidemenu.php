@@ -92,7 +92,7 @@
                             <a href="<?php echo $item['url']; ?>">
                                 <div class="survey-settings-panel-item text-black <?php echo (isset($item['selected']) && $item['selected']) ? ' bg-primary' : ''; ?>">
                                     <label class=" cursor-pointer mb-0 form-label <?php echo (isset($item['selected']) && $item['selected']) ? ' text-white' : ' text-black'; ?>">
-                                        <?php echo $item['name']; ?>
+                                        <?php echo gT($item['name']); ?>
                                     </label>
                                 </div>
                             </a>
@@ -122,7 +122,7 @@
                             <a href="<?php echo $item['disabled'] ?? false ? '#' : $item['url']; ?>" class="<?php echo $item['disabled'] ?? false ? 'disabled' : ''; ?>">
                                 <div class="survey-settings-panel-item text-black <?php echo (isset($item['selected']) && $item['selected']) ? ' bg-primary' : ''; ?>">
                                     <label class=" cursor-pointer mb-0 form-label <?php echo (isset($item['selected']) && $item['selected'])? ' text-white' : ' text-black'; ?>">
-                                        <?php echo $item['name']; ?>
+                                        <?php echo gT($item['name']); ?>
                                     </label>
                                 </div>
                             </a>
@@ -152,7 +152,7 @@
                             <a href="<?php echo $item['url']; ?>">
                                 <div class="survey-settings-panel-item text-black <?php echo (isset($item['selected']) && $item['selected'])? ' bg-primary' : ''; ?>">
                                     <label class=" cursor-pointer mb-0 form-label <?php echo (isset($item['selected']) && $item['selected']) ? ' text-white' : ' text-black'; ?>">
-                                        <?php echo $item['name']; ?>
+                                        <?php echo gT($item['name']); ?>
                                     </label>
                                 </div>
                             </a>
