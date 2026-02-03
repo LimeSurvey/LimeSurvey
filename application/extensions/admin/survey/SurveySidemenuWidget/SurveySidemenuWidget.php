@@ -20,6 +20,9 @@ class SurveySidemenuWidget extends WhSelect2
         ]);
     }
 
+    /**
+     * Initializes the widget.
+     */
     public function init()
     {
         $this->registerClientScript();
@@ -31,6 +34,9 @@ class SurveySidemenuWidget extends WhSelect2
         $this->allLanguages = Survey::model()->findByPk($this->sid)->allLanguages;
     }
 
+    /**
+     * Gets the active panel.
+     */
     public function getActivePanel()
     {
         if (App()->request->getPathInfo() == 'quickTranslation/index') {
@@ -49,6 +55,9 @@ class SurveySidemenuWidget extends WhSelect2
         return 'survey-settings-panel';
     }
 
+    /**
+     * Gets survey entry by name.
+     */
     public function getSurveyEntry($entryName)
     {
         return $this->surveyEntry->find(
@@ -57,6 +66,9 @@ class SurveySidemenuWidget extends WhSelect2
         );
     }
 
+    /**
+     * Highlights the active menu item.
+     */
     public function highlightActiveMenuItem()
     {
         $currentUrl = App()->request->requestUri;
@@ -70,6 +82,9 @@ class SurveySidemenuWidget extends WhSelect2
         }
     }
 
+    /**
+     * Gets the side menu structure.
+     */
     public function getSideMenu()
     {
         $oSurvey = Survey::model()->findByPk($this->sid);
