@@ -9,7 +9,8 @@ use SettingsUser;
 
 class EditorService
 {
-    public static function init(){
+    public static function init()
+    {
         $editorConfig = new EditorConfig(
             SettingsUser::getUserSettingValue('editorEnabled') ?? false
         );
