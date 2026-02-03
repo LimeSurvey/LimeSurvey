@@ -1,34 +1,47 @@
-#feature_preview_modal {
-    z-index: 20001;
+#activate_editor .btn-close {
+    align-self : flex-start;
+    color      : #1E1E1E; /* $g-900 */
+    width      : 0.75em;
+    height     : 0.75em;
+    opacity    : 1;
+    font-size  : 12px;
+    &:focus {
+        box-shadow : none;
+        outline    : 2px solid currentColor;
+        outline-offset:2px;
+    }
+    &:hover {
+        background-color : #EEEFF7; /* $g-200 */
+    }
 }
 
-#feature_preview_modal .modal-title {
-    font-size: 1.8em;
-}
-
-.card.card-beta-feature {
+#activate_editor .card {
+    padding-left: 0;
+    padding-right: 0;
     border: none;
-    color: #000000;
+}
+#activate_editor .card-body {
+    padding-top: 28px;
+    padding-bottom: 0;
+
 }
 
-.card.card-beta-feature .card-title {
-   font-size: 1.3em;
-}
-
-.card.card-beta-feature .card-icon {
-    font-size: 2em;
-}
-
-p#good-to-know span {
-    color: #FF515F;
-}
-
-.hint-text {
-    background-color: #a3afad;
-    border-radius: 3px;
+#activate_editor .mb-16 {
+    margin-bottom: 16px;
 }
 
 .hint-text-box {
-    margin-top: 35px;
+    background-color: #F9F9FB; /* $g-100*/
     border-radius: 3px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.hint-text-box .hint-text {
+    color: #6E748C; /* $g-700*/
+}
+
+.editor-preview {
+    margin-left: 20px;
+    margin-right: 20px;
 }
