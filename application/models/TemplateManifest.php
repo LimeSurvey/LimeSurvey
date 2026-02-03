@@ -1412,7 +1412,8 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
-     * Get options_page value from template configuration
+     * Loads the options definition from XML file
+     * @return array|false returns the array of options or false on failing to load the file
      */
     public static function getOptionAttributes($path)
     {
@@ -1437,24 +1438,70 @@ class TemplateManifest extends TemplateConfiguration
                 $aOptions['optionAttributes'][$key]['rows'] = !empty($option['rows']) ? (string)$option['rows'] : '4';
                 $aOptions['optionAttributes'][$key]['options'] = !empty($option['options']) ? (string)$option['options'] : '';
                 $aOptions['optionAttributes'][$key]['optionlabels'] = !empty($option['optionlabels']) ? (string)$option['optionlabels'] : '';
+                $aOptions['optionAttributes'][$key]['optionimages'] = !empty($option['optionimages']) ? (string)$option['optionimages'] : '';
                 $aOptions['optionAttributes'][$key]['parent'] = !empty($option['parent']) ? (string)$option['parent'] : '';
 
                 if (!empty($option->dropdownoptions)) {
-                    $dropdownOptions = '';
-                    if ($key == 'font') {
-                        $dropdownOptions .= TemplateManifest::getFontDropdownOptions();
+                    $dropdownOptions = $option->dropdownoptions; // The element to insert into
+                    $dropdownOptionsDom = dom_import_simplexml($dropdownOptions);
+                    if ($key === 'font') {
+                        $dropdownOptionsFonts = TemplateManifest::getFontDropdownOptions();
+                        $fontDropdownOptions = simplexml_load_string($dropdownOptionsFonts); // The element to insert
+                        $child_dom = dom_import_simplexml($fontDropdownOptions);
+                        // Import the child node into the parent's document
+                        $child_imported = $dropdownOptionsDom->ownerDocument->importNode($child_dom, true);
+                        // If the parent has children, insert before the first one.
+                        if ($dropdownOptionsDom->firstChild) {
+                            $dropdownOptionsDom->insertBefore($child_imported, $dropdownOptionsDom->firstChild);
+                        } else {
+                            // If the parent has no children, you can just append it (which makes it the first)
+                            $dropdownOptionsDom->appendChild($child_imported);
+                        }
                     }
-                    foreach ($option->xpath('//options/' . $key . '/dropdownoptions') as $option) {
-                        $dropdownOptions .= $option->asXml();
+                    $dropdownOptionsString = $dropdownOptions->asXML();
+                    $dropdownOptionsArray = [];
+                    if (isset($dropdownOptions->optgroup)) {
+                        $optgroup = 0;
+                        foreach ($dropdownOptions->optgroup as $XMLElementKey => $XMLElement) {
+                            foreach ($XMLElement->attributes() as $attributeKey => $attributeValue) {
+                                $dropdownOptionsArray[$XMLElementKey][$optgroup]['attributes'][$attributeKey] = (string)$attributeValue;
+                            }
+                            $optionIterator = 0;
+                            /** @var SimpleXMLElement $options */
+                            foreach ($XMLElement->children() as $optionKey => $options) {
+                                $dropdownOptionsArray[$XMLElementKey][$optgroup][$optionKey][$optionIterator]['value'] = (string)$options[0];
+                                foreach ($options->attributes() as $attributeKey => $attributeValue) {
+                                    $dropdownOptionsArray[$XMLElementKey][$optgroup][$optionKey][$optionIterator]['attributes'][$attributeKey]  = (string)$attributeValue;
+                                }
+                                $optionIterator++;
+                            }
+                            $optgroup++;
+                        }
+                    } else {
+                        $optionIterator = 0;
+                        /** @var SimpleXMLElement $options */
+                        foreach ($dropdownOptions->children() as $optionKey => $options) {
+                            $dropdownOptionsArray[$optionKey][$optionIterator]['value'] = (string)$options[0];
+                            foreach ($options->attributes() as $attributeKey => $attributeValue) {
+                                $dropdownOptionsArray[$optionKey][$optionIterator]['attributes'][$attributeKey] = (string)$attributeValue;
+                            }
+                            $optionIterator++;
+                        }
                     }
-
-                    $aOptions['optionAttributes'][$key]['dropdownoptions'] = $dropdownOptions;
+                    $aOptions['optionAttributes'][$key]['dropdownoptions'] = $dropdownOptionsString;
+                    $aOptions['optionAttributes'][$key]['dropdownoptionsArray'] = $dropdownOptionsArray;
                 } else {
                     $aOptions['optionAttributes'][$key]['dropdownoptions'] = '';
                 }
 
                 if (!in_array($aOptions['optionAttributes'][$key]['category'], $aOptions['categories'])) {
                     $aOptions['categories'][] = $aOptions['optionAttributes'][$key]['category'];
+                }
+            }
+            // different sorting for react part
+            if (isset($oXMLConfig->optionsOrderReact)) {
+                foreach ($oXMLConfig->optionsOrderReact->children() as $key => $optionOrderReact) {
+                    $aOptions['optionsOrderReact'][$key]['category'] = !empty($optionOrderReact['category']) ? (string)$optionOrderReact['category'] : gT('Display options');
                 }
             }
 
