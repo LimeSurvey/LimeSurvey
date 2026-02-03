@@ -113,6 +113,12 @@ EOT,
         );
     }
 
+    /**
+     * Saves if the users wants to activate or deactivate the new react editor
+     *
+     * @return void
+     * @throws CHttpException
+     */
     public function newDirectRequest()
     {
         $event = $this->getEvent();
@@ -123,15 +129,14 @@ EOT,
         $action = $event->get('function');
 
         if ($action === 'saveActivateDeactivate') {
-            //save the new value for the user in settings_user
-            //get current user id
-            $userId =App()->user->id;
             $optIn = isset($_POST['optin']) ? (int)$_POST['optin'] : -1;
             //update or insert entry in settings_user
+            //$activateDeactivate = new EditorEnableService($optIn);
             if($optIn === 1 || $optIn === 0) {
+                $userId = App()->user->id;
                 $userSetting = SettingsUser::model()->findByAttributes(
                     [
-                        'user_id' => $userId,
+                        'uid' => $userId,
                         "stg_name" => self::STG_NAME_REACT_EDITOR
                     ]
                 );
@@ -141,14 +146,14 @@ EOT,
                     $userSetting->uid = $userId;
                     $userSetting->stg_name = self::STG_NAME_REACT_EDITOR;
                     $userSetting->stg_value = $optIn;
-                    $userSetting->save();
                 } else {
                     //here we can simply update the value
                     $userSetting->stg_value = $optIn;
-                    $userSetting->save();
                 }
+                $success = $userSetting->save();
             }
 
+            //$activateDeactivate->activateDeactivateEditor();
         }
 
 
