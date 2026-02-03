@@ -2352,14 +2352,6 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
 
-        if ((App()->getConfig("editorEnabled")) && isset($aImportResults['newsid'])) {
-            if (!isset($oSurvey)) {
-                $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
-            }
-            if ($oSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
-                $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $aImportResults['newsid']]);
-            }
-        }
         $this->aData = $aData;
         $this->render('importSurvey_view', $this->aData);
     }
@@ -2453,14 +2445,6 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
 
-        if ((App()->getConfig("editorEnabled")) && isset($aImportResults['newsid'])) {
-            if (!isset($oSurvey)) {
-                $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
-            }
-            if ($oSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
-                $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $aImportResults['newsid']]);
-            }
-        }
         $this->aData = $aData;
         $this->render('importSurvey_view', $this->aData);
     }

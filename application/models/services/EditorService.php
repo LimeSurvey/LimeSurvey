@@ -4,30 +4,35 @@ namespace LimeSurvey\Models\Services;
 
 use LimeSurvey\Models\Services\EditorService\EditorConfig;
 use LimeSurvey\Models\Services\EditorService\EditorRedirector;
+use LimeSurvey\Models\Services\EditorService\EditorRequestHelper;
 use SettingsUser;
 
 class EditorService
 {
-    public static function initEditorApp($editorEnabled)
-    {
-        $editorConfig = new EditorConfig($editorEnabled);
+    public static function init(){
+        $editorConfig = new EditorConfig(
+            SettingsUser::getUserSettingValue('editorEnabled') ?? false
+        );
         $editorConfig->initAppConfig();
+    }
 
+    public static function initEditorApp()
+    {
+        self::init();
         $editorRedirector = new EditorRedirector();
         $editorRedirector->handleRedirect();
     }
 
-    public static function registerSurveyRedirect($editorEnabled, $controller, $action)
+
+    public static function beforeRenderSurveySidemenu($event)
     {
-        if (
-            $editorEnabled
-            && $controller == 'surveyAdministration'
-            && $action == 'newSurvey'
-        ) {
-            App()->clientScript->registerScriptFile(
-                dirname(__DIR__) .
-                '/services/EditorService/js/redirectToQEAfterSurvey.js',
-                \LSYii_ClientScript::POS_END
+        self::init();
+        $surveyId = EditorRequestHelper::findSurveyId();
+        if (App()->getConfig('editorEnabled')) {
+            $event->getEvent()->set('sidemenu', true);
+            App()->controller->widget(
+                'ext.admin.survey.SurveySidemenuWidget.SurveySidemenuWidget',
+                ['sid' => $surveyId]
             );
         }
     }
