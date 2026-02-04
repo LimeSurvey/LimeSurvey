@@ -96,119 +96,124 @@ class SurveyThemeConfiguration
     }
 
     /**
-     * Updates Common.
+     * Returns all attributes and options needed to display the themeoptions inlcuding inheritance.
      *
-     * @param TemplateConfiguration $model Template Configuration
+     * @param TemplateConfiguration $themeConfiguration Template Configuration
      * @param int|null $sid Survey ID
      * @param int|null $gsid Survey Group ID
      *
      * @return array
      * @throws NotFoundException
      */
-    public function updateCommon(TemplateConfiguration $model, int $sid = null, int $gsid = null)
+    public function updateCommon(TemplateConfiguration $themeConfiguration, int $sid = null, int $gsid = null)
     {
         /* init the template to current one if option use some twig function (imageSrc for example) mantis #14363 */
-        $oTemplate = Template::model()->getInstance($model->template_name, $sid, $gsid);
-        $oModelWithInheritReplacement = TemplateConfiguration::model()->findByPk($model->id);
-        if ($oModelWithInheritReplacement === null) {
-            throw new NotFoundException(gT("Survey theme {$model->template_name} not found."));
+        // Template::getInstance will call prepareTemplateRendering which will populate array needed for inheritance display
+        $preparedThemeConfigurationModel = Template::model()->getInstance($themeConfiguration->template_name, $sid, $gsid);
+        if ($preparedThemeConfigurationModel === null) {
+            throw new NotFoundException(gT("Survey theme {$themeConfiguration->template_name} not found."));
         }
-        $aOptionAttributes = TemplateManifest::getOptionAttributes($oTemplate->path);
-        $oTemplate = $oModelWithInheritReplacement->prepareTemplateRendering($oModelWithInheritReplacement->template->name); // Fix empty file lists
-        $aTemplateConfiguration = $oTemplate->getOptionPageAttributes();
-        if ($aOptionAttributes['optionsPage'] === 'core') {
+        $themeCategoriesAndOptions = TemplateManifest::getOptionAttributes($preparedThemeConfigurationModel->path);
+        $themeConfigurationAttributesAndFiles = $preparedThemeConfigurationModel->getOptionPageAttributes();
+        if ($themeCategoriesAndOptions['optionsPage'] === 'core') {
             App()->clientScript->registerPackage('themeoptions-core');
-            $templateOptionPage = '';
+            $customThemeOptionsPage = '';
         } else {
-            $templateOptionPage = $oModelWithInheritReplacement->getOptionPage();
+            $customThemeOptionsPage = $preparedThemeConfigurationModel->getOptionPage();
         }
-        $inheritName = $oModelWithInheritReplacement->sTemplateName;
-        $oSimpleInheritance = Template::getInstance($inheritName, $sid, $gsid, null, true);
-        $oSimpleInheritance->options = 'inherit';
-        $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering($inheritName);
-        $oParentOptions = (array)$oSimpleInheritanceTemplate->oOptions;
+        if ($preparedThemeConfigurationModel->oParentTemplate !== null) {
+            $parentTheme = $preparedThemeConfigurationModel->oParentTemplate;
+            $preparedParentTheme = $parentTheme->prepareTemplateRendering();
+        }
+        /** TODO: most of the options in this array should be renamed to better reflect what they actually contain,
+         *  TODO: but it would break backwards compatibility with custom themes, unless we modify strings inside twig through a query
+         */
         $aData = [
-            'model'                  => $model,
-            'templateOptionPage'     => $templateOptionPage,
-            'optionInheritedValues'  => $oModelWithInheritReplacement->oOptions,
-            'optionCssFiles'         => $oModelWithInheritReplacement->files_css,
-            'optionCssFramework'     => $oModelWithInheritReplacement->cssframework_css,
-            'aTemplateConfiguration' => $aTemplateConfiguration,
-            'aOptionAttributes'      => $aOptionAttributes,
-            'oParentOptions'         => $oParentOptions,
-            'sPackagesToLoad'        => $oModelWithInheritReplacement->packages_to_load,
+            // $themeConfiguration needs to be a model with $bUseMagicInherit turned off since the advanced settings use an active form,
+            // which would use the magic getter to resolve 'inherit' based values
+            'model'                  => $themeConfiguration,
+            'templateOptionPage'     => $customThemeOptionsPage,
+            'oParentOptions'         => (array)($preparedParentTheme->oOptions ?? []),
+            'optionCssFiles'         => $preparedThemeConfigurationModel->files_css,
+            'optionCssFramework'     => $preparedThemeConfigurationModel->cssframework_css,
+            'aTemplateConfiguration' => $themeConfigurationAttributesAndFiles,
+            'aOptionAttributes'      => $themeCategoriesAndOptions,
+            'sPackagesToLoad'        => $preparedThemeConfigurationModel->packages_to_load,
             'sid'                    => $sid,
-            'gsid'                   => $gsid
+            'gsid'                   => $gsid,
         ];
         if ($sid !== null) {
             $aData['surveyid'] = $sid;
         }
         $actionBaseUrl = 'themeOptions/update/';
-        $actionUrlArray = ['id' => $model->id];
-        if ($model->sid) {
+        $actionUrlArray = ['id' => $themeConfiguration->id];
+        if ($themeConfiguration->sid) {
             $actionBaseUrl = 'themeOptions/updateSurvey/';
             unset($actionUrlArray['id']);
-            $actionUrlArray['surveyid'] = $model->sid;
-            $actionUrlArray['gsid'] = $model->gsid ? $model->gsid : $gsid;
+            $actionUrlArray['surveyid'] = $themeConfiguration->sid;
+            $actionUrlArray['gsid'] = $themeConfiguration->gsid ? $themeConfiguration->gsid : $gsid;
         }
-        if ($model->gsid) {
+        if ($themeConfiguration->gsid) {
             $actionBaseUrl = 'themeOptions/updateSurveyGroup/';
             unset($actionUrlArray['id']);
-            $actionUrlArray['gsid'] = $model->gsid;
-            $actionUrlArray['id'] = $model->id;
+            $actionUrlArray['gsid'] = $themeConfiguration->gsid;
+            $actionUrlArray['id'] = $themeConfiguration->id;
         }
         $aData['actionUrl'] = App()->getController()->createUrl($actionBaseUrl, $actionUrlArray);
         return $aData;
     }
 
      /**
-     * Returns a Theme options
+     * Returns the theme option attributes with custom format for react
      *
-     * @param integer $iSurveyId
-     * @param string $sTemplateName
+     * @param array $themeData
      * @return array
      */
-    public function getSurveyThemeOptions($iSurveyId = 0, $sTemplateName = null): array
+    public function getSurveyThemeOptionsAttributes($themeData): array
     {
-        $oParentMainConfiguration = Template::getTemplateConfiguration($sTemplateName, null, null);
-        $oCurrentConfiguration = TemplateConfiguration::model()->getInstanceFromSurveyId($iSurveyId, $sTemplateName);
-        $oCurrentConfiguration->bUseMagicInherit = true;
+        $attributesReact = $themeData['aOptionAttributes']['optionsOrderReact'] ?? [];
+        $attributesCore = $themeData['aOptionAttributes']['optionAttributes'] ?? [];
+        $currentThemeOptions = $themeData['aTemplateConfiguration']['options'] ?? [];
+        $parentThemeOptions = $themeData['oParentOptions'] ?? [];
+        $attributesCompleteData = [];
+        $imageDefaultDropDown = [];
+        $iterator = 0;
+        $imageFileList = $themeData['aTemplateConfiguration']['imageFileList'] ?? [];
+        foreach ($imageFileList as $imageData) {
+            $imageDefaultDropDown[$iterator]['value'] = $imageData['filepath'];
+            $imageDefaultDropDown[$iterator]['label'] = $imageData['filename'];
+            $imageDefaultDropDown[$iterator]['group'] = $imageData['group'];
+            $imageDefaultDropDown[$iterator]['imagePreviewPath'] = $imageData['preview'];
+            $imageDefaultDropDown[$iterator]['imageOriginPath'] = $imageData['filepathOptions'];
+            $iterator++;
+        }
+        foreach ($attributesReact as $key => $optionAttribute) {
+            if (!isset($attributesCore[$key])) {
+                continue;
+            }
 
-        $oCurrentConfiguration->oParentTemplate = $oParentMainConfiguration;
-        $oCurrentConfiguration->oParentTemplate->bUseMagicInherit = true;
-        $oCurrentConfiguration->setOptions();
-        $themeOptions = (array)$oCurrentConfiguration->oOptions;
+            $attributesCompleteData[$key] = $attributesCore[$key];
+            $attributesCompleteData[$key]['category'] = $optionAttribute['category'];
+            $attributesCompleteData[$key]['currentValue'] = $currentThemeOptions->$key ?? 'inherit';
+            $attributesCompleteData[$key]['parentValue'] = $parentThemeOptions[$key];
+            if (
+                $attributesCompleteData[$key]['type'] === 'dropdown'
+                // "checkicon" is of type "icon" but has dropdown options
+                || !empty($attributesCompleteData[$key]['dropdownoptions'])
+            ) {
+                $attributesCompleteData[$key]['dropdownoptions'] = $this->extractDropdownOptions($attributesCompleteData[$key]['dropdownoptions']);
+                if (empty($attributesCompleteData[$key]['dropdownoptions'])) {
+                    $attributesCompleteData[$key]['dropdownoptions'] = $imageDefaultDropDown;
+                }
+            }
 
-        if (empty($themeOptions)) {
-            return [];
+            // TODO: incorporate this option type into the theme properly
+            if (in_array($key, ['brandlogofile', 'backgroundimagefile'])) {
+                $attributesCompleteData[$key]['hasFileUpload'] = true;
+            }
         }
 
-        return $themeOptions;
-    }
-
-     /**
-     * Returns a Theme options attributes (eg: fonts, variations ...)
-     *
-     * @param integer $iSurveyId
-     * @param string $sTemplateName
-     * @return array
-     */
-    public function getSurveyThemeOptionsAttributes($iSurveyId = 0, $sTemplateName = null): array
-    {
-        $attributes = [];
-        $oTemplate = Template::model()->getInstance($sTemplateName, $iSurveyId);
-
-        $aTemplateAttribute = $oTemplate->getOptionPageAttributes();
-        $attributes['imageFileList'] = $aTemplateAttribute['imageFileList'];
-
-        $aOptionAttributes = TemplateManifest::getOptionAttributes($oTemplate->path);
-        $fontsDropdownString = $aOptionAttributes['optionAttributes']['font']['dropdownoptions'];
-        $cssframeworkDropdownString = $aOptionAttributes['optionAttributes']['cssframework']['dropdownoptions'];
-
-        $attributes['fonts'] = $this->extractDropdownOptions($fontsDropdownString);
-        $attributes['cssframework'] = $this->extractDropdownOptions($cssframeworkDropdownString);
-
-        return $attributes;
+        return $attributesCompleteData;
     }
 
      /**

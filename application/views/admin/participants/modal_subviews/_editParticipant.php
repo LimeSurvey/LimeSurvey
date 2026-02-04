@@ -74,6 +74,7 @@ Yii::app()->getController()->renderPartial(
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'model'         => $model,
+                    'ariaLabel'    => gT("Participant is on blocklist"),
                     'attribute'     => 'blacklisted',
                     'checkedOption' => $model->blacklisted ?? 'N',
                     'selectOptions' => [
