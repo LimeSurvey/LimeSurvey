@@ -46,6 +46,10 @@
         .btn-outline-secondary:hover {
             box-shadow: none;
         }
+
+        .btn-check:not(:checked) + .btn-outline-secondary:hover {
+            background-color: $g-800;
+        }
     }
 
     // purple variant

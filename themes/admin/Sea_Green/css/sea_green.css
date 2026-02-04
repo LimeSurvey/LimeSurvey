@@ -17521,6 +17521,9 @@ body {
 .lime-toggle-btn-group .btn-group .btn-outline-secondary:hover {
   box-shadow: none;
 }
+.lime-toggle-btn-group .btn-group .btn-check:not(:checked) + .btn-outline-secondary:hover {
+  background-color: #333641;
+}
 .lime-toggle-btn-group.isSecondary .btn-group {
   background: #8146F6;
 }
