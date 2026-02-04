@@ -45,7 +45,7 @@ class Template extends LSActiveRecord
     /** @var array $aNamesFiltered cache for the method templateNameFilter */
     public static $aNamesFiltered = null;
 
-    /** @var Template - The instance of template object */
+    /** @var Template|TemplateManifest - The instance of Template or TemplateManifest as an object */
     private static $instance;
 
     public static $sTemplateNameIllegalChars = "#$%^&*()+=[]';,./{}|:<>?~";
@@ -579,11 +579,19 @@ class Template extends LSActiveRecord
             return self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML, true);
         }
 
-        if (
-            empty(self::$instance)
-            || !(self::$instance->sid === $iSurveyId && self::$instance->gsid === $iSurveyGroupId)
-            || !self::isCorrectInstance($sTemplateName)
-        ) {
+        $getNewInstance = false;
+        // if we don't have an instance, generate one
+        if (empty(self::$instance)) {
+            $getNewInstance = true;
+        } elseif (!self::$instance instanceof TemplateManifest
+            // if the current instance matches the requested surveys sid and gsid, generate a new one
+            && !(self::$instance->sid === $iSurveyId && self::$instance->gsid === $iSurveyGroupId)) {
+            $getNewInstance = true;
+        } elseif (!self::isCorrectInstance($sTemplateName)) {
+            // if the current instance name does not match the requested, generate a new one
+            $getNewInstance = true;
+        }
+        if ($getNewInstance) {
             self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML);
             self::$instance->prepareTemplateRendering($sTemplateName, $iSurveyId);
         }
