@@ -2,7 +2,7 @@
 
 class ReactEditor extends \PluginBase
 {
-    const STG_NAME_REACT_EDITOR = "reactEditor";
+    const STG_NAME_REACT_EDITOR = "editorEnabled";
 
     protected $storage = 'DbStorage';
 
@@ -66,7 +66,7 @@ class ReactEditor extends \PluginBase
 
         $modalHtml = $this->renderPartial(
             '_modalActivateDeactivateEditor', [
-            'activated' => true
+            'activated' => $this->isEditorEnabled(),
             ],
             true,
         );
@@ -157,6 +157,28 @@ EOT,
         }
 
 
+    }
+
+    /**
+     * Checks if react editor is enabled for the current user.
+     *
+     * @return bool|string
+     */
+    private function isEditorEnabled() {
+        //first check db settings_user
+        $userId = App()->user->id;
+        $userSetting = SettingsUser::model()->findByAttributes(
+            [
+                'uid' => $userId,
+                "stg_name" => self::STG_NAME_REACT_EDITOR
+            ]
+        );
+
+        if ($userSetting) {
+            return ($userSetting->stg_value === '1');
+        }
+        //if no entry there check the config default value
+        return App()->getConfig(self::STG_NAME_REACT_EDITOR);
     }
 
 

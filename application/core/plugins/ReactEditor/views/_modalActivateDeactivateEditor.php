@@ -1,10 +1,10 @@
 <?php
 
+/** @var bool $activated  */
+
 $saveUrl = \Yii::app()->createUrl(
     "plugins/direct/plugin/ReactEditor/function/saveActivateDeactivate",
 );
-
-$saveURL = ""; //todo: replace with actual save URL
 
 $cssUrl = \Yii::app()->assetManager->publish(
     dirname(dirname(__DIR__)) . '/ReactEditor/css'
@@ -23,7 +23,7 @@ $cssUrl = \Yii::app()->assetManager->publish(
                         data-bs-dismiss="modal" aria-label="Close"
                         style="z-index: 1050;"></button> <!-- TODO inline style-->
                 <input type="hidden" id="saveUrl" name="saveUrl"
-                       value="<?= $saveURL ?>">
+                       value="<?= $saveUrl ?>">
                 <input type="hidden" id="successMsgFeatureOptin"
                        value="<?= gt(
                            'The new editor was successfully activated.'
@@ -56,7 +56,7 @@ $cssUrl = \Yii::app()->assetManager->publish(
                                         [
                                             'name' => 'editor-switch-btn',
                                             'id' => 'editor-switch-btn',
-                                            'checkedOption' => true,
+                                        'checkedOption' => $activated,
                                             'selectOptions' => [
                                                 '0' => gT('Classic'),
                                                 '1' => gT('New'),
