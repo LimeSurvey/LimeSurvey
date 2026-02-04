@@ -34,6 +34,9 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.16.6 (build 260204) to 6.16.7 (build 260205) February 4, 2026
+-Fixed issue: release notes file is empty (Patrick Teichmann)
+
 Changes from 6.16.5 (build 260127) to 6.16.6 (build 260204) February 2, 2026
 +New feature #AT-1622: new corner-radius theme option for fruity_twentythree theme (Patrick Teichmann)
 +New feature #AT-1560: new copy survey process in the survey lists action menu (Patricia Stelling)
