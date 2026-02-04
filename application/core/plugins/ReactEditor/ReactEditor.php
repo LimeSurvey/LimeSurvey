@@ -90,20 +90,27 @@ class ReactEditor extends \PluginBase
      */
     public function renderActivateEditorModal()
     {
+        if ($this->isBackendAccess()) {
+            $assetsUrl = \Yii::app()->assetManager->publish(
+                dirname(__FILE__) . '/js'
+            );
+            \Yii::app()->clientScript->registerScriptFile(
+                $assetsUrl . '/activateEditor.js'
+            );
 
-        $assetsUrl = \Yii::app()->assetManager->publish(dirname(__FILE__) . '/js');
-        \Yii::app()->clientScript->registerScriptFile($assetsUrl . '/activateEditor.js');
+            $modalHtml = $this->renderPartial(
+                '_modalActivateDeactivateEditor',
+                [
+                    'activated' => $this->isEditorEnabled(),
+                ],
+                true,
+            );
 
-        $modalHtml = $this->renderPartial(
-            '_modalActivateDeactivateEditor', [
-            'activated' => $this->isEditorEnabled(),
-        ],
-            true,
-        );
+            $shouldShowModal = !$this->hasEditorSettingInDatabase();
 
-        \Yii::app()->getClientScript()->registerScript(
-            'previewModal',
-            "
+            \Yii::app()->getClientScript()->registerScript(
+                'previewModal',
+                "
             // First, remove all existing modals
             $('div[id=\"feature-preview-modal\"]').remove();
             
@@ -111,9 +118,24 @@ class ReactEditor extends \PluginBase
             if (!window.featurePreviewModalAdded) {
                 $('body').append(" . json_encode($modalHtml) . ");
                 window.featurePreviewModalAdded = true;
+                
+                "
+                . ($shouldShowModal ? "$('#activate_editor').modal('show');" : "")
+                . "
             }
             "
-        );
+            );
+        }
+    }
+
+    /**
+     * Checks if the editorEnabled setting exists in settings_user table for current user
+     *
+     * @return bool
+     */
+    private function hasEditorSettingInDatabase()
+    {
+        return SettingsUser::getUserSetting(self::STG_NAME_REACT_EDITOR) !== null;
     }
 
     public function renderDropdownItems()
@@ -161,29 +183,10 @@ EOT,
         if ($action === 'saveActivateDeactivate') {
             $optIn = isset($_POST['optin']) ? (int)$_POST['optin'] : -1;
             //update or insert entry in settings_user
-            if($optIn === 1 || $optIn === 0) {
-                $userId = App()->user->id;
-                $userSetting = SettingsUser::model()->findByAttributes(
-                    [
-                        'uid' => $userId,
-                        "stg_name" => self::STG_NAME_REACT_EDITOR
-                    ]
-                );
-                if ($userSetting === null) {
-                    //default value from config was used, create a new entry for the user
-                    $userSetting = new SettingsUser();
-                    $userSetting->uid = $userId;
-                    $userSetting->stg_name = self::STG_NAME_REACT_EDITOR;
-                    $userSetting->stg_value = $optIn;
-                } else {
-                    //here we can simply update the value
-                    $userSetting->stg_value = $optIn;
-                }
-                $userSetting->save();
+            if ($optIn === 1 || $optIn === 0) {
+                SettingsUser::setUserSetting(self::STG_NAME_REACT_EDITOR, $optIn);
             }
         }
-
-
     }
 
     /**
@@ -193,13 +196,7 @@ EOT,
      */
     private function isEditorEnabled() {
         //first check db settings_user
-        $userId = App()->user->id;
-        $userSetting = SettingsUser::model()->findByAttributes(
-            [
-                'uid' => $userId,
-                "stg_name" => self::STG_NAME_REACT_EDITOR
-            ]
-        );
+        $userSetting = SettingsUser::getUserSetting(self::STG_NAME_REACT_EDITOR);
 
         if ($userSetting) {
             return ($userSetting->stg_value === '1');
@@ -208,4 +205,11 @@ EOT,
         return App()->getConfig(self::STG_NAME_REACT_EDITOR);
     }
 
+    /**
+     * If user is a logged-in user we can assume, that backend is accessed right now.
+     */
+    public function isBackendAccess(): bool
+    {
+        return !App()->user->isGuest;
+    }
 }
