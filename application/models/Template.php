@@ -584,8 +584,8 @@ class Template extends LSActiveRecord
         if (empty(self::$instance)) {
             $getNewInstance = true;
         } elseif (!self::$instance instanceof TemplateManifest
-            // if the current instance matches the requested surveys sid and gsid, generate a new one
             && !(self::$instance->sid === $iSurveyId && self::$instance->gsid === $iSurveyGroupId)) {
+            // if the current instance matches the requested surveys sid and gsid, generate a new one
             $getNewInstance = true;
         } elseif (!self::isCorrectInstance($sTemplateName)) {
             // if the current instance name does not match the requested, generate a new one
