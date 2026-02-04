@@ -1020,11 +1020,11 @@ class UserManagementController extends LSBaseController
                 fprintf($fp, chr(0xEF) . chr(0xBB) . chr(0xBF));
                 $header = array('uid', 'users_name', 'full_name', 'email', 'lang', 'password');
                 //Add csv header
-                fputcsv($fp, $header, ';', '"');
+                fputcsv($fp, $header, ';', '"', '\\');
 
                 //add csv row datas
                 foreach ($aUsers as $fields) {
-                    fputcsv($fp, $fields, ';', '"');
+                    fputcsv($fp, $fields, ';', '"', '\\');
                 }
                 fclose($fp);
                 header('Content-Encoding: UTF-8');
