@@ -1,0 +1,60 @@
+.lime-toggle-btn-group {
+    // g-700 colored version used in the new editor
+    .btn-group {
+        width: 100%;
+        background: $g-700;
+        padding: 4px;
+        border-radius: $border-radius;
+        .btn {
+            display: block;
+            color: $g-400;
+            font-weight: $font-weight-500;
+            font-size: $font-size-sm;
+            line-height: $line-height-20;
+        }
+        .btn-check + .btn-outline-secondary {
+            background-color: transparent;
+            border-color: $g-700;
+        }
+
+        .btn-check:active + .btn-outline-secondary,
+        .btn-check:checked + .btn-outline-secondary,
+        .btn-outline-secondary.active,
+        .btn-outline-secondary.dropdown-toggle.show,
+        .btn-outline-secondary:active {
+            background-color: $white;
+            border-color: $g-700;
+            color: $g-900;
+            font-weight: $font-weight-500;
+            border-radius: 3px;
+
+            &.disabled,
+            &[disabled] {
+                border-color: $g-600;
+                background-color: $g-400;
+                color: $g-600;
+            }
+        }
+
+        .btn-check:active + .btn-outline-secondary:focus,
+        .btn-check:checked + .btn-outline-secondary:focus,
+        .btn-outline-secondary.active:focus,
+        .btn-outline-secondary.dropdown-toggle.show:focus,
+        .btn-outline-secondary:active:focus,
+        .btn-outline-secondary:active,
+        .btn-check:focus + .btn-outline-secondary,
+        .btn-outline-secondary:hover {
+            box-shadow: none;
+        }
+    }
+
+    // purple variant
+    &.isSecondary {
+        .btn-group {
+            background: $grape;
+            .btn-check + .btn-outline-secondary {
+                border-color: $grape;
+            }
+        }
+    }
+}
