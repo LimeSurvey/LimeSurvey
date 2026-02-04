@@ -49,6 +49,7 @@
 
         .btn-check:not(:checked) + .btn-outline-secondary:hover {
             background-color: $g-800;
+            color: $g-200;
         }
     }
 
