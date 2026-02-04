@@ -1,5 +1,6 @@
 <?php
 
+use LimeSurvey\Models\Services\EditorService;
 class ReactEditor extends \PluginBase
 {
     const STG_NAME_REACT_EDITOR = "editorEnabled";
@@ -18,11 +19,36 @@ class ReactEditor extends \PluginBase
         $this->subscribe('beforeControllerAction');
         $this->subscribe('beforeAdminMenuRender');
         $this->subscribe('newDirectRequest');
+        $this->subscribe('beforeDeactivate');
+        $this->subscribe('beforeControllerAction', 'initEditor');
+        $this->subscribe('beforeControllerAction', 'registerSurveyRedirect');
     }
 
-    /**
-     * @throws CException
-     */
+    public function beforeDeactivate()
+    {
+        $this->getEvent()->set('success', false);
+        $this->getEvent()->set('message', gT('Core plugin can not be disabled.'));
+    }
+
+    public function initEditor()
+    {
+        EditorService::initEditorApp(
+            SettingsUser::getUserSettingValue('editorEnabled') ?? false
+        );
+    }
+
+    public function registerSurveyRedirect()
+    {
+        $controller = $this->getEvent()->get('controller');
+        $action = $this->getEvent()->get('action');
+
+        EditorService::registerSurveyRedirect(
+            SettingsUser::getUserSettingValue('editorEnabled') ?? false,
+            $controller,
+            $action
+        );
+    }
+
     public function beforeControllerAction(): void
     {
         $this->renderActivateEditorModal();
@@ -69,7 +95,7 @@ class ReactEditor extends \PluginBase
         $modalHtml = $this->renderPartial(
             '_modalActivateDeactivateEditor', [
             'activated' => $this->isEditorEnabled(),
-            ],
+        ],
             true,
         );
 
@@ -182,6 +208,5 @@ EOT,
         //if no entry there check the config default value
         return App()->getConfig(self::STG_NAME_REACT_EDITOR);
     }
-
 
 }
