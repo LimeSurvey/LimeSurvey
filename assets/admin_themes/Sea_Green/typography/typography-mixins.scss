@@ -22,3 +22,12 @@
   font-size   : $font-size-sm;
   line-height : $line-height-20;
 }
+
+@mixin reg14 {
+    color          : $g-900;
+    font-family    : $ibm-font-family;
+    font-size      : $font-size-sm;
+    font-weight    : $font-weight-normal;
+    line-height    : $line-height-20;
+    letter-spacing : -0.238px;
+}
