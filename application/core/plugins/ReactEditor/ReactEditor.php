@@ -16,7 +16,6 @@ class ReactEditor extends \PluginBase
      */
     public function init()
     {
-        //$this->subscribe('beforeControllerAction');
         $this->subscribe('beforeAdminMenuRender');
         $this->subscribe('newDirectRequest');
         $this->subscribe('beforeDeactivate');
@@ -50,33 +49,6 @@ class ReactEditor extends \PluginBase
         );
     }
 
-    /*
-    public function beforeControllerAction(): void
-    {
-        $this->renderActivateEditorModal();
-
-        //redirect to the new editor if turned on...
-        $controller = $this->getEvent()->get('controller');
-        $action = $this->getEvent()->get('action');
-
-        //defining list of routes that should be redirected to the new editor
-        $controllerAction = ($controller === 'surveyAdministration') && ($action === 'view');
-
-        $editorEnabled = $this->isEditorEnabled();
-        if ($controllerAction) {
-            //todo check user permission
-            $sid = sanitize_int(Yii::app()->request->getParam('surveyid'));
-            if (Permission::model()->hasSurveyPermission((int)$sid, 'survey', 'read')) {
-                $survey = Survey::model()->findByPk($sid);
-                $fruityView = ($survey->getTemplateEffectiveName() === 'fruity_twentythree');
-                if ($editorEnabled && $fruityView) {
-                    Yii::app()->request->redirect(\EditorLinkController::REACT_APP_BASE_PATH . 'survey/' . $sid);
-                }
-            }
-        }
-
-    }
-*/
     /**
      * Append new menu item to the admin topbar
      */
