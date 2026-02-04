@@ -1,0 +1,36 @@
+@mixin button-outline-variant(
+    $color
+) {
+    color        : $color;
+    stroke       : $color;
+    border-color : $color;
+    &:hover {
+        color        : $color;
+        stroke       : $color;
+        border-color : $color;
+        box-shadow   : $btn-hover-boxshadow;
+    }
+    &:focus, &:active, &.active, &:active:focus, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
+        color        : $color;
+        stroke       : $color;
+        border-color : $color;
+        box-shadow   : $btn-focus-boxshadow;
+    }
+}
+
+$button-outline-variants : (
+    "primary": var(--bs-primary),
+    "secondary": $g-900,
+    "success": var(--bs-success),
+    "danger": var(--bs-danger),
+    "warning": var(--bs-warning),
+    "info": var(--bs-info),
+    "light": var(--bs-light),
+    "dark": var(--bs-dark),
+    "g-700": $g-700
+);
+@each $color, $value in $button-outline-variants {
+    .btn-outline-#{$color} {
+        @include button-outline-variant($value);
+    }
+}
