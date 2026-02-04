@@ -583,8 +583,10 @@ class Template extends LSActiveRecord
         // if we don't have an instance, generate one
         if (empty(self::$instance)) {
             $getNewInstance = true;
-        } elseif (!self::$instance instanceof TemplateManifest
-            && !(self::$instance->sid === $iSurveyId && self::$instance->gsid === $iSurveyGroupId)) {
+        } elseif (
+            !self::$instance instanceof TemplateManifest
+            && !(self::$instance->sid === $iSurveyId && self::$instance->gsid === $iSurveyGroupId)
+        ) {
             // if the current instance matches the requested surveys sid and gsid, generate a new one
             $getNewInstance = true;
         } elseif (!self::isCorrectInstance($sTemplateName)) {
