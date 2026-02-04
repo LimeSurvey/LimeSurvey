@@ -16,12 +16,13 @@ class ReactEditor extends \PluginBase
      */
     public function init()
     {
-        $this->subscribe('beforeControllerAction');
+        //$this->subscribe('beforeControllerAction');
         $this->subscribe('beforeAdminMenuRender');
         $this->subscribe('newDirectRequest');
         $this->subscribe('beforeDeactivate');
         $this->subscribe('beforeControllerAction', 'initEditor');
         $this->subscribe('beforeControllerAction', 'registerSurveyRedirect');
+        $this->subscribe('beforeControllerAction', 'renderActivateEditorModal');
     }
 
     public function beforeDeactivate()
@@ -49,6 +50,7 @@ class ReactEditor extends \PluginBase
         );
     }
 
+    /*
     public function beforeControllerAction(): void
     {
         $this->renderActivateEditorModal();
@@ -74,7 +76,7 @@ class ReactEditor extends \PluginBase
         }
 
     }
-
+*/
     /**
      * Append new menu item to the admin topbar
      */
@@ -159,7 +161,6 @@ EOT,
         if ($action === 'saveActivateDeactivate') {
             $optIn = isset($_POST['optin']) ? (int)$_POST['optin'] : -1;
             //update or insert entry in settings_user
-            //$activateDeactivate = new EditorEnableService($optIn);
             if($optIn === 1 || $optIn === 0) {
                 $userId = App()->user->id;
                 $userSetting = SettingsUser::model()->findByAttributes(
@@ -178,10 +179,8 @@ EOT,
                     //here we can simply update the value
                     $userSetting->stg_value = $optIn;
                 }
-                $success = $userSetting->save();
+                $userSetting->save();
             }
-
-            //$activateDeactivate->activateDeactivateEditor();
         }
 
 
