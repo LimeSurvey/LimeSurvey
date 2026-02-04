@@ -1,8 +1,9 @@
 <?php
 
+use LimeSurvey\Models\Services\EditorService;
 class ReactEditor extends \PluginBase
 {
-    const STG_NAME_REACT_EDITOR = "reactEditor";
+    const STG_NAME_REACT_EDITOR = "editorEnabled";
 
     protected $storage = 'DbStorage';
 
@@ -15,14 +16,41 @@ class ReactEditor extends \PluginBase
      */
     public function init()
     {
-        $this->subscribe('beforeControllerAction');
+        //$this->subscribe('beforeControllerAction');
         $this->subscribe('beforeAdminMenuRender');
         $this->subscribe('newDirectRequest');
+        $this->subscribe('beforeDeactivate');
+        $this->subscribe('beforeControllerAction', 'initEditor');
+        $this->subscribe('beforeControllerAction', 'registerSurveyRedirect');
+        $this->subscribe('beforeControllerAction', 'renderActivateEditorModal');
     }
 
-    /**
-     * @throws CException
-     */
+    public function beforeDeactivate()
+    {
+        $this->getEvent()->set('success', false);
+        $this->getEvent()->set('message', gT('Core plugin can not be disabled.'));
+    }
+
+    public function initEditor()
+    {
+        EditorService::initEditorApp(
+            SettingsUser::getUserSettingValue('editorEnabled') ?? false
+        );
+    }
+
+    public function registerSurveyRedirect()
+    {
+        $controller = $this->getEvent()->get('controller');
+        $action = $this->getEvent()->get('action');
+
+        EditorService::registerSurveyRedirect(
+            SettingsUser::getUserSettingValue('editorEnabled') ?? false,
+            $controller,
+            $action
+        );
+    }
+
+    /*
     public function beforeControllerAction(): void
     {
         $this->renderActivateEditorModal();
@@ -30,9 +58,11 @@ class ReactEditor extends \PluginBase
         //redirect to the new editor if turned on...
         $controller = $this->getEvent()->get('controller');
         $action = $this->getEvent()->get('action');
+
+        //defining list of routes that should be redirected to the new editor
         $controllerAction = ($controller === 'surveyAdministration') && ($action === 'view');
 
-        $editorEnabled = Yii::app()->getConfig('editorEnabled');
+        $editorEnabled = $this->isEditorEnabled();
         if ($controllerAction) {
             //todo check user permission
             $sid = sanitize_int(Yii::app()->request->getParam('surveyid'));
@@ -46,7 +76,7 @@ class ReactEditor extends \PluginBase
         }
 
     }
-
+*/
     /**
      * Append new menu item to the admin topbar
      */
@@ -66,8 +96,8 @@ class ReactEditor extends \PluginBase
 
         $modalHtml = $this->renderPartial(
             '_modalActivateDeactivateEditor', [
-            'activated' => true
-            ],
+            'activated' => $this->isEditorEnabled(),
+        ],
             true,
         );
 
@@ -113,6 +143,12 @@ EOT,
         );
     }
 
+    /**
+     * Saves if the users wants to activate or deactivate the new react editor
+     *
+     * @return void
+     * @throws CHttpException
+     */
     public function newDirectRequest()
     {
         $event = $this->getEvent();
@@ -123,15 +159,13 @@ EOT,
         $action = $event->get('function');
 
         if ($action === 'saveActivateDeactivate') {
-            //save the new value for the user in settings_user
-            //get current user id
-            $userId =App()->user->id;
             $optIn = isset($_POST['optin']) ? (int)$_POST['optin'] : -1;
             //update or insert entry in settings_user
             if($optIn === 1 || $optIn === 0) {
+                $userId = App()->user->id;
                 $userSetting = SettingsUser::model()->findByAttributes(
                     [
-                        'user_id' => $userId,
+                        'uid' => $userId,
                         "stg_name" => self::STG_NAME_REACT_EDITOR
                     ]
                 );
@@ -141,18 +175,37 @@ EOT,
                     $userSetting->uid = $userId;
                     $userSetting->stg_name = self::STG_NAME_REACT_EDITOR;
                     $userSetting->stg_value = $optIn;
-                    $userSetting->save();
                 } else {
                     //here we can simply update the value
                     $userSetting->stg_value = $optIn;
-                    $userSetting->save();
                 }
+                $userSetting->save();
             }
-
         }
 
 
     }
 
+    /**
+     * Checks if react editor is enabled for the current user.
+     *
+     * @return bool|string
+     */
+    private function isEditorEnabled() {
+        //first check db settings_user
+        $userId = App()->user->id;
+        $userSetting = SettingsUser::model()->findByAttributes(
+            [
+                'uid' => $userId,
+                "stg_name" => self::STG_NAME_REACT_EDITOR
+            ]
+        );
+
+        if ($userSetting) {
+            return ($userSetting->stg_value === '1');
+        }
+        //if no entry there check the config default value
+        return App()->getConfig(self::STG_NAME_REACT_EDITOR);
+    }
 
 }
