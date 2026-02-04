@@ -30,9 +30,11 @@ class ReactEditor extends \PluginBase
         //redirect to the new editor if turned on...
         $controller = $this->getEvent()->get('controller');
         $action = $this->getEvent()->get('action');
+
+        //defining list of routes that should be redirected to the new editor
         $controllerAction = ($controller === 'surveyAdministration') && ($action === 'view');
 
-        $editorEnabled = Yii::app()->getConfig('editorEnabled');
+        $editorEnabled = $this->isEditorEnabled();
         if ($controllerAction) {
             //todo check user permission
             $sid = sanitize_int(Yii::app()->request->getParam('surveyid'));
