@@ -1,20 +1,3 @@
-#activate_editor .btn-close {
-    align-self : flex-start;
-    color      : #1E1E1E; /* $g-900 */
-    width      : 0.75em;
-    height     : 0.75em;
-    opacity    : 1;
-    font-size  : 12px;
-    &:focus {
-        box-shadow : none;
-        outline    : 2px solid currentColor;
-        outline-offset:2px;
-    }
-    &:hover {
-        background-color : #EEEFF7; /* $g-200 */
-    }
-}
-
 #activate_editor .card {
     padding-left: 0;
     padding-right: 0;
@@ -42,6 +25,9 @@
 }
 
 .editor-preview {
+    max-width: calc(100% - 40px);
     margin-left: 20px;
     margin-right: 20px;
+    height: auto;
+    object-fit: contain;
 }

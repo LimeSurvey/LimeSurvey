@@ -50,6 +50,7 @@ $cssUrl = \Yii::app()->assetManager->publish(
                                 </p>
                                 <div class="row mb-16">
                                     <label class="label-s mb-1" for='editor-switch-btn'><?php eT("Editor version"); ?></label>
+                                    <div class="lime-toggle-btn-group isSecondary">
                                     <?php
                                     Yii::app()->getController()->widget(
                                         'ext.ButtonGroupWidget.ButtonGroupWidget',
@@ -61,11 +62,10 @@ $cssUrl = \Yii::app()->assetManager->publish(
                                                 '0' => gT('Classic'),
                                                 '1' => gT('New'),
                                             ],
-                                            'htmlOptions' => [
-                                                'class' => 'btn-group-purple',
-                                            ]
                                         ]
-                                    ); ?><br>
+                                    ); ?>
+                                    </div>
+                                        <br>
                                 </div>
                                 <div class="hint-text-box p-3">
                                     <p class="hint-text med-14-c mb-1">
