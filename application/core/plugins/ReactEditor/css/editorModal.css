@@ -31,3 +31,8 @@
     height: auto;
     object-fit: contain;
 }
+
+/* same size for both buttons within the toggle switch */
+.lime-toggle-btn-group .btn-group .btn {
+    flex: 1;
+}
