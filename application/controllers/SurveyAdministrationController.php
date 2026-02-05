@@ -2283,13 +2283,6 @@ class SurveyAdministrationController extends LSBaseController
                 );
             }
         }
-
-        if ((App()->getConfig("editorEnabled")) && ($copiedSurvey !== null)) {
-            $copiedSurvey->setOptions();
-            if ($copiedSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
-                $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $copiedSurvey->sid]);
-            }
-        }
         $this->aData = $aData;
 
         $this->render('copySurveyResult_view', $this->aData);
@@ -2379,10 +2372,6 @@ class SurveyAdministrationController extends LSBaseController
         $redirectUrl = App()->request->urlReferrer;
         if ($copiedSurvey !== null) {
             $redirectUrl = App()->createUrl("surveyAdministration/view/", ["iSurveyID" => $copiedSurvey->sid]);
-            $copiedSurvey->setOptions();
-            if ((App()->getConfig("editorEnabled")) && $copiedSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
-                $redirectUrl = App()->createUrl("editorLink/index", ["route" => "survey/" . $copiedSurvey->sid]);
-            }
         }
 
         $this->redirect($redirectUrl);
@@ -2477,14 +2466,6 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
 
-        if ((App()->getConfig("editorEnabled")) && isset($aImportResults['newsid'])) {
-            if (!isset($oSurvey)) {
-                $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
-            }
-            if ($oSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
-                $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $aImportResults['newsid']]);
-            }
-        }
         $this->aData = $aData;
         $this->render('importSurvey_view', $this->aData);
     }
