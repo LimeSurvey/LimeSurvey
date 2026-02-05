@@ -29,7 +29,7 @@ class EditorService
     {
         self::init();
         $surveyId = EditorRequestHelper::findSurveyId();
-        if (App()->getConfig('editorEnabled')) {
+        if (App()->getConfig('editorEnabled') && !empty($surveyId)) {
             $event->getEvent()->set('sidemenu', true);
             App()->controller->widget(
                 'ext.admin.survey.SurveySidemenuWidget.SurveySidemenuWidget',
