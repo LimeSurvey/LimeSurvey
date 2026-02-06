@@ -182,3 +182,11 @@
     background-color: $white !important;
   }
 }
+
+.dropdown-toggle-no-caret::after {
+    display: none !important;
+}
+
+.extra-menu-dropdown {
+    padding : 1rem;
+}

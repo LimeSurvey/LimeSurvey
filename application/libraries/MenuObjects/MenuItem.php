@@ -16,6 +16,8 @@ class MenuItem implements MenuItemInterface
     protected $iconClass = "";
     /** @var string */
     protected $id = null;
+    /** @var string */
+    protected $itemClass = "";
 
     //make it possible to open a modal via the item click
 
@@ -57,6 +59,9 @@ class MenuItem implements MenuItemInterface
 
         if (isset($options['modalId'])) {
             $this->modalId = $options['modalId'];
+        }
+        if (isset($options['itemClass'])) {
+            $this->itemClass = $options['itemClass'];
         }
     }
 
@@ -115,6 +120,10 @@ class MenuItem implements MenuItemInterface
     public function isModal()
     {
         return $this->isModal;
+    }
+
+    public function getItemClass(){
+        return $this->itemClass;
     }
 
     /**

@@ -29,7 +29,8 @@
         }
     }
     > {
-        li > a {
+        li > a,
+        li > button {
             color : $g-800;
             &:hover {
                 color            : $g-800;
@@ -40,7 +41,8 @@
                 background-color : var(--bs-primary);
             }
         }
-        .active > a {
+        .active > a,
+        .active > button {
             color            : $white;
             background-color : var(--bs-primary);
             &:hover {
@@ -52,7 +54,8 @@
                 background-color : var(--bs-primary);
             }
         }
-        .disabled > a {
+        .disabled > a,
+        .disabled > button {
             color : $g-600;
         }
     }
