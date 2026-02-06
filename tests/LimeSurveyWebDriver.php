@@ -224,7 +224,7 @@ class LimeSurveyWebDriver extends RemoteWebDriver
         try {
             // If not clickable, dismiss modal.
             $button = $this->findElement(
-                WebDriverBy::cssSelector('activate_editor .modal-body .btn-close')
+                WebDriverBy::cssSelector('#activate_editor .modal-body .btn-close')
             );
             $button->click();
             sleep(1);
