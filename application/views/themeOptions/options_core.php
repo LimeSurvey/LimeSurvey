@@ -145,33 +145,56 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                 <?php
                                 $optionsValues = !empty($attribute['options']) ? explode('|', $attribute['options']) : [];
                                 $optionLabels = !empty($attribute['optionlabels']) ? explode('|', $attribute['optionlabels']) : [];
+                                // images are loaded through a css class injection
+                                $optionImages = !empty($attribute['optionimages']) ? explode('|', $attribute['optionimages']) : [];
                                 $options = array_combine($optionsValues, $optionLabels);
+                                foreach ($optionsValues as $optionKey => $optionSettings) {
+                                    $imageClass = $optionImages[$optionKey] ?? '';
+                                    $options[$optionSettings] = [
+                                        'value' => $optionLabels[$optionKey],
+                                        'image' => $imageClass,
+                                    ];
+                                }
                                 if ($bInherit && isset($sParentOption)) {
-                                    $options['inherit'] = $sParentOption . " ᴵ";
+                                    $options['inherit']['value'] = $sParentOption . " ᴵ";
+                                    if (!empty($options[$sParentOption]['image'])) {
+                                        $options['inherit']['image'] = $options[$sParentOption]['image'];
+                                    }
                                 }
                                 if ($bInherit && isset($sParentOption)) {
                                     if (is_numeric($sParentOption) && array_key_exists($sParentOption, $options)) {
-                                        $sParentLabelOption = $options[$sParentOption];
-                                        $options['inherit'] = gT($sParentLabelOption) . " ᴵ";
+                                        $sParentLabelOption = $options[$sParentOption]['value'];
+                                        $options['inherit']['value'] = gT($sParentLabelOption) . " ᴵ";
                                     } else {
-                                        $sParentOption = !empty($options[$sParentOption]) ? gT($options[$sParentOption]) : '';
-                                        $options['inherit'] = $sParentOption . " ᴵ";
+                                        $sParentOption = !empty($options[$sParentOption]['value']) ? gT($options[$sParentOption]['value']) : '';
+                                        $options['inherit']['value'] = $sParentOption . " ᴵ";
                                     }
                                 }
                                 ?>
+                                <!-- buttons type -->
                                 <div class="col-12">
                                     <div class="btn-group" role="group">
-                                        <?php foreach ($options as $optionKey => $optionValue) : ?>
+                                        <?php foreach ($options as $optionKey => $optionSettings) : ?>
                                             <?php $id = $attributeKey . "_" . $optionKey; ?>
                                             <input id="<?= $id ?>" type="radio" name="<?= $attributeKey ?>" value="<?= $optionKey ?>"
                                                    class="btn-check selector_option_radio_field simple_edit_options_<?= $attributeKey ?>"/>
                                             <label for="<?= $id ?>" class="btn btn-outline-secondary">
-                                                <?= gT($optionValue) ?>
+                                                <?php if (!empty($optionSettings['image'])) : ?>
+                                                    <?php $imageFilePath = App()->getConfig('standardthemerootdir') . DIRECTORY_SEPARATOR . $aTemplateConfiguration['template_name'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . $optionSettings['image'] ?>
+                                                    <?php if (file_exists($imageFilePath)) : ?>
+                                                        <?= file_get_contents($imageFilePath) ?>
+                                                        <?= $optionKey === 'inherit' ? ' ᴵ' : '' ?>
+                                                    <?php endif; ?>
+                                                <?php endif; ?>
+                                                <?php if (empty($optionSettings['image'])) : ?>
+                                                    <?= gT($optionSettings['value']) ?>
+                                                <?php endif; ?>
                                             </label>
                                         <?php endforeach; ?>
                                     </div>
                                 </div>
                             <?php elseif ($attribute['type'] === 'colorpicker') : ?>
+                                <!-- colorpicker type -->
                                 <div class="input-group">
                                     <div class="input-group-text style__colorpicker">
                                         <input type="color" name="<?= $attributeKey ?>_picker" data-value="<?= $sParentOption ?>" class="selector__colorpicker-inherit-value"/>
@@ -214,7 +237,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                     Yii::app()->getClientScript()->registerPackage('font-websafe');
                                 }
                                 ?>
-
+                                <!-- dropdown type -->
                                 <div class="col-12">
                                     <select class="<?= $classValue ?>" <?= $parentDataAttribute ?>
                                             data-inheritvalue="<?= ($attributeKey === 'font' && isset($sPackagesToLoad) ? htmlspecialchars($sPackagesToLoad) : $sParentOption) ?>"
@@ -247,6 +270,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                     $sParentOption = 'N/A';
                                 }
                                 ?>
+                                <!-- imagefile type -->
                                 <div class="col-12">
                                     <?php // Fields linked to a parent option (Yes/No switch) need a class and data-parent attribute ?>
                                     <select class="form-select selector_option_value_field selector_option_value_field selector_image_selector"
@@ -269,6 +293,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                     </select>
                                 </div>
                             <?php elseif ($attribute['type'] === 'icon') : ?>
+                                <!-- icon type -->
                                 <div class="col-12 input-group">
                                     <select class="selector_option_value_field form-select simple_edit_options_checkicon" <?= $parentDataAttribute ?>
                                             id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>">
@@ -286,12 +311,14 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                     </div>
                                 </div>
                             <?php elseif ($attribute['type'] === 'text') : ?>
+                                <!-- text type -->
                                 <div class="col-12">
                                     <input type="text" class="form-control selector-text-input selector_text_option_value_field" <?= $parentDataAttribute ?>
                                            id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>"
                                            title="<?= gT("inherited value:") ?> <?= CHtml::encode($sParentOption) ?>"/>
                                 </div>
                             <?php elseif ($attribute['type'] === 'textarea') : ?>
+                                <!-- textarea type -->
                                 <div class="col-12">
                                     <textarea
                                         class="form-control selector-text-input selector_text_option_value_field" <?= $parentDataAttribute ?>
@@ -302,6 +329,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                     </textarea>
                                 </div>
                             <?php elseif ($attribute['type'] === 'duration') : ?>
+                                <!-- duration type -->
                                 <div class="col-12">
                                     <input type="text" class="form-control selector-numerical-input selector_text_option_value_field selector_radio_childfield"
                                            <?= $parentDataAttribute ?> id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>"
@@ -310,6 +338,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                             <?php endif; ?>
                         </div>
                         <?php if ($attribute['type'] === 'imagefile' || ($category == 'Images' && $attribute['type'] == 'dropdown')) : ?>
+                            <!-- imagefile, dropdown type -->
                             <div class="col-2">
                                 <label class="form-label">&nbsp;</label>
                                 <div class="col-12">
@@ -324,6 +353,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                 <?php endforeach; ?>
             </div>
             <?php if ($category === 'Images') : ?>
+                <!-- Images category -->
                 <div class="row action_hide_on_inherit">
                     <div class="ls-space margin bottom-15 top-15">
                         <div class="row ls-space margin bottom-15">
