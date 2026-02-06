@@ -43,13 +43,13 @@ $cssUrl = \Yii::app()->assetManager->publish(
                                 <h1 class="card-title reg-24 mb-16">
                                     <?= gT('Welcome to the new LimeSurvey') ?>
                                 </h1>
-                                <p class="card-text reg-14 mb-16"><?= gt(
+                                <p class="card-text reg-14 mb-16"><?= gT(
                                         'With the LimeSurvey Editor, you can create surveys in a 
                                         squeeze of a lime, combining intuitive design with powerful features for a 
                                         faster, smarter survey-building experience.'
                                     ) ?>
                                     <br><br>
-                                    <?= gt('Discover what the new editor can do '); ?>
+                                    <?= gT('Discover what the new editor can do '); ?>
                                     <a class="link-info" href="https://www.limesurvey.org" target="_blank"><?= gt('here'); ?></a>.
                                 </p>
                                 <div class="row mb-16">
@@ -73,7 +73,7 @@ $cssUrl = \Yii::app()->assetManager->publish(
                                 </div>
                                 <div class="hint-text-box p-3">
                                     <p class="hint-text med-14-c mb-1">
-                                        <?= gt('Good to know') ?>
+                                        <?= gT('Good to know') ?>
                                     </p>
                                     <p class="hint-text reg-12">
                                         <?= gT(
