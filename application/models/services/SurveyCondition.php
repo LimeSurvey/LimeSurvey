@@ -166,6 +166,7 @@ class SurveyCondition
                 $count_caseinsensitivedupes = count($result);
 
                 if ($count_caseinsensitivedupes == 0) {
+
                     $results[] = \Condition::model()->insertRecords($condition_data);
                     ;
                 }
@@ -255,7 +256,6 @@ class SurveyCondition
         }
 
         $results = array();
-
         if ($editTargetTab == '#CANSWERSTAB') {
             if (isset($p_csrctoken) && $p_csrctoken != '') {
                 $conditionCfieldname = $p_csrctoken;
@@ -940,7 +940,6 @@ class SurveyCondition
                 if ($rows['other'] == "Y") {
                     $fieldNameWithTitle = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], 'other');
                     $theanswer = gT("Other");
-                    $canswers[] = array($fieldName, 'other', $theanswer);
                     $shortanswer = "other: [" . strip_tags((string) $theanswer) . "]";
                     $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'] . 'other', $fieldNameWithTitle); // Set QTypes to specific for javascript
