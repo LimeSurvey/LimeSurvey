@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Menu;
 
-class Menu implements MenuInterface
+class Menu implements ExtendedMenuInterface
 {
     /**
      * @var string
