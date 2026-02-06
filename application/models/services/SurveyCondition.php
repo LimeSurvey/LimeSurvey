@@ -939,9 +939,9 @@ class SurveyCondition
                 }
                 if ($rows['other'] == "Y") {
                     $fieldNameWithTitle = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], 'other');
-                    $theanswer = gt("Other");
+                    $theanswer = gT("Other");
                     $canswers[] = array($fieldName, 'other', $theanswer);
-                    $shortanswer = "{$arows['title']}: [" . strip_tags((string) $theanswer) . "]";
+                    $shortanswer = "other: [" . strip_tags((string) $theanswer) . "]";
                     $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'] . 'other', $fieldNameWithTitle); // Set QTypes to specific for javascript
                     $canswers[] = array($fieldNameWithTitle, " ", gT("No answer"));
