@@ -25,15 +25,15 @@ $cssUrl = \Yii::app()->assetManager->publish(
                 <input type="hidden" id="saveUrl" name="saveUrl"
                        value="<?= $saveUrl ?>">
                 <input type="hidden" id="successMsgFeatureOptin"
-                       value="<?= gt(
+                       value="<?= gT(
                            'The new editor was successfully activated.'
                        ) ?>">
                 <input type="hidden" id="successMsgFeatureOptout"
-                       value="<?= gt(
+                       value="<?= gT(
                            'The new editor was successfully deactivated.'
                        ) ?>">
                 <input type="hidden" id="errorOnSave"
-                       value="<?= gt(
+                       value="<?= gT(
                            'An error occurred while saving.'
                        ) ?>">
                 <div class="card pt-3 pb-5">
@@ -50,7 +50,7 @@ $cssUrl = \Yii::app()->assetManager->publish(
                                     ) ?>
                                     <br><br>
                                     <?= gt('Discover what the new editor can do '); ?>
-                                    <a class="link-info" href="https://www.limesurvey.org" target="_blank"><?= gt('here'); ?>.</a>
+                                    <a class="link-info" href="https://www.limesurvey.org" target="_blank"><?= gt('here'); ?></a>.
                                 </p>
                                 <div class="row mb-16">
                                     <label class="label-s mb-1" for='editor-switch-btn'><?php eT("Editor version"); ?></label>
