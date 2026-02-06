@@ -166,9 +166,7 @@ class SurveyCondition
                 $count_caseinsensitivedupes = count($result);
 
                 if ($count_caseinsensitivedupes == 0) {
-
                     $results[] = \Condition::model()->insertRecords($condition_data);
-                    ;
                 }
             }
 
