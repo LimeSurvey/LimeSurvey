@@ -9,13 +9,10 @@ $(document).ready(function () {
 
         //save feature optin status to db
         let url = $('#saveUrl').val();
-        let data = {
-            optin: newValue,
-        };
         savedViaSwitch = true;
         $.post(
             url,
-            $.merge({optin: $(this).data('optin')}, LS.data.csrfTokenData)
+            $.extend({optin: newValue}, LS.data.csrfTokenData)
         ).done(
             function () {
                 let successMessage = $('#successMsgFeatureOptout').val();
