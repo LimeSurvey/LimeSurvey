@@ -1,8 +1,9 @@
-
-
 $(document).ready(function () {
     let savedViaSwitch = false;
-    //todo we decided to use the switch again as a trigger
+
+    /**
+     * Save the user decision if new editor is turned on or off
+     */
     $(document).on("change", "#editor-switch-btn", function () {
         let newValue = $(this).find('.btn-check:checked').val();
 
@@ -12,17 +13,21 @@ $(document).ready(function () {
             optin: newValue,
         };
         savedViaSwitch = true;
-        $.post(url, data, function () {
-            let successMessage = $('#successMsgFeatureOptout').val();
-            if (newValue === "1") {
-                successMessage = $('#successMsgFeatureOptin').val();
+        $.post(
+            url,
+            $.merge({optin: $(this).data('optin')}, LS.data.csrfTokenData)
+        ).done(
+            function () {
+                let successMessage = $('#successMsgFeatureOptout').val();
+                if (newValue === "1") {
+                    successMessage = $('#successMsgFeatureOptin').val();
+                }
+                $('#activate_editor').modal('hide');
+                LS.ajaxAlerts(successMessage, 'alert-success', {showCloseButton: true});
             }
-            $('#activate_editor').modal('hide');
-            LS.ajaxAlerts(successMessage, 'alert-success', {showCloseButton: true});
-            // Wait 2 seconds before reloading
-           /* setTimeout(function() {
-                window.location.reload();
-            }, 2000); */
+            ).fail(function () {
+                let errorMessage = $('#errorOnSave').val();
+                LS.ajaxAlerts(errorMessage, 'alert-danger', {showCloseButton: true});
         });
     });
     /**
@@ -37,7 +42,10 @@ $(document).ready(function () {
             let data = {
                 optin: currentValue,
             };
-            $.post(url, data);
+            $.post(
+                url,
+                $.merge({optin: $(this).data('optin')}, LS.data.csrfTokenData)
+            );
         }
         // Reset flag for next time
         savedViaSwitch = false;

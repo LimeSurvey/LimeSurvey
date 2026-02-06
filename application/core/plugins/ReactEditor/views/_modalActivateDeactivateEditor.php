@@ -32,6 +32,10 @@ $cssUrl = \Yii::app()->assetManager->publish(
                        value="<?= gt(
                            'The new editor was successfully deactivated.'
                        ) ?>">
+                <input type="hidden" id="errorOnSave"
+                       value="<?= gt(
+                           'An error occurred while saving.'
+                       ) ?>">
                 <div class="card pt-3 pb-5">
                     <div class="row g-0">
                         <div class="col-md-5">
