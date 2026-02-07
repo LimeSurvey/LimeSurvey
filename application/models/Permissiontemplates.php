@@ -279,6 +279,21 @@ class Permissiontemplates extends CActiveRecord
     }
 
     /**
+     * Finds all active records satisfying the specified condition but returns them as array
+     * 
+     * See {@link find()} for detailed explanation about $condition and $params.
+     * @param mixed $condition query condition or criteria.
+     * @param array $params parameters to be bound to an SQL statement.
+     * @return array list of active records satisfying the specified condition. An empty array is returned if none is found.
+     */
+    public function findAllAsArray($condition = '', $params = [])
+    {
+        Yii::trace(get_class($this) . '.findAll()', 'system.db.ar.CActiveRecord');
+        $criteria = $this->getCommandBuilder()->createCriteria($condition, $params);
+        return $this->query($criteria, true, false); //Notice the third parameter 'false'
+    }
+
+    /**
      * @return SimpleXMLElement
      */
     public function compileExportXML()
