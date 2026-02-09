@@ -45,10 +45,10 @@
         background-color: {{ aSurveyInfo.options.questionbackgroundcolor  }};
     }
 
-    {% set checkicon = '"\\' ~  aSurveyInfo.options.checkicon   ~ '"' %}
-    .checkbox-item input[type="checkbox"]:checked + label::after, .checkbox-item input[type="radio"]:checked + label::after {
-        content: {{ checkicon }};
-    }
+{#    {% set checkicon = '"\\' ~  aSurveyInfo.options.checkicon   ~ '"' %}#}
+{#    .checkbox-item input[type="checkbox"]:checked + label::after, .checkbox-item input[type="radio"]:checked + label::after {#}
+{#        content: {{ checkicon }};#}
+{#    }#}
 
     {% if (aSurveyInfo.options.animatecheckbox == "on" ) %}
 
