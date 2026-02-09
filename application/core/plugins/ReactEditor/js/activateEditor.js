@@ -9,10 +9,13 @@ $(document).ready(function () {
 
         //save feature optin status to db
         let url = $('#saveUrl').val();
+        let data = {
+            optin: newValue,
+        };
         savedViaSwitch = true;
         $.post(
             url,
-            $.extend({optin: newValue}, LS.data.csrfTokenData)
+            data
         ).done(
             function () {
                 let successMessage = $('#successMsgFeatureOptout').val();
@@ -37,13 +40,17 @@ $(document).ready(function () {
         if (!savedViaSwitch) {
             let currentValue = $('#editor-switch-btn').find('.btn-check:checked').val();
             let url = $('#saveUrl').val();
-            let data = {
+           let data = {
                 optin: currentValue,
             };
             $.post(
                 url,
-                $.merge({optin: $(this).data('optin')}, LS.data.csrfTokenData)
-            );
+            data
+            ).fail(function () {
+                $('#activate_editor').modal('hide');
+                let errorMessage = $('#errorOnSave').val();
+                LS.ajaxAlerts(errorMessage, 'alert-danger', {showCloseButton: true});
+            });
         }
         // Reset flag for next time
         savedViaSwitch = false;
