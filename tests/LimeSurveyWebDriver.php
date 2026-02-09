@@ -220,19 +220,6 @@ class LimeSurveyWebDriver extends RemoteWebDriver
         }
     }
 
-    public function dismissModalNewEditor() {
-        try {
-            // If not clickable, dismiss modal.
-            $button = $this->findElement(
-                WebDriverBy::cssSelector('#activate_editor .modal-body .btn-close')
-            );
-            $button->click();
-            sleep(1);
-        } catch (\Exception $ex) {
-            // Do nothing.
-        }
-    }
-
     /**
      * Scroll to the bottom of the page
      * @see https://stackoverflow.com/questions/45610679/how-can-i-scroll-page-in-php-webdriver
