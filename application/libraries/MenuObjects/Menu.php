@@ -24,7 +24,7 @@ class Menu implements ExtendedMenuInterface
     /**
      * @var string
      */
-    protected $dropDownButtonClass = "";
+    protected $dropDownButtonClass = "btn btn-primary";
 
     /**
      * @var string
