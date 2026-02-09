@@ -17890,7 +17890,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .navbar .dropdown-menu[data-bs-popper] {
   margin-top: -0.5rem;
 }
-.navbar .dropdown-menu > li > a {
+.navbar .dropdown-menu > li > a, .navbar .dropdown-menu > li > button {
   font-weight: 500;
 }
 .navbar .btn-create {

@@ -68,7 +68,8 @@
     &[data-bs-popper] {
       margin-top: -0.5rem;
     }
-    & > li > a {
+    & > li > a,
+    & > li > button {
       font-weight : $font-weight-500;
     }
   }
