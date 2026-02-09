@@ -66,7 +66,7 @@ class SurveyPermissionsController extends LSBaseController
         App()->getClientScript()->registerPackage('select2-bootstrap');
 
 
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveypermissions.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveypermissions.js', CClientScript::POS_END);
         $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $surveyid;
         $aData['sidemenu']['state'] = false;
