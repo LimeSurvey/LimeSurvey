@@ -24,6 +24,9 @@ $(document).ready(function () {
                 }
                 $('#activate_editor').modal('hide');
                 LS.ajaxAlerts(successMessage, 'alert-success', {showCloseButton: true});
+                setTimeout(function() {
+                    window.location.reload();
+                }, 2000);
             }
             ).fail(function () {
                 $('#activate_editor').modal('hide');
