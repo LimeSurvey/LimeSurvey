@@ -23,6 +23,7 @@ $(document).ready(function () {
                 LS.ajaxAlerts(successMessage, 'alert-success', {showCloseButton: true});
             }
             ).fail(function () {
+                $('#activate_editor').modal('hide');
                 let errorMessage = $('#errorOnSave').val();
                 LS.ajaxAlerts(errorMessage, 'alert-danger', {showCloseButton: true});
         });

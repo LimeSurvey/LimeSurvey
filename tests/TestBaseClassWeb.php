@@ -315,7 +315,6 @@ class TestBaseClassWeb extends TestBaseClass
      */
     protected static function ignoreEditorModal()
     {
-        // Ignore password warning.
         try {
             try {
                 self::$webDriver->wait(3)->until(

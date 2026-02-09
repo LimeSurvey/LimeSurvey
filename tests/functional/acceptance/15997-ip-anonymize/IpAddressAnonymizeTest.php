@@ -47,7 +47,7 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
             sleep(1);
 
             self::$webDriver->dismissModal();
-            self::$webDriver->dismissModalNewEditor();
+            //self::$webDriver->dismissModalNewEditor();
 
             // Click "Activate survey".
             $overview = self::$webDriver->wait(20)->until(
