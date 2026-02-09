@@ -60,6 +60,7 @@ class MenuItem implements MenuItemInterface
         if (isset($options['modalId'])) {
             $this->modalId = $options['modalId'];
         }
+
         if (isset($options['itemClass'])) {
             $this->itemClass = $options['itemClass'];
         }
