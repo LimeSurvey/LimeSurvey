@@ -2367,6 +2367,95 @@ class SurveyAdministrationController extends LSBaseController
         $this->render('importSurvey_view', $this->aData);
     }
 
+    /**
+     * Initialises the necessary options.
+     *
+     * @param $request
+     * @return CopySurveyOptions
+     */
+    private function getPostParamsForCopySurvey($request): CopySurveyOptions
+    {
+        $optionsDataContainer = new CopySurveyOptions();
+
+        //Survey resource files and adapt links
+        $option = $request->getPost('copyResourcesAndLinks');
+        $optionsDataContainer->setResourcesAndLinks(isset($option) && $option == "1");
+
+        $option = $request->getPost('copySurveyQuotas');
+        $optionsDataContainer->setQuotas(isset($option) && $option == "1");
+
+        $option = $request->getPost('copySurveyPermissions');
+        $optionsDataContainer->setPermissions(isset($option) && $option == "1");
+
+        $option = $request->getPost('copyAnswerOptions');
+        $optionsDataContainer->setAnswerOptions(isset($option) && $option == "1");
+
+        $option = $request->getPost('copySurveyConditions');
+        $optionsDataContainer->setConditions(isset($option) && $option == "1");
+
+        $option = $request->getPost('copyStartEndDate');
+        $optionsDataContainer->setStartAndEndDate(isset($option) && $option == "1");
+
+        $option = $request->getPost('resetResponseStartId');
+        $optionsDataContainer->setResetResponseStartId(isset($option) && $option == "1");
+
+        return $optionsDataContainer;
+    }
+
+    /**
+     * @param int $surveyIdToCopy
+     * @return void
+     * @throws Exception
+     */
+    public function actionCopySimple($surveyIdToCopy)
+    {
+        //everybody who has permission to create surveys
+        if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
+        }
+
+        $surveyId = sanitize_int($surveyIdToCopy);
+        $survey = Survey::model()->findByPk($surveyId);
+        if (!$survey) {
+            App()->user->setFlash('error', gT("Survey does not exist."));
+            $this->redirect(App()->request->urlReferrer);
+        }
+
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'export')) {
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
+        }
+        $optionsDataContainer = new CopySurveyOptions();
+        //start and enddate should be copied in the simple copy process
+        $optionsDataContainer->setStartAndEndDate(true);
+        $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
+            $survey,
+            $optionsDataContainer,
+        );
+
+        $copyResults = $copySurveyService->copy();
+
+        $copiedSurvey = $copyResults->getCopiedSurvey();
+        if ($copiedSurvey !== null) {
+            $groupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
+            $this->resetExpressionManager($copiedSurvey, $groupList);
+        }
+
+        if (empty($copyResults->getErrors())) {
+            App()->user->setFlash('success', gT("Survey copied successfully."));
+        } else {
+            App()->user->setFlash('error', gT("Error while copying the survey."));
+        }
+
+        $redirectUrl = App()->request->urlReferrer;
+        if ($copiedSurvey !== null) {
+            $redirectUrl = App()->createUrl("surveyAdministration/view/", ["iSurveyID" => $copiedSurvey->sid]);
+        }
+
+        $this->redirect($redirectUrl);
+    }
+
     public function actionImport()
     {
         //everybody who has permission to create surveys
@@ -2456,14 +2545,6 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
 
-        if ((App()->getConfig("editorEnabled")) && isset($aImportResults['newsid'])) {
-            if (!isset($oSurvey)) {
-                $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
-            }
-            if ($oSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
-                $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $aImportResults['newsid']]);
-            }
-        }
         $this->aData = $aData;
         $this->render('importSurvey_view', $this->aData);
     }

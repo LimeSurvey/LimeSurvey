@@ -27,7 +27,7 @@ class EditorConfig
      *
      * @return boolean
      */
-    private function getIsEditorEnabled()
+    public function getIsEditorEnabled()
     {
         $result = false;
         if ($this->isBackendAccess()) {
