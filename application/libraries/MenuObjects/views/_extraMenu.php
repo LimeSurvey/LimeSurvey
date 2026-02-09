@@ -59,7 +59,7 @@ foreach ($extraMenus as $menu): ?>
                         else: ?>
                             <li class="<?= CHtml::encode($menuItem->getItemClass()) ?> ms-3 me-3">
                                 <?php
-                                $menuItemId = ($menuItem->getId() !== null) ? 'id="' . CHtml::encode($menuItem->getId()) . '"' : '';
+                                $menuItemId = ($menuItem->getId()) ? 'id="' . CHtml::encode($menuItem->getId()) . '"' : '';
                                 ?>
                                 <?php if ($menuItem->isModal()): ?>
                                     <button class="dropdown-item"
