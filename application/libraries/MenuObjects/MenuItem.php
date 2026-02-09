@@ -2,7 +2,9 @@
 
 namespace LimeSurvey\Menu;
 
-class MenuItem implements MenuItemInterface
+use LimeSurvey\Libraries\MenuObjects\ExtendedMenuItemInterface;
+
+class MenuItem implements ExtendedMenuItemInterface
 {
     /** @var boolean */
     protected $isDivider = false;

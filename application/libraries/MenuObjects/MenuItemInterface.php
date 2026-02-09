@@ -12,7 +12,4 @@ interface MenuItemInterface
     public function getIconClass();
     public function isDivider();
     public function isSmallText();
-    public function isModal();
-    public function getModalId();
-    public function getItemClass();
 }
