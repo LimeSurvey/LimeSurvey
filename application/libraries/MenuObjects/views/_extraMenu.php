@@ -27,7 +27,7 @@ foreach ($extraMenus as $menu): ?>
                             aria-expanded="false"
                             aria-haspopup="true"
                             aria-label="<?= $menu->getLabel() ?>">
-                        <i class="ri-add-line" aria-hidden="true"></i>
+                        <i class="<?= $menu->getIconClass() ?>" aria-hidden="true"></i>
                     </button>
                     <?php
                 } else { ?>
