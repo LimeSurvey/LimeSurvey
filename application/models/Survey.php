@@ -1511,9 +1511,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $dropdownItems = [];
         $dropdownItems[] = [
             'title' => gT('General settings'),
-            'url' => App()->getConfig('editorEnabled')
-                ? App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/generalsettings'])
-                : App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
+            'url' => App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
             'enabledCondition' => $permissions['survey_update'],
         ];
         $dropdownItems[] = [
@@ -1605,9 +1603,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         ];
         $items[] = [
             'title' => gT('Statistics'),
-            'url' => App()->getConfig('editorEnabled')
-                ? App()->createUrl('editorLink/index', ['route' => 'responses/' . $this->sid])
-                : App()->createUrl('admin/statistics/sa/simpleStatistics', ['surveyid' => $this->sid]),
+            'url' => App()->createUrl('admin/statistics/sa/simpleStatistics', ['surveyid' => $this->sid]),
             'iconClass' => 'ri-bar-chart-2-line',
             'enabledCondition' =>
                 $this->active === "Y"

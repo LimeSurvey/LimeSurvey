@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\EditorService;
+use LimeSurvey\Models\Services\EditorService\EditorConfig;
 
 class ReactEditor extends PluginBase
 {
@@ -11,7 +12,7 @@ class ReactEditor extends PluginBase
     {
         $this->subscribe('beforeDeactivate');
         $this->subscribe('beforeControllerAction', 'initEditor');
-        $this->subscribe('beforeControllerAction', 'registerSurveyRedirect');
+        $this->subscribe('beforeRenderSurveySidemenu');
     }
 
     public function beforeDeactivate()
@@ -20,23 +21,19 @@ class ReactEditor extends PluginBase
         $this->getEvent()->set('message', gT('Core plugin can not be disabled.'));
     }
 
+    /**
+     * redirects to the React editor if it is enabled
+     */
     public function initEditor()
     {
-        EditorService::initEditorApp(
-            SettingsUser::getUserSettingValue('editorEnabled') ?? false
-        );
+        EditorService::initEditorApp();
     }
 
-    public function registerSurveyRedirect()
+    /**
+     * renders the survey side-menu to link the classic editor to the React editor
+     */
+    public function beforeRenderSurveySidemenu()
     {
-        $controller = $this->getEvent()->get('controller');
-        $action = $this->getEvent()->get('action');
-
-        EditorService::registerSurveyRedirect(
-            SettingsUser::getUserSettingValue('editorEnabled') ?? false,
-            $controller,
-            $action
-        );
+        EditorService::beforeRenderSurveySidemenu($this);
     }
-
 }
