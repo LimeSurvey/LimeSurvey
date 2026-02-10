@@ -9,17 +9,6 @@
 
 ?>
 
-<?php
-// new question editor btn
-if (isset($editorUrl)) {
- $this->renderPartial('/surveyAdministration/partial/topbar/_newQuestionEditorBtn', [
-     'editorUrl' => $editorUrl,
-     'enableEditorButton' => $enableEditorButton,
-     'editorEnabled' => $editorEnabled
- ]);
-}
-?>
-
 <!-- White Close button -->
 <?php
 if (!empty($showWhiteCloseButton)) {

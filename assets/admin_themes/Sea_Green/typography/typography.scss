@@ -6,6 +6,34 @@ body {
   line-height : $line-height-24;
 }
 
+.reg-12 {
+    color          : $g-900;
+    font-family    : $ibm-font-family;
+    font-size      : $font-size-xs;
+    font-weight    : $font-weight-normal;
+    line-height    : $line-height-16;
+    letter-spacing : -0.204px;
+}
+
+.reg-14 {
+    @include reg14;
+}
+
+.med-14-c {
+    @include reg14;
+    font-weight    : $font-weight-500;
+    letter-spacing: -0.21px;
+}
+
+.reg-24 {
+    color          : $g-900;
+    font-family    : $ibm-font-family;
+    font-size      : $font-size-xl;
+    font-weight    : $font-weight-normal;
+    line-height    : $line-height-32;
+    letter-spacing : -0.408px;
+}
+
 h1,
 .h1 {
   @include h1
@@ -31,6 +59,15 @@ label {
   font-weight : $font-weight-500;
   font-size   : $font-size-sm;
   line-height : $line-height-20;
+}
+
+.label-s {
+    color          : $g-800;
+    font-family    : $ibm-font-family;
+    font-weight    : $font-weight-600;
+    font-size      : $font-size-xs;
+    line-height    : $line-height-16;
+    letter-spacing : -0.204px;
 }
 
 dl {
