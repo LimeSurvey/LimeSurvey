@@ -57,4 +57,5 @@ return array_merge(
     include_once __DIR__ . '/v1/i18n.php',
     include_once __DIR__ . '/v1/file-upload.php',
     include_once __DIR__ . '/v1/version-info.php',
+    include_once __DIR__ . '/v1/permissions.php',
 );
