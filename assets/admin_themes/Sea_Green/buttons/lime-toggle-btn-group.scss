@@ -47,6 +47,13 @@
             box-shadow: none;
         }
 
+        /* Provide a visible focus indicator for keyboard navigation */
+        .lime-toggle-btn-group .btn-group .btn-check:focus + .btn-outline-secondary,
+        .lime-toggle-btn-group .btn-group .btn-outline-secondary:focus-visible {
+            outline        : 2px solid $g-900;
+            outline-offset : 2px;
+        }
+
         .btn-check:not(:checked) + .btn-outline-secondary:hover {
             background-color: $g-800;
             color: $g-200;
