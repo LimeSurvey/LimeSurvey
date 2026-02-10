@@ -57,7 +57,7 @@ class ReactEditor extends \PluginBase
     }
 
     /**
-     * @return string
+     * @return void
      */
     public function renderActivateEditorModal()
     {
