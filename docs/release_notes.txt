@@ -34,6 +34,20 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.16.7 (build 260205) to 6.16.8 (build 260209) February 9, 2026
+-Fixed issue: error if core package font can't be loaded (Patrick Teichmann)
+-Fixed issue #20042: list_users command returns wrong permissions (roles permissions are not taken into account) (#4697) (Gabriel Jenik)
+-Fixed issue #1920: Additional participant attributes were not copied in the new copy process (Patricia Stell)
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.16.6 (build 260204) to 6.16.7 (build 260205) February 4, 2026
+-Fixed issue: release notes file is empty (Patrick Teichmann)
+
 Changes from 6.16.5 (build 260127) to 6.16.6 (build 260204) February 2, 2026
 +New feature #AT-1622: new corner-radius theme option for fruity_twentythree theme (Patrick Teichmann)
 +New feature #AT-1560: new copy survey process in the survey lists action menu (Patricia Stelling)

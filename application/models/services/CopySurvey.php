@@ -74,6 +74,7 @@ class CopySurvey
         //reset creation date and last modified date for the copied survey (cache issues...)
         $destinationSurvey->datecreated = date("Y-m-d H:i:s");
         $destinationSurvey->lastmodified = date("Y-m-d H:i:s");
+        $destinationSurvey->attributedescriptions = $this->sourceSurvey->attributedescriptions;
         if (!$destinationSurvey->save()) {
             throw new \Exception(gT("Failed to copy survey"));
         }
@@ -161,6 +162,7 @@ class CopySurvey
         foreach ($sourceLanguageSettings as $sourceLanguageSetting) {
             $destLangSet = new SurveyLanguageSetting();
             $destLangSet->attributes = $sourceLanguageSetting->attributes;
+            $destLangSet->surveyls_attributecaptions = $sourceLanguageSetting->surveyls_attributecaptions;
             if ($this->options->isResourcesAndLinks()) {
                 $destLangSet->surveyls_description = translateLinks(
                     'survey',

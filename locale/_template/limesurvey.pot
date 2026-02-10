@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-02-04 10:33:05+00:00\n"
+"POT-Creation-Date: 2026-02-09 10:26:25+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3554,7 +3554,7 @@ msgstr ""
 #: application/controllers/UploaderController.php:313
 #: application/controllers/UploaderController.php:331
 #: application/controllers/UploaderController.php:359
-#: application/helpers/remotecontrol/remotecontrol_handle.php:3578
+#: application/helpers/remotecontrol/remotecontrol_handle.php:3609
 msgid "The file has been successfully uploaded."
 msgstr ""
 
@@ -12301,7 +12301,7 @@ msgid "Dark mode"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:321
-#: application/models/TemplateManifest.php:1504
+#: application/models/TemplateManifest.php:1508
 msgid "Display options"
 msgstr ""
 
@@ -17255,7 +17255,7 @@ msgstr ""
 
 #: application/models/Surveymenu.php:341
 #: application/models/SurveymenuEntries.php:186
-#: application/models/TemplateManifest.php:1545
+#: application/models/TemplateManifest.php:1549
 #: application/views/admin/super/permissions/addUserForm.php:4
 #: application/views/surveyPermissions/index.php:26
 msgid "User"
@@ -17730,12 +17730,12 @@ msgstr ""
 msgid "Simple options"
 msgstr ""
 
-#: application/models/TemplateManifest.php:1532
-#: application/models/TemplateManifest.php:1545
+#: application/models/TemplateManifest.php:1536
+#: application/models/TemplateManifest.php:1549
 msgid "Local Server"
 msgstr ""
 
-#: application/models/TemplateManifest.php:1532
+#: application/models/TemplateManifest.php:1536
 msgid "Core"
 msgstr ""
 
@@ -18073,15 +18073,15 @@ msgstr ""
 msgid "Wrong definition! Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"
 msgstr ""
 
-#: application/models/services/CopySurvey.php:78
+#: application/models/services/CopySurvey.php:79
 msgid "Failed to copy survey"
 msgstr ""
 
-#: application/models/services/CopySurvey.php:110
+#: application/models/services/CopySurvey.php:111
 msgid "Conditions were not copied because question/group mappings are missing."
 msgstr ""
 
-#: application/models/services/CopySurvey.php:139
+#: application/models/services/CopySurvey.php:140
 msgid "Some resources could not be copied from the source survey"
 msgstr ""
 
