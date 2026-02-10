@@ -2,6 +2,7 @@
 
 use LimeSurvey\Models\Services\EditorService;
 use LimeSurvey\Models\Services\EditorService\EditorConfig;
+
 class ReactEditor extends \PluginBase
 {
     const STG_NAME_REACT_EDITOR = "editorEnabled";
@@ -21,7 +22,6 @@ class ReactEditor extends \PluginBase
         $this->subscribe('newDirectRequest');
         $this->subscribe('beforeDeactivate');
         $this->subscribe('beforeControllerAction', 'initEditor');
-        $this->subscribe('beforeControllerAction', 'registerSurveyRedirect');
         $this->subscribe('beforeControllerAction', 'renderActivateEditorModal');
         $this->subscribe('beforeRenderSurveySidemenu');
     }
