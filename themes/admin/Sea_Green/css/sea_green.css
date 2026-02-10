@@ -17587,8 +17587,8 @@ body {
 .lime-toggle-btn-group .btn-group .btn-outline-secondary:hover {
   box-shadow: none;
 }
-.lime-toggle-btn-group .btn-group .lime-toggle-btn-group .btn-group .btn-check:focus + .btn-outline-secondary,
-.lime-toggle-btn-group .btn-group .lime-toggle-btn-group .btn-group .btn-outline-secondary:focus-visible {
+.lime-toggle-btn-group .btn-group .btn-check:focus + .btn-outline-secondary,
+.lime-toggle-btn-group .btn-group .btn-outline-secondary:focus-visible {
   outline: 2px solid #1E1E1E;
   outline-offset: 2px;
 }

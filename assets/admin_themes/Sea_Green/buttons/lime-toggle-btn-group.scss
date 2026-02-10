@@ -48,8 +48,8 @@
         }
 
         /* Provide a visible focus indicator for keyboard navigation */
-        .lime-toggle-btn-group .btn-group .btn-check:focus + .btn-outline-secondary,
-        .lime-toggle-btn-group .btn-group .btn-outline-secondary:focus-visible {
+        .btn-check:focus + .btn-outline-secondary,
+        .btn-outline-secondary:focus-visible {
             outline        : 2px solid $g-900;
             outline-offset : 2px;
         }
