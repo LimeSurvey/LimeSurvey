@@ -24,6 +24,7 @@ class EditorRedirector
         'questionGroupsAdministration/add' => 'survey/$surveyId/structure',
         'questionGroupsAdministration/view' => 'survey/$surveyId?group=$questionGroupId',
         'questionGroupsAdministration/edit' => 'survey/$surveyId?group=$questionGroupId',
+        'admin/statistics/sa/simpleStatistics/surveyid/' => 'responses/$surveyId',
     ];
 
     /**

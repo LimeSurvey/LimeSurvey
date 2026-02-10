@@ -42,7 +42,8 @@
                 'bindListItemclick();',
                 'switchStatusOfListActions();',
             ],
-            'rowLink'               => 'Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid))',
+            'rowLink'               =>
+                'Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid))',
             // 'template'  => $this->template,
             'massiveActionTemplate' => $this->render('massive_actions/_selector', [], true, false),
             'columns'               => $this->model->getColumns(),
