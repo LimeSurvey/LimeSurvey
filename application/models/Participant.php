@@ -1557,7 +1557,7 @@ class Participant extends LSActiveRecord
             $fields[$newfieldname] = array('type' => 'string'); // TODO: Always string??
             $attname = Yii::app()->db
                 ->createCommand()
-                ->select('{{participant_attribute_names_lang}}.attribute_name, {{participant_attribute_names_lang}}.lang')
+                ->select('{{participant_attribute_names_lang}}.attribute_name, {{participant_attribute_names_lang}}.lang, {{participant_attribute_names}}.encrypted')
                 ->from('{{participant_attribute_names}}')
                 ->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')
                 ->where('{{participant_attribute_names}}.attribute_id = :attrid ')
@@ -1576,11 +1576,11 @@ class Participant extends LSActiveRecord
             } else {
                 $newname = $attributename[0]['attribute_name']; //Choose the first item in the list
             }
-
+            $encrypted = isset($attributename[0]['encrypted']) && $attributename[0]['encrypted'] === 'Y';
             $fieldcontents[$newfieldname] = array(
                 "description" => $newname,
                 "mandatory" => "N",
-                "encrypted" => "N",
+                "encrypted" => $encrypted ? 'Y' : 'N',
                 "show_register" => "N"
             );
             array_push($addedAttributeIds, 'attribute_' . $value);
