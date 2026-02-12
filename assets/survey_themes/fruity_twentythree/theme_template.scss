@@ -162,6 +162,10 @@ $base-color: #ffffff;
 
 // 6.3 Utilities
 @import "spacing/spacing.scss";
+// Table wrap settings
+// for all devices or only mobile sized screens, depending on the setting
+@import "tables/no-tables";
+@import "tables/no-tables-mobiles";
 
 // TODO: placeholder, will probbably be removed
 @import "darkmode/darkmode_colors.scss";

@@ -121,8 +121,3 @@ table > tbody > tr > td.ddprefix {
         border-top : none; /*overriding Bootstrap */
     }
 }
-
-// Table wrap settings
-// for all devices or only mobile sized screens, depending on the setting
-@import "no-tables";
-@import "no-tables-mobiles";
