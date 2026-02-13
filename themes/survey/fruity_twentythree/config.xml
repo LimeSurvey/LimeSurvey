@@ -96,7 +96,7 @@
         <bodybackgroundcolor type="colorpicker" category="Colors" width="4" title="Background color" options="on|off" optionlabels="Yes|No">#ffffff</bodybackgroundcolor>
         <fontcolor type="colorpicker" category="Colors" width="4" title="Font color" options="on|off" optionlabels="Yes|No">#444444</fontcolor>
         <questionbackgroundcolor type="colorpicker" category="Colors" width="4" title="Question background color" options="on|off" optionlabels="Yes|No">#ffffff</questionbackgroundcolor>
-        <checkicon type="icon" library="remixicon" category="Colors" width="4" title="Check icon">f00c
+        <checkicon type="icon" library="remixicon" category="Colors" width="4" title="Check icon">EB7A
             <!--  When adding new items, please keep them ordered alphabetically -->
             <dropdownoptions>
                 <option value="EB7A"> Check </option>
