@@ -1608,6 +1608,7 @@ class Participant extends LSActiveRecord
             $newFieldName = 'attribute_' . $attributeId;
             $languages = $attributeData[$attributeId]['languages'];
             $attributeType = $attributeData[$attributeId]['type'];
+            $encrypted = $attributeData[$attributeId]['encrypted'] === 'Y';
 
             // Determine the best language match
             $newName = $this->selectBestLanguageName($languages, $defaultSurveyLang, $adminLang);
@@ -1620,7 +1621,7 @@ class Participant extends LSActiveRecord
             $fieldContents[$newFieldName] = [
                 'description' => $newName,
                 'mandatory' => 'N',
-                'encrypted' => 'N',
+                'encrypted' => $encrypted ? 'Y' : 'N',
                 'show_register' => 'N',
                 'type' => $attributeType,
                 'type_options' => $dropdownOptionsJson
@@ -1649,6 +1650,7 @@ class Participant extends LSActiveRecord
             ->select([
                 '{{participant_attribute_names}}.attribute_id',
                 '{{participant_attribute_names}}.attribute_type',
+                '{{participant_attribute_names}}.encrypted',
                 '{{participant_attribute_names_lang}}.attribute_name',
                 '{{participant_attribute_names_lang}}.lang'
             ])
@@ -1666,6 +1668,7 @@ class Participant extends LSActiveRecord
             if (!isset($result[$attrId])) {
                 $result[$attrId] = [
                     'type' => $row['attribute_type'],
+                    'encrypted' => $row['encrypted'],
                     'languages' => []
                 ];
             }
