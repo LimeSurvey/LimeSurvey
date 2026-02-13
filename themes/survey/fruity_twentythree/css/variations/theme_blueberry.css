@@ -2505,7 +2505,7 @@ textarea.form-control-lg {
 .form-floating > .form-control::placeholder {
   color: transparent;
 }
-.form-floating > .form-control:not(:-moz-placeholder-shown) {
+.form-floating > .form-control:not(:-moz-placeholder) {
   padding-top: 1.625rem;
   padding-bottom: 0.625rem;
 }
@@ -2521,7 +2521,7 @@ textarea.form-control-lg {
   padding-top: 1.625rem;
   padding-bottom: 0.625rem;
 }
-.form-floating > .form-control:not(:-moz-placeholder-shown) ~ label {
+.form-floating > .form-control:not(:-moz-placeholder) ~ label {
   opacity: 0.65;
   transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
 }
@@ -14660,8 +14660,14 @@ a [class^=ri-], a [class*=" ri-"] {
   height: 300px;
 }
 
+.alert-dismissible .btn-close:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
 .question-container {
-  margin-bottom: 3em;
+  margin-bottom: 24px;
+  padding: 12px 0;
 }
 .question-container .ls-label-question {
   font-size: 24px;
