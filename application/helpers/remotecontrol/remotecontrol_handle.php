@@ -2314,7 +2314,7 @@ class remotecontrol_handle
      *              key=>value search value in column key  : sample ['tid' => '2']
      *              key=>array(operator,value[,value[...]]) using an operator : sample ['tid'=>['=','2']]
      *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN']
-     *                  Only the IN operator allows for several values. The same key can be used several times.
+     *                  Only the IN operator allows for several values.
      *              All conditions are connected by AND.
      * @return array The list of tokens
      */
@@ -3019,7 +3019,7 @@ class remotecontrol_handle
      *              key=>value search value in column key  : sample ['tid' => '2']
      *              key=>array(operator,value[,value[...]]) using an operator : sample ['tid'=>['=','2']]
      *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN']
-     *                  Only the IN operator allows for several values. The same key can be used several times.
+     *                  Only the IN operator allows for several values.
      *              All conditions are connected by AND.
      * @return array Result of the action
      */
@@ -4040,7 +4040,7 @@ class remotecontrol_handle
      *              key=>value search value in column key  : sample ['tid' => '2']
      *              key=>array(operator,value[,value[...]]) using an operator : sample ['tid'=>['=','2']]
      *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN']
-     *                  Only the IN operator allows for several values. The same key can be used several times.
+     *                  Only the IN operator allows for several values.
      *              All conditions are connected by AND.
      * @return null|string if string it's an error.
      */
@@ -4064,6 +4064,9 @@ class remotecontrol_handle
                 return 'Invalid column name: ' . $columnName;
             }
             if (is_array($valueOrTuple)) {
+                if (count($valueOrTuple) < 2) {
+                    return 'Invalid number of element for ' . $columnName;
+                }
                 /** @var string[] List of operators allowed in query. */
                 $allowedOperators = ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN'];
                 /** @var string */
