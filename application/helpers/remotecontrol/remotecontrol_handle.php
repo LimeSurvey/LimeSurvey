@@ -3042,7 +3042,10 @@ class remotecontrol_handle
 
             $command = new CDbCriteria();
             if (count($overrideAllConditions)) {
-                $this->addConditionsToCriteria(Token::model($iSurveyID), $command, $overrideAllConditions);
+                $addConditionError = $this->addConditionsToCriteria(Token::model($iSurveyID), $command, $overrideAllConditions);
+                if (is_string($addConditionError)) {
+                    return array('status' => $addConditionError);
+                }
             } else {
                 $sNow = date('Y-m-d H:i:s', strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date('Y-m-d H:i:s'))));
                 $command->addCondition('usesleft > 0');
@@ -4050,7 +4053,7 @@ class remotecontrol_handle
         foreach ($aConditions as $columnName => $valueOrTuple) {
             if (is_int($columnName) && is_string($valueOrTuple)) {
                 // Support legacy string format for simple conditions while preventing SQL injection
-                if (preg_match('/^([a-zA-Z0-9_]+)\s*(=|<|>|<=|>=|<>)\s*(.*)$/', $valueOrTuple, $matches)) {
+                if (preg_match('/^([a-zA-Z0-9_]+)\s*(<=|>=|<>|=|<|>)\s*(.*)$/', $valueOrTuple, $matches)) {
                     $columnName = $matches[1];
                     $valueOrTuple = [$matches[2], trim($matches[3], '\'" ')];
                 } else {
