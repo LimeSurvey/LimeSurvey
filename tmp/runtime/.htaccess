@@ -1,6 +1,6 @@
 # Do not remove this file. With a correct apache configuration
-# this file should prevent snooping on your LimeSurvey version by
-# reading the release_notes.txt
+# this file should prevent acces cache file generated in runtime (randome string)
+# prevent access to generated application.log and plugin.log
 <IfVersion < 2.4>
     Order Allow,Deny
     Deny from all
