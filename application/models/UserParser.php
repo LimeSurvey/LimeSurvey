@@ -49,7 +49,7 @@ class UserParser
             throw new \CException('File can not be read.');
         }
 
-        $aFirstLine = fgetcsv($oCSVFile, 0, $delimiter, '"', '\\');
+        $aFirstLine = fgetcsv($oCSVFile, 0, $delimiter, '"', "\\");
         if (empty($aFirstLine)) {
             Yii::app()->setFlashMessage(gT("This CSV file seems to be empty"), 'error');
             Yii::app()->getController()->redirect(array('/userManagement/index'));
@@ -57,7 +57,7 @@ class UserParser
         }
         $iHeaderCount = count($aFirstLine);
         $aToBeAddedUsers = [];
-        while (($row = fgetcsv($oCSVFile, 0, $delimiter, '"', '\\')) !== false) {
+        while (($row = fgetcsv($oCSVFile, 0, $delimiter, '"', "\\")) !== false) {
             $rowarray = array();
             for ($i = 0; $i < $iHeaderCount; ++$i) {
                 $val = ($row[$i] ?? '');
@@ -118,7 +118,7 @@ class UserParser
         $firstLine = fgets($handle);
         fclose($handle);
         foreach ($delimiters as $delimiter => &$count) {
-            $count = count(str_getcsv($firstLine, $delimiter, '"', '\\'));
+            $count = count(str_getcsv($firstLine, $delimiter, '"', "\\"));
         }
 
         return array_search(max($delimiters), $delimiters);

@@ -2296,7 +2296,7 @@ class Tokens extends SurveyCommonAction
                                     $sSeparator = ',';
                                 }
                         }
-                        $aFirstLine = str_getcsv((string) $buffer, $sSeparator, '"', '\\');
+                        $aFirstLine = str_getcsv((string) $buffer, $sSeparator, '"', "\\");
                         $aFirstLine = array_map('trim', $aFirstLine);
                         $aIgnoredColumns = array();
                         // Now check the first line for invalid fields
@@ -2338,7 +2338,7 @@ class Tokens extends SurveyCommonAction
                             }
                         }
                     } else {
-                        $line = str_getcsv($buffer, $sSeparator, '"', '\\');
+                        $line = str_getcsv($buffer, $sSeparator, '"', "\\");
 
                         if (count($aFirstLine) != count($line)) {
                             $aInvalidFormatList[] = sprintf(gT("Line %s"), $iRecordCount);

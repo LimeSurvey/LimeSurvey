@@ -837,7 +837,7 @@ class ParticipantsAction extends SurveyCommonAction
                 $aResult = array_keys($aCount, max($aCount));
                 $sSeparator = $aResult[0];
             }
-            $firstline = fgetcsv($oCSVFile, 1000, $sSeparator[0], '"', '\\');
+            $firstline = fgetcsv($oCSVFile, 1000, $sSeparator[0], '"', "\\");
 
             $selectedcsvfields = array();
             $fieldlist = array();
@@ -974,7 +974,7 @@ class ParticipantsAction extends SurveyCommonAction
                             $separator = ',';
                         }
                 }
-                $firstline = str_getcsv((string) $buffer, $separator, '"', '\\');
+                $firstline = str_getcsv((string) $buffer, $separator, '"', "\\");
                 $firstline = array_map('trim', $firstline);
                 $ignoredcolumns = array();
                 //now check the first line for invalid fields
@@ -993,7 +993,7 @@ class ParticipantsAction extends SurveyCommonAction
                 }
             } else {
                 // After looking at the first line, we now import the actual values
-                $line = str_getcsv($buffer, $separator, '"', '\\');
+                $line = str_getcsv($buffer, $separator, '"', "\\");
                 // Discard lines where the number of fields do not match
                 if (count($firstline) != count($line)) {
                     $invalidformatlist[] = $recordcount . ',' . count($line) . ',' . count($firstline);
