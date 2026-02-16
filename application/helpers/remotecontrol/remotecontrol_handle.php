@@ -2342,10 +2342,7 @@ class remotecontrol_handle
                 $addConditionError = $this->addConditionsToCriteria(Token::model($iSurveyID), $oCriteria, $aConditions);
                 if (is_string($addConditionError)) {
                     return array('status' => $addConditionError);
-                } elseif (is_array($addConditionError)) {
-                    return $addConditionError;
                 }
-                return $oCriteria->toArray();
                 if ($bUnused) {
                     $oTokens = Token::model($iSurveyID)->incomplete()->findAll($oCriteria);
                 } else {
