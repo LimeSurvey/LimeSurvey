@@ -4050,7 +4050,7 @@ class remotecontrol_handle
         foreach ($aConditions as $columnName => $valueOrTuple) {
             if (is_int($columnName) && is_string($valueOrTuple)) {
                 // Support legacy string format for simple conditions while preventing SQL injection
-                if (preg_match('/^([a-zA-Z0-9_]+)\s*(=|<|>|<=|>=|<>)\s*(.*)$/', $valueOrTuple, $matches) && $matches >= 3) {
+                if (preg_match('/^([a-zA-Z0-9_]+)\s*(=|<|>|<=|>=|<>)\s*(.*)$/', $valueOrTuple, $matches)) {
                     $columnName = $matches[1];
                     $valueOrTuple = [$matches[2], trim($matches[3], '\'" ')];
                 } else {
