@@ -4100,8 +4100,8 @@ class remotecontrol_handle
                     $value = $valueOrTuple[1];
                     $oCriteria->compare($columnName, $operator . $value);
                 }
-            } elseif (is_string($valueOrTuple)) {
-                $oCriteria->compare($columnName, $valueOrTuple);
+            } elseif (is_string($valueOrTuple) || is_null($valueOrTuple)) {
+                $oCriteria->addColumnCondition([$columnName=>$valueOrTuple]);
             } else {
                 return 'Invalid value type for column ' . $columnName;
             }
