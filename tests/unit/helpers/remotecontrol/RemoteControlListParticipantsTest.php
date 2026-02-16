@@ -238,7 +238,7 @@ class RemoteControlListParticipantsTest extends TestBaseClass
         );
 
         $expected = [
-            'status' => 'Illegal operator: !'
+            'status' => 'Illegal operator: ! for column validuntil'
         ];
 
         $this->assertEquals($expected, $list);
