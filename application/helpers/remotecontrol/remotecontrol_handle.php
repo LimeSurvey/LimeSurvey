@@ -4033,7 +4033,7 @@ class remotecontrol_handle
     /**
      * Safely apply conditions to a CDbCriteria object.
      * Hardens against SQL injection by validating column names.
-     * @param model $model : can be \Token or \Survey or anything else
+     * @param model $oModel : can be \Token or \Survey or anything else
      * @param CDbCriteria $oCriteria
      * @param array $aConditions conditions to limit the list, either as a
      *              key => value if key is an integer : value is used as comparaison string : sample ['tid = 2']
@@ -4042,12 +4042,12 @@ class remotecontrol_handle
      *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN']
      *                  Only the IN operator allows for several values. The same key can be used several times.
      *              All conditions are connected by AND.
-     * return null|string if string it's an error.
+     * @return null|string if string it's an error.
      */
     protected function addConditionsToCriteria($oModel, $oCriteria, $aConditions = [])
     {
         if (empty($aConditions)) {
-            return;
+            return null;
         }
         $columnsNames = array_flip($oModel->getMetaData()->tableSchema->columnNames);
         foreach ($aConditions as $columnName => $valueOrTuple) {
@@ -4089,5 +4089,6 @@ class remotecontrol_handle
                 return 'Invalid value type for column ' . $columnName;
             }
         }
+        return null;
     }
 }
