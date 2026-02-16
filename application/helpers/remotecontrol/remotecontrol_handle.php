@@ -2355,45 +2355,14 @@ class remotecontrol_handle
                 $oCriteria->order = 'tid';
                 $oCriteria->limit = $iLimit;
                 $oCriteria->compare('tid', '>=' . $iStart);
-
-                $aAttributeValues = array();
-                if (count($aConditions) > 0) {
-                    $aConditionFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
-                    // NB: $valueOrTuple is either a value or tuple like [$operator, $value].
-                    foreach ($aConditions as $columnName => $valueOrTuple) {
-                        if (is_array($valueOrTuple)) {
-                            /** @var string[] List of operators allowed in query. */
-                            $allowedOperators = ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN'];
-                            /** @var string */
-                            $operator = $valueOrTuple[0];
-                            if (!in_array($operator, $allowedOperators)) {
-                                return array('status' => 'Illegal operator: ' . $operator);
-                            } elseif ($operator === 'LIKE') {
-                                /** @var mixed */
-                                $value = $valueOrTuple[1];
-                                $oCriteria->addSearchCondition($columnName, $value);
-                            } elseif ($operator === 'IN') {
-                                /** @var mixed */
-                                $values = array_slice($valueOrTuple, 1);
-                                $oCriteria->addInCondition($columnName, $values);
-                            } else {
-                                /** @var mixed */
-                                $value = $valueOrTuple[1];
-                                $oCriteria->compare($columnName, $operator . $value);
-                            }
-                        } elseif (is_string($valueOrTuple) || is_null($valueOrTuple)) {
-                            if (array_key_exists($columnName, $aConditionFields)) {
-                                $aAttributeValues[$columnName] = $valueOrTuple;
-                            }
-                        } else {
-                            // Silent ignore?
-                        }
-                    }
+                $addConditionError = $this->addConditionsToCriteria(Token::model($iSurveyID), $oCriteria, $aConditions);
+                if (is_string($addConditionError)) {
+                    return array('status' => $addConditionError);
                 }
                 if ($bUnused) {
-                    $oTokens = Token::model($iSurveyID)->incomplete()->findAllByAttributes($aAttributeValues, $oCriteria);
+                    $oTokens = Token::model($iSurveyID)->incomplete()->findAll($oCriteria);
                 } else {
-                    $oTokens = Token::model($iSurveyID)->findAllByAttributes($aAttributeValues, $oCriteria);
+                    $oTokens = Token::model($iSurveyID)->findAll($oCriteria);
                 }
 
                 if (count($oTokens) == 0) {
@@ -4084,5 +4053,58 @@ class remotecontrol_handle
             return true;
         }
         return false;
+    }
+
+    /**
+     * Safely apply conditions to a CDbCriteria object.
+     * Hardens against SQL injection by validating column names.
+     * @param model $model : can be \Token or \Survey or anything else
+     * @param CDbCriteria $oCriteria
+     * @param array|string $condition array key ar column name, value can be string or array. 
+     * return null|string if string it's an error.
+     */
+    protected function addConditionsToCriteria($oModel, $oCriteria, $condition)
+    {
+        if (is_string($condition)) {
+            // Support legacy string format for simple conditions while preventing SQL injection
+            if (preg_match('/^([a-zA-Z0-9_]+)\s*(=|<|>|<=|>=|<>)\s*(.*)$/', $condition, $matches) && $matches >= 3) {
+                $condition = [
+                    $matches[1] => [$matches[2], trim($matches[3], "'\" ")]
+                ];
+            } else {
+                return 'Error: Invalid condition format. Use structured array for complex conditions.';
+            }
+        }
+        $columnsNames = array_flip($oModel->getMetaData()->tableSchema->columnNames);
+        foreach ($condition as $columnName => $valueOrTuple) {
+            if (!array_key_exists($columnName, $columnsNames)) {
+                return 'Invalid column name: ' . $columnName;
+            }
+            if (is_array($valueOrTuple)) {
+                /** @var string[] List of operators allowed in query. */
+                $allowedOperators = ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN'];
+                /** @var string */
+                $operator = $valueOrTuple[0];
+                if (!in_array($operator, $allowedOperators)) {
+                    return 'Illegal operator: ' . $operator .' for column ' . $columnName;
+                } elseif ($operator === 'LIKE') {
+                    /** @var mixed */
+                    $value = $valueOrTuple[1];
+                    $oCriteria->addSearchCondition($columnName, $value);
+                } elseif ($operator === 'IN') {
+                    /** @var mixed */
+                    $values = array_slice($valueOrTuple, 1);
+                    $oCriteria->addInCondition($columnName, $values);
+                } else {
+                    /** @var mixed */
+                    $value = $valueOrTuple[1];
+                    $oCriteria->compare($columnName, $operator . $value);
+                }
+            } elseif (is_string($valueOrTuple)) {
+                $oCriteria->compare($columnName, $valueOrTuple);
+            } else {
+                return 'Invalid value type for column ' . $columnName;
+            }
+        }
     }
 }
