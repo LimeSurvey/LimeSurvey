@@ -4055,7 +4055,7 @@ class remotecontrol_handle
                 // Support legacy string format for simple conditions while preventing SQL injection
                 if (preg_match('/^([a-zA-Z0-9_]+)\s*(<=|>=|<>|=|<|>)\s*(.*)$/', $valueOrTuple, $matches)) {
                     $columnName = $matches[1];
-                    $valueOrTuple = [$matches[2], trim($matches[3], '\'" ')];
+                    $valueOrTuple = [$matches[2], $matches[3]];
                 } else {
                     return 'Error: Invalid condition format. Use structured array for complex conditions.';
                 }
@@ -4071,7 +4071,7 @@ class remotecontrol_handle
                 $allowedOperators = ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN'];
                 /** @var string */
                 $operator = $valueOrTuple[0];
-                if (!in_array($operator, $allowedOperators)) {
+                if (!in_array($operator, $allowedOperators, true)) {
                     return 'Illegal operator: ' . $operator . ' for column ' . $columnName;
                 } elseif ($operator === 'LIKE') {
                     /** @var mixed */
