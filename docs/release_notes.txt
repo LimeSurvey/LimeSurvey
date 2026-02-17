@@ -34,6 +34,20 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.16.8 (build 260209) to 6.16.9 (build 260217) February 17, 2026
+-Fixed issue: add new checkitems to fruity23 theme and options interface, checkitems options will now work as intended (#4711) (Patrick Teichmann)
+-Fixed issue #20337: Cannot add a User Group to Survey Permissions unless at least one User is already added (#4710) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni, ritapas
+#Updated translation: Italian (Informal) by lfanfoni, ritapas
+#Updated translation: French (France) by DenisChenu, fgervais, Rodrigue_Galani
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.16.7 (build 260205) to 6.16.8 (build 260209) February 9, 2026
 -Fixed issue: error if core package font can't be loaded (Patrick Teichmann)
 -Fixed issue #20042: list_users command returns wrong permissions (roles permissions are not taken into account) (#4697) (Gabriel Jenik)
