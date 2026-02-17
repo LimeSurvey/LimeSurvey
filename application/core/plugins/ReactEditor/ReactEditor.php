@@ -31,7 +31,7 @@ class ReactEditor extends \PluginBase
     private function initEditorService()
     {
         EditorService::init(
-            SettingsUser::getUserSettingValue(self::STG_NAME_REACT_EDITOR) ?? true,
+            SettingsUser::getUserSettingValue(self::STG_NAME_REACT_EDITOR) ?? false,
             true
         );
     }

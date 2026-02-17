@@ -29,7 +29,7 @@ class EditorService
 
     public static function initEditorApp()
     {
-        $editorConfig = new EditorConfig(self::$instance->editorStatus ?? true);
+        $editorConfig = new EditorConfig(self::$instance->editorStatus ?? false);
         $editorConfig->initAppConfig();
 
         $editorRedirector = new EditorRedirector();
@@ -38,7 +38,7 @@ class EditorService
 
     public static function beforeRenderSurveySidemenu($event)
     {
-        $editorConfig = new EditorConfig(self::$instance->editorStatus ?? true);
+        $editorConfig = new EditorConfig(self::$instance->editorStatus ?? false);
         $editorConfig->initAppConfig();
 
         $surveyId = EditorRequestHelper::findSurveyId();
