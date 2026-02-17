@@ -180,7 +180,7 @@ class TestBaseClassWeb extends TestBaseClass
                 )
             );
             self::ignoreWelcomeModal();
-            self::ignoreEditorModal();
+//            self::ignoreEditorModal();
             self::ignoreAdminNotification();
             sleep(3);
             self::ignoreAdminNotification();
@@ -316,14 +316,6 @@ class TestBaseClassWeb extends TestBaseClass
     protected static function ignoreEditorModal()
     {
         try {
-            $elements = self::$webDriver->findElements(
-                WebDriverBy::id('activate_editor')
-            );
-
-            if (count($elements) === 0) {
-                return;
-            }
-
             try {
                 self::$webDriver->wait(3)->until(
                     WebDriverExpectedCondition::visibilityOfElementLocated(
