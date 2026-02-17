@@ -316,6 +316,14 @@ class TestBaseClassWeb extends TestBaseClass
     protected static function ignoreEditorModal()
     {
         try {
+            $elements = self::$webDriver->findElements(
+                WebDriverBy::id('activate_editor')
+            );
+
+            if (count($elements) === 0) {
+                return;
+            }
+
             try {
                 self::$webDriver->wait(3)->until(
                     WebDriverExpectedCondition::visibilityOfElementLocated(
