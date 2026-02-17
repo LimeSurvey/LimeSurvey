@@ -22,14 +22,14 @@ class Update_642 extends DatabaseUpdateBase
         if (!empty($templateConfigurations)) {
             foreach ($templateConfigurations as $templateConfiguration) {
                 if ($templateConfiguration['options'] !== 'inherit') {
-                    $sOptionsJson = $templateConfiguration['options'];
-                    $oOldOptions = json_decode($sOptionsJson);
-                    if ($oOldOptions->checkicon !== 'inherit') {
-                        $oOldOptions->checkicon = 'EB7A';
-                        $oNewOtionsJson = json_encode($oOldOptions);
+                    $optionsJson = $templateConfiguration['options'];
+                    $oldOptions = json_decode($optionsJson);
+                    if (isset($oldOptions->checkicon) && $oldOptions->checkicon !== 'inherit') {
+                        $oldOptions->checkicon = 'EB7A';
+                        $newOptionsJson = json_encode($oldOptions);
                         $this->db->createCommand()->update(
                             '{{template_configuration}}',
-                            ['options' => $oNewOtionsJson],
+                            ['options' => $newOptionsJson],
                             'id = :id',
                             [':id' => $templateConfiguration['id']]
                         );
