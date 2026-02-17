@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-02-09 10:26:25+00:00\n"
+"POT-Creation-Date: 2026-02-17 14:00:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -8325,7 +8325,7 @@ msgid "Brandlogo file"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2774
-#: application/views/themeOptions/options_core.php:347
+#: application/views/themeOptions/options_core.php:355
 msgid "Preview image"
 msgstr ""
 
@@ -12301,7 +12301,7 @@ msgid "Dark mode"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:321
-#: application/models/TemplateManifest.php:1508
+#: application/models/TemplateManifest.php:1509
 msgid "Display options"
 msgstr ""
 
@@ -17255,7 +17255,7 @@ msgstr ""
 
 #: application/models/Surveymenu.php:341
 #: application/models/SurveymenuEntries.php:186
-#: application/models/TemplateManifest.php:1549
+#: application/models/TemplateManifest.php:1550
 #: application/views/admin/super/permissions/addUserForm.php:4
 #: application/views/surveyPermissions/index.php:26
 msgid "User"
@@ -17730,12 +17730,12 @@ msgstr ""
 msgid "Simple options"
 msgstr ""
 
-#: application/models/TemplateManifest.php:1536
-#: application/models/TemplateManifest.php:1549
+#: application/models/TemplateManifest.php:1537
+#: application/models/TemplateManifest.php:1550
 msgid "Local Server"
 msgstr ""
 
-#: application/models/TemplateManifest.php:1536
+#: application/models/TemplateManifest.php:1537
 msgid "Core"
 msgstr ""
 
@@ -21109,7 +21109,7 @@ msgstr ""
 #: application/views/admin/token/csvupload.php:142
 #: application/views/admin/token/ldapform.php:83
 #: application/views/themeOptions/advanced.php:25
-#: application/views/themeOptions/options_core.php:370
+#: application/views/themeOptions/options_core.php:378
 #: tmp/runtime/twig_cache/73/73705718114ae13e98bfe1a148fde6bb.php:165
 msgid "Upload"
 msgstr ""
@@ -26758,7 +26758,7 @@ msgid "Don't touch the values below unless you know what you're doing."
 msgstr ""
 
 #: application/views/themeOptions/advanced.php:17
-#: application/views/themeOptions/options_core.php:362
+#: application/views/themeOptions/options_core.php:370
 msgid "Upload an image (maximum size: %d MB):"
 msgstr ""
 
@@ -26892,9 +26892,9 @@ msgstr ""
 #: application/views/themeOptions/options_core.php:260
 #: application/views/themeOptions/options_core.php:289
 #: application/views/themeOptions/options_core.php:301
-#: application/views/themeOptions/options_core.php:318
-#: application/views/themeOptions/options_core.php:327
-#: application/views/themeOptions/options_core.php:336
+#: application/views/themeOptions/options_core.php:326
+#: application/views/themeOptions/options_core.php:335
+#: application/views/themeOptions/options_core.php:344
 msgid "inherited value:"
 msgstr ""
 
