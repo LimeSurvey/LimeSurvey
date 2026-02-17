@@ -304,10 +304,18 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                         <?= $aOptionAttributes['optionAttributes'][$attributeKey]['dropdownoptions'] ?>
                                     </select>
                                     <div class="input-group-text selector__<?= $attributeKey ?>-preview">
-                                        ( <i class="fa" data-inheritvalue="<?= $sParentOption ?>"
-                                             style=" background-color: #328637; color: white; width: 16px; height: 16px;  padding: 3px; font-size: 11px; ">
-                                            &#x<?= $sParentOption ?>
-                                        </i> )
+                                        (
+                                        <?php if ($attribute['library'] === 'remixicon') : ?>
+                                            <i class="ri-" data-inheritvalue="<?= $sParentOption ?>">
+                                                &#x<?= $sParentOption ?>
+                                            </i>
+                                        <?php else: ?>
+                                            <i class="fa" data-inheritvalue="<?= $sParentOption ?>"
+                                               style=" background-color: #328637; color: white; width: 16px; height: 16px;  padding: 3px; font-size: 11px; ">
+                                                &#x<?= $sParentOption ?>
+                                            </i>
+                                        <?php endif; ?>
+                                        )
                                     </div>
                                 </div>
                             <?php elseif ($attribute['type'] === 'text') : ?>
