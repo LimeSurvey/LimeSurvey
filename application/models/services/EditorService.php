@@ -10,8 +10,8 @@ use SettingsUser;
 class EditorService
 {
     private static ?self $instance = null;
-    public readonly bool $editorStatus;
-    public readonly bool $editorAllowed;
+    public bool $editorStatus;
+    public bool $editorAllowed;
 
     private function __construct(bool $editorStatus = true, bool $editorAllowed = true)
     {
