@@ -18,8 +18,6 @@ class ReactEditor extends \PluginBase
      */
     public function init()
     {
-        $this->initEditorService();
-
         $this->subscribe('newDirectRequest');
         $this->subscribe('beforeDeactivate');
         $this->subscribe('beforeControllerAction', 'initEditor');
@@ -47,7 +45,10 @@ class ReactEditor extends \PluginBase
      */
     public function initEditor()
     {
-        EditorService::initEditorApp();
+        if ($this->isBackendAccess()){
+            $status = SettingsUser::getUserSettingValue(self::STG_NAME_REACT_EDITOR) ?? false;
+            EditorService::init($status, true)->initEditorApp();
+        }
     }
 
     /**
@@ -55,7 +56,10 @@ class ReactEditor extends \PluginBase
      */
     public function beforeRenderSurveySidemenu()
     {
-        EditorService::beforeRenderSurveySidemenu($this);
+        if ($this->isBackendAccess()){
+            $status = SettingsUser::getUserSettingValue(self::STG_NAME_REACT_EDITOR) ?? false;
+            EditorService::init($status, true)->beforeRenderSurveySidemenu($this);
+        }
     }
 
     /**
@@ -63,7 +67,10 @@ class ReactEditor extends \PluginBase
      */
     public function beforeAdminMenuRender(): void
     {
-        EditorService::beforeAdminMenuRender();
+        if ($this->isBackendAccess()){
+            $status = SettingsUser::getUserSettingValue(self::STG_NAME_REACT_EDITOR) ?? false;
+            EditorService::init($status, true)->beforeAdminMenuRender();
+        }
     }
 
     /**

@@ -180,7 +180,7 @@ class TestBaseClassWeb extends TestBaseClass
                 )
             );
             self::ignoreWelcomeModal();
-//            self::ignoreEditorModal();
+            self::ignoreEditorModal();
             self::ignoreAdminNotification();
             sleep(3);
             self::ignoreAdminNotification();
