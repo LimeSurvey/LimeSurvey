@@ -16,6 +16,10 @@ if (!defined('BASEPATH')) {
  *
  */
 
+use LimeSurvey\Models\Services\Exception\{
+    BadRequestException
+};
+
 class LSDbCriteria extends CDbCriteria
 {
     /**
