@@ -2335,7 +2335,7 @@ class remotecontrol_handle
                 }
 
                 /** @var CDbCriteria mixed> Criteria used in final query below. */
-                $oCriteria = new CDbCriteria();
+                $oCriteria = new LSDbCriteria();
                 $oCriteria->order = 'tid';
                 $oCriteria->limit = $iLimit;
                 $oCriteria->compare('tid', '>=' . $iStart);
@@ -3040,7 +3040,7 @@ class remotecontrol_handle
                 return array('status' => 'Error: No survey participant list');
             }
 
-            $command = new CDbCriteria();
+            $command = new LSDbCriteria();
             if (count($overrideAllConditions)) {
                 $addConditionError = $this->addConditionsToCriteria(Token::model($iSurveyID), $command, $overrideAllConditions);
                 if (is_string($addConditionError)) {
@@ -4034,7 +4034,7 @@ class remotecontrol_handle
      * Safely apply conditions to a CDbCriteria object.
      * Hardens against SQL injection by validating column names.
      * @param model $oModel : can be \Token or \Survey or anything else
-     * @param CDbCriteria $oCriteria
+     * @param \LSDbCriteria $oCriteria
      * @param array $aConditions conditions to limit the list, either as a
      *              key => value if key is an integer : value is used as comparaison string : sample ['tid = 2']
      *              key=>value search value in column key  : sample ['tid' => '2']
