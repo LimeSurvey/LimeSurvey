@@ -4060,7 +4060,7 @@ class remotecontrol_handle
             /* Associative element */
             } else {
                 try {
-                    $oCriteria->addUnsureSearchCondition($oModel, $columnName, $valueOrTuple);
+                    $oCriteria->addUnsureSearchCondition($oModel, [$columnName => $valueOrTuple]);
                 } catch (Exception $e) {
                     return $e->getMessage();
                 }
