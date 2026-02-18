@@ -59,4 +59,95 @@ class LSDbCriteria extends CDbCriteria
         }
         return parent::addSearchCondition($column, $keyword, $escape, $operator, $like);
     }
+
+    /**
+     * Safely apply conditions to a CDbCriteria object.
+     * Hardens against SQL injection by validating column names.
+     * @param model $oModel : can be \Token or \Survey or anything else
+     * @param string $condition conditions to limit the list, either as a
+     * @throws BadRequestException
+     * @return void
+     */
+    public function addUnsureSearchStringCondition($oModel,$condition)
+    {
+        if ($condition === '') {
+            return;
+        }
+        if (!is_string($condition) || !preg_match('/^([a-zA-Z0-9_]+)\s*(<=|>=|<>|=|<|>)\s*(.*)$/', $condition, $matches)) {
+            throw new BadRequestException('Invalid expression for condition');
+        }
+        $this->addUnsureSearchCondition($oModel, [$matches[1]=>[$matches[2], $matches[3]]]);
+    }
+
+    /**
+     * Safely apply conditions to a CDbCriteria object.
+     * Hardens against SQL injection by validating column names.
+     * @param model $oModel : can be \Token or \Survey or anything else
+     * @param array $aConditions conditions to limit the list, either as a
+     *              key=>value search value in column key  : sample ['tid' => '2']
+     *              key=>array(operator,value[,value[...]]) using an operator : sample ['tid'=>['=','2']]
+     *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN']
+     *                  Only the IN operator allows for several values.
+     *              All conditions are connected by AND.
+     * @throws BadRequestException
+     * @return void
+     */
+    public function addUnsureSearchCondition($oModel, $aConditions = [])
+    {
+        if (empty($aConditions)) {
+            return;
+        }
+        $columnsNames = array_flip($oModel->getMetaData()->tableSchema->columnNames);
+        foreach ($aConditions as $columnName => $valueOrTuple) {
+            if (!array_key_exists($columnName, $columnsNames)) {
+                throw new BadRequestException('Invalid column name: ' . $columnName);
+            }
+            if (is_array($valueOrTuple)) {
+                if (count($valueOrTuple) < 2) {
+                    throw new BadRequestException('Invalid number of element for ' . $columnName);
+                }
+                /** @var string[] List of operators allowed in query. */
+                $allowedOperators = ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN'];
+                /** @var string */
+                $operator = $valueOrTuple[0];
+                if (!is_string($operator)) {
+                    throw new BadRequestException('Illegal operator for column ' . $columnName);
+                }
+                if (!in_array($operator, $allowedOperators, true)) {
+                    throw new BadRequestException('Illegal operator: ' . $operator . ' for column ' . $columnName);
+                }
+                switch ($operator) {
+                    case 'LIKE':
+                        /** @var scalar */
+                        $value = $valueOrTuple[1];
+                        if (!is_scalar($value)) {
+                            throw new BadRequestException('LIKE operator requires a string value for column ' . $columnName);
+                        }
+                        $this->addSearchCondition($columnName, $value);
+                        break;
+                    case 'IN':
+                        /** @var scalar[] */
+                        $values = array_slice($valueOrTuple, 1);
+                        foreach ($values as $v) {
+                            if (!is_scalar($v) && !is_null($v)) {
+                                throw new BadRequestException('IN operator requires scalar values for column ' . $columnName);
+                            }
+                        }
+                        $this->addInCondition($columnName, $values);
+                        break;
+                    default:
+                        /** @var scalar*/
+                        $value = $valueOrTuple[1];
+                        if (!is_scalar($value)) {
+                            throw new BadRequestException('Comparison operators require a scalar value for column ' . $columnName);
+                        }
+                        $this->compare($columnName, $operator . $value);
+                }
+            } elseif (is_scalar($valueOrTuple) || is_null($valueOrTuple)) {
+                $this->addColumnCondition([$columnName => $valueOrTuple]);
+            } else {
+                throw new BadRequestException('Invalid value type for column ' . $columnName);
+            }
+        }
+    }
 }

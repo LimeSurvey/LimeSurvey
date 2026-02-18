@@ -4049,47 +4049,21 @@ class remotecontrol_handle
         if (empty($aConditions)) {
             return null;
         }
-        $columnsNames = array_flip($oModel->getMetaData()->tableSchema->columnNames);
         foreach ($aConditions as $columnName => $valueOrTuple) {
-            if (is_int($columnName) && is_string($valueOrTuple)) {
-                // Support legacy string format for simple conditions while preventing SQL injection
-                if (preg_match('/^([a-zA-Z0-9_]+)\s*(<=|>=|<>|=|<|>)\s*(.*)$/', $valueOrTuple, $matches)) {
-                    $columnName = $matches[1];
-                    $valueOrTuple = [$matches[2], $matches[3]];
-                } else {
-                    return 'Error: Invalid condition format. Use structured array for complex conditions.';
+            /* Indexed element */
+            if (is_int($columnName)) {
+                try {
+                    $oCriteria->addUnsureSearchStringCondition($oModel, $valueOrTuple);
+                } catch (Exception $e) {
+                    return $e->getMessage();
                 }
-            }
-            if (!array_key_exists($columnName, $columnsNames)) {
-                return 'Invalid column name: ' . $columnName;
-            }
-            if (is_array($valueOrTuple)) {
-                if (count($valueOrTuple) < 2) {
-                    return 'Invalid number of element for ' . $columnName;
-                }
-                /** @var string[] List of operators allowed in query. */
-                $allowedOperators = ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN'];
-                /** @var string */
-                $operator = $valueOrTuple[0];
-                if (!in_array($operator, $allowedOperators, true)) {
-                    return 'Illegal operator: ' . $operator . ' for column ' . $columnName;
-                } elseif ($operator === 'LIKE') {
-                    /** @var mixed */
-                    $value = $valueOrTuple[1];
-                    $oCriteria->addSearchCondition($columnName, $value);
-                } elseif ($operator === 'IN') {
-                    /** @var mixed */
-                    $values = array_slice($valueOrTuple, 1);
-                    $oCriteria->addInCondition($columnName, $values);
-                } else {
-                    /** @var mixed */
-                    $value = $valueOrTuple[1];
-                    $oCriteria->compare($columnName, $operator . $value);
-                }
-            } elseif (is_string($valueOrTuple) || is_null($valueOrTuple)) {
-                $oCriteria->addColumnCondition([$columnName => $valueOrTuple]);
+            /* Associative element */
             } else {
-                return 'Invalid value type for column ' . $columnName;
+                try {
+                    $oCriteria->addUnsureSearchCondition($oModel, $columnName, $valueOrTuple);
+                } catch (Exception $e) {
+                    return $e->getMessage();
+                }
             }
         }
         return null;
