@@ -26,13 +26,6 @@ class ReactEditor extends \PluginBase
         $this->subscribe('beforeAdminMenuRender');
     }
 
-    private function initEditorService()
-    {
-        EditorService::init(
-            SettingsUser::getUserSettingValue(self::STG_NAME_REACT_EDITOR) ?? false,
-            true
-        );
-    }
 
     public function beforeDeactivate()
     {
