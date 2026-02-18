@@ -133,7 +133,7 @@ class LSDbCriteria extends CDbCriteria
                                 throw new BadRequestException('IN operator requires scalar values for column ' . $columnName);
                             }
                         }
-                        $this->addInCondition($columnName, $values);
+                        $this->addInCondition(App()->db->quoteColumnName($columnName), $values);
                         break;
                     default:
                         /** @var scalar*/
@@ -141,10 +141,10 @@ class LSDbCriteria extends CDbCriteria
                         if (!is_scalar($value)) {
                             throw new BadRequestException('Comparison operators require a scalar value for column ' . $columnName);
                         }
-                        $this->compare($columnName, $operator . $value);
+                        $this->compare(App()->db->quoteColumnName($columnName), $operator . $value);
                 }
             } elseif (is_scalar($valueOrTuple) || is_null($valueOrTuple)) {
-                $this->addColumnCondition([$columnName => $valueOrTuple]);
+                $this->addColumnCondition([App()->db->quoteColumnName($columnName) => $valueOrTuple]);
             } else {
                 throw new BadRequestException('Invalid value type for column ' . $columnName);
             }
