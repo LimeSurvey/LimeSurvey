@@ -614,17 +614,8 @@ class SurveyRuntimeHelper
      */
     public function getShowNumAndCode()
     {
-        $showqnumcode_global_ = getGlobalSetting('showqnumcode');
-        $showqnumcode_survey_ = $this->aSurveyInfo['showqnumcode'];
-
-        // Check global setting to see if survey level setting should be applied
-        if ($showqnumcode_global_ == 'choose') {
-            // Use survey level settings
-            $showqnumcode_ = $showqnumcode_survey_; //B, N, C, or X
-        } else {
-            // Use global setting
-            $showqnumcode_ = $showqnumcode_global_; //both, number, code, or none
-        }
+        // Use survey level settings
+        $showqnumcode_ = $this->aSurveyInfo['showqnumcode']; //B, N, C, or X
 
         $aShow = [];
 
