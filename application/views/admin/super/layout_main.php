@@ -17,7 +17,7 @@ $layoutHelper = new LayoutHelper();
 <?php // Render the sidebar widget only for authenticated users. Guests should not trigger the widget (which expects a non-null user id). ?>
 <?php if (!Yii::app()->user->isGuest) : ?>
 <div id="layout_sidebar">
-        <?php App()->getController()->widget('ext.SideBarWidget.SideBarWidget'); ?>
+    <?php App()->getController()->widget('ext.SideBarWidget.SideBarWidget'); ?>
     <div class="container-40">
 <?php endif; ?>
         <?= $layoutHelper->renderTopbarTemplate($aData) ?>
