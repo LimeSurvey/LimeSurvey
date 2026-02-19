@@ -4053,14 +4053,14 @@ class remotecontrol_handle
             /* Indexed element */
             if (is_int($columnName)) {
                 try {
-                    $oCriteria->addUnsureSearchStringCondition($oModel, $valueOrTuple);
+                    $oCriteria->addSafeStringSearchCondition($oModel, $valueOrTuple);
                 } catch (Exception $e) {
                     return $e->getMessage();
                 }
             /* Associative element */
             } else {
                 try {
-                    $oCriteria->addUnsureSearchCondition($oModel, [$columnName => $valueOrTuple]);
+                    $oCriteria->addSafeStructuredSearchCondition($oModel, [$columnName => $valueOrTuple]);
                 } catch (Exception $e) {
                     return $e->getMessage();
                 }

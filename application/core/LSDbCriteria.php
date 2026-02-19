@@ -72,7 +72,7 @@ class LSDbCriteria extends CDbCriteria
      * @throws BadRequestException
      * @return void
      */
-    public function addUnsureSearchStringCondition($oModel,$condition)
+    public function addSafeStringSearchCondition($oModel,$condition)
     {
         if ($condition === '') {
             return;
@@ -96,7 +96,7 @@ class LSDbCriteria extends CDbCriteria
      * @throws BadRequestException
      * @return void
      */
-    public function addUnsureSearchCondition($oModel, $aConditions = [])
+    public function addSafeStructuredSearchCondition($oModel, $aConditions = [])
     {
         if (empty($aConditions)) {
             return;
