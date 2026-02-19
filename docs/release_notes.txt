@@ -34,6 +34,83 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.16.8 (build 260209) to 6.16.9 (build 260217) February 17, 2026
+-Fixed issue: add new checkitems to fruity23 theme and options interface, checkitems options will now work as intended (#4711) (Patrick Teichmann)
+-Fixed issue #20337: Cannot add a User Group to Survey Permissions unless at least one User is already added (#4710) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni, ritapas
+#Updated translation: Italian (Informal) by lfanfoni, ritapas
+#Updated translation: French (France) by DenisChenu, fgervais, Rodrigue_Galani
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.16.7 (build 260205) to 6.16.8 (build 260209) February 9, 2026
+-Fixed issue: error if core package font can't be loaded (Patrick Teichmann)
+-Fixed issue #20042: list_users command returns wrong permissions (roles permissions are not taken into account) (#4697) (Gabriel Jenik)
+-Fixed issue #1920: Additional participant attributes were not copied in the new copy process (Patricia Stell)
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.16.6 (build 260204) to 6.16.7 (build 260205) February 4, 2026
+-Fixed issue: release notes file is empty (Patrick Teichmann)
+
+Changes from 6.16.5 (build 260127) to 6.16.6 (build 260204) February 2, 2026
++New feature #AT-1622: new corner-radius theme option for fruity_twentythree theme (Patrick Teichmann)
++New feature #AT-1560: new copy survey process in the survey lists action menu (Patricia Stelling)
+-Fixed issue #AT-1622: survey theme options are now correctly and completely implemented in the new editor (Patrick Teichmann)
+-Fixed issue: lastmodified for a copied survey should be reset (cache issues). (Patricia Stelling)
+-Fixed issue: Don't show notifications for unstable updates (Carsten Schmitz)
+-Fixed issue: A11y missing aria-label for CPDB participant modal (#4546) (Anblik Audit Team)
+-Fixed issue: A11y highlight alert close button for surveytaking (#4477) (Anblik Audit Team)
+-Fixed issue: A11y for modal close buttons (#4541) (Anblik Audit Team)
+-Fixed issue: A11y for massive action in gridview tables (#4486) (Anblik Audit Team)
+-Fixed issue: A11y corrected header tags in quota view (#4558) (Anblik Audit Team)
+-Fixed issue: A11y announce title for email invitation view (#4486) (Anblik Audit Team)
+-Fixed issue: A11y announce gridview table action dropdown (#4477) (Anblik Audit Team)
+-Fixed issue: A11y adjustments for global email bounce settings (#4614) (Anblik Audit Team)
+-Fixed issue: A11y adjust modal header title for test email (#4604) (Anblik Audit Team)
+-Fixed issue: A11y added missing labels for email view in global settings (#4603) (Anblik Audit Team)
+-Fixed issue: A11y added missing label declarations in global import particpant csv view(#4529) (Anblik Audit Team)
+#Updated translation: Swahili by FredaM
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by DenisChenu, fgervais, Rodrigue_Galani
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1, VBraun
+#Updated translation: Czech (Informal) by jelen1, slansky, VBraun
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.16.4 (build 260113) to 6.16.5 (build 260127) January 27, 2026
+-Fixed issue AT-1891: remove outline on focused links (#4665) (Tim Willig)
+-Fixed issue #20391: Spinner when trying to save survey settings (#4677) (Denis Chenu)
+#Updated translation: Swahili by FredaM
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, holch
+#Updated translation: Galician by cegar, Gronnd
+#Updated translation: Dutch by BloomingPrime, Han
+#Updated translation: Dutch (Informal) by BloomingPrime, Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.16.3 (build 251215) to 6.16.4 (build 260113) January 13, 2026
 -Fixed issue: single- and multiple-choice questions other field is not centered with its textbox (Patrick Teichmann)
 -Fixed issue: in surveytaking, reduced whitespace between navbar and content (Patrick Teichmann)
@@ -422,9 +499,9 @@ Changes from 6.15.0 (build 250623) to 6.15.1 (build 250626) June 26, 2025
 -Fixed issue #20149: Improve update script to set inheritance by default (marticos)
 -Fixed issue #20149: Fix regex for question, subquestion and answer codes validation (marticos)
 -Fixed issue #20149: Add Othersettings validation class to handle proper values (marticos)
--Fixed issue #20118: User creation : use enter key in form close dialog without create user (#4341) 
+-Fixed issue #20118: User creation : use enter key in form close dialog without create user (#4341)
 -Fixed issue #20117: Better error return in get_site_settings (#4330) (Denis Chenu)
--Fixed issue #20055: Missing save confirmation with validation errors 
+-Fixed issue #20055: Missing save confirmation with validation errors
 #Updated translation: Tamil by lucas_encuesta.biz
 #Updated translation: Slovenian by a11y.si, Grimpy, ixtlan-team-zvem, junoslukan, pur3bolt
 #Updated translation: Slovak by jelen1
@@ -5889,7 +5966,7 @@ Changes from 4.1.3 (build 200213) to 4.1.4 (build 200214) February 14, 2020
 
 Changes from 4.1.2 (build 200210) to 4.1.3 (build 200213) February 13, 2020
 -Fixed issue [security] #14379: Stored XSS through SVG file upload. (Thanks to Denis Chenu and Maxime Roy) (Marc Leonhardt)
--Fixed issue [security] #14380: Stored XSS through SVG file upload. 
+-Fixed issue [security] #14380: Stored XSS through SVG file upload.
 -Fixed issue [security] #15796: Stored XSS through SVG file upload.
 -Fixed issue #15835: Answers were already translated when loading them for export. (#1386) (Jelle Sebreghts)
 #Updated translation: German by nietzschean, eddylackmann
@@ -6079,9 +6156,9 @@ Changes from 3.21.5 (build 200115) to 4.0.0 (build 200116) January 16, 2020
 -New feature #12603: emailsmtppassword and bounceaccountpass settings are saved encrypted in database (Dominik Vitt)
 -New feature #12127: priority for plugins (Denis Chenu)
 -New feature #10038: maintenance mode (Dominik Vitt)
--New translation: Tajik - kindly provided by Iskandar_r 
--New translation: Spanish (Colombia) - translation kindly provided by https://www.sugeek.co/ 
--New translation: Somali 
+-New translation: Tajik - kindly provided by Iskandar_r
+-New translation: Spanish (Colombia) - translation kindly provided by https://www.sugeek.co/
+-New translation: Somali
 
 
 Changes from 3.21.4 (build 200108) to 3.21.5 (build 200115) January 15, 2020
@@ -6110,7 +6187,7 @@ Changes from 3.21.2 (build 191216) to 3.21.3 (build 191219) December 19, 2019
 -Fixed issue #15446: Custom Twig extensions do not work (Marc Leonhardt)
 -Fixed issue #14552: Backward navigation broken if navigation delay is enabled (lacrioque)
 #Updated translation: Turkish by bulent
-#Updated translation: Luxembourgish 
+#Updated translation: Luxembourgish
 #Updated translation: Kyrgyz by kmaksat
 #Updated translation: Korean by zist21
 #Updated translation: German by c_schmitz
@@ -6439,7 +6516,7 @@ Changes from 3.17.9 (build 190731) to 3.17.10 (build 190821) August 21, 2019
 -Fixed issue: Tagalog translation not available (Carsten Schmitz)
 -Fixed issue: Panel integration 500 error (lacrioque)
 -Fixed issue [security]: XSS with contructor statements in textedit (lacrioque)
--Fixed issue [security]: Check both mime type and file extension when validating image (Olle Haerstedt) kindly reported by PAVOL MICHALEC/FREDERIK KOĽBÍK from ESET 
+-Fixed issue [security]: Check both mime type and file extension when validating image (Olle Haerstedt) kindly reported by PAVOL MICHALEC/FREDERIK KOĽBÍK from ESET
  ( https://www.eset.sk )
 -Fixed issue [security]: #15137: XSS when use Predefined label sets (Denis Chenu) Reported by Michele Cisternino https://www.linkedin.com/in/michelecisternino/ (Denis Chenu)
 -Fixed issue [security]: #15094 XSS in label title (Denis Chenu) Reported by Michele Cisternino https://www.linkedin.com/in/michelecisternino/ (Denis Chenu)
@@ -6447,7 +6524,7 @@ Changes from 3.17.9 (build 190731) to 3.17.10 (build 190821) August 21, 2019
 -Fixed issue #14921: Ranking question on mobile devices (problem with dragging/scrolling) (Markus Flür)
 -Fixed issue #14908: The Button "exit and clear survey entrys" should not be on the last page (endmessage) (Patrick Teichmann)
 -Fixed issue #14443: "Go to survey" menu icon not working in collapsed menu mode (lacrioque)
-#Updated translation: Uighur 
+#Updated translation: Uighur
 #Updated translation: Turkish by kayazeren
 #Updated translation: Thai by adzpire, tomzt
 #Updated translation: Swedish by eddylackmann
@@ -6594,7 +6671,7 @@ Changes from 3.17.4 (build 190529) to 3.17.5 (build 190604) June 4, 2019
 #Updated translation: Norwegian (Bokmål) by pmonstad
 #Updated translation: Polish by elissa
 #Updated translation: Polish (Informal) by elissa
-#Updated translation: Tajik 
+#Updated translation: Tajik
 
 Changes from 3.17.3 (build 190429) to 3.17.4  (build 190529) May 29, 2019
 -Fixed issue [security]: survey manager can use SQL injection to access all data in the database (LouisGac)

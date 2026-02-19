@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-01-23 09:15:01+00:00\n"
+"POT-Creation-Date: 2026-02-17 14:00:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: application/controllers/AdminController.php:98
-#: application/controllers/ThemeOptionsController.php:724
+#: application/controllers/ThemeOptionsController.php:730
 #: application/controllers/UserManagementController.php:498
 #: application/controllers/UserManagementController.php:1228
 #: application/controllers/admin/DataEntry.php:196
@@ -72,6 +72,7 @@ msgstr ""
 #: application/views/admin/token/import.php:14
 #: application/views/admin/token/ldapform.php:16
 #: application/views/admin/token/ldappost.php:37
+#: application/views/surveyAdministration/copySurveyResult_view.php:19
 #: application/views/surveyAdministration/importSurveyResources_view.php:96
 #: application/views/surveyAdministration/importSurvey_view.php:14
 #: application/views/surveyAdministration/importSurvey_view.php:32
@@ -98,6 +99,7 @@ msgstr ""
 #: application/views/admin/dataentry/active_html_view.php:118
 #: application/views/admin/survey/copySurvey_view.php:15
 #: application/views/admin/token/afterDeleteParticipantsTable.php:24
+#: application/views/surveyAdministration/copySurveyResult_view.php:30
 #: application/views/surveyAdministration/importSurvey_view.php:22
 #: application/views/surveyAdministration/importSurvey_view.php:40
 msgid "Main Admin Screen"
@@ -130,21 +132,21 @@ msgstr ""
 #: application/controllers/ResponsesController.php:746
 #: application/controllers/ResponsesController.php:795
 #: application/controllers/ResponsesController.php:814
-#: application/controllers/SurveyAdministrationController.php:323
-#: application/controllers/SurveyAdministrationController.php:1995
-#: application/controllers/SurveyAdministrationController.php:2499
+#: application/controllers/SurveyAdministrationController.php:325
+#: application/controllers/SurveyAdministrationController.php:1997
+#: application/controllers/SurveyAdministrationController.php:2523
 #: application/controllers/SurveysGroupsPermissionController.php:185
 #: application/controllers/SurveysGroupsPermissionController.php:245
 #: application/controllers/SurveysGroupsPermissionController.php:353
 #: application/controllers/SurveysGroupsPermissionController.php:422
 #: application/controllers/SurveysGroupsPermissionController.php:555
 #: application/controllers/ThemeOptionsController.php:341
-#: application/controllers/ThemeOptionsController.php:374
-#: application/controllers/ThemeOptionsController.php:378
-#: application/controllers/ThemeOptionsController.php:409
-#: application/controllers/ThemeOptionsController.php:425
-#: application/controllers/ThemeOptionsController.php:635
-#: application/controllers/ThemeOptionsController.php:639
+#: application/controllers/ThemeOptionsController.php:380
+#: application/controllers/ThemeOptionsController.php:384
+#: application/controllers/ThemeOptionsController.php:415
+#: application/controllers/ThemeOptionsController.php:431
+#: application/controllers/ThemeOptionsController.php:641
+#: application/controllers/ThemeOptionsController.php:645
 #: application/controllers/UserManagementController.php:59
 #: application/controllers/UserManagementController.php:114
 #: application/controllers/UserManagementController.php:144
@@ -247,14 +249,14 @@ msgstr ""
 #: application/controllers/QuotasController.php:223
 #: application/controllers/QuotasController.php:323
 #: application/controllers/ResponsesController.php:881
-#: application/controllers/SurveyAdministrationController.php:152
 #: application/controllers/SurveyAdministrationController.php:154
-#: application/controllers/SurveyAdministrationController.php:724
-#: application/controllers/SurveyAdministrationController.php:1630
-#: application/controllers/SurveyAdministrationController.php:1899
-#: application/controllers/SurveyAdministrationController.php:2068
-#: application/controllers/SurveyAdministrationController.php:2686
-#: application/controllers/SurveyAdministrationController.php:3439
+#: application/controllers/SurveyAdministrationController.php:156
+#: application/controllers/SurveyAdministrationController.php:726
+#: application/controllers/SurveyAdministrationController.php:1632
+#: application/controllers/SurveyAdministrationController.php:1901
+#: application/controllers/SurveyAdministrationController.php:2069
+#: application/controllers/SurveyAdministrationController.php:2710
+#: application/controllers/SurveyAdministrationController.php:3463
 #: application/controllers/SurveyPermissionsController.php:74
 #: application/controllers/SurveyPermissionsController.php:234
 #: application/controllers/admin/EmailTemplates.php:92
@@ -291,7 +293,7 @@ msgstr ""
 #: application/models/SurveysGroups.php:96
 #: application/models/TokenDynamic.php:629
 #: application/models/services/SurveyDeactivate.php:101
-#: application/views/surveyAdministration/surveySummary_view.php:37
+#: application/views/surveyAdministration/surveySummary_view.php:35
 #: modules/admin/HelloWorld/controller/HelloWorld.php:78
 #: modules/admin/HelloWorld/controller/HelloWorld.php:114
 msgid "ID"
@@ -390,10 +392,11 @@ msgstr ""
 
 #: application/controllers/AssessmentController.php:329
 #: application/core/LsDefaultDataSets.php:444
-#: application/models/Survey.php:2363
+#: application/models/Survey.php:2383
 #: application/models/TemplateManifest.php:174
 #: application/views/admin/survey/copySurvey_view.php:54
 #: application/views/assessment/assessments_view.php:14
+#: application/views/surveyAdministration/copySurveyResult_view.php:62
 #: application/views/surveyAdministration/importSurvey_view.php:115
 #: tmp/runtime/twig_cache/2d/2db8cdb66cd95eb0128fce0ff6ec0c12.php:41
 msgid "Assessments"
@@ -434,7 +437,6 @@ msgstr ""
 #: application/controllers/ResponsesController.php:811
 #: application/controllers/ResponsesController.php:1053
 #: application/controllers/ResponsesController.php:1066
-#: application/controllers/SurveyAdministrationController.php:2268
 #: application/controllers/admin/DataEntry.php:1551
 #: application/controllers/admin/Statistics.php:113
 #: application/controllers/admin/Statistics.php:671
@@ -465,8 +467,8 @@ msgstr ""
 #: application/controllers/HomepageSettingsController.php:98
 #: application/controllers/HomepageSettingsController.php:154
 #: application/controllers/HomepageSettingsController.php:210
-#: application/controllers/SurveyAdministrationController.php:3498
-#: application/controllers/SurveyAdministrationController.php:3571
+#: application/controllers/SurveyAdministrationController.php:3522
+#: application/controllers/SurveyAdministrationController.php:3595
 #: application/controllers/UserGroupController.php:65
 #: application/controllers/UserGroupController.php:209
 #: application/controllers/admin/Expressions.php:52
@@ -529,7 +531,7 @@ msgid "Could not delete Box"
 msgstr ""
 
 #: application/controllers/InstallerController.php:140
-#: application/controllers/SurveyAdministrationController.php:3261
+#: application/controllers/SurveyAdministrationController.php:3285
 #: application/models/TemplateManifest.php:166
 #: application/views/admin/update/updater/_progress.php:11
 #: application/views/installer/sidebar_view.php:13
@@ -775,8 +777,8 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:365
 #: application/controllers/LimereplacementfieldsController.php:385
 #: application/controllers/LimereplacementfieldsController.php:405
-#: application/controllers/SurveyAdministrationController.php:289
-#: application/controllers/SurveyAdministrationController.php:3255
+#: application/controllers/SurveyAdministrationController.php:291
+#: application/controllers/SurveyAdministrationController.php:3279
 #: application/controllers/admin/ExpressionValidate.php:172
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:13
 #: application/views/admin/token/massive_actions/_delete_results.php:11
@@ -791,10 +793,10 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:406
 #: application/controllers/LimereplacementfieldsController.php:439
 #: application/controllers/LimereplacementfieldsController.php:454
-#: application/controllers/SurveyAdministrationController.php:289
-#: application/controllers/SurveyAdministrationController.php:3443
+#: application/controllers/SurveyAdministrationController.php:291
+#: application/controllers/SurveyAdministrationController.php:3467
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:12
-#: application/models/Survey.php:1611 application/models/SurveyLink.php:232
+#: application/models/Survey.php:1631 application/models/SurveyLink.php:232
 #: application/views/admin/token/massive_actions/_delete_results.php:10
 #: application/views/admin/token/massive_actions/_export_archive_results.php:12
 msgid "Survey ID"
@@ -912,7 +914,7 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:441
 #: application/controllers/LimereplacementfieldsController.php:456
 #: application/controllers/QuestionAdministrationController.php:1583
-#: application/controllers/SurveyAdministrationController.php:3444
+#: application/controllers/SurveyAdministrationController.php:3468
 #: application/models/Question.php:905
 #: application/views/admin/survey/Question/massive_actions/_delete_results.php:10
 msgid "Question ID"
@@ -950,6 +952,7 @@ msgstr ""
 #: application/views/admin/survey/copySurvey_view.php:31
 #: application/views/questionAdministration/import.php:30
 #: application/views/questionAdministration/listquestions.php:19
+#: application/views/surveyAdministration/copySurveyResult_view.php:58
 #: application/views/surveyAdministration/importSurvey_view.php:68
 msgid "Questions"
 msgstr ""
@@ -1066,19 +1069,21 @@ msgstr ""
 #: application/controllers/QuestionGroupsAdministrationController.php:683
 #: application/controllers/SmtpOAuthController.php:41
 #: application/controllers/SmtpOAuthController.php:91
-#: application/controllers/SurveyAdministrationController.php:380
-#: application/controllers/SurveyAdministrationController.php:608
-#: application/controllers/SurveyAdministrationController.php:637
-#: application/controllers/SurveyAdministrationController.php:946
-#: application/controllers/SurveyAdministrationController.php:1614
-#: application/controllers/SurveyAdministrationController.php:1718
-#: application/controllers/SurveyAdministrationController.php:1791
-#: application/controllers/SurveyAdministrationController.php:1889
-#: application/controllers/SurveyAdministrationController.php:1943
-#: application/controllers/SurveyAdministrationController.php:2124
-#: application/controllers/SurveyAdministrationController.php:2220
-#: application/controllers/SurveyAdministrationController.php:2227
-#: application/controllers/SurveyAdministrationController.php:2371
+#: application/controllers/SurveyAdministrationController.php:382
+#: application/controllers/SurveyAdministrationController.php:610
+#: application/controllers/SurveyAdministrationController.php:639
+#: application/controllers/SurveyAdministrationController.php:948
+#: application/controllers/SurveyAdministrationController.php:1616
+#: application/controllers/SurveyAdministrationController.php:1720
+#: application/controllers/SurveyAdministrationController.php:1793
+#: application/controllers/SurveyAdministrationController.php:1891
+#: application/controllers/SurveyAdministrationController.php:1945
+#: application/controllers/SurveyAdministrationController.php:2125
+#: application/controllers/SurveyAdministrationController.php:2222
+#: application/controllers/SurveyAdministrationController.php:2232
+#: application/controllers/SurveyAdministrationController.php:2342
+#: application/controllers/SurveyAdministrationController.php:2354
+#: application/controllers/SurveyAdministrationController.php:2395
 #: application/controllers/UserGroupController.php:396
 #: application/controllers/UserManagementController.php:1363
 #: application/controllers/admin/ParticipantsAction.php:630
@@ -1122,10 +1127,10 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:1887
 #: application/controllers/QuestionAdministrationController.php:2608
 #: application/controllers/QuestionAdministrationController.php:2654
-#: application/controllers/SurveyAdministrationController.php:750
-#: application/controllers/SurveyAdministrationController.php:1262
-#: application/controllers/SurveyAdministrationController.php:1334
-#: application/controllers/SurveyAdministrationController.php:1421
+#: application/controllers/SurveyAdministrationController.php:752
+#: application/controllers/SurveyAdministrationController.php:1264
+#: application/controllers/SurveyAdministrationController.php:1336
+#: application/controllers/SurveyAdministrationController.php:1423
 #: application/controllers/UserManagementController.php:186
 #: application/controllers/admin/DataEntry.php:258
 #: application/controllers/admin/ParticipantsAction.php:63
@@ -1163,8 +1168,8 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:1117
 #: application/controllers/ThemeOptionsController.php:224
 #: application/controllers/ThemeOptionsController.php:294
-#: application/controllers/ThemeOptionsController.php:590
-#: application/controllers/ThemeOptionsController.php:616
+#: application/controllers/ThemeOptionsController.php:596
+#: application/controllers/ThemeOptionsController.php:622
 #: application/controllers/UserManagementController.php:245
 #: application/controllers/UserManagementController.php:266
 #: application/controllers/UserManagementController.php:295
@@ -1216,7 +1221,7 @@ msgid "Question imported successfully"
 msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:1357
-#: application/controllers/SurveyAdministrationController.php:275
+#: application/controllers/SurveyAdministrationController.php:277
 #: application/controllers/UserManagementController.php:1085
 #: application/controllers/UserRoleController.php:391
 msgid "Deleted"
@@ -1251,7 +1256,7 @@ msgid "Question title"
 msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:1583
-#: application/controllers/SurveyAdministrationController.php:289
+#: application/controllers/SurveyAdministrationController.php:291
 #: application/controllers/ThemeOptionsController.php:212
 #: application/controllers/ThemeOptionsController.php:254
 #: application/controllers/UserManagementController.php:456
@@ -1267,7 +1272,7 @@ msgstr ""
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:14
 #: application/models/FailedEmail.php:80 application/models/FailedEmail.php:145
-#: application/models/Notification.php:165 application/models/Survey.php:1619
+#: application/models/Notification.php:165 application/models/Survey.php:1639
 #: application/models/User.php:188 application/models/User.php:814
 #: application/views/admin/participants/massive_actions/_update_results.php:18
 #: application/views/admin/pluginmanager/index.php:87
@@ -1281,7 +1286,7 @@ msgid "Status"
 msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:1609
-#: application/controllers/SurveyAdministrationController.php:303
+#: application/controllers/SurveyAdministrationController.php:305
 #: application/controllers/ThemeOptionsController.php:251
 #: application/controllers/ThemeOptionsController.php:260
 #: application/controllers/UserManagementController.php:1112
@@ -1382,8 +1387,8 @@ msgid "Question group successfully stored"
 msgstr ""
 
 #: application/controllers/QuestionGroupsAdministrationController.php:793
-#: application/controllers/SurveyAdministrationController.php:2030
-#: application/controllers/SurveyAdministrationController.php:3300
+#: application/controllers/SurveyAdministrationController.php:2032
+#: application/controllers/SurveyAdministrationController.php:3324
 #: application/views/admin/emailtemplates/emailtemplates_view.php:36
 #: application/views/admin/survey/subview/tab_edit_view.php:38
 #: application/views/admin/token/invite.php:90
@@ -1415,6 +1420,7 @@ msgstr ""
 #: application/controllers/QuotasController.php:224
 #: application/controllers/QuotasController.php:325
 #: application/views/quotas/index.php:14
+#: application/views/surveyAdministration/partial/_modalCopySurvey.php:43
 msgid "Survey quotas"
 msgstr ""
 
@@ -1655,7 +1661,7 @@ msgstr ""
 #: application/controllers/UploaderController.php:400
 #: application/controllers/admin/DataEntry.php:1046
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
-#: application/models/Notification.php:166 application/models/Survey.php:1627
+#: application/models/Notification.php:166 application/models/Survey.php:1647
 #: application/models/Surveymenu.php:345
 #: application/models/SurveymenuEntries.php:188
 #: application/models/SurveysGroups.php:98
@@ -1760,7 +1766,7 @@ msgstr ""
 #: application/extensions/admin/SearchBoxWidget/views/searchBox.php:76
 #: application/helpers/admin/export/HtmlWriter.php:72
 #: application/models/Assessment.php:149 application/models/Question.php:935
-#: application/models/QuestionType.php:123 application/models/Survey.php:1668
+#: application/models/QuestionType.php:123 application/models/Survey.php:1688
 #: application/models/SurveysGroups.php:460
 #: application/views/assessment/assessments_edit.php:29
 msgid "Group"
@@ -1788,7 +1794,7 @@ msgid "Question: "
 msgstr ""
 
 #: application/controllers/ResponsesController.php:924
-#: application/controllers/SurveyAdministrationController.php:3440
+#: application/controllers/SurveyAdministrationController.php:3464
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:140
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:96
 #: application/models/Assessment.php:173 application/models/FailedEmail.php:191
@@ -1797,7 +1803,7 @@ msgstr ""
 #: application/models/ParticipantShare.php:272
 #: application/models/Permissiontemplates.php:271
 #: application/models/Question.php:956 application/models/SavedControl.php:176
-#: application/models/Survey.php:1649 application/models/Surveymenu.php:427
+#: application/models/Survey.php:1669 application/models/Surveymenu.php:427
 #: application/models/SurveymenuEntries.php:196
 #: application/models/SurveymenuEntries.php:209
 #: application/models/SurveysGroups.php:181
@@ -1841,7 +1847,7 @@ msgstr ""
 msgid "The OAuth 2.0 token was successfully retrieved."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:124
+#: application/controllers/SurveyAdministrationController.php:126
 #: application/controllers/SurveyPermissionsController.php:61
 #: application/controllers/SurveyPermissionsController.php:116
 #: application/controllers/SurveyPermissionsController.php:150
@@ -1850,34 +1856,34 @@ msgstr ""
 msgid "No permission or survey does not exist."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:241
+#: application/controllers/SurveyAdministrationController.php:243
 #: application/models/TemplateManifest.php:172
 #: application/views/surveyAdministration/listSurveys_view.php:15
 #: tmp/runtime/twig_cache/87/875170de2902a3e86650279fd2651c31.php:41
 msgid "Survey list"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:268
-#: application/controllers/SurveyAdministrationController.php:879
-#: application/controllers/SurveyAdministrationController.php:2559
-#: application/controllers/SurveyAdministrationController.php:2810
+#: application/controllers/SurveyAdministrationController.php:270
+#: application/controllers/SurveyAdministrationController.php:881
+#: application/controllers/SurveyAdministrationController.php:2583
+#: application/controllers/SurveyAdministrationController.php:2834
 msgid "User does not have valid permissions"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:328
+#: application/controllers/SurveyAdministrationController.php:330
 msgid "You can't update question code for an active survey."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:334
+#: application/controllers/SurveyAdministrationController.php:336
 msgid "Invalid parameters."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:367
+#: application/controllers/SurveyAdministrationController.php:369
 msgid "Question codes were successfully regenerated."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:404
-#: application/controllers/SurveyAdministrationController.php:2092
+#: application/controllers/SurveyAdministrationController.php:406
+#: application/controllers/SurveyAdministrationController.php:2093
 #: application/extensions/AdvancedSettingWidget/views/switch.php:19
 #: application/extensions/AdvancedSettingWidget/views/switch.php:44
 #: application/extensions/GeneralOptionWidget/settings/ClearDefaultGeneralOption.php:23
@@ -1958,8 +1964,8 @@ msgstr ""
 msgid "On"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:405
-#: application/controllers/SurveyAdministrationController.php:2093
+#: application/controllers/SurveyAdministrationController.php:407
+#: application/controllers/SurveyAdministrationController.php:2094
 #: application/extensions/AdvancedSettingWidget/views/switch.php:31
 #: application/extensions/AdvancedSettingWidget/views/switch.php:57
 #: application/extensions/GeneralOptionWidget/settings/ClearDefaultGeneralOption.php:22
@@ -1985,7 +1991,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_mainoptions.php:67
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:15
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:36
-#: application/views/admin/globalsettings/_bounce.php:25
+#: application/views/admin/globalsettings/_bounce.php:26
 #: application/views/admin/globalsettings/_email.php:83
 #: application/views/admin/globalsettings/_general.php:67
 #: application/views/admin/globalsettings/_general.php:203
@@ -2050,7 +2056,7 @@ msgstr ""
 msgid "Off"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:409
+#: application/controllers/SurveyAdministrationController.php:411
 #: application/helpers/questionHelper.php:1115
 #: application/helpers/questionHelper.php:1140
 #: application/helpers/questionHelper.php:1164
@@ -2069,69 +2075,73 @@ msgstr ""
 msgid "Default"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:410
+#: application/controllers/SurveyAdministrationController.php:412
 msgid "Current user"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:411
+#: application/controllers/SurveyAdministrationController.php:413
 #: application/helpers/questionHelper.php:1022
 msgid "Custom"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:422
+#: application/controllers/SurveyAdministrationController.php:424
 msgid "New survey"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:425
-msgid "Create or copy survey"
+#: application/controllers/SurveyAdministrationController.php:427
+#: application/extensions/admin/BoxesWidget/BoxesWidget.php:143
+#: application/extensions/admin/SearchBoxWidget/views/searchBox.php:97
+#: application/views/dashboard/welcome.php:20
+#: application/views/surveyAdministration/tabCreate_view.php:129
+msgid "Create survey"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:467
+#: application/controllers/SurveyAdministrationController.php:469
 msgid "Survey could not be created because it did not have a title"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:508
-#: application/controllers/SurveyAdministrationController.php:604
+#: application/controllers/SurveyAdministrationController.php:510
+#: application/controllers/SurveyAdministrationController.php:606
 msgid "Survey could not be created."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:528
-#: application/controllers/SurveyAdministrationController.php:595
+#: application/controllers/SurveyAdministrationController.php:530
+#: application/controllers/SurveyAdministrationController.php:597
 msgid "Your new survey was created. We also created a first question group and an example question for you."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:546
+#: application/controllers/SurveyAdministrationController.php:548
 msgid "Your new survey was created."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:581
+#: application/controllers/SurveyAdministrationController.php:583
 msgid "Untitled survey"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:643
+#: application/controllers/SurveyAdministrationController.php:645
 #: application/controllers/admin/Labels.php:47
 msgid "Demo mode only: Uploading files is disabled in this system."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:658
-#: application/controllers/SurveyAdministrationController.php:1551
+#: application/controllers/SurveyAdministrationController.php:660
+#: application/controllers/SurveyAdministrationController.php:1553
 #: application/controllers/admin/Labels.php:60
 #: application/controllers/admin/PluginManagerController.php:681
 #: application/controllers/admin/Themes.php:1425
 msgid "Incorrect permissions in your %s folder."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:677
+#: application/controllers/SurveyAdministrationController.php:679
 msgid "This file is not a valid ZIP file archive. Import failed. "
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:706
+#: application/controllers/SurveyAdministrationController.php:708
 #: application/controllers/admin/Labels.php:93
 msgid "This ZIP archive contains no valid Resources files. Import failed."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:712
-#: application/controllers/SurveyAdministrationController.php:2397
+#: application/controllers/SurveyAdministrationController.php:714
+#: application/controllers/SurveyAdministrationController.php:2421
 #: application/controllers/UserRoleController.php:331
 #: application/controllers/admin/DataEntry.php:198
 #: application/controllers/admin/Labels.php:96
@@ -2146,12 +2156,12 @@ msgstr ""
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:887
-#: application/controllers/SurveyAdministrationController.php:2565
+#: application/controllers/SurveyAdministrationController.php:889
+#: application/controllers/SurveyAdministrationController.php:2589
 msgid "Survey update failed"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:893
+#: application/controllers/SurveyAdministrationController.php:895
 #: application/helpers/SurveyRuntimeHelper.php:1193
 #: application/helpers/update/update_helper.php:37
 #: application/models/services/PasswordManagement.php:102
@@ -2167,21 +2177,22 @@ msgstr ""
 #: application/views/admin/token/addtokenpost.php:15
 #: application/views/admin/token/ldappost.php:14
 #: application/views/questionAdministration/import.php:21
+#: application/views/surveyAdministration/copySurveyResult_view.php:37
 #: application/views/surveyAdministration/importSurveyResources_view.php:14
 #: application/views/surveyAdministration/importSurvey_view.php:47
 msgid "Success"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:990
-#: application/controllers/SurveyAdministrationController.php:1126
+#: application/controllers/SurveyAdministrationController.php:992
+#: application/controllers/SurveyAdministrationController.php:1128
 #: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:45
 #: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:59
 #: application/views/questionGroupsAdministration/partial/topbarBtns/groupToolsDropdownItems.php:6
 msgid "Check logic"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:999
-#: application/controllers/SurveyAdministrationController.php:1092
+#: application/controllers/SurveyAdministrationController.php:1001
+#: application/controllers/SurveyAdministrationController.php:1094
 #: application/extensions/UserPermissionsWidget/views/table.php:18
 #: application/helpers/userstatistics_helper.php:2719
 #: application/models/Permission.php:938
@@ -2217,12 +2228,12 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1011
 #: application/controllers/SurveyAdministrationController.php:1013
-#: application/controllers/SurveyAdministrationController.php:1031
+#: application/controllers/SurveyAdministrationController.php:1015
 #: application/controllers/SurveyAdministrationController.php:1033
-#: application/controllers/SurveyAdministrationController.php:1042
+#: application/controllers/SurveyAdministrationController.php:1035
 #: application/controllers/SurveyAdministrationController.php:1044
+#: application/controllers/SurveyAdministrationController.php:1046
 #: application/views/questionGroupsAdministration/partial/topbarBtns/groupToolsDropdownItems.php:44
 #: application/views/questionGroupsAdministration/partial/topbarBtns/groupToolsDropdownItems.php:52
 #: application/views/questionGroupsAdministration/partial/topbarBtns/groupToolsDropdownItems.php:61
@@ -2230,8 +2241,8 @@ msgstr ""
 msgid "Delete group"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1014
-#: application/controllers/SurveyAdministrationController.php:1140
+#: application/controllers/SurveyAdministrationController.php:1016
+#: application/controllers/SurveyAdministrationController.php:1142
 #: application/controllers/UploaderController.php:412
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:68
 #: application/extensions/UserPermissionsWidget/views/table.php:16
@@ -2301,164 +2312,152 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1025
+#: application/controllers/SurveyAdministrationController.php:1027
 #: application/models/QuestionGroup.php:348
 #: application/views/questionGroupsAdministration/partial/topbarBtns/groupToolsDropdownItems.php:41
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1035
+#: application/controllers/SurveyAdministrationController.php:1037
 #: application/views/questionGroupsAdministration/partial/topbarBtns/groupToolsDropdownItems.php:50
 msgid "Impossible to delete this group because there is at least one question having a condition on its content"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1046
+#: application/controllers/SurveyAdministrationController.php:1048
 #: application/views/questionGroupsAdministration/partial/topbarBtns/groupToolsDropdownItems.php:59
 msgid "It is not possible to add/delete groups if the survey is active."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1074
+#: application/controllers/SurveyAdministrationController.php:1076
 #: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:6
 msgid "Condition designer"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1082
+#: application/controllers/SurveyAdministrationController.php:1084
 #: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:16
 msgid "Edit default answers"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1102
-#: application/models/Survey.php:1534
+#: application/controllers/SurveyAdministrationController.php:1104
+#: application/models/Survey.php:1535
 #: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:36
 #: application/views/surveyAdministration/tab_survey_view.php:31
-#: application/views/surveyAdministration/tab_survey_view.php:61
-#: application/views/surveyAdministration/tab_survey_view.php:62
 msgid "Copy"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1137
-#: application/controllers/SurveyAdministrationController.php:1148
+#: application/controllers/SurveyAdministrationController.php:1139
+#: application/controllers/SurveyAdministrationController.php:1150
 #: application/models/Question.php:762
 #: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:80
 #: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:87
 msgid "Delete question"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1139
-#: application/controllers/SurveyAdministrationController.php:1150
+#: application/controllers/SurveyAdministrationController.php:1141
+#: application/controllers/SurveyAdministrationController.php:1152
 #: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:74
 msgid "Delete this question"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1142
+#: application/controllers/SurveyAdministrationController.php:1144
 #: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:77
 msgid "Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1152
+#: application/controllers/SurveyAdministrationController.php:1154
 msgid "You can not delete a question if the survey is active."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1306
+#: application/controllers/SurveyAdministrationController.php:1308
 msgid "Survey texts were saved successfully."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1306
+#: application/controllers/SurveyAdministrationController.php:1308
 msgid "Error saving survey texts"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1468
+#: application/controllers/SurveyAdministrationController.php:1470
 msgid "Successfully saved privacy policy text"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1468
+#: application/controllers/SurveyAdministrationController.php:1470
 msgid "Error saving privacy policy text"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1560
+#: application/controllers/SurveyAdministrationController.php:1562
 msgid "You don't have sufficient permissions to upload images in this survey"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1656
+#: application/controllers/SurveyAdministrationController.php:1658
 msgid "Error: Response table does not exist. Survey cannot be deactivated."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1729
+#: application/controllers/SurveyAdministrationController.php:1731
 #: application/helpers/frontend_helper.php:1461
 #: tmp/runtime/twig_cache/76/76f394ee8dc7c3170a56c0b0db74427a.php:113
 #: tmp/runtime/twig_cache/c9/c986f82fcb93059a9b2b7db730d27e0a.php:112
 msgid "There are no questions in this survey."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1798
+#: application/controllers/SurveyAdministrationController.php:1800
 msgid "The survey is already active."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1906
+#: application/controllers/SurveyAdministrationController.php:1908
 msgid "Survey deleted."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1931
+#: application/controllers/SurveyAdministrationController.php:1933
 msgid "Survey files deleted."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1933
+#: application/controllers/SurveyAdministrationController.php:1935
 msgid "Error: Could not delete survey files."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:1939
+#: application/controllers/SurveyAdministrationController.php:1941
 msgid "Error: Cannot purge files for a survey that is not deleted. Please delete the survey normally in the survey view."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2136
+#: application/controllers/SurveyAdministrationController.php:2137
 msgid "The new question group/question order was successfully saved."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2139
+#: application/controllers/SurveyAdministrationController.php:2140
 msgid "Unable to reorder question %s."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2166
+#: application/controllers/SurveyAdministrationController.php:2167
 msgid "Reorder questions/question groups"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2233
-#: application/views/admin/survey/copySurvey_view.php:11
-#: application/views/surveyAdministration/tabCopy_view.php:36
-msgid "Copy survey"
+#: application/controllers/SurveyAdministrationController.php:2228
+#: application/controllers/SurveyAdministrationController.php:2349
+msgid "Survey does not exist."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2234
-msgid "Survey copy summary"
+#: application/controllers/SurveyAdministrationController.php:2374
+msgid "Survey copied successfully."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2235
-#: application/views/admin/survey/copySurvey_view.php:71
-msgid "Copy of survey is completed."
+#: application/controllers/SurveyAdministrationController.php:2376
+msgid "Error while copying the survey."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2265
-msgid "No survey ID has been provided. Cannot copy survey"
-msgstr ""
-
-#: application/controllers/SurveyAdministrationController.php:2311
-msgid "Some resources could not be copied from the source survey"
-msgstr ""
-
-#: application/controllers/SurveyAdministrationController.php:2378
+#: application/controllers/SurveyAdministrationController.php:2402
 #: application/views/surveyAdministration/importSurvey_view.php:12
 msgid "Import survey data"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2379
+#: application/controllers/SurveyAdministrationController.php:2403
 msgid "Survey structure import summary"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2380
+#: application/controllers/SurveyAdministrationController.php:2404
 msgid "Import of survey is completed."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2391
+#: application/controllers/SurveyAdministrationController.php:2415
 #: application/controllers/UserRoleController.php:319
 #: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:198
 #: application/models/UserParser.php:27
@@ -2466,19 +2465,19 @@ msgstr ""
 msgid "Sorry, this file is too large. Only files up to %01.2f MB are allowed."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2394
+#: application/controllers/SurveyAdministrationController.php:2418
 msgid "Import failed. You specified an invalid file type '%s'."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2407
+#: application/controllers/SurveyAdministrationController.php:2431
 msgid "Unknown error while reading the file, no survey created."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2502
+#: application/controllers/SurveyAdministrationController.php:2526
 msgid "The survey was successfully expired by setting an expiration date in the survey settings."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2572
+#: application/controllers/SurveyAdministrationController.php:2596
 #: application/controllers/admin/ParticipantsAction.php:872
 #: application/controllers/admin/Themes.php:402
 #: application/core/SurveyCommonAction.php:1074
@@ -2493,7 +2492,7 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2650
+#: application/controllers/SurveyAdministrationController.php:2674
 #: application/controllers/admin/ParticipantsAction.php:801
 #: application/views/admin/labels/_labelviewrightcontent_view.php:59
 #: application/views/admin/labels/_labelviewrightcontent_view.php:89
@@ -2510,7 +2509,7 @@ msgstr ""
 msgid "Please select a file to import!"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2652
+#: application/controllers/SurveyAdministrationController.php:2676
 #: application/views/admin/labels/_labelviewrightcontent_view.php:85
 #: application/views/admin/pluginmanager/uploadModal.php:42
 #: application/views/admin/themes/importform_view.php:18
@@ -2518,89 +2517,89 @@ msgstr ""
 msgid "The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2819
+#: application/controllers/SurveyAdministrationController.php:2843
 msgid "User does not have permission to use this theme"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2886
+#: application/controllers/SurveyAdministrationController.php:2910
 msgid "My first question group"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2930
+#: application/controllers/SurveyAdministrationController.php:2954
 msgid "Option A"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:2938
+#: application/controllers/SurveyAdministrationController.php:2962
 msgid "Option B"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3016
+#: application/controllers/SurveyAdministrationController.php:3040
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:120
 msgid "Responses to this survey are anonymized."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3018
+#: application/controllers/SurveyAdministrationController.php:3042
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:118
 msgid "Responses to this survey are NOT anonymized."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3021
+#: application/controllers/SurveyAdministrationController.php:3045
 msgid "It is presented question by question."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3023
+#: application/controllers/SurveyAdministrationController.php:3047
 msgid "It is presented group by group."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3025
+#: application/controllers/SurveyAdministrationController.php:3049
 msgid "It is presented on one single page."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3029
+#: application/controllers/SurveyAdministrationController.php:3053
 msgid "No question index will be shown with this format."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3031
+#: application/controllers/SurveyAdministrationController.php:3055
 msgid "A question index will be shown; participants will be able to jump between viewed questions."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3033
+#: application/controllers/SurveyAdministrationController.php:3057
 msgid "A full question index will be shown; participants will be able to jump between relevant questions."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3037
+#: application/controllers/SurveyAdministrationController.php:3061
 msgid "Responses will be date stamped."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3040
+#: application/controllers/SurveyAdministrationController.php:3064
 msgid "IP Addresses will be logged"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3043
+#: application/controllers/SurveyAdministrationController.php:3067
 msgid "Referrer URL will be saved."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3046
+#: application/controllers/SurveyAdministrationController.php:3070
 msgid "It uses cookies for access control."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3049
+#: application/controllers/SurveyAdministrationController.php:3073
 msgid "If participant access codes are used, the public may register for this survey"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3052
+#: application/controllers/SurveyAdministrationController.php:3076
 msgid "Participants can save partially finished surveys"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3055
+#: application/controllers/SurveyAdministrationController.php:3079
 msgid "Basic email notification is sent to:"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3058
+#: application/controllers/SurveyAdministrationController.php:3082
 msgid "Detailed email notification with response data is sent to:"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3101
+#: application/controllers/SurveyAdministrationController.php:3125
 #: application/controllers/admin/DataEntry.php:699
 #: application/controllers/admin/DataEntry.php:1121
 #: application/controllers/admin/DataEntry.php:1191
@@ -2708,7 +2707,7 @@ msgstr ""
 #: application/views/admin/participants/blacklist_view.php:129
 #: application/views/admin/participants/massive_actions/_update.php:61
 #: application/views/admin/participants/modal_subviews/_addToSurvey.php:47
-#: application/views/admin/participants/modal_subviews/_editParticipant.php:81
+#: application/views/admin/participants/modal_subviews/_editParticipant.php:82
 #: application/views/admin/participants/modal_subviews/_shareParticipant.php:58
 #: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:21
 #: application/views/admin/survey/Question/yesNo_defaultvalue_widget.php:61
@@ -2746,7 +2745,7 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3103
+#: application/controllers/SurveyAdministrationController.php:3127
 #: application/controllers/admin/DataEntry.php:700
 #: application/controllers/admin/DataEntry.php:1116
 #: application/controllers/admin/DataEntry.php:1189
@@ -2862,7 +2861,7 @@ msgstr ""
 #: application/views/admin/participants/blacklist_view.php:128
 #: application/views/admin/participants/massive_actions/_update.php:61
 #: application/views/admin/participants/modal_subviews/_addToSurvey.php:46
-#: application/views/admin/participants/modal_subviews/_editParticipant.php:80
+#: application/views/admin/participants/modal_subviews/_editParticipant.php:81
 #: application/views/admin/participants/modal_subviews/_shareParticipant.php:57
 #: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:19
 #: application/views/admin/survey/Question/yesNo_defaultvalue_widget.php:62
@@ -2903,49 +2902,49 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3113
+#: application/controllers/SurveyAdministrationController.php:3137
 msgid "Survey cannot be activated yet."
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3115
+#: application/controllers/SurveyAdministrationController.php:3139
 msgid "You need to add question groups"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3118
+#: application/controllers/SurveyAdministrationController.php:3142
 msgid "You need to add questions"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3224
+#: application/controllers/SurveyAdministrationController.php:3248
 #: application/controllers/admin/SurveysGroupsController.php:310
 #: application/core/plugins/expressionFixedDbVar/expressionFixedDbVar.php:168
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:330
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:236
 #: application/views/themeOptions/options_core.php:5
-#: application/views/themeOptions/options_core.php:237
-#: application/views/themeOptions/options_core.php:265
-#: application/views/themeOptions/options_core.php:276
+#: application/views/themeOptions/options_core.php:260
+#: application/views/themeOptions/options_core.php:289
+#: application/views/themeOptions/options_core.php:301
 msgid "Inherit"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3256
+#: application/controllers/SurveyAdministrationController.php:3280
 #: application/models/User.php:183
 msgid "Date format"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3257
+#: application/controllers/SurveyAdministrationController.php:3281
 msgid "Decimal mark"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3258
+#: application/controllers/SurveyAdministrationController.php:3282
 #: tmp/runtime/twig_cache/f9/f9b4c942b45cc09e52c149b8fffb9938.php:41
 msgid "End url"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3259
+#: application/controllers/SurveyAdministrationController.php:3283
 msgid "URL description (link text)"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3260
+#: application/controllers/SurveyAdministrationController.php:3284
 #: application/models/Permissiontemplates.php:252
 #: application/models/QuestionType.php:122
 #: application/models/Surveymenu.php:347
@@ -2964,72 +2963,72 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3262
+#: application/controllers/SurveyAdministrationController.php:3286
 msgid "End message"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3305
+#: application/controllers/SurveyAdministrationController.php:3329
 msgid "Add a new question"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3441
+#: application/controllers/SurveyAdministrationController.php:3465
 #: application/views/admin/survey/subview/accordion/_integration_panel.php:70
 msgid "Parameter"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3442
+#: application/controllers/SurveyAdministrationController.php:3466
 #: application/views/admin/survey/subview/accordion/_integration_panel.php:76
 msgid "Target question"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3445
+#: application/controllers/SurveyAdministrationController.php:3469
 msgid "Subquestion ID"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3446
+#: application/controllers/SurveyAdministrationController.php:3470
 #: application/views/admin/survey/subview/accordion/_integration_panel.php:26
 #: application/views/surveyAdministration/addPanelIntegrationParameter_view.php:11
 msgid "Add URL parameter"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3447
+#: application/controllers/SurveyAdministrationController.php:3471
 msgid "Edit URL parameter"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3448
+#: application/controllers/SurveyAdministrationController.php:3472
 #: application/views/surveyAdministration/addPanelIntegrationParameter_view.php:28
 msgid "(No target question)"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3449
+#: application/controllers/SurveyAdministrationController.php:3473
 #: application/models/SurveyURLParameter.php:197
 msgid "Are you sure you want to delete this URL parameter?"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3450
+#: application/controllers/SurveyAdministrationController.php:3474
 #: application/views/admin/survey/subview/accordion/_integration_panel.php:51
 msgid "No parameters defined"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3451
+#: application/controllers/SurveyAdministrationController.php:3475
 #: application/views/questionAdministration/partial/questionView.php:49
 msgid "Search:"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3452
+#: application/controllers/SurveyAdministrationController.php:3476
 msgid "Showing _START_ to _END_ of _TOTAL_ entries"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3453
+#: application/controllers/SurveyAdministrationController.php:3477
 #: application/core/plugins/TwoFactorAdminLogin/views/userindex.php:47
 msgid "No, cancel"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3454
+#: application/controllers/SurveyAdministrationController.php:3478
 msgid "Yes, delete"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3455
+#: application/controllers/SurveyAdministrationController.php:3479
 #: application/controllers/admin/DataEntry.php:1450
 #: application/controllers/admin/PluginManagerController.php:359
 #: application/helpers/admin/label_helper.php:124
@@ -3094,7 +3093,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3456
+#: application/controllers/SurveyAdministrationController.php:3480
 #: application/controllers/admin/Tokens.php:1332
 #: application/controllers/admin/Tokens.php:1765
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:68
@@ -3123,7 +3122,7 @@ msgstr ""
 #: application/views/admin/participants/modal_subviews/_addToSurvey.php:56
 #: application/views/admin/participants/modal_subviews/_deleteParticipant.php:29
 #: application/views/admin/participants/modal_subviews/_editAttribute.php:244
-#: application/views/admin/participants/modal_subviews/_editParticipant.php:138
+#: application/views/admin/participants/modal_subviews/_editParticipant.php:139
 #: application/views/admin/participants/modal_subviews/_exportCSV.php:42
 #: application/views/admin/participants/modal_subviews/_shareParticipant.php:68
 #: application/views/admin/participants/participantsPanel_view.php:22
@@ -3171,6 +3170,7 @@ msgstr ""
 #: application/views/responses/partial/topbarBtns/rightSideButtons.php:23
 #: application/views/surveyAdministration/addPanelIntegrationParameter_view.php:62
 #: application/views/surveyAdministration/deleteSurvey_view.php:37
+#: application/views/surveyAdministration/partial/_modalCopySurvey.php:77
 #: application/views/surveyAdministration/partial/_modalImportSurvey.php:65
 #: application/views/surveyAdministration/partial/topbar_tokens/rightSideButtons.php:92
 #: application/views/surveyAdministration/surveyActivation/_activateFooterBtns.php:1
@@ -3196,33 +3196,33 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3490
-#: application/controllers/SurveyAdministrationController.php:3567
+#: application/controllers/SurveyAdministrationController.php:3514
+#: application/controllers/SurveyAdministrationController.php:3591
 msgid "Invalid request"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3514
+#: application/controllers/SurveyAdministrationController.php:3538
 msgid "Invalid URL parameter"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3534
-#: application/controllers/SurveyAdministrationController.php:3577
+#: application/controllers/SurveyAdministrationController.php:3558
+#: application/controllers/SurveyAdministrationController.php:3601
 msgid "URL parameter not found"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3544
+#: application/controllers/SurveyAdministrationController.php:3568
 msgid "URL parameter saved"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3549
+#: application/controllers/SurveyAdministrationController.php:3573
 msgid "Could not save URL parameter"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3582
+#: application/controllers/SurveyAdministrationController.php:3606
 msgid "URL parameter deleted"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3584
+#: application/controllers/SurveyAdministrationController.php:3608
 msgid "Could not delete URL parameter"
 msgstr ""
 
@@ -3230,6 +3230,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:276
 #: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:50
 #: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:167
+#: application/views/surveyAdministration/partial/_modalCopySurvey.php:49
 #: application/views/surveyPermissions/index.php:13
 msgid "Survey permissions"
 msgstr ""
@@ -3450,24 +3451,24 @@ msgid "Uninstalled"
 msgstr ""
 
 #: application/controllers/ThemeOptionsController.php:288
-#: application/controllers/ThemeOptionsController.php:353
-#: application/controllers/ThemeOptionsController.php:392
+#: application/controllers/ThemeOptionsController.php:359
+#: application/controllers/ThemeOptionsController.php:398
 msgid "Theme options saved."
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:436
+#: application/controllers/ThemeOptionsController.php:442
 msgid "The template upload directory doesn't exist or is not writable."
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:439
+#: application/controllers/ThemeOptionsController.php:445
 msgid "Some directories are not writable. Please change the folder permissions for /tmp and /upload/themes in order to enable this option."
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:442
+#: application/controllers/ThemeOptionsController.php:448
 msgid "You do not have the required ZIP library installed in PHP."
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:486
+#: application/controllers/ThemeOptionsController.php:492
 #: application/core/LsDefaultDataSets.php:875
 #: application/models/Permission.php:887
 #: application/views/admin/super/_configuration_menu.php:147
@@ -3475,37 +3476,37 @@ msgstr ""
 msgid "Themes"
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:571
+#: application/controllers/ThemeOptionsController.php:577
 msgid "Unsafe path"
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:580
+#: application/controllers/ThemeOptionsController.php:586
 msgid "The Question theme \"%s\" has been successfully installed"
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:582
+#: application/controllers/ThemeOptionsController.php:588
 msgid "The Question theme \"%s\" could not be installed"
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:609
+#: application/controllers/ThemeOptionsController.php:615
 msgid "You can't uninstall template '%s' because some templates inherit from it."
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:650
+#: application/controllers/ThemeOptionsController.php:656
 msgid "Invalid theme configuration for this group."
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:654
 #: application/controllers/ThemeOptionsController.php:660
+#: application/controllers/ThemeOptionsController.php:666
 msgid "The theme '%s' has been reset."
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:731
-#: application/controllers/ThemeOptionsController.php:732
+#: application/controllers/ThemeOptionsController.php:737
+#: application/controllers/ThemeOptionsController.php:738
 msgid "Survey theme options"
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:753
+#: application/controllers/ThemeOptionsController.php:759
 msgid " global level"
 msgstr ""
 
@@ -3553,7 +3554,7 @@ msgstr ""
 #: application/controllers/UploaderController.php:313
 #: application/controllers/UploaderController.php:331
 #: application/controllers/UploaderController.php:359
-#: application/helpers/remotecontrol/remotecontrol_handle.php:3578
+#: application/helpers/remotecontrol/remotecontrol_handle.php:3609
 msgid "The file has been successfully uploaded."
 msgstr ""
 
@@ -3793,7 +3794,7 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1232
 #: application/controllers/UserManagementController.php:1280
 #: application/controllers/UserManagementController.php:1328
-#: application/core/LsDefaultDataSets.php:2836
+#: application/core/LsDefaultDataSets.php:2834
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:386
 #: application/core/plugins/Authdb/Authdb.php:142
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:110
@@ -5545,7 +5546,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:895
 #: application/models/QuestionAttribute.php:437
 #: application/views/admin/super/_configuration_menu.php:283
-#: application/views/surveyAdministration/tab_survey_view.php:86
+#: application/views/surveyAdministration/tab_survey_view.php:77
 msgid "Plugins"
 msgstr ""
 
@@ -5631,6 +5632,7 @@ msgstr ""
 #: application/models/TemplateConfig.php:602
 #: application/views/admin/emailtemplates/email_language_template_tab.php:151
 #: application/views/admin/emailtemplates/emailtemplates_view.php:104
+#: application/views/admin/globalsettings/_emailTestConfirmation.php:3
 #: application/views/admin/globalsettings/_emailTestConfirmation.php:16
 #: application/views/admin/globalsettings/partial/topbarBtns/rightSideButtons.php:9
 #: application/views/admin/globalsettings/partial/topbarBtns_surveysettings/rightSideButtons.php:10
@@ -5644,7 +5646,7 @@ msgstr ""
 #: application/views/admin/super/footer.php:168
 #: application/views/admin/super/footer.php:188
 #: application/views/admin/super/footer.php:207
-#: application/views/admin/super/footer.php:232
+#: application/views/admin/super/footer.php:237
 #: application/views/admin/super/fullpagebar_view.php:51
 #: application/views/admin/super/fullpagebar_view.php:123
 #: application/views/admin/themes/templatesummary_view.php:285
@@ -6042,7 +6044,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:430
 #: application/helpers/questionHelper.php:829
 #: application/helpers/userstatistics_helper.php:2582
-#: application/models/Survey.php:1587 application/models/Survey.php:2385
+#: application/models/Survey.php:1607 application/models/Survey.php:2405
 #: application/views/admin/export/statistics_user_view.php:18
 #: application/views/admin/export/statistics_view.php:23
 msgid "Statistics"
@@ -6114,7 +6116,7 @@ msgstr ""
 #: application/controllers/admin/globalsettings.php:577
 #: application/core/LsDefaultDataSets.php:838
 #: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:19
-#: application/models/Survey.php:2435 application/models/SurveysGroups.php:322
+#: application/models/Survey.php:2455 application/models/SurveysGroups.php:322
 #: application/models/SurveysGroups.php:471
 msgid "Survey settings"
 msgstr ""
@@ -6945,7 +6947,7 @@ msgid "(Autodetect)"
 msgstr ""
 
 #: application/controllers/admin/UserAction.php:162
-#: application/views/layouts/adminmenu.php:110
+#: application/views/layouts/adminmenu.php:114
 msgid "Account"
 msgstr ""
 
@@ -7250,7 +7252,7 @@ msgid "Open general survey settings"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:79
-#: application/core/LsDefaultDataSets.php:81 application/models/Survey.php:2419
+#: application/core/LsDefaultDataSets.php:81 application/models/Survey.php:2439
 #: tmp/runtime/twig_cache/4f/4f5b58e80eeab4fe5765d567a122ffa2.php:50
 msgid "Survey text elements"
 msgstr ""
@@ -7352,7 +7354,7 @@ msgid "Overview of questions and groups where you can add, edit and reorder them
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:332
-#: application/models/Survey.php:2440
+#: application/models/Survey.php:2460
 msgid "Participants"
 msgstr ""
 
@@ -7378,8 +7380,9 @@ msgid "Edit quotas"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:416
-#: application/models/Survey.php:2370
+#: application/models/Survey.php:2390
 #: application/views/admin/survey/copySurvey_view.php:55
+#: application/views/surveyAdministration/copySurveyResult_view.php:66
 #: application/views/surveyAdministration/importSurvey_view.php:119
 msgid "Quotas"
 msgstr ""
@@ -7401,7 +7404,7 @@ msgid "Edit survey panel integration"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:472
-#: application/views/surveyAdministration/tab_survey_view.php:71
+#: application/views/surveyAdministration/tab_survey_view.php:62
 msgid "Panel integration"
 msgstr ""
 
@@ -7412,7 +7415,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:499
 #: application/core/LsDefaultDataSets.php:500
 #: application/core/LsDefaultDataSets.php:501
-#: application/models/Survey.php:1642 application/models/Survey.php:2375
+#: application/models/Survey.php:1662 application/models/Survey.php:2395
 #: application/views/admin/export/exportresult_panels/_responses.php:4
 #: application/views/admin/survey/surveybar_statistics.php:18
 #: application/views/admin/survey/surveybar_statistics.php:23
@@ -7426,7 +7429,7 @@ msgid "Add/edit resources (files/images) for this survey"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:556
-#: application/views/surveyAdministration/tab_survey_view.php:78
+#: application/views/surveyAdministration/tab_survey_view.php:69
 msgid "Resources"
 msgstr ""
 
@@ -7465,6 +7468,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:668
 #: application/core/LsDefaultDataSets.php:669
 #: application/views/admin/survey/copySurvey_view.php:75
+#: application/views/surveyAdministration/copySurveyResult_view.php:88
 #: application/views/surveyAdministration/importSurvey_view.php:170
 msgid "Go to survey"
 msgstr ""
@@ -7678,43 +7682,43 @@ msgstr ""
 msgid "Manage plugins"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1028
+#: application/core/LsDefaultDataSets.php:1026
 #: application/helpers/update/updates/Update_609.php:28
 #: tmp/runtime/twig_cache/64/64544e68dea5aaf64d052b8e4fb22212.php:40
 msgid "A clean and simple base that can be used by developers to create their own Bootstrap based theme."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1047
+#: application/core/LsDefaultDataSets.php:1045
 #: application/helpers/update/updates/Update_609.php:37
 #: tmp/runtime/twig_cache/15/15fc6b97fdc1b7af7c30fb392c994701.php:40
 msgid "A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1066
+#: application/core/LsDefaultDataSets.php:1064
 #: application/helpers/update/updates/Update_609.php:46
 msgid "Based on BootsWatch Themes:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1066
+#: application/core/LsDefaultDataSets.php:1064
 #: application/helpers/update/updates/Update_609.php:46
 msgid "Visit Bootswatch page"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1085
+#: application/core/LsDefaultDataSets.php:1083
 #: application/helpers/update/updates/Update_609.php:117
 #: tmp/runtime/twig_cache/59/590a054adbd179e9da05a2b3dcbf415b.php:40
 msgid "Our default theme for a fruity and flexible use. This theme offers single color variations"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1099
+#: application/core/LsDefaultDataSets.php:1097
 msgid "Beginner tour"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1109
+#: application/core/LsDefaultDataSets.php:1107
 msgid "End tour"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1115
+#: application/core/LsDefaultDataSets.php:1113
 #: application/views/installer/dbconfig_view.php:111
 #: application/views/installer/license_view.php:16
 #: application/views/installer/populatedb_view.php:20
@@ -7727,7 +7731,7 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1116
+#: application/core/LsDefaultDataSets.php:1114
 #: application/views/installer/dbconfig_view.php:116
 #: application/views/installer/optconfig_view.php:88
 #: application/views/installer/precheck_view.php:173
@@ -7739,783 +7743,783 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1139
+#: application/core/LsDefaultDataSets.php:1137
 msgid "Welcome to LimeSurvey!"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1140
+#: application/core/LsDefaultDataSets.php:1138
 msgid "This tour will help you to easily get a basic understanding of LimeSurvey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1141
+#: application/core/LsDefaultDataSets.php:1139
 msgid "We would like to help you with a quick tour of the most essential functions and features."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1156
+#: application/core/LsDefaultDataSets.php:1154
 msgid "The basic functions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1157
+#: application/core/LsDefaultDataSets.php:1155
 msgid "The three top boxes are the most basic functions of LimeSurvey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1158
+#: application/core/LsDefaultDataSets.php:1156
 msgid "From left to right it should be 'Create survey', 'List surveys' and 'Global settings'. Best we start by creating a survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1159
+#: application/core/LsDefaultDataSets.php:1157
 msgid "Click on the 'Create survey' box - or 'Next' in this tutorial"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1171
+#: application/core/LsDefaultDataSets.php:1169
 msgid "The survey title"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1172
+#: application/core/LsDefaultDataSets.php:1170
 msgid "This is the title of your survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1173
+#: application/core/LsDefaultDataSets.php:1171
 msgid "Your participants will see this title in the browser's title bar and on the welcome screen."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1174
+#: application/core/LsDefaultDataSets.php:1172
 msgid "You have to put in at least a title for the survey to be saved."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1194
+#: application/core/LsDefaultDataSets.php:1192
 msgid "The survey description"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1195
+#: application/core/LsDefaultDataSets.php:1193
 msgid "In this field you may type a short description of your survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1196
+#: application/core/LsDefaultDataSets.php:1194
 msgid "The text inserted here will be displayed on the welcome screen, which is the first thing that your respondents will see when they access your survey.."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1197
+#: application/core/LsDefaultDataSets.php:1195
 msgid "Describe your survey, but do not ask any question yet."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1208
+#: application/core/LsDefaultDataSets.php:1206
 msgid "Create a sample question and question group"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1209
+#: application/core/LsDefaultDataSets.php:1207
 msgid "We will be creating a question group and a question in this tutorial. There is need to automatically create them."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1219
+#: application/core/LsDefaultDataSets.php:1217
 msgid "The welcome message"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1220
+#: application/core/LsDefaultDataSets.php:1218
 msgid "This message is shown directly below the survey description on the welcome page. You may leave this blank for now but it is a good way to introduce your participants to the survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1231
+#: application/core/LsDefaultDataSets.php:1229
 msgid "The end message"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1232
+#: application/core/LsDefaultDataSets.php:1230
 msgid "This message is shown at the end of your survey to every participant. It's a great way to say thank you or give some links or hints where to go next."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1243
+#: application/core/LsDefaultDataSets.php:1241
 msgid "Now save your survey"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1244
+#: application/core/LsDefaultDataSets.php:1242
 msgid "You may play around with more settings, but let's save and start adding questions to your survey now. Just click on 'Save'."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1262
+#: application/core/LsDefaultDataSets.php:1260
 msgid "The sidebar"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1263
+#: application/core/LsDefaultDataSets.php:1261
 msgid "This is the sidebar."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1264
+#: application/core/LsDefaultDataSets.php:1262
 msgid "All important settings can be reached in this sidebar."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1265
+#: application/core/LsDefaultDataSets.php:1263
 msgid "The most important settings of your survey can be reached from this sidebar: the survey settings menu and the survey structure menu. You may resize it to fit your screen to easily navigate through the available options. If the size of the sidebar is too small, the options get collapsed and the quick-menu is displayed. If you wish to work from the quick-menu, either click on the arrow button or drag it to the left."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1281
+#: application/core/LsDefaultDataSets.php:1279
 msgid "The settings tab with the survey menu"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1282
+#: application/core/LsDefaultDataSets.php:1280
 msgid "If you click on this tab, the survey settings menu will be displayed. The most important settings of your survey are accessible from this menu."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1283
+#: application/core/LsDefaultDataSets.php:1281
 msgid "If you want to know more about them, check our manual."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1294
+#: application/core/LsDefaultDataSets.php:1292
 msgid "The top bar"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1295
+#: application/core/LsDefaultDataSets.php:1293
 msgid "This is the top bar."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1296
+#: application/core/LsDefaultDataSets.php:1294
 msgid "This bar will change as you move through the functionalities. The current bar corresponds to the \"overview\" tab. It contains the most important LimeSurvey functionalities such as preview and activate survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1307
+#: application/core/LsDefaultDataSets.php:1305
 msgid "The survey structure"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1308
+#: application/core/LsDefaultDataSets.php:1306
 msgid "This is the structure view of your survey. Here you can see all your groups and questions."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1322
+#: application/core/LsDefaultDataSets.php:1320
 msgid "Let's add a question group"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1323
+#: application/core/LsDefaultDataSets.php:1321
 msgid "What good would your survey be without questions?"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1324
+#: application/core/LsDefaultDataSets.php:1322
 msgid "In LimeSurvey a survey is organized in groups and questions. To begin creating questions, we first need a question group."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1325
+#: application/core/LsDefaultDataSets.php:1323
 msgid "Click on the 'Add group' button"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1342
+#: application/core/LsDefaultDataSets.php:1340
 msgid "Enter a title for your first question group"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1343
+#: application/core/LsDefaultDataSets.php:1341
 msgid "The title of the question group is visible to your survey participants (this setting can be changed later and it cannot be empty). Question groups are important because they allow the survey administrators to logically group the questions. By default, each question group (including its questions) is shown on its own page (this setting can be changed later)."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1359
+#: application/core/LsDefaultDataSets.php:1357
 msgid "A description for your question group"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1360
+#: application/core/LsDefaultDataSets.php:1358
 msgid "This description is also visible to your participants."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1361
+#: application/core/LsDefaultDataSets.php:1359
 msgid "You do not need to add a description to your question group, but sometimes it makes sense to add a little extra information for your participants."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1372
+#: application/core/LsDefaultDataSets.php:1370
 msgid "Advanced settings"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1373
+#: application/core/LsDefaultDataSets.php:1371
 msgid "For now it's best to leave these additional settings as they are. If you want to know more about randomization and relevance settings, have a look at our manual."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1384
+#: application/core/LsDefaultDataSets.php:1382
 msgid "Save and add a new question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1385
+#: application/core/LsDefaultDataSets.php:1383
 msgid "Now when you are finished click on 'Save and add question'."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1386
+#: application/core/LsDefaultDataSets.php:1384
 msgid "This will directly add a question to the current question group."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1387
+#: application/core/LsDefaultDataSets.php:1385
 msgid "Now click on 'Save and add question'."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1404
+#: application/core/LsDefaultDataSets.php:1402
 msgid "Set your question type."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1405
+#: application/core/LsDefaultDataSets.php:1403
 msgid "LimeSurvey offers you a lot of different question types."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1406
+#: application/core/LsDefaultDataSets.php:1404
 msgid "As you can see, the preselected question type is the 'Long free text' one. We will use in this example the 'Array' question type."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1407
+#: application/core/LsDefaultDataSets.php:1405
 msgid "This type of question allows you to add multiple subquestions and a set of answers."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1408
+#: application/core/LsDefaultDataSets.php:1406
 msgid "Please select the 'Array'-type."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1424
+#: application/core/LsDefaultDataSets.php:1422
 msgid "The title of your question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1426
+#: application/core/LsDefaultDataSets.php:1424
 msgid "This code is normally not shown to your participants, still it is necessary and has to be unique for the survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1427
+#: application/core/LsDefaultDataSets.php:1425
 msgid "This code is also the name of the variable that will be exported to SPSS or Excel."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1428
+#: application/core/LsDefaultDataSets.php:1426
 msgid "Please type in a code that consists only of letters and numbers, and doesn't start with a number."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1440
+#: application/core/LsDefaultDataSets.php:1438
 msgid "The actual question text"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1441
+#: application/core/LsDefaultDataSets.php:1439
 msgid "The content of this box is the actual question text shown to your participants. It may be empty, but that is not recommended. You may use all the power of our WYSIWYG editor to make your question shine."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1452
+#: application/core/LsDefaultDataSets.php:1450
 msgid "An additional help text for your question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1453
+#: application/core/LsDefaultDataSets.php:1451
 msgid "You can add some additional help text to your question. If you decide not to offer any additional question hints, then no help text will be displayed to your respondents."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1464
+#: application/core/LsDefaultDataSets.php:1462
 msgid "Now save the created question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1465
+#: application/core/LsDefaultDataSets.php:1463
 msgid "Next, we will create subquestions and answer options."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1466
+#: application/core/LsDefaultDataSets.php:1464
 msgid "Please remember that in order to have a valid code, it must contain only letters and numbers, also please check that it starts with a letter."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1484
+#: application/core/LsDefaultDataSets.php:1482
 msgid "The question bar"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1485
+#: application/core/LsDefaultDataSets.php:1483
 msgid "This is the question bar."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1486
+#: application/core/LsDefaultDataSets.php:1484
 msgid "The most important question-related options are displayed here."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1487
+#: application/core/LsDefaultDataSets.php:1485
 msgid "The availability of options is related to the type of question you previously chose."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1500
+#: application/core/LsDefaultDataSets.php:1498
 msgid "Add some subquestions to your question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1501
+#: application/core/LsDefaultDataSets.php:1499
 msgid "The array question is a type that creates a matrix for the participant."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1502
+#: application/core/LsDefaultDataSets.php:1500
 msgid "To fully use it, you have to add subquestions as well as answer options."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1503
+#: application/core/LsDefaultDataSets.php:1501
 msgid "Let's start with subquestions."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1504
+#: application/core/LsDefaultDataSets.php:1502
 msgid "Click on the 'Edit subquestions' button."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1526
+#: application/core/LsDefaultDataSets.php:1524
 msgid "Edit subquestions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1527
+#: application/core/LsDefaultDataSets.php:1525
 msgid "You should add some subquestions for your question here."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1528
+#: application/core/LsDefaultDataSets.php:1526
 msgid "Every row is one subquestion. We recommend the usage of logical or numerical codes for subquestions. Your participants cannot see the subquestion code, only the subquestion text itself."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1529
+#: application/core/LsDefaultDataSets.php:1527
 msgid "Pro tip: The subquestion may even contain HTML code."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1542
+#: application/core/LsDefaultDataSets.php:1540
 msgid "Add subquestion row"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1543
+#: application/core/LsDefaultDataSets.php:1541
 msgid "Click on the plus sign %s to add another subquestion to your question."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1544
+#: application/core/LsDefaultDataSets.php:1542
 msgid "Please add at least two subquestions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1555
+#: application/core/LsDefaultDataSets.php:1553
 msgid "Now save the subquestions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1556
+#: application/core/LsDefaultDataSets.php:1554
 msgid "You may save empty subquestions, but that would be pointless."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1557
+#: application/core/LsDefaultDataSets.php:1555
 msgid "Save and close now and let's edit the answer options."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1574
+#: application/core/LsDefaultDataSets.php:1572
 msgid "Add some answer options to your question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1575
+#: application/core/LsDefaultDataSets.php:1573
 msgid "Now that we've got some subquestions, we have to add answer options as well."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1576
+#: application/core/LsDefaultDataSets.php:1574
 msgid "The answer options will be shown for each subquestion."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1577
+#: application/core/LsDefaultDataSets.php:1575
 msgid "Click on the 'Edit answer options' button."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1599
+#: application/core/LsDefaultDataSets.php:1597
 msgid "Edit answer options"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1600
+#: application/core/LsDefaultDataSets.php:1598
 msgid "As you can see, editing answer options is quite similar to editing subquestions."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1601
+#: application/core/LsDefaultDataSets.php:1599
 msgid "Remember the plus button"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1602
+#: application/core/LsDefaultDataSets.php:1600
 msgid "Please add at least two answer options to proceed."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1615
+#: application/core/LsDefaultDataSets.php:1613
 msgid "Now save the answer options"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1616
+#: application/core/LsDefaultDataSets.php:1614
 msgid "Click on 'Save and close' or 'Next' to proceed."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1633
+#: application/core/LsDefaultDataSets.php:1631
 #: application/core/SurveyCommonAction.php:744
 #: application/core/TopbarConfiguration.php:180
 #: application/views/surveyAdministration/partial/topbar/previewOrRunButton_view.php:39
 msgid "Preview survey"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1634
+#: application/core/LsDefaultDataSets.php:1632
 msgid "Let's have a look at your first survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1635
+#: application/core/LsDefaultDataSets.php:1633
 msgid "Just click on this button and a new window will open, where you can test run your survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1636
+#: application/core/LsDefaultDataSets.php:1634
 msgid "Please be aware that your answers will not be saved, because the survey isn't active yet."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1637
+#: application/core/LsDefaultDataSets.php:1635
 msgid "Click on 'Preview survey' and return to this window when you are done testing."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1653
+#: application/core/LsDefaultDataSets.php:1651
 msgid "Easy navigation with the \"breadcrumbs\""
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1654
+#: application/core/LsDefaultDataSets.php:1652
 msgid "You can see the \"breadcrumbs\" In the top bar of the admin interface."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1655
+#: application/core/LsDefaultDataSets.php:1653
 msgid "They represent an easy way to get back to any previous setting, and provide a general overview of where you are."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1656
+#: application/core/LsDefaultDataSets.php:1654
 msgid "Click on the name of your survey to get back to the survey settings overview."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1673
+#: application/core/LsDefaultDataSets.php:1671
 msgid "Finally, activate your survey"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1674
+#: application/core/LsDefaultDataSets.php:1672
 msgid "Now, activate your survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1675
+#: application/core/LsDefaultDataSets.php:1673
 msgid "You can create as many surveys as you like."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1676
+#: application/core/LsDefaultDataSets.php:1674
 msgid "Click on 'Activate this survey'"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1695
+#: application/core/LsDefaultDataSets.php:1693
 msgid "Activation settings"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1696
+#: application/core/LsDefaultDataSets.php:1694
 msgid "These settings cannot be changed once the survey is online."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1697
+#: application/core/LsDefaultDataSets.php:1695
 msgid "For this simple survey the default settings are ok, but read the disclaimer carefully when you activate your own surveys."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1698
+#: application/core/LsDefaultDataSets.php:1696
 msgid "For more information consult our manual, or our forums."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1699
+#: application/core/LsDefaultDataSets.php:1697
 msgid "Now click on \"Save & activate survey\""
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1721
+#: application/core/LsDefaultDataSets.php:1719
 msgid "Activate survey participant list"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1722
+#: application/core/LsDefaultDataSets.php:1720
 msgid "Here you can select to start your survey in closed access mode."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1723
+#: application/core/LsDefaultDataSets.php:1721
 msgid "For our simple survey it is better to start in open access mode."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1724
+#: application/core/LsDefaultDataSets.php:1722
 msgid "The closed access mode needs a participant list, which you may create by clicking on the menu entry 'Participants'."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1725
+#: application/core/LsDefaultDataSets.php:1723
 msgid "For more information please consult our manual or our forum."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1726
+#: application/core/LsDefaultDataSets.php:1724
 msgid "Click on 'No, thanks'"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1748
+#: application/core/LsDefaultDataSets.php:1746
 msgid "Share this link"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1749
+#: application/core/LsDefaultDataSets.php:1747
 msgid "Just share this link with some of your friends and of course, test it yourself."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1750
+#: application/core/LsDefaultDataSets.php:1748
 msgid "Thank you for taking the tour!"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1836
-#: application/core/LsDefaultDataSets.php:1843
+#: application/core/LsDefaultDataSets.php:1834
+#: application/core/LsDefaultDataSets.php:1841
 msgid "Strongly disagree"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1837
-#: application/core/LsDefaultDataSets.php:1844
+#: application/core/LsDefaultDataSets.php:1835
+#: application/core/LsDefaultDataSets.php:1842
 msgid "Disagree"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1838
+#: application/core/LsDefaultDataSets.php:1836
 msgid "Neither agree nor disagree"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1839
-#: application/core/LsDefaultDataSets.php:1845
+#: application/core/LsDefaultDataSets.php:1837
+#: application/core/LsDefaultDataSets.php:1843
 msgid "Agree"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1840
-#: application/core/LsDefaultDataSets.php:1846
+#: application/core/LsDefaultDataSets.php:1838
+#: application/core/LsDefaultDataSets.php:1844
 msgid "Strongly agree"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2759
+#: application/core/LsDefaultDataSets.php:2757
 msgid "Bootstrap dropdown"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2760
+#: application/core/LsDefaultDataSets.php:2758
 msgid "Bootstrap buttons"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2761
+#: application/core/LsDefaultDataSets.php:2759
 msgid "Image select list (Radio)"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2762
+#: application/core/LsDefaultDataSets.php:2760
 msgid "Image select multiple choice"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2763
+#: application/core/LsDefaultDataSets.php:2761
 msgid "Browser detection"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2764
+#: application/core/LsDefaultDataSets.php:2762
 msgid "Input on demand"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2765
+#: application/core/LsDefaultDataSets.php:2763
 msgid "Ranking advanced"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2767
+#: application/core/LsDefaultDataSets.php:2765
 msgid "Survey container"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2768
-#: application/core/LsDefaultDataSets.php:2784
+#: application/core/LsDefaultDataSets.php:2766
+#: application/core/LsDefaultDataSets.php:2782
 msgid "Hide privacy info"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2769
+#: application/core/LsDefaultDataSets.php:2767
 msgid "Show popups"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2770
+#: application/core/LsDefaultDataSets.php:2768
 #: application/views/admin/globalsettings/_general.php:239
 msgid "Popup"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2771
+#: application/core/LsDefaultDataSets.php:2769
 msgid "On page"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2772
+#: application/core/LsDefaultDataSets.php:2770
 msgid "Fix automatically numeric value"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2773
+#: application/core/LsDefaultDataSets.php:2771
 msgid "For expression"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2774
+#: application/core/LsDefaultDataSets.php:2772
 msgid "Brandlogo"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2775
+#: application/core/LsDefaultDataSets.php:2773
 msgid "Brandlogo file"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2776
-#: application/views/themeOptions/options_core.php:318
+#: application/core/LsDefaultDataSets.php:2774
+#: application/views/themeOptions/options_core.php:355
 msgid "Preview image"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2777
+#: application/core/LsDefaultDataSets.php:2775
 msgid "Bootstrap theme"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2778
+#: application/core/LsDefaultDataSets.php:2776
 msgid "Bootswatch theme"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2779
+#: application/core/LsDefaultDataSets.php:2777
 msgid "Question borders"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2780
+#: application/core/LsDefaultDataSets.php:2778
 msgid "Question shadow"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2781
+#: application/core/LsDefaultDataSets.php:2779
 msgid "Zebra-striped questions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2782
+#: application/core/LsDefaultDataSets.php:2780
 msgid "Sticky array headers"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2783
+#: application/core/LsDefaultDataSets.php:2781
 msgid "Dim answered array rows"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2785
+#: application/core/LsDefaultDataSets.php:2783
 msgid "Cross-hover in matrix questions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2786
+#: application/core/LsDefaultDataSets.php:2784
 msgid "Background color"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2787
+#: application/core/LsDefaultDataSets.php:2785
 msgid "Font color"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2788
+#: application/core/LsDefaultDataSets.php:2786
 msgid "Question background color"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2789
+#: application/core/LsDefaultDataSets.php:2787
 msgid "Check icon"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2790
+#: application/core/LsDefaultDataSets.php:2788
 msgid "Background image"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2791
+#: application/core/LsDefaultDataSets.php:2789
 msgid "Background image file"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2792
+#: application/core/LsDefaultDataSets.php:2790
 msgid "Logo"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2793
+#: application/core/LsDefaultDataSets.php:2791
 msgid "Logo file"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2794
+#: application/core/LsDefaultDataSets.php:2792
 msgid "Animate body"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2795
+#: application/core/LsDefaultDataSets.php:2793
 msgid "Body animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2796
+#: application/core/LsDefaultDataSets.php:2794
 msgid "Duration"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2797
+#: application/core/LsDefaultDataSets.php:2795
 msgid "Animate question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2798
+#: application/core/LsDefaultDataSets.php:2796
 msgid "Question animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2799
+#: application/core/LsDefaultDataSets.php:2797
 msgid "Animate alert"
 msgstr ""
 
+#: application/core/LsDefaultDataSets.php:2798
 #: application/core/LsDefaultDataSets.php:2800
-#: application/core/LsDefaultDataSets.php:2802
 msgid "Alert animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2801
+#: application/core/LsDefaultDataSets.php:2799
 msgid "Animate checkbox"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2803
+#: application/core/LsDefaultDataSets.php:2801
 msgid "Animate radio buttons"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2804
+#: application/core/LsDefaultDataSets.php:2802
 msgid "Radio button animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2805
+#: application/core/LsDefaultDataSets.php:2803
 msgid "Select font:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2806
+#: application/core/LsDefaultDataSets.php:2804
 msgid "Select variation:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2807
+#: application/core/LsDefaultDataSets.php:2805
 msgid "Fruity fonts"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2808
+#: application/core/LsDefaultDataSets.php:2806
 msgid "Fruity variations"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2809
+#: application/core/LsDefaultDataSets.php:2807
 msgid "I confirm"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2810
+#: application/core/LsDefaultDataSets.php:2808
 msgid "Show link to legal notice in survey:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2811
+#: application/core/LsDefaultDataSets.php:2809
 msgid "Show link to data policy in survey:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2812
+#: application/core/LsDefaultDataSets.php:2810
 msgid "Survey legal notice:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2813
+#: application/core/LsDefaultDataSets.php:2811
 msgid "Legal notice"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2814
+#: application/core/LsDefaultDataSets.php:2812
 msgid "Show 'Clear all' button"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2815
+#: application/core/LsDefaultDataSets.php:2813
 #: application/helpers/twig_translation_helper.php:49
 msgid "Wrap tables"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2816
+#: application/core/LsDefaultDataSets.php:2814
 msgid "Variations"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2817
+#: application/core/LsDefaultDataSets.php:2815
 msgid "Colors"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2818
+#: application/core/LsDefaultDataSets.php:2816
 msgid "Animations"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2819
+#: application/core/LsDefaultDataSets.php:2817
 msgid "Fonts"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2833
+#: application/core/LsDefaultDataSets.php:2831
 msgid "Hello"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2834
+#: application/core/LsDefaultDataSets.php:2832
 msgid "This is an automated email notification that a user has been created for you on the website %s."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2835
+#: application/core/LsDefaultDataSets.php:2833
 msgid "You can use now the following credentials to log in:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2839
+#: application/core/LsDefaultDataSets.php:2837
 msgid "Click here to set your password"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2840
+#: application/core/LsDefaultDataSets.php:2838
 msgid "If you have any questions regarding this email, please do not hesitate to contact the site administrator at"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2841
+#: application/core/LsDefaultDataSets.php:2839
 msgid "Thank you"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2844
+#: application/core/LsDefaultDataSets.php:2842
 msgid "User registration at '%s'"
 msgstr ""
 
@@ -8713,7 +8717,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:2593
 #: application/helpers/userstatistics_helper.php:2696
 #: application/helpers/userstatistics_helper.php:2795
-#: application/models/Survey.php:2395 application/models/Surveymenu.php:340
+#: application/models/Survey.php:2415 application/models/Surveymenu.php:340
 #: application/views/admin/participants/modal_subviews/_addToSurvey.php:22
 #: application/views/admin/super/quickmenu.php:6
 msgid "Survey"
@@ -8792,6 +8796,7 @@ msgstr ""
 #: application/core/plugins/Authdb/Authdb.php:143
 #: application/libraries/Save.php:217 application/models/User.php:174
 #: application/views/admin/authentication/newPassword.php:35
+#: application/views/admin/token/bounce.php:86
 #: application/views/admin/user/modifyuser.php:55
 #: application/views/userManagement/partial/createdrandoms.php:30
 #: tmp/runtime/twig_cache/af/afa8c7283ad517184254af27b2a56633.php:216
@@ -9809,13 +9814,6 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: application/extensions/admin/BoxesWidget/BoxesWidget.php:143
-#: application/extensions/admin/SearchBoxWidget/views/searchBox.php:97
-#: application/views/dashboard/welcome.php:20
-#: application/views/surveyAdministration/tabCreate_view.php:129
-msgid "Create survey"
-msgstr ""
-
 #: application/extensions/admin/BoxesWidget/views/box.php:67
 msgid "No responses"
 msgstr ""
@@ -9826,14 +9824,14 @@ msgstr ""
 
 #: application/extensions/admin/BoxesWidget/views/box.php:87
 #: application/models/Plugin.php:397 application/models/Plugin.php:406
-#: application/models/Survey.php:1577 application/models/User.php:611
+#: application/models/Survey.php:1597 application/models/User.php:611
 #: application/views/quotas/viewquotas_massive_selector.php:20
 #: application/views/userManagement/massiveAction/_updatestatus.php:6
 msgid "Activate"
 msgstr ""
 
 #: application/extensions/admin/BoxesWidget/views/box.php:95
-#: application/models/Survey.php:1570
+#: application/models/Survey.php:1590
 msgid "Edit survey"
 msgstr ""
 
@@ -9927,6 +9925,10 @@ msgstr ""
 #: application/views/responses/modal_subviews/filterColumns.php:54
 #: application/views/themeOptions/index.php:256
 msgid "Select"
+msgstr ""
+
+#: application/extensions/admin/grid/GridActionsWidget/views/action_dropdown.php:9
+msgid "Action Menu"
 msgstr ""
 
 #: application/extensions/admin/survey/LanguagesWidget/LanguagesWidget.php:19
@@ -10056,7 +10058,7 @@ msgstr ""
 #: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:62
 #: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:200
 #: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:222
-#: application/models/Survey.php:2448
+#: application/models/Survey.php:2468
 msgid "Quick translation"
 msgstr ""
 
@@ -10343,6 +10345,7 @@ msgid "This survey setting has not been imported: %s => %s"
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:2226
+#: application/models/services/CopySurvey.php:69
 msgid "The desired survey ID was already in use, therefore a random one was assigned."
 msgstr ""
 
@@ -10926,7 +10929,6 @@ msgid "Start language"
 msgstr ""
 
 #: application/helpers/common_helper.php:1370
-#: application/helpers/editorTranslations.php:392
 msgid "Seed"
 msgstr ""
 
@@ -12221,562 +12223,156 @@ msgid "Zoom"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:302
-msgid "Customize link"
+msgid "Adjust the color of buttons and the progress bar"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:303
-msgid "%s Congrats! You have completed the tour."
+msgid "Adjust the color of buttons and the progress bar in dark mode"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:304
-msgid "Add content"
+msgid "Adjust the color of your survey questions"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:305
-msgid "All Data"
+msgid "Alternate cell background color for better detectability"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:306
-msgid "Allow survey embedding"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:307
 msgid "An update is available. You will be redirected to the admin panel to perform the update."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:308
-msgid "Answer already exists"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:309
+#: application/helpers/editorTranslations.php:307
 #: tmp/runtime/twig_cache/54/54efbc5e1159187b14cc3b72c83f765a.php:205
 #: tmp/runtime/twig_cache/54/54efbc5e1159187b14cc3b72c83f765a.php:224
 msgid "Anyone with link"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:310
+#: application/helpers/editorTranslations.php:308
 msgid "Anyone with the link to this survey can access."
 msgstr ""
 
+#: application/helpers/editorTranslations.php:309
+msgid "Arrow right"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:310
+msgid "Asterisk"
+msgstr ""
+
 #: application/helpers/editorTranslations.php:311
-msgid "Are you sure you want to delete the attachments for the selected responses?"
+msgid "Change or upload a new icon"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:312
-msgid "Are you sure you want to perform this action?"
+msgid "Change the background color of your survey"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:313
-msgid "Array five points"
+msgid "Change the corner radius (rounding) of buttons"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:314
-msgid "Array increase, same, and decrease"
+msgid "Check"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:315
-msgid "Array ten points"
+msgid "Check circle"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:316
-msgid "Array yes, no, and uncertain"
+msgid "Check square"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:317
-msgid "Autosave"
+msgid "Chevron circle right"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:318
-msgid "Can not be used with active survey."
+msgid "Corner radius"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:319
-msgid "Canvas"
+msgid "Cross-hover in array-questions"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:320
-msgid "Clear filters"
+msgid "Dark mode"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:321
-msgid "Click and type to fill in your question text. You can also use the toolbar for formatting and more options."
+#: application/models/TemplateManifest.php:1509
+msgid "Display options"
 msgstr ""
 
 #: application/helpers/editorTranslations.php:322
-msgid "Click on the survey title to edit it, your changes will be saved automatically."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:323
-msgid "Close interactive help"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:324
-msgid "Complete responses"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:325
-msgid "Completed without answers"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:326
-msgid "Conditions written in ExpressionScript mode can’t be displayed inside the visual condition builder."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:327
-msgid "Confirm Action"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:328
-msgid "Create surveys in seconds with LimeSurvey. Easy to use, secure, and trusted by professionals worldwide. Get started free and unlock fresh insights today!"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:329
-msgid "Currently embedding is disabled for the application"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:330
-msgid "Currently embedding is disabled for the survey"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:331
-msgid "Customize preview"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:332
-msgid "Customize the link preview for your survey"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:333
-msgid "Data view"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:334
-msgid "Date/Time Format"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:335
-msgid "Display code"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:336
-msgid "Do you have a minute?"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:337
-msgid "Download file"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:338
-msgid "Drop icon here"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:339
-msgid "Edit text"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:340
-msgid "Embed code"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:341
-msgid "Embed survey options"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:342
-msgid "Embed the survey easily on a website"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:343
-msgid "Enable embedding in the survey settings under publication and access."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:344
-msgid "Export response"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:345
-msgid "Export statistics"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:346
-msgid "Export survey responses"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:347
-msgid "Failed to download QR code"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:348
-msgid "File has been deleted"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:349
-msgid "Filter column"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:350
-msgid "Filter responses"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:351
-msgid "Filtered Data"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:352
 msgid "Fix number values automatically"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:353
-msgid "Huge text"
+#: application/helpers/editorTranslations.php:323
+msgid "Full width"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:354
-msgid "Incompleted without answers"
+#: application/helpers/editorTranslations.php:324
+msgid "Highlight the whole row and column on hover"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:355
-msgid "Interactive help"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:356
-msgid "Invalid input"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:357
-msgid "Last action"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:358
+#: application/helpers/editorTranslations.php:325
 #: tmp/runtime/twig_cache/54/54efbc5e1159187b14cc3b72c83f765a.php:205
 #: tmp/runtime/twig_cache/54/54efbc5e1159187b14cc3b72c83f765a.php:230
 msgid "Link with access code"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:359
-msgid "List dropdown"
+#: application/helpers/editorTranslations.php:326
+msgid "Note:"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:360
-msgid "Loading preview"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:361
-msgid "Loading responses..."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:362
-msgid "Loading statistics..."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:363
-msgid "Max"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:364
-msgid "Max ID must be a positive integer"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:365
-msgid "Max ID must be greater than Min ID"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:366
-msgid "MB"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:367
-msgid "Meta title - short and precise"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:368
-msgid "Min ID must be a positive integer"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:369
-msgid "Min ID must be less than Max ID"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:370
-msgid "No files uploaded"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:371
-msgid "Not enabled"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:372
-msgid "Only completed"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:373
+#: application/helpers/editorTranslations.php:327
 msgid "Only participants with the link and access code can access."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:374
-msgid "Open the settings to access theme options and change your survey's design. Try it and change the style of your survey."
+#: application/helpers/editorTranslations.php:328
+msgid "participants."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:375
-msgid "Organize columns"
+#: application/helpers/editorTranslations.php:329
+msgid "Plus"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:376
-msgid "Overwriting condition from condition builder"
+#: application/helpers/editorTranslations.php:330
+msgid "Resistance"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:377
-msgid "Overwriting condition from ExpressionScript"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:378
-msgid "Pin column"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:379
-msgid "Please enable the embedding in the Global settings under Security."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:380
-msgid "Powered by LimeSurvey – The Freshest Online Survey Tool"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:381
-msgid "Preview Settings"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:382
-#: application/helpers/questionHelper.php:860
-#: application/helpers/questionHelper.php:878
-msgid "Random A-Z/Z-A"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:383
-msgid "Reorder questions"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:384
-msgid "Responses can only be updated through the responses list."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:385
-msgid "Responses list"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:386
-msgid "Responses rate"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:387
-msgid "Responses updated!"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:388
-msgid "Results overview"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:389
-msgid "Return to the editor"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:390
-msgid "Rows per page"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:391
-msgid "See how LimeSurvey autosaves your work? You don't have to worry about saving your progress at any time."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:393
-msgid "Select a question type"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:394
-msgid "Select an embed type"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:395
+#: application/helpers/editorTranslations.php:331
 msgid "Select how you want to share your survey"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:396
-msgid "Select the plus symbol to add questions, groups or logic to the survey. For now, let's add a simple multiple-choice question."
+#: application/helpers/editorTranslations.php:332
+msgid "Star"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:397
-msgid "Select the question type for your new question from this menu. Try it and add a simple multiple-choice question for now."
+#: application/helpers/editorTranslations.php:333
+msgid "Theme color"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:398
-msgid "Select which columns you want to display inside this table. You can order the columns by drag and drop."
+#: application/helpers/editorTranslations.php:334
+msgid "This question uses a customized condition. If you create a condition using this editor the current customized condition will be overwritten."
 msgstr ""
 
-#: application/helpers/editorTranslations.php:399
-msgid "selected"
+#: application/helpers/editorTranslations.php:335
+msgid "Times"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:400
-msgid "Sharing options"
+#: application/helpers/editorTranslations.php:336
+msgid "Use the full width or create a left/right border"
 msgstr ""
 
-#: application/helpers/editorTranslations.php:401
-msgid "Sharing overview"
+#: application/helpers/editorTranslations.php:337
+msgid "You do not have participants yet. Create or restore archived participants under "
 msgstr ""
 
-#: application/helpers/editorTranslations.php:402
-msgid "Show in search results"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:403
-msgid "Submit date"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:404
-#: application/helpers/questionHelper.php:882
-msgid "Subquestions order"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:405
-msgid "Switching to the visual condition builder will overwrite the condition written in expression script mode."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:406
-msgid "Tell us"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:407
-msgid "The condition created inside the builder will replace your existing condition written in ExpressionScript mode. This action cannot be undone. Do you want to apply your changes?"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:408
-msgid "The preview doesn’t update automatically while you’re editing. It will refresh once the survey is activated. Click “Update preview” to see the latest changes now."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:409
-msgid "The public registration feature is not supported for embedded surveys. Participants will not see the registration screen; instead, they will see the token form when applicable. To use public registration, share the survey link instead."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:410
-msgid "The theme options allow you to change the appearance of your survey. Try it and change a style of your survey."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:411
-msgid "This is where you create your questions and answer options. A sample question group and question is always created to get you started. Just click on any element to edit it."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:412
-msgid "This script will be overwritten:"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:413
-msgid "Thumbnail"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:414
-msgid "To"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:415
-msgid "Token"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:416
-msgid "Unpin column"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:417
-msgid "Update global settings"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:418
-msgid "Update preview"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:419
-msgid "Update survey settings"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:420
-msgid "Use the left-side menu bar to navigate back to your survey at any time."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:421
-msgid "Use the survey preview to see how your survey will look like for your participants."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:422
-msgid "Use the trash-icon to delete questions  or the X-icons to delete answer options."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:423
-msgid "Use this panel to change question types, logic, and display settings. You can also switch between simple and advanced question settings."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:424
-msgid "View all responses"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:425
-msgid "View results overview"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:426
-msgid "View/Edit response details"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:427
-msgid "We would love to hear your thoughts on our sharing options!"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:428
-msgid "Welcome to LimeSurvey"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:429
-msgid "When you embed your survey on an external site, the code snippet will be visible in the site’s source. Anyone can copy this code and place your survey outside of your intended site. We recommend using it only on sites you manage or fully trust. Your survey and responses will always remain securely stored in your account."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:430
-msgid "When your survey is ready, use this button to activate it. Once activated, you can access the options for sharing your survey."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:431
-msgid "XLS"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:432
-msgid "You can reorder your questions and groups by drag and drop inside the survey structure."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:433
-msgid "You currently have \\\"View only\\\" access."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:434
-msgid "You do not have participants yet. Create or restore archived participants under %sparticipants%s"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:435
-msgid "You need an email tool like gmail or zoho or an email marketing tool like Mailchimp or Hubspot to embed the survey in an email."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:436
-msgid "You still have a participants list for your survey. You can remove it under %sparticipants%s"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:437
-msgid "You will see a preview of your changes on the right side."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:438
-msgid "You're now using the LimeSurvey editor. This quick tutorial will guide you through what's most important in just a few steps."
-msgstr ""
-
-#: application/helpers/editorTranslations.php:439
-msgid "Your condition will no longer be editable in the visual builder. Are you sure you want to apply these changes?"
-msgstr ""
-
-#: application/helpers/editorTranslations.php:440
-msgid "At least %s pixels"
+#: application/helpers/editorTranslations.php:338
+msgid "You still have a participants list for your survey. You can remove it under "
 msgstr ""
 
 #: application/helpers/export_helper.php:1637
@@ -13858,7 +13454,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:3675
 #: application/helpers/qanda_helper.php:3713
 #: application/helpers/qanda_helper.php:3718
-#: application/models/Assessment.php:149 application/models/Survey.php:1701
+#: application/models/Assessment.php:149 application/models/Survey.php:1721
 #: application/views/admin/export/generatestats/_statisticsoutput_answer.php:55
 #: application/views/admin/export/generatestats/_statisticsoutput_gross_total.php:27
 #: application/views/assessment/assessments_edit.php:26
@@ -14672,6 +14268,11 @@ msgstr ""
 msgid "Alphabetical"
 msgstr ""
 
+#: application/helpers/questionHelper.php:860
+#: application/helpers/questionHelper.php:878
+msgid "Random A-Z/Z-A"
+msgstr ""
+
 #: application/helpers/questionHelper.php:865
 msgid "Present answer options in normal, random or alphabetical order"
 msgstr ""
@@ -14682,6 +14283,10 @@ msgstr ""
 
 #: application/helpers/questionHelper.php:881
 msgid "Present subquestions in normal, random or alphabetical order"
+msgstr ""
+
+#: application/helpers/questionHelper.php:882
+msgid "Subquestions order"
 msgstr ""
 
 #: application/helpers/questionHelper.php:892
@@ -16489,7 +16094,7 @@ msgstr ""
 #: application/models/FailedEmail.php:157
 #: application/models/Notification.php:163
 #: application/models/Permissiontemplates.php:264
-#: application/models/Survey.php:1635
+#: application/models/Survey.php:1655
 msgid "Created"
 msgstr ""
 
@@ -16682,12 +16287,12 @@ msgstr ""
 #: application/models/Participant.php:347
 #: application/views/admin/globalsettings/_overview.php:22
 #: application/views/admin/super/_configuration_menu.php:53
-#: application/views/layouts/adminmenu.php:29
+#: application/views/layouts/adminmenu.php:31
 #: modules/admin/globalsettings/views/_overview.php:40
 msgid "Active surveys"
 msgstr ""
 
-#: application/models/Participant.php:352 application/models/Survey.php:1675
+#: application/models/Participant.php:352 application/models/Survey.php:1695
 #: application/models/SurveysGroups.php:101
 #: application/models/SurveysGroups.php:168
 #: application/models/UserGroup.php:307 application/models/UserGroup.php:415
@@ -16816,7 +16421,8 @@ msgstr ""
 #: application/views/admin/globalsettings/_overview.php:19
 #: application/views/admin/super/_configuration_menu.php:49
 #: application/views/admin/survey/copySurvey_view.php:28
-#: application/views/layouts/adminmenu.php:71
+#: application/views/layouts/adminmenu.php:75
+#: application/views/surveyAdministration/copySurveyResult_view.php:46
 #: application/views/surveyAdministration/importSurvey_view.php:56
 #: modules/admin/globalsettings/views/_overview.php:36
 msgid "Surveys"
@@ -17440,16 +17046,24 @@ msgstr ""
 msgid "Add user"
 msgstr ""
 
-#: application/models/Survey.php:1661
+#: application/models/Survey.php:1558
+msgid "Quick copy"
+msgstr ""
+
+#: application/models/Survey.php:1563
+msgid "Custom copy"
+msgstr ""
+
+#: application/models/Survey.php:1681
 msgid "Last modified"
 msgstr ""
 
-#: application/models/Survey.php:1682
+#: application/models/Survey.php:1702
 #: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:42
 msgid "Anonymized responses"
 msgstr ""
 
-#: application/models/Survey.php:1689
+#: application/models/Survey.php:1709
 #: application/models/SurveymenuEntries.php:198
 #: application/views/admin/labels/importlabelresources_view.php:18
 #: application/views/admin/themes/importuploaded_view.php:11
@@ -17457,7 +17071,7 @@ msgstr ""
 msgid "Partial"
 msgstr ""
 
-#: application/models/Survey.php:1695
+#: application/models/Survey.php:1715
 #: application/models/SurveysGroupsettings.php:446
 #: application/views/admin/globalsettings/_general.php:279
 #: application/views/admin/globalsettings/_general.php:298
@@ -17466,75 +17080,75 @@ msgstr ""
 msgid "Full"
 msgstr ""
 
-#: application/models/Survey.php:1707
+#: application/models/Survey.php:1727
 msgid "Closed group"
 msgstr ""
 
-#: application/models/Survey.php:2251
+#: application/models/Survey.php:2271
 msgid "Show policy"
 msgstr ""
 
-#: application/models/Survey.php:2364
+#: application/models/Survey.php:2384
 msgid "Permission to create, view, update, delete assessments rules for a survey"
 msgstr ""
 
-#: application/models/Survey.php:2371
+#: application/models/Survey.php:2391
 msgid "Permission to create, view, update, delete quota rules for a survey"
 msgstr ""
 
-#: application/models/Survey.php:2376
+#: application/models/Survey.php:2396
 msgid "Permission to create(data entry), view, update, delete, import, export responses"
 msgstr ""
 
-#: application/models/Survey.php:2386
+#: application/models/Survey.php:2406
 msgid "Permission to view statistics"
 msgstr ""
 
-#: application/models/Survey.php:2396
+#: application/models/Survey.php:2416
 msgid "Permission for survey access. Read permission is a requirement to give any further permission to a survey."
 msgstr ""
 
-#: application/models/Survey.php:2405
+#: application/models/Survey.php:2425
 msgid "Survey activation"
 msgstr ""
 
-#: application/models/Survey.php:2406
+#: application/models/Survey.php:2426
 msgid "Permission to activate, deactivate a survey"
 msgstr ""
 
-#: application/models/Survey.php:2410
+#: application/models/Survey.php:2430
 msgid "Survey content"
 msgstr ""
 
-#: application/models/Survey.php:2411
+#: application/models/Survey.php:2431
 msgid "Permission to create, view, update, delete, import, export the questions, groups, answers & conditions of a survey"
 msgstr ""
 
-#: application/models/Survey.php:2420
+#: application/models/Survey.php:2440
 msgid "Permission to view, update the survey text elements, e.g. survey title, survey description, welcome and end message"
 msgstr ""
 
-#: application/models/Survey.php:2426
+#: application/models/Survey.php:2446
 msgid "Survey security"
 msgstr ""
 
-#: application/models/Survey.php:2427
+#: application/models/Survey.php:2447
 msgid "Permission to modify survey security settings"
 msgstr ""
 
-#: application/models/Survey.php:2436
+#: application/models/Survey.php:2456
 msgid "Permission to view, update the survey settings including survey participant list creation"
 msgstr ""
 
-#: application/models/Survey.php:2440
+#: application/models/Survey.php:2460
 msgid "Permission to create, update, delete, import, export participants"
 msgstr ""
 
-#: application/models/Survey.php:2449
+#: application/models/Survey.php:2469
 msgid "Permission to view & update the translations using the quick-translation feature"
 msgstr ""
 
-#: application/models/Survey.php:2578
+#: application/models/Survey.php:2598
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:20
 msgid "Expiration date can't be lower than the start date"
 msgstr ""
@@ -17641,7 +17255,7 @@ msgstr ""
 
 #: application/models/Surveymenu.php:341
 #: application/models/SurveymenuEntries.php:186
-#: application/models/TemplateManifest.php:1498
+#: application/models/TemplateManifest.php:1550
 #: application/views/admin/super/permissions/addUserForm.php:4
 #: application/views/surveyPermissions/index.php:26
 msgid "User"
@@ -17911,7 +17525,7 @@ msgid "Default survey theme %s is not installed. Now %s is the new default surve
 msgstr ""
 
 #: application/models/TemplateConfig.php:920
-#: application/models/TemplateConfiguration.php:1185
+#: application/models/TemplateConfiguration.php:1183
 msgid "Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."
 msgstr ""
 
@@ -18001,11 +17615,11 @@ msgstr ""
 msgid "This will reload the configuration file of this theme."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:1114
+#: application/models/TemplateConfiguration.php:1112
 msgid "Error: Malformed JSON - field %s must be either a JSON array or the string \"inherit\". Found \"null\"."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:1631
+#: application/models/TemplateConfiguration.php:1629
 msgid "No preview available"
 msgstr ""
 
@@ -18111,17 +17725,17 @@ msgstr ""
 msgid "You can't import the theme '%s' because '%s'  is not installed."
 msgstr ""
 
-#: application/models/TemplateManifest.php:1434
+#: application/models/TemplateManifest.php:1435
 #: application/views/themeOptions/update.php:33
 msgid "Simple options"
 msgstr ""
 
-#: application/models/TemplateManifest.php:1485
-#: application/models/TemplateManifest.php:1498
+#: application/models/TemplateManifest.php:1537
+#: application/models/TemplateManifest.php:1550
 msgid "Local Server"
 msgstr ""
 
-#: application/models/TemplateManifest.php:1485
+#: application/models/TemplateManifest.php:1537
 msgid "Core"
 msgstr ""
 
@@ -18459,6 +18073,18 @@ msgstr ""
 msgid "Wrong definition! Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"
 msgstr ""
 
+#: application/models/services/CopySurvey.php:79
+msgid "Failed to copy survey"
+msgstr ""
+
+#: application/models/services/CopySurvey.php:111
+msgid "Conditions were not copied because question/group mappings are missing."
+msgstr ""
+
+#: application/models/services/CopySurvey.php:140
+msgid "Some resources could not be copied from the source survey"
+msgstr ""
+
 #: application/models/services/CopySurveyResources.php:52
 msgid "Could not open source directory - maybe a permission problem?"
 msgstr ""
@@ -18605,6 +18231,7 @@ msgstr ""
 #: application/models/services/QuickTranslation.php:514
 #: application/views/admin/survey/copySurvey_view.php:30
 #: application/views/questionAdministration/import.php:28
+#: application/views/surveyAdministration/copySurveyResult_view.php:54
 #: application/views/surveyAdministration/importSurvey_view.php:64
 msgid "Question groups"
 msgstr ""
@@ -19395,8 +19022,7 @@ msgid "Identifier:"
 msgstr ""
 
 #: application/views/admin/dataentry/active_html_view.php:53
-#: application/views/admin/globalsettings/_bounce.php:52
-#: application/views/admin/token/bounce.php:86
+#: application/views/admin/globalsettings/_bounce.php:53
 #: application/views/installer/success_view.php:15
 #: tmp/runtime/twig_cache/66/66b6e94685536ff3323be76233a4e004.php:216
 #: tmp/runtime/twig_cache/f8/f865e5e838c42941340b9fd5499376dc.php:256
@@ -20344,47 +19970,50 @@ msgid "Default site bounce email:"
 msgstr ""
 
 #: application/views/admin/globalsettings/_bounce.php:19
-#: application/views/admin/token/bounce.php:45
+#: application/views/admin/globalsettings/_bounce.php:23
 msgid "Server type:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_bounce.php:26
+#: application/views/admin/globalsettings/_bounce.php:27
 #: application/views/admin/token/bounce.php:53
 msgid "IMAP"
 msgstr ""
 
-#: application/views/admin/globalsettings/_bounce.php:27
+#: application/views/admin/globalsettings/_bounce.php:28
 #: application/views/admin/token/bounce.php:54
 msgid "POP"
 msgstr ""
 
-#: application/views/admin/globalsettings/_bounce.php:35
-#: application/views/admin/token/bounce.php:63
+#: application/views/admin/globalsettings/_bounce.php:36
 msgid "Server name & port:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_bounce.php:38
+#: application/views/admin/globalsettings/_bounce.php:39
 msgid "Enter your hostname and port, e.g.: imap.gmail.com:993"
 msgstr ""
 
-#: application/views/admin/globalsettings/_bounce.php:44
-#: application/views/admin/token/bounce.php:76
+#: application/views/admin/globalsettings/_bounce.php:45
 #: application/views/admin/user/personalsettings.php:107
 msgid "User name:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_bounce.php:59
-#: application/views/admin/token/bounce.php:97
+#: application/views/admin/globalsettings/_bounce.php:60
 msgid "Encryption type:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_bounce.php:65
+#: application/views/admin/globalsettings/_bounce.php:64
+#: application/views/admin/token/bounce.php:97
+#: application/views/admin/token/bounce.php:102
+msgid "Encryption type"
+msgstr ""
+
+#: application/views/admin/globalsettings/_bounce.php:67
 #: application/views/admin/globalsettings/_email.php:68
 #: application/views/admin/token/bounce.php:105
 msgid "Off (unsafe)"
 msgstr ""
 
-#: application/views/admin/globalsettings/_bounce.php:79
+#: application/views/admin/globalsettings/_bounce.php:81
 #: application/views/admin/globalsettings/_email.php:167
 #: application/views/admin/globalsettings/_general.php:420
 #: application/views/admin/globalsettings/_interfaces.php:61
@@ -21161,6 +20790,7 @@ msgstr ""
 #: application/views/admin/survey/copySurvey_view.php:60
 #: application/views/admin/token/csvimportresult.php:48
 #: application/views/questionAdministration/import.php:60
+#: application/views/surveyAdministration/copySurveyResult_view.php:74
 #: application/views/surveyAdministration/importSurvey_view.php:154
 msgid "Warnings"
 msgstr ""
@@ -21225,6 +20855,7 @@ msgstr ""
 #: application/views/admin/labels/labelsets_view.php:48
 #: application/views/admin/participants/modal_subviews/_editAttribute.php:98
 #: application/views/admin/survey/copySurvey_view.php:29
+#: application/views/surveyAdministration/copySurveyResult_view.php:50
 #: application/views/surveyAdministration/importSurvey_view.php:60
 msgid "Languages"
 msgstr ""
@@ -21242,7 +20873,7 @@ msgid "Do you really want to delete this label set?"
 msgstr ""
 
 #: application/views/admin/notification/index.php:7
-#: application/views/admin/super/footer.php:225
+#: application/views/admin/super/footer.php:230
 msgid "Notifications"
 msgstr ""
 
@@ -21478,7 +21109,7 @@ msgstr ""
 #: application/views/admin/token/csvupload.php:142
 #: application/views/admin/token/ldapform.php:83
 #: application/views/themeOptions/advanced.php:25
-#: application/views/themeOptions/options_core.php:340
+#: application/views/themeOptions/options_core.php:378
 #: tmp/runtime/twig_cache/73/73705718114ae13e98bfe1a148fde6bb.php:165
 msgid "Upload"
 msgstr ""
@@ -21686,12 +21317,16 @@ msgstr ""
 msgid "Participant is on blocklist:"
 msgstr ""
 
-#: application/views/admin/participants/modal_subviews/_editParticipant.php:91
+#: application/views/admin/participants/modal_subviews/_editParticipant.php:77
+msgid "Participant is on blocklist"
+msgstr ""
+
+#: application/views/admin/participants/modal_subviews/_editParticipant.php:92
 #: tmp/runtime/twig_cache/e9/e902f67ce86ea21d5393de47baeb2cef.php:63
 msgid "Owner:"
 msgstr ""
 
-#: application/views/admin/participants/modal_subviews/_editParticipant.php:102
+#: application/views/admin/participants/modal_subviews/_editParticipant.php:103
 msgid "Custom attributes"
 msgstr ""
 
@@ -22454,6 +22089,13 @@ msgstr ""
 msgid "EM value"
 msgstr ""
 
+#: application/views/admin/survey/copySurvey_view.php:11
+#: application/views/surveyAdministration/copySurveyResult_view.php:17
+#: application/views/surveyAdministration/partial/_modalCopySurvey.php:13
+#: application/views/surveyAdministration/partial/_modalCopySurvey.php:78
+msgid "Copy survey"
+msgstr ""
+
 #: application/views/admin/survey/copySurvey_view.php:25
 msgid "Survey import summary"
 msgstr ""
@@ -22484,6 +22126,11 @@ msgstr ""
 
 #: application/views/admin/survey/copySurvey_view.php:55
 msgid "quota language settings"
+msgstr ""
+
+#: application/views/admin/survey/copySurvey_view.php:71
+#: application/views/surveyAdministration/copySurveyResult_view.php:84
+msgid "Copy of survey is completed."
 msgstr ""
 
 #: application/views/admin/survey/editDataSecurityLocalSettings_view.php:25
@@ -23295,7 +22942,6 @@ msgstr ""
 #: application/views/admin/survey/surveybar_tools.php:78
 #: application/views/surveyAdministration/partial/topbar/surveyToolsDropdownItems.php:53
 #: application/views/surveyAdministration/partial/topbar/surveyToolsDropdownItems.php:63
-#: application/views/surveyAdministration/tabCopy_view.php:74
 msgid "Reset conditions"
 msgstr ""
 
@@ -23835,23 +23481,25 @@ msgid "You can switch back to closed-access mode at any time. Navigate to Settin
 msgstr ""
 
 #: application/views/admin/token/bounce.php:13
-msgid "Survey bounce email address:"
+msgid "Survey bounce email address"
 msgstr ""
 
 #: application/views/admin/token/bounce.php:23
-msgid "Used bounce settings:"
-msgstr ""
-
 #: application/views/admin/token/bounce.php:29
 msgid "Used bounce settings"
 msgstr ""
 
+#: application/views/admin/token/bounce.php:45
 #: application/views/admin/token/bounce.php:51
 msgid "Server type"
 msgstr ""
 
-#: application/views/admin/token/bounce.php:102
-msgid "Encryption type"
+#: application/views/admin/token/bounce.php:63
+msgid "Server name & port"
+msgstr ""
+
+#: application/views/admin/token/bounce.php:76
+msgid "User name"
 msgstr ""
 
 #: application/views/admin/token/browse.php:25
@@ -25312,7 +24960,7 @@ msgid "Create a new survey"
 msgstr ""
 
 #: application/views/dashboard/welcome.php:22
-#: application/views/layouts/adminmenu.php:36
+#: application/views/layouts/adminmenu.php:38
 msgid "List surveys"
 msgstr ""
 
@@ -25592,8 +25240,6 @@ msgid "Minimum requirements"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:29
-#: application/views/surveyAdministration/tabCopy_view.php:17
-#: application/views/surveyAdministration/tabCopy_view.php:24
 #: application/views/surveyAdministration/tabCreate_view.php:69
 msgid "Required"
 msgstr ""
@@ -25763,16 +25409,16 @@ msgstr ""
 msgid "Try now"
 msgstr ""
 
-#: application/views/layouts/adminmenu.php:42
-#: application/views/layouts/adminmenu.php:119
+#: application/views/layouts/adminmenu.php:44
+#: application/views/layouts/adminmenu.php:123
 msgid "Logout"
 msgstr ""
 
-#: application/views/layouts/adminmenu.php:54
+#: application/views/layouts/adminmenu.php:56
 msgid "Click here to change maintenance mode setting."
 msgstr ""
 
-#: application/views/layouts/adminmenu.php:56
+#: application/views/layouts/adminmenu.php:58
 msgid "Maintenance mode is active!"
 msgstr ""
 
@@ -26550,6 +26196,10 @@ msgstr ""
 msgid "If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure."
 msgstr ""
 
+#: application/views/surveyAdministration/copySurveyResult_view.php:39
+msgid "Survey copy summary"
+msgstr ""
+
 #: application/views/surveyAdministration/deleteSurvey_view.php:18
 msgid "You are about to delete this survey"
 msgstr ""
@@ -26696,6 +26346,38 @@ msgstr ""
 
 #: application/views/surveyAdministration/partial/_modalActivateSuccess.php:34
 msgid "By default, surveys are activated in open-access mode and participants do not need an invitaion code."
+msgstr ""
+
+#: application/views/surveyAdministration/partial/_modalCopySurvey.php:25
+msgid "New survey ID:"
+msgstr ""
+
+#: application/views/surveyAdministration/partial/_modalCopySurvey.php:28
+msgid "Optional - Leave this field empty to assign a new ID automatically"
+msgstr ""
+
+#: application/views/surveyAdministration/partial/_modalCopySurvey.php:33
+msgid "Select the elements to include:"
+msgstr ""
+
+#: application/views/surveyAdministration/partial/_modalCopySurvey.php:37
+msgid "Survey resource files and adapt links"
+msgstr ""
+
+#: application/views/surveyAdministration/partial/_modalCopySurvey.php:55
+msgid "Answer options from the original survey"
+msgstr ""
+
+#: application/views/surveyAdministration/partial/_modalCopySurvey.php:61
+msgid "Survey conditions"
+msgstr ""
+
+#: application/views/surveyAdministration/partial/_modalCopySurvey.php:67
+msgid "Start/end date/time"
+msgstr ""
+
+#: application/views/surveyAdministration/partial/_modalCopySurvey.php:72
+msgid "Reset response start ID"
 msgstr ""
 
 #: application/views/surveyAdministration/partial/_modalImportSurvey.php:16
@@ -27032,52 +26714,8 @@ msgstr ""
 msgid "By default, surveys are activated in open-access mode and participants don't need an invitation code. "
 msgstr ""
 
-#: application/views/surveyAdministration/surveySummary_view.php:36
+#: application/views/surveyAdministration/surveySummary_view.php:34
 msgid "Survey summary"
-msgstr ""
-
-#: application/views/surveyAdministration/tabCopy_view.php:12
-msgid "Select survey to copy:"
-msgstr ""
-
-#: application/views/surveyAdministration/tabCopy_view.php:21
-msgid "New survey title:"
-msgstr ""
-
-#: application/views/surveyAdministration/tabCopy_view.php:28
-msgid "New survey ID:"
-msgstr ""
-
-#: application/views/surveyAdministration/tabCopy_view.php:31
-msgid "Optional"
-msgstr ""
-
-#: application/views/surveyAdministration/tabCopy_view.php:33
-msgid "If the new survey ID is already used, a random one will be assigned."
-msgstr ""
-
-#: application/views/surveyAdministration/tabCopy_view.php:46
-msgid "Copy survey resource files and adapt links"
-msgstr ""
-
-#: application/views/surveyAdministration/tabCopy_view.php:53
-msgid "Exclude quotas"
-msgstr ""
-
-#: application/views/surveyAdministration/tabCopy_view.php:60
-msgid "Exclude survey permissions"
-msgstr ""
-
-#: application/views/surveyAdministration/tabCopy_view.php:67
-msgid "Exclude answers"
-msgstr ""
-
-#: application/views/surveyAdministration/tabCopy_view.php:81
-msgid "Reset start/end date/time"
-msgstr ""
-
-#: application/views/surveyAdministration/tabCopy_view.php:87
-msgid "Reset response start ID"
 msgstr ""
 
 #: application/views/surveyAdministration/tabCreate_view.php:39
@@ -27120,7 +26758,7 @@ msgid "Don't touch the values below unless you know what you're doing."
 msgstr ""
 
 #: application/views/themeOptions/advanced.php:17
-#: application/views/themeOptions/options_core.php:332
+#: application/views/themeOptions/options_core.php:370
 msgid "Upload an image (maximum size: %d MB):"
 msgstr ""
 
@@ -27251,12 +26889,12 @@ msgid "Visible inside the Question Selector"
 msgstr ""
 
 #: application/views/themeOptions/options_core.php:5
-#: application/views/themeOptions/options_core.php:237
-#: application/views/themeOptions/options_core.php:265
-#: application/views/themeOptions/options_core.php:276
-#: application/views/themeOptions/options_core.php:292
-#: application/views/themeOptions/options_core.php:300
-#: application/views/themeOptions/options_core.php:308
+#: application/views/themeOptions/options_core.php:260
+#: application/views/themeOptions/options_core.php:289
+#: application/views/themeOptions/options_core.php:301
+#: application/views/themeOptions/options_core.php:326
+#: application/views/themeOptions/options_core.php:335
+#: application/views/themeOptions/options_core.php:344
 msgid "inherited value:"
 msgstr ""
 
@@ -27276,7 +26914,7 @@ msgstr ""
 msgid "There are no simple options in this survey theme."
 msgstr ""
 
-#: application/views/themeOptions/update.php:107
+#: application/views/themeOptions/update.php:106
 msgid "Inherited value:"
 msgstr ""
 
