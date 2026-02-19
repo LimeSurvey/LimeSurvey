@@ -12,11 +12,15 @@
 /** @var String $type */
 /** @var boolean $isFilled */
 
-// Ensure flexbox classes are present for proper icon alignment
+// Only add flexbox classes when using default div tag and icon is shown
+$useFlexbox = ($tag === 'div' && $showIcon);
+
 if (!isset($htmlOptions['class'])) {
     $htmlOptions['class'] = '';
 }
-$htmlOptions['class'] .= ' d-flex align-items-start';
+if ($useFlexbox) {
+    $htmlOptions['class'] .= ' d-flex align-items-start';
+}
 
 echo CHtml::openTag($tag, $htmlOptions);
 
@@ -25,7 +29,10 @@ if ($showIcon) {
     echo CHtml::closeTag("span");
 }
 
-echo CHtml::openTag("div", ['class' => 'flex-grow-1']);
+// Only wrap in flex-grow div when using flexbox layout
+if ($useFlexbox) {
+    echo CHtml::openTag("div", ['class' => 'flex-grow-1']);
+}
 
 if ($header != '') {
     echo CHtml::openTag("span", ['class' => 'alert-header']);
@@ -38,7 +45,9 @@ if ($inErrorMode) {
     echo $this->render('error-summary', ['errors' => $errors]);
 }
 
-echo CHtml::closeTag("div");
+if ($useFlexbox) {
+    echo CHtml::closeTag("div");
+}
 
 if ($showCloseButton) {
     //change closing 'x' when type has a dark background color
