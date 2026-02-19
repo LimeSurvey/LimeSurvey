@@ -14,25 +14,30 @@ $this->showHeaders($aData);
 $this->showadminmenu($aData);
 $layoutHelper = new LayoutHelper();
 ?>
+<div id="layout_sidebar">
+    <?php App()->getController()->widget('ext.SideBarWidget.SideBarWidget'); ?>
+    <div class="container-40">
+        <?= $layoutHelper->renderTopbarTemplate($aData) ?>
+        <!-- BEGIN LAYOUT_MAIN -->
 
-<?= $layoutHelper->renderTopbarTemplate($aData) ?>
-<!-- BEGIN LAYOUT_MAIN -->
 
-<div class='container-fluid'>
-    <?= $this->updatenotification() ?>
-</div>
+        <div class='container-fluid'>
+            <?= $this->updatenotification() ?>
+        </div>
 
-<?= $this->notifications() ?>
+        <?= $this->notifications() ?>
 
-<!--The load indicator for pjax-->
-<div id="pjax-file-load-container" class="ls-flex-row col-12">
-    <div style="height:2px;width:0;"></div>
-</div>
+        <!--The load indicator for pjax-->
+        <div id="pjax-file-load-container" class="ls-flex-row col-12">
+            <div style="height:2px;width:0;"></div>
+        </div>
 
-<?php $containerClass = !App()->user->isGuest ? 'container-fluid' : 'container-fluid ps-0' ?>
-<!-- Full page, started in SurveyCommonAction::renderWrappedTemplate() -->
-<div class="<?= $containerClass ?>" id="in_survey_common_action">
-    <?= $content ?>
+        <?php $containerClass = !App()->user->isGuest ? 'container-fluid' : 'container-fluid ps-0' ?>
+        <!-- Full page, started in SurveyCommonAction::renderWrappedTemplate() -->
+        <div class="<?= $containerClass ?>" id="in_survey_common_action">
+            <?= $content ?>
+        </div>
+    </div>
 </div>
 <!-- END LAYOUT_MAIN -->
 
