@@ -13,7 +13,7 @@ class Update_643 extends DatabaseUpdateBase
      */
     public function up()
     {
-        \Yii::app()->db->createCommand("UPDATE {{boxes}} SET title = :title, buttontext = :buttontext, desc = :desc WHERE id = :id")
+        \Yii::app()->db->createCommand("UPDATE {{boxes}} SET title = :title, buttontext = :buttontext, `desc` = :desc WHERE id = :id")
             ->execute([
                 ':title' => 'Workspace',
                 ':buttontext' => 'View workspace',
