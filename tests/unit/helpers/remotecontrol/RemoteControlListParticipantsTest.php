@@ -245,6 +245,46 @@ class RemoteControlListParticipantsTest extends TestBaseClass
     }
 
     /**
+     * Test invalid columns 'extractvalue(1,concat(0x3a,(DATABASE())))'.
+     *
+     * @return void
+     */
+    public function testConditionInvalidColumn()
+    {
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+        \Yii::import('application.helpers.viewHelper', true);
+        \Yii::import('application.libraries.BigData', true);
+
+        // Create handler.
+        $admin   = new \AdminController('dummyid');
+        $handler = new \remotecontrol_handle($admin);
+
+        // Get session key.
+        $sessionKey = $handler->get_session_key(
+            self::$username,
+            self::$password
+        );
+        $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
+
+        /** @var array */
+        $list = $handler->list_participants(
+            $sessionKey,
+            self::$surveyId,
+            0,
+            10,
+            false,
+            false,
+            ['extractvalue(1,concat(0x3a,(DATABASE())))' => ['=', 1]]
+        );
+
+        $expected = [
+            'status' => 'Invalid column name: extractvalue(1,concat(0x3a,(DATABASE())))'
+        ];
+
+        $this->assertEquals($expected, $list);
+    }
+
+    /**
      * Test higher-than operator, '>'.
      *
      * @return void
