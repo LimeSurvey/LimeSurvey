@@ -22,12 +22,12 @@ class ReactEditor extends \PluginBase
     public function init()
     {
         $this->subscribe('afterSuccessfulLogin', 'createUniqueWrongUrlFormatNotification');
-        $this->subscribe('beforeAdminMenuRender');
         $this->subscribe('newDirectRequest');
         $this->subscribe('beforeDeactivate');
         $this->subscribe('beforeControllerAction', 'initEditor');
         $this->subscribe('beforeControllerAction', 'renderActivateEditorModal');
         $this->subscribe('beforeRenderSurveySidemenu');
+        $this->subscribe('beforeAdminMenuRender');
     }
 
     public function beforeDeactivate()
@@ -41,7 +41,10 @@ class ReactEditor extends \PluginBase
      */
     public function initEditor()
     {
-        EditorService::initEditorApp();
+        if ($this->isBackendAccess()){
+            $status = SettingsUser::getUserSettingValue(self::STG_NAME_REACT_EDITOR) ?? false;
+            EditorService::init($status, true)->initEditorApp();
+        }
     }
 
     /**
@@ -49,7 +52,10 @@ class ReactEditor extends \PluginBase
      */
     public function beforeRenderSurveySidemenu()
     {
-        EditorService::beforeRenderSurveySidemenu($this);
+        if ($this->isBackendAccess()){
+            $status = SettingsUser::getUserSettingValue(self::STG_NAME_REACT_EDITOR) ?? false;
+            EditorService::init($status, true)->beforeRenderSurveySidemenu($this);
+        }
     }
 
     /**
@@ -57,7 +63,10 @@ class ReactEditor extends \PluginBase
      */
     public function beforeAdminMenuRender(): void
     {
-        $this->renderDropdownItems();
+        if ($this->isBackendAccess()){
+            $status = SettingsUser::getUserSettingValue(self::STG_NAME_REACT_EDITOR) ?? false;
+            EditorService::init($status, true)->beforeAdminMenuRender();
+        }
     }
 
     /**
@@ -112,33 +121,6 @@ class ReactEditor extends \PluginBase
     private function hasEditorSettingInDatabase()
     {
         return SettingsUser::getUserSetting(self::STG_NAME_REACT_EDITOR) !== null;
-    }
-
-    public function renderDropdownItems()
-    {
-        $assetsUrl = \Yii::app()->assetManager->publish(dirname(__FILE__) . '/js');
-        \Yii::app()->clientScript->registerScriptFile($assetsUrl . '/adminMenuDropdown.js', LSYii_ClientScript::POS_HEAD);
-
-        $htmlLiItems = json_encode(
-            $this->renderPartial(
-                '_activateEditorItem',
-                [],
-                true
-            ),
-            JSON_HEX_APOS
-        );
-
-        //li items accessible for js
-        App()->clientScript->registerScript(
-            'liItemsJsHtml',
-            <<<EOT
-                function getItemsHtml() {
-
-                    return $htmlLiItems;
-                }
-EOT,
-            \CClientScript::POS_BEGIN
-        );
     }
 
     /**
