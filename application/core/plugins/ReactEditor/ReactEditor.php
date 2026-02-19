@@ -1,7 +1,10 @@
 <?php
 
 use LimeSurvey\Models\Services\EditorService;
-use LimeSurvey\Models\Services\EditorService\EditorConfig;
+
+// phpcs:disable
+require_once(__DIR__ . '/autoload.php');
+// phpcs:enable
 
 class ReactEditor extends \PluginBase
 {
@@ -18,6 +21,7 @@ class ReactEditor extends \PluginBase
      */
     public function init()
     {
+        $this->subscribe('afterSuccessfulLogin', 'createUniqueWrongUrlFormatNotification');
         $this->subscribe('beforeAdminMenuRender');
         $this->subscribe('newDirectRequest');
         $this->subscribe('beforeDeactivate');
@@ -73,6 +77,7 @@ class ReactEditor extends \PluginBase
                 '_modalActivateDeactivateEditor',
                 [
                     'activated' => $this->isEditorEnabled(),
+                    'hasPathUrlFormat' => $this->hasPathUrlFormat()
                 ],
                 true,
             );
@@ -159,28 +164,67 @@ EOT,
             }
         }
     }
+    /**
+     * Creates a unique notification for the current user when the React editor is enabled
+     * but the URL format is not set to 'path'.
+     *
+     * This method checks if the editor is enabled and if the URL format requirement is not met.
+     * If both conditions are true, it creates a high-importance notification informing the user
+     * about the URL format requirement for the React editor.
+     *
+     * @return void
+     */
+    private function createUniqueWrongUrlFormatNotification()
+    {
+        if ($this->isEditorEnabled(false) && !$this->hasPathUrlFormat()) {
+            $not = new UniqueNotification([
+                'user_id' => App()->user->id,
+                'importance' => Notification::HIGH_IMPORTANCE,
+                'title' => EditorMessages::getUrlFormatRequirementHeader(),
+                'message' => '<span class="ri-error-warning-fill"></span>&nbsp;'
+                    .
+                    EditorMessages::getUrlFormatRequirementMessage()
+            ]);
+            $not->save();
+        }
+    }
 
     /**
-     * Checks if react editor is enabled for the current user.
+     * Checks if the React editor is enabled for the current user.
      *
-     * @return bool|string
+     * This method first checks the user's settings in the database. If a user setting exists
+     * and the URL format requirement is met (when checked), it returns the user's preference.
+     * If no user setting exists, it falls back to the application's default configuration value,
+     * still respecting the URL format requirement.
+     *
+     * @param bool $urlFormatCheck Whether to check if the URL format is set to 'path'.
+     *                             Defaults to true. When false, skips the URL format validation.
+     *
+     * @return bool True if the React editor is enabled and URL format requirements are met
+     *              (when checked), false otherwise.
      */
-    private function isEditorEnabled() {
+    private function isEditorEnabled($urlFormatCheck = true) {
         //first check db settings_user
         $userSetting = SettingsUser::getUserSetting(self::STG_NAME_REACT_EDITOR);
+        $hasPathUrlFormat = $urlFormatCheck ? $this->hasPathUrlFormat() : true;
 
-        if ($userSetting) {
+        if ($userSetting && $hasPathUrlFormat) {
             return ($userSetting->stg_value === '1');
         }
         //if no entry there check the config default value
-        return App()->getConfig(self::STG_NAME_REACT_EDITOR);
+        return $hasPathUrlFormat && App()->getConfig(self::STG_NAME_REACT_EDITOR);
     }
 
     /**
      * If user is a logged-in user we can assume, that backend is accessed right now.
      */
-    public function isBackendAccess(): bool
+    private function isBackendAccess(): bool
     {
         return !App()->user->isGuest;
+    }
+
+    private function hasPathUrlFormat(): bool
+    {
+         return App()->getUrlManager()->getUrlFormat() === 'path';
     }
 }
