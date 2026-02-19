@@ -20,6 +20,5 @@ class Update_643 extends DatabaseUpdateBase
                 ':desc' => 'View workspace',
                 ':id' => 1,
             ]);
-
     }
 }
