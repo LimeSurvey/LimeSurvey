@@ -13,7 +13,7 @@ $cssUrl = \Yii::app()->assetManager->publish(
 \Yii::app()->clientScript->registerCssFile($cssUrl . '/editorModal.css');
 
 $colClassLeft = $hasPathUrlFormat ? 'col-md-5' : 'col-md-6';
-$colClassRight = $hasPathUrlFormat ? 'col-md-7' : 'col-md-6 pt-4';
+$colClassRight = $hasPathUrlFormat ? 'col-md-7' : 'col-md-6 pt-3';
 ?>
 <!-- Modal to activate/deactivate the react question editor -->
 <div id="activate_editor" class="modal fade" role="dialog">

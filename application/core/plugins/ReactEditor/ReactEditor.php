@@ -225,6 +225,7 @@ EOT,
 
     private function hasPathUrlFormat(): bool
     {
+//        return false;
          return App()->getUrlManager()->getUrlFormat() === 'path';
     }
 }

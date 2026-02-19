@@ -30,6 +30,8 @@
             font-weight: $font-weight-500;
             font-size: $font-size-sm;
             line-height: $line-height-20;
+            padding: 2px 16px;
+            min-height: 20px;
         }
         .btn-check + .btn-outline-secondary {
             background-color: transparent;
