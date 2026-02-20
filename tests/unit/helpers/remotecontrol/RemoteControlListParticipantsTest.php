@@ -333,6 +333,42 @@ class RemoteControlListParticipantsTest extends TestBaseClass
     }
 
     /**
+     * Test broken (SQL return DB Name) string.
+     * TODO : search other SQL payload
+     * @return void
+     */
+    public function testSQLPayloadString()
+    {
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+        \Yii::import('application.helpers.viewHelper', true);
+        \Yii::import('application.libraries.BigData', true);
+
+        // Create handler.
+        $admin   = new \AdminController('dummyid');
+        $handler = new \remotecontrol_handle($admin);
+
+        // Get session key.
+        $sessionKey = $handler->get_session_key(
+            self::$username,
+            self::$password
+        );
+        $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
+
+        /** @var array */
+        $list = $handler->mail_registered_participants(
+            $sessionKey,
+            self::$surveyId,
+            ['extractvalue(1,concat(0x3a,(DATABASE())))']
+        );
+
+        /** @var array */
+        $expected = [
+            'status' => 'Invalid expression for condition'
+        ];
+        $this->assertEquals($expected, $list);
+    }
+
+    /**
      * Test higher-than operator, '>'.
      *
      * @return void
