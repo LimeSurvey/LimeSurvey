@@ -17525,6 +17525,8 @@ body {
   font-weight: 500;
   font-size: 0.9975rem;
   line-height: 20px;
+  padding: 2px 16px;
+  min-height: 20px;
 }
 .lime-toggle-btn-group .btn-group .btn-check + .btn-outline-secondary {
   background-color: transparent;
@@ -17538,28 +17540,13 @@ body {
   background-color: #fff;
   border-color: #6E748C;
   color: #1E1E1E;
-  font-weight: 500;
   border-radius: 3px;
-}
-.lime-toggle-btn-group .btn-group .btn-check:active + .btn-outline-secondary.disabled, .lime-toggle-btn-group .btn-group .btn-check:active + .btn-outline-secondary[disabled],
-.lime-toggle-btn-group .btn-group .btn-check:checked + .btn-outline-secondary.disabled,
-.lime-toggle-btn-group .btn-group .btn-check:checked + .btn-outline-secondary[disabled],
-.lime-toggle-btn-group .btn-group .btn-outline-secondary.active.disabled,
-.lime-toggle-btn-group .btn-group .btn-outline-secondary.active[disabled],
-.lime-toggle-btn-group .btn-group .btn-outline-secondary.dropdown-toggle.show.disabled,
-.lime-toggle-btn-group .btn-group .btn-outline-secondary.dropdown-toggle.show[disabled],
-.lime-toggle-btn-group .btn-group .btn-outline-secondary:active.disabled,
-.lime-toggle-btn-group .btn-group .btn-outline-secondary:active[disabled] {
-  border-color: #9094A7;
-  background-color: #D3D5DA;
-  color: #9094A7;
 }
 .lime-toggle-btn-group .btn-group .btn-check:active + .btn-outline-secondary:focus,
 .lime-toggle-btn-group .btn-group .btn-check:checked + .btn-outline-secondary:focus,
 .lime-toggle-btn-group .btn-group .btn-outline-secondary.active:focus,
 .lime-toggle-btn-group .btn-group .btn-outline-secondary.dropdown-toggle.show:focus,
 .lime-toggle-btn-group .btn-group .btn-outline-secondary:active:focus,
-.lime-toggle-btn-group .btn-group .btn-outline-secondary:active,
 .lime-toggle-btn-group .btn-group .btn-check:focus + .btn-outline-secondary,
 .lime-toggle-btn-group .btn-group .btn-outline-secondary:hover {
   box-shadow: none;
@@ -17573,11 +17560,39 @@ body {
   background-color: #333641;
   color: #EEEFF7;
 }
+.lime-toggle-btn-group .btn-group .btn-check:disabled + .btn-outline-secondary {
+  border-color: #F9F9FB;
+  background-color: transparent;
+  color: #D3D5DA;
+  pointer-events: none;
+  opacity: 1;
+}
+.lime-toggle-btn-group .btn-group .btn-check:checked:disabled + .btn-outline-secondary {
+  background-color: #fff;
+  border-color: #F9F9FB;
+}
+.lime-toggle-btn-group .btn-group:has(.btn-check:disabled) {
+  background: #F9F9FB;
+}
 .lime-toggle-btn-group.isSecondary .btn-group {
   background: #8146F6;
 }
 .lime-toggle-btn-group.isSecondary .btn-group .btn-check + .btn-outline-secondary {
   border-color: #8146F6;
+}
+.lime-toggle-btn-group.isSecondary .btn-group .btn-check:disabled + .btn-outline-secondary {
+  border-color: #F9F9FB;
+  background-color: transparent;
+  color: #D3D5DA;
+  pointer-events: none;
+  opacity: 1;
+}
+.lime-toggle-btn-group.isSecondary .btn-group .btn-check:checked:disabled + .btn-outline-secondary {
+  background-color: #fff;
+  border-color: #F9F9FB;
+}
+.lime-toggle-btn-group.isSecondary .btn-group:has(.btn-check:disabled) {
+  background: #F9F9FB;
 }
 
 .modal-content {
@@ -20025,20 +20040,17 @@ table [class^=ri-], table [class*=" ri-"] {
   text-align: start;
   font-size: 0.9975rem;
   line-height: 20px;
-  padding: 0.625rem 1rem;
+  padding: 0.625rem 0.5rem 0.625rem 1rem;
   position: relative;
 }
 .alert > span[class*=ri-] {
   font-size: 1.14rem;
 }
-.alert > .alert-header {
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+.alert .alert-header {
   font-weight: 600;
-  font-size: 1.425rem;
-  line-height: 26px;
   color: inherit;
 }
-.alert > .alert-header > span[class*=ri-] {
+.alert .alert-header > span[class*=ri-] {
   font-weight: 400;
 }
 
