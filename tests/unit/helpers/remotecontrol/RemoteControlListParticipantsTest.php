@@ -285,6 +285,54 @@ class RemoteControlListParticipantsTest extends TestBaseClass
     }
 
     /**
+     * Test simple string.
+     *
+     * @return void
+     */
+    public function testSimpleString()
+    {
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+        \Yii::import('application.helpers.viewHelper', true);
+        \Yii::import('application.libraries.BigData', true);
+
+        // Create handler.
+        $admin   = new \AdminController('dummyid');
+        $handler = new \remotecontrol_handle($admin);
+
+        // Get session key.
+        $sessionKey = $handler->get_session_key(
+            self::$username,
+            self::$password
+        );
+        $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
+
+        /** @var array */
+        $list = $handler->list_participants(
+            $sessionKey,
+            self::$surveyId,
+            0,
+            10,
+            false,
+            false,
+            ["validuntil >='2020-04-01 15:12:00'"]
+        );
+
+        /** @var array */
+        $expected = [
+            [
+                'tid' => "1",
+                'token' => "c",
+                'participant_info' => [
+                    'firstname' => "a",
+                    'lastname' => "b",
+                    'email' => "a@a.a"
+                ]
+            ]
+        ];
+        $this->assertEquals($expected, $list);
+    }
+
+    /**
      * Test higher-than operator, '>'.
      *
      * @return void

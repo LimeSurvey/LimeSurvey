@@ -80,7 +80,7 @@ class LSDbCriteria extends CDbCriteria
         if (!is_string($condition) || !preg_match('/^([a-zA-Z0-9_]+)\s*(<=|>=|<>|=|<|>)\s*(.*)$/', $condition, $matches)) {
             throw new BadRequestException('Invalid expression for condition');
         }
-        $this->addUnsureSearchCondition($oModel, [$matches[1]=>[$matches[2], $matches[3]]]);
+        $this->addSafeStructuredSearchCondition($oModel, [$matches[1]=>[$matches[2], $matches[3]]]);
     }
 
     /**
