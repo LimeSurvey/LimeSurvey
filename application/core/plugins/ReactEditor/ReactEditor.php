@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\EditorService;
+use ReactEditor\EditorMessages;
 
 // phpcs:disable
 require_once(__DIR__ . '/autoload.php');
@@ -86,7 +87,9 @@ class ReactEditor extends \PluginBase
                 '_modalActivateDeactivateEditor',
                 [
                     'activated' => $this->isEditorEnabled(false),
-                    'hasPathUrlFormat' => $this->hasPathUrlFormat()
+                    'hasPathUrlFormat' => $this->hasPathUrlFormat(),
+                    'warningHeader' => EditorMessages::getUrlFormatRequirementHeader(),
+                    'warningMessage' => EditorMessages::getUrlFormatRequirementMessage(),
                 ],
                 true,
             );

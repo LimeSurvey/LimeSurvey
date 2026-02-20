@@ -2,6 +2,8 @@
 
 /** @var bool $activated  */
 /** @var bool $hasPathUrlFormat  */
+/** @var string $warningHeader  */
+/** @var string $warningMessage  */
 
 $saveUrl = \Yii::app()->createUrl(
     "plugins/direct/plugin/ReactEditor/function/saveActivateDeactivate",
@@ -59,7 +61,7 @@ $colClassRight = $hasPathUrlFormat ? 'col-md-7' : 'col-md-6 pt-3';
                                     <label class="label-s mb-1" for='editor-switch-btn'><?php eT("Editor version"); ?></label>
                                     <div class="lime-toggle-btn-group isSecondary">
                                     <?php
-                                    Yii::app()->getController()->widget(
+                                    App()->getController()->widget(
                                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                                         [
                                             'name' => 'editor-switch-btn',
@@ -87,9 +89,9 @@ $colClassRight = $hasPathUrlFormat ? 'col-md-7' : 'col-md-6 pt-3';
                                     </p>
                                 </div>
                                 <?php else:
-                                    $this->widget('ext.AlertWidget.AlertWidget', [
-                                    'header' => EditorMessages::getUrlFormatRequirementHeader(),
-                                    'text' => EditorMessages::getUrlFormatRequirementMessage(),
+                                    App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                                    'header' => $warningHeader,
+                                    'text' => $warningMessage,
                                     'type' => 'warning',
                                     ]);
                                 endif; ?>
