@@ -314,7 +314,7 @@ class RemoteControlListParticipantsTest extends TestBaseClass
             10,
             false,
             false,
-            ["validuntil >='2020-04-01 15:12:00'"]
+            ["validuntil >= 2020-04-01 15:12:00"]
         );
 
         /** @var array */
