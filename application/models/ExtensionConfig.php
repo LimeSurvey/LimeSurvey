@@ -150,9 +150,11 @@ class ExtensionConfig
      */
     public static function loadFromFile($file)
     {
-        if (!file_exists($file)) {
-            return null;
-        } else {
+        static $_c = [];
+        if (!array_key_exists($file, $_c)) {
+            if (!file_exists($file)) {
+                return null;
+            }
             if (\PHP_VERSION_ID < 80000) {
                 libxml_disable_entity_loader(false);
             }
@@ -161,8 +163,12 @@ class ExtensionConfig
                 libxml_disable_entity_loader(true);
             }
             $config = new self($xml);
+            $_c[$file] = $config;
+
             return $config;
         }
+
+        return $_c[$file];
     }
 
     /**
