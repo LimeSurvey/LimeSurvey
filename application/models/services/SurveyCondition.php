@@ -941,7 +941,7 @@ class SurveyCondition
                     $shortanswer = "other: [" . strip_tags((string) $theanswer) . "]";
                     $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'] . 'other', $fieldNameWithTitle); // Set QTypes to specific for javascript
-                    $canswers[] = array($fieldNameWithTitle, " ", gT("No answer"));
+                    $canswers[] = array($fieldNameWithTitle, '', gT("No answer"));
                 }
             } else {
                 $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid']);

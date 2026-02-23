@@ -964,12 +964,17 @@ class LimeExpressionManager
                 $subqid = $fieldname;
                 $value = $row['value'];
             } elseif ($row['type'] == Question::QT_M_MULTIPLE_CHOICE || $row['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
+                $oQuestion = Question::model()->findByPk(array("qid" => $row['cqid']));
                 if ((string)substr((string) $row['cfieldname'], 0, 1) == '+') {
                     // if prefixed with +, then a fully resolved name
                     $row['cfieldname'] = (string)substr((string) $row['cfieldname'], 1);
                     if (isset($aDictionary[$row['cfieldname']])) {
                         $row['cfieldname'] = $aDictionary[$row['cfieldname']];
                     }
+                    $fieldname = $row['cfieldname'] . '.NAOK';
+                    $subqid = $fieldname;
+                    $value = $row['value'];
+                } elseif (strlen($row['cfieldname']) > 5 && substr($row['cfieldname'], -5) === 'other' && $oQuestion && $oQuestion->other == "Y") {
                     $fieldname = $row['cfieldname'] . '.NAOK';
                     $subqid = $fieldname;
                     $value = $row['value'];
@@ -1007,7 +1012,6 @@ class LimeExpressionManager
             } elseif ((string)(float)$value !== (string)$value) {
                 $value = '"' . $value . '"';
             }
-
             // add equation
             if ($row['method'] == 'RX') {
                 $relOrList[] = "regexMatch(" . $value . "," . $fieldname . ")";
