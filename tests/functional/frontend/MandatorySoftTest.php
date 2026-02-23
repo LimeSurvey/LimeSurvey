@@ -38,7 +38,7 @@ class MandatorySoftTest extends TestBaseClassWeb
                     WebDriverBy::id('mandatory-soft-alert-box-modal')
                 )
             );
-            /* Check if question Q00 mandatoiry are shown */
+            /* Check if question Q00 mandatory are shown */
             $MandatoryTip = trim(self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $questions['Q00']->qid . ' .ls-question-mandatory'))->getText());
             $this->assertEquals("Please note that you have not answered this question. You may continue without answering.", $MandatoryTip);
             /* Find the action button (theme dependant ?) */
@@ -95,7 +95,13 @@ class MandatorySoftTest extends TestBaseClassWeb
                 !empty(self::$webDriver->findElement(WebDriverBy::id('question' . $ManOnQid))),
                 'Mandatory question are not in page'
             );
-            /* Check if question ManOn mandatoiry are shown */
+            /* Find the action button (theme dependant ?) */
+            $this->assertTrue(
+                !empty(self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'))),
+                'Unable to find the action button after try to submit'
+            );
+            self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'))->click();
+            /* Check if question ManOn mandatory are shown */
             $MandatoryTip = trim(self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $ManOnQid . ' .ls-question-mandatory'))->getText());
             $this->assertEquals("This question is mandatory", $MandatoryTip);
             /* mandatory tip shown as error : BS dependent*/
