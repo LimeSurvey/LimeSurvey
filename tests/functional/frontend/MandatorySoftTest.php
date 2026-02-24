@@ -98,7 +98,7 @@ class MandatorySoftTest extends TestBaseClassWeb
             /* Find the close button (#20409) : must be mandatory modal only */
             $modalCloseButton1 = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('.modal.show .modal-header .btn-close')
+                    WebDriverBy::cssSelector('#bootstrap-alert-box-modal .btn-close')
                 )
             );
             $this->assertCount(
@@ -123,12 +123,12 @@ class MandatorySoftTest extends TestBaseClassWeb
             /* Must have mandatory soft element */
             $modalCloseButton2 = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('.modal.show .modal-header .btn-close')
+                    WebDriverBy::cssSelector('.modal .btn-close')
                 )
             );
             $this->assertTrue(
                 !empty(self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'))),
-                'No mandatory soft shown when there are onlt soft mandatoiry question'
+                'No mandatory soft shown when there are only soft mandatory question'
             );
             $modalCloseButton2->click();
             /* Click on close button must not disable mandatory-soft-alert-box-modal issue #20409 */
