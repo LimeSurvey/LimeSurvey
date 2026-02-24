@@ -1434,6 +1434,7 @@ class TemplateManifest extends TemplateConfiguration
                 $aOptions['optionAttributes'][$key]['title'] = !empty($option['title']) ? (string)$option['title'] : '';
                 $aOptions['optionAttributes'][$key]['category'] = !empty($option['category']) ? (string)$option['category'] : gT('Simple options');
                 $aOptions['optionAttributes'][$key]['width'] = !empty($option['width']) ? (string)$option['width'] : '2';
+                $aOptions['optionAttributes'][$key]['library'] = !empty($option['library']) ? (string)$option['library'] : '';
                 /* rows for textarea */
                 $aOptions['optionAttributes'][$key]['rows'] = !empty($option['rows']) ? (string)$option['rows'] : '4';
                 $aOptions['optionAttributes'][$key]['options'] = !empty($option['options']) ? (string)$option['options'] : '';
@@ -1446,16 +1447,20 @@ class TemplateManifest extends TemplateConfiguration
                     $dropdownOptionsDom = dom_import_simplexml($dropdownOptions);
                     if ($key === 'font') {
                         $dropdownOptionsFonts = TemplateManifest::getFontDropdownOptions();
-                        $fontDropdownOptions = simplexml_load_string($dropdownOptionsFonts); // The element to insert
-                        $child_dom = dom_import_simplexml($fontDropdownOptions);
-                        // Import the child node into the parent's document
-                        $child_imported = $dropdownOptionsDom->ownerDocument->importNode($child_dom, true);
-                        // If the parent has children, insert before the first one.
-                        if ($dropdownOptionsDom->firstChild) {
-                            $dropdownOptionsDom->insertBefore($child_imported, $dropdownOptionsDom->firstChild);
-                        } else {
-                            // If the parent has no children, you can just append it (which makes it the first)
-                            $dropdownOptionsDom->appendChild($child_imported);
+                        if (!empty($dropdownOptionsFonts)) {
+                            $fontDropdownOptions = simplexml_load_string($dropdownOptionsFonts); // The element to insert
+                            if ($fontDropdownOptions !== false) {
+                                $child_dom = dom_import_simplexml($fontDropdownOptions);
+                                // Import the child node into the parent's document
+                                $child_imported = $dropdownOptionsDom->ownerDocument->importNode($child_dom, true);
+                                // If the parent has children, insert before the first one.
+                                if ($dropdownOptionsDom->firstChild) {
+                                    $dropdownOptionsDom->insertBefore($child_imported, $dropdownOptionsDom->firstChild);
+                                } else {
+                                    // If the parent has no children, you can just append it (which makes it the first)
+                                    $dropdownOptionsDom->appendChild($child_imported);
+                                }
+                            }
                         }
                     }
                     $dropdownOptionsString = $dropdownOptions->asXML();

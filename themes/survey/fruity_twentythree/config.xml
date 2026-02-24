@@ -96,21 +96,12 @@
         <bodybackgroundcolor type="colorpicker" category="Colors" width="4" title="Background color" options="on|off" optionlabels="Yes|No">#ffffff</bodybackgroundcolor>
         <fontcolor type="colorpicker" category="Colors" width="4" title="Font color" options="on|off" optionlabels="Yes|No">#444444</fontcolor>
         <questionbackgroundcolor type="colorpicker" category="Colors" width="4" title="Question background color" options="on|off" optionlabels="Yes|No">#ffffff</questionbackgroundcolor>
-        <checkicon type="icon" category="Colors" width="4" title="Check icon">f00c
+        <checkicon type="icon" library="remixicon" category="Colors" width="4" title="Check icon">EB7A
             <!--  When adding new items, please keep them ordered alphabetically -->
             <dropdownoptions>
-                <option value="f061"> Arrow right </option>
-                <option value="f069"> Asterisk </option>
-                <option value="f00c"> Check </option>
-                <option value="f058"> Check circle </option>
-                <option value="f14a"> Check square </option>
-                <option value="f138"> Chevron circle right </option>
-                <option value="f111"> Circle </option>
-                <option value="f067"> Plus </option>
-                <option value="f1d0"> Resistance </option>
-                <option value="f0c8"> Square </option>
-                <option value="f005"> Star </option>
-                <option value="f00d"> Times </option>
+                <option value="EB7A"> Check </option>
+                <option value="EB80"> Check circle </option>
+                <option value="EB82"> Check square </option>
             </dropdownoptions>
         </checkicon>
 

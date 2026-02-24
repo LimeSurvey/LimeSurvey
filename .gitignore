@@ -55,14 +55,20 @@
 !/upload/global/readme.txt
 
 # tmp directory : whole except the index.html for directory create
+# Add .htaccess where needed and index.html to disable directory listing (without mod_rewrite)
 /tmp/*
-/tmp/assets/*
-/tmp/runtime/*
-/tmp/upload/*
 !/tmp/index.html
+!/tmp/assets/
+/tmp/assets/*
 !/tmp/assets/index.html
+!/tmp/runtime/
+/tmp/runtime/*
 !/tmp/runtime/index.html
+!/tmp/runtime/.htaccess
+!/tmp/upload/
+/tmp/upload/*
 !/tmp/upload/index.html
+!/tmp/upload/.htaccess
 
 # ignore plugins directory by default except LS plugin
 # if you want to add a new distributed plugin : use /application/core/plugins
