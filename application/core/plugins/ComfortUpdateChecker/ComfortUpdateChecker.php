@@ -102,12 +102,13 @@ class ComfortUpdateChecker extends PluginBase
      */
     private function getUpdate()
     {
-        $buttons = 1;
+        // @todo Make this a global setting so people can choose if they want to get notification for unstable versions
+        $checkForUnstableUpdates = 0;
         $updateModel = new UpdateForm();
         // NB: Use getUpdateNotification, since it checks session for datetime to avoid multiple calls.
-        $serverAnswer = $updateModel->getUpdateNotification($buttons);
+        $serverAnswer = $updateModel->getUpdateNotification($checkForUnstableUpdates);
         if ($serverAnswer && $serverAnswer->result) {
-            return $updateModel->getUpdateInfo($buttons);
+            return $updateModel->getUpdateInfo($checkForUnstableUpdates);
         } else {
             return null;
         }
