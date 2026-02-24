@@ -113,7 +113,7 @@ class MandatorySoftTest extends TestBaseClassWeb
             /* mandatory tip shown as error : BS dependent*/
             $MandatoryTipShownAsErrorElement = self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $ManOnQid . ' .ls-question-mandatory.text-danger'));
             $this->assertTrue(
-                !empty(self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $ManOnQid . ' .ls-question-mandatory.text-danger'))),
+                !empty($MandatoryTipShownAsErrorElement),
                 'Mandatory tip don\'t have text-danger class'
             );
             /* Enter value in ManOn and check if move next show end (using id added manually in survey */
