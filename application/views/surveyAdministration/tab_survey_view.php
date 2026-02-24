@@ -54,16 +54,7 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
         </a>
     </li>
 
-
-    <?php if ($action === "newsurvey"): ?>
-        <!-- Copy -->
-        <li class="nav-item" role="presentation">
-            <a class="nav-link <?= $activeTab === 'copy' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title="<i class='ri-file-copy-line'></i>&nbsp;<?= gT('Copy'); ?>" data-form-id="copysurveyform" href="#copy">
-                <?php  eT("Copy"); ?>
-            </a>
-        </li>
-
-    <?php elseif($action === "editsurveysettings"): ?>
+    <?php if($action === "editsurveysettings"): ?>
 
         <!-- Panel integration -->
         <li class="nav-item" role="presentation">

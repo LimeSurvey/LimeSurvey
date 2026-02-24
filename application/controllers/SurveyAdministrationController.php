@@ -2285,12 +2285,6 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
 
-        if ((App()->getConfig("editorEnabled")) && ($copiedSurvey !== null)) {
-            $copiedSurvey->setOptions();
-            if ($copiedSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
-                $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $copiedSurvey->sid]);
-            }
-        }
         $this->aData = $aData;
 
         $this->render('copySurveyResult_view', $this->aData);
