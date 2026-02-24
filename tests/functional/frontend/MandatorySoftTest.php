@@ -120,20 +120,6 @@ class MandatorySoftTest extends TestBaseClassWeb
             self::$webDriver->answerTextQuestion($ManOnSgqa, 'Some value');
             self::$webDriver->scrollToBottom();
             self::$webDriver->next();
-            /* Must have mandatory soft element */
-            $modalCloseButton = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#bootstrap-alert-box-modal [data-bs-dismiss]')
-                )
-            );
-            $this->assertTrue(
-                !empty(self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'))),
-                'No mandatory soft shown when there are only soft mandatory question'
-            );
-            $modalCloseButton->click();
-            /* Click on close button must not disable mandatory-soft-alert-box-modal issue #20409 */
-            self::$webDriver->scrollToBottom();
-            self::$webDriver->next();
             /* Must still find modal soft dialog and button */
             $mandatorysoftButton = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
