@@ -460,15 +460,8 @@ class SurveyRuntimeHelper
                 'GROUPNAME' => $aGroup['name'],
             ));
             $aGroup['gseq']        = $_gseq;
-            $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
-            $aSurveyinfo           = getSurveyInfo($this->iSurveyid, App()->getLanguage());
-
-            // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings
-            if (($aSurveyinfo['showgroupinfo'] == $showgroupinfo_global_) || ($showgroupinfo_global_ == 'choose')) {
-                $showgroupinfo_ = $aSurveyinfo['showgroupinfo'];
-            } else {
-                $showgroupinfo_ = $showgroupinfo_global_;
-            }
+            // Use survey level settings
+            $showgroupinfo_ = $this->aSurveyInfo['showgroupinfo'];
 
             $showgroupdesc_ = $showgroupinfo_ == 'B' /* both */ || $showgroupinfo_ == 'D'; /* (group-) description */
 
