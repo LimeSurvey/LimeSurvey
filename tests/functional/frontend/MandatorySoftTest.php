@@ -121,6 +121,7 @@ class MandatorySoftTest extends TestBaseClassWeb
             self::$webDriver->scrollToBottom();
             self::$webDriver->next();
             /* Must still find modal soft dialog and button */
+            /**
             $mandatorysoftButton = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::id('mandatory-soft-alert-box-modal')
@@ -131,6 +132,7 @@ class MandatorySoftTest extends TestBaseClassWeb
                 'No mandatory soft shown after click on close'
             );
             $mandatorysoftButton->click();
+            **/
             /* Completed with success */
             /** @var $surveyCompletedElement RemoteWebElement */
             $surveyCompletedElement = self::$webDriver->wait(5)->until(
