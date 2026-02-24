@@ -96,9 +96,9 @@ class MandatorySoftTest extends TestBaseClassWeb
                 'Mandatory question are not in page'
             );
             /* Find the close button (#20409) : must be mandatory modal only */
-            $modalCloseButton1 = self::$webDriver->wait(10)->until(
+            $modalCancelButton = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#bootstrap-alert-box-modal .btn-close')
+                    WebDriverBy::cssSelector('#bootstrap-alert-box-modal .btn-outline-secondary')
                 )
             );
             $this->assertCount(
@@ -106,7 +106,7 @@ class MandatorySoftTest extends TestBaseClassWeb
                 self::$webDriver->findElements(WebDriverBy::id('mandatory-soft-alert-box-modal')),
                 'The modal shown are mandatory soft, must be a mandatory'
             );
-            $modalCloseButton1->click();
+            $modalCancelButton->click();
             /* Check if question ManOn mandatory are shown */
             $MandatoryTip = trim(self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $ManOnQid . ' .ls-question-mandatory'))->getText());
             $this->assertEquals("This question is mandatory", $MandatoryTip);
@@ -121,16 +121,16 @@ class MandatorySoftTest extends TestBaseClassWeb
             self::$webDriver->scrollToBottom();
             self::$webDriver->next();
             /* Must have mandatory soft element */
-            $modalCloseButton2 = self::$webDriver->wait(10)->until(
+            $modalCloseButton = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('.modal .btn-close')
+                    WebDriverBy::cssSelector('#bootstrap-alert-box-modal .btn-close')
                 )
             );
             $this->assertTrue(
                 !empty(self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'))),
                 'No mandatory soft shown when there are only soft mandatory question'
             );
-            $modalCloseButton2->click();
+            $modalCloseButton->click();
             /* Click on close button must not disable mandatory-soft-alert-box-modal issue #20409 */
             self::$webDriver->scrollToBottom();
             self::$webDriver->next();
