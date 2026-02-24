@@ -96,16 +96,17 @@ class MandatorySoftTest extends TestBaseClassWeb
                 'Mandatory question are not in page'
             );
             /* Find the close button (#20409) : must be mandatory modal only */
-            $modalCloseButton = self::$webDriver->wait(10)->until(
+            $modalCloseButton1 = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::cssSelector('.modal.show .modal-header .btn-close')
                 )
             );
-            $this->assertTrue(
-                empty(self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'))),
-                'The modal shown are mandatory soft, muts be mandatory'
+            $this->assertCount(
+                0,
+                self::$webDriver->findElements(WebDriverBy::id('mandatory-soft-alert-box-modal')),
+                'The modal shown are mandatory soft, must be a mandatory'
             );
-            $modalCloseButton->click();
+            $modalCloseButton1->click();
             /* Check if question ManOn mandatory are shown */
             $MandatoryTip = trim(self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $ManOnQid . ' .ls-question-mandatory'))->getText());
             $this->assertEquals("This question is mandatory", $MandatoryTip);
@@ -120,7 +121,7 @@ class MandatorySoftTest extends TestBaseClassWeb
             self::$webDriver->scrollToBottom();
             self::$webDriver->next();
             /* Must have mandatory soft element */
-            $modalCloseButton = self::$webDriver->wait(10)->until(
+            $modalCloseButton2 = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::cssSelector('.modal.show .modal-header .btn-close')
                 )
@@ -129,7 +130,7 @@ class MandatorySoftTest extends TestBaseClassWeb
                 !empty(self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'))),
                 'No mandatory soft shown when there are onlt soft mandatoiry question'
             );
-            $modalCloseButton->click();
+            $modalCloseButton2->click();
             /* Click on close button must not disable mandatory-soft-alert-box-modal issue #20409 */
             self::$webDriver->scrollToBottom();
             self::$webDriver->next();
@@ -143,7 +144,7 @@ class MandatorySoftTest extends TestBaseClassWeb
                 !empty(self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'))),
                 'No mandatory soft shown after click on close'
             );
-            $modalCloseButton->click();
+            $mandatorysoftButton->click();
             /* Completed with success */
             /** @var $surveyCompletedElement RemoteWebElement */
             $surveyCompletedElement = self::$webDriver->wait(5)->until(
