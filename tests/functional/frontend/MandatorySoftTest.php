@@ -96,9 +96,9 @@ class MandatorySoftTest extends TestBaseClassWeb
                 'Mandatory question are not in page'
             );
             /* Find the close button (#20409) : must be mandatory modal only */
-            $modalCancelButton = self::$webDriver->wait(10)->until(
+            $modalCloseButton = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#bootstrap-alert-box-modal .btn-outline-secondary')
+                    WebDriverBy::cssSelector('#bootstrap-alert-box-modal .btn-close')
                 )
             );
             $this->assertCount(
@@ -106,7 +106,7 @@ class MandatorySoftTest extends TestBaseClassWeb
                 self::$webDriver->findElements(WebDriverBy::id('mandatory-soft-alert-box-modal')),
                 'The modal shown are mandatory soft, must be a mandatory'
             );
-            $modalCancelButton->click();
+            $modalCloseButton->click();
             /* Check if question ManOn mandatory are shown */
             $MandatoryTip = trim(self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $ManOnQid . ' .ls-question-mandatory'))->getText());
             $this->assertEquals("This question is mandatory", $MandatoryTip);
@@ -120,20 +120,7 @@ class MandatorySoftTest extends TestBaseClassWeb
             self::$webDriver->answerTextQuestion($ManOnSgqa, 'Some value');
             self::$webDriver->scrollToBottom();
             self::$webDriver->next();
-            /* Must still find modal soft dialog and button */
-            /**
-            $mandatorysoftButton = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::id('mandatory-soft-alert-box-modal')
-                )
-            );
-            $this->assertTrue(
-                !empty(self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'))),
-                'No mandatory soft shown after click on close'
-            );
-            $mandatorysoftButton->click();
-            **/
-            /* Completed with success */
+            /* Completed with success : Issue here ! Manually it's OK */
             /** @var $surveyCompletedElement RemoteWebElement */
             $surveyCompletedElement = self::$webDriver->wait(5)->until(
                 WebDriverExpectedCondition::presenceOfElementLocated(
