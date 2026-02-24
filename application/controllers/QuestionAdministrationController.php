@@ -1766,12 +1766,12 @@ class QuestionAdministrationController extends LSBaseController
             }
             $copyQuestionValues->setQuestionPositionInGroup($newQuestionPosition);
 
-            $copyQuestionService = new \LimeSurvey\Models\Services\CopyQuestion($copyQuestionValues);
             $copyOptions['copySubquestions'] = (int)Yii::app()->request->getParam('copysubquestions') === 1;
             $copyOptions['copyAnswerOptions'] = (int)Yii::app()->request->getParam('copyanswers') === 1;
             $copyOptions['copyDefaultAnswers'] = (int)Yii::app()->request->getParam('copydefaultanswers') === 1;
             $copyOptions['copySettings'] = (int)Yii::app()->request->getParam('copyattributes') === 1;
-            if ($copyQuestionService->copyQuestion($copyOptions)) {
+            $copyQuestionService = new \LimeSurvey\Models\Services\CopyQuestion($copyQuestionValues, $copyOptions);
+            if ($copyQuestionService->copyQuestion()) {
                 App()->user->setFlash('success', gT("Saved copied question"));
                 $newQuestion = $copyQuestionService->getNewCopiedQuestion();
                 $this->redirect(

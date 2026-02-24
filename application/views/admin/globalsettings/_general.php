@@ -192,7 +192,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
 Off
 Soft lock - participants are able to finish started surveys, no new participants are allowed
 Full lock - none of participants are allowed to take survey, even if they already started to take it'); ?> ">
-                <?php eT("Maintenance mode:"); ?>
+                <?php eT("Maintenance mode"); ?>
             </label>
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -211,7 +211,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <!-- Refresh assets -->
         <div class="mb-3">
             <label class="col-12 form-label" for='clearcache'>
-                <?php eT("Clear frontend cache:"); ?> <small>(<?php echo getGlobalSetting('customassetversionnumber'); ?>)</small>
+                <?php eT("Clear frontend cache"); ?> <small>(<?php echo getGlobalSetting('customassetversionnumber'); ?>)</small>
             </label>
             <div class="col-12">
                 <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa" => "clearAssetsAndCache")); ?>"
@@ -224,7 +224,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <!-- Default Editor mode -->
         <div class="mb-3">
             <label class="col-12 form-label" for='defaulthtmleditormode'>
-                <?php eT("Default HTML editor mode:");
+                <?php eT("Default HTML editor mode");
                 echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
             </label>
             <div class="col-12">
@@ -248,7 +248,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <?php /* This setting is just remaining here for campatibility reasons. It is not yet implemented into the new admmin panel */ ?>
         <div class="mb-3" style="display: none;">
             <label class='col-12 form-label' for='sideMenuBehaviour'>
-                <?php eT("Side-menu behaviour:"); ?>
+                <?php eT("Side-menu behaviour"); ?>
             </label>
             <div class='col-md-4'>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -267,7 +267,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <!-- Default question type selector mode -->
         <div class="mb-3">
             <label class="col-12 form-label" for='defaultquestionselectormode'>
-                <?php eT("Question type selector:");
+                <?php eT("Question type selector");
                 echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
             </label>
             <div class="col-12">
@@ -286,7 +286,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <!-- Default theme editor mode -->
         <div class="mb-3">
             <label class="col-12 form-label" for='defaultthemeteeditormode'>
-                <?php eT("Template editor:");
+                <?php eT("Template editor");
                 echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
             </label>
             <div class="col-12">
@@ -305,7 +305,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <!-- Default breadcrumb mode -->
         <div class="mb-3">
             <label class="col-12 form-label" for='defaultBreadcrumbMode'>
-                <?php eT("Default breadcrumb mode:");
+                <?php eT("Default breadcrumb mode");
                 echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
             </label>
             <div class="col-12">
@@ -324,7 +324,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <!-- Default theme editor mode -->
         <div class="mb-3">
             <label class="col-12 form-label" for='javascriptdebugbcknd'>
-                <?php eT("JS-Debug mode [Backend]:");
+                <?php eT("JS-Debug mode [Backend]");
                 echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
             </label>
             <div class="col-12">
@@ -343,7 +343,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <!-- Default theme editor mode -->
         <div class="mb-3">
             <label class="col-12 form-label" for='javascriptdebugfrntnd'>
-                <?php eT("JS-Debug mode [Frontend]:");
+                <?php eT("JS-Debug mode [Frontend]");
                 echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
             </label>
             <div class="col-12">
@@ -363,7 +363,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) : ?>
             <div class="mb-3">
                 <label class="col-12 form-label" for='allow_unstable_extension_update'>
-                    <?php eT('Allow unstable extension updates:'); ?>
+                    <?php eT('Allow unstable extension updates'); ?>
                 </label>
                 <div class="col-12">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [

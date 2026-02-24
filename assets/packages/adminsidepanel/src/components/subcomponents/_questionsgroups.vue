@@ -327,7 +327,7 @@ export default {
         </div>
 		<div class="ls-flex-row wrap align-content-center align-items-center button-sub-bar">
 			<div class="scoped-toolbuttons-left mb-2 d-flex align-items-center">
-                <div class="create-question px-3" data-bs-toggle="tooltip" data-bs-placement="top" :title="translate(createQuestionAllowed ? '' : 'deactivateSurvey')">
+                <div class="create-question px-3" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-original-title="createQuestionAllowed ? '' : translate('deactivateSurvey')" :title="createQuestionAllowed ? '' : translate('deactivateSurvey')">
                     <a id="adminsidepanel__sidebar--selectorCreateQuestion" :href="createFullQuestionLink()"
                         class="btn btn-primary pjax" v-bind:class="createQuestionAllowedClass">
                         <i class="ri-add-circle-fill"></i>
@@ -336,7 +336,7 @@ export default {
                     </a>
                 </div>
 
-                <div data-bs-toggle="tooltip" data-bs-placement="top" :title="translate(createQuestionAllowed ? '' : 'deactivateSurvey')">
+                <div data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-original-title="createQuestionAllowed ? '' : translate('deactivateSurvey')" :title="createQuestionAllowed ? '' : translate('deactivateSurvey')">
                     <a id="adminsidepanel__sidebar--selectorCreateQuestionGroup" v-bind:class="createQuestionGroupAllowedClass"
                         :href="createQuestionGroupLink" class="btn btn-secondary pjax">
                         <!-- <i class="ri-add-line"></i> -->
