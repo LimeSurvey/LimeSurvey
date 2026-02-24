@@ -123,7 +123,7 @@ class MandatorySoftTest extends TestBaseClassWeb
             /* Must have mandatory soft element */
             $modalCloseButton = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#bootstrap-alert-box-modal .btn-close')
+                    WebDriverBy::cssSelector('#bootstrap-alert-box-modal [data-bs-dismiss]')
                 )
             );
             $this->assertTrue(
