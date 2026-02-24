@@ -95,12 +95,17 @@ class MandatorySoftTest extends TestBaseClassWeb
                 !empty(self::$webDriver->findElement(WebDriverBy::id('question' . $ManOnQid))),
                 'Mandatory question are not in page'
             );
-            /* Find the action button (theme dependant ?) */
-            $this->assertTrue(
-                !empty(self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'))),
-                'Unable to find the action button after try to submit'
+            /* Find the close button (#20409) : must be mandatory modal only */
+            $modalCloseButton = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('.modal.show .modal-header .btn-close')
+                )
             );
-            self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'))->click();
+            $this->assertTrue(
+                empty(self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'))),
+                'The modal shown are mandatory soft, muts be mandatory'
+            );
+            $modalCloseButton->click();
             /* Check if question ManOn mandatory are shown */
             $MandatoryTip = trim(self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $ManOnQid . ' .ls-question-mandatory'))->getText());
             $this->assertEquals("This question is mandatory", $MandatoryTip);
@@ -108,12 +113,38 @@ class MandatorySoftTest extends TestBaseClassWeb
             $MandatoryTipShownAsErrorElement = self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $ManOnQid . ' .ls-question-mandatory.text-danger'));
             $this->assertTrue(
                 !empty(self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $ManOnQid . ' .ls-question-mandatory.text-danger'))),
-                'Mandatory tipe don\'t have text-danger class'
+                'Mandatory tip don\'t have text-danger class'
             );
             /* Enter value in ManOn and check if move next show end (using id added manually in survey */
             self::$webDriver->answerTextQuestion($ManOnSgqa, 'Some value');
             self::$webDriver->scrollToBottom();
             self::$webDriver->next();
+            /* Must have mandatory soft element */
+            $modalCloseButton = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('.modal.show .modal-header .btn-close')
+                )
+            );
+            $this->assertTrue(
+                !empty(self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'))),
+                'No mandatory soft shown when there are onlt soft mandatoiry question'
+            );
+            $modalCloseButton->click();
+            /* Click on close button must not disable mandatory-soft-alert-box-modal issue #20409 */
+            self::$webDriver->scrollToBottom();
+            self::$webDriver->next();
+            /* Must still find modal soft dialog and button */
+            $mandatorysoftButton = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('mandatory-soft-alert-box-modal')
+                )
+            );
+            $this->assertTrue(
+                !empty(self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'))),
+                'No mandatory soft shown after click on close'
+            );
+            $modalCloseButton->click();
+            /* Completed with success */
             /** @var $surveyCompletedElement RemoteWebElement */
             $surveyCompletedElement = self::$webDriver->wait(5)->until(
                 WebDriverExpectedCondition::presenceOfElementLocated(

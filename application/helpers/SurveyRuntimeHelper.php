@@ -1060,9 +1060,8 @@ class SurveyRuntimeHelper
                 }
             }
 
-            if ($this->aMoveResult['finished'] == true || (!empty($this->aMoveResult['mandSoft']) && App()->request->getPost('mandSoft') == 'movesubmit')) {
+            if ($this->aMoveResult['finished'] == true) {
                 $this->sMove = 'movesubmit';
-                $this->aMoveResult['finished'] = true;
             }
 
             if ($this->sMove == "movesubmit" && $this->aMoveResult['finished'] == false) {
