@@ -107,10 +107,16 @@ class MandatorySoftTest extends TestBaseClassWeb
             /* Close the dialog box */
             $modalCloseButton = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#bootstrap-alert-box-modal .btn-close')
+                    WebDriverBy::cssSelector('#bootstrap-alert-box-modal .btn-outline-secondary')
                 )
             );
             $modalCloseButton->click();
+            /* Wait for modal close */
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('ls-button-submit')
+                )
+            );
             /* Enter value in ManOn and check if move next show end (using id added manually in survey) */
             /* manSoft have a checkbox name mandSoft checked in help text */
             self::$webDriver->answerTextQuestion($ManOnSgqa, 'Some value');
@@ -124,7 +130,7 @@ class MandatorySoftTest extends TestBaseClassWeb
             );
             $this->assertTrue(
                 !empty($surveyCompletedElement),
-                'Completed page not shown after bypassing soft mandatory questions via Continue without answering'
+                'Completed are not shown after fill mandatory question'
             );
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
@@ -210,7 +216,7 @@ class MandatorySoftTest extends TestBaseClassWeb
             );
             $this->assertTrue(
                 !empty($surveyCompletedElement),
-                'Completed are not shown after fill mandatory question'
+                'Completed page not shown after bypassing soft mandatory questions via Continue without answering'
             );
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
