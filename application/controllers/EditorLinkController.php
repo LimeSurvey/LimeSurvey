@@ -21,30 +21,6 @@ class EditorLinkController extends LSYii_Controller
     const REACT_APP_BASE_PATH = '/editor/#/';
 
     /**
-     * Access Rules
-     *
-     * @return array
-     */
-    public function accessRules()
-    {
-        return [
-            [
-                'allow',
-                'actions' => [],
-                'users' => ['*'], //everybody
-            ],
-            [
-                'allow',
-                'actions' => [
-                    'goto',
-                ],
-                'users' => ['@'], //only login users
-            ],
-            ['deny'], //always deny all actions not mentioned above
-        ];
-    }
-
-    /**
      * Create react auth key cookie and redirect.
      *
      * @return void
@@ -52,15 +28,14 @@ class EditorLinkController extends LSYii_Controller
     public function run($action)
     {
         $this->setAuthenticationInitCookie();
-        $editorUrl = Yii::app()->request->getQuery(
-            'url',
-            rtrim(
-                Yii::app()->request->baseUrl
-                . static::REACT_APP_BASE_PATH,
-                '/'
-            )
+
+        $editorUrl = rtrim(
+            App()->request->baseUrl
+            . static::REACT_APP_BASE_PATH,
+            '/'
         );
-        $editorRoute = Yii::app()->request->getQuery('route');
+
+        $editorRoute = App()->request->getQuery('route');
         $url = $editorUrl . '/' . $editorRoute;
         $this->redirect($url);
     }
@@ -80,11 +55,11 @@ class EditorLinkController extends LSYii_Controller
             AuthenticationTokenSimple::class
         );
         $session = $authTokenSimple->createSession(
-            Yii::app()->session['user']
+            App()->session['user']
         );
 
         /** @var \LSYii_Application */
-        $app = \Yii::app();
+        $app = \App();
 
         $cookieDataJson = json_encode(
             $authTokenSimple->getTokenData(
@@ -96,6 +71,6 @@ class EditorLinkController extends LSYii_Controller
         $cookie = new CHttpCookie($cookieName, $cookieDataJson);
         $cookie->expire = time() + 10;
 
-        Yii::app()->request->cookies[$cookieName] = $cookie;
+        App()->request->cookies[$cookieName] = $cookie;
     }
 }
