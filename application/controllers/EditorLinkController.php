@@ -27,6 +27,10 @@ class EditorLinkController extends LSYii_Controller
      */
     public function run($action)
     {
+        if (Yii::app()->user->isGuest) {
+            throw new CHttpException(403, 'Access denied');
+        }
+
         $this->setAuthenticationInitCookie();
 
         $editorUrl = rtrim(
