@@ -107,12 +107,12 @@ class MandatorySoftTest extends TestBaseClassWeb
             /* Close the dialog box */
             $modalCloseButton = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#bootstrap-alert-box-modal .btn-outline-secondary')
+                    WebDriverBy::cssSelector('#bootstrap-alert-box-modal .modal-header .btn-close')
                 )
             );
             $modalCloseButton->click();
             /* Wait for modal close */
-            self::$webDriver->wait(10)->until(
+            $buttonSubmit = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::id('ls-button-submit')
                 )
@@ -121,7 +121,7 @@ class MandatorySoftTest extends TestBaseClassWeb
             /* manSoft have a checkbox name mandSoft checked in help text */
             self::$webDriver->answerTextQuestion($ManOnSgqa, 'Some value');
             self::$webDriver->scrollToBottom();
-            self::$webDriver->next();
+            $buttonSubmit->click();
             /** @var $surveyCompletedElement RemoteWebElement */
             $surveyCompletedElement = self::$webDriver->wait(5)->until(
                 WebDriverExpectedCondition::presenceOfElementLocated(
