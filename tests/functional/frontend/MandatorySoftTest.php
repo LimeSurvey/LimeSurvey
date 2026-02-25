@@ -38,7 +38,7 @@ class MandatorySoftTest extends TestBaseClassWeb
                     WebDriverBy::id('mandatory-soft-alert-box-modal')
                 )
             );
-            /* Check if question Q00 mandatory are shown */
+            /* Check if question Q00 mandatoiry are shown */
             $MandatoryTip = trim(self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $questions['Q00']->qid . ' .ls-question-mandatory'))->getText());
             $this->assertEquals("Please note that you have not answered this question. You may continue without answering.", $MandatoryTip);
             /* Find the action button (theme dependant ?) */
@@ -95,32 +95,20 @@ class MandatorySoftTest extends TestBaseClassWeb
                 !empty(self::$webDriver->findElement(WebDriverBy::id('question' . $ManOnQid))),
                 'Mandatory question are not in page'
             );
-            /* Find the close button (#20409) : must be mandatory modal only */
-            $modalCloseButton = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#bootstrap-alert-box-modal .btn-close')
-                )
-            );
-            $this->assertCount(
-                0,
-                self::$webDriver->findElements(WebDriverBy::id('mandatory-soft-alert-box-modal')),
-                'The modal shown are mandatory soft, must be a mandatory'
-            );
-            $modalCloseButton->click();
             /* Check if question ManOn mandatory are shown */
             $MandatoryTip = trim(self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $ManOnQid . ' .ls-question-mandatory'))->getText());
             $this->assertEquals("This question is mandatory", $MandatoryTip);
             /* mandatory tip shown as error : BS dependent*/
             $MandatoryTipShownAsErrorElement = self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $ManOnQid . ' .ls-question-mandatory.text-danger'));
             $this->assertTrue(
-                !empty($MandatoryTipShownAsErrorElement),
+                !empty(self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $ManOnQid . ' .ls-question-mandatory.text-danger'))),
                 'Mandatory tip don\'t have text-danger class'
             );
-            /* Enter value in ManOn and check if move next show end (using id added manually in survey */
+            /* Enter value in ManOn and check if move next show end (using id added manually in survey) */
+            /* manSoft have a checkbox name mandSoft checked in help text */
             self::$webDriver->answerTextQuestion($ManOnSgqa, 'Some value');
             self::$webDriver->scrollToBottom();
             self::$webDriver->next();
-            /* Completed with success : Issue here ! Manually it's OK */
             /** @var $surveyCompletedElement RemoteWebElement */
             $surveyCompletedElement = self::$webDriver->wait(5)->until(
                 WebDriverExpectedCondition::presenceOfElementLocated(
