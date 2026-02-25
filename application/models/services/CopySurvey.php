@@ -451,7 +451,8 @@ class CopySurvey
             $condition->cqid = $mappingQuestionIds[$conditionRow['cqid']];
             //rebuild the cfieldname --> "$iSurveyID . "X" . $iGroupID . "X" . $iQuestionID"
             $cfieldname = (string) $conditionRow['cfieldname'];
-            if (!in_array($cfieldname[0], ['Q', '+'])) {
+            $qPos = strpos($cfieldname, 'Q');
+            if (($qPos === false) || ($qPos > 1)) {
                 list(, $oldGroupId, $oldQuestionId) = explode("X", $cfieldname, 3);
                 //the $oldQuestionId contains the question id from the old question id
                 //and could in addition contain a subquestion code or answer option code
