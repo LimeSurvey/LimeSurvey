@@ -104,6 +104,13 @@ class MandatorySoftTest extends TestBaseClassWeb
                 !empty(self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $ManOnQid . ' .ls-question-mandatory.text-danger'))),
                 'Mandatory tip don\'t have text-danger class'
             );
+            /* Close the dialog box */
+            $modalCloseButton = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('#bootstrap-alert-box-modal .btn-close')
+                )
+            );
+            $modalCloseButton1->click();
             /* Enter value in ManOn and check if move next show end (using id added manually in survey) */
             /* manSoft have a checkbox name mandSoft checked in help text */
             self::$webDriver->answerTextQuestion($ManOnSgqa, 'Some value');

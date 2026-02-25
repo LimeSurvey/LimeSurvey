@@ -1087,7 +1087,7 @@ The following answers were given by the participant:<br />
      <animatebody>off</animatebody>
      <hideprivacyinfo>off</hideprivacyinfo>
      <container>on</container>
-     <showpopups>-1</showpopups>
+     <showpopups>1</showpopups>
      <showclearall>off</showclearall>
      <questionhelptextposition>top</questionhelptextposition>
      <fixnumauto>enable</fixnumauto>
