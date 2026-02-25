@@ -24,6 +24,7 @@ use Answer;
  *
  * Class CopySurvey
  * @package LimeSurvey\Models\Services
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class CopySurvey
 {
@@ -426,6 +427,7 @@ class CopySurvey
      * @param array $mappingGroupIds
      * @param int $destinationSurveyId
      * @return int number of conditions copied
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     private function copyConditions($mappingQuestionIds, $mappingGroupIds, $destinationSurveyId)
     {
