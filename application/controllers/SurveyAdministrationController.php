@@ -6,6 +6,7 @@ use LimeSurvey\Models\Services\FileUploadService;
 use LimeSurvey\Models\Services\FilterImportedResources;
 use LimeSurvey\Models\Services\GroupHelper;
 use LimeSurvey\Models\Services\SurveyAccessModeService;
+use LimeSurvey\Models\Services\SurveyDetailService;
 
 /**
  * Class SurveyAdministrationController
@@ -2257,6 +2258,10 @@ class SurveyAdministrationController extends LSBaseController
         if ($copiedSurvey !== null) {
             $groupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
             $this->resetExpressionManager($copiedSurvey, $groupList);
+
+            //remove cache for copy survey process...
+           $surveyDetailService = new SurveyDetailService();
+           $surveyDetailService->removeCache($sourceSurvey->sid);
         }
 
         $aData = [];
@@ -2368,6 +2373,9 @@ class SurveyAdministrationController extends LSBaseController
         if ($copiedSurvey !== null) {
             $groupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
             $this->resetExpressionManager($copiedSurvey, $groupList);
+            //remove cache for copy survey process...
+           $surveyDetailService = new SurveyDetailService();
+           $surveyDetailService->removeCache($survey->sid);
         }
 
         if (empty($copyResults->getErrors())) {
