@@ -3558,6 +3558,55 @@ class remotecontrol_handle
     }
 
     /**
+     * List available response export formats for a survey.
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID ID of the Survey
+     * @return array On success: list of export format metadata. On failure: array with status information
+     */
+    public function list_response_exports($sSessionKey, $iSurveyID)
+    {
+        $iSurveyID = (int) $iSurveyID;
+
+        if (!$this->_checkSessionKey($sSessionKey)) {
+            return array('status' => self::INVALID_SESSION_KEY);
+        }
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) {
+            return array('status' => 'No permission');
+        }
+
+        Yii::app()->loadHelper('admin.exportresults');
+        $oExport = new ExportSurveyResultsService();
+        $aExports = array_filter($oExport->getExports());
+
+        if (empty($aExports)) {
+            return array();
+        }
+
+        ksort($aExports, SORT_STRING);
+        $oPluginManager = App()->getPluginManager();
+        $aExportOptions = array();
+
+        foreach ($aExports as $sType => $sPluginClass) {
+            $event = new PluginEvent('listExportOptions');
+            $event->set('type', $sType);
+            $oPluginManager->dispatchEvent($event, $sPluginClass);
+
+            $aExportOptions[] = array(
+                'type' => (string) $sType,
+                'pluginClass' => (string) $sPluginClass,
+                'label' => $event->get('label', null),
+                'tooltip' => $event->get('tooltip', null),
+                'onclick' => $event->get('onclick', null),
+                'isDefault' => (bool) $event->get('default', false),
+            );
+        }
+
+        return $aExportOptions;
+    }
+
+    /**
      * Export responses in base64 encoded string
      *
      * @access public
