@@ -45,6 +45,9 @@
   padding-top: 1px;
   color: $white;
   background-color: $active-green;
+  &.ri- {
+    font-family: 'remixicon';
+  }
 }
 
 .icon-label-padding {

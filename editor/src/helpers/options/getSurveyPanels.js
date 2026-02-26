@@ -45,6 +45,13 @@ export const getSurveyPanels = () => {
     quickTranslation: {
       label: t('Quick translation'),
       panel: 'quickTranslation',
+      disabled: (survey) => survey.languages.length <= 1,
+      disabledMessage:
+        t('Quick translation') +
+        ': ' +
+        t(
+          'Currently there are no additional languages configured for this survey.'
+        ),
       icon: SurveyTranslationIcon,
       getRedirectUrl: (surveyId) =>
         getSiteUrl(`/quickTranslation/index?surveyid=${surveyId}`),

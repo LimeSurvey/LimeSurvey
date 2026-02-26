@@ -1,14 +1,22 @@
-import { useMemo } from 'react'
+import { useLocation } from 'react-router-dom'
 import classNames from 'classnames'
+
 import { useAppState } from 'hooks'
-import { STATES } from 'helpers'
+import {
+  getSiteUrl,
+  getTooltipMessages,
+  PAGES,
+  STATES,
+  SURVEY_MENU_TITLES,
+} from 'helpers'
 import { Dropdown } from 'components/UIComponents/Dropdown/Dropdown'
 import { EyeIcon } from 'components/icons'
-import { ActionButton } from './Button/ActionButton'
-import { TopBarQuestionInserter } from './TopBarQuestionInserter'
-import { getTopBarDropdownItems } from './getTopBarDropdownItems'
+import { getSharingPanels } from 'shared/getSharingPanels'
 import { PLUGIN_SLOTS } from 'plugins/slots'
 import { PluginSlot } from 'plugins/PluginSlot'
+
+import { ActionButton } from './Button/ActionButton'
+import { TopBarQuestionInserter } from './TopBarQuestionInserter'
 
 export const TopBarActions = ({
   surveyId,
@@ -27,6 +35,7 @@ export const TopBarActions = ({
   isAddingQuestionOrGroup,
   setShowOverviewModalRef,
 }) => {
+  const location = useLocation()
   const [, startEditorTutorial] = useAppState(
     STATES.START_EDITOR_TUTORIAL,
     false
@@ -36,16 +45,149 @@ export const TopBarActions = ({
     startEditorTutorial(true)
   }
 
-  const dropdownMenuItems = useMemo(
-    () =>
-      getTopBarDropdownItems({
-        surveyId,
-        surveySid: survey.sid,
-        isSurveyActive,
-        handleStartEditorTutorial,
-      }),
-    [surveyId, survey.sid, isSurveyActive, handleStartEditorTutorial]
-  )
+  const isActiveMenuItem = (url) => {
+    if (!url) return false
+    const currentPath = (
+      window.location.hash ||
+      location.pathname ||
+      ''
+    ).replace('#', '')
+    const cleanURL = url.replace('#', '')
+    return currentPath.startsWith(cleanURL)
+  }
+
+  const dropdownMenuItems = [
+    {
+      type: 'header',
+      label: t('Navigate'),
+    },
+    {
+      type: 'item',
+      label: t('Workspace'),
+      icon: 'ri-microsoft-fill',
+      url: '/dashboard/view',
+      disabled: {
+        state: isActiveMenuItem('/dashboard/view'),
+        tooltip: t('Current page'),
+      },
+    },
+    {
+      type: 'item',
+      label: t('Editor'),
+      icon: 'ri-bar-chart-horizontal-line',
+      url: `#/${PAGES.EDITOR}/${surveyId}/structure`,
+      disabled: {
+        state: isActiveMenuItem(`/${PAGES.EDITOR}/${surveyId}`),
+        tooltip: t('Current page'),
+      },
+    },
+    {
+      type: 'item',
+      label: t('Share'),
+      icon: 'ri-share-forward-line',
+      url: `#/${PAGES.SHARE}/${surveyId}/${getSharingPanels().sharing.panel}/${SURVEY_MENU_TITLES.sharingOverview}`,
+      disabled: {
+        state: isActiveMenuItem(`/${PAGES.SHARE}/${surveyId}`),
+        tooltip: t('Current page'),
+      },
+    },
+    {
+      type: 'item',
+      label: t('Results'),
+      icon: 'ri-bar-chart-2-line',
+      url: `#/responses/${survey.sid}`,
+      disabled: {
+        state: !isSurveyActive || isActiveMenuItem(`/responses/${survey.sid}`),
+        tooltip: !isSurveyActive
+          ? getTooltipMessages().SURVEY_NOT_ACTIVE_NO_RESULTS
+          : t('Current page'),
+      },
+    },
+    {
+      type: 'divider',
+    },
+    {
+      type: 'header',
+      label: t('Tools'),
+    },
+    {
+      type: 'submenu',
+      label: t('Export'),
+      submenu: [
+        {
+          type: 'item',
+          label: t('Survey structure (.lss)'),
+          url: getSiteUrl(
+            `/admin/export/sa/survey/action/exportstructurexml/surveyid/${survey.sid}`
+          ),
+        },
+        {
+          type: 'item',
+          label: t('Survey archive'),
+          url: getSiteUrl(
+            `/admin/export/sa/survey/action/exportarchive/surveyid/${survey.sid}`
+          ),
+          disabled: {
+            state: !isSurveyActive,
+            tooltip: t('Only available for active surveys'),
+          },
+        },
+        {
+          type: 'item',
+          label: t('queXML format (.xml)'),
+          url: getSiteUrl(
+            `/admin/export/sa/survey/action/exportstructurequexml/surveyid/${survey.sid}`
+          ),
+        },
+        {
+          type: 'item',
+          label: t('Tab-separated-values format (.txt)'),
+          url: getSiteUrl(
+            `/admin/export/sa/survey/action/exportstructuretsv/surveyid/${survey.sid}`
+          ),
+        },
+        {
+          type: 'item',
+          label: t('Printable survey (.html)'),
+          url: getSiteUrl(
+            `/admin/export/sa/survey/action/exportprintables/surveyid/${survey.sid}`
+          ),
+        },
+        {
+          type: 'item',
+          label: t('Printable survey'),
+          url: getSiteUrl(
+            `/admin/printablesurvey/sa/index/surveyid/${survey.sid}`
+          ),
+        },
+      ],
+    },
+    {
+      type: 'item',
+      label: t('Import'),
+      disabled: {
+        state: true,
+        tooltip: t('Coming soon'),
+      },
+    },
+    {
+      type: 'divider',
+    },
+    {
+      type: 'header',
+      label: t('Help'),
+    },
+    {
+      type: 'item',
+      label: t('Interactive help'),
+      icon: 'ri-information-line',
+      onClick: handleStartEditorTutorial,
+      disabled: {
+        state: isSurveyActive,
+        tooltip: getTooltipMessages().DISABLE_FIRST,
+      },
+    },
+  ]
 
   const dropdownToggleSettings = {
     iconClassName: 'ri-more-fill',
@@ -69,8 +211,10 @@ export const TopBarActions = ({
           {saveState}
         </p>
       </div>
-      {/*<ButtonBackToClassicEditor className="me-2" surveyId={surveyId} />*/}
-
+      <Dropdown
+        menuItems={dropdownMenuItems}
+        toggleSettings={dropdownToggleSettings}
+      />
       {showPreviewButton && (
         <a
           target="_blank"
@@ -99,10 +243,6 @@ export const TopBarActions = ({
         showExportResponsesButton={showExportResponsesButton}
         showExportStatisticsButton={showExportStatisticsButton}
         showPublishSettings={showPublishSettings}
-      />
-      <Dropdown
-        menuItems={dropdownMenuItems}
-        toggleSettings={dropdownToggleSettings}
       />
       <PluginSlot slotName={PLUGIN_SLOTS.TOP_BAR_RIGHT} />
       <div>

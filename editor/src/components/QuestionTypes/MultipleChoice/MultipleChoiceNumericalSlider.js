@@ -39,7 +39,10 @@ const MultipleChoiceNumericalSlider = ({
 
   const min = getAttributeValue(slider_min) || 0
   const max = getAttributeValue(slider_max) || 100
-  const accuracy = getAttributeValue(slider_accuracy) || 1
+  const accuracyValue = getAttributeValue(slider_accuracy)
+  const accuracyNum = +accuracyValue
+  const accuracy =
+    accuracyNum !== 0 && !isNaN(accuracyNum) ? Math.abs(accuracyNum) : 1
 
   const value = defaultValue
     ? +defaultValue

@@ -27,6 +27,14 @@
   border-radius: $border-radius;
   background: $lime-green;
   color: $g-900;
+
+  i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .x-button-container {

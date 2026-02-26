@@ -103,6 +103,7 @@ export const LeftSideBar = ({
       const handleIconClick = () => handlePanelNavigation(panelInfo)
       const handlePanelClick = () => handlePanelNavigation(panelInfo)
       const handleSidebarClose = () => navigate(`/survey/${surveyId}`)
+      const isDisabled = panelInfo.disabled ? panelInfo.disabled(survey) : false
 
       return {
         icon: panelInfo.icon,
@@ -110,6 +111,8 @@ export const LeftSideBar = ({
         tip: panelInfo.tip,
         iconEvent: panelInfo.panel,
         panel: panelKey,
+        isDisabled,
+        disabledMessage: panelInfo.disabledMessage,
         panelItems: panelOptions[panelKey] || [],
         panelComponent: panelComponents[panelKey] || [],
         onIconClickCallback: handleIconClick,
@@ -125,6 +128,7 @@ export const LeftSideBar = ({
     handlePanelNavigation,
     navigate,
     surveyId,
+    survey,
   ])
 
   return (

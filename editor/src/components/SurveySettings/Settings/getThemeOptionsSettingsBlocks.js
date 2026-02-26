@@ -45,6 +45,7 @@ export const getThemeOptions = (survey) => {
     } else if (attribute.type === TYPES.TEXTAREA) {
       setting = handleTextareaType(attribute, keyPath)
     }
+    setting.attribute = attribute
     options[category].settings[keyPath] = setting
     options[category].settings[keyPath].formatDisplayValue = (value) => {
       return value.currentValue === 'inherit'

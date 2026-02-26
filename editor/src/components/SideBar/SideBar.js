@@ -12,7 +12,9 @@ import { SideBarPanel } from './SideBarPanel'
  *  icon?: <Icon />,
  *  label: 'Label',
  *  "tip"?: "Tooltip text",
- *  onIconClickEvent?: 'Presention', // a string (e.g., 'Presention', 'Translation', 'Structure')
+ *  disabled?: (survey) => boolean, // A function that receives survey object and returns true if item should be disabled
+ *  disabledMessage?: "Reason why disabled", // Message to show in tooltip when disabled
+ *  onIconClickEvent?: 'Presentation', // a string (e.g., 'Presentation', 'Translation', 'Structure')
  *  onIconClickCallback?: () => {}, // A function to be called when the item is clicked
  *  onPanelClickEvent?: 'Menu', // a string (e.g., 'Menu', 'Structure')
  *  onPanelClickCallback?: () => {}, // A function to be called when the item is clicked
@@ -48,10 +50,13 @@ export const SideBar = ({
               <React.Fragment key={index + 'sidebar'}>
                 <div
                   onClick={() => {
-                    onIconClick(item.panel)
+                    if (!item.isDisabled) {
+                      onIconClick(item.panel)
+                    }
                   }}
                   className={classNames('cursor-pointer', {
                     'margin-top-10': index > 0,
+                    'sidebar-icon-disabled': item.isDisabled,
                   })}
                   data-testid={`btn-${item.panel}-open`}
                   id={`btn-${item.panel}-open`}
@@ -59,7 +64,11 @@ export const SideBar = ({
                   <TooltipContainer
                     offset={[0, 20]}
                     placement="right"
-                    tip={item.tip}
+                    tip={
+                      item.isDisabled && item.disabledMessage
+                        ? item.disabledMessage
+                        : item.tip || item.label
+                    }
                   >
                     <item.icon
                       className={classNames('fill-current', {

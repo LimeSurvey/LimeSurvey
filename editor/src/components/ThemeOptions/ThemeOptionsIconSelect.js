@@ -8,10 +8,11 @@ const ThemeOptionsIconSelect = ({
   value = '',
   onChange = () => {},
   update = () => {},
+  setting = {},
 }) => {
   const customSelectRef = useRef()
   const [isOpen, toggle] = useState(false)
-
+  const library = setting?.attribute?.library || ''
   const close = useCallback(() => toggle(false), [])
   const open = useCallback(() => toggle(true), [])
 
@@ -32,7 +33,12 @@ const ThemeOptionsIconSelect = ({
     <div className="icon-select-container">
       <div className="swatch-container" onClick={open}>
         <div className="icon-label-padding">
-          <i className="fa icon-preview">{unicodeChar}</i>
+          {library === 'remixicon' && (
+            <i className="ri- icon-preview">{unicodeChar}</i>
+          )}
+          {library !== 'remixicon' && (
+            <i className="fa t icon-preview">{unicodeChar}</i>
+          )}
         </div>
         <DropdownIcon />
       </div>
@@ -46,9 +52,16 @@ const ThemeOptionsIconSelect = ({
               })}
               onClick={() => handleSelect(option.value)}
             >
-              <i className="fa icon-preview me-2">
-                {String.fromCharCode(parseInt(option.value, 16))}
-              </i>
+              {library === 'remixicon' && (
+                <i className="ri- icon-preview me-2">
+                  {String.fromCharCode(parseInt(option.value, 16))}
+                </i>
+              )}
+              {library !== 'remixicon' && (
+                <i className="fa icon-preview me-2">
+                  {String.fromCharCode(parseInt(option.value, 16))}
+                </i>
+              )}
               <span>{option.label}</span>
             </div>
           ))}
