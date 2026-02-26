@@ -482,14 +482,14 @@ class CopySurvey
                             } else {
                                 $qid = $mappingQuestionIds[substr($parts[$index], $offset)];
                             }
-                            $parts[$index] = $firstLetter . $qid;
+                            $parts[$index] = substr($parts[$index], 0, $offset) . $qid;
                         } else {
-                            $oldAnswer = Answer::model()->findByPk(substr($parts[$index], 1));
+                            $oldAnswer = Answer::model()->findByPk(substr($parts[$index], $offset));
                             if (!isset($mappingQuestionIds[$oldAnswer->qid])) {
                                 continue;
                             }
                             $newAnswer = Answer::model()->find("qid = :qid and code = :code", [":qid" => $mappingQuestionIds[$oldAnswer->qid], ":code" => $oldAnswer->code]);
-                            $parts[$index] = $firstLetter . $newAnswer->aid;
+                            $parts[$index] = substr($parts[$index], 0, $offset) . $newAnswer->aid;
                         }
                     }
                 }
