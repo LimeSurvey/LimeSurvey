@@ -42,7 +42,7 @@ class ReactEditor extends \PluginBase
      */
     public function initEditor()
     {
-        if ($this->isBackendAccess()){
+        if ($this->isBackendAccess()) {
             $status = $this->isEditorEnabled();
             EditorService::init($status, true)->initEditorApp();
         }
@@ -53,7 +53,7 @@ class ReactEditor extends \PluginBase
      */
     public function beforeRenderSurveySidemenu()
     {
-        if ($this->isBackendAccess()){
+        if ($this->isBackendAccess()) {
             $status = $this->isEditorEnabled();
             EditorService::init($status, true)->beforeRenderSurveySidemenu($this);
         }
@@ -64,7 +64,7 @@ class ReactEditor extends \PluginBase
      */
     public function beforeAdminMenuRender(): void
     {
-        if ($this->isBackendAccess()){
+        if ($this->isBackendAccess()) {
             $status = $this->isEditorEnabled();
             EditorService::init($status, true)->beforeAdminMenuRender();
         }
