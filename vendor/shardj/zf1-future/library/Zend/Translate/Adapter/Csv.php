@@ -94,7 +94,7 @@ class Zend_Translate_Adapter_Csv extends Zend_Translate_Adapter
             throw new Zend_Translate_Exception('Error opening translation file \'' . $filename . '\'.');
         }
 
-        while(($data = fgetcsv($this->_file, $options['length'], $options['delimiter'], $options['enclosure'])) !== false) {
+        while(($data = fgetcsv($this->_file, $options['length'], $options['delimiter'], $options['enclosure'], '\\')) !== false) {
             if (is_string($data[0]) && substr($data[0], 0, 1) === '#') {
                 continue;
             }

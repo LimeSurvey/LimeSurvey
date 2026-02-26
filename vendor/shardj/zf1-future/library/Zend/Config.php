@@ -104,7 +104,7 @@ class Zend_Config implements Countable, Iterator
      */
     public function __construct(array $array, $allowModifications = false)
     {
-        $this->_allowModifications = (boolean) $allowModifications;
+        $this->_allowModifications = (bool) $allowModifications;
         $this->_loadedSection = null;
         $this->_index = 0;
         $this->_data = [];
