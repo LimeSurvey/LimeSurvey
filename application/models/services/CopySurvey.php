@@ -4,8 +4,10 @@ namespace LimeSurvey\Models\Services;
 
 use App;
 use Assessment;
+use CDbCriteria;
 use Condition;
 use DefaultValue;
+use DefaultValueL10n;
 use LimeSurvey\Datavalueobjects\CopyQuestionValues;
 use LSHttpRequest;
 use Question;
@@ -478,20 +480,20 @@ class CopySurvey
     private function copyDefaultAnswers($mappingQuestionIds, $mappedSuquestionIds)
     {
         //get all entries from defaultvalues table where the qid belongs to the source survey
-        $defaultAnswerRows = Yii::app()->db->createCommand()
-            ->select('defaultvalues.*')
-            ->from('{{defaultvalues}} defaultvalues')
-            ->join('{{questions}} questions', 'questions.qid=defaultvalues.qid')
-            ->where('questions.sid=:sid and questions.parent_qid=:parent_qid', [
-                ':sid' => $this->sourceSurvey->sid,
-                ':parent_qid' => 0
-            ])
-            ->queryAll();
+        $criteria = new CDbCriteria();
+        $criteria->join = 'JOIN {{questions}} questions ON questions.qid=t.qid';
+        $criteria->condition = 'questions.sid=:sid and questions.parent_qid=:parent_qid';
+        $criteria->params = [
+            ':sid' => $this->sourceSurvey->sid,
+            ':parent_qid' => 0
+        ];
+        $defaultAnswerRows = DefaultValue::model()->findAll($criteria);
+
         $cntDefaultAnswers = 0;
         //now copy the default answers and map them to the corresponding question ids
         foreach ($defaultAnswerRows as $defaultAnswerRow) {
-            $defaultAnswer = new Defaultvalue();
-            $defaultAnswer->dvid = null;
+            $defaultAnswer = new DefaultValue();
+            $defaultAnswer->dvid = null; //generate new id
             $defaultAnswer->qid = $mappingQuestionIds[$defaultAnswerRow['qid']];
             //find the correct subquestion id
             if ($defaultAnswerRow['sqid'] === 0) {
@@ -506,6 +508,14 @@ class CopySurvey
             $defaultAnswer->scale_id = $defaultAnswerRow['scale_id'];
             $defaultAnswer->specialtype = $defaultAnswerRow['specialtype'];
             if ($defaultAnswer->save()) {
+                $defaultValLng = DefaultValueL10n::model()->findAllByAttributes(['dvid' => $defaultAnswerRow->dvid]);
+                foreach ($defaultValLng as $defaultValLngEntry) {
+                    $langDefaultVal = new DefaultValueL10n();
+                    $langDefaultVal->attributes = $defaultValLngEntry->attributes;
+                    $langDefaultVal->id = null; //new id needed...
+                    $langDefaultVal->dvid = $defaultAnswer->dvid;
+                    $langDefaultVal->save();
+                }
                 $cntDefaultAnswers++;
             }
         }
