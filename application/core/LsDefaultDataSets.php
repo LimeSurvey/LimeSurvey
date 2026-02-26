@@ -692,9 +692,9 @@ class LsDefaultDataSets
                 null,
                 4,
                 'surveyLogicFile',
-                gT('Survey logic file', 'unescaped'),
-                gT('Survey logic file', 'unescaped'),
-                gT('Survey logic file', 'unescaped'),
+                gT('Survey logic overview', 'unescaped'),
+                gT('Survey logic overview', 'unescaped'),
+                gT('Survey logic overview', 'unescaped'),
                 'ri-git-branch-fill',
                 'remix',
                 '',
@@ -2835,9 +2835,7 @@ class LsDefaultDataSets
         //don't send password anymore, just send a link for the new admin to generate their own password
         //$template .= "<p><strong>" . gT("Password") . "</strong>: {PASSWORD}</p>";
         $template .= '<p><a href="{LOGINURL}">' . gT("Click here to set your password") . '</a></p>';
-        $template .= "<p>" . gT("If you have any questions regarding this email, please do not hesitate to contact the site administrator at") . " {SITEADMINEMAIL}.</p><p> </p>";
-        $template .= "<p>" . gT("Thank you") . "!</p>";
-
+        $template .= "<p>" . sprintf(gT("If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!"), "{SITEADMINEMAIL}") . "</p><p> </p>";
         $default['sendadmincreationemail'] = 1;
         $default['admincreationemailsubject']  = sprintf(gT("User registration at '%s'", "unescaped"), "{SITENAME}");
         $default['admincreationemailtemplate'] = $template;

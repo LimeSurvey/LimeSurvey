@@ -5307,7 +5307,7 @@ class LimeExpressionManager
                             $submitdate = date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
                         }
                         if (!Response::model($this->sid)->updateByPk($oResponse->id, ['submitdate' => $submitdate]) && $submitdate != $oResponse->submitdate) {
-                            LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('An error happened when trying to submit your response.'), $this->sid);
+                            LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('An error occurred when trying to submit your response.'), $this->sid);
                         }
                     }
                 }
@@ -6710,7 +6710,7 @@ class LimeExpressionManager
                                 'coreId'    => "vmsg_{$qid}_defaultvalueerror",
                                 'vclass'    => 'defaultvalueerror',
                                 'coreClass' => 'ls-em-tip em_defaultvalueerror',
-                                'vtip'      => sprintf(gT("Error in default value : %s"), $validityString)
+                                'vtip'      => sprintf(gT("Error in default value: %s"), $validityString)
                             ],
                             true
                         );
@@ -9153,7 +9153,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
         $surveyname = viewHelper::stripTagsEM(templatereplace('{SURVEYNAME}', ['SURVEYNAME' => $aSurveyInfo['surveyls_title']]));
 
-        $out = '<div id="showlogicfilediv" class="table-responsive"><div class="pagetitle h3">' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</div>\n";
+        $out = '<div id="showlogicfilediv" class="table-responsive"><div class="pagetitle h3">' . $LEM->gT('Logic check for Survey # ') . '[' . $LEM->sid . "]: $surveyname</div>\n";
         $out .= "<table id='logicfiletable' class='table table-bordered'>";
 
         if (is_null($gid) && is_null($qid)) {

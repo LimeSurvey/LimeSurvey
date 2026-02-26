@@ -89,7 +89,7 @@ class QuestionAdministrationController extends LSBaseController
         $surveyid = (int) $surveyid;
 
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
-            App()->user->setFlash('error', gT("Access denied"));
+            App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(App()->request->urlReferrer);
         }
 
@@ -132,11 +132,11 @@ class QuestionAdministrationController extends LSBaseController
         /** @var $question Question|null */
         $question = Question::model()->findByPk($questionId);
         if (empty($question)) {
-            throw new CHttpException(404, gT("Invalid question id"));
+            throw new CHttpException(404, gT("Invalid question ID"));
         }
 
         if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
 
@@ -277,11 +277,11 @@ class QuestionAdministrationController extends LSBaseController
         $questionId = (int) $questionId;
         $question = Question::model()->findByPk($questionId);
         if (empty($question)) {
-            throw new CHttpException(404, gT('Invalid question id'));
+            throw new CHttpException(404, gT('Invalid question ID'));
         }
 
         if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'read')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
         Yii::app()->loadHelper("admin.htmleditor");
@@ -583,7 +583,7 @@ class QuestionAdministrationController extends LSBaseController
                 $this->redirect($sRedirectUrl);
             }
         } catch (PermissionDeniedException $e) {
-            Yii::app()->user->setFlash('error', gT('Access denied'));
+            Yii::app()->user->setFlash('error', gT('Access denied!'));
             $this->redirect(Yii::app()->request->urlReferrer);
         } catch (\Exception $e) {
             // Determine the proper redirect URL
@@ -1243,7 +1243,7 @@ class QuestionAdministrationController extends LSBaseController
     public function actionEditdefaultvalues($surveyid, $gid, $qid)
     {
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
-            App()->user->setFlash('error', gT("Access denied"));
+            App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(App()->request->urlReferrer);
         }
         $iSurveyID = (int)$surveyid;
@@ -1412,7 +1412,7 @@ class QuestionAdministrationController extends LSBaseController
         try {
             $questionAggregateService->delete($surveyid, $qid);
         } catch (NotFoundException $e) {
-            throw new CHttpException(404, gT('Invalid question id'));
+            throw new CHttpException(404, gT('Invalid question ID'));
         } catch (QuestionHasConditionsException $e) {
             $message = gT(
                 'Question could not be deleted. '
@@ -1678,7 +1678,7 @@ class QuestionAdministrationController extends LSBaseController
 
         //permission check ...
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'create')) {
-            Yii::app()->user->setFlash('error', gT("Access denied! You don't have permission to copy a question"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
 
@@ -2615,13 +2615,13 @@ class QuestionAdministrationController extends LSBaseController
         if ($qid) {
             $oQuestion = Question::model()->findByAttributes(['qid' => $qid, 'sid' => $sid]);
             if (empty($oQuestion)) {
-                throw new CHttpException(404, gT("Invalid question id"));
+                throw new CHttpException(404, gT("Invalid question ID"));
             }
             if (!empty($oQuestion->parent_qid)) {
-                throw new CHttpException(400, gT("Invalid question id"));
+                throw new CHttpException(400, gT("Invalid question ID"));
             }
             if ($oQuestion->sid != $sid) {
-                throw new CHttpException(400, gT("Invalid question id"));
+                throw new CHttpException(400, gT("Invalid question ID"));
             }
         } else {
             $oQuestion = $this->getQuestionObject();
@@ -2648,7 +2648,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         $question = Question::model()->findByPk($questionId);
         if (empty($question)) {
-            throw new CHttpException(404, gT("Invalid question id"));
+            throw new CHttpException(404, gT("Invalid question ID"));
         }
         if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'read')) {
             throw new CHttpException(403, gT('No permission'));

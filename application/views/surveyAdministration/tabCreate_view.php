@@ -116,7 +116,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                             )); ?>
                         </div>
                         <div class="mb-3">
-                            <label class=" form-label" for='adminemail'><?php eT("Administrator email"); ?></label>
+                            <label class=" form-label" for='adminemail'><?php eT("Administrator email address"); ?></label>
                             <?php echo CHtml::textField('adminemail', '', array(
                                 'class' => 'form-control',
                                 'id' => 'adminemail',

@@ -88,7 +88,7 @@
 <?php endif; ?>
 <?php
     $notificationLanguageString=array(
-        'errorTitle' => gT("Error : %s"),
+        'errorTitle' => gT("Error %s"),
         'errorUnknow' => gT("unknown"),
         'unknowText' => gT("An unknown error occurred"),
     );

@@ -590,7 +590,7 @@ class QuestionAttribute extends LSActiveRecord
      *      'category' : Where to put it
      *      'sortorder' : Qort order in this category
      *      'inputtype' : type of input
-     *      'expression' : 2 to force Expression Manager when see the survey logic file (add { } and validate, 1 : allow it : validate in survey logic file
+     *      'expression' : 2 to force Expression Manager when see the survey logic overview (add { } and validate, 1 : allow it : validate in survey logic overview
      *      'options' : optional options if input type need it
      *      'default' : the default value
      *      'caption' : the label

@@ -34,7 +34,7 @@ class questionHelper
      * Return all the definitions of Question attributes core+extended value
      * @return array[]
      *
-     *@deprecated  used only as fall back method and for import/exports of LS v1 and for Survey Logic File
+     *@deprecated  used only as fall back method and for import/exports of LS v1 and for Survey Logic overview
      * use QuestionAttribute::getQuestionAttributesSettings function to get attributes
      */
     public static function getAttributesDefinitions()
@@ -1551,7 +1551,7 @@ class questionHelper
             'min' => 1,
             'default' => '1',
             "help" => gT("Maximum number of files that the participant can upload for this question"),
-            "caption" => gT("Max number of files")
+            "caption" => gT("Maximum number of files")
         );
 
         self::$attributes["min_num_of_files"] = array(
@@ -1562,7 +1562,7 @@ class questionHelper
             'default' => '0',
             'min' => 0,
             "help" => gT("Minimum number of files that the participant must upload for this question"),
-            "caption" => gT("Min number of files")
+            "caption" => gT("Minimum number of files")
         );
 
         self::$attributes["allowed_filetypes"] = array(

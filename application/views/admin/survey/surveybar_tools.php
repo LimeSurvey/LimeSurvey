@@ -106,11 +106,11 @@
             <?php if ($onelanguage): ?>
                 <!-- one language -->
 
-                <!-- Survey logic file -->
+                <!-- Survey logic overview -->
                 <li>
                     <a href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/"); ?>' >
                         <span class="ri-checkbox-fill" ></span>
-                        <?php eT("Survey logic file"); ?>
+                        <?php eT("Survey logic overview"); ?>
                     </a>
                 </li>
             <?php else : ?>
@@ -118,8 +118,8 @@
 
                 <li role="separator" class="dropdown-divider"></li>
 
-                <!-- Survey logic file -->
-                <li class="dropdown-header"><?php eT("Survey logic file"); ?></li>
+                <!-- Survey logic overview -->
+                <li class="dropdown-header"><?php eT("Survey logic overview"); ?></li>
                 <?php foreach ($oSurvey->allLanguages as $tmp_lang): ?>
                     <!-- Languages -->
 

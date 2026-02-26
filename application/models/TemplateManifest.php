@@ -1534,7 +1534,7 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($coreFontPackages as $coreKey => $corePackage) {
             $i += 1;
             if ($i === 1) {
-                $fontOptions .= '<optgroup  label="' . gT("Local Server") . ' - ' . gT("Core") . '">';
+                $fontOptions .= '<optgroup  label="' . gT("Local server") . ' - ' . gT("Core") . '">';
             }
             $fontOptions .= '<option class="font-' . $coreKey . '"     value="' . $coreKey . '"     data-font-package="' . $coreKey . '"      >' . $corePackage['title'] . '</option>';
         }
@@ -1547,7 +1547,7 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($userFontPackages as $userKey => $userPackage) {
             $i += 1;
             if ($i === 1) {
-                $fontOptions .= '<optgroup  label="' . gT("Local Server") . ' - ' . gT("User") . '">';
+                $fontOptions .= '<optgroup  label="' . gT("Local server") . ' - ' . gT("User") . '">';
             }
             $fontOptions .= '<option class="font-' . $userKey . '"     value="' . $userKey . '"     data-font-package="' . $userKey . '"      >' . $userPackage['title'] . '</option>';
         }

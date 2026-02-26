@@ -1,11 +1,11 @@
 <ul class="dropdown-menu">
 
-    <!-- Import responses from a deactivated survey table -->
+    <!-- Import responses from an archived reponse table -->
     <li>
         <a class="dropdown-item"
            href='<?php echo Yii::App()->createUrl("admin/dataentry/sa/import/surveyid/$oSurvey->sid"); ?>'
            role="button">
-            <?php eT("Import responses from a deactivated survey table"); ?>
+            <?php eT("Import responses from an archived reponse table"); ?>
         </a>
     </li>
 

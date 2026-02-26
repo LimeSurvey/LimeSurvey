@@ -398,7 +398,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         if ($success) {
             App()->setFlashMessage(gT("Survey group permissions were successfully updated."));
         } else {
-            App()->setFlashMessage(gT("An error happened while updating survey group permissions."), 'danger');
+            App()->setFlashMessage(gT("An error occurred while updating survey group permissions."), 'danger');
         }
         if ($type == 'group') {
             App()->request->redirect(App()->getController()->createUrl('surveysGroupsPermission/index', array('id' => $id)));
