@@ -139,7 +139,7 @@ class MandatorySoftTest extends TestBaseClassWeb
      * In next page with Continue without answering #20433 mantis issue
      * @since 2025-02-26
      */
-    public function testMandatorySoftAction()
+    public function testMandatoryCloseDialog()
     {
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_MandatorySoftCloseDialog.lss';
         self::importSurvey($surveyFile);
