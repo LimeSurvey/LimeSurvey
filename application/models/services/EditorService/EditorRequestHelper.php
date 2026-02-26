@@ -35,8 +35,9 @@ class EditorRequestHelper
 
         $surveyId = null;
         foreach ($possibleSurveyIdValues as $value) {
-            if ($value == '0' || !empty($value)) {
-                $surveyId = $value;
+            $sanitizedValue = sanitize_int($value);
+            if ($sanitizedValue == '0' || !empty($sanitizedValue)) {
+                $surveyId = $sanitizedValue;
                 break;
             }
         }
@@ -63,8 +64,9 @@ class EditorRequestHelper
 
         $questionId = null;
         foreach ($possibleQuestionIdValues as $value) {
-            if ($value == '0' || !empty($value)) {
-                $questionId = $value;
+            $sanitizedValue = sanitize_int($value);
+            if ($sanitizedValue == '0' || !empty($sanitizedValue)) {
+                $questionId = $sanitizedValue;
                 break;
             }
         }
@@ -91,8 +93,9 @@ class EditorRequestHelper
 
         $questionGroupId = null;
         foreach ($possibleQuestionGroupIdValues as $value) {
-            if ($value == '0' || !empty($value)) {
-                $questionGroupId = $value;
+            $sanitizedValue = sanitize_int($value);
+            if ($sanitizedValue == '0' || !empty($sanitizedValue)) {
+                $questionGroupId = $sanitizedValue;
                 break;
             }
         }
