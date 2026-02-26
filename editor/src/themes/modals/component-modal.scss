@@ -1,0 +1,9 @@
+.component-modal {
+  .modal-header {
+    z-index: 9999;
+  }
+}
+
+.modal-dialog {
+  min-width: fit-content;
+}

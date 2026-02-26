@@ -1,0 +1,52 @@
+.icon-select-container {
+  position: relative;
+  display: flex;
+  justify-content: end;
+}
+
+.icon-select-dropdown {
+  border: 1px solid $g-500;
+  border-radius: 4px;
+  box-shadow: 0 6px 12px $g-700;
+  background: $white;
+  max-height: 300px;
+  overflow-y: auto;
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 2px);
+  right: 0;
+}
+
+.icon-select-option {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px 8px;
+
+  &:hover {
+    background-color: #dde7ff;
+  }
+
+  &.selected {
+    background-color: $grape;
+    color: $white;
+  }
+}
+
+.icon-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'FontAwesome';
+  font-size: 12px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  padding-top: 1px;
+  color: $white;
+  background-color: $active-green;
+}
+
+.icon-label-padding {
+  padding-inline: 4px;
+}

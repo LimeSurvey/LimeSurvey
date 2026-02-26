@@ -1,0 +1,190 @@
+.publish-settings-popover {
+  width: 325px;
+  border-radius: 2px;
+  border: 2px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  background-color: $white;
+  margin-top: 10px;
+
+  font-size: 16px;
+  // because of inner-wrap element, set higher
+  z-index: 3;
+
+  .visibility-option {
+    color: $g-900;
+    font-size: $font-size-xs;
+    font-weight: 200;
+    font-style: italic;
+    margin: 0;
+  }
+
+  .qe-input-icon-right {
+    top: 48%;
+  }
+
+  .qe-input-icon-left {
+    left: 90px;
+  }
+
+  hr {
+    border: 1px solid;
+    margin: 12px 0;
+  }
+
+  .public-link-header {
+    color: $g-700;
+    font-weight: $font-weight-500;
+    font-size: $font-size-xs;
+  }
+
+  button {
+    width: 100%;
+    z-index: 10;
+    padding: 8px;
+    margin: 0;
+    border: none;
+    color: #1e1e1e;
+    border-radius: 2px;
+    background-color: transparent !important;
+  }
+
+  .save-button,
+  .cancel-button,
+  .copy-button,
+  .settings-button {
+    padding: 0;
+    width: fit-content;
+    display: inline;
+
+    &:hover,
+    &:focus,
+    &:active {
+      box-shadow: none !important;
+    }
+
+    &:hover {
+      svg {
+        transition: all $transition-duration;
+        path {
+          fill: $g-700;
+        }
+      }
+    }
+  }
+
+  .save-button {
+    color: $b-900;
+    width: 56px;
+  }
+
+  .cancel-button {
+    color: $g-500;
+    width: 56px;
+  }
+
+  button:active,
+  button:focus,
+  button:hover {
+    box-shadow: 0 0 1px 2px $b-900;
+  }
+
+  .focus-element {
+    box-shadow: 0 0 1px 2px $b-900;
+  }
+
+  .qr-code {
+    width: 160px;
+    height: 100%;
+  }
+
+  .publish-choose-password-input {
+    background-color: $g-200;
+    border: none;
+
+    &::placeholder {
+      color: $input-color;
+    }
+  }
+}
+
+.publish-button {
+  max-height: 36px;
+  min-width: 104px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: white !important;
+  }
+}
+
+.publish-settings-swal-container {
+  .publish-info {
+    padding-top: 10px;
+
+    .publish-info-title,
+    .publish-info-description {
+      font-weight: $font-weight-500;
+      line-height: 18px;
+    }
+
+    .publish-info-title {
+      margin-bottom: 32px;
+    }
+
+    .publish-info-description {
+      margin-bottom: 28px;
+    }
+  }
+
+  .swal-confirm-button-survey-activate {
+    @extend .btn;
+    @extend .btn-success;
+
+    background-color: $active-green !important;
+    color: $white !important;
+
+    height: 44px !important;
+
+    &:hover,
+    &:active,
+    &:focus {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+  }
+
+  .swal2-actions {
+    display: flex;
+    flex-direction: row-reverse !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    padding-right: 20px !important;
+  }
+
+  .swal2-close {
+    top: 10px;
+    right: 10px;
+
+    &:hover,
+    &:focus {
+      outline: none;
+      box-shadow: none;
+      color: #ccc;
+    }
+  }
+}
+
+.block-padding {
+  display: block;
+  padding: 0;
+}
+
+.block-padding > * {
+  float: right;
+}

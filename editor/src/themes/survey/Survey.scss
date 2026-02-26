@@ -1,0 +1,181 @@
+.survey {
+  .survey-section {
+    z-index: 3;
+    position: relative;
+    margin: 2rem 0 2rem 0;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-600;
+    line-height: 24px;
+  }
+
+  .language-dropdown-section {
+    position: sticky;
+    width: fit-content;
+    top: 70px;
+    z-index: 900;
+    flex-direction: row-reverse;
+    align-self: flex-end;
+    margin-right: 10px;
+    background-color: $g-100;
+    border-radius: $border-radius;
+
+    .select {
+      border: none;
+      outline: none;
+      width: fit-content;
+      display: flex;
+      background-color: $g-100;
+    }
+  }
+
+  .language-box {
+    border: none !important;
+    background-color: transparent;
+  }
+
+  .survey-section:last-of-type {
+    border-bottom: 0;
+  }
+
+  .survey-card {
+    border-radius: 2px;
+    background-color: white;
+
+    .image {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      min-width: 304px;
+      background-color: rgb(215, 215, 215);
+      font-size: 0.9rem;
+      color: #9d9d9d;
+
+      svg {
+        margin-right: 0.5rem;
+        color: #9d9d9d;
+      }
+    }
+
+    .header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      padding: 0.8rem 20px 0.8rem 20px;
+      width: 100%;
+
+      .title {
+        font-weight: $font-weight-600;
+      }
+    }
+
+    .right {
+      flex-grow: 1;
+    }
+
+    .body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-size: $font-size-xs;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+
+      h6 {
+        font-weight: $font-weight-300;
+        font-size: 1.2rem;
+      }
+
+      p {
+        color: #757575;
+      }
+
+      button {
+        border-color: #aaa9a9;
+        color: #1e1e1e;
+        min-width: 110px;
+        border-radius: 0;
+      }
+
+      .description {
+        padding: 0 2rem;
+        margin-bottom: 2em;
+      }
+    }
+
+    &.welcome,
+    &.thankyou {
+      height: 388px;
+      padding: 0;
+      display: flex;
+      flex-direction: row;
+
+      .title {
+        width: 100%;
+      }
+
+      .body {
+        min-height: 315px;
+      }
+
+      .welcome-body {
+        padding-right: 2rem;
+        padding-left: 2rem;
+      }
+
+      .body {
+        padding-right: 2rem;
+        padding-left: 2rem;
+      }
+    }
+  }
+
+  .add-question {
+    color: $active-green;
+    z-index: 3;
+
+    .add-question-container {
+      width: 85%;
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .save-survey-button {
+    display: none;
+    padding-right: 2rem;
+    padding-left: 2rem;
+  }
+
+  .survey-header,
+  .survey-footer {
+    .header {
+      color: $g-700;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-600;
+      line-height: 24px;
+
+      svg {
+        fill: $g-700;
+        path {
+          fill: $g-700;
+        }
+      }
+    }
+  }
+}
+
+.survey-part {
+  // 838 maxValue // 80px extra spacing for up/down arrows (on question focus)
+  max-width: min(
+    838px,
+    calc(100vw - ($left-side-bar-width + $right-side-bar-width + 80px))
+  );
+  min-width: 550px; // for 1280 vw support
+  margin: auto;
+  z-index: 3;
+}

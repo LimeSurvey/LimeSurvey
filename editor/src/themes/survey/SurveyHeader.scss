@@ -1,0 +1,118 @@
+.survey-header-container {
+  background-color: #a3c8ff44;
+  box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
+  border-radius: 2px;
+  width: 100%;
+  padding: 63px 67px;
+
+  .show-x-questions {
+    font-size: 16px;
+    font-weight: normal;
+  }
+
+  .select {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    width: fit-content;
+
+    .react-select__menu {
+      background-color: red !important;
+    }
+
+    *,
+    svg {
+      color: #5076ff !important;
+      fill: #5076ff;
+      padding: 0;
+      //styleName: LSD/Typography/Sans/Semi14;
+      font-family: IBM Plex Sans;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-600;
+      line-height: 20px;
+      letter-spacing: -0.017em;
+      text-align: left;
+    }
+  }
+
+  .start-survey-section {
+    .or-press-enter-text {
+      font-size: $font-size-md;
+      color: $g-700 !important;
+      font-weight: $font-weight-normal;
+      font-family: IBM Plex Sans;
+    }
+
+    .start-button {
+      min-width: 101px;
+      height: 44px;
+      transition: box-shadow 0.2s;
+      border-radius: $border-radius;
+      background: $active-green;
+      border: none;
+      outline: none;
+
+      font-size: $font-size-sm;
+      font-weight: $font-weight-500;
+      line-height: 20px;
+      letter-spacing: -0.015em;
+      text-align: left;
+      color: $white;
+
+      &:hover {
+        background: $active-green-hover;
+      }
+    }
+  }
+
+  h6,
+  h4 {
+    font-weight: $font-weight-normal;
+    color: #757575;
+  }
+
+  h4 {
+    color: $black75 !important;
+  }
+
+  .language-change-header {
+    color: $g-700;
+    margin-bottom: 18px;
+  }
+
+  .welcome-title {
+    margin-bottom: 18px;
+    font-size: 40px;
+    letter-spacing: -0.017em;
+    text-align: left;
+
+    * {
+      font-family: 'IBM';
+      line-height: 125%;
+    }
+  }
+
+  .welcome-description {
+    font-size: $font-size-md;
+    letter-spacing: -0.017em;
+    text-align: left;
+    margin-bottom: 10px;
+    font-weight: $font-weight-normal;
+  }
+
+  .collapse-control {
+    color: $g-700;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-600;
+    line-height: 24px;
+  }
+
+  .border-bottom {
+    border-bottom: 1px rgb(220, 220, 220) solid;
+  }
+}
+
+.inactive-section-header {
+  opacity: 0.25;
+  cursor: default;
+}

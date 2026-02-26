@@ -1,0 +1,100 @@
+.condition-designer-sidebar {
+  padding: 12px 8px 12px 12px !important;
+}
+
+#condition-designer {
+  padding-left: 16px;
+  padding-right: 12px;
+}
+
+.condition-apply-button {
+  border: none;
+  min-height: 36px;
+  min-width: 70px;
+
+  &.active {
+    color: $white;
+  }
+
+  &:disabled {
+    color: $g-800 !important;
+    background-color: $g-500 !important;
+  }
+}
+
+.condition-counter {
+  color: $grape;
+}
+
+.add-condition-button {
+  border: none;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  color: $white !important;
+  margin-right: 10px;
+}
+
+.scenario-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: stretch;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid $grape;
+  margin: 3px 14px 3px 14px;
+  background-color: $g-200;
+}
+
+.conditions-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.scenario-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 4px 4px 13px;
+  position: relative;
+  border: 3px solid $g-700;
+  border-radius: $border-radius;
+  margin-bottom: 10px;
+  height: 34px;
+  width: 242px;
+}
+
+.advanced-toggle .lime-toggle-btn-group .btn-group .btn {
+  font-size: $font-size-sm;
+}
+
+.condition-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 21px;
+  height: 20px;
+  color: white;
+  background-color: $g-700;
+  padding: 2px;
+  border-radius: 2px;
+  font-size: $font-size-sm;
+}
+
+.green-left-mark {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 8px;
+    height: 100%;
+    background-color: $success;
+    border-top-left-radius: 7px; // 1px less than parent
+    border-bottom-left-radius: 7px; // 1px less than parent
+    border-left: 1px $g-900 solid;
+  }
+}

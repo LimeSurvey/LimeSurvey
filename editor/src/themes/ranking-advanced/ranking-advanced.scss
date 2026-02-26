@@ -1,0 +1,41 @@
+.ranking-advanced-question {
+  .ranking-advanced-answer-content-editor,
+  .placeholder-content-editor {
+    min-width: 200px;
+    min-height: 36px;
+    border-radius: 2px;
+    line-height: normal;
+    display: flex;
+    align-items: center;
+  }
+
+  .ranking-advanced-answer {
+    width: fit-content;
+
+    .ranking-advanced-answer-content-editor {
+      outline: 1px $g-700 solid;
+      padding-left: 12px;
+      padding-right: 20px;
+    }
+  }
+
+  .answer-item-placeholder {
+    background-color: $g-100;
+  }
+
+  .remove-option-button {
+    right: 10px;
+    width: fit-content;
+  }
+
+  .close-circle-fill-icon {
+    height: 14px;
+  }
+
+  .placeholder-content-editor {
+    outline: 1px $g-400 solid;
+    color: $g-400;
+    justify-content: center;
+    width: 100%;
+  }
+}

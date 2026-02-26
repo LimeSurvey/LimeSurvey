@@ -1,0 +1,81 @@
+// input field that type is number
+.numeric {
+  position: relative;
+}
+
+// input[type='number']::-webkit-inner-spin-button,
+// input[type='number']::-webkit-outer-spin-button {
+//   -webkit-appearance: none;
+//   margin: 0;
+// }
+
+// input[type='number'] {
+//   -moz-appearance: textfield;
+// }
+
+.numeric input {
+  width: 100%;
+  height: 34px;
+  padding: 4px 12px;
+  background: $white;
+  border: 2px solid $g-700;
+  border-radius: $border-radius;
+  &:focus {
+    outline: 0;
+    box-shadow: none;
+    border: 2px solid $g-700;
+  }
+}
+
+.numeric-wrapper {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  height: 34px;
+}
+
+.numeric-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 30px;
+  text-align: center;
+  color: #333;
+  font-size: $font-size-base;
+  line-height: 1.7;
+  -webkit-transform: translateX(-100%);
+  transform: translateX(-100%);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.numeric-button.numeric-up {
+  position: absolute;
+  height: 13px;
+  top: 4px;
+  color: $g-700;
+  fill: currentColor;
+
+  &:hover {
+    color: $g-900;
+    background-color: $g-200;
+  }
+}
+
+.numeric-button.numeric-down {
+  position: absolute;
+  height: 13px;
+  bottom: 4px;
+  color: $g-700;
+  fill: currentColor;
+
+  &:hover {
+    color: $g-900;
+    background-color: $g-200;
+  }
+}
