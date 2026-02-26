@@ -161,7 +161,8 @@ class MandatorySoftTest extends TestBaseClassWeb
                     WebDriverBy::cssSelector('.modal.show .btn-close')
                 )
             );
-            $modalCloseButton->click();
+            // Double-click to ensure modal closes (handles race condition) : comment to check and be sure
+            // $modalCloseButton->click();
             $modalCloseButton->click();
             /* Wait it was closed ? */
             self::$webDriver->wait(10)->until(
