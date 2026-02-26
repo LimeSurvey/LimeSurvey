@@ -168,7 +168,7 @@ class Zend_CodeGenerator_Php_File extends Zend_CodeGenerator_Php_Abstract
             unset($bodyLines, $bodyReturn, $classStartLine, $classEndLine);
         }
 
-        if (($reflectionFile->getDocComment() != '')) {
+        if (isset($class) && $reflectionFile->getDocComment() != '') {
             $docblock = $reflectionFile->getDocblock();
             $file->setDocblock(Zend_CodeGenerator_Php_Docblock::fromReflection($docblock));
 
@@ -183,7 +183,7 @@ class Zend_CodeGenerator_Php_File extends Zend_CodeGenerator_Php_Abstract
                 }
             }
             $body = implode("\n", $bodyReturn);
-            unset($bodyLines, $bodyReturn, $classStartLine, $classEndLine);
+            unset($bodyLines, $bodyReturn);
         }
 
         $file->setBody($body);

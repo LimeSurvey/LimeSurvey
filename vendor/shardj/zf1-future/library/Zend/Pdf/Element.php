@@ -27,7 +27,7 @@
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  *
- * @property mixed $value
+ * @property mixed $value see https://github.com/Shardj/zf1-future/pull/453
  */
 abstract class Zend_Pdf_Element
 {

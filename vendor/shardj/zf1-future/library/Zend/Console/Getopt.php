@@ -260,9 +260,8 @@ class Zend_Console_Getopt
         if (!is_array($argv)) {
             $argv = array_slice($_SERVER['argv'], 1);
         }
-        if (isset($argv)) {
-            $this->addArguments((array)$argv);
-        }
+
+        $this->addArguments((array)$argv);
     }
 
     /**
@@ -518,7 +517,7 @@ class Zend_Console_Getopt
     public function toXml()
     {
         $this->parse();
-        $doc = new DomDocument('1.0', 'utf-8');
+        $doc = new DOMDocument('1.0', 'utf-8');
         $optionsNode = $doc->createElement('options');
         $doc->appendChild($optionsNode);
 
