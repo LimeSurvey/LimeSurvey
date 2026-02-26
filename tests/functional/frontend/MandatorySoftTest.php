@@ -219,5 +219,3 @@ class MandatorySoftTest extends TestBaseClassWeb
         self::$testSurvey = null;
     }
 }
-
-}
