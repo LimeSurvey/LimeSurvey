@@ -162,6 +162,13 @@ class MandatorySoftTest extends TestBaseClassWeb
                 )
             );
             $modalCloseButton->click();
+            $modalCloseButton->click();
+            /* Wait it was closed ? */
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('ls-button-submit')
+                )
+            );
             /* Try to submit again */
             self::$webDriver->scrollToBottom();
             self::$webDriver->next();
