@@ -1,0 +1,14 @@
+# Do not remove this file. With a correct apache configuration
+# prevent access to cache files generated in runtime (random string, low risk)
+# prevent access to generated application.log and plugin.log
+<IfVersion < 2.4>
+    Order Allow,Deny
+    Deny from all
+</IfVersion>
+<IfVersion >= 2.4>
+    Require all denied
+    <IfModule mod_access_compat.c>
+        Order Allow,Deny
+        Deny from all
+    </IfModule>
+</IfVersion>

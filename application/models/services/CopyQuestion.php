@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Models\Services;
 
+use CException;
 use LimeSurvey\Datavalueobjects\CopyQuestionValues;
 
 /**
@@ -24,57 +25,75 @@ class CopyQuestion
     private $newQuestion;
 
     /**
+     * @var array mapping between original subquestion id and new subquestion id
+     */
+    private $mappedSubquestionIds = [];
+
+    /**
+     * @var array options when copying the question
+     *                           ['copySubquestions']  --> true if subquestions should be copied
+     *                           ['copyAnswerOptions'] --> true if answer options should be copied
+     *                           ['copyDefaultAnswers'] --> true if default answers should be copied
+     *                           ['copySettings'] --> generalSettings and advancedSettings
+     *                           ['adjustLinks']  --> true if links just be ajusted to a new survey id
+     *                                                (e.g. /upload/348592/images)
+     */
+    private array $copyOptions = [];
+
+    /**
      * CopyQuestion constructor.
      *
      * @param CopyQuestionValues $copyQuestionValues
      */
-    public function __construct($copyQuestionValues)
+    public function __construct($copyQuestionValues, $copyOptions)
     {
         $this->copyQuestionValues = $copyQuestionValues;
         $this->newQuestion = null;
+        $this->copyOptions = $copyOptions;
     }
 
     /**
      * Copies the question and all necessary values/parameters
      * (languages, subquestions, answeroptions, defaultanswers, settings)
      *
-     * @param array $copyOptions has the following boolean elements
-     *                          ['copySubquestions']
-     *                          ['copyAnswerOptions']
-     *                          ['copyDefaultAnswers']
-     *                          ['copySettings'] --> generalSettings and advancedSettings
+     * @param int|null $surveyId The id of the survey to which the new question should be added. If null, it will be added to the current survey.
      *
      * @return boolean True if new copied question could be saved, false otherwise
      */
-    public function copyQuestion($copyOptions)
+    public function copyQuestion($surveyId = null)
     {
         $copySuccessful = $this->createNewCopiedQuestion(
             $this->copyQuestionValues->getQuestionCode(),
             $this->copyQuestionValues->getQuestionGroupId(),
-            $this->copyQuestionValues->getQuestiontoCopy()
+            $this->copyQuestionValues->getQuestiontoCopy(),
+            $surveyId
         );
         if ($copySuccessful) {
             //copy question languages
-            $this->copyQuestionLanguages($this->copyQuestionValues->getQuestiontoCopy(), $this->copyQuestionValues->getQuestionL10nData());
+            $this->copyQuestionLanguages(
+                $this->copyQuestionValues->getQuestiontoCopy(),
+                $this->copyQuestionValues->getQuestionL10nData(),
+                $surveyId
+            );
 
             //copy subquestions
-            if ($copyOptions['copySubquestions']) {
-                $this->copyQuestionsSubQuestions($this->copyQuestionValues->getQuestiontoCopy()->qid);
+            if (isset($this->copyOptions['copySubquestions']) && $this->copyOptions['copySubquestions']) {
+                $this->copyQuestionsSubQuestions($this->copyQuestionValues->getQuestiontoCopy()->qid, $surveyId);
             }
 
             //copy answer options
-            if ($copyOptions['copyAnswerOptions']) {
+            if (isset($this->copyOptions['copyAnswerOptions']) && $this->copyOptions['copyAnswerOptions']) {
                 $this->copyQuestionsAnswerOptions($this->copyQuestionValues->getQuestiontoCopy()->qid);
             }
 
             //copy default answers
-            if ($copyOptions['copyDefaultAnswers']) {
+            if (isset($this->copyOptions['copyDefaultAnswers']) && $this->copyOptions['copyDefaultAnswers']) {
                 $this->copyQuestionsDefaultAnswers($this->copyQuestionValues->getQuestiontoCopy()->qid);
             }
 
-            ////copy question settings (generalsettings and advanced settings)
-            if ($copyOptions['copySettings']) {
-                $this->copyQuestionsSettings($this->copyQuestionValues->getQuestiontoCopy()->qid);
+            //copy question settings (generalsettings and advanced settings)
+            if (isset($this->copyOptions['copySettings']) && $this->copyOptions['copySettings']) {
+                $this->copyQuestionsSettings($this->copyQuestionValues->getQuestiontoCopy()->qid, $surveyId);
             }
         }
         return $copySuccessful;
@@ -87,10 +106,11 @@ class CopyQuestion
      * @param string $questionCode
      * @param int $groupId
      * @param \Question $questionToCopy the question that should be copied
+     * @param int $surveyId null if copied to same survey
      *
      * @return bool true if question could be saved, false otherwise
      */
-    public function createNewCopiedQuestion($questionCode, $groupId, $questionToCopy)
+    public function createNewCopiedQuestion($questionCode, $groupId, $questionToCopy, $surveyId = null)
     {
         $this->newQuestion = new \Question();
         // We need to use setAttributes here with $safeOnly=false to avoid issue #18323.
@@ -102,6 +122,12 @@ class CopyQuestion
         $this->newQuestion->gid = $groupId;
         $this->newQuestion->question_order = $this->copyQuestionValues->getQuestionPositionInGroup();
         $this->newQuestion->qid = null;
+        if ($surveyId != null) {
+            $this->newQuestion->sid = $surveyId;
+        } else {
+            $this->newQuestion->sid = $this->copyQuestionValues->getOSurvey()->sid;
+        }
+
 
         return $this->newQuestion->save();
     }
@@ -117,19 +143,33 @@ class CopyQuestion
      * @return bool true if all languages could be copied,
      *              false if no language was copied or save failed for one language
      */
-    private function copyQuestionLanguages($oQuestion, $newQuestionL10nData = [])
+    private function copyQuestionLanguages($oQuestion, $newQuestionL10nData = [], $surveyId = null)
     {
         $allLanguagesAreCopied = false;
         if ($oQuestion !== null) {
             $allLanguagesAreCopied = true;
-            foreach ($oQuestion->questionl10ns as $questionl10n) {
+            foreach ($oQuestion->questionl10ns as $questionL10n) {
                 $copyLanguage = new \QuestionL10n();
-                $copyLanguage->attributes = $questionl10n->attributes;
+                $copyLanguage->attributes = $questionL10n->attributes;
                 $copyLanguage->id = null; //new id needed
                 $copyLanguage->qid = $this->newQuestion->qid;
-                if (isset($newQuestionL10nData[$questionl10n->language])) {
-                    $copyLanguage->question = $newQuestionL10nData[$questionl10n->language]->getQuestionText();
-                    $copyLanguage->help = $newQuestionL10nData[$questionl10n->language]->getHelp();
+                if (isset($newQuestionL10nData[$questionL10n->language])) {
+                    $copyLanguage->question = $newQuestionL10nData[$questionL10n->language]->getQuestionText();
+                    $copyLanguage->help = $newQuestionL10nData[$questionL10n->language]->getHelp();
+                    if ($surveyId !== null && isset($this->copyOptions['adjustLinks']) && $this->copyOptions['adjustLinks']) {
+                        $copyLanguage->question = translateLinks(
+                            'survey',
+                            $this->copyQuestionValues->getSourceSurveyId(),
+                            $surveyId,
+                            $copyLanguage->question
+                        );
+                        $copyLanguage->help = translateLinks(
+                            'survey',
+                            $this->copyQuestionValues->getSourceSurveyId(),
+                            $surveyId,
+                            $copyLanguage->help
+                        );
+                    }
                 }
                 $allLanguagesAreCopied = $allLanguagesAreCopied && $copyLanguage->save();
             }
@@ -142,12 +182,14 @@ class CopyQuestion
      * Copy subquestions of a question
      *
      * @param int $parentId id of question to be copied
+     * @param int|null $surveyId The id of the survey to which the new subquestion should be added.
+     *                           If null, it will be added to the survey the original question belongs to.
      *
      * * @before $this->newQuestion must exist and should not be null
      *
      * @return bool true if all subquestions could be copied&saved, false if a subquestion could not be saved
      */
-    private function copyQuestionsSubQuestions($parentId)
+    private function copyQuestionsSubQuestions($parentId, $surveyId = null)
     {
         //copy subquestions
         $areSubquestionsCopied = true;
@@ -162,17 +204,43 @@ class CopyQuestion
             $copiedSubquestion->setAttributes($subquestion->attributes, false);
             $copiedSubquestion->parent_qid = $this->newQuestion->qid;
             $copiedSubquestion->qid = null; //new question id needed ...
+            if ($surveyId !== null) {
+                $copiedSubquestion->sid = $surveyId;
+            }
             $areSubquestionsCopied = $areSubquestionsCopied && $copiedSubquestion->save();
+            $this->mappedSubquestionIds[$subquestion->qid] = $copiedSubquestion->qid; // map old subquestion id to new subquestion id
             foreach ($subquestion->questionl10ns as $subquestLanguage) {
+                $substituteSurveyInQuestionText = $subquestLanguage->question;
+                if ($surveyId !== null && isset($this->copyOptions['adjustLinks']) && $this->copyOptions['adjustLinks']) {
+                    $substituteSurveyInQuestionText = translateLinks(
+                        'survey',
+                        $this->copyQuestionValues->getSourceSurveyId(), //oldID
+                        $surveyId, //newId
+                        $subquestLanguage->question, //the original question text
+                    );
+                }
                 $newSubquestLanguage = new \QuestionL10n();
-                $newSubquestLanguage->attributes = $subquestLanguage->attributes;
+                $newSubquestLanguage->attributes = $subquestLanguage->attributes; //if new attributes are added in future
+                $newSubquestLanguage->help = $subquestLanguage->help;
+                $newSubquestLanguage->question = $substituteSurveyInQuestionText;
+                $newSubquestLanguage->script = $subquestLanguage->script;
                 $newSubquestLanguage->qid = $copiedSubquestion->qid;
-                $newSubquestLanguage->id = null;
+                $newSubquestLanguage->language = $subquestLanguage->language;
                 $newSubquestLanguage->save();
             }
         }
 
         return $areSubquestionsCopied;
+    }
+
+    /**
+     * Returns the mapping of subquestions
+     *
+     * @return array the mapping of subquestion ids from the original question to the copied question
+     */
+    public function getMappedSubquestionIds()
+    {
+        return $this->mappedSubquestionIds;
     }
 
     /**
@@ -237,12 +305,13 @@ class CopyQuestion
      * Copies the question settings (general_settings (on the left in questioneditor) and advanced settings (bottom)
      *
      * @param $questionIdToCopy
+     * @param $surveyId int The id of the survey to which the question should be copied.
      *
      * * @before $this->newQuestion must exist and should not be null
      *
      * @return boolean True if settings are copied, false otherwise
      */
-    private function copyQuestionsSettings($questionIdToCopy)
+    private function copyQuestionsSettings($questionIdToCopy, $surveyId = null)
     {
         $settingsFromQuestionToCopy = \QuestionAttribute::model()->findAllByAttributes(['qid' => $questionIdToCopy]);
         $areSettingsCopied = false;
@@ -253,6 +322,15 @@ class CopyQuestion
                 $newSetting->attributes = $settingToCopy->attributes;
                 $newSetting->qaid = null;  //create new id
                 $newSetting->qid = $this->newQuestion->qid;
+                if (($surveyId !== null) && ($settingToCopy->attribute === 'image')) {
+                    //change the image path to the new survey id
+                    $newSetting->value = translateLinks(
+                        'survey',
+                        $this->copyQuestionValues->getSourceSurveyId(), //oldID
+                        $surveyId, //newId
+                        $settingToCopy->value, //the original value
+                    );
+                }
                 $areSettingsCopied = $areSettingsCopied && $newSetting->save();
             }
         }

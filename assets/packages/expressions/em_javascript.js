@@ -3084,7 +3084,7 @@ function substr (str, start, len) {
     // allow access of binary (see file_get_contents()) by: charCodeAt(x) & 0xFF (see https://developer.mozilla.org/En/Using_XMLHttpRequest ) or require conversion first?
 
     // ensure that start/len are integers (even when strings are given)
-    if (!Number.isInteger(Number(start) || !Number.isInteger(Number(len)))) {
+    if (!Number.isInteger(Number(start)) || !Number.isInteger(Number(len))) {
        return false;
     }
 
