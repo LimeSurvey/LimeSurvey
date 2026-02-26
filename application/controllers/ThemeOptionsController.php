@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\DI;
+use LimeSurvey\Models\Services\SurveyDetailService;
 use LimeSurvey\Models\Services\SurveyThemeConfiguration;
 
 /**
@@ -350,12 +351,8 @@ class ThemeOptionsController extends LSBaseController
         if (isset($_POST['TemplateConfiguration'])) {
             $model->attributes = $_POST['TemplateConfiguration'];
             if ($model->save()) {
-                $cacheFile = \Yii::app()->getConfig('uploaddir') . "/surveys/" . $sid . '/survey-detail.html';
-                // Remove cache file when themeOptions are changed, so it's newly generated
-                // TODO: when proper caching takes place, replace this with cache invalidation
-                if (file_exists($cacheFile)) {
-                    unlink($cacheFile);
-                }
+                $surveyDetailService = DI::getContainer()->get(SurveyDetailService::class);
+                $surveyDetailService->removeCache($sid);
                 App()->user->setFlash('success', gT('Theme options saved.'));
             }
         }
