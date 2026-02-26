@@ -3941,6 +3941,11 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
             if ($key[0] == '_') {
                 $key = substr($key, 1);
             }
+            if (strpos($key, "X") !== false) {
+                $parts = explode("X", $key);
+                $prefix = (count($parts) >= 3) ? 'Q' : 'G';
+                $key = $prefix . $parts[count($parts) - 1];
+            }
             if (isset($aFieldReMap[substr($key, 0, -4)])) {
                 $key = $aFieldReMap[substr($key, 0, -4)] . 'time';
             }
