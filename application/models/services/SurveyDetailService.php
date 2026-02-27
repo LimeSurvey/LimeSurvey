@@ -6,16 +6,8 @@ use Survey;
 
 class SurveyDetailService
 {
-    /**
-     * Gets the cache path of a survey
-     * @param int $surveyId
-     * @param bool $root
-     * @return string
-     */
-    protected function getCachePath(int $surveyId, bool $root = false)
-    {
-        return \Yii::app()->getConfig('uploaddir') . "/surveys/" . $surveyId . ($root ? '' : '/survey-detail.html');
-    }
+    private const CACHE_KEY_PREFIX = 'survey_detail_';
+    private const CACHE_DURATION = 3600; // Cache duration in seconds (1 hour)
 
     /**
      * Gets the survey cache if exists and false otherwise
@@ -28,14 +20,14 @@ class SurveyDetailService
         if ($clearCache) {
             $this->removeCache($surveyId);
         }
-        if (!file_exists($this->getCachePath($surveyId))) {
+
+        $cache = App()->cache->get(self::CACHE_KEY_PREFIX . $surveyId);
+        // If cache is not found or contains invalid data
+        if (empty($cache) || !is_string($cache)) {
             return false;
         }
-        if (time() - filemtime($this->getCachePath($surveyId)) > 3600) {
-            $this->removeCache($surveyId);
-            return false;
-        }
-        return json_decode(file_get_contents($this->getCachePath($surveyId)), true);
+
+        return json_decode($cache, true);
     }
 
     /**
@@ -46,10 +38,7 @@ class SurveyDetailService
      */
     public function saveCache(int $surveyId, array $content)
     {
-        if (!is_dir($this->getCachePath($surveyId, true))) {
-            mkdir($this->getCachePath($surveyId, true));
-        }
-        file_put_contents($this->getCachePath($surveyId), json_encode($content));
+        App()->cache->set(self::CACHE_KEY_PREFIX . $surveyId, json_encode($content), self::CACHE_DURATION);
     }
 
     /**
@@ -59,9 +48,7 @@ class SurveyDetailService
      */
     public function removeCache(int $surveyId)
     {
-        if (file_exists($this->getCachePath($surveyId))) {
-            unlink($this->getCachePath($surveyId));
-        }
+        App()->cache->delete(self::CACHE_KEY_PREFIX . $surveyId);
     }
 
     /**

@@ -433,12 +433,14 @@ legend {
   padding: 0;
   margin-bottom: 0.5rem;
   font-size: calc(1.275rem + 0.3vw);
-  line-height: inherit;
 }
 @media (min-width: 1200px) {
   legend {
     font-size: 1.5rem;
   }
+}
+legend {
+  line-height: inherit;
 }
 legend + * {
   clear: left;
@@ -511,78 +513,92 @@ progress {
 
 .lead {
   font-size: calc(1.2675rem + 0.21vw);
-  font-weight: 300;
 }
 @media (min-width: 1200px) {
   .lead {
     font-size: 1.425rem;
   }
 }
+.lead {
+  font-weight: 300;
+}
 
 .display-1 {
   font-size: calc(1.625rem + 4.5vw);
-  font-weight: 300;
-  line-height: 1.2;
 }
 @media (min-width: 1200px) {
   .display-1 {
     font-size: 5rem;
   }
 }
+.display-1 {
+  font-weight: 300;
+  line-height: 1.2;
+}
 
 .display-2 {
   font-size: calc(1.575rem + 3.9vw);
-  font-weight: 300;
-  line-height: 1.2;
 }
 @media (min-width: 1200px) {
   .display-2 {
     font-size: 4.5rem;
   }
 }
+.display-2 {
+  font-weight: 300;
+  line-height: 1.2;
+}
 
 .display-3 {
   font-size: calc(1.525rem + 3.3vw);
-  font-weight: 300;
-  line-height: 1.2;
 }
 @media (min-width: 1200px) {
   .display-3 {
     font-size: 4rem;
   }
 }
+.display-3 {
+  font-weight: 300;
+  line-height: 1.2;
+}
 
 .display-4 {
   font-size: calc(1.475rem + 2.7vw);
-  font-weight: 300;
-  line-height: 1.2;
 }
 @media (min-width: 1200px) {
   .display-4 {
     font-size: 3.5rem;
   }
 }
+.display-4 {
+  font-weight: 300;
+  line-height: 1.2;
+}
 
 .display-5 {
   font-size: calc(1.425rem + 2.1vw);
-  font-weight: 300;
-  line-height: 1.2;
 }
 @media (min-width: 1200px) {
   .display-5 {
     font-size: 3rem;
   }
 }
+.display-5 {
+  font-weight: 300;
+  line-height: 1.2;
+}
 
 .display-6 {
   font-size: calc(1.375rem + 1.5vw);
-  font-weight: 300;
-  line-height: 1.2;
 }
 @media (min-width: 1200px) {
   .display-6 {
     font-size: 2.5rem;
   }
+}
+.display-6 {
+  font-weight: 300;
+  line-height: 1.2;
 }
 
 .list-unstyled {
@@ -2136,12 +2152,14 @@ progress {
   min-height: calc(1.5em + 1rem + 2px);
   padding: 0.5rem 1rem;
   font-size: calc(1.2675rem + 0.21vw);
-  border-radius: 0.3rem;
 }
 @media (min-width: 1200px) {
   .form-control-lg {
     font-size: 1.425rem;
   }
+}
+.form-control-lg {
+  border-radius: 0.3rem;
 }
 .form-control-lg::file-selector-button {
   padding: 0.5rem 1rem;
@@ -2198,14 +2216,16 @@ textarea.form-control-lg {
   border: 1px solid #ced4da;
   border-radius: 4px;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
 }
 @media (prefers-reduced-motion: reduce) {
   .form-select {
     transition: none;
   }
+}
+.form-select {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
 }
 .form-select:focus {
   border-color: rgb(134, 182.5, 254);
@@ -2237,12 +2257,14 @@ textarea.form-control-lg {
   padding-bottom: 0.5rem;
   padding-left: 1rem;
   font-size: calc(1.2675rem + 0.21vw);
-  border-radius: 0.3rem;
 }
 @media (min-width: 1200px) {
   .form-select-lg {
     font-size: 1.425rem;
   }
+}
+.form-select-lg {
+  border-radius: 0.3rem;
 }
 
 .form-check {
@@ -2380,14 +2402,16 @@ textarea.form-control-lg {
   border-radius: 1rem;
   -webkit-transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  -webkit-appearance: none;
-          appearance: none;
 }
 @media (prefers-reduced-motion: reduce) {
   .form-range::-webkit-slider-thumb {
     -webkit-transition: none;
     transition: none;
   }
+}
+.form-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+          appearance: none;
 }
 .form-range::-webkit-slider-thumb:active {
   background-color: rgb(182.4, 211.5, 254.4);
@@ -2409,14 +2433,16 @@ textarea.form-control-lg {
   border-radius: 1rem;
   -moz-transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  -moz-appearance: none;
-       appearance: none;
 }
 @media (prefers-reduced-motion: reduce) {
   .form-range::-moz-range-thumb {
     -moz-transition: none;
     transition: none;
   }
+}
+.form-range::-moz-range-thumb {
+  -moz-appearance: none;
+       appearance: none;
 }
 .form-range::-moz-range-thumb:active {
   background-color: rgb(182.4, 211.5, 254.4);
@@ -2551,7 +2577,6 @@ textarea.form-control-lg {
 .input-group-lg > .btn {
   padding: 0.5rem 1rem;
   font-size: calc(1.2675rem + 0.21vw);
-  border-radius: 0.3rem;
 }
 @media (min-width: 1200px) {
   .input-group-lg > .form-control,
@@ -2560,6 +2585,12 @@ textarea.form-control-lg {
   .input-group-lg > .btn {
     font-size: 1.425rem;
   }
+}
+.input-group-lg > .form-control,
+.input-group-lg > .form-select,
+.input-group-lg > .input-group-text,
+.input-group-lg > .btn {
+  border-radius: 0.3rem;
 }
 
 .input-group-sm > .form-control,
@@ -3371,12 +3402,14 @@ textarea.form-control-lg {
 .btn-lg, .btn-group-lg > .btn {
   padding: 0.5rem 1rem;
   font-size: calc(1.2675rem + 0.21vw);
-  border-radius: 0.3rem;
 }
 @media (min-width: 1200px) {
   .btn-lg, .btn-group-lg > .btn {
     font-size: 1.425rem;
   }
+}
+.btn-lg, .btn-group-lg > .btn {
+  border-radius: 0.3rem;
 }
 
 .btn-sm, .btn-group-sm > .btn {
@@ -3941,13 +3974,15 @@ textarea.form-control-lg {
   padding-bottom: 0.28625rem;
   margin-right: 1rem;
   font-size: calc(1.2675rem + 0.21vw);
-  text-decoration: none;
-  white-space: nowrap;
 }
 @media (min-width: 1200px) {
   .navbar-brand {
     font-size: 1.425rem;
   }
+}
+.navbar-brand {
+  text-decoration: none;
+  white-space: nowrap;
 }
 .navbar-nav {
   display: flex;
@@ -3978,16 +4013,18 @@ textarea.form-control-lg {
 .navbar-toggler {
   padding: 0.25rem 0.75rem;
   font-size: calc(1.2675rem + 0.21vw);
-  line-height: 1;
-  background-color: transparent;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  transition: box-shadow 0.15s ease-in-out;
 }
 @media (min-width: 1200px) {
   .navbar-toggler {
     font-size: 1.425rem;
   }
+}
+.navbar-toggler {
+  line-height: 1;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  transition: box-shadow 0.15s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {
   .navbar-toggler {
@@ -5434,12 +5471,14 @@ textarea.form-control-lg {
 }
 .modal.fade .modal-dialog {
   transition: transform 0.3s ease-out;
-  transform: translate(0, -50px);
 }
 @media (prefers-reduced-motion: reduce) {
   .modal.fade .modal-dialog {
     transition: none;
   }
+}
+.modal.fade .modal-dialog {
+  transform: translate(0, -50px);
 }
 .modal.show .modal-dialog {
   transform: none;
@@ -10640,7 +10679,6 @@ textarea.form-control-lg {
 #outerframeContainer {
   min-height: 100%;
   word-wrap: break-word;
-  -webkit-hyphens: auto;
   -o-hyphens: auto;
   hyphens: auto;
 }
@@ -10747,19 +10785,6 @@ body {
   background-color: #ffffff;
 }
 
-.fruity_twentythree {
-  /* jqGrid */
-  /**
-  * Template selector
-  */
-  /**
-  * Ajax loader
-  * from : http://codepen.io/weaintplastic/pen/qEMZbx
-  */
-  /**
-  * comfortUpdate
-  */
-}
 .fruity_twentythree mark, .fruity_twentythree .mark {
   background: hsl(354.0519480519, 133.381443299%, 73.0392156863%);
   color: #000;
@@ -11295,6 +11320,9 @@ body {
   background: #a0352f;
   color: #fff;
 }
+.fruity_twentythree {
+  /* jqGrid */
+}
 .fruity_twentythree .ui-dialog,
 .fruity_twentythree .ui-jqdialog,
 .fruity_twentythree .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-dialog-buttons.ui-draggable.ui-resizable {
@@ -11320,6 +11348,11 @@ body {
 .fruity_twentythree .data-entry-tbl tr.even {
   border-bottom: 1px solid #ebebeb;
 }
+.fruity_twentythree {
+  /**
+  * Template selector
+  */
+}
 .fruity_twentythree #carousel-example-generic .carousel-control {
   color: #14AE5C;
 }
@@ -11331,6 +11364,12 @@ body {
 }
 .fruity_twentythree #carousel-example-generic .carousel-indicators li {
   border: 1px solid #14AE5C;
+}
+.fruity_twentythree {
+  /**
+  * Ajax loader
+  * from : http://codepen.io/weaintplastic/pen/qEMZbx
+  */
 }
 @keyframes preload-show-1 {
   from {
@@ -11564,6 +11603,11 @@ body {
   transition-timing-function: ease-in-out;
   /* Safari */
   transition: width 1.6s;
+}
+.fruity_twentythree {
+  /**
+  * comfortUpdate
+  */
 }
 .fruity_twentythree #comfortUpdateGeneralWrap h3.maintitle, .fruity_twentythree #comfortUpdateGeneralWrap .maintitle.h3 {
   background-color: transparent;
@@ -12021,9 +12065,10 @@ Responsive navbar-brand image CSS
   padding: 15px;
   width: auto;
 }
-
-.brand-logo .top-container .top-content {
-  padding-top: 2em;
+@media (max-width: 768px) {
+  .logo-container > img {
+    max-height: 60px;
+  }
 }
 
 /* text overflows, ellipsis and hyphens */
@@ -12065,12 +12110,6 @@ Responsive navbar-brand image CSS
   }
   .navbar .navbar-nav .nav-item {
     position: relative;
-  }
-}
-@media (max-width: 768px) {
-  .navbar {
-    padding-top: 15px;
-    padding-bottom: 15px;
   }
 }
 
@@ -13061,11 +13100,13 @@ textarea {
 
 .form-control[disabled] {
   color: #e3e3e3;
-  background-color: #f5f5f5;
-  opacity: 1;
 }
 .form-control[disabled].total {
   color: rgb(53, 54, 63);
+}
+.form-control[disabled] {
+  background-color: #f5f5f5;
+  opacity: 1;
 }
 
 .form-control[readonly] {
@@ -13274,6 +13315,14 @@ table.ls-answers .radio-item .ls-label-xs-visibility {
   padding-left: 8px;
 }
 
+.radio-item .othertext-label-checkox-container {
+  align-self: center;
+}
+.radio-item .othertext-label-checkox-container label {
+  vertical-align: unset;
+  margin-bottom: 0;
+}
+
 .radio-item label::before {
   content: "";
   display: inline-block;
@@ -13429,6 +13478,10 @@ table > tbody > tr > td.ddprefix {
 
 .ls-answers tbody .answertext {
   text-align: left;
+}
+
+.ls-answers.semantic-differential-list tbody .answertext {
+  text-align: right;
 }
 
 /**
@@ -13644,6 +13697,14 @@ table > tbody > tr > td.ddprefix {
   vertical-align: middle;
   position: relative;
   padding-left: 20px;
+}
+
+.checkbox-item.othertext-label-checkox-container {
+  align-self: center;
+}
+.checkbox-item.othertext-label-checkox-container label {
+  vertical-align: unset;
+  margin-bottom: 0;
 }
 
 .checkbox-item .ls-label-xs-visibility {
@@ -14589,8 +14650,14 @@ a [class^=ri-], a [class*=" ri-"] {
   height: 300px;
 }
 
+.alert-dismissible .btn-close:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
 .question-container {
-  margin-bottom: 3em;
+  margin-bottom: 24px;
+  padding: 12px 0;
 }
 .question-container .ls-label-question {
   font-size: 24px;
@@ -15481,8 +15548,12 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
   table.ls-answers tbody .control-label {
     text-align: left;
   }
-  table.ls-answers .answertextright {
+  table.ls-answers:not(.semantic-differential-list) tbody .answertextright {
     text-align: right;
+  }
+  table.ls-answers.semantic-differential-list tbody .answertextright,
+  table.ls-answers.semantic-differential-list tbody .answertext {
+    text-align: left;
   }
   /* Show the label */
   table.ls-answers .ls-label-xs-visibility {
@@ -15560,6 +15631,216 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
 .space-col {
   margin-top: 1em;
   margin-bottom: 2em;
+}
+
+.no-tables-general .slider-list .slider-left {
+  text-align: left;
+}
+.no-tables-general .slider-list .slider-right {
+  text-align: right;
+}
+.no-tables-general table.ls-answers,
+.no-tables-general table.ls-answers thead,
+.no-tables-general table.ls-answers tbody,
+.no-tables-general table.ls-answers th,
+.no-tables-general table.ls-answers td,
+.no-tables-general table.ls-answers tr {
+  display: block;
+}
+.no-tables-general table.ls-answers, .no-tables-general table.ls-answers thead, .no-tables-general table.ls-answers tbody, .no-tables-general table.ls-answers th, .no-tables-general table.ls-answers td,
+.no-tables-general table.ls-answers tr {
+  text-align: left;
+}
+.no-tables-general table.ls-answers thead {
+  display: none;
+}
+.no-tables-general {
+  /* We don't need it for accessibility : we already have the label */
+}
+.no-tables-general table.ls-answers tbody td {
+  text-align: left;
+  height: auto;
+  overflow: visible;
+}
+.no-tables-general table.ls-answers .information-item:empty {
+  display: none;
+}
+.no-tables-general .ls-answers td.radio-item,
+.no-tables-general .ls-answers td.checkbox-item {
+  padding: 4px;
+}
+.no-tables-general .ls-answers td.radio-item, .no-tables-general .ls-answers td.checkbox-item {
+  padding-left: 24px;
+  padding-right: 4px;
+}
+.no-tables-general table.ls-answers tbody .control-label {
+  text-align: left;
+}
+.no-tables-general table.ls-answers .answertext {
+  margin-bottom: 0;
+}
+.no-tables-general table.ls-answers .answertextright {
+  text-align: right;
+}
+.no-tables-general {
+  /* Show the label */
+}
+.no-tables-general table.ls-answers .ls-label-xs-visibility {
+  display: block;
+  position: relative;
+  width: auto;
+  height: auto;
+  overflow: initial;
+  white-space: normal;
+}
+.no-tables-general table.ls-answers .ls-label-xs-visibility {
+  left: auto;
+}
+.no-tables-general table.ls-answers .radio-item .ls-label-xs-visibility,
+.no-tables-general table.ls-answers .checkbox-item .ls-label-xs-visibility {
+  line-height: initial;
+  text-indent: initial;
+}
+.no-tables-general table.ls-answers .radio-item .ls-label-xs-visibility, .no-tables-general table.ls-answers .checkbox-item .ls-label-xs-visibility {
+  margin-left: 0;
+}
+.no-tables-general table.ls-answers .ls-label-xs-visibility > * {
+  position: relative;
+  top: auto;
+  width: auto;
+  height: auto;
+  overflow: auto;
+}
+.no-tables-general table.ls-answers .ls-label-xs-visibility > * {
+  left: auto;
+}
+.no-tables-general table.ls-answers .radio-item label.ls-label-xs-visibility::before, .no-tables-general table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
+  margin-left: -20px;
+}
+.no-tables-general table.ls-answers .radio-item label.ls-label-xs-visibility::after, .no-tables-general table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
+  margin-left: -18px;
+}
+.no-tables-general table.ls-answers > tbody > tr:hover {
+  background-color: transparent;
+}
+.no-tables-general {
+  /* bs fix */
+}
+.no-tables-general table.ls-answers td.visible-xs,
+.no-tables-general table.ls-answers th.visible-xs {
+  display: block !important;
+}
+
+@media only screen and (max-width: 760px) {
+  .no-tables-mobile .slider-list .slider-left {
+    text-align: left !important;
+  }
+  .no-tables-mobile .slider-list .slider-right {
+    text-align: right !important;
+  }
+}
+.no-tables-mobile {
+  /*
+  Max width before this PARTICULAR table gets nasty
+  For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)
+  */
+}
+@media only screen and (max-width: 767px) {
+  .no-tables-mobile table.ls-answers,
+  .no-tables-mobile table.ls-answers thead,
+  .no-tables-mobile table.ls-answers tbody,
+  .no-tables-mobile table.ls-answers th,
+  .no-tables-mobile table.ls-answers td,
+  .no-tables-mobile table.ls-answers tr {
+    display: block;
+  }
+  .no-tables-mobile table.ls-answers, .no-tables-mobile table.ls-answers thead, .no-tables-mobile table.ls-answers tbody, .no-tables-mobile table.ls-answers th, .no-tables-mobile table.ls-answers td,
+  .no-tables-mobile table.ls-answers tr {
+    text-align: left;
+  }
+  .no-tables-mobile table.ls-answers thead {
+    display: none;
+  }
+  .no-tables-mobile {
+    /* We don't need it for accessibility : we already have the label */
+  }
+  .no-tables-mobile table.ls-answers tbody td {
+    text-align: left;
+  }
+  .no-tables-mobile table.ls-answers .information-item:empty {
+    display: none;
+  }
+  .no-tables-mobile .ls-answers td.radio-item,
+  .no-tables-mobile .ls-answers td.checkbox-item {
+    padding: 4px;
+  }
+  .no-tables-mobile .ls-answers td.radio-item, .no-tables-mobile .ls-answers td.checkbox-item {
+    padding-left: 24px;
+    padding-right: 4px;
+  }
+  .no-tables-mobile table.ls-answers tbody .control-label {
+    text-align: left;
+  }
+  .no-tables-mobile table.ls-answers .answertext {
+    margin-bottom: 0;
+  }
+  .no-tables-mobile table.ls-answers .answertextright {
+    text-align: right;
+  }
+  .no-tables-mobile {
+    /* Show the label */
+  }
+  .no-tables-mobile table.ls-answers .ls-label-xs-visibility {
+    display: block;
+    position: relative;
+    width: auto;
+    height: auto;
+    overflow: initial;
+    white-space: normal;
+  }
+  .no-tables-mobile table.ls-answers .ls-label-xs-visibility {
+    left: auto;
+  }
+  .no-tables-mobile table.ls-answers .radio-item .ls-label-xs-visibility,
+  .no-tables-mobile table.ls-answers .checkbox-item .ls-label-xs-visibility {
+    line-height: initial;
+    text-indent: initial;
+  }
+  .no-tables-mobile table.ls-answers .radio-item .ls-label-xs-visibility, .no-tables-mobile table.ls-answers .checkbox-item .ls-label-xs-visibility {
+    margin-left: 0;
+  }
+  .no-tables-mobile table.ls-answers .ls-label-xs-visibility > * {
+    position: relative;
+    top: auto;
+    width: auto;
+    height: auto;
+    overflow: auto;
+  }
+  .no-tables-mobile table.ls-answers .ls-label-xs-visibility > * {
+    left: auto;
+  }
+  .no-tables-mobile table.ls-answers .radio-item label.ls-label-xs-visibility::before, .no-tables-mobile table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
+    margin-left: -20px;
+  }
+  .no-tables-mobile table.ls-answers .radio-item label.ls-label-xs-visibility::after, .no-tables-mobile table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
+    margin-left: -20px;
+  }
+  .no-tables-mobile table.ls-answers > tbody > tr:hover {
+    background-color: transparent;
+  }
+  .no-tables-mobile {
+    /* bs fix */
+  }
+  .no-tables-mobile table.ls-answers td.visible-xs,
+  .no-tables-mobile table.ls-answers th.visible-xs {
+    display: block !important;
+  }
+  .no-tables-mobile {
+    /* Don't display repeating header on mobile devices'*/
+  }
+  .no-tables-mobile table.ls-answers tr.ls-heading-repeat {
+    display: none;
+  }
 }
 
 .darkmode-on {

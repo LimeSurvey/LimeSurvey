@@ -78,7 +78,7 @@ class Zend_Amf_Parse_Amf0_Deserializer extends Zend_Amf_Parse_Deserializer
 
             // boolean
             case Zend_Amf_Constants::AMF0_BOOLEAN:
-                return (boolean) $this->_stream->readByte();
+                return (bool) $this->_stream->readByte();
 
             // string
             case Zend_Amf_Constants::AMF0_STRING:

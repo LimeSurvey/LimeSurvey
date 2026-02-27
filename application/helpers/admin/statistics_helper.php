@@ -979,6 +979,7 @@ class statistics_helper
                         $rows[$key] = $row[$fieldname];
                     }
                 }
+                $rows = array_filter($rows, fn($value) => $value !== "" && $value !== null);
 
                 //calculate statistical values
                 if (!empty($rows)) {

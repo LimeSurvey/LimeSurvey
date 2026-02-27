@@ -92,7 +92,8 @@
         {# Ajaxify cannot handle an element that is a direct child of body, so => create simple wrapper section #}
         <article>
 
-            <div id="{{ aSurveyInfo.id.dynamicreload }}">
+            <div id="{{ aSurveyInfo.id.dynamicreload }}"
+                 class="{% if( aSurveyInfo.options.notables == "2" ) %}no-tables-general{% elseif(aSurveyInfo.options.notables == "1") %}no-tables-mobile{% endif %}">
             {% block body %}
 
                 {# Bootstrap Navigation Bar: the top menu #}

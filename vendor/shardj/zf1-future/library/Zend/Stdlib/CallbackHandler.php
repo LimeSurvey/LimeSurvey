@@ -93,7 +93,11 @@ class Zend_Stdlib_CallbackHandler
      */
     protected function registerCallback($callback)
     {
-        set_error_handler([$this, 'errorHandler'], E_STRICT);
+        $errorLevel = (defined('E_STRICT') && version_compare(PHP_VERSION, '8.4.0', '<'))
+            ? (E_ALL | E_STRICT)
+            : E_ALL;
+
+        set_error_handler([$this, 'errorHandler'], $errorLevel);
         $callable = is_callable($callback);
         restore_error_handler();
         if (!$callable || $this->error) {
@@ -102,7 +106,7 @@ class Zend_Stdlib_CallbackHandler
         }
 
         // If pecl/weakref is not installed, simply store the callback and return
-        set_error_handler([$this, 'errorHandler'], E_WARNING);
+        set_error_handler([$this, 'errorHandler'], $errorLevel);
         $callable = class_exists('WeakRef');
         restore_error_handler();
         if (!$callable || $this->error) {

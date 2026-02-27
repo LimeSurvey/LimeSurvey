@@ -103,6 +103,9 @@
     cursor: pointer;
     width: 36px;
 }
+.sidebar-icons-item .sidebar-icon div {
+    z-index: 5000;
+}
 .sidebar-icons-item:first-child {
     margin-top: 0;
 }
