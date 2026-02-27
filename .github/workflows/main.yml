@@ -11,6 +11,9 @@ on:
       - 'feature/**'
       - 'zoho/**'
 
+permissions:
+  contents: read
+
 jobs:
   CI-pipeline:
     runs-on: ubuntu-22.04    # ubuntu runner hosted by Github
