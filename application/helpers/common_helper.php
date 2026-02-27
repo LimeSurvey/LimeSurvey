@@ -749,7 +749,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
     }
 
     $surveyid = sanitize_int($surveyid);
-    $languagecode = sanitize_languagecode($languagecode);
+    $languagecode = \LSYii_Validators::languageCodeFilter($languagecode);
     $thissurvey = false;
     $oSurvey = Survey::model()->findByPk($surveyid);
     // Do job only if this survey exist
@@ -936,9 +936,9 @@ function returnGlobal($stringname, $bRestrictToString = false)
         }
     } elseif ($stringname == "lang" || $stringname == "adminlang") {
         if ($bUrlParamIsArray) {
-            return array_map("sanitize_languagecode", $urlParam);
+            return array_map(['\\LSYii_Validators', 'languageCodeFilter'], $urlParam);
         } else {
-            return sanitize_languagecode($urlParam);
+            return \LSYii_Validators::languageCodeFilter($urlParam);
         }
     } elseif (
         $stringname == "htmleditormode" ||
@@ -1495,7 +1495,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 {
 
     static $aQIDReplacementMappings = [];
-    $sLanguage = sanitize_languagecode($sLanguage);
+    $sLanguage = \LSYii_Validators::languageCodeFilter($sLanguage);
     $surveyid = $survey->sid;
     if (!isset($aQIDReplacementMappings[$surveyid])) {
         $aQIDReplacementMappings[$surveyid] = $surveyReplacements;
@@ -2197,7 +2197,7 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
 {
     static $timingsFieldMap;
 
-    $sLanguage = sanitize_languagecode($sQuestionLanguage);
+    $sLanguage = \LSYii_Validators::languageCodeFilter($sQuestionLanguage);
     $surveyid = sanitize_int($surveyid);
     $survey = Survey::model()->findByPk($surveyid);
 
@@ -4056,13 +4056,13 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = '')
 {
     Yii::app()->loadHelper('database');
     $iSurveyID = (int) $iSurveyID;
-    $baselang = sanitize_languagecode($baselang);
+    $baselang = \LSYii_Validators::languageCodeFilter($baselang);
     if (empty($baselang)) {
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
     }
     $aLanguages = [];
     if (!empty($availlangs) && $availlangs != " ") {
-        $availlangs = sanitize_languagecodeS($availlangs);
+        $availlangs = \LSYii_Validators::multiLanguageCodeFilter($availlangs);
         $aLanguages = explode(" ", (string) $availlangs);
         if ($aLanguages[count($aLanguages) - 1] == "") {
             array_pop($aLanguages);
@@ -4116,12 +4116,12 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = '')
 function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
 {
     $sid = (int) $sid;
-    $baselang = sanitize_languagecode($baselang);
+    $baselang = \LSYii_Validators::languageCodeFilter($baselang);
     if (empty($baselang)) {
         $baselang = Survey::model()->findByPk($sid)->language;
     }
     if (trim($availlangs) != '') {
-        $availlangs = sanitize_languagecodeS($availlangs);
+        $availlangs = \LSYii_Validators::multiLanguageCodeFilter($availlangs);
         $languagesToCheck = explode(" ", (string) $availlangs);
         if ($languagesToCheck[count($languagesToCheck) - 1] == "") {
             array_pop($languagesToCheck);
@@ -4730,7 +4730,7 @@ function getLabelSets($languages = null)
 {
     $aLanguages = array();
     if (!empty($languages)) {
-        $languages = sanitize_languagecodeS($languages);
+        $languages = \LSYii_Validators::multiLanguageCodeFilter($languages);
         $aLanguages = explode(' ', trim((string) $languages));
     }
 

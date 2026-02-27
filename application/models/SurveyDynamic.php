@@ -277,7 +277,7 @@ class SurveyDynamic extends LSActiveRecord
      */
     public function getGridButtons()
     {
-        $sBrowseLanguage = sanitize_languagecode(Yii::app()->request->getParam('browseLang', ''));
+        $sBrowseLanguage = \LSYii_Validators::languageCodeFilter(Yii::app()->request->getParam('browseLang', ''));
 
         $permissionReponseUpdate = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update');
         $permissionReponseDelete = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete');

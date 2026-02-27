@@ -281,7 +281,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
 */
 function SPSSGetValues($field, $qidattributes, $language)
 {
-    $language = sanitize_languagecode($language);
+    $language = \LSYii_Validators::languageCodeFilter($language);
 
     $length_vallabel = 120; // Constant ?
     if (!isset($field['LStype']) || empty($field['LStype'])) {
@@ -1315,7 +1315,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
     App()->setLanguage($quexmllang);
 
     $aCondition = array('parent_qid' => $qid);
-    $quexmllang = sanitize_languagecode($quexmllang);
+    $quexmllang = \LSYii_Validators::languageCodeFilter($quexmllang);
     $scale_id   = sanitize_paranoid_string($scale_id);
 
     if ($scale_id != false) {
@@ -1438,7 +1438,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
     global $quexmllang;
     global $iSurveyID;
 
-    $quexmllang = sanitize_languagecode($quexmllang);
+    $quexmllang = \LSYii_Validators::languageCodeFilter($quexmllang);
     $qid        = sanitize_paranoid_string($qid);
     if ($use_answers) {
         // $Query = "SELECT qid, answer as question, code as title, sortorder as aid FROM {{answers}} WHERE qid = $qid  AND language='$quexmllang' ORDER BY sortorder ASC";
