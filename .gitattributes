@@ -21,6 +21,7 @@ psalm-all.xml           export-ignore
 psalm-strict.xml        export-ignore
 tests                   export-ignore
 yarn.lock               export-ignore
+composer.lock           export-ignore
 vendor/khaled.alshamaa/ar-php/examples export-ignore
 
 # Set default behaviour, in case users don't have core.autocrlf set.
