@@ -326,8 +326,7 @@ class CopySurvey
                 $destinationQuestion->sid = $destinationSurvey->sid;
                 $destinationQuestion->gid = $mapping['questionGroupIds'][$question->gid];
                 if ($destinationQuestion->save()) {
-                    //the subquestion also need the correct mapping of the groupids....
-                    $this->mapGroupIdsToSubquestions(
+                    $this->mapGroupIdsToSubquestions( //subquestion need mapping of groupids
                         $destinationQuestion,
                         $destinationSurvey->sid,
                         $mapping['questionGroupIds'][$question->gid]
