@@ -219,7 +219,7 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label" for='tokenIpWhitelist' role="heading" aria-level="3">
+                <label class="form-label" for='tokenIpWhitelist'>
                     <?php eT("Reset failed login attempts of participants to make survey accessible again:"); ?>
                 </label>
                 <div class="">
