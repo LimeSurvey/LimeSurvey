@@ -14,6 +14,7 @@ import {
   statisticsGraphs,
 } from '../ResponsesStatistics'
 import { ResponsesTable } from '../ResponsesTable'
+import { getResponsesPanels, panelItemsKeys } from '../../Sidebars'
 
 export const ResponsesOverview = ({ surveyId, survey, surveyQuestions }) => {
   const navigate = useNavigate()
@@ -186,7 +187,11 @@ export const ResponsesOverview = ({ surveyId, survey, surveyQuestions }) => {
           disableUpdatingResponses={true}
         />
         <div
-          onClick={() => navigate(`/responses/${surveyId}/results/list`)}
+          onClick={() =>
+            navigate(
+              `/responses/${surveyId}/${getResponsesPanels().results.panel}/${panelItemsKeys.list}`
+            )
+          }
           className="text-end mt-2 med14-c cursor-pointer text-primary"
         >
           {t('View all responses')} <i className="ri-arrow-right-line"></i>
