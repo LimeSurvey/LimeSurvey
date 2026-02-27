@@ -17,12 +17,14 @@ use Permission;
 use SurveyLanguageSetting;
 use Template;
 use Yii;
+use Answer;
 
 /**
  * This class is responsible for copying a survey.
  *
  * Class CopySurvey
  * @package LimeSurvey\Models\Services
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class CopySurvey
 {
@@ -425,6 +427,7 @@ class CopySurvey
      * @param array $mappingGroupIds
      * @param int $destinationSurveyId
      * @return int number of conditions copied
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     private function copyConditions($mappingQuestionIds, $mappingGroupIds, $destinationSurveyId)
     {
@@ -447,17 +450,51 @@ class CopySurvey
             $condition->qid = $mappingQuestionIds[$conditionRow['qid']];
             $condition->cqid = $mappingQuestionIds[$conditionRow['cqid']];
             //rebuild the cfieldname --> "$iSurveyID . "X" . $iGroupID . "X" . $iQuestionID"
-            list(, $oldGroupId, $oldQuestionId) = explode("X", (string) $conditionRow['cfieldname'], 3);
-            //the $oldQuestionId contains the question id from the old question id
-            //and could in addition contain a subquestion code or answer option code
-            //cut out the question id, which is at the beginning of $oldQuestionId
-            $appendSubQuestionOrAnswerOption = substr($oldQuestionId, strlen((string) $conditionRow['cqid']));
-            $addPlusSign = "";
-            if (preg_match("/^\+/", $conditionRow['cfieldname'])) {
-                $addPlusSign = "+";
+            $cfieldname = (string) $conditionRow['cfieldname'];
+            $qPos = strpos($cfieldname, 'Q');
+            if (($qPos === false) || ($qPos > 1)) {
+                list(, $oldGroupId, $oldQuestionId) = explode("X", $cfieldname, 3);
+                //the $oldQuestionId contains the question id from the old question id
+                //and could in addition contain a subquestion code or answer option code
+                //cut out the question id, which is at the beginning of $oldQuestionId
+                $appendSubQuestionOrAnswerOption = substr($oldQuestionId, strlen((string) $conditionRow['cqid']));
+                $addPlusSign = "";
+                if (preg_match("/^\+/", $conditionRow['cfieldname'])) {
+                    $addPlusSign = "+";
+                }
+                $condition->cfieldname = $addPlusSign . $destinationSurveyId . "X" . $mappingGroupIds[$oldGroupId] .
+                    "X" . $mappingQuestionIds[$conditionRow['cqid']] . $appendSubQuestionOrAnswerOption;
+            } else {
+                $parts = explode("_", $cfieldname);
+                for ($index = 0; $index < count($parts); $index++) {
+                    $firstLetter = $parts[$index][0];
+                    if (in_array($firstLetter, ['+', 'Q', 'S', 'R'])) {
+                        if ($firstLetter !== 'R') {
+                            $offset = (($firstLetter === '+') ? 2 : 1);
+                            $qid = -1;
+                            if (!isset($mappingQuestionIds[substr($parts[$index], $offset)])) {
+                                $oldQuestion = Question::model()->findByPk(substr($parts[$index], $offset));
+                                if (!$oldQuestion) {
+                                    continue;
+                                }
+                                $newQuestion = Question::model()->find("sid = :sid and title = :title", [":sid" => $destinationSurveyId, ":title" => $oldQuestion->title]);
+                                $qid = $newQuestion->qid;
+                            } else {
+                                $qid = $mappingQuestionIds[substr($parts[$index], $offset)];
+                            }
+                            $parts[$index] = substr($parts[$index], 0, $offset) . $qid;
+                        } else {
+                            $oldAnswer = Answer::model()->findByPk(substr($parts[$index], $offset));
+                            if (!isset($mappingQuestionIds[$oldAnswer->qid])) {
+                                continue;
+                            }
+                            $newAnswer = Answer::model()->find("qid = :qid and code = :code", [":qid" => $mappingQuestionIds[$oldAnswer->qid], ":code" => $oldAnswer->code]);
+                            $parts[$index] = substr($parts[$index], 0, $offset) . $newAnswer->aid;
+                        }
+                    }
+                }
+                $condition->cfieldname = implode("_", $parts);
             }
-            $condition->cfieldname = $addPlusSign . $destinationSurveyId . "X" . $mappingGroupIds[$oldGroupId] .
-                "X" . $mappingQuestionIds[$conditionRow['cqid']] . $appendSubQuestionOrAnswerOption;
             $condition->value = $conditionRow['value'];
             $condition->method = $conditionRow['method'];
             if ($condition->save()) {
