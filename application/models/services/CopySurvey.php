@@ -325,6 +325,8 @@ class CopySurvey
                 $destinationQuestion->sid = $destinationSurvey->sid;
                 $destinationQuestion->gid = $mapping['questionGroupIds'][$question->gid];
                 $destinationQuestion->save();
+                //the subquestion also need the correct mapping of the groupids....
+                $this->mapGroupIdsToSubquestions($destinationQuestion, $destinationSurvey->sid, $mapping['questionGroupIds'][$question->gid]);
                 $mappingQuestionIds[$question->qid] = $destinationQuestion->qid;
                 $cntCopiedQuestions++;
                 if (!empty($copyQuestion->getMappedSubquestionIds()) && is_array($copyQuestion->getMappedSubquestionIds())) {
@@ -337,6 +339,27 @@ class CopySurvey
         $this->copyDefaultAnswers($mappingQuestionIds, $mappedSubquestionIds);
 
         return $mapping;
+    }
+
+    /**
+     * Assigns the correct group ids to the subquestions of the main question.
+     *
+     * @param Question $parentQuestion
+     * @param int $destinationSurveyId
+     * @param int $groupId
+     * @return void
+     */
+    public function mapGroupIdsToSubquestions($parentQuestion, $destinationSurveyId, $groupId) {
+        //search for all subquestions for the main question
+        $subquestions = Question::model()->findAllByAttributes([
+            'parent_qid' => $parentQuestion->qid,
+           'sid' => $destinationSurveyId,
+        ]);
+
+        foreach ($subquestions as $subquestion) {
+            $subquestion->gid = $groupId;
+            $subquestion->save();   //update the group id for the subquestion
+        }
     }
 
     /**
