@@ -12,6 +12,7 @@ const StateManager = (function() {
     let listeners = [];
     let mutations = {};
     let getters = {};
+    let persistKeys = null; // null = persist all, array = persist only these keys
 
     /**
      * Initialize state with default values
@@ -38,9 +39,10 @@ const StateManager = (function() {
             storageKey += '_' + config.surveyid;
         }
 
-        // Set mutations and getters
+        // Set mutations, getters, and persist keys
         mutations = config.mutations || {};
         getters = config.getters || {};
+        persistKeys = config.persistKeys || null;
 
         // Try to load from sessionStorage
         const savedState = loadFromStorage();
@@ -69,7 +71,18 @@ const StateManager = (function() {
      */
     function saveToStorage() {
         try {
-            sessionStorage.setItem(storageKey, JSON.stringify(state));
+            if (persistKeys) {
+                var toSave = {};
+                for (var i = 0; i < persistKeys.length; i++) {
+                    var k = persistKeys[i];
+                    if (state.hasOwnProperty(k)) {
+                        toSave[k] = state[k];
+                    }
+                }
+                sessionStorage.setItem(storageKey, JSON.stringify(toSave));
+            } else {
+                sessionStorage.setItem(storageKey, JSON.stringify(state));
+            }
         } catch (e) {
             console.warn('Failed to save state to sessionStorage:', e);
         }

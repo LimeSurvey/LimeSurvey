@@ -318,6 +318,7 @@ const StateManager = function () {
   let listeners = [];
   let mutations = {};
   let getters = {};
+  let persistKeys = null; // null = persist all, array = persist only these keys
 
   /**
    * Initialize state with default values
@@ -344,9 +345,10 @@ const StateManager = function () {
       storageKey += '_' + config.surveyid;
     }
 
-    // Set mutations and getters
+    // Set mutations, getters, and persist keys
     mutations = config.mutations || {};
     getters = config.getters || {};
+    persistKeys = config.persistKeys || null;
 
     // Try to load from sessionStorage
     const savedState = loadFromStorage();
@@ -374,7 +376,18 @@ const StateManager = function () {
    */
   function saveToStorage() {
     try {
-      sessionStorage.setItem(storageKey, JSON.stringify(state));
+      if (persistKeys) {
+        var toSave = {};
+        for (var i = 0; i < persistKeys.length; i++) {
+          var k = persistKeys[i];
+          if (state.hasOwnProperty(k)) {
+            toSave[k] = state[k];
+          }
+        }
+        sessionStorage.setItem(storageKey, JSON.stringify(toSave));
+      } else {
+        sessionStorage.setItem(storageKey, JSON.stringify(state));
+      }
     } catch (e) {
       console.warn('Failed to save state to sessionStorage:', e);
     }
@@ -624,12 +637,12 @@ const UIHelpers = function () {
     if (!icon) return '';
     switch (iconType) {
       case 'fontawesome':
-        return '<i class="fa fa-' + icon + '">&nbsp;</i>';
+        return '<i class="icon fa fa-' + escapeHtml(icon) + '">&nbsp;</i>';
       case 'image':
-        return '<img width="32px" src="' + icon + '" />';
+        return '<img class="icon" width="32px" src="' + escapeHtml(icon) + '" />';
       case 'iconclass':
       case 'remix':
-        return '<i class="' + icon + '">&nbsp;</i>';
+        return '<i class="icon ' + escapeHtml(icon) + '">&nbsp;</i>';
       default:
         return '';
     }
@@ -644,7 +657,7 @@ const UIHelpers = function () {
   function createLoaderWidget(id, extraClass) {
     id = id || 'loader-' + Math.floor(1000 * Math.random());
     extraClass = extraClass || '';
-    return '<div id="' + id + '" class="loader--loaderWidget ls-flex ls-flex-column align-content-center align-items-center" style="min-height: 100%;">' + '<div class="ls-flex align-content-center align-items-center">' + '<div class="loader-adminpanel text-center ' + extraClass + '">' + '<div class="contain-pulse animate-pulse">' + '<div class="square"></div>' + '<div class="square"></div>' + '<div class="square"></div>' + '<div class="square"></div>' + '</div>' + '</div>' + '</div>' + '</div>';
+    return '<div id="' + escapeHtml(id) + '" class="loader--loaderWidget ls-flex ls-flex-column align-content-center align-items-center" style="min-height: 100%;">' + '<div class="ls-flex align-content-center align-items-center">' + '<div class="loader-adminpanel text-center ' + escapeHtml(extraClass) + '">' + '<div class="contain-pulse animate-pulse">' + '<div class="square"></div>' + '<div class="square"></div>' + '<div class="square"></div>' + '<div class="square"></div>' + '</div>' + '</div>' + '</div>' + '</div>';
   }
 
   /**
@@ -1192,6 +1205,9 @@ class QuestionExplorer {
         return g.gid === gid;
       });
       if (this.questiongroupDragging && this.draggedQuestionGroup && questiongroupObject) {
+        // Highlight the drop destination
+        $container.find('.list-group-item').removeClass('dragged');
+        $(e.currentTarget).addClass('dragged');
         var targetPosition = parseInt(questiongroupObject.group_order);
         var currentPosition = parseInt(this.draggedQuestionGroup.group_order);
         if (Math.abs(targetPosition - currentPosition) === 1) {
@@ -1268,9 +1284,13 @@ class QuestionExplorer {
     // Question dragenter - matching dragoverQuestion
     $container.on('dragenter.qe', '.question-question-list-item', e => {
       e.preventDefault();
+      e.stopPropagation();
       var qid = $(e.currentTarget).data('qid');
       var gid = $(e.currentTarget).data('gid');
       if (this.questionDragging && this.draggedQuestion) {
+        // Highlight the drop destination
+        $container.find('.question-question-list-item').removeClass('dragged');
+        $(e.currentTarget).addClass('dragged');
         if (window.SideMenuData.isActive && this.draggedQuestion.gid !== gid) return;
         var questiongroups = _StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"].get('questiongroups') || [];
         var group = questiongroups.find(function (g) {
@@ -1415,12 +1435,12 @@ class QuickMenu {
     const icon = menuItem.menu_icon;
     switch (iconType) {
       case 'fontawesome':
-        return '<i class="quickmenuIcon fa fa-' + icon + '"></i>';
+        return '<i class="quickmenuIcon fa fa-' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_1__["default"].escapeHtml(icon) + '"></i>';
       case 'image':
-        return '<img width="32px" src="' + icon + '" />';
+        return '<img width="32px" src="' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_1__["default"].escapeHtml(icon) + '" />';
       case 'iconclass':
       case 'remix':
-        return '<i class="quickmenuIcon ' + icon + '"></i>';
+        return '<i class="quickmenuIcon ' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_1__["default"].escapeHtml(icon) + '"></i>';
       default:
         return '';
     }
@@ -2047,8 +2067,10 @@ class Sidebar {
    * Handle vue-reload-remote event
    */
   handleVueReloadRemote() {
-    _Actions_js__WEBPACK_IMPORTED_MODULE_1__["default"].getQuestions();
-    _Actions_js__WEBPACK_IMPORTED_MODULE_1__["default"].collectMenus();
+    Promise.all([_Actions_js__WEBPACK_IMPORTED_MODULE_1__["default"].getQuestions(), _Actions_js__WEBPACK_IMPORTED_MODULE_1__["default"].collectMenus()]).then(() => {
+      this.controlActiveLink();
+      this.renderContent();
+    });
     _StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"].commit('newToggleKey');
   }
 
@@ -2056,8 +2078,10 @@ class Sidebar {
    * Handle vue-redraw event
    */
   handleVueRedraw() {
-    _Actions_js__WEBPACK_IMPORTED_MODULE_1__["default"].getQuestions();
-    _Actions_js__WEBPACK_IMPORTED_MODULE_1__["default"].collectMenus();
+    Promise.all([_Actions_js__WEBPACK_IMPORTED_MODULE_1__["default"].getQuestions(), _Actions_js__WEBPACK_IMPORTED_MODULE_1__["default"].collectMenus()]).then(() => {
+      this.controlActiveLink();
+      this.renderContent();
+    });
   }
 
   /**
@@ -2723,7 +2747,8 @@ const Lsadminsidepanel = function (userid, surveyid) {
       surveyid: surveyid,
       defaultState: (0,_stateConfig_js__WEBPACK_IMPORTED_MODULE_1__.createDefaultState)(userid, surveyid),
       mutations: (0,_stateConfig_js__WEBPACK_IMPORTED_MODULE_1__.createMutations)(_StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"]),
-      getters: (0,_stateConfig_js__WEBPACK_IMPORTED_MODULE_1__.createGetters)(_StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+      getters: (0,_stateConfig_js__WEBPACK_IMPORTED_MODULE_1__.createGetters)(_StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"]),
+      persistKeys: ['currentTab', 'isCollapsed', 'sidebarwidth', 'questionGroupOpenArray', 'lastMenuOpen', 'lastMenuItemOpen', 'lastQuestionOpen', 'lastQuestionGroupOpen']
     });
 
     // Apply survey ID

@@ -67,7 +67,17 @@ const Lsadminsidepanel = function(userid, surveyid) {
             surveyid: surveyid,
             defaultState: createDefaultState(userid, surveyid),
             mutations: createMutations(StateManager),
-            getters: createGetters(StateManager)
+            getters: createGetters(StateManager),
+            persistKeys: [
+                'currentTab',
+                'isCollapsed',
+                'sidebarwidth',
+                'questionGroupOpenArray',
+                'lastMenuOpen',
+                'lastMenuItemOpen',
+                'lastQuestionOpen',
+                'lastQuestionGroupOpen'
+            ]
         });
 
         // Apply survey ID

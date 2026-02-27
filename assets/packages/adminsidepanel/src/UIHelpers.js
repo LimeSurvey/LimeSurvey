@@ -127,12 +127,12 @@ const UIHelpers = (function() {
 
         switch (iconType) {
             case 'fontawesome':
-                return '<i class="fa fa-' + escapeHtml(icon) + '">&nbsp;</i>';
+                return '<i class="icon fa fa-' + escapeHtml(icon) + '">&nbsp;</i>';
             case 'image':
-                return '<img width="32px" src="' + escapeHtml(icon) + '" />';
+                return '<img class="icon" width="32px" src="' + escapeHtml(icon) + '" />';
             case 'iconclass':
             case 'remix':
-                return '<i class="' + escapeHtml(icon) + '">&nbsp;</i>';
+                return '<i class="icon ' + escapeHtml(icon) + '">&nbsp;</i>';
             default:
                 return '';
         }

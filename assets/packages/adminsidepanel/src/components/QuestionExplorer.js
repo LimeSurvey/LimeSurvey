@@ -505,6 +505,9 @@ class QuestionExplorer {
             var questiongroupObject = questiongroups.find(function(g) { return g.gid === gid; });
 
             if (this.questiongroupDragging && this.draggedQuestionGroup && questiongroupObject) {
+                // Highlight the drop destination
+                $container.find('.list-group-item').removeClass('dragged');
+                $(e.currentTarget).addClass('dragged');
                 var targetPosition = parseInt(questiongroupObject.group_order);
                 var currentPosition = parseInt(this.draggedQuestionGroup.group_order);
                 if (Math.abs(targetPosition - currentPosition) === 1) {
@@ -583,10 +586,15 @@ class QuestionExplorer {
         // Question dragenter - matching dragoverQuestion
         $container.on('dragenter.qe', '.question-question-list-item', (e) => {
             e.preventDefault();
+            e.stopPropagation();
             var qid = $(e.currentTarget).data('qid');
             var gid = $(e.currentTarget).data('gid');
 
             if (this.questionDragging && this.draggedQuestion) {
+                // Highlight the drop destination
+                $container.find('.question-question-list-item').removeClass('dragged');
+                $(e.currentTarget).addClass('dragged');
+
                 if (window.SideMenuData.isActive && this.draggedQuestion.gid !== gid) return;
 
                 var questiongroups = StateManager.get('questiongroups') || [];

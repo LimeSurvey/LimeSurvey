@@ -417,8 +417,13 @@ class Sidebar {
      * Handle vue-reload-remote event
      */
     handleVueReloadRemote() {
-        Actions.getQuestions();
-        Actions.collectMenus();
+        Promise.all([
+            Actions.getQuestions(),
+            Actions.collectMenus()
+        ]).then(() => {
+            this.controlActiveLink();
+            this.renderContent();
+        });
         StateManager.commit('newToggleKey');
     }
 
@@ -426,8 +431,13 @@ class Sidebar {
      * Handle vue-redraw event
      */
     handleVueRedraw() {
-        Actions.getQuestions();
-        Actions.collectMenus();
+        Promise.all([
+            Actions.getQuestions(),
+            Actions.collectMenus()
+        ]).then(() => {
+            this.controlActiveLink();
+            this.renderContent();
+        });
     }
 
     /**
