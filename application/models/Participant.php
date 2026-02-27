@@ -2104,17 +2104,57 @@ class Participant extends LSActiveRecord
                     $oTokenDynamic->decrypt();
                 }
 
-                /* See if there are any existing CPDB entries that match on firstname,lastname and email */
-                $participantCriteria = new CDbCriteria();
-                $participantCriteria->addCondition('firstname = :firstname');
-                $participantCriteria->addCondition('lastname = :lastname');
-                $participantCriteria->addCondition('email = :email');
-                $participantCriteria->params = [
-                    ":firstname" => $oTokenDynamic->firstname,
-                    ":lastname"  => $oTokenDynamic->lastname,
-                    ":email"     => $oTokenDynamic->email,
-                ];
-                $existing = Participant::model()->find($participantCriteria);
+                // First check if token already has a participant_id in central database
+                $existing = null;
+                if (!empty($oTokenDynamic->participant_id)) {
+                    $existing = Participant::model()->findByPk(
+                        $oTokenDynamic->participant_id
+                    );
+                }
+
+                if (
+                    $existing == null
+                    && (!empty($oTokenDynamic->firstname)
+                        || !empty($oTokenDynamic->lastname)
+                        || !empty($oTokenDynamic->email))
+                ) {
+                    // Determine encryption state of each CPDB core attribute
+                    $cpdbCoreAttributes = ParticipantAttributeName::model(
+                    )->findAllByAttributes([
+                        'core_attribute' => 'Y'
+                    ]);
+                    $cpdbEncrypted = [];
+                    foreach ($cpdbCoreAttributes as $attr) {
+                        $cpdbEncrypted[$attr->defaultname] = ($attr->encrypted
+                            === 'Y');
+                    }
+
+                    // Build comparison values: re-encrypt if the CPDB column is encrypted
+                    $compareFirstname = !empty($cpdbEncrypted['firstname']) ? LSActiveRecord::encryptSingle(
+                        $oTokenDynamic->firstname
+                    ) : $oTokenDynamic->firstname;
+                    $compareLastname = !empty($cpdbEncrypted['lastname']) ? LSActiveRecord::encryptSingle(
+                        $oTokenDynamic->lastname
+                    ) : $oTokenDynamic->lastname;
+                    $compareEmail = !empty($cpdbEncrypted['email']) ? LSActiveRecord::encryptSingle(
+                        $oTokenDynamic->email
+                    ) : $oTokenDynamic->email;
+
+                    $participantCriteria = new CDbCriteria();
+                    $participantCriteria->addCondition(
+                        'firstname = :firstname'
+                    );
+                    $participantCriteria->addCondition('lastname = :lastname');
+                    $participantCriteria->addCondition('email = :email');
+                    $participantCriteria->params = [
+                        ":firstname" => $compareFirstname,
+                        ":lastname" => $compareLastname,
+                        ":email" => $compareEmail,
+                    ];
+                    $existing = Participant::model()->find(
+                        $participantCriteria
+                    );
+                }
                 /* If there is already an existing entry, add to the duplicate count */
                 if ($existing != null) {
                     $duplicate++;
@@ -2161,6 +2201,12 @@ class Participant extends LSActiveRecord
                     /* Now add mapped attribute values */
                     if (!empty($aMapped)) {
                         foreach ($aMapped as $cpdbatt => $tatt) {
+                            Participant::model()->updateAttributeValueToken($surveyid, $pid, $cpdbatt, $tatt);
+                        }
+                    }
+                    /* Now add auto-mapped attribute values */
+                    if (!empty($aAutoMapped)) {
+                        foreach ($aAutoMapped as $cpdbatt => $tatt) {
                             Participant::model()->updateAttributeValueToken($surveyid, $pid, $cpdbatt, $tatt);
                         }
                     }
