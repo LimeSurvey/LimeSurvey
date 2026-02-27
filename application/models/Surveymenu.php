@@ -138,7 +138,7 @@ class Surveymenu extends LSActiveRecord
         foreach ($oSurveyMenuObjects as $oSurveyMenuObject) {
             $entries = [];
             $aMenuEntries = $oSurveyMenuObject->surveymenuEntries;
-            $submenus = $this->getSurveymenuSubmenus($oSurveyMenuObject, $collapsed);
+            $submenus = $this->getSurveymenuSubmenus($oSurveyMenuObject, $collapsed, $oSurvey);
             foreach ($aMenuEntries as $menuEntry) {
                 $aEntry = $menuEntry->attributes;
                 //Skip menuentry if not activated in collapsed mode
@@ -210,7 +210,7 @@ class Surveymenu extends LSActiveRecord
         return $aResultCollected;
     }
 
-    public function getSurveymenuSubmenus($oParentSurveymenu, $collapsed = false)
+    public function getSurveymenuSubmenus($oParentSurveymenu, $collapsed = false, $oSurvey = null)
     {
         $criteria = new CDbCriteria();
         $criteria->addCondition('survey_id=:surveyid OR survey_id IS NULL');
@@ -229,7 +229,7 @@ class Surveymenu extends LSActiveRecord
 
         $oMenus = Surveymenu::model()->findAll($criteria);
 
-        $aResultCollected = $this->createSurveymenuArray($oMenus, $collapsed);
+        $aResultCollected = $this->createSurveymenuArray($oMenus, $collapsed, $oSurvey);
         return $aResultCollected;
     }
 
