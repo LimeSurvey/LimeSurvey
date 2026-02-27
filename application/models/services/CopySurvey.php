@@ -325,13 +325,18 @@ class CopySurvey
                 //change sid and gip for the new question
                 $destinationQuestion->sid = $destinationSurvey->sid;
                 $destinationQuestion->gid = $mapping['questionGroupIds'][$question->gid];
-                $destinationQuestion->save();
-                //the subquestion also need the correct mapping of the groupids....
-                $this->mapGroupIdsToSubquestions($destinationQuestion, $destinationSurvey->sid, $mapping['questionGroupIds'][$question->gid]);
-                $mappingQuestionIds[$question->qid] = $destinationQuestion->qid;
-                $cntCopiedQuestions++;
-                if (!empty($copyQuestion->getMappedSubquestionIds()) && is_array($copyQuestion->getMappedSubquestionIds())) {
-                    $mappedSubquestionIds += $copyQuestion->getMappedSubquestionIds();
+                if ($destinationQuestion->save()) {
+                    //the subquestion also need the correct mapping of the groupids....
+                    $this->mapGroupIdsToSubquestions(
+                        $destinationQuestion,
+                        $destinationSurvey->sid,
+                        $mapping['questionGroupIds'][$question->gid]
+                    );
+                    $mappingQuestionIds[$question->qid] = $destinationQuestion->qid;
+                    $cntCopiedQuestions++;
+                    if (!empty($copyQuestion->getMappedSubquestionIds()) && is_array($copyQuestion->getMappedSubquestionIds())) {
+                        $mappedSubquestionIds += $copyQuestion->getMappedSubquestionIds();
+                    }
                 }
             }
         }
