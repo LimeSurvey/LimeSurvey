@@ -349,7 +349,8 @@ class CopySurvey
      * @param int $groupId
      * @return void
      */
-    public function mapGroupIdsToSubquestions($parentQuestion, $destinationSurveyId, $groupId) {
+    public function mapGroupIdsToSubquestions($parentQuestion, $destinationSurveyId, $groupId)
+    {
         //search for all subquestions for the main question
         $subquestions = Question::model()->findAllByAttributes([
             'parent_qid' => $parentQuestion->qid,
