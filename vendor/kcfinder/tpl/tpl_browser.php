@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>KCFinder: /<?php echo $this->session['dir'] ?></title>
-<base href="<?= Yii::app()->request->getBaseUrl() ?>/">
+<base href="<?= Yii::app()->request->getBaseUrl() . '/vendor/kcfinder' ?>/">
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 <?php INCLUDE "tpl/tpl_css.php" ?>
 <?php INCLUDE "tpl/tpl_javascript.php" ?>
