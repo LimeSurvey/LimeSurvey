@@ -25,6 +25,7 @@ use Yii;
  *
  * Class CopySurvey
  * @package LimeSurvey\Models\Services
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class CopySurvey
 {
