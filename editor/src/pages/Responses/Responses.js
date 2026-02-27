@@ -182,7 +182,7 @@ export const Responses = () => {
             />
           )
         }
-        break;
+        break
       case panelItemsKeys.list:
         if (tabKey === TAB_KEYS.RESPONSES) {
           return (
