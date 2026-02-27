@@ -2125,8 +2125,9 @@ class Participant extends LSActiveRecord
                     ]);
                     $cpdbEncrypted = [];
                     foreach ($cpdbCoreAttributes as $attr) {
-                        $cpdbEncrypted[$attr->defaultname] = ($attr->encrypted
-                            === 'Y');
+                        if (in_array($attr->defaultname, ['firstname', 'lastname', 'email'])) {
+                            $cpdbEncrypted[$attr->defaultname] = ($attr->encrypted === 'Y');
+                        }
                     }
 
                     // Build comparison values: re-encrypt if the CPDB column is encrypted
