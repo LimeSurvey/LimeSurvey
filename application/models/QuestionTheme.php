@@ -38,6 +38,8 @@ class QuestionTheme extends LSActiveRecord
     const THEME_TYPE_USER = 'customUserTheme';
 
     /**
+     * Returns the table name for this model.
+     *
      * @return string the associated database table name
      */
     public function tableName()
@@ -46,6 +48,8 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
+     * Returns the validation rules for this model.
+     *
      * @return array validation rules for model attributes.
      */
     public function rules()
@@ -79,6 +83,8 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
+     * Returns the relations for this model.
+     *
      * @return array relational rules.
      */
     public function relations()
@@ -86,7 +92,22 @@ class QuestionTheme extends LSActiveRecord
         return array();
     }
 
-    /** @inheritdoc */
+    /**
+     * Defines the named scopes available for this model.
+     *
+     * This method overrides CActiveRecord::scopes() and provides additional
+     * query scopes that can be used when retrieving question themes.
+     *
+     * Currently it defines the "base" scope, which selects all core question
+     * themes that do not extend any other theme or question type.
+     *
+     * Example usage:
+     *     QuestionTheme::model()->base()->findAll();
+     *
+     * @inheritdoc
+     *
+     * @return array<string, array<string, mixed>>  An array of named scopes.
+     */
     public function scopes()
     {
         return array(
@@ -99,6 +120,8 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
+     * Returns the attribute labels.
+     *
      * @return array customized attribute labels (name=>label)
      */
     public function attributeLabels()
@@ -172,13 +195,16 @@ class QuestionTheme extends LSActiveRecord
         $criteria->compare('settings', $this->settings, true);
         $sort = new CSort();
         $sort->defaultOrder = 'name';
-        return new CActiveDataProvider($this, array(
+        return new CActiveDataProvider(
+            $this,
+            array(
             'criteria'   => $criteria,
             'sort'      => $sort,
             'pagination' => array(
                 'pageSize' => $pageSizeTemplateView,
             ),
-        ));
+            )
+        );
     }
 
     /**
@@ -229,6 +255,8 @@ class QuestionTheme extends LSActiveRecord
 
     /**
      * Install Button for the available questions
+     *
+     * @return string
      */
     public function getManifestButtons()
     {
@@ -248,12 +276,14 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Import config manifest to database.
      *
-     * @param string $sXMLDirectoryPath the relative path to the Question Theme XML directory
-     * @param bool   $bSkipConversion   If converting should be skipped
-     * @param $bThrowConversionException If true, throws exception instead of redirecting
+     * @param string $sXMLDirectoryPath         the relative path to the Question Theme XML directory
+     * @param bool   $bSkipConversion           If converting should be skipped
+     * @param bool   $bThrowConversionException If true, throws exception instead of redirecting
+     *
      * @return bool|string
      * @throws Exception
-     * @todo Please never redirect at this level, only from controllers.
+     * @todo   Please never redirect at this level, only from controllers.
+     * @todo   Please refactor this function. Meaningful param names. Variable names too.
      */
     public function importManifest($sXMLDirectoryPath, $bSkipConversion = false, $bThrowConversionException = false)
     {
@@ -274,14 +304,22 @@ class QuestionTheme extends LSActiveRecord
             }
         }
 
-        /** @var array */
+        /**
+         * Question Meta Data
+         *
+         * @var array
+         */
         $aQuestionMetaData = self::getQuestionMetaData($sXMLDirectoryPath);
 
         if (empty($aQuestionMetaData)) {
             throw new Exception('Found no question theme metadata');
         }
 
-        /** @var array<string, mixed> */
+        /**
+         * Meta Data
+         *
+         * @var array<string, mixed>
+         */
         // todo proper error handling should be done before in getQuestionMetaData via validate()
         $aMetaDataArray = self::getMetaDataArray($aQuestionMetaData);
 
@@ -331,11 +369,13 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Returns an array of all question themes and their metadata, split into available_themes and broken_themes
      *
-     * @param bool $core
-     * @param bool $custom
-     * @param bool $user
+     * @param bool $core   is Core question theme
+     * @param bool $custom is custom question theme
+     * @param bool $user   is user question theme
+     *
      * @return array
-     * @todo Move to service class
+     * @todo   Move to service class
+     * @todo   Please refactor this function. Example: More meaningfull param names.
      */
     public function getAllQuestionMetaData($core = true, $custom = true, $user = true)
     {
@@ -348,10 +388,13 @@ class QuestionTheme extends LSActiveRecord
                         $questionMetaData = self::getQuestionMetaData($questionConfigFilePath);
                         $questionsMetaData[$questionMetaData['name'] . '_' . $questionMetaData['questionType']] = $questionMetaData;
                     } catch (Exception $e) {
-                        array_push($aBrokenQuestionThemes, [
+                        array_push(
+                            $aBrokenQuestionThemes,
+                            [
                             'path'    => $questionConfigFilePath,
                             'exception' => $e
-                        ]);
+                            ]
+                        );
                     }
                 }
             }
@@ -365,10 +408,11 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Read all the MetaData for given Question XML definition
      *
-     * @param string $pathToXmlFolder
+     * @param string $pathToXmlFolder Path to XML Folder
+     *
      * @return array Question Meta Data
      * @throws Exception
-     * @todo Replace assoc array with DTO
+     * @todo   Replace assoc array with DTO
      */
     public static function getQuestionMetaData($pathToXmlFolder)
     {
@@ -421,14 +465,16 @@ class QuestionTheme extends LSActiveRecord
         $questionMetaData['xml_path'] = $pathToXmlFolder;
 
         // set settings as json
-        $questionMetaData['settings'] = json_encode([
+        $questionMetaData['settings'] = json_encode(
+            [
             'subquestions'     => $questionMetaData['subquestions'] ?? 0,
             'other'            => $questionMetaData['other'] ?? false,
             'answerscales'     => $questionMetaData['answerscales'] ?? 0,
             'hasdefaultvalues' => $questionMetaData['hasdefaultvalues'] ?? 0,
             'assessable'       => $questionMetaData['assessable'] ?? 0,
             'class'            => $questionMetaData['class'] ?? '',
-        ]);
+            ]
+        );
 
         // override MetaData depending on directory
         if (substr($pathToXmlFolder, 0, strlen((string) $questionDirectories[self::THEME_TYPE_CORE])) === $questionDirectories[self::THEME_TYPE_CORE]) {
@@ -453,11 +499,12 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Find all XML paths for specified Question Root folders
      *
-     * @param bool $core
-     * @param bool $custom
-     * @param bool $user
+     * @param bool $core   is core question theme
+     * @param bool $custom is custom question theme
+     * @param bool $user   is user question theme
      *
      * @return array
+     * @todo   Please update PHPDoc.
      */
     public static function getAllQuestionXMLPaths($core = true, $custom = true, $user = true)
     {
@@ -496,11 +543,14 @@ class QuestionTheme extends LSActiveRecord
 
 
     /**
-     * @param QuestionTheme $oQuestionTheme
+     * Uninstalls a question theme.
+     *
+     * @param QuestionTheme $oQuestionTheme Question theme
      *
      * @return array|false
-     * @todo move actions to its controller and split between controller and model, related search for: 1573123789741
-     * @todo Move to QuestionThemeInstaller
+     * @todo   move actions to its controller and split between controller and model, related search for: 1573123789741
+     * @todo   Move to QuestionThemeInstaller
+     * @todo   Refactor this function. It should only return one type. Boolean would be great as return type.
      */
     public static function uninstall($oQuestionTheme)
     {
@@ -596,7 +646,11 @@ class QuestionTheme extends LSActiveRecord
     public static function findQuestionMetaDataForAllTypes()
     {
         // Getting all question_types which are NOT extended
-        /** @var QuestionTheme[] $baseQuestions */
+        /**
+         * Question Theme
+         *
+         * @var QuestionTheme[] $baseQuestions
+         */
         $baseQuestions = self::model()->findAllByAttributes(['extends' => '']);
         $aQuestionsIndexedByType = [];
 
@@ -611,9 +665,10 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Returns all QuestionTheme settings
      *
-     * @param string $question_type
-     * @param string $question_theme_name
-     * @param string $language
+     * @param string $question_type       Question theme
+     * @param string $question_theme_name Name of the question theme
+     * @param string $language            Language
+     *
      * @return QuestionTheme
      */
     public static function findQuestionMetaData($question_type, $question_theme_name = null, $language = '')
@@ -657,7 +712,11 @@ class QuestionTheme extends LSActiveRecord
         $criteria->addCondition('visible = :visible', 'AND');
         $criteria->params = [':visible' => 'Y'];
 
-        /** @var QuestionTheme[] */
+        /**
+         * QuestionTheme
+         *
+         * @var QuestionTheme[]
+         */
         $baseQuestions = self::model()->query($criteria, true);
 
         if (\PHP_VERSION_ID < 80000) {
@@ -705,6 +764,8 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
+     * Returns the directories for the question theme.
+     *
      * @return array
      */
     public static function getQuestionThemeDirectories()
@@ -719,11 +780,11 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Returns QuestionMetaData Array for use in ->save operations
      *
-     * @param array $questionMetaData
+     * @param array $questionMetaData Question Meta Data
      *
      * @return array $questionMetaData
-     * @todo Naming is wrong, it does not "get", it "convertTo"
-     * @todo Possibly make a DTO for question metadata instead, and implement the ArrayAccess interface or "toArray()"
+     * @todo   Naming is wrong, it does not "get", it "convertTo"
+     * @todo   Possibly make a DTO for question metadata instead, and implement the ArrayAccess interface or "toArray()"
      */
     public static function getMetaDataArray($questionMetaData)
     {
@@ -779,12 +840,16 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
-     * Returns the table definition for the current Question
+     * Returns the answer column definition for a given question theme and type.
      *
-     * @param string $name
-     * @param string $type
+     * The result is read from the question theme's config.xml and cached per
+     * (name, type) combination. If no definition is found, an empty string
+     * is returned.
      *
-     * @return string mixed
+     * @param string $name Question theme name, or empty/core to use the base theme.
+     * @param string $type Question type code used to look up the theme.
+     *
+     * @return string  The answer column definition, or an empty string if none is defined.
      */
     public static function getAnswerColumnDefinition($name, $type)
     {
@@ -828,14 +893,18 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Returns the Config Path for the selected Question Type base definition
      *
-     * @param string $type
+     * @param string $type Question type
      *
      * @return string Path to config XML
      * @throws CException
      */
     public static function getQuestionXMLPathForBaseType($type)
     {
-        /** @var QuestionTheme|null */
+        /**
+         * Question Theme
+         *
+         * @var QuestionTheme|null
+         */
         $questionTheme = QuestionTheme::model()->findByAttributes([], 'question_type = :question_type AND extends = :extends', ['question_type' => $type, 'extends' => '']);
         if (empty($questionTheme)) {
             throw new \CException("The Database definition for Questiontype: " . $type . " is missing");
@@ -848,7 +917,7 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Converts LS3 Question Theme to LS5
      *
-     * @param string $sXMLDirectoryPath
+     * @param string $sXMLDirectoryPath Path to XML
      *
      * @return array $success Returns an array with the conversion status
      */
@@ -965,8 +1034,8 @@ class QuestionTheme extends LSActiveRecord
      * -- gets additional attributes from extended theme (if theme is extended)
      * -- gets "own" attributes via plugin
      *
-     * @param string  $type question type (this is the attribute 'question_type' in table question_theme)
-     * @param string  $sQuestionThemeName : question theme name
+     * @param string $type               question type (this is the attribute 'question_type' in table question_theme)
+     * @param string $sQuestionThemeName : question theme name
      *
      * @return array : the attribute settings for this question type
      * @throws Exception when question type attributes are not available
@@ -1008,7 +1077,8 @@ class QuestionTheme extends LSActiveRecord
      * If there are no attributes, an empty array is returned
      *
      * @param string $sQuestionThemeName the question theme name (see table question theme "name")
-     * @param string $type   the extended typ (see table question_themes "extends")
+     * @param string $type               the extended typ (see table question_themes "extends")
+     *
      * @return array additional attributes for an extended theme or empty array
      */
     public static function getAdditionalAttrFromExtendedTheme($sQuestionThemeName, $type)
@@ -1048,6 +1118,22 @@ class QuestionTheme extends LSActiveRecord
         return $additionalAttributes;
     }
 
+    /**
+     * Extracts the question theme directory name from a config.xml path.
+     *
+     * Example:
+     *   /path/to/questions/answer/multiplechoice/config.xml
+     *   → returns "multiplechoice"
+     *
+     * If the path does not match the expected pattern, an empty string is returned.
+     *
+     * @param string $sQuestionConfigFilePath Full filesystem path to a question's config.xml file.
+     *
+     * @return string  The extracted theme directory name, or an empty string if no match is found.
+     *
+     * @todo Consider switching to a safer delimiter in the regex
+     *       (e.g. "#...#" instead of "$...$") for better readability.
+     */
     public static function getThemeDirectoryPath($sQuestionConfigFilePath)
     {
         $sQuestionConfigFilePath = str_replace('\\', '/', (string) $sQuestionConfigFilePath);
@@ -1062,7 +1148,8 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Returns the name of the base question theme for the question type $questionType
      *
-     * @param string $questionType
+     * @param string $questionType Question Type
+     *
      * @return string|null question theme name or null if no question theme is found
      */
     public function getBaseThemeNameForQuestionType($questionType)
@@ -1075,6 +1162,7 @@ class QuestionTheme extends LSActiveRecord
 
     /**
      * Returns the settings attribute decoded
+     *
      * @return mixed
      */
     public function getDecodedSettings()
@@ -1090,7 +1178,8 @@ class QuestionTheme extends LSActiveRecord
      * Returns a dummy instance of QuestionTheme, with
      * the question type $questionType.
      *
-     * @param string $questionType
+     * @param string $questionType Type of question
+     *
      * @return QuestionTheme
      */
     public static function getDummyInstance($questionType)
@@ -1111,7 +1200,7 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Returns the type of question theme (coreQuestion, customCoreTheme, customUserTheme)
      *
-     * coreQuestion = Themes shipped with Limesurvey that don't extend other theme
+     * CoreQuestion = Themes shipped with Limesurvey that don't extend other theme
      * customCoreTheme = Themes shipped with Limesurvey that extend other theme
      * customUserTheme = User provided question themes
      *
@@ -1132,6 +1221,7 @@ class QuestionTheme extends LSActiveRecord
 
     /**
      * Returns the XML path relative to the path configured for the question theme type
+     *
      * @return string
      */
     public function getRelativeXmlPath()
@@ -1148,6 +1238,7 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Returns the XML path
      * It may be absolute or relative to the Limesurvey root
+     *
      * @return string
      */
     public function getXmlPath()
@@ -1157,7 +1248,9 @@ class QuestionTheme extends LSActiveRecord
 
     /**
      * Returns the path for the specified question theme type
-     * @param string $themeType
+     *
+     * @param string $themeType Type of theme
+     *
      * @return string
      * @throws Exception if no directory is found for the given type
      */
@@ -1172,8 +1265,10 @@ class QuestionTheme extends LSActiveRecord
 
     /**
      * Returns the corresponding absolute path, given a relative path and the theme type.
-     * @param string $relativePath
-     * @param string $themeType
+     *
+     * @param string $relativePath Relative Path
+     * @param string $themeType    Type of theme
+     *
      * @return string
      */
     public static function getAbsolutePathForType($relativePath, $themeType)
