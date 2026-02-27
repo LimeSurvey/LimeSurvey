@@ -60,7 +60,7 @@ class Surveymenu extends LSActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'surveymenuEntries' => array(self::HAS_MANY, 'SurveymenuEntries', 'menu_id'),
+            'surveymenuEntries' => array(self::HAS_MANY, 'SurveymenuEntries', 'menu_id','condition' => 'surveymenuEntries.active = 1 '),
             'survey' => array(self::BELONGS_TO, 'Survey', ['survey_id' => 'sid']),
             'user' => array(self::BELONGS_TO, 'User', 'user_id'),
             'parent' => array(self::BELONGS_TO, 'Surveymenu', 'parent_id'),
