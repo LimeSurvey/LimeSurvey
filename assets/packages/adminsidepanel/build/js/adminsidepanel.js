@@ -116,13 +116,14 @@ const Actions = function () {
    */
   function unlockLockOrganizer() {
     return new Promise(function (resolve, reject) {
-      const value = _StateManager_js__WEBPACK_IMPORTED_MODULE_1__["default"].get('allowOrganizer') ? '0' : '1';
+      const newAllowOrganizer = _StateManager_js__WEBPACK_IMPORTED_MODULE_1__["default"].get('allowOrganizer') ? 0 : 1;
+      const lockValue = newAllowOrganizer ? '0' : '1';
       _AjaxHelper_js__WEBPACK_IMPORTED_MODULE_0__["default"].post(window.SideMenuData.unlockLockOrganizerUrl, {
         setting: 'lock_organizer',
-        newValue: value
+        newValue: lockValue
       }).then(function (result) {
         log('setUsersettingLog', result);
-        _StateManager_js__WEBPACK_IMPORTED_MODULE_1__["default"].commit('setAllowOrganizer', parseInt(value));
+        _StateManager_js__WEBPACK_IMPORTED_MODULE_1__["default"].commit('setAllowOrganizer', newAllowOrganizer);
         resolve(result);
       }).catch(function (error) {
         reject(error);
@@ -2748,7 +2749,7 @@ const Lsadminsidepanel = function (userid, surveyid) {
       defaultState: (0,_stateConfig_js__WEBPACK_IMPORTED_MODULE_1__.createDefaultState)(userid, surveyid),
       mutations: (0,_stateConfig_js__WEBPACK_IMPORTED_MODULE_1__.createMutations)(_StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"]),
       getters: (0,_stateConfig_js__WEBPACK_IMPORTED_MODULE_1__.createGetters)(_StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"]),
-      persistKeys: ['currentTab', 'isCollapsed', 'sidebarwidth', 'questionGroupOpenArray', 'lastMenuOpen', 'lastMenuItemOpen', 'lastQuestionOpen', 'lastQuestionGroupOpen']
+      persistKeys: ['currentTab', 'isCollapsed', 'sidebarwidth', 'questionGroupOpenArray', 'lastMenuOpen', 'lastMenuItemOpen', 'lastQuestionOpen', 'lastQuestionGroupOpen', 'allowOrganizer']
     });
 
     // Apply survey ID

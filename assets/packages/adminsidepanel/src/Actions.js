@@ -114,17 +114,18 @@ const Actions = (function() {
      */
     function unlockLockOrganizer() {
         return new Promise(function(resolve, reject) {
-            const value  = StateManager.get('allowOrganizer') ? '0' : '1';
+            const newAllowOrganizer = StateManager.get('allowOrganizer') ? 0 : 1;
+            const lockValue = newAllowOrganizer ? '0' : '1';
             AjaxHelper.post(
                 window.SideMenuData.unlockLockOrganizerUrl,
                 {
                     setting: 'lock_organizer',
-                    newValue: value
+                    newValue: lockValue
                 }
             )
                 .then(function(result) {
                     log('setUsersettingLog', result);
-                    StateManager.commit('setAllowOrganizer', parseInt(value));
+                    StateManager.commit('setAllowOrganizer', newAllowOrganizer);
                     resolve(result);
                 })
                 .catch(function(error) {

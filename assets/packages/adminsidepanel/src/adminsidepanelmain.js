@@ -76,7 +76,8 @@ const Lsadminsidepanel = function(userid, surveyid) {
                 'lastMenuOpen',
                 'lastMenuItemOpen',
                 'lastQuestionOpen',
-                'lastQuestionGroupOpen'
+                'lastQuestionGroupOpen',
+                'allowOrganizer'
             ]
         });
 
