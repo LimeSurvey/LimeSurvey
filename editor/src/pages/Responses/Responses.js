@@ -172,7 +172,7 @@ export const Responses = () => {
             surveyQuestions={responses.surveyQuestions}
           />
         )
-      case panelItemsKeys.list:
+      case panelItemsKeys.statistics:
         if (tabKey === TAB_KEYS.STATISTICS) {
           return (
             <ResponsesStatistics

@@ -25,6 +25,18 @@ export const Tutorial = ({
       onTutorialFinish()
     }
 
+    if (type === EVENTS.TARGET_NOT_FOUND) {
+      // rerender in race condition where the target is not mounted yet
+      setTimeout(() => {
+        setTutorialState({
+          ...tutorialState,
+          stepIndex: index,
+          run: true,
+        })
+      }, 100)
+      return
+    }
+
     if (type === EVENTS.STEP_AFTER && action === ACTIONS.NEXT) {
       if (typeof data.step?.beforeNextStep === 'function') {
         await data.step.beforeNextStep(data)

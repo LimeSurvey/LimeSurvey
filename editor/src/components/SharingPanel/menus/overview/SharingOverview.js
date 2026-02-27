@@ -16,7 +16,6 @@ import { LanguageSelector } from './LanguageSelector'
 import { SocialMediaCard } from './SocialMediaCard'
 import { AliasSettingsCard } from './AliasSettingsCard'
 import { QRCodeCard } from './QRCodeCard'
-import { PasswordProtectionCard } from './PasswordProtectionCard'
 import { ParticipantsListCard } from './ParticipantsListCard'
 
 export const SharingOverview = () => {
@@ -113,7 +112,7 @@ export const SharingOverview = () => {
           title={survey.languageSettings[selectedLanguage]?.title || ''}
         />
         <PluginSlot slotName={PLUGIN_SLOTS.SHARING_OVERVIEW_BOTTOM_LEFT} />
-        <PasswordProtectionCard />
+        <PluginSlot slotName={PLUGIN_SLOTS.SHARING_OVERVIEW_BOTTOM_RIGHT} />
         <ParticipantsListCard
           hasUpdatePermission={hasUpdatePermission}
           surveyId={surveyId}
