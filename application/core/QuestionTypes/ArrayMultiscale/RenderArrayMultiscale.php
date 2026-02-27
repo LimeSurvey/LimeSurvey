@@ -289,7 +289,6 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                 // if second label set is used
 
                     if (!empty($this->getFromSurveySession($myfname1))) {
-                        //$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
                         $aData['aSubQuestions'][$i]['sessionfname1'] = $this->getFromSurveySession($myfname1);
                     } else {
                         $aData['aSubQuestions'][$i]['sessionfname1'] = '';
@@ -302,7 +301,6 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                         // string "0" should be considered as valid answer,
                         // so notset should not be checked in that case.
                         if ($fname0value !== '0' && empty($fname0value)) {
-                            //$answer .= CHECKED;
                             $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
                         } else {
                             $aData['aSubQuestions'][$i]['myfname0_notset'] = "";
@@ -329,8 +327,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                     // If value is empty, notset should be checked.
                     // string "0" should be considered as valid answer,
                     // so notset should not be checked in that case.
-                    if ($fname1value !== '0' && empty($fname1value)) {
-                        #$answer .= CHECKED;
+                    if ($fname1value !== '0' && $this->isNoAnswerChecked($myfname1)) {
                         $aData['aSubQuestions'][$i]['myfname1_notset'] = CHECKED;
                     } else {
                         $aData['aSubQuestions'][$i]['myfname1_notset'] = "";
@@ -340,11 +337,11 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                     // If value is empty, notset should be checked.
                     // string "0" should be considered as valid answer,
                     // so notset should not be checked in that case.
-                    if ($fname0value !== '0' && empty($fname0value)) {
+                    if ($fname0value !== '0' && $this->isNoAnswerChecked($myfname0)) {
                         //$answer .= CHECKED;
                         $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
                     } else {
-                        $aData['aSubQuestions'][$i]['myfname0_notset'] = '';
+                        $aData['aSubQuestions'][$i]['myfname0_notset'] = "";
                     }
                 }
             }

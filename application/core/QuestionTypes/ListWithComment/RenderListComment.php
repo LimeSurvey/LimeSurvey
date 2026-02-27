@@ -57,7 +57,7 @@ class RenderListComment extends QuestionBaseRenderer
                 'name' => $this->sSGQA,
                 'id' => 'answer' . $this->sSGQA,
                 'value' => '',
-                'check_ans' => ($this->mSessionValue == '' || $this->mSessionValue == ' ') ? CHECKED : '',
+                'check_ans' => $this->isNoAnswerChecked() ? CHECKED : '',
                 'checkconditionFunction' => $this->checkconditionFunction . '(this.value, this.name, this.type)',
                 'labeltext' => gT('No answer'),
             );
