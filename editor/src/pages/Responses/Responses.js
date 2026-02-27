@@ -182,6 +182,8 @@ export const Responses = () => {
             />
           )
         }
+        break;
+      case panelItemsKeys.list:
         if (tabKey === TAB_KEYS.RESPONSES) {
           return (
             <ResponsesTable
