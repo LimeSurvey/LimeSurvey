@@ -16,7 +16,7 @@
     "lodash": "^4.17.21",
     "sass": "^1.51.0",
     "vue": "~2.6.x",
-    "vue-localstorage": "^0.5.0",
+    "vue-localstorage": "^0.6.2",
     "vuex": "^2.3.1",
     "vuex-persist": "^1.0.3"
   },
