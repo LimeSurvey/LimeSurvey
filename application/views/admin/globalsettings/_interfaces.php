@@ -12,6 +12,7 @@
     <div>
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
             'name'          => 'RPCInterface',
+            'ariaLabel'=> gT('RPC interface enabled:'),
             'checkedOption' => $RPCInterface,
             'selectOptions' => [
                 "off"  => gT("Off", 'unescaped'),
@@ -34,6 +35,7 @@
     <div>
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
             'name'          => "rpc_publish_api",
+            'ariaLabel'=> gT('Publish API on /admin/remotecontrol:'),
             'checkedOption' => App()->getConfig('rpc_publish_api'),
             'selectOptions' => [
                 '1' => gT('On'),
@@ -48,6 +50,7 @@
     <div>
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
             'name'          => 'add_access_control_header',
+            'ariaLabel'=> gT('Set Access-Control-Allow-Origin header:'),
             'checkedOption' => App()->getConfig('add_access_control_header'),
             'selectOptions' => [
                 '1' => gT('On'),
