@@ -302,8 +302,26 @@ window.addEventListener('message', function(event) {
         if ($this->getPathOfFile($sView . '.twig', null, $extraPath, $sDirName)) {
             // We're not using the Yii Theming system, so we don't use parent::renderFile
             // current controller properties will be accessible as {{ this.property }}
-                        //  aData and surveyInfo variables are accessible from question type twig files
+           //  aData and surveyInfo variables are accessible from question type twig files
             $aData['aData'] = $aData;
+
+            $oQuestionModel = $oQuestionTemplate->oQuestion;
+            // Expose Question model's attributes as 'question'
+            $aData['question'] = $oQuestionModel->attributes;
+
+            // Use the cached helper to get attributes efficiently and correctly for the current language
+            $sCurrentLanguage = App()->language;
+
+            $questionAttributesRaw = QuestionAttribute::model()->getQuestionAttributes($oQuestionModel, $sCurrentLanguage);
+            if ($questionAttributesRaw === false) {
+                $questionAttributesRaw = [];
+            }
+
+            $aData['sCurrentLanguage'] = $sCurrentLanguage;
+            $aData['questionAttributesI18n'] = $questionAttributesRaw;
+            $aData['questionAttributes'] = $this->resolveI18nQuestionAttributesForLanguage($questionAttributesRaw, $sCurrentLanguage);
+            $aData['question_text'] = $oQuestionModel->questionl10ns[$sCurrentLanguage]->question;
+            $aData['question_help'] = $oQuestionModel->questionl10ns[$sCurrentLanguage]->help;
 
             // check if this method is called from theme editor
             if (empty($aData['bIsThemeEditor'])) {
@@ -319,6 +337,30 @@ window.addEventListener('message', function(event) {
         } else {
             return App()->getController()->renderPartial($sView, $aData, true);
         }
+    }
+
+    /**
+     * Resolve i18n question attribute values for a single language.
+     *
+     * The QuestionAttribute model returns i18n values as arrays keyed by language, even if a single language is
+     * requested. For Twig templates, it is more convenient to work with scalar values for the current language.
+     *
+     * @param array $questionAttributes
+     * @param string $language
+     * @return array
+     */
+    private function resolveI18nQuestionAttributesForLanguage(array $questionAttributes, $language)
+    {
+        $resolved = [];
+        foreach ($questionAttributes as $name => $value) {
+            if (is_array($value)) {
+                $resolved[$name] = array_key_exists($language, $value) ? $value[$language] : (count($value) ? reset($value) : '');
+                continue;
+            }
+            $resolved[$name] = $value;
+        }
+
+        return $resolved;
     }
 
     /**
