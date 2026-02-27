@@ -27,6 +27,7 @@ class ReactEditor extends \PluginBase
         $this->subscribe('beforeDeactivate');
         $this->subscribe('beforeControllerAction', 'initEditor');
         $this->subscribe('beforeControllerAction', 'renderActivateEditorModal');
+        $this->subscribe('beforeControllerAction', 'redirectToDifferentCreateSurveyRoute');
         $this->subscribe('beforeRenderSurveySidemenu');
         $this->subscribe('beforeAdminMenuRender');
     }
@@ -113,6 +114,29 @@ class ReactEditor extends \PluginBase
             }
             "
             );
+        }
+    }
+
+    /**
+     * Change survey create url when editor is enabled
+     *
+     * @return void
+     * @throws CException
+     */
+    //
+    public function redirectToDifferentCreateSurveyRoute()
+    {
+        $editorEnabled = $this->isEditorEnabled();
+        if (
+            $editorEnabled
+            && $this->getEvent()->get('controller') == 'surveyAdministration'
+            && $this->getEvent()->get('action') == 'newSurvey'
+            && !App()->request->getParam('tab')
+        ) {
+            $createSurveyActionUrl = App()->createUrl(
+                'surveyAdministration/createSurvey'
+            );
+            App()->request->redirect($createSurveyActionUrl);
         }
     }
 
