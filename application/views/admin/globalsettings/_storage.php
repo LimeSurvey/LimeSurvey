@@ -28,6 +28,7 @@
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'overwritefiles',
+                    'ariaLabel'=> gT('Overwrite files with the same name when uploaded, moved or copied through the editor/file-manager?'),
                     'checkedOption' => App()->getConfig('overwritefiles') === 'Y' ? '1' : 0,
                     'selectOptions' => [
                         '1' => gT('On'),
