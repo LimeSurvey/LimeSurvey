@@ -3558,22 +3558,16 @@ class remotecontrol_handle
     }
 
     /**
-     * List available response export formats for a survey.
+     * List available response export formats.
      *
      * @access public
      * @param string $sSessionKey Auth credentials
-     * @param int $iSurveyID ID of the Survey
      * @return array On success: list of export format metadata. On failure: array with status information
      */
-    public function list_response_exports($sSessionKey, $iSurveyID)
+    public function list_response_exports($sSessionKey)
     {
-        $iSurveyID = (int) $iSurveyID;
-
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
-        }
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) {
-            return array('status' => 'No permission');
         }
 
         Yii::app()->loadHelper('admin.exportresults');
