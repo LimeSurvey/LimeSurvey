@@ -741,6 +741,8 @@ class QuestionExplorer {
     this.draggedQuestion = null;
     this.draggedQuestionsGroup = null;
     this.orderChanged = false; // Track if order actually changed during drag
+    this.lastDragenterGid = null; // Prevent duplicate dragenter processing
+    this.lastDragenterQid = null; // Prevent duplicate dragenter processing
   }
 
   /**
@@ -1178,6 +1180,7 @@ class QuestionExplorer {
       });
       this.questiongroupDragging = true;
       this.orderChanged = false; // Reset flag at start of drag
+      this.lastDragenterGid = null; // Reset dragenter tracking
       e.originalEvent.dataTransfer.setData('text/plain', 'node');
       // Add dragged class directly without re-rendering
       $(e.currentTarget).closest('.list-group-item').addClass('dragged');
@@ -1201,6 +1204,10 @@ class QuestionExplorer {
     $container.on('dragenter.qe', '.list-group-item[data-gid]', e => {
       e.preventDefault();
       var gid = $(e.currentTarget).data('gid');
+
+      // Skip duplicate dragenter events for same target (fires multiple times for child elements)
+      if (this.questiongroupDragging && gid === this.lastDragenterGid) return;
+      this.lastDragenterGid = gid;
       var questiongroups = _StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"].get('questiongroups') || [];
       var questiongroupObject = questiongroups.find(function (g) {
         return g.gid === gid;
@@ -1261,6 +1268,7 @@ class QuestionExplorer {
         this.draggedQuestionsGroup = group;
         this.questionDragging = true;
         this.orderChanged = false; // Reset flag at start of drag
+        this.lastDragenterQid = null; // Reset dragenter tracking
         e.originalEvent.dataTransfer.setData('application/node', 'node');
         // Add dragged class directly without re-rendering
         $(e.currentTarget).closest('.question-question-list-item').addClass('dragged');
@@ -1288,6 +1296,10 @@ class QuestionExplorer {
       e.stopPropagation();
       var qid = $(e.currentTarget).data('qid');
       var gid = $(e.currentTarget).data('gid');
+
+      // Skip duplicate dragenter events for same target (fires multiple times for child elements)
+      if (this.questionDragging && qid === this.lastDragenterQid) return;
+      this.lastDragenterQid = qid;
       if (this.questionDragging && this.draggedQuestion) {
         // Highlight the drop destination
         $container.find('.question-question-list-item').removeClass('dragged');

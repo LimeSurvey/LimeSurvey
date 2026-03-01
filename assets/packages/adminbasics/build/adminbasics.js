@@ -18498,9 +18498,10 @@
 	  //////METHODS
 	  //Parse available options from specific item.data settings, if not available load relatedTarget settings
 	  const _parseOptions = e => {
-	      return lodash.each(optionsDefault, (value, key) => {
+	      Object.keys(optionsDefault).forEach(key => {
 	        optionsDefault[key] = $(_this).data(key) || $(e.relatedTarget).data(key) || optionsDefault[key];
 	      });
+	      return optionsDefault;
 	    },
 	    //Generate a simple link on the ok button
 	    _basicLink = () => {
@@ -18639,10 +18640,11 @@
 	  },
 	  // finds any duplicate array elements using the fewest possible comparison
 	  arrHasDupes: arrayToCheck => {
-	    return _.uniq(arrayToCheck).length !== arrayToCheck.length;
+	    return new Set(arrayToCheck).size !== arrayToCheck.length;
 	  },
 	  arrHasDupesWhich: arrayToCheck => {
-	    return _.difference(_.uniq(arrayToCheck), arrayToCheck).length > 0;
+	    const unique = [...new Set(arrayToCheck)];
+	    return unique.filter(item => !arrayToCheck.includes(item)).length > 0;
 	  },
 	  getkey: e => {
 	    return window.event ? window.event.keyCode : e ? e.which : null;
@@ -18674,12 +18676,13 @@
 	    const $form = $("<form method='POST'>").attr("action", url);
 	    if (typeof content == 'string' && content != '') {
 	      try {
-	        contentObject = _.merge(contentObject, JSON.parse(content));
+	        Object.assign(contentObject, JSON.parse(content));
 	      } catch (e) {
 	        console.error('JSON parse on sendPost failed!');
 	      }
 	    }
-	    _.each(contentObject, (value, key) => {
+	    Object.entries(contentObject).forEach(_ref => {
+	      let [key, value] = _ref;
 	      $("<input type='hidden'>").attr("name", key).attr("value", value).appendTo($form);
 	    });
 	    $("<input type='hidden'>").attr("name", LS.data.csrfTokenName).attr("value", LS.data.csrfToken).appendTo($form);
@@ -22289,11 +22292,6 @@
 	      args[_key - 1] = arguments[_key];
 	    }
 	    console.ls.log("Emitting -> ", event, ...args);
-	    if (this.eventsBound[event] !== undefined) {
-	      this.eventsBound[event].forEach(element => {
-	        // Placeholder for tracking - kept from original
-	      });
-	    }
 	    if (this.events[event]) {
 	      this.events[event].forEach(callback => {
 	        try {
@@ -22352,9 +22350,9 @@
 	    return this;
 	  }
 	}
-
-	// Create singleton instance
-	window.EventBus = window.EventBus || new EventBus();
+	window.EventBus = window.EventBus || new EventBus({
+	  name: "EventBus"
+	});
 	var EventBus$1 = window.EventBus;
 
 	//Define LS Namespace
