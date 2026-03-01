@@ -1,45 +1,76 @@
-import Vue from 'vue'
-import GlobalSidemenu from './components/GlobalSidemenu.vue'
-import getStore from './storage/store'
-import {PluginLog} from "./mixins/logSystem.js";
+/**
+ * Global Sidebar Panel
+ * Vanilla JavaScript implementation
+ */
 
-Vue.config.productionTip = false
+import StateManager, { initStore } from './store';
+import Actions from './actions';
+import GlobalSidemenu from './components/GlobalSidemenu';
+import Sidemenu from './components/Sidemenu';
 
-Vue.use(PluginLog);
-Vue.mixin({
-  methods: {
-      updatePjaxLinks: function () {
-          //this.$store.dispatch("updatePjax");
-          this.$forceUpdate();
-      },
-      redoTooltips: function () {
-          window.LS.doToolTip();
-      },
-      translate(string){
-          return window.GlobalSideMenuData.i10n[string] || string;
-      }
-  },
-  filters: {
-      translate(string){
-          return window.GlobalSideMenuData.i10n[string] || string;
-      }
-  }
-});
+// Initialize the application
+const init = () => {
+    // Get container element
+    const container = document.getElementById('global-sidebar-container');
 
-let storeName = window.GlobalSideMenuData.sgid ? LS.globalUserId+'-'+window.GlobalSideMenuData.sgid : LS.globalUserId;
+    if (!container) {
+        console.error('Global sidebar container not found');
+        return null;
+    }
 
-const AppState = getStore(storeName);
+    // Check if required global data exists
+    if (!window.GlobalSideMenuData) {
+        console.error('GlobalSideMenuData not found');
+        return null;
+    }
 
-const GlobalSidePanel = new Vue({
-  el: "#global-sidebar-container",
-  store: AppState,
-  components: {
-    GlobalSidemenu
-  },
-  mounted() {
-      $(document).on("vue-redraw", () => {
-          this.$forceUpdate();
-      });
-      $(document).trigger("vue-reload-remote");
-  }
-});
+    // Validate LS global
+    if (!window.LS || typeof window.LS.globalUserId === 'undefined') {
+        console.error('LS.globalUserId not found');
+        return null;
+    }
+
+    // Create user ID for store
+    let userid = window.GlobalSideMenuData.sgid
+        ? LS.globalUserId + '-' + window.GlobalSideMenuData.sgid
+        : LS.globalUserId;
+
+    // Initialize store with unified API
+    const store = initStore(userid);
+
+    // Initialize actions
+    const actions = new Actions(store);
+
+    // Initialize main component
+    const globalSidePanel = new GlobalSidemenu(container, store, actions, {
+        Sidemenu
+    });
+
+    return {
+        store,
+        actions,
+        component: globalSidePanel
+    };
+};
+
+// Wait for DOM to be ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        const app = init();
+        // Export to window for external access
+        window.GlobalSidePanel = app;
+    });
+} else {
+    const app = init();
+    // Export to window for external access
+    window.GlobalSidePanel = app;
+}
+
+// Export for module usage
+export default {
+    init,
+    StateManager,
+    Actions,
+    GlobalSidemenu,
+    Sidemenu
+};

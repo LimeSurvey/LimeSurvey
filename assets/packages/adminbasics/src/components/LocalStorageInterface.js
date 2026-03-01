@@ -33,12 +33,12 @@ export default class LocalStorageInterface {
     }
 
     /**
-     * Returns the saveState function used in VueXPersist
+     * Returns the saveState function used for state persistence
      * It will trigger a cleanup on the already stored keys
-     * 
-     * @param String name  -> the name the Vuex-Persist is storing the state in localStorage
-     * 
-     * @returns function The saveState function used in VueX-Persist
+     *
+     * @param String name  -> the name used for storing the state in localStorage
+     *
+     * @returns function The saveState function used for state persistence
      */
     getSaveState(name) {
         this.archive[name] = {
@@ -111,12 +111,11 @@ export default class LocalStorageInterface {
     }
 
     /**
-     * SaveState method as used in VuexPersist
-     * @see https://github.com/championswimmer/vuex-persist/blob/master/src/index.ts#L218
-     * 
+     * SaveState method for state persistence
+     *
      * @param String name The name of the state to be created
-     * 
-     * @return λ-function with definition (key, state, storage) 
+     *
+     * @return λ-function with definition (key, state, storage)
      */
     createSaveState(name) {
         const saveState = function(key, state, storage) {
