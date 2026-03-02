@@ -10,9 +10,12 @@ class PluginApiGuardsTest extends BaseTest
     private const TEST_PLUGIN = 'RemoteControlApiTestPlugin';
     private const LOW_PERMISSION_USER = 'rc_api_guard_user';
     private const LOW_PERMISSION_PASSWORD = 'rc_api_guard_password';
+    private const AUTHORIZED_SURVEY_USER = 'rc_api_guard_authorized_user';
+    private const AUTHORIZED_SURVEY_PASSWORD = 'rc_api_guard_authorized_password';
 
     private static $originalRpcPluginApi = '0';
     private static $lowPermissionUserId = 0;
+    private static $authorizedSurveyUserId = 0;
 
     public static function setUpBeforeClass(): void
     {
@@ -39,6 +42,23 @@ class PluginApiGuardsTest extends BaseTest
             ]
         );
         self::$lowPermissionUserId = (int) $user->uid;
+
+        $authorizedUser = self::createUserWithPermissions(
+            [
+                'users_name' => self::AUTHORIZED_SURVEY_USER,
+                'full_name' => self::AUTHORIZED_SURVEY_USER,
+                'email' => self::AUTHORIZED_SURVEY_USER . '@example.com',
+                'lang' => 'en',
+                'password' => self::AUTHORIZED_SURVEY_PASSWORD,
+            ],
+            [
+                'auth_db' => [
+                    'read' => 'on',
+                ],
+            ]
+        );
+        self::$authorizedSurveyUserId = (int) $authorizedUser->uid;
+        self::grantSurveyReadPermission(self::$authorizedSurveyUserId, (int) self::$surveyId);
     }
 
     public static function tearDownAfterClass(): void
@@ -49,6 +69,10 @@ class PluginApiGuardsTest extends BaseTest
         if (self::$lowPermissionUserId > 0) {
             \Permission::model()->deleteAllByAttributes(['uid' => self::$lowPermissionUserId]);
             \User::model()->deleteByPk(self::$lowPermissionUserId);
+        }
+        if (self::$authorizedSurveyUserId > 0) {
+            \Permission::model()->deleteAllByAttributes(['uid' => self::$authorizedSurveyUserId]);
+            \User::model()->deleteByPk(self::$authorizedSurveyUserId);
         }
 
         parent::tearDownAfterClass();
@@ -193,7 +217,7 @@ class PluginApiGuardsTest extends BaseTest
     public function testCallPluginApiRequiresSurveyIdForSurveyScopedPermission(): void
     {
         $this->setPluginApiEnabled(true);
-        $sessionKey = $this->getValidSessionKey($this->getUsername(), $this->getPassword());
+        $sessionKey = $this->getValidSessionKey(self::AUTHORIZED_SURVEY_USER, self::AUTHORIZED_SURVEY_PASSWORD);
 
         $result = $this->handler->call_plugin_api($sessionKey, self::TEST_PLUGIN, 'guard_survey_action', [], []);
         $this->assertSame(['status' => 'Faulty parameters: payload.sid is required for permission check'], $result);
@@ -202,7 +226,7 @@ class PluginApiGuardsTest extends BaseTest
     public function testCallPluginApiAllowsSurveyScopedActionWhenPermissionCheckPasses(): void
     {
         $this->setPluginApiEnabled(true);
-        $sessionKey = $this->getValidSessionKey($this->getUsername(), $this->getPassword());
+        $sessionKey = $this->getValidSessionKey(self::AUTHORIZED_SURVEY_USER, self::AUTHORIZED_SURVEY_PASSWORD);
 
         $result = $this->handler->call_plugin_api(
             $sessionKey,
@@ -228,5 +252,21 @@ class PluginApiGuardsTest extends BaseTest
     private function setPluginApiEnabled(bool $enabled): void
     {
         \SettingGlobal::setSetting('rpc_plugin_api', $enabled ? '1' : '0');
+    }
+
+    private static function grantSurveyReadPermission(int $userId, int $surveyId): void
+    {
+        $permission = new \Permission();
+        $permission->entity = 'survey';
+        $permission->entity_id = $surveyId;
+        $permission->uid = $userId;
+        $permission->permission = 'surveycontent';
+        $permission->read_p = 1;
+        $permission->create_p = 0;
+        $permission->update_p = 0;
+        $permission->delete_p = 0;
+        $permission->import_p = 0;
+        $permission->export_p = 0;
+        $permission->save();
     }
 }
