@@ -1,0 +1,38 @@
+#activate_editor .card {
+    padding-left: 0;
+    padding-right: 0;
+    border: none;
+}
+#activate_editor .card-body {
+    padding-top: 28px;
+    padding-bottom: 0;
+
+}
+
+#activate_editor .mb-16 {
+    margin-bottom: 16px;
+}
+
+.hint-text-box {
+    background-color: #F9F9FB; /* $g-100*/
+    border-radius: 3px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.hint-text-box .hint-text {
+    color: #6E748C; /* $g-700*/
+}
+
+.editor-preview {
+    max-width: calc(100% - 40px);
+    margin-left: 20px;
+    margin-right: 20px;
+    height: auto;
+    object-fit: contain;
+}
+
+/* same size for both buttons within the toggle switch */
+.lime-toggle-btn-group .btn-group .btn {
+    flex: 1;
+}

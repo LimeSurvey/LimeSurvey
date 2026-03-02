@@ -1,0 +1,53 @@
+.survey-footer-container {
+  border-radius: 2px;
+  width: 100%;
+  background-color: #a3c8ff44;
+  box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
+  padding: 63px 67px;
+
+  h6,
+  h4 {
+    font-weight: $font-weight-normal;
+    color: #757575;
+  }
+
+  h4 {
+    color: $black75 !important;
+  }
+
+  .collapse-control {
+    color: $g-700;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-600;
+    line-height: 24px;
+  }
+
+  .border-bottom {
+    border-bottom: 1px rgb(220, 220, 220) solid;
+  }
+
+  .finish-button {
+    width: 101px;
+    height: 44px;
+    transition: box-shadow 0.2s;
+    border-radius: $border-radius;
+    background: $active-green;
+    border: none;
+    outline: none;
+
+    font-size: $font-size-sm;
+    font-weight: $font-weight-500;
+    line-height: 20px;
+    letter-spacing: -0.015em;
+    text-align: left;
+    color: $white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      background: $active-green-hover;
+    }
+  }
+}

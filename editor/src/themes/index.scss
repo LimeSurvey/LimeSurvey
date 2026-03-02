@@ -1,0 +1,131 @@
+// Custom BS5 Style
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import 'bootstrap/scss/functions';
+// 2. Include any default variable overrides here
+@import 'bootstrap/scss/variables';
+@import 'variables.scss';
+
+// 3. Include remainder of required Bootstrap stylesheets
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/_variables-dark';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/root';
+
+// 4. Include any optional Bootstrap CSS as needed
+@import 'bootstrap/scss/utilities';
+@import 'bootstrap/scss/reboot';
+@import 'bootstrap/scss/type';
+@import 'bootstrap/scss/images';
+@import 'bootstrap/scss/containers';
+@import 'bootstrap/scss/grid';
+@import 'bootstrap/scss/tables';
+@import 'bootstrap/scss/forms';
+@import 'bootstrap/scss/buttons';
+@import 'bootstrap/scss/transitions';
+@import 'bootstrap/scss/dropdown';
+@import 'bootstrap/scss/button-group';
+@import 'bootstrap/scss/nav';
+@import 'bootstrap/scss/navbar';
+@import 'bootstrap/scss/card';
+@import 'bootstrap/scss/accordion';
+@import 'bootstrap/scss/breadcrumb';
+@import 'bootstrap/scss/pagination';
+@import 'bootstrap/scss/badge';
+@import 'bootstrap/scss/alert';
+@import 'bootstrap/scss/progress';
+@import 'bootstrap/scss/list-group';
+@import 'bootstrap/scss/close';
+@import 'bootstrap/scss/toasts';
+@import 'bootstrap/scss/modal';
+@import 'bootstrap/scss/tooltip';
+@import 'bootstrap/scss/popover';
+@import 'bootstrap/scss/carousel';
+@import 'bootstrap/scss/spinners';
+@import 'bootstrap/scss/offcanvas';
+@import 'bootstrap/scss/placeholders';
+@import 'bootstrap/scss/helpers';
+@import 'react-date-range/dist/styles.css';
+@import 'react-date-range/dist/theme/default.css';
+
+@import 'leaflet/dist/leaflet.css';
+
+// 5. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
+@import 'bootstrap/scss/utilities/api';
+
+// 6. Add additional custom code here
+@import 'customizations';
+@import 'utils';
+
+// survey editor styles
+@import 'accordion/accordion.scss';
+@import 'array-question/ArrayQuestion.scss';
+@import 'gender-question/gender-question.scss';
+@import 'buttons/button.scss';
+@import 'buttons/btn-group.scss';
+@import 'buttons/button-question.scss';
+@import 'card/card.scss';
+@import 'contenteditor/content-editor.scss';
+@import 'date-picker/date-picker.scss';
+@import 'dropzone/dropzone.scss';
+@import 'navbar/navbar.scss';
+@import 'numeric/numeric.scss';
+@import 'forms/forms.scss';
+@import 'forms/select.scss';
+@import 'list-question/ListQuestion.scss';
+@import 'loader/loader.scss';
+@import 'question/Question.scss';
+@import 'question/question-code-tag.scss';
+@import 'question/qe-input-group.scss';
+@import 'question-type-selector/QuestionTypeSelector.scss';
+@import 'questiongroup/QuestionGroup.scss';
+@import 'settingsform/SettingsForm.scss';
+@import 'sidebar/sidebar.scss';
+@import 'sidebar/RightSideBar.scss';
+@import 'sidebar/LeftSideBar.scss';
+@import 'survey/Survey.scss';
+@import 'survey/SurveyHeader.scss';
+@import 'survey/SurveyFooter.scss';
+@import 'surveysettings/SurveySettings.scss';
+@import 'surveystructure/SurveyStructure.scss';
+@import 'topbar/TopBar.scss';
+@import 'EditableImage/EditableImage.scss';
+@import 'meatball-menu/meatball-menu.scss';
+@import 'publish-settings/publish-settings.scss';
+@import 'general-settings/general-settings.scss';
+@import 'multiple-choice-question/multiple-choice-question.scss';
+@import 'yes-no-question/yes-no-question.scss';
+@import 'ranking-advanced/ranking-advanced.scss';
+@import 'checkboxRadio/CheckboxRadio.scss';
+@import 'placeholder-menu/placeholder-menu.scss';
+@import 'condition-designer/condition-designer.scss';
+@import 'condition-designer/expression-script.scss';
+@import 'condition-designer/overlays.scss';
+@import 'surveyStatusSwitch/surveyStatusSwitchPopup.scss';
+@import 'sharing-panel/sharing-panel.scss';
+@import 'themeOptions/themeOptionsPreview.scss';
+@import 'themeOptions/themeOptionsIconSelect.scss';
+@import 'color-picker/color-picker.scss';
+@import 'survey-access-mode/survey-access-mode';
+@import 'modals/overview-modal.scss';
+@import 'modals/confirm-modal.scss';
+@import 'modals/component-modal.scss';
+@import 'input-range/input-range.scss';
+@import 'icon/icon.scss';
+@import 'tutorial/tutorial.scss';
+@import 'react-loading-skeleton/dist/skeleton.css';
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+@import 'pagination-buttons/pagination-buttons.scss';
+@import 'responses/responses.scss';
+@import 'responses/responses-statistics.scss';
+@import 'arrayParticipantMode/arrayParticipanMode.scss';
+@import 'tooltip/tooltip.scss';
+@import 'context-menu/context-menu.scss';
+@import 'alert/alert.scss';
+@import 'text/text.scss';
+@import 'footer/footer.scss';
+// react app styles
+@import './react/topbar/topbar.scss';
+@import './select/colorSelect.scss';
+@import './feedback/feedbackPopup.scss';
+@import 'date-range-picker/date-range-picker.scss';

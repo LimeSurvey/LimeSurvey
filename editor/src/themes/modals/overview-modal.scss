@@ -1,0 +1,77 @@
+.overview-modal {
+  max-width: 1025px;
+  width: 100%;
+  background-color: $g-200;
+  padding: 0;
+  min-height: 600px;
+
+  .arrow-link {
+    padding: 32px 0;
+  }
+
+  .overview-section {
+    padding: 42px 20px;
+
+    &.overview-main-section {
+      min-width: 250px;
+    }
+
+    &.overview-right-section {
+      padding-top: 52px;
+    }
+
+    .btn {
+      min-height: 42px;
+      outline: none;
+      border: none;
+    }
+
+    .btn-secondary {
+      background-color: #9094a7;
+    }
+
+    .stop-icon {
+      width: 20px;
+    }
+
+    .overview-toast {
+      position: relative;
+      background-color: $white;
+      border-radius: 5px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+
+      .overview-left-spacing {
+        margin-left: 6px;
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 8px;
+        height: 100%;
+        background-color: $success;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+    }
+
+    .card {
+      padding: 10px 20px;
+
+      .card-body {
+        padding: 0;
+      }
+    }
+  }
+
+  &,
+  active {
+    .swal2-html-container {
+      padding: 0;
+    }
+  }
+}

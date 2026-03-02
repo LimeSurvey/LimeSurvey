@@ -1,0 +1,87 @@
+.error-toast {
+  background-color: $error;
+  border: 1px $g-900 solid;
+  border-radius: 8px;
+  min-width: fit-content;
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  font-size: $font-size-md;
+  align-items: center;
+}
+
+.success-toast {
+  background-color: $success;
+  border: 1px $g-900 solid;
+  border-radius: 8px;
+  min-width: fit-content;
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  font-size: $font-size-md;
+  align-items: center;
+}
+
+.generic-toast {
+  background-color: white;
+  border: 1px $g-900 solid;
+  border-radius: 8px;
+  min-width: fit-content;
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  font-size: $font-size-md;
+  align-items: center;
+}
+
+.animate-enter {
+  opacity: 1;
+  transition: all 0.5s ease;
+}
+
+.animate-leave {
+  opacity: 0;
+  transition: all 0.5s ease;
+}
+
+.swal2-container {
+  .swal2-title {
+    font-size: $font-size-lg;
+  }
+}
+
+.swal2-html-container {
+  margin: 0;
+}
+
+.swal2-popup {
+  width: fit-content;
+}
+
+.swal2-close {
+  position: absolute;
+  width: 1.2em;
+  height: 1.2em;
+  transition: color 0.1s ease-out;
+  border: none;
+  background: transparent;
+  font-size: 40px;
+  cursor: pointer;
+  color: #ccc;
+
+  &:hover,
+  &:focus {
+    outline: none;
+    box-shadow: none;
+    color: #ccc;
+  }
+}
+
+.question-preview {
+  .swal2-html-container {
+    all: unset;
+  }
+}

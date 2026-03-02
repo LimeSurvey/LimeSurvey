@@ -1,0 +1,56 @@
+.array-question {
+  .form-check-input {
+    width: 20px;
+    height: 20px;
+  }
+
+  .array-question-answers {
+    overflow-wrap: break-word;
+    white-space: normal;
+  }
+
+  .array-question-item {
+    &:hover {
+      .remove-item-button {
+        opacity: 1 !important;
+      }
+    }
+  }
+
+  .array-answer-content-editor {
+    min-width: 120px;
+    width: max-content;
+
+    .content-editable {
+      text-align: center;
+    }
+  }
+
+  .array-dual-scale-header-input {
+    height: max-content;
+    min-height: 40px;
+  }
+
+  .add-item-button {
+    border-style: dashed;
+    border-color: $grape;
+    background-color: $grape-light;
+    color: $grape;
+    fill: $grape;
+    outline: none;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: $grape;
+      color: $white;
+      fill: $white;
+      border-color: $white;
+    }
+  }
+}
+
+.array-question-footer {
+  position: sticky;
+  left: 0;
+}

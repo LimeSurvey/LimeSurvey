@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>ReactEditor</name>
+        <type>plugin</type>
+        <plugin_type>core</plugin_type>
+        <creationDate>2026-01-26</creationDate>
+        <lastUpdate>2026-01-26</lastUpdate>
+        <author>LimeSurvey GmbH</author>
+        <authorUrl>https://www.limesurvey.org</authorUrl>
+        <version>1.0.0</version>
+        <license>GNU General Public License version 2 or later</license>
+        <description><![CDATA[Core: Activate Editor]]></description>
+    </metadata>
+
+    <compatibility>
+        <version>6.0</version>
+    </compatibility>
+
+    <!-- Core plugins don't need updaters. -->
+    <updaters>
+    </updaters>
+</config>
