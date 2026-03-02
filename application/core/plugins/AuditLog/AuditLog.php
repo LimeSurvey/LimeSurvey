@@ -627,19 +627,30 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         $pluginsettings = $this->getPluginSettings(true);
 
         $event = $this->getEvent();
+
+        // Build the auditing setting meta data
+        $auditingSetting = array(
+            'type' => 'select',
+            'options' => array(0 => 'No',
+                1 => 'Yes'),
+            'default' => 1,
+            'tab' => 'notification', // @todo: Setting no used yet
+            'category' => 'Auditing for person-related data', // @todo: Setting no used yet
+            'label' => 'Audit log for this survey:',
+            'current' => $this->get('auditing', 'Survey', $event->get('survey'))
+        );
+
+        // Disable the control for non-superadmin users to prevent them from disabling audit
+        $oCurrentUser = $this->api->getCurrentUser();
+        if ($oCurrentUser !== null && !Permission::model()->hasGlobalPermission('superadmin', 'read', $oCurrentUser->uid)) {
+            $auditingSetting['htmlOptions'] = array('disabled' => 'disabled');
+            $auditingSetting['help'] = gT('Only superadmins can disable the audit log for a survey.');
+        }
+
         $event->set("surveysettings.{$this->id}", array(
             'name' => get_class($this),
             'settings' => array(
-                'auditing' => array(
-                    'type' => 'select',
-                    'options' => array(0 => 'No',
-                        1 => 'Yes'),
-                    'default' => 1,
-                    'tab' => 'notification', // @todo: Setting no used yet
-                    'category' => 'Auditing for person-related data', // @todo: Setting no used yet
-                    'label' => 'Audit log for this survey:',
-                    'current' => $this->get('auditing', 'Survey', $event->get('survey'))
-                )
+                'auditing' => $auditingSetting
             )
         ));
     }
@@ -667,6 +678,20 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
             $oldSurvey = Survey::model()->find('sid = :sid', array(':sid' => $iSurveyID));
 
             $oldAttributes = $oldSurvey->getAttributes();
+
+            // Prevent non-superadmins from disabling auditing for a survey
+            if ($oCurrentUser !== null 
+                && isset($newAttributes['auditing']) && isset($oldAttributes['auditing'])
+                && $newAttributes['auditing'] != $oldAttributes['auditing']
+                && (int)$newAttributes['auditing'] === 0
+                && !Permission::model()->hasGlobalPermission('superadmin', 'read', $oCurrentUser->uid)
+            ) {
+                // Revert the change and show an error message
+                $oModifiedSurvey->auditing = $oldAttributes['auditing'];
+                $newAttributes['auditing'] = $oldAttributes['auditing'];
+                App()->setFlashMessage(gT('You are not allowed to disable the audit log for this survey.'), 'error');
+            }
+
             $diff = array_diff_assoc($newAttributes, $oldAttributes);
             if (count($diff) > 0) {
                 $oAutoLog = $this->api->newModel($this, 'log');
