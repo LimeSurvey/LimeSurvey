@@ -513,6 +513,7 @@ class SurveyCommonAction extends CAction
      * @return Menu
      */
     public function getCreateMenu() {
+        $itemClass = 'create-menu-item';
         $menuItemHeader = [
             'isDivider' => false,
             'isSmallText' => true,
@@ -529,6 +530,7 @@ class SurveyCommonAction extends CAction
             'href' => \Yii::app()->createUrl('surveyAdministration/newSurvey'),
             'iconClass' => 'ri-add-line',
             'id' => 'create-survey-link',
+            'itemClass' => $itemClass
         ];
         $menuItems[] = (new MenuItem($menuItemNewSurvey));
 
@@ -538,6 +540,7 @@ class SurveyCommonAction extends CAction
             'label' => gT('Survey group'),
             'href' => \Yii::app()->createUrl('admin/surveysgroups/sa/create'),
             'iconClass' => 'ri-add-circle-line',
+            'itemClass' => $itemClass
         ];
         $menuItems[] = (new MenuItem($menuItemNewSurvey));
 
@@ -548,14 +551,17 @@ class SurveyCommonAction extends CAction
             'isModal' => true,
             'modalId' => 'importSurvey_modal',
             'iconClass' => 'ri-upload-line',
+            'itemClass' => $itemClass
         ];
         $menuItems[] = (new MenuItem($menuItemNewSurvey));
 
         $options = [
+            'id' => 'createMenuButton',
             'label' => '+',
             'iconClass' => 'ri-add-line',
             'isDropDown' => true,
             'isDropDownButton' => true,
+            'dropDownButtonClass' => 'btn btn-info btn-create dropdown-toggle-no-caret',
             'menuItems' => $menuItems,
             'isPrepended' => true,
         ];
