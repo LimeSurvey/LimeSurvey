@@ -106,6 +106,90 @@ class PluginApiGuardsTest extends BaseTest
         $this->assertSame(['status' => 'No permission'], $result);
     }
 
+    public function testCallPluginApiRejectsLegacyGlobalActionForLowPermissionUser(): void
+    {
+        $this->setPluginApiEnabled(true);
+        $sessionKey = $this->getValidSessionKey(self::LOW_PERMISSION_USER, self::LOW_PERMISSION_PASSWORD);
+
+        $result = $this->handler->call_plugin_api($sessionKey, self::TEST_PLUGIN, 'guard_legacy_global_action', [], []);
+        $this->assertSame(['status' => 'No permission'], $result);
+    }
+
+    public function testCallPluginApiRejectsSurveyActionForLowPermissionUserUsingPayloadSid(): void
+    {
+        $this->setPluginApiEnabled(true);
+        $sessionKey = $this->getValidSessionKey(self::LOW_PERMISSION_USER, self::LOW_PERMISSION_PASSWORD);
+
+        $result = $this->handler->call_plugin_api(
+            $sessionKey,
+            self::TEST_PLUGIN,
+            'guard_survey_action',
+            ['sid' => self::$surveyId],
+            []
+        );
+        $this->assertSame(['status' => 'No permission'], $result);
+    }
+
+    public function testCallPluginApiRejectsSurveyActionForLowPermissionUserUsingPayloadSurveyId(): void
+    {
+        $this->setPluginApiEnabled(true);
+        $sessionKey = $this->getValidSessionKey(self::LOW_PERMISSION_USER, self::LOW_PERMISSION_PASSWORD);
+
+        $result = $this->handler->call_plugin_api(
+            $sessionKey,
+            self::TEST_PLUGIN,
+            'guard_survey_action',
+            ['surveyId' => self::$surveyId],
+            []
+        );
+        $this->assertSame(['status' => 'No permission'], $result);
+    }
+
+    public function testCallPluginApiRejectsSurveyActionForLowPermissionUserUsingContextSid(): void
+    {
+        $this->setPluginApiEnabled(true);
+        $sessionKey = $this->getValidSessionKey(self::LOW_PERMISSION_USER, self::LOW_PERMISSION_PASSWORD);
+
+        $result = $this->handler->call_plugin_api(
+            $sessionKey,
+            self::TEST_PLUGIN,
+            'guard_survey_action',
+            [],
+            ['sid' => self::$surveyId]
+        );
+        $this->assertSame(['status' => 'No permission'], $result);
+    }
+
+    public function testCallPluginApiRejectsSurveyActionForLowPermissionUserUsingContextSurveyId(): void
+    {
+        $this->setPluginApiEnabled(true);
+        $sessionKey = $this->getValidSessionKey(self::LOW_PERMISSION_USER, self::LOW_PERMISSION_PASSWORD);
+
+        $result = $this->handler->call_plugin_api(
+            $sessionKey,
+            self::TEST_PLUGIN,
+            'guard_survey_action',
+            [],
+            ['surveyId' => self::$surveyId]
+        );
+        $this->assertSame(['status' => 'No permission'], $result);
+    }
+
+    public function testCallPluginApiRejectsLegacySurveyActionForLowPermissionUser(): void
+    {
+        $this->setPluginApiEnabled(true);
+        $sessionKey = $this->getValidSessionKey(self::LOW_PERMISSION_USER, self::LOW_PERMISSION_PASSWORD);
+
+        $result = $this->handler->call_plugin_api(
+            $sessionKey,
+            self::TEST_PLUGIN,
+            'guard_legacy_survey_action',
+            ['sid' => self::$surveyId],
+            []
+        );
+        $this->assertSame(['status' => 'No permission'], $result);
+    }
+
     public function testCallPluginApiRequiresSurveyIdForSurveyScopedPermission(): void
     {
         $this->setPluginApiEnabled(true);

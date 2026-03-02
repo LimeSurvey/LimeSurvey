@@ -8,6 +8,8 @@ class RemoteControlApiTestPlugin extends PluginBase
     public const ACTION_GLOBAL = 'guard_global_action';
     public const ACTION_SURVEY = 'guard_survey_action';
     public const ACTION_INVALID = 'guard_invalid_permission_action';
+    public const ACTION_LEGACY_SURVEY = 'guard_legacy_survey_action';
+    public const ACTION_LEGACY_GLOBAL = 'guard_legacy_global_action';
 
     public function init()
     {
@@ -57,6 +59,14 @@ class RemoteControlApiTestPlugin extends PluginBase
                         'crud' => 'read',
                     ],
                 ],
+                self::ACTION_LEGACY_SURVEY => [
+                    'title' => 'Guard Legacy Survey Action',
+                    'permissions' => ['surveycontent.read'],
+                ],
+                self::ACTION_LEGACY_GLOBAL => [
+                    'title' => 'Guard Legacy Global Action',
+                    'permissions' => ['superadmin.read'],
+                ],
             ],
         ];
 
@@ -71,7 +81,19 @@ class RemoteControlApiTestPlugin extends PluginBase
         }
 
         $action = (string) $event->get('action', '');
-        if (!in_array($action, [self::ACTION_GLOBAL, self::ACTION_SURVEY, self::ACTION_INVALID], true)) {
+        if (
+            !in_array(
+                $action,
+                [
+                    self::ACTION_GLOBAL,
+                    self::ACTION_SURVEY,
+                    self::ACTION_INVALID,
+                    self::ACTION_LEGACY_SURVEY,
+                    self::ACTION_LEGACY_GLOBAL
+                ],
+                true
+            )
+        ) {
             return;
         }
 
