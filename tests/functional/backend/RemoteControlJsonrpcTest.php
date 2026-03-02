@@ -78,25 +78,25 @@ class RemoteControlJsonrpcTest extends TestBaseClassWeb
         try {
             \SettingGlobal::setSetting('RPCInterface', 'json');
 
-            $enabledList = $this->sendJsonRpcRequest('list_plugin_api', ['invalid-session-key', 'StructureImEx']);
+            $enabledList = $this->sendJsonRpcRequest('list_plugin_api', ['invalid-session-key', 'RemoteControlApiTestPlugin']);
             $this->assertArrayHasKey('result', $enabledList);
             $this->assertSame('Invalid session key', $enabledList['result']['status']);
 
             $enabledCall = $this->sendJsonRpcRequest(
                 'call_plugin_api',
-                ['invalid-session-key', 'StructureImEx', 'list_group_items', ['sid' => 1], []]
+                ['invalid-session-key', 'RemoteControlApiTestPlugin', 'guard_survey_action', ['sid' => 1], []]
             );
             $this->assertArrayHasKey('result', $enabledCall);
             $this->assertSame('Invalid session key', $enabledCall['result']['status']);
 
             \SettingGlobal::setSetting('RPCInterface', 'off');
 
-            $blockedListBody = $this->sendRawJsonRpcRequest('list_plugin_api', ['invalid-session-key', 'StructureImEx']);
+            $blockedListBody = $this->sendRawJsonRpcRequest('list_plugin_api', ['invalid-session-key', 'RemoteControlApiTestPlugin']);
             $this->assertSame('', trim($blockedListBody));
 
             $blockedCallBody = $this->sendRawJsonRpcRequest(
                 'call_plugin_api',
-                ['invalid-session-key', 'StructureImEx', 'list_group_items', ['sid' => 1], []]
+                ['invalid-session-key', 'RemoteControlApiTestPlugin', 'guard_survey_action', ['sid' => 1], []]
             );
             $this->assertSame('', trim($blockedCallBody));
         } finally {
