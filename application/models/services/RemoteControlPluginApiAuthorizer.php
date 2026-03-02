@@ -26,11 +26,12 @@ class RemoteControlPluginApiAuthorizer
 
         $permission = $permissionSpec['permission'] ?? '';
         $crud = $permissionSpec['crud'] ?? '';
+        $userId = $this->getCurrentUserId();
         return is_string($permission)
             && is_string($crud)
             && $permission !== ''
             && $crud !== ''
-            && Permission::model()->hasGlobalPermission($permission, $crud);
+            && Permission::model()->hasGlobalPermission($permission, $crud, $userId);
     }
 
     /**
@@ -87,7 +88,7 @@ class RemoteControlPluginApiAuthorizer
      */
     private function authorizeGlobal(string $permission, string $crud, ?string &$errorStatus): bool
     {
-        if (!Permission::model()->hasGlobalPermission($permission, $crud)) {
+        if (!Permission::model()->hasGlobalPermission($permission, $crud, $this->getCurrentUserId())) {
             $errorStatus = 'No permission';
             return false;
         }
@@ -116,7 +117,14 @@ class RemoteControlPluginApiAuthorizer
             return false;
         }
 
-        if (!Permission::model()->hasSurveyPermission($sid, $permissionSpec['permission'], $permissionSpec['crud'])) {
+        if (
+            !Permission::model()->hasSurveyPermission(
+                $sid,
+                $permissionSpec['permission'],
+                $permissionSpec['crud'],
+                $this->getCurrentUserId()
+            )
+        ) {
             $errorStatus = 'No permission';
             return false;
         }
@@ -163,5 +171,16 @@ class RemoteControlPluginApiAuthorizer
         }
 
         return 0;
+    }
+
+    /**
+     * Resolve current authenticated user ID for stable permission checks.
+     *
+     * @return int|null
+     */
+    private function getCurrentUserId(): ?int
+    {
+        $userId = (int) App()->getCurrentUserId();
+        return $userId > 0 ? $userId : null;
     }
 }
