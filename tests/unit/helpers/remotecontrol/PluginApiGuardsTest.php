@@ -178,7 +178,7 @@ class PluginApiGuardsTest extends BaseTest
             true,
             'guard_survey_action'
         );
-        $this->assertSame(['status' => 'Faulty parameters: payload.sid is required for permission check'], $result);
+        $this->assertSame(['status' => 'Faulty parameters: survey ID is required for permission check'], $result);
     }
 
     public function testCallPluginApiAllowsSurveyScopedActionWhenPermissionCheckPasses(): void

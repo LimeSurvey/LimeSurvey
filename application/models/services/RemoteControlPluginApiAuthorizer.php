@@ -113,7 +113,7 @@ class RemoteControlPluginApiAuthorizer
 
         $sid = $this->resolveSurveyIdFromPaths($sidPaths, $payload, $context);
         if ($sid <= 0) {
-            $errorStatus = 'Faulty parameters: payload.sid is required for permission check';
+            $errorStatus = 'Faulty parameters: survey ID is required for permission check';
             return false;
         }
 
