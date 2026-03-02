@@ -157,25 +157,27 @@ echo viewHelper::getViewTestTag('surveyTexts');
             ); ?>
         </div>
         <div class="col-12 col-lg-6">
-           <div>
-    <label
-        class="form-label"
-        for="url_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>"
-    >
-        <?php eT("End URL:"); ?>
-    </label>
+            <div>
+                <label
+                        class="form-label"
+                        for="url_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>"
+                >
+                    <?php eT("End URL:"); ?>
+                </label>
 
-    <?php echo CHtml::textField(
-        "url_{$aSurveyLanguageSettings['surveyls_language']}",
-        htmlspecialchars_decode((string) $aSurveyLanguageSettings['surveyls_url']),
-        array(
-            'class' => 'form-control',
-            'size' => "80",
-            'placeholder' => 'https://',
-            'id' => "url_{$aSurveyLanguageSettings['surveyls_language']}"
-        )
-    ); ?>
-</div>
+                <?php echo CHtml::textField(
+                    "url_{$aSurveyLanguageSettings['surveyls_language']}",
+                    htmlspecialchars_decode(
+                        (string)$aSurveyLanguageSettings['surveyls_url']
+                    ),
+                    array(
+                        'class' => 'form-control',
+                        'size' => "80",
+                        'placeholder' => 'https://',
+                        'id' => "url_{$aSurveyLanguageSettings['surveyls_language']}"
+                    )
+                ); ?>
+            </div>
 
             <div class="mt-2">
                 <label class="form-label " for="urldescrip_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>"><?php eT("URL description:"); ?></label>
