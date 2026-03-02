@@ -80,28 +80,28 @@ class PluginApiGuardsTest extends BaseTest
 
     public function testListPluginApiIsBlockedWhenGlobalSwitchIsDisabled(): void
     {
-        $this->setPluginApiEnabled(false);
-        $sessionKey = $this->getValidSessionKey($this->getUsername(), $this->getPassword());
-
-        $result = $this->handler->list_plugin_api($sessionKey, self::TEST_PLUGIN);
+        $result = $this->listPluginApiForUser($this->getUsername(), $this->getPassword(), false);
         $this->assertSame(['status' => 'Error: Plugin API disabled'], $result);
     }
 
     public function testCallPluginApiIsBlockedWhenGlobalSwitchIsDisabled(): void
     {
-        $this->setPluginApiEnabled(false);
-        $sessionKey = $this->getValidSessionKey($this->getUsername(), $this->getPassword());
-
-        $result = $this->handler->call_plugin_api($sessionKey, self::TEST_PLUGIN, 'guard_global_action', [], []);
+        $result = $this->callPluginApiForUser(
+            $this->getUsername(),
+            $this->getPassword(),
+            false,
+            'guard_global_action'
+        );
         $this->assertSame(['status' => 'Error: Plugin API disabled'], $result);
     }
 
     public function testListPluginApiFiltersActionsByCallerPermissionAndMetadata(): void
     {
-        $this->setPluginApiEnabled(true);
-        $sessionKey = $this->getValidSessionKey(self::LOW_PERMISSION_USER, self::LOW_PERMISSION_PASSWORD);
-
-        $result = $this->handler->list_plugin_api($sessionKey, self::TEST_PLUGIN);
+        $result = $this->listPluginApiForUser(
+            self::LOW_PERMISSION_USER,
+            self::LOW_PERMISSION_PASSWORD,
+            true
+        );
         $this->assertArrayHasKey('plugins', $result);
         $this->assertArrayHasKey(self::TEST_PLUGIN, $result['plugins']);
         $this->assertArrayHasKey('actions', $result['plugins'][self::TEST_PLUGIN]);
@@ -114,126 +114,84 @@ class PluginApiGuardsTest extends BaseTest
 
     public function testCallPluginApiRejectsInvalidPermissionMetadata(): void
     {
-        $this->setPluginApiEnabled(true);
-        $sessionKey = $this->getValidSessionKey($this->getUsername(), $this->getPassword());
-
-        $result = $this->handler->call_plugin_api($sessionKey, self::TEST_PLUGIN, 'guard_invalid_permission_action', [], []);
+        $result = $this->callPluginApiForUser(
+            $this->getUsername(),
+            $this->getPassword(),
+            true,
+            'guard_invalid_permission_action'
+        );
         $this->assertSame(['status' => 'Error: Invalid plugin API permission metadata'], $result);
     }
 
     public function testCallPluginApiRejectsGlobalActionForLowPermissionUser(): void
     {
-        $this->setPluginApiEnabled(true);
-        $sessionKey = $this->getValidSessionKey(self::LOW_PERMISSION_USER, self::LOW_PERMISSION_PASSWORD);
-
-        $result = $this->handler->call_plugin_api($sessionKey, self::TEST_PLUGIN, 'guard_global_action', [], []);
+        $result = $this->callPluginApiForUser(
+            self::LOW_PERMISSION_USER,
+            self::LOW_PERMISSION_PASSWORD,
+            true,
+            'guard_global_action'
+        );
         $this->assertSame(['status' => 'No permission'], $result);
     }
 
     public function testCallPluginApiRejectsLegacyGlobalActionForLowPermissionUser(): void
     {
-        $this->setPluginApiEnabled(true);
-        $sessionKey = $this->getValidSessionKey(self::LOW_PERMISSION_USER, self::LOW_PERMISSION_PASSWORD);
-
-        $result = $this->handler->call_plugin_api($sessionKey, self::TEST_PLUGIN, 'guard_legacy_global_action', [], []);
-        $this->assertSame(['status' => 'No permission'], $result);
-    }
-
-    public function testCallPluginApiRejectsSurveyActionForLowPermissionUserUsingPayloadSid(): void
-    {
-        $this->setPluginApiEnabled(true);
-        $sessionKey = $this->getValidSessionKey(self::LOW_PERMISSION_USER, self::LOW_PERMISSION_PASSWORD);
-
-        $result = $this->handler->call_plugin_api(
-            $sessionKey,
-            self::TEST_PLUGIN,
-            'guard_survey_action',
-            ['sid' => self::$surveyId],
-            []
+        $result = $this->callPluginApiForUser(
+            self::LOW_PERMISSION_USER,
+            self::LOW_PERMISSION_PASSWORD,
+            true,
+            'guard_legacy_global_action'
         );
         $this->assertSame(['status' => 'No permission'], $result);
     }
 
-    public function testCallPluginApiRejectsSurveyActionForLowPermissionUserUsingPayloadSurveyId(): void
+    /**
+     * @dataProvider surveyReferenceProvider
+     */
+    public function testCallPluginApiRejectsSurveyActionForLowPermissionUser(array $payload, array $context): void
     {
-        $this->setPluginApiEnabled(true);
-        $sessionKey = $this->getValidSessionKey(self::LOW_PERMISSION_USER, self::LOW_PERMISSION_PASSWORD);
-
-        $result = $this->handler->call_plugin_api(
-            $sessionKey,
-            self::TEST_PLUGIN,
+        $result = $this->callPluginApiForUser(
+            self::LOW_PERMISSION_USER,
+            self::LOW_PERMISSION_PASSWORD,
+            true,
             'guard_survey_action',
-            ['surveyId' => self::$surveyId],
-            []
-        );
-        $this->assertSame(['status' => 'No permission'], $result);
-    }
-
-    public function testCallPluginApiRejectsSurveyActionForLowPermissionUserUsingContextSid(): void
-    {
-        $this->setPluginApiEnabled(true);
-        $sessionKey = $this->getValidSessionKey(self::LOW_PERMISSION_USER, self::LOW_PERMISSION_PASSWORD);
-
-        $result = $this->handler->call_plugin_api(
-            $sessionKey,
-            self::TEST_PLUGIN,
-            'guard_survey_action',
-            [],
-            ['sid' => self::$surveyId]
-        );
-        $this->assertSame(['status' => 'No permission'], $result);
-    }
-
-    public function testCallPluginApiRejectsSurveyActionForLowPermissionUserUsingContextSurveyId(): void
-    {
-        $this->setPluginApiEnabled(true);
-        $sessionKey = $this->getValidSessionKey(self::LOW_PERMISSION_USER, self::LOW_PERMISSION_PASSWORD);
-
-        $result = $this->handler->call_plugin_api(
-            $sessionKey,
-            self::TEST_PLUGIN,
-            'guard_survey_action',
-            [],
-            ['surveyId' => self::$surveyId]
+            $payload,
+            $context
         );
         $this->assertSame(['status' => 'No permission'], $result);
     }
 
     public function testCallPluginApiRejectsLegacySurveyActionForLowPermissionUser(): void
     {
-        $this->setPluginApiEnabled(true);
-        $sessionKey = $this->getValidSessionKey(self::LOW_PERMISSION_USER, self::LOW_PERMISSION_PASSWORD);
-
-        $result = $this->handler->call_plugin_api(
-            $sessionKey,
-            self::TEST_PLUGIN,
+        $result = $this->callPluginApiForUser(
+            self::LOW_PERMISSION_USER,
+            self::LOW_PERMISSION_PASSWORD,
+            true,
             'guard_legacy_survey_action',
-            ['sid' => self::$surveyId],
-            []
+            ['sid' => self::$surveyId]
         );
         $this->assertSame(['status' => 'No permission'], $result);
     }
 
     public function testCallPluginApiRequiresSurveyIdForSurveyScopedPermission(): void
     {
-        $this->setPluginApiEnabled(true);
-        $sessionKey = $this->getValidSessionKey(self::AUTHORIZED_SURVEY_USER, self::AUTHORIZED_SURVEY_PASSWORD);
-
-        $result = $this->handler->call_plugin_api($sessionKey, self::TEST_PLUGIN, 'guard_survey_action', [], []);
+        $result = $this->callPluginApiForUser(
+            self::AUTHORIZED_SURVEY_USER,
+            self::AUTHORIZED_SURVEY_PASSWORD,
+            true,
+            'guard_survey_action'
+        );
         $this->assertSame(['status' => 'Faulty parameters: payload.sid is required for permission check'], $result);
     }
 
     public function testCallPluginApiAllowsSurveyScopedActionWhenPermissionCheckPasses(): void
     {
-        $this->setPluginApiEnabled(true);
-        $sessionKey = $this->getValidSessionKey(self::AUTHORIZED_SURVEY_USER, self::AUTHORIZED_SURVEY_PASSWORD);
-
-        $result = $this->handler->call_plugin_api(
-            $sessionKey,
-            self::TEST_PLUGIN,
+        $result = $this->callPluginApiForUser(
+            self::AUTHORIZED_SURVEY_USER,
+            self::AUTHORIZED_SURVEY_PASSWORD,
+            true,
             'guard_survey_action',
-            ['sid' => self::$surveyId],
-            []
+            ['sid' => self::$surveyId]
         );
 
         $this->assertArrayHasKey('ok', $result);
@@ -249,9 +207,57 @@ class PluginApiGuardsTest extends BaseTest
         return $sessionKey;
     }
 
+    /**
+     * @return array
+     */
+    public function surveyReferenceProvider(): array
+    {
+        return [
+            'payload sid' => [['sid' => self::$surveyId], []],
+            'payload surveyId' => [['surveyId' => self::$surveyId], []],
+            'context sid' => [[], ['sid' => self::$surveyId]],
+            'context surveyId' => [[], ['surveyId' => self::$surveyId]],
+        ];
+    }
+
     private function setPluginApiEnabled(bool $enabled): void
     {
         \SettingGlobal::setSetting('rpc_plugin_api', $enabled ? '1' : '0');
+    }
+
+    /**
+     * @param string $username
+     * @param string $password
+     * @param bool $enabled
+     * @return array
+     */
+    private function listPluginApiForUser(string $username, string $password, bool $enabled): array
+    {
+        $this->setPluginApiEnabled($enabled);
+        $sessionKey = $this->getValidSessionKey($username, $password);
+        return $this->handler->list_plugin_api($sessionKey, self::TEST_PLUGIN);
+    }
+
+    /**
+     * @param string $username
+     * @param string $password
+     * @param bool $enabled
+     * @param string $action
+     * @param array $payload
+     * @param array $context
+     * @return array
+     */
+    private function callPluginApiForUser(
+        string $username,
+        string $password,
+        bool $enabled,
+        string $action,
+        array $payload = [],
+        array $context = []
+    ): array {
+        $this->setPluginApiEnabled($enabled);
+        $sessionKey = $this->getValidSessionKey($username, $password);
+        return $this->handler->call_plugin_api($sessionKey, self::TEST_PLUGIN, $action, $payload, $context);
     }
 
     private static function grantSurveyReadPermission(int $userId, int $surveyId): void
@@ -267,6 +273,10 @@ class PluginApiGuardsTest extends BaseTest
         $permission->delete_p = 0;
         $permission->import_p = 0;
         $permission->export_p = 0;
-        $permission->save();
+        if (!$permission->save()) {
+            throw new \RuntimeException(
+                'Failed to grant survey read permission: ' . json_encode($permission->getErrors())
+            );
+        }
     }
 }
