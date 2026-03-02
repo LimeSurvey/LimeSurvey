@@ -8,6 +8,7 @@ class RemoteControlJsonrpcTest extends TestBaseClassWeb
 {
     private static $tmpBaseUrl;
     private static $tmpRPCType;
+    private static $serverUrl;
 
     private static $client;
 
@@ -20,6 +21,7 @@ class RemoteControlJsonrpcTest extends TestBaseClassWeb
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         //$serverUrl = App()->createAbsoluteUrl('/admin/remotecontrol');
         $serverUrl = $urlMan->createUrl('/admin/remotecontrol');
+        self::$serverUrl = $serverUrl;
 
         self::$tmpRPCType = Yii::app()->getConfig('RPCInterface');
 
@@ -66,5 +68,75 @@ class RemoteControlJsonrpcTest extends TestBaseClassWeb
         $this->assertSame("Invalid user name or password", $sessionKey['status']);
 
         self::$client->call('release_session_key', [$sessionKey]);
+    }
+
+    public function testPluginApiMethodsAreBlockedWhenRpcInterfaceIsOff()
+    {
+        $originalPluginApi = (string) Yii::app()->getConfig('rpc_plugin_api', '0');
+        \SettingGlobal::setSetting('rpc_plugin_api', '1');
+
+        try {
+            \SettingGlobal::setSetting('RPCInterface', 'json');
+
+            $enabledList = $this->sendJsonRpcRequest('list_plugin_api', ['invalid-session-key', 'StructureImEx']);
+            $this->assertArrayHasKey('result', $enabledList);
+            $this->assertSame('Invalid session key', $enabledList['result']['status']);
+
+            $enabledCall = $this->sendJsonRpcRequest(
+                'call_plugin_api',
+                ['invalid-session-key', 'StructureImEx', 'list_group_items', ['sid' => 1], []]
+            );
+            $this->assertArrayHasKey('result', $enabledCall);
+            $this->assertSame('Invalid session key', $enabledCall['result']['status']);
+
+            \SettingGlobal::setSetting('RPCInterface', 'off');
+
+            $blockedListBody = $this->sendRawJsonRpcRequest('list_plugin_api', ['invalid-session-key', 'StructureImEx']);
+            $this->assertSame('', trim($blockedListBody));
+
+            $blockedCallBody = $this->sendRawJsonRpcRequest(
+                'call_plugin_api',
+                ['invalid-session-key', 'StructureImEx', 'list_group_items', ['sid' => 1], []]
+            );
+            $this->assertSame('', trim($blockedCallBody));
+        } finally {
+            \SettingGlobal::setSetting('rpc_plugin_api', $originalPluginApi);
+            \SettingGlobal::setSetting('RPCInterface', 'json');
+        }
+    }
+
+    private function sendJsonRpcRequest(string $method, array $params): array
+    {
+        $responseBody = $this->sendRawJsonRpcRequest($method, $params);
+        $this->assertNotSame('', trim($responseBody), 'Expected JSON-RPC response body.');
+
+        $decoded = json_decode($responseBody, true);
+        $this->assertIsArray($decoded, 'Expected valid JSON-RPC response.');
+        return $decoded;
+    }
+
+    private function sendRawJsonRpcRequest(string $method, array $params): string
+    {
+        $requestBody = json_encode([
+            'method' => $method,
+            'params' => $params,
+            'id' => 999,
+        ]);
+
+        $context = stream_context_create([
+            'http' => [
+                'method' => 'POST',
+                'header' => 'Content-Type: application/json',
+                'content' => $requestBody,
+                'ignore_errors' => true,
+            ],
+        ]);
+
+        $responseBody = file_get_contents(self::$serverUrl, false, $context);
+        if ($responseBody === false) {
+            return '';
+        }
+
+        return $responseBody;
     }
 }
