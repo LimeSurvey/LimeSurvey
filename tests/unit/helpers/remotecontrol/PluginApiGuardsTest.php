@@ -103,13 +103,8 @@ class PluginApiGuardsTest extends BaseTest
             true
         );
         $this->assertArrayHasKey('plugins', $result);
-        $this->assertArrayHasKey(self::TEST_PLUGIN, $result['plugins']);
-        $this->assertArrayHasKey('actions', $result['plugins'][self::TEST_PLUGIN]);
-
-        $actions = $result['plugins'][self::TEST_PLUGIN]['actions'];
-        $this->assertArrayNotHasKey('guard_survey_action', $actions);
-        $this->assertArrayNotHasKey('guard_global_action', $actions);
-        $this->assertArrayNotHasKey('guard_invalid_permission_action', $actions);
+        $this->assertArrayNotHasKey(self::TEST_PLUGIN, $result['plugins']);
+        $this->assertSame([], $result['plugins']);
     }
 
     public function testCallPluginApiRejectsInvalidPermissionMetadata(): void
