@@ -1550,16 +1550,16 @@ function getNavigatorDatas()
         $bAlreadySaved              = isset($_SESSION['survey_' . $surveyid]['scid']);
         $iSessionStep               = ($_SESSION['survey_' . $surveyid]['step'] ?? false);
         $iSessionMaxStep            = ($_SESSION['survey_' . $surveyid]['maxstep'] ?? false);
-
+        $bNoTokenFreeAccess         = empty($_SESSION['survey_' . $surveyid]['token']) && $thissurvey['access_mode'] !== SurveyAccessModeService::$ACCESS_TYPE_CLOSED;
         // Find out if the user has any saved data
         if ($thissurvey['format'] == 'A') {
-            if ((!$bTokenanswerspersistence || $bAnonymized) && !$bAlreadySaved) {
+            if ((!($bTokenanswerspersistence && !$bNoTokenFreeAccess) || $bAnonymized) && !$bAlreadySaved) {
                 $aNavigator['load']['show'] = true;
             }
             $aNavigator['save']['show'] = true;
         } elseif (!$iSessionStep) {
             //Welcome page, show load (but not save)
-            if ((!$bTokenanswerspersistence || $bAnonymized) && !$bAlreadySaved) {
+            if ((!($bTokenanswerspersistence && !$bNoTokenFreeAccess) || $bAnonymized) && !$bAlreadySaved) {
                 $aNavigator['load']['show'] = true;
             }
 
@@ -1568,7 +1568,7 @@ function getNavigatorDatas()
             }
         } elseif ($iSessionMaxStep == 1 && $thissurvey['showwelcome'] == "N") {
             //First page, show LOAD and SAVE
-            if ((!$bTokenanswerspersistence || $bAnonymized) && !$bAlreadySaved) {
+            if ((!($bTokenanswerspersistence && !$bNoTokenFreeAccess) || $bAnonymized) && !$bAlreadySaved) {
                 $aNavigator['load']['show'] = true;
             }
 
