@@ -38,7 +38,7 @@ foreach ($extraMenus as $menu): ?>
                             <li class="dropdown-divider"></li>
                         <?php
                         elseif ($menuItem->isSmallText()): ?>
-                            <li class="dropdown-header"><?= $menuItem->getLabel(); ?></li>
+                            <li class="dropdown-header" role="heading" aria-level="2"><?= $menuItem->getLabel(); ?></li>
                         <?php
                         else: ?>
                             <li class="create-menu-item ms-3 me-3">
