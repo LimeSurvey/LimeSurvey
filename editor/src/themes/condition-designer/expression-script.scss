@@ -1,0 +1,79 @@
+.expression-script-container {
+  background-color: $g-200;
+  border-radius: 10px;
+  border: 1px solid $grape;
+  padding: 4px;
+  gap: 10px;
+  margin: 3px 16px;
+}
+
+.expression-script-header {
+  display: flex;
+  align-items: center;
+  font-size: $font-size-sm;
+  height: 40px;
+  border-radius: $border-radius;
+  padding: 0 4px 4px 16px;
+  background-color: $white;
+  margin-bottom: 10px;
+}
+
+.condition-script-trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 4px 4px 13px;
+  position: relative;
+  border: 2px solid $g-700;
+  border-radius: $border-radius;
+  margin-bottom: 10px;
+  height: 40px;
+  width: 242px;
+}
+
+.expression-script-body {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.expression-script-label {
+  display: block;
+  text-align: start;
+  width: 100%;
+  color: $g-600;
+  font-weight: $font-weight-600;
+  margin-left: 15px;
+  font-size: $font-size-xs;
+}
+
+.expression-script-textarea {
+  height: 230px;
+  width: 220px;
+  border: 3px solid $g-600;
+  border-radius: $border-radius;
+  margin: 0 14px;
+  padding: 4px 12px;
+  overflow: auto;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  box-sizing: border-box;
+}
+
+.expression-script-apply-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.expression-script-codemirror .cm-focused {
+  outline: none;
+}
+.expression-script-codemirror .cm-gutters {
+  background-color: $g-200;
+}
+.condition-designer-overlay-textarea-container {
+  padding: 12px;
+  border: 1px solid $g-400;
+  border-radius: $border-radius;
+}

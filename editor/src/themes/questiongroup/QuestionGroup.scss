@@ -1,0 +1,125 @@
+.question-group {
+  .header {
+    color: $g-700;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-600;
+    line-height: 24px;
+
+    svg {
+      fill: $g-700;
+      path {
+        fill: $g-700;
+      }
+    }
+  }
+
+  .questions-length {
+    padding: 2px;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-sm;
+    background-color: $g-700;
+    border-radius: 2px;
+    color: $white;
+  }
+
+  .question-group-editor-area {
+    transition: box-shadow 1s;
+    box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
+    border: none !important;
+
+    .question-group-body {
+      font-size: $font-size-xs;
+
+      .question-scroll {
+        top: calc(50% - 20px);
+        right: -40px;
+        .question-scroll-button {
+          padding: 2px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 2px;
+          i {
+            font-size: $font-size-md;
+          }
+        }
+      }
+
+      .image-wrapper {
+        width: 50%;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .description {
+        padding: 0 2rem;
+        margin-bottom: 2em;
+      }
+    }
+  }
+
+  .add-question-button {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border-radius: 2px;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    &:before {
+      position: absolute;
+      content: '';
+      left: 0;
+      right: 50%;
+      margin-right: 10px;
+      border-top: 2px solid $grape;
+      border-radius: 2px;
+      border-color: inherit;
+      color: $grape;
+      pointer-events: none;
+    }
+
+    &:after {
+      position: absolute;
+      content: '';
+      left: 50%;
+      margin-left: 10px;
+      right: 0;
+      border-top: 2px solid $grape;
+      border-radius: 2px;
+      border-color: inherit;
+      color: $grape;
+      pointer-events: none;
+    }
+
+    &:hover {
+      &:before {
+        color: #6e3cd1;
+      }
+
+      &:after {
+        color: #6e3cd1;
+      }
+    }
+  }
+}
+
+.adding-question-group-wrapper {
+  background: rgba(243, 243, 243, 0.3);
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}

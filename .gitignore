@@ -21,6 +21,7 @@
 !.eslintrc
 !.env-cmdrc
 !.eslintignore
+!.github/
 
 # upload directory : whole except the index.html and readme.txt
 /upload/*.*
@@ -75,9 +76,6 @@
 /plugins/*
 !/plugins/index.html
 !/plugins/Demo/
-
-# ignore editor contents - reserved for future use
-/editor/*
 
 #ignore old styles
 /styles/
