@@ -481,12 +481,16 @@ class QuestionTheme extends LSActiveRecord
 
         if (isset($selectedQuestionDirectories)) {
             foreach ($selectedQuestionDirectories as $questionThemeDirectory) {
-                $directory = new RecursiveDirectoryIterator($questionThemeDirectory);
+                $directory = new RecursiveDirectoryIterator($questionThemeDirectory, FilesystemIterator::FOLLOW_SYMLINKS);
                 $iterator = new RecursiveIteratorIterator($directory);
                 foreach ($iterator as $info) {
                     $ext = pathinfo((string) $info->getPathname(), PATHINFO_EXTENSION);
+                    // Accept both real directories and symlinks
                     if ($ext == 'xml') {
-                        $questionDirectoriesAndPaths[$questionThemeDirectory][] = dirname((string) $info->getPathname());
+                        $dirPath = dirname((string) $info->getPathname());
+                        if (is_dir($dirPath) || is_link($dirPath)) {
+                            $questionDirectoriesAndPaths[$questionThemeDirectory][] = $dirPath;
+                        }
                     }
                 }
             }
