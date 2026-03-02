@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-02-17 14:00:00+00:00\n"
+"POT-Creation-Date: 2026-02-23 11:37:10+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3228,8 +3228,8 @@ msgstr ""
 
 #: application/controllers/SurveyPermissionsController.php:82
 #: application/core/LsDefaultDataSets.php:276
-#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:50
-#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:167
+#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:64
+#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:189
 #: application/views/surveyAdministration/partial/_modalCopySurvey.php:49
 #: application/views/surveyPermissions/index.php:13
 msgid "Survey permissions"
@@ -3554,7 +3554,7 @@ msgstr ""
 #: application/controllers/UploaderController.php:313
 #: application/controllers/UploaderController.php:331
 #: application/controllers/UploaderController.php:359
-#: application/helpers/remotecontrol/remotecontrol_handle.php:3609
+#: application/helpers/remotecontrol/remotecontrol_handle.php:3556
 msgid "The file has been successfully uploaded."
 msgstr ""
 
@@ -6115,7 +6115,7 @@ msgstr ""
 #: application/controllers/admin/SurveysGroupsController.php:340
 #: application/controllers/admin/globalsettings.php:577
 #: application/core/LsDefaultDataSets.php:838
-#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:19
+#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:28
 #: application/models/Survey.php:2455 application/models/SurveysGroups.php:322
 #: application/models/SurveysGroups.php:471
 msgid "Survey settings"
@@ -7627,8 +7627,8 @@ msgid ""
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:839
-#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:39
-#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:107
+#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:53
+#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:129
 #: application/views/admin/surveymenu/shortlist.php:10
 msgid "Survey menu"
 msgstr ""
@@ -10045,28 +10045,35 @@ msgstr ""
 msgid "This will export a printable version of your survey."
 msgstr ""
 
-#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:9
+#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:15
 #: application/views/admin/survey/surveybar_displayexport.php:39
 msgid "Survey structure"
 msgstr ""
 
-#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:29
-#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:137
+#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:42
+#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:159
 msgid "Survey presentation"
 msgstr ""
 
-#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:62
-#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:200
+#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:76
+#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:77
 #: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:222
+#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:244
 #: application/models/Survey.php:2468
 msgid "Quick translation"
 msgstr ""
 
-#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:76
+#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:78
+#: application/views/admin/survey/surveybar_tools.php:55
+#: application/views/surveyAdministration/partial/topbar/surveyToolsDropdownItems.php:38
+msgid "Currently there are no additional languages configured for this survey."
+msgstr ""
+
+#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:98
 msgid "Survey Settings"
 msgstr ""
 
-#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:188
+#: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:210
 msgid "Permissions"
 msgstr ""
 
@@ -22931,11 +22938,6 @@ msgstr ""
 #: application/views/surveyAdministration/partial/topbar/surveyToolsDropdownItems.php:28
 #: application/views/surveyAdministration/partial/topbar/surveyToolsDropdownItems.php:40
 msgid "Quick-translation"
-msgstr ""
-
-#: application/views/admin/survey/surveybar_tools.php:55
-#: application/views/surveyAdministration/partial/topbar/surveyToolsDropdownItems.php:38
-msgid "Currently there are no additional languages configured for this survey."
 msgstr ""
 
 #: application/views/admin/survey/surveybar_tools.php:70

@@ -223,7 +223,7 @@ class Zend_Filter_File_Rename implements Zend_Filter_Interface
                     break;
 
                 case 'overwrite' :
-                    $files['overwrite'] = (boolean) $value;
+                    $files['overwrite'] = (bool) $value;
                     break;
 
                 default:

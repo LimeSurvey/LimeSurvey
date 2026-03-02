@@ -28,6 +28,7 @@
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'overwritefiles',
+                    'ariaLabel'=> gT('Overwrite files with the same name when uploaded, moved or copied through the editor/file-manager?'),
                     'checkedOption' => App()->getConfig('overwritefiles') === 'Y' ? '1' : 0,
                     'selectOptions' => [
                         '1' => gT('On'),
@@ -40,8 +41,8 @@
         <div id="global-settings-max-size-for-db-dump-settings" class="mb-3">
             <label class="form-label" for='global-settings-max-size-for-db-dump'><?php eT("Set limit in megabytes for direct download of the database.");?></label>
             <div>
-                <input class="form-control" type="number" id="global-settings-max-size-for-db-dump" min="0" step="1" name="global-settings-max-size-for-db-dump" value="<?php echo App()->getConfig('maxDatabaseSizeForDump') ?? 256; ?>" />
-                <span class='hint'>
+                <input class="form-control" aria-describedby="storage_ins" type="number" id="global-settings-max-size-for-db-dump" min="0" step="1" name="global-settings-max-size-for-db-dump" value="<?php echo App()->getConfig('maxDatabaseSizeForDump') ?? 256; ?>" />
+                <span class='hint' id="storage_ins">
                     <?php eT('The recommended value is 256 MB. Depending on the system, a higher value could lead to slower performance.');?>
                 </span>
             </div>

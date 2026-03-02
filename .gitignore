@@ -175,7 +175,6 @@ enabletests
 /tests/data/tmp/**
 
 ## Ignore files and dependencies for testing
-composer.lock
 vendor/bin/phpcbf
 vendor/bin/phpcs
 vendor/squizlabs/
@@ -243,5 +242,7 @@ package-lock.json
 docker-compose.yml
 docker/
 /geckodriver-v0.23.0-linux64.tar.gz
-/yarn.lock
 /geckodriver.exe
+/vendor/khaled.alshamaa/ar-php/composer.lock
+/vendor/mk-j/php_xlsxwriter/composer.lock
+/vendor/mockery/mockery/composer.lock
