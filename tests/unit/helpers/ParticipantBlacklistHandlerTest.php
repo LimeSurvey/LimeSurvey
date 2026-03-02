@@ -12,32 +12,6 @@ use Survey;
 class ParticipantBlacklistHandlerTest extends TestBaseClass
 {
     /**
-     * Ensure core participant attributes (firstname, lastname, email) are created in the database
-     *
-     * @return void
-     */
-    private function ensureCoreParticipantAttributes()
-    {
-        $coreAttributes = ['firstname', 'lastname', 'email'];
-        foreach ($coreAttributes as $attrName) {
-            $existing = \ParticipantAttributeName::model()->findByAttributes([
-                'defaultname' => $attrName,
-                'core_attribute' => 'Y'
-            ]);
-
-            if (!$existing) {
-                $attr = new \ParticipantAttributeName();
-                $attr->attribute_type = 'TB';
-                $attr->defaultname = $attrName;
-                $attr->visible = 'TRUE';
-                $attr->encrypted = 'N';
-                $attr->core_attribute = 'Y';
-                $attr->save();
-            }
-        }
-    }
-
-    /**
      * Test adding participant to blocklist
      *
      * @return void
@@ -48,11 +22,8 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
         $filename = self::$surveysFolder . '/survey_archive_993688_participantBlacklist.lsa';
         self::importSurvey($filename);
 
-        // Ensure CPDB core attributes exist
-        $this->ensureCoreParticipantAttributes();
-
         // Create participant in CPDB
-        \Yii::app()->session['participantid'] = 1;
+        \Yii::app()->session['participantid'] = '["1"]';
         $copyResult = Participant::model()->copyToCentral(self::$surveyId, [], []);
         if (empty($copyResult['success'])) {
             throw new \Exception('Failed to copy participants to the CPDB.');
@@ -66,7 +37,12 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
 
         $this->assertTrue($blacklistResult->isBlacklisted());
 
-        // Cleanup
+        // Cleanup: Delete the participant from CPDB so it can be re-added in other tests
+        $token->decrypt();
+        if (!empty($token->participant_id)) {
+            Participant::model()->deleteByPk($token->participant_id);
+        }
+
         self::$testSurvey->delete();
         self::$testSurvey = null;
         Survey::model()->resetCache();
@@ -83,11 +59,8 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
         $filename = self::$surveysFolder . '/survey_archive_993688_participantBlacklist.lsa';
         self::importSurvey($filename);
 
-        // Ensure CPDB core attributes exist
-        $this->ensureCoreParticipantAttributes();
-
         // Create participant in CPDB
-        \Yii::app()->session['participantid'] = 1;
+        \Yii::app()->session['participantid'] = '["1"]';
         $copyResult = Participant::model()->copyToCentral(self::$surveyId, [], []);
         if (empty($copyResult['success'])) {
             throw new \Exception('Failed to copy participants to the CPDB.');
@@ -104,7 +77,12 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
 
         $this->assertFalse($blacklistResult->isBlacklisted());
 
-        // Cleanup
+        // Cleanup: Delete the participant from CPDB so it can be re-added in other tests
+        $token->decrypt();
+        if (!empty($token->participant_id)) {
+            Participant::model()->deleteByPk($token->participant_id);
+        }
+
         self::$testSurvey->delete();
         self::$testSurvey = null;
         Survey::model()->resetCache();
