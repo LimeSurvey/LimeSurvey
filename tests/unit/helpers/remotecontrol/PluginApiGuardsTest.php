@@ -225,7 +225,7 @@ class PluginApiGuardsTest extends BaseTest
     /**
      * @return array
      */
-    public function surveyReferenceProvider(): array
+    public static function surveyReferenceProvider(): array
     {
         return [
             'payload sid' => ['payloadSid'],
