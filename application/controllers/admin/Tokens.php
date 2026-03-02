@@ -3146,7 +3146,7 @@ class Tokens extends SurveyCommonAction
         $bHtml = (getEmailFormat($iSurveyId) == 'html');
         $bEmail = $sSubAction == 'invite';
         $aTokenIds = $this->getTokenIds();
-
+        $aData['warnings'] = [];
         // Fill empty email template by default text
         foreach ($aSurveyLangs as $sSurveyLanguage) {
             $aData['thissurvey'][$sSurveyLanguage] = getSurveyInfo($iSurveyId, $sSurveyLanguage);
@@ -3159,6 +3159,27 @@ class Tokens extends SurveyCommonAction
                         $aData['thissurvey'][$sSurveyLanguage]["email_{$sSubAction}"] = $aDefaultTexts["invitation"];
                     } elseif ($sSubAction == 'remind') {
                         $aData['thissurvey'][$sSurveyLanguage]["email_{$sSubAction}"] = $aDefaultTexts["reminder"];
+                    }
+                }
+            }
+            // Check if all attachment are here : add a warning in case
+            if (!empty($aData['thissurvey'][$sSurveyLanguage]['attachments'])) {
+                $attachments = $aData['thissurvey'][$sSurveyLanguage]['attachments'];
+                if (is_string($attachments)) {
+                    $attachments = unserialize($attachments);
+                }
+                $type = ($sSubAction == 'invite') ? 'invitation' : 'reminder';
+                if (!empty($attachments[$type]) && is_array($attachments[$type])) {
+                    foreach ($attachments[$type] as $attachment) {
+                        if (!LimeMailer::attachmentExist($iSurveyId, $attachment, false)) {
+                            $aData['warnings'][] = sprintf(
+                                gT("There is an issue with an attachment for language %s. You can review it in the %semail template%s."),
+                                $sSurveyLanguage,
+                                "<a href='" . App()->createUrl("admin/emailtemplates", ["sa" => "index", "surveyid" => $iSurveyId]) . "'>",
+                                "</a>"
+                            );
+                            break;
+                        }
                     }
                 }
             }

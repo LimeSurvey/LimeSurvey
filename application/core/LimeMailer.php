@@ -945,39 +945,12 @@ class LimeMailer extends PHPMailer
                     LimeExpressionManager::singleton()->loadTokenInformation($this->surveyId, $this->oToken->token);
                 }
                 foreach ($aAttachments[$attachementType] as $aAttachment) {
-                    if ($this->attachementExists($aAttachment) && LimeExpressionManager::ProcessRelevance($aAttachment['relevance'])) {
+                    if (self::attachmentExist($this->surveyId, $aAttachment) && LimeExpressionManager::ProcessRelevance($aAttachment['relevance'])) {
                         $this->addAttachment($aAttachment['url']);
                     }
                 }
             }
         }
-    }
-
-    private function attachementExists($aAttachment)
-    {
-        $throwError = (Yii::app()->getConfig('debug') && Permission::model()->hasSurveyPermission($this->surveyId, 'surveylocale', 'update'));
-
-        $isInSurvey = Yii::app()->is_file(
-            $aAttachment['url'],
-            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $this->surveyId,
-            false
-        );
-
-        $isInGlobal = Yii::app()->is_file(
-            $aAttachment['url'],
-            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "global",
-            false
-        );
-
-        if ($isInSurvey || $isInGlobal) {
-            return true;
-        }
-
-        if ($throwError && !($isInSurvey || $isInGlobal)) {
-            throw new \CException(sprintf(gT("File not found: %s"), $aAttachment['url']));
-        }
-
-        return false;
     }
 
     /**
@@ -1037,7 +1010,6 @@ class LimeMailer extends PHPMailer
         return $aOutList;
     }
 
-
     /**
      * @inheritdoc
      * Override to use a better html to text converter (ex. doesn't removes links)
@@ -1049,5 +1021,39 @@ class LimeMailer extends PHPMailer
         }
 
         return (new \Html2Text\Html2Text($html))->getText();
+    }
+
+    /**
+     * Checks that the specified attachment exists on one of the allowed paths.
+     * @param integer $surveyId
+     * @param array $attachment data
+     * @param boolean|null $throwError if null use debug and allow edoit survey content
+     * @return bool True if the file exists within the survey or global upload dirs.
+     */
+    public static function attachmentExist($surveyId, $attachment, $throwError = null)
+    {
+        if (is_null($throwError)) {
+            $throwError = (Yii::app()->getConfig('debug') > 1 && Permission::model()->hasSurveyPermission($surveyId, 'surveylocale', 'update'));
+        }
+        if (App()->is_file(
+            $attachment['url'],
+            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId,
+            false
+        )) {
+            // isInSurvey
+            return true;
+        }
+        if (App()->is_file(
+            $attachment['url'],
+            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "global",
+            false
+        )) {
+            // isInGlobal
+            return true;
+        }
+        if ($throwError) {
+            throw new \CException(sprintf(gT("File not found: %s"), $attachment['url']));
+        }
+        return false;
     }
 }
