@@ -17,11 +17,6 @@ class remotecontrol_handle
     protected $controller;
 
     /**
-     * @var RemoteControlPluginApiService|null
-     */
-    protected $remoteControlPluginApiService;
-
-    /**
      * Constructor, stores the action instance into this handle class
      *
      * @access public
@@ -30,7 +25,6 @@ class remotecontrol_handle
     public function __construct(AdminController $controller)
     {
         $this->controller = $controller;
-        $this->remoteControlPluginApiService = null;
     }
 
     /**
@@ -3837,10 +3831,12 @@ class remotecontrol_handle
      */
     public function list_plugin_api($sSessionKey, $pluginName = null)
     {
+        $pluginApiService = new RemoteControlPluginApiService();
+
         if (!$this->_checkSessionKey($sSessionKey)) {
             return ['status' => self::INVALID_SESSION_KEY];
         }
-        $pluginApiAvailabilityError = $this->getRemoteControlPluginApiService()->getAvailabilityError();
+        $pluginApiAvailabilityError = $pluginApiService->getAvailabilityError();
         if ($pluginApiAvailabilityError !== null) {
             return ['status' => $pluginApiAvailabilityError];
         }
@@ -3869,7 +3865,7 @@ class remotecontrol_handle
             $pluginApi = [];
         }
 
-        $pluginApi = $this->getRemoteControlPluginApiService()->filterDiscoveryForCaller($pluginApi);
+        $pluginApi = $pluginApiService->filterDiscoveryForCaller($pluginApi);
 
         if (!empty($pluginName)) {
             $pluginApi = isset($pluginApi[$pluginName]) ? [$pluginName => $pluginApi[$pluginName]] : [];
@@ -3895,10 +3891,12 @@ class remotecontrol_handle
      */
     public function call_plugin_api($sSessionKey, $pluginName, $action, $payload = [], $context = [])
     {
+        $pluginApiService = new RemoteControlPluginApiService();
+
         if (!$this->_checkSessionKey($sSessionKey)) {
             return ['status' => self::INVALID_SESSION_KEY];
         }
-        $pluginApiAvailabilityError = $this->getRemoteControlPluginApiService()->getAvailabilityError();
+        $pluginApiAvailabilityError = $pluginApiService->getAvailabilityError();
         if ($pluginApiAvailabilityError !== null) {
             return ['status' => $pluginApiAvailabilityError];
         }
@@ -3918,17 +3916,17 @@ class remotecontrol_handle
             return ['status' => 'Error: Plugin not active or not found'];
         }
 
-        $payload = $this->normalizeRpcAssocArray($payload);
+        $payload = $pluginApiService->normalizeRpcAssocArray($payload);
         if ($payload === null) {
             return ['status' => 'Faulty parameters: payload must be an object or array'];
         }
 
-        $context = $this->normalizeRpcAssocArray($context);
+        $context = $pluginApiService->normalizeRpcAssocArray($context);
         if ($context === null) {
             return ['status' => 'Faulty parameters: context must be an object or array'];
         }
 
-        $authorizationError = $this->getRemoteControlPluginApiService()->getActionAuthorizationError(
+        $authorizationError = $pluginApiService->getActionAuthorizationError(
             $pluginName,
             $action,
             $payload,
@@ -3967,38 +3965,6 @@ class remotecontrol_handle
         }
 
         return is_array($result) ? $result : ['result' => $result];
-    }
-
-    /**
-     * Normalize JSON-RPC payload/context into an associative array.
-     *
-     * @param mixed $value
-     * @return array|null Null means invalid structure
-     */
-    private function normalizeRpcAssocArray($value)
-    {
-        if (is_null($value)) {
-            return [];
-        }
-        if (is_array($value)) {
-            return $value;
-        }
-        if (is_object($value)) {
-            $decoded = json_decode(json_encode($value), true);
-            return is_array($decoded) ? $decoded : null;
-        }
-        return null;
-    }
-
-    /**
-     * @return RemoteControlPluginApiService
-     */
-    private function getRemoteControlPluginApiService(): RemoteControlPluginApiService
-    {
-        if ($this->remoteControlPluginApiService === null) {
-            $this->remoteControlPluginApiService = new RemoteControlPluginApiService();
-        }
-        return $this->remoteControlPluginApiService;
     }
 
     /**

@@ -13,6 +13,27 @@ class RemoteControlPluginApiService
     public const CONFIG_KEY = 'rpc_plugin_api';
 
     /**
+     * Normalize JSON-RPC payload/context into an associative array.
+     *
+     * @param mixed $value
+     * @return array|null Null means invalid structure
+     */
+    public function normalizeRpcAssocArray($value): ?array
+    {
+        if (is_null($value)) {
+            return [];
+        }
+        if (is_array($value)) {
+            return $value;
+        }
+        if (is_object($value)) {
+            $decoded = json_decode(json_encode($value), true);
+            return is_array($decoded) ? $decoded : null;
+        }
+        return null;
+    }
+
+    /**
      * @return string|null Error status when unavailable, null when available.
      */
     public function getAvailabilityError(): ?string
