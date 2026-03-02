@@ -159,12 +159,37 @@ class RenderListRadio extends QuestionBaseRenderer
         }
 
         $this->inputnames[] = $thisfieldname;
-        
+
+        $otherTextLeft = $this->sOthertext;
+        $otherTextRight = "";
+        if (!empty($this->sOthertext) && strpos($this->sOthertext, '|') !== false) {
+            [$otherTextLeft, $otherTextRight] = explode('|', $this->sOthertext, 2);
+        }
+
+        $otherItemExtraClass = "";
+        if (empty($otherTextLeft)) {
+            $otherItemExtraClass = "no-left-othertext";
+        }
+
+        // Get other_input_size and other_maximum_chars attributes
+        $otherInputSize = null;
+        if (ctype_digit(trim((string) $this->getQuestionAttribute('other_input_size')))) {
+            $otherInputSize = trim((string) $this->getQuestionAttribute('other_input_size'));
+            $otherItemExtraClass .= " ls-input-sized";
+        }
+
+        $otherMaxLength = null;
+        if (intval(trim((string) $this->getQuestionAttribute('other_maximum_chars'))) > 0) {
+            $otherMaxLength = intval(trim((string) $this->getQuestionAttribute('other_maximum_chars')));
+        }
+
         return Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/answer_row_other', array(
             'name' => $this->sSGQA,
             'answer_other' => $answer_other,
             'myfname' => $myfname,
-            'othertext' => $this->sOthertext,
+            'othertext' => $otherTextLeft,
+            'otherTextRight' => $otherTextRight,
+            'otherItemExtraClass' => $otherItemExtraClass,
             'checkedState' => $checkedState,
             'oth_checkconditionFunction' => $oth_checkconditionFunction . '(this.value, this.name, this.type)',
             'checkconditionFunction' => $this->checkconditionFunction,
@@ -173,6 +198,8 @@ class RenderListRadio extends QuestionBaseRenderer
             'hasOther' => $this->hasOther,
             'otherPosition' => $this->otherPosition,
             'answerBeforeOther' => $this->answerBeforeOther,
+            'otherInputSize' => $otherInputSize,
+            'otherMaxLength' => $otherMaxLength,
             ), true);
     }
 
