@@ -271,7 +271,11 @@ class PluginApiGuardsTest extends BaseTest
     {
         $this->setPluginApiEnabled($enabled);
         $sessionKey = $this->getValidSessionKey($username, $password);
-        return $this->handler->list_plugin_api($sessionKey, self::TEST_PLUGIN);
+        try {
+            return $this->handler->list_plugin_api($sessionKey, self::TEST_PLUGIN);
+        } finally {
+            $this->handler->release_session_key($sessionKey);
+        }
     }
 
     /**
@@ -293,7 +297,11 @@ class PluginApiGuardsTest extends BaseTest
     ): array {
         $this->setPluginApiEnabled($enabled);
         $sessionKey = $this->getValidSessionKey($username, $password);
-        return $this->handler->call_plugin_api($sessionKey, self::TEST_PLUGIN, $action, $payload, $context);
+        try {
+            return $this->handler->call_plugin_api($sessionKey, self::TEST_PLUGIN, $action, $payload, $context);
+        } finally {
+            $this->handler->release_session_key($sessionKey);
+        }
     }
 
     private static function grantSurveyReadPermission(int $userId, int $surveyId): void
