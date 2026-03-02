@@ -22,6 +22,7 @@ $form = $this->beginWidget('CActiveForm', array('id' => 'survey-expiry',)); ?>
                         'format' => $dateFormatDetails['jsdate'] . " HH:mm",
                         'allowInputToggle' => true,
                         'showClear' => true,
+                        'theme' => 'light',
                         'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                     )
                 ));

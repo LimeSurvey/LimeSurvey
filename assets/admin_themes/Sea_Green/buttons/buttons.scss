@@ -225,7 +225,7 @@
 // btn-link should be outsourced to links.scss or whatever it will be called
 .btn-link {
     color : $active-green;
-    &:hover, &:focus {
+    &:hover, &:focus, &:active, &:active:focus {
         color : $active-green;
     }
 }

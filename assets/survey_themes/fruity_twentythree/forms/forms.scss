@@ -61,6 +61,10 @@ textarea {
     padding: $form-select-padding-y $form-select-indicator-padding $form-select-padding-y $form-select-padding-x;
 }
 
+.form-select.ls-important-field {
+    height: 44px;
+}
+
 .question-item.mb-3 {
     padding-top: 0;
 }
