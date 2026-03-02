@@ -500,6 +500,9 @@ class CGridView extends CBaseListView
 		if($this->dataProvider->getItemCount()>0 || $this->showTableOnEmpty)
 		{
 			echo "<table class=\"{$this->itemsCssClass}\">\n";
+			if($this->caption!==null) {
+			    echo "<caption class='sr-only'>{$this->caption}</caption>\n";
+			}
 			$this->renderTableHeader();
 			ob_start();
 			$this->renderTableBody();

@@ -86,7 +86,7 @@
                                 echo App()->createUrl(
                                     'questionAdministration/listquestions',
                                     ['surveyid' => $oSurvey->primaryKey]
-                                ); ?>" class="btn btn-warning">
+                                ); ?>" class="btn btn-warning" role="button" aria-label="<?php eT('Reset'); ?>">
                         <span class="ri-refresh-line"></span>
                         <?php
                         eT('Reset'); ?>
@@ -112,6 +112,7 @@
             $this->widget('ext.admin.grid.CLSGridView', array( //done
                 'dataProvider' => $questionModel->search(),
                 'id' => 'question-grid',
+                'caption'      => gT("List of questions in this survey"),
                 'emptyText' => gT('No questions found.'),
                 'massiveActionTemplate' => $massiveAction,
                 'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '

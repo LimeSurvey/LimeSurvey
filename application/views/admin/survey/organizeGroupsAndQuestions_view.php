@@ -30,7 +30,7 @@ App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl'
                 <li id='list_g<?php echo $aGroupAndQuestions['gid']; ?>' class='card mjs-nestedSortable-expanded mt-2' data-level='group'>
 
                     <div class="h2 card-header bg-white">
-                        <a class='btn btn-outline-secondary btn-xs ri-arrow-down-s-fill disclose'><span title="Click to show/hide children" class="caret"></span></a>
+                        <a class='btn btn-outline-secondary btn-xs ri-arrow-down-s-fill disclose ' tabindex="0" aria-label="Click to show/hide children"><span title="Click to show/hide children" class="caret"></span></a>
                         &nbsp;
                         <?php echo ellipsize($aGroupAndQuestions['group_text'], 80); ?>
                     </div>
