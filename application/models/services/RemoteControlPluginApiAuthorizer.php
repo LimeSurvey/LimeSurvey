@@ -16,8 +16,12 @@ class RemoteControlPluginApiAuthorizer
     public function isDiscoveryAllowed(array $permissionSpec): bool
     {
         $scope = $permissionSpec['scope'] ?? '';
+        if ($scope === 'survey') {
+            // Discovery has no survey context, so don't expose survey-scoped actions.
+            return false;
+        }
         if ($scope !== 'global') {
-            return true;
+            return false;
         }
 
         $permission = $permissionSpec['permission'] ?? '';
