@@ -45,7 +45,7 @@ export const getSurveyPanels = () => {
     quickTranslation: {
       label: t('Quick translation'),
       panel: 'quickTranslation',
-      disabled: (survey) => survey.languages.length <= 1,
+      disabled: (survey) => survey?.languages?.length <= 1,
       disabledMessage:
         t('Quick translation') +
         ': ' +

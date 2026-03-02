@@ -13,6 +13,10 @@ export const SurveyLanguageSwitch = ({ survey, allLanguages }) => {
   )
 
   const languages = useMemo(() => {
+    if (!survey.additionalLanguages || survey.additionalLanguages === '') {
+      return [survey.language]
+    }
+
     return [survey.language, ...survey.additionalLanguages.split(' ')]
   }, [survey.language, survey.additionalLanguages])
 

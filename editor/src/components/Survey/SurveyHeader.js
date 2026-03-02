@@ -64,7 +64,7 @@ export const SurveyHeader = ({
 
   const languageSource = allLanguages[activeLanguage]
   const languages = useMemo(() => {
-    if (additionalLanguages === '') {
+    if (!additionalLanguages || additionalLanguages === '') {
       return [language]
     }
 
@@ -111,10 +111,6 @@ export const SurveyHeader = ({
     }
   }
 
-  if (!sid) {
-    return <></>
-  }
-
   const welcomeTitle = useMemo(
     () =>
       L10ns({
@@ -124,6 +120,10 @@ export const SurveyHeader = ({
       }),
     [languageSettings]
   )
+
+  if (!sid) {
+    return <></>
+  }
 
   return (
     <TooltipContainer

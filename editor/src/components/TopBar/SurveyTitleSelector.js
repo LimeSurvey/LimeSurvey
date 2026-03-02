@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Entities, L10ns } from 'helpers'
 import { ContentEditor } from 'components'
 import { SurveyListComponent } from './SurveyListComponent'
@@ -22,13 +22,22 @@ export const SurveyTitleSelector = ({
     language: activeLanguage,
     l10ns: survey.languageSettings,
   })
+  const [surveyTitleWidth, setSurveyTitleWidth] = useState(0)
 
-  const surveyTitleWidth = useMemo(() => {
-    if (titleRef.current) {
-      return titleRef.current.offsetWidth
-    }
-    return 0
-  }, [surveyTitle, titleRef.current])
+  useEffect(() => {
+    const element = titleRef.current
+    if (!element) return
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const width =
+          entry.borderBoxSize?.[0]?.inlineSize || entry.contentRect.width
+        setSurveyTitleWidth(width)
+      }
+    })
+
+    resizeObserver.observe(element)
+    return () => resizeObserver.disconnect()
+  }, [])
 
   const handleSurveyTitleFocusChange = useCallback(
     (isFocused) => () => {
