@@ -38,11 +38,17 @@ class RemoteControlPluginApiService
             return [];
         }
         if (is_array($value)) {
+            if ($this->isSequentialArray($value)) {
+                return null;
+            }
             return $value;
         }
         if (is_object($value)) {
             $decoded = json_decode(json_encode($value), true);
-            return is_array($decoded) ? $decoded : null;
+            if (!is_array($decoded) || $this->isSequentialArray($decoded)) {
+                return null;
+            }
+            return $decoded;
         }
         return null;
     }
@@ -187,5 +193,14 @@ class RemoteControlPluginApiService
     {
         $normalizedValue = strtolower(trim((string) $value));
         return in_array($normalizedValue, ['1', 'true', 'on', 'yes'], true);
+    }
+
+    /**
+     * @param array $value
+     * @return bool
+     */
+    private function isSequentialArray(array $value): bool
+    {
+        return !empty($value) && array_keys($value) === range(0, count($value) - 1);
     }
 }

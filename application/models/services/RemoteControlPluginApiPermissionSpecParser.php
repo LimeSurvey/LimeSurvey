@@ -21,12 +21,12 @@ class RemoteControlPluginApiPermissionSpecParser
      */
     public function extract(array $actionMetadata): ?array
     {
-        $permissionMetadata = $actionMetadata['remoteControlPermission'] ?? null;
+        $permissionMetadata = $this->normalizeArrayLike($actionMetadata['remoteControlPermission'] ?? null);
         if (is_array($permissionMetadata)) {
             return $this->extractRemoteControlPermissionSpec($permissionMetadata);
         }
 
-        $legacyPermissions = $actionMetadata['permissions'] ?? null;
+        $legacyPermissions = $this->normalizeArrayLike($actionMetadata['permissions'] ?? null);
         if (is_array($legacyPermissions) && !empty($legacyPermissions)) {
             return $this->extractLegacyPermissionSpec($legacyPermissions);
         }
@@ -117,6 +117,24 @@ class RemoteControlPluginApiPermissionSpecParser
         }
 
         return array_values(array_unique($normalizedSidPaths));
+    }
+
+    /**
+     * Normalize array-like metadata coming from plugin definitions.
+     *
+     * @param mixed $value
+     * @return array|null
+     */
+    private function normalizeArrayLike($value): ?array
+    {
+        if (is_array($value)) {
+            return $value;
+        }
+        if (is_object($value)) {
+            $normalizedValue = json_decode(json_encode($value), true);
+            return is_array($normalizedValue) ? $normalizedValue : null;
+        }
+        return null;
     }
 
     /**

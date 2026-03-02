@@ -2,6 +2,8 @@
 
 namespace ls\tests;
 
+use LimeSurvey\Models\Services\RemoteControlPluginApiService;
+
 /**
  * Guard coverage for RemoteControl plugin API.
  */
@@ -21,8 +23,8 @@ class PluginApiGuardsTest extends BaseTest
     {
         parent::setUpBeforeClass();
 
-        self::$originalRpcPluginApi = (string) App()->getConfig('rpc_plugin_api', '0');
-        \SettingGlobal::setSetting('rpc_plugin_api', '0');
+        self::$originalRpcPluginApi = (string) App()->getConfig(RemoteControlPluginApiService::CONFIG_KEY, '0');
+        \SettingGlobal::setSetting(RemoteControlPluginApiService::CONFIG_KEY, '0');
 
         self::loadTestPlugin(self::TEST_PLUGIN);
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_666368.lss');
@@ -63,7 +65,7 @@ class PluginApiGuardsTest extends BaseTest
 
     public static function tearDownAfterClass(): void
     {
-        \SettingGlobal::setSetting('rpc_plugin_api', self::$originalRpcPluginApi);
+        \SettingGlobal::setSetting(RemoteControlPluginApiService::CONFIG_KEY, self::$originalRpcPluginApi);
         self::deActivatePlugin(self::TEST_PLUGIN);
 
         if (self::$lowPermissionUserId > 0) {
@@ -197,6 +199,22 @@ class PluginApiGuardsTest extends BaseTest
         $this->assertSame((int) self::$surveyId, $result['sid']);
     }
 
+    public function testCallPluginApiAllowsSurveyScopedObjectMetadataActionWhenPermissionCheckPasses(): void
+    {
+        $result = $this->callPluginApiForUser(
+            self::AUTHORIZED_SURVEY_USER,
+            self::AUTHORIZED_SURVEY_PASSWORD,
+            true,
+            'guard_survey_object_action',
+            ['sid' => self::$surveyId]
+        );
+
+        $this->assertArrayHasKey('ok', $result);
+        $this->assertTrue($result['ok']);
+        $this->assertSame('guard_survey_object_action', $result['action']);
+        $this->assertSame((int) self::$surveyId, $result['sid']);
+    }
+
     private function getValidSessionKey(string $username, string $password): string
     {
         $sessionKey = $this->handler->get_session_key($username, $password);
@@ -219,7 +237,7 @@ class PluginApiGuardsTest extends BaseTest
 
     private function setPluginApiEnabled(bool $enabled): void
     {
-        \SettingGlobal::setSetting('rpc_plugin_api', $enabled ? '1' : '0');
+        \SettingGlobal::setSetting(RemoteControlPluginApiService::CONFIG_KEY, $enabled ? '1' : '0');
     }
 
     /**

@@ -7,6 +7,7 @@ class RemoteControlApiTestPlugin extends PluginBase
 
     public const ACTION_GLOBAL = 'guard_global_action';
     public const ACTION_SURVEY = 'guard_survey_action';
+    public const ACTION_SURVEY_OBJECT = 'guard_survey_object_action';
     public const ACTION_INVALID = 'guard_invalid_permission_action';
     public const ACTION_LEGACY_SURVEY = 'guard_legacy_survey_action';
     public const ACTION_LEGACY_GLOBAL = 'guard_legacy_global_action';
@@ -51,6 +52,15 @@ class RemoteControlApiTestPlugin extends PluginBase
                         'sid' => ['payload.sid', 'payload.surveyId', 'context.sid', 'context.surveyId'],
                     ],
                 ],
+                self::ACTION_SURVEY_OBJECT => [
+                    'title' => 'Guard Survey Object Action',
+                    'remoteControlPermission' => (object) [
+                        'scope' => 'survey',
+                        'permission' => 'surveycontent',
+                        'crud' => 'read',
+                        'sid' => ['payload.sid', 'payload.surveyId', 'context.sid', 'context.surveyId'],
+                    ],
+                ],
                 self::ACTION_INVALID => [
                     'title' => 'Guard Invalid Permission Action',
                     'remoteControlPermission' => [
@@ -87,6 +97,7 @@ class RemoteControlApiTestPlugin extends PluginBase
                 [
                     self::ACTION_GLOBAL,
                     self::ACTION_SURVEY,
+                    self::ACTION_SURVEY_OBJECT,
                     self::ACTION_INVALID,
                     self::ACTION_LEGACY_SURVEY,
                     self::ACTION_LEGACY_GLOBAL
