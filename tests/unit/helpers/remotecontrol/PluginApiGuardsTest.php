@@ -143,8 +143,10 @@ class PluginApiGuardsTest extends BaseTest
     /**
      * @dataProvider surveyReferenceProvider
      */
-    public function testCallPluginApiRejectsSurveyActionForLowPermissionUser(array $payload, array $context): void
+    public function testCallPluginApiRejectsSurveyActionForLowPermissionUser(string $referenceType): void
     {
+        [$payload, $context] = $this->buildSurveyReference($referenceType);
+
         $result = $this->callPluginApiForUser(
             self::LOW_PERMISSION_USER,
             self::LOW_PERMISSION_PASSWORD,
@@ -208,16 +210,37 @@ class PluginApiGuardsTest extends BaseTest
     public function surveyReferenceProvider(): array
     {
         return [
-            'payload sid' => [['sid' => self::$surveyId], []],
-            'payload surveyId' => [['surveyId' => self::$surveyId], []],
-            'context sid' => [[], ['sid' => self::$surveyId]],
-            'context surveyId' => [[], ['surveyId' => self::$surveyId]],
+            'payload sid' => ['payloadSid'],
+            'payload surveyId' => ['payloadSurveyId'],
+            'context sid' => ['contextSid'],
+            'context surveyId' => ['contextSurveyId'],
         ];
     }
 
     private function setPluginApiEnabled(bool $enabled): void
     {
         \SettingGlobal::setSetting('rpc_plugin_api', $enabled ? '1' : '0');
+    }
+
+    /**
+     * @param string $referenceType
+     * @return array
+     */
+    private function buildSurveyReference(string $referenceType): array
+    {
+        switch ($referenceType) {
+            case 'payloadSid':
+                return [['sid' => self::$surveyId], []];
+            case 'payloadSurveyId':
+                return [['surveyId' => self::$surveyId], []];
+            case 'contextSid':
+                return [[], ['sid' => self::$surveyId]];
+            case 'contextSurveyId':
+                return [[], ['surveyId' => self::$surveyId]];
+            default:
+                $this->fail('Unsupported survey reference type: ' . $referenceType);
+                return [[], []];
+        }
     }
 
     /**
