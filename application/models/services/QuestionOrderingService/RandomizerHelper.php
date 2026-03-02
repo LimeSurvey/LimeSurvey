@@ -69,7 +69,7 @@ class RandomizerHelper
         // Check for excluded subquestion before randomization
         /* @param string|null $excludeAllOthers */
         $excludeAllOthers = $question->getQuestionAttribute('exclude_all_others');
-        $excludedSubquestion = null;
+        $excludedSubquestions = [];
 
         if (
             $excludeAllOthers !== '' && $excludeAllOthers !== null &&
@@ -77,9 +77,9 @@ class RandomizerHelper
                 $question->getQuestionAttribute('subquestion_order') == 'random')
         ) {
             [
-                $excludedSubquestion,
+                $excludedSubquestions,
                 $groupedSubquestions
-            ] = $this->extractExcludedSubquestion(
+            ] = $this->extractExcludedSubquestions(
                 $groupedSubquestions,
                 $excludeAllOthers
             );
@@ -89,24 +89,53 @@ class RandomizerHelper
         foreach ($groupedSubquestions as $scaleId => &$scaleArray) {
             $scaleArray = \ls\mersenne\shuffle($scaleArray);
         }
-
-        // Reinsert excluded subquestion if needed
-        if ($excludedSubquestion !== null) {
+        foreach ($excludedSubquestions as $excludedSubquestion) {
             $scaleId = $excludedSubquestion->scale_id;
             array_splice(
                 $groupedSubquestions[$scaleId],
-                ($excludedSubquestion->question_order - 1),
+                ($excludedSubquestion->question_order),
                 0,
                 [$excludedSubquestion]
             );
         }
-
         return $groupedSubquestions;
     }
 
     /**
-     * Extract excluded subquestion from the grouped subquestions
+     * Extract excluded subquestions from the grouped subquestions if there are only one
      *
+     * @param array $groupedSubquestions Subquestions grouped by scale_id
+     * @param string $excludeAllOthers The code of the excluded subquestion
+     * @return array [excludedSubquestions, updatedGroupedSubquestions] : excludedSubquestions is subquestion array with order set to index
+     */
+    public function extractExcludedSubquestions(
+        array $groupedSubquestions,
+        string $excludeAllOthers
+    ): array {
+        $excludedSubquestions = [];
+
+        if (empty($excludeAllOthers)) {
+            return [$excludedSubquestions, $groupedSubquestions];
+        }
+        /* @var array of code tfor exclude */
+        $excludeAllOthersTitle = explode(";", $excludeAllOthers);
+        foreach ($groupedSubquestions as $scaleId => $scaleArray) {
+            foreach ($scaleArray as $key => $subquestion) {
+                if (in_array($subquestion->title, $excludeAllOthersTitle)) {
+                    $subquestion->question_order = $key;
+                    $excludedSubquestions[] = $subquestion;
+                    $groupedSubquestions[$scaleId][$key] = null;
+                }
+            }
+            $groupedSubquestions[$scaleId] = array_values(array_filter($groupedSubquestions[$scaleId]));
+        }
+        return [$excludedSubquestions, $groupedSubquestions];
+    }
+
+    /**
+     * Extract single excluded subquestion from the grouped subquestions
+     *
+     * @deprecated 6.16.5 : use extractExcludedSubquestions to have multiple excluded subquestions
      * @param array $groupedSubquestions Subquestions grouped by scale_id
      * @param string $excludeAllOthers The code of the excluded subquestion
      * @return array [excludedSubquestion, updatedGroupedSubquestions]
