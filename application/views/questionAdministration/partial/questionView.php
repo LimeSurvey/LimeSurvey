@@ -114,19 +114,22 @@
                 'id' => 'question-grid',
                 'emptyText' => gT('No questions found.'),
                 'massiveActionTemplate' => $massiveAction,
-                'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
+                'summaryText' => html_entity_decode(
+                    gT('Displaying {start}-{end} of {count} result(s).') . ' '
                     . sprintf(
-                        gT('%s rows per page'),
+                        gT('%s <span id="rows-per-page-label">rows per page</span>'),
                         CHtml::dropDownList(
                             'pageSize',
                             $pageSize,
                             App()->params['pageSizeOptions'],
                             array(
                                 'class' => 'changePageSize form-select',
-                                'style' => 'display: inline; width: auto'
+                                'style' => 'display: inline; width: auto',
+                                'aria-labelledby' => 'rows-per-page-label',
                             )
                         )
-                    ),
+                    )
+                ),
                 'columns' => $questionModel->questionListColumns,
                 'ajaxUpdate' => 'question-grid',
                 'afterAjaxUpdate' => "bindPageSizeChange"
