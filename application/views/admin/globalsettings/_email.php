@@ -27,7 +27,7 @@
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'emailmethod',
-                    'ariaLabel'     => gt('Email method:'),
+                    'ariaLabel'     => gT('Email method:'),
                     'checkedOption' => Yii::app()->getConfig('emailmethod'),
                     'selectOptions' => [
                         LimeMailer::MethodMail => "PHP",
