@@ -1,6 +1,6 @@
 <?php
 ?>
-<!-- List of actions: labelled by the trigger button so the list is announced separately -->
+<!-- List of actions -->
 <ul class="dropdown-menu listActions" role="menu" aria-labelledby="<?php echo $this->dropupId; ?>-button">
 
     <?php foreach($this->aActions as $key => $aAction):?>
@@ -15,7 +15,7 @@
 
             <?php case 'dropdown-header': ?>
 
-            <!-- Header: not a menu item so it is not counted in the menu item list -->
+            <!-- Header -->
             <li class="dropdown-header" role="presentation"><?php echo $aAction['text'];?></li>
             <?php break;?>
 
