@@ -7,8 +7,6 @@ use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
 use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurveyResponses;
 use LimeSurvey\Models\Services\ExportSurveyResultsService;
 use LimeSurvey\Models\Services\Export\CsvExportWriter;
-use LimeSurvey\Models\Services\Export\XlsxExportWriter;
-use LimeSurvey\Models\Services\Export\XlsExportWriter;
 use LimeSurvey\Models\Services\Export\HtmlExportWriter;
 use ls\tests\TestBaseClass;
 use Mockery;
@@ -78,7 +76,7 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
     }
 
     /**
-     * Test that CSV export uses CsvExportWriter and returns expected structure
+     * Test that CSV export returns expected structure
      */
     public function testCsvExportReturnsCorrectStructure()
     {
@@ -106,11 +104,7 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
             $transformerMock
         ])->makePartial()->shouldAllowMockingProtectedMethods();
 
-        $service->shouldReceive('fetchSurveyResponsesInChunks')
-            ->andReturn(['responses' => [], 'surveyQuestions' => []]);
-
-        $writerMock = Mockery::mock(CsvExportWriter::class);
-        $writerMock->shouldReceive('export')
+        $service->shouldReceive('exportResponsesInChunks')
             ->once()
             ->andReturn([
                 'content' => 'csv,content',
@@ -122,10 +116,6 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
                 'responseCount' => 0
             ]);
 
-        $service->shouldReceive('getExportWriter')
-            ->with('csv')
-            ->andReturn($writerMock);
-
         $result = $service->exportResponses(123456, 'csv');
 
         $this->assertIsArray($result);
@@ -134,115 +124,55 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
     }
 
     /**
-     * Test that XLSX export uses XlsxExportWriter
+     * Test that XLSX export throws unsupported type exception
      */
-    public function testXlsxExportUsesCorrectWriter()
+    public function testXlsxExportThrowsUnsupportedException()
     {
-        $foundSurvey = Mockery::mock(\Survey::class)->makePartial();
-        $foundSurvey->shouldReceive('__get')
-            ->with('language')
-            ->andReturn('en');
-        $foundSurvey->shouldReceive('__get')
-            ->with('sid')
-            ->andReturn(123456);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unsupported export type: xlsx');
 
         $surveyMock = Mockery::mock(\Survey::class)->makePartial();
-        $surveyMock->shouldReceive('findByPk')
-            ->andReturn($foundSurvey);
-
         $answerMock = Mockery::mock(\Answer::class)->makePartial();
         $filterPatcherMock = Mockery::mock(FilterPatcher::class)->makePartial();
         $transformerMock = Mockery::mock(TransformerOutputSurveyResponses::class)->makePartial();
 
-        $service = Mockery::mock(ExportSurveyResultsService::class, [
+        $service = new ExportSurveyResultsService(
             $surveyMock,
             $answerMock,
             $filterPatcherMock,
             $transformerMock
-        ])->makePartial()->shouldAllowMockingProtectedMethods();
+        );
 
-        $service->shouldReceive('fetchSurveyResponsesInChunks')
-            ->andReturn(['responses' => [], 'surveyQuestions' => []]);
-
-        $writerMock = Mockery::mock(XlsxExportWriter::class);
-        $writerMock->shouldReceive('export')
-            ->once()
-            ->andReturn([
-                'content' => 'xlsx-content',
-                'filePath' => null,
-                'filename' => 'test.xlsx',
-                'mimeType' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'extension' => 'xlsx',
-                'size' => 100,
-                'responseCount' => 0
-            ]);
-
-        $service->shouldReceive('getExportWriter')
-            ->with('xlsx')
-            ->andReturn($writerMock);
-
-        $result = $service->exportResponses(123456, 'xlsx');
-
-        $this->assertEquals('xlsx', $result['extension']);
+        $service->exportResponses(123456, 'xlsx');
     }
 
     /**
-     * Test that XLS export uses XlsExportWriter
+     * Test that XLS export throws unsupported type exception
      */
-    public function testXlsExportUsesCorrectWriter()
+    public function testXlsExportThrowsUnsupportedException()
     {
-        $foundSurvey = Mockery::mock(\Survey::class)->makePartial();
-        $foundSurvey->shouldReceive('__get')
-            ->with('language')
-            ->andReturn('en');
-        $foundSurvey->shouldReceive('__get')
-            ->with('sid')
-            ->andReturn(123456);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unsupported export type: xls');
 
         $surveyMock = Mockery::mock(\Survey::class)->makePartial();
-        $surveyMock->shouldReceive('findByPk')
-            ->andReturn($foundSurvey);
-
         $answerMock = Mockery::mock(\Answer::class)->makePartial();
         $filterPatcherMock = Mockery::mock(FilterPatcher::class)->makePartial();
         $transformerMock = Mockery::mock(TransformerOutputSurveyResponses::class)->makePartial();
 
-        $service = Mockery::mock(ExportSurveyResultsService::class, [
+        $service = new ExportSurveyResultsService(
             $surveyMock,
             $answerMock,
             $filterPatcherMock,
             $transformerMock
-        ])->makePartial()->shouldAllowMockingProtectedMethods();
+        );
 
-        $service->shouldReceive('fetchSurveyResponsesInChunks')
-            ->andReturn(['responses' => [], 'surveyQuestions' => []]);
-
-        $writerMock = Mockery::mock(XlsExportWriter::class);
-        $writerMock->shouldReceive('export')
-            ->once()
-            ->andReturn([
-                'content' => 'xls-content',
-                'filePath' => null,
-                'filename' => 'test.xls',
-                'mimeType' => 'application/vnd.ms-excel',
-                'extension' => 'xls',
-                'size' => 100,
-                'responseCount' => 0
-            ]);
-
-        $service->shouldReceive('getExportWriter')
-            ->with('xls')
-            ->andReturn($writerMock);
-
-        $result = $service->exportResponses(123456, 'xls');
-
-        $this->assertEquals('xls', $result['extension']);
+        $service->exportResponses(123456, 'xls');
     }
 
     /**
-     * Test that HTML export uses HtmlExportWriter
+     * Test that HTML export returns correct structure
      */
-    public function testHtmlExportUsesCorrectWriter()
+    public function testHtmlExportReturnsCorrectStructure()
     {
         $foundSurvey = Mockery::mock(\Survey::class)->makePartial();
         $foundSurvey->shouldReceive('__get')
@@ -267,11 +197,7 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
             $transformerMock
         ])->makePartial()->shouldAllowMockingProtectedMethods();
 
-        $service->shouldReceive('fetchSurveyResponsesInChunks')
-            ->andReturn(['responses' => [], 'surveyQuestions' => []]);
-
-        $writerMock = Mockery::mock(HtmlExportWriter::class);
-        $writerMock->shouldReceive('export')
+        $service->shouldReceive('exportResponsesInChunks')
             ->once()
             ->andReturn([
                 'content' => '<html></html>',
@@ -283,13 +209,10 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
                 'responseCount' => 0
             ]);
 
-        $service->shouldReceive('getExportWriter')
-            ->with('html')
-            ->andReturn($writerMock);
-
         $result = $service->exportResponses(123456, 'html');
 
         $this->assertEquals('html', $result['extension']);
+        $this->assertEquals('text/html', $result['mimeType']);
     }
 
     /**
@@ -336,13 +259,9 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
             $transformerMock
         ])->makePartial()->shouldAllowMockingProtectedMethods();
 
-        $service->shouldReceive('fetchSurveyResponsesInChunks')
-            ->andReturn(['responses' => [], 'surveyQuestions' => []]);
-
-        $writerMock = Mockery::mock(CsvExportWriter::class);
-        $writerMock->shouldReceive('export')
+        $service->shouldReceive('exportResponsesInChunks')
             ->once()
-            ->withArgs(function ($responses, $questions, $metadata) {
+            ->withArgs(function ($surveyId, $exportType, $metadata, $chunkSize) {
                 return $metadata['language'] === 'de';
             })
             ->andReturn([
@@ -354,9 +273,6 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
                 'size' => 0,
                 'responseCount' => 0
             ]);
-
-        $service->shouldReceive('getExportWriter')
-            ->andReturn($writerMock);
 
         $result = $service->exportResponses(123456, 'csv');
 
@@ -391,13 +307,9 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
             $transformerMock
         ])->makePartial()->shouldAllowMockingProtectedMethods();
 
-        $service->shouldReceive('fetchSurveyResponsesInChunks')
-            ->andReturn(['responses' => [], 'surveyQuestions' => []]);
-
-        $writerMock = Mockery::mock(CsvExportWriter::class);
-        $writerMock->shouldReceive('export')
+        $service->shouldReceive('exportResponsesInChunks')
             ->once()
-            ->withArgs(function ($responses, $questions, $metadata) {
+            ->withArgs(function ($surveyId, $exportType, $metadata, $chunkSize) {
                 return $metadata['language'] === 'fr';
             })
             ->andReturn([
@@ -410,18 +322,15 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
                 'responseCount' => 0
             ]);
 
-        $service->shouldReceive('getExportWriter')
-            ->andReturn($writerMock);
-
         $result = $service->exportResponses(123456, 'csv', 'fr');
 
         $this->assertIsArray($result);
     }
 
     /**
-     * Test that metadata is correctly passed to the writer
+     * Test that metadata is correctly passed to exportResponsesInChunks
      */
-    public function testMetadataIsCorrectlyPassedToWriter()
+    public function testMetadataIsCorrectlyPassedToExport()
     {
         $foundSurvey = Mockery::mock(\Survey::class)->makePartial();
         $foundSurvey->language = 'en';
@@ -442,14 +351,12 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
             $transformerMock
         ])->makePartial()->shouldAllowMockingProtectedMethods();
 
-        $service->shouldReceive('fetchSurveyResponsesInChunks')
-            ->andReturn(['responses' => [], 'surveyQuestions' => []]);
-
-        $writerMock = Mockery::mock(CsvExportWriter::class);
-        $writerMock->shouldReceive('export')
+        $service->shouldReceive('exportResponsesInChunks')
             ->once()
-            ->withArgs(function ($responses, $questions, $metadata) {
-                return $metadata['surveyId'] === 123456
+            ->withArgs(function ($surveyId, $exportType, $metadata, $chunkSize) {
+                return $surveyId === 123456
+                    && $exportType === 'csv'
+                    && $metadata['surveyId'] === 123456
                     && $metadata['language'] === 'en'
                     && $metadata['exportType'] === 'csv'
                     && $metadata['outputMode'] === 'file';
@@ -463,9 +370,6 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
                 'size' => 0,
                 'responseCount' => 0
             ]);
-
-        $service->shouldReceive('getExportWriter')
-            ->andReturn($writerMock);
 
         $result = $service->exportResponses(123456, 'csv', null, 'file');
 
@@ -500,14 +404,11 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
             $transformerMock
         ])->makePartial()->shouldAllowMockingProtectedMethods();
 
-        // Verify the chunk size is passed to fetchSurveyResponsesInChunks
-        $service->shouldReceive('fetchSurveyResponsesInChunks')
+        $service->shouldReceive('exportResponsesInChunks')
             ->once()
-            ->with(123456, 50)
-            ->andReturn(['responses' => [], 'surveyQuestions' => []]);
-
-        $writerMock = Mockery::mock(CsvExportWriter::class);
-        $writerMock->shouldReceive('export')
+            ->withArgs(function ($surveyId, $exportType, $metadata, $chunkSize) {
+                return $chunkSize === 50;
+            })
             ->andReturn([
                 'content' => '',
                 'filePath' => null,
@@ -517,9 +418,6 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
                 'size' => 0,
                 'responseCount' => 0
             ]);
-
-        $service->shouldReceive('getExportWriter')
-            ->andReturn($writerMock);
 
         $result = $service->exportResponses(123456, 'csv', null, 'memory', 50);
 
@@ -567,9 +465,9 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
     }
 
     /**
-     * Test that responses and questions are passed to writer
+     * Test that export result contains expected keys
      */
-    public function testResponsesAndQuestionsArePassedToWriter()
+    public function testExportResultContainsExpectedKeys()
     {
         $foundSurvey = Mockery::mock(\Survey::class)->makePartial();
         $foundSurvey->shouldReceive('__get')
@@ -594,27 +492,8 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
             $transformerMock
         ])->makePartial()->shouldAllowMockingProtectedMethods();
 
-        $mockResponses = [
-            ['id' => 1, 'answers' => ['Q1' => ['value' => 'answer1']]],
-            ['id' => 2, 'answers' => ['Q1' => ['value' => 'answer2']]]
-        ];
-        $mockQuestions = [
-            'Q1' => ['qid' => 1, 'gid' => 1]
-        ];
-
-        $service->shouldReceive('fetchSurveyResponsesInChunks')
-            ->andReturn([
-                'responses' => $mockResponses,
-                'surveyQuestions' => $mockQuestions
-            ]);
-
-        $writerMock = Mockery::mock(CsvExportWriter::class);
-        $writerMock->shouldReceive('export')
+        $service->shouldReceive('exportResponsesInChunks')
             ->once()
-            ->withArgs(function ($responses, $questions, $metadata) use ($mockResponses, $mockQuestions) {
-                return $responses === $mockResponses
-                    && $questions === $mockQuestions;
-            })
             ->andReturn([
                 'content' => 'csv-content',
                 'filePath' => null,
@@ -625,11 +504,14 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
                 'responseCount' => 2
             ]);
 
-        $service->shouldReceive('getExportWriter')
-            ->andReturn($writerMock);
-
         $result = $service->exportResponses(123456, 'csv');
 
+        $this->assertArrayHasKey('content', $result);
+        $this->assertArrayHasKey('filename', $result);
+        $this->assertArrayHasKey('mimeType', $result);
+        $this->assertArrayHasKey('extension', $result);
+        $this->assertArrayHasKey('size', $result);
+        $this->assertArrayHasKey('responseCount', $result);
         $this->assertEquals(2, $result['responseCount']);
     }
 }
