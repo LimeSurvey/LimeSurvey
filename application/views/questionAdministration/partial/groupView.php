@@ -55,7 +55,7 @@
             )); ?>
             <div class="row row-cols-lg-auto g-1 align-items-center mb-3 float-end">
                 <div class="col-12">
-                    <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class' => 'text-nowrap col-sm-7 col-form-label col-form-label-sm')); ?>
+                    <?php echo CHtml::label(gT('Search by group name:'), CHtml::activeId($groupModel, 'group_name'), array('class' => 'text-nowrap col-sm-7 col-form-label col-form-label-sm')); ?>
                 </div>
                 <div class="col-12">
                     <?php echo $form->textField($groupModel, 'group_name', array('class' => 'form-control')); ?>
@@ -70,8 +70,8 @@
                                         'surveyid' => $oSurvey->primaryKey,
                                         'activeTab' => 'groups'
                                     ]
-                                ); ?>" class="btn btn-warning">
-                        <span class="ri-refresh-line"></span>
+                                ); ?>" class="btn btn-warning" role="button" aria-label="<?php echo CHtml::encode(gT('Reset')); ?>">
+                        <span class="ri-refresh-line" aria-hidden="true"></span>
                         <?php eT('Reset'); ?>
                     </a>
                 </div>
