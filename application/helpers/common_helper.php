@@ -3003,9 +3003,34 @@ function getParticipantAttributes($iSurveyID)
     return getTokenFieldsAndNames($iSurveyID, true);
 }
 
+/**
+ * Decodes and formats attribute select options from JSON string to associative array.
+ *
+ * This method checks if the 'type_options' key exists in the provided attribute data array
+ * and if it contains a JSON string. If so, it decodes the JSON and converts a numeric array
+ * into an associative array where each value serves as both the key and value. This is useful
+ * for formatting select/dropdown options for form rendering.
+ *
+ * @param array $attrData The attribute data array that may contain a 'type_options' key with JSON string value
+ * @return array The modified attribute data array with decoded and formatted type_options, or the original array if no changes were made
+ */
+function decodeAttributeSelectOptions(array $attrData)
+{
+    if (array_key_exists('type_options', $attrData) && is_string($attrData['type_options'])) {
+        static $attributeService = null;
+        if ($attributeService === null) {
+            $diContainer = \LimeSurvey\DI::getContainer();
+            $attributeService = $diContainer->get(
+                LimeSurvey\Models\Services\ParticipantAttributeService::class
+            );
+        }
+        $decodedOptions = $attributeService->decodeJsonEncodedTypeOptions($attrData['type_options']);
+        // Always normalize to array for downstream form rendering (even if empty / invalid -> []).
+        $attrData['type_options'] = $decodedOptions;
+    }
 
-
-
+    return $attrData;
+}
 
 /**
 * Retrieves the attribute names from the related survey participant list
@@ -3092,6 +3117,7 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
         } elseif (empty($aSavedExtraTokenFields[$sField]['description'])) {
             $aSavedExtraTokenFields[$sField]['description'] = $sField;
         }
+        $aSavedExtraTokenFields[$sField] = decodeAttributeSelectOptions($aSavedExtraTokenFields[$sField]);
     }
     if ($bOnlyAttributes) {
         return $aSavedExtraTokenFields;
