@@ -10,7 +10,7 @@
         <div class="col-12 content-center">
             <!-- Message box from super admin -->
             <div class="jumbotron message-box <?php echo $class ?? ""; ?>">
-                <h2><?php echo $title;?></h2>
+                <h1 class="h2" ><?php echo $title;?></h1>
                 <?php echo $message;?>
             </div>
         </div>

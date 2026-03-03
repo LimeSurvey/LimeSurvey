@@ -8,7 +8,9 @@
  * @var array $extraMenus   //menu items fetched from plugins
  */
 ?>
-
+<?php /* Register needed script used at different point even if not needed in loaded page see #20391 */
+	App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
+?>
 <!-- admin menu bar -->
 <nav class="navbar navbar-expand-md">
     <div class="container-fluid">
@@ -64,6 +66,8 @@
                 <!-- Render the modal for importing a survey -->
                 <?php App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'importSurveyFileUpload.js', LSYii_ClientScript::POS_BEGIN); ?>
                 <?php $this->renderPartial("/surveyAdministration/partial/_modalImportSurvey", []);?>
+
+                <?php App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'copySurvey.js', LSYii_ClientScript::POS_BEGIN); ?>
 
                 <li
                     class="nav-item d-flex"><a

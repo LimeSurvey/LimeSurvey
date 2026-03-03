@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\DI;
+use LimeSurvey\Models\Services\SurveyDetailService;
 use LimeSurvey\Models\Services\SurveyThemeConfiguration;
 
 /**
@@ -350,6 +351,8 @@ class ThemeOptionsController extends LSBaseController
         if (isset($_POST['TemplateConfiguration'])) {
             $model->attributes = $_POST['TemplateConfiguration'];
             if ($model->save()) {
+                $surveyDetailService = DI::getContainer()->get(SurveyDetailService::class);
+                $surveyDetailService->removeCache($sid);
                 App()->user->setFlash('success', gT('Theme options saved.'));
             }
         }
