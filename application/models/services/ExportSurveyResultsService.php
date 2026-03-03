@@ -22,9 +22,14 @@ class ExportSurveyResultsService
     protected $supportedExportTypes = ['csv', 'html'];
 
     /**
-     * @var Survey
+     * @var Survey Injected model instance used for querying.
      */
     protected $survey;
+
+    /**
+     * @var Survey|null The loaded survey instance for the current export.
+     */
+    protected $loadedSurvey;
 
     /**
      * @var Answer
@@ -80,6 +85,10 @@ class ExportSurveyResultsService
         $outputMode = 'memory',
         $chunkSize = 500
     ) {
+        if (!is_int($chunkSize) || $chunkSize <= 0) {
+            throw new InvalidArgumentException("Invalid chunkSize: must be a positive integer, got: " . var_export($chunkSize, true));
+        }
+
         if (!in_array($exportType, $this->supportedExportTypes)) {
             throw new InvalidArgumentException("Unsupported export type: $exportType");
         }
@@ -89,7 +98,7 @@ class ExportSurveyResultsService
         if ($survey === null) {
             throw new RuntimeException("Survey not found: $surveyId");
         }
-        $this->survey = $survey;
+        $this->loadedSurvey = $survey;
 
         // Use provided language or default to survey language
         if ($language === null) {
@@ -122,7 +131,7 @@ class ExportSurveyResultsService
     {
         // Generate field map for questions (do this once)
         $this->transformerOutputSurveyResponses->fieldMap =
-            createFieldMap($this->survey, 'full', false, false);
+            createFieldMap($this->loadedSurvey, 'full', false, false);
 
         // Get question field map (do this once)
         $surveyQuestions = $this->getQuestionFieldMap();
@@ -180,6 +189,7 @@ class ExportSurveyResultsService
     protected function fetchResponseChunkDirect($model, $offset, $limit)
     {
         $criteria = new \CDbCriteria();
+        $criteria->order = $model->primaryKey() . ' ASC';
         $criteria->limit = $limit;
         $criteria->offset = $offset;
 
@@ -202,7 +212,7 @@ class ExportSurveyResultsService
     {
         $transformedResponses = $this->transformerOutputSurveyResponses->transform(
             $chunk,
-            ['survey' => $this->survey]
+            ['survey' => $this->loadedSurvey]
         );
 
         foreach ($transformedResponses as $index => &$response) {
