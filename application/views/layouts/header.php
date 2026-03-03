@@ -59,7 +59,7 @@
         <###begin###>
     </div>
 <!-- Loading wrapper -->
-<div id='ls-loading' role="alert" aria-live="assertive">
+<div id='ls-loading' role="status" aria-live="polite">
     <span id='ls-loading-spinner' class='ri-loader-2-fill remix-spin remix-4x'></span>
     <span class='visually-hidden'><?php eT('Loading...'); ?></span>
 </div>
