@@ -240,6 +240,42 @@ class ExportSurveyResultsService
     }
 
     /**
+     * Get the question field map with export-specific fields.
+     * Overrides the trait method to include additional fields needed for export.
+     *
+     * @return array
+     */
+    protected function getQuestionFieldMap(): array
+    {
+        $fieldMap = $this->transformerOutputSurveyResponses->fieldMap;
+
+        return array_filter(
+            array_map(
+                function ($item) {
+                    if (!empty($item['qid'])) {
+                        return [
+                            'fieldname' => $item['fieldname'] ?? null,
+                            'gid' => $item['gid'],
+                            'qid' => $item['qid'],
+                            'aid' => $item['aid'] ?? null,
+                            'sqid' => $item['sqid'] ?? null,
+                            'scaleid' => $item['scale_id'] ?? null,
+                            'title' => $item['title'] ?? null,
+                            'question' => $item['question'] ?? null,
+                            'subquestion' => $item['subquestion'] ?? null,
+                            'subquestion1' => $item['subquestion1'] ?? null,
+                            'subquestion2' => $item['subquestion2'] ?? null,
+                            'scale' => $item['scale'] ?? null,
+                        ];
+                    }
+                    return null;
+                },
+                $fieldMap
+            )
+        );
+    }
+
+    /**
      * Get the appropriate export writer for the given type.
      *
      * @param string $exportType

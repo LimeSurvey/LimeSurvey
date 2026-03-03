@@ -6,6 +6,8 @@ use RuntimeException;
 
 class CsvExportWriter implements ExportWriterInterface
 {
+    use ExportHeadingTrait;
+
     /** @var resource|null File handle for chunked writing */
     private $handle = null;
 
@@ -92,9 +94,7 @@ class CsvExportWriter implements ExportWriterInterface
             'Referrer URL'
         ];
         foreach ($surveyQuestions as $question) {
-            $questionText = $question['question'] ?? $question['title'] ?? "Q{$question['qid']}";
-            $questionText = strip_tags(html_entity_decode($questionText, ENT_QUOTES, 'UTF-8'));
-            $headers[] = $questionText;
+            $headers[] = $this->buildQuestionHeading($question);
         }
         fputcsv($this->handle, $headers);
         $this->headersWritten = true;

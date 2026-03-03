@@ -85,7 +85,6 @@ $rest['v1/survey-responses-export/$id'] = [
         'params' => [
             'language' => ['type' => 'string'],
             'type' => ['type' => 'string'],
-            'columns' => ['type' => 'array']
         ],
         'responses' => [
             'success' => [

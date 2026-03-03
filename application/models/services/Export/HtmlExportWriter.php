@@ -6,6 +6,8 @@ use RuntimeException;
 
 class HtmlExportWriter implements ExportWriterInterface
 {
+    use ExportHeadingTrait;
+
     /** @var resource|null File handle for chunked writing */
     private $handle = null;
 
@@ -109,9 +111,7 @@ class HtmlExportWriter implements ExportWriterInterface
         fwrite($this->handle, '<th>Referrer URL</th>');
 
         foreach ($surveyQuestions as $question) {
-            $questionText = $question['question'] ?? $question['title'] ?? "Q{$question['qid']}";
-            $questionText = strip_tags(html_entity_decode($questionText, ENT_QUOTES, 'UTF-8'));
-            fwrite($this->handle, '<th>' . htmlspecialchars($questionText) . '</th>');
+            fwrite($this->handle, '<th>' . htmlspecialchars($this->buildQuestionHeading($question)) . '</th>');
         }
         fwrite($this->handle, '</tr></thead>');
         fwrite($this->handle, '<tbody>');
