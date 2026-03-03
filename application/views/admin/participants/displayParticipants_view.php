@@ -74,25 +74,26 @@ echo viewHelper::getViewTestTag('displayParticipants');
                 'beforeAjaxUpdate'         => 'insertSearchCondition',
                 'filter'                   => $model,
                 'summaryText' => html_entity_decode(
-    gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
-    sprintf(
-        gT('%s <span id="participant-rows-per-page-label">rows per page</span>'),
-        CHtml::dropDownList(
-            'pageSizeParticipantView',
-            Yii::app()->user->getState(
-                'pageSizeParticipantView',
-                Yii::app()->params['defaultPageSize']
-            ),
-            App()->params['pageSizeOptions'],
-            [
-                'class' => 'changePageSize form-select',
-                'style' => 'display: inline; width: auto',
-                'aria-labelledby' => 'participant-rows-per-page-label',
-            ]
-        )
-    )
-),
-
+                    gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
+                    sprintf(
+                        gT('%s rows per page'),
+                        '<span id="participant-rows-per-page-label">' .
+                        CHtml::dropDownList(
+                            'pageSizeParticipantView',
+                            Yii::app()->user->getState(
+                                'pageSizeParticipantView',
+                                Yii::app()->params['defaultPageSize']
+                            ),
+                            App()->params['pageSizeOptions'],
+                            [
+                                'class' => 'changePageSize form-select',
+                                'style' => 'display: inline; width: auto',
+                                'aria-labelledby' => 'participant-rows-per-page-label',
+                            ]
+                        ) .
+                        '</span>'
+                    )
+                ),
             ]);
 
             ?>
