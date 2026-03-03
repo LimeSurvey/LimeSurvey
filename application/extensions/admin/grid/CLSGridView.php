@@ -34,6 +34,13 @@ class CLSGridView extends TbGridView
     public string $rowLink;
 
     /**
+     * Optional table caption. When set, a <caption> element is rendered inside the grid table.
+     * @var string|null
+     */
+    public $caption;
+
+    /**
+     *
      * Initializes the widget.
      * @throws CException
      */
@@ -56,6 +63,29 @@ class CLSGridView extends TbGridView
             }
         }
         $this->registerGridviewScripts();
+    }
+
+    /**
+     * Renders the data items for the grid view.
+     * Overrides parent to output an optional table caption after the opening <table> tag.
+     */
+    public function renderItems()
+    {
+        if ($this->dataProvider->getItemCount() > 0 || $this->showTableOnEmpty) {
+            echo "<table class=\"{$this->itemsCssClass}\">\n";
+            if (!empty($this->caption)) {
+                echo CHtml::tag('caption', [], $this->caption) . "\n";
+            }
+            $this->renderTableHeader();
+            ob_start();
+            $this->renderTableBody();
+            $body = ob_get_clean();
+            $this->renderTableFooter();
+            echo $body; // TFOOT must appear before TBODY according to the standard.
+            echo "</table>";
+        } else {
+            $this->renderEmptyText();
+        }
     }
 
     /**
