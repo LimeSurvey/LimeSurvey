@@ -61,6 +61,7 @@
             <label class=' form-label'><?php et('Actions:');?></label>
             <div class=''>
                 <a class='btn btn-outline-secondary' 
+                tabindex="0"
                    id="validate_expression_<?=$grouplang?>_<?=$tab?>" 
                    data-parent-element="#in_survey_common" 
                    data-bs-target="modal" 
