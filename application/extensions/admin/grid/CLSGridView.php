@@ -74,7 +74,7 @@ class CLSGridView extends TbGridView
         if ($this->dataProvider->getItemCount() > 0 || $this->showTableOnEmpty) {
             echo "<table class=\"{$this->itemsCssClass}\">\n";
             if (!empty($this->caption)) {
-                echo CHtml::tag('caption', [], $this->caption) . "\n";
+                echo CHtml::tag('caption', ['class' => 'visually-hidden'], CHtml::encode($this->caption)) . "\n";
             }
             $this->renderTableHeader();
             ob_start();
