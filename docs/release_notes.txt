@@ -34,6 +34,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.16.10 (build 260223) to 6.16.11 (build 260303) March 3, 2026
++New feature #AT-1894: add wrap table settings to fruity23 theme (#4694)
+-Fixed issue #AT-1945: Quota languages were not copied properly (#4726) (Patricia Stell)
+-Fixed issue #AT-1910: Add navigation flow across all pages (#4717) (Stefan K)
+-Fixed issue #20434: When exporting R syntax it would only export in the base language, no matter which language was selected (Carsten Schmitz)
+-Fixed issue #20432: Question numbers and group info not displaying correctly after upgrade from v 3.x (#4722) (Gabriel Jenik)
+-Fixed issue #20426: Missing composer.lock file which is needed for SBOM (Carsten Schmitz)
+-Fixed issue #20423: [security] Open redirect vulnerability (#4727) (Tim Willig)
+-Fixed issue #20407: Other option not in condition designer for multiple-choice question (#4707) (Denis Chenu)
+-Fixed issue #20367: 500 server error (division by zero) when using Excel export at statistics (#4721) (Gabriel Jenik)
+-Fixed issue: adding appropriate accessibility attributes to the loading spinner (a11y)  (#4689) (Anblik Audit Team)
+-Fixed issue: improved label–input associations in text elements settings (a11y) (#4690) (Anblik Audit Team)
+-Fixed issue: added multiple aria-label and role tags in global settings (a11y) (Anblik Audit Team)
+-Fixed issue: Privacy policy settings form, added proper label-to-input associations and enhanced tab navigation controls (a11y) (#4691) (Anblik Audit Team)
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
 Changes from 6.16.9 (build 260217) to 6.16.10 (build 260223) February 23, 2026
 -Fixed issue #AT-1792: Add disable logic to survey sidemenu + disable quick translation item on condition (#4668) (Tim Willig)
 -Fixed issue #20425: [security] Runtime directory is not protected by default (#4713) (Denis Chenu)
