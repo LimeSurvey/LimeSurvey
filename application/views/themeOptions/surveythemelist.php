@@ -26,9 +26,9 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
         'massiveActionTemplate' => $massiveAction,
         'summaryText' => html_entity_decode(
             gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
+            '<span id="rows-per-page-label">' .
             sprintf(
                 gT('%s rows per page'),
-                '<span id="rows-per-page-label">' .
                 CHtml::dropDownList(
                     'pageSize',
                     $pageSize,
@@ -38,9 +38,9 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
                         'style' => 'display: inline; width: auto',
                         'aria-labelledby' => 'rows-per-page-label',
                     )
-                ) .
-                '</span>'
-            )
+                )
+            ) .
+            '</span>'
         ),
 
         'columns' => [

@@ -75,9 +75,9 @@ echo viewHelper::getViewTestTag('displayParticipants');
                 'filter'                   => $model,
                 'summaryText' => html_entity_decode(
                     gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
+                    '<span id="participant-rows-per-page-label">' .
                     sprintf(
                         gT('%s rows per page'),
-                        '<span id="participant-rows-per-page-label">' .
                         CHtml::dropDownList(
                             'pageSizeParticipantView',
                             Yii::app()->user->getState(
@@ -90,9 +90,9 @@ echo viewHelper::getViewTestTag('displayParticipants');
                                 'style' => 'display: inline; width: auto',
                                 'aria-labelledby' => 'participant-rows-per-page-label',
                             ]
-                        ) .
-                        '</span>'
-                    )
+                        )
+                    ) .
+                    '</span>'
                 ),
             ]);
 
