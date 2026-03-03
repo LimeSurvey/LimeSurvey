@@ -35,6 +35,12 @@ require_once 'Zend/Navigation/Container.php';
 class Zend_Navigation extends Zend_Navigation_Container
 {
     /**
+     * declare dynamic property to avoid error in PHP8.4:
+     * Error #8192 Creation of dynamic property Zend_Navigation::$breadcrumbs is deprecated
+     * when Session is started
+     */
+    public $breadcrumbs;
+    /**
      * Creates a new navigation container
      *
      * @param array|Zend_Config $pages    [optional] pages to add

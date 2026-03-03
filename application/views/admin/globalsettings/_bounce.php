@@ -20,6 +20,7 @@
     <div>
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
             'name'          => 'bounceaccounttype',
+            'ariaLabel'     => gT('Server type:'),
             'checkedOption' => getGlobalSetting('bounceaccounttype'),
             'selectOptions' => [
                 "off"  => gT("Off", 'unescaped'),
@@ -34,8 +35,8 @@
 <div class="mb-3">
     <label class=" form-label"  for='bounceaccounthost'><?php eT("Server name & port:"); ?></label>
     <div class="">
-        <input class="form-control" type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value="<?php echo htmlspecialchars((string) getGlobalSetting('bounceaccounthost'))?>" />
-        <span class='hint'><?php eT("Enter your hostname and port, e.g.: imap.gmail.com:993"); ?></span>
+        <input class="form-control" type='text' size='50' id='bounceaccounthost' aria-describedby="bounce_ins" name='bounceaccounthost' value="<?php echo htmlspecialchars((string) getGlobalSetting('bounceaccounthost'))?>" />
+        <span id="bounce_ins" class='hint'><?php eT("Enter your hostname and port, e.g.: imap.gmail.com:993"); ?></span>
     </div>
 
 </div>
@@ -60,6 +61,7 @@
     <div>
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
             'name'          => 'bounceencryption',
+            'ariaLabel'=> gT('Encryption type'),
             'checkedOption' => strtolower((string) getGlobalSetting('bounceencryption')),
             'selectOptions' => [
                 "off" => gT("Off (unsafe)", 'unescaped'),
