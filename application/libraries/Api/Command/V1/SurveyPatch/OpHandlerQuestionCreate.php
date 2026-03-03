@@ -244,7 +244,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                 }
             }
             Condition::model()->copyConditions($cids, $question->qid);
-        }
+                                                                                                                                                        }
         return ['tempIdMapping' => $mapping];
     }
 
