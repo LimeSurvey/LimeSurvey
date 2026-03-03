@@ -45,7 +45,7 @@
                     <?php
                     echo $form->label(
                         $questionModel,
-                        'search',
+                        'title',
                         array('label' => gT('Search:'), 'class' => 'col-sm-3 col-form-label col-form-label-sm')
                     ); ?>
                 </div>
@@ -64,7 +64,7 @@
                     ); ?>
                 </div>
                 <div class="col-12">
-                    <select name="gid" class="form-select">
+                    <select name="gid" id="<?php echo CHtml::getIdByName(CHtml::activeName($questionModel, 'group')); ?>" class="form-select">
                         <option value=""><?php eT('(Any group)'); ?></option>
                         <?php foreach ($oSurvey->groups as $group) : ?>
                             <option value="<?php echo $group->gid; ?>" <?php if ($group->gid == $questionModel->gid) {
