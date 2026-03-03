@@ -4,8 +4,8 @@
 ?>
 
 <div class="modal-header">
-    <h5 class="modal-title">
+    <h2 class=" h5 modal-title">
         <?php echo $modalTitle; ?>
-    </h5>
+    </h2>
     <button type="button" class="btn-close" data-bs-dismiss="modal" role="button"></button>
 </div>
