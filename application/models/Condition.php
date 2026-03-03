@@ -362,7 +362,8 @@ class Condition extends LSActiveRecord
      * @param int $qid the qid of the question whose conditions are to be created
      * @return bool Whether there were conditions to copy
      */
-    public function copyConditions(array $cids, int $qid) {
+    public function copyConditions(array $cids, int $qid)
+    {
         $isArray = is_array($cids);
         if (is_array($cids) && count($cids)) {
             $conditions = Condition::model()->findAll('cid in (' . implode(",", $cids) . ")");
