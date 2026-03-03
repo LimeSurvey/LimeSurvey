@@ -10,7 +10,7 @@
                             <!-- Survey bounce email -->
                             <div class="mb-3 setting control-group setting-email col-3">
                                 <label class="default form-label" for="bounce_email">
-                                    <?php eT('Survey bounce email address:'); ?>
+                                    <?php eT('Survey bounce email address'); ?>
                                 </label>
                                 <div class="default controls">
                                     <input class='form-control' size="50" type="email" value="<?php echo $settings['bounce_email'];?>" name="bounce_email" id="bounce_email" />
@@ -20,7 +20,7 @@
                             <!-- Bounce settings to be used -->
                             <div class="mb-3 setting control-group setting-select">
                                 <label class="default form-label" for="bounceprocessing">
-                                    <?php eT('Used bounce settings:');?>
+                                    <?php eT('Used bounce settings');?>
                                 </label>
                                 <div class="default controls">
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
@@ -42,7 +42,7 @@
                             <!-- Server type -->
                             <div class=" mb-3 setting control-group setting-select">
                                 <label class="default form-label" for="bounceaccounttype">
-                                    <?php eT("Server type:"); ?>
+                                    <?php eT("Server type"); ?>
                                 </label>
                                 <div class="default controls">
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
@@ -60,7 +60,7 @@
                             <!-- Server name port -->
                             <div class=" mb-3 setting control-group setting-string col-3">
                                 <label class="default form-label" for="bounceaccounthost">
-                                    <?php eT('Server name & port:'); ?>
+                                    <?php eT('Server name & port'); ?>
                                 </label>
                                 <div class="default controls">
                                     <input class="form-control" size="50" type="text" value="<?php echo $settings['bounceaccounthost']; ?>" name="bounceaccounthost" id="bounceaccounthost" />
@@ -73,7 +73,7 @@
                             <!-- User name -->
                             <div class=" mb-3 setting control-group setting-string col-3">
                                 <label class="default form-label" for="bounceaccountuser">
-                                    <?php eT('User name:'); ?>
+                                    <?php eT('User name'); ?>
                                 </label>
                                 <div class="default controls">
                                     <input class="form-control" size="50" type="text" value="<?php echo $settings['bounceaccountuser'];?>" name="bounceaccountuser" id="bounceaccountuser" />
@@ -83,7 +83,7 @@
                             <!-- Password -->
                             <div class=" mb-3 setting control-group setting-password col-3">
                                 <label class="default form-label" for="bounceaccountpass">
-                                    <?php eT('Password:'); ?>
+                                    <?php eT('Password'); ?>
                                 </label>
 
                                 <div class="default controls">
@@ -94,7 +94,7 @@
                             <!-- Encryption type  -->
                             <div class=" mb-3 setting control-group setting-select">
                                 <label class="default form-label" for="bounceaccountencryption">
-                                    <?php eT('Encryption type:'); ?>
+                                    <?php eT('Encryption type'); ?>
                                 </label>
                                 <div class="default controls">
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(

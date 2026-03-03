@@ -12,7 +12,6 @@ var ThemeOptions = function () {
         "general_inherit": 1
     }
 
-    var optionObjectInheritedValues = JSON.parse($('#optionInheritedValues').val());
     var optionCssFiles = JSON.parse($('#optionCssFiles').val());
     //get the global form
     var globalForm = $('.action_update_options_string_form');

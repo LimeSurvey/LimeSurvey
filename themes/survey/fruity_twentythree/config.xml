@@ -75,12 +75,17 @@
     <!-- for animations, see https://daneden.github.io/animate.css/ -->
     <!-- for checkbox icons, use the Unicode of the charcter (eg: http://fontawesome.io/icon/check/ is f00c ) -->
     <options>
+        <!-- simple options -->
         <hideprivacyinfo type="buttons" category="Simple options" width="4" title="Hide privacy info" options="on|off"
                          optionlabels="Yes|No">off
         </hideprivacyinfo>
         <showpopups type="buttons" category="Simple options" width="4" title="Show popups" options="1|0|-1"
                     optionlabels="Popup|On page|No">1
         </showpopups>
+        <notables type="buttons" category="Simple options" width="4" title="Wrap tables" options="2|1|0"
+                  optionlabels="Always on|Small screens|Off">1
+        </notables>
+
         <showclearall type="buttons" category="Simple options" width="4" title="Show 'Clear all' button" options="on|off"
                       optionlabels="Yes|No">off
         </showclearall>
@@ -90,6 +95,20 @@
         <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value"
                     options="enable|partial|disable" optionlabels="Yes|For expression|No">enable
         </fixnumauto>
+        <cornerradius type="buttons" category="Simple options" width="4" title="Corner radius" options="1|2|3" optionlabels="0px|4px|20px" optionimages="cornerradius_0.svg|cornerradius_4.svg|cornerradius_20.svg">2</cornerradius>
+        <!-- colors -->
+        <bodybackgroundcolor type="colorpicker" category="Colors" width="4" title="Background color" options="on|off" optionlabels="Yes|No">#ffffff</bodybackgroundcolor>
+        <fontcolor type="colorpicker" category="Colors" width="4" title="Font color" options="on|off" optionlabels="Yes|No">#444444</fontcolor>
+        <questionbackgroundcolor type="colorpicker" category="Colors" width="4" title="Question background color" options="on|off" optionlabels="Yes|No">#ffffff</questionbackgroundcolor>
+        <checkicon type="icon" library="remixicon" category="Colors" width="4" title="Check icon">EB7A
+            <!--  When adding new items, please keep them ordered alphabetically -->
+            <dropdownoptions>
+                <option value="EB7A"> Check </option>
+                <option value="EB80"> Check circle </option>
+                <option value="EB82"> Check square </option>
+            </dropdownoptions>
+        </checkicon>
+
         <!-- images -->
         <backgroundimage type="buttons" category="Images" width="4" title="Background image" options="on|off"
                          optionlabels="Yes|No">off
@@ -144,6 +163,24 @@
             </dropdownoptions>
         </cssframework>
     </options>
+    <optionsOrderReact>
+        <brandlogo category="Logo"/>
+        <brandlogofile category="Logo"/>
+        <cssframework category="Appearance"/>
+        <font category="Appearance"/>
+        <fontcolor category="Appearance"/>
+        <bodybackgroundcolor category="Appearance"/>
+        <questionbackgroundcolor category="Appearance"/>
+        <checkicon category="Appearance"/>
+        <backgroundimage category="Appearance"/>
+        <backgroundimagefile category="Appearance"/>
+        <cornerradius category="Display options"/>
+        <hideprivacyinfo category="Display options" />
+        <showclearall category="Display options" />
+        <questionhelptextposition category="Display options"/>
+        <showpopups category="Display options" />
+        <fixnumauto category="Display options" />
+    </optionsOrderReact>
 
     <!-- Here datas about how LimeSurvey should load the theme -->
     <engine>
