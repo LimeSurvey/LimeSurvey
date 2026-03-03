@@ -2562,7 +2562,13 @@ function numericSize(string $sColumn, $decimal = false)
 {
     $sColumn = sanitize_paranoid_string($sColumn);
     // Find the sid
-    $iSurveyId = substr($sColumn, 0, strpos($sColumn, 'X'));
+    $surveyId = "";
+    if (strpos($sColumn, 'X') !== false) {
+        $iSurveyId = substr($sColumn, 0, strpos($sColumn, 'X'));
+    } else {
+        $iQid = substr(explode("_", $sColumn)[0], 1);
+        $iSurveyId = Question::model()->findByPk($iQid)->sid;
+    }
     $sColumn = Yii::app()->db->quoteColumnName($sColumn);
     /* Find the max len of integer part for positive value*/
     $maxInteger = Yii::app()->db
