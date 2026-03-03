@@ -22,7 +22,7 @@
     }
 ?>
 
-<div id='<?php echo "tab-".CHtml::encode($grouplang)."-".CHtml::encode($tab); ?>' class="tab-pane fade in <?=CHtml::encode($active); ?>">
+<div id='<?php echo "tab-".CHtml::encode($grouplang)."-".CHtml::encode($tab); ?>' class="tab-pane fade in <?=CHtml::encode($active); ?>" role="tabpanel" aria-labelledby="<?php echo "tab-".CHtml::encode($grouplang)."-".CHtml::encode($tab)."-tab"; ?>">
     <?php if ($attachmentsHaveErrors): ?>
         <div class="row">
             <div class='col-sm-12'>
