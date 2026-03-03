@@ -160,6 +160,15 @@ class CLSGridView extends TbGridView
 			});
 		';
         App()->getClientScript()->registerScript('pageChanger#' . $this->id, $script, LSYii_ClientScript::POS_POSTSCRIPT);
+
+        // Accessibility: announce "Select all" for header checkboxes (id ending with _all)
+        $selectAllLabel = gT('Select all');
+        $scriptAria = 'jQuery(document).ready(function(){ jQuery("#' . $this->id . ' input[type=checkbox][id$=\'_all\']").attr("aria-label", ' . json_encode($selectAllLabel) . '); });';
+        App()->getClientScript()->registerScript('CLSGridView-ariaSelectAll#' . $this->id, $scriptAria, LSYii_ClientScript::POS_POSTSCRIPT);
+        if (!App()->getClientScript()->isScriptRegistered('CLSGridView-ariaSelectAll-ajax')) {
+            $scriptAriaAjax = 'jQuery(document).ajaxComplete(function(){ jQuery(".grid-view-ls input[type=checkbox][id$=\'_all\']").attr("aria-label", ' . json_encode($selectAllLabel) . '); });';
+            App()->getClientScript()->registerScript('CLSGridView-ariaSelectAll-ajax', $scriptAriaAjax, LSYii_ClientScript::POS_POSTSCRIPT);
+        }
     }
 
     /**
