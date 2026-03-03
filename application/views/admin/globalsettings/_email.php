@@ -27,7 +27,7 @@
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'emailmethod',
-                    'ariaLabel' => 'Email method',
+                    'ariaLabel'     => gt('Email method:'),
                     'checkedOption' => Yii::app()->getConfig('emailmethod'),
                     'selectOptions' => [
                         LimeMailer::MethodMail => "PHP",
@@ -64,7 +64,7 @@
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
                     array(
                         'name' => 'emailsmtpssl',
-                        'ariaLabel' => 'SMTP encryption',
+                        'ariaLabel' => gT("SMTP encryption:"),
                         'checkedOption' => getGlobalSetting('emailsmtpssl'),
                         'selectOptions' => array(
                             "" => gT("Off (unsafe)", 'unescaped'),
@@ -80,7 +80,7 @@
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'emailsmtpdebug',
-                    'ariaLabel' => 'SMTP debug mode',
+                    'ariaLabel'     => gT("SMTP debug mode:"),
                     'checkedOption' => getGlobalSetting('emailsmtpdebug'),
                     'selectOptions' => [
                         "0" => gT("Off", 'unescaped'),
