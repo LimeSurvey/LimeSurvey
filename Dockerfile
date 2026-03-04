@@ -7,9 +7,6 @@ WORKDIR /var/www/html
 # Copy your PHP application code into the container
 COPY . .
 
-# Remove the .git folder since it is huge
-RUN rm -r .git
-
 # Set permissions as stated here: https://manual.limesurvey.org/Installation_-_LimeSurvey_CE
 RUN chmod -R 755 /var/www/html && \
     chmod -R 777 /var/www/html/tmp && \
