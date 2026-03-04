@@ -19,7 +19,7 @@ export function createDefaultState(userid, surveyid) {
     }
 
     return {
-        surveyid: 0,
+        surveyid: surveyid,
         language: '',
         maxHeight: 0,
         inSurveyViewHeight: 1000,
@@ -161,16 +161,18 @@ export function createGetters(StateManager) {
         substractContainer: function() {
             const state = StateManager.get();
             const container = $('#vue-apps-main-container');
-            const containerWidth = container.length ? container.width() : window.innerWidth;
-            const bodyWidth = (1 - (parseInt(state.sidebarwidth) / containerWidth)) * 100;
+            const containerWidth = Math.max(1, container.length ? container.width() : window.innerWidth);
+            const sidebarwidth = parseInt(state.sidebarwidth) || 0;
+            const bodyWidth = (1 - (sidebarwidth / containerWidth)) * 100;
             const collapsedBodyWidth = (1 - (98 / containerWidth)) * 100;
             return Math.floor(state.isCollapsed ? collapsedBodyWidth : bodyWidth) + '%';
         },
         sideBarSize: function() {
             const state = StateManager.get();
             const container = $('#vue-apps-main-container');
-            const containerWidth = container.length ? container.width() : window.innerWidth;
-            const sidebarWidth = (parseInt(state.sidebarwidth) / containerWidth) * 100;
+            const containerWidth = Math.max(1, container.length ? container.width() : window.innerWidth);
+            const sidebarwidth = parseInt(state.sidebarwidth) || 0;
+            const sidebarWidth = (sidebarwidth / containerWidth) * 100;
             const collapsedSidebarWidth = (98 / containerWidth) * 100;
             return Math.ceil(state.isCollapsed ? collapsedSidebarWidth : sidebarWidth) + '%';
         },

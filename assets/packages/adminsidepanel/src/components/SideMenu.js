@@ -91,20 +91,20 @@ class SideMenu {
             const target = menuItem.link_external === true ? '_blank' : '';
             const tooltip = menuItem.disabled ? menuItem.disabled_tooltip : UIHelpers.reConvertHTML(menuItem.menu_description);
 
-            html += '<a href="' + href + '"' +
+            html += '<a href="' + UIHelpers.escapeHtml(href) + '"' +
                 (target ? ' target="' + target + '"' : '') +
-                ' id="sidemenu_' + menuItem.name + '"' +
+                ' id="sidemenu_' + UIHelpers.escapeHtml(menuItem.name) + '"' +
                 ' class="list-group-item w-100 ' + linkClass + '"' +
-                ' data-menu-item-id="' + menuItem.id + '"' +
-                ' data-menu-id="' + menuItem.menu_id + '">';
+                ' data-menu-item-id="' + UIHelpers.escapeHtml(menuItem.id) + '"' +
+                ' data-menu-id="' + UIHelpers.escapeHtml(menuItem.menu_id) + '">';
 
-            html += '<div class="d-flex ' + (menuItem.menu_class || '') + '"' +
+            html += '<div class="d-flex ' + UIHelpers.escapeHtml(menuItem.menu_class || '') + '"' +
                 ' title="' + UIHelpers.escapeHtml(tooltip) + '"' +
                 ' data-bs-toggle="tooltip">';
 
             html += '<div class="ls-space padding all-0 me-auto wrapper">';
             html += UIHelpers.renderMenuIcon(menuItem.menu_icon_type, menuItem.menu_icon);
-            html += '<span class="title">' + (menuItem.menu_title || '') + '</span>';
+            html += '<span class="title">' + UIHelpers.escapeHtml(menuItem.menu_title || '') + '</span>';
             if (menuItem.link_external === true) {
                 html += '<i class="ri-external-link-fill">&nbsp;</i>';
             }

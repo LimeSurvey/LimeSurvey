@@ -42,24 +42,26 @@ class Sidemenu {
     }
 
     renderMenuItem(menuItem) {
+        const esc = this.escapeHTML;
         const href = this.getHref(menuItem);
         const linkClass = this.getLinkClass(menuItem);
         const target = menuItem.link_external ? '_blank' : '';
         const tooltip = this.reConvertHTML(menuItem.menu_description);
-        const isSelected = this.store.get('lastMenuItemOpen') === menuItem.partial.split('/').pop();
+        const menuItemPartial = menuItem.partial.split('/').pop();
+        const isSelected = this.store.get('lastMenuItemOpen') === menuItemPartial;
 
         return `
-            <a data-menu-item="${menuItem.partial.split('/').pop()}"
-               href="${href}"
+            <a data-menu-item="${esc(menuItemPartial)}"
+               href="${esc(href)}"
                target="${target}"
-               id="sidemenu_${menuItem.name}"
+               id="sidemenu_${esc(menuItem.name)}"
                class="list-group-item ${linkClass}"
-               title="${tooltip}"
+               title="${esc(tooltip)}"
                data-bs-toggle="tooltip">
-                <div class="col-12 ${menuItem.menu_class || ''}">
+                <div class="col-12 ${esc(menuItem.menu_class || '')}">
                     <div class="ls-space padding all-0 ${isSelected ? 'col-md-10' : 'col-12'}">
                         ${this.renderMenuIcon(menuItem)}
-                        <span>${menuItem.menu_title}</span>
+                        <span>${esc(menuItem.menu_title)}</span>
                         ${menuItem.link_external ? '<i class="ri-external-link-fill">&nbsp;</i>' : ''}
                     </div>
                     ${isSelected ? `
@@ -75,15 +77,16 @@ class Sidemenu {
     renderMenuIcon(menuItem) {
         if (!menuItem.menu_icon) return '';
 
+        const esc = this.escapeHTML;
         const iconType = menuItem.menu_icon_type || 'fontawesome';
         let iconClass = '';
 
         if (iconType === 'fontawesome') {
-            iconClass = `fa fa-${menuItem.menu_icon}`;
+            iconClass = `fa fa-${esc(menuItem.menu_icon)}`;
         } else if (iconType === 'remix') {
-            iconClass = `ri-${menuItem.menu_icon}`;
+            iconClass = `ri-${esc(menuItem.menu_icon)}`;
         } else if (iconType === 'iconClass') {
-            iconClass = menuItem.menu_icon;
+            iconClass = esc(menuItem.menu_icon);
         }
 
         return `<i class="${iconClass}"></i>`;
@@ -99,6 +102,16 @@ class Sidemenu {
         const isSelected = this.store.get('lastMenuItemOpen') === menuItem.partial.split('/').pop();
         classes += isSelected ? 'selected ' : ' ';
         return classes;
+    }
+
+    escapeHTML(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
     }
 
     reConvertHTML(string) {

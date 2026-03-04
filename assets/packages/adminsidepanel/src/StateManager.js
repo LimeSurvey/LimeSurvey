@@ -39,6 +39,9 @@ const StateManager = (function() {
             storageKey += '_' + config.surveyid;
         }
 
+        // Reset subscribers so old callbacks don't leak across re-inits
+        listeners = [];
+
         // Set mutations, getters, and persist keys
         mutations = config.mutations || {};
         getters = config.getters || {};

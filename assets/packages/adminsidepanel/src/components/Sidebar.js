@@ -232,7 +232,7 @@ class Sidebar {
                 StateManager.commit('changeSidebarwidth', widthNum);
             }
             $('#sidebar').addClass('transition-animate-width');
-            $('#pjax-content').removeClass('transition-animate-width');
+            $('#pjax-content').addClass('transition-animate-width');
         }
     }
 
@@ -385,10 +385,14 @@ class Sidebar {
             })
             .catch((error) => {
                 console.ls.error('questiongroups updating error!', error);
-                Actions.getQuestions().then(() => {
-                    this.showLoader = false;
-                    this.render();
-                });
+                Actions.getQuestions()
+                    .catch((retryError) => {
+                        console.ls.error('questiongroups retry error!', retryError);
+                    })
+                    .finally(() => {
+                        this.showLoader = false;
+                        this.render();
+                    });
             });
     }
 
@@ -421,10 +425,12 @@ class Sidebar {
             Actions.getQuestions(),
             Actions.collectMenus()
         ]).then(() => {
+            StateManager.commit('newToggleKey');
             this.controlActiveLink();
             this.renderContent();
+        }).catch((error) => {
+            console.ls.error(error);
         });
-        StateManager.commit('newToggleKey');
     }
 
     /**
@@ -437,6 +443,8 @@ class Sidebar {
         ]).then(() => {
             this.controlActiveLink();
             this.renderContent();
+        }).catch((error) => {
+            console.ls.error(error);
         });
     }
 

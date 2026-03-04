@@ -16,6 +16,12 @@ const AjaxHelper = (function() {
         data = data || {};
         method = method || 'get';
 
+        // Ensure CSRF token is included for non-GET requests
+        // (the global ajaxPrefilter can hold a stale token after PJAX navigation)
+        if (method !== 'get' && window.LS && window.LS.data && window.LS.data.csrfTokenName) {
+            data[window.LS.data.csrfTokenName] = window.LS.data.csrfToken;
+        }
+
         return new Promise(function(resolve, reject) {
             if (typeof $ === 'undefined') {
                 reject('JQUERY NOT AVAILABLE!');

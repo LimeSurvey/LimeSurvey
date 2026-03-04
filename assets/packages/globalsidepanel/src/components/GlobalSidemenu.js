@@ -67,6 +67,8 @@ class GlobalSidemenu {
             this.render();
             this.attachEventListeners();
             this.mounted();
+        }).catch((error) => {
+            LOG.error('Failed to load menus', error);
         });
     }
 
@@ -151,7 +153,7 @@ class GlobalSidemenu {
     }
 
     mounted() {
-        $(document).on("vue-redraw", () => {
+        $(document).on("vue-redraw.globalsidemenu", () => {
             this.update();
         });
 
@@ -196,7 +198,7 @@ class GlobalSidemenu {
                 this.sideBarWidth = 250;
             }
             $("#sidebar").addClass("transition-animate-width");
-            $("#pjax-content").removeClass("transition-animate-width");
+            $("#pjax-content").addClass("transition-animate-width");
             this.update();
         }
     }
@@ -256,7 +258,7 @@ class GlobalSidemenu {
         }
 
         document.body.removeEventListener('mousemove', this.mousemove);
-        $(document).off('vue-redraw');
+        $(document).off('vue-redraw.globalsidemenu');
     }
 }
 
