@@ -1018,13 +1018,18 @@ class ParticipantsAction extends SurveyCommonAction
                 //HACK - converting into SQL instead of doing an array search
                 if (in_array('participant_id', $firstline)) {
                     $dupreason = "participant_id";
-                    $aData = "participant_id = " . Yii::app()->db->quoteValue($writearray['participant_id']);
+                    $duplicateCriteriaAttributes = ['participant_id' => $writearray['participant_id']];
                 } else {
                     $dupreason = "nameemail";
-                    $aData = "firstname = " . Yii::app()->db->quoteValue($writearray['firstname']) . " AND lastname = " . Yii::app()->db->quoteValue($writearray['lastname']) . " AND email = " . Yii::app()->db->quoteValue($writearray['email']) . " AND owner_uid = '" . Yii::app()->session['loginID'] . "'";
+                    $duplicateCriteriaAttributes = [
+                        'firstname' => $writearray['firstname'],
+                        'lastname'  => $writearray['lastname'],
+                        'email'     => $writearray['email'],
+                        'owner_uid' => Yii::app()->session['loginID']
+                    ];
                 }
                 //End of HACK
-                $aData = Participant::model()->checkforDuplicate($aData, "participant_id");
+                $aData = Participant::model()->checkforDuplicate($duplicateCriteriaAttributes, "participant_id");
                 if ($aData !== false) {
                     $thisduplicate = 1;
                     $dupcount++;
