@@ -54,7 +54,9 @@ foreach ($extraMenus as $menu): ?>
                             <li class="dropdown-divider" role="separator"></li>
                         <?php
                         elseif ($menuItem->isSmallText()): ?>
-                            <li class="dropdown-header"><?= $menuItemLabel; ?></li>
+                            <li class="dropdown-header" role="presentation">
+                                <span role="doc-subtitle" aria-label="<?= $menuItemLabel; ?>"><?= $menuItemLabel; ?></span>
+                            </li>
                         <?php
                         else: ?>
                             <li class="<?= CHtml::encode($menuItem->getItemClass()) ?> ms-3 me-3">
