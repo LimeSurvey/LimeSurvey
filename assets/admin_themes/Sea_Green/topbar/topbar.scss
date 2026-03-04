@@ -10,8 +10,7 @@
         margin-bottom : 4px;
     }
     &.scroll-shadow {
-        background-color: inherit;
-        box-shadow : 0 1px 20px 0 rgba(196, 196, 196, 1);
+        box-shadow : 0 12px 8px -12px rgb(196, 196, 196);
     }
     .ls-breadcrumb {
         align-self : center;
