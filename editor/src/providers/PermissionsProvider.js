@@ -109,9 +109,7 @@ export const PermissionsProvider = ({ children }) => {
     setHasResponsesReadPermission(hasResponsesReadPermissionValue)
     setHasResponsesUpdatePermission(hasResponsesUpdatePermissionValue)
 
-    setTimeout(() => {
-      setLoading(false)
-    }, 500)
+    setLoading(false)
   }, [
     permissions,
     surveyId,
