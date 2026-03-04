@@ -2562,7 +2562,7 @@ function numericSize(string $sColumn, $decimal = false)
 {
     $sColumn = sanitize_paranoid_string($sColumn);
     // Find the sid
-    $surveyId = "";
+    $iSurveyId = "";
     if (strpos($sColumn, 'X') !== false) {
         $iSurveyId = substr($sColumn, 0, strpos($sColumn, 'X'));
     } else {
