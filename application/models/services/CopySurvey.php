@@ -2,14 +2,11 @@
 
 namespace LimeSurvey\Models\Services;
 
-use App;
 use Assessment;
 use Condition;
 use DefaultValue;
 use LimeSurvey\Datavalueobjects\CopyQuestionValues;
-use LSHttpRequest;
 use Question;
-use QuestionAttribute;
 use QuestionGroup;
 use QuestionL10n;
 use Survey;
