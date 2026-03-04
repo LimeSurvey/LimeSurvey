@@ -152,7 +152,7 @@
                 </optgroup>
             </dropdownoptions>
         </font>
-        <cssframework type="icon" colorSwatch="true" category="Simple options" width="12" title="Theme color">Apple
+        <cssframework type="dropdown" colorSwatch="true" category="Simple options" width="12" title="Theme color">Apple
             <dropdownoptions>
                 <optgroup>
                     <option data-value="css/variations/theme_apple.css" value="apple" hexValue="#14AE5C">Apple</option>
