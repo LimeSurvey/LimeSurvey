@@ -1,188 +1,229 @@
-//globals formId
-import Vue from "vue";
-import Sidebar from "./components/sidebar.vue";
-import getAppState from "./store/vuex-store.js";
-import {PluginLog} from "./mixins/logSystem.js";
-import Loader from './helperComponents/loader.vue';
+/**
+ * AdminSidePanel - Main entry point (vanilla JS)
+ * Replaces Vue-based adminsidepanelmain.js
+ */
+import StateManager from './StateManager.js';
+import { createDefaultState, createMutations, createGetters } from './stateConfig.js';
+import Actions from './Actions.js';
+import Sidebar from './components/Sidebar.js';
 
-//Ignore phpunits testing tags
-Vue.config.ignoredElements = ["x-test"];
-Vue.config.devtools = true;
+/**
+ * Main AdminSidePanel factory function
+ * @param {string|number} userid
+ * @param {string|number} surveyid
+ * @returns {Function}
+ */
+const Lsadminsidepanel = function(userid, surveyid) {
+    'use strict';
 
-Vue.use(PluginLog);
-
-Vue.component('loader-widget', Loader);
-
-Vue.mixin({
-    methods: {
-        updatePjaxLinks: function () {
-            this.$forceUpdate();
-            this.$store.commit('newToggleKey');
-        },
-        redoTooltips: function () {
-            window.LS.doToolTip();
-        },
-        translate(string){
-            return window.SideMenuData.translate[string] || string;
-        }
-    },
-    filters: {
-        translate(string){
-            return window.SideMenuData.translate[string] || string;
-        }
-    }
-});
-
-const Lsadminsidepanel = (userid, surveyid) => {
-    const AppState = getAppState(userid, surveyid);
     const panelNameSpace = {};
 
-    const applySurveyId = (store) => {
-        if (surveyid != 0) {
-            store.commit("updateSurveyId", surveyid);
+    /**
+     * Apply survey ID to state
+     */
+    function applySurveyId() {
+        if (surveyid !== 0 && surveyid !== '0' && surveyid !== 'newSurvey') {
+            StateManager.commit('updateSurveyId', surveyid);
         }
-    };
+    }
 
-    const controlWindowSize = () => {
-        const adminmenuHeight = $("body").find("nav").first().height();
-        const footerHeight = $("body").find("footer").last().height();
-        const menuHeight = $(".menubar").outerHeight();
+    /**
+     * Control window size and adjust layout
+     */
+    function controlWindowSize() {
+        const adminmenuHeight = $('body').find('nav').first().height() || 0;
+        const footerHeight = $('body').find('footer').last().height() || 0;
+        const menuHeight = $('.menubar').outerHeight() || 0;
         const inSurveyOffset = adminmenuHeight + footerHeight + menuHeight + 25;
         const windowHeight = window.innerHeight;
         const inSurveyViewHeight = windowHeight - inSurveyOffset;
-        const bodyWidth = (1 - (parseInt($('#sidebar').width()) / $('#vue-apps-main-container').width())) * 100;
-        const collapsedBodyWidth = (1 - (parseInt('98px') / $('#vue-apps-main-container').width())) * 100;
+
+        const sidebarWidth = $('#sidebar').width() || 0;
+        const containerWidth = $('#vue-apps-main-container').width() || 1;
+        const bodyWidth = (1 - (parseInt(sidebarWidth) / containerWidth)) * 100;
+        const collapsedBodyWidth = (1 - (parseInt('98px') / containerWidth)) * 100;
         const inSurveyViewWidth = Math.floor($('#sidebar').data('collapsed') ? bodyWidth : collapsedBodyWidth) + '%';
 
-        panelNameSpace["surveyViewHeight"] = inSurveyViewHeight;
-        panelNameSpace["surveyViewWidth"] = inSurveyViewWidth;
+        panelNameSpace.surveyViewHeight = inSurveyViewHeight;
+        panelNameSpace.surveyViewWidth = inSurveyViewWidth;
+
         $('#fullbody-container').css({
-            //'height': inSurveyViewHeight,
             'max-width': inSurveyViewWidth,
             'overflow-x': 'auto'
         });
     }
 
-    const createSideMenu = () => {
-        return new Vue({
-            el: "#vue-sidebar-container",
-            store: AppState,
-            components: {
-                sidebar: Sidebar,
-            },
-            created() {
-                $(document).on("vue-sidebar-collapse", () => {
-                    this.$store.commit("changeIsCollapsed", true);
-                });
-            },
-            mounted() {
-                applySurveyId(this.$store);
+    /**
+     * Create the side menu
+     */
+    function createSideMenu() {
+        const containerEl = document.getElementById('vue-sidebar-container');
+        if (!containerEl) return null;
 
-                const maxHeight = $("#in_survey_common").height() - 35 || 400;
-                this.$store.commit("changeMaxHeight", maxHeight);
-                this.$store.commit("setAllowOrganizer", window.SideMenuData.allowOrganizer);
-                this.updatePjaxLinks();
-
-
-                $(document).on("vue-redraw", () => {
-                    this.updatePjaxLinks();
-                });
-
-                $(document).trigger("vue-reload-remote");
-            }
+        // Initialize state manager with unified API
+        StateManager.init({
+            storagePrefix: 'limesurveyadminsidepanel',
+            userid: userid,
+            surveyid: surveyid,
+            defaultState: createDefaultState(userid, surveyid),
+            mutations: createMutations(StateManager),
+            getters: createGetters(StateManager),
+            persistKeys: [
+                'currentTab',
+                'isCollapsed',
+                'sidebarwidth',
+                'questionGroupOpenArray',
+                'lastMenuOpen',
+                'lastMenuItemOpen',
+                'lastQuestionOpen',
+                'lastQuestionGroupOpen',
+                'allowOrganizer'
+            ]
         });
-    };
 
-    const applyPjaxMethods = () => {
+        // Apply survey ID
+        applySurveyId();
+
+        // Set max height
+        const maxHeight = $('#in_survey_common').height() - 35 || 400;
+        StateManager.commit('changeMaxHeight', maxHeight);
+
+        // Set allow organizer - default to unlocked (1) unless explicitly locked
+        if (window.SideMenuData && window.SideMenuData.allowOrganizer !== undefined) {
+            // Only lock if explicitly set to 0, otherwise keep unlocked
+            StateManager.commit('setAllowOrganizer', window.SideMenuData.allowOrganizer === 0 ? 0 : 1);
+        } else {
+            // No server value, default to unlocked
+            StateManager.commit('setAllowOrganizer', 1);
+        }
+
+        // Initialize sidebar component (now as a class)
+        const sidebar = new Sidebar();
+        sidebar.init(containerEl);
+
+        // Bind Vue-style events
+        $(document).on('vue-redraw', function() {
+            StateManager.commit('newToggleKey');
+        });
+
+        $(document).trigger('vue-reload-remote');
+
+        return sidebar;
+    }
+
+    /**
+     * Apply Pjax methods for AJAX navigation
+     */
+    function applyPjaxMethods() {
         panelNameSpace.reloadcounter = 5;
+
         $(document)
-            .off("pjax:send.panelloading")
-            .on("pjax:send.panelloading", () => {
-                $('<div id="pjaxClickInhibitor"></div>').appendTo("body");
-                $(
-                    ".ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable"
-                ).remove();
-                $("#pjax-file-load-container")
-                    .find("div")
+            .off('pjax:send.panelloading')
+            .on('pjax:send.panelloading', function() {
+                $('<div id="pjaxClickInhibitor"></div>').appendTo('body');
+                $('.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable').remove();
+                $('#pjax-file-load-container')
+                    .find('div')
                     .css({
-                        width: "20%",
-                        display: "block"
+                        width: '20%',
+                        display: 'block'
                     });
                 LS.adminsidepanel.reloadcounter--;
             });
 
         $(document)
-            .off("pjax:error.panelloading")
-            .on("pjax:error.panelloading", event => {
-                // eslint-disable-next-line no-console
-                console.ls.log(event);
+            .off('pjax:error.panelloading')
+            .on('pjax:error.panelloading', function(event) {
+                if (console.ls && console.ls.log) {
+                    console.ls.log(event);
+                }
             });
 
         $(document)
-            .off("pjax:complete.panelloading")
-            .on("pjax:complete.panelloading", () => {
+            .off('pjax:complete.panelloading')
+            .on('pjax:complete.panelloading', function() {
                 if (LS.adminsidepanel.reloadcounter === 0) {
                     location.reload();
                 }
             });
+
         $(document)
-            .off("pjax:scriptcomplete.panelloading")
-            .on("pjax:scriptcomplete.panelloading", () => {
-                $("#pjax-file-load-container")
-                    .find("div")
-                    .css("width", "100%");
-                $("#pjaxClickInhibitor").fadeOut(400, function () {
+            .off('pjax:scriptcomplete.panelloading')
+            .on('pjax:scriptcomplete.panelloading', function() {
+                $('#pjax-file-load-container')
+                    .find('div')
+                    .css('width', '100%');
+
+                $('#pjaxClickInhibitor').fadeOut(400, function() {
                     $(this).remove();
                 });
-                $(document).trigger("vue-resize-height");
-                $(document).trigger("vue-reload-remote");
-                // $(document).trigger('vue-sidemenu-update-link');
-                setTimeout(function () {
-                    $("#pjax-file-load-container")
-                        .find("div")
+
+                $(document).trigger('vue-resize-height');
+                $(document).trigger('vue-reload-remote');
+
+                setTimeout(function() {
+                    $('#pjax-file-load-container')
+                        .find('div')
                         .css({
-                            width: "0%",
-                            display: "none"
+                            width: '0%',
+                            display: 'none'
                         });
                 }, 2200);
             });
+    }
 
-    };
-
-    const createPanelAppliance = () => {
-        window.singletonPjax();
-        if (document.getElementById("vue-sidebar-container")) {
-            panelNameSpace['sidemenu'] = createSideMenu();
+    /**
+     * Create panel appliance
+     */
+    function createPanelAppliance() {
+        // Initialize singleton Pjax
+        if (window.singletonPjax) {
+            window.singletonPjax();
         }
-        $(document).on("click", "ul.pagination>li>a", () => {
+
+        // Create side menu
+        if (document.getElementById('vue-sidebar-container')) {
+            panelNameSpace.sidemenu = createSideMenu();
+        }
+
+        // Pagination click handler
+        $(document).on('click', 'ul.pagination>li>a', function() {
             $(document).trigger('pjax:refresh');
         });
 
+        // Window resize handling
         controlWindowSize();
-        window.addEventListener("resize", LS.ld.debounce(controlWindowSize, 300));
-        $(document).on("vue-resize-height", LS.ld.debounce(controlWindowSize, 300));
-        applyPjaxMethods();
+        window.addEventListener('resize', LS.ld.debounce(controlWindowSize, 300));
+        $(document).on('vue-resize-height', LS.ld.debounce(controlWindowSize, 300));
 
+        // Apply Pjax methods
+        applyPjaxMethods();
     }
 
-    LS.adminCore.addToNamespace(panelNameSpace, 'adminsidepanel');
+    // Add to LS admin namespace
+    if (LS && LS.adminCore && LS.adminCore.addToNamespace) {
+        LS.adminCore.addToNamespace(panelNameSpace, 'adminsidepanel');
+    }
 
     return createPanelAppliance;
 };
 
-
-
-$(document).ready(function(){
+// Document ready handler
+$(document).ready(function() {
     let surveyid = 'newSurvey';
-    if(window.LS != undefined) {
+
+    if (window.LS !== undefined) {
         surveyid = window.LS.parameters.$GET.surveyid || window.LS.parameters.keyValuePairs.surveyid;
     }
-    if(window.SideMenuData) {
+
+    if (window.SideMenuData) {
         surveyid = window.SideMenuData.surveyid;
     }
 
-    window.adminsidepanel =  window.adminsidepanel || Lsadminsidepanel(window.LS.globalUserId, surveyid);
+    const userid = (window.LS && window.LS.globalUserId) ? window.LS.globalUserId : null;
+    window.adminsidepanel = window.adminsidepanel || Lsadminsidepanel(userid, surveyid);
 
     window.adminsidepanel();
 });
 
+export default Lsadminsidepanel;

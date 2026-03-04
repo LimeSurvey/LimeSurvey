@@ -60,7 +60,7 @@
             basemenus: '.json_encode($menuObjectArray).',
             updateOrderLink: "'.$updateOrderLink.'",
             unlockLockOrganizerUrl: "'.$unlockLockOrganizerUrl.'",
-            allowOrganizer: '.(SettingsUser::getUserSettingValue('lock_organizer') ? '1' : '0').',
+            allowOrganizer: '.(SettingsUser::getUserSettingValue('lock_organizer') ? '0' : '1').',
             translate: '
             .json_encode(
                 [
