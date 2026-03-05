@@ -3,8 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { SideBarHeader, SideBarPanelItem } from 'components/SideBar'
 import { CloseIcon } from 'components/icons'
-import { PluginSlot } from 'plugins/PluginSlot'
-import { PAGES } from 'helpers'
 
 export const SideBarPanel = ({
   label,
@@ -12,7 +10,7 @@ export const SideBarPanel = ({
   page = 'survey',
   showCloseButton = true,
 }) => {
-  const { surveyId, panel } = useParams()
+  const { surveyId } = useParams()
   const navigate = useNavigate()
 
   const handleClose = () => {
@@ -45,9 +43,6 @@ export const SideBarPanel = ({
               />
             )
           })}
-          {page == PAGES.SHARE && panel == 'sharingSettings' && (
-            <PluginSlot slotName="sidebarpanel:sharing:sharingSettings:bottom" />
-          )}
         </div>
       </div>
     </div>

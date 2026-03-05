@@ -11,6 +11,7 @@ export const PermissionsProvider = ({ children }) => {
   const userService = useUserService()
   const [hasSurveyReadPermission, setHasSurveyReadPermission] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [hasSurveyUpdatePermission, setHasSurveyUpdatePermission] = useAppState(
     STATES.HAS_SURVEY_UPDATE_PERMISSION,
     false
@@ -27,20 +28,16 @@ export const PermissionsProvider = ({ children }) => {
   // Fetch permissions if we have auth token but no permissions yet
   useEffect(() => {
     setPermissions(null)
-
-    if (!auth?.token) {
-      setLoading(false)
-      return
-    }
-
-    // Only set loading to true when we actually need to fetch
-    setLoading(true)
+    setError(null)
     userService
       .getUserPermissions()
       .then(({ permissions: { global, survey } }) => {
         setPermissions({ global, survey })
       })
       .catch(() => {
+        setError(
+          t('Failed to load permissions. Please try again or contact support.')
+        )
         setLoading(false)
       })
   }, [auth?.token])
@@ -52,11 +49,6 @@ export const PermissionsProvider = ({ children }) => {
       setHasSurveyUpdatePermission(false)
       setHasResponsesReadPermission(false)
       setHasResponsesUpdatePermission(false)
-
-      // If we don't have auth token and no permissions, we're done loading
-      if (!auth?.token) {
-        setLoading(false)
-      }
 
       return
     }
@@ -117,7 +109,6 @@ export const PermissionsProvider = ({ children }) => {
     setHasResponsesReadPermission(hasResponsesReadPermissionValue)
     setHasResponsesUpdatePermission(hasResponsesUpdatePermissionValue)
 
-    // Always set loading to false after processing permissions
     setLoading(false)
   }, [
     permissions,
@@ -129,7 +120,7 @@ export const PermissionsProvider = ({ children }) => {
     setHasResponsesUpdatePermission,
   ])
 
-  if (loading) {
+  if (loading || !permissions) {
     return (
       <>
         <div className="d-flex vh-100 flex-column justify-content-center align-items-center">
@@ -143,7 +134,15 @@ export const PermissionsProvider = ({ children }) => {
     )
   }
 
-  // Check if we're on the responses route
+  if (error) {
+    return (
+      <div className="d-flex vh-100 flex-column justify-content-center align-items-center text-danger">
+        <h1>{error}</h1>
+      </div>
+    )
+  }
+
+  // Check if we're on the responses route th
   const isResponsesRoute = pathname.startsWith('/responses/')
 
   if (

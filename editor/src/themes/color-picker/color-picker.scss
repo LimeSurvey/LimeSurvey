@@ -28,13 +28,14 @@
   top: calc(100% + 2px);
   right: -1px;
   border-radius: 12px;
+  background: $g-100;
+  box-shadow: 0 6px 12px $g-700;
 }
 
 .custom-picker .react-colorful {
+  width: 100%;
   padding: 16px;
-  border-radius: 12px;
-  background: $g-100;
-  box-shadow: 0 6px 12px $g-700;
+  border-radius: 12px 12px 0 0;
 }
 
 .custom-picker .react-colorful__saturation {
@@ -53,4 +54,54 @@
 .custom-picker .react-colorful__alpha-pointer {
   width: 20px;
   height: 20px;
+}
+
+.color-inputs {
+  display: flex;
+  gap: 6px;
+  padding: 10px 16px 16px;
+  border-radius: 0 0 12px 12px;
+}
+
+.color-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+
+  label {
+    font-size: 11px;
+    color: $g-700;
+    font-weight: 600;
+  }
+
+  input {
+    width: 100%;
+    padding: 4px 6px;
+    border: 1px solid $g-700;
+    border-radius: 4px;
+    font-size: 12px;
+    text-align: center;
+    outline: none;
+    background: #fff;
+
+    &:focus {
+      border-color: $primary;
+    }
+
+    /* Hide number spinners */
+    &[type='number'] {
+      -moz-appearance: textfield;
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    }
+  }
+
+  &.color-input-hex {
+    flex: 1.5;
+  }
 }
