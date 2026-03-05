@@ -2071,24 +2071,6 @@ class Participant extends LSActiveRecord
 
     /**
      * The purpose of this function is to check for duplicate in participants
-     * @param array $attributes
-     * @param string $output
-     * @return string|boolean
-     */
-    public function checkForDuplicateByAttributes($attributes, $output = "bool")
-    {
-        $participant = Participant::model()->findByAttributes($attributes);
-        if ($participant) {
-            if ($output === "bool") {
-                return true;
-            }
-            return $participant->$output;
-        }
-        return false;
-    }
-
-    /**
-     * The purpose of this function is to check for duplicate in participants
      * @param string $fields
      * @param string $output
      * @return string|boolean
