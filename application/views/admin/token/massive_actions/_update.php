@@ -49,7 +49,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-                            <input type="checkbox" id="massedit_completed_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_completed_fieldlabel"></input>
+                            <input type="checkbox" id="massedit_completed_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_completed_fieldlabel">
                         </label>
                     </div>
                     <label id="massedit_completed_fieldlabel" class="col-md-3 form-label" for='massedit_completed'><?php eT("Completed?"); ?></label>
@@ -113,7 +113,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-                            <input type="checkbox" id="massedit_firstname_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_firstname_fieldlabel"></input>
+                            <input type="checkbox" id="massedit_firstname_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_firstname_fieldlabel">
                         </label>
                     </div>
                     <label id="massedit_firstname_fieldlabel" class="col-md-3 form-label" for='massedit_firstname'><?php eT("First name:"); ?></label>
@@ -126,7 +126,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-                            <input type="checkbox" id="massedit_lastname_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_lastname_fieldlabel"></input>
+                            <input type="checkbox" id="massedit_lastname_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_lastname_fieldlabel">
                         </label>
                     </div>
                     <label id="massedit_lastname_fieldlabel" class="col-md-3 form-label" for='massedit_lastname'><?php eT("Last name:"); ?></label>
@@ -139,7 +139,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-                            <input type="checkbox" id="massedit_language_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_language_fieldlabel"></input>
+                            <input type="checkbox" id="massedit_language_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_language_fieldlabel">
                         </label>
                     </div>
                     <label id="massedit_language_fieldlabel" class="col-md-3 form-label" for='massedit_language'><?php eT("Language:"); ?></label>
@@ -153,7 +153,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                     <div class="row mb-2">
                         <div class="col-md-1">
                             <label class="">
-                                <input type="checkbox" id="massedit_email_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_email_fieldlabel"></input>
+                                <input type="checkbox" id="massedit_email_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_email_fieldlabel">
                             </label>
                         </div>
                         <label id="massedit_email_fieldlabel" class="col-md-3 form-label" for='massedit_email'><?php eT("Email:"); ?></label>
@@ -175,7 +175,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-                            <input type="checkbox" id="massedit_sent_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_sent_fieldlabel"></input>
+                            <input type="checkbox" id="massedit_sent_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_sent_fieldlabel">
                         </label>
                     </div>
                     <label id="massedit_sent_fieldlabel" class="col-md-3 form-label" for='sent'><?php eT("Invitation sent?"); ?></label>
@@ -225,7 +225,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-                            <input type="checkbox" id="massedit_remindersent_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_remindersent_fieldlabel"></input>
+                            <input type="checkbox" id="massedit_remindersent_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_remindersent_fieldlabel">
                         </label>
                     </div>
                     <!-- Reminder sent -->
@@ -279,7 +279,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-                            <input type="checkbox" id="massedit_remindercount_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_remindercount_fieldlabel"></input>
+                            <input type="checkbox" id="massedit_remindercount_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_remindercount_fieldlabel">
                         </label>
                     </div>
                     <label id="massedit_remindercount_fieldlabel" class="col-md-3 form-label" for='massedit_remindercount'><?php eT("Reminder count:"); ?></label>
@@ -292,7 +292,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-                            <input type="checkbox" id="massedit_usesleft_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_usesleft_fieldlabel"></input>
+                            <input type="checkbox" id="massedit_usesleft_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_usesleft_fieldlabel">
                         </label>
                     </div>
                     <label id="massedit_usesleft_fieldlabel" class="col-md-3 form-label" for='massedit_usesleft'><?php eT("Uses left:"); ?></label>
@@ -305,7 +305,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-                            <input type="checkbox" id="massedit_validfrom_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_validfrom_fieldlabel"></input>
+                            <input type="checkbox" id="massedit_validfrom_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_validfrom_fieldlabel">
                         </label>
                     </div>
 
@@ -323,7 +323,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-                            <input type="checkbox" id="massedit_validuntil_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_validuntil_fieldlabel"></input>
+                            <input type="checkbox" id="massedit_validuntil_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_validuntil_fieldlabel">
                         </label>
                     </div>
                     <label id="massedit_validuntil_fieldlabel" class="col-md-3 form-label" for='massedit_validuntil'><?php eT('Until:'); ?></label>
@@ -370,7 +370,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                     <div class="ex-form-group mb-3 row">
                         <div class="col-md-1">
                             <label class="">
-                                <input type="checkbox" id="massedit_<?php echo CHtml::encode($attr_name); ?>_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-custom-legend <?php echo CHtml::encode($fieldLabelId); ?>"></input>
+                                <input type="checkbox" id="massedit_<?php echo CHtml::encode($attr_name); ?>_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-custom-legend <?php echo CHtml::encode($fieldLabelId); ?>">
                             </label>
                         </div>
                         <label id="<?php echo $fieldLabelId; ?>" class="col-md-3 form-label" for='massedit_<?php echo $attr_name; ?>'><?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:</label>
