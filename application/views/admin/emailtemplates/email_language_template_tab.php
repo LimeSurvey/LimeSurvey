@@ -22,7 +22,7 @@
     }
 ?>
 
-<div id='<?php echo "tab-".CHtml::encode($grouplang)."-".CHtml::encode($tab); ?>' class="tab-pane fade in <?=CHtml::encode($active); ?>">
+<div id='<?php echo "tab-".CHtml::encode($grouplang)."-".CHtml::encode($tab); ?>' class="tab-pane fade in <?=CHtml::encode($active); ?>" role="tabpanel" aria-labelledby="<?php echo "tab-".CHtml::encode($grouplang)."-".CHtml::encode($tab)."-tab"; ?>">
     <?php if ($attachmentsHaveErrors): ?>
         <div class="row">
             <div class='col-sm-12'>
@@ -58,20 +58,23 @@
     </div>
     <div class="row">
         <div class='mb-3 col-md-12'>
-            <label class=' form-label'><?php et('Actions:');?></label>
+            <label class=' form-label' id="actions-label-<?= $grouplang ?>-<?= $tab ?>"><?php et('Actions:');?></label>
             <div class=''>
                 <a class='btn btn-outline-secondary' 
-                   id="validate_expression_<?=$grouplang?>_<?=$tab?>" 
+                tabindex="0"
+                   id="validate_expression_<?=$grouplang?>_<?=$tab?>"
+                   aria-labelledby="actions-label-<?= $grouplang ?>-<?= $tab ?> validate_expression_<?=$grouplang?>_<?=$tab?>_lbl"
                    data-parent-element="#in_survey_common" 
                    data-bs-target="modal" 
                    data-remote-link="<?=App()->createUrl('admin/validate',['sa'=>'email','sid'=>$surveyid,'lang'=>$grouplang,'type'=>$tab])?>" 
                    data-footer="false" 
                    data-modal-title="<?=$details['title']?>" > 
-                    <?=gT("Validate ExpressionScript")?> 
+                    <span id="validate_expression_<?=$grouplang?>_<?=$tab?>_lbl"><?=gT("Validate ExpressionScript")?></span>
                 </a> 
                 <?php
                 $details['default']['body']=($tab=='admin_detailed_notification') ? $details['default']['body'] : conditionalNewlineToBreak($details['default']['body'],$ishtml) ;
-                echo CHtml::button(gT("Reset this template"),array( 'id'=>'reset_template_'.$grouplang.'_'.$tab, 'class'=>'fillin btn btn-outline-secondary selector__reset_template','data-target'=>"email_{$tab}_{$grouplang}",'data-value'=>$details['default']['body']));
+                echo '<span id="reset_template_'.$grouplang.'_'.$tab.'_lbl" class="visually-hidden">'.gT("Reset this template").'</span>';
+                echo CHtml::button(gT("Reset this template"),array( 'id'=>'reset_template_'.$grouplang.'_'.$tab, 'class'=>'fillin btn btn-outline-secondary selector__reset_template','data-target'=>"email_{$tab}_{$grouplang}",'data-value'=>$details['default']['body'],'aria-labelledby'=>'actions-label-'.$grouplang.'-'.$tab.' reset_template_'.$grouplang.'_'.$tab.'_lbl'));
                 ?>
             </div>
         </div>
@@ -83,9 +86,9 @@
     if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
     { ?>
     <div class="row">
-            <label class='form-label col-12' for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
+            <label class='form-label col-12' id="attachments-label-<?= $grouplang ?>-<?= $tab ?>" for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
             <div class="col-12">
-                <button class="add-attachment btn btn-outline-secondary" data-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php eT("Add file"); ?></button> &nbsp;
+                <span id="add-attachment-<?php echo $grouplang; ?>-<?php echo $tab; ?>_lbl" class="visually-hidden"><?php eT("Add file"); ?></span><button class="add-attachment btn btn-outline-secondary" data-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>" aria-labelledby="attachments-label-<?= $grouplang ?>-<?= $tab ?> add-attachment-<?php echo $grouplang; ?>-<?php echo $tab; ?>_lbl"><?php eT("Add file"); ?></button> &nbsp;
             </div>
     </div>
 

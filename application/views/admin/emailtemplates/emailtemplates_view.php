@@ -28,10 +28,11 @@ var LS = LS || {};  // namespace
     <div class="row">
         <div class="col-12 content-right">
             <?php echo CHtml::form(['admin/emailtemplates/sa/update/surveyid/' . $surveyid], 'post', ['name' => 'emailtemplates', 'class' => '', 'id' => 'emailtemplates']); ?>
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs" role="tablist">
                 <?php foreach ($oSurvey->allLanguages as $grouplang): ?>
+                    <?php $langTabId = 'tab-lang-' . CHtml::encode($grouplang); ?>
                     <li role="presentation" class="nav-item">
-                        <a class="nav-link <?= ($count == 0) ? 'active' : '' ?>" data-bs-toggle="tab" href='#tab-<?= $grouplang ?>'>
+                        <a class="nav-link <?= ($count == 0) ? 'active' : '' ?>" id="<?= $langTabId ?>" role="tab" aria-selected="<?= ($count == 0) ? 'true' : 'false' ?>" aria-controls="tab-<?= $grouplang ?>" data-bs-toggle="tab" href="#tab-<?= $grouplang ?>">
                             <?php $count++ ?>
                             <?= getLanguageNameFromCode($grouplang, false) . " " . (($grouplang == $oSurvey->language) ? "(" . gT("Base language") . ")" : "") ?>
                         </a>
