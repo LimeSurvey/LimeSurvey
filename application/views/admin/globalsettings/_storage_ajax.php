@@ -38,6 +38,8 @@
 <?php if ($surveys) : ?>
     <h2><?php eT('Survey storage'); ?></h2>
     <table class='table table-striped table-bordered'>
+            <caption class="sr-only">
+                <?php eT("Survey storage details"); ?>
         <?php foreach ($surveys as $survey) : ?>
         <tr>
             <td style='width: 70%;'>
