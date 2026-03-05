@@ -11,7 +11,7 @@
 
         <div class='col-md-4'></div>
         <div class='col-md-8'>
-            <p><?php echo ngT('Add the selected participant to survey.|Add the {n} selected participants to survey.', $count); ?></p>
+            <p role="heading" aria-level="3"><?php echo ngT('Add the selected participant to survey.|Add the {n} selected participants to survey.', $count); ?></p>
         </div>
 
         <!-- Comma separated list -->
