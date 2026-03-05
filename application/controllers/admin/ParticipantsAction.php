@@ -1029,7 +1029,7 @@ class ParticipantsAction extends SurveyCommonAction
                     ];
                 }
                 //End of HACK
-                $aData = Participant::model()->checkforDuplicate($duplicateCriteriaAttributes, "participant_id");
+                $aData = Participant::model()->checkForDuplicateByAttributes($duplicateCriteriaAttributes, "participant_id");
                 if ($aData !== false) {
                     $thisduplicate = 1;
                     $dupcount++;
