@@ -12,7 +12,7 @@
  */
 ?>
 <br /><table class='table table-hover'>
-    <caption class="sr-only">
+    <caption class="visually-hidden">
         <?php eT("Global settings overview"); ?>
     </caption>
     <tr>

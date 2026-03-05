@@ -9,7 +9,7 @@
 
 <h2><?php eT('Overview'); ?></h2>
 <table class='table table-striped table-bordered'>
-    <caption class="sr-only">
+    <caption class="visually-hidden">
         <?php eT("Storage overview"); ?>
     </caption>
     <tfoot>
@@ -38,7 +38,7 @@
 <?php if ($surveys) : ?>
     <h2><?php eT('Survey storage'); ?></h2>
     <table class='table table-striped table-bordered'>
-            <caption class="sr-only">
+            <caption class="visually-hidden">
                 <?php eT("Survey storage details"); ?>
             </caption>
         <?php foreach ($surveys as $survey) : ?>

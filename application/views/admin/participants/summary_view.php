@@ -17,7 +17,7 @@ echo viewHelper::getViewTestTag('participantsSummary');
         <div class="row">
             <div class="col-12 content-right table-responsive">
                 <table class='ls-statisticssummary table table-hover'>
-                    <caption class="sr-only">
+                    <caption class="visually-hidden">
                             <?php eT("Participants summary"); ?>
                     </caption>
                     <tr>
