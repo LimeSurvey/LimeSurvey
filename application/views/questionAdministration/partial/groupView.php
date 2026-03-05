@@ -89,9 +89,11 @@
                 'id'              => 'question-group-grid',
                 'dataProvider'    => $groupModel->search(),
                 'emptyText'       => gT('No question groups found.'),
-                'summaryText'     => html_entity_decode(
-                    gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                        gT('%s <span id="question-group-rows-per-page-label">rows per page</span>'),
+                'summaryText' => html_entity_decode(
+                    gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
+                    '<span id="question-group-rows-per-page-label">' .
+                    sprintf(
+                        gT('%s rows per page'),
                         CHtml::dropDownList(
                             'pageSize',
                             $pageSize,
@@ -100,10 +102,10 @@
                                 'class' => 'changePageSize form-select',
                                 'style' => 'display: inline; width: auto',
                                 'aria-labelledby' => 'question-group-rows-per-page-label',
-                                'aria-label' => gT('Rows per page'),
                             ]
                         )
-                    )
+                    ) .
+                    '</span>'
                 ),
 
                 // Columns to dispplay

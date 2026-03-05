@@ -7,5 +7,5 @@
     <h5 class="modal-title">
         <?php echo $modalTitle; ?>
     </h5>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" role="button" aria-label="close"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" role="button" aria-label="<?= gT('Close') ?>>"></button>
 </div>

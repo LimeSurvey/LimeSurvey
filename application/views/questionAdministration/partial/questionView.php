@@ -109,31 +109,33 @@
                 true,
                 false
             );
-            $this->widget('ext.admin.grid.CLSGridView', array( //done
-                'dataProvider' => $questionModel->search(),
-                'id' => 'question-grid',
-                'emptyText' => gT('No questions found.'),
+            $this->widget('ext.admin.grid.CLSGridView', [
+                'dataProvider'          => $questionModel->search(),
+                'id'                    => 'question-grid',
+                'emptyText'             => gT('No questions found.'),
                 'massiveActionTemplate' => $massiveAction,
-                'summaryText' => html_entity_decode(
-                    gT('Displaying {start}-{end} of {count} result(s).') . ' '
-                    . sprintf(
-                        gT('%s <span id="rows-per-page-label">rows per page</span>'),
+                'summaryText'           => html_entity_decode(
+                    gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
+                    '<span id="rows-per-page-label">' .
+                    sprintf(
+                        gT('%s rows per page'),
                         CHtml::dropDownList(
                             'pageSize',
                             $pageSize,
                             App()->params['pageSizeOptions'],
-                            array(
-                                'class' => 'changePageSize form-select',
-                                'style' => 'display: inline; width: auto',
+                            [
+                                'class'           => 'changePageSize form-select',
+                                'style'           => 'display: inline; width: auto',
                                 'aria-labelledby' => 'rows-per-page-label',
-                            )
+                            ]
                         )
-                    )
+                    ) .
+                    '</span>'
                 ),
-                'columns' => $questionModel->questionListColumns,
-                'ajaxUpdate' => 'question-grid',
-                'afterAjaxUpdate' => "bindPageSizeChange"
-            ));
+                'columns'               => $questionModel->questionListColumns,
+                'ajaxUpdate'            => 'question-grid',
+                'afterAjaxUpdate'       => "bindPageSizeChange"
+            ]);
             ?>
         </div>
     </div>
