@@ -18,9 +18,10 @@
                 <div class="row">
                     <div class="col-4 ls-ba">
                         <div class="ls-space padding all-0">
-                            <div class="list-group ls-space margin all-0">
+                            <div class="list-group ls-space margin all-0" role="list">
                                 <?php foreach ($this->itemsArray as $sItemKey => $aItemContent) { ?>
                                     <a href="#"
+                                       role="listitem"
                                        class="list-group-item selector__Item--select-<?= $this->widgetsJsName ?> <?= @$aItemContent['htmlclasses'] ?>"
                                        data-selector="<?= !empty($aItemContent['class']) ? $aItemContent['class'] : $sItemKey ?>"
                                        data-key="<?= $sItemKey ?>"
