@@ -40,6 +40,7 @@
     <table class='table table-striped table-bordered'>
             <caption class="sr-only">
                 <?php eT("Survey storage details"); ?>
+            </caption>
         <?php foreach ($surveys as $survey) : ?>
         <tr>
             <td style='width: 70%;'>
