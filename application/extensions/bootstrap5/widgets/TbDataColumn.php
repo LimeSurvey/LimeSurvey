@@ -41,20 +41,18 @@ class TbDataColumn extends CDataColumn
                 }
             }
 
-            echo $sort->link($this->name, $label, array(
-        'class' => 'sort-link',
-        'role'  => 'button',
-    ));
-        } else {
-            if ($this->name !== null && $this->header === null) {
-                if ($this->grid->dataProvider instanceof CActiveDataProvider) {
-                    echo CHtml::encode($this->grid->dataProvider->model->getAttributeLabel($this->name));
-                } else {
-                    echo CHtml::encode($this->name);
-                }
+            echo $sort->link($this->name, $label, [
+                'class' => 'sort-link',
+                'role'  => 'button',
+            ]);
+        } elseif ($this->name !== null && $this->header === null) {
+            if ($this->grid->dataProvider instanceof CActiveDataProvider) {
+                echo CHtml::encode($this->grid->dataProvider->model->getAttributeLabel($this->name));
             } else {
-                parent::renderHeaderCellContent();
+                echo CHtml::encode($this->name);
             }
+        } else {
+            parent::renderHeaderCellContent();
         }
     }
 

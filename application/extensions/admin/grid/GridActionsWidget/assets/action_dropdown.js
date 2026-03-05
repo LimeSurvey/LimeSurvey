@@ -1,7 +1,6 @@
 LS.actionDropdown = {
     DropdownClass: class extends bootstrap.Dropdown {
-        _getMenuElement()
-        {
+        _getMenuElement() {
             return this._config.lsMenuElement;
         }
     },
@@ -32,8 +31,8 @@ LS.actionDropdown = {
                 });
                 body.append(dropdownMenu);
 
-                
-                       // ✅ Add focus trap logic
+
+                // ✅ Add focus trap logic
                 dropdownToggleEl.addEventListener('shown.bs.dropdown', function () {
                     trapFocus(dropdownMenu);
                 });
@@ -73,10 +72,10 @@ LS.actionDropdown = {
                     if (toggleButton) {
                         e.preventDefault();
                         e.stopPropagation();
-                        
+
                         // Store reference to toggle button for focus
                         let targetToggle = toggleButton;
-                        
+
                         // Close the dropdown first
                         let dropdownInstance = bootstrap.Dropdown.getInstance(toggleButton);
                         if (dropdownInstance) {
@@ -86,7 +85,7 @@ LS.actionDropdown = {
                             container.style.display = 'none';
                             container.classList.remove('show');
                         }
-                        
+
                         // Return focus to the toggle button after a short delay
                         setTimeout(() => {
                             if (targetToggle) {

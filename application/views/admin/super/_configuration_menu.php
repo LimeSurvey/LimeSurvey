@@ -138,7 +138,7 @@
                         <!-- Advanced -->
                         <li class="dropdown-header">
                             <span class="ri-tools-fill"></span>
-                           <span  role="heading" aria-level="2"> <?php eT('Advanced'); ?></span>
+                            <span role="heading" aria-level="2"> <?php eT('Advanced'); ?></span>
                         </li>
                         <?php if (Permission::model()->hasGlobalPermission('templates', 'read')): ?>
                             <!-- Theme Editor -->
