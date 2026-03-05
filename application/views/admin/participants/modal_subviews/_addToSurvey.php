@@ -3,7 +3,7 @@
     ), 'post'
 ); ?>
     <div class="modal-header">
-        <h5 class="modal-title" id="participant_edit_modal"><?php echo ngT('Add participant to survey|Add participants to survey', $count); ?></h5>
+        <h2 class="modal-title h5" id="participant_edit_modal"><?php echo ngT('Add participant to survey|Add participants to survey', $count); ?></h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
 
