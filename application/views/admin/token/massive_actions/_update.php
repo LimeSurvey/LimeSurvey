@@ -178,7 +178,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                             <input type="checkbox" id="massedit_sent_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_sent_fieldlabel">
                         </label>
                     </div>
-                    <label id="massedit_sent_fieldlabel" class="col-md-3 form-label" for='sent'><?php eT("Invitation sent?"); ?></label>
+                    <label id="massedit_sent_fieldlabel" class="col-md-3 form-label" for='massedit_sent'><?php eT("Invitation sent?"); ?></label>
                     <div class="col-md-8 <?php echo $sCointainerClass; ?>" id="massedit_sent-yes-no-date-container" data-locale="<?php echo $locale ?>">
                         <div class="row">
                             <div class="col-md-4">
