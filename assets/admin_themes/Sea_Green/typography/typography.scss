@@ -54,8 +54,8 @@ dl {
 
 // LINKS
 a {
-  color: $link-color;
-  font-weight: $font-weight-500;
+  color       : $link-color;
+  font-weight : $font-weight-500;
 }
 
 .has-link {
@@ -69,4 +69,31 @@ a {
 .has-link a {
   color: $g-900;
   font-weight: $font-weight-normal;
+}
+
+.reg12 {
+  color: $g-700;
+  font-weight: $font-weight-normal;
+  font-size: $font-size-xs;
+  line-height : $line-height-16;
+  letter-spacing: -0.5px;
+  font-family : $ibm-font-family;
+}
+
+.reg16 {
+  color: $g-900;
+  font-weight: $font-weight-normal;
+  font-size: $font-size-base;
+  line-height : $line-height-20;
+  letter-spacing: -0.272px;
+  font-family : $ibm-font-family;
+}
+
+.semibold12 {
+  color: $g-900;
+  font-weight: $font-weight-600;
+  font-size: $font-size-xs;
+  line-height : $line-height-16;
+  letter-spacing: -0.204px;
+  font-family : $ibm-font-family;
 }

@@ -1,22 +1,28 @@
 $('.btn-close-lime').on('click', function (e) {
-    $('.side-panel').addClass('d-none')
-    $('.sidebar-icon .btn-icon').removeClass('active')
+    $('.side-panel').addClass('d-none');
+    $('.sidebar-icon .btn-icon').removeClass('active');
 })
 $('.sidebar-icon').on('click', function (e) {
-    $('.side-panel').addClass('d-none')
+    // Check if the element is disabled
+    if ($(this).hasClass('disabled')) {
+        e.preventDefault();
+        return false;
+    }
+
+    $('.side-panel').addClass('d-none');
 
     if ($(this).find('.btn-icon').hasClass('active')) {
-        $(this).find('.btn-icon').removeClass('active')
+        $(this).find('.btn-icon').removeClass('active');
     } else {
-        $($(this).attr('data-target')).removeClass('d-none')
-        $('.sidebar-icon .btn-icon').removeClass('active')
-        $(this).find('.btn-icon').addClass('active')
+        $($(this).attr('data-target')).removeClass('d-none');
+        $('.sidebar-icon .btn-icon').removeClass('active');
+        $(this).find('.btn-icon').addClass('active');
     }
-})
+});
 
 
 $(document).on('ready  pjax:scriptcomplete', function(){
-    $('.ls-breadcrumb').hide()
+    $('.ls-breadcrumb').hide();
     $('.topbar.editor .container-fluid .row').prepend($('.side-menu-logo'));
 });
 $(window).on("load scroll", function () {

@@ -85,7 +85,7 @@ class InstallerConfigForm extends CFormModel
     /** @var string $adminName */
     public $adminName = 'Administrator';
     /** @var string $adminEmail */
-    public $adminEmail = 'your-email@example.net';
+    public $adminEmail = '';
     /** @var string $siteName */
     public $siteName = 'LimeSurvey';
     /** @var string $surveylang */

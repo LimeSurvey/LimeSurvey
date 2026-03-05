@@ -20,7 +20,7 @@
     ));
     ?>
 
-    <p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
+    <p role="heading" aria-level="2" class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
 
 
     <?php
