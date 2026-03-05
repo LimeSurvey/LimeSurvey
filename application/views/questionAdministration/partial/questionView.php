@@ -116,7 +116,6 @@
                 'massiveActionTemplate' => $massiveAction,
                 'summaryText'           => html_entity_decode(
                     gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
-                    '<span id="rows-per-page-label">' .
                     sprintf(
                         gT('%s rows per page'),
                         CHtml::dropDownList(
@@ -128,7 +127,7 @@
                                 'style'           => 'display: inline; width: auto',
                                 'aria-labelledby' => 'rows-per-page-label',
                             ]
-                        )
+                        ) . '<span id="rows-per-page-label">'
                     ) .
                     '</span>'
                 ),
