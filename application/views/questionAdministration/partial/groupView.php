@@ -70,7 +70,7 @@
                                         'surveyid' => $oSurvey->primaryKey,
                                         'activeTab' => 'groups'
                                     ]
-                                ); ?>" class="btn btn-warning">
+                                ); ?>" class="btn btn-warning" role="button" aria-label="<?php eT('Reset'); ?>">
                         <span class="ri-refresh-line"></span>
                         <?php eT('Reset'); ?>
                     </a>
@@ -87,6 +87,7 @@
             'ext.admin.grid.CLSGridView', //done
             [
                 'id'              => 'question-group-grid',
+                'caption'        => gT("List of question groups in this survey"),
                 'dataProvider'    => $groupModel->search(),
                 'emptyText'       => gT('No question groups found.'),
                 'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
