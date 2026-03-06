@@ -2074,7 +2074,7 @@ class Participant extends LSActiveRecord
      * @param string $fields
      * @param string $output
      * @return string|boolean
-     * @deprecated Use checkForDuplicateByAttributes() instead.
+     * @deprecated Use Participant::model()->findByAttributes() instead.
      */
     public function checkforDuplicate($fields, $output = "bool")
     {

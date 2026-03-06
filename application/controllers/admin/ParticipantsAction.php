@@ -1028,7 +1028,7 @@ class ParticipantsAction extends SurveyCommonAction
                     ];
                 }
                 $existingParticipant = Participant::model()->findByAttributes($duplicateCriteriaAttributes);
-                if ($existingParticipant !== false) {
+                if (!empty($existingParticipant)) {
                     $thisduplicate = 1;
                     $dupcount++;
                     if ($overwrite == "true") {
