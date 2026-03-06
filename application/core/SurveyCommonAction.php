@@ -439,7 +439,7 @@ class SurveyCommonAction extends CAction
             if ($sendHTTPHeader) {
                 header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
             }
-            Yii::app()->getController()->getAdminHeader();
+            Yii::app()->getController()->getAdminHeader(false, false, $aData);
         }
     }
 

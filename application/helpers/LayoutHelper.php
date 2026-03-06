@@ -21,7 +21,7 @@ class LayoutHelper
             if ($sendHTTPHeader) {
                 header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
             }
-            $this->getAdminHeader();
+            $this->getAdminHeader(false, false, $aData);
         }
     }
 
@@ -31,9 +31,10 @@ class LayoutHelper
      * @access protected
      * @param bool $meta
      * @param bool $return
+     * @param array $pageData Optional page data (e.g. topbar, title_bar) to set document title for screen readers
      * @return string|null
      */
-    public function getAdminHeader(bool $meta = false, bool $return = false)
+    public function getAdminHeader(bool $meta = false, bool $return = false, array $pageData = [])
     {
         if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
@@ -72,6 +73,15 @@ class LayoutHelper
 
         $aData['sAdmintheme'] = $oAdminTheme->name;
         $aData['aPackageScripts'] = $aData['aPackageStyles'] = array();
+
+        $aData['pageTitle'] = null;
+        if (!empty($pageData['topbar']['title'])) {
+            $aData['pageTitle'] = is_string($pageData['topbar']['title'])
+                ? $pageData['topbar']['title'] : strip_tags((string) $pageData['topbar']['title']);
+        } elseif (!empty($pageData['title_bar']['title'])) {
+            $aData['pageTitle'] = is_string($pageData['title_bar']['title'])
+                ? $pageData['title_bar']['title'] : strip_tags((string) $pageData['title_bar']['title']);
+        }
 
         $sOutput = Yii::app()->getController()->renderPartial("/layouts/header", $aData, true);
 

@@ -44,7 +44,7 @@
     <?php endif; ?>
 
     <?php echo $datepickerlang;?>
-    <title><?php echo $sitename;?></title>
+    <title><?php echo (isset($pageTitle) && $pageTitle !== '') ? htmlspecialchars((string) $pageTitle) . ' - ' . $sitename : $sitename; ?></title>
     <link rel="shortcut icon" href="<?php echo Yii::app()->getConfig('styleurl');?>favicon.ico" type="image/x-icon" />
     <link rel="icon" href="<?php echo Yii::app()->getConfig('styleurl');?>favicon.ico" type="image/x-icon" />
     <?php $this->widget('ext.LimeScript.LimeScript'); ?>

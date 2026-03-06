@@ -415,7 +415,7 @@ class AdminController extends LSYii_Controller
      * @param bool $return
      * @return string|null
      */
-    public function getAdminHeader($meta = false, $return = false)
+    public function getAdminHeader($meta = false, $return = false, $pageData = [])
     {
         if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
@@ -446,7 +446,7 @@ class AdminController extends LSYii_Controller
         $aData['sitename'] = Yii::app()->getConfig("sitename");
 
         if (!empty(Yii::app()->session['dateformat'])) {
-                    $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
+            $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
         }
 
         // Register admin theme package with asset manager
@@ -454,6 +454,15 @@ class AdminController extends LSYii_Controller
 
         $aData['sAdmintheme'] = $oAdminTheme->name;
         $aData['aPackageScripts'] = $aData['aPackageStyles'] = array();
+
+        $aData['pageTitle'] = null;
+        if (!empty($pageData['topbar']['title'])) {
+            $aData['pageTitle'] = is_string($pageData['topbar']['title'])
+                ? $pageData['topbar']['title'] : strip_tags((string) $pageData['topbar']['title']);
+        } elseif (!empty($pageData['title_bar']['title'])) {
+            $aData['pageTitle'] = is_string($pageData['title_bar']['title'])
+                ? $pageData['title_bar']['title'] : strip_tags((string) $pageData['title_bar']['title']);
+        }
 
             //foreach ($aData['aPackageStyles'] as &$filename)
             //{
