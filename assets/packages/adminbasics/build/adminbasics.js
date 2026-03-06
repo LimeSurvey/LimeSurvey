@@ -18621,15 +18621,23 @@
 	    return true;
 	  },
 	  doToolTip: () => {
-	    // Destroy all tooltips
-	    try {
-	      $('.tooltip').tooltip('dispose');
-	    } catch (e) {}
+	    // Dispose existing Bootstrap Tooltip instances on trigger elements
+	    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+	      var instance = bootstrap.Tooltip.getInstance(el);
+	      if (instance) {
+	        try {
+	          instance.dispose();
+	        } catch (e) {}
+	      }
+	    });
+	    // Remove any orphaned tooltip popups left in the DOM
+	    document.querySelectorAll('.tooltip.bs-tooltip-auto, .tooltip.bs-tooltip-top, .tooltip.bs-tooltip-bottom, .tooltip.bs-tooltip-start, .tooltip.bs-tooltip-end, .tooltip.show').forEach(function (el) {
+	      el.remove();
+	    });
 
 	    // Reinit all tooltips
-	    let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-	    tooltipTriggerList.map(function (tooltipTriggerEl) {
-	      return new bootstrap.Tooltip(tooltipTriggerEl);
+	    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (tooltipTriggerEl) {
+	      new bootstrap.Tooltip(tooltipTriggerEl);
 	    });
 	  },
 	  doSelect2: () => {

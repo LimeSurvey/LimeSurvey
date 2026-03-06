@@ -6810,6 +6810,27 @@ const Lsadminsidepanel = function (userid, surveyid) {
   function applyPjaxMethods() {
     panelNameSpace.reloadcounter = 5;
     $(document).off('pjax:send.panelloading').on('pjax:send.panelloading', function () {
+      // Dispose Bootstrap tooltips and popovers before PJAX replaces the DOM
+      document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+        var instance = bootstrap.Tooltip.getInstance(el);
+        if (instance) {
+          try {
+            instance.dispose();
+          } catch (e) {}
+        }
+      });
+      document.querySelectorAll('[data-bs-toggle="popover"]').forEach(function (el) {
+        var instance = bootstrap.Popover.getInstance(el);
+        if (instance) {
+          try {
+            instance.dispose();
+          } catch (e) {}
+        }
+      });
+      // Remove any orphaned tooltip/popover popups
+      document.querySelectorAll('.tooltip.show, .popover.show').forEach(function (el) {
+        el.remove();
+      });
       $('<div id="pjaxClickInhibitor"></div>').appendTo('body');
       $('.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable').remove();
       $('#pjax-file-load-container').find('div').css({
