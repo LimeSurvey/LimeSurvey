@@ -366,6 +366,9 @@ class Condition extends LSActiveRecord
     {
         $isArray = is_array($cids);
         if (is_array($cids) && count($cids)) {
+            foreach ($cids as &$cid) {
+                $cid = (int) $cid;
+            }
             $conditions = Condition::model()->findAll('cid in (' . implode(",", $cids) . ")");
             foreach ($conditions as $condition) {
                 $newCondition = new Condition();
