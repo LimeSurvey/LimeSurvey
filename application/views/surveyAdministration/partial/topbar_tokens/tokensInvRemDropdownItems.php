@@ -51,8 +51,9 @@
 
     <?php if (isset($eMessage)):?>
         <li role="none" class="disabled">
-            <span class="d-inline-block w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title='<?php echo $eMessage; ?>'>
-                <button type="button" class="dropdown-item" disabled style="pointer-events: none;">
+            <span id="bounceReason" class="visually-hidden"><?php echo $eMessage; ?></span>
+            <span class="d-inline-block w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $eMessage; ?>">
+                <button type="button" class="dropdown-item" disabled aria-describedby="bounceReason" style="pointer-events: none;">
                     <span class="ri-tools-fill" aria-hidden="true"></span>
                     <?php eT("Start bounce processing"); ?>
                 </button>
