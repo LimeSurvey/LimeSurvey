@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Card, Container } from 'react-bootstrap'
 
-import { PublicSurveyAlias } from 'components'
+import { ContentEditor, PublicSurveyAlias } from 'components'
 import { ACCESS_MODES, PAGES, SURVEY_MENU_TITLES } from 'helpers'
 import { useStatisticsAtGlance } from 'hooks'
 import { getSharingPanels } from 'shared/getSharingPanels'
@@ -190,7 +190,13 @@ export const SurveyOverview = ({
 
           <div className="overview-section overview-right-section w-25 bg-white d-flex flex-column justify-content-between">
             <div className="text-start">
-              <div className="reg18">{surveyTitle || t('Survey title')}</div>
+              <div className="reg18">
+                <ContentEditor
+                  disabled={true}
+                  value={surveyTitle || t('Survey title')}
+                  className="survey-overview-content-editor"
+                />
+              </div>
               <div className="reg12">{dateCreated.toLocaleDateString()}</div>
             </div>
             <div>
