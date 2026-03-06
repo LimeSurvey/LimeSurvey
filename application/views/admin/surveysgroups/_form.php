@@ -63,8 +63,8 @@
 
     <!-- User list -->
     <div class="mb-3">
-        <?php echo $form->labelEx($model, 'owner_id'); ?>
-        <?php echo $form->dropDownList($model, 'owner_id', CHtml::listData($oUsers, 'uid', 'full_name'), array('disabled' => !$aRigths['owner_id'], 'class' => 'form-select')); ?>
+        <?php echo $form->labelEx($model, 'owner_id', array('for' => CHtml::activeId($model, 'owner_id') . '_select')); ?>
+        <?php echo $form->dropDownList($model, 'owner_id', CHtml::listData($oUsers, 'uid', 'full_name'), array('disabled' => !$aRigths['owner_id'], 'class' => 'form-select', 'id' => CHtml::activeId($model, 'owner_id') . '_select')); ?>
         <?php echo $form->error($model, 'owner_id', array('errorCssClass' => 'text-danger')); ?>
     </div>
 
