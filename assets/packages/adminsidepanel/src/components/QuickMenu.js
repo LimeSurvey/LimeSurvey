@@ -51,7 +51,7 @@ class QuickMenu {
             html += UIHelpers.createLoaderWidget('quickmenuLoadingIcon', 'loader-quickmenu');
         } else {
             sortedMenus.forEach((menu) => {
-                html += '<div class="ls-space margin top-10" title="' + UIHelpers.escapeHtml(menu.title) + '">';
+                html += '<div class="ls-space margin top-10" title="' + menu.title + '">';
                 html += '<div class="btn-group-vertical ls-space padding right-10">';
 
                 const sortedEntries = this.sortMenuEntries(menu.entries);
@@ -95,7 +95,7 @@ class QuickMenu {
         const target = menuItem.link_external ? '_blank' : '_self';
 
         let html = '<a href="' + menuItem.link + '"' +
-            ' title="' + UIHelpers.escapeHtml(tooltip) + '"' +
+            ' title="' + tooltip + '"' +
             ' target="' + target + '"' +
             ' data-bs-toggle="tooltip"' +
             ' class="btn ' + classes + '"' +
@@ -166,7 +166,8 @@ class QuickMenu {
      * Handle menu item click
      */
     handleMenuItemClick(e) {
-        const menuItemId = $(e.currentTarget).data('menu-item-id');
+        const $this = $(e.currentTarget);
+        const menuItemId = $this.data('menu-item-id');
 
         // Update state
         StateManager.commit('lastMenuItemOpen', {
@@ -176,6 +177,12 @@ class QuickMenu {
 
         // Re-render to update selected state
         this.renderMenu();
+
+        // Use PJAX navigation for pjax-enabled links
+        if ($this.hasClass('pjax')) {
+            e.preventDefault();
+            $(document).trigger('pjax:load', { url: $this.attr('href') });
+        }
     }
 }
 

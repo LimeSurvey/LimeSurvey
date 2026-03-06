@@ -912,7 +912,7 @@ class QuestionExplorer {
     // Question group name
     html += '<div class="w-100 position-relative">';
     html += '<div class="cursor-pointer">';
-    html += '<a class="d-flex pjax" href="' + questiongroup.link + '">';
+    html += '<a class="d-flex pjax questiongroup-link" href="' + questiongroup.link + '" data-gid="' + questiongroup.gid + '">';
     html += '<span class="question_text_ellipsize" style="max-width: ' + itemWidth + '">' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(questiongroup.group_name) + '</span>';
     html += '</a>';
     html += '</div>';
@@ -1140,6 +1140,24 @@ class QuestionExplorer {
       });
       if (group) {
         this.toggleQuestionGroup(group);
+      }
+    });
+
+    // Question group link click - use PJAX navigation
+    $container.on('click.qe', '.questiongroup-link', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      var gid = $(e.currentTarget).data('gid');
+      var questiongroups = _StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"].get('questiongroups') || [];
+      var group = questiongroups.find(function (g) {
+        return g.gid === gid;
+      });
+      if (group) {
+        this.addActive(group.gid);
+        _StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"].commit('lastQuestionGroupOpen', group);
+        $(document).trigger('pjax:load', {
+          url: $(e.currentTarget).attr('href')
+        });
       }
     });
 
@@ -1415,7 +1433,7 @@ class QuickMenu {
       html += _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].createLoaderWidget('quickmenuLoadingIcon', 'loader-quickmenu');
     } else {
       sortedMenus.forEach(menu => {
-        html += '<div class="ls-space margin top-10" title="' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(menu.title) + '">';
+        html += '<div class="ls-space margin top-10" title="' + menu.title + '">';
         html += '<div class="btn-group-vertical ls-space padding right-10">';
         const sortedEntries = this.sortMenuEntries(menu.entries);
         sortedEntries.forEach(menuItem => {
@@ -1451,7 +1469,7 @@ class QuickMenu {
     const classes = this.compileEntryClasses(menuItem);
     const tooltip = _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].reConvertHTML(menuItem.menu_description);
     const target = menuItem.link_external ? '_blank' : '_self';
-    let html = '<a href="' + menuItem.link + '"' + ' title="' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(tooltip) + '"' + ' target="' + target + '"' + ' data-bs-toggle="tooltip"' + ' class="btn ' + classes + '"' + ' data-menu-item-id="' + menuItem.id + '">';
+    let html = '<a href="' + menuItem.link + '"' + ' title="' + tooltip + '"' + ' target="' + target + '"' + ' data-bs-toggle="tooltip"' + ' class="btn ' + classes + '"' + ' data-menu-item-id="' + menuItem.id + '">';
 
     // Render icon based on type
     html += this.renderIcon(menuItem);
@@ -1512,7 +1530,8 @@ class QuickMenu {
    * Handle menu item click
    */
   handleMenuItemClick(e) {
-    const menuItemId = $(e.currentTarget).data('menu-item-id');
+    const $this = $(e.currentTarget);
+    const menuItemId = $this.data('menu-item-id');
 
     // Update state
     _StateManager_js__WEBPACK_IMPORTED_MODULE_1__["default"].commit('lastMenuItemOpen', {
@@ -1522,6 +1541,14 @@ class QuickMenu {
 
     // Re-render to update selected state
     this.renderMenu();
+
+    // Use PJAX navigation for pjax-enabled links
+    if ($this.hasClass('pjax')) {
+      e.preventDefault();
+      $(document).trigger('pjax:load', {
+        url: $this.attr('href')
+      });
+    }
   }
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (QuickMenu);
@@ -1590,13 +1617,13 @@ class SideMenu {
       html += _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].createLoaderWidget('sidemenuLoaderWidget', '');
     } else if (sortedMenus.length >= 2) {
       // First menu (usually main settings)
-      html += '<div title="' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(sortedMenus[0].title) + '" id="' + sortedMenus[0].id + '" class="ls-flex-row wrap ls-space padding all-0">';
+      html += '<div title="' + sortedMenus[0].title + '" id="' + sortedMenus[0].id + '" class="ls-flex-row wrap ls-space padding all-0">';
       html += this.renderSubmenu(sortedMenus[0]);
       html += '</div>';
 
       // Second menu (with label)
-      html += '<div title="' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(sortedMenus[1].title) + '" id="' + sortedMenus[1].id + '" class="ls-flex-row wrap ls-space padding all-0">';
-      html += '<label class="menu-label mt-3 p-2 ls-survey-menu-item">' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(sortedMenus[1].title) + '</label>';
+      html += '<div title="' + sortedMenus[1].title + '" id="' + sortedMenus[1].id + '" class="ls-flex-row wrap ls-space padding all-0">';
+      html += '<label class="menu-label mt-3 p-2 ls-survey-menu-item">' + sortedMenus[1].title + '</label>';
       html += this.renderSubmenu(sortedMenus[1]);
       html += '</div>';
     }
@@ -1623,10 +1650,10 @@ class SideMenu {
       const target = menuItem.link_external === true ? '_blank' : '';
       const tooltip = menuItem.disabled ? menuItem.disabled_tooltip : _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].reConvertHTML(menuItem.menu_description);
       html += '<a href="' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(href) + '"' + (target ? ' target="' + target + '"' : '') + ' id="sidemenu_' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(menuItem.name) + '"' + ' class="list-group-item w-100 ' + linkClass + '"' + ' data-menu-item-id="' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(menuItem.id) + '"' + ' data-menu-id="' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(menuItem.menu_id) + '">';
-      html += '<div class="d-flex ' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(menuItem.menu_class || '') + '"' + ' title="' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(tooltip) + '"' + ' data-bs-toggle="tooltip">';
+      html += '<div class="d-flex ' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(menuItem.menu_class || '') + '"' + ' title="' + tooltip + '"' + ' data-bs-toggle="tooltip">';
       html += '<div class="ls-space padding all-0 me-auto wrapper">';
       html += _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].renderMenuIcon(menuItem.menu_icon_type, menuItem.menu_icon);
-      html += '<span class="title">' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(menuItem.menu_title || '') + '</span>';
+      html += '<span class="title">' + (menuItem.menu_title || '') + '</span>';
       if (menuItem.link_external === true) {
         html += '<i class="ri-external-link-fill">&nbsp;</i>';
       }
@@ -1685,7 +1712,13 @@ class SideMenu {
     // Re-render to update selected state
     this.renderMenu();
 
-    // Allow default link behavior (pjax will handle it)
+    // Use PJAX navigation for pjax-enabled links
+    if ($this.hasClass('pjax')) {
+      e.preventDefault();
+      $(document).trigger('pjax:load', {
+        url: $this.attr('href')
+      });
+    }
   }
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SideMenu);

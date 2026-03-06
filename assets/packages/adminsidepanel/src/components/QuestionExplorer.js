@@ -190,7 +190,7 @@ class QuestionExplorer {
         // Question group name
         html += '<div class="w-100 position-relative">';
         html += '<div class="cursor-pointer">';
-        html += '<a class="d-flex pjax" href="' + questiongroup.link + '">';
+        html += '<a class="d-flex pjax questiongroup-link" href="' + questiongroup.link + '" data-gid="' + questiongroup.gid + '">';
         html += '<span class="question_text_ellipsize" style="max-width: ' + itemWidth + '">' + UIHelpers.escapeHtml(questiongroup.group_name) + '</span>';
         html += '</a>';
         html += '</div>';
@@ -426,6 +426,20 @@ class QuestionExplorer {
             var group = questiongroups.find(function(g) { return g.gid === gid; });
             if (group) {
                 this.toggleQuestionGroup(group);
+            }
+        });
+
+        // Question group link click - use PJAX navigation
+        $container.on('click.qe', '.questiongroup-link', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            var gid = $(e.currentTarget).data('gid');
+            var questiongroups = StateManager.get('questiongroups') || [];
+            var group = questiongroups.find(function(g) { return g.gid === gid; });
+            if (group) {
+                this.addActive(group.gid);
+                StateManager.commit('lastQuestionGroupOpen', group);
+                $(document).trigger('pjax:load', { url: $(e.currentTarget).attr('href') });
             }
         });
 

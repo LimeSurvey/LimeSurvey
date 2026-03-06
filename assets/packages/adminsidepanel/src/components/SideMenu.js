@@ -51,13 +51,13 @@ class SideMenu {
             html += UIHelpers.createLoaderWidget('sidemenuLoaderWidget', '');
         } else if (sortedMenus.length >= 2) {
             // First menu (usually main settings)
-            html += '<div title="' + UIHelpers.escapeHtml(sortedMenus[0].title) + '" id="' + sortedMenus[0].id + '" class="ls-flex-row wrap ls-space padding all-0">';
+            html += '<div title="' + sortedMenus[0].title + '" id="' + sortedMenus[0].id + '" class="ls-flex-row wrap ls-space padding all-0">';
             html += this.renderSubmenu(sortedMenus[0]);
             html += '</div>';
 
             // Second menu (with label)
-            html += '<div title="' + UIHelpers.escapeHtml(sortedMenus[1].title) + '" id="' + sortedMenus[1].id + '" class="ls-flex-row wrap ls-space padding all-0">';
-            html += '<label class="menu-label mt-3 p-2 ls-survey-menu-item">' + UIHelpers.escapeHtml(sortedMenus[1].title) + '</label>';
+            html += '<div title="' + sortedMenus[1].title + '" id="' + sortedMenus[1].id + '" class="ls-flex-row wrap ls-space padding all-0">';
+            html += '<label class="menu-label mt-3 p-2 ls-survey-menu-item">' + sortedMenus[1].title + '</label>';
             html += this.renderSubmenu(sortedMenus[1]);
             html += '</div>';
         }
@@ -99,12 +99,12 @@ class SideMenu {
                 ' data-menu-id="' + UIHelpers.escapeHtml(menuItem.menu_id) + '">';
 
             html += '<div class="d-flex ' + UIHelpers.escapeHtml(menuItem.menu_class || '') + '"' +
-                ' title="' + UIHelpers.escapeHtml(tooltip) + '"' +
+                ' title="' + tooltip + '"' +
                 ' data-bs-toggle="tooltip">';
 
             html += '<div class="ls-space padding all-0 me-auto wrapper">';
             html += UIHelpers.renderMenuIcon(menuItem.menu_icon_type, menuItem.menu_icon);
-            html += '<span class="title">' + UIHelpers.escapeHtml(menuItem.menu_title || '') + '</span>';
+            html += '<span class="title">' + (menuItem.menu_title || '') + '</span>';
             if (menuItem.link_external === true) {
                 html += '<i class="ri-external-link-fill">&nbsp;</i>';
             }
@@ -167,7 +167,11 @@ class SideMenu {
         // Re-render to update selected state
         this.renderMenu();
 
-        // Allow default link behavior (pjax will handle it)
+        // Use PJAX navigation for pjax-enabled links
+        if ($this.hasClass('pjax')) {
+            e.preventDefault();
+            $(document).trigger('pjax:load', { url: $this.attr('href') });
+        }
     }
 }
 
