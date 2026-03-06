@@ -12,6 +12,9 @@
  */
 ?>
 <br /><table class='table table-hover'>
+    <caption class="visually-hidden">
+        <?php eT("Global settings overview"); ?>
+    </caption>
     <tr>
         <th ><?php eT("Users"); ?>:</th><td><?php echo $usercount; ?></td>
     </tr>
