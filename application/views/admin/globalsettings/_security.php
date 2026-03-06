@@ -47,9 +47,9 @@
                             'type' => 'success',
                         ]);
                     } else {
-                        $text = gT("Note: XSS filtering is forced by settings in your config file. You can not disable it. XSS filtering is enable for all user.");
+                        $text = gT("Note: XSS filtering is forced by settings in your config file. You cannot disable it. XSS filtering is enabled for all users.");
                         if (App()->getConfig('filterxsshtml_allowforcedsuperadmin')) {
-                            $text = gT("Note: XSS filtering is forced by settings in your config file. You can not disable it. XSS filtering is only disable for forced super admin.");
+                            $text = gT("Note: XSS filtering is forced by settings in your config file. You cannot disable it. XSS filtering is only disabled for forced super admin(s).");
                         }
                         App()->getController()->widget('ext.AlertWidget.AlertWidget', [
                             'text' => $text,
@@ -77,11 +77,11 @@
                 </div>
                 <div class="help-block mt-1">
                     <?php if (App()->getConfig('filterxsshtml_forcedall') && App()->getConfig('filterxsshtml_enablescript') != 'gui') {
-                        $text = gT("Script edition is forced by your config file. No user can user can add or update question script.");
+                        $text = gT("Script edition is forced by your config file. No user can add or update question script.");
                         if (App()->getConfig('filterxsshtml_enablescript') == 'superadmin') {
-                            $text = gT("Script edition is forced by your config file. Only superadmin can add or update question script.");
+                            $text = gT("Script edition is forced by your config file. Only the super admin(s) can add or update question script.");
                         } elseif (App()->getConfig('filterxsshtml_allowforcedsuperadmin') || App()->getConfig('filterxsshtml_enablescript') == 'forcedsuperadmin') {
-                            $text = gT("Script edition is forced by your config file. Only forced superadmin can add or update question script.");
+                            $text = gT("Script edition is forced by your config file. Only forced super admin(s) can add or update question script.");
                         }
                         App()->getController()->widget('ext.AlertWidget.AlertWidget', [
                             'text' => $text,
