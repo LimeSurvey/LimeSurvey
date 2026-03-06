@@ -200,7 +200,7 @@ class LSWebUser extends CWebUser
             {
                 case 'gui':
                     // Break and continue
-                    break
+                    break;
                 case 'forcedsuperadmin':
                     return Permission::isForcedSuperAdmin($this->getId());
                 case 'superadmin':
