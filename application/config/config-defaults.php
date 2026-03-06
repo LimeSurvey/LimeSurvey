@@ -242,20 +242,49 @@ $config['auth_webserver_autocreate_permissions'] = array(
 //          'htmleditormode' => 'inline');
 //}
 
-
-// filterxsshtml
-// Enables filtering of suspicious html tags in survey, group, questions
-// and answer texts in the administration interface
-// Only set this to false if you absolutely trust the users
-// you created for the administration of  LimeSurvey and if you want to
-// allow these users to be able to use Javascript etc. .
+/** filterxsshtml
+ * Enables filtering of suspicious html tags in survey, group, questions
+ * and answer texts in the administration interface
+ * Only set this to false if you absolutely trust the users
+ * you created for the administration of  LimeSurvey and if you want to
+ * allow these users to be able to use Javascript etc. .
+ * Can be updated via GUI after installation
+ * @var boolean
+ */
 $config['filterxsshtml'] = true;
 
-// disablescriptwithxss
-// Allow update of script in question
-// true : Default : follow XSS rules
-// false : allowed for all
+/** filterxsshtml_forcedall
+ * Force previous settings for all user include superadmin
+ * Disable update in admin GUI
+ * @var boolean
+ */
+$config['filterxsshtml_forcedall'] = false;
+
+/** filterxsshtml_allowforcedsuperadmin
+ * Only used if filterxsshtml_forcedall is true
+ * Allow adding any script and HTML by forcedsuperadmin
+ * @var boolean
+ */
+$config['filterxsshtml_allowforcedsuperadmin'] = false;
+
+/** disablescriptwithxss
+ * Allow update of script in question
+ * true : Default : follow XSS rules
+ * false : allowed for all
+ * @var boolean
+ */
 $config['disablescriptwithxss'] = true;
+
+/** filterxsshtml_enablecript
+ * Only used if filterxsshtml_forcedall is true
+ * Enable script for specific user
+ * - gui:  use GUI (can allow all, none or only forcedsuperadmin)
+ * - superadmin: only super admin
+ * - forcedsuperadmin: only forced superadmin
+ * - By default : no user and don't use GUI
+ * @var string (''|'gui'|'superadmin'|'forcedsuperadmin')
+ */
+$config['filterxsshtml_enablescript'] = '';
 
 // usercontrolSameGroupPolicy
 // If this option is set to true, then limesurvey operators will only 'see'
