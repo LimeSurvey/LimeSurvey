@@ -127,7 +127,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
      * If templatereplace is called from the template editor, a $oTemplate is provided.
      */
     if ($oTemplate === '') {
-        $oTemplate = Template::model()->getInstance($templatename, $surveyid ?? null);
+        $oTemplate = Template::model()->getInstance($templatename);
     }
 
     // surveyformat
