@@ -51,10 +51,12 @@
 
     <?php if (isset($eMessage)):?>
         <li role="none" class="disabled">
-            <a class="dropdown-item disabled" role="menuitem" href="#" aria-disabled="true" data-bs-toggle="tooltip" data-bs-placement="bottom" title='<?php echo $eMessage; ?>'>
-                <span class="ri-tools-fill" aria-hidden="true"></span>
-                <?php eT("Start bounce processing"); ?>
-            </a>
+            <span class="d-inline-block w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title='<?php echo $eMessage; ?>'>
+                <button type="button" class="dropdown-item" disabled style="pointer-events: none;">
+                    <span class="ri-tools-fill" aria-hidden="true"></span>
+                    <?php eT("Start bounce processing"); ?>
+                </button>
+            </span>
         </li>
     <?php endif;?>
 
