@@ -37,8 +37,8 @@
     </div>
     <div class="mb-3">
         <?php echo $form->labelEx($model, 'title'); ?>
-        <?php echo $form->textField($model, 'title', array('size' => 60, 'maxlength' => 100, 'readonly' => !$updateRigth)); ?>
-        <?php echo $form->error($model, 'title', array('errorCssClass' => 'text-danger')); ?>
+        <?php echo $form->textField($model, 'title', array('size' => 60, 'maxlength' => 100, 'readonly' => !$updateRigth, 'aria-describedby' => CHtml::activeId($model, 'title') . '_em_')); ?>
+        <?php echo $form->error($model, 'title', array('errorCssClass' => 'text-danger', 'id' => CHtml::activeId($model, 'title') . '_em_')); ?>
     </div>
 
     <div class="mb-3">
