@@ -10,10 +10,10 @@ use LimeSurvey\Menu\MenuButton;
 
 foreach ($extraMenus as $menu): ?>
     <?php
-    $menuId = CHtml::encode($menu->getId());
-    $menuLabel = CHtml::encode($menu->getLabel());
-    $menuIconClass = CHtml::encode($menu->getIconClass());
-    $menuHref = CHtml::encode($menu->getHref());
+    $menuId = $menu->getId();
+    $menuLabel = $menu->getLabel();
+    $menuIconClass = $menu->getIconClass();
+    $menuHref = $menu->getHref();
     $idAttr = ($menu->getId())? 'id="'. $menuId.'"' : '';
     $ariaLabelledBy = $idAttr ? 'aria-labelledby="' . $menuId . '"' : '';
     $sectionFilter = (($middleSection && $menu->isInMiddleSection()) || (!$middleSection && !$menu->isInMiddleSection()));
@@ -26,7 +26,7 @@ foreach ($extraMenus as $menu): ?>
                 <?php if ($menu->isDropDownButton()) { ?>
                     <button type="button"
                             <?= $idAttr ?>
-                            class="dropdown-toggle <?= CHtml::encode($menu->getDropDownButtonClass()) ?>"
+                            class="dropdown-toggle <?= $menu->getDropDownButtonClass() ?>"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                             aria-haspopup="true"
@@ -41,47 +41,47 @@ foreach ($extraMenus as $menu): ?>
                        href="#"
                        aria-expanded="false"
                        aria-haspopup="true">
-                        <?= $menuLabel; ?>
+                        <?= $menuLabel ?>
                     </a>
                 <?php }?>
                 <ul class="dropdown-menu" <?= $ariaLabelledBy ?>>
                     <?php
                     foreach ($menu->getMenuItems() as $menuItem): ?>
                         <?php
-                        $menuItemLabel = CHtml::encode($menuItem->getLabel());
-                        $menuItemIconClass = CHtml::encode($menuItem->getIconClass());
+                        $menuItemLabel = $menuItem->getLabel();
+                        $menuItemIconClass = $menuItem->getIconClass();
                         if ($menuItem->isDivider()): ?>
                             <li class="dropdown-divider" role="separator"></li>
                         <?php
                         elseif ($menuItem->isSmallText()): ?>
                             <li class="dropdown-header" role="presentation">
-                                <span role="doc-subtitle" aria-label="<?= $menuItemLabel; ?>"><?= $menuItemLabel; ?></span>
+                                <span role="doc-subtitle" aria-label="<?= $menuItemLabel ?>"><?= $menuItemLabel ?></span>
                             </li>
                         <?php
                         else: ?>
-                            <li class="<?= CHtml::encode($menuItem->getItemClass()) ?> ms-3 me-3">
+                            <li class="<?= $menuItem->getItemClass() ?> ms-3 me-3">
                                 <?php
-                                $menuItemId = ($menuItem->getId()) ? 'id="' . CHtml::encode($menuItem->getId()) . '"' : '';
+                                $menuItemId = ($menuItem->getId()) ? 'id="' . $menuItem->getId() . '"' : '';
                                 ?>
                                 <?php if ($menuItem->isModal()): ?>
                                     <button class="dropdown-item"
                                             type="button"
                                             data-bs-toggle="modal"
-                                            data-bs-target="#<?= CHtml::encode($menuItem->getModalId()) ?>"
+                                            data-bs-target="#<?= $menuItem->getModalId() ?>"
                                         <?= $menuItemId ?>>
                                         <?php if ($menuItem->getIconClass() != ''): ?>
-                                            <span class="<?= $menuItemIconClass; ?>" aria-hidden="true"></span>
+                                            <span class="<?= $menuItemIconClass ?>" aria-hidden="true"></span>
                                         <?php endif; ?>
-                                        <?= $menuItemLabel; ?>
+                                        <?= $menuItemLabel ?>
                                     </button>
                                 <?php else: ?>
-                                    <a href="<?= CHtml::encode($menuItem->getHref()); ?>"
+                                    <a href="<?= $menuItem->getHref() ?>"
                                        class="dropdown-item"
                                         <?= $menuItemId ?>>
                                         <?php if ($menuItem->getIconClass() != ''): ?>
-                                            <span class="<?= $menuItemIconClass; ?>" aria-hidden="true"></span>
+                                            <span class="<?= $menuItemIconClass ?>" aria-hidden="true"></span>
                                         <?php endif; ?>
-                                        <?= $menuItemLabel; ?>
+                                        <?= $menuItemLabel ?>
                                     </a>
                                 <?php endif; ?>
                             </li>
@@ -94,31 +94,31 @@ foreach ($extraMenus as $menu): ?>
             elseif ($menu->isButton()): ?>
                 <?php
                 $menuButton = $menu;
-                $menuButtonLabel = CHtml::encode($menuButton->getLabel());
-                $menuButtonTooltip = CHtml::encode($menuButton->getTooltip());
+                $menuButtonLabel = $menuButton->getLabel();
+                $menuButtonTooltip = $menuButton->getTooltip();
                 /** @var MenuButton $menuButton */
                 $target = $menuButton->getOpenInNewTab() ? '_blank' : '_self';
                 $relAttribute = $menuButton->getOpenInNewTab() ? 'noopener noreferrer' : '';
                 ?>
-                <a id="<?= CHtml::encode($menuButton->getButtonId()) ?>"
-                   href="<?= CHtml::encode($menuButton->getHref()) ?>"
-                   class="<?= CHtml::encode($menuButton->getButtonClass()) ?>"
+                <a id="<?= $menuButton->getButtonId() ?>"
+                   href="<?= $menuButton->getHref() ?>"
+                   class="<?= $menuButton->getButtonClass() ?>"
                    title="<?= $menuButtonTooltip ?>"
                    data-bs-toggle="tooltip"
                    data-bs-placement="bottom"
-                   onclick="<?= CHtml::encode($menuButton->getOnClick()) ?>"
+                   onclick="<?= $menuButton->getOnClick() ?>"
                    target="<?= $target ?>"
                    <?php if ($relAttribute): ?>rel="<?= $relAttribute ?>"<?php endif; ?>
                    aria-label="<?= $menuButtonTooltip ?>">
-                    <?= $menuButtonLabel; ?>
+                    <?= $menuButtonLabel ?>
                 </a>
             <?php
             else: ?>
-                <a href="<?= $menuHref; ?>" class="nav-link" <?= $idAttr ?>>
+                <a href="<?= $menuHref ?>" class="nav-link" <?= $idAttr ?>>
                     <?php if ($menu->getIconClass()): ?>
-                        <i class="<?= $menuIconClass; ?>" aria-hidden="true"></i>
+                        <i class="<?= $menuIconClass ?>" aria-hidden="true"></i>
                     <?php endif; ?>
-                    <?= $menuLabel; ?>
+                    <?= $menuLabel ?>
                 </a>
             <?php
             endif; ?>
