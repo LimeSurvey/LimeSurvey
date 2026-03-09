@@ -279,10 +279,10 @@ $config['disablescriptwithxss'] = true;
 /** filterxsshtml_enablescript
  * Only used if filterxsshtml_forcedall is true
  * Enable script for specific user
- * - gui:  use GUI (can allow all, none or only forcedsuperadmin)
+ * - gui: allow update setting via GUI
  * - superadmin: only super admin
  * - forcedsuperadmin: only forced superadmin
- * - By default : no user and don't use GUI
+ * - By default : no user and do not allow update via GUI
  * @var string (''|'gui'|'superadmin'|'forcedsuperadmin')
  */
 $config['filterxsshtml_enablescript'] = '';
