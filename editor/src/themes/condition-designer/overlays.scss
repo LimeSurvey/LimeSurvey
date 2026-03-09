@@ -53,6 +53,12 @@
     border-radius: 5px;
     padding: 10px 20px;
     border: none;
+
+    &:disabled {
+      background-color: $g-400;
+      color: $g-600;
+      cursor: not-allowed;
+    }
   }
 }
 
