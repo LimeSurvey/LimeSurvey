@@ -238,4 +238,124 @@ div[class*=" col-"] {
     }
 }
 
+// Original _questionsgroups.vue scoped styles
+.scoped-bottom-bar {
+    align-self: flex-end;
+}
+.scoped-toolbuttons-left {
+    flex: 3 0 auto;
+    align-self: flex-start;
+    .btn {
+        flex: 1;
+    }
+}
+.scoped-toolbuttons-right {
+    flex: 2 1 auto;
+    align-self: flex-end;
+    white-space: nowrap;
+    .btn {
+        float: right;
+    }
+}
+.list-group-item.question-question-list-item .editIcon {
+    margin: 10px 10px 10px 5px;
+}
+.display-as-container {
+    display: block;
+}
+#questionexplorer {
+    overflow: auto;
+    background-color: #fff;
+    min-height: 100vh;
+}
+.question-question-list-item .dropdown-menu li a.disabled {
+    opacity: 0.5;
+}
+
+// Drag and drop styles
+.list-group-item.dragged,
+.question-question-list-item.dragged {
+    opacity: 0.5;
+    background-color: #f0f0f0;
+}
+
+.dragPointer {
+    cursor: grab;
+
+    &:active {
+        cursor: grabbing;
+    }
+
+    &.disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+}
+
+// Dropdown visibility - hide by default, show when active or on hover
+.questiongroup-dropdown:not(.active),
+.question-dropdown:not(.active) {
+    display: none;
+}
+
+.questiongroup-dropdown.active,
+.question-dropdown.active {
+    display: block;
+}
+
+// Sidebar loader overlay
+.sidebar_loader {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    background: rgba(231, 231, 231, 0.3);
+    z-index: 4501;
+    box-shadow: 8px 0px 15px rgba(231, 231, 231, 0.3);
+    top: 0;
+}
+
+// Resize handle styles
+.resize-handle {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: ew-resize;
+
+    .resize-btn {
+        background: transparent;
+        border: none;
+        cursor: ew-resize;
+        padding: 4px;
+        color: #888;
+        transition: color 0.2s;
+
+        &:hover {
+            color: #333;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    #sidebar .resize-handle {
+        &>button {
+            width: 20px;
+            background: var(--LS-admintheme-basecolor);
+        }
+    }
+}
+
+.scoped-placeholder-greyed-area {
+    display: none;
+
+    @media (max-width: 768px) {
+        display: block;
+        background: rgba(125, 125, 125, 0.2);
+        height: 100%;
+        width: 20vw;
+    }
+}
 

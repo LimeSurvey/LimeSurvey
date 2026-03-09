@@ -1,7 +1,6 @@
 /**
  * Neccessary methods for the confirmation modal
  */
-import _ from 'lodash';
 import LOG from "../components/lslog";
 
 const ConfirmationModal = function(e){
@@ -28,9 +27,10 @@ const ConfirmationModal = function(e){
     //////METHODS
     //Parse available options from specific item.data settings, if not available load relatedTarget settings
     const _parseOptions = (e) => {
-        return _.each(optionsDefault, (value, key) => {
+        Object.keys(optionsDefault).forEach((key) => {
             optionsDefault[key] = $(_this).data(key) || $(e.relatedTarget).data(key) || optionsDefault[key];
         });
+        return optionsDefault;
     },
     //Generate a simple link on the ok button
     _basicLink = () => {
