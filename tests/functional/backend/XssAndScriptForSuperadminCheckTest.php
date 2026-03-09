@@ -16,6 +16,7 @@ class XssAndScriptForSuperadminCheckTest extends TestBaseClass
     {
         parent::setupBeforeClass();
         /* be sure to be at default */
+        App()->setConfig('forcedsuperadmin', [1]);
         App()->setConfig('filterxsshtml', true);
         App()->setConfig('disablescriptwithxss', true);
         App()->setConfig('filterxsshtml_forcedall', false);
@@ -62,7 +63,7 @@ class XssAndScriptForSuperadminCheckTest extends TestBaseClass
      */
     public function testXssOffForcedSuperAdmin()
     {
-        App()->setConfig('filterxsshtml_forcedall', true);
+        App()->setConfig('filterxsshtml_forcedall', false);
         App()->setConfig('filterxsshtml_allowforcedsuperadmin', true);
         $questionl10n = $this->importSurveyAndgetQuestionI10n();
         $this->assertEquals("Question:<script>alert('question');</script>", $questionl10n->question);
