@@ -130,10 +130,7 @@ class HtmlExportWriter implements ExportWriterInterface
             throw new RuntimeException("Writer not initialized. Call init() first.");
         }
 
-        $qids = [];
-        foreach ($surveyQuestions as $question) {
-            $qids[] = $question['qid'];
-        }
+        $fieldKeys = array_keys($surveyQuestions);
 
         foreach ($responses as $response) {
             fwrite($this->handle, '<tr>');
@@ -147,17 +144,18 @@ class HtmlExportWriter implements ExportWriterInterface
             fwrite($this->handle, '<td>' . htmlspecialchars((string)($response['ipAddr'] ?? '')) . '</td>');
             fwrite($this->handle, '<td>' . htmlspecialchars((string)($response['refUrl'] ?? '')) . '</td>');
 
-            $answersByQid = [];
+            $answersByKey = [];
             if (isset($response['answers'])) {
                 foreach ($response['answers'] as $answer) {
-                    if (isset($answer['qid'])) {
-                        $answersByQid[$answer['qid']] = $answer['value'] ?? '';
+                    $key = $answer['key'] ?? null;
+                    if ($key !== null) {
+                        $answersByKey[$key] = $answer['value'];
                     }
                 }
             }
 
-            foreach ($qids as $qid) {
-                fwrite($this->handle, '<td>' . htmlspecialchars((string)($answersByQid[$qid] ?? '')) . '</td>');
+            foreach ($fieldKeys as $fieldKey) {
+                fwrite($this->handle, '<td>' . htmlspecialchars((string)($answersByKey[$fieldKey] ?? '')) . '</td>');
             }
 
             fwrite($this->handle, '</tr>');

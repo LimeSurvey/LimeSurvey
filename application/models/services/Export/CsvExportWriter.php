@@ -96,7 +96,7 @@ class CsvExportWriter implements ExportWriterInterface
         foreach ($surveyQuestions as $question) {
             $headers[] = $this->buildQuestionHeading($question);
         }
-        fputcsv($this->handle, $headers);
+        $this->writeCsvRow($headers);
         $this->headersWritten = true;
     }
 
@@ -113,11 +113,8 @@ class CsvExportWriter implements ExportWriterInterface
             throw new RuntimeException("Writer not initialized. Call init() first.");
         }
 
-        // Pre-extract qids for faster lookup
-        $qids = [];
-        foreach ($surveyQuestions as $question) {
-            $qids[] = $question['qid'];
-        }
+        // Use field keys (not qids) to correctly map subquestion answers
+        $fieldKeys = array_keys($surveyQuestions);
 
         foreach ($responses as $response) {
             $row = [
@@ -132,21 +129,21 @@ class CsvExportWriter implements ExportWriterInterface
                 $response['refUrl'] ?? ''
             ];
 
-            $answersByQid = [];
+            $answersByKey = [];
             if (isset($response['answers'])) {
                 foreach ($response['answers'] as $answer) {
-                    if (isset($answer['qid'])) {
-                        $answersByQid[$answer['qid']] = $answer['value'] ?? '';
+                    $key = $answer['key'] ?? null;
+                    if ($key !== null) {
+                        $answersByKey[$key] = $answer['value'];
                     }
                 }
             }
 
-            // Now lookup is O(1) per question
-            foreach ($qids as $qid) {
-                $row[] = $answersByQid[$qid] ?? '';
+            foreach ($fieldKeys as $fieldKey) {
+                $row[] = $answersByKey[$fieldKey] ?? '';
             }
 
-            fputcsv($this->handle, $row);
+            $this->writeCsvRow($row);
             $this->responseCount++;
         }
     }
@@ -190,6 +187,38 @@ class CsvExportWriter implements ExportWriterInterface
             'size' => $size,
             'responseCount' => $this->responseCount
         ];
+    }
+
+    /**
+     * Write a single CSV row with all values quoted.
+     *
+     * @param array $fields
+     * @return void
+     */
+    private function writeCsvRow(array $fields): void
+    {
+        $escaped = [];
+        foreach ($fields as $field) {
+            $escaped[] = $this->csvEscape($field);
+        }
+        fwrite($this->handle, implode(',', $escaped) . "\r\n");
+    }
+
+    /**
+     * Escape a value for CSV output. All non-null values are quoted.
+     * Null values become empty unquoted strings.
+     *
+     * @param mixed $value
+     * @return string
+     */
+    private function csvEscape($value): string
+    {
+        if (is_null($value)) {
+            return '';
+        }
+        $value = (string) $value;
+        $value = preg_replace('~\R~u', "\n", $value);
+        return '"' . str_replace('"', '""', $value) . '"';
     }
 
     /**

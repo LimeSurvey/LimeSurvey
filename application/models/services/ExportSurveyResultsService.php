@@ -13,6 +13,7 @@ use LimeSurvey\Models\Services\Export\HtmlExportWriter;
 use RuntimeException;
 use Survey;
 use Answer;
+use Question;
 use SurveyDynamic;
 
 class ExportSurveyResultsService
@@ -73,7 +74,7 @@ class ExportSurveyResultsService
      * @param string $exportType The export format (csv, xlsx, xls, pdf, html)
      * @param string|null $language The language code for the export
      * @param string $outputMode Output mode: 'memory' (default) or 'file'
-     * @param int $chunkSize Number of responses to fetch per chunk (default 100)
+     * @param int $chunkSize Number of responses to fetch per chunk (default 500)
      * @return array Export result with content/filePath and metadata
      * @throws InvalidArgumentException If the export type is not supported
      * @throws RuntimeException If survey is not found or responses cannot be fetched
@@ -131,45 +132,62 @@ class ExportSurveyResultsService
     {
         // Generate field map for questions (do this once)
         $this->transformerOutputSurveyResponses->fieldMap =
-            createFieldMap($this->loadedSurvey, 'full', false, false);
+            createFieldMap($this->loadedSurvey, 'full', false, false, $metadata['language'] ?? '');
 
         // Get question field map (do this once)
         $surveyQuestions = $this->getQuestionFieldMap();
 
-        // Pre-cache the token table check to avoid repeated tableExists() calls
+        // Add timing columns if enabled
+        $hasTimings = $this->loadedSurvey->savetimings == "Y"
+            && tableExists("survey_{$surveyId}_timings");
+        $timingFieldKeys = [];
+        if ($hasTimings) {
+            $timingFieldMap = $this->getTimingFieldMap($metadata['language'] ?? null);
+            $surveyQuestions = $surveyQuestions + $timingFieldMap;
+            $timingFieldKeys = array_keys($timingFieldMap);
+        }
+
+        // Pre-cache token table existence for the transformer
         $this->transformerOutputSurveyResponses->hasTokenTable =
             tableExists('tokens_' . $surveyId);
 
-        // Get the appropriate export writer
         $writer = $this->getExportWriter($exportType);
         $writer->init($surveyQuestions, $metadata);
-        $totalCount = $this->getTotalResponseCount($surveyId);
 
+        $totalCount = $this->getTotalResponseCount($surveyId);
         $model = SurveyDynamic::model($surveyId);
 
         for ($offset = 0; $offset < $totalCount; $offset += $chunkSize) {
             $chunk = $this->fetchResponseChunkDirect($model, $offset, $chunkSize);
-            $processedChunk = $this->processResponseChunk($chunk, $surveyQuestions);
 
+            $timingsData = [];
+            if ($hasTimings) {
+                $timingsData = $this->fetchTimingsForChunk($surveyId, $chunk);
+            }
+
+            $processedChunk = $this->processResponseChunk(
+                $chunk,
+                $surveyQuestions,
+                $timingsData,
+                $timingFieldKeys
+            );
             $writer->writeChunk($processedChunk, $surveyQuestions);
-
-            unset($chunk, $processedChunk);
+            unset($chunk, $processedChunk, $timingsData);
         }
 
         return $writer->finalize();
     }
 
     /**
-     * Get the total count of survey responses.
+     * Get the total number of responses for a survey.
      *
      * @param int $surveyId
-     * @return int Total number of responses
-     * @throws RuntimeException If count cannot be fetched
+     * @return int
+     * @throws RuntimeException
      */
     protected function getTotalResponseCount($surveyId)
     {
         $model = SurveyDynamic::model($surveyId);
-
         try {
             return (int) $model->count();
         } catch (CDbException $e) {
@@ -178,13 +196,13 @@ class ExportSurveyResultsService
     }
 
     /**
-     * Fetch a single chunk of survey responses using direct query (faster than DataProvider).
+     * Fetch a chunk of responses directly using CDbCriteria.
      *
-     * @param SurveyDynamic $model Pre-instantiated model
-     * @param int $offset Starting position
-     * @param int $limit Number of responses to fetch
-     * @return array Array of survey response objects
-     * @throws RuntimeException If responses cannot be fetched
+     * @param SurveyDynamic $model
+     * @param int $offset
+     * @param int $limit
+     * @return SurveyDynamic[]
+     * @throws RuntimeException
      */
     protected function fetchResponseChunkDirect($model, $offset, $limit)
     {
@@ -201,42 +219,160 @@ class ExportSurveyResultsService
     }
 
     /**
-     * Process a chunk of responses (transform and map to questions).
-     * Optimized for export - skips unnecessary processing like actual_aid lookup.
+     * Process a chunk of SurveyDynamic responses through the transformer,
+     * override dates with raw values, format answers, and merge timing data.
      *
-     * @param array $chunk Array of raw survey response objects
-     * @param array $surveyQuestions Question field map
-     * @return array Processed and mapped responses
+     * @param array $chunk Array of SurveyDynamic objects
+     * @param array $surveyQuestions The survey questions field map
+     * @param array $timingsData Timing data indexed by response ID
+     * @param array $timingFieldKeys Array of timing field keys
+     * @return array Processed responses ready for the writer
      */
-    protected function processResponseChunk(array $chunk, array $surveyQuestions)
-    {
+    protected function processResponseChunk(
+        array $chunk,
+        array $surveyQuestions,
+        array $timingsData = [],
+        array $timingFieldKeys = []
+    ) {
         $transformedResponses = $this->transformerOutputSurveyResponses->transform(
             $chunk,
             ['survey' => $this->loadedSurvey]
         );
 
+        $dummyDate = '1980-01-01 00:00:00';
+
         foreach ($transformedResponses as $index => &$response) {
-            // Add raw attributes that may not be in transformed output
+            // Override date fields with raw DB values (bypass ISO 8601 formatting)
             if (isset($chunk[$index]) && $chunk[$index] instanceof SurveyDynamic) {
                 $rawAttributes = $chunk[$index]->attributes;
+
+                // Make all raw attributes available
                 foreach ($rawAttributes as $key => $value) {
                     if (!isset($response[$key])) {
                         $response[$key] = $value;
                     }
                 }
+
+                $rawSubmitDate = $rawAttributes['submitdate'] ?? null;
+                $response['submitDate'] = ($rawSubmitDate === $dummyDate) ? null : $rawSubmitDate;
+
+                $rawStartDate = $rawAttributes['startdate'] ?? null;
+                $response['startDate'] = ($rawStartDate === $dummyDate) ? null : $rawStartDate;
+
+                $rawDatestamp = $rawAttributes['datestamp'] ?? null;
+                $response['dateLastAction'] = ($rawDatestamp === $dummyDate) ? null : $rawDatestamp;
             }
 
+            // Format answer values using full answer formatting
             if (isset($response['answers'])) {
                 foreach ($response['answers'] as &$answer) {
                     $key = $answer['key'] ?? null;
                     if ($key !== null && isset($surveyQuestions[$key])) {
-                        $answer['qid'] = $surveyQuestions[$key]['qid'];
+                        $question = $surveyQuestions[$key];
+                        $answer['qid'] = $question['qid'];
+                        $answer['value'] = $this->formatFullAnswer(
+                            $answer['value'],
+                            $question['type'] ?? null,
+                            $key
+                        );
+                    }
+                }
+
+                // Merge timing data into answers
+                if (!empty($timingsData)) {
+                    $responseId = $response['id'];
+                    if (isset($timingsData[$responseId])) {
+                        $timingRow = $timingsData[$responseId];
+                        foreach ($timingFieldKeys as $fieldKey) {
+                            $response['answers'][$fieldKey] = [
+                                'key' => $fieldKey,
+                                'value' => $timingRow[$fieldKey] ?? '',
+                            ];
+                        }
                     }
                 }
             }
         }
 
         return $transformedResponses;
+    }
+
+    /**
+     * Format a raw answer value to its display text,
+     * matching the old export's "full answer" format.
+     *
+     * @param mixed $value Raw answer value from the database
+     * @param string|null $type Question type character
+     * @param string $fieldKey Full field key (e.g. "123X456X789SQ001")
+     * @return mixed Formatted display value
+     */
+    protected function formatFullAnswer($value, $type, $fieldKey)
+    {
+        if ($type === null) {
+            return $value;
+        }
+
+        switch ($type) {
+            case Question::QT_M_MULTIPLE_CHOICE:
+            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
+                // Comment and "other" fields: pass through raw value
+                if (str_ends_with($fieldKey, 'other') || str_ends_with($fieldKey, 'comment')) {
+                    return $value;
+                }
+                // Checkbox fields: Y/N/null -> Yes/No/N/A
+                if ($value === 'Y') {
+                    return gT('Yes');
+                }
+                if ($value === 'N' || $value === '') {
+                    return gT('No');
+                }
+                return gT('N/A');
+
+            case Question::QT_Y_YES_NO_RADIO:
+                if ($value === 'Y') {
+                    return gT('Yes');
+                }
+                if ($value === 'N') {
+                    return gT('No');
+                }
+                return gT('N/A');
+
+            case Question::QT_G_GENDER:
+                if ($value === 'M') {
+                    return gT('Male');
+                }
+                if ($value === 'F') {
+                    return gT('Female');
+                }
+                return gT('N/A');
+
+            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
+                if ($value === 'Y') {
+                    return gT('Yes');
+                }
+                if ($value === 'N') {
+                    return gT('No');
+                }
+                if ($value === 'U') {
+                    return gT('Uncertain');
+                }
+                return $value;
+
+            case Question::QT_E_ARRAY_INC_SAME_DEC:
+                if ($value === 'I') {
+                    return gT('Increase');
+                }
+                if ($value === 'S') {
+                    return gT('Same');
+                }
+                if ($value === 'D') {
+                    return gT('Decrease');
+                }
+                return $value;
+
+            default:
+                return $value;
+        }
     }
 
     /**
@@ -266,6 +402,7 @@ class ExportSurveyResultsService
                             'subquestion1' => $item['subquestion1'] ?? null,
                             'subquestion2' => $item['subquestion2'] ?? null,
                             'scale' => $item['scale'] ?? null,
+                            'type' => $item['type'] ?? null,
                         ];
                     }
                     return null;
@@ -273,6 +410,80 @@ class ExportSurveyResultsService
                 $fieldMap
             )
         );
+    }
+
+    /**
+     * Generate timing field map entries for export headers and data mapping.
+     *
+     * @param string|null $language
+     * @return array Timing field map keyed by field name
+     */
+    protected function getTimingFieldMap($language = null)
+    {
+        $surveyId = $this->loadedSurvey->sid;
+        $timingsFieldMap = createTimingsFieldMap(
+            $surveyId,
+            'full',
+            true,
+            false,
+            $language ?? $this->loadedSurvey->language
+        );
+
+        $result = [];
+        foreach ($timingsFieldMap as $key => $field) {
+            $result[$key] = [
+                'fieldname' => $field['fieldname'],
+                'gid' => $field['gid'] ?? '',
+                'qid' => $field['qid'] ?? '',
+                'aid' => $field['aid'] ?? '',
+                'sqid' => null,
+                'scaleid' => null,
+                'title' => $field['title'] ?? '',
+                'question' => $field['question'] ?? '',
+                'subquestion' => null,
+                'subquestion1' => null,
+                'subquestion2' => null,
+                'scale' => null,
+                'type' => $field['type'] ?? null,
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Fetch timing data for a chunk of SurveyDynamic response objects.
+     *
+     * @param int $surveyId
+     * @param array $chunk Array of SurveyDynamic objects
+     * @return array Timing rows indexed by response ID
+     */
+    protected function fetchTimingsForChunk($surveyId, array $chunk)
+    {
+        $ids = [];
+        foreach ($chunk as $response) {
+            if ($response instanceof SurveyDynamic) {
+                $ids[] = $response->id;
+            }
+        }
+
+        if (empty($ids)) {
+            return [];
+        }
+
+        $tableName = "{{survey_{$surveyId}_timings}}";
+        $rows = \Yii::app()->db->createCommand()
+            ->select('*')
+            ->from($tableName)
+            ->where(['in', 'id', $ids])
+            ->queryAll();
+
+        $result = [];
+        foreach ($rows as $row) {
+            $result[$row['id']] = $row;
+        }
+
+        return $result;
     }
 
     /**
