@@ -203,9 +203,10 @@ class Quota extends LSActiveRecord
             'quotals_urldescrip'  => '',
         ];
 
+        $quotaLanguageAttributes = ($languageSettings && $languageSettings->attributes) ? $languageSettings->attributes : $defaultLanguageAttributes;
+
         return array_merge(
-            array(),
-            $languageSettings->attributes ?? $defaultLanguageAttributes,
+            $quotaLanguageAttributes,
             array('members' => $members),
             $attributes
         );
