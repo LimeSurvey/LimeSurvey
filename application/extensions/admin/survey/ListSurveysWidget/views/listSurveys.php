@@ -42,6 +42,7 @@
                 'window.LS.doToolTip();',
                 'bindListItemclick();',
                 'switchStatusOfListActions();',
+                'restoreFocusAfterSort();',
             ],
             'rowLink'               =>
                 'App()->getConfig("editorEnabled") && Yii::app()->getConfig("debug")'
@@ -53,6 +54,42 @@
             'lsAdditionalColumns' => $this->model->getAdditionalColumns(),
 
         ]);
+        ?>
+        <?php
+        // Keep focus on the clicked sort column after grid AJAX update instead of moving to select-all checkbox.
+        // Re-attach listener after each update because #survey-grid is replaced on pagination/sort.
+        App()->getClientScript()->registerScript(
+            'ListSurveysWidget-restoreFocusAfterSort',
+            "
+        window._lastSortColumnIndex = null;
+        var _sortFocusCaptureHandler = function(e) {
+            var link = e.target.closest && e.target.closest('a.sort-link');
+            if (link) {
+                var th = link.closest('th');
+                if (th) {
+                    window._lastSortColumnIndex = Array.prototype.indexOf.call(th.parentNode.children, th);
+                }
+            }
+        };
+        function attachSortFocusCapture() {
+            var grid = document.getElementById('survey-grid');
+            if (!grid) return;
+            grid.removeEventListener('click', _sortFocusCaptureHandler, true);
+            grid.addEventListener('click', _sortFocusCaptureHandler, true);
+        }
+        function restoreFocusAfterSort() {
+            if (window._lastSortColumnIndex != null) {
+                var \$th = jQuery('#survey-grid table thead th').eq(window._lastSortColumnIndex);
+                var \$link = \$th.find('a.sort-link');
+                if (\$link.length) { \$link[0].focus(); }
+                window._lastSortColumnIndex = null;
+            }
+            attachSortFocusCapture();
+        }
+        jQuery(function() { attachSortFocusCapture(); });
+        ",
+            LSYii_ClientScript::POS_POSTSCRIPT
+        );
         ?>
     </div>
 </div>
