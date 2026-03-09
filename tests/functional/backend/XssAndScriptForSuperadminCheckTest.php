@@ -22,7 +22,7 @@ class XssAndScriptForSuperadminCheckTest extends TestBaseClass
         App()->setConfig('filterxsshtml_forcedall', false);
         App()->setConfig('filterxsshtml_allowforcedsuperadmin', false);
         App()->setConfig('filterxsshtml_enablescript', '');
-        \LSWebUser::setId(1);
+        App()->user->setId(1);
     }
 
     /**
