@@ -70,13 +70,13 @@
   background: transparent;
   font-size: 40px;
   cursor: pointer;
-  color: #ccc;
+  color: $g-900;
 
   &:hover,
   &:focus {
     outline: none;
     box-shadow: none;
-    color: #ccc;
+    color: $g-900;
   }
 }
 

@@ -12,7 +12,7 @@ export const ResetAllConditionsOverlay = ({ onConfirmDelete }) => {
         {t('Are you sure you want to delete all conditions for this question?')}
       </p>
 
-      <div className="condition-designer-overlay-actions">
+      <div className="condition-designer-overlay-actions d-flex justify-content-end">
         <Button
           variant="secondary"
           className="condition-designer-overlay-secondary-button"

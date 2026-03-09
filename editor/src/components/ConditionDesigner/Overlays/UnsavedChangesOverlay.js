@@ -7,11 +7,11 @@ export const UnsavedChangesOverlay = ({ onIgnoreChanges, message = false }) => {
   )
   return (
     <div className="condition-designer-overlay">
-      <div className="condition-designer-overlay-title">
+      <div className="condition-designer-overlay-title reg24">
         <p>{t('Unsaved changes')}</p>
       </div>
 
-      <p className="condition-designer-overlay-message">
+      <p className="condition-designer-overlay-message reg14">
         {message ? message : defaultMessage}
       </p>
 
