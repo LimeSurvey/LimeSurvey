@@ -99,7 +99,7 @@ class QuestionExplorer {
             ['asc']
         );
 
-        var itemWidth = (parseInt(StateManager.get('sidebarwidth')) - 120) + 'px';
+        var itemWidth = (parseInt(StateManager.get('sidebarwidth') || 300) - 120) + 'px';
 
         var html = '<div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane h-100 pt-2">';
 
@@ -273,7 +273,7 @@ class QuestionExplorer {
      * Render single question - matching Vue template exactly
      */
     renderQuestion(question, questiongroup, allowOrganizer, surveyIsActive, itemWidth) {
-        var classes = 'list-group-item question-question-list-item ls-flex-row align-itmes-flex-start ' + this.questionItemClasses(question);
+        var classes = 'list-group-item question-question-list-item ls-flex-row align-items-flex-start ' + this.questionItemClasses(question);
         var itemActivated = StateManager.get('lastQuestionOpen') === question.qid;
         // Always show dropdown HTML, use CSS/JS hover to control visibility
         var showDropdown = true;
