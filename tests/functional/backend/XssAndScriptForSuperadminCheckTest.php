@@ -36,6 +36,7 @@ class XssAndScriptForSuperadminCheckTest extends TestBaseClass
         $this->assertEquals('Help:', $questionl10n->help);
         $this->assertEquals('', $questionl10n->script);
         self::$testSurvey->delete();
+        self::$testSurvey = null;
         /* reset to default */
         App()->setConfig('filterxsshtml_forcedall', false);
         App()->setConfig('filterxsshtml_allowforcedsuperadmin', false);
@@ -53,6 +54,7 @@ class XssAndScriptForSuperadminCheckTest extends TestBaseClass
         $this->assertEquals('Help:', $questionl10n->help);
         $this->assertEquals("alert('script');", $questionl10n->script);
         self::$testSurvey->delete();
+        self::$testSurvey = null;
         /* reset to default */
         App()->setConfig('filterxsshtml_forcedall', false);
         App()->setConfig('filterxsshtml_enablescript', '');
@@ -63,13 +65,14 @@ class XssAndScriptForSuperadminCheckTest extends TestBaseClass
      */
     public function testXssOffForcedSuperAdmin()
     {
-        App()->setConfig('filterxsshtml_forcedall', false);
+        App()->setConfig('filterxsshtml_forcedall', true);
         App()->setConfig('filterxsshtml_allowforcedsuperadmin', true);
         $questionl10n = $this->importSurveyAndgetQuestionI10n();
         $this->assertEquals("Question:<script>alert('question');</script>", $questionl10n->question);
         $this->assertEquals("Help:<script>alert('help');</script>", $questionl10n->help);
         $this->assertEquals("alert('script');", $questionl10n->script);
         self::$testSurvey->delete();
+        self::$testSurvey = null;
         /* reset to default */
         App()->setConfig('filterxsshtml_forcedall', false);
         App()->setConfig('filterxsshtml_allowforcedsuperadmin', false);
