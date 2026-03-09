@@ -17,25 +17,25 @@
 echo viewHelper::getViewTestTag('templateOptions');
 ?>
 <div class="list-themes">
-    <ul class="nav nav-tabs" id="themelist">
-        <li class="nav-item">
-            <a class="nav-link active" href="#surveythemes" data-bs-toggle="tab">
+    <ul class="nav nav-tabs" id="themelist" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="surveythemes-tab" href="#surveythemes" data-bs-toggle="tab" role="tab" aria-controls="surveythemes" aria-selected="true">
                 <?php eT('Survey themes'); ?>
             </a>
         </li>
-        <li>
-            <a class="nav-link" href="#adminthemes" data-bs-toggle="tab">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="adminthemes-tab" href="#adminthemes" data-bs-toggle="tab" role="tab" aria-controls="adminthemes" aria-selected="false">
                 <?php eT('Admin themes'); ?>
             </a>
         </li>
-        <li>
-            <a class="nav-link" href="#questionthemes" data-bs-toggle="tab">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="questionthemes-tab" href="#questionthemes" data-bs-toggle="tab" role="tab" aria-controls="questionthemes" aria-selected="false">
                 <?php eT('Question themes'); ?>
             </a>
         </li>
     </ul>
-    <div class="tab-content">
-        <div id="surveythemes" class="tab-pane active">
+    <div class="tab-content" id="themelistContent">
+        <div id="surveythemes" class="tab-pane active" role="tabpanel" aria-labelledby="surveythemes-tab">
             <div class="list-surveys">
                 <h2><?= gT('Installed survey themes:') ?></h2>
                 <?php $this->renderPartial('./surveythemelist', [
@@ -224,7 +224,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                 <!-- End Deprecated Themes -->
             </div>
         </div>
-        <div id="adminthemes" class="tab-pane">
+        <div id="adminthemes" class="tab-pane" role="tabpanel" aria-labelledby="adminthemes-tab">
             <div class="list-surveys">
                 <h3><?php eT('Available admin themes:'); ?></h3>
                 <div id="admin_themes">
@@ -261,7 +261,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                             <i class="ri-error-warning-fill"></i><?= gT('Show errors') ?>
                                         </button>
                                         <div class="modal fade" id="admin_theme_error_<?= $adminThemeIterator ?>" tabindex="-1"
-                                             aria-labelledby="#admin_theme_error_title_<?= $adminThemeIterator ?>" aria-hidden="true">
+                                             aria-labelledby="admin_theme_error_title_<?= $adminThemeIterator ?>" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -290,7 +290,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                 </div>
             </div>
         </div>
-        <div id="questionthemes" class="tab-pane">
+        <div id="questionthemes" class="tab-pane" role="tabpanel" aria-labelledby="questionthemes-tab">
             <div class="col-12 list-surveys">
                 <?php echo '<h3>' . gT('Question themes:') . '</h3>'; ?>
                 <!-- Installed Question Themes -->
