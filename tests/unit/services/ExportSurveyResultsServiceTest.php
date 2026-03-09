@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
 use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurveyResponses;
 use LimeSurvey\Models\Services\ExportSurveyResultsService;
+use LimeSurvey\Models\Services\Export\ExportAnswerFormatter;
 use LimeSurvey\Models\Services\Export\CsvExportWriter;
 use LimeSurvey\Models\Services\Export\HtmlExportWriter;
 use ls\tests\TestBaseClass;
@@ -38,11 +39,14 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
         $filterPatcherMock = Mockery::mock(FilterPatcher::class)->makePartial();
         $transformerMock = Mockery::mock(TransformerOutputSurveyResponses::class)->makePartial();
 
+        $answerFormatterMock = new ExportAnswerFormatter();
+
         $service = new ExportSurveyResultsService(
             $surveyMock,
             $answerMock,
             $filterPatcherMock,
-            $transformerMock
+            $transformerMock,
+            $answerFormatterMock
         );
 
         $service->exportResponses(123456, 'random');
@@ -65,11 +69,14 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
         $filterPatcherMock = Mockery::mock(FilterPatcher::class)->makePartial();
         $transformerMock = Mockery::mock(TransformerOutputSurveyResponses::class)->makePartial();
 
+        $answerFormatterMock = new ExportAnswerFormatter();
+
         $service = new ExportSurveyResultsService(
             $surveyMock,
             $answerMock,
             $filterPatcherMock,
-            $transformerMock
+            $transformerMock,
+            $answerFormatterMock
         );
 
         $service->exportResponses(999999, 'csv');
@@ -97,11 +104,14 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
         $filterPatcherMock = Mockery::mock(FilterPatcher::class)->makePartial();
         $transformerMock = Mockery::mock(TransformerOutputSurveyResponses::class)->makePartial();
 
+        $answerFormatterMock = new ExportAnswerFormatter();
+
         $service = Mockery::mock(ExportSurveyResultsService::class, [
             $surveyMock,
             $answerMock,
             $filterPatcherMock,
-            $transformerMock
+            $transformerMock,
+            $answerFormatterMock
         ])->makePartial()->shouldAllowMockingProtectedMethods();
 
         $service->shouldReceive('exportResponsesInChunks')
@@ -136,11 +146,14 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
         $filterPatcherMock = Mockery::mock(FilterPatcher::class)->makePartial();
         $transformerMock = Mockery::mock(TransformerOutputSurveyResponses::class)->makePartial();
 
+        $answerFormatterMock = new ExportAnswerFormatter();
+
         $service = new ExportSurveyResultsService(
             $surveyMock,
             $answerMock,
             $filterPatcherMock,
-            $transformerMock
+            $transformerMock,
+            $answerFormatterMock
         );
 
         $service->exportResponses(123456, 'xlsx');
@@ -159,11 +172,14 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
         $filterPatcherMock = Mockery::mock(FilterPatcher::class)->makePartial();
         $transformerMock = Mockery::mock(TransformerOutputSurveyResponses::class)->makePartial();
 
+        $answerFormatterMock = new ExportAnswerFormatter();
+
         $service = new ExportSurveyResultsService(
             $surveyMock,
             $answerMock,
             $filterPatcherMock,
-            $transformerMock
+            $transformerMock,
+            $answerFormatterMock
         );
 
         $service->exportResponses(123456, 'xls');
@@ -190,11 +206,14 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
         $filterPatcherMock = Mockery::mock(FilterPatcher::class)->makePartial();
         $transformerMock = Mockery::mock(TransformerOutputSurveyResponses::class)->makePartial();
 
+        $answerFormatterMock = new ExportAnswerFormatter();
+
         $service = Mockery::mock(ExportSurveyResultsService::class, [
             $surveyMock,
             $answerMock,
             $filterPatcherMock,
-            $transformerMock
+            $transformerMock,
+            $answerFormatterMock
         ])->makePartial()->shouldAllowMockingProtectedMethods();
 
         $service->shouldReceive('exportResponsesInChunks')
@@ -225,11 +244,14 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
         $filterPatcherMock = Mockery::mock(FilterPatcher::class)->makePartial();
         $transformerMock = Mockery::mock(TransformerOutputSurveyResponses::class)->makePartial();
 
+        $answerFormatterMock = new ExportAnswerFormatter();
+
         $service = new ExportSurveyResultsService(
             $surveyMock,
             $answerMock,
             $filterPatcherMock,
-            $transformerMock
+            $transformerMock,
+            $answerFormatterMock
         );
 
         $this->assertInstanceOf(ExportSurveyResultsService::class, $service);
@@ -252,11 +274,14 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
         $filterPatcherMock = Mockery::mock(FilterPatcher::class)->makePartial();
         $transformerMock = Mockery::mock(TransformerOutputSurveyResponses::class)->makePartial();
 
+        $answerFormatterMock = new ExportAnswerFormatter();
+
         $service = Mockery::mock(ExportSurveyResultsService::class, [
             $surveyMock,
             $answerMock,
             $filterPatcherMock,
-            $transformerMock
+            $transformerMock,
+            $answerFormatterMock
         ])->makePartial()->shouldAllowMockingProtectedMethods();
 
         $service->shouldReceive('exportResponsesInChunks')
@@ -300,11 +325,14 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
         $filterPatcherMock = Mockery::mock(FilterPatcher::class)->makePartial();
         $transformerMock = Mockery::mock(TransformerOutputSurveyResponses::class)->makePartial();
 
+        $answerFormatterMock = new ExportAnswerFormatter();
+
         $service = Mockery::mock(ExportSurveyResultsService::class, [
             $surveyMock,
             $answerMock,
             $filterPatcherMock,
-            $transformerMock
+            $transformerMock,
+            $answerFormatterMock
         ])->makePartial()->shouldAllowMockingProtectedMethods();
 
         $service->shouldReceive('exportResponsesInChunks')
@@ -344,11 +372,14 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
         $filterPatcherMock = Mockery::mock(FilterPatcher::class)->makePartial();
         $transformerMock = Mockery::mock(TransformerOutputSurveyResponses::class)->makePartial();
 
+        $answerFormatterMock = new ExportAnswerFormatter();
+
         $service = Mockery::mock(ExportSurveyResultsService::class, [
             $surveyMock,
             $answerMock,
             $filterPatcherMock,
-            $transformerMock
+            $transformerMock,
+            $answerFormatterMock
         ])->makePartial()->shouldAllowMockingProtectedMethods();
 
         $service->shouldReceive('exportResponsesInChunks')
@@ -397,11 +428,14 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
         $filterPatcherMock = Mockery::mock(FilterPatcher::class)->makePartial();
         $transformerMock = Mockery::mock(TransformerOutputSurveyResponses::class)->makePartial();
 
+        $answerFormatterMock = new ExportAnswerFormatter();
+
         $service = Mockery::mock(ExportSurveyResultsService::class, [
             $surveyMock,
             $answerMock,
             $filterPatcherMock,
-            $transformerMock
+            $transformerMock,
+            $answerFormatterMock
         ])->makePartial()->shouldAllowMockingProtectedMethods();
 
         $service->shouldReceive('exportResponsesInChunks')
@@ -438,11 +472,14 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
         $filterPatcherMock = Mockery::mock(FilterPatcher::class)->makePartial();
         $transformerMock = Mockery::mock(TransformerOutputSurveyResponses::class)->makePartial();
 
+        $answerFormatterMock = new ExportAnswerFormatter();
+
         $service = new ExportSurveyResultsService(
             $surveyMock,
             $answerMock,
             $filterPatcherMock,
-            $transformerMock
+            $transformerMock,
+            $answerFormatterMock
         );
 
         $service->exportResponses(123456, $invalidType);
@@ -485,11 +522,14 @@ class ExportSurveyResultsServiceTest extends TestBaseClass
         $filterPatcherMock = Mockery::mock(FilterPatcher::class)->makePartial();
         $transformerMock = Mockery::mock(TransformerOutputSurveyResponses::class)->makePartial();
 
+        $answerFormatterMock = new ExportAnswerFormatter();
+
         $service = Mockery::mock(ExportSurveyResultsService::class, [
             $surveyMock,
             $answerMock,
             $filterPatcherMock,
-            $transformerMock
+            $transformerMock,
+            $answerFormatterMock
         ])->makePartial()->shouldAllowMockingProtectedMethods();
 
         $service->shouldReceive('exportResponsesInChunks')

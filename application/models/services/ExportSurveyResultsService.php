@@ -7,13 +7,13 @@ use InvalidArgumentException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseMappingTrait;
 use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurveyResponses;
+use LimeSurvey\Models\Services\Export\ExportAnswerFormatter;
 use LimeSurvey\Models\Services\Export\ExportWriterInterface;
 use LimeSurvey\Models\Services\Export\CsvExportWriter;
 use LimeSurvey\Models\Services\Export\HtmlExportWriter;
 use RuntimeException;
 use Survey;
 use Answer;
-use Question;
 use SurveyDynamic;
 
 class ExportSurveyResultsService
@@ -48,23 +48,31 @@ class ExportSurveyResultsService
     protected $transformerOutputSurveyResponses;
 
     /**
+     * @var ExportAnswerFormatter
+     */
+    protected $answerFormatter;
+
+    /**
      * ExportSurveyResultsService constructor.
      *
      * @param Survey $survey
      * @param Answer $answerModel
      * @param FilterPatcher $responseFilterPatcher
      * @param TransformerOutputSurveyResponses $transformerOutputSurveyResponses
+     * @param ExportAnswerFormatter $answerFormatter
      */
     public function __construct(
         Survey $survey,
         Answer $answerModel,
         FilterPatcher $responseFilterPatcher,
-        TransformerOutputSurveyResponses $transformerOutputSurveyResponses
+        TransformerOutputSurveyResponses $transformerOutputSurveyResponses,
+        ExportAnswerFormatter $answerFormatter
     ) {
         $this->survey = $survey;
         $this->answerModel = $answerModel;
         $this->responseFilterPatcher = $responseFilterPatcher;
         $this->transformerOutputSurveyResponses = $transformerOutputSurveyResponses;
+        $this->answerFormatter = $answerFormatter;
     }
 
     /**
@@ -239,58 +247,25 @@ class ExportSurveyResultsService
             ['survey' => $this->loadedSurvey]
         );
 
-        $dummyDate = '1980-01-01 00:00:00';
-
         foreach ($transformedResponses as $index => &$response) {
-            // Override date fields with raw DB values (bypass ISO 8601 formatting)
             if (isset($chunk[$index]) && $chunk[$index] instanceof SurveyDynamic) {
-                $rawAttributes = $chunk[$index]->attributes;
-
-                // Make all raw attributes available
-                foreach ($rawAttributes as $key => $value) {
-                    if (!isset($response[$key])) {
-                        $response[$key] = $value;
-                    }
-                }
-
-                $rawSubmitDate = $rawAttributes['submitdate'] ?? null;
-                $response['submitDate'] = ($rawSubmitDate === $dummyDate) ? null : $rawSubmitDate;
-
-                $rawStartDate = $rawAttributes['startdate'] ?? null;
-                $response['startDate'] = ($rawStartDate === $dummyDate) ? null : $rawStartDate;
-
-                $rawDatestamp = $rawAttributes['datestamp'] ?? null;
-                $response['dateLastAction'] = ($rawDatestamp === $dummyDate) ? null : $rawDatestamp;
+                $this->overrideDateFields($response, $chunk[$index]->attributes);
             }
 
-            // Format answer values using full answer formatting
             if (isset($response['answers'])) {
                 foreach ($response['answers'] as &$answer) {
                     $key = $answer['key'] ?? null;
                     if ($key !== null && isset($surveyQuestions[$key])) {
                         $question = $surveyQuestions[$key];
                         $answer['qid'] = $question['qid'];
-                        $answer['value'] = $this->formatFullAnswer(
+                        $answer['value'] = $this->answerFormatter->formatFullAnswer(
                             $answer['value'],
                             $question['type'] ?? null,
                             $key
                         );
                     }
                 }
-
-                // Merge timing data into answers
-                if (!empty($timingsData)) {
-                    $responseId = $response['id'];
-                    if (isset($timingsData[$responseId])) {
-                        $timingRow = $timingsData[$responseId];
-                        foreach ($timingFieldKeys as $fieldKey) {
-                            $response['answers'][$fieldKey] = [
-                                'key' => $fieldKey,
-                                'value' => $timingRow[$fieldKey] ?? '',
-                            ];
-                        }
-                    }
-                }
+                $this->mergeTimingData($response, $timingsData, $timingFieldKeys);
             }
         }
 
@@ -298,80 +273,54 @@ class ExportSurveyResultsService
     }
 
     /**
-     * Format a raw answer value to its display text,
-     * matching the old export's "full answer" format.
+     * Override date fields with raw DB values (bypass ISO 8601 formatting)
+     * and merge any missing raw attributes into the response.
      *
-     * @param mixed $value Raw answer value from the database
-     * @param string|null $type Question type character
-     * @param string $fieldKey Full field key (e.g. "123X456X789SQ001")
-     * @return mixed Formatted display value
+     * @param array $response
+     * @param array $rawAttributes
      */
-    protected function formatFullAnswer($value, $type, $fieldKey)
+    private function overrideDateFields(array &$response, array $rawAttributes)
     {
-        if ($type === null) {
-            return $value;
+        $dummyDate = '1980-01-01 00:00:00';
+
+        foreach ($rawAttributes as $key => $value) {
+            if (!isset($response[$key])) {
+                $response[$key] = $value;
+            }
         }
 
-        switch ($type) {
-            case Question::QT_M_MULTIPLE_CHOICE:
-            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
-                // Comment and "other" fields: pass through raw value
-                if (str_ends_with($fieldKey, 'other') || str_ends_with($fieldKey, 'comment')) {
-                    return $value;
-                }
-                // Checkbox fields: Y/N/null -> Yes/No/N/A
-                if ($value === 'Y') {
-                    return gT('Yes');
-                }
-                if ($value === 'N' || $value === '') {
-                    return gT('No');
-                }
-                return gT('N/A');
+        $rawSubmitDate = $rawAttributes['submitdate'] ?? null;
+        $response['submitDate'] = ($rawSubmitDate === $dummyDate) ? null : $rawSubmitDate;
 
-            case Question::QT_Y_YES_NO_RADIO:
-                if ($value === 'Y') {
-                    return gT('Yes');
-                }
-                if ($value === 'N') {
-                    return gT('No');
-                }
-                return gT('N/A');
+        $rawStartDate = $rawAttributes['startdate'] ?? null;
+        $response['startDate'] = ($rawStartDate === $dummyDate) ? null : $rawStartDate;
 
-            case Question::QT_G_GENDER:
-                if ($value === 'M') {
-                    return gT('Male');
-                }
-                if ($value === 'F') {
-                    return gT('Female');
-                }
-                return gT('N/A');
+        $rawDatestamp = $rawAttributes['datestamp'] ?? null;
+        $response['dateLastAction'] = ($rawDatestamp === $dummyDate) ? null : $rawDatestamp;
+    }
 
-            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
-                if ($value === 'Y') {
-                    return gT('Yes');
-                }
-                if ($value === 'N') {
-                    return gT('No');
-                }
-                if ($value === 'U') {
-                    return gT('Uncertain');
-                }
-                return $value;
-
-            case Question::QT_E_ARRAY_INC_SAME_DEC:
-                if ($value === 'I') {
-                    return gT('Increase');
-                }
-                if ($value === 'S') {
-                    return gT('Same');
-                }
-                if ($value === 'D') {
-                    return gT('Decrease');
-                }
-                return $value;
-
-            default:
-                return $value;
+    /**
+     * Merge timing data into the response's answers array.
+     *
+     * @param array $response
+     * @param array $timingsData Timing data indexed by response ID
+     * @param array $timingFieldKeys
+     */
+    private function mergeTimingData(array &$response, array $timingsData, array $timingFieldKeys)
+    {
+        if (empty($timingsData)) {
+            return;
+        }
+        $responseId = $response['id'];
+        if (!isset($timingsData[$responseId])) {
+            return;
+        }
+        $timingRow = $timingsData[$responseId];
+        foreach ($timingFieldKeys as $fieldKey) {
+            $response['answers'][$fieldKey] = [
+                'key' => $fieldKey,
+                'value' => $timingRow[$fieldKey] ?? '',
+            ];
         }
     }
 
