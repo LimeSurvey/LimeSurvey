@@ -197,7 +197,18 @@ class Quota extends LSActiveRecord
         }
         $attributes = $this->attributes;
 
-        return array_merge(array(), $languageSettings->attributes, array('members' => $members), $attributes);
+        $defaultLanguageAttributes = [
+            'quotals_message'     => gT("Sorry your responses have exceeded a quota on this survey."),
+            'quotals_url'         => '',
+            'quotals_urldescrip'  => '',
+        ];
+
+        return array_merge(
+            array(),
+            $languageSettings->attributes ?? $defaultLanguageAttributes,
+            array('members' => $members),
+            $attributes
+        );
     }
 
     /**
