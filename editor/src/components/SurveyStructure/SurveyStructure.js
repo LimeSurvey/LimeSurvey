@@ -9,7 +9,6 @@ import {
   DuplicateQuestionGroup,
   IsElementOnScreen,
   ScrollToElement,
-  confirmAlert,
   moveQuestionGroup,
   createBufferOperation,
   getReorganizedQuestionGroups,
@@ -22,6 +21,7 @@ import {
 import { useFocused, useAppState, useBuffer, useSurvey } from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
 import { CloseIcon } from 'components/icons'
+import { ConfirmModal } from 'components/Modals'
 
 import { getQuestionTypeInfo } from '../QuestionTypes'
 import { RowPinned } from './RowPinned'
@@ -46,6 +46,11 @@ export const SurveyStructure = () => {
 
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
   const [isDraggingOutOfGroup, setIsDraggingOutOfGroup] = useState(false)
+  const [deleteGroupState, setDeleteGroupState] = useState({
+    show: false,
+    questionGroup: null,
+    index: null,
+  })
 
   useEffect(() => {
     const allGroupsElement = document.querySelector(
@@ -81,21 +86,21 @@ export const SurveyStructure = () => {
   }
 
   const handleGroupDeletion = (questionGroup, index) => {
-    confirmAlert({ icon: 'warning' }).then(({ isConfirmed }) => {
-      if (!isConfirmed) {
-        return
-      }
+    setDeleteGroupState({ show: true, questionGroup, index })
+  }
 
-      const [updatedQuestionGroups] = arrayDeleteItem(questionGroups, index)
+  const handleConfirmGroupDeletion = () => {
+    const { questionGroup, index } = deleteGroupState
+    const [updatedQuestionGroups] = arrayDeleteItem(questionGroups, index)
 
-      const operation = createBufferOperation(questionGroup.gid)
-        .questionGroup()
-        .delete()
+    const operation = createBufferOperation(questionGroup.gid)
+      .questionGroup()
+      .delete()
 
-      unFocus()
-      handleUpdate(updatedQuestionGroups)
-      addToBuffer(operation)
-    })
+    unFocus()
+    handleUpdate(updatedQuestionGroups)
+    addToBuffer(operation)
+    setDeleteGroupState({ show: false, questionGroup: null, index: null })
   }
 
   const handleOnDragEnd = (dropResult) => {
@@ -299,6 +304,18 @@ export const SurveyStructure = () => {
       className="d-flex"
       style={{ height: '100%' }}
     >
+      <ConfirmModal
+        show={deleteGroupState.show}
+        onHide={() =>
+          setDeleteGroupState({ show: false, questionGroup: null, index: null })
+        }
+        onConfirm={handleConfirmGroupDeletion}
+        title={t('Delete question group')}
+        description={t(
+          'Are you sure you want to delete this question group? this action cannot be reverted.'
+        )}
+        confirmButtonText={t('Delete')}
+      />
       <div className="survey-structure">
         <div id="survey-menu" className="survey-menu">
           <SideBarHeader className="primary">
