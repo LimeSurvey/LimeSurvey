@@ -254,8 +254,9 @@ $config['auth_webserver_autocreate_permissions'] = array(
 $config['filterxsshtml'] = true;
 
 /** filterxsshtml_forcedall
- * Force previous settings for all user include superadmin
+ * Force filterxsshtml to true
  * Disable update in admin GUI
+ * Enables filtering of suspicious html tags for superadmin too
  * @var boolean
  */
 $config['filterxsshtml_forcedall'] = false;
