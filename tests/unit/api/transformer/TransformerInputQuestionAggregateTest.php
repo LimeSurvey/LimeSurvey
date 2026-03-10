@@ -52,12 +52,12 @@ class TransformerInputQuestionAggregateTest extends TestBaseClass
         self::assertIsArray($preparedData);
         self::assertArrayHasKey('answeroptions', $preparedData);
         $answers = $preparedData['answeroptions'];
-        self::assertArrayHasKey(0, $answers);
-        self::assertArrayHasKey(0, $answers[0]);
-        self::assertArrayHasKey('code', $answers[0][0]);
-        self::assertEquals('AO01', $answers[0][0]['code']);
-        self::assertArrayHasKey('answeroptionl10n', $answers[0][0]);
-        $answerL10n = $answers[0][0]['answeroptionl10n'];
+        self::assertArrayHasKey('temp__123', $answers);
+        self::assertArrayHasKey(0, $answers['temp__123']);
+        self::assertArrayHasKey('code', $answers['temp__123'][0]);
+        self::assertEquals('AO01', $answers['temp__123'][0]['code']);
+        self::assertArrayHasKey('answeroptionl10n', $answers['temp__123'][0]);
+        $answerL10n = $answers['temp__123'][0]['answeroptionl10n'];
         self::assertIsArray($answerL10n);
         self::assertArrayHasKey('en', $answerL10n);
         self::assertArrayHasKey('de', $answerL10n);
@@ -156,7 +156,8 @@ class TransformerInputQuestionAggregateTest extends TestBaseClass
     private function getAnswers($operation = 'create'): array
     {
         $answer = [
-            'tempId' => 'XXX124',
+            'tempId' => 'temp__123',
+            'aid' => 'temp__123',
             'code'   => 'AO01',
             'l10ns'  => [
                 'en' => [

@@ -96,7 +96,7 @@ class ResponsesController extends LSBaseController
             $quexmlpdf->setLanguage($sBrowseLanguage);
             set_time_limit(120);
             App()->loadHelper('export');
-            $quexml = quexml_export($surveyId, $sBrowseLanguage, $id);
+            $quexml = quexml_export($surveyId, $sBrowseLanguage, $id, false);
             $quexmlpdf->create($quexmlpdf->createqueXML($quexml));
             $quexmlpdf->write_out("$surveyId-$id-queXML.pdf");
         } else {

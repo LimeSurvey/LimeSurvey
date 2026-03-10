@@ -69,7 +69,7 @@ class Tokens extends SurveyCommonAction
         );
 
         // this data is for table
-        if (($_POST['oldtable'] ?? null) && (($_POST['restoretable'] ?? null) === 'Y') && (!$survey->hasTokensTable)) {
+        if (($_POST['oldtable'] ?? null) && (($_POST['restoretable'] ?? null) === 'Y') && (!$survey->hasTokens())) {
             $this->newParticipantTable($iSurveyId);
         }
         Yii::import('application.libraries.Date_Time_Converter', true);
@@ -288,7 +288,7 @@ class Tokens extends SurveyCommonAction
 
                                     if (!empty($record) && $record->emailstatus != 'bounced') {
                                         $record->emailstatus = 'bounced';
-                                        $record->save();
+                                        $record->save(true, ['emailstatus']);
                                         $bouncetotal++;
                                     }
 
@@ -398,9 +398,6 @@ class Tokens extends SurveyCommonAction
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect(array("/admin/tokens/sa/index/surveyid/{$iSurveyId}"));
         }
-
-        // TODO: Why needed?
-        App()->clientScript->registerPackage('bootstrap-switch');
 
         if (!$survey->hasTokensTable) {
             $this->newParticipantTable($iSurveyId);
@@ -1531,7 +1528,7 @@ class Tokens extends SurveyCommonAction
         $bIsInvitation = $sSubAction == 'invite';
 
         Yii::app()->loadHelper('surveytranslator');
-        Yii::app()->loadHelper('/admin/htmleditor');
+        Yii::app()->loadHelper('admin.htmleditor');
         Yii::app()->session['FileManagerContext'] = "edit:emailsettings:{$iSurveyId}";
         initKcfinder();
         Yii::app()->loadHelper('replacements');
@@ -1606,7 +1603,7 @@ class Tokens extends SurveyCommonAction
                 $mail->setSurvey($iSurveyId);
                 $mail->emailType = $sSubAction;
                 $mail->replaceTokenAttributes = true;
-                foreach ($emresult as $emrow) {
+                foreach ($emresult as $index => $emrow) {
                     $mailLanguage = $emrow['language'];
                     if (empty($mailLanguage)) {
                         $mailLanguage = $sBaseLanguage;
@@ -1630,6 +1627,7 @@ class Tokens extends SurveyCommonAction
                         }
                         continue;
                     }
+                    $mail->index = $index;
                     $mail->setToken($emrow['token']);
                     $mail->setFrom(Yii::app()->request->getPost('from_' . $mailLanguage));
                     $mail->rawSubject = $sSubject[$mailLanguage];
@@ -1699,14 +1697,13 @@ class Tokens extends SurveyCommonAction
                             }
                         }
                         $tokenoutput .= $stringInfo . "<br />\n";
-                        if (Yii::app()->getConfig("emailsmtpdebug") > 1) {
-                            $tokenoutput .= $mail->getDebug('html');
-                        }
                         $tokenoutput .= $tokenSaveError;
                     } else {
                         $tokenoutput .= $stringInfo . CHtml::tag("span", array('class' => "text-danger"), sprintf(gT("Error message: %s"), $mail->getError())) . "<br>\n";
+                        // If there is an error show the debug information right after the error message
                         if (Yii::app()->getConfig("emailsmtpdebug") > 0) {
                             $tokenoutput .= $mail->getDebug('html');
+                            $mail->debug = [];
                         }
                         $bSendError = true;
                     }
@@ -1715,6 +1712,9 @@ class Tokens extends SurveyCommonAction
                 }
                 // Closes a still active SMTP connection if it exists
                 $mail->smtpClose();
+                if (Yii::app()->getConfig("emailsmtpdebug") > 1 && ($mail->Mailer == 'smtp')) {
+                    $tokenoutput .= $mail->getDebug('html');
+                }
                 $aViewUrls = array();
                 $aData['tokenoutput'] = $tokenoutput;
 
@@ -1762,7 +1762,7 @@ class Tokens extends SurveyCommonAction
                                 . "<li>" . gT("not having already completed the survey") . "</li>"
                                 . "<li>" . gT("having an access code") . "</li>"
                                 . "<li>" . gT("having at least one use left") . "</li></ul>"
-                                . '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-cancel ">' . gT("Cancel") . '</a></p>'
+                                . '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-cancel " role="button">' . gT("Cancel") . '</a></p>'
                         )
                     ),
                     $aData
@@ -2371,6 +2371,8 @@ class Tokens extends SurveyCommonAction
                             $aParams = array();
                             $oCriteria = new CDbCriteria();
                             $oCriteria->condition = "";
+
+                            // @todo If a field is encrypted, then the condition value also needs to be encrypted before comparison
                             foreach ($aFilterDuplicateFields as $field) {
                                 if (isset($aWriteArray[$field])) {
                                     $oCriteria->addCondition("{$field} = :{$field}");
@@ -2874,7 +2876,15 @@ class Tokens extends SurveyCommonAction
 
         //The survey participant list already exist ?
         if ($survey->hasTokensTable) {
-            Yii::app()->session['flashmessage'] = gT("Participant list already exist for this survey.");
+            if ((returnGlobal('restoretable') === "Y" && Yii::app()->request->getPost('oldtable'))) {
+                require_once "application/helpers/admin/import_helper.php";
+                $source = Yii::app()->db->tablePrefix . Yii::app()->request->getPost('oldtable');
+                $destination = Yii::app()->db->tablePrefix . "tokens_" . (int)$iSurveyId;
+                copyFromOneTableToTheOther($source, $destination, $preserveIDs = false);
+                Yii::app()->session['flashmessage'] = gT("Participant list was successfully imported.");
+            } else {
+                Yii::app()->session['flashmessage'] = gT("Participant list already exist for this survey.");
+            }
             $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
 

@@ -1610,7 +1610,7 @@ class userstatistics_helper
                     . gT("Browse") . "' id='$sColumnName' />";
                 }
 
-                if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'pdf') {
+                if ($browse === true && !empty($_POST['showtextinline']) && $outputType == 'pdf') {
                     $headPDF2 = array();
                     $headPDF2[] = array(gT("ID"), gT("Response"));
                     $tablePDF2 = array();
@@ -1621,7 +1621,7 @@ class userstatistics_helper
                     }
                 }
 
-                if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'xls') {
+                if ($browse === true && !empty($_POST['showtextinline']) && $outputType == 'xls') {
                     $headXLS = array();
                     $tableXLS = array();
                     $headXLS[] = array(gT("ID"), gT("Response"));
@@ -1664,7 +1664,7 @@ class userstatistics_helper
                 . "<strong>" . gT("Percentage") . "</strong></th>\n"
                 . "\t</tr></thead>\n";
 
-                if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'pdf') {
+                if ($browse === true && !empty($_POST['showtextinline']) && $outputType == 'pdf') {
                     $headPDF2 = array();
                     $headPDF2[] = array(gT("ID"), gT("Response"));
                     $tablePDF2 = array();

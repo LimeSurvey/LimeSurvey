@@ -51,6 +51,9 @@ class LimeMailer extends PHPMailer
     /* @var string[] Array for barebone url and url */
     public $aUrlsPlaceholders = [];
 
+    /* @var integer $index Index of current email related to batch sending - starts from 0*/
+    public $index = 0;
+
     /*  @var string[] Array of replacements key was replaced by value */
     public $aReplacements = [];
 
@@ -155,11 +158,6 @@ class LimeMailer extends PHPMailer
         /* Default language to current one */
         $this->mailLanguage = Yii::app()->getLanguage();
 
-        $this->SMTPDebug = Yii::app()->getConfig("emailsmtpdebug");
-        $this->Debugoutput = function ($str, $level) {
-            $this->addDebug($str);
-        };
-
         if (Yii::app()->getConfig('demoMode')) {
             /* in demo mode no need to do something else */
             return;
@@ -177,7 +175,14 @@ class LimeMailer extends PHPMailer
             case self::MethodSmtp:
                 $this->IsSMTP();
                 $this->SMTPKeepAlive = true;
+                $this->Debugoutput = function ($str, $level) {
+                    $this->addDebug($str);
+                };
                 if ($emailsmtpdebug > 0) {
+                    if ($emailsmtpdebug == 1) {
+                        // Map "On errors" to PHPMailer debug level 2
+                        $emailsmtpdebug = 2;
+                    }
                     $this->SMTPDebug = $emailsmtpdebug;
                 }
                 if (strpos((string) $emailsmtphost, ':') > 0) {
@@ -224,8 +229,9 @@ class LimeMailer extends PHPMailer
     public function init()
     {
         // Make sure that any existing SMTP connection is closed
-        $this->smtpClose();
-        $this->debug = [];
+        if ($this->Mailer != 'smtp') {
+            $this->debug = [];
+        }
         $this->ContentType = self::CONTENT_TYPE_PLAINTEXT;
         $this->clearCustomHeaders();
         $this->clearAddresses();
@@ -462,7 +468,7 @@ class LimeMailer extends PHPMailer
      */
     public function addDebug($str, $level = 0)
     {
-        $this->debug[] = rtrim((string) $str) . "\n";
+        $this->debug[] = '[' . date('Y-m-d H:i:s') . "] " . rtrim((string) $str) . "\n";
     }
 
     /**
@@ -518,13 +524,13 @@ class LimeMailer extends PHPMailer
             'survey' => $this->surveyId,
             'type' => $this->emailType,
             'model' => $model,
-            // This send array of array, different behaviour than in 3.X where it send array of string (Name <email>)
+            'index' => $this->index,
             'to' => $this->to,
             'subject' => $this->Subject,
             'body' => $this->Body,
             'from' => $this->getFrom(),
             'bounce' => $this->Sender,
-            /* plugin can update itself some value, then allowing to disable update by default event */
+            /* A plugin can update some value, then allowing to disable update by default event */
             /* PS : plugin MUST use $this->get('mailer') for better compatibility for each plugin …*/
             'updateDisable' => array(),
         );
@@ -587,7 +593,7 @@ class LimeMailer extends PHPMailer
 
     /**
      * Construct and do what must be done before sending a message
-     * @return boolean
+     * @return boolean True if sending was successful, false otherwise.
      */
     public function sendMessage()
     {
@@ -647,7 +653,6 @@ class LimeMailer extends PHPMailer
                 return $event->get('error') == null;
             }
         }
-
         return parent::Send();
     }
 

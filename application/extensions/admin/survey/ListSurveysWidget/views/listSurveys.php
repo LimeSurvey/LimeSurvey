@@ -26,6 +26,7 @@
             'dataProvider'          => $this->model->search(),
             // Number of row per page selection
             'id'                    => 'survey-grid',
+            'caption'               => gT('List of surveys'),
             'emptyText'             => gT('No surveys found.'),
             'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                     gT('%s rows per page'),

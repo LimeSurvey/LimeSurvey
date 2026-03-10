@@ -373,7 +373,6 @@ class ParticipantsAction extends SurveyCommonAction
         $searchstring = $request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
         Yii::app()->clientScript->registerPackage('bootstrap-datetimepicker');
-        Yii::app()->clientScript->registerPackage('bootstrap-switch');
 
         // check global and custom permissions and pass them to $aData
         $aData['permissions'] = permissionsAsArray(
@@ -784,7 +783,6 @@ class ParticipantsAction extends SurveyCommonAction
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
         );
         $aData['topbar'] = $this->getTopBarComponents($title, false, false);
-        Yii::app()->clientScript->registerPackage('bootstrap-switch');
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'importCSV'), $aData);
     }
 
@@ -1303,7 +1301,6 @@ class ParticipantsAction extends SurveyCommonAction
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
         );
         $aData['topbar'] = $this->getTopBarComponents($title, false, false);
-        Yii::app()->clientScript->registerPackage('bootstrap-switch');
 
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'blacklist'), $aData);
     }
@@ -1397,7 +1394,6 @@ class ParticipantsAction extends SurveyCommonAction
         $searchstring = Yii::app()->request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
         // loads the participant panel view and display participant view
-        Yii::app()->clientScript->registerPackage('bootstrap-switch');
 
         $aData['massiveAction'] = App()->getController()->renderPartial(
             '/admin/participants/massive_actions/_selector_attribute',
@@ -1407,7 +1403,6 @@ class ParticipantsAction extends SurveyCommonAction
         );
         $aData['topbar'] = $this->getTopBarComponents($title, false, true);
 
-        Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'attributeControl'), $aData);
     }
 
@@ -2005,7 +2000,6 @@ class ParticipantsAction extends SurveyCommonAction
         $aData['pageSizeShareParticipantView'] = Yii::app()->user->getState('pageSizeShareParticipantView');
         $searchstring = Yii::app()->request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
-        App()->getClientScript()->registerPackage('bootstrap-switch');
 
         $aData['massiveAction'] = App()->getController()->renderPartial('/admin/participants/massive_actions/_selector_share', array(), true, false);
         $aData['topbar'] = $this->getTopBarComponents($title, false, false);

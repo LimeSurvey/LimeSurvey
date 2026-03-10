@@ -18,23 +18,6 @@ $(document).on('ready  pjax:scriptcomplete',  function(){
         var sBaseLang    = $("[name=baselang]").val();
         var sToLang      = $("[name=tolang]").val();
 
-        switch (sToLang)
-        {
-            case 'he': sToLang='iw'; break;
-            case 'zh-Hans': sToLang='zh-CN'; break;
-            case 'zh-Hant-TW': sToLang='zh-TW'; break;
-            case 'zh-Hant-HK': sToLang='zh-TW'; break;
-            case 'nl-informal': sToLang='nl'; break;
-            case 'de-easy': sToLang='de'; break;
-            case 'de-informal': sToLang='de'; break;
-            case 'ie': sToLang='ga'; break;
-            case 'it-formal': sToLang='it'; break;
-            case 'nb': sToLang='no'; break;
-            case 'nn': sToLang='no'; break;
-            case 'pt-BR': sToLang='pt'; break;
-            case 'es-MX': sToLang='es'; break;
-        }
-
         $("._from_",$(ui.target).parent()).each(function(index,element)
         {
             var sToConvert = $(element).html();
@@ -115,7 +98,7 @@ function fDoTranslateAjax(sBaseLang,sToLang,sToConvert,sId)
 
                 if (aData.error)
                 {
-                    alert(sGoogleApiError + " " + sDetailedError + ": " + aData.error);
+                    alert(sGoogleApiError + "\n\n" + sprintf(sDetailedError, aData.error));
                 }
                 else if (!aData.error)
                 {

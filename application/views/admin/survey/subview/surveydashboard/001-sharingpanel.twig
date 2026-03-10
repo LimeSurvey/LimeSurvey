@@ -60,7 +60,7 @@
         </li>
         <!-- Sharing panel -->
         <li class="list-group-item p-0 border-0">
-            <div class="ls-flex-row col-12">
+            <div class="ls-flex-row col-12" style="align-items:center">
                 <div class="col-4 card-label">
                     {{ gT("Sharing panel:") }}
                 </div>
@@ -73,6 +73,26 @@
                     </div>
                 </div>
             </div>
+        </li>
+        <!-- Access mode -->
+        <li class="list-group-item p-0 border-0" >
+            <div class="ls-flex-row col-12" style="align-items:center; margin-top:6px">
+                <div class="col-4 card-label">
+                    {{ gT("Access mode:") }}
+                </div>
+                <div class="col-8 ls-card-grid__description"  style="align-content:center">
+                    {% set accessModeIcon = accessMode == 'O' ? "ri-global-line" : "ri-lock-2-line" %}
+                    {% set accessModeText = accessMode == 'O' ? gT("Anyone with link") : gT("Link with access code") %}
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="access-mode-dropdown" data-bs-toggle="dropdown" aria-expanded="false" {{ oSurvey.active == 'Y' ? '' : 'disabled' }}>
+                            <i class="{{ accessModeIcon }}"></i> {{ accessModeText }}
+                        </button>
+                         <ul class="dropdown-menu" aria-labelledby="access-mode-dropdown">
+                            <li><a data-surveyid="{{ oSurvey.sid }}" data-newaccessmode="O" class="dropdown-item updateAccessModeBtn" href="#"><i class="ri-global-line"></i> {{ gT("Anyone with link") }}</a></li>
+                            <li><a data-surveyid="{{ oSurvey.sid }}" data-newaccessmode="C" class="dropdown-item updateAccessModeBtn" href="#"><i class="ri-lock-2-line"></i> {{ gT("Link with access code") }}</a></li>
+                        </ul>
+                    </div>
+                </div>
         </li>
     </ul>
 </div>

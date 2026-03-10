@@ -135,7 +135,7 @@ class TokenDynamic extends LSActiveRecord
         $missingcolumns = array_diff($columncheck, $columns);
         //Some columns are missing - we need to create them
         if (count($missingcolumns) > 0) {
-            Yii::app()->loadHelper('update/updatedb'); //Load the admin helper to allow column creation
+            Yii::app()->loadHelper('update.updatedb'); //Load the admin helper to allow column creation
             $columninfo = array(
                     'validfrom' => 'datetime',
                     'validuntil' => 'datetime',
@@ -155,7 +155,7 @@ class TokenDynamic extends LSActiveRecord
             foreach ($columns as $columnname) {
                 $definition = $tableSchema->getColumn($columnname);
                 if ($definition->allowNull != true) {
-                    Yii::app()->loadHelper('update/updatedb'); //Load the admin helper to allow column creation
+                    Yii::app()->loadHelper('update.updatedb'); //Load the admin helper to allow column creation
                     Yii::app()->db->createCommand()->alterColumn($sTableName, $columnname, "string({$definition->size}})");
                     Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
                 }

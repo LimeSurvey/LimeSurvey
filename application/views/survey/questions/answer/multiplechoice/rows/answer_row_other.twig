@@ -16,9 +16,9 @@
 #}
 
 <!-- answer_row_other -->
-<li id='javatbd{{ myfname }}' class='question-item answer-item checkbox-text-item mb-1 {{ relevanceClass }}'>
+<li id='javatbd{{ myfname }}' class='question-item answer-item checkbox-text-item {{ relevanceClass }}'>
     <div class="row">
-        <div class="col-auto">
+        <div class="col-auto d-flex">
             <!-- Checkbox + label -->
             <div class="checkbox-item othertext-label-checkox-container">
                 <!-- checkbox -->
@@ -34,9 +34,7 @@
                        id="label-{{ myfname }}-other">{{ processString(othertext) }}</label>
             </div>
         </div>
-
-        <!-- comment -->
-        <div class="col-auto">
+        <div class="col">
             <div class="text-item other-text-item">
                 <input
                     class="form-control input-sm {{ kpclass }}"
