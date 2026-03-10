@@ -387,7 +387,7 @@ export default {
                                 class="d-flex pjax"
                                 :href="questiongroup.link"
                             >
-                                <span class="question_text_ellipsize" :style="{ 'max-width': itemWidth }" tab-index="1">
+                                <span class="question_text_ellipsize" :style="{ 'max-width': itemWidth }" tabindex="0">
                                     {{ questiongroup.group_name }}
                                 </span>
                             </a>
@@ -401,7 +401,7 @@ export default {
 
                             <div>
                             <div class="ls-questiongroup-tools cursor-pointer" id="dropdownMenuButton1"
-                                data-bs-toggle="dropdown" aria-expanded="false" tab-index="1">
+                                data-bs-toggle="dropdown" aria-expanded="false" role="button" tabindex="0">
                                 <i class="ri-more-fill"></i>
                             </div>
 
@@ -490,7 +490,7 @@ export default {
                                 </a>
                                 <div  class="dropdown position-absolute" style="right:10px" >
                                     <div class="ls-question-tools ms-auto position-relative cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                     aria-expanded="false" tabindex="1">
+                                     aria-expanded="false" role="button" tabindex="0">
                                         <i class="ri-more-fill"></i>
                                     </div>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
