@@ -16329,12 +16329,6 @@ body {
   flex-direction: column;
 }
 
-.scoped-toolbuttons-left {
-  display: flex;
-  justify-content: flex-end;
-  gap: 5px;
-}
-
 .container-40 {
   padding: 0 40px;
   width: 100%;
@@ -19086,6 +19080,14 @@ input[type=number] {
 .sidebar .sidebar-icons .sidebar-icon .btn-icon[selected] {
   background-color: #fff;
   color: #333641;
+}
+.sidebar .scoped-toolbuttons-left {
+  flex: 2 1 auto;
+  align-self: flex-end;
+  white-space: nowrap;
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
 }
 
 .badge {

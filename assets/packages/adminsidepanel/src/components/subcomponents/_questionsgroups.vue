@@ -308,7 +308,7 @@ export default {
 <template>
     <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane h-100 pt-2">
         <div class="ls-flex-row button-sub-bar mb-2">
-          <div class="scoped-toolbuttons-right me-2">
+          <div class="scoped-toolbuttons-right">
            <button
                 class="btn btn-sm btn-outline-secondary me-2"
                 @click="collapseAll"
@@ -490,7 +490,7 @@ export default {
                                 </a>
                                 <div  class="dropdown position-absolute" style="right:10px" >
                                     <div class="ls-question-tools ms-auto position-relative cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                     aria-expanded="false" tab-index="1">
+                                     aria-expanded="false" tabindex="1">
                                         <i class="ri-more-fill"></i>
                                     </div>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -569,14 +569,7 @@ export default {
         flex: 1;
     }
 }
-.scoped-toolbuttons-right {
-    flex: 2 1 auto;
-    align-self: flex-end;
-    white-space: nowrap;
-    .btn {
-        float: right;
-    }
-}
+
 .list-group-item.question-question-list-item .editIcon {
     margin: 10px 10px 10px 5px;
 }
