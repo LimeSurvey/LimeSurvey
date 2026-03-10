@@ -19439,6 +19439,14 @@ input[type=number] {
   background-color: #fff;
   color: #333641;
 }
+.sidebar .scoped-toolbuttons-left {
+  flex: 2 1 auto;
+  align-self: flex-end;
+  white-space: nowrap;
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+}
 
 .badge {
   padding: 4px 8px;
