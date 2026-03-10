@@ -3823,20 +3823,15 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 }
 
 /**
-* Import survey from an TSV file template that does not require assigning of GID or QID values.
-* If ID's are presented, they would be respected and used
-* Multilanguage imports are supported
-* Original function is changed to allow generating of XML instead of creating database objects directly
-* Generated XML code is send to existing lss import function
-* @param string $sFullFilePath
-* @return string XML data
-*
-* @author TMSWhite
-*/
+ * Import a survey from a TSV template by converting the TSV to LimeSurvey XML and delegating the import to XMLImportSurvey.
+ *
+ * Validates that the TSV contains the minimal headers (including survey language) required for import, reads and parses the TSV file, constructs the XML representation of survey data, and passes that XML to XMLImportSurvey for actual import processing.
+ *
+ * @param string $sFullFilePath Path to the tab-separated values (TSV) file to import.
+ * @return array Import results returned by XMLImportSurvey (counters, warnings and possible error information).
+ */
 function TSVImportSurvey($sFullFilePath)
 {
-    $baselang = 'en'; // TODO set proper default
-
     $aAttributeList = array(); //QuestionAttribute::getQuestionAttributesSettings();
     $tmp = fileCsvToUtf8($sFullFilePath);
 
@@ -3865,6 +3860,12 @@ function TSVImportSurvey($sFullFilePath)
         $adata[] = $rowarray;
     }
     fclose($tmp);
+    /* Check minimal headers */
+    $necessaryHeader = ['class', 'name', 'text'];
+    if (count(array_diff($necessaryHeader, $rowheaders)) > 0) {
+        $results['error'] = gT("The file do not seem to be a valid tab-separated-values survey file. The necessary headers are not present.");
+        return $results;
+    }
     unset($rowheaders);
     unset($rowarray) ;
 
@@ -3899,7 +3900,11 @@ function TSVImportSurvey($sFullFilePath)
                 break;
         }
     }
-
+    if (!isset($surveyinfo['language'])) {
+        $results['error'] = gT("The file do not seem to be a valid tab-separated-values survey file. No language set.");
+        return $results;
+    }
+    $baselang = $surveyinfo['language']; // the base language
 
     // Create the survey entry
     $surveyinfo['startdate'] = null;
@@ -3930,9 +3935,6 @@ function TSVImportSurvey($sFullFilePath)
     $sqinfo = array();
     $asinfo = array();
 
-    if (isset($surveyinfo['language'])) {
-        $baselang = $surveyinfo['language']; // the base language
-    }
     /* Keep track of id for group */
     $groupIds = [];
     /* Keep track of id for question (can come from tsv and can be broken : issue #17980 */
