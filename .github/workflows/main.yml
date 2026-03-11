@@ -170,12 +170,15 @@ jobs:
       DBENGINE: INNODB
     steps:
       - uses: actions/checkout@v4
+      - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mysql, xml
       - name: Setup
         run: |
           touch enabletests
           composer install -vvv
-          sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php${{ matrix.php-versions }}-mysql php${{ matrix.php-versions }}-xml -y
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
           chmod -R 777 ./themes
@@ -194,10 +197,6 @@ jobs:
           mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
           mysql -uroot -proot -e "CREATE DATABASE limesurvey;"
-      - name: Install specified PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
       - name: Load custom console and start the Application
         run: |
           cp application/config/config-sample-mysql.php application/config/config.php
@@ -206,7 +205,6 @@ jobs:
         env:
           XDEBUG_MODE: coverage
         run: php vendor/bin/phpunit --testdox --stop-on-failure tests/unit
-
       - name: Upload cov.xml
         uses: actions/upload-artifact@v4
         with:
@@ -245,31 +243,29 @@ jobs:
 
   code-check:
     runs-on: ubuntu-22.04
-    env:
-      DBENGINE: INNODB
     strategy:
       matrix:
         # Specify what versions of php you want to test
         php-versions: ['8.1', '8.3']
+    env:
+      DBENGINE: INNODB
     steps:
       - uses: actions/checkout@v4
-
+      - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mysql, xml
       - name: Setup
         run: |
           touch enabletests
           composer install -vvv
-          sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php-mysql -y
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
           chmod -R 777 ./themes
           chmod -R 777 ./tests/tmp
           chmod -R 777 ./application/config
           chmod +x ./tests/bin/lint-*
-      - name: Install specified PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
       - name: Check MySQL service
         run: |
           # InnoDB needs large_file_prefix & Barracuda file format
