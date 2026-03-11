@@ -486,7 +486,7 @@ class Zend_OpenId_Consumer_Storage_File extends Zend_OpenId_Consumer_Storage
                 unset($nonceFiles);
             } else {
                 if (is_string($date)) {
-                    $time = time($date);
+                    $time = time();
                 } else {
                     $time = $date;
                 }
