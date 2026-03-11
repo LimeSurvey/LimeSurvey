@@ -599,9 +599,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function filterTemplateSave($sTemplateName)
     {
-        if (!Permission::model()->hasTemplatePermission($sTemplateName)) {
+        // 'inherit' is always permitted — the dropdown shows it without any permission check
+        if ($sTemplateName !== 'inherit' && !Permission::model()->hasTemplatePermission($sTemplateName)) {
             // Reset to default only if different from actual value
             if (!$this->isNewRecord) {
+                $this->resetCache();
                 $oSurvey = self::model()->findByPk($this->sid);
                 if ($oSurvey->template != $sTemplateName) {
                     // No need to test !is_null($oSurvey)
