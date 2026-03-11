@@ -170,12 +170,6 @@ jobs:
       DBENGINE: INNODB
     steps:
       - uses: actions/checkout@v4
-
-      - name: Install specified PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-
       - name: Setup
         run: |
           touch enabletests
@@ -200,6 +194,10 @@ jobs:
           mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
           mysql -uroot -proot -e "CREATE DATABASE limesurvey;"
+      - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
       - name: Load custom console and start the Application
         run: |
           cp application/config/config-sample-mysql.php application/config/config.php
