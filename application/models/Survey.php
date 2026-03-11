@@ -12,6 +12,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+
 use LimeSurvey\PluginManager\PluginEvent;
 
 /**
@@ -477,10 +478,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         return array(
             'active' => array('condition' => "active = 'Y'"),
-            'open' => array('condition' => '(startdate <= :now1 OR startdate IS NULL) AND (expires >= :now2 OR expires IS NULL)', 'params' => array(
-                ':now1' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
-                ':now2' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))
-            )
+            'open' => array(
+                'condition' => '(startdate <= :now1 OR startdate IS NULL) AND (expires >= :now2 OR expires IS NULL)',
+                'params' => array(
+                    ':now1' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
+                    ':now2' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))
+                )
             ),
             'registration' => array('condition' => "allowregister = 'Y' AND startdate > :now3 AND (expires < :now4 OR expires IS NULL)", 'params' => array(
                 ':now3' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
@@ -493,8 +496,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function rules()
     {
         return array(
-            array('sid', 'numerical', 'integerOnly' => true,'min' => 1), // max ?
-            array('sid', 'unique'),// Not in pk
+            array('sid', 'numerical', 'integerOnly' => true, 'min' => 1), // max ?
+            array('sid', 'unique'), // Not in pk
             array('gsid', 'numerical', 'integerOnly' => true),
             array('datecreated', 'default', 'value' => date("Y-m-d H:i:s")),
             array('startdate', 'default', 'value' => null),
@@ -554,13 +557,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('additional_languages', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
             array('additional_languages', 'LSYii_Validators', 'isLanguageMulti' => true),
             array('running', 'safe', 'on' => 'search'),
-            array('expires', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
-            array('startdate', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
-            array('datecreated', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
+            array('expires', 'date', 'format' => ['yyyy-M-d H:m:s.???', 'yyyy-M-d H:m:s', 'yyyy-M-d H:m'], 'allowEmpty' => true),
+            array('startdate', 'date', 'format' => ['yyyy-M-d H:m:s.???', 'yyyy-M-d H:m:s', 'yyyy-M-d H:m'], 'allowEmpty' => true),
+            array('datecreated', 'date', 'format' => ['yyyy-M-d H:m:s.???', 'yyyy-M-d H:m:s', 'yyyy-M-d H:m'], 'allowEmpty' => true),
             array('expires', 'checkExpireAfterStart'),
             // The Google Analytics Tracking ID is inserted in a JS script. If the following rule is changed, make sure
             // that it doesn't render it vulnerable to XSS attacks.
-            array('googleanalyticsapikey', 'match', 'pattern' => '/^[a-zA-Z\-\d]*$/',
+            array(
+                'googleanalyticsapikey',
+                'match',
+                'pattern' => '/^[a-zA-Z\-\d]*$/',
                 'message' => gT('Google Analytics Tracking ID may only contain alphanumeric characters and hyphens.'),
             ),
         );
@@ -716,7 +722,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         // Without token table : all attribute $this->attributedescriptions AND real attribute. @see issue #13924
         if ($this->getHasTokensTable()) {
             $allKnowAttributes = array_intersect_key(
-                ( $attdescriptiondata + Token::model($this->sid)->getAttributes()),
+                ($attdescriptiondata + Token::model($this->sid)->getAttributes()),
                 Token::model($this->sid)->getAttributes()
             );
             // We remove deleted attribute even if deleted manually in DB
@@ -1166,9 +1172,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getRunning()
     {
-            $onclick = App()->getConfig('editorEnabled')
-                ? ' onclick="return  false;" '
-                : '';
+        $onclick = App()->getConfig('editorEnabled')
+            ? ' onclick="return  false;" '
+            : '';
 
         // If the survey is not active, no date test is needed
         if ($this->active === 'N') {
@@ -1542,8 +1548,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         $dropdownItems[] = [
             'title' => gT('Delete'),
-            'url' => App()->createUrl("/surveyAdministration/delete", array('iSurveyID' => $this->sid)),
+            'url' => '#',
             'enabledCondition' => $permissions['survey_update'],
+            'linkAttributes' => [
+                'data-bs-toggle' => 'modal',
+                'data-bs-target' => '#deleteSurvey_modal',
+                'onclick' => 'deleteSurveyConfirm(' . (int)$this->sid . ')',
+            ],
         ];
 
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
@@ -1596,7 +1607,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'url' => App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
             'iconClass' => 'ri-check-line',
             'enabledCondition' =>
-                $this->active === "N"
+            $this->active === "N"
                 && $permissions['survey_update']
                 && $this->groupsCount > 0
                 && $this->getQuestionsCount() > 0
@@ -1606,7 +1617,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'url' => App()->createUrl('admin/statistics/sa/simpleStatistics', ['surveyid' => $this->sid]),
             'iconClass' => 'ri-bar-chart-2-line',
             'enabledCondition' =>
-                $this->active === "Y"
+            $this->active === "Y"
                 && $permissions['statistics_read'],
         ];
 
@@ -1855,7 +1866,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 if ($this->active == "E") {
                     $criteria->compare("t.active", 'Y');
                     $criteria->addCondition("t.expires <'$sNow'");
-                } if ($this->active == "S") {
+                }
+                if ($this->active == "S") {
                     $criteria->compare("t.active", 'Y');
                     $criteria->addCondition("t.startdate >'$sNow'");
                 }
@@ -2453,7 +2465,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'img' => ' ri-settings-5-fill',
             ),
             'tokens' => array(
-                'title' => gT("Participants"), 'description' => gT("Permission to create, update, delete, import, export participants"),
+                'title' => gT("Participants"),
+                'description' => gT("Permission to create, update, delete, import, export participants"),
                 'img' => ' ri-group-fill',
             ),
             'translations' => array(
