@@ -59,6 +59,13 @@
 
 .swal2-popup {
   width: fit-content;
+  &:has(.condition-designer-overlay) {
+    max-width: 530px;
+  }
+
+  &:has(.cm-editor) {
+    max-width: none;
+  }
 }
 
 .swal2-close {
