@@ -1,6 +1,7 @@
-<label class=" form-label" for="datepickerInputField_[<?=CHtml::encode($name)?>]"><?php echo $defaultname; ?></label>
+<?php $selectId = 'Attributes_' . CHtml::encode($name); ?>
+<label id="<?php echo $selectId; ?>_label" class="form-label" for="<?php echo $selectId; ?>"><?php echo $defaultname; ?></label>
 <div class='mb-3'>
-    <select class="form-select" name="Attributes[<?=CHtml::encode($name)?>]" id="Attributes_<?=CHtml::encode($name)?>">
+    <select class="form-select" name="Attributes[<?=CHtml::encode($name)?>]" id="<?php echo $selectId; ?>" aria-labelledby="<?php echo $selectId; ?>_label">
         <option></option>  <!-- Nothing selected -->
         <?php foreach ($options as $option): ?>
             <option 
