@@ -57,6 +57,20 @@
     </div>
 </div>
 
+<div class="mb-3">
+    <label class=" form-label"  for='rpc_plugin_api'><?php eT("Enable plugin API on RemoteControl:"); ?></label>
+    <div>
+        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => 'rpc_plugin_api',
+            'checkedOption' => App()->getConfig('rpc_plugin_api'),
+            'selectOptions' => [
+                '1' => gT('On'),
+                '0' => gT('Off'),
+            ]
+        ]) ?>
+    </div>
+</div>
+
 <?php if (Yii::app()->getConfig("demoMode")==true):?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
     <?php endif; ?>

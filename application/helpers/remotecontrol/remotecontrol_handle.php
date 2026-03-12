@@ -4,6 +4,7 @@
  * This class handles all methods of the RemoteControl 2 API
  */
 
+use LimeSurvey\Models\Services\RemoteControlPluginApiService;
 use LimeSurvey\PluginManager\PluginEvent;
 
 class remotecontrol_handle
@@ -3815,6 +3816,155 @@ class remotecontrol_handle
             return ['status' => 'Can not obtain field map'];
         }
         return $fieldmap;
+    }
+
+    /**
+     * List plugin APIs exposed for RemoteControl usage.
+     *
+     * Returns discovery metadata for plugin actions. If $pluginName is given,
+     * only that active plugin is queried.
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param string|null $pluginName Optional plugin class name
+     * @return array
+     */
+    public function list_plugin_api($sSessionKey, $pluginName = null)
+    {
+        $pluginApiService = new RemoteControlPluginApiService();
+
+        if (!$this->_checkSessionKey($sSessionKey)) {
+            return ['status' => self::INVALID_SESSION_KEY];
+        }
+        $pluginApiAvailabilityError = $pluginApiService->getAvailabilityError();
+        if ($pluginApiAvailabilityError !== null) {
+            return ['status' => $pluginApiAvailabilityError];
+        }
+
+        $pluginName = $pluginName === null ? null : trim((string) $pluginName);
+        $targetPlugins = [];
+
+        if (!empty($pluginName)) {
+            $pluginRecord = Plugin::model()->findByAttributes([
+                'name' => $pluginName,
+                'active' => 1,
+            ]);
+            if (empty($pluginRecord)) {
+                return ['status' => 'Error: Plugin not active or not found'];
+            }
+            $targetPlugins = [$pluginName];
+        }
+
+        $event = new PluginEvent('listPluginApiActions');
+        $event->set('pluginApi', []);
+        $event->set('requestedPlugin', $pluginName);
+        App()->getPluginManager()->dispatchEvent($event, $targetPlugins);
+
+        $pluginApi = $event->get('pluginApi', []);
+        if (!is_array($pluginApi)) {
+            $pluginApi = [];
+        }
+
+        $pluginApi = $pluginApiService->filterDiscoveryForCaller($pluginApi);
+
+        if (!empty($pluginName)) {
+            $pluginApi = isset($pluginApi[$pluginName]) ? [$pluginName => $pluginApi[$pluginName]] : [];
+        } else {
+            ksort($pluginApi);
+        }
+
+        return [
+            'plugins' => $pluginApi,
+        ];
+    }
+
+    /**
+     * Call a plugin API action exposed through RemoteControl.
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param string $pluginName Plugin class name
+     * @param string $action Plugin action name
+     * @param array|object|null $payload Action payload data
+     * @param array|object|null $context Optional context metadata
+     * @return array
+     */
+    public function call_plugin_api($sSessionKey, $pluginName, $action, $payload = [], $context = [])
+    {
+        $pluginApiService = new RemoteControlPluginApiService();
+
+        if (!$this->_checkSessionKey($sSessionKey)) {
+            return ['status' => self::INVALID_SESSION_KEY];
+        }
+        $pluginApiAvailabilityError = $pluginApiService->getAvailabilityError();
+        if ($pluginApiAvailabilityError !== null) {
+            return ['status' => $pluginApiAvailabilityError];
+        }
+
+        $pluginName = trim((string) $pluginName);
+        $action = trim((string) $action);
+
+        if ($pluginName === '' || $action === '') {
+            return ['status' => 'Faulty parameters'];
+        }
+
+        $pluginRecord = Plugin::model()->findByAttributes([
+            'name' => $pluginName,
+            'active' => 1,
+        ]);
+        if (empty($pluginRecord)) {
+            return ['status' => 'Error: Plugin not active or not found'];
+        }
+
+        $payload = $pluginApiService->normalizeRpcAssocArray($payload);
+        if ($payload === null) {
+            return ['status' => 'Faulty parameters: payload must be an object or array'];
+        }
+
+        $context = $pluginApiService->normalizeRpcAssocArray($context);
+        if ($context === null) {
+            return ['status' => 'Faulty parameters: context must be an object or array'];
+        }
+
+        $authorizationError = $pluginApiService->getActionAuthorizationError(
+            $pluginName,
+            $action,
+            $payload,
+            $context
+        );
+        if ($authorizationError !== null) {
+            return ['status' => $authorizationError];
+        }
+
+        $event = new PluginEvent('callPluginApiAction');
+        $event->set('plugin', $pluginName);
+        $event->set('action', $action);
+        $event->set('payload', $payload);
+        $event->set('context', $context);
+        $event->set('handled', false);
+        $event->set('result', null);
+        $event->set('error', null);
+
+        App()->getPluginManager()->dispatchEvent($event, [$pluginName]);
+
+        if (!$event->get('handled', false)) {
+            return ['status' => 'Error: Unknown plugin API action'];
+        }
+
+        $error = $event->get('error');
+        if (!empty($error)) {
+            if (is_array($error)) {
+                return $error;
+            }
+            return ['status' => (string) $error];
+        }
+
+        $result = $event->get('result');
+        if (is_null($result)) {
+            return ['status' => 'Error: Plugin API returned no result'];
+        }
+
+        return is_array($result) ? $result : ['result' => $result];
     }
 
     /**
