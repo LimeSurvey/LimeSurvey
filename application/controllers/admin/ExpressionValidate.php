@@ -3,7 +3,7 @@
 /*
 * Offer some way to validate Expression in survey
 *
-* @copyright 2014 The LimeSurvey Project Team
+* @copyright 2026 The LimeSurvey Project Team
 * @license http://www.gnu.org/licenses/gpl-3.0.txt
 * @todo : Add any expression
 * @version : 1.1
@@ -46,8 +46,7 @@ class ExpressionValidate extends SurveyCommonAction
         }
         $iQuotaId = $quota;
         if (is_string($lang)) {
-            $oValidator = new LSYii_Validators();
-            $aLangs = array($oValidator->languageFilter($lang));
+            $aLangs = array(\LSYii_Validators::languageCodeFilter($lang));
         } else {
             $aLangs = $oSurvey->allLanguages;
         }

@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+html {
+  font-family: 'IBM Plex Sans';
+  font-weight: $font-weight-normal;
+  position: relative;
+  min-height: 100%;
+  font-size: $font-size-root;
+  background-color: $g-100;
+}
+
+#content {
+  background-color: $g-100 !important;
+  height: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+#container {
+  height: 100%;
+  background-color: #f6f7f7;
+}
+
+.focus-element {
+  border-radius: 2px;
+  background: $white;
+  box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
+  outline: 3px solid $grape;
+  z-index: 10;
+}
+
+[data-error] {
+  outline: 1px solid $error;
+  transition: all $transition-duration;
+  border-radius: 2px;
+}
+
+.hover-element {
+  &:hover {
+    outline: 3px solid $hover-color;
+    box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
+    border-radius: 2px;
+  }
+}
+
+.rotate-270 {
+  transform: rotate(270deg);
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.rotate-90 {
+  transform: rotate(90deg);
+}
+
+.transition-all {
+  transition: all $transition-duration;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed !important;
+
+  * {
+    cursor: not-allowed !important;
+  }
+}
+
+.disabled {
+  opacity: 0.25;
+  pointer-events: none;
+  cursor: not-allowed !important;
+}
+
+.main-body {
+  width: 100%;
+  margin-left: $left-side-bar-width;
+  background: $g-100;
+}
+
+.right-side-margin {
+  margin-right: $right-side-bar-width;
+}
+
+* {
+  scrollbar-color: $g-400 $white;
+}
+
+.inner-wrap {
+  position: absolute;
+  inset: 0;
+  // background: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+.mouse-pointer {
+  cursor: pointer;
+}
+
+.fill-grape {
+  fill: $grape;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+button.no-underline {
+  text-decoration: none !important;
+}
+
+.disable-settings {
+  pointer-events: none;
+  color: $g-400;
+
+  span,
+  div {
+    color: $g-400 !important;
+  }
+
+  img,
+  svg {
+    opacity: 0.4;
+    filter: grayscale(100%) brightness(0.8);
+  }
+}
+.no-resize {
+  resize: none;
+}

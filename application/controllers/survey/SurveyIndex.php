@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -46,12 +46,11 @@ class SurveyIndex extends CAction
             killSurveySession($surveyid);
             resetQuestionTimers($surveyid);
         }
-
         /* Get client token by POST or GET value */
         $clienttoken = trim((string)$param['token']);
         /* If not set : get by SESSION to avoid multiple submit of same token in different navigator */
-        if (empty($clienttoken) && !empty($_SESSION['survey_' . $surveyid]['token'])) {
-            $clienttoken = $_SESSION['survey_' . $surveyid]['token'];
+        if (empty($clienttoken) && !empty($_SESSION['responses_' . $surveyid]['token'])) {
+            $clienttoken = $_SESSION['responses_' . $surveyid]['token'];
         }
 
         $oSurvey = Survey::model()->findByPk($surveyid);
@@ -180,21 +179,21 @@ class SurveyIndex extends CAction
 
         // If the session was already initiated before accessing the survey with a token,
         // add it to the session to be taken into account.
-        if (empty($_SESSION['survey_' . $surveyid]['token']) && $token) {
-            $_SESSION['survey_' . $surveyid]['token'] = $token;
+        if (empty($_SESSION['responses_' . $surveyid]['token']) && $token) {
+            $_SESSION['responses_' . $surveyid]['token'] = $token;
         }
 
         $this->loadLimesurveyLang($surveyid);
 
         // Set the language of the survey, either from POST, GET parameter of session var
         // Keep the old value, because SetSurveyLanguage update $_SESSION
-        $sOldLang = $_SESSION['survey_' . $surveyid]['s_lang'] ?? ""; // Keep the old value, because SetSurveyLanguage update $_SESSION
+        $sOldLang = $_SESSION['responses_' . $surveyid]['s_lang'] ?? ""; // Keep the old value, because SetSurveyLanguage update $_SESSION
 
         $sDisplayLanguage = Yii::app()->getConfig('defaultlang');
         if (!empty($param['lang'])) {
             $sDisplayLanguage = $param['lang']; // $param take lang from returnGlobal and returnGlobal sanitize langagecode
-        } elseif (isset($_SESSION['survey_' . $surveyid]['s_lang'])) {
-            $sDisplayLanguage = $_SESSION['survey_' . $surveyid]['s_lang'];
+        } elseif (isset($_SESSION['responses_' . $surveyid]['s_lang'])) {
+            $sDisplayLanguage = $_SESSION['responses_' . $surveyid]['s_lang'];
         } elseif (!empty($oToken)) {
             $sDisplayLanguage = $oToken->language;
         } elseif ($oSurvey) {
@@ -232,7 +231,7 @@ class SurveyIndex extends CAction
 
             $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
         } elseif (!$clienttoken) {
-            $clienttoken = $_SESSION['survey_' . $surveyid]['token'] ?? ""; // Fix for #12003
+            $clienttoken = $_SESSION['responses_' . $surveyid]['token'] ?? ""; // Fix for #12003
         }
 
         if ($tokensexist != 1) {
@@ -298,8 +297,8 @@ class SurveyIndex extends CAction
         // TODO can this be moved to the top?
         // (Used to be global, used in ExpressionManager, merged into amVars. If not filled in === '')
         // can this be added in the first computation of $redata?
-        if (isset($_SESSION['survey_' . $surveyid]['srid'])) {
-            $saved_id = $_SESSION['survey_' . $surveyid]['srid'];
+        if (isset($_SESSION['responses_' . $surveyid]['srid'])) {
+            $saved_id = $_SESSION['responses_' . $surveyid]['srid'];
         }
 
         // recompute $redata since $saved_id used to be a global
@@ -351,7 +350,7 @@ class SurveyIndex extends CAction
         }
 
         //GET BASIC INFORMATION ABOUT THIS SURVEY
-        $thissurvey = getSurveyInfo($surveyid, $_SESSION['survey_' . $surveyid]['s_lang']);
+        $thissurvey = getSurveyInfo($surveyid, $_SESSION['responses_' . $surveyid]['s_lang']);
         EmCacheHelper::init($thissurvey);
         /* Unsure it still work, and surely better in afterFindSurvey */
         if (!is_null($beforeSurveyPageEvent->get('template'))) {
@@ -459,8 +458,8 @@ class SurveyIndex extends CAction
                     $aLoadErrorMsg['captchaempty'] = gT("You did not answer to the security question.");
                 } elseif (
                     !Yii::app()->request->getPost('loadsecurity')
-                    || !isset($_SESSION['survey_' . $surveyid]['secanswer'])
-                    || Yii::app()->request->getPost('loadsecurity') != $_SESSION['survey_' . $surveyid]['secanswer']
+                    || !isset($_SESSION['responses_' . $surveyid]['secanswer'])
+                    || Yii::app()->request->getPost('loadsecurity') != $_SESSION['responses_' . $surveyid]['secanswer']
                 ) {
                         $aLoadErrorMsg['captcha'] = gT("The answer to the security question is incorrect.");
                 }
@@ -487,7 +486,7 @@ class SurveyIndex extends CAction
                 }
 
                 randomizationGroupsAndQuestions($surveyid);
-                initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
+                initFieldArray($surveyid, $_SESSION['responses_' . $surveyid]['fieldmap']);
             }
             usleep(rand(Yii::app()->getConfig("minforgottenpasswordemaildelay"), Yii::app()->getConfig("maxforgottenpasswordemaildelay")));
             if (count($aLoadErrorMsg)) {
@@ -568,8 +567,8 @@ class SurveyIndex extends CAction
         }
 
         //Check to see if a refering URL has been captured.
-        if (!isset($_SESSION['survey_' . $surveyid]['refurl'])) {
-            $_SESSION['survey_' . $surveyid]['refurl'] = getReferringUrl(); // do not overwrite refurl
+        if (!isset($_SESSION['responses_' . $surveyid]['refurl'])) {
+            $_SESSION['responses_' . $surveyid]['refurl'] = getReferringUrl(); // do not overwrite refurl
         }
 
         // Let's do this only if
@@ -579,7 +578,7 @@ class SurveyIndex extends CAction
         //  - a token information has been provided
         //  - the survey is setup to allow token-response-persistence
 
-        if (!isset($_SESSION['survey_' . $surveyid]['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token != '') {
+        if (!isset($_SESSION['responses_' . $surveyid]['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token != '') {
             // load previous answers if any (dataentry with nosubmit)
                 $oResponses = Response::model($surveyid)->findAllByAttributes(array(
                 'token' => $token
@@ -608,14 +607,14 @@ class SurveyIndex extends CAction
                     }
 
                     if (isset($oResponse)) {
-                        $_SESSION['survey_' . $surveyid]['srid'] = $oResponse->id;
+                        $_SESSION['responses_' . $surveyid]['srid'] = $oResponse->id;
 
                         if (!empty($oResponse->lastpage)) {
-                            $_SESSION['survey_' . $surveyid]['LEMtokenResume'] = true;
+                            $_SESSION['responses_' . $surveyid]['LEMtokenResume'] = true;
 
                             // If the response was completed and user is allowed to edit after completion start at the beginning and not at the last page - just makes more sense
                             if (!($oResponse->submitdate && $thissurvey['alloweditaftercompletion'] == 'Y')) {
-                                $_SESSION['survey_' . $surveyid]['step'] = $oResponse->lastpage;
+                                $_SESSION['responses_' . $surveyid]['step'] = $oResponse->lastpage;
                             }
                         }
 
@@ -623,12 +622,12 @@ class SurveyIndex extends CAction
 
                         // alloweditaftercompletion
                         if (!empty($oResponse->submitdate)) {
-                            $_SESSION['survey_' . $surveyid]['maxstep'] = $_SESSION['survey_' . $surveyid]['totalsteps'];
+                            $_SESSION['responses_' . $surveyid]['maxstep'] = $_SESSION['responses_' . $surveyid]['totalsteps'];
                         }
 
                         loadanswers();
                         randomizationGroupsAndQuestions($surveyid);
-                        initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
+                        initFieldArray($surveyid, $_SESSION['responses_' . $surveyid]['fieldmap']);
                     }
                 }
             }
@@ -638,7 +637,7 @@ class SurveyIndex extends CAction
         if ($previewmode == 'previewgroup' || $previewmode == 'previewquestion') {
             // Unset all SESSION: be sure to have the last version
             unset($_SESSION['fieldmap-' . $surveyid . App()->language]); // Needed by createFieldMap: else fieldmap can be outdated
-            unset($_SESSION['survey_' . $surveyid]);
+            unset($_SESSION['responses_' . $surveyid]);
 
             if ($param['action'] == 'previewgroup') {
                 $thissurvey['format'] = 'G';
@@ -648,7 +647,7 @@ class SurveyIndex extends CAction
 
             buildsurveysession($surveyid, true);
             randomizationGroupsAndQuestions($surveyid, true);
-            initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
+            initFieldArray($surveyid, $_SESSION['responses_' . $surveyid]['fieldmap']);
         }
 
         $popuppreview = (Yii::app()->request->getParam("popuppreview", false) == "true");
@@ -717,12 +716,12 @@ class SurveyIndex extends CAction
 
     private function isClientTokenDifferentFromSessionToken($clientToken, $surveyid)
     {
-        return $clientToken != '' && isset($_SESSION['survey_' . $surveyid]['token']) && $clientToken != $_SESSION['survey_' . $surveyid]['token'];
+        return $clientToken != '' && isset($_SESSION['responses_' . $surveyid]['token']) && $clientToken != $_SESSION['responses_' . $surveyid]['token'];
     }
 
     private function isSurveyFinished($surveyid)
     {
-        return isset($_SESSION['survey_' . $surveyid]['finished']) && $_SESSION['survey_' . $surveyid]['finished'] === true;
+        return isset($_SESSION['responses_' . $surveyid]['finished']) && $_SESSION['responses_' . $surveyid]['finished'] === true;
     }
 
     private function surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $bIsSurveyActive, $bSurveyExists)
@@ -733,7 +732,7 @@ class SurveyIndex extends CAction
 
     private function didSessionTimeout($surveyid)
     {
-        return (!isset($_SESSION['survey_' . $surveyid]['step']) && null !== App()->request->getPost('thisstep'));
+        return (!isset($_SESSION['responses_' . $surveyid]['step']) && null !== App()->request->getPost('thisstep'));
     }
 
     private function canUserPreviewSurvey($iSurveyID)

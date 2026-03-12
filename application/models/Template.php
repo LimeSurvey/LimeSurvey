@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -45,7 +45,7 @@ class Template extends LSActiveRecord
     /** @var array $aNamesFiltered cache for the method templateNameFilter */
     public static $aNamesFiltered = null;
 
-    /** @var Template - The instance of template object */
+    /** @var Template|TemplateManifest - The instance of Template or TemplateManifest as an object */
     private static $instance;
 
     public static $sTemplateNameIllegalChars = "#$%^&*()+=[]';,./{}|:<>?~";
@@ -579,7 +579,21 @@ class Template extends LSActiveRecord
             return self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML, true);
         }
 
-        if (empty(self::$instance) || ! self::isCorrectInstance($sTemplateName)) {
+        $getNewInstance = false;
+        // if we don't have an instance, generate one
+        if (empty(self::$instance)) {
+            $getNewInstance = true;
+        } elseif (
+            !self::$instance instanceof TemplateManifest
+            && !(self::$instance->sid === $iSurveyId && self::$instance->gsid === $iSurveyGroupId)
+        ) {
+            // if the current instance matches the requested surveys sid and gsid, generate a new one
+            $getNewInstance = true;
+        } elseif (!self::isCorrectInstance($sTemplateName)) {
+            // if the current instance name does not match the requested, generate a new one
+            $getNewInstance = true;
+        }
+        if ($getNewInstance) {
             self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML);
             self::$instance->prepareTemplateRendering($sTemplateName, $iSurveyId);
         }

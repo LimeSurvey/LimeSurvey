@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -365,7 +365,7 @@ class GlobalSettings extends SurveyCommonAction
         }
 
         SettingGlobal::setSetting('emailsmtpssl', sanitize_paranoid_string(Yii::app()->request->getPost('emailsmtpssl', '')));
-        SettingGlobal::setSetting('emailsmtpdebug', sanitize_int(Yii::app()->request->getPost('emailsmtpdebug', '0')));
+        SettingGlobal::setSetting('emailsmtpdebug', sanitize_int(Yii::app()->request->getPost('emailsmtpdebug', '0'), 0, 3));
         SettingGlobal::setSetting('emailsmtpuser', strip_tags((string) returnGlobal('emailsmtpuser')));
         SettingGlobal::setSetting('filterxsshtml', strip_tags(Yii::app()->getRequest()->getPost('filterxsshtml', '')));
         SettingGlobal::setSetting('disablescriptwithxss', strip_tags(Yii::app()->getRequest()->getPost('disablescriptwithxss', '')));
@@ -493,7 +493,7 @@ class GlobalSettings extends SurveyCommonAction
                 $oldtokenlist[] = $table;
             } elseif (strpos((string) $table, Yii::app()->db->tablePrefix . "tokens_") !== false) {
                 $tokenlist[] = $table;
-            } elseif (strpos((string) $table, Yii::app()->db->tablePrefix . "old_survey_") !== false) {
+            } elseif (strpos((string) $table, Yii::app()->db->tablePrefix . "old_responses_") !== false) {
                 $oldresultslist[] = $table;
             }
         }

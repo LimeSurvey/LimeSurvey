@@ -2,7 +2,7 @@
 
 /**
 * LimeSurvey
-* Copyright (C) 2007-2016 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v3 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -34,7 +34,7 @@ class questionHelper
      * Return all the definitions of Question attributes core+extended value
      * @return array[]
      *
-     *@deprecated  used only as fall back method
+     *@deprecated  used only as fall back method and for import/exports of LS v1 and for Survey Logic File
      * use QuestionAttribute::getQuestionAttributesSettings function to get attributes
      */
     public static function getAttributesDefinitions()
@@ -847,18 +847,63 @@ class questionHelper
             "help" => gT('Present subquestions/answer options in random order'),
             "caption" => gT('Random order')
         );
-
         self::$attributes["answer_order"] = array(
-            "types" => Question::QT_L_LIST . Question::QT_R_RANKING . Question::QT_EXCLAMATION_LIST_DROPDOWN,
+            "types" => Question::QT_L_LIST . Question::QT_R_RANKING . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_O_LIST_WITH_COMMENT,
             'category' => gT('Display'),
             'sortorder' => 100,
             'inputtype' => 'singleselect',
-            'options' => array('normal' => gT('Normal'), 'random' => gT("Random"), 'alphabetical' => gT("Alphabetical")),
+            'options' => array(
+                'normal' => gT('Normal'),
+                'random' => gT("Random"),
+                'alphabetical' => gT("Alphabetical"),
+                'random_alphabetical' => gT("Random A-Z/Z-A")
+            ),
             //1=>gT('Randomize on each page load')  // Shnoulle : replace by yes till we have only one solution
             //2=>gT('Randomize once on survey start')  //Mdekker: commented out as code to handle this was removed in refactoring
             'default' => 0,
             "help" => gT('Present answer options in normal, random or alphabetical order'),
             "caption" => gT('Answer options order')
+        );
+
+        self::$attributes["keep_codes_order"] = array(
+            "types" => Question::QT_L_LIST
+                . Question::QT_R_RANKING
+                . Question::QT_EXCLAMATION_LIST_DROPDOWN
+                . Question::QT_O_LIST_WITH_COMMENT
+                . Question::QT_A_ARRAY_5_POINT
+                . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS
+                . Question::QT_C_ARRAY_YES_UNCERTAIN_NO
+                . Question::QT_E_ARRAY_INC_SAME_DEC
+                . Question::QT_F_ARRAY
+                . Question::QT_H_ARRAY_COLUMN
+                . Question::QT_K_MULTIPLE_NUMERICAL
+                . Question::QT_M_MULTIPLE_CHOICE
+                . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS
+                . Question::QT_Q_MULTIPLE_SHORT_TEXT
+                . Question::QT_1_ARRAY_DUAL
+                . Question::QT_COLON_ARRAY_NUMBERS
+                . Question::QT_SEMICOLON_ARRAY_TEXT,
+            'category' => gT('Display'),
+            'sortorder' => 101,
+            'inputtype' => 'text',
+            "help" => gT('Semicolon-separated list of codes that keep their original database position when items are randomized.'),
+            "caption" => gT('Keep codes at original positions')
+        );
+
+        self::$attributes["subquestion_order"] = array(
+            "types" => Question::QT_M_MULTIPLE_CHOICE . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
+            'category' => gT('Display'),
+            'sortorder' => 100,
+            'inputtype' => 'singleselect',
+            'options' => array(
+                'normal' => gT('Normal'),
+                'random' => gT("Random"),
+                'alphabetical' => gT("Alphabetical"),
+                'random_alphabetical' => gT("Random A-Z/Z-A")
+            ),
+            'default' => 'normal',
+            "help" => gT('Present subquestions in normal, random or alphabetical order'),
+            "caption" => gT('Subquestions order')
         );
 
         self::$attributes["showpopups"] = array(

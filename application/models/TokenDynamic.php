@@ -2,7 +2,7 @@
 
 /*
    * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013-2026 The LimeSurvey Project Team
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
    * LimeSurvey is free software. This version may have been modified pursuant
@@ -135,7 +135,7 @@ class TokenDynamic extends LSActiveRecord
         $missingcolumns = array_diff($columncheck, $columns);
         //Some columns are missing - we need to create them
         if (count($missingcolumns) > 0) {
-            Yii::app()->loadHelper('update/updatedb'); //Load the admin helper to allow column creation
+            Yii::app()->loadHelper('update.updatedb'); //Load the admin helper to allow column creation
             $columninfo = array(
                     'validfrom' => 'datetime',
                     'validuntil' => 'datetime',
@@ -155,7 +155,7 @@ class TokenDynamic extends LSActiveRecord
             foreach ($columns as $columnname) {
                 $definition = $tableSchema->getColumn($columnname);
                 if ($definition->allowNull != true) {
-                    Yii::app()->loadHelper('update/updatedb'); //Load the admin helper to allow column creation
+                    Yii::app()->loadHelper('update.updatedb'); //Load the admin helper to allow column creation
                     Yii::app()->db->createCommand()->alterColumn($sTableName, $columnname, "string({$definition->size}})");
                     Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
                 }
@@ -444,7 +444,7 @@ class TokenDynamic extends LSActiveRecord
         }
         $command = Yii::app()->db->createCommand()
             ->select('COUNT(token)')
-            ->from('{{survey_' . intval(self::$sid) . '}}')
+            ->from('{{responses_' . intval(self::$sid) . '}}')
             ->where('token=:token')
             ->bindParam(':token', $sToken, PDO::PARAM_STR);
 

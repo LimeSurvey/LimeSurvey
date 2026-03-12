@@ -1,6 +1,6 @@
 {#
 LimeSurvey
-Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+Copyright (C) 2007-2026 The LimeSurvey Project Team
 All rights reserved.
 License: GNU/GPL License v2 or later, see LICENSE.php
 LimeSurvey is free software. This version may have been modified pursuant
@@ -21,7 +21,7 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
     <header role="banner" id="survey-nav" class="navbar fixed-top">
         <div class="container-fluid col-xl-8">
             {% if( aSurveyInfo.options.brandlogo == "on") %}
-                <div class="navbar-brand logo-container d-none d-md-block">
+                <div class="navbar-brand logo-container">
                     {{ image(aSurveyInfo.options.brandlogofile, aSurveyInfo.name, {"class": "logo img-fluid"}) }}
                 </div>
             {% endif %}

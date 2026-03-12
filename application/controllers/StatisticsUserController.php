@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -242,7 +242,7 @@ class StatisticsUserController extends SurveyController
         foreach ($filters as $flt) {
             //SGQ identifier
             $type = $flt['type'];
-            $SGQidentifier = $this->iSurveyID . 'X' . $flt->gid . 'X' . $flt->qid;
+            $SGQidentifier = 'Q' . $flt->qid;
 
             //let's switch through the question type for each question
             switch ($type) {

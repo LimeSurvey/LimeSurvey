@@ -1,7 +1,7 @@
 /*
     LimeSurvey
 
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    Copyright (C) 2007-2026 The LimeSurvey Project Team
     All rights reserved.
 
     License: GNU/GPL License v2 or later, see LICENSE.php
@@ -818,7 +818,7 @@ label::after {
     color: #333;
 }
 
-.dropdown-item:focus, .dropdown-item:hover {
+.list-group-itemindex-item a:hover, .list-group-itemindex-item a:focus {
     background-color: #e9ecef !important;
 }
 

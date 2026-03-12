@@ -62,17 +62,14 @@ $alert-status : (
   text-align: start;
   font-size: $font-size-sm;
   line-height: $line-height-20;
-  padding: 0.625rem 1rem;
+  padding: 0.625rem 1rem 0.625rem 0.5rem;
   position: relative;
 
   & > span[class*="ri-"] {
     font-size: $font-size-base;
   }
-  & > .alert-header {
-    font-family : $ibm-font-family;
+  .alert-header {
     font-weight : $font-weight-600;
-    font-size   : $font-size-lg;
-    line-height : $line-height-26;
     color:inherit;
 
     & > span[class*="ri-"] {

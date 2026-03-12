@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -87,10 +87,10 @@ class LSYii_Validators extends CValidator
             }
         }
         if ($this->isLanguage) {
-            $object->$attribute = $this->languageFilter($object->$attribute);
+            $object->$attribute = self::languageCodeFilter($object->$attribute);
         }
         if ($this->isLanguageMulti) {
-            $object->$attribute = $this->multiLanguageFilter($object->$attribute);
+            $object->$attribute = self::multiLanguageCodeFilter($object->$attribute);
         }
         if (!$this->allowDataUri) {
             $object->$attribute = $this->dataUriFilter($object->$attribute);
@@ -175,35 +175,86 @@ class LSYii_Validators extends CValidator
     }
 
     /**
-     * Defines the customs validation rule for language string
+     * Function for backward compatibility - see languageCodeFilter()
      *
-     * @param mixed $value
-     * @return string
+     * @param mixed $value The language string to filter. Can be any type, but only strings are processed.
+     *
+     * @return string The filtered language string containing only letters and hyphens.
+     *                Returns an empty string if the input is empty or not a string.
+     * @deprecated 7.0.0 Use languageCodeFilter() instead
      */
     public function languageFilter($value)
     {
-        /* No need to filter empty $value */
-        if (empty($value)) {
-            return strval($value);
-        }
-        // Maybe use the array of language ?
-        return preg_replace('/[^a-z0-9-]/i', '', (string) $value);
+        return self::languageCodeFilter($value);
     }
 
     /**
-     * Defines the customs validation rule for multi language string
+     * Filters a language string by removing invalid characters.
      *
-     * @param mixed $value
-     * @return string
+     * This method validates and sanitizes a language code string by removing all characters
+     * except letters (a-z) and hyphens (-). This ensures the value
+     * conforms to standard language code formats (e.g., 'en', 'en-US', 'zh-Hans').
+     *
+     * Note: This function does NOT check if the language code is available in
+     * the general or restricted  list of language codes in LimeSurvey
+     *
+     * @param mixed $value The language string to filter. Can be any type, but only strings are processed.
+     *
+     * @return string The filtered language string containing only letters and hyphens.
+     *                Returns an empty string if the input is empty or not a string.
+     */
+    public static function languageCodeFilter($value)
+    {
+        /* No need to filter empty $value */
+        if (!is_string($value) || empty(trim($value))) {
+            return '';
+        }
+        // Maybe use the array of language ?
+        return preg_replace('/[^a-z-]/i', '', $value);
+    }
+
+
+    /**
+     * Function for backward compatibility - see multiLanguageCodeFilter()
+     *
+     * @param mixed $value The multi-language string to filter. Should be a space-separated list of language codes.
+     *                      Can be any type, but only strings are processed.
+     * @return string The filtered multi-language string containing only valid language codes separated by spaces.
+     *                Duplicate codes are removed. Returns an empty string if the input is empty or not a string.
+     * @deprecated 7.0.0 Use multiLanguageCodeFilter() instead
      */
     public function multiLanguageFilter($value)
     {
+        return self::multiLanguageCodeFilter($value);
+    }
+
+
+    /**
+     * Filters a multi-language string by removing invalid characters from each language code.
+     *
+     * This method processes a space-separated string of language codes, applying language code
+     * filtering to each individual code. It removes duplicates and empty values, then rejoins
+     * the filtered codes back into a space-separated string.
+     *
+     * Note: This function does NOT check if the language codes are available in
+     * the general or restricted list of language codes in LimeSurvey.
+     *
+     * @param mixed $value The multi-language string to filter. Should be a space-separated list of language codes.
+     *                      Can be any type, but only strings are processed.
+     * @return string The filtered multi-language string containing only valid language codes separated by spaces.
+     *                Duplicate codes are removed. Returns an empty string if the input is empty or not a string.
+     */
+    public static function multiLanguageCodeFilter($value)
+    {
         /* No need to filter empty $value */
-        if (empty($value)) {
-            return strval($value);
+        if (!is_string($value) || empty(trim($value))) {
+            return '';
         }
-        $aValue = explode(" ", trim((string) $value));
-        $aValue = array_map("sanitize_languagecode", $aValue);
+        $aValue = explode(" ", trim($value));
+        $aValue = array_map([self::class, 'languageCodeFilter'], $aValue);
+        // remove empty or duplicate values
+        $aValue = array_filter(array_unique($aValue));
+        // join back
         return implode(" ", $aValue);
     }
 

@@ -128,7 +128,7 @@ class LayoutHelper
             $aData['dataForConfigMenu']['userscount'] = User::model()->count();
 
             //Check if have a comfortUpdate key
-            if (getGlobalSetting('emailsmtpdebug') != '') {
+            if (getGlobalSetting('update_key') != '') {
                 $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('Activated');
             } else {
                 $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('None');
@@ -402,8 +402,9 @@ class LayoutHelper
 
         $survey = Survey::model()->findByPk($iSurveyID);
 
-        if (App()->getConfig('editorEnabled') && $survey->getTemplateEffectiveName() == 'fruity_twentythree') {
-            App()->controller->widget('ext.admin.survey.SurveySidemenuWidget.SurveySidemenuWidget', ['sid' => $iSurveyID]);
+        $event = new PluginEvent('beforeRenderSurveySidemenu', $this);
+        App()->getPluginManager()->dispatchEvent($event);
+        if ($event->get('sidemenu')) {
             return;
         }
 

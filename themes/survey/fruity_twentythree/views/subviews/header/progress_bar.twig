@@ -1,6 +1,6 @@
 {#
 LimeSurvey
-Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+Copyright (C) 2007-2026 The LimeSurvey Project Team
 All rights reserved.
 License: GNU/GPL License v2 or later, see LICENSE.php
 LimeSurvey is free software. This version may have been modified pursuant
@@ -22,7 +22,7 @@ The progress bar is a Bootstrap progress bar.
     <div class="{{ aSurveyInfo.class.topcontainer }} container-fluid" {{ aSurveyInfo.attr.topcontainer }} >
         <div class="row justify-content-center">
             <div class="{{ aSurveyInfo.class.topcontent }} col-12 col-xl-8" {{ aSurveyInfo.attr.topcontent }}>
-                <div id="progressbar-top" tabindex="0" role="progressbar" aria-valuenow="{{ sprintf('%s%%',progressValue) }}" aria-valuemin="0" aria-valuemax="100" class="ls-progress-container" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                <div id="progressbar-top" tabindex="0" role="progressbar" aria-label="{{ gT('Progress percentage') }}" aria-valuenow="{{ progressValue }}" aria-valuemin="0" aria-valuemax="100" class="ls-progress-container" data-bs-toggle="tooltip" data-bs-placement="bottom"
                      title="{{ sprintf(gT('You have completed %s%% of this survey'),progressValue) }}">
                     <div class="visually-hidden">{{ sprintf(gT('You have completed %s%% of this survey'),progressValue) }}</div>
                     <div class="{{ aSurveyInfo.class.progress }}" {{ aSurveyInfo.attr.progress }} aria-hidden="true" data-bs-placement="bottom">

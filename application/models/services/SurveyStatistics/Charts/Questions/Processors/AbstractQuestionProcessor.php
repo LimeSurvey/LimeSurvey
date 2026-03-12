@@ -60,12 +60,12 @@ abstract class AbstractQuestionProcessor
     /**
      * Build the identifier for current question.
      *
-     * Ex: sidXgidXqid
+     * Ex: Qqid
      */
     public function rt(): void
     {
         if (!empty($this->question)) {
-            $this->rt = $this->question['sid'] . 'X' . $this->question['gid'] . 'X' . $this->question['qid'];
+            $this->rt = 'Q' . $this->question['qid'];
         }
     }
 
@@ -200,6 +200,16 @@ abstract class AbstractQuestionProcessor
         }
 
         return [$legend, $items];
+    }
+
+    /**
+     * @param array $data
+     * @param string $key
+     * @return float|int
+     */
+    protected function calculateTotal($data, $key = 'value')
+    {
+        return array_sum(array_column($data, $key));
     }
 
     /**

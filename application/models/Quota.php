@@ -2,7 +2,7 @@
 
 /*
    * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013-2026 The LimeSurvey Project Team
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
    * LimeSurvey is free software. This version may have been modified pursuant
@@ -149,7 +149,7 @@ class Quota extends LSActiveRecord
 
     public function getCompleteCount()
     {
-        if (!tableExists("survey_{$this->sid}")) {
+        if (!tableExists("responses_{$this->sid}")) {
             return null;
         }
         /* Must control if column name exist (@todo : move this to QuotaMember::model(), even with deactivated survey*/

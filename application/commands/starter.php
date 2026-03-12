@@ -2,7 +2,7 @@
 <?php
     /*
     * LimeSurvey (tm)
-    * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+    * Copyright (C) 2011-2026 The LimeSurvey Project Team
     * All rights reserved.
     * License: GNU/GPL License v2 or later, see LICENSE.php
     * LimeSurvey is free software. This version may have been modified pursuant

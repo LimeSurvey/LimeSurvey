@@ -2,7 +2,7 @@
 
 /*
    * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013-2026 The LimeSurvey Project Team
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
    * LimeSurvey is free software. This version may have been modified pursuant
@@ -15,6 +15,8 @@
 
 /**
  * Class DefaultValue
+ * The default values are default answers for questions that could be selected by the user.
+ * (e.g. a subquestion that is selected as the default answer for the question in advance)
  *
  * @property integer $dvid primary key
  * @property integer $qid The question id

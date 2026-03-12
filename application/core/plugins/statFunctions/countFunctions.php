@@ -47,8 +47,8 @@ class countFunctions
         if ($submitted) {
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }
-        if (!$self && isset($_SESSION['survey_' . $surveyId]['srid'])) {
-            $srid = $_SESSION['survey_' . $surveyId]['srid'];
+        if (!$self && isset($_SESSION['responses_' . $surveyId]['srid'])) {
+            $srid = $_SESSION['responses_' . $surveyId]['srid'];
             $oCriteria->compare("id", "<>" . $srid);
         }
         $oCriteria->compare($sQuotedColumn, $comparaison);
@@ -87,8 +87,8 @@ class countFunctions
         if ($submitted) {
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }
-        if (!$self && isset($_SESSION['survey_' . $surveyId]['srid'])) {
-            $srid = $_SESSION['survey_' . $surveyId]['srid'];
+        if (!$self && isset($_SESSION['responses_' . $surveyId]['srid'])) {
+            $srid = $_SESSION['responses_' . $surveyId]['srid'];
             $oCriteria->compare("id", "<>" . $srid);
         }
         return intval(SurveyDynamic::model($surveyId)->count($oCriteria));

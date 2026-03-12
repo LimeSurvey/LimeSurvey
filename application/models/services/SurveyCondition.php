@@ -74,8 +74,7 @@ class SurveyCondition
      */
     public function getQIDFromFieldName(string $copyc)
     {
-        list(,, $newqid) = explode("X", (string) $copyc);
-        return $newqid;
+        return substr(explode("_", $copyc)[0], 1);
     }
 
     /**
@@ -88,7 +87,8 @@ class SurveyCondition
      */
     public function getFieldName(int $sid, int $gid, int $qid, string $title = '')
     {
-        return $sid . self::X . $gid . self::X . $qid . $title;
+        $questions = $title ? \Question::model()->findAll($qid . ' IN (qid, parent_qid)') : [\Question::model()->findByPk($qid)];
+        return getFieldName("{{responses_{$sid}}}", $sid . self::X . $gid . self::X . $qid . $title, $questions, $sid, $gid, true);
     }
 
     /**
@@ -167,7 +167,6 @@ class SurveyCondition
 
                 if ($count_caseinsensitivedupes == 0) {
                     $results[] = \Condition::model()->insertRecords($condition_data);
-                    ;
                 }
             }
 
@@ -255,7 +254,6 @@ class SurveyCondition
         }
 
         $results = array();
-
         if ($editTargetTab == '#CANSWERSTAB') {
             if (isset($p_csrctoken) && $p_csrctoken != '') {
                 $conditionCfieldname = $p_csrctoken;
@@ -903,7 +901,7 @@ class SurveyCondition
                 }
 
                 for ($i = 1; $i <= $acount; $i++) {
-                    $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], $i);
+                    $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], $aresult[$i - 1 ]->aid);
                     $cquestions[] = array("{$rows['title']}: [RANK $i] " . strip_tags((string) $rows['question']), $rows['qid'], $rows['type'], $fieldName);
                     foreach ($quicky as $qck) {
                         $canswers[] = array($fieldName, $qck[0], $qck[1]);
@@ -936,6 +934,14 @@ class SurveyCondition
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], "+" . $fieldNameWithTitle);
                     $canswers[] = array("+" . $fieldNameWithTitle, 'Y', gT("checked"));
                     $canswers[] = array("+" . $fieldNameWithTitle, '', gT("not checked"));
+                }
+                if ($rows['other'] == "Y") {
+                    $fieldNameWithTitle = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], 'other');
+                    $theanswer = gT("Other");
+                    $shortanswer = "other: [" . strip_tags((string) $theanswer) . "]";
+                    $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $rows['question']);
+                    $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'] . 'other', $fieldNameWithTitle); // Set QTypes to specific for javascript
+                    $canswers[] = array($fieldNameWithTitle, '', gT("No answer"));
                 }
             } else {
                 $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid']);
@@ -1271,7 +1277,6 @@ class SurveyCondition
 
         $theserows = $this->getTheseRows($questionlist);
         $postrows  = $this->getPostRows($postquestionlist);
-
         $questionscount = count($theserows);
         $postquestionscount = count($postrows);
 
@@ -1521,7 +1526,7 @@ class SurveyCondition
                             if ($rows['method'] == 'RX') {
                                 $rightOperandType = 'regexp';
                                 $data['target'] = HTMLEscape($rows['value']);
-                            } elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]*)@$/', (string) $rows['value'], $matchedSGQA) > 0) {
+                            } elseif (preg_match('/^@(Q[0-9]+[^@]*)@$/', (string) $rows['value'], $matchedSGQA) > 0) {
                                 // SGQA
                                 $rightOperandType = 'prevQsgqa';
                                 $textfound = false;

@@ -1,7 +1,7 @@
 <?php
 /*
 * LimeSurvey
-* Copyright (C) 2007-2016 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -43,9 +43,7 @@
                 'switchStatusOfListActions();',
             ],
             'rowLink'               =>
-                'App()->getConfig("editorEnabled") && Yii::app()->getConfig("debug")'
-                . ' ? App()->createUrl("editorLink/index", ["route" => "survey/" . $data->sid]) '
-                . ' : Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid))',
+                'Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid))',
             // 'template'  => $this->template,
             'massiveActionTemplate' => $this->render('massive_actions/_selector', [], true, false),
             'columns'               => $this->model->getColumns(),

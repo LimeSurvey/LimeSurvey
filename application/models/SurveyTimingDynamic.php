@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -78,7 +78,7 @@ class SurveyTimingDynamic extends LSActiveRecord
     /** @inheritdoc */
     public function tableName()
     {
-        return '{{survey_' . intval(self::$sid) . '_timings}}';
+        return '{{timings_' . intval(self::$sid) . '}}';
     }
 
     /**
@@ -94,26 +94,26 @@ class SurveyTimingDynamic extends LSActiveRecord
             $queryAvg = Yii::app()->db->createCommand()
                 ->select("AVG(interviewtime) AS avg, COUNT(*) as count")
                 ->from($this->tableName() . " t")
-                ->join("{{survey_{$sid}}} s", "t.id = s.id")
+                ->join("{{responses_{$sid}}} s", "t.id = s.id")
                 ->where("s.submitdate IS NOT NULL")
                 ->queryRow();
             if ($queryAvg['count']) {
                 $statistics['avgmin'] = (int) ($queryAvg['avg'] / 60);
-                $statistics['avgsec'] = $queryAvg['avg'] % 60;
+                $statistics['avgsec'] = (int) $queryAvg['avg'] % 60;
                 $statistics['count'] = $queryAvg['count'];
                 $queryAll = Yii::app()->db->createCommand()
                     ->select("interviewtime")
                     ->from($this->tableName() . " t")
-                    ->join("{{survey_{$sid}}} s", "t.id = s.id")
+                    ->join("{{responses_{$sid}}} s", "t.id = s.id")
                     ->where("s.submitdate IS NOT NULL")
                     ->order("t.interviewtime")
                     ->queryAll();
                 $middleval = intval($statistics['count'] / 2);
                 $statistics['middleval'] = $middleval;
                 if ($statistics['count'] % 2 && $statistics['count'] > 1) {
-                    $median = ($queryAll[$middleval]['interviewtime'] + $queryAll[$middleval - 1]['interviewtime']) / 2;
+                    $median = (int)(($queryAll[$middleval]['interviewtime'] + $queryAll[$middleval - 1]['interviewtime']) / 2);
                 } else {
-                    $median = $queryAll[$middleval]['interviewtime'];
+                    $median = (int)$queryAll[$middleval]['interviewtime'];
                 }
                 $statistics['median'] = $median;
                 $statistics['allmin'] = (int) ($median / 60);
@@ -172,7 +172,7 @@ class SurveyTimingDynamic extends LSActiveRecord
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
         $oCriteria = new CdbCriteria();
-        $oCriteria->join = "INNER JOIN {{survey_{$iSurveyID}}} s ON t.id=s.id";
+        $oCriteria->join = "INNER JOIN {{responses_{$iSurveyID}}} s ON t.id=s.id";
         $oCriteria->condition = 'submitdate IS NOT NULL';
         $oCriteria->order = "s.id " . (Yii::app()->request->getParam('order') == 'desc' ? 'desc' : 'asc');
         //$oCriteria->offset = $start;

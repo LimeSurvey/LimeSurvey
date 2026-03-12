@@ -5,7 +5,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -320,7 +320,7 @@ class Authentication extends SurveyCommonAction
             $sDBVersion = getGlobalSetting('DBVersion');
             if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber')) {
                 // Try a silent update first
-                Yii::app()->loadHelper('update/updatedb');
+                Yii::app()->loadHelper('update.updatedb');
                 if (!db_upgrade_all(intval($sDBVersion), true)) {
                     Yii::app()->getController()->redirect(array('/admin/databaseupdate/sa/db'));
                 }

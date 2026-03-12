@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -216,8 +216,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         /* default template */
         $this->template = 'inherit';
         /* default language */
-        $validator = new LSYii_Validators();
-        $this->language = $validator->languageFilter(App()->getConfig('defaultlang'));
+        $this->language = \LSYii_Validators::languageCodeFilter(App()->getConfig('defaultlang'));
         /* default user */
         $this->owner_id = 1;
         $this->admin = App()->getConfig('siteadminname');
@@ -256,13 +255,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
             return false;
         }
         if ($recursive) {
-            //delete the survey_$iSurveyID table
-            if (tableExists("{{survey_" . $this->sid . "}}")) {
-                Yii::app()->db->createCommand()->dropTable("{{survey_" . $this->sid . "}}");
+            //delete the responses_$iSurveyID table
+            if (tableExists("{{responses_" . $this->sid . "}}")) {
+                Yii::app()->db->createCommand()->dropTable("{{responses_" . $this->sid . "}}");
             }
-            //delete the survey_$iSurveyID_timings table
-            if (tableExists("{{survey_" . $this->sid . "_timings}}")) {
-                Yii::app()->db->createCommand()->dropTable("{{survey_" . $this->sid . "_timings}}");
+            //delete the timings_$iSurveyID table
+            if (tableExists("{{timings_" . $this->sid . "}}")) {
+                Yii::app()->db->createCommand()->dropTable("{{timings_" . $this->sid . "}}");
             }
             //delete the tokens_$iSurveyID table
             if (tableExists("{{tokens_" . $this->sid . "}}")) {
@@ -385,8 +384,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $sLang = Yii::app()->request->getParam('lang');
         } else {
             // SESSION
-            if (isset(Yii::app()->session['survey_' . $this->sid]['s_lang'])) {
-                $sLang = Yii::app()->session['survey_' . $this->sid]['s_lang'];
+            if (isset(Yii::app()->session['responses_' . $this->sid]['s_lang'])) {
+                $sLang = Yii::app()->session['responses_' . $this->sid]['s_lang'];
             }
         }
         return $sLang;
@@ -775,7 +774,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getTimingsTableName()
     {
-        return "{{survey_" . $this->primaryKey . "_timings}}";
+        return "{{timings_" . $this->primaryKey . "}}";
     }
 
     /**
@@ -784,7 +783,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getResponsesTableName()
     {
-        return '{{survey_' . $this->primaryKey . '}}';
+        return '{{responses_' . $this->primaryKey . '}}';
     }
 
 
@@ -1512,9 +1511,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $dropdownItems = [];
         $dropdownItems[] = [
             'title' => gT('General settings'),
-            'url' => App()->getConfig('editorEnabled')
-                ? App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/generalsettings'])
-                : App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
+            'url' => App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
             'enabledCondition' => $permissions['survey_update'],
         ];
         $dropdownItems[] = [
@@ -1532,14 +1529,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'enabledCondition' => $permissions['survey_update'],
         ];
         $dropdownItems[] = [
+            'submenu' => true,
             'title' => gT('Copy'),
-            'url' => App()->createUrl("/surveyAdministration/newSurvey", ['tab' => 'copy']),
-
             'enabledCondition' => $permissions['survey_update'],
+            'submenu_items' => $this->getSubmenuItemsCopy($permissions['survey_update']),
         ];
         $dropdownItems[] = [
             'title' => gT('Add user'),
-            'url' => App()->createUrl("/userManagement"),
+            'url' => App()->createUrl('/surveyPermissions/index', ['surveyid' => $this->sid]),
             'enabledCondition' => $permissions['survey_update'],
         ];
 
@@ -1550,6 +1547,26 @@ class Survey extends LSActiveRecord implements PermissionInterface
         ];
 
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
+    }
+
+    private function getSubmenuItemsCopy($enableCondition = true)
+    {
+        $submenuItems = [];
+        $submenuItems[] = [
+            'title' => gT('Quick copy'),
+            'url' => App()->createUrl("/surveyAdministration/copySimple", ['surveyIdToCopy' => $this->sid]),
+            'enabledCondition' => $enableCondition,
+        ];
+        $submenuItems[] = [
+            'title' => gT('Custom copy'),
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-bs-target' => "#copySurvey_modal",
+                'onclick' => "copySurveyOptions(" . (int)$this->sid . ")",
+            ],
+            'enabledCondition' => $enableCondition,
+        ];
+        return $submenuItems;
     }
 
     /**
@@ -1586,9 +1603,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         ];
         $items[] = [
             'title' => gT('Statistics'),
-            'url' => App()->getConfig('editorEnabled')
-                ? App()->createUrl('editorLink/index', ['route' => 'responses/' . $this->sid])
-                : App()->createUrl('admin/statistics/sa/simpleStatistics', ['surveyid' => $this->sid]),
+            'url' => App()->createUrl('admin/statistics/sa/simpleStatistics', ['surveyid' => $this->sid]),
             'iconClass' => 'ri-bar-chart-2-line',
             'enabledCondition' =>
                 $this->active === "Y"
@@ -2129,15 +2144,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         $criteria = new CDbCriteria();
         $criteria->select = Yii::app()->db->quoteColumnName('t.*');
-        $criteria->with = array(
-            'survey.groups',
-        );
         if (Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib') {
-            $criteria->order = Yii::app()->db->quoteColumnName('t.question_order');
+            $criteria->join = 'INNER JOIN {{groups}} grp ON grp.gid = t.gid';
+            $criteria->order = Yii::app()->db->quoteColumnName('grp.group_order') . ',' . Yii::app()->db->quoteColumnName('t.question_order');
         } else {
+            $criteria->with = array('survey.groups');
             $criteria->order = Yii::app()->db->quoteColumnName('groups.group_order') . ',' . Yii::app()->db->quoteColumnName('t.question_order');
+            $criteria->addCondition('groups.gid=t.gid', 'AND');
         }
-        $criteria->addCondition('groups.gid=t.gid', 'AND');
         return $criteria;
     }
 
