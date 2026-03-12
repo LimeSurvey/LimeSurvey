@@ -26,6 +26,10 @@ class ShortUrlTest extends TestBaseClassWeb
         $web  = self::$webDriver;
 
         try {
+            // Clear cookies to prevent stale PHP session from a previous dataset run
+            // causing a 500 error when submitting (old srid pointing to deleted response table).
+            $web->manage()->deleteAllCookies();
+
             // Go to welcome
             $web->get($url);
 
@@ -79,6 +83,10 @@ class ShortUrlTest extends TestBaseClassWeb
         $web  = self::$webDriver;
 
         try {
+            // Clear cookies to prevent stale PHP session from a previous dataset run
+            // causing a 500 error when submitting (old srid pointing to deleted response table).
+            $web->manage()->deleteAllCookies();
+
             // Go to welcome
             $web->get($url);
 
@@ -126,6 +134,10 @@ class ShortUrlTest extends TestBaseClassWeb
         $web  = self::$webDriver;
 
         try {
+            // Clear cookies to prevent stale PHP session from a previous dataset run
+            // causing a 500 error when submitting (old srid pointing to deleted response table).
+            $web->manage()->deleteAllCookies();
+
             // Go to welcome
             $web->get($url);
 
@@ -180,6 +192,10 @@ class ShortUrlTest extends TestBaseClassWeb
         $web  = self::$webDriver;
 
         try {
+            // Clear cookies to prevent stale PHP session from a previous dataset run
+            // causing a 500 error when submitting (old srid pointing to deleted response table).
+            $web->manage()->deleteAllCookies();
+
             // Go to welcome
             $web->get($url);
 

@@ -5243,9 +5243,25 @@ class LimeExpressionManager
             }
 
             if (isset($_SESSION[$this->sessid]['srid']) && $this->surveyOptions['active']) {
-                $oResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
+                try {
+                    $oResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
+                } catch (\Exception $ex) {
+                    // The response table no longer exists (survey deactivated/deleted while user had a stale session).
+                    // Kill the stale session and redirect to the survey start page for a fresh start.
+                    killSurveySession($this->sid);
+                    $survey = Survey::model()->findByPk($this->sid);
+                    if ($survey) {
+                        App()->getController()->redirect($survey->getSurveyUrl());
+                    }
+                }
                 if (empty($oResponse)) {
-                    // This can happen if admin deletes incomple response while survey is running.
+                    // The response row was deleted (e.g. admin deleted incomplete response while survey was running).
+                    // Kill the stale session and redirect to the survey start page for a fresh start.
+                    killSurveySession($this->sid);
+                    $survey = Survey::model()->findByPk($this->sid);
+                    if ($survey) {
+                        App()->getController()->redirect($survey->getSurveyUrl());
+                    }
                     $message = submitfailed($this->gT('The data could not be saved because the response does not exist in the database.'));
                     LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
                     return $message;
