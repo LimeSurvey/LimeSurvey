@@ -197,11 +197,6 @@ jobs:
           chmod -R 777 ./tests/tmp
           chmod -R 777 ./application/config
 
-      - name: Install MySQL extensions
-        if: matrix.db-type == 'mysql'
-        run: |
-          sudo apt --fix-broken install php php-mysql php8.3-mysql php7.4-mysql -y
-
       - name: Check MySQL service
         if: matrix.db-type == 'mysql'
         run: |
