@@ -79,11 +79,12 @@
                             </div>
                         </div>
                     </div>
-                    <ul class="nav nav-tabs">
+                    <ul class="nav nav-tabs" role="tablist">
                         <?php $c = true ?>
                         <?php foreach ($oSurvey->allLanguages as $language): ?>
+                            <?php $tabId = 'invite-tab-' . CHtml::encode($language); ?>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link <?= $c ? "active" : "" ?>" data-bs-toggle="tab" href="#<?= $language ?>">
+                                <a class="nav-link <?= $c ? "active" : "" ?>" id="<?= $tabId ?>" role="tab" aria-selected="<?= $c ? 'true' : 'false' ?>" data-bs-toggle="tab" href="#<?= $language ?>" aria-controls="<?= CHtml::encode($language) ?>">
                                     <?php if ($c) {
                                         $c = false;
                                     } ?>
@@ -111,7 +112,8 @@
                                     $textarea = str_replace(array('<x>', '</x>'), array(''), (string) $textarea);
                                 }
                             ?>
-                            <div id="<?php echo $language; ?>" class="tab-pane fade <?php if ($c){$c=false;echo 'show active';}?>">
+                            <?php $tabId = 'invite-tab-' . CHtml::encode($language); ?>
+                            <div id="<?php echo $language; ?>" class="tab-pane fade <?php if ($c){$c=false;echo 'show active';}?>" role="tabpanel" aria-labelledby="<?= $tabId ?>">
 
                                 <div class='mb-3'>
                                     <label class='form-label ' for='from_<?php echo $language; ?>'><?php eT("From:"); ?></label>
