@@ -13,12 +13,13 @@
         <div class="col-12 content-right">
             <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributedescriptions/surveyid/{$surveyid}"), 'post'); ?>
             <div>
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs" role="tablist">
                     <?php $c = true; ?>
                     <?php foreach ($oSurvey->allLanguages as $sLanguage): ?>
                         <?php $sTabTitle = getLanguageNameFromCode($sLanguage, false) . " " . (($sLanguage == $oSurvey->language) ? "(" . gT("Base language") . ")" : "") ?>
-                        <li class="nav-item">
-                            <a class="nav-link <?= $c ? "active" : "" ?>" data-bs-toggle="tab" href="#language_<?php echo $sLanguage ?>">
+                        <?php $tabId = 'tokenattr-tab-' . CHtml::encode($sLanguage); ?>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link <?= $c ? "active" : "" ?>" id="<?= $tabId ?>" role="tab" aria-selected="<?= $c ? 'true' : 'false' ?>" data-bs-toggle="tab" href="#language_<?php echo $sLanguage ?>" aria-controls="language_<?php echo CHtml::encode($sLanguage); ?>">
                                 <?php $c = false; ?>
                                 <?php echo $sTabTitle; ?>
                             </a>
@@ -29,7 +30,8 @@
                 <div class="tab-content">
                     <?php $c=true;?>
                     <?php foreach ($oSurvey->allLanguages as $sLanguage) { ?>
-                        <div id="language_<?php echo $sLanguage ?>"  class="table-responsive tab-pane fade <?= $c ? "show active" : "" ?>">
+                        <?php $tabId = 'tokenattr-tab-' . CHtml::encode($sLanguage); ?>
+                        <div id="language_<?php echo $sLanguage ?>" class="table-responsive tab-pane fade <?= $c ? "show active" : "" ?>" role="tabpanel" aria-labelledby="<?= $tabId ?>">
                             <?php $c=false; ?>
                             <table class='listtokenattributes table table-hover'>
                                 <thead> <tr>
