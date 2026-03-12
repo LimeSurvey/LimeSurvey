@@ -703,7 +703,6 @@ var GlobalSidemenu = /*#__PURE__*/function () {
       y: 0
     };
     this.isMouseDown = false;
-    this.isMouseDownTimeOut = null;
 
     // Child component instances
     this.sidemenuInstance = null;
@@ -715,7 +714,6 @@ var GlobalSidemenu = /*#__PURE__*/function () {
     // Bind methods
     this.mousedown = this.mousedown.bind(this);
     this.mouseup = this.mouseup.bind(this);
-    this.mouseleave = this.mouseleave.bind(this);
     this.mousemove = this.mousemove.bind(this);
     this.init();
   }
@@ -797,11 +795,9 @@ var GlobalSidemenu = /*#__PURE__*/function () {
         });
       }
 
-      // Sidebar mouse events
-      if (this.sidebarEl) {
-        this.sidebarEl.addEventListener('mouseleave', this.mouseleave);
-        this.sidebarEl.addEventListener('mouseup', this.mouseup);
-      }
+      // Sidebar mouse events - bind mouseup on document so it fires
+      // even when the cursor leaves the sidebar during drag
+      document.addEventListener('mouseup', this.mouseup);
 
       // Body mousemove - only add once
       if (!this.mousemoveAttached) {
@@ -873,16 +869,6 @@ var GlobalSidemenu = /*#__PURE__*/function () {
       }
     }
   }, {
-    key: "mouseleave",
-    value: function mouseleave(e) {
-      var _this4 = this;
-      if (this.isMouseDown) {
-        this.isMouseDownTimeOut = setTimeout(function () {
-          _this4.mouseup(e);
-        }, 1000);
-      }
-    }
-  }, {
     key: "mousemove",
     value: function mousemove(e) {
       if (this.isMouseDown) {
@@ -895,8 +881,6 @@ var GlobalSidemenu = /*#__PURE__*/function () {
           return;
         }
         this.sideBarWidth = e.pageX - 4;
-        window.clearTimeout(this.isMouseDownTimeOut);
-        this.isMouseDownTimeOut = null;
       }
     }
   }, {
@@ -931,6 +915,7 @@ var GlobalSidemenu = /*#__PURE__*/function () {
       if (resizeBtn) {
         resizeBtn.removeEventListener('mousedown', this.mousedown);
       }
+      document.removeEventListener('mouseup', this.mouseup);
       document.body.removeEventListener('mousemove', this.mousemove);
       $(document).off('vue-redraw.globalsidemenu');
     }

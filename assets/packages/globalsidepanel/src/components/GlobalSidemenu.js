@@ -18,7 +18,6 @@ class GlobalSidemenu {
         this.activeMenuIndex = 0;
         this.initialPos = { x: 0, y: 0 };
         this.isMouseDown = false;
-        this.isMouseDownTimeOut = null;
 
         // Child component instances
         this.sidemenuInstance = null;
@@ -30,7 +29,6 @@ class GlobalSidemenu {
         // Bind methods
         this.mousedown = this.mousedown.bind(this);
         this.mouseup = this.mouseup.bind(this);
-        this.mouseleave = this.mouseleave.bind(this);
         this.mousemove = this.mousemove.bind(this);
 
         this.init();
@@ -129,11 +127,9 @@ class GlobalSidemenu {
             resizeBtn.addEventListener('click', (e) => e.preventDefault());
         }
 
-        // Sidebar mouse events
-        if (this.sidebarEl) {
-            this.sidebarEl.addEventListener('mouseleave', this.mouseleave);
-            this.sidebarEl.addEventListener('mouseup', this.mouseup);
-        }
+        // Sidebar mouse events - bind mouseup on document so it fires
+        // even when the cursor leaves the sidebar during drag
+        document.addEventListener('mouseup', this.mouseup);
 
         // Body mousemove - only add once
         if (!this.mousemoveAttached) {
@@ -203,14 +199,6 @@ class GlobalSidemenu {
         }
     }
 
-    mouseleave(e) {
-        if (this.isMouseDown) {
-            this.isMouseDownTimeOut = setTimeout(() => {
-                this.mouseup(e);
-            }, 1000);
-        }
-    }
-
     mousemove(e) {
         if (this.isMouseDown) {
             // Prevent unwanted value on dragend
@@ -222,8 +210,6 @@ class GlobalSidemenu {
                 return;
             }
             this.sideBarWidth = e.pageX - 4;
-            window.clearTimeout(this.isMouseDownTimeOut);
-            this.isMouseDownTimeOut = null;
         }
     }
 
@@ -257,6 +243,7 @@ class GlobalSidemenu {
             resizeBtn.removeEventListener('mousedown', this.mousedown);
         }
 
+        document.removeEventListener('mouseup', this.mouseup);
         document.body.removeEventListener('mousemove', this.mousemove);
         $(document).off('vue-redraw.globalsidemenu');
     }

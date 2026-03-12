@@ -830,7 +830,7 @@ class QuestionExplorer {
     var orderedQuestionGroups = LS.ld.orderBy(questiongroups, function (a) {
       return _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].parseIntOr(a.group_order, 999999);
     }, ['asc']);
-    var itemWidth = parseInt(_StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"].get('sidebarwidth')) - 120 + 'px';
+    var itemWidth = parseInt(_StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"].get('sidebarwidth') || 300) - 120 + 'px';
     var html = '<div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane h-100 pt-2">';
 
     // Toolbar buttons
@@ -986,7 +986,7 @@ class QuestionExplorer {
    * Render single question - matching Vue template exactly
    */
   renderQuestion(question, questiongroup, allowOrganizer, surveyIsActive, itemWidth) {
-    var classes = 'list-group-item question-question-list-item ls-flex-row align-itmes-flex-start ' + this.questionItemClasses(question);
+    var classes = 'list-group-item question-question-list-item ls-flex-row align-items-flex-start ' + this.questionItemClasses(question);
     var itemActivated = _StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"].get('lastQuestionOpen') === question.qid;
     // Always show dropdown HTML, use CSS/JS hover to control visibility
     var showDropdown = true;
@@ -1769,7 +1769,6 @@ class Sidebar {
     this.container = null;
     this.sideBarWidth = '315';
     this.isMouseDown = false;
-    this.isMouseDownTimeOut = null;
     this.smallScreenHidden = false;
     this.showLoader = false;
     this.loading = true;
@@ -1782,7 +1781,6 @@ class Sidebar {
     // Bind methods
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
-    this.handleMouseLeave = this.handleMouseLeave.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleQuestionGroupOrderChange = this.handleQuestionGroupOrderChange.bind(this);
     this.controlActiveLink = this.controlActiveLink.bind(this);
@@ -1984,17 +1982,6 @@ class Sidebar {
   }
 
   /**
-   * Handle mouse leave for resize
-   */
-  handleMouseLeave(e) {
-    if (this.isMouseDown) {
-      this.isMouseDownTimeOut = setTimeout(() => {
-        this.handleMouseUp(e);
-      }, 1000);
-    }
-  }
-
-  /**
    * Handle mouse move for resize
    */
   handleMouseMove(e) {
@@ -2020,8 +2007,6 @@ class Sidebar {
     }
     _StateManager_js__WEBPACK_IMPORTED_MODULE_4__["default"].commit('changeSidebarwidth', this.sideBarWidth);
     _StateManager_js__WEBPACK_IMPORTED_MODULE_4__["default"].commit('maxSideBarWidth', false);
-    window.clearTimeout(this.isMouseDownTimeOut);
-    this.isMouseDownTimeOut = null;
 
     // Update sidebar width in real-time (sideBarWidth is a number, add px)
     $('#sidebar').css('width', this.sideBarWidth + 'px');
@@ -2340,8 +2325,7 @@ class Sidebar {
 
     // Resize handle
     $(this.container).off('mousedown', '.resize-btn').on('mousedown', '.resize-btn', this.handleMouseDown);
-    $(this.container).off('mouseup').on('mouseup', this.handleMouseUp);
-    $(this.container).off('mouseleave', '#sidebar').on('mouseleave', '#sidebar', this.handleMouseLeave);
+    $(document).off('mouseup.sidebar-resize').on('mouseup.sidebar-resize', this.handleMouseUp);
 
     // Placeholder click (mobile)
     $(this.container).off('click', '.scoped-placeholder-greyed-area').on('click', '.scoped-placeholder-greyed-area', () => this.toggleSmallScreenHide());

@@ -14,7 +14,6 @@ class Sidebar {
         this.container = null;
         this.sideBarWidth = '315';
         this.isMouseDown = false;
-        this.isMouseDownTimeOut = null;
         this.smallScreenHidden = false;
         this.showLoader = false;
         this.loading = true;
@@ -27,7 +26,6 @@ class Sidebar {
         // Bind methods
         this.handleMouseDown = this.handleMouseDown.bind(this);
         this.handleMouseUp = this.handleMouseUp.bind(this);
-        this.handleMouseLeave = this.handleMouseLeave.bind(this);
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleQuestionGroupOrderChange = this.handleQuestionGroupOrderChange.bind(this);
         this.controlActiveLink = this.controlActiveLink.bind(this);
@@ -237,17 +235,6 @@ class Sidebar {
     }
 
     /**
-     * Handle mouse leave for resize
-     */
-    handleMouseLeave(e) {
-        if (this.isMouseDown) {
-            this.isMouseDownTimeOut = setTimeout(() => {
-                this.handleMouseUp(e);
-            }, 1000);
-        }
-    }
-
-    /**
      * Handle mouse move for resize
      */
     handleMouseMove(e) {
@@ -276,9 +263,6 @@ class Sidebar {
 
         StateManager.commit('changeSidebarwidth', this.sideBarWidth);
         StateManager.commit('maxSideBarWidth', false);
-
-        window.clearTimeout(this.isMouseDownTimeOut);
-        this.isMouseDownTimeOut = null;
 
         // Update sidebar width in real-time (sideBarWidth is a number, add px)
         $('#sidebar').css('width', this.sideBarWidth + 'px');
@@ -658,8 +642,7 @@ class Sidebar {
 
         // Resize handle
         $(this.container).off('mousedown', '.resize-btn').on('mousedown', '.resize-btn', this.handleMouseDown);
-        $(this.container).off('mouseup').on('mouseup', this.handleMouseUp);
-        $(this.container).off('mouseleave', '#sidebar').on('mouseleave', '#sidebar', this.handleMouseLeave);
+        $(document).off('mouseup.sidebar-resize').on('mouseup.sidebar-resize', this.handleMouseUp);
 
         // Placeholder click (mobile)
         $(this.container).off('click', '.scoped-placeholder-greyed-area').on('click', '.scoped-placeholder-greyed-area', () => this.toggleSmallScreenHide());
