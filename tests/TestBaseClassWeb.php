@@ -18,7 +18,7 @@ use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 use Facebook\WebDriver\WebDriverExpectedCondition;
-use Facebook\WebDriver\Exception\TimeOutException;
+use Facebook\WebDriver\Exception\TimeoutException;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\UnrecognizedExceptionException;
 
@@ -151,7 +151,7 @@ class TestBaseClassWeb extends TestBaseClass
                     WebDriverBy::id('user')
                 )
             );
-        } catch (TimeOutException $ex) {
+        } catch (TimeoutException $ex) {
             //$name =__DIR__ . '/_output/loginfailed.png';
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder .'/FailedLogin.png';
@@ -193,7 +193,7 @@ class TestBaseClassWeb extends TestBaseClass
                     WebDriverBy::id('welcome-jumbotron')
                 )
             );
-        } catch (TimeOutException $ex) {
+        } catch (TimeoutException $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder .'/FailedLogin.png';
             file_put_contents($filename, $screenshot);
