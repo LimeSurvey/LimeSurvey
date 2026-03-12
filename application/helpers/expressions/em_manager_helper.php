@@ -3027,7 +3027,7 @@ class LimeExpressionManager
                 //Get date format of current question and convert date in help text accordingly
                 $LEM =& LimeExpressionManager::singleton();
                 $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $questionNum, $_SESSION['LEMlang']);
-                $aDateFormatData = getDateFormatDataForQID($aAttributes[$questionNum], $LEM->surveyOptions);
+                $aDateFormatData = getDateFormatDataForQID($aAttributes[$questionNum] ?? [], $LEM->surveyOptions);
                 $_minV = (($date_min == '') ? "''" : "if((strtotime(" . $date_min . ")), date('" . $aDateFormatData['phpdate'] . "', strtotime(" . $date_min . ")),'')");
                 $_maxV = (($date_max == '') ? "''" : "if((strtotime(" . $date_max . ")), date('" . $aDateFormatData['phpdate'] . "', strtotime(" . $date_max . ")),'')");
                 $qtips['value_range'] =
@@ -8879,7 +8879,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         case Question::QT_D_DATE: //DATE
                             $LEM =& LimeExpressionManager::singleton();
                             $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $var['qid'], $_SESSION['LEMlang']);
-                            $aDateFormatData = getDateFormatDataForQID($aAttributes[$var['qid']], $LEM->surveyOptions);
+                            $aDateFormatData = getDateFormatDataForQID($aAttributes[$var['qid']] ?? [], $LEM->surveyOptions);
                             $shown = '';
                             if (strtotime((string) $code) !== false) {
                                 $shown = date($aDateFormatData['phpdate'], strtotime((string) $code));
