@@ -19,11 +19,15 @@ class ShortUrlTest extends TestBaseClassWeb
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_shortUrlOpen.lss');
         self::$testHelper->activateSurvey(self::$surveyId);
 
-        $url = 'http://' . self::$domain . '/index.php/' . $alias;
+        $urlManager = App()->urlManager;
+        $urlManager->setBaseUrl('http://' . self::$domain . '/index.php');
+        $urlParams = [];
         if (!empty($params)) {
-            $url .= "?" . $params;
+            parse_str($params, $extraParams);
+            $urlParams = array_merge($urlParams, $extraParams);
         }
-        $web  = self::$webDriver;
+        $url = $urlManager->createUrl($alias, $urlParams);
+        $web = self::$webDriver;
 
         try {
             // Clear cookies to prevent stale PHP session from a previous dataset run
@@ -75,10 +79,14 @@ class ShortUrlTest extends TestBaseClassWeb
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_shortUrlOpen.lss');
         self::$testHelper->activateSurvey(self::$surveyId);
 
-        $url = 'http://' . self::$domain . '/index.php/' . $alias . "?Q01=Prefilled";
+        $urlManager = App()->urlManager;
+        $urlManager->setBaseUrl('http://' . self::$domain . '/index.php');
+        $urlParams = ['Q01' => 'Prefilled'];
         if (!empty($params)) {
-            $url .= "&" . $params;
+            parse_str($params, $extraParams);
+            $urlParams = array_merge($urlParams, $extraParams);
         }
+        $url = $urlManager->createUrl($alias, $urlParams);
         list(, , $sgqa) = self::$testHelper->getSgqa('Q01', self::$surveyId);
         $web  = self::$webDriver;
 
@@ -127,10 +135,14 @@ class ShortUrlTest extends TestBaseClassWeb
     {
         self::importSurvey(self::$surveysFolder . '/survey_archive_shortUrlClosed.lsa');
 
-        $url = 'http://' . self::$domain . '/index.php/' . $alias . "?token=123456";
+        $urlManager = App()->urlManager;
+        $urlManager->setBaseUrl('http://' . self::$domain . '/index.php');
+        $urlParams = ['token' => '123456'];
         if (!empty($params)) {
-            $url .= "&" . $params;
+            parse_str($params, $extraParams);
+            $urlParams = array_merge($urlParams, $extraParams);
         }
+        $url = $urlManager->createUrl($alias, $urlParams);
         $web  = self::$webDriver;
 
         try {
@@ -182,10 +194,14 @@ class ShortUrlTest extends TestBaseClassWeb
     {
         self::importSurvey(self::$surveysFolder . '/survey_archive_shortUrlClosed.lsa');
 
-        $url = 'http://' . self::$domain . '/index.php/' . $alias . "?token=123456&Q01=Prefilled";
+        $urlManager = App()->urlManager;
+        $urlManager->setBaseUrl('http://' . self::$domain . '/index.php');
+        $urlParams = ['token' => '123456', 'Q01' => 'Prefilled'];
         if (!empty($params)) {
-            $url .= "&" . $params;
+            parse_str($params, $extraParams);
+            $urlParams = array_merge($urlParams, $extraParams);
         }
+        $url = $urlManager->createUrl($alias, $urlParams);
 
         list(, , $sgqa) = self::$testHelper->getSgqa('Q01', self::$surveyId);
 
