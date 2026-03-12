@@ -2,14 +2,48 @@
 
 namespace ls\tests;
 
+use CUrlManager;
 use Facebook\WebDriver\WebDriverBy;
 use Survey;
+use Yii;
 
 /**
  * @group shorturl
  */
 class ShortUrlTest extends TestBaseClassWeb
 {
+    /**
+     * Build a short URL for the given alias and query params, respecting the
+     * configured urlFormat ('path' or 'get') from application/config/config.php.
+     *
+     * path format: http://domain/index.php/alias?key=val
+     * get  format: http://domain/index.php?r=alias&key=val
+     *
+     * @param string $alias  The short-URL alias (e.g. 'testsurvey')
+     * @param array  $params Key/value query parameters (e.g. ['lang=en&something=else'])
+     * @return string
+     */
+    private function buildShortUrl(string $alias, array $params = []): string
+    {
+        $baseUrl    = 'http://' . self::$domain . '/index.php';
+        $urlManager = Yii::app()->getUrlManager();
+        $urlFormat  = $urlManager->getUrlFormat();
+
+        if ($urlFormat === CUrlManager::GET_FORMAT) {
+            $params = [$urlManager->routeVar => $alias] + $params;
+            $url    = $baseUrl;
+        } else {
+            $url = $baseUrl . '/' . $alias;
+        }
+
+        $query = $urlManager->createPathInfo($params, '=', '&');
+        if (!empty($query)) {
+            $url .= '?' . $query;
+        }
+
+        return $url;
+    }
+
     /**
      * Test short urls without extra params (except language)
      * @dataProvider shortUrlDataProvider
@@ -19,14 +53,8 @@ class ShortUrlTest extends TestBaseClassWeb
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_shortUrlOpen.lss');
         self::$testHelper->activateSurvey(self::$surveyId);
 
-        $urlManager = App()->urlManager;
-        $urlManager->setBaseUrl('http://' . self::$domain . '/index.php');
-        $urlParams = [];
-        if (!empty($params)) {
-            parse_str($params, $extraParams);
-            $urlParams = array_merge($urlParams, $extraParams);
-        }
-        $url = $urlManager->createUrl($alias, $urlParams);
+        parse_str($params, $queryParams);
+        $url = $this->buildShortUrl($alias, $queryParams);
         $web = self::$webDriver;
 
         try {
@@ -78,14 +106,9 @@ class ShortUrlTest extends TestBaseClassWeb
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_shortUrlOpen.lss');
         self::$testHelper->activateSurvey(self::$surveyId);
 
-        $urlManager = App()->urlManager;
-        $urlManager->setBaseUrl('http://' . self::$domain . '/index.php');
-        $urlParams = ['Q01' => 'Prefilled'];
-        if (!empty($params)) {
-            parse_str($params, $extraParams);
-            $urlParams = array_merge($urlParams, $extraParams);
-        }
-        $url = $urlManager->createUrl($alias, $urlParams);
+        parse_str($params, $queryParams);
+        $queryParams['Q01'] = 'Prefilled';
+        $url = $this->buildShortUrl($alias, $queryParams);
         list(, , $sgqa) = self::$testHelper->getSgqa('Q01', self::$surveyId);
         $web  = self::$webDriver;
 
@@ -133,14 +156,9 @@ class ShortUrlTest extends TestBaseClassWeb
     {
         self::importSurvey(self::$surveysFolder . '/survey_archive_shortUrlClosed.lsa');
 
-        $urlManager = App()->urlManager;
-        $urlManager->setBaseUrl('http://' . self::$domain . '/index.php');
-        $urlParams = ['token' => '123456'];
-        if (!empty($params)) {
-            parse_str($params, $extraParams);
-            $urlParams = array_merge($urlParams, $extraParams);
-        }
-        $url = $urlManager->createUrl($alias, $urlParams);
+        parse_str($params, $queryParams);
+        $queryParams['token'] = '123456';
+        $url = $this->buildShortUrl($alias, $queryParams);
         $web  = self::$webDriver;
 
         try {
@@ -191,14 +209,10 @@ class ShortUrlTest extends TestBaseClassWeb
     {
         self::importSurvey(self::$surveysFolder . '/survey_archive_shortUrlClosed.lsa');
 
-        $urlManager = App()->urlManager;
-        $urlManager->setBaseUrl('http://' . self::$domain . '/index.php');
-        $urlParams = ['token' => '123456', 'Q01' => 'Prefilled'];
-        if (!empty($params)) {
-            parse_str($params, $extraParams);
-            $urlParams = array_merge($urlParams, $extraParams);
-        }
-        $url = $urlManager->createUrl($alias, $urlParams);
+        parse_str($params, $queryParams);
+        $queryParams['token'] = '123456';
+        $queryParams['Q01'] = 'Prefilled';
+        $url = $this->buildShortUrl($alias, $queryParams);
 
         list(, , $sgqa) = self::$testHelper->getSgqa('Q01', self::$surveyId);
 
