@@ -46,13 +46,14 @@ class UpdateCheck extends PluginBase
     /**
      * After super admin log in, check date of next update check and set flag.
      * @return void
+     * @throws Exception
      */
     public function afterSuccessfulLogin()
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             // NB: $nextCheck will be set to "now" if next_extension_update_check is empty.
             // Hence it needs to be initialised *before* today.
-            $nextCheck = new DateTime($this->get('next_extension_update_check'));
+            $nextCheck = new DateTime($this->get('next_extension_update_check') ?? 'now');
             $today = new DateTime("now");
             if ($nextCheck <= $today) {
                 // Set flag.
