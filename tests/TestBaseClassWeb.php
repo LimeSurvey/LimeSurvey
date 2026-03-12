@@ -174,15 +174,22 @@ class TestBaseClassWeb extends TestBaseClass
         self::$webDriver->click($submit);
 
         if ($wait) {
-            self::$webDriver->wait()->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::className('welcome')
-                )
-            );
-            self::ignoreWelcomeModal();
-            self::ignoreAdminNotification();
-            sleep(3);
-            self::ignoreAdminNotification();
+            try {
+                self::$webDriver->wait(10)->until(
+                    WebDriverExpectedCondition::presenceOfElementLocated(
+                        WebDriverBy::className('welcome')
+                    )
+                );
+            } catch (TimeoutException $ex) {
+                $screenshot = self::$webDriver->takeScreenshot();
+                $filename = self::$screenshotsFolder . '/FailedLoginWelcome.png';
+                file_put_contents($filename, $screenshot);
+                self::assertTrue(
+                    false,
+                    ' Screenshot in ' . $filename . PHP_EOL .
+                    'Could not find element with class "welcome" after login. The login might have failed or the page did not load.'
+                );
+            }
         }
 
         /*
