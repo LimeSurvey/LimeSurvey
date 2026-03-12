@@ -56,14 +56,15 @@
             <div class=''></div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" role="group" aria-labelledby="email_actions_label_<?php echo CHtml::encode($grouplang); ?>_<?php echo CHtml::encode($tab); ?>">
         <div class='mb-3 col-md-12'>
-            <label class=' form-label'><?php et('Actions:');?></label>
+            <label id="email_actions_label_<?php echo CHtml::encode($grouplang); ?>_<?php echo CHtml::encode($tab); ?>" class=' form-label'><?php eT('Actions:');?></label>
             <div class=''>
                 <a class='btn btn-outline-secondary' 
                    id="validate_expression_<?=$grouplang?>_<?=$tab?>" 
                    data-parent-element="#in_survey_common" 
                    data-bs-target="modal" 
+                   tabindex="0"
                    data-remote-link="<?=App()->createUrl('admin/validate',['sa'=>'email','sid'=>$surveyid,'lang'=>$grouplang,'type'=>$tab])?>" 
                    data-footer="false" 
                    data-modal-title="<?=$details['title']?>" > 
@@ -82,8 +83,8 @@
     <?php
     if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
     { ?>
-    <div class="row">
-            <label class='form-label col-12' for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
+    <div class="row" role="group" aria-labelledby="email_attachments_label_<?php echo CHtml::encode($grouplang); ?>_<?php echo CHtml::encode($tab); ?>">
+            <label id="email_attachments_label_<?php echo CHtml::encode($grouplang); ?>_<?php echo CHtml::encode($tab); ?>" class='form-label col-12' for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
             <div class="col-12">
                 <button class="add-attachment btn btn-outline-secondary" data-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php eT("Add file"); ?></button> &nbsp;
             </div>
