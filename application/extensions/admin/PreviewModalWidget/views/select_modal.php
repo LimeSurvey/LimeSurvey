@@ -11,16 +11,17 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?= gT($this->modalTitle) ?></h5>
+                <h2 class="modal-title h5"><?= gT($this->modalTitle) ?></h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-4 ls-ba">
                         <div class="ls-space padding all-0">
-                            <div class="list-group ls-space margin all-0">
+                            <div class="list-group ls-space margin all-0" role="list">
                                 <?php foreach ($this->itemsArray as $sItemKey => $aItemContent) { ?>
                                     <a href="#"
+                                       role="listitem"
                                        class="list-group-item selector__Item--select-<?= $this->widgetsJsName ?> <?= @$aItemContent['htmlclasses'] ?>"
                                        data-selector="<?= !empty($aItemContent['class']) ? $aItemContent['class'] : $sItemKey ?>"
                                        data-key="<?= $sItemKey ?>"
