@@ -97,7 +97,7 @@ export const SurveyStructure = () => {
       .questionGroup()
       .delete()
 
-    if (!focused.qid && focused.gid === questionGroup.gid) {
+    if (!focused?.qid && focused?.gid === questionGroup.gid) {
       unFocus()
     }
 
@@ -315,7 +315,7 @@ export const SurveyStructure = () => {
         onConfirm={handleConfirmGroupDeletion}
         title={t('Delete question group')}
         description={t(
-          'Are you sure you want to delete this question group? this action cannot be reverted.'
+          'Are you sure you want to delete this question group? This action cannot be reverted.'
         )}
         confirmButtonText={t('Delete')}
       />

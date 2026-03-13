@@ -42,6 +42,7 @@ export const ConfirmModal = ({
           className="text-light confirm-button"
           variant="danger"
           onClick={onConfirm}
+          testId="confirm-modal-confirm-button"
         >
           {confirmButtonText}
         </Button>
