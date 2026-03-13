@@ -1,0 +1,73 @@
+.condition-designer-overlay {
+  margin-top: 20px;
+}
+
+.condition-designer-overlay-title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
+
+  p {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-normal;
+    color: $black;
+  }
+}
+
+.condition-designer-overlay-message {
+  text-align: left;
+  font-size: $font-size-sm;
+  color: $g-700;
+  font-family: 'IBM Plex Sans';
+  font-style: $font-style-base;
+  font-weight: $font-weight-normal;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: -0.238px;
+}
+
+.condition-designer-overlay-actions {
+  text-align: right;
+  margin-top: 20px;
+
+  .condition-designer-overlay-secondary-button {
+    background-color: $g-600;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+
+  .condition-designer-overlay-danger-button {
+    background-color: $error;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .condition-designer-overlay-primary-button {
+    background-color: $grape;
+    color: $white;
+    border-radius: 5px;
+    padding: 10px 20px;
+    border: none;
+  }
+}
+
+.condition-designer-overlay-textarea-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 0;
+}
+
+.condition-designer-overlay-textarea {
+  border: 2px solid $g-700;
+  border-radius: 8px;
+  padding: 10px;
+  outline: none;
+  width: 100%;
+  resize: vertical;
+  transition: border-color 0.3s ease-in-out;
+}

@@ -1,0 +1,27 @@
+.button.button-question {
+  gap: 6px;
+  border: 2px solid $g-700;
+  color: $g-700;
+  padding: 8px 12px;
+  min-width: 90px;
+  min-height: 72px;
+  font-size: $font-size-sm;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: $active-green-hover;
+    border-color: $active-green-hover;
+    color: $g-100;
+    outline: none;
+
+    svg {
+      fill: $g-100;
+    }
+  }
+
+  &:focus {
+    background-color: $active-green-hover;
+    color: $g-100;
+    outline: none;
+  }
+}

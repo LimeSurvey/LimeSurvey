@@ -1,0 +1,82 @@
+.question-type-selector-container,
+.question-type-attribute-selector-container {
+  z-index: 1030;
+  background: white;
+  width: calc(100% - 450px);
+  left: 300px;
+  min-width: 400px;
+  max-width: 1024px;
+}
+
+.question-type-attribute-selector-container {
+  width: 250px;
+}
+
+// This needs to be defined outside of the container because the selector
+// - is not always displayed within the container (storybook)
+.question-type-selector {
+  .qe-input-icon-right {
+    margin-right: -6px !important;
+  }
+
+  .question-inserter-search {
+    border: none;
+    background-color: $g-200 !important;
+    height: 100%;
+  }
+
+  h6 {
+    text-transform: uppercase;
+    font-size: 0.8em;
+    font-weight: 200;
+  }
+  .list {
+    font-size: 0.9em;
+    padding: 0 1em 0 1em;
+    overflow-y: scroll;
+    max-height: 360px;
+  }
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  .list-group-item {
+    display: flex;
+    align-items: center;
+    border: 0;
+    padding-left: 0.25em;
+    // text-transform: uppercase;
+    cursor: pointer;
+    svg {
+      margin-right: 0.2em;
+    }
+  }
+  .list-group-item:hover {
+    color: blue;
+  }
+
+  .list-group-item:last-child {
+    margin-bottom: 0.5em;
+  }
+
+  .qe-input-group {
+    input {
+      background-color: #f0f0f0;
+    }
+
+    .qe-input-icon-right {
+      margin-right: 0.5em;
+    }
+  }
+
+  .add-question-group {
+    background: #8146f614;
+    border-radius: 5px;
+  }
+}
+
+.attribute-label {
+  @include label-s-sidebar;
+}

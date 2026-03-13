@@ -1,0 +1,156 @@
+.sidebar {
+  background-color: $white;
+  display: flex;
+  flex-direction: column;
+  max-width: $left-side-bar-width;
+  font-size: $font-size-xs;
+
+  border-right: 1px #eeeeee solid;
+  height: 100vh;
+  left: 0;
+  position: fixed;
+  overflow-y: auto;
+  max-height: calc(100vh - $top-bar-height);
+
+  .margin-top-10 {
+    margin-top: 10px;
+  }
+}
+
+.sidebar-header {
+  font-size: $font-size-xs;
+  padding: 12px 8px 12px 18px;
+  font-weight: $font-weight-600;
+  margin-bottom: 1rem;
+
+  .btn-close-lime {
+    color: $g-900;
+    opacity: 1;
+    font-size: $font-size-xs;
+    &:hover,
+    &:focus {
+      box-shadow: $btn-hover-boxshadow !important;
+    }
+  }
+}
+
+.sidebar-header.primary {
+  background-color: $g-200;
+}
+
+.sidebar-panel {
+  .form-label {
+    @include med14-c;
+  }
+}
+
+.sidebar-row {
+  @include med14-c;
+
+  margin-bottom: 6px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-right: 10px;
+  cursor: grab;
+
+  .content-editable {
+    cursor: grab;
+
+    &::before {
+      cursor: grab;
+    }
+  }
+
+  .sidebar-row-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 170px;
+    margin-left: 5px;
+
+    [data-placeholder]:empty {
+      &:before {
+        color: $g-400;
+      }
+    }
+  }
+
+  .sidebar-row-tag {
+    background-color: $g-100;
+    padding: 4px 8px;
+    margin-left: 6px;
+    margin-right: 6px;
+    border-radius: 2px;
+    max-width: 70px;
+    min-width: 62px;
+    min-height: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sidebar-row-title-container {
+    cursor: grab;
+  }
+
+  .sidebar-meatball-menu {
+    opacity: 0;
+  }
+
+  &:hover .sidebar-meatball-menu {
+    opacity: 1;
+  }
+}
+
+.sidebar-section {
+  margin: 0 0 1rem 0;
+  padding: 0 0.5rem 1.5rem 1.5rem;
+  border-bottom: 1px #dcdcdc solid;
+}
+
+.sidebar-section button {
+  border-radius: 0;
+  min-width: 110px;
+}
+
+.sidebar-section select {
+  border-radius: 0;
+}
+
+h6.section-header {
+  font-size: $font-size-xs;
+  margin: 0 0 1rem 0;
+}
+
+.right-side-bar {
+  .accordion {
+    border-bottom: 1px solid $g-400;
+  }
+
+  .accordion-button:not(.collapsed) {
+    background-color: $white;
+    color: $g-900;
+  }
+}
+
+.sidebar-icons {
+  box-sizing: content-box;
+  padding: 8px 8px 0 8px;
+  width: 36px;
+}
+.survey-structure {
+  padding-left: 2px;
+}
+.survey-menu {
+  box-sizing: content-box;
+  padding: 8px 6px;
+}
+
+.group .sidebar-row-title.question-code .content-editable,
+.group .sidebar-row-title.question-code {
+  width: 110px !important;
+}
+
+.sidebar-icon-disabled {
+  opacity: 0.5;
+}

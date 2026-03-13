@@ -1,0 +1,112 @@
+.top-bar {
+  background-color: white;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  width: 100vw;
+  z-index: 1000;
+
+  &-left {
+    width: $left-side-bar-width;
+    // z-index is set due to middle part
+    z-index: 2;
+  }
+
+  &-right {
+    min-width: $right-side-bar-width;
+    z-index: 2;
+  }
+
+  height: $top-bar-height;
+
+  .top-bar-select {
+    border: 0;
+    background-color: transparent;
+    font-weight: $font-weight-500;
+    font-size: $font-size-sm;
+    position: relative;
+
+    .survey-title-content-editor {
+      z-index: 100;
+      color: $black;
+      background-color: $white;
+
+      &:focus,
+      &:active {
+        background-color: $g-200 !important;
+      }
+    }
+
+    .form-select-top-bar {
+      position: absolute;
+      margin-left: 25px;
+      border: none;
+      outline: none;
+      color: $white;
+      z-index: 1;
+
+      &:active,
+      &:focus {
+        color: black;
+      }
+    }
+  }
+
+  box-shadow: 0 1px 2px -2px gray;
+
+  .top-bar-brand {
+    font-style: $font-style-base;
+    font-weight: 800;
+    font-size: 15px;
+    color: #1e1e1e;
+    font-family: 'IBM Plex Sans', sans-serif;
+    line-height: 24px;
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    margin-right: 0;
+
+    .logo {
+      padding-left: 3px;
+      vertical-align: bottom;
+      display: inline-block;
+    }
+  }
+
+  .button {
+    height: 36px;
+  }
+
+  .add-question-button {
+    padding: 0;
+    height: 36px;
+    width: 36px;
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+}
+
+.auto-saved {
+  font-size: $font-size-sm;
+  min-width: max-content;
+}
+
+.preview-button {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 3px;
+  background: $g-200;
+}
+
+.topbar-question-inserter {
+  position: fixed;
+  top: $top-bar-height;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1050;
+  max-height: 80vh;
+  overflow-y: auto;
+}

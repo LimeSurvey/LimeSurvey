@@ -1,0 +1,23 @@
+.confirm-modal {
+  background-color: rgba(0, 0, 0, 0.5);
+  @include med14-c;
+
+  text-align: center;
+
+  .modal-title {
+    text-align: center;
+  }
+
+  .body-icon {
+    font-size: 64px;
+    font-weight: 200;
+    border: 2px solid $r-700;
+    border-radius: 100px;
+    padding: 8px;
+    color: $r-700;
+  }
+
+  .modal-content {
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+  }
+}
