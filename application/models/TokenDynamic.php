@@ -566,6 +566,20 @@ class TokenDynamic extends LSActiveRecord
         return $this->getYesNoDateFormated($field);
     }
 
+    public function getCustomDateAttrFormatted($attrName)
+    {
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $attributeService = $diContainer->get(
+            LimeSurvey\Models\Services\ParticipantAttributeService::class
+        );
+        $field = $this->{$attrName};
+        return $attributeService->convertDateAttributeToDisplayFormat(
+            0,
+            $field,
+            false
+        );
+    }
+
     /**
      * @param string $field
      * @return string
@@ -577,7 +591,7 @@ class TokenDynamic extends LSActiveRecord
                 $field     = '<span class="text-danger">' . gT('Quota out') . '</span>';
             } elseif ($field != 'Y') {
                 $fieldDate = convertToGlobalSettingFormat($field);
-                $field     = '<span class="text-success">' . $fieldDate . '</span>';
+                $field     = '<span class="text-success">' . CHtml::encode($fieldDate) . '</span>';
             } else {
                 $field     = '<span class="text-success ri-check-fill"></span>';
             }
@@ -746,11 +760,19 @@ class TokenDynamic extends LSActiveRecord
         // Custom attributes
         foreach ($aCustomAttributes as $sColName => $oColumn) {
             $desc = ($oColumn['description'] != '') ? $oColumn['description'] : $sColName;
+            if (array_key_exists('type', $oColumn) && $oColumn['type'] == 'DP') {
+                $value = '$data->getCustomDateAttrFormatted(\'' . $sColName . '\')';
+                $type = 'raw';
+            } else {
+                $value = '$data->' . $sColName;
+                $type = 'longtext';
+            }
+
             $aCustomAttributesCols[] = array(
                 'header' => $desc . $this->setEncryptedAttributeLabel(self::$sid, 'Token', $sColName), // $aAttributedescriptions->$sColName->description,
                 'name' => $sColName,
-                'type' => 'longtext',
-                'value' => '$data->' . $sColName,
+                'type' => $type,
+                'value' => $value,
                 'headerHtmlOptions' => array('class' => ''),
                 'htmlOptions' => array('class' => ''),
             );

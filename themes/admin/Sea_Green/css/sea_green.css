@@ -11434,20 +11434,6 @@ textarea.form-control-lg {
   font-weight: 600;
 }
 
-.pagetitle {
-  padding-bottom: 4px;
-  border-bottom: solid 2px #D3D5DA;
-  position: relative;
-  margin-bottom: 1em;
-}
-.pagetitle.h3 {
-  color: #152536;
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 500;
-  font-size: 0.9975rem;
-  line-height: 20px;
-}
-
 .side-body h3, .side-body .h3,
 .side-body h2,
 .side-body .h2 {
@@ -17142,7 +17128,7 @@ body {
 .btn-link {
   color: #14AE5C;
 }
-.btn-link:hover, .btn-link:focus {
+.btn-link:hover, .btn-link:focus, .btn-link:active, .btn-link:active:focus {
   color: #14AE5C;
 }
 
@@ -17427,30 +17413,37 @@ body {
 .dropdown-menu .dropdown-item.disabled i {
   color: #9094A7 !important;
 }
-.dropdown-menu > li > a {
+.dropdown-menu > li > a,
+.dropdown-menu > li > button {
   color: #333641;
 }
-.dropdown-menu > li > a:hover {
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > button:hover {
   color: #333641;
   background-color: #EEEFF7;
 }
-.dropdown-menu > li > a:focus {
+.dropdown-menu > li > a:focus,
+.dropdown-menu > li > button:focus {
   color: #fff;
   background-color: var(--bs-primary);
 }
-.dropdown-menu > .active > a {
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > button {
   color: #fff;
   background-color: var(--bs-primary);
 }
-.dropdown-menu > .active > a:hover {
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > button:hover {
   color: #fff;
   background-color: var(--bs-primary);
 }
-.dropdown-menu > .active > a:focus {
+.dropdown-menu > .active > a:focus,
+.dropdown-menu > .active > button:focus {
   color: #fff;
   background-color: var(--bs-primary);
 }
-.dropdown-menu > .disabled > a {
+.dropdown-menu > .disabled > a,
+.dropdown-menu > .disabled > button {
   color: #9094A7;
 }
 
@@ -17815,6 +17808,32 @@ h3,
   line-height: 20px;
 }
 
+.pagetitle {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding-bottom: 4px;
+  border-bottom: solid 2px #D3D5DA;
+  position: relative;
+  margin-bottom: 1em;
+}
+.pagetitle h1, .pagetitle .h1 {
+  margin-bottom: 0;
+}
+.pagetitle.h3 {
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 500;
+  font-size: 0.9975rem;
+  line-height: 20px;
+}
+.pagetitle__description {
+  font-weight: 400;
+  font-size: 0.9975rem;
+  line-height: 26px;
+  color: #182535;
+}
+
 label {
   color: #152536;
   font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -18088,7 +18107,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .navbar .dropdown-menu[data-bs-popper] {
   margin-top: -0.5rem;
 }
-.navbar .dropdown-menu > li > a {
+.navbar .dropdown-menu > li > a, .navbar .dropdown-menu > li > button {
   font-weight: 500;
 }
 .navbar .btn-create {
@@ -18191,6 +18210,14 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   border: 1px solid;
   border-radius: 2px;
   background-color: #fff !important;
+}
+
+.dropdown-toggle-no-caret::after {
+  display: none !important;
+}
+
+.extra-menu-dropdown {
+  padding: 1rem;
 }
 
 .card .card-header {
@@ -18645,8 +18672,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   margin-bottom: 4px;
 }
 .topbar.scroll-shadow {
-  background-color: inherit;
-  box-shadow: 0 1px 20px 0 rgb(196, 196, 196);
+  box-shadow: 0 12px 8px -12px rgb(196, 196, 196);
 }
 .topbar .ls-breadcrumb {
   align-self: center;
@@ -19599,6 +19625,14 @@ input[type=number] {
 .sidebar .sidebar-icons .sidebar-icon .btn-icon[selected] {
   background-color: #fff;
   color: #333641;
+}
+.sidebar .scoped-toolbuttons-right {
+  flex: 2 1 auto;
+  align-self: flex-end;
+  white-space: nowrap;
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
 }
 
 .badge {
