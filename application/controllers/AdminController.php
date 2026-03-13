@@ -135,7 +135,7 @@ class AdminController extends LSYii_Controller
             if (Yii::app()->request->getPost('lang') == 'auto') {
                 $sLanguage = getBrowserLanguage();
             } else {
-                $sLanguage = sanitize_languagecode(Yii::app()->request->getPost('lang'));
+                $sLanguage = \LSYii_Validators::languageCodeFilter(Yii::app()->request->getPost('lang'));
             }
             Yii::app()->session['adminlang'] = $sLanguage;
         }
