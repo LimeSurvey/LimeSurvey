@@ -13,7 +13,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "core-js": "^2.6.5",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "sass": "^1.51.0",
     "vue": "~2.6.x",
     "vue-localstorage": "^0.5.0",
