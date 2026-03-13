@@ -1,0 +1,13 @@
+.cm-gutterElement,
+.cm-line {
+  background-color: $g-200 !important;
+}
+
+.cm-lineWrapping {
+  padding: 0 !important;
+}
+
+.cm-activeLine,
+.cm-activeLineGutter {
+  background-color: $g-300 !important;
+}
