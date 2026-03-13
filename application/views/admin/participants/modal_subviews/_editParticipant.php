@@ -34,35 +34,37 @@ Yii::app()->getController()->renderPartial(
         );
     ?>
         <div class='mb-3'>
-            <label class='form-label ' for="Participant_firstname">
+            <label id="Participant_firstname_label" class='form-label ' for="Participant_firstname">
                 <?php eT('First name:'); ?>
             </label>
             <div class=''>
-                <?=$form->textField($model, 'firstname')?>
+                <?=$form->textField($model, 'firstname', ['id' => 'Participant_firstname', 'aria-labelledby' => 'Participant_firstname_label'])?>
             </div>
-            <label class='form-label ' for="Participant_lastname">
+            <label id="Participant_lastname_label" class='form-label ' for="Participant_lastname">
                 <?php eT('Last name:'); ?>
             </label>
             <div class=''>
-                <?=$form->textField($model, 'lastname')?>
+                <?=$form->textField($model, 'lastname', ['id' => 'Participant_lastname', 'aria-labelledby' => 'Participant_lastname_label'])?>
             </div>
         </div>
         <div class='mb-3'>
-            <label class='form-label ' for="Participant_email">
+            <label id="Participant_email_label" class='form-label ' for="Participant_email">
                 <?php eT('Email:'); ?>
             </label>
-            <div class='0'>
-                <?=$form->textField($model, 'email')?>
+            <div class=''>
+                <?=$form->textField($model, 'email', ['id' => 'Participant_email', 'aria-labelledby' => 'Participant_email_label'])?>
             </div>
         </div>
         <div class='mb-3'>
-            <label class='form-label ' for="Participant_language"><?php eT("Language:"); ?></label>
+            <label id="Participant_language_label" class='form-label ' for="Participant_language"><?php eT("Language:"); ?></label>
             <div class=''>
                 <?= $form->dropDownList(
                         $model,
                         'language',
                         $model->languageOptions,
                         [
+                            'id' => 'Participant_language',
+                            'aria-labelledby' => 'Participant_language_label',
                             'empty' => gT('Select language...'),
                             'class' => 'form-select'
                         ]
@@ -89,12 +91,12 @@ Yii::app()->getController()->renderPartial(
         <?php if ($model->isOwnerOrSuperAdmin()): ?>
         <?php  ?>
             <div class='mb-3'>
-                <label class='form-label ' for="owner_uid"><?php eT("Owner:"); ?></label>
+                <label id="owner_uid_label" class='form-label' for="owner_uid"><?php eT("Owner:"); ?></label>
                 <?php
                     // When we add a new user, owner is default to current user
                     $selected = ($editType == 'add') ? Yii::app()->user->id : $model->owner_uid;
                     $listUsers = CHtml::listData($users,'uid','full_name');
-                    echo CHtml::dropDownList('Participant[owner_uid]',$selected,$listUsers,array('id'=>'owner_uid','class'=>'form-select'));
+                    echo CHtml::dropDownList('Participant[owner_uid]',$selected,$listUsers,array('id'=>'owner_uid','class'=>'form-select','aria-labelledby'=>'owner_uid_label'));
                 ?>
             </div>
         <?php endif; ?>

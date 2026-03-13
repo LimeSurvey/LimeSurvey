@@ -18,11 +18,11 @@
         <input type='hidden' name='participant_id' value='<?php echo $participant_id; ?>'/>
         <div class="row ls-space margin top-10 bottom-10">
             <div class='mb-3'>
-                <label class='form-label col-md-4'>
+                <label id="addToSurvey_survey_label" class='form-label col-md-4' for="addToSurvey_survey_id">
                     <?php eT('Survey'); ?>
                 </label>
                 <div class='col-md-8'>
-                    <select name='survey_id' class='form-select'>
+                    <select name='survey_id' id="addToSurvey_survey_id" class='form-select' aria-labelledby="addToSurvey_survey_label">
                         <?php foreach ($surveys as $survey): ?>
                             <?php if ($hasGlobalPermission || Permission::model()->hasSurveyPermission($survey->sid, 'tokens', 'update')): ?>
                                 <option value='<?php echo $survey->sid; ?>'><?php echo $survey->languagesettings[$survey->language]->surveyls_title; ?> (<?php echo $survey->sid; ?>)</option>
