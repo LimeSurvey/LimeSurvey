@@ -131,7 +131,7 @@ class SurveyResponses implements CommandInterface
             'sort' => $request->getData('sort', []),
         ];
 
-        $this->answerCache->load($surveyId, $this->survey->language);
+        $this->answerCache->load((int) $surveyId, $this->survey->language);
         $data['responses'] = $this->mapResponsesToQuestions(
             $data['responses'],
             $data['surveyQuestions']

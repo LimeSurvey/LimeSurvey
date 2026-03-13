@@ -16,6 +16,9 @@ use RuntimeException;
 use Survey;
 use SurveyDynamic;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
 class ExportSurveyResultsService
 {
     use ResponseMappingTrait;
