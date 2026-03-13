@@ -37,7 +37,7 @@
     </div>
     <div class="mb-3">
         <?php echo $form->labelEx($model, 'title'); ?>
-        <?php echo $form->textField($model, 'title', array('size' => 60, 'maxlength' => 100, 'readonly' => !$updateRigth)); ?>
+        <?php echo $form->textField($model, 'title', array('size' => 60, 'maxlength' => 100, 'readonly' => !$updateRigth, 'aria-describedby' => CHtml::activeId($model, 'title') . '_em_')); ?>
         <?php echo $form->error($model, 'title', array('errorCssClass' => 'text-danger')); ?>
     </div>
 
@@ -57,14 +57,14 @@
     <!-- should be a selector based on group name -->
     <div class="mb-3">
         <?php echo $form->labelEx($model, 'parent_id'); ?>
-        <?php echo $form->dropDownList($model, 'parent_id', $model->getParentGroupOptions($model->gsid), array('disabled' => !$updateRigth, 'class' => 'form-select')); ?>
+        <?php echo $form->dropDownList($model, 'parent_id', $model->getParentGroupOptions($model->gsid), array('disabled' => !$updateRigth, 'class' => 'form-select', 'aria-label' => $model->getAttributeLabel('parent_id'))); ?>
         <?php echo $form->error($model, 'parent_id', array('errorCssClass' => 'text-danger')); ?>
     </div>
 
     <!-- User list -->
     <div class="mb-3">
         <?php echo $form->labelEx($model, 'owner_id'); ?>
-        <?php echo $form->dropDownList($model, 'owner_id', CHtml::listData($oUsers, 'uid', 'full_name'), array('disabled' => !$aRigths['owner_id'], 'class' => 'form-select')); ?>
+        <?php echo $form->dropDownList($model, 'owner_id', CHtml::listData($oUsers, 'uid', 'full_name'), array('disabled' => !$aRigths['owner_id'], 'class' => 'form-select', 'aria-label' => $model->getAttributeLabel('owner_id'))); ?>
         <?php echo $form->error($model, 'owner_id', array('errorCssClass' => 'text-danger')); ?>
     </div>
 
