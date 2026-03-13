@@ -98,7 +98,7 @@
                 <div class="col-md-6">
                     <!-- Max reminders -->
                     <div class='mb-3'>
-                        <label class='form-label ' for='maxremindercount'><?php eT("Max reminders:"); ?></label>
+                        <label class='form-label ' for='maxremindercount'><?php eT("Maximum reminders:"); ?></label>
                         <div class=''>
                             <input type="text" id="maxremindercount" class="form-control" size="25" value=""
                                    name="maxremindercount" style="width: 50%;"/>
@@ -108,7 +108,7 @@
                     <!-- Min days between reminders -->
                     <div class='mb-3'>
                         <label class='form-label '
-                               for='minreminderdelay'><?php eT("Min days between reminders:"); ?></label>
+                               for='minreminderdelay'><?php eT("Minimum days between reminders:"); ?></label>
                         <div class=''>
                             <input type="text" id="minreminderdelay" class="form-control" size="25" value=""
                                    name="minreminderdelay" style="width: 50%;">

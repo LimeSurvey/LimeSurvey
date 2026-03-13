@@ -553,7 +553,7 @@ class DataEntry extends SurveyCommonAction
         }
         $idresult = Response::model($surveyid)->findByPk($id);
         if (empty($idresult)) {
-            throw new CHttpException(404, gT("Invalid response id."));
+            throw new CHttpException(404, gT("Invalid response ID"));
         }
         $sDataEntryLanguage = $oSurvey->language;
         $aData = [];
@@ -2092,7 +2092,7 @@ class DataEntry extends SurveyCommonAction
      */
     private function returnErrorMessageIfLastAnswerForTokenIsNotPrivacyProtected(string $lastAnswer, int $id, string $errorMessage): string
     {
-        $errorMessage .= "<br /><br />" . gT("Follow the following link to update it") . ":\n";
+        $errorMessage .= "<br /><br />" . gT("Use the following link to update it:") . "\n";
         $errorMessage .= CHtml::link(
             "[id:$lastAnswer]",
             $this->getController()->createUrl('/admin/dataentry/sa/editdata/subaction/edit/id/' . $lastAnswer . '/surveyid/' . $id),

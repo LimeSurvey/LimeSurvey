@@ -539,7 +539,7 @@ abstract class PluginBase implements iPlugin
             'message' =>
                 '<span class="ri-error-warning-fill"></span>&nbsp;' .
                 gT('Could not read config file for plugin ' . $this->getName()) . '. ' .
-                gT('Config file is malformed or null.'),
+                gT('Config file is malformed or empty.'),
             'importance' => \Notification::HIGH_IMPORTANCE
             ]
         );

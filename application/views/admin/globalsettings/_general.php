@@ -60,7 +60,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'createsample',
-                    'ariaLabel' => gT('Create example question group and question'),
+                    'ariaLabel' => gT('Create example question group and question:'),
                     'checkedOption' => App()->getConfig('createsample'),
                     'selectOptions' => [
                         '1' => gT('On'),

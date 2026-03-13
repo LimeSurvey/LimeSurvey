@@ -2217,7 +2217,7 @@ function questionExport($action, $iSurveyID, $gid, $qid)
         [":sid" => $iSurveyID, ":gid" => $gid, ":qid" => $qid]
     );
     if (empty($question)) {
-        throw new CHttpException(404, gT("Invalid question id"));
+        throw new CHttpException(404, gT("Invalid question ID"));
     }
     $fn = "limesurvey_question_$qid.lsq";
     $xml = getXMLWriter();

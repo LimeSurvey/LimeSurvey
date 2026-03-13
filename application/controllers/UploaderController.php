@@ -370,7 +370,7 @@ class UploaderController extends SurveyController
             );
             /* Add information for for user forcedSuperAdmin right */
             if (Permission::isForcedSuperAdmin(Permission::model()->getUserId())) {
-                $return['msg'] = sprintf(gT("An unknown error happened when moving file %s to %s."), $uploadfile_tmp_name, $randfileloc);
+                $return['msg'] = sprintf(gT("An unknown error occurred when moving file %s to %s."), $uploadfile_tmp_name, $randfileloc);
             }
             //header('Content-Type: application/json');
             echo ls_json_encode($return);

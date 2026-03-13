@@ -151,7 +151,7 @@ class SurveyCommonAction extends CAction
         if (!empty($params['iQuestionId'])) {
             if ((string) (int) $params['iQuestionId'] !== (string) $params['iQuestionId']) {
                 // pgsql need filtering before find
-                throw new CHttpException(403, gT("Invalid question id"));
+                throw new CHttpException(403, gT("Invalid question ID"));
             }
             $oQuestion = Question::model()->find("qid=:qid", array(":qid" => $params['iQuestionId'])); //Move this in model to use cache
             if (!$oQuestion) {
@@ -1078,7 +1078,7 @@ class SurveyCommonAction extends CAction
                         // Extension forbidden
                         $aErrorFilesInfo[] = array(
                         "filename" => $direntry,
-                        "status" => gT("Forbidden Extension")
+                        "status" => gT("Forbidden extension")
                         );
                     }
                     unlink($extractdir . "/" . $direntry);

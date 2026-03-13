@@ -43,7 +43,7 @@ if ($result === 'success') {
             </p>
             <?php if (count($aImportedFilesInfo) > 0): ?>
                 <p>
-                    <br><strong><u><?php eT("Imported files:") ?></u></strong><br>
+                    <br><strong><u><?php eT("Imported files list:") ?></u></strong><br>
                 </p>
                 <ul style="max-height: 250px; overflow-y:scroll;" class="list-unstyled">
                     <?php foreach ($aImportedFilesInfo as $entry): ?>

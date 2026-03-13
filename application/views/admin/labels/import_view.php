@@ -12,7 +12,7 @@
     </div>
 <?php else:?>
     <div class="jumbotron message-box">
-            <h2 class="text-success"><?php eT("Import Label Set") ?></h2>
+            <h2 class="text-success"><?php eT("Import label set(s)") ?></h2>
             <p class="lead"><?php eT("File upload succeeded.") ?></p>
             <?php if (count($aImportResults['warnings']) > 0): ?>
                 <p  class="lead text-danger">
