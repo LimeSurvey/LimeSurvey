@@ -54,6 +54,7 @@ export const QuestionFooter = ({
               opacity: isSurveyActive && 0.3,
               cursor: !isSurveyActive && 'pointer',
               pointerEvents: isSurveyActive && 'none',
+              disabled: !isFocused,
             }}
             data-testid="question-footer-copy-icon"
             onClick={handleDuplicate}
