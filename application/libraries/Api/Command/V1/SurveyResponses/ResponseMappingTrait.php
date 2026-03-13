@@ -2,11 +2,6 @@
 
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses;
 
-use Answer;
-use Question;
-use Survey;
-use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurveyResponses;
-
 /**
  * Trait for shared response mapping functionality
  * Used by both SurveyResponses API command and ExportSurveyResultsService
@@ -27,6 +22,7 @@ trait ResponseMappingTrait
                 function ($item) {
                     if (!empty($item['qid'])) {
                         return [
+                            'fieldname' => $item['fieldname'] ?? null,
                             'gid' => $item['gid'],
                             'qid' => $item['qid'],
                             'aid' => $item['aid'] ?? null,
@@ -34,6 +30,11 @@ trait ResponseMappingTrait
                             'scaleid' => $item['scale_id'] ?? null,
                             'title' => $item['title'] ?? null,
                             'question' => $item['question'] ?? null,
+                            'subquestion' => $item['subquestion'] ?? null,
+                            'subquestion1' => $item['subquestion1'] ?? null,
+                            'subquestion2' => $item['subquestion2'] ?? null,
+                            'scale' => $item['scale'] ?? null,
+                            'type' => $item['type'] ?? null,
                         ];
                     }
                     return null;
@@ -72,43 +73,7 @@ trait ResponseMappingTrait
     }
 
     /**
-     * Get all answers for the survey questions and cache them.
-     *
-     * @return array Answers indexed by qid, scale_id, and code
-     */
-    protected function getAllSurveyAnswers()
-    {
-        static $answersCache = [];
-        $surveyId = $this->survey->sid;
-
-        if (!isset($answersCache[$surveyId])) {
-            /** @var Question[] $questions */
-            /** @psalm-suppress UndefinedMagicPropertyFetch */
-            $questions = $this->survey->questions;
-            $questionIds = array_map(function (Question $q): int {
-                return $q->qid;
-            }, $questions);
-
-            if (empty($questionIds)) {
-                $answersCache[$surveyId] = [];
-                return $answersCache[$surveyId];
-            }
-
-            $answers = $this->answerModel->findAll(
-                'qid IN (' . implode(',', $questionIds) . ')'
-            );
-
-            $answersCache[$surveyId] = [];
-            foreach ($answers as $answer) {
-                $answersCache[$surveyId][$answer->qid][$answer->scale_id][$answer->code] = $answer->aid;
-            }
-        }
-
-        return $answersCache[$surveyId];
-    }
-
-    /**
-     * Get the actual answer ID efficiently using cached answers.
+     * Get the actual answer ID using the shared answer cache.
      *
      * @param int $questionID
      * @param int $scaleId
@@ -117,7 +82,6 @@ trait ResponseMappingTrait
      */
     protected function getActualAid($questionID, $scaleId, $value)
     {
-        $allAnswers = $this->getAllSurveyAnswers();
-        return $allAnswers[$questionID][$scaleId][$value] ?? null;
+        return $this->answerCache->getAid($questionID, $scaleId, $value);
     }
 }

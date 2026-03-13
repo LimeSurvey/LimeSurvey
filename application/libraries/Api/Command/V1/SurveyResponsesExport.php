@@ -131,7 +131,10 @@ class SurveyResponsesExport implements CommandInterface
         [$type, $language] = $this->getExportRequestData($request);
 
         // Use file output mode for better memory efficiency with large exports
-        return $this->exportSurvey->exportResponses($surveyId, $type, $language, 'file');
+        return $this->exportSurvey
+            ->setLanguage($language)
+            ->setOutputMode('file')
+            ->exportResponses($surveyId, $type);
     }
 
     /**

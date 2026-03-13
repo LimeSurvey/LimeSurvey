@@ -7,9 +7,9 @@ use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseMappingTrait;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
+use LimeSurvey\Models\Services\SurveyAnswerCache;
 use Permission;
 use Survey;
-use Answer;
 use LimeSurvey\Api\Command\{CommandInterface,
     Request\Request,
     Response\Response,
@@ -24,36 +24,36 @@ class SurveyResponses implements CommandInterface
     use ResponseMappingTrait;
 
     protected Survey $survey;
-    protected Answer $answerModel;
     protected Permission $permission;
     protected ResponseFactory $responseFactory;
     protected FilterPatcher $responseFilterPatcher;
     protected TransformerOutputSurveyResponses $transformerOutputSurveyResponses;
+    protected SurveyAnswerCache $answerCache;
 
     /**
      * Constructor
      *
      * @param Survey $survey
-     * @param Answer $answerModel
      * @param Permission $permission
      * @param FilterPatcher $responseFilterPatcher
      * @param ResponseFactory $responseFactory
      * @param TransformerOutputSurveyResponses $transformerOutputSurveyResponses
+     * @param SurveyAnswerCache $answerCache
      */
     public function __construct(
         Survey $survey,
-        Answer $answerModel,
         Permission $permission,
         FilterPatcher $responseFilterPatcher,
         ResponseFactory $responseFactory,
-        TransformerOutputSurveyResponses $transformerOutputSurveyResponses
+        TransformerOutputSurveyResponses $transformerOutputSurveyResponses,
+        SurveyAnswerCache $answerCache
     ) {
         $this->survey = $survey;
-        $this->answerModel = $answerModel;
         $this->permission = $permission;
         $this->responseFactory = $responseFactory;
         $this->responseFilterPatcher = $responseFilterPatcher;
         $this->transformerOutputSurveyResponses = $transformerOutputSurveyResponses;
+        $this->answerCache = $answerCache;
     }
 
     /**
@@ -108,8 +108,8 @@ class SurveyResponses implements CommandInterface
             throw new TransformerException();
         }
 
-            $this->transformerOutputSurveyResponses->fieldMap =
-                createFieldMap($this->survey, 'full', false, false);
+        $this->transformerOutputSurveyResponses->fieldMap =
+            createFieldMap($this->survey, 'full', true, false);
 
         $data = [];
         $data['responses'] = $this->transformerOutputSurveyResponses->transform(
@@ -131,6 +131,7 @@ class SurveyResponses implements CommandInterface
             'sort' => $request->getData('sort', []),
         ];
 
+        $this->answerCache->load($surveyId, $this->survey->language);
         $data['responses'] = $this->mapResponsesToQuestions(
             $data['responses'],
             $data['surveyQuestions']

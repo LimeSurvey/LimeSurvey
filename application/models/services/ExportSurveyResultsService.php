@@ -11,14 +11,27 @@ use LimeSurvey\Models\Services\Export\ExportAnswerFormatter;
 use LimeSurvey\Models\Services\Export\ExportWriterInterface;
 use LimeSurvey\Models\Services\Export\CsvExportWriter;
 use LimeSurvey\Models\Services\Export\HtmlExportWriter;
+use LimeSurvey\Models\Services\SurveyAnswerCache;
 use RuntimeException;
 use Survey;
-use Answer;
 use SurveyDynamic;
 
 class ExportSurveyResultsService
 {
     use ResponseMappingTrait;
+
+    private const META_COLUMN_MAP = [
+        'id'            => ['key' => 'id',             'header' => 'Response ID'],
+        'submitdate'    => ['key' => 'submitDate',     'header' => 'Date submitted'],
+        'lastpage'      => ['key' => 'lastPage',       'header' => 'Last page'],
+        'startlanguage' => ['key' => 'language',       'header' => 'Start language'],
+        'seed'          => ['key' => 'seed',            'header' => 'Seed'],
+        'token'         => ['key' => 'token',           'header' => 'Token'],
+        'startdate'     => ['key' => 'startDate',      'header' => 'Date started'],
+        'datestamp'     => ['key' => 'dateLastAction',  'header' => 'Date last action'],
+        'ipaddr'        => ['key' => 'ipAddr',         'header' => 'IP address'],
+        'refurl'        => ['key' => 'refUrl',         'header' => 'Referrer URL'],
+    ];
 
     protected $supportedExportTypes = ['csv', 'html'];
 
@@ -33,9 +46,9 @@ class ExportSurveyResultsService
     protected $loadedSurvey;
 
     /**
-     * @var Answer
+     * @var SurveyAnswerCache
      */
-    protected $answerModel;
+    protected $answerCache;
 
     /**
      * @var FilterPatcher
@@ -52,52 +65,129 @@ class ExportSurveyResultsService
      */
     protected $answerFormatter;
 
+    /** @var string|null Language code for the export. Defaults to survey base language. */
+    protected $language;
+
+    /** @var string Output mode: 'memory' or 'file'. */
+    protected $outputMode = 'memory';
+
+    /** @var int Number of responses to fetch per chunk. */
+    protected $chunkSize = 500;
+
+    /** @var string 'long' for full translated answers, 'short' for raw answer codes. */
+    protected $answerFormat = 'long';
+
     /**
      * ExportSurveyResultsService constructor.
      *
      * @param Survey $survey
-     * @param Answer $answerModel
      * @param FilterPatcher $responseFilterPatcher
      * @param TransformerOutputSurveyResponses $transformerOutputSurveyResponses
      * @param ExportAnswerFormatter $answerFormatter
+     * @param SurveyAnswerCache $answerCache
      */
     public function __construct(
         Survey $survey,
-        Answer $answerModel,
         FilterPatcher $responseFilterPatcher,
         TransformerOutputSurveyResponses $transformerOutputSurveyResponses,
-        ExportAnswerFormatter $answerFormatter
+        ExportAnswerFormatter $answerFormatter,
+        SurveyAnswerCache $answerCache
     ) {
         $this->survey = $survey;
-        $this->answerModel = $answerModel;
         $this->responseFilterPatcher = $responseFilterPatcher;
         $this->transformerOutputSurveyResponses = $transformerOutputSurveyResponses;
         $this->answerFormatter = $answerFormatter;
+        $this->answerCache = $answerCache;
+    }
+
+    /**
+     * @param string|null $language
+     * @return $this
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param string $outputMode 'memory' or 'file'
+     * @return $this
+     */
+    public function setOutputMode($outputMode)
+    {
+        $this->outputMode = $outputMode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOutputMode()
+    {
+        return $this->outputMode;
+    }
+
+    /**
+     * @param int $chunkSize
+     * @return $this
+     */
+    public function setChunkSize($chunkSize)
+    {
+        if (!is_int($chunkSize) || $chunkSize <= 0) {
+            throw new InvalidArgumentException("Invalid chunkSize: must be a positive integer, got: " . var_export($chunkSize, true));
+        }
+        $this->chunkSize = $chunkSize;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getChunkSize()
+    {
+        return $this->chunkSize;
+    }
+
+    /**
+     * @param string $answerFormat 'long' or 'short'
+     * @return $this
+     */
+    public function setAnswerFormat($answerFormat)
+    {
+        $this->answerFormat = $answerFormat;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAnswerFormat()
+    {
+        return $this->answerFormat;
     }
 
     /**
      * Export survey responses to the specified format.
      *
      * @param int $surveyId The survey ID
-     * @param string $exportType The export format (csv, xlsx, xls, pdf, html)
-     * @param string|null $language The language code for the export
-     * @param string $outputMode Output mode: 'memory' (default) or 'file'
-     * @param int $chunkSize Number of responses to fetch per chunk (default 500)
+     * @param string $exportType The export format (csv, html)
      * @return array Export result with content/filePath and metadata
      * @throws InvalidArgumentException If the export type is not supported
      * @throws RuntimeException If survey is not found or responses cannot be fetched
      */
     public function exportResponses(
         $surveyId,
-        $exportType,
-        $language = null,
-        $outputMode = 'memory',
-        $chunkSize = 500
+        $exportType
     ) {
-        if (!is_int($chunkSize) || $chunkSize <= 0) {
-            throw new InvalidArgumentException("Invalid chunkSize: must be a positive integer, got: " . var_export($chunkSize, true));
-        }
-
         if (!in_array($exportType, $this->supportedExportTypes)) {
             throw new InvalidArgumentException("Unsupported export type: $exportType");
         }
@@ -109,21 +199,19 @@ class ExportSurveyResultsService
         }
         $this->loadedSurvey = $survey;
 
-        // Use provided language or default to survey language
-        if ($language === null) {
-            $language = $survey->language;
-        }
+        // Use configured language or default to survey language
+        $language = $this->language ?? $survey->language;
 
         // Prepare metadata
         $metadata = [
             'surveyId' => $surveyId,
             'language' => $language,
             'exportType' => $exportType,
-            'outputMode' => $outputMode
+            'outputMode' => $this->outputMode,
         ];
 
         // Export responses using chunked writing
-        return $this->exportResponsesInChunks($surveyId, $exportType, $metadata, $chunkSize);
+        return $this->exportResponsesInChunks($surveyId, $exportType, $metadata);
     }
 
     /**
@@ -132,15 +220,24 @@ class ExportSurveyResultsService
      * @param int $surveyId
      * @param string $exportType
      * @param array $metadata
-     * @param int $chunkSize Number of responses per chunk
      * @return array Export result from the writer
      * @throws RuntimeException If responses cannot be fetched
      */
-    protected function exportResponsesInChunks($surveyId, $exportType, array $metadata, $chunkSize = 500)
+    protected function exportResponsesInChunks($surveyId, $exportType, array $metadata)
     {
+        $language = $metadata['language'] ?? $this->loadedSurvey->language;
+
         // Generate field map for questions (do this once)
+        // force_refresh = true to bypass stale session-cached field maps
         $this->transformerOutputSurveyResponses->fieldMap =
-            createFieldMap($this->loadedSurvey, 'full', false, false, $metadata['language'] ?? '');
+            createFieldMap($this->loadedSurvey, 'full', true, false, $language);
+
+        // Pre-cache token table existence for the transformer
+        $this->transformerOutputSurveyResponses->hasTokenTable =
+            tableExists('tokens_' . $surveyId);
+
+        // Pre-load answer data for list/array/ranking question types
+        $this->answerFormatter->loadAnswers($surveyId, $language);
 
         // Get question field map (do this once)
         $surveyQuestions = $this->getQuestionFieldMap();
@@ -155,9 +252,14 @@ class ExportSurveyResultsService
             $timingFieldKeys = array_keys($timingFieldMap);
         }
 
-        // Pre-cache token table existence for the transformer
-        $this->transformerOutputSurveyResponses->hasTokenTable =
-            tableExists('tokens_' . $surveyId);
+        // Compute active meta columns from fieldMap
+        $metaColumns = [];
+        foreach (self::META_COLUMN_MAP as $fieldMapKey => $meta) {
+            if (isset($this->transformerOutputSurveyResponses->fieldMap[$fieldMapKey])) {
+                $metaColumns[] = $meta;
+            }
+        }
+        $metadata['metaColumns'] = $metaColumns;
 
         $writer = $this->getExportWriter($exportType);
         $writer->init($surveyQuestions, $metadata);
@@ -165,8 +267,8 @@ class ExportSurveyResultsService
         $totalCount = $this->getTotalResponseCount($surveyId);
         $model = SurveyDynamic::model($surveyId);
 
-        for ($offset = 0; $offset < $totalCount; $offset += $chunkSize) {
-            $chunk = $this->fetchResponseChunkDirect($model, $offset, $chunkSize);
+        for ($offset = 0; $offset < $totalCount; $offset += $this->chunkSize) {
+            $chunk = $this->fetchResponseChunkDirect($model, $offset, $this->chunkSize);
 
             $timingsData = [];
             if ($hasTimings) {
@@ -258,11 +360,14 @@ class ExportSurveyResultsService
                     if ($key !== null && isset($surveyQuestions[$key])) {
                         $question = $surveyQuestions[$key];
                         $answer['qid'] = $question['qid'];
-                        $answer['value'] = $this->answerFormatter->formatFullAnswer(
-                            $answer['value'],
-                            $question['type'] ?? null,
-                            $key
-                        );
+                        if ($this->answerFormat === 'long') {
+                            $answer['value'] = $this->answerFormatter->formatFullAnswer(
+                                $answer['value'],
+                                $question['type'] ?? null,
+                                $key,
+                                $question['qid']
+                            );
+                        }
                     }
                 }
                 $this->mergeTimingData($response, $timingsData, $timingFieldKeys);
@@ -322,43 +427,6 @@ class ExportSurveyResultsService
                 'value' => $timingRow[$fieldKey] ?? '',
             ];
         }
-    }
-
-    /**
-     * Get the question field map with export-specific fields.
-     * Overrides the trait method to include additional fields needed for export.
-     *
-     * @return array
-     */
-    protected function getQuestionFieldMap(): array
-    {
-        $fieldMap = $this->transformerOutputSurveyResponses->fieldMap;
-
-        return array_filter(
-            array_map(
-                function ($item) {
-                    if (!empty($item['qid'])) {
-                        return [
-                            'fieldname' => $item['fieldname'] ?? null,
-                            'gid' => $item['gid'],
-                            'qid' => $item['qid'],
-                            'aid' => $item['aid'] ?? null,
-                            'sqid' => $item['sqid'] ?? null,
-                            'scaleid' => $item['scale_id'] ?? null,
-                            'title' => $item['title'] ?? null,
-                            'question' => $item['question'] ?? null,
-                            'subquestion' => $item['subquestion'] ?? null,
-                            'subquestion1' => $item['subquestion1'] ?? null,
-                            'subquestion2' => $item['subquestion2'] ?? null,
-                            'scale' => $item['scale'] ?? null,
-                            'type' => $item['type'] ?? null,
-                        ];
-                    }
-                    return null;
-                },
-                $fieldMap
-            )
-        );
     }
 
     /**

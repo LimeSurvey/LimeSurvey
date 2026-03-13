@@ -26,6 +26,9 @@ class CsvExportWriter implements ExportWriterInterface
     /** @var bool Whether headers have been written */
     private bool $headersWritten = false;
 
+    /** @var array Active metadata columns from fieldMap */
+    private array $metaColumns = [];
+
     /**
      * Export survey responses to CSV format.
      *
@@ -61,6 +64,7 @@ class CsvExportWriter implements ExportWriterInterface
         $this->metadata = $metadata;
         $this->responseCount = 0;
         $this->headersWritten = false;
+        $this->metaColumns = $metadata['metaColumns'] ?? [];
 
         $surveyId = $metadata['surveyId'];
         $timestamp = date('YmdHis');
@@ -82,17 +86,13 @@ class CsvExportWriter implements ExportWriterInterface
             $this->filePath = null;
         }
 
-        $headers = [
-            'Response ID',
-            'Date submitted',
-            'Last page',
-            'Start language',
-            'Seed',
-            'Date started',
-            'Date last action',
-            'IP address',
-            'Referrer URL'
-        ];
+        // UTF-8 BOM for Excel compatibility
+        fwrite($this->handle, "\xEF\xBB\xBF");
+
+        $headers = [];
+        foreach ($this->metaColumns as $meta) {
+            $headers[] = $meta['header'];
+        }
         foreach ($surveyQuestions as $question) {
             $headers[] = $this->buildQuestionHeading($question);
         }
@@ -117,17 +117,10 @@ class CsvExportWriter implements ExportWriterInterface
         $fieldKeys = array_keys($surveyQuestions);
 
         foreach ($responses as $response) {
-            $row = [
-                $response['id'] ?? '',
-                $response['submitDate'] ?? '',
-                $response['lastPage'] ?? '',
-                $response['language'] ?? '',
-                $response['seed'] ?? '',
-                $response['startDate'] ?? '',
-                $response['dateLastAction'] ?? '',
-                $response['ipAddr'] ?? '',
-                $response['refUrl'] ?? ''
-            ];
+            $row = [];
+            foreach ($this->metaColumns as $meta) {
+                $row[] = $response[$meta['key']] ?? '';
+            }
 
             $answersByKey = [];
             if (isset($response['answers'])) {
@@ -190,7 +183,7 @@ class CsvExportWriter implements ExportWriterInterface
     }
 
     /**
-     * Write a single CSV row with all values quoted.
+     * Write a single CSV row with RFC 4180 line endings (\r\n).
      *
      * @param array $fields
      * @return void
@@ -205,15 +198,14 @@ class CsvExportWriter implements ExportWriterInterface
     }
 
     /**
-     * Escape a value for CSV output. All non-null values are quoted.
-     * Null values become empty unquoted strings.
+     * Escape a value for CSV output.
      *
      * @param mixed $value
      * @return string
      */
     private function csvEscape($value): string
     {
-        if (is_null($value)) {
+        if (is_null($value) || $value === '') {
             return '';
         }
         $value = (string) $value;

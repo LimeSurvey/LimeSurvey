@@ -23,6 +23,9 @@ class HtmlExportWriter implements ExportWriterInterface
     /** @var int Response count */
     private int $responseCount = 0;
 
+    /** @var array Active metadata columns from fieldMap */
+    private array $metaColumns = [];
+
     /**
      * Export survey responses to HTML format.
      *
@@ -51,6 +54,7 @@ class HtmlExportWriter implements ExportWriterInterface
     {
         $this->metadata = $metadata;
         $this->responseCount = 0;
+        $this->metaColumns = $metadata['metaColumns'] ?? [];
 
         $surveyId = $metadata['surveyId'];
         $timestamp = date('YmdHis');
@@ -94,21 +98,14 @@ class HtmlExportWriter implements ExportWriterInterface
 
         fwrite($this->handle, '<h1>Survey ' . htmlspecialchars($surveyId) . ' - Response Export</h1>');
         fwrite($this->handle, '<div class="meta">Export Date: ' . date('Y-m-d H:i:s') . '</div>');
-        // Note: Total responses will be updated in finalize via JavaScript or we skip it for streaming
 
         fwrite($this->handle, '<table>');
 
         // Write header row
         fwrite($this->handle, '<thead><tr>');
-        fwrite($this->handle, '<th>Response ID</th>');
-        fwrite($this->handle, '<th>Date submitted</th>');
-        fwrite($this->handle, '<th>Last page</th>');
-        fwrite($this->handle, '<th>Start language</th>');
-        fwrite($this->handle, '<th>Seed</th>');
-        fwrite($this->handle, '<th>Date started</th>');
-        fwrite($this->handle, '<th>Date last action</th>');
-        fwrite($this->handle, '<th>IP address</th>');
-        fwrite($this->handle, '<th>Referrer URL</th>');
+        foreach ($this->metaColumns as $meta) {
+            fwrite($this->handle, '<th>' . htmlspecialchars($meta['header']) . '</th>');
+        }
 
         foreach ($surveyQuestions as $question) {
             fwrite($this->handle, '<th>' . htmlspecialchars($this->buildQuestionHeading($question)) . '</th>');
@@ -134,15 +131,9 @@ class HtmlExportWriter implements ExportWriterInterface
 
         foreach ($responses as $response) {
             fwrite($this->handle, '<tr>');
-            fwrite($this->handle, '<td>' . htmlspecialchars((string)($response['id'] ?? '')) . '</td>');
-            fwrite($this->handle, '<td>' . htmlspecialchars((string)($response['submitDate'] ?? '')) . '</td>');
-            fwrite($this->handle, '<td>' . htmlspecialchars((string)($response['lastPage'] ?? '')) . '</td>');
-            fwrite($this->handle, '<td>' . htmlspecialchars((string)($response['language'] ?? '')) . '</td>');
-            fwrite($this->handle, '<td>' . htmlspecialchars((string)($response['seed'] ?? '')) . '</td>');
-            fwrite($this->handle, '<td>' . htmlspecialchars((string)($response['startDate'] ?? '')) . '</td>');
-            fwrite($this->handle, '<td>' . htmlspecialchars((string)($response['dateLastAction'] ?? '')) . '</td>');
-            fwrite($this->handle, '<td>' . htmlspecialchars((string)($response['ipAddr'] ?? '')) . '</td>');
-            fwrite($this->handle, '<td>' . htmlspecialchars((string)($response['refUrl'] ?? '')) . '</td>');
+            foreach ($this->metaColumns as $meta) {
+                fwrite($this->handle, '<td>' . htmlspecialchars((string)($response[$meta['key']] ?? '')) . '</td>');
+            }
 
             $answersByKey = [];
             if (isset($response['answers'])) {
