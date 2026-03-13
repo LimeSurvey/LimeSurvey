@@ -36,12 +36,13 @@ export const ResponseModals = ({
     ? t('Delete responses')
     : t('Delete response')
 
-  const deleteModalDescription = isBulkAction
-    ? t(
-        'The selected {{count}} responses will be deleted. Do you want to proceed?',
-        { count: selectedRowsIds?.length }
-      )
-    : `${t('Are you sure you want to delete this response? This action cannot be reverted.')}`
+  const deleteModalDescription =
+    isBulkAction && selectedRowsIds?.length > 1
+      ? t(
+          'The selected {{count}} responses will be deleted. Do you want to proceed?',
+          { count: selectedRowsIds?.length }
+        )
+      : `${t('Are you sure you want to delete this response? This action cannot be reverted.')}`
 
   const confirmModalButtonText = isBulkAction
     ? t('Delete')
