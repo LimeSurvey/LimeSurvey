@@ -20,7 +20,7 @@ export const ResponseModals = ({
   table,
   handleOnHide,
   isBulkAction,
-  selectedRowsIds,
+  selectedRowsIds = [],
 }) => {
   const handleOnDeleteConfirm = () => {
     onResponsesDeleteConfirm()
@@ -37,7 +37,10 @@ export const ResponseModals = ({
     : t('Delete response')
 
   const deleteModalDescription = isBulkAction
-    ? `${t('The selected')} ${selectedRowsIds.length} ${t('responses will be delete. Do you want to proceed?')}`
+    ? t(
+        'The selected {{count}} responses will be deleted. Do you want to proceed?',
+        { count: selectedRowsIds?.length }
+      )
     : `${t('Are you sure you want to delete this response? This action cannot be reverted.')}`
 
   const confirmModalButtonText = isBulkAction
