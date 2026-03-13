@@ -118,7 +118,7 @@ class Box extends CActiveRecord
 
         // Can't use switch because of empty case
         if (empty($usergroupid) || $usergroupid == '-2') {
-            return gT('Only Superadmin');
+            return gT('Superadmin only');
         } elseif ($usergroupid == '-1') {
             return gT('Everybody');
         } elseif ($usergroupid == '-3') {

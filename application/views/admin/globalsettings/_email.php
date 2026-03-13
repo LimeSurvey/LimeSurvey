@@ -65,7 +65,7 @@
                         'name' => 'emailsmtpssl',
                         'checkedOption' => getGlobalSetting('emailsmtpssl'),
                         'selectOptions' => array(
-                            "" => gT("Off (unsafe)", 'unescaped'),
+                            "" => gT("Off", 'unescaped'),
                             "ssl" => gT("SSL/TLS", 'unescaped'),
                             "tls" => gT("StartTLS", 'unescaped')
                         )

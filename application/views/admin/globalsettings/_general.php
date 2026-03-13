@@ -236,7 +236,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
                         'checkedOption' => $thisdefaulthtmleditormode,
                         'selectOptions' => [
                             "inline" => gT("Inline", 'unescaped'),
-                            "popup"  => gT("Popup", 'unescaped'),
+                            "popup"  => gT("Pop-up", 'unescaped'),
                             "none"   => gT("HTML source", 'unescaped')
                         ]
                     ]

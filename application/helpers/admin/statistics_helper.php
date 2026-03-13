@@ -1774,7 +1774,7 @@ class statistics_helper
                 // Add a line with not displayed %
                 if ($multiNotDisplayed > 0) {
                     if ((incompleteAnsFilterState() != "complete")) {
-                        $fname = gT("Not completed or Not displayed");
+                        $fname = gT("Not completed or not displayed");
                     } else {
                         $fname = gT("Not displayed");
                     }
@@ -2644,7 +2644,7 @@ class statistics_helper
 
                 //output
                 if ((incompleteAnsFilterState() != "complete")) {
-                    $fname = gT("Not completed or Not displayed");
+                    $fname = gT("Not completed or not displayed");
                 } else {
                     $fname = gT("Not displayed");
                 }
@@ -2671,7 +2671,7 @@ class statistics_helper
 
                 //edit labels and put them into another array
                 if ((incompleteAnsFilterState() != "complete")) {
-                    $flatLabel = gT("Not completed or Not displayed");
+                    $flatLabel = gT("Not completed or not displayed");
                     // If the flatten label is empty (like for picture, or HTML, etc.)
                     // We replace it by the subquestion code
                     if ($flatLabel == '') {
@@ -2725,7 +2725,7 @@ class statistics_helper
                         }
                         $criteria->addCondition($condition);
                     }
-                    $fname = gT("Not completed or Not displayed");
+                    $fname = gT("Not completed or not displayed");
                 }
                 if (incompleteAnsFilterState() == "incomplete") {
                     $criteria->addCondition("submitdate IS NULL");
@@ -3397,9 +3397,9 @@ class statistics_helper
                 // Labels for graphs
                 $iMaxLabelLength = 0;
 
-                // add "Not completed or Not displayed" label if missing
+                // add "Not completed or not displayed" label if missing
                 if (!is_null($noncompleted) && $noncompleted == 0 && count($labels) > count($aGraphLabels)) {
-                    $aGraphLabels[] = gT("Not completed or Not displayed");
+                    $aGraphLabels[] = gT("Not completed or not displayed");
                 }
 
                 foreach ($aGraphLabels as $key => $label) {

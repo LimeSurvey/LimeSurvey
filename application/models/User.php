@@ -827,7 +827,7 @@ class User extends LSActiveRecord
         if ($permission_read_surveys) {
             $cols[] = array(
                 "name" => 'surveysCreated',
-                "header" => gT("No of surveys"),
+                "header" => gT("Owned surveys"),
                 'filter' => false
             );
         }

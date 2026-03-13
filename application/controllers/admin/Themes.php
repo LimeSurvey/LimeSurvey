@@ -1222,7 +1222,7 @@ JAVASCRIPT
                         // If there are conditions on a question, list the conditions.
                         'QUESTION_SCENARIO' => 'Only answer this if certain conditions are met.',
                         'QUESTION_CLASS' => ' mandatory list-radio',
-                        'QUESTION_TYPE_HELP' => gT('Please choose *only one* of the following:'),
+                        'QUESTION_TYPE_HELP' => gT('Please choose only one of the following:'),
                         // (not sure if this is used) mandatory error
                         'QUESTION_MAN_MESSAGE' => '',
                         // (not sure if this is used) validation error

@@ -433,10 +433,10 @@ class questionHelper
             'options' => array(
                 0 => gT('Bar chart'),
                 1 => gT('Pie chart'),
-                2 => gT('Radar'),
-                3 => gT('Line'),
-                4 => gT('PolarArea'),
-                5 => gT('Doughnut'),
+                2 => gT('Radar chart'),
+                3 => gT('Line chart'),
+                4 => gT('Polar chart'),
+                5 => gT('Doughnut chart'),
             ),
             'help' => gT("Select the type of chart to be displayed"),
             'caption' => gT("Chart type"),
@@ -1257,7 +1257,7 @@ class questionHelper
             'inputtype' => 'buttongroup',
             'options' => array(
                 0 => gT('None', 'unescaped'),
-                1 => gT('Order - like 3)', 'unescaped'),
+                1 => gT('Numbered: 1).. 2).. 3)..', 'unescaped'),
                 // 2=>gT('Code - like A1','unescaped'), // Just an idea ;)
             ),
             'default' => 0,

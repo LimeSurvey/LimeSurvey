@@ -38,8 +38,7 @@ $googleAnalyticsStyleOptions = array(
             <div class="col-12 col-lg-6 ls-flex-column">
                 <div class="card card-primary ">
                     <div class="card-body d-flex">
-                        <?php eT("Please note that you need to deactivate this survey
-                         if you want to change any of the settings below."); ?>
+                        <?php eT("Please note that you need to deactivate this survey, if you want to change any of the settings below."); ?>
                     </div>
                     <div class="card-footer d-flex">
                         <a class="btn btn-danger" href="<?php echo $this->createUrl("surveyAdministration/deactivate/surveyid/$oSurvey->sid"); ?>" role="button">

@@ -1461,7 +1461,7 @@ class LsDefaultDataSets
                 'ordering' => 22,
                 'title' => gT('Now save the created question'),
                 'content' => gT('Next, we will create subquestions and answer options.') . '<br/>'
-                    . gT('Please remember that in order to have a valid code, it must contain only letters and numbers, also please check that it starts with a letter.'),
+                    . gT('Please remember that a valid code must start with a letter and may contain only letters and numbers.'),
                 'settings' => json_encode(array(
                     'element' => '#save-button',
                     'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],

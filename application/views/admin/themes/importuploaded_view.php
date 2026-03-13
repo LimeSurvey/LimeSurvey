@@ -8,7 +8,7 @@ if ($result === 'success') {
     $statusClass = 'text-success';
     $okfiles = count($aImportedFilesInfo);
 } elseif ($result === 'partial') {
-    $status = gT("Partial");
+    $status = gT("Partial import");
     $class = 'message-box-warning';
     $statusClass = 'text-danger';
     $okfiles = count($aImportedFilesInfo);

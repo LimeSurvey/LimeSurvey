@@ -43,7 +43,7 @@
                                     <?php } ?>
                                 </select>
                             <?php } else {
-                                echo eT("No question group found.");
+                                echo eT("No question groups found.");
                             } ?>
                         </div>
                         <div class='col-md-2 hide-xs'></div>

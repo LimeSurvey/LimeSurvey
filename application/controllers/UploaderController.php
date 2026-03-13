@@ -112,7 +112,7 @@ class UploaderController extends SurveyController
             if (@unlink($sFileDir . $sFileNameFiltered)) {
                 echo sprintf(gT('File %s deleted'), CHtml::encode($sOriginalFileName));
             } else {
-                echo gT('Oops, There was an error deleting the file');
+                echo gT('There was an error deleting the file.');
             }
             Yii::app()->end();
         }

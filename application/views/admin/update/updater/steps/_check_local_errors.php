@@ -53,7 +53,7 @@
         <?php if($errors): ?>
             <div>
             <em>
-                <?php eT("Note : In some hosting, like shared hosting, it can happen that the available free space is not correctly evaluated. If you checked manually that you have enough free space to update, please, just ignore this error."); ?>
+                <?php eT("Note: With some shared hosting configuration, it can happen that the available free space is not correctly evaluated. If you checked manually that you have enough free space to update, just ignore this error."); ?>
             </em>
             <br/><br/>
             </div>
@@ -138,7 +138,7 @@
                     <?php elseif(isset($module->required)): ?>
                         <td>
                             <span class="badge bg-danger">
-                                <?php eT('Not found!'); ?>
+                                <?php eT('Not found'); ?>
                             </span>
                         </td>
                         <?php $errors = TRUE; $cant_ignore = true; $ignore = false;?>

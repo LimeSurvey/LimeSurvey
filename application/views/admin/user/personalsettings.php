@@ -243,7 +243,7 @@ echo $oQuestionSelector->getModal();
                                         [
                                             'default' => gT("Default", 'unescaped'),
                                             'inline'  => gT("Inline HTML editor", 'unescaped'),
-                                            'popup'   => gT("Popup HTML editor", 'unescaped'),
+                                            'popup'   => gT("Pop-up HTML editor", 'unescaped'),
                                             'none'    => gT("Sourcecode editor", 'unescaped'),
                                         ],
                                         ['class' => "form-select"]

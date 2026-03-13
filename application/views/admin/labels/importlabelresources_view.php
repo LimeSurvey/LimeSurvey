@@ -12,7 +12,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) {
     $ImportListHeader .= "<br /><strong><u>" . gT("Imported files list") . ":</u></strong><br />\n";
     $ErrorListHeader = '';
 } elseif (count($aErrorFilesInfo) && count($aImportedFilesInfo)) {
-    $status = gT("Partial");
+    $status = gT("Partial import");
     $statusClass = 'partialheader';
     $okfiles = count($aImportedFilesInfo);
     $errfiles = count($aErrorFilesInfo);

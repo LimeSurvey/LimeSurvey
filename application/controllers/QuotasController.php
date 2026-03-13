@@ -410,9 +410,9 @@ class QuotasController extends LSBaseController
                 Yii::app()->request->getPost('QuotaLanguageSetting', [])
             );
             if (empty($errors)) {
-                eT("OK!");
+                eT("OK");
             } else {
-                eT("Error!");
+                eT("Error");
             }
         } else {
             /* 403 error ? */

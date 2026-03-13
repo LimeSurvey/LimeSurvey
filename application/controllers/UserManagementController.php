@@ -157,7 +157,7 @@ class UserManagementController extends LSBaseController
             if ($passwordTest !== $aUser['password']) {
                 return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                     'success' => false,
-                    'errors' => gT('Passwords do not match'),
+                    'errors' => gT('Passwords do not match!'),
                 ]]);
             }
             $user = new User();
