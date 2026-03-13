@@ -5,6 +5,8 @@
  * @var $sDisable
  * @var $myfname
  * @var $othertext
+ * @var $othertextRight
+ * @var $otherItemExtraClass
  * @var $checkedState
  * @var $kpclass
  * @var $sValue
@@ -12,11 +14,13 @@
  * @var $checkconditionFunction
  * @var $sValueHidden
  * @var $wrapper
+ * @var $otherInputSize
+ * @var $otherMaxLength
  */
 #}
 
 <!-- answer_row_other -->
-<li id='javatbd{{ myfname }}' class='question-item answer-item checkbox-text-item {{ relevanceClass }}'>
+<li id='javatbd{{ myfname }}' class='question-item answer-item checkbox-text-item {{ relevanceClass }} {{ otherItemExtraClass }}'>
     <div class="row">
         <div class="col-auto d-flex">
             <!-- Checkbox + label -->
@@ -43,9 +47,17 @@
                     id="answer{{ myfname }}"
                     value="{{ sValue }}"
                     aria-labelledby="label-{{ myfname }}-other"
+                    {% if otherInputSize %} size="{{ otherInputSize }}" {% endif %}
+                    {% if otherMaxLength %} maxlength="{{ otherMaxLength }}" {% endif %}
                 />
             </div>
         </div>
+
+        {% if othertextRight is defined and othertextRight|length >0 %}
+            <div class="othertext-right-label col-auto">
+                {{ processString(othertextRight) }}
+            </div>
+        {% endif %}
 
         <!-- hidden input -->
         <input
