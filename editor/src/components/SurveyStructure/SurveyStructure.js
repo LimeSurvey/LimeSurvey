@@ -97,7 +97,10 @@ export const SurveyStructure = () => {
       .questionGroup()
       .delete()
 
-    unFocus()
+    if (!focused.qid && focused.gid === questionGroup.gid) {
+      unFocus()
+    }
+
     handleUpdate(updatedQuestionGroups)
     addToBuffer(operation)
     setDeleteGroupState({ show: false, questionGroup: null, index: null })
