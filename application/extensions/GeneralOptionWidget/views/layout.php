@@ -1,6 +1,11 @@
 <?php
 $labelAttr = in_array($this->generalOption->inputType, GeneralOptionWidget::SINGLEINPUTTYPE) ? 'for="' : 'id="label-';
 $labelAttr .= CHtml::getIdByName($this->generalOption->name) . '"';
+/* Output once: prevent focus ring on visually hidden .btn-check so focus stays on the visible button */
+if (empty($GLOBALS['GeneralOptionWidget_btn_check_focus_style_printed'])) {
+    $GLOBALS['GeneralOptionWidget_btn_check_focus_style_printed'] = true;
+    echo '<style>.question-option-general-setting-block .btn-check:focus{outline:none;}</style>';
+}
 ?>
 <div class="mb-3">
     <div class="question-option-general-setting-block">
