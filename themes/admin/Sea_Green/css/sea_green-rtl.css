@@ -17549,7 +17549,6 @@ body {
   background: #6E748C;
   padding: 4px;
   border-radius: 4px;
-  /* Provide a visible focus indicator for keyboard navigation */
 }
 .lime-toggle-btn-group .btn-group .btn {
   display: block;
@@ -17582,6 +17581,9 @@ body {
 .lime-toggle-btn-group .btn-group .btn-check:focus + .btn-outline-secondary,
 .lime-toggle-btn-group .btn-group .btn-outline-secondary:hover {
   box-shadow: none;
+}
+.lime-toggle-btn-group .btn-group {
+  /* Provide a visible focus indicator for keyboard navigation */
 }
 .lime-toggle-btn-group .btn-group .btn-check:focus + .btn-outline-secondary,
 .lime-toggle-btn-group .btn-group .btn-outline-secondary:focus-visible {
