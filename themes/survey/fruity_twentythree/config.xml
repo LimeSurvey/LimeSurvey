@@ -83,6 +83,10 @@
         <showpopups type="buttons" category="Simple options" width="4" title="Show popups" options="1|0|-1"
                     optionlabels="Popup|On page|No">1
         </showpopups>
+        <notables type="buttons" category="Simple options" width="4" title="Wrap tables" options="2|1|0"
+                  optionlabels="Always on|Small screens|Off">1
+        </notables>
+
         <showclearall type="buttons" category="Simple options" width="4" title="Show 'Clear all' button" options="on|off"
                       optionlabels="Yes|No">off
         </showclearall>
@@ -149,13 +153,13 @@
                 </optgroup>
             </dropdownoptions>
         </font>
-        <cssframework type="dropdown" category="Simple options" width="12" title="Variations">Apple
+        <cssframework type="dropdown" colorSwatch="true" category="Simple options" width="12" title="Theme color">Apple
             <dropdownoptions>
                 <optgroup>
-                    <option data-value="css/variations/theme_apple.css" value="apple">Apple</option>
-                    <option data-value="css/variations/theme_blueberry.css" value="blueberry">Blueberry</option>
-                    <option data-value="css/variations/theme_grape.css" value="grape">Grape</option>
-                    <option data-value="css/variations/theme_mango.css" value="mango">Mango</option>
+                    <option data-value="css/variations/theme_apple.css" value="apple" hexValue="#14AE5C">Apple</option>
+                    <option data-value="css/variations/theme_blueberry.css" value="blueberry" hexValue="#5076FF">Blueberry</option>
+                    <option data-value="css/variations/theme_grape.css" value="grape" hexValue="#8146F6">Grape</option>
+                    <option data-value="css/variations/theme_mango.css" value="mango" hexValue="#ED5046">Mango</option>
                 </optgroup>
             </dropdownoptions>
         </cssframework>
@@ -163,11 +167,11 @@
     <optionsOrderReact>
         <brandlogo category="Logo"/>
         <brandlogofile category="Logo"/>
-        <cssframework category="Appearance"/>
         <font category="Appearance"/>
         <fontcolor category="Appearance"/>
         <bodybackgroundcolor category="Appearance"/>
         <questionbackgroundcolor category="Appearance"/>
+        <cssframework category="Appearance"/>
         <checkicon category="Appearance"/>
         <backgroundimage category="Appearance"/>
         <backgroundimagefile category="Appearance"/>

@@ -17,11 +17,11 @@
                 <!-- Scope, Total, Group -->
                 <div class='row'>
                     <div class='mb-3 col-12 row'>
-                        <label class='form-label col-md-2'>
+                        <label class='form-label col-md-2' id='scope-label'>
                             <?php eT("Scope:"); ?>
                         </label>
                         <div class='col-md-10 ls-flex wrap'>
-                            <div class="btn-group" role="group">
+                            <div class="btn-group" role="group" aria-labelledby="scope-label">
                                 <input class='btn-check' type='radio' id='radiototal' name='scope' value='T' checked='checked'/>
                                 <label class='btn btn-outline-secondary' for="radiototal"><?php eT("Total"); ?></label>
 

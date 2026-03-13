@@ -211,6 +211,11 @@ class SurveyThemeConfiguration
             if (in_array($key, ['brandlogofile', 'backgroundimagefile'])) {
                 $attributesCompleteData[$key]['hasFileUpload'] = true;
             }
+
+            // TODO: AT-1896 - force temporary theme color to be of icon type for the API
+            if ($attributesCompleteData[$key]['title'] === 'Theme color') {
+                $attributesCompleteData[$key]['type'] = 'icon';
+            }
         }
 
         return $attributesCompleteData;
