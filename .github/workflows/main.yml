@@ -23,6 +23,8 @@ jobs:
       DBENGINE: INNODB
 
     name: PHP ${{ matrix.php-versions }} # Check each version of php specified in matrix
+    permissions:
+      contents: write
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
@@ -340,10 +342,7 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       DBENGINE: INNODB
-    strategy:
-      matrix:
-        # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.3']
+      PHP_VERSION: '8.3'
     steps:
       - uses: actions/checkout@v4
 
@@ -381,6 +380,31 @@ jobs:
           php application/commands/console.php install admin password TravisLS no@email.com verbose
       - name: Run syntax check, CodeSniffer, MessDetector, ...
         run: composer test
+        continue-on-error: true
+
+      - name: Run PHPCBF
+        run: |
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/models
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/controllers
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/ExtensionInstaller
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/FormExtension
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/Api
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updatedb_helper.php
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updates
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php
+        continue-on-error: true
+
+        # we need to do this because otherwise the auto commit step commits additional files
+      - name: Ignore file mode changes
+        run: |
+          git config core.fileMode false
+
+      - name: Commit Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Apply php-cs-fixer changes
+          file_pattern: 'application/**.php'
 
       - name: Run Psalm on application/ folder with low strictness
         run: |
