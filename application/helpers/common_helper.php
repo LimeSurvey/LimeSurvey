@@ -2647,7 +2647,7 @@ function isCaptchaEnabled($screen, $captchamode = '')
 function tableExists($sTableName)
 {
     $sTableName = Yii::app()->db->tablePrefix . str_replace(array('{', '}'), array('', ''), $sTableName);
-    return in_array($sTableName, Yii::app()->db->schema->getTableNames());
+    return Yii::app()->db->schema->getTable($sTableName, true) !== null;
 }
 
 // Returns false if the survey is anonymous,
