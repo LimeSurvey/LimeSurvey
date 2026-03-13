@@ -11,14 +11,14 @@
 </script>
 
 <div class='header'>
-    <h3 class='pagetitle' aria-level="1"><?php eT("Map your survey participant attributes to an existing participant attribute or create a new one"); ?></h3>
+    <h1 class="pagetitle h3" ><?php eT("Map your survey participant attributes to an existing participant attribute or create a new one"); ?></h1>
 </div>
 
 <div class="draggable-container">
     <div class='row'>
         <div class='col-md-4'>
             <div id="tokenattribute" class="card attribute-column">
-                <div class="card-header " role="heading" aria-level="2"><?php eT("Unmapped survey participant attributes") ?></div>
+                <h2 class="card-header h3"><?php eT("Unmapped survey participant attributes") ?></h2>
                 <div id="tokenatt" class="tokenatt droppable">
                     <?php
                         if (!empty($tokenattribute))
@@ -36,7 +36,7 @@
 
         <div class='col-md-4'>
             <div id="newcreated" class="card attribute-column">
-                <div class="card-header " role="heading" aria-level="2"><?php eT("Participant attributes to create") ?></div>
+                <h2 class="card-header h3"><?php eT("Participant attributes to create") ?></h2>
                 <div class="card-body newcreate droppable" style ="height: 40px">
                 </div>
             </div>
@@ -44,7 +44,7 @@
 
         <div class='col-md-4'>
             <div id="centralattribute" class="card attribute-column">
-                <div class="card-header " role="heading" aria-level="2"><?php eT("Existing participant attributes")?></div>
+                <h2 class="card-header h3"><?php eT("Existing participant attributes")?></h2>
                 <div class="centralatt">
                     <?php
                     if (!empty($attribute))
@@ -115,7 +115,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" aria-level="2"><?php eT("Map survey participant attributes"); ?></h5>
+                <h2 class="modal-title"><?php eT("Map survey participant attributes"); ?></h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

@@ -1502,11 +1502,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getButtons(): string
     {
-        $permissions = [
-            'statistics_read'  => Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read'),
-            'survey_update'    => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update'),
-            'responses_create' => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'create'),
-        ];
 
         $dropdownItems = [];
         $dropdownItems[] = [
@@ -1514,7 +1509,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'url' => App()->getConfig('editorEnabled')
                 ? App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/generalsettings'])
                 : App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
-            'enabledCondition' => $permissions['survey_update'],
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'surveysettings', 'read'),
         ];
         $dropdownItems[] = [
             'title'            => gT('Preview'),
@@ -1522,30 +1517,30 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 "survey/index",
                 ['sid' => $this->sid, 'newtest' => "Y", 'lang' => $this->language]
             ),
-            'enabledCondition' => $permissions['survey_update'],
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'read'),
             'linkAttributes'   => ['target' => '_blank'],
         ];
         $dropdownItems[] = [
             'title' => gT('Share'),
             'url' => App()->createUrl("/surveyAdministration/view", array('iSurveyID' => $this->sid)),
-            'enabledCondition' => $permissions['survey_update'],
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'read'),
         ];
         $dropdownItems[] = [
             'submenu' => true,
             'title' => gT('Copy'),
-            'enabledCondition' => $permissions['survey_update'],
-            'submenu_items' => $this->getSubmenuItemsCopy($permissions['survey_update']),
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read'),
+            'submenu_items' => $this->getSubmenuItemsCopy(Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')),
         ];
         $dropdownItems[] = [
             'title' => gT('Add user'),
             'url' => App()->createUrl('/surveyPermissions/index', ['surveyid' => $this->sid]),
-            'enabledCondition' => $permissions['survey_update'],
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'surveysecurity', 'create'),
         ];
 
         $dropdownItems[] = [
             'title' => gT('Delete'),
             'url' => App()->createUrl("/surveyAdministration/delete", array('iSurveyID' => $this->sid)),
-            'enabledCondition' => $permissions['survey_update'],
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'delete'),
         ];
 
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
@@ -1579,27 +1574,20 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getActionButtons(): string
     {
-        $permissions = [
-            'statistics_read'  => Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read'),
-            'survey_update'    => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update'),
-            'responses_create' => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'create'),
-        ];
-
         $items = [];
         $items[] = [
             'title' => gT('Edit survey'),
             'url' => App()->createUrl('surveyAdministration/view', ['iSurveyID' => $this->sid]),
             'iconClass' => 'ri-edit-line',
-            'enabledCondition' => $this->active !== "Y" && $permissions['responses_create']
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'),
         ];
-
         $items[] = [
             'title' => gT('Activate'),
             'url' => App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
             'iconClass' => 'ri-check-line',
             'enabledCondition' =>
                 $this->active === "N"
-                && $permissions['survey_update']
+                && Permission::model()->hasSurveyPermission($this->sid, 'surveyactivation', 'update')
                 && $this->groupsCount > 0
                 && $this->getQuestionsCount() > 0
         ];
@@ -1611,7 +1599,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'iconClass' => 'ri-bar-chart-2-line',
             'enabledCondition' =>
                 $this->active === "Y"
-                && $permissions['statistics_read'],
+                && Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read'),
         ];
 
         return App()->getController()->widget('ext.admin.grid.BarActionsWidget.BarActionsWidget', ['items' => $items], true);
