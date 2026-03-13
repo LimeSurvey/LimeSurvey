@@ -2762,10 +2762,11 @@ function exprmgr_countifop($args)
  */
 function exprmgr_stripos($haystack, $needle, $offset = 0)
 {
+    $haystack = ($haystack ?? '');
     if ($offset > mb_strlen($haystack)) {
-            return false;
+        return false;
     }
-    return mb_stripos($haystack, $needle, $offset, 'UTF-8');
+    return mb_stripos($haystack, ($needle ?? ''), $offset, 'UTF-8');
 }
 /**
  * Finds first occurrence of a unicode string within another, case-insensitive
@@ -2776,7 +2777,7 @@ function exprmgr_stripos($haystack, $needle, $offset = 0)
  */
 function exprmgr_stristr($haystack, $needle, $before_needle = false)
 {
-    return mb_stristr($haystack, $needle, $before_needle, 'UTF-8');
+    return mb_stristr((string) ($haystack ?? ''), (string) ($needle ?? ''), $before_needle, 'UTF-8');
 }
 /**
  * Get unicode string length
@@ -2785,7 +2786,7 @@ function exprmgr_stristr($haystack, $needle, $before_needle = false)
  */
 function exprmgr_strlen($string)
 {
-    return mb_strlen($string, 'UTF-8');
+    return mb_strlen(($string ?? ''), 'UTF-8');
 }
 /**
  * Find position of first occurrence of unicode string in a unicode string
@@ -2796,10 +2797,11 @@ function exprmgr_strlen($string)
  */
 function exprmgr_strpos($haystack, $needle, $offset = 0)
 {
+    $haystack = ($haystack ?? '');
     if ($offset > mb_strlen($haystack)) {
-            return false;
+        return false;
     }
-    return mb_strpos($haystack, $needle, $offset, 'UTF-8');
+    return mb_strpos($haystack, ($needle ?? ''), $offset, 'UTF-8');
 }
 /**
  * Finds first occurrence of a unicode string within another
@@ -2810,7 +2812,7 @@ function exprmgr_strpos($haystack, $needle, $offset = 0)
  */
 function exprmgr_strstr($haystack, $needle, $before_needle = false)
 {
-    return mb_strstr($haystack, $needle, $before_needle, 'UTF-8');
+    return mb_strstr(($haystack ?? ''), ($needle ?? ''), $before_needle, 'UTF-8');
 }
 /**
  * Make an unicode string lowercase
@@ -2819,7 +2821,7 @@ function exprmgr_strstr($haystack, $needle, $before_needle = false)
  */
 function exprmgr_strtolower($string)
 {
-    return mb_strtolower($string, 'UTF-8');
+    return mb_strtolower(($string ?? ''), 'UTF-8');
 }
 /**
  * Make an unicode string uppercase
@@ -2828,7 +2830,7 @@ function exprmgr_strtolower($string)
  */
 function exprmgr_strtoupper($string)
 {
-    return mb_strtoupper($string, 'UTF-8');
+    return mb_strtoupper(($string ?? ''), 'UTF-8');
 }
 /**
  * Get part of unicode string
@@ -2839,7 +2841,7 @@ function exprmgr_strtoupper($string)
  */
 function exprmgr_substr($string, $start, $end = null)
 {
-    return mb_substr($string, $start, $end, 'UTF-8');
+    return mb_substr(($string ?? ''), $start, $end, 'UTF-8');
 }
 /**
  * Sum of values of answered questions which meet the criteria (arg op value)

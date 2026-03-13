@@ -316,7 +316,7 @@ function sanitize_int($integer, $min = '', $max = '')
 function sanitize_user($string)
 {
     $username_length = 64;
-    $string = mb_substr($string, 0, $username_length);
+    $string = mb_substr((string) $string, 0, $username_length);
     return $string;
 }
 
@@ -469,7 +469,6 @@ function check($input, $flags, $min = '', $max = '')
  * Sanitizes a language code by removing all non-alphanumeric and non-dash characters.
  *
  * This function removes any characters that are not letters (a-z), numbers (0-9),
- * or hyphens (-) from the input string. It is case-insensitive in its matching.
  * @todo deprecated 7.0.0 Use LSYii_Validators::languageCodeFilter
  *
  * @param string $codetosanitize The language code string to sanitize.

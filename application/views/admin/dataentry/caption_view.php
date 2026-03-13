@@ -23,7 +23,7 @@
                     <td colspan='3'></td>
                 </tr>
 
-            <?php if ($oSurvey->hasTokensTable) //Give entry field for token id
+            <?php if ($survey->hasTokensTable) //Give entry field for token id
             { ?>
                 <tr>
                 <td valign='top' width='1%'></td>
