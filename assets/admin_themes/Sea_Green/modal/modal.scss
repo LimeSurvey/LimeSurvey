@@ -1,53 +1,92 @@
 .modal-content {
-    background-color : $white;
-    border           : none;
-    box-shadow       : none;
-    border-radius    : 0px;
+  background-color: $white;
+  border: none;
+  box-shadow: none;
+  border-radius: 0px;
 }
 
 .modal-backdrop {
-    background-color : $black;
+  background-color: $black;
 }
 
 .modal-header {
-    border-bottom : none;
+  border-bottom: none;
 }
 
 .modal {
-    .btn-close {
-        align-self : flex-start;
-        margin     : 0 -0.75rem -0.75rem auto;
-        color      : $g-900;
-        width      : 0.75em;
-        height     : 0.75em;
-        opacity    : 1;
-        font-size  : $btn-font-size-sm;
-        &:focus {
-            box-shadow     : none;
-            outline        : 2px solid currentColor;
-            outline-offset : 2px;
-        }
-        &:hover {
-            background-color : $g-200;
-        }
+  .btn-close {
+    align-self: flex-start;
+    margin: 0 -0.75rem -0.75rem auto;
+    color: $g-900;
+    width: 0.75em;
+    height: 0.75em;
+    opacity: 1;
+    font-size: $btn-font-size-sm;
+    &:focus {
+      box-shadow: none;
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
     }
+    &:hover {
+      background-color: $g-200;
+    }
+  }
+}
+
+#deleteSurvey_modal {
+  .modal-dialog {
+    width: 800px;
+    max-width: 800px;
+    margin: auto;
+  }
+
+  .modal-content {
+    height: 280px;
+
+    .modal-header {
+      padding-bottom: 0;
+
+      .modal-title {
+        color: $g-900;
+        font-size: $font-size-xl;
+        font-weight: $font-weight-normal;
+        line-height: $line-height-32;
+        padding-bottom: 0;
+        margin-bottom: 16px;
+      }
+    }
+
+    .modal-body {
+      padding-top: 0;
+
+      p {
+        color: $g-900;
+        font-size: $font-size-sm;
+        line-height: $line-height-20;
+
+        .body-highlight {
+          font-weight: $font-weight-500;
+        }
+      }
+    }
+  }
 }
 
 .modal-title {
-    color       : $g-900;
-    line-height : $line-height-26;
+  color: $g-900;
+  line-height: $line-height-26;
 }
 
 .modal-footer {
-    border-top : none;
-    padding    : $modal-inner-padding;
+  border-top: none;
+  padding: $modal-inner-padding;
 }
 
 #selector__exportTypeSelector-modal .modal-dialog {
-    border : 1px solid $g-900;
+  border: 1px solid $g-900;
 }
 
 .modal-header .btn-close:focus {
-    outline        : 2px solid currentColor;
-    outline-offset : 2px;
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }

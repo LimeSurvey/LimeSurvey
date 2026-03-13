@@ -17662,6 +17662,37 @@ body {
   background-color: #EEEFF7;
 }
 
+#deleteSurvey_modal .modal-dialog {
+  width: 800px;
+  max-width: 800px;
+  margin: auto;
+}
+#deleteSurvey_modal .modal-content {
+  height: 280px;
+}
+#deleteSurvey_modal .modal-content .modal-header {
+  padding-bottom: 0;
+}
+#deleteSurvey_modal .modal-content .modal-header .modal-title {
+  color: #1E1E1E;
+  font-size: 1.71rem;
+  font-weight: 400;
+  line-height: 32px;
+  padding-bottom: 0;
+  margin-bottom: 16px;
+}
+#deleteSurvey_modal .modal-content .modal-body {
+  padding-top: 0;
+}
+#deleteSurvey_modal .modal-content .modal-body p {
+  color: #1E1E1E;
+  font-size: 0.9975rem;
+  line-height: 20px;
+}
+#deleteSurvey_modal .modal-content .modal-body p .body-highlight {
+  font-weight: 500;
+}
+
 .modal-title {
   color: #1E1E1E;
   line-height: 26px;
