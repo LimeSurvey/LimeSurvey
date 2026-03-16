@@ -6,7 +6,7 @@ class Update_644 extends DatabaseUpdateBase
 {
     /**
      * @inheritDoc
-     */Expand comment
+     */
     public function up()
     {
     }
