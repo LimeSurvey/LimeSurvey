@@ -124,7 +124,7 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
         </div>
       </div>
 
-      <div className="p-2 m-2 text-center">
+      <div className="p-2 m-2 d-flex justify-content-center">
         <Button
           onClick={handleApplyClick}
           variant={

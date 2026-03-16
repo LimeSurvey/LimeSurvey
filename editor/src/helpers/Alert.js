@@ -131,7 +131,7 @@ export const Toast = ({
   )
 }
 
-export const toastComoponent = ({
+export const toastComponent = ({
   Component,
   position = 'bottom-right',
   className = 'error-toast',

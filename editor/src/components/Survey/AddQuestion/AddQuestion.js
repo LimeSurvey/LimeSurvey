@@ -60,7 +60,7 @@ export const AddQuestion = ({
           {isAddingQuestionOrGroup ? (
             <CloseIcon className="text-white fill-current" />
           ) : (
-            <AddIcon fill="white" />
+            <AddIcon />
           )}
         </Button>
       </TooltipContainer>
