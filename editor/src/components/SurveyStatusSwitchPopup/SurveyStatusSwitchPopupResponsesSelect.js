@@ -40,7 +40,7 @@ const SurveyStatusSwitchPopupResponsesSelect = ({
       })}
     >
       <Form.Label htmlFor="select">
-        {t('Import responses from an archived respone table')}
+        {t('Import responses from an archived response table')}
       </Form.Label>
       <ReactSelect
         classNames={{
