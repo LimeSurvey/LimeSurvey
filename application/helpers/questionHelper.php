@@ -965,7 +965,7 @@ class questionHelper
             'sortorder' => 110,
             'inputtype' => 'text',
             'expression' => 2,
-            "help" => gT('You can use Expression manager, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used.'),
+            "help" => gT('You can use ExpressionScript, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used.'),
             "caption" => gT('Slider minimum value')
         );
 
@@ -975,7 +975,7 @@ class questionHelper
             'sortorder' => 120,
             'inputtype' => 'text',
             'expression' => 2,
-            "help" => gT('You can use Expression manager, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used.'),
+            "help" => gT('You can use ExpressionScript, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used.'),
             "caption" => gT('Slider maximum value')
         );
 
@@ -985,7 +985,7 @@ class questionHelper
             'sortorder' => 130,
             'inputtype' => 'text',
             'expression' => 2,
-            "help" => gT('You can use Expression manager, but this must be a number before showing the page else set to 1.'),
+            "help" => gT('You can use ExpressionScript, but this must be a number before showing the page else set to 1.'),
             "caption" => gT('Slider accuracy')
         );
 
@@ -995,7 +995,7 @@ class questionHelper
             'sortorder' => 210,
             'inputtype' => 'text',
             'expression' => 2, // must be controlled : unsure
-            "help" => gT('Slider start as this value. You can use Expression manager, but this must be a number before showing the page. This setting has priority over slider starts at the middle position.'),
+            "help" => gT('Slider start as this value. You can use ExpressionScript, but this must be a number before showing the page. This setting has priority over slider starts at the middle position.'),
             "caption" => gT('Slider initial value')
         );
         self::$attributes["slider_default_set"] = array(

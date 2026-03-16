@@ -174,7 +174,7 @@
                                        for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
                                 <div class="input-group htmleditor ">
                                     <?php echo CHtml::textArea("message_{$language}", $textarea, array('cols' => 80, 'rows' => 20, 'class' => 'form-control')); ?>
-                                    <?php echo getEditor("email-reminder", "message_$language", "[" . gT("Reminder Email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
+                                    <?php echo getEditor("email-reminder", "message_$language", "[" . gT("Reminder email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
                                 </div>
                             </div>
                         </div>
@@ -184,7 +184,7 @@
                     <div class='mb-3'>
                         <div class=''></div>
                         <div class=''>
-                            <?php echo CHtml::submitButton(gT("Send Reminders", 'unescaped'), array('class' => 'btn btn-outline-secondary')); ?>
+                            <?php echo CHtml::submitButton(gT("Send reminders", 'unescaped'), array('class' => 'btn btn-outline-secondary')); ?>
                         </div>
 
                         <?php

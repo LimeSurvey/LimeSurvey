@@ -14,7 +14,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                         <?php eT("Success"); ?>
                     </p>
                     <p>
-                        <?php eT("Resources Import Summary"); ?>
+                        <?php eT("Resources import summary"); ?>
                     </p>
                     <p>
                         <?php eT("Total Imported files"); ?>: <?php echo count($aImportedFilesInfo); ?><br/>
@@ -48,11 +48,11 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                         <?php eT("Partial import"); ?>
                     </p>
                     <p>
-                        <?php eT("Resources Import Summary"); ?>
+                        <?php eT("Resources import summary"); ?>
                     </p>
                     <p>
-                        <?php eT("Total Imported files"); ?>: <?php echo count($aImportedFilesInfo); ?><br/>
-                        <?php eT("Total Errors"); ?>: <?php echo count($aErrorFilesInfo); ?><br/>
+                        <?php eT("Total imported files"); ?>: <?php echo count($aImportedFilesInfo); ?><br/>
+                        <?php eT("Total errors"); ?>: <?php echo count($aErrorFilesInfo); ?><br/>
                     </p>
                     <p>
                         <strong><?php eT("Imported files list"); ?>:</strong>
@@ -67,7 +67,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                     </ul>
                     </p>
                     <p>
-                        <strong class="text-danger"><?php eT("Error Files List"); ?>:</strong>
+                        <strong class="text-danger"><?php eT("Error files list"); ?>:</strong>
                     </p>
                     <p>
                         <ul>
@@ -96,14 +96,14 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                         <?php eT("Error"); ?>
                     </p>
                     <p>
-                        <?php eT("Resources Import Summary"); ?>
+                        <?php eT("Resources import summary"); ?>
                     </p>
                     <p>
-                        <?php eT("Total Imported files"); ?>: 0<br/>
-                        <?php eT("Total Errors"); ?>: <?php echo count($aErrorFilesInfo); ?><br/>
+                        <?php eT("Total imported files"); ?>: 0<br/>
+                        <?php eT("Total errors"); ?>: <?php echo count($aErrorFilesInfo); ?><br/>
                     </p>
                     <p>
-                        <strong class="text-danger"><?php eT("Error Files List"); ?>:</strong>
+                        <strong class="text-danger"><?php eT("Error files list"); ?>:</strong>
                     </p>
                     <p>
                         <ul>

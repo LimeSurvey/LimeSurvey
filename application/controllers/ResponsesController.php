@@ -905,7 +905,7 @@ class ResponsesController extends LSBaseController
             if ($fielddetails['type'] === 'page_time') {
                 $fnames[] = [$fielddetails['fieldname'], gT('Group') . ": " . $fielddetails['group_name']];
                 $aData['columns'][] = [
-                    'header' => sprintf('Group: %s', $fielddetails['group_name']),
+                    'header' => sprintf(gT('Group: %s'), $fielddetails['group_name']),
                     'name'   => $fielddetails['fieldname']
                 ];
             }
@@ -913,7 +913,7 @@ class ResponsesController extends LSBaseController
             if ($fielddetails['type'] === 'answer_time') {
                 $fnames[] = [$fielddetails['fieldname'], gT('Question') . ": " . $fielddetails['title']];
                 $aData['columns'][] = [
-                    'header' => gT('Question: ') . $fielddetails['title'],
+                    'header' => sprintf(gT('Question: %s'), $fielddetails['title']),
                     'name'   => $fielddetails['fieldname']
                 ];
             }

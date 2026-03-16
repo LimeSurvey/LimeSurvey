@@ -28,7 +28,7 @@ $googleAnalyticsOptions = array(
 $googleAnalyticsStyleOptions = array(
     "0" => gT("Off", 'unescaped'),
     "1" => gT("Default", 'unescaped'),
-    "2" => gT("Survey-SID/Group", 'unescaped')
+    "2" => gT("Survey ID/group ID", 'unescaped')
 );
 ?>
 <!-- Notification panel -->

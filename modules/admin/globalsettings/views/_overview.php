@@ -17,7 +17,7 @@
     $this->widget('ext.AlertWidget.AlertWidget', [
         'tag' => 'p',
         'text' => gT(
-            'this subview is rendered from global setting module. This message is shown only when debug mode is on'
+            'This subview is rendered from global setting module. This message is shown only when debug mode is on'
         ),
         'type' => 'info',
         'showCloseButton' => false,

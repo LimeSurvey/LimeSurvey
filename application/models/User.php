@@ -840,7 +840,7 @@ class User extends LSActiveRecord
         if ($permission_read_users && $permission_read_usergroups) {
             $cols[] = array(
                 "name" => 'groupList',
-                "header" => gT("Usergroups"),
+                "header" => gT("User groups"),
                 'filter' => false
             );
         }

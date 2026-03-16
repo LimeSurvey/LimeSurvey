@@ -72,7 +72,7 @@ switch ($serverAnswer->error) {
 
     default :
         $sTile = gT('Error!');
-        $sHeader = gT('Unknown error!');
+        $sHeader = gT('Unknown error');
         $sMessage = gT('An unknown error occurred.') . ' ' . gT('Please contact the LimeSurvey team.');
         $sErrorCode = gT('Error code:') . ' ' . $serverAnswer->error;
         break;

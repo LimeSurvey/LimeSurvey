@@ -147,7 +147,7 @@ class SurveysGroupsController extends SurveyCommonAction
                 /* Check permission */
                 $aAvailableParents = $model->getParentGroupOptions($model->gsid);
                 if (!array_key_exists($parentId, $aAvailableParents)) {
-                    Yii::app()->setFlashMessage(sprintf(gT("You don't have rights on Survey group"), CHtml::encode($parentId)), 'error');
+                    Yii::app()->setFlashMessage(sprintf(gT("You don't have permissions for this survey group"), CHtml::encode($parentId)), 'error');
                     $postSurveysGroups['parent_id'] = $model->parent_id;
                 }
                 /* avoid loop */

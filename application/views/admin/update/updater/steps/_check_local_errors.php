@@ -63,7 +63,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th class="col-md-10"><?php eT('MYSQL version required:');?></th>
+                        <th class="col-md-10"><?php eT('MariaDB/MYSQL version required:');?></th>
                         <th class="col-md-1"  style="text-align: right"></th>
                         <th class="col-md-1"  style="text-align: right"></th>
                     </tr>
@@ -77,7 +77,7 @@
                         <?php else: ?>
                             <td>
                                 <h3 class="badge bg-danger">
-                                    <?php printf(gT('MYSQL version is only %s'),$localChecks->mysql->local_mysql_ver);?>
+                                    <?php printf(gT('MariaDB/MySQL version is only %s'),$localChecks->mysql->local_mysql_ver);?>
                                 </h3>
                             </td>
                             <?php $errors = TRUE; $cant_ignore = true; $ignore = false; ?>

@@ -1283,7 +1283,7 @@ class UserManagementController extends LSBaseController
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
             array(
                 'aResults'     => $aResults,
-                'successLabel' => gT('Usergroup updated'),
+                'successLabel' => gT('User group updated'),
                 'tableLabels' =>  $tableLabels
             )
         );

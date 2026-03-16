@@ -2986,22 +2986,22 @@ class LimeExpressionManager
                 /* different messages for text and checkbox questions */
                 if ($type == Question::QT_Q_MULTIPLE_SHORT_TEXT || $type == Question::QT_K_MULTIPLE_NUMERICAL || $type == Question::QT_SEMICOLON_ARRAY_TEXT || $type == Question::QT_COLON_ARRAY_NUMBERS) {
                     $_msgs = [
-                        'atleast_m' => $this->gT("Please fill in at least %s answers"),
-                        'atleast_1' => $this->gT("Please fill in at least one answer"),
-                        'atmost_m'  => $this->gT("Please fill in at most %s answers"),
-                        'atmost_1'  => $this->gT("Please fill in at most one answer"),
-                        '1'         => $this->gT("Please fill in at most one answer"),
-                        'n'         => $this->gT("Please fill in %s answers"),
+                        'atleast_m' => $this->gT("Please fill in at least %s answers."),
+                        'atleast_1' => $this->gT("Please fill in at least one answer."),
+                        'atmost_m'  => $this->gT("Please fill in at most %s answers."),
+                        'atmost_1'  => $this->gT("Please fill in at most one answer."),
+                        '1'         => $this->gT("Please fill in at most one answer."),
+                        'n'         => $this->gT("Please fill in %s answers."),
                         'between'   => $this->gT("Please fill in from %s to %s answers.")
                     ];
                 } else {
                     $_msgs = [
-                        'atleast_m' => $this->gT("Please select at least %s answers"),
-                        'atleast_1' => $this->gT("Please select at least one answer"),
-                        'atmost_m'  => $this->gT("Please select at most %s answers"),
-                        'atmost_1'  => $this->gT("Please select at most one answer"),
-                        '1'         => $this->gT("Please select one answer"),
-                        'n'         => $this->gT("Please select %s answers"),
+                        'atleast_m' => $this->gT("Please select at least %s answers."),
+                        'atleast_1' => $this->gT("Please select at least one answer."),
+                        'atmost_m'  => $this->gT("Please select at most %s answers."),
+                        'atmost_1'  => $this->gT("Please select at most one answer."),
+                        '1'         => $this->gT("Please select one answer."),
+                        'n'         => $this->gT("Please select %s answers."),
                         'between'   => $this->gT("Please select from %s to %s answers.")
                     ];
                 }
@@ -3021,15 +3021,15 @@ class LimeExpressionManager
                 $_maxV = (($max_num_value_n == '') ? "''" : $max_num_value_n);
                 if ($type != Question::QT_N_NUMERICAL) {
                     $qtips['value_range'] =
-                        "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at least %s") . "',fixnum($_minV)), '')}" .
-                        "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at most %s") . "',fixnum($_maxV)), '')}" .
-                        "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Each answer must be %s") . "', fixnum($_minV)), '')}" .
+                        "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at least %s.") . "',fixnum($_minV)), '')}" .
+                        "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at most %s.") . "',fixnum($_maxV)), '')}" .
+                        "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Each answer must be %s.") . "', fixnum($_minV)), '')}" .
                         "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('" . $this->gT("Each answer must be between %s and %s") . "', fixnum($_minV), fixnum($_maxV)), '')}";
                 } else {
                     $qtips['value_range'] =
-                        "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("Your answer must be at least %s") . "',fixnum($_minV)), '')}" .
-                        "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("Your answer must be at most %s") . "',fixnum($_maxV)), '')}" .
-                        "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Your answer must be %s") . "', fixnum($_minV)), '')}" .
+                        "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("Your answer must be at least %s.") . "',fixnum($_minV)), '')}" .
+                        "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("Your answer must be at most %s.") . "',fixnum($_maxV)), '')}" .
+                        "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Your answer must be %s.") . "', fixnum($_minV)), '')}" .
                         "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('" . $this->gT("Your answer must be between %s and %s") . "', fixnum($_minV), fixnum($_maxV)), '')}";
                 }
             }
@@ -3043,9 +3043,9 @@ class LimeExpressionManager
                 $_minV = (($date_min == '') ? "''" : "if((strtotime(" . $date_min . ")), date('" . $aDateFormatData['phpdate'] . "', strtotime(" . $date_min . ")),'')");
                 $_maxV = (($date_max == '') ? "''" : "if((strtotime(" . $date_max . ")), date('" . $aDateFormatData['phpdate'] . "', strtotime(" . $date_max . ")),'')");
                 $qtips['value_range'] =
-                    "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("Answer must be greater or equal to %s") . "',$_minV), '')}" .
-                    "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("Answer must be less or equal to %s") . "',$_maxV), '')}" .
-                    "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Answer must be %s") . "', $_minV), '')}" .
+                    "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("Answer must be greater or equal to %s.") . "',$_minV), '')}" .
+                    "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("Answer must be less or equal to %s.") . "',$_maxV), '')}" .
+                    "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Answer must be %s.") . "', $_minV), '')}" .
                     "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('" . $this->gT("Answer must be between %s and %s") . "', ($_minV), ($_maxV)), '')}";
             }
 
@@ -3054,9 +3054,9 @@ class LimeExpressionManager
                 $_minV = (($multiflexible_min == '') ? "''" : $multiflexible_min);
                 $_maxV = (($multiflexible_max == '') ? "''" : $multiflexible_max);
                 $qtips['value_range'] =
-                    "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at least %s") . "',fixnum($_minV)), '')}" .
-                    "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at most %s") . "',fixnum($_maxV)), '')}" .
-                    "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Each answer must be %s") . "', fixnum($_minV)), '')}" .
+                    "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at least %s.") . "',fixnum($_minV)), '')}" .
+                    "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at most %s.") . "',fixnum($_maxV)), '')}" .
+                    "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Each answer must be %s.") . "', fixnum($_minV)), '')}" .
                     "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('" . $this->gT("Each answer must be between %s and %s") . "', fixnum($_minV), fixnum($_maxV)), '')}";
             }
 
@@ -3065,9 +3065,9 @@ class LimeExpressionManager
                 $_minV = (($min_num_value == '') ? "''" : $min_num_value);
                 $_maxV = (($max_num_value == '') ? "''" : $max_num_value);
                 $qtips['sum_range'] =
-                    "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("The sum must be at least %s") . "',fixnum($_minV)), '')}" .
-                    "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("The sum must be at most %s") . "',fixnum($_maxV)), '')}" .
-                    "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("The sum must equal %s") . "', fixnum($_minV)), '')}" .
+                    "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("The sum must be at least %s.") . "',fixnum($_minV)), '')}" .
+                    "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("The sum must be at most %s.") . "',fixnum($_maxV)), '')}" .
+                    "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("The sum must equal %s.") . "', fixnum($_minV)), '')}" .
                     "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('" . $this->gT("The sum must be between %s and %s") . "', fixnum($_minV), fixnum($_maxV)), '')}";
             }
 
@@ -3077,13 +3077,13 @@ class LimeExpressionManager
                 $_maxA = (($max_num_of_files == '') ? "''" : $max_num_of_files);
                 // TODO - create em_num_files class so can sepately style num_files vs. num_answers
                 $qtips['num_answers'] =
-                    "{if(!is_empty($_minA) && is_empty($_maxA) && ($_minA)!=1,sprintf('" . $this->gT("Please upload at least %s files") . "',fixnum($_minA)),'')}" .
-                    "{if(!is_empty($_minA) && is_empty($_maxA) && ($_minA)==1,sprintf('" . $this->gT("Please upload at least one file") . "',fixnum($_minA)),'')}" .
-                    "{if(is_empty($_minA) && !is_empty($_maxA) && ($_maxA)!=1,sprintf('" . $this->gT("Please upload at most %s files") . "',fixnum($_maxA)),'')}" .
-                    "{if(is_empty($_minA) && !is_empty($_maxA) && ($_maxA)==1,sprintf('" . $this->gT("Please upload at most one file") . "',fixnum($_maxA)),'')}" .
-                    "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) == ($_maxA) && ($_minA) == 1,'" . $this->gT("Please upload one file") . "','')}" .
+                    "{if(!is_empty($_minA) && is_empty($_maxA) && ($_minA)!=1,sprintf('" . $this->gT("Please upload at least %s files.") . "',fixnum($_minA)),'')}" .
+                    "{if(!is_empty($_minA) && is_empty($_maxA) && ($_minA)==1,sprintf('" . $this->gT("Please upload at least one file.") . "',fixnum($_minA)),'')}" .
+                    "{if(is_empty($_minA) && !is_empty($_maxA) && ($_maxA)!=1,sprintf('" . $this->gT("Please upload at most %s files.") . "',fixnum($_maxA)),'')}" .
+                    "{if(is_empty($_minA) && !is_empty($_maxA) && ($_maxA)==1,sprintf('" . $this->gT("Please upload at most one file.") . "',fixnum($_maxA)),'')}" .
+                    "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) == ($_maxA) && ($_minA) == 1,'" . $this->gT("Please upload one file.") . "','')}" .
                     "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) == ($_maxA) && ($_minA) != 1,sprintf('" . $this->gT("Please upload %s files") . "',fixnum($_minA)),'')}" .
-                    "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) != ($_maxA),sprintf('" . $this->gT("Please upload between %s and %s files") . "',fixnum($_minA),fixnum($_maxA)),'')}";
+                    "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) != ($_maxA),sprintf('" . $this->gT("Please upload between %s and %s files.") . "',fixnum($_minA),fixnum($_maxA)),'')}";
             }
 
 

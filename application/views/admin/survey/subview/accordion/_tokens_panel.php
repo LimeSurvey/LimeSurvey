@@ -171,7 +171,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                 <?php $tokenlength = $oSurvey->tokenlength; ?>
                 <div class="d-flex align-items-center">
                     <div class="content-right me-4">
-                            <label class=" form-label"  for='tokenlength'><?php  eT("Set access code length to:"); ?></label>
+                            <label class=" form-label"  for='tokenlength'><?php  eT("Access code length:"); ?></label>
                             <div style='width:170px'>
                               <input class="form-control inherit-edit <?php echo ($bShowInherited && $tokenlength == '-1' ? 'd-none' : 'd-block'); ?>" type='text' size='50' id='tokenlength' name='tokenlength' value="<?php echo htmlspecialchars((string) $tokenlength); ?>" data-inherit-value="-1" data-saved-value="<?php echo $tokenlength; ?>"/>
                               <input class="form-control inherit-readonly <?php echo ($bShowInherited && $tokenlength == '-1' ? 'd-block' : 'd-none'); ?>" type='text' size='50' value="<?php echo htmlspecialchars((string) $oSurveyOptions->tokenlength); ?>" readonly />

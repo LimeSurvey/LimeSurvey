@@ -30,7 +30,7 @@
                     </div>
 
                     <div class="row">
-                        <label class=" form-label semibold12" ><?php echo  eT("Select the elements to include:"); ?> </label>
+                        <label class=" form-label semibold12" ><?php echo  eT("Select which elements to include:"); ?> </label>
                         <!-- Convert resource links -->
                         <div class="form-check">
                             <input name="copyResourcesAndLinks" type="checkbox" value="1" checked>
@@ -58,7 +58,7 @@
                         <!-- Reset conditions/relevance -->
                         <div class="form-check">
                             <input name="copySurveyConditions" type="checkbox" value="1">
-                            <label class=" form-label reg16" for='copySurveyConditions'><?php echo  eT("Survey conditions"); ?> </label>
+                            <label class=" form-label reg16" for='copySurveyConditions'><?php echo  eT("Conditions"); ?> </label>
                         </div>
 
                         <!-- Reset start/end date/time -->

@@ -432,7 +432,7 @@ class PrintableSurvey extends SurveyCommonAction
                                     case Question::QT_R_RANKING: // (Rank 1), (Rank 2)...
                                         $thiscquestion = $fieldmap[$conrow['cfieldname']];
                                         $rankid = $thiscquestion['aid'];
-                                        $answer_section = " (" . gT("RANK") . " $rankid)";
+                                        $answer_section = " (" . sprintf(gT("Rank %s"), $rankid) . ")";
                                         break;
                                     default: // nothing to add
                                         break;

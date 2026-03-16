@@ -583,9 +583,9 @@ class ThemeOptionsController extends LSBaseController
                 //skip convertion LS3ToLS4 (this should have been happen BEFORE theme was moved to the uninstalled themes
                 $themeName = $questionTheme->importManifest($fullTemplateFolder, true);
                 if (isset($themeName)) {
-                    App()->setFlashMessage(sprintf(gT('The Question theme "%s" has been successfully installed'), "$themeName"), 'success');
+                    App()->setFlashMessage(sprintf(gT('The question theme "%s" has been successfully installed'), "$themeName"), 'success');
                 } else {
-                    App()->setFlashMessage(sprintf(gT('The Question theme "%s" could not be installed'), $themeName), 'error');
+                    App()->setFlashMessage(sprintf(gT('The question theme "%s" could not be installed'), $themeName), 'error');
                 }
                 $this->redirect(array("themeOptions/index#questionthemes"));
             } else {
