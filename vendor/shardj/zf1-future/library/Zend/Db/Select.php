@@ -67,6 +67,7 @@ class Zend_Db_Select
     public const FULL_JOIN      = 'full join';
     public const CROSS_JOIN     = 'cross join';
     public const NATURAL_JOIN   = 'natural join';
+    public const STRAIGHT_JOIN  = 'straight_join';
 
     public const SQL_WILDCARD   = '*';
     public const SQL_SELECT     = 'SELECT';
@@ -157,6 +158,7 @@ class Zend_Db_Select
         self::FULL_JOIN,
         self::CROSS_JOIN,
         self::NATURAL_JOIN,
+        self::STRAIGHT_JOIN,
     ];
 
     /**
@@ -183,6 +185,30 @@ class Zend_Db_Select
      * @var array
      */
     protected $_tableCols = [];
+
+    /**
+     * A regular expression used to match column expressions.
+     * Initialized with the constant REGEX_COLUMN_EXPR.
+     *
+     * @var string
+     */
+    protected $_regexColumnExpr = self::REGEX_COLUMN_EXPR;
+
+    /**
+     * A regular expression used to match column expressions for ORDER BY clauses.
+     * Initialized with the constant REGEX_COLUMN_EXPR_ORDER.
+     *
+     * @var string
+     */
+    protected $_regexColumnExprOrder = self::REGEX_COLUMN_EXPR_ORDER;
+
+    /**
+     * A regular expression used to match column expressions for GROUP BY clauses.
+     * Initialized with the constant REGEX_COLUMN_EXPR_GROUP.
+     *
+     * @var string
+     */
+    protected $_regexColumnExprGroup = self::REGEX_COLUMN_EXPR_GROUP;
 
     /**
      * Class constructor
@@ -216,6 +242,36 @@ class Zend_Db_Select
         $this->_bind = $bind;
 
         return $this;
+    }
+
+    /**
+     * Set the $regexColumnExpr variable
+     *
+     * @param string $regexColumnExpr
+     * @return void
+     */
+    public function setRegexColumnExpr($regexColumnExpr): void {
+        $this->_regexColumnExpr = $regexColumnExpr;
+    }
+
+    /**
+     * Set the $regexColumnExprOrder variable
+     *
+     * @param string $regexColumnExprOrder
+     * @return void
+     */
+    public function setRegexColumnExprOrder($regexColumnExprOrder): void {
+        $this->_regexColumnExprOrder = $regexColumnExprOrder;
+    }
+
+    /**
+     * Set the $regexColumnExprOrder variable
+     *
+     * @param string $regexColumnExprGroup
+     * @return void
+     */
+    public function setRegexColumnExprGroup($regexColumnExprGroup): void {
+        $this->_regexColumnExprGroup = $regexColumnExprGroup;
     }
 
     /**
@@ -468,6 +524,30 @@ class Zend_Db_Select
     }
 
     /**
+     * Add a STRAIGHT_JOIN table and columns to the query
+     * In MySQL an STRAIGHT_JOIN scans and combines matching rows
+     * (if specified any condition) which are stored in associated tables
+     * otherwise it behaves like an INNER JOIN or JOIN of without any condition.
+     * STRAIGHT_JOIN is similar to JOIN,
+     * except that the left table is always read before the right table.
+     * This can be used for those (few) cases for which the join optimizer
+     * puts the tables in the wrong order.
+     *
+     * The $name and $cols parameters follow the same logic
+     * as described in the from() method.
+     *
+     * @param  array|string|Zend_Db_Expr $name The table name.
+     * @param  string $cond Join on this condition.
+     * @param  array|string $cols The columns to select from the joined table.
+     * @param  string $schema The database name to specify, if any.
+     * @return $this This Zend_Db_Select object.
+     */
+    public function joinStraight($name, $cond, $cols = self::SQL_WILDCARD, $schema = null)
+    {
+        return $this->_join(self::STRAIGHT_JOIN, $name, $cond, $cols, $schema);
+    }
+
+    /**
      * Adds a WHERE condition to the query by AND.
      *
      * If a value is passed as the second param, it will be quoted
@@ -540,7 +620,7 @@ class Zend_Db_Select
         foreach ($spec as $val) {
             // Remove comments from SQL statement
             $noComments = preg_replace(self::REGEX_SQL_COMMENTS, '$1', (string) $val);
-            if (preg_match(self::REGEX_COLUMN_EXPR_GROUP, $noComments)) {
+            if (preg_match($this->_regexColumnExprGroup, $noComments)) {
                 $val = new Zend_Db_Expr($val);
             }
             $this->_parts[self::GROUP][] = $val;
@@ -634,7 +714,7 @@ class Zend_Db_Select
                 }
                 // Remove comments from SQL statement
                 $noComments = preg_replace(self::REGEX_SQL_COMMENTS, '$1', (string) $val);
-                if (preg_match(self::REGEX_COLUMN_EXPR_ORDER, $noComments)) {
+                if (preg_match($this->_regexColumnExprOrder, $noComments)) {
                     $val = new Zend_Db_Expr($val);
                 }
                 $this->_parts[self::ORDER][] = [$val, $direction];
@@ -982,7 +1062,7 @@ class Zend_Db_Select
                     $alias = $m[2];
                 }
                 // Check for columns that look like functions and convert to Zend_Db_Expr
-                if (preg_match(self::REGEX_COLUMN_EXPR, (string) $col)) {
+                if (preg_match($this->_regexColumnExpr, (string) $col)) {
                     $col = new Zend_Db_Expr($col);
                 } elseif (preg_match('/(.+)\.(.+)/', $col, $m)) {
                     $currentCorrelationName = $m[1];

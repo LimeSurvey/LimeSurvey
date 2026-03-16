@@ -3192,9 +3192,34 @@ function getParticipantAttributes($iSurveyID)
     return getTokenFieldsAndNames($iSurveyID, true);
 }
 
+/**
+ * Decodes and formats attribute select options from JSON string to associative array.
+ *
+ * This method checks if the 'type_options' key exists in the provided attribute data array
+ * and if it contains a JSON string. If so, it decodes the JSON and converts a numeric array
+ * into an associative array where each value serves as both the key and value. This is useful
+ * for formatting select/dropdown options for form rendering.
+ *
+ * @param array $attrData The attribute data array that may contain a 'type_options' key with JSON string value
+ * @return array The modified attribute data array with decoded and formatted type_options, or the original array if no changes were made
+ */
+function decodeAttributeSelectOptions(array $attrData)
+{
+    if (array_key_exists('type_options', $attrData) && is_string($attrData['type_options'])) {
+        static $attributeService = null;
+        if ($attributeService === null) {
+            $diContainer = \LimeSurvey\DI::getContainer();
+            $attributeService = $diContainer->get(
+                LimeSurvey\Models\Services\ParticipantAttributeService::class
+            );
+        }
+        $decodedOptions = $attributeService->decodeJsonEncodedTypeOptions($attrData['type_options']);
+        // Always normalize to array for downstream form rendering (even if empty / invalid -> []).
+        $attrData['type_options'] = $decodedOptions;
+    }
 
-
-
+    return $attrData;
+}
 
 /**
 * Retrieves the attribute names from the related survey participant list
@@ -3281,6 +3306,7 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
         } elseif (empty($aSavedExtraTokenFields[$sField]['description'])) {
             $aSavedExtraTokenFields[$sField]['description'] = $sField;
         }
+        $aSavedExtraTokenFields[$sField] = decodeAttributeSelectOptions($aSavedExtraTokenFields[$sField]);
     }
     if ($bOnlyAttributes) {
         return $aSavedExtraTokenFields;
@@ -4883,17 +4909,21 @@ function ls_json_encode($content)
 }
 
 /**
- * Decode a json string, sometimes needs stripslashes
+ * Decodes a json string, sometimes needs stripslashes
  *
  * @param string $jsonString
  * @return mixed
  */
 function json_decode_ls($jsonString)
 {
+    if ($jsonString === null) {
+        return null;
+    }
+
     $decoded = json_decode($jsonString, true);
 
     if (is_null($decoded) && !empty($jsonString)) {
-        // probably we need stipslahes
+        // probably we need stripslashes
         $decoded = json_decode(stripslashes($jsonString), true);
     }
 
@@ -5454,9 +5484,16 @@ function recursive_preg_replace($pattern, $replacement, $subject, $limit = -1, &
  */
 function standardDeviation(array $numbers): float
 {
-    // Filter empty "" records
-    $numbers = array_filter($numbers);
+    // Filter empty ("" and null) records (keeping zeroes)
+    $numbers = array_filter($numbers, fn($value) => $value !== "" && $value !== null);
     $numberOfElements = count($numbers);
+
+    if ($numberOfElements === 0) {
+        /**
+         * @todo Should this be null? Function signature says float
+         */
+        return 0.0;
+    }
 
     $variance = 0.0;
     $average = array_sum($numbers) / $numberOfElements;

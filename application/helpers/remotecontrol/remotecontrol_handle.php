@@ -2950,6 +2950,7 @@ class remotecontrol_handle
                         }
                     }
                     unset($attributes['password']);
+                    unset($attributes['one_time_pw']);
                     $data[] = $attributes;
                 }
                 return $data;
