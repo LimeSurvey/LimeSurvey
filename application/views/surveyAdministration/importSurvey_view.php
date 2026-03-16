@@ -56,70 +56,70 @@
                         <?php eT("Survey copy summary"); ?>
                     </caption>
                     <tr>
-                        <td><?php eT("Surveys"); ?>:</td>
+                        <td><?php eT("Surveys"); ?></td>
                         <td><?php echo $aImportResults['surveys']; ?></td>
                     </tr>
                     <tr>
-                        <td><?php eT("Languages"); ?>:</td>
+                        <td><?php eT("Languages"); ?></td>
                         <td><?php echo $aImportResults['languages']; ?></td>
                     </tr>
                     <tr>
-                        <td><?php eT("Question groups"); ?>:</td>
+                        <td><?php eT("Question groups"); ?></td>
                         <td><?php echo $aImportResults['groups']; ?></td>
                     </tr>
                     <tr>
-                        <td><?php eT("Questions"); ?>:</td>
+                        <td><?php eT("Questions"); ?></td>
                         <td><?php echo $aImportResults['questions']; ?></td>
                     </tr>
                     <tr>
-                        <td><?php eT("Question attributes"); ?>:</td>
+                        <td><?php eT("Question attributes"); ?></td>
                         <td><?php echo $aImportResults['question_attributes']; ?></td>
                     </tr>
                     <tr>
-                        <td><?php eT("Answers"); ?>:</td>
+                        <td><?php eT("Answers"); ?></td>
                         <td><?php echo $aImportResults['answers']; ?></td>
                     </tr>
                     <?php if (isset($aImportResults['subquestions'])) {
                         ?>
                         <tr>
-                            <td><?php eT("Subquestions"); ?>:</td>
+                            <td><?php eT("Subquestions"); ?></td>
                             <td><?php echo $aImportResults['subquestions']; ?></td>
                         </tr>
                     <?php }
                     if (isset($aImportResults['defaultvalues'])) {
                         ?>
                         <tr>
-                            <td><?php eT("Default answers"); ?>:</td>
+                            <td><?php eT("Default answers"); ?></td>
                             <td><?php echo $aImportResults['defaultvalues']; ?></td>
                         </tr>
                     <?php }
                     if (isset($aImportResults['conditions'])) {
                         ?>
                         <tr>
-                            <td><?php eT("Condition"); ?>:</td>
+                            <td><?php eT("Conditions"); ?></td>
                             <td><?php echo $aImportResults['conditions']; ?></td>
                         </tr>
                     <?php }
                     if (isset($aImportResults['labelsets'])) {
                         ?>
                         <tr>
-                            <td><?php eT("Label sets"); ?>:</td>
+                            <td><?php eT("Label sets"); ?></td>
                             <td><?php echo $aImportResults['labelsets']; ?></td>
                         </tr>
                     <?php }
                     if (isset($aImportResults['deniedcountls']) && $aImportResults['deniedcountls'] > 0) {
                         ?>
                         <tr>
-                            <td><?php eT("Not imported label sets"); ?>:</td>
+                            <td><?php eT("Not imported label sets"); ?></td>
                             <td><?php echo $aImportResults['deniedcountls']; ?><?php eT("(Label sets were not imported since you do not have the permission to create label sets.)"); ?> </td>
                         </tr>
                     <?php } ?>
                     <tr>
-                        <td><?php eT("Assessments"); ?>:</td>
+                        <td><?php eT("Assessments"); ?></td>
                         <td><?php echo $aImportResults['assessments']; ?></td>
                     </tr>
                     <tr>
-                        <td><?php eT("Quotas"); ?>:</td>
+                        <td><?php eT("Quotas"); ?></td>
                         <td><?php echo $aImportResults['quota']; ?></td>
                     </tr>
                     <tr>

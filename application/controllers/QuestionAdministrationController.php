@@ -1148,7 +1148,7 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         if (!$gid) {
-            $fatalerror .= gT("No (valid) group ID has been provided. Cannot import question");
+            $fatalerror .= gT("No (valid) group ID has been provided. Cannot import question.");
         }
 
         if ($fatalerror != '') {

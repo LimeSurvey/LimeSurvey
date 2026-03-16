@@ -465,7 +465,7 @@ class UserGroupController extends LSBaseController
         $currentUserId = App()->getCurrentUserId();
         $userGroup = UserGroup::model()->findByPk($ugid);
         if (empty($userGroup)) {
-            throw new CHttpException(404, gT("User group not found"));
+            throw new CHttpException(404, gT("User group not found."));
         }
         if (
             !Permission::model()->hasGlobalPermission('superadmin', 'read') // User is not a superadmin

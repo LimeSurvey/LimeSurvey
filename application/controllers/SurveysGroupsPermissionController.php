@@ -329,7 +329,7 @@ class SurveysGroupsPermissionController extends LSBaseController
     {
         $oUserGroup = UserGroup::model()->findByPk($to);
         if (empty($oUserGroup)) {
-            throw new CHttpException(401, gT("User group not found"));
+            throw new CHttpException(401, gT("User group not found."));
         }
         /* Check if logged user can see user group */
         if (shouldFilterUserGroupList() && !in_array($to, getUserGroupList())) {

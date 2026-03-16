@@ -9,22 +9,22 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) {
     $statusClass = 'successheader';
     $okfiles = count($aImportedFilesInfo);
     $errfiles = 0;
-    $ImportListHeader .= "<br /><strong><u>" . gT("Imported files list") . ":</u></strong><br />\n";
+    $ImportListHeader .= "<br /><strong><u>" . gT("Imported files list:") . "</u></strong><br />\n";
     $ErrorListHeader = '';
 } elseif (count($aErrorFilesInfo) && count($aImportedFilesInfo)) {
     $status = gT("Partial import");
     $statusClass = 'partialheader';
     $okfiles = count($aImportedFilesInfo);
     $errfiles = count($aErrorFilesInfo);
-    $ErrorListHeader = "<br /><strong><u>" . gT("Error files list") . ":</u></strong><br />\n";
-    $ImportListHeader .= "<br /><strong><u>" . gT("Imported files list") . ":</u></strong><br />\n";
+    $ErrorListHeader = "<br /><strong><u>" . gT("Error files list:") . "</u></strong><br />\n";
+    $ImportListHeader .= "<br /><strong><u>" . gT("Imported files list:") . "</u></strong><br />\n";
 } else {
     $okfiles = 0;
     $status = gT("Error");
     $statusClass = 'warningheader';
     $errfiles = count($aErrorFilesInfo);
     $ImportListHeader = '';
-    $ErrorListHeader = "<br /><strong><u>" . gT("Error files list") . ":</u></strong><br />\n";
+    $ErrorListHeader = "<br /><strong><u>" . gT("Error files list:") . "</u></strong><br />\n";
 }
 ?>
 

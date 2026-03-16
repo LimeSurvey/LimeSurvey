@@ -17,10 +17,10 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                         <?php eT("Resources import summary"); ?>
                     </p>
                     <p>
-                        <?php eT("Total Imported files"); ?>: <?php echo count($aImportedFilesInfo); ?><br/>
+                        <?php eT("Total imported files"); ?>: <?php echo count($aImportedFilesInfo); ?><br/>
                     </p>
                     <p>
-                        <strong><?php eT("Imported files list") ?>:</strong>
+                        <strong><?php eT("Imported files list:"); ?></strong>
                     </p>
                     <p>
                         <ul>
@@ -55,7 +55,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                         <?php eT("Total errors"); ?>: <?php echo count($aErrorFilesInfo); ?><br/>
                     </p>
                     <p>
-                        <strong><?php eT("Imported files list"); ?>:</strong>
+                        <strong><?php eT("Imported files list:"); ?></strong>
                     </p>
                     <p>
                     <ul>

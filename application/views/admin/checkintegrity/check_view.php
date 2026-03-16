@@ -144,7 +144,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($questions as $question) { ?>
-                                <li>QID:<?php echo $question['qid']; ?> <?php eT("Reason:"); ?><?php echo $question['reason']; ?></li><?php
+                                <li><?php printf(gT("Question ID: %s"), $question['id']); ?> <?php eT("Reason:"); ?><?php echo $question['reason']; ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -159,7 +159,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($question_l10ns as $question) { ?>
-                                <li>QID:<?php echo $question['qid']; ?><?php printf(gT("ID: %s"), $question['id']); ?> <?php eT("Reason:"); ?><?php echo $question['reason']; ?></li><?php
+                                <li><?php printf(gT("Question ID: %s"), $question['id']); ?> <?php eT("Reason:"); ?><?php echo $question['reason']; ?></li><?php
                             } ?>
                         </ul>
                     </li>

@@ -2990,7 +2990,7 @@ class LimeExpressionManager
                         'atleast_1' => $this->gT("Please fill in at least one answer."),
                         'atmost_m'  => $this->gT("Please fill in at most %s answers."),
                         'atmost_1'  => $this->gT("Please fill in at most one answer."),
-                        '1'         => $this->gT("Please fill in at most one answer."),
+                        '1'         => $this->gT("Please fill in one answer."),
                         'n'         => $this->gT("Please fill in %s answers."),
                         'between'   => $this->gT("Please fill in from %s to %s answers.")
                     ];

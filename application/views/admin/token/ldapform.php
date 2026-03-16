@@ -86,7 +86,7 @@
 
             <!-- Note -->
             <?php
-            $message = '<strong>' . gT("Note: LDAP queries are defined by the administrator in the configuration file /application/config/ldap.php .");
+            $message = gT("Note: LDAP queries are defined by the administrator in the configuration file /application/config/ldap.php .");
             $this->widget('ext.AlertWidget.AlertWidget', [
                 'text' => $message,
                 'type' => 'info',
