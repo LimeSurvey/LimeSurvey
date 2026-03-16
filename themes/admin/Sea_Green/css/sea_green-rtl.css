@@ -16497,6 +16497,10 @@ body {
   flex-direction: column;
 }
 
+#last_survey a {
+  color: #2D7A53 !important;
+}
+
 .container-40 {
   padding: 0 40px;
   width: 100%;
@@ -18706,6 +18710,11 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 .cke_button_icon {
   opacity: unset !important;
+}
+
+.cke_reset_all,
+.cke_reset_all * {
+  color: #1E1E1E !important;
 }
 
 .cke_contents {
