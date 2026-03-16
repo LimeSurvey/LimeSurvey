@@ -84,7 +84,7 @@ class Dumpdb extends SurveyCommonAction
     private function getData()
     {
         if ($this->data === []) {
-            Yii::app()->loadHelper("admin/backupdb");
+            Yii::app()->loadHelper("admin.backupdb");
             $dbSize = getDatabaseSize();
             $downloadable = true;
             if ($dbSize > Yii::app()->getConfig('maxDatabaseSizeForDump')) {
@@ -114,7 +114,7 @@ class Dumpdb extends SurveyCommonAction
             throw new CHttpException(403, gT("The database is too large to be downloaded. Please consider exporting it manually using your database client."));
         }
 
-        Yii::app()->loadHelper("admin/backupdb");
+        Yii::app()->loadHelper("admin.backupdb");
         $sDbName = _getDbName();
         $sFileName = 'LimeSurvey_' . $sDbName . '_dump_' . dateShift(date('Y-m-d H:i:s'), 'Y-m-d', Yii::app()->getConfig('timeadjust')) . '.sql';
         $this->outputHeaders($sFileName);

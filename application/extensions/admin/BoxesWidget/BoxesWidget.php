@@ -139,7 +139,7 @@ class BoxesWidget extends CWidget
     {
         return [
             'type' => self::TYPE_LINK,
-            'link' => App()->createUrl('/surveyAdministration/createSurvey/'),
+            'link' => App()->createUrl('/surveyAdministration/newSurvey/'),
             'text' => gT('Create survey'),
             'icon' => 'ri-add-line',
             'colored' => true,

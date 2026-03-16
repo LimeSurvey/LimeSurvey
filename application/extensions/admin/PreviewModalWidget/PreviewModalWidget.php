@@ -171,12 +171,12 @@ class PreviewModalWidget extends CWidget
         $oClientScript = App()->getClientScript();
         $basePath = dirname(__FILE__) . '/assets/';
 
-        //publish Assets
-        $sStyleFile = App()->getAssetManager()->publish($basePath.'previewModalWidget.css');
-        $sScriptFile = App()->getAssetManager()->publish($basePath.'previewModalWidget.js');
-        //register Assets
-        $oClientScript->registerCssFile($sStyleFile);
-        $oClientScript->registerScriptFile($sScriptFile, CClientScript::POS_BEGIN);
+        // Publish assets once so the directory always exists in the public temp path.
+        $sAssetsBaseUrl = App()->getAssetManager()->publish($basePath);
+
+        // register Assets
+        $oClientScript->registerCssFile($sAssetsBaseUrl . '/previewModalWidget.css');
+        $oClientScript->registerScriptFile($sAssetsBaseUrl . '/previewModalWidget.js', CClientScript::POS_BEGIN);
         $oClientScript->registerScript(
             'WIDGETSCRIPT--' . $this->widgetsJsName,
             'var runner_' . $this->widgetsJsName . ' = new PreviewModalScript("' . $this->widgetsJsName . '",'

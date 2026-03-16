@@ -12,6 +12,14 @@
     padding-left: 20px;
 }
 
+.checkbox-item.othertext-label-checkox-container {
+  align-self: center ;
+  label {
+    vertical-align: unset;
+    margin-bottom: 0;
+  }
+}
+
 .checkbox-item .ls-label-xs-visibility {
     display: inline-block;
     position: relative;

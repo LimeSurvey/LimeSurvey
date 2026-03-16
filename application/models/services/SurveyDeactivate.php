@@ -26,6 +26,7 @@ class SurveyDeactivate
     private ArchivedTableSettings $archivedResponseSettings;
     private SurveyLink $surveyLink;
     private SavedControl $savedControl;
+    protected array $siddates;
 
     public function setArchivedResponseSettings(ArchivedTableSettings $archivedResponseSettings)
     {
@@ -56,6 +57,21 @@ class SurveyDeactivate
         $this->app = $app;
         $this->surveyLink = $surveyLink;
         $this->savedControl = $savedControl;
+        $this->siddates = [];
+    }
+
+    /**
+     * Gets a string of the form of <sid>_<timestamp>
+     * @param int $iSurveyID
+     * @return string
+     */
+    protected function getSiddate(int $iSurveyID): string
+    {
+        if (!isset($this->siddates[$iSurveyID])) {
+            $date = date('YmdHis', time());
+            $this->siddates[$iSurveyID] = "{$iSurveyID}_{$date}";
+        }
+        return $this->siddates[$iSurveyID];
     }
 
     /**
@@ -99,14 +115,6 @@ class SurveyDeactivate
             return $result;
         }
         if (!is_array($params) || (($params['ok'] ?? '') == '')) {
-            if (!empty($this->app->session->get('sNewSurveyTableName'))) {
-                $this->app->session->remove('sNewSurveyTableName');
-            }
-            $this->app->session->add('sNewSurveyTableName', $this->app->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}");
-            if (!empty($this->app->session->get('NewSIDDate'))) {
-                $this->app->session->remove('NewSIDDate');
-            }
-            $this->app->session->add('NewSIDDate', "{$iSurveyID}_{$date}");
             $aData['surveyid'] = $iSurveyID;
             $aData['date'] = $date;
             $aData['dbprefix'] = $this->app->db->tablePrefix;
@@ -124,7 +132,7 @@ class SurveyDeactivate
             $aData['surveyid'] = $iSurveyID;
             $this->app->db->schema->refresh();
             //after deactivation redirect to survey overview and show message...
-            $siddate = $this->app->session->get('NewSIDDate', "{$iSurveyID}_{$date}");
+            $siddate = $this->getSiddate($iSurveyID);
             createTableFromPattern($this->app->db->tablePrefix . "old_questions_{$siddate}", $this->app->db->tablePrefix . "questions", ['sid', 'gid', 'qid', 'parent_qid', 'type'], ['sid' => $iSurveyID]);
             $this->app->session->remove('sNewSurveyTableName');
         }
@@ -160,7 +168,7 @@ class SurveyDeactivate
     protected function archiveToken($iSurveyID, $date, $userID, $DBDate, &$aData)
     {
         $toldtable = $this->app->db->tablePrefix . "tokens_{$iSurveyID}";
-        $siddate = $this->app->session->get('NewSIDDate', "{$iSurveyID}_{$date}");
+        $siddate = $this->getSiddate($iSurveyID);
         $tnewtable = $this->app->db->tablePrefix . "old_tokens_{$siddate}";
         if ($this->app->db->getDriverName() == 'pgsql') {
             // Find out the trigger name for tid column
@@ -249,11 +257,8 @@ class SurveyDeactivate
         // IF there are any records in the saved_control table related to this survey, they have to be deleted
         $this->savedControl->deleteSomeRecords(array('sid' => $iSurveyID)); //Yii::app()->db->createCommand($query)->query();
         $sOldSurveyTableName = $this->app->db->tablePrefix . "survey_{$iSurveyID}";
-        $siddate = $this->app->session->get('NewSIDDate', "{$iSurveyID}_{$date}");
-        if (empty($this->app->session->get('sNewSurveyTableName'))) {
-            $this->app->session->add('sNewSurveyTableName', $this->app->db->tablePrefix . "old_survey_{$siddate}");
-        }
-        $sNewSurveyTableName = $this->app->session->get('sNewSurveyTableName');
+        $siddate = $this->getSiddate($iSurveyID);
+        $sNewSurveyTableName = $this->app->db->tablePrefix . "old_survey_{$siddate}";
         $aData['sNewSurveyTableName'] = $sNewSurveyTableName;
 
         $query = "SELECT id FROM " . $this->app->db->quoteTableName($sOldSurveyTableName) . " ORDER BY id desc";
@@ -295,7 +300,7 @@ class SurveyDeactivate
      */
     protected function handleTimingTable($iSurveyID, $date, &$aData, $userID, $DBDate)
     {
-        $siddate = $this->app->session->get('NewSIDDate', "{$iSurveyID}_{$date}");
+        $siddate = $this->getSiddate($iSurveyID);
         $prow = $this->survey->find('sid = :sid', array(':sid' => $iSurveyID));
         if ($prow->savetimings == "Y") {
             $sOldTimingsTableName = $this->app->db->tablePrefix . "survey_{$iSurveyID}_timings";

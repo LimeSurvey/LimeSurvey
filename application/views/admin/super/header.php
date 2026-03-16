@@ -47,7 +47,6 @@
     <title><?php echo $sitename;?></title>
     <link rel="shortcut icon" href="<?php echo Yii::app()->getConfig('styleurl');?>favicon.ico" type="image/x-icon" />
     <link rel="icon" href="<?php echo Yii::app()->getConfig('styleurl');?>favicon.ico" type="image/x-icon" />
-    <?php echo $firebug ?>
     <?php $this->widget('ext.LimeScript.LimeScript'); ?>
     <?php //$this->widget('ext.LimeDebug.LimeDebug'); ?>
 </head>
@@ -56,7 +55,7 @@
         <###begin###>
     </div>
 <!-- Loading wrapper -->
-<div id='ls-loading'>
+<div id='ls-loading' role="status" aria-live="polite">
     <span id='ls-loading-spinner' class='ri-loader-2-fill remix-spin remix-4x'></span>
     <span class='visually-hidden'><?php eT('Loading...'); ?></span>
 </div>

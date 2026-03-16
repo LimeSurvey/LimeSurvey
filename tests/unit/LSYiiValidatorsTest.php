@@ -294,7 +294,7 @@ class LSYiiValidatorsTest extends TestBaseClass
     {
         \Yii::app()->session['loginID'] = 1;
 
-        // Testing languageFilter.
+        // Testing languageCodeFilter.
         $survey = \Survey::model()->insertNewSurvey(array('language' => 'ko')); // Set language to Korean.
 
         $this->assertSame('ko', $survey->language, 'The language filter did not return a correctly filtered language string.');
@@ -309,7 +309,7 @@ class LSYiiValidatorsTest extends TestBaseClass
 
         $this->assertSame('en', $survey->language, 'The language filter did not return a correctly filtered language string.');
 
-        // Testing multiLanguageFilter.
+        // Testing multiLanguageCodeFilter.
         $survey->additional_languages = 'es';
         $survey->save();
 

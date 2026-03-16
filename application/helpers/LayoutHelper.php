@@ -62,7 +62,6 @@ class LayoutHelper
         $aData['datepickerlang'] = "";
 
         $aData['sitename'] = Yii::app()->getConfig("sitename");
-        $aData['firebug'] = useFirebug();
 
         if (!empty(Yii::app()->session['dateformat'])) {
             $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
@@ -129,7 +128,7 @@ class LayoutHelper
             $aData['dataForConfigMenu']['userscount'] = User::model()->count();
 
             //Check if have a comfortUpdate key
-            if (getGlobalSetting('emailsmtpdebug') != '') {
+            if (getGlobalSetting('update_key') != '') {
                 $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('Activated');
             } else {
                 $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('None');
@@ -162,10 +161,11 @@ class LayoutHelper
      * @return Menu
      */
     public function getCreateMenu() {
+        $itemClass = 'create-menu-item';
         $menuItemHeader = [
             'isDivider' => false,
             'isSmallText' => true,
-            'label' => 'Create new...',
+            'label' => gT('Create new...'),
             'href' => '#',
             'iconClass' => 'ri-add-line',
         ];
@@ -175,9 +175,10 @@ class LayoutHelper
             'isDivider' => false,
             'isSmallText' => false,
             'label' => gT('Survey'),
-            'href' => \Yii::app()->createUrl('surveyAdministration/createSurvey'),
+            'href' => \Yii::app()->createUrl('surveyAdministration/newSurvey'),
             'iconClass' => 'ri-add-line',
             'id' => 'create-survey-link',
+            'itemClass' => $itemClass
         ];
         $menuItems[] = (new MenuItem($menuItemNewSurvey));
 
@@ -187,6 +188,7 @@ class LayoutHelper
             'label' => gT('Survey group'),
             'href' => \Yii::app()->createUrl('admin/surveysgroups/sa/create'),
             'iconClass' => 'ri-add-circle-line',
+            'itemClass' => $itemClass
         ];
         $menuItems[] = (new MenuItem($menuItemNewSurvey));
 
@@ -194,16 +196,20 @@ class LayoutHelper
             'isDivider' => false,
             'isSmallText' => false,
             'label' => gT('Import survey'),
-            'href' => \Yii::app()->createUrl('surveyAdministration/newSurvey'),
+            'isModal' => true,
+            'modalId' => 'importSurvey_modal',
             'iconClass' => 'ri-upload-line',
+            'itemClass' => $itemClass
         ];
         $menuItems[] = (new MenuItem($menuItemNewSurvey));
 
         $options = [
+            'id' => 'createMenuButton',
             'label' => '+',
             'iconClass' => 'ri-add-line',
             'isDropDown' => true,
             'isDropDownButton' => true,
+            'dropDownButtonClass' => 'btn btn-info btn-create dropdown-toggle-no-caret',
             'menuItems' => $menuItems,
             'isPrepended' => true,
         ];

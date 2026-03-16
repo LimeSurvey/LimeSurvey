@@ -9,7 +9,7 @@
 ?>
 
 <!-- Modal -->
-<div class="modal fade" id="<?= $modalId ?>" tabindex="-1" role="dialog" aria-labelledby="responses-column-filter-label">
+<div class="modal fade" id="<?= $modalId ?>" tabindex="-1" role="dialog" aria-labelledby="<?= $modalId ?>-label" aria-modal="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form
@@ -19,7 +19,7 @@
                 <?php
                 Yii::app()->getController()->renderPartial(
                     '/layouts/partial_modals/modal_header',
-                    ['modalTitle' => gT('Select columns')]
+                    ['modalTitle' => gT('Select columns'), 'modalTitleId' => $modalId . '-label']
                 );
                 ?>
                 <div class="modal-body">
@@ -57,7 +57,7 @@
                         <?php endforeach; ?>
                     </div>
 
-                    <input type="hidden" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= App()->request->csrfToken ?>"/>
+                    <input type="hidden" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= CHtml::encode(App()->request->csrfToken) ?>"/>
                 </div>
                 <div class="modal-footer">
                     <button id="<?= $modalId ?>-cancel" type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>

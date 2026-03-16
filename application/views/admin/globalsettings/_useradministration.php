@@ -18,13 +18,14 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'sendadmincreationemail',
+                        'ariaLabel'=> gT('Send email to new user administrators:'),
                         'checkedOption' => $sSendAdminCreationEmail ?? 0,
                         'selectOptions' => [
                             '1' => gT('On'),
                             '0' => gT('Off'),
                         ],
                         'htmlOptions'   => [
-                            'class'        => 'custom-data bootstrap-switch-boolean',
+                            'class'        => 'custom-data',
                         ]
                     ]); ?>
                 </div>

@@ -9,6 +9,7 @@ use CHttpSession;
 use LimeSurvey\PluginManager\PluginManager;
 use LimeSurvey\Models\Services\SurveyAggregateService\LanguageConsistency;
 use User;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 class GeneralSettingsMockSet
 {
@@ -21,4 +22,5 @@ class GeneralSettingsMockSet
     public LanguageConsistency $languageConsistency;
     public User $user;
     public User $modelUser;
+    public SurveyAccessModeService $surveyAccessModeService;
 }

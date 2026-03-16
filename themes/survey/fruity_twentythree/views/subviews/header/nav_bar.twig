@@ -21,7 +21,7 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
     <header role="banner" id="survey-nav" class="navbar fixed-top">
         <div class="container-fluid col-xl-8">
             {% if( aSurveyInfo.options.brandlogo == "on") %}
-                <div class="navbar-brand logo-container d-none d-md-block">
+                <div class="navbar-brand logo-container">
                     {{ image(aSurveyInfo.options.brandlogofile, aSurveyInfo.name, {"class": "logo img-fluid"}) }}
                 </div>
             {% endif %}
