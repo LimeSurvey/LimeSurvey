@@ -88,12 +88,15 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
             if ( anonymizedOption === 'Y' ) {
                 $('#alloweditaftercompletion-update').toggleClass('hidden', true);
                 $('#alloweditaftercompletion-multiple').toggleClass('hidden', false);
+                $('#alloweditaftercompletion').attr('aria-label', $('#alloweditaftercompletion-multiple').text().trim());
             } else if( persistenceOption === 'N' ) {
                 $('#alloweditaftercompletion-update').toggleClass('hidden', true);
                 $('#alloweditaftercompletion-multiple').toggleClass('hidden', false);
+                $('#alloweditaftercompletion').attr('aria-label', $('#alloweditaftercompletion-multiple').text().trim());
             } else if( persistenceOption === 'Y' ) {
                 $('#alloweditaftercompletion-update').toggleClass('hidden', false);
                 $('#alloweditaftercompletion-multiple').toggleClass('hidden', true);
+                $('#alloweditaftercompletion').attr('aria-label', $('#alloweditaftercompletion-update').text().trim());
             }
             
             $('#multiResponseHint').toggleClass('hidden', ! multipleResponsesSameToken );
@@ -160,7 +163,6 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'alloweditaftercompletion',
                         'checkedOption' => $oSurvey->alloweditaftercompletion,
-                       'ariaLabel' => gT('Allow to update the responses using the access code'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->alloweditaftercompletion . " ᴵ"])
                             : $optionsOnOff
