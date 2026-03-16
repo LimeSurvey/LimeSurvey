@@ -3937,6 +3937,12 @@ class LimeExpressionManager
             if (!isset($this->qcode2sgqa[$varName])) {
                 $this->qcode2sgqa[$varName] = $sgqa;
             }
+            $tokens = explode("_", $varName);
+            if (count($tokens) > 1) {
+                $tokens = implode("_", $tokens);
+                $varName2 = explode("_", $sgqa)[0] . substr($tokens, strpos($tokens, "_") + 1);
+                $this->knownVars[$varName2] = $varInfo_Code;
+            }
             $this->jsVar2qid[$jsVarName] = $questionNum;
             $this->qcode2sgq[$fielddata['title']] = 'Q' . $questionNum;
 
