@@ -1,6 +1,6 @@
 <?php if (isset($aImportResults['fatalerror'])):?>
     <div class="jumbotron message-box message-box-error">
-            <h2 class="text-danger"><?php eT("Import Label Set") ?></h2>
+            <h2 class="text-danger"><?php eT("Import label set(s)") ?></h2>
             <p class="lead text-danger"><?php eT("Error") ?></p>
             <p><?php echo $aImportResults['fatalerror']; ?></p>
 

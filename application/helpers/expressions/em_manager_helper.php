@@ -3082,7 +3082,7 @@ class LimeExpressionManager
                     "{if(is_empty($_minA) && !is_empty($_maxA) && ($_maxA)!=1,sprintf('" . $this->gT("Please upload at most %s files.") . "',fixnum($_maxA)),'')}" .
                     "{if(is_empty($_minA) && !is_empty($_maxA) && ($_maxA)==1,sprintf('" . $this->gT("Please upload at most one file.") . "',fixnum($_maxA)),'')}" .
                     "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) == ($_maxA) && ($_minA) == 1,'" . $this->gT("Please upload one file.") . "','')}" .
-                    "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) == ($_maxA) && ($_minA) != 1,sprintf('" . $this->gT("Please upload %s files") . "',fixnum($_minA)),'')}" .
+                    "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) == ($_maxA) && ($_minA) != 1,sprintf('" . $this->gT("Please upload %s files.") . "',fixnum($_minA)),'')}" .
                     "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) != ($_maxA),sprintf('" . $this->gT("Please upload between %s and %s files.") . "',fixnum($_minA),fixnum($_maxA)),'')}";
             }
 
