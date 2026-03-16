@@ -413,6 +413,7 @@ class AdminController extends LSYii_Controller
      * @access protected
      * @param bool $meta
      * @param bool $return
+     * @param array $pageData Optional page data (e.g. topbar, title_bar) to set document title for screen readers
      * @return string|null
      */
     public function getAdminHeader($meta = false, $return = false, $pageData = [])
@@ -456,10 +457,10 @@ class AdminController extends LSYii_Controller
         $aData['aPackageScripts'] = $aData['aPackageStyles'] = array();
 
         $aData['pageTitle'] = null;
-        if (!empty($pageData['topbar']['title'])) {
+        if (!empty($pageData['topbar'] ?? null) && !empty($pageData['topbar']['title'] ?? null)) {
             $aData['pageTitle'] = is_string($pageData['topbar']['title'])
                 ? $pageData['topbar']['title'] : strip_tags((string) $pageData['topbar']['title']);
-        } elseif (!empty($pageData['title_bar']['title'])) {
+        } elseif (!empty($pageData['title_bar'] ?? null) && !empty($pageData['title_bar']['title'] ?? null)) {
             $aData['pageTitle'] = is_string($pageData['title_bar']['title'])
                 ? $pageData['title_bar']['title'] : strip_tags((string) $pageData['title_bar']['title']);
         }

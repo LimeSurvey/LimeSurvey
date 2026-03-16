@@ -75,10 +75,10 @@ class LayoutHelper
         $aData['aPackageScripts'] = $aData['aPackageStyles'] = array();
 
         $aData['pageTitle'] = null;
-        if (!empty($pageData['topbar']['title'])) {
+        if (!empty($pageData['topbar'] ?? null) && !empty($pageData['topbar']['title'] ?? null)) {
             $aData['pageTitle'] = is_string($pageData['topbar']['title'])
                 ? $pageData['topbar']['title'] : strip_tags((string) $pageData['topbar']['title']);
-        } elseif (!empty($pageData['title_bar']['title'])) {
+        } elseif (!empty($pageData['title_bar'] ?? null) && !empty($pageData['title_bar']['title'] ?? null)) {
             $aData['pageTitle'] = is_string($pageData['title_bar']['title'])
                 ? $pageData['title_bar']['title'] : strip_tags((string) $pageData['title_bar']['title']);
         }
