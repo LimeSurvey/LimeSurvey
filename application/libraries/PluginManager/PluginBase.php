@@ -463,7 +463,7 @@ abstract class PluginBase implements iPlugin
                 libxml_disable_entity_loader(true);
             }
 
-            if ($this->config === null) {
+            if ($this->config === false) {
                 // Failed. Popup error message.
                 $this->showConfigErrorNotification();
                 return false;
