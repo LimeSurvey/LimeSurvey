@@ -364,7 +364,6 @@ function file_validation_popup($ia, $filenotvalidated = null)
         unset($filenotvalidated);
     }
     if (isset($filenotvalidated) && is_array($filenotvalidated)) {
-
         if (!isset($filevalidationpopup)) {
             $fpopup = gT("One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed");
             $filevalidationpopup = "Y";
@@ -385,7 +384,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     global $thissurvey;
     global $gid;
     $time_limit = intval($aQuestionAttributes['time_limit']);
-    if($time_limit <= 0) {
+    if ($time_limit <= 0) {
         return;
     }
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'coookies.js', CClientScript::POS_BEGIN);
@@ -596,14 +595,6 @@ function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $an
     $htmltbody2 .= ">\n";
     return array($htmltbody2, "");
 }
-
-/**
- * @param string $sUseKeyPad
- * @return string
- */
-// On-screen keyboard functionality has been removed
-
-
 
 // ==================================================================
 // QUESTION METHODS =================================================
@@ -874,7 +865,6 @@ function do_list_radio($ia)
 
     // General variables
     global $thissurvey;
-    // On-screen keyboard functionality has been removed
     $checkconditionFunction = "checkconditions"; // name of the function to check condition TODO : check is used more than once
     $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey ID
     $sSurveyLang            = $_SESSION['responses_' . $iSurveyId]['s_lang']; // survey language
@@ -1025,7 +1015,7 @@ function do_list_radio($ia)
             'sDisplayStyle' => $sDisplayStyle,
             'othertext' => $othertext,
             'checkedState' => $checkedState,
-            'kpclass' => '',
+            'kpclass' => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
             'checkconditionFunction' => $checkconditionFunction,
             'numbers_only' => ($aQuestionAttributes['other_numbers_only'] == 1),
         ), true);
@@ -1175,7 +1165,7 @@ function do_listwithcomment($ia)
             'basename'          => $ia[1],
             'coreClass'         => $coreClass,
             'hint_comment'      => $hint_comment,
-            'kpclass'           => '',
+            'kpclass'           => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
             'name'              => $ia[1] . '_Ccomment',
             'tarows'            => floor($tarows),
             'has_comment_saved' => isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2],
@@ -1250,7 +1240,7 @@ function do_listwithcomment($ia)
             'basename'               => $ia[1],
             'show_noanswer'          => is_null($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]]),
             'label_text'             => $hint_comment,
-            'kpclass'                => '',
+            'kpclass'                => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
             'tarows'                 => $tarows,
             'maxoptionsize'          => $maxoptionsize,
             'comment_saved'          => htmlspecialchars((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2]), /* htmlspecialchars(null)=="" right ? */
@@ -1510,7 +1500,7 @@ function do_multiplechoice($ia)
             'myfname'                    => $myfname,
             'othertext'                  => $othertext,
             'checkedState'               => $checkedState,
-            'kpclass'                    => '',
+            'kpclass'                    => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
             'sValue'                     => $sValue,
             'oth_checkconditionFunction' => $oth_checkconditionFunction,
             'checkconditionFunction'     => $checkconditionFunction,
@@ -1642,7 +1632,7 @@ function do_multiplechoice_withcomments($ia)
 
         $inputCOmmentValue = htmlspecialchars((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname2], ENT_QUOTES);
         $sRows .= doRender('/survey/questions/answer/multiplechoice_with_comments/rows/answer_row', array(
-            'kpclass'                       => '',
+            'kpclass'                       => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
             'title'                         => '',
             'liclasses'                     => 'responsive-content question-item answer-item checkbox-text-item',
             'name'                          => $myfname,
@@ -1688,7 +1678,7 @@ function do_multiplechoice_withcomments($ia)
         $sRows .= doRender('/survey/questions/answer/multiplechoice_with_comments/rows/answer_row_other', array(
             'liclasses'                     => 'other question-item answer-item checkbox-text-item other-item',
             'liid'                          => 'javatbd' . $myfname,
-            'kpclass'                       => '',
+            'kpclass'                       => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
             'title'                         => gT('Other'),
             'name'                          => $myfname,
             'id'                            => 'answer' . $myfname,
@@ -1909,7 +1899,7 @@ function do_multipleshorttext($ia)
                     'placeholder'            => $placeholder,
                     'myfname'                => $myfname,
                     'question'               => $sSubquestionText,
-                    'kpclass'                => '',
+                    'kpclass'                => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
                     'dispVal'                => $dispVal,
                     'suffix'                 => $suffix,
                 ), true);
@@ -1928,7 +1918,7 @@ function do_multipleshorttext($ia)
                     'placeholder'            => $placeholder,
                     'myfname'                => $myfname,
                     'question'               => $sSubquestionText,
-                    'kpclass'                => '',
+                    'kpclass'                => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
                     'dispVal'                => $dispVal,
                     'suffix'                 => $suffix,
                 ), true);
@@ -2022,8 +2012,6 @@ function do_numerical($ia)
     }
     $fValue = str_replace('.', $sSeparator, (string) $fValue);
 
-    // On-screen keyboard functionality has been removed
-
     $answer = doRender('/survey/questions/answer/numerical/answer', array(
         'extraclass'             => $extraclass,
         'coreClass'              => $coreClass,
@@ -2104,7 +2092,6 @@ function do_shortfreetext($ia)
     } else {
         $placeholder = '';
     }
-    // On-screen keyboard functionality has been removed
     $answer = "";
     $sQuestionHelpText = '';
 
@@ -2132,7 +2119,7 @@ function do_shortfreetext($ia)
             'drows'                  => $drows,
             'dispVal'                => $dispVal,
             'maxlength'              => $maxlength,
-            'kpclass'                => '',
+            'kpclass'                => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
             'prefix'                 => $prefix,
             'suffix'                 => $suffix,
             'inputsize'              => $inputsize,
@@ -2206,7 +2193,7 @@ function do_shortfreetext($ia)
             'qid'                    => $ia[0],
             'basename'               => $ia[1],
             'value'                  => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]],
-            'kpclass'                => '',
+            'kpclass'                => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
             'currentLocation'        => $currentLocation,
             'strBuild'               => $strBuild,
             'location_mapservice'    => $aQuestionAttributes['location_mapservice'],
@@ -2298,7 +2285,7 @@ function do_shortfreetext($ia)
             'basename'               => $ia[1],
             'prefix' => $prefix,
             'suffix' => $suffix,
-            'kpclass' => '',
+            'kpclass' => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
             'dispVal' => $dispVal,
             'maxlength' => $maxlength,
             'numberonly' => $numberonly,
@@ -2343,7 +2330,6 @@ function do_longfreetext($ia)
     global $thissurvey;
     $extraclass = "";
     $coreClass = "ls-answers answer-item text-item";
-    // On-screen keyboard functionality has been removed
 
     $checkconditionFunction = "checkconditions";
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
@@ -2388,7 +2374,7 @@ function do_longfreetext($ia)
         'extraclass'             => $extraclass,
         'coreClass'              => $coreClass,
         'withColumn'             => $withColumn,
-        'kpclass'                => '',
+        'kpclass'                => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
         'name'                   => $ia[1],
         'basename'               => $ia[1],
         'drows'                  => $drows,
@@ -2415,7 +2401,6 @@ function do_hugefreetext($ia)
     global $thissurvey;
     $extraclass = "";
     $coreClass = "ls-answers answer-item text-item";
-    // On-screen keyboard functionality has been removed
 
     $checkconditionFunction = "checkconditions";
 
@@ -2462,7 +2447,7 @@ function do_hugefreetext($ia)
         'extraclass' => $extraclass,
         'coreClass' => $coreClass,
         'withColumn' => $withColumn,
-        'kpclass' => '',
+        'kpclass' => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
         'name' => $ia[1],
         'basename' => $ia[1],
         'drows' => $drows,
@@ -3183,8 +3168,6 @@ function do_array_texts($ia)
     $coreRowClass               = "subquestion-list questions-list";
     $caption                    = gT("A table of subquestions on each cell. The subquestion texts are in the column header and relate the particular row header.");
 
-    // On-screen keyboard functionality has been removed
-
     $checkconditionFunction = "checkconditions";
     $sSeparator             = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator             = $sSeparator['separator'];
@@ -3468,7 +3451,7 @@ function do_array_texts($ia)
                     'basename'   => $ia[1],
                     'myfname2'   => $myfname2,
                     'labelText'  => $label,
-                    'kpclass'    => '',
+                    'kpclass'    => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
                     'maxlength'  => $maxlength,
                     'inputsize'  => $inputsize,
                     'value'      => $myfname2value,
@@ -3672,8 +3655,6 @@ function do_array_multiflexi($ia)
         $inputsize = null;
     }
 
-    // On-screen keyboard functionality has been removed
-
     if (ctype_digit(trim((string) $aQuestionAttributes['answer_width']))) {
         $answerwidth = trim((string) $aQuestionAttributes['answer_width']);
         $defaultWidth = false;
@@ -3833,7 +3814,7 @@ function do_array_multiflexi($ia)
                         'reverse'                   => $reverse,
                         'value'                     => $value,
                         'sSeparator'                => $sSeparator,
-                        'kpclass'                   => '',
+                        'kpclass'                   => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
                         'maxlength'                 => $maxlength,
                         'inputsize'                 => $inputsize,
                         'error'                     => ($error && $value === '')
@@ -4022,7 +4003,6 @@ function do_arraycolumns($ia)
 
             // TODO: What is this? What is happening here?
             foreach ($labels as $labelIdx => $ansrow) {
-
                 // create the html ids for the table rows, which are
                 // the answer options for this question type
                 $aData['labels'][$labelIdx]['myfname'] = $ia[1];
