@@ -3941,7 +3941,7 @@ class LimeExpressionManager
             if (count($tokens) > 1) {
                 $tokens = implode("_", $tokens);
                 $varName2 = explode("_", $sgqa)[0] . substr($tokens, strpos($tokens, "_") + 1);
-                $this->knownVars[$varName2] = $varInfo_Code;
+                $this->tempVars[$varName2] = $varInfo_Code;
             }
             $this->jsVar2qid[$jsVarName] = $questionNum;
             $this->qcode2sgq[$fielddata['title']] = 'Q' . $questionNum;
