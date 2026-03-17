@@ -1,7 +1,3 @@
-<?php
-
-?>
-
 <div id="deleteSurvey_modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
