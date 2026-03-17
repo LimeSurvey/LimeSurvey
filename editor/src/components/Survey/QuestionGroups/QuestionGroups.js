@@ -145,7 +145,7 @@ export const QuestionGroups = ({
         onConfirm={handleConfirmGroupDeletion}
         title={t('Delete question group')}
         description={t(
-          'Are you sure you want to delete this question group? this action cannot be reverted.'
+          'Are you sure you want to delete this question group? This action cannot be reverted.'
         )}
         confirmButtonText={t('Delete')}
       />
