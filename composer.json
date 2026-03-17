@@ -74,9 +74,9 @@
         "php-webdriver/webdriver": "^1.4",
         "squizlabs/php_codesniffer": "^3.5",
         "phpmd/phpmd" : "^2.8",
-        "phpunit/phpunit": "^8.0",
-        "vimeo/psalm": "^4.29",
-		"misantron/dbunit": "^5.1",
+        "phpunit/phpunit": "^9.6",
+        "vimeo/psalm": "^5.0",
+		"misantron/dbunit": "^5.4",
 		"tebazil/yii1-db-seeder": "^0.0.0",
 		"mockery/mockery": "^1.5"
     },
