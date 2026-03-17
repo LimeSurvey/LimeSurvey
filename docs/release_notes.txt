@@ -34,6 +34,24 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.16.12 (build 260309) to 6.16.13 (build 260316) March 16, 2026
+-Fixed issue: Adjusted panel cards, import survey and import user, toolbuttons for sidebar (a11y) (#4437) (Anblik Audit Team)
+-Fixed issue: Added and adjusted missing tags and roles on question summary page (a11y) (#4435) (Anblik Audit Team)
+-Fixed issue #LE-633: Prevent type error when quota language settings are missing (#4758) (haythem chibani)
+-Fixed issue #LE-534: Switching access mode in classic editor does not get updated in new editor (#4761) (haythem chibani)
+-Fixed issue #20456: Editing source syntax highlighting missing (Carsten Schmitz)
+-Fixed issue #20455: The 404 error page for non-existent surveys displays raw HTML entities (Carsten Schmitz)
+-Fixed issue #20449: Unable to edit account settings when using Hiligaynon (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian (Informal) by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German by actxcellence, c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 6.16.11 (build 260303) to 6.16.12 (build 260309) March 9, 2026
 -Fixed issue 20423: [security] Open redirect vulnerability (Thank you to Melvin Lammerts for reporting the issue)
 -Fixed issue: [security] RemoteControl API user export exports too much information (Carsten Schmitz)
