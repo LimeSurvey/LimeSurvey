@@ -3866,7 +3866,7 @@ function TSVImportSurvey($sFullFilePath)
     /* Check minimal headers */
     $necessaryHeader = ['class', 'name', 'text'];
     if (count(array_diff($necessaryHeader, $rowheaders)) > 0) {
-        $results['error'] = gT("The file do not seem to be a valid tab-separated-values survey file. The necessary headers are not present.");
+        $results['error'] = gT("The file does not seem to be a valid survey file. The necessary headers are not present.");
         return $results;
     }
     unset($rowheaders);
