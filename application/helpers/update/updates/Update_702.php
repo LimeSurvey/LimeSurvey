@@ -15,6 +15,6 @@ class Update_702 extends DatabaseUpdateBase
         dropColumn('{{surveys}}', 'nokeyboard');
 
         // Drop nokeyboard column from surveys_group_settings table
-        dropColumn('{{surveys_group_settings}}', 'nokeyboard');
+        dropColumn('{{surveys_groupsettings}}', 'nokeyboard');
     }
 }
