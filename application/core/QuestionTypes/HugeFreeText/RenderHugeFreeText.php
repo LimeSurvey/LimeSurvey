@@ -32,7 +32,6 @@ class RenderHugeFreeText extends QuestionBaseRenderer
     {
         $answer = '';
         $inputnames = [];
-        $kpclass = "";
         $extraclass = "";
         $maxlength = "";
         $withColumn = false;
@@ -70,7 +69,7 @@ class RenderHugeFreeText extends QuestionBaseRenderer
             'extraclass'             => $extraclass,
             'coreClass'              => "ls-answers answer-item text-item " . $sCoreClasses,
             'withColumn'             => $withColumn,
-            'kpclass'                => $kpclass,
+            'kpclass'                => '',
             'name'                   => $this->sSGQA,
             'basename'               => $this->sSGQA,
             'drows'                  => $drows,
