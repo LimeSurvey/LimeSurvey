@@ -1083,7 +1083,7 @@ class ParticipantsAction extends SurveyCommonAction
                         $uuid = Participant::genUuid(); //Generate a UUID for the new participant
                         $writearray['participant_id'] = $uuid;
                     }
-                    if (isset($writearray['emailstatus']) && trim($writearray['emailstatus'] == '')) {
+                    if (isset($writearray['emailstatus']) && trim((string) $writearray['emailstatus']) == '') {
                         unset($writearray['emailstatus']);
                     }
                     if (!isset($writearray['language']) || $writearray['language'] == "") {
@@ -1093,10 +1093,10 @@ class ParticipantsAction extends SurveyCommonAction
                         $writearray['blacklisted'] = "N";
                     }
                     $writearray['owner_uid'] = Yii::app()->session['loginID'];
-                    if (isset($writearray['validfrom']) && trim($writearray['validfrom'] == '')) {
+                    if (isset($writearray['validfrom']) && trim((string) $writearray['validfrom']) == '') {
                         unset($writearray['validfrom']);
                     }
-                    if (isset($writearray['validuntil']) && trim($writearray['validuntil'] == '')) {
+                    if (isset($writearray['validuntil']) && trim((string) $writearray['validuntil']) == '') {
                         unset($writearray['validuntil']);
                     }
                     $dontimport = false;

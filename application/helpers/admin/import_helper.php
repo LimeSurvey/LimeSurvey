@@ -3803,7 +3803,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
             if ($aOptions['bNotFinalized']) {
                 $oSurvey->submitdate = new CDbExpression('NULL');
             } elseif (is_int($iSubmitdateKey)) {
-                if ($aResponses[$iSubmitdateKey] == '{question_not_shown}' || trim($aResponses[$iSubmitdateKey] == '')) {
+                if ($aResponses[$iSubmitdateKey] == '{question_not_shown}' || trim((string) $aResponses[$iSubmitdateKey]) == '') {
                     $oSurvey->submitdate = new CDbExpression('NULL');
                 } else {
                     // Maybe control valid date : see http://php.net/manual/en/function.checkdate.php#78362 for example

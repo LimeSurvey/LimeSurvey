@@ -4280,7 +4280,7 @@ class LimeExpressionManager
     {
         // These will be called in the order that questions are supposed to be asked
         // TODO - cache results and generated JavaScript equations?
-        if (!isset($eqn) || trim($eqn == '') || trim($eqn) == '1') {
+        if (!isset($eqn) || trim((string) $eqn) == '' || trim((string) $eqn) == '1') {
             $this->groupRelevanceInfo[] = [
                 'qid'           => $questionNum,
                 'gseq'          => $gseq,
@@ -4342,7 +4342,7 @@ class LimeExpressionManager
     private function _ProcessSubQRelevance($eqn, $questionNum = null, $rowdivid = null, $type = null, $qtype = null, $sgqa = null, $isExclusive = '', $irrelevantAndExclusive = '')
     {
         // These will be called in the order that questions are supposed to be asked
-        if (!isset($eqn) || trim($eqn == '') || trim($eqn) == '1') {
+        if (!isset($eqn) || trim((string) $eqn) == '' || trim((string) $eqn) == '1') {
             return true;
         }
         $questionSeq = -1;
@@ -4423,7 +4423,7 @@ class LimeExpressionManager
         }
 
         $eqn = (isset($this->gseq2info[$groupSeq]['grelevance']) ? $this->gseq2info[$groupSeq]['grelevance'] : 1);
-        if (is_null($eqn) || trim($eqn == '') || trim((string) $eqn) == '1') {
+        if (is_null($eqn) || trim((string) $eqn) == '' || trim((string) $eqn) == '1') {
             $this->gRelInfo[$groupSeq] = [
                 'gseq'          => $groupSeq,
                 'eqn'           => '',
