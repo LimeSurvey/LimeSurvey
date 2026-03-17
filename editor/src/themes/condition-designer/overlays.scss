@@ -27,6 +27,9 @@
 }
 
 .condition-designer-overlay-actions {
+  display: flex;
+  justify-content: end;
+  gap: 2px;
   text-align: right;
   margin-top: 20px;
 

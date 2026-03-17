@@ -18,7 +18,13 @@ import {
   InsertElementAndIncrementProperty,
   DuplicateQuestion,
 } from 'helpers'
-import { useFocused, useAppState, useBuffer, useSurvey } from 'hooks'
+import {
+  useFocused,
+  useAppState,
+  useBuffer,
+  useSurvey,
+  useSurveyRequestTimestamp,
+} from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
 import { CloseIcon } from 'components/icons'
 import { ConfirmModal } from 'components/Modals'
@@ -39,6 +45,10 @@ export const SurveyStructure = () => {
   } = useSurvey(surveyId)
 
   const { addToBuffer } = useBuffer()
+  const { clearSurveyRequestTimestamp } = useSurveyRequestTimestamp()
+  const [, setSurveyRefreshRequired] = useAppState(
+    STATES.SURVEY_REFRESH_REQUIRED
+  )
 
   const [hasSurveyUpdatePermission] = useAppState(
     STATES.HAS_SURVEY_UPDATE_PERMISSION
@@ -279,6 +289,9 @@ export const SurveyStructure = () => {
     addToBuffer(reorderOperation)
 
     setFocused(duplicatedQuestionGroup, index + 1)
+
+    clearSurveyRequestTimestamp(surveyId)
+    setSurveyRefreshRequired(true)
   }
 
   const getQuestionGroupDragStyle = (draggableStyle) => ({

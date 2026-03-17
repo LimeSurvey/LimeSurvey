@@ -1,7 +1,7 @@
 <?php
 ?>
 <!-- List of actions -->
-<ul class="dropdown-menu listActions" aria-labelledby="<?php echo $this->dropupId; ?>">
+<ul class="dropdown-menu listActions" role="menu" aria-labelledby="<?php echo $this->dropupId; ?>-button">
 
     <?php foreach($this->aActions as $key => $aAction):?>
         <?php
@@ -16,19 +16,19 @@
             <?php case 'dropdown-header': ?>
 
             <!-- Header -->
-            <li class="dropdown-header"> <?php echo $aAction['text'];?></li>
+            <li class="dropdown-header" role="presentation"><?php echo $aAction['text'];?></li>
             <?php break;?>
 
         <?php case 'action': ?>
 
             <!-- Action -->
-            <li
+            <li role="none"
                 <?php if(!empty($aAction['disabled'])) : ?>
                     class='disabled'
                 <?php endif;?>
             >
                 <a href="#"
-            role="Button"
+                   role="menuitem"
                    class="dropdown-item"
                     <?php if(!empty($aAction['disabled'])) : ?>
                         data-disabled='1'

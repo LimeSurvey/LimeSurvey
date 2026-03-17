@@ -237,8 +237,6 @@ class Labels extends SurveyCommonAction
         $aViewUrls = array();
         $aData = array();
 
-        // Includes some javascript files
-        App()->getClientScript()->registerPackage('jquery-json');
         $model = LabelSet::model()->findByPk($lid);
         if ($lid > 0) {
             $lid = $this->validateLabelSetId($lid, 'read');

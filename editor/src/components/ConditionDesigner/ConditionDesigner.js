@@ -71,7 +71,8 @@ export const ConditionDesigner = ({
       showWarningMessage(
         t(
           'Switching to the visual condition builder will overwrite the condition written in expression script mode.'
-        )
+        ),
+        'bottom-center'
       )
       hasShownWarningRef.current = true
     }
@@ -209,7 +210,7 @@ export const ConditionDesigner = ({
             />
           ))}
         </div>
-        <div className="text-center">
+        <div className="d-flex justify-content-center">
           <Button
             className="mb-3"
             onClick={addCondition}
@@ -222,7 +223,7 @@ export const ConditionDesigner = ({
         </div>
       </div>
       {conditions.length > 0 && (
-        <div className="p-2 m-2 text-center">
+        <div className="p-2 m-2 d-flex justify-content-center">
           <Button
             onClick={handleApplyClick}
             className={`mt-3 condition-apply-button`}

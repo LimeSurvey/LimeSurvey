@@ -1,6 +1,12 @@
 import { useMemo, useState } from 'react'
+import { useParams } from 'react-router-dom'
 
-import { useBuffer, useFocused } from 'hooks'
+import {
+  useBuffer,
+  useFocused,
+  useSurveyRequestTimestamp,
+  useAppState,
+} from 'hooks'
 import {
   createBufferOperation,
   DuplicateQuestion,
@@ -8,6 +14,7 @@ import {
   getReorganizedQuestionGroups,
   InsertElementAndIncrementProperty,
   RandomNumber,
+  STATES,
 } from 'helpers'
 import { ConfirmModal } from 'components/Modals'
 
@@ -22,6 +29,11 @@ export const QuestionGroups = ({
   const { focused = {}, setFocused, unFocus } = useFocused()
   const { addToBuffer } = useBuffer()
   const [deleteState, setDeleteState] = useState({ show: false, index: null })
+  const { surveyId } = useParams()
+  const { clearSurveyRequestTimestamp } = useSurveyRequestTimestamp()
+  const [, setSurveyRefreshRequired] = useAppState(
+    STATES.SURVEY_REFRESH_REQUIRED
+  )
 
   const keys = useMemo(() => {
     return [...Array(questionGroups.length)].map(() => `Q${RandomNumber()}`)
@@ -117,6 +129,9 @@ export const QuestionGroups = ({
     addToBuffer(reorderOperation)
     update(updatedQuestionGroups)
     setFocused(duplicatedQuestionGroup, index + 1)
+
+    clearSurveyRequestTimestamp(surveyId)
+    setSurveyRefreshRequired(true)
   }
 
   // Keeps a running count on how many questions we have

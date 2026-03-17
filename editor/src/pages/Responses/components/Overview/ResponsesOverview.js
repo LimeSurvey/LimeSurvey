@@ -56,12 +56,12 @@ export const ResponsesOverview = ({ surveyId, survey, surveyQuestions }) => {
               value: statistics.totalResponses - statistics.incompleteResponses,
             },
             {
-              title: t('Completed without answers'),
+              title: t('Complete without answers'),
               key: 'completedWithoutAnswers',
               value: statistics.completedWithoutAnswers,
             },
             {
-              title: t('Incompleted without answers'),
+              title: t('Incomplete without answers'),
               key: 'incompletedWithoutAnswers',
               value: statistics.incompletedWithoutAnswers,
             },

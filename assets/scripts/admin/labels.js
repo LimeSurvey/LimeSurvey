@@ -92,7 +92,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         $("input[name=dataToSend]").remove();
 
         $("#mainform").append("<input type='hidden' id='dataToSend' name='dataToSend' value='' />");
-        $('#dataToSend').val($.toJSON(dataToSend));
+        $('#dataToSend').val(JSON.stringify(dataToSend));
     });
 
     fix_highlighting();
