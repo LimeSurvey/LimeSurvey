@@ -601,16 +601,7 @@ function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $an
  * @param string $sUseKeyPad
  * @return string
  */
-function testKeypad($sUseKeyPad)
-{
-    if ($sUseKeyPad == 'Y') {
-        includeKeypad();
-        $kpclass = "text-keypad";
-    } else {
-        $kpclass = "";
-    }
-    return $kpclass;
-}
+// On-screen keyboard functionality has been removed
 
 
 
@@ -883,7 +874,7 @@ function do_list_radio($ia)
 
     // General variables
     global $thissurvey;
-    $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
+    // On-screen keyboard functionality has been removed
     $checkconditionFunction = "checkconditions"; // name of the function to check condition TODO : check is used more than once
     $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey ID
     $sSurveyLang            = $_SESSION['responses_' . $iSurveyId]['s_lang']; // survey language
@@ -1034,7 +1025,7 @@ function do_list_radio($ia)
             'sDisplayStyle' => $sDisplayStyle,
             'othertext' => $othertext,
             'checkedState' => $checkedState,
-            'kpclass' => $kpclass,
+            'kpclass' => '',
             'checkconditionFunction' => $checkconditionFunction,
             'numbers_only' => ($aQuestionAttributes['other_numbers_only'] == 1),
         ), true);
@@ -1111,7 +1102,6 @@ function do_listwithcomment($ia)
 
     // General variables
     global $thissurvey;
-    $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $checkconditionFunction = "checkconditions";
     $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey ID
     $sSurveyLang            = $_SESSION['responses_' . $iSurveyId]['s_lang']; // survey language
@@ -1185,7 +1175,7 @@ function do_listwithcomment($ia)
             'basename'          => $ia[1],
             'coreClass'         => $coreClass,
             'hint_comment'      => $hint_comment,
-            'kpclass'           => $kpclass,
+            'kpclass'           => '',
             'name'              => $ia[1] . '_Ccomment',
             'tarows'            => floor($tarows),
             'has_comment_saved' => isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2],
@@ -1260,7 +1250,7 @@ function do_listwithcomment($ia)
             'basename'               => $ia[1],
             'show_noanswer'          => is_null($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]]),
             'label_text'             => $hint_comment,
-            'kpclass'                => $kpclass,
+            'kpclass'                => '',
             'tarows'                 => $tarows,
             'maxoptionsize'          => $maxoptionsize,
             'comment_saved'          => htmlspecialchars((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2]), /* htmlspecialchars(null)=="" right ? */
@@ -1406,7 +1396,6 @@ function do_multiplechoice($ia)
 
     // General variables
     global $thissurvey;
-    $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $inputnames             = array(); // It is used!
     $checkconditionFunction = "checkconditions"; // name of the function to check condition TODO : check is used more than once
     $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey ID
@@ -1521,7 +1510,7 @@ function do_multiplechoice($ia)
             'myfname'                    => $myfname,
             'othertext'                  => $othertext,
             'checkedState'               => $checkedState,
-            'kpclass'                    => $kpclass,
+            'kpclass'                    => '',
             'sValue'                     => $sValue,
             'oth_checkconditionFunction' => $oth_checkconditionFunction,
             'checkconditionFunction'     => $checkconditionFunction,
@@ -1551,7 +1540,6 @@ function do_multiplechoice($ia)
 function do_multiplechoice_withcomments($ia)
 {
     global $thissurvey;
-    $kpclass    = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $inputnames = [];
     $coreClass = "ls-answers answers-list checkbox-text-list";
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
@@ -1654,7 +1642,7 @@ function do_multiplechoice_withcomments($ia)
 
         $inputCOmmentValue = htmlspecialchars((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname2], ENT_QUOTES);
         $sRows .= doRender('/survey/questions/answer/multiplechoice_with_comments/rows/answer_row', array(
-            'kpclass'                       => $kpclass,
+            'kpclass'                       => '',
             'title'                         => '',
             'liclasses'                     => 'responsive-content question-item answer-item checkbox-text-item',
             'name'                          => $myfname,
@@ -1700,7 +1688,7 @@ function do_multiplechoice_withcomments($ia)
         $sRows .= doRender('/survey/questions/answer/multiplechoice_with_comments/rows/answer_row_other', array(
             'liclasses'                     => 'other question-item answer-item checkbox-text-item other-item',
             'liid'                          => 'javatbd' . $myfname,
-            'kpclass'                       => $kpclass,
+            'kpclass'                       => '',
             'title'                         => gT('Other'),
             'name'                          => $myfname,
             'id'                            => 'answer' . $myfname,
@@ -1867,7 +1855,6 @@ function do_multipleshorttext($ia)
     } else {
         $placeholder = '';
     }
-    $kpclass = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
 
     $sSurveyLanguage = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang'];
     // Get questions and answers by defined order
@@ -1922,7 +1909,7 @@ function do_multipleshorttext($ia)
                     'placeholder'            => $placeholder,
                     'myfname'                => $myfname,
                     'question'               => $sSubquestionText,
-                    'kpclass'                => $kpclass,
+                    'kpclass'                => '',
                     'dispVal'                => $dispVal,
                     'suffix'                 => $suffix,
                 ), true);
@@ -1941,7 +1928,7 @@ function do_multipleshorttext($ia)
                     'placeholder'            => $placeholder,
                     'myfname'                => $myfname,
                     'question'               => $sSubquestionText,
-                    'kpclass'                => $kpclass,
+                    'kpclass'                => '',
                     'dispVal'                => $dispVal,
                     'suffix'                 => $suffix,
                 ), true);
@@ -2035,11 +2022,7 @@ function do_numerical($ia)
     }
     $fValue = str_replace('.', $sSeparator, (string) $fValue);
 
-    if ($thissurvey['nokeyboard'] == 'Y') {
-        includeKeypad();
-        $extraclass      .= " inputkeypad";
-        $answertypeclass .= " num-keypad";
-    }
+    // On-screen keyboard functionality has been removed
 
     $answer = doRender('/survey/questions/answer/numerical/answer', array(
         'extraclass'             => $extraclass,
@@ -2121,13 +2104,7 @@ function do_shortfreetext($ia)
     } else {
         $placeholder = '';
     }
-    if ($thissurvey['nokeyboard'] == 'Y') {
-        includeKeypad();
-        $kpclass     = "text-keypad";
-        $extraclass .= " inputkeypad";
-    } else {
-        $kpclass = "";
-    }
+    // On-screen keyboard functionality has been removed
     $answer = "";
     $sQuestionHelpText = '';
 
@@ -2155,7 +2132,7 @@ function do_shortfreetext($ia)
             'drows'                  => $drows,
             'dispVal'                => $dispVal,
             'maxlength'              => $maxlength,
-            'kpclass'                => $kpclass,
+            'kpclass'                => '',
             'prefix'                 => $prefix,
             'suffix'                 => $suffix,
             'inputsize'              => $inputsize,
@@ -2229,7 +2206,7 @@ function do_shortfreetext($ia)
             'qid'                    => $ia[0],
             'basename'               => $ia[1],
             'value'                  => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]],
-            'kpclass'                => $kpclass,
+            'kpclass'                => '',
             'currentLocation'        => $currentLocation,
             'strBuild'               => $strBuild,
             'location_mapservice'    => $aQuestionAttributes['location_mapservice'],
@@ -2321,7 +2298,7 @@ function do_shortfreetext($ia)
             'basename'               => $ia[1],
             'prefix' => $prefix,
             'suffix' => $suffix,
-            'kpclass' => $kpclass,
+            'kpclass' => '',
             'dispVal' => $dispVal,
             'maxlength' => $maxlength,
             'numberonly' => $numberonly,
@@ -2366,13 +2343,7 @@ function do_longfreetext($ia)
     global $thissurvey;
     $extraclass = "";
     $coreClass = "ls-answers answer-item text-item";
-    if ($thissurvey['nokeyboard'] == 'Y') {
-        includeKeypad();
-        $kpclass     = "text-keypad";
-        $extraclass .= " inputkeypad";
-    } else {
-        $kpclass = "";
-    }
+    // On-screen keyboard functionality has been removed
 
     $checkconditionFunction = "checkconditions";
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
@@ -2417,7 +2388,7 @@ function do_longfreetext($ia)
         'extraclass'             => $extraclass,
         'coreClass'              => $coreClass,
         'withColumn'             => $withColumn,
-        'kpclass'                => $kpclass,
+        'kpclass'                => '',
         'name'                   => $ia[1],
         'basename'               => $ia[1],
         'drows'                  => $drows,
@@ -2444,13 +2415,7 @@ function do_hugefreetext($ia)
     global $thissurvey;
     $extraclass = "";
     $coreClass = "ls-answers answer-item text-item";
-    if ($thissurvey['nokeyboard'] == 'Y') {
-        includeKeypad();
-        $kpclass = "text-keypad";
-        $extraclass .= " inputkeypad";
-    } else {
-        $kpclass = "";
-    }
+    // On-screen keyboard functionality has been removed
 
     $checkconditionFunction = "checkconditions";
 
@@ -2497,7 +2462,7 @@ function do_hugefreetext($ia)
         'extraclass' => $extraclass,
         'coreClass' => $coreClass,
         'withColumn' => $withColumn,
-        'kpclass' => $kpclass,
+        'kpclass' => '',
         'name' => $ia[1],
         'basename' => $ia[1],
         'drows' => $drows,
@@ -3218,12 +3183,7 @@ function do_array_texts($ia)
     $coreRowClass               = "subquestion-list questions-list";
     $caption                    = gT("A table of subquestions on each cell. The subquestion texts are in the column header and relate the particular row header.");
 
-    if ($thissurvey['nokeyboard'] == 'Y') {
-        includeKeypad();
-        $kpclass = "text-keypad";
-    } else {
-        $kpclass = "";
-    }
+    // On-screen keyboard functionality has been removed
 
     $checkconditionFunction = "checkconditions";
     $sSeparator             = getRadixPointData($thissurvey['surveyls_numberformat']);
@@ -3508,7 +3468,7 @@ function do_array_texts($ia)
                     'basename'   => $ia[1],
                     'myfname2'   => $myfname2,
                     'labelText'  => $label,
-                    'kpclass'    => $kpclass,
+                    'kpclass'    => '',
                     'maxlength'  => $maxlength,
                     'inputsize'  => $inputsize,
                     'value'      => $myfname2value,
@@ -3712,13 +3672,7 @@ function do_array_multiflexi($ia)
         $inputsize = null;
     }
 
-    if ($thissurvey['nokeyboard'] == 'Y') {
-        includeKeypad();
-        $kpclass     = " num-keypad";
-        $extraclass .= " inputkeypad";
-    } else {
-        $kpclass = "";
-    }
+    // On-screen keyboard functionality has been removed
 
     if (ctype_digit(trim((string) $aQuestionAttributes['answer_width']))) {
         $answerwidth = trim((string) $aQuestionAttributes['answer_width']);
@@ -3879,7 +3833,7 @@ function do_array_multiflexi($ia)
                         'reverse'                   => $reverse,
                         'value'                     => $value,
                         'sSeparator'                => $sSeparator,
-                        'kpclass'                   => $kpclass,
+                        'kpclass'                   => '',
                         'maxlength'                 => $maxlength,
                         'inputsize'                 => $inputsize,
                         'error'                     => ($error && $value === '')

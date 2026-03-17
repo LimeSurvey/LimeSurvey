@@ -3781,21 +3781,6 @@ function short_implode($sDelimeter, $sHyphen, $aArray)
 }
 
 /**
-* Include Keypad headers
-*/
-function includeKeypad()
-{
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.plugin.min.js');
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad.min.js');
-    $localefile = Yii::app()->getConfig('rootdir') . '/vendor/jquery-keypad/jquery.keypad-' . App()->language . '.js';
-    if (App()->language != 'en' && file_exists($localefile)) {
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js');
-    }
-    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('vendor') . "jquery-keypad/jquery.keypad.alt.css");
-}
-
-
-/**
 * This function replaces the old insertans tags with new ones across a survey
 *
 * @param string $newsid  Old SID

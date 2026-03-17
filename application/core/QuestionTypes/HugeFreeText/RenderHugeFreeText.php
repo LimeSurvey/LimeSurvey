@@ -44,12 +44,6 @@ class RenderHugeFreeText extends QuestionBaseRenderer
             ($this->oQuestion->type == Question::QT_T_LONG_FREE_TEXT  ? 4 : 30)
         );
 
-        if ($this->oQuestion->survey->nokeyboard == 'Y') {
-            $this->includeKeypad();
-            $kpclass     = "text-keypad";
-            $extraclass .= " inputkeypad";
-        }
-
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
         if (intval(trim((string) $this->getQuestionAttribute('maximum_chars'))) > 0) {
             $maxlength = intval(trim((string) $this->getQuestionAttribute('maximum_chars')));
