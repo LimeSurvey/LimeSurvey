@@ -3360,7 +3360,7 @@
     {
      /* Strip HTML query strings */
      $Values   = $this->tmpFolder.$MapName;
-     $Value    = split("\?",$Values);
+     $Value    = explode("\?",$Values);
      $FileName = $Value[0];
 
      if ( file_exists($FileName) )
@@ -3430,7 +3430,7 @@
      $o  = floor($Value - $Go*1000000000 - $Mo*1000000 - $Ko*1000);
 
      if ($Go != 0)   { return($Go.".".$Mo."g"); }
-     if ($Mo != 0)   { return($Mo.".".$ko."m"); }
+     if ($Mo != 0)   { return($Mo.".".$Ko."m"); }
      if ($Ko != 0)   { return($Ko.".".$o)."k"; }
      return($o);
     }
