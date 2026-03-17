@@ -1,2 +1,0 @@
-There is a new sortable version that is not dependant on jQuery anymore.
-Needs to be fixed for the new library.
