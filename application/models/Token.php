@@ -323,8 +323,7 @@ abstract class Token extends Dynamic
      */
     public static function sanitizeAttribute($attribute)
     {
-        // TODO: Use HTML Purifier?
-        return filter_var($attribute, @FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+        return htmlspecialchars(strip_tags($attribute), ENT_NOQUOTES, 'UTF-8');
     }
 
     /**
