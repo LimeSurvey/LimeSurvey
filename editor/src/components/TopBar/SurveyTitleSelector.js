@@ -22,6 +22,7 @@ export const SurveyTitleSelector = ({
     language: activeLanguage,
     l10ns: survey.languageSettings,
   })
+
   const [surveyTitleWidth, setSurveyTitleWidth] = useState(0)
 
   useEffect(() => {

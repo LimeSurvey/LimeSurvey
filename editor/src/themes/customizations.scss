@@ -130,3 +130,9 @@ button.no-underline {
 .no-resize {
   resize: none;
 }
+
+.add-question-button {
+  svg {
+    fill: $white;
+  }
+}

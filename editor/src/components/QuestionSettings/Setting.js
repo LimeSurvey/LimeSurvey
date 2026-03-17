@@ -136,19 +136,25 @@ export const Setting = ({
           attribute.languageBased
         )
 
+        const isDisabled =
+          [
+            'questionThemeName',
+            'encrypted',
+            'attributes.save_as_default',
+          ].includes(attribute.attributePath) && isSurveyActive
+
         return (
           <div
             className="right-side-bar-settings"
             key={`${title}-settings-${attribute.attributePath}${attribute.props.labelText}`}
           >
-            {/*Globally disabled when survey is active for beta */}
             <TooltipContainer
               tip={getTooltipMessages().ACTIVE_DISABLED}
-              showTip={isSurveyActive}
+              showTip={isDisabled}
             >
               <attribute.component
                 {...attribute.props}
-                activeDisabled={isSurveyActive}
+                activeDisabled={isDisabled}
                 noPermissionDisabled={true}
                 value={
                   value

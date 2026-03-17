@@ -7,7 +7,7 @@ export const ConfirmModal = ({
   show = false,
   onHide = () => {},
   onConfirm,
-  title = t('Confirm Action'),
+  title = t('Confirm action'),
   description = t('Are you sure you want to perform this action?'),
   ...props
 }) => {

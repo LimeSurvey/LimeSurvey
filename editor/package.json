@@ -89,10 +89,10 @@
     "util": "^0.12.5"
   },
   "scripts": {
-    "prestart": "npm run collect-translations",
     "dev": "rsbuild dev",
     "start": "export REACT_APP_COMMIT_HASH=$(git rev-parse HEAD) && rsbuild dev",
     "start-https": "HTTPS=true rsbuild preview",
+    "prebuild": "npm run collect-translations",
     "build": "export REACT_APP_COMMIT_HASH=$(git rev-parse HEAD) && rsbuild build",
     "build-https": "HTTPS=true rsbuild build",
     "build-demo": "PUBLIC_URL=/ REACT_APP_DEV_MODE= REACT_APP_DEMO_MODE=true rsbuild build",

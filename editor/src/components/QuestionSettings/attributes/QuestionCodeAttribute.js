@@ -6,7 +6,7 @@ import { STATES } from '../../../helpers'
 import { Form, FormControl } from 'react-bootstrap'
 
 // note: make it faster using debounce ... read about it.
-export const QuestionCodeAttribute = ({ value, update }) => {
+export const QuestionCodeAttribute = ({ value, update, disabled = false }) => {
   const [codeToQuestion] = useAppState(STATES.CODE_TO_QUESTION, {})
   const [errorMessage, setErrorMessage] = useState('')
   const [inputValue, setInputValue] = useState(value)
@@ -64,6 +64,7 @@ export const QuestionCodeAttribute = ({ value, update }) => {
             className="d-flex justify-content-between align-items-center w-100"
             noPermissionDisabled={true}
             update={update}
+            disabled={disabled}
           />
         </div>
       </Form.Group>
