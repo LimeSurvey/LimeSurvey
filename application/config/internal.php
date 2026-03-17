@@ -48,6 +48,7 @@ $internalConfig = array(
         'node_modules_decimal' => realpath(__DIR__ . '/../../node_modules/decimal.js'),
         'node_modules_jquery_actual' => realpath(__DIR__ . '/../../node_modules/jquery.actual'),
         'node_modules.chartjs' => realpath(__DIR__ . '/../../node_modules/chart.js/dist'),
+        'node_modules.moment.min' => realpath(__DIR__ . '/../../node_modules/moment/min'),
         'core' => realpath(__DIR__ . '/../../assets/packages'),
         'fonts' => realpath(__DIR__ . '/../../assets/fonts'),
 
