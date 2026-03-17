@@ -14,7 +14,8 @@
             ?>
             <?php echo CHtml::form(
                 ['surveyAdministration/delete'],
-                'post'
+                'post',
+                ['id' => 'deleteSurveyForm']
             ) ?>
             <input type="hidden" id="deleteSurveyId" name="iSurveyID" value="" />
             <div class="modal-body">
@@ -44,5 +45,6 @@
     function deleteSurveyConfirm(surveyId) {
         document.getElementById('deleteSurveyId').value = surveyId;
         document.getElementById('deleteSurveyIdDisplay').textContent = surveyId;
+        document.getElementById('deleteSurveyForm').action = '<?php echo Yii::app()->createUrl('surveyAdministration/delete'); ?>/surveyid/' + surveyId;
     }
 </script>

@@ -17662,6 +17662,9 @@ body {
   background-color: #EEEFF7;
 }
 
+#deleteSurvey_modal {
+  top: calc(50% - 140px);
+}
 #deleteSurvey_modal .modal-dialog {
   width: 800px;
   max-width: 800px;
@@ -17688,9 +17691,6 @@ body {
   color: #1E1E1E;
   font-size: 0.9975rem;
   line-height: 20px;
-}
-#deleteSurvey_modal .modal-content .modal-body p .body-highlight {
-  font-weight: 500;
 }
 
 .modal-title {

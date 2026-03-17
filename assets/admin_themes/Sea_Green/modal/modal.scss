@@ -34,6 +34,8 @@
 }
 
 #deleteSurvey_modal {
+  top: calc(50% - 140px);
+
   .modal-dialog {
     width: 800px;
     max-width: 800px;
@@ -63,10 +65,6 @@
         color: $g-900;
         font-size: $font-size-sm;
         line-height: $line-height-20;
-
-        .body-highlight {
-          font-weight: $font-weight-500;
-        }
       }
     }
   }
