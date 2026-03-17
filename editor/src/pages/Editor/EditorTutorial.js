@@ -1,12 +1,11 @@
 import { getQuestionTypeInfo, Tutorial } from 'components'
 import SmallCheckMarkIcon from 'components/icons/SmallCheckMarkIcon'
-import { getApiUrl, sleep, STATES, toastComoponent, TUTORIALS } from 'helpers'
+import { getApiUrl, sleep, STATES, toastComponent, TUTORIALS } from 'helpers'
 import { getSurveyPanels } from 'helpers/options'
 import { useAppState, useAuth, useFocused } from 'hooks'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { UserSettingsService } from 'services'
-import { format } from 'util'
 
 export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
   const { surveyId } = useParams()
@@ -303,13 +302,13 @@ export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
   }
 
   const handleOnTutorialFinish = () => {
-    toastComoponent({
+    toastComponent({
       Component: (
         <div className="tutorial-finished-content">
           <div className="green-mark"></div>
           <span className="reg14">
             <SmallCheckMarkIcon />
-            {format(t('%s Congrats! You have completed the tour.'), '🎉')}
+            {t('🎉 Congrats! You have completed the tour.')}
           </span>
         </div>
       ),

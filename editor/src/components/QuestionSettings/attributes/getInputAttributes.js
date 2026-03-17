@@ -6,7 +6,7 @@ export const getInputAttributes = () => ({
     component: Select,
     attributePath: 'attributes.date_format',
     props: {
-      labelText: t('Date/Time Format'),
+      labelText: t('Date/time format'),
       dataTestId: 'date-time-format',
       options: [
         {
