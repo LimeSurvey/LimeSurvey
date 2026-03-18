@@ -1,23 +1,9 @@
 import { getQuestionTypeInfo } from '../getQuestionTypeInfo'
-import { within } from '@storybook/test'
 import { QuestionPreview } from 'sbook/helpers/fixtures/QuestionPreview'
-import { handleTests } from 'sbook/helpers/tests/handleTests'
-import { ATTRIBUTES } from 'sbook/helpers/tests/attributes'
 import { mockQuestionTypeWithSettings } from '../../../sbook/helpers/fixtures/mockQuestionTypeWithSettings'
 
 export default {
   title: 'QuestionTypes/SingleChoice',
-}
-
-const attributes = {
-  ...ATTRIBUTES,
-  display: {
-    ...ATTRIBUTES.display,
-    'answer-options-order': {
-      ...ATTRIBUTES.display['answer-options-order'],
-      value: true,
-    },
-  },
 }
 
 /** RadioList **/
@@ -34,18 +20,6 @@ export const RadioList = () => {
   )
 }
 
-RadioList.play = async ({ canvasElement, step }) => {
-  const canvas = within(canvasElement)
-
-  await handleTests(
-    step,
-    canvas,
-    radioListQuestion,
-    getQuestionTypeInfo().SINGLE_CHOICE_LIST_RADIO,
-    attributes,
-    7
-  )
-}
 /** RadioListWithComments **/
 const radioListWithCommentsQuestion = mockQuestionTypeWithSettings(
   getQuestionTypeInfo().SINGLE_CHOICE_LIST_RADIO_WITH_COMMENT
@@ -74,19 +48,6 @@ export const Dropdown = () => {
   )
 }
 
-Dropdown.play = async ({ canvasElement, step }) => {
-  const canvas = within(canvasElement)
-
-  await handleTests(
-    step,
-    canvas,
-    dropdownQuestion,
-    getQuestionTypeInfo().SINGLE_CHOICE_DROPDOWN,
-    attributes,
-    7
-  )
-}
-
 /** SingleChoiceButtons **/
 const singleChoiceButtonQuestion = mockQuestionTypeWithSettings(
   getQuestionTypeInfo().SINGLE_CHOICE_BUTTONS
@@ -98,19 +59,6 @@ export const SingleChoiceButtons = () => {
       question={singleChoiceButtonQuestion}
       surveySettings={singleChoiceButtonQuestion.surveySettings}
     />
-  )
-}
-
-SingleChoiceButtons.play = async ({ canvasElement, step }) => {
-  const canvas = within(canvasElement)
-
-  await handleTests(
-    step,
-    canvas,
-    singleChoiceButtonQuestion,
-    getQuestionTypeInfo().SINGLE_CHOICE_BUTTONS,
-    attributes,
-    7
   )
 }
 
@@ -128,19 +76,6 @@ export const SingleChoiceListSelect = () => {
   )
 }
 
-SingleChoiceListSelect.play = async ({ canvasElement, step }) => {
-  const canvas = within(canvasElement)
-
-  await handleTests(
-    step,
-    canvas,
-    singleChoiceListSelectQuestion,
-    getQuestionTypeInfo().SINGLE_CHOICE_IMAGE_SELECT,
-    attributes,
-    7
-  )
-}
-
 /** FivePointChoice **/
 const fivePointChoiceQuestion = mockQuestionTypeWithSettings(
   getQuestionTypeInfo().SINGLE_CHOICE_FIVE_POINT_CHOICE
@@ -152,18 +87,5 @@ export const FivePointChoice = () => {
       question={fivePointChoiceQuestion}
       surveySettings={fivePointChoiceQuestion.surveySettings}
     />
-  )
-}
-
-FivePointChoice.play = async ({ canvasElement, step }) => {
-  const canvas = within(canvasElement)
-
-  await handleTests(
-    step,
-    canvas,
-    fivePointChoiceQuestion,
-    getQuestionTypeInfo().SINGLE_CHOICE_FIVE_POINT_CHOICE,
-    attributes,
-    7
   )
 }
