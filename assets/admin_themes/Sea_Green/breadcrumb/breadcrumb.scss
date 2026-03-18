@@ -2,47 +2,71 @@ ol.breadcrumb.title-bar-breadcrumb {
     background : transparent;
     color      : $breadcrumb-active-color;
     flex-wrap  : nowrap;
-    a {
-        color       : $breadcrumb-link-color;
-        font-weight : $font-weight-normal;
-        &:hover {
-            color : $link-hover-color
-        }
-    }
+    display    : flex;
+    align-items: center;
+    line-height: 20px;
+    height     : 24px; // Fixed height to prevent growth on focus
+    min-width  : 0; // Allow container to shrink
+
     li {
-        background : transparent;
         color      : $breadcrumb-active-color;
-        overflow   : hidden;
-        text-overflow: ellipsis;
-        text-wrap: nowrap;
+        display    : flex;
+        align-items: center;
+        min-width  : 0; // Allows child a to show ellipsis
+        flex       : 0 1 auto; // Shrink but don't grow
+
         &.active {
             color       : $breadcrumb-active-color;
             font-weight : $font-weight-base;
+            white-space : nowrap;
+            flex        : 0 0 auto; // Don't shrink, show full text
+        }
+    }
+
+    a {
+        color         : $breadcrumb-link-color;
+        font-weight   : $font-weight-normal;
+        padding       : 2px 6px;
+        display       : inline-block;
+        border-radius : $state-border-radius;
+        border        : 1px solid transparent;
+        overflow      : hidden;
+        text-overflow : ellipsis;
+        white-space   : nowrap;
+
+        &:hover {
+            border : $hover-border;
+        }
+
+        &:focus {
+            outline    : none;
+            box-shadow : $focus-boxshadow;
+        }
+
+        &:active {
+            border           : $hover-border;
+            background-color : $g-100;
+            color            : $breadcrumb-active-color;
         }
     }
 }
 
-//
-//// from custom.scss
-.ls-ba {
-    li {
-        > div {
-            display : inline-block;
-        }
-    }
+// Legacy support from custom.scss
+.ls-ba li > div {
+    display : inline-block;
 }
 
-// from lime-admin-colors:
+// Legacy support from lime-admin-colors
 .surveymanagerbar {
     background-color : transparent;
     color            : $breadcrumb-active-color;
 }
 
-// new admin theme customization:
+// Bootstrap 5 breadcrumb customization
 .breadcrumb {
     font-size     : $breadcrumb-font-size;
-    line-height   : 20px;
     margin-bottom : 0;
+    align-items   : center;
 }
 
 .breadcrumb-item + .breadcrumb-item:before {
@@ -51,12 +75,18 @@ ol.breadcrumb.title-bar-breadcrumb {
     font-weight   : $font-weight-base;
 }
 
+.breadcrumb-item + .breadcrumb-item.active:before {
+    padding-right : $breadcrumb-spacing + 6px;
+}
+
 .breadcrumb-item + .breadcrumb-item {
     padding-left : $breadcrumb-spacing;
 }
 
+// Breadcrumb wrapper
 .ls-breadcrumb {
     margin-bottom: 0.65em;
+
     h1 {
         margin : 0;
     }
