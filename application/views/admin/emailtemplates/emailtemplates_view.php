@@ -68,12 +68,12 @@ var LS = LS || {};  // namespace
     </div>
 </div>
 
-<div class="modal modal-large fade" tabindex="-1" role="dialog" id="kc-modal-open">
+<div class="modal modal-large fade" tabindex="-1" role="dialog" id="kc-modal-open" aria-modal="true" aria-labelledby="kc-modal-open-title">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title h5"><?= gT("Choose file to add") ?></h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h2 id="kc-modal-open-title" class="modal-title h5"><?= gT("Choose file to add") ?></h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?= gT('Close') ?>"></button>
             </div>
             <div class="modal-body" style="padding: 0;">
                 <iframe id="browseiframe" frameBorder="0" style="min-height: 600px; height:100%; width: 100%;" src="about:blank"></iframe>
