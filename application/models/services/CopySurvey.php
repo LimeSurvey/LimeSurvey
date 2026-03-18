@@ -80,15 +80,27 @@ class CopySurvey
         $destinationSurvey->datecreated = date("Y-m-d H:i:s");
         $destinationSurvey->lastmodified = date("Y-m-d H:i:s");
         $destinationSurvey->attributedescriptions = $this->sourceSurvey->attributedescriptions;
-        if (!$destinationSurvey->save()) {
-            throw new \Exception(gT("Failed to copy survey"));
+        $transaction = App()->db->beginTransaction();
+
+        try {
+            if (!$destinationSurvey->save()) {
+                throw new \Exception(gT("Failed to copy survey"));
+            }
+
+            //this call is necessary to prevent errors when copying the survey with the configured template
+            Template::model()->getTemplateConfiguration(null, $destinationSurvey->sid)->getApiVersion();
+            $this->copySurveyPluginSettings($destinationSurvey);
+
+            $transaction->commit();
+        } catch (\Throwable $exception) {
+            if ($transaction->getActive()) {
+                $transaction->rollBack();
+            }
+
+            throw $exception;
         }
 
-        //this call is necessary to prevent errors when copying the survey with the configured template
-        Template::model()->getTemplateConfiguration(null, $destinationSurvey->sid)->getApiVersion();
-
         $copySurveyResult->setCopiedSurvey($destinationSurvey);
-        $this->copySurveyPluginSettings($destinationSurvey);
 
         $this->copySurveyLanguages($copySurveyResult, $destinationSurvey);
         $destinationSurvey->currentLanguageSettings->surveyls_title = $this->sourceSurvey->currentLanguageSettings->surveyls_title . ' - Copy';
@@ -269,33 +281,22 @@ class CopySurvey
             'model' => 'Survey',
             'model_id' => $this->sourceSurvey->sid,
         ]);
-        $transaction = App()->db->beginTransaction();
 
-        try {
-            foreach ($sourcePluginSettings as $sourcePluginSetting) {
-                $destinationPluginSetting = new PluginSetting();
-                $destinationPluginSetting->plugin_id = $sourcePluginSetting->plugin_id;
-                $destinationPluginSetting->model = $sourcePluginSetting->model;
-                $destinationPluginSetting->model_id = $destinationSurvey->sid;
-                $destinationPluginSetting->key = $sourcePluginSetting->key;
-                $destinationPluginSetting->value = $sourcePluginSetting->value;
+        foreach ($sourcePluginSettings as $sourcePluginSetting) {
+            $destinationPluginSetting = new PluginSetting();
+            $destinationPluginSetting->plugin_id = $sourcePluginSetting->plugin_id;
+            $destinationPluginSetting->model = $sourcePluginSetting->model;
+            $destinationPluginSetting->model_id = $destinationSurvey->sid;
+            $destinationPluginSetting->key = $sourcePluginSetting->key;
+            $destinationPluginSetting->value = $sourcePluginSetting->value;
 
-                if (!$destinationPluginSetting->save()) {
-                    throw new PersistErrorException(
-                        gT("Failed to copy survey plugin settings")
-                        . ': '
-                        . json_encode($destinationPluginSetting->getErrors())
-                    );
-                }
+            if (!$destinationPluginSetting->save()) {
+                throw new PersistErrorException(
+                    gT("Failed to copy survey plugin settings")
+                    . ': '
+                    . json_encode($destinationPluginSetting->getErrors())
+                );
             }
-
-            $transaction->commit();
-        } catch (\Throwable $exception) {
-            if ($transaction->getActive()) {
-                $transaction->rollBack();
-            }
-
-            throw $exception;
         }
     }
 
