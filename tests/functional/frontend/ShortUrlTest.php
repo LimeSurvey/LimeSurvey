@@ -13,15 +13,25 @@ use Yii;
 class ShortUrlTest extends TestBaseClassWeb
 {
     /**
+     * Import and activate the survey, then flush the shared file-based
+     * schema cache so the Docker PHP-FPM process picks up the new
+     * response table columns (schemaCachingDuration=3600 in internal.php).
+     */
+    private function importAndActivateSurvey(string $surveyFile): void
+    {
+        // Flush the file cache so it re-reads the response table schema on the next request.
+        Yii::app()->cache->flush();
+        self::importSurvey($surveyFile);
+        self::$testHelper->activateSurvey(self::$surveyId);
+
+    }
+
+    /**
      * Build a short URL for the given alias and query params, respecting the
      * configured urlFormat ('path' or 'get') from application/config/config.php.
      *
      * path format: http://domain/index.php/alias?key=val
      * get  format: http://domain/index.php?r=alias&key=val
-     *
-     * @param string $alias  The short-URL alias (e.g. 'testsurvey')
-     * @param array  $params Key/value query parameters (e.g. ['lang=en&something=else'])
-     * @return string
      */
     private function buildShortUrl(string $alias, array $params = []): string
     {
@@ -50,8 +60,7 @@ class ShortUrlTest extends TestBaseClassWeb
      */
     public function testShortUrlOnOpenSurvey($alias, $params, $welcomeText, $firstQuestionText)
     {
-        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_shortUrlOpen.lss');
-        self::$testHelper->activateSurvey(self::$surveyId);
+        $this->importAndActivateSurvey(self::$surveysFolder . '/limesurvey_survey_shortUrlOpen.lss');
 
         parse_str($params, $queryParams);
         $url = $this->buildShortUrl($alias, $queryParams);
@@ -90,11 +99,13 @@ class ShortUrlTest extends TestBaseClassWeb
                 .  'Screenshot taken.' . PHP_EOL
                 .  self::$testHelper->javaTrace($ex)
             );
+        } finally {
+            // Cleanup must run even when assertions fail, otherwise the response
+            // table (with its QID-based column names) persists and the next dataset
+            // import creates new QIDs that don't match the stale table columns.
+            self::$testSurvey->delete();
+            self::$testSurvey = null;
         }
-
-        // Cleanup
-        self::$testSurvey->delete();
-        self::$testSurvey = null;
     }
 
     /**
@@ -103,8 +114,7 @@ class ShortUrlTest extends TestBaseClassWeb
      */
     public function testShortUrlOnOpenSurveyWithPrefill($alias, $params)
     {
-        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_shortUrlOpen.lss');
-        self::$testHelper->activateSurvey(self::$surveyId);
+        $this->importAndActivateSurvey(self::$surveysFolder . '/limesurvey_survey_shortUrlOpen.lss');
 
         parse_str($params, $queryParams);
         $queryParams['Q01'] = 'Prefilled';
@@ -141,11 +151,10 @@ class ShortUrlTest extends TestBaseClassWeb
                 .  'Screenshot taken.' . PHP_EOL
                 .  self::$testHelper->javaTrace($ex)
             );
+        } finally {
+            self::$testSurvey->delete();
+            self::$testSurvey = null;
         }
-
-        // Cleanup
-        self::$testSurvey->delete();
-        self::$testSurvey = null;
     }
 
     /**
@@ -155,6 +164,7 @@ class ShortUrlTest extends TestBaseClassWeb
     public function testShortUrlOnClosedSurvey($alias, $params, $welcomeText, $firstQuestionText)
     {
         self::importSurvey(self::$surveysFolder . '/survey_archive_shortUrlClosed.lsa');
+        Yii::app()->cache->flush();
 
         parse_str($params, $queryParams);
         $queryParams['token'] = '123456';
@@ -194,11 +204,10 @@ class ShortUrlTest extends TestBaseClassWeb
                 .  'Screenshot taken.' . PHP_EOL
                 .  self::$testHelper->javaTrace($ex)
             );
+        } finally {
+            self::$testSurvey->delete();
+            self::$testSurvey = null;
         }
-
-        // Cleanup
-        self::$testSurvey->delete();
-        self::$testSurvey = null;
     }
 
     /**
@@ -208,6 +217,7 @@ class ShortUrlTest extends TestBaseClassWeb
     public function testShortUrlOnClosedSurveyWithPrefill($alias, $params)
     {
         self::importSurvey(self::$surveysFolder . '/survey_archive_shortUrlClosed.lsa');
+        Yii::app()->cache->flush();
 
         parse_str($params, $queryParams);
         $queryParams['token'] = '123456';
@@ -247,11 +257,10 @@ class ShortUrlTest extends TestBaseClassWeb
                 .  'Screenshot taken.' . PHP_EOL
                 .  self::$testHelper->javaTrace($ex)
             );
+        } finally {
+            self::$testSurvey->delete();
+            self::$testSurvey = null;
         }
-
-        // Cleanup
-        self::$testSurvey->delete();
-        self::$testSurvey = null;
     }
 
     /**
