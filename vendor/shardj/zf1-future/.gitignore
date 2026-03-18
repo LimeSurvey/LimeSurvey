@@ -20,5 +20,6 @@ bin/phpunit
 bin/parallel-lint
 .php-cs-fixer.cache
 .php_cs.cache
+.phpstan.cache/*
 .idea
 .vscode
