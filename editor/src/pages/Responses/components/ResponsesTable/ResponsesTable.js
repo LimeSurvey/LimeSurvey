@@ -374,6 +374,8 @@ export const ResponsesTable = ({
       />
       <ResponseModals
         showResponsesDeleteModal={showResponsesDeleteModal}
+        isBulkAction={isBulkActionRef.current}
+        selectedRowsIds={getSelectedRowIdsFromTable(table)}
         setShowResponsesDeleteModal={setShowResponsesDeleteModal}
         setShowAttachmentsDeleteModal={setShowAttachmentsDeleteModal}
         onAttachmentsDeleteConfirm={handleDeletingFiles}

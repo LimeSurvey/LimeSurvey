@@ -18,7 +18,7 @@
 .condition-designer-overlay-message {
   text-align: left;
   font-size: $font-size-sm;
-  color: $g-700;
+  color: $g-900;
   font-family: 'IBM Plex Sans';
   font-style: $font-style-base;
   font-weight: $font-weight-normal;
@@ -34,7 +34,6 @@
   margin-top: 20px;
 
   .condition-designer-overlay-secondary-button {
-    background-color: $g-600;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -56,6 +55,12 @@
     border-radius: 5px;
     padding: 10px 20px;
     border: none;
+
+    &:disabled {
+      background-color: $g-400;
+      color: $g-600;
+      cursor: not-allowed;
+    }
   }
 }
 

@@ -72,7 +72,7 @@
          $buffer = fgets($handle, 4096);
          $buffer = str_replace(chr(10),"",$buffer);
          $buffer = str_replace(chr(13),"",$buffer);
-         $Values = explode($Delimiter,$buffer);
+         $Values = preg_split("/" . preg_quote($Delimiter, "/") . "/",$buffer);
 
          if ( $buffer != "" )
           {

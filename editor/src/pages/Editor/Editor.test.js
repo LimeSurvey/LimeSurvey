@@ -47,6 +47,9 @@ describe('Editor interactions', () => {
     )
     await userEvent.click(meatballMenuToggleButton)
     await userEvent.click(await screen.findByTestId('delete-button'))
+    await userEvent.click(
+      await screen.findByTestId('confirm-modal-confirm-button')
+    )
 
     await expect(
       screen.getAllByTestId('question-group-meatball-menu')
@@ -65,7 +68,9 @@ describe('Editor interactions', () => {
     )
     await userEvent.click(sideBarTogglerButtons[0])
     await userEvent.click(await screen.findByTestId('delete-button'))
-
+    await userEvent.click(
+      await screen.findByTestId('confirm-modal-confirm-button')
+    )
     const numberOfQuestionGroupsAfterUpdate = within(
       structurePanel
     ).getAllByTestId('survey-structure-question-group').length

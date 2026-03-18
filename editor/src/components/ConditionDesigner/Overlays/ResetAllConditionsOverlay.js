@@ -4,15 +4,15 @@ import { SwalAlert } from 'helpers'
 export const ResetAllConditionsOverlay = ({ onConfirmDelete }) => {
   return (
     <div className="condition-designer-overlay">
-      <div className="condition-designer-overlay-title">
-        <p>{t('Confirm')}</p>
+      <div className="condition-designer-overlay-title reg24">
+        <p>{t('Delete condition')}</p>
       </div>
 
-      <p className="condition-designer-overlay-message">
+      <p className="condition-designer-overlay-message reg14">
         {t('Are you sure you want to delete all conditions for this question?')}
       </p>
 
-      <div className="condition-designer-overlay-actions">
+      <div className="condition-designer-overlay-actions d-flex justify-content-end">
         <Button
           variant="secondary"
           className="condition-designer-overlay-secondary-button"

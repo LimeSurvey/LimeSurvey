@@ -3360,7 +3360,7 @@
     {
      /* Strip HTML query strings */
      $Values   = $this->tmpFolder.$MapName;
-     $Value    = explode("\?",$Values);
+     $Value    = preg_split("/\\?/",$Values);
      $FileName = $Value[0];
 
      if ( file_exists($FileName) )
