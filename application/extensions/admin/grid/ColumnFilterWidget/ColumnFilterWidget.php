@@ -34,6 +34,11 @@ class ColumnFilterWidget extends CWidget
     public $model;
 
     /**
+     * @var string|null target the related grid ID
+     */
+    public $ajaxUpdate;
+
+    /**
      * Initializes the widget by registering necessary client-side scripts.
      */
     public function init(): void
@@ -63,7 +68,8 @@ class ColumnFilterWidget extends CWidget
             'modalId' => $this->modalId,
             'filterableColumns' => $this->filterableColumns,
             'filteredColumns' => $this->filteredColumns,
-            'columnsData' => $this->columnsData
+            'columnsData' => $this->columnsData,
+            'ajaxUpdate' => $this->ajaxUpdate
         ]);
     }
 

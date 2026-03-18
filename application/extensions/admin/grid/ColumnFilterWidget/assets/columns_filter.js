@@ -10,18 +10,17 @@ function initColumnFilter()
     $('#' + modalId + '-submit').on('click', function (e) {
         e.preventDefault();
         var form = $('#' + modalId);
+        var target = $(form).data('target');
         var model = $('#' + modalId + ' input.model-name').val();
         var filterData = $('#' + modalId + ' .checkbox input:checked').map(function () {
             if ($(this).val().trim() !== '') {
                 return $(this).val();
             }
         }).get();
-
         if (filterData.length === 0) {
             filterData = [];
         }
-
-        $.fn.yiiGridView.update('survey-grid', {data: {model: model, selectColumns : 'select', columnsSelected: filterData}});
+        $.fn.yiiGridView.update(target, {data: {model: model, selectColumns : 'select', columnsSelected: filterData}});
         form.modal('hide');
     });
 

@@ -545,7 +545,7 @@ class User extends LSActiveRecord
      * Gets the buttons for the GridView
      * @return string
      */
-    public function getManagementButtons()
+    public function getButtons() : string
     {
         $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
         $permission_users_read = Permission::model()->hasGlobalPermission('users', 'read');
@@ -769,6 +769,7 @@ class User extends LSActiveRecord
         return "<input type='checkbox' class='usermanagement--selector-userCheckbox' name='selectedUser[]' value='" . $this->uid . "'>";
     }
     /**
+     * Get column definitin for grid
      * @return array
      */
     public function getManagementColums()
@@ -809,36 +810,57 @@ class User extends LSActiveRecord
                 "name"   => "parentUserName",
                 "header" => gT("Created by"),
             ],
+            // CLSGridView include 2 last columns, add it but hidden
             [
-                "name"   => "user_status",
-                "header" => gT("Status"),
+                'header' => gT('Action'),
+                'value' => '',
                 'headerHtmlOptions' => ['class' => 'hidden'],
-                'htmlOptions'       => ['class' => 'hidden activation']
+                'htmlOptions'       => ['class' => 'hidden']
             ],
         ];
+        return $cols;
+    }
 
-        // NOTE: Super Administrators with just the "read" flag also have these flags
+    /**
+     * =Get additional (optionnale) column definition for grid
+     * @return [][]
+     */
+    public function getAdditionalColumns()
+    {
         $permission_read_users      = Permission::model()->hasGlobalPermission('users', 'read');
         $permission_read_usergroups = Permission::model()->hasGlobalPermission('usergroups', 'read');
         $permission_read_surveys    = Permission::model()->hasGlobalPermission('surveys', 'read');
+        $cols = [
+            "expires" => [
+                "name"   => "expires",
+                "header" => gT("Expires"),
+                "value"  => '$data->formattedDateCreated',
+                'filter' => false
+            ],
+            "user_status" => [
+                "name"   => "user_status",
+                "header" => gT("Status"),
+                // Todo : show a Yes/no value Checked/empty
+                // Todo show a Y/N filter
+            ],
+        ];
 
         // Number of Surveys
         // This info is already guessable by people able to list all Surveys
         if ($permission_read_surveys) {
-            $cols[] = array(
+            $cols['surveysCreated'] = array(
                 "name" => 'surveysCreated',
                 "header" => gT("No of surveys"),
                 'filter' => false
             );
         }
-
         // Usergroups Names
         // This info is safe to be shown to who can read all Users and Groups.
         // TODO: When there will be a more robust Group permissions system,
         //       this column could be enabled by default, since each Group would
         //       be checked individually.
         if ($permission_read_users && $permission_read_usergroups) {
-            $cols[] = array(
+            $cols['groupList'] = array(
                 "name" => 'groupList',
                 "header" => gT("Usergroups"),
                 'filter' => false
@@ -848,32 +870,31 @@ class User extends LSActiveRecord
         // Role Names
         // Knowing this info makes sense if you can read all Users
         if ($permission_read_users) {
-            $cols[] = array(
+            $cols['roleList'] = array(
                 "name" => 'roleList',
                 "header" => gT("Applied role"),
                 'filter' => false
             );
         }
-
-        $cols[] = [
-            "header"            => gT("Action"),
-            "name"              => 'managementButtons',
-            "type"              => 'raw',
-            'filter'            => false,
-            'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-            'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-            'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
-        ];
-
         return $cols;
     }
 
     /**
+     * Returns buttons for gridview.
+     * @deprecated 6.17.0 use directly getButtons
+     * @return string
+     */
+    public function getManagemmentButtons()
+    {
+        return $this->getButtons();
+    }
+
+    /**
+     * @deprecated
      * @return array
      */
     public function getColums()
     {
-        // TODO should be static
         $cols = array(
             array(
                 "name" => 'buttons',
@@ -1157,7 +1178,6 @@ class User extends LSActiveRecord
         } else {
             $this->user_status = 0;
         }
-
         return $this->save();
     }
 }

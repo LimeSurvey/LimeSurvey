@@ -212,8 +212,8 @@ class CLSGridView extends TbGridView
         if (!$this->dataProvider instanceof CActiveDataProvider) {
             return;
         }
-        $columns_filter_button = '<button role="button" type="button" class="btn b-0" data-bs-toggle="modal" data-bs-target="#survey-column-filter-modal">
-                <i class="ri-layout-column-fill"></i>
+        $columns_filter_button = '<button role="button" type="button" class="btn b-0" data-bs-toggle="modal" data-bs-target="#column-filter-modal">
+                <i class="ri-layout-column-fill"></i><span id="column-filter-label" class="sr-only">' . gT("Select columns") . '</span>
             </button>';
         $this->columns[]  = [
             'header'            => $columns_filter_button,
@@ -222,6 +222,7 @@ class CLSGridView extends TbGridView
             'type'              => 'raw',
             'headerHtmlOptions' => ['class' => 'text-center ls-sticky-column', 'style' => 'font-size: 1.5em; font-weight: 400;'],
             'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
+            'filter'            => false
         ];
         /* Updating the columns to be added */
         if (App()->request->getParam('selectColumns') && $this->ajaxUpdate === $ajaxUpdate) {
