@@ -18731,6 +18731,11 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   opacity: unset !important;
 }
 
+.cke_reset_all,
+.cke_reset_all * {
+  color: #1E1E1E !important;
+}
+
 .cke_contents {
   border: none !important;
   border-right: 1px solid #1E1E1E !important;
@@ -19395,6 +19400,13 @@ input[type=number] {
 }
 #sidebar .subpanel {
   font-size: 14px;
+  /* Keyboard focus: ring on sidebar links; extra specificity when .selected (current page e.g. Theme options) */
+}
+#sidebar .subpanel a.list-group-item.selected:focus-visible {
+  outline: 2px solid #1E1E1E !important;
+  outline-offset: 2px;
+  position: relative;
+  z-index: 2;
 }
 #sidebar .subpanel .list-group-item .wrapper .title {
   color: #6E748C;
