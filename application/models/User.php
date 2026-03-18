@@ -238,19 +238,32 @@ class User extends LSActiveRecord
     }
 
     /**
-     * @todo Not used?
+     * Show created date formatted for current user
      */
     public function getFormattedDateCreated()
     {
-        $dateCreated = $this->created;
-        /**
-         * @todo: Review this. Cast to string added to keep the original behavior (parameter can't be null since PHP 8.1).
-         *        But it returns the current date if the parameter is null (both now with the cast and pre PHP 8.1 without the cast).
-         */
-        $date = new DateTime((string) $dateCreated);
-        return $date->format($this->getDateFormat());
+        return $this->getDateFormatted('created');
     }
 
+    /**
+     * Show expire date formatted for current user
+     */
+    public function getFormattedExpire()
+    {
+        return $this->getDateFormatted('expires');
+    }
+    /**
+     * @param string $attribute date attribute name
+     * @return string formatted date
+     */
+    private function getDateFormatted($attribute)
+    {
+        $dateformatdata = getDateFormatData(App()->session['dateformat']);
+        if ($this->$attribute) {
+            return convertDateTimeFormat($this->$attribute, 'Y-m-d', $dateformatdata['phpdate']);
+        }
+        return null;
+    }
     /**
      * Creates new user
      *
@@ -834,7 +847,7 @@ class User extends LSActiveRecord
             "expires" => [
                 "name"   => "expires",
                 "header" => gT("Expires"),
-                "value"  => '$data->formattedDateCreated',
+                "value"  => '$data->formattedExpire',
                 'filter' => false
             ],
             "user_status" => [
@@ -884,7 +897,7 @@ class User extends LSActiveRecord
      * @deprecated 6.17.0 use directly getButtons
      * @return string
      */
-    public function getManagemmentButtons()
+    public function getManagementButtons()
     {
         return $this->getButtons();
     }
@@ -948,9 +961,9 @@ class User extends LSActiveRecord
 
         $criteria->compare('t.uid', $this->uid);
         $criteria->compare('t.full_name', $this->full_name, true);
-        $criteria->compare('t.users_name', $this->users_name, true, 'OR');
-        $criteria->compare('t.email', $this->email, true, 'OR');
-
+        $criteria->compare('t.users_name', $this->users_name, true);
+        $criteria->compare('t.email', $this->email, true);
+        $criteria->compare('t.user_status', $this->user_status, true);
         //filter for 'created' date comparison
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         if ($this->created) {

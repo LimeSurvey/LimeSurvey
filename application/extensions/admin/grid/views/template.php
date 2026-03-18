@@ -17,7 +17,6 @@
             <div class="summary-container">{summary}</div>
     </div>
 <?php
-tracevar($this->id);
 if (!empty($this->lsAdditionalColumns)) {
     App()->getController()->widget('ext.admin.grid.ColumnFilterWidget.ColumnFilterWidget', [
         'modalId'           => 'column-filter-modal',
