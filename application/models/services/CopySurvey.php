@@ -9,7 +9,9 @@ use Condition;
 use DefaultValue;
 use DefaultValueL10n;
 use LimeSurvey\Datavalueobjects\CopyQuestionValues;
+use LimeSurvey\Models\Services\Exception\PersistErrorException;
 use LSHttpRequest;
+use PluginSetting;
 use Question;
 use QuestionAttribute;
 use QuestionGroup;
@@ -86,6 +88,7 @@ class CopySurvey
         Template::model()->getTemplateConfiguration(null, $destinationSurvey->sid)->getApiVersion();
 
         $copySurveyResult->setCopiedSurvey($destinationSurvey);
+        $this->copySurveyPluginSettings($destinationSurvey);
 
         $this->copySurveyLanguages($copySurveyResult, $destinationSurvey);
         $destinationSurvey->currentLanguageSettings->surveyls_title = $this->sourceSurvey->currentLanguageSettings->surveyls_title . ' - Copy';
@@ -251,6 +254,36 @@ class CopySurvey
             }
         }
         $copySurveyResult->setCntSurveyLanguages($cntCopiedLanguageSettings);
+    }
+
+    /**
+     * Copy survey-scoped plugin settings to the destination survey.
+     *
+     * @param Survey $destinationSurvey
+     * @return void
+     * @throws PersistErrorException
+     */
+    private function copySurveyPluginSettings($destinationSurvey)
+    {
+        $sourcePluginSettings = PluginSetting::model()->findAllByAttributes([
+            'model' => 'Survey',
+            'model_id' => $this->sourceSurvey->sid,
+        ]);
+
+        foreach ($sourcePluginSettings as $sourcePluginSetting) {
+            $destinationPluginSetting = new PluginSetting();
+            $destinationPluginSetting->plugin_id = $sourcePluginSetting->plugin_id;
+            $destinationPluginSetting->model = $sourcePluginSetting->model;
+            $destinationPluginSetting->model_id = $destinationSurvey->sid;
+            $destinationPluginSetting->key = $sourcePluginSetting->key;
+            $destinationPluginSetting->value = $sourcePluginSetting->value;
+
+            if (!$destinationPluginSetting->save()) {
+                $exception = new PersistErrorException(gT("Failed to copy survey plugin settings"));
+                $exception->setErrorModel($destinationPluginSetting);
+                throw $exception;
+            }
+        }
     }
 
     /**
