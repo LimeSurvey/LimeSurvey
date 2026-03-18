@@ -269,22 +269,33 @@ class CopySurvey
             'model' => 'Survey',
             'model_id' => $this->sourceSurvey->sid,
         ]);
+        $transaction = App()->db->beginTransaction();
 
-        foreach ($sourcePluginSettings as $sourcePluginSetting) {
-            $destinationPluginSetting = new PluginSetting();
-            $destinationPluginSetting->plugin_id = $sourcePluginSetting->plugin_id;
-            $destinationPluginSetting->model = $sourcePluginSetting->model;
-            $destinationPluginSetting->model_id = $destinationSurvey->sid;
-            $destinationPluginSetting->key = $sourcePluginSetting->key;
-            $destinationPluginSetting->value = $sourcePluginSetting->value;
+        try {
+            foreach ($sourcePluginSettings as $sourcePluginSetting) {
+                $destinationPluginSetting = new PluginSetting();
+                $destinationPluginSetting->plugin_id = $sourcePluginSetting->plugin_id;
+                $destinationPluginSetting->model = $sourcePluginSetting->model;
+                $destinationPluginSetting->model_id = $destinationSurvey->sid;
+                $destinationPluginSetting->key = $sourcePluginSetting->key;
+                $destinationPluginSetting->value = $sourcePluginSetting->value;
 
-            if (!$destinationPluginSetting->save()) {
-                throw new PersistErrorException(
-                    gT("Failed to copy survey plugin settings")
-                    . ': '
-                    . json_encode($destinationPluginSetting->getErrors())
-                );
+                if (!$destinationPluginSetting->save()) {
+                    throw new PersistErrorException(
+                        gT("Failed to copy survey plugin settings")
+                        . ': '
+                        . json_encode($destinationPluginSetting->getErrors())
+                    );
+                }
             }
+
+            $transaction->commit();
+        } catch (\Throwable $exception) {
+            if ($transaction->getActive()) {
+                $transaction->rollBack();
+            }
+
+            throw $exception;
         }
     }
 
