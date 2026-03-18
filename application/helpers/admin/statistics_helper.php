@@ -2176,9 +2176,9 @@ class statistics_helper
         $noncompleted = App()->getRequest()->getPost('noncompleted');
         if ($usegraph == 1 && $outputType != 'html') {
             //for creating graphs we need some more scripts which are included here
-            require_once(APPPATH . '/../vendor/pchart/pChart.class.php');
-            require_once(APPPATH . '/../vendor/pchart/pData.class.php');
-            require_once(APPPATH . '/../vendor/pchart/pCache.class.php');
+            require_once(APPPATH . '/../assets/packages/pchart/pChart.class.php');
+            require_once(APPPATH . '/../assets/packages/pchart/pData.class.php');
+            require_once(APPPATH . '/../assets/packages/pchart/pCache.class.php');
             $MyCache = new pCache($tempdir . '/');
         }
 

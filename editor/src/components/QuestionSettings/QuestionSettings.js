@@ -8,6 +8,7 @@ import {
   createBufferOperation,
   getDisabledQuestionTypes,
   errorToast,
+  isTempId,
 } from 'helpers'
 import { useAppState, useBuffer, useFocused, useSurvey } from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
@@ -228,7 +229,7 @@ export const QuestionSettings = ({ surveyId }) => {
         </>
       )}
       <div id="condition-designer">
-        {!focused ? null : (
+        {!focused || (focused && isTempId(focused.qid)) ? null : (
           <>
             <AddScenario
               key={`add-scenario-${focused.qid}`}

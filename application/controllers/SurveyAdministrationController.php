@@ -387,7 +387,6 @@ class SurveyAdministrationController extends LSBaseController
         // set 'inherit' values to survey attributes
         $survey->setToInherit();
 
-        App()->getClientScript()->registerPackage('jquery-json');
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin.htmleditor');
 
@@ -2046,8 +2045,6 @@ class SurveyAdministrationController extends LSBaseController
             $aData['aTabTitles']   = $aTabTitles;
             $aData['moreInfo'] = $temp;
         }
-
-        App()->getClientScript()->registerPackage('jquery-json');
 
         // override survey settings if global settings exist
         $templateData['showqnumcode']   = getGlobalSetting('showqnumcode') !== 'choose' ? getGlobalSetting('showqnumcode') : $survey->showqnumcode;

@@ -23,15 +23,15 @@ export const getStatisticsAttributes = () => ({
           value: statisticsGraphs.PIE_CHART,
         },
         {
-          label: t('Radar'),
+          label: t('Radar chart'),
           value: statisticsGraphs.RADAR,
         },
         {
-          label: t('Line'),
+          label: t('Line chart'),
           value: statisticsGraphs.LINE,
         },
         {
-          label: t('Polar area'),
+          label: t('Polar chart'),
           value: statisticsGraphs.POLAR_AREA,
         },
       ],
