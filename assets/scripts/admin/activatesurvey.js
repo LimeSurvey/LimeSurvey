@@ -99,3 +99,27 @@ if (!window.accessModes) {
             });
     });
 }
+
+/**
+ * Dismiss Bootstrap 5 tooltips on Escape (e.g. while hovering "Activate survey" disabled state).
+ */
+(function () {
+    if (window.LS && LS._tooltipEscapeDismissBound) {
+        return;
+    }
+    LS._tooltipEscapeDismissBound = true;
+    document.addEventListener('keydown', function (e) {
+        if (e.key !== 'Escape' && e.keyCode !== 27) {
+            return;
+        }
+        if (typeof bootstrap === 'undefined' || !bootstrap.Tooltip) {
+            return;
+        }
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+            var t = bootstrap.Tooltip.getInstance(el);
+            if (t) {
+                t.hide();
+            }
+        });
+    });
+})();
