@@ -13,7 +13,7 @@ use Yii;
 
 class AuthenticationTokenSimple implements AuthenticationInterface
 {
-    const ERROR_INVALID_SESSION_KEY = 'INVALID_SESSION_KEY';
+    const string ERROR_INVALID_SESSION_KEY = 'INVALID_SESSION_KEY';
 
     protected SessionUtil $sessionUtil;
     protected FormatterDateTimeToJson $formatterDateTimeToJson;

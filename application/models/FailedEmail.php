@@ -22,10 +22,10 @@
 class FailedEmail extends LSActiveRecord
 {
     /** @var string The success status */
-    public const STATE_SUCCESS = 'SEND SUCCESS';
+    public const string STATE_SUCCESS = 'SEND SUCCESS';
 
     /** @var string The failed status */
-    public const STATE_FAILED = 'SEND FAILED';
+    public const string STATE_FAILED = 'SEND FAILED';
 
     /**
      * @inheritdoc
