@@ -66,7 +66,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                         <label for="surveyTitle"><?= gT('Survey title:') ?></label>
                         <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" required="required" maxlength="200">
                         <div class="form-control-static">
-                            <span class='annotation text-danger'><?php echo  gT("Required"); ?> </span>
+                            <span class='annotation text-danger'><?php echo  gT("Survey title is required."); ?> </span>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -102,8 +102,9 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                                 'name'          => 'administrator',
                                 'checkedOption' => 'default',
                                 'selectOptions' => $optionsAdmin ?? [],
+                                'ariaLabel' => gT("Administrator"),
                             ]); ?>
-                        </div>
+                        </div>        
                     </div>
                     <div id="conditional-administrator-fields" style="display: none;">
                         <div class="mb-3">

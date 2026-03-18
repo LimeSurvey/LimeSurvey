@@ -2,10 +2,16 @@
 
 namespace LimeSurvey\Models\Services;
 
+use App;
 use Assessment;
+use CDbCriteria;
 use Condition;
 use DefaultValue;
+use DefaultValueL10n;
 use LimeSurvey\Datavalueobjects\CopyQuestionValues;
+use LimeSurvey\Models\Services\Exception\PersistErrorException;
+use LSHttpRequest;
+use PluginSetting;
 use Question;
 use QuestionGroup;
 use QuestionL10n;
@@ -14,7 +20,6 @@ use Permission;
 use SurveyLanguageSetting;
 use Template;
 use Yii;
-use Answer;
 
 /**
  * This class is responsible for copying a survey.
@@ -74,12 +79,25 @@ class CopySurvey
         $destinationSurvey->datecreated = date("Y-m-d H:i:s");
         $destinationSurvey->lastmodified = date("Y-m-d H:i:s");
         $destinationSurvey->attributedescriptions = $this->sourceSurvey->attributedescriptions;
-        if (!$destinationSurvey->save()) {
-            throw new \Exception(gT("Failed to copy survey"));
-        }
+        $transaction = App()->db->beginTransaction();
 
-        //this call is necessary to prevent errors when copying the survey with the configured template
-        Template::model()->getTemplateConfiguration(null, $destinationSurvey->sid)->getApiVersion();
+        try {
+            if (!$destinationSurvey->save()) {
+                throw new \Exception(gT("Failed to copy survey"));
+            }
+
+            //this call is necessary to prevent errors when copying the survey with the configured template
+            Template::model()->getTemplateConfiguration(null, $destinationSurvey->sid)->getApiVersion();
+            $this->copySurveyPluginSettings($destinationSurvey);
+
+            $transaction->commit();
+        } catch (\Throwable $exception) {
+            if ($transaction->getActive()) {
+                $transaction->rollBack();
+            }
+
+            throw $exception;
+        }
 
         $copySurveyResult->setCopiedSurvey($destinationSurvey);
 
@@ -250,6 +268,38 @@ class CopySurvey
     }
 
     /**
+     * Copy survey-scoped plugin settings to the destination survey.
+     *
+     * @param Survey $destinationSurvey
+     * @return void
+     * @throws PersistErrorException
+     */
+    private function copySurveyPluginSettings($destinationSurvey)
+    {
+        $sourcePluginSettings = PluginSetting::model()->findAllByAttributes([
+            'model' => 'Survey',
+            'model_id' => $this->sourceSurvey->sid,
+        ]);
+
+        foreach ($sourcePluginSettings as $sourcePluginSetting) {
+            $destinationPluginSetting = new PluginSetting();
+            $destinationPluginSetting->plugin_id = $sourcePluginSetting->plugin_id;
+            $destinationPluginSetting->model = $sourcePluginSetting->model;
+            $destinationPluginSetting->model_id = $destinationSurvey->sid;
+            $destinationPluginSetting->key = $sourcePluginSetting->key;
+            $destinationPluginSetting->value = $sourcePluginSetting->value;
+
+            if (!$destinationPluginSetting->save()) {
+                throw new PersistErrorException(
+                    gT("Failed to copy survey plugin settings")
+                    . ': '
+                    . json_encode($destinationPluginSetting->getErrors())
+                );
+            }
+        }
+    }
+
+    /**
      * Copy all question groups of the survey to the destination survey.
      *
      * @param CopySurveyResult $copyResults
@@ -321,11 +371,17 @@ class CopySurvey
                 //change sid and gip for the new question
                 $destinationQuestion->sid = $destinationSurvey->sid;
                 $destinationQuestion->gid = $mapping['questionGroupIds'][$question->gid];
-                $destinationQuestion->save();
-                $mappingQuestionIds[$question->qid] = $destinationQuestion->qid;
-                $cntCopiedQuestions++;
-                if (!empty($copyQuestion->getMappedSubquestionIds()) && is_array($copyQuestion->getMappedSubquestionIds())) {
-                    $mappedSubquestionIds += $copyQuestion->getMappedSubquestionIds();
+                if ($destinationQuestion->save()) {
+                    $this->mapGroupIdsToSubquestions( //subquestion need mapping of groupids
+                        $destinationQuestion,
+                        $destinationSurvey->sid,
+                        $mapping['questionGroupIds'][$question->gid]
+                    );
+                    $mappingQuestionIds[$question->qid] = $destinationQuestion->qid;
+                    $cntCopiedQuestions++;
+                    if (!empty($copyQuestion->getMappedSubquestionIds()) && is_array($copyQuestion->getMappedSubquestionIds())) {
+                        $mappedSubquestionIds += $copyQuestion->getMappedSubquestionIds();
+                    }
                 }
             }
         }
@@ -334,6 +390,28 @@ class CopySurvey
         $this->copyDefaultAnswers($mappingQuestionIds, $mappedSubquestionIds);
 
         return $mapping;
+    }
+
+    /**
+     * Assigns the correct group ids to the subquestions of the main question.
+     *
+     * @param Question $parentQuestion
+     * @param int $destinationSurveyId
+     * @param int $groupId
+     * @return void
+     */
+    public function mapGroupIdsToSubquestions($parentQuestion, $destinationSurveyId, $groupId)
+    {
+        //search for all subquestions for the main question
+        $subquestions = Question::model()->findAllByAttributes([
+            'parent_qid' => $parentQuestion->qid,
+           'sid' => $destinationSurveyId,
+        ]);
+
+        foreach ($subquestions as $subquestion) {
+            $subquestion->gid = $groupId;
+            $subquestion->save();   //update the group id for the subquestion
+        }
     }
 
     /**
@@ -424,7 +502,6 @@ class CopySurvey
      * @param array $mappingGroupIds
      * @param int $destinationSurveyId
      * @return int number of conditions copied
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     private function copyConditions($mappingQuestionIds, $mappingGroupIds, $destinationSurveyId)
     {
@@ -447,51 +524,17 @@ class CopySurvey
             $condition->qid = $mappingQuestionIds[$conditionRow['qid']];
             $condition->cqid = $mappingQuestionIds[$conditionRow['cqid']];
             //rebuild the cfieldname --> "$iSurveyID . "X" . $iGroupID . "X" . $iQuestionID"
-            $cfieldname = (string) $conditionRow['cfieldname'];
-            $qPos = strpos($cfieldname, 'Q');
-            if (($qPos === false) || ($qPos > 1)) {
-                list(, $oldGroupId, $oldQuestionId) = explode("X", $cfieldname, 3);
-                //the $oldQuestionId contains the question id from the old question id
-                //and could in addition contain a subquestion code or answer option code
-                //cut out the question id, which is at the beginning of $oldQuestionId
-                $appendSubQuestionOrAnswerOption = substr($oldQuestionId, strlen((string) $conditionRow['cqid']));
-                $addPlusSign = "";
-                if (preg_match("/^\+/", $conditionRow['cfieldname'])) {
-                    $addPlusSign = "+";
-                }
-                $condition->cfieldname = $addPlusSign . $destinationSurveyId . "X" . $mappingGroupIds[$oldGroupId] .
-                    "X" . $mappingQuestionIds[$conditionRow['cqid']] . $appendSubQuestionOrAnswerOption;
-            } else {
-                $parts = explode("_", $cfieldname);
-                for ($index = 0; $index < count($parts); $index++) {
-                    $firstLetter = $parts[$index][0];
-                    if (in_array($firstLetter, ['+', 'Q', 'S', 'R'])) {
-                        if ($firstLetter !== 'R') {
-                            $offset = (($firstLetter === '+') ? 2 : 1);
-                            $qid = -1;
-                            if (!isset($mappingQuestionIds[substr($parts[$index], $offset)])) {
-                                $oldQuestion = Question::model()->findByPk(substr($parts[$index], $offset));
-                                if (!$oldQuestion) {
-                                    continue;
-                                }
-                                $newQuestion = Question::model()->find("sid = :sid and title = :title", [":sid" => $destinationSurveyId, ":title" => $oldQuestion->title]);
-                                $qid = $newQuestion->qid;
-                            } else {
-                                $qid = $mappingQuestionIds[substr($parts[$index], $offset)];
-                            }
-                            $parts[$index] = substr($parts[$index], 0, $offset) . $qid;
-                        } else {
-                            $oldAnswer = Answer::model()->findByPk(substr($parts[$index], $offset));
-                            if (!isset($mappingQuestionIds[$oldAnswer->qid])) {
-                                continue;
-                            }
-                            $newAnswer = Answer::model()->find("qid = :qid and code = :code", [":qid" => $mappingQuestionIds[$oldAnswer->qid], ":code" => $oldAnswer->code]);
-                            $parts[$index] = substr($parts[$index], 0, $offset) . $newAnswer->aid;
-                        }
-                    }
-                }
-                $condition->cfieldname = implode("_", $parts);
+            list(, $oldGroupId, $oldQuestionId) = explode("X", (string) $conditionRow['cfieldname'], 3);
+            //the $oldQuestionId contains the question id from the old question id
+            //and could in addition contain a subquestion code or answer option code
+            //cut out the question id, which is at the beginning of $oldQuestionId
+            $appendSubQuestionOrAnswerOption = substr($oldQuestionId, strlen((string) $conditionRow['cqid']));
+            $addPlusSign = "";
+            if (preg_match("/^\+/", $conditionRow['cfieldname'])) {
+                $addPlusSign = "+";
             }
+            $condition->cfieldname = $addPlusSign . $destinationSurveyId . "X" . $mappingGroupIds[$oldGroupId] .
+                "X" . $mappingQuestionIds[$conditionRow['cqid']] . $appendSubQuestionOrAnswerOption;
             $condition->value = $conditionRow['value'];
             $condition->method = $conditionRow['method'];
             if ($condition->save()) {
@@ -512,20 +555,20 @@ class CopySurvey
     private function copyDefaultAnswers($mappingQuestionIds, $mappedSuquestionIds)
     {
         //get all entries from defaultvalues table where the qid belongs to the source survey
-        $defaultAnswerRows = Yii::app()->db->createCommand()
-            ->select('defaultvalues.*')
-            ->from('{{defaultvalues}} defaultvalues')
-            ->join('{{questions}} questions', 'questions.qid=defaultvalues.qid')
-            ->where('questions.sid=:sid and questions.parent_qid=:parent_qid', [
-                ':sid' => $this->sourceSurvey->sid,
-                ':parent_qid' => 0
-            ])
-            ->queryAll();
+        $criteria = new CDbCriteria();
+        $criteria->join = 'JOIN {{questions}} questions ON questions.qid=t.qid';
+        $criteria->condition = 'questions.sid=:sid and questions.parent_qid=:parent_qid';
+        $criteria->params = [
+            ':sid' => $this->sourceSurvey->sid,
+            ':parent_qid' => 0
+        ];
+        $defaultAnswerRows = DefaultValue::model()->findAll($criteria);
+
         $cntDefaultAnswers = 0;
         //now copy the default answers and map them to the corresponding question ids
         foreach ($defaultAnswerRows as $defaultAnswerRow) {
-            $defaultAnswer = new Defaultvalue();
-            $defaultAnswer->dvid = null;
+            $defaultAnswer = new DefaultValue();
+            $defaultAnswer->dvid = null; //generate new id
             $defaultAnswer->qid = $mappingQuestionIds[$defaultAnswerRow['qid']];
             //find the correct subquestion id
             if ($defaultAnswerRow['sqid'] === 0) {
@@ -540,6 +583,14 @@ class CopySurvey
             $defaultAnswer->scale_id = $defaultAnswerRow['scale_id'];
             $defaultAnswer->specialtype = $defaultAnswerRow['specialtype'];
             if ($defaultAnswer->save()) {
+                $defaultValLng = DefaultValueL10n::model()->findAllByAttributes(['dvid' => $defaultAnswerRow->dvid]);
+                foreach ($defaultValLng as $defaultValLngEntry) {
+                    $langDefaultVal = new DefaultValueL10n();
+                    $langDefaultVal->attributes = $defaultValLngEntry->attributes;
+                    $langDefaultVal->id = null; //new id needed...
+                    $langDefaultVal->dvid = $defaultAnswer->dvid;
+                    $langDefaultVal->save();
+                }
                 $cntDefaultAnswers++;
             }
         }
