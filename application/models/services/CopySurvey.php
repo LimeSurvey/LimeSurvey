@@ -279,7 +279,11 @@ class CopySurvey
             $destinationPluginSetting->value = $sourcePluginSetting->value;
 
             if (!$destinationPluginSetting->save()) {
-                throw new PersistErrorException(gT("Failed to copy survey plugin settings"));
+                throw new PersistErrorException(
+                    gT("Failed to copy survey plugin settings")
+                    . ': '
+                    . json_encode($destinationPluginSetting->getErrors())
+                );
             }
         }
     }
