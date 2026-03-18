@@ -7,7 +7,7 @@
     autoloader="tests/phpstan/phpstan_bootstrap.php"
 >
     <issueHandlers>
-        <!--  Introduced by psalm error restructuring  -->
+        <!-- Issues raised by psalm error level restructuring after upgrade -->
         <InvalidArgument errorLevel="suppress" />
         <InvalidPropertyFetch errorLevel="suppress" />
         <InvalidArrayOffset errorLevel="suppress" />

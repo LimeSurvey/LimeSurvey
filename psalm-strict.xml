@@ -6,11 +6,12 @@
     autoloader="tests/phpstan/phpstan_bootstrap.php"
 >
     <issueHandlers>
-        <!-- Issues caused by psalm error level restructuring after update -->
+        <!-- Issues raised by psalm error level restructuring after upgrade -->
         <RiskyTruthyFalsyComparison errorLevel="suppress" />
         <UnsupportedReferenceUsage errorLevel="suppress" />
         <UnsupportedPropertyReferenceUsage errorLevel="suppress" />
         <UndefinedMagicPropertyAssignment errorLevel="suppress" />
+        <MissingClassConstType errorLevel="suppress" />
     </issueHandlers>
     <projectFiles>
         <file name="application/models/FailedEmail.php" />
