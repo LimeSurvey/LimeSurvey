@@ -2446,8 +2446,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'img' => ' ri-settings-5-fill',
             ),
             'tokens' => array(
-                'title' => gT("Participants"),
-                'description' => gT("Permission to create, update, delete, import, export participants"),
+                'title' => gT("Participants"), 'description' => gT("Permission to create, update, delete, import, export participants"),
                 'img' => ' ri-group-fill',
             ),
             'translations' => array(
