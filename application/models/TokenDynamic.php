@@ -238,7 +238,7 @@ class TokenDynamic extends LSActiveRecord
         // Use CDbCommand for safe SQL generation with proper column quoting
         $db = Yii::app()->db;
         $command = $db->createCommand()
-            ->select('tid')
+            ->select('tid, participant_id')
             ->from($this->tableName());
 
         // Build conditions using Yii's safe quoting methods
@@ -277,6 +277,12 @@ class TokenDynamic extends LSActiveRecord
         }
 
         $results = $command->queryAll();
+
+        // Filter out blocklisted participants (same approach as findUninvited)
+        $cpdbBlocklisted = Participant::model()->getBlacklistedParticipantIds();
+        $results = array_filter($results, function ($item) use ($cpdbBlocklisted) {
+            return empty($item['participant_id']) || !in_array($item['participant_id'], $cpdbBlocklisted);
+        });
 
         // Extract IDs only
         $ids = array_map(function ($item) {
