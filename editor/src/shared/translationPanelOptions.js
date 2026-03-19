@@ -1,5 +1,4 @@
-import { SURVEY_MENU_TITLES } from '@core/helpers'
-import { getSiteUrl } from 'helpers'
+import { getSiteUrl, SURVEY_MENU_TITLES } from 'helpers'
 
 export const translationsPanelOptions = (surveyId) => [
   {
