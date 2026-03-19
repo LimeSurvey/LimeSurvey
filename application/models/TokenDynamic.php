@@ -285,9 +285,7 @@ class TokenDynamic extends LSActiveRecord
         });
 
         // Extract IDs only
-        $ids = array_map(function ($item) {
-            return $item['tid'];
-        }, $results);
+        $ids = array_column($results, 'tid');
 
         return $ids;
     }
