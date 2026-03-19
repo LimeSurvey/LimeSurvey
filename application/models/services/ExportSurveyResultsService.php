@@ -491,7 +491,7 @@ class ExportSurveyResultsService
             return [];
         }
 
-        $tableName = "{{survey_{$surveyId}_timings}}";
+        $tableName = tableExists("{{timings_{$surveyId}}}") ? "{{timings_{$surveyId}}}" : "{{survey_{$surveyId}_timings}}";
         $rows = \Yii::app()->db->createCommand()
             ->select('*')
             ->from($tableName)
