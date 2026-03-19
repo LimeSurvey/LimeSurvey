@@ -16,6 +16,8 @@ import {
 } from 'helpers/options'
 import { Survey } from 'components'
 import { SurveySettings } from 'components/SurveySettings/SurveySettings'
+import { PluginSlot } from 'plugins/PluginSlot'
+import { PLUGIN_SLOTS } from 'plugins/slots'
 
 import { LeftSideBar } from './LeftSideBar/LeftSideBar'
 import { i18nInstance } from '../../i18nInit'
@@ -74,6 +76,13 @@ const Layout = () => {
         return <SurveySettings id={surveyId} />
       case LAYOUT_TYPES.Survey:
         return mainSurveyComponent()
+      case LAYOUT_TYPES.Translations:
+        return (
+          <PluginSlot
+            slotName={PLUGIN_SLOTS.TRANSLATIONS_PANEL}
+            fallback={mainSurveyComponent()}
+          />
+        )
       default:
         return mainSurveyComponent()
     }
