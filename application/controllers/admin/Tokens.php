@@ -3164,7 +3164,7 @@ class Tokens extends SurveyCommonAction
             }
         }
         if (empty($aData['tokenids'])) {
-            $aTokens = TokenDynamic::model($iSurveyId)->findUninvitedIDs($aTokenIds, 0, $bEmail, $SQLemailstatuscondition);
+            $aTokens = TokenDynamic::model($iSurveyId)->findParticipantIDs($aTokenIds, 0, $bEmail, $SQLemailstatuscondition);
             foreach ($aTokens as $aToken) {
                 $aData['tokenids'][] = $aToken;
             }
