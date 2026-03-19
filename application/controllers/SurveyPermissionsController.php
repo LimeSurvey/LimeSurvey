@@ -61,11 +61,14 @@ class SurveyPermissionsController extends LSBaseController
             Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
-        App()->getClientScript()->registerPackage('jquery-tablesorter');
+        App()->getClientScript()->registerPackageScriptOnPosition('jquery-tablesorter', CClientScript::POS_END);
+        // Keep jQuery in head to not break other scripts in head.
+        App()->getClientScript()->registerPackageScriptOnPosition('jquery', CClientScript::POS_HEAD);
         App()->getClientScript()->registerPackage('usermanagement');
         App()->getClientScript()->registerPackage('select2-bootstrap');
 
-
+        // Register client scripts for grid action dropdown in case no users are added yet.
+        App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', [], true);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveypermissions.js', CClientScript::POS_END);
         $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $surveyid;
