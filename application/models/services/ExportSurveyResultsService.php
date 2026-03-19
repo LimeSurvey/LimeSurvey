@@ -247,7 +247,7 @@ class ExportSurveyResultsService
 
         // Add timing columns if enabled
         $hasTimings = $this->loadedSurvey->savetimings == "Y"
-            && tableExists("survey_{$surveyId}_timings");
+            && (tableExists("survey_{$surveyId}_timings") || tableExists("timings_{$surveyId}"));
         $timingFieldKeys = [];
         if ($hasTimings) {
             $timingFieldMap = $this->getTimingFieldMap($metadata['language'] ?? null);
