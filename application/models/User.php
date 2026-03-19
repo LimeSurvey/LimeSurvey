@@ -558,7 +558,7 @@ class User extends LSActiveRecord
      * Gets the buttons for the GridView
      * @return string
      */
-    public function getButtons() : string
+    public function getButtons(): string
     {
         $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
         $permission_users_read = Permission::model()->hasGlobalPermission('users', 'read');
