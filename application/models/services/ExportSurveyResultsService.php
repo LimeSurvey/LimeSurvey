@@ -246,8 +246,15 @@ class ExportSurveyResultsService
         $surveyQuestions = $this->getQuestionFieldMap();
 
         // Add timing columns if enabled
-        $hasTimings = $this->loadedSurvey->savetimings == "Y"
-            && tableExists("survey_{$surveyId}_timings");
+        $timingsTable = null;
+        if ($this->loadedSurvey->savetimings == "Y") {
+            if (tableExists("timings_{$surveyId}")) {
+                $timingsTable = "timings_{$surveyId}";
+            } elseif (tableExists("survey_{$surveyId}_timings")) {
+                $timingsTable = "survey_{$surveyId}_timings";
+            }
+        }
+        $hasTimings = $timingsTable !== null;
         $timingFieldKeys = [];
         if ($hasTimings) {
             $timingFieldMap = $this->getTimingFieldMap($metadata['language'] ?? null);
@@ -275,7 +282,7 @@ class ExportSurveyResultsService
 
             $timingsData = [];
             if ($hasTimings) {
-                $timingsData = $this->fetchTimingsForChunk($surveyId, $chunk);
+                $timingsData = $this->fetchTimingsForChunk($timingsTable, $chunk);
             }
 
             $processedChunk = $this->processResponseChunk(
@@ -474,11 +481,11 @@ class ExportSurveyResultsService
     /**
      * Fetch timing data for a chunk of SurveyDynamic response objects.
      *
-     * @param int $surveyId
+     * @param string $timingsTable The bare table name (without prefix braces) of the timings table
      * @param array $chunk Array of SurveyDynamic objects
      * @return array Timing rows indexed by response ID
      */
-    protected function fetchTimingsForChunk($surveyId, array $chunk)
+    protected function fetchTimingsForChunk($timingsTable, array $chunk)
     {
         $ids = [];
         foreach ($chunk as $response) {
@@ -491,7 +498,7 @@ class ExportSurveyResultsService
             return [];
         }
 
-        $tableName = "{{survey_{$surveyId}_timings}}";
+        $tableName = "{{{$timingsTable}}}";
         $rows = \Yii::app()->db->createCommand()
             ->select('*')
             ->from($tableName)
