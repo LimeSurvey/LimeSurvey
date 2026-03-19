@@ -238,7 +238,7 @@ class TokenDynamic extends LSActiveRecord
         // Use CDbCommand for safe SQL generation with proper column quoting
         $db = Yii::app()->db;
         $command = $db->createCommand()
-            ->select($db->quoteColumnName('tid'))
+            ->select('tid')
             ->from($this->tableName());
 
         // Build conditions using Yii's safe quoting methods
@@ -270,7 +270,7 @@ class TokenDynamic extends LSActiveRecord
             $command->andWhere($db->quoteColumnName('tid') . " IN ($placeholders)", $ids);
         }
 
-        $command->order($db->quoteColumnName('tid'));
+        $command->order('tid');
 
         if ($iMaxEmails) {
             $command->limit($iMaxEmails);
