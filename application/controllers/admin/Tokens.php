@@ -3164,10 +3164,7 @@ class Tokens extends SurveyCommonAction
             }
         }
         if (empty($aData['tokenids'])) {
-            $aTokens = TokenDynamic::model($iSurveyId)->findParticipantIDs($aTokenIds, 0, $bEmail, $SQLemailstatuscondition);
-            foreach ($aTokens as $aToken) {
-                $aData['tokenids'][] = $aToken;
-            }
+            $aData['tokenids'] = TokenDynamic::model($iSurveyId)->findParticipantIDs($aTokenIds, 0, $bEmail, $SQLemailstatuscondition);
         }
 
         if (Yii::app()->request->getParam('action') == "remind") {
