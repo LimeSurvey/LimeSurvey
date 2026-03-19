@@ -252,6 +252,18 @@ class User extends LSActiveRecord
     {
         return $this->getDateFormatted('expires');
     }
+
+    /**
+     * retirnj formatted status
+     */
+    public function getFormattedStatus()
+    {
+        if ($this->isActive()) {
+            return '<span class="text-success ri-check-fill"></span><span class="sr-only">' . gT("Yes") . '</span>';
+        }
+        return '<span class="sr-only">' . gT("No") . '</span>';
+    }
+
     /**
      * @param string $attribute date attribute name
      * @return string formatted date
@@ -845,16 +857,18 @@ class User extends LSActiveRecord
         $permission_read_surveys    = Permission::model()->hasGlobalPermission('surveys', 'read');
         $cols = [
             "expires" => [
-                "name"   => "expires",
-                "header" => gT("Expires"),
+                "name"   => 'expires',
+                "header" => gT('Expires'),
                 "value"  => '$data->formattedExpire',
-                'filter' => false
+                "filter" => false
             ],
             "user_status" => [
-                "name"   => "user_status",
-                "header" => gT("Status"),
-                // Todo : show a Yes/no value Checked/empty
-                // Todo show a Y/N filter
+                "name"   => 'user_status',
+                "header" => gT('Status'),
+                "value"  => '$data->formattedStatus',
+                "type" => 'raw',
+                "htmlOptions" => ['class' => 'text-center'],
+                "filter" => ['Y' => gT('Yes'), 'N' => gT('No')], // Y/N, default is set to 1
             ],
         ];
 
@@ -963,8 +977,14 @@ class User extends LSActiveRecord
         $criteria->compare('t.full_name', $this->full_name, true);
         $criteria->compare('t.users_name', $this->users_name, true);
         $criteria->compare('t.email', $this->email, true);
-        $criteria->compare('t.user_status', $this->user_status, true);
+        if ($this->user_status === "Y") {
+            $criteria->compare('t.user_status', "<>0", true);
+        }
+        if ($this->user_status === "N") {
+            $criteria->compare('t.user_status', "0", true);
+        }
         //filter for 'created' date comparison
+        // TODO must show a specific input and allow > < <= etc ...
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         if ($this->created) {
             try {
