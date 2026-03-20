@@ -10037,7 +10037,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 if ($maxChars <= 0) {
                     $maxChars = ($type === 'U') ? 1048576 : 102400; // 1MB for Huge, 100KB for Long
                 }
-                $maxChars = min($maxChars, 10485760); // 10MB cap
+                $maxChars = min($maxChars, \QuestionBaseRenderer::MAX_CHARS_CAP);
                 $valueLength = mb_strlen($value, 'UTF-8');
                 if ($valueLength > $maxChars) {
                     $displayValue = mb_substr($value, 0, 50, 'UTF-8') . '... [truncated, ' . $valueLength . ' chars total]';

@@ -19,6 +19,9 @@
  */
 abstract class QuestionBaseRenderer extends StaticModel
 {
+    /** @var int Maximum character cap for text questions (10MB) */
+    public const MAX_CHARS_CAP = 10485760;
+
     public $oQuestion;
     public $sSGQA;
     public $sHtml;
@@ -257,7 +260,7 @@ abstract class QuestionBaseRenderer extends StaticModel
     /**
      * Compute the effective maximum characters for text questions.
      * Reads the 'maximum_chars' question attribute, applies the given default
-     * if not set, and caps at 10MB (10485760 chars).
+     * if not set, and caps at {@see self::MAX_CHARS_CAP}.
      *
      * @param int $default Default maximum chars when attribute is not set
      * @return int
@@ -268,7 +271,7 @@ abstract class QuestionBaseRenderer extends StaticModel
         if ($maximum_chars <= 0) {
             $maximum_chars = $default;
         }
-        return min($maximum_chars, 10485760);
+        return min($maximum_chars, self::MAX_CHARS_CAP);
     }
 
     protected function setSubquestions($scaleId = null)
