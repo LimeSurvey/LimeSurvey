@@ -13,20 +13,6 @@ use Yii;
 class ShortUrlTest extends TestBaseClassWeb
 {
     /**
-     * Import and activate the survey, then flush the shared file-based
-     * schema cache so the Docker PHP-FPM process picks up the new
-     * response table columns (schemaCachingDuration=3600 in internal.php).
-     */
-    private function importAndActivateSurvey(string $surveyFile): void
-    {
-        // Flush the file cache so it re-reads the response table schema on the next request.
-        Yii::app()->cache->flush();
-        self::importSurvey($surveyFile);
-        self::$testHelper->activateSurvey(self::$surveyId);
-
-    }
-
-    /**
      * Build a short URL for the given alias and query params, respecting the
      * configured urlFormat ('path' or 'get') from application/config/config.php.
      *
@@ -60,7 +46,8 @@ class ShortUrlTest extends TestBaseClassWeb
      */
     public function testShortUrlOnOpenSurvey($alias, $params, $welcomeText, $firstQuestionText)
     {
-        $this->importAndActivateSurvey(self::$surveysFolder . '/limesurvey_survey_shortUrlOpen.lss');
+        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_shortUrlOpen.lss');
+        self::$testHelper->activateSurvey(self::$surveyId);
 
         parse_str($params, $queryParams);
         $url = $this->buildShortUrl($alias, $queryParams);
@@ -89,8 +76,7 @@ class ShortUrlTest extends TestBaseClassWeb
             $web->next();
 
             // Check the completed text is there
-            $completedText = $web->findByCss(".completed-text");
-
+            $web->findByCss(".completed-text");
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot($web, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
@@ -99,12 +85,6 @@ class ShortUrlTest extends TestBaseClassWeb
                 .  'Screenshot taken.' . PHP_EOL
                 .  self::$testHelper->javaTrace($ex)
             );
-        } finally {
-            // Cleanup must run even when assertions fail, otherwise the response
-            // table (with its QID-based column names) persists and the next dataset
-            // import creates new QIDs that don't match the stale table columns.
-            self::$testSurvey->delete();
-            self::$testSurvey = null;
         }
     }
 
@@ -114,7 +94,8 @@ class ShortUrlTest extends TestBaseClassWeb
      */
     public function testShortUrlOnOpenSurveyWithPrefill($alias, $params)
     {
-        $this->importAndActivateSurvey(self::$surveysFolder . '/limesurvey_survey_shortUrlOpen.lss');
+        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_shortUrlOpen.lss');
+        self::$testHelper->activateSurvey(self::$surveyId);
 
         parse_str($params, $queryParams);
         $queryParams['Q01'] = 'Prefilled';
@@ -141,8 +122,9 @@ class ShortUrlTest extends TestBaseClassWeb
             $web->next();
 
             // Check the completed text is there
-            $completedText = $web->findByCss(".completed-text");
+            $web->findByCss(".completed-text");
 
+            sleep(1);
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot($web, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
@@ -151,9 +133,6 @@ class ShortUrlTest extends TestBaseClassWeb
                 .  'Screenshot taken.' . PHP_EOL
                 .  self::$testHelper->javaTrace($ex)
             );
-        } finally {
-            self::$testSurvey->delete();
-            self::$testSurvey = null;
         }
     }
 
@@ -164,7 +143,6 @@ class ShortUrlTest extends TestBaseClassWeb
     public function testShortUrlOnClosedSurvey($alias, $params, $welcomeText, $firstQuestionText)
     {
         self::importSurvey(self::$surveysFolder . '/survey_archive_shortUrlClosed.lsa');
-        Yii::app()->cache->flush();
 
         parse_str($params, $queryParams);
         $queryParams['token'] = '123456';
@@ -172,10 +150,6 @@ class ShortUrlTest extends TestBaseClassWeb
         $web  = self::$webDriver;
 
         try {
-            // Clear cookies to prevent stale PHP session from a previous dataset run
-            // causing a 500 error when submitting (old srid pointing to deleted response table).
-            $web->manage()->deleteAllCookies();
-
             // Go to welcome
             $web->get($url);
 
@@ -194,8 +168,8 @@ class ShortUrlTest extends TestBaseClassWeb
             $web->next();
 
             // Check the completed text is there
-            $completedText = $web->findByCss(".completed-text");
-
+            $web->findByCss(".completed-text");
+            sleep(1);
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot($web, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
@@ -204,9 +178,6 @@ class ShortUrlTest extends TestBaseClassWeb
                 .  'Screenshot taken.' . PHP_EOL
                 .  self::$testHelper->javaTrace($ex)
             );
-        } finally {
-            self::$testSurvey->delete();
-            self::$testSurvey = null;
         }
     }
 
@@ -217,7 +188,6 @@ class ShortUrlTest extends TestBaseClassWeb
     public function testShortUrlOnClosedSurveyWithPrefill($alias, $params)
     {
         self::importSurvey(self::$surveysFolder . '/survey_archive_shortUrlClosed.lsa');
-        Yii::app()->cache->flush();
 
         parse_str($params, $queryParams);
         $queryParams['token'] = '123456';
@@ -229,10 +199,6 @@ class ShortUrlTest extends TestBaseClassWeb
         $web  = self::$webDriver;
 
         try {
-            // Clear cookies to prevent stale PHP session from a previous dataset run
-            // causing a 500 error when submitting (old srid pointing to deleted response table).
-            $web->manage()->deleteAllCookies();
-
             // Go to welcome
             $web->get($url);
 
@@ -247,8 +213,7 @@ class ShortUrlTest extends TestBaseClassWeb
             $web->next();
 
             // Check the completed text is there
-            $completedText = $web->findByCss(".completed-text");
-
+            $web->findByCss(".completed-text");
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot($web, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
@@ -257,9 +222,6 @@ class ShortUrlTest extends TestBaseClassWeb
                 .  'Screenshot taken.' . PHP_EOL
                 .  self::$testHelper->javaTrace($ex)
             );
-        } finally {
-            self::$testSurvey->delete();
-            self::$testSurvey = null;
         }
     }
 
@@ -273,5 +235,22 @@ class ShortUrlTest extends TestBaseClassWeb
             ["prueba", "lang=it", "Questo è il testo di benvenuto in italiano.", "Domanda 1"],
             ["prueba", "lang=es", "Este es el texto de bienvenida en español.", "Pregunta 1"],
         ];
+    }
+
+    /**
+     * Clean up after each test run
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        if (self::$testSurvey) {
+            // Clear database cache.
+            \Yii::app()->db->schema->refresh();
+            Survey::model()->deleteSurvey(self::$surveyId);
+            self::$testSurvey = null;
+            self::$surveyId = null;
+        }
+        Yii::app()->cache->flush();
     }
 }
