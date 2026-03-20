@@ -256,7 +256,7 @@ class User extends LSActiveRecord
     }
 
     /**
-     * retirnj formatted status
+     * @return formatted status
      */
     public function getFormattedStatus()
     {
@@ -796,7 +796,7 @@ class User extends LSActiveRecord
         return "<input type='checkbox' class='usermanagement--selector-userCheckbox' name='selectedUser[]' value='" . $this->uid . "'>";
     }
     /**
-     * Get column definitin for grid
+     * Get column definition for grid
      * @return array
      */
     public function getManagementColums()
@@ -839,7 +839,11 @@ class User extends LSActiveRecord
                 "value"  => '$data->parentUserName',
                 "header" => gT("Created by"),
             ],
-            // CLSGridView include 2 last columns, add it but hidden
+            /**
+             * CLSGridView include extra columns before the 2 last columns,
+             * Survey have Action column here, User din't have Action column
+             * Add one hidden Action column for CLSGridView
+             */
             [
                 'header' => gT('Action'),
                 'value' => '',
@@ -851,7 +855,7 @@ class User extends LSActiveRecord
     }
 
     /**
-     * =Get additional (optionnale) column definition for grid
+     * Get additional (optional) column definition for grid
      * @return [][]
      */
     public function getAdditionalColumns()
@@ -921,7 +925,7 @@ class User extends LSActiveRecord
     }
 
     /**
-     * @deprecated
+     * @deprecated ?
      * @return array
      */
     public function getColums()
@@ -957,9 +961,8 @@ class User extends LSActiveRecord
         }
 
         $cols[] = array(
-            "name" => "search_parentUserName",
+            "name" => "parentUserName",
             "header" => gT("Created by"),
-            "value" => '$data->getParentUserName',
         );
 
         $cols[] = array(
