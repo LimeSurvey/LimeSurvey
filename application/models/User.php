@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
 * LimeSurvey
 * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
 * All rights reserved.
@@ -64,6 +64,8 @@ class User extends LSActiveRecord
 
     public $searched_value;
 
+    /** @var null|string To be in search */
+    public $search_parentUserName;
     /**
      * @inheritdoc
      * @return User
@@ -833,7 +835,8 @@ class User extends LSActiveRecord
                 "filter" => $this->getDateFilter("created"),
             ],
             [
-                "name"   => "parentUserName",
+                "name"   => "search_parentUserName",
+                "value"  => '$data->parentUserName',
                 "header" => gT("Created by"),
             ],
             // CLSGridView include 2 last columns, add it but hidden
@@ -954,8 +957,9 @@ class User extends LSActiveRecord
         }
 
         $cols[] = array(
-            "name" => "parentUserName",
+            "name" => "search_parentUserName",
             "header" => gT("Created by"),
+            "value" => '$data->getParentUserName',
         );
 
         $cols[] = array(
@@ -976,25 +980,6 @@ class User extends LSActiveRecord
     {
         $dateFilter = "<div class='input-group'>";
         $dateFilter .= "<span class='input-group-text'>&gt;=</span>";
-        /* DateTimePicker widget alternative, but : issue with change event + issue after table reloaed */
-        //~ $dateFilter .= App()->getController()->widget(
-            //~ 'ext.DateTimePickerWidget.DateTimePicker', [
-                //~ 'name'          => get_class($this) . "[" . $column . "]",
-                //~ 'id'            => get_class($this) . "_" . $column,
-                //~ 'value'         => $this->getAttribute($column) ? date(
-                    //~ $dateformatdetails['phpdate'],
-                    //~ strtotime($this->getAttribute($column))
-                //~ ) : '',
-                //~ 'pluginOptions' => [
-                    //~ 'format'           => $dateformatdetails['jsdate'],
-                    //~ 'allowInputToggle' => true,
-                    //~ 'showClear'        => true,
-                    //~ 'theme'            => 'light',
-                    //~ 'locale'           => convertLStoDateTimePickerLocale(App()->session['adminlang'])
-                //~ ]
-            //~ ],
-            //~ true
-        //~ );
         $dateFilter .= Chtml::dateField(
             get_class($this) . "[" . $column . "]",
             $this->getAttribute($column),
@@ -1010,7 +995,7 @@ class User extends LSActiveRecord
     public function search()
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
-        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+        $pageSize = App()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $criteria = new CDbCriteria();
 
         $criteria->compare('t.uid', $this->uid);
@@ -1018,28 +1003,29 @@ class User extends LSActiveRecord
         $criteria->compare('t.users_name', $this->users_name, true);
         $criteria->compare('t.email', $this->email, true);
         if ($this->user_status === "Y") {
-            $criteria->compare('t.user_status', "<>0", true);
+            $criteria->addCondition('t.user_status <> 0 OR t.user_status IS NULL');
         }
         if ($this->user_status === "N") {
-            $criteria->compare('t.user_status', "0", true);
+            $criteria->addCondition('t.user_status = 0');
         }
         //filter for date comparison
         foreach (['created','expires'] as $dateAttribute) {
             if ($this->getAttribute($dateAttribute)) {
                 $datetime = DateTime::createFromFormat("Y-m-d", $this->getAttribute($dateAttribute)); // Fix date
                 if ($datetime) {
-                    $dateCompare = $this->created . ' 00:00:00';
+                    $dateCompare = $this->getAttribute($dateAttribute) . ' 00:00:00';
                     $criteria->compare('t.' . $dateAttribute, ">=" . $dateCompare, true);
                 } else {
                     $this->setAttribute($dateAttribute, null);
                 }
             }
         }
-        $getUser = Yii::app()->request->getParam('User');
-        if (!empty($getUser['parentUserName'])) {
-            $getParentName = $getUser['parentUserName'];
+        /* $this->search_parentUserName is noty set like default Yii grid, set it manually */
+        $searchValues = App()->getRequest()->getParam("User");
+        if (!empty($searchValues['search_parentUserName'])) {
+            $getParentName = $this->search_parentUserName = strval($searchValues['search_parentUserName']);
             $criteria->join = "LEFT JOIN {{users}} u ON t.parent_id = u.uid";
-            $criteria->compare('u.users_name', $getParentName, true, 'OR');
+            $criteria->compare('u.users_name', $getParentName, true);
         }
 
         return new CActiveDataProvider($this, array(
