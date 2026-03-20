@@ -14,10 +14,10 @@ class ShortUrlTest extends TestBaseClassWeb
 {
     private static $lssSurveyId = 926581;
 
-    public function setUp(): void
+    public function checkBefore(): void
     {
-        parent::setUp();
         Survey::model()->resetCache();
+        Yii::app()->emcache->flush();
         $survey = Survey::model()->findByPk(self::$lssSurveyId);
         $this->assertNull(
             $survey,
@@ -59,6 +59,8 @@ class ShortUrlTest extends TestBaseClassWeb
      */
     public function testShortUrlOnOpenSurvey($alias, $params, $welcomeText, $firstQuestionText)
     {
+        $this->checkBefore();
+
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_shortUrlOpen.lss');
         self::$testHelper->activateSurvey(self::$surveyId);
 
@@ -67,10 +69,6 @@ class ShortUrlTest extends TestBaseClassWeb
         $web = self::$webDriver;
 
         try {
-            // Clear cookies to prevent stale PHP session from a previous dataset run
-            // causing a 500 error when submitting (old srid pointing to deleted response table).
-            $web->manage()->deleteAllCookies();
-
             // Go to welcome
             $web->get($url);
 
@@ -107,6 +105,8 @@ class ShortUrlTest extends TestBaseClassWeb
      */
     public function testShortUrlOnOpenSurveyWithPrefill($alias, $params)
     {
+        $this->checkBefore();
+
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_shortUrlOpen.lss');
         self::$testHelper->activateSurvey(self::$surveyId);
 
@@ -117,10 +117,6 @@ class ShortUrlTest extends TestBaseClassWeb
         $web  = self::$webDriver;
 
         try {
-            // Clear cookies to prevent stale PHP session from a previous dataset run
-            // causing a 500 error when submitting (old srid pointing to deleted response table).
-            $web->manage()->deleteAllCookies();
-
             // Go to welcome
             $web->get($url);
 
@@ -136,8 +132,6 @@ class ShortUrlTest extends TestBaseClassWeb
 
             // Check the completed text is there
             $web->findByCss(".completed-text");
-
-            sleep(1);
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot($web, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
