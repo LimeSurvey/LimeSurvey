@@ -830,6 +830,7 @@ class User extends LSActiveRecord
                 "name"   => "created",
                 "header" => gT("Created on"),
                 "value"  => '$data->formattedDateCreated',
+                "filter" => $this->getDateFilter("created"),
             ],
             [
                 "name"   => "parentUserName",
@@ -860,7 +861,7 @@ class User extends LSActiveRecord
                 "name"   => 'expires',
                 "header" => gT('Expires'),
                 "value"  => '$data->formattedExpire',
-                "filter" => false
+                "filter" => $this->getDateFilter("expires"),
             ],
             "user_status" => [
                 "name"   => 'user_status',
@@ -961,9 +962,48 @@ class User extends LSActiveRecord
             "name" => "created",
             "header" => gT("Created on"),
             "value" => '$data->formattedDateCreated',
-
+            "filter" => $this->getDateFilter("created"),
         );
         return $cols;
+    }
+
+    /**
+     * get specific filter for date
+     * @param string $column
+     * @return string the HTML filter for date
+     */
+    public function getDateFilter($column)
+    {
+        $dateFilter = "<div class='input-group'>";
+        $dateFilter .= "<span class='input-group-text'>&gt;=</span>";
+        /* DateTimePicker widget alternative, but : issue with change event + issue after table reloaed */
+        //~ $dateFilter .= App()->getController()->widget(
+            //~ 'ext.DateTimePickerWidget.DateTimePicker', [
+                //~ 'name'          => get_class($this) . "[" . $column . "]",
+                //~ 'id'            => get_class($this) . "_" . $column,
+                //~ 'value'         => $this->getAttribute($column) ? date(
+                    //~ $dateformatdetails['phpdate'],
+                    //~ strtotime($this->getAttribute($column))
+                //~ ) : '',
+                //~ 'pluginOptions' => [
+                    //~ 'format'           => $dateformatdetails['jsdate'],
+                    //~ 'allowInputToggle' => true,
+                    //~ 'showClear'        => true,
+                    //~ 'theme'            => 'light',
+                    //~ 'locale'           => convertLStoDateTimePickerLocale(App()->session['adminlang'])
+                //~ ]
+            //~ ],
+            //~ true
+        //~ );
+        $dateFilter .= Chtml::dateField(
+            get_class($this) . "[" . $column . "]",
+            $this->getAttribute($column),
+            [
+                'class' => "form-control"
+            ]
+        );
+        $dateFilter .= "</div>";
+        return $dateFilter;
     }
 
     /** @inheritdoc */
@@ -983,25 +1023,18 @@ class User extends LSActiveRecord
         if ($this->user_status === "N") {
             $criteria->compare('t.user_status', "0", true);
         }
-        //filter for 'created' date comparison
-        // TODO must show a specific input and allow > < <= etc ...
-        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-        if ($this->created) {
-            try {
-                $dateTimeInput = $this->created . ' 00:00'; //append time
-                $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $dateTimeInput);
-                if ($s) {
-                    $s2 = $s->format('Y-m-d H:i');
-                    $criteria->addCondition('t.created >= \'' . $s2 . '\'');
+        //filter for date comparison
+        foreach(['created','expires'] as $dateAttribute) {
+            if ($this->getAttribute($dateAttribute)) {
+                $datetime = DateTime::createFromFormat("Y-m-d",$this->getAttribute($dateAttribute)); // Fix date
+                if ($datetime) {
+                    $dateCompare = $this->created . ' 00:00:00';
+                    $criteria->compare('t.' . $dateAttribute, ">=" . $dateCompare, true);
                 } else {
-                    throw new Exception('wrong date format.');
+                    $this->setAttribute($dateAttribute, null);
                 }
-            } catch (Exception $e) {
-                //could only mean wrong input from user ...reset filter value
-                $this->created = '';
             }
         }
-
         $getUser = Yii::app()->request->getParam('User');
         if (!empty($getUser['parentUserName'])) {
             $getParentName = $getUser['parentUserName'];
