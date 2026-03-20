@@ -10042,10 +10042,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 if ($valueLength > $maxChars) {
                     $displayValue = mb_substr($value, 0, 50, 'UTF-8') . '... [truncated, ' . $valueLength . ' chars total]';
                     $LEM->addValidityString($sgq, $displayValue, sprintf(gT("Text exceeds the maximum allowed length of %s characters"), $maxChars), $set);
-                    return false;
-                    // False drops the value at rerender, but a participant should never get to this point,
-                    // because the frontend should prevent them from entering too much text.
-                    // This is a safety net for any bypass of frontend checks, and to prevent database errors.
                 }
                 break;
             case 'Q': // Multiple text
