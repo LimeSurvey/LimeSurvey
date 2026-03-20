@@ -10035,9 +10035,13 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $maxChars = ($type === 'U') ? 1048576 : 102400; // 1MB for Huge, 100KB for Long
                 }
                 $maxChars = min($maxChars, 10485760); // 10MB cap
-                if (mb_strlen($value, 'UTF-8') > $maxChars) {
-                    $LEM->addValidityString($sgq, $value, sprintf(gT("Text exceeds the maximum allowed length of %s characters"), $maxChars), $set);
-                    return false;
+                $valueLength = mb_strlen($value, 'UTF-8');
+                if ($valueLength > $maxChars) {
+                    $displayValue = mb_substr($value, 0, 50, 'UTF-8') . '... [truncated, ' . $valueLength . ' chars total]';
+                    $LEM->addValidityString($sgq, $displayValue, sprintf(gT("Text exceeds the maximum allowed length of %s characters"), $maxChars), $set);
+                    // Return true to preserve the value in session (textarea keeps its contents).
+                    // The validity error via addValidityString sets $qvalid=false in _ValidateQuestion(),
+                    // which blocks forward navigation and database persistence.
                 }
                 break;
             case 'Q': // Multiple text
