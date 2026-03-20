@@ -10028,6 +10028,18 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 break;
             case 'U': // Huge text
             case 'T': // Long text
+                // Enforce maximum_chars limit (default 100KB for T, 1MB for U, cap 10MB) - see bug #18275
+                $aAttributes = $LEM->getQuestionAttributesForEM($LEM->getLEMsurveyId(), $qid, isset($_SESSION['LEMlang']) ? $_SESSION['LEMlang'] : '');
+                $maxChars = isset($aAttributes[$qid]['maximum_chars']) ? intval(trim((string) $aAttributes[$qid]['maximum_chars'])) : 0;
+                if ($maxChars <= 0) {
+                    $maxChars = ($type === 'U') ? 1048576 : 102400; // 1MB for Huge, 100KB for Long
+                }
+                $maxChars = min($maxChars, 10485760); // 10MB cap
+                if (mb_strlen($value, 'UTF-8') > $maxChars) {
+                    $LEM->addValidityString($sgq, $value, sprintf(gT("Text exceeds the maximum allowed length of %s characters"), $maxChars), $set);
+                    return false;
+                }
+                break;
             case 'Q': // Multiple text
             case 'S': // Short text
                 /* No validty control ? size ? */

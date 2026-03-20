@@ -193,8 +193,10 @@ class SurveyActivator
                     }
                     break;
                 case Question::QT_U_HUGE_FREE_TEXT:
-                case Question::QT_Q_MULTIPLE_SHORT_TEXT:
                 case Question::QT_T_LONG_FREE_TEXT:
+                    $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "mediumtext";
+                    break;
+                case Question::QT_Q_MULTIPLE_SHORT_TEXT:
                 case Question::QT_SEMICOLON_ARRAY_TEXT:
                 case Question::QT_COLON_ARRAY_NUMBERS:
                     $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";

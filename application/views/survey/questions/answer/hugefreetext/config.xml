@@ -588,8 +588,8 @@
             <category>Input</category>
             <sortorder>100</sortorder>
             <inputtype>integer</inputtype>
-            <default></default>
-            <help>Maximum characters allowed</help>
+            <default>1048576</default>
+            <help>Maximum characters allowed (default: 1048576 = 1MB, max: 10485760 = 10MB)</help>
             <caption>Maximum characters</caption>
             <i18n></i18n>
             <readonly></readonly>
