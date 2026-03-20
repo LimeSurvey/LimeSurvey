@@ -12,6 +12,19 @@ use Yii;
  */
 class ShortUrlTest extends TestBaseClassWeb
 {
+    private static $lssSurveyId = 926581;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        Survey::model()->resetCache();
+        $survey = Survey::model()->findByPk(self::$lssSurveyId);
+        $this->assertNull(
+            $survey,
+            'Survey ' . self::$lssSurveyId . ' already exists before import. '
+            . 'A previous test run likely failed to clean up.'
+        );
+    }
     /**
      * Build a short URL for the given alias and query params, respecting the
      * configured urlFormat ('path' or 'get') from application/config/config.php.
