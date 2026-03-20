@@ -155,8 +155,16 @@ function quickaddfunction() {
             }
             
             // Ensure the generated code is unique
+            // NOTE: getNextCode() may return the same value if code has no numeric suffix
+            // To prevent infinite loops, we append '1' if getNextCode returns unchanged
             while (existingCodes.indexOf(code) !== -1) {
-                code = getNextCode(code);
+                const nextCode = getNextCode(code);
+                // If no numeric suffix exists, getNextCode returns unchanged value
+                if (nextCode === code) {
+                    code = code + '1';
+                } else {
+                    code = nextCode;
+                }
             }
         }
 
