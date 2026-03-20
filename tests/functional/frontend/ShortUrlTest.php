@@ -75,9 +75,11 @@ class ShortUrlTest extends TestBaseClassWeb
             // Check welcome text
             $welcome = $web->findByCss(".survey-welcome");
             $this->assertNotFalse(strpos($welcome->getText(), $welcomeText));
+            self::$testHelper->takeScreenshot($web, __CLASS__ . '_step1' . __FUNCTION__);
 
             // Go to first group
             $web->next();
+            self::$testHelper->takeScreenshot($web, __CLASS__ . '_step2' . __FUNCTION__);
 
             // Check first question
             $question = $web->findByCss(".ls-label-question");
