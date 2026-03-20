@@ -13,6 +13,12 @@ namespace LimeSurvey\Helpers\Update;
  */
 class Update_702 extends DatabaseUpdateBase
 {
+    /**
+     * Alter TEXT columns to MEDIUMTEXT for Long free text (T) and Huge free text (U)
+     * question types in existing MySQL/MariaDB response tables.
+     *
+     * @return void
+     */
     public function up()
     {
         // Only MySQL/MariaDB needs this change.
@@ -55,7 +61,15 @@ class Update_702 extends DatabaseUpdateBase
             foreach ($rows as $row) {
                 $columnName = $surveyId . 'X' . $row['gid'] . 'X' . $row['qid'];
                 if (in_array($columnName, $oTableSchema->columnNames)) {
-                    \alterColumn($sTableName, $columnName, 'mediumtext');
+                    try {
+                        \alterColumn($sTableName, $columnName, 'mediumtext');
+                    } catch (\Exception $e) {
+                        \Yii::log(
+                            "Update_702: Failed to alter column '$columnName' in table '$sTableName': " . $e->getMessage(),
+                            'error',
+                            'application.db.upgrade'
+                        );
+                    }
                 }
             }
         }

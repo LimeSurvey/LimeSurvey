@@ -9878,7 +9878,10 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
      * @param boolean $set : update the invalid string or not. Used for #14649 (invalid default value)
      * @throw Exception
      *
-     * @return boolean true : if question is OK to be put in session, false if must be set to null
+     * @return boolean true if value is valid and should be kept in session;
+     *                  false if value must be set to null (e.g. invalid choice).
+     *                  Note: for T/U text length violations, returns true (value preserved)
+     *                  while still setting an invalidAnswerString to block persistence.
      */
     private static function checkValidityAnswer($type, $value, $sgq, $qinfo, $set = true)
     {
