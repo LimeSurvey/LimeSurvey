@@ -1024,9 +1024,9 @@ class User extends LSActiveRecord
             $criteria->compare('t.user_status', "0", true);
         }
         //filter for date comparison
-        foreach(['created','expires'] as $dateAttribute) {
+        foreach (['created','expires'] as $dateAttribute) {
             if ($this->getAttribute($dateAttribute)) {
-                $datetime = DateTime::createFromFormat("Y-m-d",$this->getAttribute($dateAttribute)); // Fix date
+                $datetime = DateTime::createFromFormat("Y-m-d", $this->getAttribute($dateAttribute)); // Fix date
                 if ($datetime) {
                     $dateCompare = $this->created . ' 00:00:00';
                     $criteria->compare('t.' . $dateAttribute, ">=" . $dateCompare, true);
