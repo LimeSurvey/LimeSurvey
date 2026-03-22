@@ -5275,8 +5275,7 @@ class LimeExpressionManager
                         if (YII_DEBUG) {
                             throw $ex;
                         }
-//                        $this->throwFatalError();
-                        throw $ex;
+                        $this->throwFatalError();
                     }
                     $oResponse->decrypt();
                     if (!$oResponse->encryptSave()) {

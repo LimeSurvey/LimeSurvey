@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['8.1', '8.3']
+        php-versions: [ '8.1', '8.3' ]
     # Env vars for this job
     env:
       DBENGINE: INNODB
@@ -97,17 +97,17 @@ jobs:
         run: |
           cp application/config/config-sample-mysql.php application/config/config.php
           php application/commands/console.php install admin password TravisLS no@email.com verbose
-          # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
-          # TODO: Disable, a lines was added to config file and some tests started to fail.
-          # NB: EmCache is always disabled when debug => 2
-          # NB: There can be a difference in assets used when debug = 0 or 2 (minified version or not)
-          sed -i '60s/.*/        "debug"=>2,/' application/config/config.php
+          # Do NOT set debug=2 here. 
+          # InstallationControllerTest rewrites config.php with debug=0 and PHPUnit's YII_DEBUG constant (set at bootstrap) is immutable.
+          # This causes PHPUnit to use CDummyCache while Apache uses CFileCache, so cache->flush() 
+          # becomes a no-op and Apache serves stale schema entries that breaks subsequent functional tests.
+          # sed -i '60s/.*/        "debug"=>2,/' application/config/config.php
           cat application/config/config.php
 
       # for debugging
-     # - name: Setup upterm session
-     #   uses: lhotari/action-upterm@v1
-     #   if: ${{ contains(matrix.php-versions, '8.1') }}
+      # - name: Setup upterm session
+      #   uses: lhotari/action-upterm@v1
+      #   if: ${{ contains(matrix.php-versions, '8.1') }}
       - name: Test the server
         run: |
           # Test server.
@@ -143,7 +143,7 @@ jobs:
 
       - name: Run functional tests
         env:
-            DOMAIN: localhost
+          DOMAIN: localhost
         run: php vendor/bin/phpunit --testdox --stop-on-failure tests/functional
 
       - name: Upload Screenshots
@@ -334,7 +334,7 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['8.1', '8.3']
+        php-versions: [ '8.1', '8.3' ]
     env:
       DBENGINE: INNODB
     steps:
