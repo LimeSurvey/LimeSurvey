@@ -2,7 +2,7 @@
 /** @var array $questions */
 ?>
 <div id="dlgEditParameter" class="modal fade" role="dialog" tabindex="-1" aria-modal="true"
-     aria-labelledby="dlgEditParameterTitle" aria-label="<?= CHtml::encode(gT('Add URL parameter')) ?>"
+     aria-labelledby="dlgEditParameterTitle"
      data-save-url='<?= Yii::app()->createUrl("surveyAdministration/saveUrlParam") ?>'
 >
 
