@@ -911,6 +911,44 @@ class User extends LSActiveRecord
                 'filter' => false
             );
         }
+
+        /** If you can set superadmin : allow see of superadmin permissions */
+        if (Permission::model()->hasGlobalPermission('superadmin', 'update')) {
+            $cols['isSuperAdmin'] = array(
+                "name" => 'isSuperAdmin',
+                "header" => gT("Super admin"),
+                "value"  => function ($data) {
+                    if ($data->isSuperAdmin) {
+                        return '<span class="text-success ri-check-fill"></span><span class="sr-only">' . gT("Yes") . '</span>';
+                    } else {
+                        return '<span class="sr-only">' . gT("No") . '</span>';
+                    }
+                },
+                "htmlOptions" => ['class' => 'text-center'],
+                "type" => 'raw',
+                "filter" => false
+            );
+        }
+        /**
+         * If you are superadmin : allow see of logi via DB permissions.
+         * Useful for systems that use other authentication methods
+         **/
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            $cols['haveDbAuthentication'] = array(
+                "name" => 'haveDbAuthentication',
+                "header" => gT("Auth DB"), // need short header
+                "value"  => function ($data) {
+                    if ($data->haveDbAuthentication) {
+                        return '<span class="text-success ri-check-fill"></span><span class="sr-only">' . gT("Yes") . '</span>';
+                    } else {
+                        return '<span class="sr-only">' . gT("No") . '</span>';
+                    }
+                },
+                "htmlOptions" => ['class' => 'text-center'],
+                "type" => 'raw',
+                "filter" => false
+            );
+        }
         return $cols;
     }
 
@@ -1105,6 +1143,24 @@ class User extends LSActiveRecord
     public function canLogin()
     {
         return $this->isActive() && !$this->isExpired();
+    }
+
+    /**
+     * Check if user is superadmin for grid
+     * @return boolean
+     */
+    public function getIsSuperAdmin()
+    {
+        return Permission::model()->hasGlobalPermission('superadmin', 'read', $this->uid);
+    }
+
+    /**
+     * Check if user have database autheticatin allowed
+     * @return boolean
+     */
+    public function getHaveDbAuthentication()
+    {
+        return Permission::model()->hasGlobalPermission('auth_db', 'read', $this->uid);
     }
 
     /**
