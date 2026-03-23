@@ -231,6 +231,7 @@ class User extends LSActiveRecord
     }
 
     /**
+     * Return the needed PHP date format for current user
      * @return string
      */
     public function getDateFormat()
@@ -240,44 +241,33 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Show created date formatted for current user
+     * Return a formatted date attribute in current user date format.
+     * @param Object $data see https://www.yiiframework.com/doc/api/1.1/CDataColumn#value-detail
+     * @param string $attribute date attribute name
+     * @return string formatted date
      */
-    public function getFormattedDateCreated()
+    private function getFormattedDate($data, $attribute)
     {
-        return $this->getDateFormatted('created');
+        if ($data->$attribute) {
+            return strval(convertDateTimeFormat($data->$attribute, 'Y-m-d', $this->getDateFormat()));
+        }
+        return "";
     }
 
     /**
-     * Show expire date formatted for current user
-     */
-    public function getFormattedExpire()
+     * get a boolean and return an HTML for grid
+     * @param Object $data see https://www.yiiframework.com/doc/api/1.1/CDataColumn#value-detail
+     * @param string attruibute to use
+     * @return string the html for grid
+     **/
+    private function getFormattedBoolean($data, $attribute)
     {
-        return $this->getDateFormatted('expires');
-    }
-
-    /**
-     * @return formatted status
-     */
-    public function getFormattedStatus()
-    {
-        if ($this->isActive()) {
+        if ($data->$attribute) {
             return '<span class="text-success ri-check-fill"></span><span class="sr-only">' . gT("Yes") . '</span>';
         }
         return '<span class="sr-only">' . gT("No") . '</span>';
     }
 
-    /**
-     * @param string $attribute date attribute name
-     * @return string formatted date
-     */
-    private function getDateFormatted($attribute)
-    {
-        $dateformatdata = getDateFormatData(App()->session['dateformat']);
-        if ($this->$attribute) {
-            return convertDateTimeFormat($this->$attribute, 'Y-m-d', $dateformatdata['phpdate']);
-        }
-        return null;
-    }
     /**
      * Creates new user
      *
@@ -831,7 +821,9 @@ class User extends LSActiveRecord
             [
                 "name"   => "created",
                 "header" => gT("Created on"),
-                "value"  => '$data->formattedDateCreated',
+                "value"  => function ($data) {
+                    return $this->getFormattedDate($data, "created");
+                },
                 "filter" => $this->getDateFilter("created"),
             ],
             [
@@ -867,13 +859,17 @@ class User extends LSActiveRecord
             "expires" => [
                 "name"   => 'expires',
                 "header" => gT('Expires'),
-                "value"  => '$data->formattedExpire',
+                "value"  => function ($data) {
+                    return $this->getFormattedDate($data, "expires");
+                },
                 "filter" => $this->getDateFilter("expires"),
             ],
             "user_status" => [
                 "name"   => 'user_status',
                 "header" => gT('Status'),
-                "value"  => '$data->formattedStatus',
+                "value"  => function ($data) {
+                    return $this->getFormattedBoolean($data, "isActive");
+                },
                 "type" => 'raw',
                 "htmlOptions" => ['class' => 'text-center'],
                 "filter" => ['Y' => gT('Yes'), 'N' => gT('No')], // Y/N, default is set to 1
@@ -918,11 +914,7 @@ class User extends LSActiveRecord
                 "name" => 'isSuperAdmin',
                 "header" => gT("Super admin"),
                 "value"  => function ($data) {
-                    if ($data->isSuperAdmin) {
-                        return '<span class="text-success ri-check-fill"></span><span class="sr-only">' . gT("Yes") . '</span>';
-                    } else {
-                        return '<span class="sr-only">' . gT("No") . '</span>';
-                    }
+                    return $this->getFormattedBoolean($data, "isSuperAdmin");
                 },
                 "htmlOptions" => ['class' => 'text-center'],
                 "type" => 'raw',
@@ -938,11 +930,7 @@ class User extends LSActiveRecord
                 "name" => 'haveDbAuthentication',
                 "header" => gT("Auth DB"), // need short header
                 "value"  => function ($data) {
-                    if ($data->haveDbAuthentication) {
-                        return '<span class="text-success ri-check-fill"></span><span class="sr-only">' . gT("Yes") . '</span>';
-                    } else {
-                        return '<span class="sr-only">' . gT("No") . '</span>';
-                    }
+                    return $this->getFormattedBoolean($data, "haveDbAuthentication");
                 },
                 "htmlOptions" => ['class' => 'text-center'],
                 "type" => 'raw',
@@ -1061,7 +1049,7 @@ class User extends LSActiveRecord
                 }
             }
         }
-        /* $this->search_parentUserName is noty set like default Yii grid, set it manually */
+        /* $this->search_parentUserName is not set like default Yii grid, set it manually */
         $searchValues = App()->getRequest()->getParam("User");
         if (!empty($searchValues['search_parentUserName'])) {
             $getParentName = $this->search_parentUserName = strval($searchValues['search_parentUserName']);
@@ -1124,6 +1112,15 @@ class User extends LSActiveRecord
             $expired = new DateTime($expirationTime) < new DateTime($now);
         }
         return $expired;
+    }
+
+    /**
+     * Check if user is active, used for grid
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive();
     }
 
     /**
