@@ -67,10 +67,9 @@
             $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'surveys-groups-form');
         } else if (target == '#settingsForThisGroup') {
             $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'surveys-groups-form');
-        } else if (target == '#securityForThisGroup') {
-            $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'surveys-groups-permission');
         } else if (target == '#templateSettingsFortThisGroup') {
-            $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'template-options-form');
+            //save button does not make any sense in this tab, so we remove the form id to avoid any issue?
+            $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'surveys-groups-form');
         }
     });
 </script>
