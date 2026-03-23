@@ -18,5 +18,14 @@ class Update_701 extends DatabaseUpdateBase
                 'priority' => 0,
             ]
         );
+
+        if (class_exists("\\LimeSurveyProfessional")) {
+            App()->db->createCommand()->update(
+                '{{plugins}}',
+                ['priority' => 1],
+                'name = :name',
+                [':name' => 'LimeSurveyProfessional']
+            );
+        }
     }
 }
