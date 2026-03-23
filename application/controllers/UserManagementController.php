@@ -1315,8 +1315,14 @@ class UserManagementController extends LSBaseController
             $aResults[$sItem]['title'] = '';
             $model = $this->loadModel($sItem);
             $aResults[$sItem]['title'] = $model->users_name;
+            if (!$model->canEdit()) {
+                $aResults[$sItem]['result'] = false;
+                $aResults[$sItem]['error'] = gT("You are not allowed to update this user expiration date.");
+                continue;
+            }
+            /* Allow to set own expired date : you can set your own date if you still able to connect */
             $model->expires = $expires;
-            if ($model->save(['expires'])) {
+            if ($model->save(true, ['expires'])) {
                 $aResults[$sItem]['result'] = true;
             } else {
                 $aResults[$sItem]['result'] = false;
