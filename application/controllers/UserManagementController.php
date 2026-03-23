@@ -1307,8 +1307,11 @@ class UserManagementController extends LSBaseController
         if (trim((string) $expires) == "") {
             $expires = null;
         } else {
-            $datetimeobj = new Date_Time_Converter($expires, $formatdata['phpdate'] . ' H:i');
-            $expires = $datetimeobj->convert("Y-m-d H:i:s");
+            $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'] . " H:i", $expires);
+            if (!is_object($datetimeobj)) {
+                throw new CHttpException(400, sprintf(gT('Invalid date, please use "%s" format.', 'unescaped'), $formatdata['phpdate'] . " H:i"));
+            }
+            $expires = $datetimeobj->format('Y-m-d H:i:s');
         }
         $aResults = [];
         foreach ($aItems as $sItem) {
