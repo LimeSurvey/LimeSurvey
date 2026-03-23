@@ -1971,7 +1971,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * @return string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
      */
-    public static function saveTranscribeCaptchaOptions(Survey $oSurvey = null)
+    public static function saveTranscribeCaptchaOptions(?Survey $oSurvey = null)
     {
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess', null);
         $registration = App()->request->getPost('usecaptcha_registration', null);

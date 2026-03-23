@@ -508,7 +508,20 @@ class ConditionsAction extends SurveyCommonAction
      */
     protected function copyConditions(array $args)
     {
-        $this->surveyCondition->copyConditions(returnGlobal('copyconditionsfrom'), returnGlobal('copyconditionsto'), Yii::app());
+        $copyconditionsfrom = returnGlobal('copyconditionsfrom');
+        $copyconditionsto = returnGlobal('copyconditionsto');
+
+        // Validate that target questions are selected
+        if (!is_array($copyconditionsto) || count($copyconditionsto) === 0) {
+            throw new CHttpException(400, 'Invalid request: No target question selected.');
+        }
+
+        // Validate that source conditions are selected
+        if (!is_array($copyconditionsfrom) || count($copyconditionsfrom) === 0) {
+            throw new CHttpException(400, 'Invalid request: No conditions selected to copy.');
+        }
+
+        $this->surveyCondition->copyConditions($copyconditionsfrom, $copyconditionsto, Yii::app());
     }
 
     /**

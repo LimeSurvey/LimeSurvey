@@ -9,7 +9,9 @@ use Condition;
 use DefaultValue;
 use DefaultValueL10n;
 use LimeSurvey\Datavalueobjects\CopyQuestionValues;
+use LimeSurvey\Models\Services\Exception\PersistErrorException;
 use LSHttpRequest;
+use PluginSetting;
 use Question;
 use QuestionAttribute;
 use QuestionGroup;
@@ -78,12 +80,25 @@ class CopySurvey
         $destinationSurvey->datecreated = date("Y-m-d H:i:s");
         $destinationSurvey->lastmodified = date("Y-m-d H:i:s");
         $destinationSurvey->attributedescriptions = $this->sourceSurvey->attributedescriptions;
-        if (!$destinationSurvey->save()) {
-            throw new \Exception(gT("Failed to copy survey"));
-        }
+        $transaction = App()->db->beginTransaction();
 
-        //this call is necessary to prevent errors when copying the survey with the configured template
-        Template::model()->getTemplateConfiguration(null, $destinationSurvey->sid)->getApiVersion();
+        try {
+            if (!$destinationSurvey->save()) {
+                throw new \Exception(gT("Failed to copy survey"));
+            }
+
+            //this call is necessary to prevent errors when copying the survey with the configured template
+            Template::model()->getTemplateConfiguration(null, $destinationSurvey->sid)->getApiVersion();
+            $this->copySurveyPluginSettings($destinationSurvey);
+
+            $transaction->commit();
+        } catch (\Throwable $exception) {
+            if ($transaction->getActive()) {
+                $transaction->rollBack();
+            }
+
+            throw $exception;
+        }
 
         $copySurveyResult->setCopiedSurvey($destinationSurvey);
 
@@ -251,6 +266,38 @@ class CopySurvey
             }
         }
         $copySurveyResult->setCntSurveyLanguages($cntCopiedLanguageSettings);
+    }
+
+    /**
+     * Copy survey-scoped plugin settings to the destination survey.
+     *
+     * @param Survey $destinationSurvey
+     * @return void
+     * @throws PersistErrorException
+     */
+    private function copySurveyPluginSettings($destinationSurvey)
+    {
+        $sourcePluginSettings = PluginSetting::model()->findAllByAttributes([
+            'model' => 'Survey',
+            'model_id' => $this->sourceSurvey->sid,
+        ]);
+
+        foreach ($sourcePluginSettings as $sourcePluginSetting) {
+            $destinationPluginSetting = new PluginSetting();
+            $destinationPluginSetting->plugin_id = $sourcePluginSetting->plugin_id;
+            $destinationPluginSetting->model = $sourcePluginSetting->model;
+            $destinationPluginSetting->model_id = $destinationSurvey->sid;
+            $destinationPluginSetting->key = $sourcePluginSetting->key;
+            $destinationPluginSetting->value = $sourcePluginSetting->value;
+
+            if (!$destinationPluginSetting->save()) {
+                throw new PersistErrorException(
+                    gT("Failed to copy survey plugin settings")
+                    . ': '
+                    . json_encode($destinationPluginSetting->getErrors())
+                );
+            }
+        }
     }
 
     /**

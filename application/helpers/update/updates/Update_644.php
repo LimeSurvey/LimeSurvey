@@ -9,5 +9,6 @@ class Update_644 extends DatabaseUpdateBase
      */
     public function up()
     {
+        //Update intentionally left blank for compatibility with Cloud version.
     }
 }

@@ -3835,8 +3835,6 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 */
 function TSVImportSurvey($sFullFilePath)
 {
-    $baselang = 'en'; // TODO set proper default
-
     $aAttributeList = array(); //QuestionAttribute::getQuestionAttributesSettings();
     $tmp = fileCsvToUtf8($sFullFilePath);
 
@@ -3865,6 +3863,12 @@ function TSVImportSurvey($sFullFilePath)
         $adata[] = $rowarray;
     }
     fclose($tmp);
+    /* Check minimal headers */
+    $necessaryHeader = ['class', 'name', 'text'];
+    if (count(array_diff($necessaryHeader, $rowheaders)) > 0) {
+        $results['error'] = gT("The file does not seem to be a valid survey file. The necessary headers are not present.");
+        return $results;
+    }
     unset($rowheaders);
     unset($rowarray) ;
 
@@ -3899,7 +3903,11 @@ function TSVImportSurvey($sFullFilePath)
                 break;
         }
     }
-
+    if (!isset($surveyinfo['language'])) {
+        $results['error'] = gT("The file do not seem to be a valid tab-separated-values survey file. No language set.");
+        return $results;
+    }
+    $baselang = $surveyinfo['language']; // the base language
 
     // Create the survey entry
     $surveyinfo['startdate'] = null;
@@ -3930,9 +3938,6 @@ function TSVImportSurvey($sFullFilePath)
     $sqinfo = array();
     $asinfo = array();
 
-    if (isset($surveyinfo['language'])) {
-        $baselang = $surveyinfo['language']; // the base language
-    }
     /* Keep track of id for group */
     $groupIds = [];
     /* Keep track of id for question (can come from tsv and can be broken : issue #17980 */
