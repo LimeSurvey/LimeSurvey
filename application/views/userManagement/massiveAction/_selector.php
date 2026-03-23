@@ -94,7 +94,7 @@ $aActionsArray = array(
             'keepopen'          => 'yes',
             'showSelected'      => 'yes',
             'selectedUrl'       => App()->createUrl('userManagement/renderSelectedItems/'),
-            'sModalTitle'       => gT('Edit status'),
+            'sModalTitle'       => gT('Set expire date'),
             //'htmlFooterButtons' => [],
             'htmlModalBody'     => App()->getController()->renderPartial('/userManagement/massiveAction/_updateexpires', [], true)
         ),

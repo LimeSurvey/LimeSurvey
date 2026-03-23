@@ -4,7 +4,7 @@ $dateFormatDetails = getDateFormatData(Yii::app()->session['dateformat']);
 <div class="selector--edit-status-container">
     <div class="form">
         <div class="mb-3">
-            <label for="status_selector"><?php eT("Expires:"); ?></label>
+            <label for="expiresPicker"><?php eT("Expires:"); ?></label>
             <div class='col-md-6'>
                 <?php
                 $widget = Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
