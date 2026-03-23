@@ -2377,13 +2377,13 @@ function do_longfreetext($ia)
     $checkconditionFunction = "checkconditions";
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
-    if (intval(trim((string) $aQuestionAttributes['maximum_chars'])) > 0) {
-        // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        $maxlength = intval(trim((string) $aQuestionAttributes['maximum_chars']));
-        $extraclass .= " ls-input-maxchars";
-    } else {
-        $maxlength = "";
+    // Default to 100KB (102400 chars) for long free text, cap at 10MB
+    $maximum_chars = intval(trim((string) $aQuestionAttributes['maximum_chars']));
+    if ($maximum_chars <= 0) {
+        $maximum_chars = 102400;
     }
+    $maxlength = min($maximum_chars, QuestionBaseRenderer::MAX_CHARS_CAP);
+    $extraclass .= " ls-input-maxchars";
 
     if (trim((string) $aQuestionAttributes['display_rows']) != '') {
         $drows = $aQuestionAttributes['display_rows'];
@@ -2456,13 +2456,13 @@ function do_hugefreetext($ia)
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
-    if (intval(trim((string) $aQuestionAttributes['maximum_chars'])) > 0) {
-        // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        $maxlength = intval(trim((string) $aQuestionAttributes['maximum_chars']));
-        $extraclass .= " ls-input-maxchars";
-    } else {
-        $maxlength = "";
+    // Default to 1MB (1048576 chars) for huge free text, cap at 10MB
+    $maximum_chars = intval(trim((string) $aQuestionAttributes['maximum_chars']));
+    if ($maximum_chars <= 0) {
+        $maximum_chars = 1048576;
     }
+    $maxlength = min($maximum_chars, QuestionBaseRenderer::MAX_CHARS_CAP);
+    $extraclass .= " ls-input-maxchars";
 
     if (trim((string) $aQuestionAttributes['display_rows']) != '') {
         $drows = $aQuestionAttributes['display_rows'];

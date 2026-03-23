@@ -9878,7 +9878,10 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
      * @param boolean $set : update the invalid string or not. Used for #14649 (invalid default value)
      * @throw Exception
      *
-     * @return boolean true : if question is OK to be put in session, false if must be set to null
+     * @return boolean true if value is valid and should be kept in session;
+     *                  false if value must be set to null (e.g. invalid choice).
+     *                  Note: for T/U text length violations, returns true (value preserved)
+     *                  while still setting an invalidAnswerString to block persistence.
      */
     private static function checkValidityAnswer($type, $value, $sgq, $qinfo, $set = true)
     {
@@ -10028,6 +10031,19 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 break;
             case 'U': // Huge text
             case 'T': // Long text
+                // Enforce maximum_chars limit (default 100KB for T, 1MB for U, cap 10MB) - see bug #18275
+                $aAttributes = $LEM->getQuestionAttributesForEM($LEM->getLEMsurveyId(), $qid, isset($_SESSION['LEMlang']) ? $_SESSION['LEMlang'] : '');
+                $maxChars = isset($aAttributes[$qid]['maximum_chars']) ? intval(trim((string) $aAttributes[$qid]['maximum_chars'])) : 0;
+                if ($maxChars <= 0) {
+                    $maxChars = ($type === 'U') ? 1048576 : 102400; // 1MB for Huge, 100KB for Long
+                }
+                $maxChars = min($maxChars, \QuestionBaseRenderer::MAX_CHARS_CAP);
+                $valueLength = mb_strlen($value, 'UTF-8');
+                if ($valueLength > $maxChars) {
+                    $displayValue = mb_substr($value, 0, 50, 'UTF-8') . '... [truncated, ' . $valueLength . ' chars total]';
+                    $LEM->addValidityString($sgq, $displayValue, sprintf(gT("Text exceeds the maximum allowed length of %s characters"), $maxChars), $set);
+                }
+                break;
             case 'Q': // Multiple text
             case 'S': // Short text
                 /* No validty control ? size ? */

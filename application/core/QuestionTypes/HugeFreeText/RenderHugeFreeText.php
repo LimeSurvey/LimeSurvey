@@ -28,6 +28,12 @@ class RenderHugeFreeText extends QuestionBaseRenderer
         return;
     }
 
+    /**
+     * Render the Huge free text question textarea.
+     *
+     * @param string $sCoreClasses Additional CSS classes
+     * @return array{0: string, 1: string[]} Rendered HTML and input name(s)
+     */
     public function render($sCoreClasses = '')
     {
         $answer = '';
@@ -50,11 +56,9 @@ class RenderHugeFreeText extends QuestionBaseRenderer
             $extraclass .= " inputkeypad";
         }
 
-        // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        if (intval(trim((string) $this->getQuestionAttribute('maximum_chars'))) > 0) {
-            $maxlength = intval(trim((string) $this->getQuestionAttribute('maximum_chars')));
-            $extraclass .= " ls-input-maxchars";
-        }
+        // 1MB default for huge free text, capped at 10MB
+        $maxlength = $this->getEffectiveMaxChars(1048576);
+        $extraclass .= " ls-input-maxchars";
     
         // text_input_width can not be empty, except with old survey (wher can be empty or up to 12 see bug #11743
         if (trim((string) $this->getQuestionAttribute('text_input_width')) != '') {
