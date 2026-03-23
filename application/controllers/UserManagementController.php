@@ -23,7 +23,7 @@ class UserManagementController extends LSBaseController
                 'allow',
                 'actions' => array(
                     'index', 'addEditUser', 'applyEdit',
-                    'addRole', 'batchAddGroup', 'batchApplyRoles', 'batchPermissions',
+                    'addRole', 'batchAddGroup', 'batchApplyRoles', 'batchPermissions', 'batchExpire',
                     'batchSendAndResetLoginData', 'deleteConfirm',  'deleteMultiple', 'exportUser', 'importUser',
                     'renderSelectedItems', 'renderUserImport', 'saveRole', 'saveThemePermissions',
                     'takeOwnership', 'userPermissions', 'userTemplatePermissions', 'viewUser'
@@ -42,7 +42,7 @@ class UserManagementController extends LSBaseController
         return [
             'postOnly + applyEdit, deleteUser, userActivateDeactivate,'
             . ' batchStatus, saveUserPermissions, saveThemePermissions, saveRole, importUsers, deleteMultiple,'
-            . ' batchSendAndResetLoginData, batchPermissions, batchAddGroup, batchApplyRoles,'
+            . ' batchSendAndResetLoginData, batchPermissions, batchAddGroup, batchApplyRoles, batchExpire, '
             . ' TakeOwnership'
         ];
     }
@@ -1284,6 +1284,52 @@ class UserManagementController extends LSBaseController
             array(
                 'aResults'     => $aResults,
                 'successLabel' => gT('Usergroup updated'),
+                'tableLabels' =>  $tableLabels
+            )
+        );
+    }
+
+    /**
+     * Mass action to set expires
+     *
+     * @return string
+     * @throws CException
+     */
+    public function actionBatchExpires()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        $aItems = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
+        $expires = App()->request->getPost('expires');
+        $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
+        Yii::import('application.libraries.Date_Time_Converter', true);
+        if (trim((string) $expires) == "") {
+            $expires = null;
+        } else {
+            $datetimeobj = new Date_Time_Converter($expires, $formatdata['phpdate'] . ' H:i');
+            $expires = $datetimeobj->convert("Y-m-d H:i:s");
+        }
+        $aResults = [];
+        foreach ($aItems as $sItem) {
+            $aResults[$sItem]['title'] = '';
+            $model = $this->loadModel($sItem);
+            $aResults[$sItem]['title'] = $model->users_name;
+            $model->expires = $expires;
+            if ($model->save(['expires'])) {
+                $aResults[$sItem]['result'] = true;
+            } else {
+                $aResults[$sItem]['result'] = false;
+                $aResults[$sItem]['error'] = gT('An error happen when set expired to the user.');
+            }
+        }
+
+        $tableLabels = array(gT('User ID'), gT('Username'), gT('Expires'));
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => $expires ? gT('Expiration date updated') : gT('Expiration date deleted'),
                 'tableLabels' =>  $tableLabels
             )
         );
