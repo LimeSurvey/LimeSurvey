@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-03-23 13:55:15+00:00\n"
+"POT-Creation-Date: 2026-03-23 22:02:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12405,6 +12405,569 @@ msgstr ""
 msgid "You still have a participants list for your survey. You can remove it under "
 msgstr ""
 
+#: application/helpers/editorTranslations.php:339
+msgid "%s Congrats! You have completed the tour."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:340
+msgid "Add content"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:341
+msgid "All Data"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:342
+msgid "Allow survey embedding"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:343
+msgid "Answer already exists"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:344
+msgid "Are you sure you want to delete the attachments for the selected responses?"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:345
+msgid "Are you sure you want to perform this action?"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:346
+msgid "Array five points"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:347
+msgid "Array increase, same, and decrease"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:348
+msgid "Array ten points"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:349
+msgid "Array yes, no, and uncertain"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:350
+msgid "At least %s pixels"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:351
+msgid "Autosave"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:352
+msgid "Can not be used with active survey."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:353
+msgid "Canvas"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:354
+msgid "Clear filters"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:355
+msgid "Click and type to fill in your question text. You can also use the toolbar for formatting and more options."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:356
+msgid "Click on the survey title to edit it, your changes will be saved automatically."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:357
+msgid "Close interactive help"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:358
+msgid "Complete responses"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:359
+msgid "Completed without answers"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:360
+msgid "Conditions written in ExpressionScript mode can’t be displayed inside the visual condition builder."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:361
+msgid "Confirm Action"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:362
+msgid "Create surveys in seconds with LimeSurvey. Easy to use, secure, and trusted by professionals worldwide. Get started free and unlock fresh insights today!"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:363
+msgid "Current page"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:364
+msgid "Currently embedding is disabled for the application"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:365
+msgid "Currently embedding is disabled for the survey"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:366
+msgid "Customize link"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:367
+msgid "Customize preview"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:368
+msgid "Customize the link preview for your survey"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:369
+msgid "Daily activity isn’t available when datestamps are turned off."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:370
+msgid "Data view"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:371
+msgid "Date/Time Format"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:372
+msgid "Display code"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:373
+msgid "Do you have a minute?"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:374
+msgid "Download file"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:375
+msgid "Drop icon here"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:376
+msgid "Edit text"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:377
+msgid "Embed code"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:378
+msgid "Embed survey options"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:379
+msgid "Embed the survey easily on a website"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:380
+msgid "Enable embedding in the survey settings under publication and access."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:381
+msgid "Export response"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:382
+msgid "Export statistics"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:383
+msgid "Export survey responses"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:384
+msgid "Failed to download QR code"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:385
+msgid "File has been deleted"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:386
+msgid "Filter column"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:387
+msgid "Filter responses"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:388
+msgid "Filtered Data"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:389
+msgid "HEX"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:390
+msgid "Huge text"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:391
+msgid "Incompleted without answers"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:392
+msgid "Interactive help"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:393
+msgid "Last action"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:394
+msgid "List dropdown"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:395
+msgid "Loading overview..."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:396
+msgid "Loading preview"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:397
+msgid "Loading responses..."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:398
+msgid "Loading statistics..."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:399
+msgid "Max"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:400
+msgid "Max ID must be a positive integer"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:401
+msgid "Max ID must be greater than Min ID"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:402
+msgid "MB"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:403
+msgid "Meta title - short and precise"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:404
+msgid "Min ID must be a positive integer"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:405
+msgid "Min ID must be less than Max ID"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:406
+msgid "No files to download!"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:407
+msgid "No files uploaded"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:408
+msgid "Not enabled"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:409
+msgid "Only available for active surveys"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:410
+msgid "Only completed"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:411
+msgid "Open the settings to access theme options and change your survey's design. Try it and change the style of your survey."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:412
+msgid "Organize columns"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:413
+msgid "Overwriting condition from condition builder"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:414
+msgid "Overwriting condition from ExpressionScript"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:415
+msgid "Pin column"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:416
+msgid "Please enable the embedding in the Global settings under Security."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:417
+msgid "Powered by LimeSurvey – The Freshest Online Survey Tool"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:418
+msgid "Preview Settings"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:419
+msgid "Printable survey (.html)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:420
+msgid "queXML format (.xml)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:421
+#: application/helpers/questionHelper.php:860
+#: application/helpers/questionHelper.php:878
+msgid "Random A-Z/Z-A"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:422
+msgid "Reorder questions"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:423
+msgid "Responses can only be updated through the responses list."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:424
+msgid "Responses list"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:425
+msgid "Responses rate"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:426
+msgid "Responses updated!"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:427
+msgid "Results overview"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:428
+msgid "Return to the editor"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:429
+msgid "Rows per page"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:430
+msgid "See how LimeSurvey autosaves your work? You don't have to worry about saving your progress at any time."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:431
+msgid "Select a question type"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:432
+msgid "Select an embed type"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:433
+msgid "Select the plus symbol to add questions, groups or logic to the survey. For now, let's add a simple multiple-choice question."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:434
+msgid "Select the question type for your new question from this menu. Try it and add a simple multiple-choice question for now."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:435
+msgid "Select which columns you want to display inside this table. You can order the columns by drag and drop."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:436
+msgid "selected"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:437
+msgid "Sharing options"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:438
+msgid "Sharing overview"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:439
+msgid "Show in search results"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:440
+msgid "Submit date"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:441
+#: application/helpers/questionHelper.php:882
+msgid "Subquestions order"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:442
+msgid "Survey archive"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:443
+msgid "Switching to the visual condition builder will overwrite the condition written in expression script mode."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:444
+msgid "Tab-separated-values format (.txt)"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:445
+msgid "Tell us"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:446
+msgid "The condition created inside the builder will replace your existing condition written in ExpressionScript mode. This action cannot be undone. Do you want to apply your changes?"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:447
+msgid "The preview doesn’t update automatically while you’re editing. It will refresh once the survey is activated. Click “Update preview” to see the latest changes now."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:448
+msgid "The public registration feature is not supported for embedded surveys. Participants will not see the registration screen; instead, they will see the token form when applicable. To use public registration, share the survey link instead."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:449
+msgid "The theme options allow you to change the appearance of your survey. Try it and change a style of your survey."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:450
+msgid "This is where you create your questions and answer options. A sample question group and question is always created to get you started. Just click on any element to edit it."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:451
+msgid "This script will be overwritten:"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:452
+msgid "Thumbnail"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:453
+msgid "To"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:454
+msgid "Token"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:455
+msgid "Unpin column"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:456
+msgid "Update global settings"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:457
+msgid "Update preview"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:458
+msgid "Update survey settings"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:459
+msgid "Use the left-side menu bar to navigate back to your survey at any time."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:460
+msgid "Use the survey preview to see how your survey will look like for your participants."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:461
+msgid "Use the trash-icon to delete questions  or the X-icons to delete answer options."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:462
+msgid "Use this panel to change question types, logic, and display settings. You can also switch between simple and advanced question settings."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:463
+msgid "View all responses"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:464
+msgid "View results overview"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:465
+msgid "View/Edit response details"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:466
+msgid "We would love to hear your thoughts on our sharing options!"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:467
+msgid "Welcome to LimeSurvey"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:468
+msgid "When you embed your survey on an external site, the code snippet will be visible in the site’s source. Anyone can copy this code and place your survey outside of your intended site. We recommend using it only on sites you manage or fully trust. Your survey and responses will always remain securely stored in your account."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:469
+msgid "When your survey is ready, use this button to activate it. Once activated, you can access the options for sharing your survey."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:470
+msgid "XLS"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:471
+msgid "You can reorder your questions and groups by drag and drop inside the survey structure."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:472
+msgid "You currently have \\\"View only\\\" access."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:473
+msgid "You do not have participants yet. Create or restore archived participants under %sparticipants%s"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:474
+msgid "You need an email tool like gmail or zoho or an email marketing tool like Mailchimp or Hubspot to embed the survey in an email."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:475
+msgid "You still have a participants list for your survey. You can remove it under %sparticipants%s"
+msgstr ""
+
+#: application/helpers/editorTranslations.php:476
+msgid "You will see a preview of your changes on the right side."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:477
+msgid "You're now using the LimeSurvey editor. This quick tutorial will guide you through what's most important in just a few steps."
+msgstr ""
+
+#: application/helpers/editorTranslations.php:478
+msgid "Your condition will no longer be editable in the visual builder. Are you sure you want to apply these changes?"
+msgstr ""
+
 #: application/helpers/export_helper.php:1637
 msgid "Only answer the following question if:"
 msgstr ""
@@ -14299,11 +14862,6 @@ msgstr ""
 msgid "Alphabetical"
 msgstr ""
 
-#: application/helpers/questionHelper.php:860
-#: application/helpers/questionHelper.php:878
-msgid "Random A-Z/Z-A"
-msgstr ""
-
 #: application/helpers/questionHelper.php:865
 msgid "Present answer options in normal, random or alphabetical order"
 msgstr ""
@@ -14314,10 +14872,6 @@ msgstr ""
 
 #: application/helpers/questionHelper.php:881
 msgid "Present subquestions in normal, random or alphabetical order"
-msgstr ""
-
-#: application/helpers/questionHelper.php:882
-msgid "Subquestions order"
 msgstr ""
 
 #: application/helpers/questionHelper.php:892
