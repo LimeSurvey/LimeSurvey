@@ -919,32 +919,31 @@ class UserManagementController extends LSBaseController
                             $oUser->setAttribute($attribute, $value);
                         }
                     }
-                    if ($aNewUser['password'] != ' ') {
+                    if (!empty($aNewUser['password']) && $aNewUser['password'] != ' ') {
                         $oUser->setPassword($aNewUser['password'], false);
                     }
-                    $save = $oUser->save(true);
+                    $save = $oUser->save(true, array_keys($aNewUser));
                     if ($save) {
                         $updated[] = $aNewUser;
                     }
                 }
             } else {
-                if (empty($aNewUser['password'])) {
+                if (empty($aNewUser['password']) || $aNewUser['password'] == ' ') {
                     $aNewUser['password'] = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
                 }
                 /* Some default */
                 $aNewUser['full_name'] = $aNewUser['full_name'] ?? "";
                 $aNewUser['lang'] = $aNewUser['lang'] ?? "auto";
-                $save = $this->createNewUser([
+                $newUserAttributes = $this->createNewUser([
                     'users_name' => $aNewUser['users_name'],
                     'full_name' => $aNewUser['full_name'],
                     'password' => $aNewUser['password'], // AuthDB use User::insertUser this use User::setPassword
                     'email' => $aNewUser['email'],
                     'lang' => $aNewUser['lang'],
                 ]);
-
-                if ($save) {
+                if ($newUserAttributes) {
                     /* Update it with other attributes */
-                    $oUser = User::model()->findByPk($save['uid']);
+                    $oUser = User::model()->findByPk($newUserAttributes['uid']);
                     $aNewUserExtra = array_diff_key($aNewUser, array_flip(['users_name','full_name', 'password', 'email', 'lang']));
                     if (!empty($aNewUserExtra)) {
                         foreach ($aNewUserExtra as $attribute => $value) {
