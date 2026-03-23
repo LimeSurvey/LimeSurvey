@@ -912,6 +912,9 @@ class UserManagementController extends LSBaseController
                         continue;
                     }
                     foreach ($aNewUser as $attribute => $value) {
+                        if ($attribute === 'password') {
+                            continue; // Handle password separately via setPassword()
+                        }
                         if (!empty($value) || !in_array($attribute, $dateAttributes)) {
                             $oUser->setAttribute($attribute, $value);
                         }
@@ -919,7 +922,7 @@ class UserManagementController extends LSBaseController
                     if ($aNewUser['password'] != ' ') {
                         $oUser->setPassword($aNewUser['password'], false);
                     }
-                    $save = $oUser->save();
+                    $save = $oUser->save(true);
                     if ($save) {
                         $updated[] = $aNewUser;
                     }
@@ -940,13 +943,6 @@ class UserManagementController extends LSBaseController
                 ]);
 
                 if ($save) {
-                    $created[] = [
-                        'username' => $aNewUser['users_name'],
-                        'full_name' => $aNewUser['full_name'],
-                        'email' => $aNewUser['email'],
-                        'password' => $aNewUser['password'],
-                        'lang' => $aNewUser['lang'],
-                    ];
                     /* Update it with other attributes */
                     $oUser = User::model()->findByPk($save['uid']);
                     $aNewUserExtra = array_diff_key($aNewUser, array_flip(['users_name','full_name', 'password', 'email', 'lang']));
@@ -956,9 +952,9 @@ class UserManagementController extends LSBaseController
                                 $oUser->setAttribute($attribute, $value);
                             }
                         }
-                        $oUser->save($aNewUserExtra);
-                        $created[] = $aNewUser;
+                        $oUser->save(true, array_keys($aNewUserExtra));
                     }
+                    $created[] = $aNewUser;
                 }
             }
         }
