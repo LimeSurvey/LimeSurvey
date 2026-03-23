@@ -6,7 +6,9 @@ body {
     min-height       : 100vh;
     flex-direction   : column;
 }
-.back_bt13{
-    color: black !important;
-    font-weight: bold !important;
+
+.topbar-back-link {
+    font-weight : 600;
+    font-size   : 1.5rem;
+    color       : black;
 }
