@@ -7,8 +7,8 @@
     <div class="col-12 list-surveys">
         <ul class="nav nav-tabs" id="surveygrouptabsystem" role="tablist">
             <?php if ($model->hasPermission('group', 'read')): ?>
-                <li class="nav-item active">
-                    <a class="nav-link" href="#settingsForThisGroup" data-bs-toggle="tab">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#settingsForThisGroup" data-bs-toggle="tab">
                         <?php eT('Settings for this survey group'); ?>
                     </a>
                 </li>
