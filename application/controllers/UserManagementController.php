@@ -821,11 +821,11 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * Calls up a modal to import users via csv/json file
+     * Render the import-users modal part for a given import format.
      *
-     * @param string $importFormat - Importformat (csv/json) to render
-     * @return string
-     * @throws CException
+     * @param string $importFormat The import format to render; allowed values are 'csv' or 'json'.
+     * @return string The rendered HTML partial for the import modal.
+     * @throws LSUserException If an unsupported import format is provided.
      */
     public function actionRenderUserImport(string $importFormat = 'csv')
     {
@@ -857,11 +857,11 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * Creates users from an uploaded CSV / JSON file
+     * Imports users from an uploaded CSV or JSON file, creating new users or updating existing ones, then redirects to the user index after adding alert message.
      *
-     * @param string $importFormat - format of the imported file - Choice between csv / json
-     * @return string
-     * @throws CException
+     * @param string $importFormat Format of the uploaded file; must be "csv" or "json".
+     * @return string The rendered error partial when the current user lacks create permission; or redirect.
+     * @throws LSUserException If an unsupported $importFormat is provided.
      */
     public function actionImportUsers(string $importFormat = 'csv'): string
     {
@@ -965,12 +965,15 @@ class UserManagementController extends LSBaseController
 
 
     /**
-     * Export users with specific format (json or csv)
+     * Export user records to a downloadable CSV or JSON file.
      *
-     * @param string $outputFormat json or csv
-     * @param int $uid userId   if 0, all users will be exported
-     * @return mixed
-     * @throws CException
+     * Exports either a single user (when $uid > 0) or all users to a temporary file and sends it as a file download.
+     * The exported records are the user attributes with the `password` field cleared.
+     * CSV output uses a UTF-8 BOM and semicolon (;) as the field delimiter with double-quote enclosure.
+     *
+     * @param string $outputFormat 'json' or 'csv' (defaults to 'csv' for unrecognized values)
+     * @param int $uid User ID to export; 0 exports all users
+     * @return string in case of error
      */
     public function actionExportUser(string $outputFormat, int $uid = 0)
     {
