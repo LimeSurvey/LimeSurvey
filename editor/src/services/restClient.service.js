@@ -29,13 +29,32 @@ export class RestClient {
     }
   }
 
-  async post(endpoint, data, additionalHeaders = {}, canThrowError = false) {
+  async post(
+    endpoint,
+    data,
+    additionalHeaders = {},
+    canThrowError = false,
+    config = {}
+  ) {
     try {
       const response = await this.client.post(endpoint, data, {
         headers: { ...this.restHeaders, ...additionalHeaders },
+        ...config, // Spread the config here (for responseType, etc.)
       })
+
+      if (config.responseType === 'blob') {
+        return response
+      }
+
       return response.data
     } catch (error) {
+      if (
+        config.responseType === 'blob' &&
+        error.response?.data instanceof Blob
+      ) {
+        const text = await error.response.data.text()
+        error.response.data = JSON.parse(text)
+      }
       return handleAxiosError(error, { throwError: canThrowError })
     }
   }

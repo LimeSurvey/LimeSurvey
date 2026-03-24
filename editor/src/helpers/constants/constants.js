@@ -112,6 +112,8 @@ export const SURVEY_MENU_TITLES = {
   // sharing
   sharingOverview: 'sharingOverview',
   participantsList: 'participantsList',
+  // translations
+  quickTranslations: 'quick_translations',
 }
 
 export const PAGES = {
