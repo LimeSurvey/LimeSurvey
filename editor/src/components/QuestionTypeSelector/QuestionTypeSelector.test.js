@@ -95,20 +95,22 @@ describe('QuestionTypeSelector', () => {
     )
 
     questionTypeInputs.forEach((input) => {
-      expect(input.parentElement.classList.contains('focus-element')).toBe(false)
+      expect(input.parentElement.classList.contains('focus-element')).toBe(
+        false
+      )
     })
 
     await userEvent.keyboard('[ArrowDown]')
-    expect(questionTypeInputs[0].parentElement.classList.contains('focus-element')).toBe(
-      true
-    )
+    expect(
+      questionTypeInputs[0].parentElement.classList.contains('focus-element')
+    ).toBe(true)
 
     await userEvent.keyboard('[ArrowDown]')
-    expect(questionTypeInputs[1].parentElement.classList.contains('focus-element')).toBe(
-      true
-    )
-    expect(questionTypeInputs[0].parentElement.classList.contains('focus-element')).toBe(
-      false
-    )
+    expect(
+      questionTypeInputs[1].parentElement.classList.contains('focus-element')
+    ).toBe(true)
+    expect(
+      questionTypeInputs[0].parentElement.classList.contains('focus-element')
+    ).toBe(false)
   })
 })
