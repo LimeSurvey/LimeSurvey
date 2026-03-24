@@ -24,7 +24,6 @@ describe('QuestionTypes/Text - ShortText', () => {
     const answer = await waitFor(() =>
       screen.getByTestId('text-question-answer-input')
     )
-    await sleep(200)
     expect(answer).toBeInTheDocument()
     await userEvent.type(answer, 'My name is Tom Riddle.', { delay: 0 })
     expect(answer.value).toBe('My name is Tom Riddle.')

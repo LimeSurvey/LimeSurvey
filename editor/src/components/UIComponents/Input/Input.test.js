@@ -78,7 +78,7 @@ describe('NumericInputWithMinAndMaxValues', () => {
   beforeEach(async () => {
     await renderWithProviders(
       <Input
-        placeholder="Enter your a number of stars"
+        placeholder="Enter a number of stars"
         labelText={'Numeric Input'}
         dataTestId={'numeric-input'}
         type="number"
