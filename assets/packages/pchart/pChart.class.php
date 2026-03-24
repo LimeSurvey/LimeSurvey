@@ -2690,7 +2690,7 @@
      foreach($iValues as $Key => $Value)
       {
        $C_GraphLo = $this->AllocateColor($this->Picture,$this->Palette[$Key]["R"],$this->Palette[$Key]["G"],$this->Palette[$Key]["B"],-20);
-       imagefilledpolygon($this->Picture,$BotPlots[$Key],(count($BotPlots[$Key])+1)/2,$C_GraphLo);
+       imagefilledpolygon($this->Picture,$BotPlots[$Key],$C_GraphLo);
 
        if ( $EnhanceColors ) { $En = -10; } else { $En = 0; }
  
@@ -2714,7 +2714,7 @@
            else
             $Plots[] = $Value2+$i;
           }
-         imagefilledpolygon($this->Picture,$Plots,(count($Plots)+1)/2,$C_GraphLo);
+         imagefilledpolygon($this->Picture,$Plots,$C_GraphLo);
 
          $Index       = count($Plots);
          if ($EnhanceColors ) {$ColorFactor = -20 + ($SpliceHeight - $i) * $ColorRatio; } else { $ColorFactor = 0; }
@@ -2729,7 +2729,7 @@
      for($Key=count($iValues)-1;$Key>=0;$Key--)
       { 
        $C_GraphLo = $this->AllocateColor($this->Picture,$this->Palette[$Key]["R"],$this->Palette[$Key]["G"],$this->Palette[$Key]["B"]);
-       imagefilledpolygon($this->Picture,$TopPlots[$Key],(count($TopPlots[$Key])+1)/2,$C_GraphLo);
+       imagefilledpolygon($this->Picture,$TopPlots[$Key],$C_GraphLo);
 
        if ( $EnhanceColors ) { $En = 10; } else { $En = 0; }
        for($j=0;$j<=count($aTopPlots[$Key])-4;$j=$j+2)
@@ -3139,7 +3139,7 @@
      if ( $G < 0 ) { $G = 0; } if ( $G > 255 ) { $G = 255; }
      if ( $B < 0 ) { $B = 0; } if ( $B > 255 ) { $B = 255; }
 
-     return(imagecolorallocate($Picture,$R,$G,$B));
+     return(imagecolorallocate($Picture,(int)$R,(int)$G,(int)$B));
     }
 
    /* Add a border to the picture */

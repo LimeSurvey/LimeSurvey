@@ -153,7 +153,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
 
             $counter = 0;
             foreach ($lblout as $sLabelName) {
-                $DataSet->SetSerieName(html_entity_decode($sLabelName, null, 'UTF-8'), "Serie" . $counter);
+                $DataSet->SetSerieName(html_entity_decode($sLabelName, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8'), "Serie" . $counter);
                 $counter++;
             }
 
@@ -229,11 +229,11 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
                 }
             } elseif (getLanguageRTL($sLanguageCode)) {
                 foreach ($lbl as $kkey => $kval) {
-                    $lblout[] = UTF8Strrev(html_entity_decode($kkey, null, 'UTF-8') . ' )' . $kval . '(');
+                    $lblout[] = UTF8Strrev(html_entity_decode($kkey, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8') . ' )' . $kval . '(');
                 }
             } else {
                 foreach ($lbl as $kkey => $kval) {
-                    $lblout[] = html_entity_decode($kkey, null, 'UTF-8') . ' (' . $kval . ')';
+                    $lblout[] = html_entity_decode($kkey, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8') . ' (' . $kval . ')';
                 }
             }
 
@@ -594,14 +594,13 @@ class userstatistics_helper
         //M - Multiple choice, therefore multiple fields - one for each answer
         if ($firstletter == "M" || $firstletter == "P") {
             //get SGQ data
-            $qqid = substr($rt, 1);
+            $qqid = substr($rt, 2);
 
             //select details for this question
             $nresult = Question::model()->with('questionl10ns')->find('language=:language AND parent_qid=0 AND t.qid=:qid', array(':language' => $language, ':qid' => $qqid));
             $qtitle = $nresult->title;
             $qtype = $nresult->type;
             $qquestion = flattenText($nresult->questionl10ns[$language]->question);
-            $qlid = $nresult->parent_qid;
             $qother = $nresult->other;
 
             //1. Get list of answers
@@ -611,7 +610,7 @@ class userstatistics_helper
                 'params'    => array(':language' => $language, ':qid' => $qqid)
             ));
             foreach ($result as $row) {
-                $mfield = $rt;
+                $mfield = substr($rt, 1) . "_S" . $row['qid'];
                 $alist[] = array($row->title, flattenText($row->questionl10ns[$language]->question), $mfield);
             }
 
@@ -624,47 +623,53 @@ class userstatistics_helper
         elseif ($firstletter == "T" || $firstletter == "S") {
             //Short and long text
             //search for key
-            $fld = $tr;
-            $fielddata = $fieldmap[$fld];
+            $fld = substr($rt, 1, strlen($rt));
+            if (array_key_exists($fld, $fieldmap)) {
+                $fielddata = $fieldmap[$fld];
 
-            //get question data
-            $nresult = Question::model()->with('questionl10ns')->find('language=:language AND parent_qid=0 AND t.qid=:qid', array(':language' => $language, ':qid' => $fielddata['qid']));
-            $qtitle = $nresult->title;
-            $qtype = $nresult->type;
-            $qquestion = flattenText($nresult->questionl10ns[$language]->question);
-            $mfield = $rt;
+                //get question data
+                $nresult = Question::model()->with('questionl10ns')->find('language=:language AND parent_qid=0 AND t.qid=:qid', array(':language' => $language, ':qid' => $fielddata['qid']));
+                $qtitle = $nresult->title;
+                $qtype = $nresult->type;
+                $qquestion = flattenText($nresult->questionl10ns[$language]->question);
+                $mfield = $rt;
 
-            //Text questions either have an answer, or they don't. There's no other way of quantising the results.
-            // So, instead of building an array of predefined answers like we do with lists & other types,
-            // we instead create two "types" of possible answer - either there is a response.. or there isn't.
-            // This question type then can provide a % of the question answered in the summary.
-            $alist[] = array("Answer", gT("Answer"), $mfield);
-            $alist[] = array("NoAnswer", gT("No answer"), $mfield);
-            if ($qtype == Question::QT_SEMICOLON_ARRAY_TEXT) {
-                $qqid = $fielddata['qid']; // setting $qqid variable to parent qid enables graph for Array Text to be shown
+                //Text questions either have an answer, or they don't. There's no other way of quantising the results.
+                // So, instead of building an array of predefined answers like we do with lists & other types,
+                // we instead create two "types" of possible answer - either there is a response.. or there isn't.
+                // This question type then can provide a % of the question answered in the summary.
+                $alist[] = array("Answer", gT("Answer"), $mfield);
+                $alist[] = array("NoAnswer", gT("No answer"), $mfield);
+                if ($qtype == Question::QT_SEMICOLON_ARRAY_TEXT) {
+                    $qqid = $fielddata['qid']; // setting $qqid variable to parent qid enables graph for Array Text to be shown
+                }
             }
         } //Q - Multiple short text
         elseif ($firstletter == "Q") {
             //Build an array of legitimate qid's for testing later
-            $aQuestionInfo = $fieldmap[substr($rt, 1)];
+            $key = substr($rt, strcspn($rt, '0123456789') - 1);
+            $aQuestionInfo = $fieldmap[substr($rt, strcspn($rt, '0123456789') - 1)];
             $qqid = $aQuestionInfo['qid'];
             $qaid = $aQuestionInfo['aid'];
 
             //get question data
-            $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => $qqid));
+            $nresult = Question::model()->with('questionl10ns')->find('language=:language AND t.parent_qid=0 AND t.qid=:qid', array(':language' => $language, ':qid' => $qqid));
+            $nresultl10ns = $nresult->questionl10ns[$language];
             $qtitle = $nresult->title;
             $qtype = $nresult->type;
-            $qquestion = flattenText($nresult->question);
+            $qquestion = flattenText($nresultl10ns->question);
 
             //get answers / subquestion text
-            $nresult = Question::model()->find(array(
+            $nresult = Question::model()->with('questionl10ns')->find(array(
                 'order'     => 'question_order',
-                'condition' => 'language=:language AND parent_qid=:parent_qid AND title=:title',
+                'condition' => 'language=:language AND t.parent_qid=:parent_qid AND t.title=:title',
                 'params'    => array(':language' => $language, ':parent_qid' => $qqid, ':title' => $qaid)
             ));
-            $atext = flattenText($nresult->question);
-            //add this to the question title
-            $qtitle .= " [$atext]";
+            if ($nresult) {
+                $atext = flattenText($nresult->questionl10ns[$language]->question);
+                //add this to the question title
+                $qtitle .= " [$atext]";
+            }
 
             //even more substrings...
             $mfield = $rt;
@@ -678,8 +683,10 @@ class userstatistics_helper
         } // Ranking OPTION
         elseif ($firstletter == "R") {
             //getting the needed IDs somehow
-            $lengthofnumeral = substr($rt, strpos($rt, "-") + 1, 1);
-            $qqid = substr($rt, 1);
+            $qqid = explode("_", substr($rt, 2))[0];
+            $lengthofnumeral = strlen(substr($rt, strpos($rt, "_R") + 2));
+
+            $qqid = (int) $qqid;
 
             //get question data
             $nresult = Question::model()->with('questionl10ns')->findAll(array(
@@ -705,14 +712,16 @@ class userstatistics_helper
             //loop through answers
             foreach ($result as $row) {
                 //create an array containing answer code, answer and fieldname(??)
+                $mfield = substr($rt, 1, strpos($rt, "-") - 1);
                 $mfield = $rt;
                 $alist[] = array("$row->code", flattenText($row->answerl10ns[$language]->answer), $mfield);
+                //create an array containing answer code, answer and fieldname(??)
             }
         } else {
             if ($firstletter == "|") {
                 // File Upload
                 //get SGQ data
-                $qid = substr($rt, 1);
+                $qqid = substr(explode("_", $rt)[0], 1);
 
                 //select details for this question
                 /**
@@ -838,7 +847,7 @@ class userstatistics_helper
                 } else {
                     $showem = array();
                     $fld = $rt;
-                    $fielddata = $fieldmap[$fld];
+                    $fielddata = $fieldmap[($fld[1] === 'Q') ? substr($fld, 1) : $fld];
 
                     $qtitle = flattenText($fielddata['title']);
                     $qtype = $fielddata['type'];
@@ -896,7 +905,7 @@ class userstatistics_helper
                     }
 
                     //this field is queried using mathematical functions
-                    $fieldname = $rt;
+                    $fieldname = ($rt[1] === 'Q') ? substr($rt, 1) : $rt;
 
                     //special treatment for MS SQL databases
                     if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
@@ -1538,7 +1547,8 @@ class userstatistics_helper
                 // all other question types
                 } else {
                     foreach ($oResponses as $oResponse) {
-                        $sResponseColumn = $al[2];
+                        $pos = strcspn($al[2], '123456789');
+                        $sResponseColumn = ($pos > 1) ? substr($al[2], $pos - 1) : $al[2];
                         if (substr((string) $rt, 0, 1) == "R") {
                             $sSubquestionCode = $al[0];
                             if ($oResponse->$sResponseColumn == $sSubquestionCode) {
@@ -2378,6 +2388,7 @@ class userstatistics_helper
             Yii::app()->session['stats'] = $stats;
 
             if ($bShowGraph == true) {
+                $qqid = explode("_", substr($rt, 1))[0];
                 $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
                 if ($cachefilename) {
                     // Add the image only if constructed
