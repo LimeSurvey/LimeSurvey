@@ -6,18 +6,18 @@
 <div class="row">
     <div class="col-12 list-surveys">
         <ul class="nav nav-tabs" id="surveygrouptabsystem" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" href="#surveysInThisGroup" data-bs-toggle="tab">
+                    <?php eT('Surveys in this group'); ?>
+                </a>
+            </li>
             <?php if ($model->hasPermission('group', 'read')): ?>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="#settingsForThisGroup" data-bs-toggle="tab">
                         <?php eT('Settings for this survey group'); ?>
                     </a>
                 </li>
             <?php endif; ?>
-            <li class="nav-item">
-                <a class="nav-link" href="#surveysInThisGroup" data-bs-toggle="tab">
-                    <?php eT('Surveys in this group'); ?>
-                </a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link" href="#templateSettingsFortThisGroup" data-bs-toggle="tab">
                     <?php eT('Themes options for this survey group'); ?>
@@ -25,12 +25,7 @@
             </li>
         </ul>
         <div class="tab-content">
-            <?php if ($model->hasPermission('group', 'read')): ?>
-                <div id="settingsForThisGroup" class="tab-pane show active">
-                    <?php $this->renderPartial('./surveysgroups/_form', $_data_); ?>
-                </div>
-            <?php endif; ?>
-            <div id="surveysInThisGroup" class="tab-pane">
+            <div id="surveysInThisGroup" class="tab-pane show active">
                 <div class="list-surveys">
                     <h2><?php eT('Surveys in this group:'); ?></h2>
                     <?php
@@ -43,6 +38,11 @@
                     ?>
                 </div>
             </div>
+            <?php if ($model->hasPermission('group', 'read')): ?>
+                <div id="settingsForThisGroup" class="tab-pane">
+                    <?php $this->renderPartial('./surveysgroups/_form', $_data_); ?>
+                </div>
+            <?php endif; ?>
             <div id="templateSettingsFortThisGroup" class="tab-pane">
                 <?php
                 if (is_a($templateOptionsModel, 'TemplateConfiguration')) {
@@ -63,11 +63,13 @@
 <script>
     $('#surveygrouptabsystem a').click(function (e) {
         var target = $(e.target).attr('href');
-        if (target === '#settingsForThisGroup') {
-            $('#save-form-button').attr('data-form-id', 'surveys-groups-form').prop('disabled', false);
-        } else { //by now on all other tabs, the save button should be disabled, because no use.
-            $('#save-form-button').prop('disabled', true);
+        if (target == '#surveysInThisGroup') {
+            $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'surveys-groups-form');
+        } else if (target == '#settingsForThisGroup') {
+            $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'surveys-groups-form');
+        } else if (target == '#templateSettingsFortThisGroup') {
+            //save button does not make any sense in this tab, so we remove the form id to avoid any issue?
+            $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'surveys-groups-form');
         }
-
     });
 </script>
