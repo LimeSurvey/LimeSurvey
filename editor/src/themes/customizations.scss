@@ -37,6 +37,20 @@ a {
   border-radius: 2px;
 }
 
+[data-placeholder]:empty {
+  text-align: left !important;
+  font-style: italic;
+
+  &:before {
+    color: $g-700;
+    cursor: text;
+    content: attr(data-placeholder);
+    -webkit-content: attr(data-placeholder);
+    -moz-content: attr(data-placeholder);
+    -ms-content: attr(data-placeholder);
+  }
+}
+
 .hover-element {
   &:hover {
     outline: 3px solid $hover-color;

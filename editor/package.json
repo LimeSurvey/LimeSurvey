@@ -1,6 +1,6 @@
 {
   "name": "limesurvey-editor",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "homepage": ".",
   "private": true,
   "type": "module",
