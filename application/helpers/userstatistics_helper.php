@@ -623,7 +623,7 @@ class userstatistics_helper
         elseif ($firstletter == "T" || $firstletter == "S") {
             //Short and long text
             //search for key
-            $fld = substr($rt, 1, strlen($rt));
+            $fld = $rt;
             if (array_key_exists($fld, $fieldmap)) {
                 $fielddata = $fieldmap[$fld];
 
