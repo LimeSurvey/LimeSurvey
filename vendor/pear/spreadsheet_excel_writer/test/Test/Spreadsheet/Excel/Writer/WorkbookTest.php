@@ -29,11 +29,11 @@ class Test_Spreadsheet_Excel_Writer_WorkbookTest extends Test_Spreadsheet_Excel_
         return $workbook;
     }
 
-    /**
-     * @depends testSetVersion
-     */
-    public function testWriteSingleCell(Spreadsheet_Excel_Writer $workbook)
+    public function testWriteSingleCell()
     {
+        $workbook = $this->getNewWorkbook();
+        $workbook->setVersion(8);
+
         $sheet = $workbook->addWorksheet("Example");
         $sheet->write(0, 0, "Example");
 

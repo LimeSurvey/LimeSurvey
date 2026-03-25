@@ -69,7 +69,7 @@ class UniqueNotification extends Notification
     }
 
     /** @inheritdoc */
-    public static function broadcast(array $options, array $users = null)
+    public static function broadcast(array $options, ?array $users = null)
     {
         // Get all users if no $users were given
         if ($users === null) {

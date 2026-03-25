@@ -18,7 +18,7 @@ use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 use Facebook\WebDriver\WebDriverExpectedCondition;
-use Facebook\WebDriver\Exception\TimeOutException;
+use Facebook\WebDriver\Exception\TimeoutException;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\UnrecognizedExceptionException;
 
@@ -151,7 +151,7 @@ class TestBaseClassWeb extends TestBaseClass
                     WebDriverBy::id('user')
                 )
             );
-        } catch (TimeOutException $ex) {
+        } catch (TimeoutException $ex) {
             //$name =__DIR__ . '/_output/loginfailed.png';
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder .'/FailedLogin.png';
@@ -174,16 +174,27 @@ class TestBaseClassWeb extends TestBaseClass
         self::$webDriver->click($submit);
 
         if ($wait) {
-            self::$webDriver->wait()->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::className('welcome')
-                )
-            );
-            self::ignoreWelcomeModal();
-            self::ignoreEditorModal();
-            self::ignoreAdminNotification();
-            sleep(3);
-            self::ignoreAdminNotification();
+            try {
+                self::$webDriver->wait(10)->until(
+                    WebDriverExpectedCondition::presenceOfElementLocated(
+                        WebDriverBy::className('welcome')
+                    )
+                );
+                self::ignoreWelcomeModal();
+                self::ignoreEditorModal();
+                self::ignoreAdminNotification();
+                sleep(3);
+                self::ignoreAdminNotification();
+            } catch (TimeoutException $ex) {
+                $screenshot = self::$webDriver->takeScreenshot();
+                $filename = self::$screenshotsFolder . '/FailedLoginWelcome.png';
+                file_put_contents($filename, $screenshot);
+                self::assertTrue(
+                    false,
+                    ' Screenshot in ' . $filename . PHP_EOL .
+                    'Could not find element with class "welcome" after login. The login might have failed or the page did not load.'
+                );
+            }
         }
 
         /*
@@ -194,7 +205,7 @@ class TestBaseClassWeb extends TestBaseClass
                     WebDriverBy::id('welcome-jumbotron')
                 )
             );
-        } catch (TimeOutException $ex) {
+        } catch (TimeoutException $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder .'/FailedLogin.png';
             file_put_contents($filename, $screenshot);

@@ -3243,7 +3243,7 @@ function do_array_texts($ia)
     $isInteger = 0;
     $inputnames             = [];
 
-    if (ctype_digit(trim((string) $aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings'] != "")) {
+    if (ctype_digit(trim((string) $aQuestionAttributes['repeat_headings'])) && trim((string) $aQuestionAttributes['repeat_headings']) != "") {
         $repeatheadings     = intval($aQuestionAttributes['repeat_headings']);
         $minrepeatheadings  = 0;
     }
@@ -3693,7 +3693,7 @@ function do_array_multiflexi($ia)
         $caption            .= gT("Please select an answer for each combination.");
     }
 
-    if (ctype_digit(trim((string) $aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings'] != "")) {
+    if (ctype_digit(trim((string) $aQuestionAttributes['repeat_headings'])) && trim((string) $aQuestionAttributes['repeat_headings']) != "") {
         $repeatheadings     = intval($aQuestionAttributes['repeat_headings']);
         $minrepeatheadings  = 0;
     }
@@ -3767,7 +3767,7 @@ function do_array_multiflexi($ia)
         $aSubquestions = $orderingService->getOrderedSubQuestions($question, 0, $sSurveyLanguage);
 
 
-        if (trim($aQuestionAttributes['parent_order'] != '')) {
+        if (trim((string) $aQuestionAttributes['parent_order']) != '') {
             $iParentQID = (int) $aQuestionAttributes['parent_order'];
             $aResult    = [];
             $sessionao  = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['answer_order'] ?? [];
@@ -4183,7 +4183,7 @@ function do_array_dual($ia)
         $answertypeclass .= " radio";
         $doDualScaleFunction = "doDualScaleRadio";
     }
-    if (ctype_digit(trim((string) $aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings'] != "")) {
+    if (ctype_digit(trim((string) $aQuestionAttributes['repeat_headings'])) && trim((string) $aQuestionAttributes['repeat_headings']) != "") {
         $repeatheadings = intval($aQuestionAttributes['repeat_headings']);
         $minrepeatheadings = 0;
     }

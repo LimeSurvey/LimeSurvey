@@ -89,7 +89,8 @@ class SurveyTemplate implements CommandInterface
                 )->toArray()
             );
         }
-        $language = (($request->getData('language') ?? $survey->language) ?? 'en');
+        $language = $request->getData('language', $survey->language);
+        $language = $language ?? 'en';
         $languageSettings = $this
             ->surveyLanguageSetting
             ->find('surveyls_survey_id = :sid and surveyls_language = :language', [
