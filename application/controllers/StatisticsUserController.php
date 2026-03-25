@@ -305,7 +305,7 @@ class StatisticsUserController extends SurveyController
                     $count = count($results);
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
                     for ($i = 0; $i < $count; $i++) {
-                        $allfields[] = $flt->type . "_R" . $SGQidentifier . $results[$i] . "-" . strlen($i);
+                        $allfields[] = $flt->type . "Q" . $SGQidentifier . "_R" . $results[$i]->code . "-" . strlen($i);
                     }
                     break;
                 //Boilerplate questions are only used to put some text between other questions -> no analysis needed
