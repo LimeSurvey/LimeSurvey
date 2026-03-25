@@ -43,6 +43,10 @@ class UpdateDBCommand extends CConsoleCommand
             Yii::import('application.helpers.update.update_helper', true);
             Yii::import('application.helpers.update.updatedb_helper', true);
             Yii::import('application.helpers.update.update_helper', true);
+            /** Needed in update 470 */
+            Yii::import('application.helpers.expressions.em_manager_helper', true);
+            /** Needed by em_manager_helper */
+            Yii::import('application.helpers.replacements_helper', true);
             $result = db_upgrade_all($currentDbVersion);
             if ($result) {
                 echo "Database has been successfully upgraded to version $newDbVersion \n";
