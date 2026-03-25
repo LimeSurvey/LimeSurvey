@@ -7353,7 +7353,6 @@ class LimeExpressionManager
                     $valParts[] = "  isValidSum" . $arg['qid'] . "=true;\n";    // assume valid until proven otherwise
                     $valParts[] = "  isValidOther" . $arg['qid'] . "=true;\n";    // assume valid until proven otherwise
                     $valParts[] = "  isValidOtherComment" . $arg['qid'] . "=true;\n";    // assume valid until proven otherwise
-                    echo $arg['qid'] . "<br>";
                     foreach ($validationEqns as $vclass => $validationEqn) {
                         if ($validationEqn == '') {
                             continue;
