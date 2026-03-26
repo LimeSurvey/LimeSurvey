@@ -655,23 +655,17 @@ class UpdateForm extends CFormModel
                     Yii::app()->session['security_update'] = $security_update_available;
                     Yii::app()->session['update_stability_labels'] = array_keys($stabilityLabels);
 
-                    // If only updates available are unstable, display in a different style
-                    if (count($filteredUpdates) > 0 && $unstable_update_available && !$security_update_available) {
-                        $allUnstable = true;
-                        foreach ($filteredUpdates as $update) {
-                            if (in_array($update->branch, ['master','5.x','3.x-LTS'])) {
-                                $allUnstable = false;
-                                break;
-                            }
-                        }
-                        Yii::app()->session['unstable_update'] = $allUnstable;
+                    // If only one update is available and it's an unstable one,
+                    // then it will be displayed in a different color
+                    if (count($filteredUpdates) == 1 && $unstable_update_available) {
+                        Yii::app()->session['unstable_update'] = true;
                     } else {
                         Yii::app()->session['unstable_update'] = false;
                     }
 
                     $next_update_check = $today->add(new DateInterval('P1D'));
                     Yii::app()->session['next_update_check'] = $next_update_check;
-                    $updates = array('result' => $update_available, 'security_update' => $security_update_available, 'unstable_update' => Yii::app()->session['unstable_update']);
+                    $updates = array('result' => $update_available, 'security_update' => $security_update_available, 'unstable_update' => $unstable_update_available);
                 } else {
                     $next_update_check = $today->add(new DateInterval('P1D'));
                     Yii::app()->session['next_update_check'] = $next_update_check;
