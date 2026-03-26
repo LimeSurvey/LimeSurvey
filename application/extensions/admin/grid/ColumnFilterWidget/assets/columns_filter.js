@@ -10,7 +10,10 @@ function initColumnFilter()
     $('#' + modalId + '-submit').on('click', function (e) {
         e.preventDefault();
         var form = $('#' + modalId);
-        var target = $(form).data('target');
+        var target = 'survey-grid'; // Old default, updated in 6.17.0
+        if ($(form).data('target')) {
+            target = $(form).data('target');
+        }
         var model = $('#' + modalId + ' input.model-name').val();
         var filterData = $('#' + modalId + ' .checkbox input:checked').map(function () {
             if ($(this).val().trim() !== '') {

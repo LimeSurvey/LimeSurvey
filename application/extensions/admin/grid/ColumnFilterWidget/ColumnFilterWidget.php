@@ -6,6 +6,7 @@ Yii::import('zii.widgets.grid.CGridView');
  * ColumnFilterWidget provides column filtering functionality for GridViews.
  * It allows users to filter the visible columns in a grid based on the available and selected columns.
  */
+
 class ColumnFilterWidget extends CWidget
 {
     /**

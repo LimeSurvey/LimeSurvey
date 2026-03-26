@@ -255,6 +255,14 @@ class User extends LSActiveRecord
     }
 
     /**
+     * @deprecated 6.17.0
+     */
+    public function getFormattedDateCreated()
+    {
+        return $this->getFormattedDate($this, 'created');
+    }
+
+    /**
      * get a boolean and return an HTML for grid
      * @param Object $data see https://www.yiiframework.com/doc/api/1.1/CDataColumn#value-detail
      * @param string attruibute to use
@@ -922,7 +930,7 @@ class User extends LSActiveRecord
             );
         }
         /**
-         * If you are superadmin : allow see of logi via DB permissions.
+         * If you are superadmin : allow see of login via DB permissions.
          * Useful for systems that use other authentication methods
          **/
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -1009,7 +1017,7 @@ class User extends LSActiveRecord
     {
         $dateFilter = "<div class='input-group'>";
         $dateFilter .= "<span class='input-group-text'>&gt;=</span>";
-        $dateFilter .= Chtml::dateField(
+        $dateFilter .= CHtml::dateField(
             get_class($this) . "[" . $column . "]",
             $this->getAttribute($column),
             [
@@ -1152,7 +1160,7 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Check if user have database autheticatin allowed
+     * Check if user have database authentication allowed
      * @return boolean
      */
     public function getHaveDbAuthentication()
