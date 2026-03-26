@@ -507,46 +507,4 @@ class LayoutHelper
         $result = App()->getPluginManager()->dispatchEvent($event);
         return $result->get('html');
     }
-
-    /**
-     * todo: document me...
-     *
-     * @deprecated not used anymore
-     * @param array $aData
-     */
-    /*
-    public function renderGeneralTopbarAdditions(array $aData)
-    {
-        $aData['topBar'] = $aData['topBar'] ?? [];
-        $aData['topBar'] = array_merge(
-            [
-                'type' => 'survey',
-                'sid' => $aData['sid'],
-                'gid' => $aData['gid'] ?? 0,
-                'qid' => $aData['qid'] ?? 0,
-                'showSaveButton' => false,
-                'showCloseButton' => false,
-            ],
-            $aData['topBar']
-        );
-
-        if (isset($aData['qid'])) {
-            $aData['topBar']['type'] = $aData['topBar']['type'] ?? 'question';
-        } elseif (isset($aData['gid'])) {
-            $aData['topBar']['type'] = $aData['topBar']['type'] ?? 'group';
-        } elseif (isset($aData['surveyid'])) {
-            $sid = $aData['sid'];
-            $oSurvey       = Survey::model()->findByPk($sid);
-            $respstatsread = Permission::model()->hasSurveyPermission($sid, 'responses', 'read')  ||
-                Permission::model()->hasSurveyPermission($sid, 'statistics', 'read') ||
-                Permission::model()->hasSurveyPermission($sid, 'responses', 'export');
-            $surveyexport = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
-            $oneLanguage  = (count($oSurvey->allLanguages) == 1);
-            $aData['respstatsread'] = $respstatsread;
-            $aData['surveyexport']  = $surveyexport;
-            $aData['onelanguage']   = $oneLanguage;
-            $aData['topBar']['type'] = $aData['topBar']['type'] ?? 'survey';
-        }
-        Yii::app()->getController()->renderPartial("/admin/survey/topbar/topbar_additions", $aData);
-    }*/
 }

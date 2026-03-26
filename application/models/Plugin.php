@@ -226,41 +226,6 @@ class Plugin extends LSActiveRecord
         }
     }
 
-
-    /**
-     * Action buttons in plugin list.
-     * @deprecated 6.0
-     * @return string HTML
-     */
-    public function getActionButtons()
-    {
-        $output = '';
-        if (Permission::model()->hasGlobalPermission('settings', 'update')) {
-            $output .= "<div class='icon-btn-row'>";
-            if ($this->getLoadError()) {
-                $reloadUrl = Yii::app()->createUrl(
-                    'admin/pluginmanager',
-                    [
-                        'sa' => 'resetLoadError',
-                        'pluginId' => $this->id
-                    ]
-                );
-                $output .= "<a href='" . $reloadUrl . "' data-bs-toggle='tooltip' title='" . gT('Attempt plugin reload') . "' class='btn btn-outline-secondary btn-sm btntooltip'><span class='ri-refresh-line'></span></a>";
-            } elseif ($this->active == 0) {
-                $output .= $this->getActivateButton();
-            } else {
-                $output .= $this->getDeactivateButton();
-            }
-
-            if ($this->active == 0) {
-                $output .= $this->getUninstallButton();
-            }
-            $output .= "</div>";
-        }
-
-        return $output;
-    }
-
     /**
      * @deprecated 6.0
      * @return string HTML
