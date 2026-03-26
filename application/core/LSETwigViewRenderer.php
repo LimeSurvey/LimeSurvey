@@ -174,7 +174,7 @@ window.addEventListener('message', function(event) {
             }
 
             $sHtml     = $this->convertTwigToHtml($line, $aData, $oTemplate);
-            
+
             $sEmHiddenInputs = LimeExpressionManager::FinishProcessPublicPage(true);
             if ($sEmHiddenInputs) {
                 $sHtml = str_replace(
@@ -709,10 +709,12 @@ window.addEventListener('message', function(event) {
                 foreach ($oTemplate->oOptions as $key => $value) {
                     // TODO: Same issue as commit 2972aea41c51c74db95bfe40c337ae839471152c
                     // Options are not loaded the same way in all places.
-                    if (!is_string($value)) {
+                    if ($value instanceof stdClass) {
                         $value = 'N/A';
                     }
-                    $aData["aSurveyInfo"]["options"][$key] = $value;
+                    // Note that $value can also be a SimpleXMLElement
+                    // if force_xmlsettings_for_survey_rendering is activated
+                    $aData["aSurveyInfo"]["options"][$key] = (string)$value;
                 }
             }
         } else {

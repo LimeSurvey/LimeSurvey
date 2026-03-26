@@ -1435,6 +1435,7 @@ class TemplateManifest extends TemplateConfiguration
                 $aOptions['optionAttributes'][$key]['category'] = !empty($option['category']) ? (string)$option['category'] : gT('Simple options');
                 $aOptions['optionAttributes'][$key]['width'] = !empty($option['width']) ? (string)$option['width'] : '2';
                 $aOptions['optionAttributes'][$key]['library'] = !empty($option['library']) ? (string)$option['library'] : '';
+                $aOptions['optionAttributes'][$key]['colorSwatch'] = !empty($option['colorSwatch']) ? (bool)$option['colorSwatch'] : '';
                 /* rows for textarea */
                 $aOptions['optionAttributes'][$key]['rows'] = !empty($option['rows']) ? (string)$option['rows'] : '4';
                 $aOptions['optionAttributes'][$key]['options'] = !empty($option['options']) ? (string)$option['options'] : '';
