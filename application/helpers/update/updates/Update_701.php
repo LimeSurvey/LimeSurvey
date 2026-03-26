@@ -24,7 +24,7 @@ class Update_701 extends DatabaseUpdateBase
             ->select('id')
             ->from('{{plugins}}')
             ->where('name = :name', [':name' => 'LimeSurveyProfessional']);
-        
+
         if ($command->queryRow()) {
             $this->db->createCommand()->update(
                 '{{plugins}}',
