@@ -411,24 +411,6 @@ class SurveymenuEntryController extends SurveyCommonAction
         }
     }
 
-
-    /**
-     * Returns the data model based on the primary key given in the GET variable.
-     * If the data model is not found, an HTTP exception will be raised.
-     * @param integer $id the ID of the model to be loaded
-     * @return SurveymenuEntries the loaded model
-     * @throws CHttpException
-     * * @deprecated do not use this function in future
-     */
-    public function loadModel($id)
-    {
-        $model = SurveymenuEntries::model()->findByPk($id);
-        if ($model === null) {
-                    throw new CHttpException(404, 'The requested page does not exist.');
-        }
-        return $model;
-    }
-
     /**
      * Performs the AJAX validation.
      * @param SurveymenuEntries $model the model to be validated

@@ -557,7 +557,10 @@ class LimesurveyApi
             $newUserGroup->name = $db_group_name;
             $newUserGroup->description = $db_group_description;
             if ($newUserGroup->save()) {
-                \UserInGroup::model()->insertRecords(array('ugid' => $newUserGroup->getPrimaryKey(), 'uid' => 1));
+                $newUserInGroup = new \UserInGroup();
+                $newUserInGroup->ugid = $newUserGroup->getPrimaryKey();
+                $newUserInGroup->uid = 1;
+                $newUserInGroup->save();
                 return true;
             } else {
                 return false;
@@ -588,8 +591,11 @@ class LimesurveyApi
                     throw new InvalidArgumentException('user must not be group owner');
                 } else {
                     $user_in_group = $this->getUserInGroup($ugid, $uid);
-                    if (empty($user_in_group) && \UserInGroup::model()->insertRecords(array('ugid' => $ugid, 'uid' => $uid))) {
-                        return true;
+                    if (empty($user_in_group)) {
+                        $newUserInGroup = new \UserInGroup();
+                        $newUserInGroup->ugid = $ugid;
+                        $newUserInGroup->uid = $uid;
+                        return $newUserInGroup->save();
                     } else {
                         return false;
                     }

@@ -972,31 +972,6 @@ JAVASCRIPT
     }
 
     /**
-     * Load menu bar related to a template.
-     *
-     * @access protected
-     * @param string $screenname
-     * @param string $editfile
-     * @param string $screens
-     * @param string $tempdir
-     * @param string $templatename
-     * @return void
-     * @deprecated ? 151005
-     */
-    protected function templatebar($screenname, $editfile, $screens, $tempdir, $templatename)
-    {
-        $aData = array();
-        $aData['screenname'] = $screenname;
-        $aData['editfile'] = $editfile;
-        $aData['screens'] = $screens;
-        $aData['tempdir'] = $tempdir;
-        $aData['templatename'] = $templatename;
-        $aData['userthemerootdir'] = Yii::app()->getConfig('userthemerootdir');
-
-        $this->getController()->renderPartial("/admin/themes/templatebar_view", $aData);
-    }
-
-    /**
      * Load CodeMirror editor and various files information.
      *
      * @access protected

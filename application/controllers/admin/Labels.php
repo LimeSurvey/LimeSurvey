@@ -78,7 +78,8 @@ class Labels extends SurveyCommonAction
             // now read tempdir and copy authorized files only
             $folders = array('flash', 'files', 'images');
             foreach ($folders as $folder) {
-                list($_aImportedFilesInfo, $_aErrorFilesInfo) = $this->filterImportedResources($extractdir . "/" . $folder, $destdir . $folder);
+                $filterImportedService = new \LimeSurvey\Models\Services\FilterImportedResources();
+                list($_aImportedFilesInfo, $_aErrorFilesInfo) = $filterImportedService->filterImportedResources($extractdir . "/" . $folder, $destdir . $folder);
                 $aImportedFilesInfo = array_merge($aImportedFilesInfo, $_aImportedFilesInfo);
                 $aErrorFilesInfo = array_merge($aErrorFilesInfo, $_aErrorFilesInfo);
             }
@@ -608,53 +609,6 @@ class Labels extends SurveyCommonAction
         Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             ['data' => $returnArray]
-        );
-        App()->end();
-    }
-
-    /**
-     * New label set from question editor
-     * @deprecated : not used in 6.0 and before
-     * @return void
-     */
-    public function newLabelSetFromQuestionEditor()
-    {
-        $aLabelSet = Yii::app()->request->getPost('labelSet', []);
-        $oLabelSet = new LabelSet();
-        $aLabels = $aLabelSet['labels'];
-        $oLabelSet->label_name = $aLabelSet['label_name'];
-        $oLabelSet->languages = $aLabelSet['languages'];
-        $oLabelSet->owner_id = App()->user->getId();
-        $result = $oLabelSet->save();
-        $aDebug['saveLabelSet'] = $result;
-
-        foreach ($aLabelSet['labels'] as $i => $aLabel) {
-            $oLabel = new Label();
-            $oLabel->lid = $oLabelSet->lid;
-            $oLabel->code = $aLabel['code'] ?? $aLabel['title'];
-            $oLabel->sortorder = $i;
-            $oLabel->assessment_value = $aLabel['assessment_value'] ?? 0;
-            $partResult = $oLabel->save();
-            $aDebug['saveLabel_' . $i] = $partResult;
-            $result = $result && $partResult;
-            foreach ($oLabelSet->languageArray as $language) {
-                $oLabelL10n = new LabelL10n();
-                $oLabelL10n->label_id = $oLabel->id;
-                $oLabelL10n->language = $language;
-                $oLabelL10n->title = $aLabel[$language]['question'] ?? $aLabel[$language]['answer'];
-
-                $lngResult = $oLabelL10n->save();
-                $aDebug['saveLabel_' . $i . '_' . $language] = $lngResult;
-                $result = $result && $lngResult;
-            }
-        }
-
-        Yii::app()->getController()->renderPartial(
-            '/admin/super/_renderJson',
-            ['data' => [
-                'success' => $result,
-                'message' => gT('Label set successfully saved')
-            ]]
         );
         App()->end();
     }

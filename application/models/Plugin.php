@@ -285,36 +285,6 @@ class Plugin extends LSActiveRecord
         return $output;
     }
 
-    /**
-     * @todo: Don't use JS native confirm.
-     * @deprecated 6.0
-     * @return string HTML
-     */
-    protected function getUninstallButton()
-    {
-        $uninstallUrl = App()->getController()->createUrl(
-            '/admin/pluginmanager',
-            [
-                'sa' => 'uninstallPlugin'
-            ]
-        );
-        $output = CHtml::beginForm(
-            $uninstallUrl,
-            'post',
-            [
-                'style' => 'display: inline-block'
-            ]
-        );
-        $output .= "
-                <input type='hidden' name='pluginId' value='" . $this->id . "' />
-                <button data-bs-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to uninstall this plugin?') . "\");' title='" . gT('Uninstall plugin') . "' class='btntooltip btn btn-danger btn-sm'>
-                    <i class='ri-close-circle-fill'></i>
-                </button>
-            </form>
-        ";
-        return $output;
-    }
-
     public function getButtons(): string
     {
 
