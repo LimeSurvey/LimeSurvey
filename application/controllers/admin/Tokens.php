@@ -2119,7 +2119,7 @@ class Tokens extends SurveyCommonAction
                                 if ($filterblankemail && $myemail == '') {
                                     $invalidemail = true;
                                     $invalidemaillist[] = $myfirstname . " " . $mylastname . " ( )";
-                                } elseif ($myemail != '' && !validateEmailAddress($myemail)) {
+                                } elseif ($myemail != '' && !LimeMailer::validateAddress($myemail)) {
                                     $invalidemail = true;
                                     $invalidemaillist[] = $myfirstname . " " . $mylastname . " (" . $myemail . ")";
                                 }
@@ -2411,7 +2411,7 @@ class Tokens extends SurveyCommonAction
                         if (!$bDuplicateFound && $aWriteArray['email'] != '') {
                             $aEmailAddresses = preg_split("/(,|;)/", $aWriteArray['email']);
                             foreach ($aEmailAddresses as $sEmailaddress) {
-                                if (!validateEmailAddress($sEmailaddress)) {
+                                if (!LimeMailer::validateAddress($sEmailaddress)) {
                                     if ($bAllowInvalidEmail) {
                                         $iInvalidEmailCount++;
                                         if (empty($aWriteArray['emailstatus']) || strtoupper($aWriteArray['emailstatus'] == "OK")) {

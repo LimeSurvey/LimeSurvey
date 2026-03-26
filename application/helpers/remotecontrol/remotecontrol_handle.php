@@ -4023,7 +4023,7 @@ class remotecontrol_handle
             $aEmailAddresses = explode(';', (string) $sEmail);
             // Ignore additional email addresses
             $sEmailaddress = $aEmailAddresses[0];
-            if (!validateEmailAddress($sEmailaddress)) {
+            if (!LimeMailer::validateAddress($sEmailaddress)) {
                 return false;
             }
             return true;

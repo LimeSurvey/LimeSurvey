@@ -386,7 +386,7 @@ class GlobalSettings extends SurveyCommonAction
         // make sure emails are valid before saving them
         if (
             Yii::app()->request->getPost('siteadminbounce', '') == ''
-            || validateEmailAddress(Yii::app()->request->getPost('siteadminbounce'))
+            || LimeMailer::validateAddress(Yii::app()->request->getPost('siteadminbounce'))
         ) {
             SettingGlobal::setSetting('siteadminbounce', strip_tags(Yii::app()->request->getPost('siteadminbounce', '')));
         } else {
@@ -394,7 +394,7 @@ class GlobalSettings extends SurveyCommonAction
         }
         if (
             Yii::app()->request->getPost('siteadminemail', '') == ''
-            || validateEmailAddress(Yii::app()->request->getPost('siteadminemail'))
+            || LimeMailer::validateAddress(Yii::app()->request->getPost('siteadminemail'))
         ) {
             SettingGlobal::setSetting('siteadminemail', strip_tags(Yii::app()->request->getPost('siteadminemail', '')));
         } else {

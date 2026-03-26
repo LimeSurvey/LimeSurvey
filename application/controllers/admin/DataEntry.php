@@ -1974,7 +1974,7 @@ class DataEntry extends SurveyCommonAction
                         }
                         if ($saver['email']) {
                             //Send email
-                            if (validateEmailAddress($saver['email']) && !returnGlobal('redo')) {
+                            if (LimeMailer::validateAddress($saver['email']) && !returnGlobal('redo')) {
                                 $mailer = new \LimeMailer();
                                 $mailer->addAddress($saver['email']);
                                 $mailer->setSurvey($surveyid);

@@ -1177,31 +1177,6 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
 }
 
 /**
-* Validate an email address - also supports IDN email addresses
-* @deprecated : use LimeMailer::validateAddress($sEmailAddress);
-* @returns True/false for valid/invalid
-*
-* @param mixed $sEmailAddress  Email address to check
-*/
-function validateEmailAddress($sEmailAddress)
-{
-    return LimeMailer::validateAddress($sEmailAddress);
-}
-
-/**
-* Validate an list of email addresses - either as array or as semicolon-limited text
-* @deprecated : use LimeMailer::validateAddresses($aEmailAddressList);
-* @return string List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
-*
-* @param string $aEmailAddressList  Email address to check
-* @returns array
-*/
-function validateEmailAddresses($aEmailAddressList)
-{
-    return LimeMailer::validateAddresses($aEmailAddressList);
-}
-
-/**
  * This functions generates a a summary containing the SGQA for questions of a survey, enriched with options per question
  * It can be used for the generation of statistics. Derived from StatisticsUserController
  * @param int $iSurveyID Id of the Survey in question
@@ -2365,78 +2340,6 @@ function jsonEscape(string $str, $strip_tags = false, $htmldecode = false)
     }
     return str_replace(array('"','\''), array("&apos;","&apos;"), $str);
 }
-
-/**
-* This function mails a text $body to the recipient $to.
-* You can use more than one recipient when using a semicolon separated string with recipients.
-* @deprecated : leave it in 4.0 for plugins ? Must remove in 5.0 at minima.
-*
-* @param string $body Body text of the email in plain text or HTML
-* @param mixed $subject Email subject
-* @param mixed $to Array with several email addresses or single string with one email address
-* @param string $from
-* @param mixed $sitename
-* @param boolean $ishtml
-* @param mixed $bouncemail
-* @param mixed $attachments
-* @return bool If successful returns true
-*/
-function SendEmailMessage($body, $subject, $to, string $from, $sitename, $ishtml = false, $bouncemail = null, $attachments = null, $customheaders = "")
-{
-    global $maildebug;
-
-    if (!is_array($to)) {
-        $to = array($to);
-    }
-
-    if (!is_array($customheaders) && $customheaders == '') {
-        $customheaders = array();
-    }
-
-    $mail =  new LimeMailer();
-    $mail->emailType = 'deprecated';
-
-    $fromname = '';
-    $fromemail = $from;
-    if (strpos($from, '<')) {
-        $fromemail = substr($from, strpos($from, '<') + 1, strpos($from, '>') - 1 - strpos($from, '<'));
-        $fromname = trim(substr($from, 0, strpos($from, '<') - 1));
-    }
-    if (is_null($bouncemail)) {
-        $senderemail = $fromemail;
-    } else {
-        $senderemail = $bouncemail;
-    }
-
-    $mail->SetFrom($fromemail, $fromname);
-    $mail->Sender = $senderemail; // Sets Return-Path for error notifications
-    foreach ($to as $singletoemail) {
-        $mail->addAddress($singletoemail);
-    }
-    if (is_array($customheaders)) {
-        foreach ($customheaders as $key => $val) {
-            $mail->AddCustomHeader($val);
-        }
-    }
-    $mail->Subject = $subject;
-    $mail->Body = $body;
-    $mail->IsHTML($ishtml);
-    // Add attachments if they are there.
-    if (is_array($attachments)) {
-        foreach ($attachments as $attachment) {
-            // Attachment is either an array with filename and attachment name.
-            if (is_array($attachment)) {
-                $mail->AddAttachment($attachment[0], $attachment[1]);
-            } else {
-                // Or a string with the filename.
-                $mail->AddAttachment($attachment);
-            }
-        }
-    }
-    $mail->Subject = $subject;
-    return $mail->Send();
-}
-
 
 /**
 *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
