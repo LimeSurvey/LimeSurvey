@@ -329,6 +329,8 @@ class GlobalSettings extends SurveyCommonAction
             // Clear cached update check so the new stability filter takes effect immediately
             Yii::app()->session['next_update_check'] = null;
             Yii::app()->session['update_result'] = null;
+            Yii::app()->session['security_update'] = null;
+            Yii::app()->session['unstable_update'] = null;
             Yii::app()->session['update_stability_labels'] = null;
         }
 
