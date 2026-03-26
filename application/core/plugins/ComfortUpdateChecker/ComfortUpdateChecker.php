@@ -96,19 +96,21 @@ class ComfortUpdateChecker extends PluginBase
     }
 
     /**
-     * This function check if update is available from the comfort update server
+     * Check if an update is available from the comfort update server.
+     * Uses the 'minimum_update_stability' global setting to determine
+     * whether to request unstable versions via crosscheck.
      *
-     * @return ?stdClass
+     * @return ?stdClass Update info from the server, or null if no update available
      */
     private function getUpdate()
     {
-        // @todo Make this a global setting so people can choose if they want to get notification for unstable versions
-        $checkForUnstableUpdates = 0;
         $updateModel = new UpdateForm();
         // NB: Use getUpdateNotification, since it checks session for datetime to avoid multiple calls.
-        $serverAnswer = $updateModel->getUpdateNotification($checkForUnstableUpdates);
+        $serverAnswer = $updateModel->getUpdateNotification();
         if ($serverAnswer && $serverAnswer->result) {
-            return $updateModel->getUpdateInfo($checkForUnstableUpdates);
+            $minimumStability = getGlobalSetting('minimum_update_stability') ?: Yii::app()->getConfig('minimum_update_stability');
+            $crosscheck = ($minimumStability !== 'stable') ? '1' : '0';
+            return $updateModel->getUpdateInfo($crosscheck);
         } else {
             return null;
         }
