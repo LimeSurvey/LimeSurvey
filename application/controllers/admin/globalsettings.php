@@ -322,12 +322,14 @@ class GlobalSettings extends SurveyCommonAction
         }
 
         // Minimum stability for update notifications
-        $minimumUpdateStability = Yii::app()->getRequest()->getPost('minimum_update_stability', 'stable');
+        $minimumUpdateStability = Yii::app()->getRequest()->getPost('minimum_update_stability')
+            ?: Yii::app()->getConfig('minimum_update_stability');
         if (in_array($minimumUpdateStability, ['alpha', 'beta', 'rc', 'stable'])) {
             SettingGlobal::setSetting('minimum_update_stability', $minimumUpdateStability);
             // Clear cached update check so the new stability filter takes effect immediately
             Yii::app()->session['next_update_check'] = null;
             Yii::app()->session['update_result'] = null;
+            Yii::app()->session['update_stability_labels'] = null;
         }
 
         SettingGlobal::setSetting('createsample', Yii::app()->getRequest()->getPost('createsample'));

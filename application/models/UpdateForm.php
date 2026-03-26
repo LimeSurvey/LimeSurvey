@@ -671,6 +671,7 @@ class UpdateForm extends CFormModel
                     Yii::app()->session['next_update_check'] = $next_update_check;
                     Yii::app()->session['update_result'] = false;
                     Yii::app()->session['unstable_update'] = false;
+                    Yii::app()->session['security_update'] = false;
                     Yii::app()->session['update_stability_labels'] = [];
                 }
             } else {
