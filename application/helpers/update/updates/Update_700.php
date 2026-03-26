@@ -1032,7 +1032,7 @@ class Update_700 extends DatabaseUpdateBase
                 'old_name' => $timingsTable['old_name'],
                 'handled' => false
             ];
-            $createTable = $this->adjustShowCreateTable($this->db->createCommand($this->showCreateTable($timingsTable['old_name']))->queryRow(), $responsesTable['old_name']);
+            $createTable = $this->adjustShowCreateTable($this->db->createCommand($this->showCreateTable($timingsTable['old_name']))->queryRow(), $timingsTable['old_name']);
             $scripts[$timingsTable['old_name']]['CREATE'] = $createTable["Create Table"];
             $scripts[$timingsTable['old_name']]['DROP'] = "DROP TABLE {$timingsTable['old_name']}";
             $scripts[$timingsTable['old_name']]['columns'] = $this->db->createCommand($this->getFieldsFromTableScript($timingsTable['old_name']))->queryAll();

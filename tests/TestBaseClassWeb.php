@@ -180,8 +180,8 @@ class TestBaseClassWeb extends TestBaseClass
                         WebDriverBy::className('welcome')
                     )
                 );
-                self::ignoreWelcomeModal();
                 self::ignoreEditorModal();
+                self::ignoreWelcomeModal();
                 self::ignoreAdminNotification();
                 sleep(3);
                 self::ignoreAdminNotification();
