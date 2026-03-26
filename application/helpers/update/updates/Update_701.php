@@ -19,13 +19,17 @@ class Update_701 extends DatabaseUpdateBase
             ]
         );
 
-        if (class_exists("\\LimeSurveyProfessional")) {
-            App()->db->createCommand()->update(
-                '{{plugins}}',
-                ['priority' => 1],
-                'name = :name',
-                [':name' => 'LimeSurveyProfessional']
-            );
+        try {
+            if (class_exists("\\LimeSurveyProfessional")) {
+                App()->db->createCommand()->update(
+                    '{{plugins}}',
+                    ['priority' => 1],
+                    'name = :name',
+                    [':name' => 'LimeSurveyProfessional']
+                );
+            }
+        } catch (\Exception $e) {
+            // LimeSurveyProfessional is not available - that's fine for community edition
         }
     }
 }
