@@ -807,8 +807,18 @@ class User extends LSActiveRecord
                 'filter'            => false,
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column'],
+            ],
+            /* @todo check why this didn't work : single choice and no all */
+            /*
+            [
+                'id'                => 'uid',
+                'class'             => 'CCheckBoxColumn',
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'htmlOptions'       => ['class' => 'ls-sticky-column']
             ],
+            */
             [
                 "name"   => 'uid',
                 "header" => gT("User ID"),
@@ -845,10 +855,10 @@ class User extends LSActiveRecord
              * Add one hidden Action column for CLSGridView
              */
             [
-                'header' => gT('Action'),
+                'header' => '',
                 'value' => '',
-                'headerHtmlOptions' => ['class' => 'hidden'],
-                'htmlOptions'       => ['class' => 'hidden']
+                'headerHtmlOptions' => ['class' => 'hidden d-none'],
+                'htmlOptions'       => ['class' => 'hidden d-none']
             ],
         ];
         return $cols;

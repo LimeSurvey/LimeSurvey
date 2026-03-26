@@ -41,7 +41,7 @@
                                 <div class="checkbox">
                                     <label>
                                         <input name="columns[]" type="checkbox" value="" checked disabled>
-                                        <?= $column->name ?>
+                                        <?= $column->header ?>
                                     </label>
                                 </div>
                             <?php endif; ?>
