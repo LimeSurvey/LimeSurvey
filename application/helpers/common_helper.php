@@ -1483,6 +1483,13 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
             case \Question::QT_R_RANKING:
                 $prefix = ((strpos($tableName, "timing") !== false) ? "C" : "R");
                 $index = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                if (!$cd) {
+                    echo json_encode([
+                        'table' => $tableName,
+                        'field' => $fieldName,
+                        'index' => substr($fieldName, strlen("{$sid}X{$gid}X{$qid}")) - 1
+                    ]) . "<br>";
+                }
                 $aid = $cd ? $index : $questions[0]->answers[(substr($fieldName, strlen("{$sid}X{$gid}X{$qid}")) - 1)]->aid;
                 $newFieldName = "Q{$qid}_{$prefix}" . $aid;
                 break;
