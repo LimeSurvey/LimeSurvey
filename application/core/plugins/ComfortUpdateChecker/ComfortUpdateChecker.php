@@ -108,7 +108,7 @@ class ComfortUpdateChecker extends PluginBase
         // NB: Use getUpdateNotification, since it checks session for datetime to avoid multiple calls.
         $serverAnswer = $updateModel->getUpdateNotification();
         if ($serverAnswer && $serverAnswer->result) {
-            $minimumStability = getGlobalSetting('minimum_update_stability') ?: Yii::app()->getConfig('minimum_update_stability');
+            $minimumStability = Yii::app()->getConfig('minimum_update_stability');
             $crosscheck = ($minimumStability !== 'stable') ? '1' : '0';
             return $updateModel->getUpdateInfo($crosscheck);
         } else {
