@@ -560,8 +560,7 @@ class LimesurveyApi
                 $newUserInGroup = new \UserInGroup();
                 $newUserInGroup->ugid = $newUserGroup->getPrimaryKey();
                 $newUserInGroup->uid = 1;
-                $newUserInGroup->save();
-                return true;
+                return $newUserInGroup->save();
             } else {
                 return false;
             }

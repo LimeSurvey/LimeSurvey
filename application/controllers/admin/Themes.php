@@ -685,6 +685,7 @@ JAVASCRIPT
             if ($sNewName && $sOldName) {
                 $sNewDirectoryPath = Yii::app()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $sNewName;
                 $sOldDirectoryPath = Yii::app()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $sOldName;
+                Yii::import('application.helpers.SurveyThemeHelper');
                 if (SurveyThemeHelper::isStandardTemplate($sNewName)) {
                     App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("This name is reserved for standard template."));
                 } elseif (file_exists($sNewDirectoryPath)) {
