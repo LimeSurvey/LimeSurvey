@@ -801,7 +801,7 @@ class User extends LSActiveRecord
     {
         $cols = [
             [
-                'name'              => 'managementCheckbox',
+                'name'              => 'dropdown_actions',
                 'type'              => 'raw',
                 'header'            => "<input type='checkbox' id='usermanagement--action-toggleAllUsers' />",
                 'filter'            => false,
