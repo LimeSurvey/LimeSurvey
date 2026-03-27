@@ -1417,21 +1417,24 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                 if (strpos($tableName, "timings") !== false) {
                     $newFieldName = "Q{$qid}_Ctime";
                 } else {
-                    $suffix = explode("_", substr($fieldName, strlen("{$sid}X{$gid}X{$qid}")));
-                    $scales = [];
+                    $scales = [0 => [], 1 => []];
                     foreach ($questions as $question) {
-                        if (($suffix[$question->scale_id] ?? null) === $question->title) {
-                            $scales[$question->scale_id] = $question->qid;
+                        if ($question->parent_qid != 0) {
+                            $scales[$question->scale_id][$question->title] = $question->qid;
                         }
                     }
-                    $suffixText = "";
-                    for ($index = 0; $index < count($scales); $index++) {
-                        if ((strpos($tableName, "old") !== false) && (!isset($scales[$index]))) {
-                            return $fieldName; //Legacy fieldname format in archive
+                    $partialFieldName = substr($fieldName, 0, strlen("{$sid}X{$gid}X{$qid}"));
+                    foreach ($scales[0] as $title1 => $qid1) {
+                        if (count($scales[1])) {
+                            foreach ($scales[1] as $title2 => $qid2) {
+                                if ($fieldName === "{$qid}{$title1}_{$title2}") {
+                                    return "{$partialFieldName}_S{$qid1}_S{$qid2}";
+                                }
+                            }
+                        } else if ($fieldName === "{$qid}{$title1}") {
+                            return "{$partialFieldName}_S{$qid1}";
                         }
-                        $suffixText .= "_S" . $scales[$index];
                     }
-                    $newFieldName = "Q{$qid}" . $suffixText;
                 }
                 break;
             case \Question::QT_D_DATE:
