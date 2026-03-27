@@ -1425,7 +1425,7 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                         if (!isset($scales[$index])) {
                             $ids = [];
                             foreach ($questions as $question) {
-                                $qid[] = $question->qid;
+                                $ids[] = $question->qid;
                             }
                             echo json_encode([
                                 "table" => $tableName,
