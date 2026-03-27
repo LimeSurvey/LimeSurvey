@@ -1348,9 +1348,6 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
             }
         }
         $qid = $rootQuestion->qid;
-        if ($fieldName === "957473X9X301") {
-            "TYPE IS {$rootQuestion->type}";
-        }
         switch ($rootQuestion->type) {
             case \Question::QT_1_ARRAY_DUAL:
             case \Question::QT_5_POINT_CHOICE:
@@ -1369,13 +1366,18 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                         $currentQuestion = $question;
                     }
                 }
-                if ($currentQuestion === null) {
+                $hashTags = explode("#", $fieldName);
+                if (($rootQuestion->type === \Question::QT_M_MULTIPLE_CHOICE) && ($length < strlen($hashTags[0]))) {
+                    $currentQuestion = \Question::model()->find("parent_qid = {$qid} and title = :title", [
+                        ":title" => substr($hashTags[0], $length)
+                    ]);
+                }
+                if (!$currentQuestion) {
                     $newFieldName = "Q{$qid}";
                     if (strlen($fieldName) > strlen("{$sid}X{$gid}X{$qid}")) {
                         $newFieldName .= "_C" . substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
                     }
                 } else {
-                    $hashTags = explode("#", $fieldName);
                     $newFieldName = "Q{$qid}_S{$currentQuestion->qid}";
                     if (count($hashTags)) {
                         for ($index = 1; $index < count($hashTags); $index++) {
