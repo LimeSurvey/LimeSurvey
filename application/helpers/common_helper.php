@@ -1396,11 +1396,14 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
             case \Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
             case \Question::QT_Q_MULTIPLE_SHORT_TEXT:
                 $code = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                if ($code === '') {
+                    return "Q{$qid}";
+                }
                 $commentText = false;
                 $currentQuestion = null;
                 $excludeSubquestion = false;
                 foreach ($questions as $question) {
-                    if (($question->title === $code) || ($code === "")) {
+                    if ($question->title === $code) {
                         $currentQuestion = $question;
                     } elseif (in_array($code, ["other", "comment", "othercomment", $question->title . "other", $question->title . "comment", $question->title . "othercomment"])) {
                         $currentQuestion = $question;
