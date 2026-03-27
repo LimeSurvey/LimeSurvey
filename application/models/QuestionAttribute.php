@@ -241,12 +241,10 @@ class QuestionAttribute extends LSActiveRecord
         static $survey = '';
         // Limit the size of the attribute cache due to memory usage
         $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . json_encode($sLanguage);
-        if (method_exists(EmCacheHelper::class, 'useCache')) {
-            if (EmCacheHelper::useCache()) {
-                $value = EmCacheHelper::get($cacheKey);
-                if ($value !== false) {
-                    return $value;
-                }
+        if (\EmCacheHelper::useCache()) {
+            $value = \EmCacheHelper::get($cacheKey);
+            if ($value !== false) {
+                return $value;
             }
         }
 
@@ -277,8 +275,8 @@ class QuestionAttribute extends LSActiveRecord
             }
         }
 
-        if (EmCacheHelper::useCache()) {
-            EmCacheHelper::set($cacheKey, $aAttributeValues);
+        if (\EmCacheHelper::useCache()) {
+            \EmCacheHelper::set($cacheKey, $aAttributeValues);
         }
 
         return $aAttributeValues;
