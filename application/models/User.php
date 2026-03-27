@@ -828,7 +828,7 @@ class User extends LSActiveRecord
             [
                 "name"   => 'uid',
                 "header" => gT("User ID"),
-                'htmlOptions' => ['class' => 'text-end'],
+                'htmlOptions' => ['class' => 'text-end uid'],// uid class used in test
             ],
             [
                 "name"   => 'users_name',
