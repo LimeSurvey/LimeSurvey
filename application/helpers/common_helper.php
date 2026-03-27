@@ -1402,7 +1402,7 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                     }
                 }
                 if ((!$currentQuestion) && (count($questions) < 2) && (strpos($tableName, "old") === false)) {
-                    $questions = Question::model()->with('answers')->findAll([
+                    $questions = \Question::model()->with('answers')->findAll([
                         'condition' => "sid = {$sid} and gid = {$gid} and {$rootQuestion->qid} in (qid, parent_qid))"
                     ]);
                     foreach ($questions as $question) {
