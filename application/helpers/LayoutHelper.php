@@ -107,7 +107,7 @@ class LayoutHelper
     {
         // We don't wont the admin menu to be shown in login page
         if (!Yii::app()->user->isGuest) {
-            if (!(App()->getConfig('ssl_disable_alert')) && strtolower(App()->getConfig('force_ssl') != 'on') && \Permission::model()->hasGlobalPermission("superadmin")) {
+            if (!(Yii::app()->getConfig('ssl_disable_alert')) && strtolower(Yii::app()->getConfig('force_ssl') != 'on') && \Permission::model()->hasGlobalPermission("superadmin")) {
                 $not = new UniqueNotification(array(
                     'user_id' => App()->user->id,
                     'importance' => Notification::HIGH_IMPORTANCE,
@@ -128,7 +128,7 @@ class LayoutHelper
             $aData['dataForConfigMenu']['userscount'] = User::model()->count();
 
             //Check if have a comfortUpdate key
-            if (getGlobalSetting('update_key') != '') {
+            if (Yii::app()->getConfig('update_key') != '') {
                 $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('Activated');
             } else {
                 $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('None');
@@ -320,7 +320,7 @@ class LayoutHelper
             $updateNotification = $updateModel->updateNotification;
 
             if ($updateNotification->result) {
-                App()->getClientScript()->registerScriptFile(App()->getConfig('packages') . DIRECTORY_SEPARATOR . 'comfort_update' . DIRECTORY_SEPARATOR . 'comfort_update.js');
+                App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('packages') . DIRECTORY_SEPARATOR . 'comfort_update' . DIRECTORY_SEPARATOR . 'comfort_update.js');
                 return App()->getController()->renderPartial(
                     "/admin/update/_update_notification",
                     array('security_update_available' => $updateNotification->security_update)
@@ -450,7 +450,7 @@ class LayoutHelper
             $aData['aGroups'] = $aGroups;
             $aData['surveycontent'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'read');
             $aData['surveycontentupdate'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'update');
-            $aData['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
+            $aData['sideMenuBehaviour'] = Yii::app()->getConfig('sideMenuBehaviour');
 
             Yii::app()->getController()->renderPartial("/layouts/sidemenu", $aData);
         } else {

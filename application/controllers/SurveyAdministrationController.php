@@ -784,7 +784,7 @@ class SurveyAdministrationController extends LSBaseController
         ];
 
         if ($oSurvey == null) {
-            $defaultLanguage = App()->getConfig('defaultlang');
+            $defaultLanguage = Yii::app()->getConfig('defaultlang');
             $aLanguageDetails = getLanguageDetails($defaultLanguage);
             $aLanguages = [$defaultLanguage => getLanguageCodefromLanguage($defaultLanguage)];
             $aReturner["surveyTitle"][$defaultLanguage] = "";
@@ -1355,7 +1355,7 @@ class SurveyAdministrationController extends LSBaseController
         ];
 
         if ($oSurvey == null) {
-            $defaultLanguage = App()->getConfig('defaultlang');
+            $defaultLanguage = Yii::app()->getConfig('defaultlang');
             $aLanguages = [$defaultLanguage => getLanguageCodefromLanguage($defaultLanguage)];
             $aReturner["datasecmessage"][$defaultLanguage] = "";
             $aReturner["datasecerror"][$defaultLanguage] = "";
@@ -2049,10 +2049,10 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         // override survey settings if global settings exist
-        $templateData['showqnumcode']   = getGlobalSetting('showqnumcode') !== 'choose' ? getGlobalSetting('showqnumcode') : $survey->showqnumcode;
-        $templateData['shownoanswer']   = getGlobalSetting('shownoanswer') !== 'choose' ? getGlobalSetting('shownoanswer') : $survey->shownoanswer;
-        $templateData['showgroupinfo']  = getGlobalSetting('showgroupinfo') !== '2' ? getGlobalSetting('showgroupinfo') : $survey->showgroupinfo;
-        $templateData['showxquestions'] = getGlobalSetting('showxquestions') !== 'choose' ? getGlobalSetting('showxquestions') : $survey->showxquestions;
+        $templateData['showqnumcode']   = Yii::app()->getConfig('showqnumcode') !== 'choose' ? Yii::app()->getConfig('showqnumcode') : $survey->showqnumcode;
+        $templateData['shownoanswer']   = Yii::app()->getConfig('shownoanswer') !== 'choose' ? Yii::app()->getConfig('shownoanswer') : $survey->shownoanswer;
+        $templateData['showgroupinfo']  = Yii::app()->getConfig('showgroupinfo') !== '2' ? Yii::app()->getConfig('showgroupinfo') : $survey->showgroupinfo;
+        $templateData['showxquestions'] = Yii::app()->getConfig('showxquestions') !== 'choose' ? Yii::app()->getConfig('showxquestions') : $survey->showxquestions;
 
         //Start collecting aData
         $aData['surveyid'] = $iSurveyID;
@@ -2400,7 +2400,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $aData['bFailed'] = false;
 
-        $sFullFilepath = App()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(30) . '.' . $sExtension;
+        $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(30) . '.' . $sExtension;
         if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
             $aData['sErrorMessage'] = sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024) . '<br>';
             $aData['bFailed'] = true;
@@ -2925,7 +2925,7 @@ class SurveyAdministrationController extends LSBaseController
         $oQuestionLS->qid = $oQuestion->qid;
         $oQuestionLS->save();
 
-        $editorEnabled = App()->getConfig('editorEnabled') ?? false;
+        $editorEnabled = Yii::app()->getConfig('editorEnabled') ?? false;
         if (!$editorEnabled) {
             $this->createSampleSubquestion(
                 1,

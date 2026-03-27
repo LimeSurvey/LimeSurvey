@@ -199,7 +199,7 @@ abstract class ExtensionUpdater
             return [];
         }
 
-        $allowUnstable = getGlobalSetting('allow_unstable_extension_update');
+        $allowUnstable = Yii::app()->getConfig('allow_unstable_extension_update');
 
         $versions = [];
         foreach ($versionFetchers as $fetcher) {

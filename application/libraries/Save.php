@@ -114,7 +114,7 @@ class Save
         $survey = Survey::model()->findByPk($surveyid);
 
         $aSaveForm  = array();
-        $timeadjust = getGlobalSetting('timeadjust');
+        $timeadjust = Yii::app()->getConfig('timeadjust');
         $this->saveData = array(
             'identifier'  => App()->request->getPost('savename'),
             'email' => App()->request->getPost('saveemail'),

@@ -208,7 +208,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $this->tokenencryptionoptions = '';
 
         // Default setting is to use the global Google Analytics key If one exists
-        $globalKey = App()->getConfig('googleanalyticsapikey');
+        $globalKey = Yii::app()->getConfig('googleanalyticsapikey');
         if ($globalKey != "") {
             $this->googleanalyticsapikey = "9999useGlobal9999";
             $this->googleanalyticsapikeysetting = "G";
@@ -216,11 +216,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
         /* default template */
         $this->template = 'inherit';
         /* default language */
-        $this->language = \LSYii_Validators::languageCodeFilter(App()->getConfig('defaultlang'));
+        $this->language = \LSYii_Validators::languageCodeFilter(Yii::app()->getConfig('defaultlang'));
         /* default user */
         $this->owner_id = 1;
-        $this->admin = App()->getConfig('siteadminname');
-        $this->adminemail = App()->getConfig('siteadminemail');
+        $this->admin = Yii::app()->getConfig('siteadminname');
+        $this->adminemail = Yii::app()->getConfig('siteadminemail');
         if (!(Yii::app() instanceof CConsoleApplication)) {
             $iUserid = Permission::model()->getUserId();
             if ($iUserid) {
@@ -605,7 +605,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 $oSurvey = self::model()->findByPk($this->sid);
                 if ($oSurvey->template != $sTemplateName) {
                     // No need to test !is_null($oSurvey)
-                    $sTemplateName = getGlobalSetting('defaulttheme');
+                    $sTemplateName = Yii::app()->getConfig('defaulttheme');
                 }
             } else {
                 $sTemplateName = 'inherit';
@@ -1166,7 +1166,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getRunning()
     {
-            $onclick = App()->getConfig('editorEnabled')
+            $onclick = Yii::app()->getConfig('editorEnabled')
                 ? ' onclick="return  false;" '
                 : '';
 
@@ -1920,7 +1920,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $criteriaPerm->compare("surveysingrouppermissions{$userid}.read_p", '1', false, 'OR'); // This mean : update, export … didn't allow see in list
 
             /* Under condition : owner of group */
-            if (App()->getConfig('ownerManageAllSurveysInGroup')) {
+            if (Yii::app()->getConfig('ownerManageAllSurveysInGroup')) {
                 $criteriaPerm->mergeWith(
                     array(
                         'join' => "LEFT JOIN {{surveys_groups}} AS surveysgroupsowner{$userid} ON (surveysgroupsowner{$userid}.gsid = t.gsid) ",

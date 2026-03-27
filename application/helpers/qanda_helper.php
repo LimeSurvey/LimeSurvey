@@ -57,15 +57,15 @@ define('SELECTED', ' selected="selected"');
  */
 function setNoAnswerMode($thissurvey)
 {
-    if (App()->getConfig('shownoanswer') == 2) {
+    if (Yii::app()->getConfig('shownoanswer') == 2) {
         if ($thissurvey['shownoanswer'] == 'N') {
             define('SHOW_NO_ANSWER', 0);
         } else {
             define('SHOW_NO_ANSWER', 1);
         }
-    } elseif (App()->getConfig('shownoanswer') == 1) {
+    } elseif (Yii::app()->getConfig('shownoanswer') == 1) {
         define('SHOW_NO_ANSWER', 1);
-    } elseif (App()->getConfig('shownoanswer') == 0) {
+    } elseif (Yii::app()->getConfig('shownoanswer') == 0) {
         define('SHOW_NO_ANSWER', 0);
     } else {
         define('SHOW_NO_ANSWER', 1);
@@ -392,7 +392,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     Yii::app()->getClientScript()->registerPackage('timer-addition');
 
     $questionId = $ia[0];
-    $surveyId = App()->getConfig('surveyID');
+    $surveyId = Yii::app()->getConfig('surveyID');
     $langTimer = array(
         'hours' => gT("hours"),
         'mins' => gT("mins"),
@@ -988,7 +988,7 @@ function do_shortfreetext($ia)
         $strBuild = "";
 
         $aGlobalMapScriptVar = array(
-            'geonameUser' => getGlobalSetting('GeoNamesUsername'), // Did we need to urlencode ?
+            'geonameUser' => Yii::app()->getConfig('GeoNamesUsername'), // Did we need to urlencode ?
             'geonameLang' => Yii::app()->language,
         );
         $aThisMapScriptVar = array(
@@ -1209,7 +1209,7 @@ function do_array_5point($ia)
         //Question is not mandatory
         ++$colCount; // add another column
     }
-    $sSurveyLanguage = $_SESSION['responses_' . App()->getConfig('surveyID')]['s_lang'];
+    $sSurveyLanguage = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang'];
 
     // Get questions and answers by defined order
     $question = Question::model()->findByPk($ia[0]);
@@ -1303,10 +1303,10 @@ function do_array_5point($ia)
         $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
         // Value
-        $value = $_SESSION['responses_' . App()->getConfig('surveyID')][$myfname] ?? '';
+        $value = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] ?? '';
 
         for ($i = 1; $i <= 5; $i++) {
-            $CHECKED = (isset($_SESSION['responses_' . App()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . App()->getConfig('surveyID')][$myfname] == $i) ? 'CHECKED' : '';
+            $CHECKED = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == $i) ? 'CHECKED' : '';
             $answer_tds .= doRender('/survey/questions/answer/arrays/5point/rows/cells/answer_td_input', array(
                 'i' => $i,
                 'labelText' => (string) $i,
@@ -2547,7 +2547,7 @@ function do_arraycolumns($ia)
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
-    $sSurveyLanguage = $_SESSION['responses_' . App()->getConfig('surveyID')]['s_lang'];
+    $sSurveyLanguage = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang'];
     $aAnswers = Answer::model()->findAll(array('order' => 'sortorder, code', 'condition' => 'qid=:qid AND scale_id=0', 'params' => array(':qid' => $ia[0])));
 
     $labelans = [];
@@ -2638,12 +2638,12 @@ function do_arraycolumns($ia)
                     $myfname = $ia[1] . "_S" . $ld;
                     $aData['aQuestions'][$j]['myfname'] = $myfname;
                     if (
-                        isset($_SESSION['responses_' . App()->getConfig('surveyID')][$myfname]) &&
-                        $_SESSION['responses_' . App()->getConfig('surveyID')][$myfname] === $ansrow['code']
+                        isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) &&
+                        $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] === $ansrow['code']
                     ) {
                         $aData['checked'][$ansrow['code']][$ld] = CHECKED;
                     } elseif (
-                        !isset($_SESSION['responses_' . App()->getConfig('surveyID')][$myfname]) &&
+                        !isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) &&
                         $ansrow['code'] == ''
                     ) {
                         $aData['checked'][$ansrow['code']][$ld] = CHECKED;
@@ -2660,8 +2660,8 @@ function do_arraycolumns($ia)
             foreach ($anscode as $j => $ld) {
                 $myfname = $ia[1] . "_S" . $ld;
 
-                if (isset($_SESSION['responses_' . App()->getConfig('surveyID')][$myfname])) {
-                    $aData['aQuestions'][$j]['myfname_value'] = $_SESSION['responses_' . App()->getConfig('surveyID')][$myfname];
+                if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname])) {
+                    $aData['aQuestions'][$j]['myfname_value'] = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname];
                 } else {
                     $aData['aQuestions'][$j]['myfname_value'] = '';
                 }

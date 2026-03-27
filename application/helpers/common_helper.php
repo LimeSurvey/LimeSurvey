@@ -107,7 +107,7 @@ function quoteText($sText, $sEscapeMode = 'html')
 function getSurveyList($bReturnArray = false)
 {
     static $cached = null;
-    $timeadjust = getGlobalSetting('timeadjust');
+    $timeadjust = Yii::app()->getConfig('timeadjust');
     App()->setLanguage((Yii::app()->session['adminlang'] ?? 'en'));
     $surveynames = array();
 
@@ -670,7 +670,7 @@ function getUserList($outputformat = 'fullinfoarray')
     if (!empty(Yii::app()->session['loginID'])) {
         $myuid = sanitize_int(Yii::app()->session['loginID']);
     }
-    $usercontrolSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy');
+    $usercontrolSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
     if (
         !Permission::model()->hasGlobalPermission('superadmin', 'read') && isset($usercontrolSameGroupPolicy) &&
         $usercontrolSameGroupPolicy == true
@@ -2830,7 +2830,7 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
     if ($sType == 'survey') {
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_:])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
         if ($isLocalPath) {
-            $sReplace = rtrim(App()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
+            $sReplace = rtrim(Yii::app()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
             return preg_replace('/' . $sPattern . '/u', $sReplace, $sString);
         } else {
             // Make the replacement conditionaly.
@@ -2842,9 +2842,9 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
                 $parsedUrl = parse_url($url);
                 $replacementUrl = "/upload/surveys/{$iNewSurveyID}/";
                 if (isset($parsedUrl['scheme']) && isset($parsedUrl['host'])) {
-                    return rtrim(App()->getPublicBaseUrl(true), "/") . $replacementUrl;
+                    return rtrim(Yii::app()->getPublicBaseUrl(true), "/") . $replacementUrl;
                 } else {
-                    return rtrim(App()->getConfig("publicurl"), '/') . $replacementUrl;
+                    return rtrim(Yii::app()->getConfig("publicurl"), '/') . $replacementUrl;
                 }
             }, $sString);
         }
@@ -2857,7 +2857,7 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
             if (isset($parsedUrl['scheme']) && isset($parsedUrl['host'])) {
                 return rtrim(App()->getPublicBaseUrl(true), "/") . $replacementUrl;
             } else {
-                return rtrim(App()->getConfig("publicurl"), '/') . $replacementUrl;
+                return rtrim(Yii::app()->getConfig("publicurl"), '/') . $replacementUrl;
             }
         }, $sString);
     } else // unknown type
@@ -3522,7 +3522,7 @@ function enforceSSLMode()
     (isset($_SERVER['HTTP_FORWARDED_PROTO']) && $_SERVER['HTTP_FORWARDED_PROTO'] == "https") ||
     (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == "https"));
     if (Yii::app()->getConfig('ssl_emergency_override') !== true) {
-        $bForceSSL = strtolower((string) getGlobalSetting('force_ssl'));
+        $bForceSSL = strtolower((string) Yii::app()->getConfig('force_ssl'));
     }
     if ($bForceSSL == 'on' && !$bSSLActive) {
         SSLRedirect('s');
@@ -4532,7 +4532,7 @@ function checkMoveQuestionConstraintsForConditions($sid, $qid, $newgid = "all")
 */
 function shouldFilterUserGroupList()
 {
-    $bUserControlSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy', true);
+    $bUserControlSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy', true);
     $bUserHasSuperAdminReadPermissions = Permission::model()->hasGlobalPermission('superadmin', 'read');
     return $bUserControlSameGroupPolicy && !$bUserHasSuperAdminReadPermissions;
 }
@@ -5083,7 +5083,7 @@ function decodeTokenAttributes(string $tokenAttributeData)
         return array();
     }
     if (substr($tokenAttributeData, 0, 1) != '{' && substr($tokenAttributeData, 0, 1) != '[') {
-        if (!App()->getConfig('allow_unserialize_attributedescriptions')) {
+        if (!Yii::app()->getConfig('allow_unserialize_attributedescriptions')) {
             return array();
         }
         // minimal broken securisation, mantis issue #20144
