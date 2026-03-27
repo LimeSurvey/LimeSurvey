@@ -31,20 +31,33 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'filterxsshtml',
+                        'checkedOption' => App()->getConfig('filterxsshtml_forcedall') ? 1 : App()->getConfig('filterxsshtml'),
                         'ariaLabel'=> gT('Filter HTML for XSS:'),
-                        'checkedOption' => App()->getConfig('filterxsshtml'),
                         'selectOptions' => [
                             '1' => gT('On'),
                             '0' => gT('Off'),
+                        ],
+                        'htmlOptions'=> [
+                            'disabled' => App()->getConfig('filterxsshtml_forcedall')
                         ]
                     ]); ?>
                 </div>
                 <div class="help-block mt-1">
-                    <?php
-                    App()->getController()->widget('ext.AlertWidget.AlertWidget', [
-                        'text' => gT("Note: XSS filtering is always disabled for the superadministrator."),
-                        'type' => 'success',
-                    ]);
+                    <?php if (!App()->getConfig('filterxsshtml_forcedall')) {
+                        App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => gT("Note: XSS filtering is always disabled for the superadministrator."),
+                            'type' => 'success',
+                        ]);
+                    } else {
+                        $text = gT("Note: XSS filtering is forced by settings in your config file. You cannot disable it. XSS filtering is enabled for all users.");
+                        if (App()->getConfig('filterxsshtml_allowforcedsuperadmin')) {
+                            $text = gT("Note: XSS filtering is forced by settings in your config file. You cannot disable it. XSS filtering is only disabled for forced super admin(s).");
+                        }
+                        App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => $text,
+                            'type' => 'warning',
+                        ]);
+                    }
                     ?>
                 </div>
             </div>
@@ -54,20 +67,35 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'disablescriptwithxss',
+                        'checkedOption' => (App()->getConfig('filterxsshtml_forcedall') && App()->getConfig('filterxsshtml_enablescript') != 'gui') ? 1 : App()->getConfig('disablescriptwithxss'),
                         'ariaLabel'=> gT('Disable question script for XSS restricted user:'),
-                        'checkedOption' => App()->getConfig('disablescriptwithxss'),
                         'selectOptions' => [
                             '1' => gT('On'),
                             '0' => gT('Off'),
+                        ],
+                        'htmlOptions'=> [
+                            'disabled' => App()->getConfig('filterxsshtml_forcedall') && App()->getConfig('filterxsshtml_enablescript') != 'gui'
                         ]
                     ]); ?>
                 </div>
                 <div class="help-block mt-1">
-                    <?php
-                    App()->getController()->widget('ext.AlertWidget.AlertWidget', [
-                    'text' => gT("If you disable this option : user with XSS restriction still can add script. This allows user to add cross-site scripting javascript system."),
-                    'type' => 'warning',
-                    ]);
+                    <?php if (App()->getConfig('filterxsshtml_forcedall') && App()->getConfig('filterxsshtml_enablescript') != 'gui') {
+                        $text = gT("Script edition is forced by your config file. No user can add or update question script.");
+                        if (App()->getConfig('filterxsshtml_enablescript') == 'superadmin') {
+                            $text = gT("Script edition is forced by your config file. Only the super admin(s) can add or update question script.");
+                        } elseif (App()->getConfig('filterxsshtml_allowforcedsuperadmin') || App()->getConfig('filterxsshtml_enablescript') == 'forcedsuperadmin') {
+                            $text = gT("Script edition is forced by your config file. Only forced super admin(s) can add or update question script.");
+                        }
+                        App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => $text,
+                            'type' => 'warning',
+                        ]);
+                    } else {
+                        App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT("If you disable this option : user with XSS restriction still can add script. This allows user to add cross-site scripting javascript system."),
+                        'type' => 'warning',
+                        ]);
+                    }
                     ?>
                 </div>
             </div>
