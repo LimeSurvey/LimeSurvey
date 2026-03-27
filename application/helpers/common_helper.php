@@ -1350,10 +1350,14 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
             case \Question::QT_N_NUMERICAL:
             case \Question::QT_O_LIST_WITH_COMMENT:
             case \Question::QT_EXCLAMATION_LIST_DROPDOWN:
+                $testS4 = ($fieldName === "957473X9X301");
                 $currentQuestion = null;
                 $length = strlen("{$sid}X{$gid}X{$qid}");
                 $hashPos = strpos($fieldName, '#');
                 foreach ($questions as $question) {
+                    if ($testS4) {
+                        echo "processing {$question->qid} with title of {$question->title} suffix is " . substr($fieldName, strlen("{$sid}X{$gid}X{$qid}")) . "\n";
+                    }
                     if ($hashPos && ($question->title === substr($fieldName, $length, ($hashPos !== false) ? ($hashPos - $length) : null))) {
                         $currentQuestion = $question;
                     } else if ($question->title === substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"))) {
