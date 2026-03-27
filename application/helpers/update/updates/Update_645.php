@@ -15,7 +15,8 @@ class Update_645 extends DatabaseUpdateBase
         $templateConfigurations = $this->db->createCommand()
             ->select('id, options')
             ->from('{{template_configuration}}')
-            ->where('template_name = :template_name AND LOWER(options) LIKE :optionValue',
+            ->where(
+                'template_name = :template_name AND LOWER(options) LIKE :optionValue',
                 [
                     ':template_name' => 'fruity_twentythree',
                     ':optionValue' => '%f00c%'
