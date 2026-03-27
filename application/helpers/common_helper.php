@@ -1353,6 +1353,9 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                 $testS4 = ($fieldName === "957473X9X301");
                 $currentQuestion = null;
                 $length = strlen("{$sid}X{$gid}X{$qid}");
+                if ($testS4) {
+                    echo "\nthis is a test \n";
+                }
                 $hashPos = strpos($fieldName, '#');
                 foreach ($questions as $question) {
                     if ($testS4) {
@@ -1364,13 +1367,13 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                         $currentQuestion = $question;
                     }
                 }
-                $hashTags = explode("#", $fieldName);
                 if ($currentQuestion === null) {
                     $newFieldName = "Q{$qid}";
                     if (strlen($fieldName) > strlen("{$sid}X{$gid}X{$qid}")) {
                         $newFieldName .= "_C" . substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
                     }
                 } else {
+                    $hashTags = explode("#", $fieldName);
                     $newFieldName = "Q{$qid}_S{$currentQuestion->qid}";
                     if (count($hashTags)) {
                         for ($index = 1; $index < count($hashTags); $index++) {
