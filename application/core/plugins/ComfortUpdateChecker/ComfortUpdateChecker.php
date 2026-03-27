@@ -12,7 +12,6 @@
 
 class ComfortUpdateChecker extends PluginBase
 {
-
     protected $storage = 'DbStorage';
 
     protected static $description = 'Update Checker for Comfort Update users';
@@ -56,14 +55,14 @@ class ComfortUpdateChecker extends PluginBase
         //Register css and js script
         $this->registerAssets();
 
-        $update = (array)$this->getUpdate();
+        $updateNotification = $this->getUpdate();
 
-        if ($update && $update['result']) {
+        if ($updateNotification && $updateNotification->result) {
             //Default icon class
             $iconClass = "";
             $NotificationText = gT("Update available");
 
-            if ($update[key($update)]->security_update) {
+            if ($updateNotification->security_update) {
                 $NotificationText = gT("Security update available");
             }
             //Append cu-checker class to icon when animate option is true in plugin settings
@@ -71,49 +70,41 @@ class ComfortUpdateChecker extends PluginBase
                 $iconClass = "cu-checker";
             }
 
-            //Display update notification only for superadmin user
-            if (Permission::model()->hasGlobalPermission('superadmin')) {
-                $aMenuItemAdminOptions = [
-                    'isDivider' => false,
-                    'isSmallText' => false,
-                    'label' => '<strong class="text-warning">' . $NotificationText . '</strong>',
-                    'href' => $this->api->createUrl('admin/update', []),
-                    'iconClass' => 'ri-shield-check-fill text-warning ' . $iconClass,
-                ];
+            // Permission check is already handled in getUpdateNotification() so we can display directly
+            $aMenuItemAdminOptions = [
+                'isDivider' => false,
+                'isSmallText' => false,
+                'label' => '<strong class="text-warning">' . $NotificationText . '</strong>',
+                'href' => $this->api->createUrl('admin/update', []),
+                'iconClass' => 'ri-shield-check-fill text-warning ' . $iconClass,
+            ];
 
-                $aMenuItems[] = (new \LimeSurvey\Menu\MenuItem($aMenuItemAdminOptions));
+            $aMenuItems[] = (new \LimeSurvey\Menu\MenuItem($aMenuItemAdminOptions));
 
-                $oNewMenu = new \ComfortUpdateChecker\helpers\CUCMenuClass($aMenuItemAdminOptions);
+            $oNewMenu = new \ComfortUpdateChecker\helpers\CUCMenuClass($aMenuItemAdminOptions);
 
-                //Check if display only for security update is true in plugin settings and display it otherwhise display all
-                if ($this->get('only_security_update', null, null, false) && $update[key($update)]->security_update) {
-                    $oEvent->append('extraMenus', [$oNewMenu]);
-                } elseif (!$this->get('only_security_update', null, null, false)) {
-                    $oEvent->append('extraMenus', [$oNewMenu]);
-                }
+            //Check if display only for security update is true in plugin settings and display it otherwhise display all
+            if ($this->get('only_security_update', null, null, false) && $updateNotification->security_update) {
+                $oEvent->append('extraMenus', [$oNewMenu]);
+            } elseif (!$this->get('only_security_update', null, null, false)) {
+                $oEvent->append('extraMenus', [$oNewMenu]);
             }
         }
     }
 
     /**
      * Check if an update is available from the comfort update server.
-     * Uses the 'minimum_update_stability' global setting to determine
-     * whether to request unstable versions via crosscheck.
+     * Reuses UpdateForm::getUpdateNotification() to preserve permission gate,
+     * session caching, and stability filtering (meetsMinimumStability).
      *
-     * @return ?stdClass Update info from the server, or null if no update available
+     * @return ?stdClass Update notification with aggregated flags (result, security_update, unstable_update), or null
      */
     private function getUpdate()
     {
         $updateModel = new UpdateForm();
-        $minimumStability = Yii::app()->getConfig('minimum_update_stability');
-        $crosscheck = ($minimumStability !== 'stable') ? '1' : '0';
-        $updateInfo = $updateModel->getUpdateInfo($crosscheck);
-        
-        if ($updateInfo && $updateInfo->result) {
-            return $updateInfo;
-        } else {
-            return null;
-        }
+        // Reuse the shared notification logic: permission check, once-per-day cache, stability filtering
+        $updateNotification = $updateModel->getUpdateNotification();
+        return ($updateNotification && $updateNotification->result) ? $updateNotification : null;
     }
 
     /**
