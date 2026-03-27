@@ -1417,7 +1417,7 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                         'code' => $code,
                         'qs' => $qs
                     ];
-                    echo json_encode($output);
+                    echo json_encode($output) . "\n\n";
                 }
                 break;
             case \Question::QT_SEMICOLON_ARRAY_TEXT:
