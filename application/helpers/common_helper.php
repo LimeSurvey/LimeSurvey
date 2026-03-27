@@ -1482,7 +1482,7 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                         ]);
                         foreach ($answers as $answer) {
                             if (($rankingSuffix == $answer->code) || ((intval($rankingSuffix) > 0) && ($rankingSuffix - 1 == $answer->sortorder))) {
-                                $newFieldName = "Q{$qid}_{$prefix}{$answer->id}";
+                                $newFieldName = "Q{$qid}_{$prefix}{$answer->aid}";
                             }
                         }
                     }
