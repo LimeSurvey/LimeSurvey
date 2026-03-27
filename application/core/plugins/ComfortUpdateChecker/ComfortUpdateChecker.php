@@ -105,12 +105,12 @@ class ComfortUpdateChecker extends PluginBase
     private function getUpdate()
     {
         $updateModel = new UpdateForm();
-        // NB: Use getUpdateNotification, since it checks session for datetime to avoid multiple calls.
-        $serverAnswer = $updateModel->getUpdateNotification();
-        if ($serverAnswer && $serverAnswer->result) {
-            $minimumStability = Yii::app()->getConfig('minimum_update_stability');
-            $crosscheck = ($minimumStability !== 'stable') ? '1' : '0';
-            return $updateModel->getUpdateInfo($crosscheck);
+        $minimumStability = Yii::app()->getConfig('minimum_update_stability');
+        $crosscheck = ($minimumStability !== 'stable') ? '1' : '0';
+        $updateInfo = $updateModel->getUpdateInfo($crosscheck);
+        
+        if ($updateInfo && $updateInfo->result) {
+            return $updateInfo;
         } else {
             return null;
         }
