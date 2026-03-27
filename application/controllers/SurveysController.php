@@ -23,15 +23,15 @@ class SurveysController extends LSYii_Controller
             // Validate if languages exists and fall back to default lang if needed
             $aLanguages = getLanguageDataRestricted(false, 'short');
             if (!isset($aLanguages[ $lang ])) {
-                $lang = App()->getConfig('defaultlang');
+                $lang = Yii::app()->getConfig('defaultlang');
             }
         } else {
-            $lang = App()->getConfig('defaultlang');
+            $lang = Yii::app()->getConfig('defaultlang');
         }
             App()->setLanguage($lang);
 
 
-        $oTemplate       = Template::model()->getInstance(getGlobalSetting('defaulttheme'));
+        $oTemplate       = Template::model()->getInstance(Yii::app()->getConfig('defaulttheme'));
         $this->sTemplate = $oTemplate->sTemplateName;
 
         $aData = array(
@@ -56,7 +56,7 @@ class SurveysController extends LSYii_Controller
         Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'nojs.js', CClientScript::POS_HEAD);
 
         // maintenance mode
-        $sMaintenanceMode = getGlobalSetting('maintenancemode');
+        $sMaintenanceMode = Yii::app()->getConfig('maintenancemode');
         if ($sMaintenanceMode == 'hard' || $sMaintenanceMode == 'soft') {
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_maintenance.twig", array('aSurveyInfo' => $aData), false);
         } else {
@@ -111,14 +111,14 @@ class SurveysController extends LSYii_Controller
         if ($surveyId) {
             $oTemplate = Template::model()->getInstance(null, $surveyId);
         } else {
-            $oTemplate = Template::model()->getInstance(App()->getConfig('defaulttheme'));
+            $oTemplate = Template::model()->getInstance(Yii::app()->getConfig('defaulttheme'));
         }
         $this->sTemplate = $oTemplate->sTemplateName;
 
-        $admin = App()->getConfig('siteadminname');
-        if (App()->getConfig('showEmailInError')) {
+        $admin = Yii::app()->getConfig('siteadminname');
+        if (Yii::app()->getConfig('showEmailInError')) {
             // Never show email by default
-            $admin = CHtml::mailto(App()->getConfig('siteadminname'), App()->getConfig('siteadminemail'));
+            $admin = CHtml::mailto(Yii::app()->getConfig('siteadminname'), Yii::app()->getConfig('siteadminemail'));
         }
         $contact = sprintf(gT('If you think this is a server error, please contact %s.'), $admin);
         switch ($error['code']) {
@@ -170,7 +170,7 @@ class SurveysController extends LSYii_Controller
         $aError['message'] = $message;
         $aError['contact'] = $contact;
 
-        if (App()->getConfig('debug') != 0) {
+        if (Yii::app()->getConfig('debug') != 0) {
             $aError['trace'] = $error['trace'];
         }
 
