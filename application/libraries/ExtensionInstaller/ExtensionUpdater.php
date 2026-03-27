@@ -16,6 +16,7 @@ namespace LimeSurvey\ExtensionInstaller;
 
 use Exception;
 use ExtensionConfig;
+use Yii;
 
 /**
  * @since 2018-09-26
