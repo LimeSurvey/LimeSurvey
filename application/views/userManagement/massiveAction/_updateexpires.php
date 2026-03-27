@@ -4,12 +4,12 @@ $dateFormatDetails = getDateFormatData(Yii::app()->session['dateformat']);
 <div class="selector--edit-status-container">
     <div class="form">
         <div class="mb-3">
-            <label for="expiresPicker"><?php eT("Expires:"); ?></label>
+            <label for="batchExpiresPicker"><?php eT("Expires:"); ?></label>
             <div class='col-md-6'>
                 <?php
                 $widget = Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
-                    'name' => 'expiresInputField',
-                    'id' => 'expiresPicker',
+                    'name' => 'batchExpiresPicker',
+                    'id' => 'batchExpiresPicker',
                     'pluginOptions' => array(
                         'format' => $dateFormatDetails['jsdate'] . " HH:mm",
                         'allowInputToggle' => true,
@@ -19,13 +19,13 @@ $dateFormatDetails = getDateFormatData(Yii::app()->session['dateformat']);
                     )
                 ));
                 ?>
-                <input class="form-control custom-data" name="expires" id="expires" type="hidden" value="">
+                <input class="form-control custom-data" name="batchExpires" id="batchExpires" type="hidden" value="">
                 <script type="text/javascript">
                     $(function () {
                         // datepicker needs to be reinitialized, due to ajax reload of modal:
-                        <?= $widget->getConfigScript('expiresPicker'); ?>
-                        document.getElementById("expiresPicker_datetimepicker").addEventListener("change.td", function(){
-                            document.getElementById("expires").value = document.getElementById("expiresPicker").value;
+                        <?= $widget->getConfigScript('batchExpiresPicker'); ?>
+                        document.getElementById("batchExpiresPicker_datetimepicker").addEventListener("change.td", function(){
+                            document.getElementById("batchExpires").value = document.getElementById("batchExpiresPicker").value;
                         });
                     });
                 </script>

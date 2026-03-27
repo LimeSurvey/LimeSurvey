@@ -1301,7 +1301,7 @@ class UserManagementController extends LSBaseController
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $aItems = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
-        $expires = App()->request->getPost('expires');
+        $expires = App()->request->getPost('batchExpires');
         $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
         Yii::import('application.libraries.Date_Time_Converter', true);
         if (trim((string) $expires) == "") {
