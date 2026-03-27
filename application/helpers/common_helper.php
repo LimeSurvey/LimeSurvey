@@ -1317,29 +1317,35 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
  * 
  * @param string $tableName
  * @param string $fieldName
- * @param array $questions a collection of questions containing a question and its subquestions
+ * @param array $rawQuestions a collection of questions containing a question and its subquestions
  * @param int $sid
  * @param int $gid
  * @param bool $cd is it the condition designer
  * 
  * @return string the field's name
  */
-function getFieldName(string $tableName, string $fieldName, array $questions, int $sid, int $gid, bool $cd = false)
+function getFieldName(string $tableName, string $fieldName, array $rawQuestions, int $sid, int $gid, bool $cd = false)
 {
     $newFieldName = "";
     if (strpos($tableName, "timings") !== false) {
         $X = explode("X", $fieldName);
         $newFieldName = ((count($X) > 2) ? "Q" : "G") . $X[count($X) - 1];
     } else {
-        $rootQuestion = $questions[0];
+        $rootQuestion = $rawQuestions[0];
         $questionIndex = 0;
-        while ($questionIndex < count($questions)) {
-            if (!$questions[$questionIndex]->parent_qid) {
-                if ($rootQuestion->parent_qid || ($rootQuestion->qid < $questions[$questionIndex]->qid)) {
-                    $rootQuestion = $questions[$questionIndex];
+        while ($questionIndex < count($rawQuestions)) {
+            if (!$rawQuestions[$questionIndex]->parent_qid) {
+                if ($rootQuestion->parent_qid || ($rootQuestion->qid < $rawQuestions[$questionIndex]->qid)) {
+                    $rootQuestion = $rawQuestions[$questionIndex];
                 }
             }
             $questionIndex++;
+        }
+        $questions = [$rootQuestion];
+        foreach ($rawQuestions as $rawQuestion) {
+            if ($rawQuestion->parent_qid == $rootQuestion->qid) {
+                $questions[] = $rawQuestion;
+            }
         }
         $qid = $rootQuestion->qid;
         if ($fieldName === "957473X9X301") {
