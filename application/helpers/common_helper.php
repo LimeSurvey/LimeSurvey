@@ -1431,7 +1431,8 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                                 "table" => $tableName,
                                 "field" => $fieldName,
                                 "scale" => $scales,
-                                "ids" => $ids
+                                "ids" => $ids,
+                                "suffix" => $suffix
                             ]);
                         }
                         $suffixText .= "_S" . $scales[$index];
