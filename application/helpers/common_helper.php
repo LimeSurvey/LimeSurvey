@@ -1422,18 +1422,8 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                     }
                     $suffixText = "";
                     for ($index = 0; $index < count($scales); $index++) {
-                        if (!isset($scales[$index])) {
-                            $ids = [];
-                            foreach ($questions as $question) {
-                                $ids[] = $question->qid;
-                            }
-                            echo json_encode([
-                                "table" => $tableName,
-                                "field" => $fieldName,
-                                "scale" => $scales,
-                                "ids" => $ids,
-                                "suffix" => $suffix
-                            ]);
+                        if ((strpos($tableName, "old") !== false) && (!isset($scales[$index]))) {
+                            return $fieldName; //Legacy fieldname format in archive
                         }
                         $suffixText .= "_S" . $scales[$index];
                     }
