@@ -1407,6 +1407,18 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                         $newFieldName = $newFieldName . "_C" . $commentText;
                     }
                 }
+                if ($newFieldName === '') {
+                    $qs = [];
+                    foreach ($questions as $question) {
+                        $qs[] = $question->title;
+                    }
+                    $output = [
+                        'fieldName' => $fieldName,
+                        'code' => $code,
+                        'qs' => $qs
+                    ];
+                    echo json_encode($output);
+                }
                 break;
             case \Question::QT_SEMICOLON_ARRAY_TEXT:
             case \Question::QT_COLON_ARRAY_NUMBERS:
