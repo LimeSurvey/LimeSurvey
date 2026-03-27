@@ -1401,6 +1401,24 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                         }
                     }
                 }
+                if ((!$currentQuestion) && (count($questions) < 2)) {
+                    $questions = Question::model()->with('answers')->findAll([
+                        'condition' => "sid = {$sid} and gid = {$gid} and {$rootQuestion->qid} in (qid, parent_qid))"
+                    ]);
+                    foreach ($questions as $question) {
+                        if (($question->title === $code) || ($code === "")) {
+                            $currentQuestion = $question;
+                        } elseif (in_array($code, ["other", "comment", "othercomment", $question->title . "other", $question->title . "comment", $question->title . "othercomment"])) {
+                            $currentQuestion = $question;
+                            $commentText = $code;
+                            if (strpos($code, $question->title) === 0) {
+                                $commentText = substr($code, strlen($question->title));
+                            } else {
+                                $excludeSubquestion = true;
+                            }
+                        }
+                    }
+                }
                 if ($currentQuestion) {
                     $newFieldName = "Q{$qid}" . ($excludeSubquestion ? "" : "_S{$currentQuestion->qid}");
                     if ($commentText) {
