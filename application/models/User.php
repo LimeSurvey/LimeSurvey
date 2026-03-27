@@ -66,6 +66,7 @@ class User extends LSActiveRecord
 
     /** @var null|string To be in search */
     public $search_parentUserName;
+
     /**
      * @inheritdoc
      * @return User
@@ -799,6 +800,11 @@ class User extends LSActiveRecord
         return $date->format($this->getDateFormat()) . ' ' . $date->format('H:i');
     }
 
+    /**
+     * Used in management grid before 6.17.0
+     * @deprecated 6.17.0
+     * @return string
+     */
     public function getManagementCheckbox()
     {
         return "<input type='checkbox' class='usermanagement--selector-userCheckbox' name='selectedUser[]' value='" . $this->uid . "'>";
@@ -811,28 +817,18 @@ class User extends LSActiveRecord
     {
         $cols = [
             [
-                'name'              => 'dropdown_actions',
-                'type'              => 'raw',
-                'header'            => "<input type='checkbox' id='usermanagement--action-toggleAllUsers' />",
-                'filter'            => false,
+                'id' => 'uid',
+                'class' => 'CCheckBoxColumn',
+                'selectableRows' => 2, // allow multiple selection
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'htmlOptions'       => ['class' => 'ls-sticky-column'],
+                'htmlOptions' => ['class' => 'ls-sticky-column text-end'],
+                'checkBoxHtmlOptions' => ['class' => 'usermanagement--selector-userCheckbox'], // Class used in test
             ],
-            /* @todo check why this didn't work : single choice and no all */
-            /*
-            [
-                'id'                => 'uid',
-                'class'             => 'CCheckBoxColumn',
-                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'htmlOptions'       => ['class' => 'ls-sticky-column']
-            ],
-            */
             [
                 "name"   => 'uid',
                 "header" => gT("User ID"),
-                'htmlOptions' => ['class' => 'uid']
+                'htmlOptions' => ['class' => 'text-end'],
             ],
             [
                 "name"   => 'users_name',
@@ -1074,6 +1070,7 @@ class User extends LSActiveRecord
             $criteria->join = "LEFT JOIN {{users}} u ON t.parent_id = u.uid";
             $criteria->compare('u.users_name', $getParentName, true);
         }
+
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
