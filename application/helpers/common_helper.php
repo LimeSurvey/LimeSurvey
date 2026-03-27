@@ -1492,6 +1492,9 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                                 $newFieldName = "Q{$qid}_{$prefix}{$answer->aid}";
                             }
                         }
+                        if (!$newFieldName) {
+                            $newFieldName = $fieldName;
+                        }
                     }
                 } catch (\Exception $ex) {
                     if (strpos($tableName, 'old') === false) {
