@@ -3,7 +3,7 @@
  * This view generates the Updates tab inside global settings.
  */
 ?>
-<?php $minimumUpdateStability = getGlobalSetting('minimum_update_stability') ?: Yii::app()->getConfig('minimum_update_stability'); ?>
+<?php $minimumUpdateStability = Yii::app()->getConfig('minimum_update_stability'); ?>
 <div class="container">
     <div class="mb-3">
         <label class="form-label" for="minimum_update_stability">

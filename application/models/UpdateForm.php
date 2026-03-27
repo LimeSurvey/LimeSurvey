@@ -625,7 +625,7 @@ class UpdateForm extends CFormModel
                     }
 
                     // Filter updates by minimum stability setting
-                    $minimumStability = getGlobalSetting('minimum_update_stability') ?: Yii::app()->getConfig('minimum_update_stability');
+                    $minimumStability = Yii::app()->getConfig('minimum_update_stability');
                     $filteredUpdates = [];
                     $stabilityLabels = [];
                     foreach ($updates as $update) {
