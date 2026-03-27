@@ -1487,8 +1487,21 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                         $answers = \Answer::model()->findAll("qid = :qid", [
                             ':qid' => $qid
                         ]);
+                        $minSortOrder = 999;
                         foreach ($answers as $answer) {
-                            if (($rankingSuffix == $answer->code) || ((intval($rankingSuffix) > 0) && ($rankingSuffix - 1 == $answer->sortorder))) {
+                            $so = (int)$answer->sortorder;
+                            if ($so < $minSortOrder) {
+                                $minSortOrder = $so;
+                            }
+                        }
+                        $diff = 0;
+                        if ($minSortOrder === 0) {
+                            $diff = -1;
+                        } else if ($minSortOrder > 1) {
+                            $diff = $minSortOrder;
+                        }
+                        foreach ($answers as $answer) {
+                            if (($rankingSuffix == $answer->code) || ((intval($rankingSuffix) > 0) && ($rankingSuffix + $diff == $answer->sortorder))) {
                                 $newFieldName = "Q{$qid}_{$prefix}{$answer->aid}";
                             }
                         }
