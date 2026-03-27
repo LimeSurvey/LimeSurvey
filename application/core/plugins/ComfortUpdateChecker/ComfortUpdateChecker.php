@@ -79,8 +79,6 @@ class ComfortUpdateChecker extends PluginBase
                 'iconClass' => 'ri-shield-check-fill text-warning ' . $iconClass,
             ];
 
-            $aMenuItems[] = (new \LimeSurvey\Menu\MenuItem($aMenuItemAdminOptions));
-
             $oNewMenu = new \ComfortUpdateChecker\helpers\CUCMenuClass($aMenuItemAdminOptions);
 
             //Check if display only for security update is true in plugin settings and display it otherwhise display all
