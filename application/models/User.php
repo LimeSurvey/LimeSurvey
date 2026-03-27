@@ -567,10 +567,20 @@ class User extends LSActiveRecord
     }
 
     /**
+     * Returns buttons for gridview.
+     * @deprecated 6.17.0 use directly getButtons
+     * @return string
+     */
+    public function getManagementButtons()
+    {
+        return $this->getButtons();
+    }
+
+    /**
      * Gets the buttons for the GridView
      * @return string
      */
-    public function getButtons(): string
+    public function getButtons()
     {
         $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
         $permission_users_read = Permission::model()->hasGlobalPermission('users', 'read');
@@ -956,16 +966,6 @@ class User extends LSActiveRecord
             );
         }
         return $cols;
-    }
-
-    /**
-     * Returns buttons for gridview.
-     * @deprecated 6.17.0 use directly getButtons
-     * @return string
-     */
-    public function getManagementButtons()
-    {
-        return $this->getButtons();
     }
 
     /**
