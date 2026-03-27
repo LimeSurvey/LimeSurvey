@@ -1427,12 +1427,12 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                     foreach ($scales[0] as $title1 => $qid1) {
                         if (count($scales[1])) {
                             foreach ($scales[1] as $title2 => $qid2) {
-                                if ($fieldName === "{$qid}{$title1}_{$title2}") {
-                                    return "{$partialFieldName}_S{$qid1}_S{$qid2}";
+                                if ($fieldName === "{$partialFieldName}{$title1}_{$title2}") {
+                                    return "Q{$partialFieldName}_S{$qid1}_S{$qid2}";
                                 }
                             }
-                        } else if ($fieldName === "{$qid}{$title1}") {
-                            return "{$partialFieldName}_S{$qid1}";
+                        } else if ($fieldName === "{$partialFieldName}{$title1}") {
+                            return "Q{$partialFieldName}_S{$qid1}";
                         }
                     }
                 }
