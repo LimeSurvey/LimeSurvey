@@ -1422,6 +1422,18 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                     }
                     $suffixText = "";
                     for ($index = 0; $index < count($scales); $index++) {
+                        if (!isset($scales[$index])) {
+                            $ids = [];
+                            foreach ($questions as $question) {
+                                $qid[] = $question->qid;
+                            }
+                            echo json_encode([
+                                "table" => $tableName,
+                                "field" => $fieldName,
+                                "scale" => $scales,
+                                "ids" => $ids
+                            ]);
+                        }
                         $suffixText .= "_S" . $scales[$index];
                     }
                     $newFieldName = "Q{$qid}" . $suffixText;
