@@ -1407,18 +1407,6 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                         $newFieldName = $newFieldName . "_C" . $commentText;
                     }
                 }
-                if ($newFieldName === '') {
-                    $qs = [];
-                    foreach ($questions as $question) {
-                        $qs[] = $question->title;
-                    }
-                    $output = [
-                        'fieldName' => $fieldName,
-                        'code' => $code,
-                        'qs' => $qs
-                    ];
-                    echo json_encode($output) . "\n\n";
-                }
                 break;
             case \Question::QT_SEMICOLON_ARRAY_TEXT:
             case \Question::QT_COLON_ARRAY_NUMBERS:
@@ -1483,12 +1471,8 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
             case \Question::QT_R_RANKING:
                 $prefix = ((strpos($tableName, "timing") !== false) ? "C" : "R");
                 $index = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
-                if (!$cd) {
-                    echo json_encode([
-                        'table' => $tableName,
-                        'field' => $fieldName,
-                        'index' => substr($fieldName, strlen("{$sid}X{$gid}X{$qid}")) - 1
-                    ]) . "<br>";
+                if ((!isset($questions[0]->answers[(substr($fieldName, strlen("{$sid}X{$gid}X{$qid}")) - 1)])) && (strpos($tableName, "old") !== false)) {
+                    return "";
                 }
                 $aid = $cd ? $index : $questions[0]->answers[(substr($fieldName, strlen("{$sid}X{$gid}X{$qid}")) - 1)]->aid;
                 $newFieldName = "Q{$qid}_{$prefix}" . $aid;
