@@ -1477,8 +1477,8 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                         $aid = $cd ? $index : $questions[0]->answers[($rankingSuffix - 1)]->aid;
                         $newFieldName = "Q{$qid}_{$prefix}" . $aid;
                     } else {
-                        $answers = \Answer::model()->findAll("qid = :qid and code = :code", [
-                            'qid' => $qid
+                        $answers = \Answer::model()->findAll("qid = :qid", [
+                            ':qid' => $qid
                         ]);
                         foreach ($answers as $answer) {
                             if (($rankingSuffix == $answer->code) || ((intval($rankingSuffix) > 0) && ($rankingSuffix - 1 == $answer->sortorder))) {
