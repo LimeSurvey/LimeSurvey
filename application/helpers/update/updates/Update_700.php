@@ -1067,7 +1067,7 @@ class Update_700 extends DatabaseUpdateBase
                 }
                 $commaSeparatedQIDs = implode(",", $qids);
                 $questions = Question::model()->with('answers')->findAll([
-                    'condition' => "sid = {$sid} and ((t.qid in ({$commaSeparatedQIDs}) gid = {$gid}) or parent_qid in ({$commaSeparatedQIDs}))"
+                    'condition' => "sid = {$sid} and ((t.qid in ({$commaSeparatedQIDs}) and gid = {$gid}) or parent_qid in ({$commaSeparatedQIDs}))"
                 ]);
             }
             if (count($questions) || ((strpos($tableName, "timings") !== false) && ($split > 1))) {
