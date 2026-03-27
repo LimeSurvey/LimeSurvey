@@ -1471,11 +1471,14 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
             case \Question::QT_R_RANKING:
                 $prefix = ((strpos($tableName, "timing") !== false) ? "C" : "R");
                 $index = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
-                if ((!$cd) &&  ((!count($questions)) || (intval(substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"))) == 0) || (!isset($questions[0]->answers[(substr($fieldName, strlen("{$sid}X{$gid}X{$qid}")) - 1)])) && (strpos($tableName, "old") !== false))) {
-                    return "";
+                try {
+                    $aid = $cd ? $index : $questions[0]->answers[(substr($fieldName, strlen("{$sid}X{$gid}X{$qid}")) - 1)]->aid;
+                    $newFieldName = "Q{$qid}_{$prefix}" . $aid;
+                } catch (\Exception $ex) {
+                    if (strpos($tableName, 'old') === false) {
+                        throw $ex; //Ignore inconsistencies in archive rankings
+                    }
                 }
-                $aid = $cd ? $index : $questions[0]->answers[(substr($fieldName, strlen("{$sid}X{$gid}X{$qid}")) - 1)]->aid;
-                $newFieldName = "Q{$qid}_{$prefix}" . $aid;
                 break;
         }
     }
