@@ -1335,6 +1335,9 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
         $questionIndex = 0;
         while ($questionIndex < count($rawQuestions)) {
             if (!$rawQuestions[$questionIndex]->parent_qid) {
+        if ($fieldName === "296253X46X391") {
+            echo "\n QID IS" . $rootQuestion->qid . "\n";
+        }
                 if (($rawQuestions[$questionIndex]->gid == $gid) && ($rootQuestion->parent_qid || ($rootQuestion->qid < $rawQuestions[$questionIndex]->qid))) {
                     $rootQuestion = $rawQuestions[$questionIndex];
                 }
@@ -1346,9 +1349,6 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
             if ($rawQuestion->parent_qid == $rootQuestion->qid) {
                 $questions[] = $rawQuestion;
             }
-        }
-        if ($fieldName === "296253X46X391") {
-            echo "\n QID IS" . $rootQuestion->qid . "\n";
         }
         $qid = $rootQuestion->qid;
         switch ($rootQuestion->type) {
