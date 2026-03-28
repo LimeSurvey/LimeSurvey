@@ -1647,6 +1647,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
             ],
             [
+                'header'            => gT('Last Modified'),
+                'name'              => 'last_modified',
+                'value'             => '$data->lastmodified',
+                'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
+            ],
+            [
                 'header'            => gT('Responses'),
                 'name'              => 'responses',
                 'value'             => '$data->countFullAnswers',
@@ -1770,6 +1777,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'desc' => 't.datecreated desc',
             ),
 
+            'last_modified' => array(
+                'asc' => 't.lastmodified asc',
+                'desc' => 't.lastmodified desc',
+            ),
+
             'owner' => array(
                 'asc' => 'owner.users_name asc',
                 'desc' => 'owner.users_name desc',
@@ -1791,7 +1803,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             ),
 
         );
-        $sort->defaultOrder = array('creation_date' => CSort::SORT_DESC);
+        $sort->defaultOrder = array('last_modified' => CSort::SORT_DESC);
 
         $criteria = new LSDbCriteria();
         $aWithRelations = array('correct_relation_defaultlanguage');
