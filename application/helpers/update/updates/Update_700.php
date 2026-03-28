@@ -1070,6 +1070,9 @@ class Update_700 extends DatabaseUpdateBase
                     'condition' => "sid = {$sid} and ((t.qid in ({$commaSeparatedQIDs}) and gid = {$gid}) or parent_qid in ({$commaSeparatedQIDs}))"
                 ]);
             }
+            if ($fieldName === "296253X46X391") {
+                echo json_encode([count($questions), $split]) . "\n";
+            }
             if (count($questions) || ((strpos($tableName, "timings") !== false) && ($split > 1))) {
                 $fieldMap[$tableName][$fieldName] = getFieldName($tableName, $fieldName, $questions, (int)$sid, (int)$gid);
             }
