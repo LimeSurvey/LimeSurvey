@@ -1347,6 +1347,9 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                 $questions[] = $rawQuestion;
             }
         }
+        if ($fieldName === "296253X46X391") {
+            echo "\n QID IS" . $rootQuestion->qid . "\n";
+        }
         $qid = $rootQuestion->qid;
         switch ($rootQuestion->type) {
             case \Question::QT_1_ARRAY_DUAL:

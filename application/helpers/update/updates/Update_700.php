@@ -1071,9 +1071,6 @@ class Update_700 extends DatabaseUpdateBase
                 ]);
             }
             if (count($questions) || ((strpos($tableName, "timings") !== false) && (count($split) > 1))) {
-            if ($fieldName === "296253X46X391") {
-                echo json_encode([count($questions), $split]) . "\n";
-            }
                 $fieldMap[$tableName][$fieldName] = getFieldName($tableName, $fieldName, $questions, (int)$sid, (int)$gid);
             }
         }
