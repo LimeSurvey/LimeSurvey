@@ -1490,6 +1490,10 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                 $index = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
                 try {
                     $rankingSuffix = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                    if (intval($rankingSuffix) === 0) {
+                        echo "\nRANKING SUFFIX: " . var_dump($rankingSuffix) . "\n";
+                        echo "\nRANKING SUFFIX: " . var_dump(["table" => $tableName, "field" => $fieldName]) . "\n";
+                    }
                     if ((intval($rankingSuffix) > 0) && isset($questions[0]->answers[($rankingSuffix - 1)])) {
                         $aid = $cd ? $index : $questions[0]->answers[($rankingSuffix - 1)]->aid;
                         $newFieldName = "Q{$qid}_{$prefix}" . $aid;
