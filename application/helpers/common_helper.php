@@ -1512,7 +1512,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                             $diff = $minSortOrder;
                         }
                         foreach ($answers as $answer) {
-                            if (($rankingSuffix == $answer->code) || ((intval($rankingSuffix) > 0) && ($rankingSuffix + $diff == $answer->sortorder))) {
+                            if (($rankingSuffix == $answer->code) || ((intval($iRankingSuffix) > 0) && ($rankingSuffix + $diff == $answer->sortorder))) {
                                 $newFieldName = "Q{$qid}_{$prefix}{$answer->aid}";
                             }
                         }
