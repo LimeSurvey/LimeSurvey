@@ -1492,7 +1492,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                     $rankingSuffix = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
                     $iRankingSuffix = intval($rankingSuffix);
                     if ((intval($iRankingSuffix) > 0) && isset($questions[0]->answers[($iRankingSuffix - 1)])) {
-                        $aid = $cd ? $index : $questions[0]->answers[($rankingSuffix - 1)]->aid;
+                        $aid = $cd ? $index : $questions[0]->answers[($iRankingSuffix - 1)]->aid;
                         $newFieldName = "Q{$qid}_{$prefix}" . $aid;
                     } else {
                         $answers = \Answer::model()->findAll("qid = :qid", [
