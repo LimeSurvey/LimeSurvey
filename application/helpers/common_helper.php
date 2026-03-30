@@ -1335,7 +1335,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
         $questionIndex = 0;
         while ($questionIndex < count($rawQuestions)) {
             if ($fieldName === "653941X5X341") {
-                echo $rawQuestions[$questionIndex]->qid . "<br>";
+                echo $rawQuestions[$questionIndex]->qid . ", " . $rawQuestions[$questionIndex]->parent_qid . "\n";
             }
             if (!$rawQuestions[$questionIndex]->parent_qid) {
                 if (($rawQuestions[$questionIndex]->gid == $gid) && ($rootQuestion->parent_qid || ($rootQuestion->qid < $rawQuestions[$questionIndex]->qid))) {
@@ -1352,7 +1352,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
         }
         $qid = $rootQuestion->qid;
             if ($fieldName === "653941X5X341") {
-                echo "Root question" . $rawQuestions[$questionIndex]->qid . ", Type " . $rootQuestion->type . "<br>";
+                echo "Root question" . $rootQuestion->qid . ", Type " . $rootQuestion->type . "\n";
             }
         switch ($rootQuestion->type) {
             case \Question::QT_1_ARRAY_DUAL:
