@@ -6,6 +6,7 @@
      *
      */
 
+$fileMaxSizeHintId = $importModal . '-file-max-size-hint';
 ?>
 <div class="modal fade" tabindex="-1" role="dialog" id="<?php echo $importModal;?>">
     <div class="modal-dialog">
@@ -36,8 +37,15 @@
                         <label for='the_file' class="form-label">
                             <?php eT("Select theme ZIP file:") ?>
                         </label>
-                        <input id='the_file' class="form-control" name='the_file' type="file" accept='.zip' />
-                        <div class="form-text mt-2">
+                        <input
+                            id="the_file"
+                            class="form-control"
+                            name="the_file"
+                            type="file"
+                            accept=".zip"
+                            aria-describedby="<?php echo CHtml::encode($fileMaxSizeHintId); ?>"
+                        />
+                        <div class="form-text mt-2" id="<?php echo CHtml::encode($fileMaxSizeHintId); ?>">
                             <?php printf(gT('(Maximum file size: %01.2f MB)'),getMaximumFileUploadSize()/1024/1024); ?>
                         </div>
                     </div>
