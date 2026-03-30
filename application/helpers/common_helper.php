@@ -1361,7 +1361,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
             foreach ($questions as $question) {
                 $tempIDs['whitelisted'][] = $question->qid;
             }
-            echo $tempIDs . "\n";
+            echo json_encode($tempIDs) . "\n";
         }
         switch ($rootQuestion->type) {
             case \Question::QT_1_ARRAY_DUAL:
