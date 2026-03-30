@@ -34,6 +34,24 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.16.14 (build 260323) to 6.16.15 (build 260330) March 30, 2026
+-Fixed issue #LE-663: Deletion of participants list should switch access mode from closed to open (#4814) (haythem chibani)
+-Fixed issue #LE-661: Visiting survey fails in closed access mode with inherited public registration enabled (#4813) (haythem chibani)
+-Fixed issue #AT-1976: Survey showing wrong checkbox icon (#4828) (Stefan K)
+-Fixed issue #20470: On group import the question codes in custom conditions are not updated (Carsten Schmitz)
+-Fixed issue #20464: Error message 'Unknown table field questions.qid' (Carsten Schmitz)
+-Fixed issue #20399: CSS class not applied to active menu items (#4805) (Stefan K)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by DenisChenu, fgervais, Rodrigue_Galani
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+
+
 Changes from 6.16.13 (build 260316) to 6.16.14 (build 260323) March 23, 2026
 -Fixed issue: Add aria-labels to button groups and heading semantic enhancements in survey menu panels (a11y) (#4447) (Anblik Audit Team)
 -Fixed issue LS-CLOUD-409: array_merge() error when executing quota (Carsten Schmitz)
