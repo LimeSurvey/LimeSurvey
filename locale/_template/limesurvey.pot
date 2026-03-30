@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-03-24 17:13:54+00:00\n"
+"POT-Creation-Date: 2026-03-30 12:45:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -40,22 +40,22 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:98
 #: application/helpers/admin/import_helper.php:207
 #: application/helpers/admin/import_helper.php:317
-#: application/helpers/admin/import_helper.php:813
-#: application/helpers/admin/import_helper.php:2366
-#: application/helpers/admin/import_helper.php:2418
-#: application/helpers/admin/import_helper.php:2545
-#: application/helpers/admin/import_helper.php:2664
-#: application/helpers/admin/import_helper.php:2905
-#: application/helpers/admin/import_helper.php:2912
-#: application/helpers/admin/import_helper.php:3013
-#: application/helpers/admin/import_helper.php:3045
-#: application/helpers/admin/import_helper.php:3071
-#: application/helpers/admin/import_helper.php:3157
-#: application/helpers/admin/import_helper.php:3260
-#: application/helpers/admin/import_helper.php:3454
-#: application/helpers/admin/import_helper.php:3816
-#: application/helpers/admin/import_helper.php:4454
-#: application/helpers/admin/import_helper.php:4499
+#: application/helpers/admin/import_helper.php:817
+#: application/helpers/admin/import_helper.php:2370
+#: application/helpers/admin/import_helper.php:2422
+#: application/helpers/admin/import_helper.php:2549
+#: application/helpers/admin/import_helper.php:2668
+#: application/helpers/admin/import_helper.php:2909
+#: application/helpers/admin/import_helper.php:2916
+#: application/helpers/admin/import_helper.php:3017
+#: application/helpers/admin/import_helper.php:3049
+#: application/helpers/admin/import_helper.php:3075
+#: application/helpers/admin/import_helper.php:3161
+#: application/helpers/admin/import_helper.php:3264
+#: application/helpers/admin/import_helper.php:3458
+#: application/helpers/admin/import_helper.php:3820
+#: application/helpers/admin/import_helper.php:4458
+#: application/helpers/admin/import_helper.php:4503
 #: application/models/TemplateManifest.php:173
 #: application/models/services/PasswordManagement.php:88
 #: application/views/admin/checkintegrity/fix_view.php:16
@@ -10472,252 +10472,252 @@ msgstr ""
 
 #: application/helpers/admin/import_helper.php:211
 #: application/helpers/admin/import_helper.php:321
-#: application/helpers/admin/import_helper.php:817
-#: application/helpers/admin/import_helper.php:2549
-#: application/helpers/admin/import_helper.php:2668
+#: application/helpers/admin/import_helper.php:821
+#: application/helpers/admin/import_helper.php:2553
+#: application/helpers/admin/import_helper.php:2672
 msgid "Error while saving: "
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:222
-#: application/helpers/admin/import_helper.php:2560
-#: application/helpers/admin/import_helper.php:2732
+#: application/helpers/admin/import_helper.php:2564
+#: application/helpers/admin/import_helper.php:2736
 msgid "Question %s has outdated links."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:225
-#: application/helpers/admin/import_helper.php:2563
-#: application/helpers/admin/import_helper.php:2744
+#: application/helpers/admin/import_helper.php:2567
+#: application/helpers/admin/import_helper.php:2748
 msgid "Help text for question %s has outdated links."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:236
-#: application/helpers/admin/import_helper.php:696
-#: application/helpers/admin/import_helper.php:2574
+#: application/helpers/admin/import_helper.php:700
+#: application/helpers/admin/import_helper.php:2578
 msgid "Question code %s was updated to %s."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:333
-#: application/helpers/admin/import_helper.php:2680
-#: application/helpers/admin/import_helper.php:2736
+#: application/helpers/admin/import_helper.php:2684
+#: application/helpers/admin/import_helper.php:2740
 msgid "Subquestion %s of question %s has outdated links."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:345
-#: application/helpers/admin/import_helper.php:841
-#: application/helpers/admin/import_helper.php:2692
+#: application/helpers/admin/import_helper.php:845
+#: application/helpers/admin/import_helper.php:2696
 msgid "Title of subquestion %s was updated to %s."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:578
-#: application/helpers/admin/import_helper.php:3274
+#: application/helpers/admin/import_helper.php:582
+#: application/helpers/admin/import_helper.php:3278
 msgid "Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:625
+#: application/helpers/admin/import_helper.php:629
 msgid "The languages of the imported question file must at least include the base language of this survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:691
-#: application/helpers/admin/import_helper.php:711
+#: application/helpers/admin/import_helper.php:695
+#: application/helpers/admin/import_helper.php:715
 msgid "The question could not be imported for the following reasons:"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:829
+#: application/helpers/admin/import_helper.php:833
 msgid "Subquestion %s has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:915
-#: application/helpers/admin/import_helper.php:959
+#: application/helpers/admin/import_helper.php:919
+#: application/helpers/admin/import_helper.php:963
 msgid "Answer option %s has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1281
+#: application/helpers/admin/import_helper.php:1285
 msgid "This is not a valid LimeSurvey LSA file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1325
+#: application/helpers/admin/import_helper.php:1329
 msgid "Unable to create survey participant list"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2108
+#: application/helpers/admin/import_helper.php:2112
 msgid "This is not a valid LimeSurvey survey structure XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2148
+#: application/helpers/admin/import_helper.php:2152
 msgid "XML Parsing Error: Missing or malformed element of type 'survey'"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2219
+#: application/helpers/admin/import_helper.php:2223
 msgid "This survey setting has not been imported: %s => %s"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2226
+#: application/helpers/admin/import_helper.php:2230
 #: application/models/services/CopySurvey.php:74
 msgid "The desired survey ID was already in use, therefore a random one was assigned."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2229
+#: application/helpers/admin/import_helper.php:2233
 msgid "Unable to import survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2281
+#: application/helpers/admin/import_helper.php:2285
 msgid "Survey title has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2284
+#: application/helpers/admin/import_helper.php:2288
 msgid "Survey description has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2287
+#: application/helpers/admin/import_helper.php:2291
 msgid "Welcome text has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2290
+#: application/helpers/admin/import_helper.php:2294
 msgid "URL description has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2293
+#: application/helpers/admin/import_helper.php:2297
 msgid "Invitation email template has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2296
+#: application/helpers/admin/import_helper.php:2300
 msgid "Reminder email template has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2299
+#: application/helpers/admin/import_helper.php:2303
 msgid "Registration email template has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2302
+#: application/helpers/admin/import_helper.php:2306
 msgid "Confirmation email template has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2349
+#: application/helpers/admin/import_helper.php:2353
 msgid "The survey alias for '%s' has been cleared because it was already in use by another survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2363
+#: application/helpers/admin/import_helper.php:2367
 msgid "Error: Failed to import survey language settings."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2371
+#: application/helpers/admin/import_helper.php:2375
 msgid "The email attachments have not been imported because they were in an old format."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2375
+#: application/helpers/admin/import_helper.php:2379
 msgid "Email templates have attachments but the resources have not been copied. Please update the attachments manually."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2400
+#: application/helpers/admin/import_helper.php:2404
 msgid "Group name has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2403
+#: application/helpers/admin/import_helper.php:2407
 msgid "Group description has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2461
+#: application/helpers/admin/import_helper.php:2465
 msgid "Error while saving group: "
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2795
-#: application/helpers/admin/import_helper.php:2836
+#: application/helpers/admin/import_helper.php:2799
+#: application/helpers/admin/import_helper.php:2840
 msgid "Answer option %s of question %s has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3105
 #: application/helpers/admin/import_helper.php:3109
+#: application/helpers/admin/import_helper.php:3113
 #: application/views/admin/databaseupdate/verify.php:24
 msgid "Error:"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3130
+#: application/helpers/admin/import_helper.php:3134
 msgid "Unable to insert quota language settings for quota %s"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3132
+#: application/helpers/admin/import_helper.php:3136
 msgid "Unable to insert quota language settings for quota %s and language %s"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3180
+#: application/helpers/admin/import_helper.php:3184
 msgid "Error when saving %s for plugin %s"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3183
+#: application/helpers/admin/import_helper.php:3187
 msgid "Plugin %s didn't exist, settings not imported"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3323
+#: application/helpers/admin/import_helper.php:3327
 msgid "This is not a valid participant data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3367
+#: application/helpers/admin/import_helper.php:3371
 msgid "Skipped participant entry:"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3412
+#: application/helpers/admin/import_helper.php:3416
 msgid "This is not a valid response data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3473
+#: application/helpers/admin/import_helper.php:3477
 #: application/views/surveyAdministration/surveyActivation/_activation_error.php:20
 msgid "The survey response table could not be created."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3473
+#: application/helpers/admin/import_helper.php:3477
 #: application/views/surveyAdministration/surveyActivation/_activation_error.php:21
 msgid "Usually this is caused by having too many (sub-)questions in your survey. Please try removing questions from your survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3522
+#: application/helpers/admin/import_helper.php:3526
 msgid "File is empty or you selected an invalid character set (%s)."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3535
+#: application/helpers/admin/import_helper.php:3539
 msgid "File seems empty or has only one line"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3585
+#: application/helpers/admin/import_helper.php:3589
 msgid "Import failed: Forced import was requested but the input file doesn't contain enough columns to fill the survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3592
+#: application/helpers/admin/import_helper.php:3596
 msgid "Import failed: No answers could be mapped."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3752
+#: application/helpers/admin/import_helper.php:3756
 msgid "%s response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3754
+#: application/helpers/admin/import_helper.php:3758
 msgid "No response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3757
+#: application/helpers/admin/import_helper.php:3761
 msgid "%s responses were inserted."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3761
+#: application/helpers/admin/import_helper.php:3765
 msgid "%s responses were updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3764
+#: application/helpers/admin/import_helper.php:3768
 msgid "%s responses cannot be inserted or updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3767
+#: application/helpers/admin/import_helper.php:3771
 msgid "%s responses already exist."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3784
+#: application/helpers/admin/import_helper.php:3788
 msgid "This is not a valid timings data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3869
+#: application/helpers/admin/import_helper.php:3873
 msgid "The file does not seem to be a valid survey file. The necessary headers are not present."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3907
+#: application/helpers/admin/import_helper.php:3911
 msgid "The file do not seem to be a valid tab-separated-values survey file. No language set."
 msgstr ""
 
