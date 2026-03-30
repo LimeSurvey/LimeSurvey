@@ -1334,9 +1334,6 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
         $rootQuestion = $rawQuestions[0];
         $questionIndex = 0;
         while ($questionIndex < count($rawQuestions)) {
-            if ($fieldName === "653941X5X341") {
-                echo $rawQuestions[$questionIndex]->qid . ", " . $rawQuestions[$questionIndex]->parent_qid . "\n";
-            }
             if (!$rawQuestions[$questionIndex]->parent_qid) {
                 if (($rawQuestions[$questionIndex]->gid == $gid) && ($rootQuestion->parent_qid || ($rootQuestion->qid < $rawQuestions[$questionIndex]->qid))) {
                     $rootQuestion = $rawQuestions[$questionIndex];
@@ -1351,9 +1348,20 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
             }
         }
         $qid = $rootQuestion->qid;
-            if ($fieldName === "653941X5X341") {
-                echo "Root question" . $rootQuestion->qid . ", Type " . $rootQuestion->type . "\n";
+        if (($tableName === "survey_516152") && (in_array($fieldName, ["516152X1X11", "516152X1X110", "516152X1X111", "516152X1X112"]))) {
+            echo "Table: " . $tableName . " Field: " . $fieldName . " questions:";
+            $tempIDs = [
+                'all' => [],
+                'whitelisted' => [],
+                'root' => $rootQuestion->qid
+            ];
+            foreach ($rawQuestions as $rawQuestion) {
+                $tempIDs['all'][] = $rawQuestion->qid;
             }
+            foreach ($questions as $question) {
+                $tempIDs['whitelisted'][] = $question->qid;
+            }
+        }
         switch ($rootQuestion->type) {
             case \Question::QT_1_ARRAY_DUAL:
             case \Question::QT_5_POINT_CHOICE:
