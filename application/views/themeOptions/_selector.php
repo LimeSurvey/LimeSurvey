@@ -16,34 +16,33 @@
         'dropUpText'  => gT('Selected theme(s)...'),
         'aActions'    => array(
             //reset
-            /*  this makes only sense if feature "change question theme attributes" is implemented ...
             array(
                 //li element
                 'type' => 'action',
                 'action' => 'reset',
                 'url' => App()->createUrl('themeOptions/resetMultiple/'),
-                'iconClasses' => '',
+                'iconClasses' => 'ri-refresh-line',
                 'text' => gT('Reset'),
                 'grid-reload' => 'yes',
 
                 //modal
-                'actionType' => 'modal',
-                'modalType'     => 'yes-no',
+                'actionType'    => 'modal',
+                'modalType'     => 'cancel-apply',
                 'keepopen'      => 'yes',
                 'showSelected'  => 'yes',
                 'selectedUrl'   => App()->createUrl('themeOptions/selectedItems/'),
-                'yes'           => gT('Reset Themes'),
+                'yes'           => gT('Reset'),
                 'no'            => gT('Cancel'),
-                'sModalTitle'   => gT('Reset theme'),
-                'htmlModalBody' =>gT('Are you sure you want to reset the selected themes?')
-            ),*/
+                'sModalTitle'   => gT('Reset themes'),
+                'htmlModalBody' => gT('Are you sure you want to reset the selected themes?'),
+            ),
             //uninstall 
             array(
                 //li element
                 'type'        => 'action',
                 'action'      => 'Uninstall',
                 'url'         =>  App()->createUrl('themeOptions/uninstallMultiple/'),
-                'iconClasses' => '',
+                'iconClasses' => 'ri-delete-bin-fill',
                 'text'        =>  gT('Uninstall'),
                 'grid-reload' => 'yes',
 
