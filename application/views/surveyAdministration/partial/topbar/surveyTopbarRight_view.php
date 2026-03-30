@@ -2,9 +2,6 @@
 /**
  * @var string $closeUrl
  * @var string $returnUrl
- * @var string $editorUrl
- * @var bool   $enableEditorButton
- * @var bool   $editorEnabled
  */
 
 ?>
