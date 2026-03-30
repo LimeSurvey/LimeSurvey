@@ -26,7 +26,11 @@ class OptoutController extends LSYii_Controller
     public $defaultAction = 'tokens';
 
     /**
-     * Display the confirmation for individual survey opt out
+     * Display the confirmation page for individual survey opt-out.
+     * Provides both a legacy GET link (optin_link) for old themes and a
+     * secure POST link (optin_post_link) for updated themes.
+     *
+     * @throws CHttpException
      */
     public function actiontokens()
     {
@@ -74,7 +78,11 @@ class OptoutController extends LSYii_Controller
     }
 
     /**
-     * Display the confirmation for global opt out
+     * Display the confirmation page for global opt-out (central participant list).
+     * Provides both a legacy GET link (optin_link) for old themes and a
+     * secure POST link (optin_post_link) for updated themes.
+     *
+     * @throws CHttpException
      */
     public function actionparticipants()
     {
@@ -144,6 +152,35 @@ class OptoutController extends LSYii_Controller
      */
     public function actionremovetokens()
     {
+        $result = $this->handleOptout();
+        $this->renderHtml($result['message'], $result['survey'], '', $result['tokenAttributes'], $result['participantAttributes']);
+    }
+
+    /**
+     * Secure opt-out endpoint (POST-only). Prevents email security scanners
+     * (Microsoft Defender Safe Links, Proofpoint, etc.) from automatically
+     * triggering opt-out by following GET links.
+     */
+    public function actionremovetoken()
+    {
+        if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(405, gT('Invalid request method.'));
+        }
+
+        $result = $this->handleOptout();
+        $this->renderHtml($result['message'], $result['survey'], '', $result['tokenAttributes'], $result['participantAttributes']);
+    }
+
+    /**
+     * Common opt-out logic shared by actionremovetokens() and actionremovetoken().
+     * Validates the survey, resolves the language, loads the token, sets emailstatus
+     * to 'OptOut', and optionally blacklists the participant globally.
+     *
+     * @return array{message: string, survey: Survey, tokenAttributes: array<string,mixed>, participantAttributes: array<string,mixed>}
+     * @throws CHttpException
+     */
+    private function handleOptout()
+    {
         $surveyId = Yii::app()->request->getQuery('surveyid');
         $language = Yii::app()->request->getQuery('langcode');
         $accessToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
@@ -202,93 +239,23 @@ class OptoutController extends LSYii_Controller
             $tokenAttributes = $token->getAttributes();
         }
 
-        $this->renderHtml($message, $survey, '', $tokenAttributes, $participantAttributes);
+        return [
+            'message' => $message,
+            'survey' => $survey,
+            'tokenAttributes' => $tokenAttributes,
+            'participantAttributes' => $participantAttributes,
+        ];
     }
 
     /**
-     * Secure opt-out endpoint (POST-only). Prevents email security scanners
-     * (Microsoft Defender Safe Links, Proofpoint, etc.) from automatically
-     * triggering opt-out by following GET links.
-     */
-    public function actionremovetoken()
-    {
-        if (!Yii::app()->request->isPostRequest) {
-            throw new CHttpException(405, gT('Invalid request method.'));
-        }
-
-        $surveyId = Yii::app()->request->getQuery('surveyid');
-        $language = Yii::app()->request->getQuery('langcode');
-        $accessToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
-        $global = Yii::app()->request->getQuery('global');
-
-        Yii::app()->loadHelper('database');
-        Yii::app()->loadHelper('sanitize');
-
-        // If there is no survey ID, redirect back to the default public page
-        if (!$surveyId) {
-            $this->redirect(['/']);
-        }
-
-        $survey = Survey::model()->findByPk($surveyId);
-        if (empty($survey) || !$survey->hasTokensTable) {
-            throw new CHttpException(404, "This survey does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
-        }
-
-        // Get passed language from form, so that we dont lose this!
-        if (!isset($language) || $language == "" || !$language) {
-            $baseLanguage = $survey->language;
-        } else {
-            $baseLanguage = sanitize_languagecode($language);
-        }
-
-        Yii::app()->setLanguage($baseLanguage);
-
-        LimeExpressionManager::singleton()->loadTokenInformation($surveyId, $accessToken, false);
-        $token = Token::model($surveyId)->findByAttributes(['token' => $accessToken]);
-
-        $tokenAttributes = [];
-        $participantAttributes = [];
-        if (!isset($token)) {
-            $message = gT('You are not a participant in this survey.');
-        } else {
-            if (substr((string) $token->emailstatus, 0, strlen('OptOut')) !== 'OptOut') {
-                $token->emailstatus = 'OptOut';
-                if (!$token->save()) {
-                    // Not translated because it is extremely unlikely that this will ever be seen by a user
-                    throw new CHttpException(500, 'We could not complete your opt-out request. Please try again later.');
-                }
-                $message = gT('You have been successfully removed from this survey.');
-            } else {
-                $message = gT('You have already been removed from this survey.');
-            }
-            if ($global) {
-                $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
-                $blacklistResult = $blacklistHandler->addToBlacklist($token);
-                if ($blacklistResult->isBlacklisted()) {
-                    foreach ($blacklistResult->getMessages() as $blacklistMessage) {
-                        $message .= "<br>" . $blacklistMessage;
-                    }
-                }
-                $participant = $blacklistHandler->getCentralParticipantFromToken($token);
-                if (!empty($participant)) {
-                    $participantAttributes = $participant->getAttributes();
-                }
-            }
-            $tokenAttributes = $token->getAttributes();
-        }
-
-        $this->renderHtml($message, $survey, '', $tokenAttributes, $participantAttributes);
-    }
-
-    /**
-     * Render something
+     * Render the opt-out/opt-in themed page via Twig.
      *
      * @param string $message
      * @param Survey $survey
-     * @param string $link
+     * @param string $link Legacy GET URL for the opt-out action (used by old themes via optin_link)
      * @param array<string,mixed> $token
      * @param array<string,mixed> $participant
-     * @param string $postLink URL for the POST-only removetoken endpoint (for updated templates)
+     * @param string $postLink Secure POST-only URL for the opt-out action (used by updated themes via optin_post_link)
      * @return void
      */
     private function renderHtml($message, $survey, $link = '', $token = [], $participant = [], $postLink = '')
