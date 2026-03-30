@@ -65,11 +65,12 @@ class OptoutController extends LSYii_Controller
                 $sMessage = gT('You have already been removed from this survey.');
             } else {
                 $sMessage = gT('Please confirm that you want to opt out of this survey by clicking the button below.') . '<br>' . gT("After confirmation you won't receive any invitations or reminders for this survey anymore.");
-                $link = Yii::app()->createUrl('optout/removetoken', array('surveyid' => $iSurveyID, 'langcode' => $sBaseLanguage, 'token' => $sToken));
+                $link = Yii::app()->createUrl('optout/removetokens', array('surveyid' => $iSurveyID, 'langcode' => $sBaseLanguage, 'token' => $sToken));
+                $postLink = Yii::app()->createUrl('optout/removetoken', array('surveyid' => $iSurveyID, 'langcode' => $sBaseLanguage, 'token' => $sToken));
             }
             $tokenAttributes = $oToken->getAttributes();
         }
-        $this->renderHtml($sMessage, $oSurvey, $link, $tokenAttributes);
+        $this->renderHtml($sMessage, $oSurvey, $link, $tokenAttributes, [], $postLink ?? '');
     }
 
     /**
@@ -118,10 +119,12 @@ class OptoutController extends LSYii_Controller
 
             if (!empty($participant) && $participant->blacklisted != 'Y') {
                 $message = gT('Please confirm that you want to be removed from the central participant list for this site.');
-                $link = Yii::app()->createUrl('optout/removetoken', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken, 'global' => true));
+                $link = Yii::app()->createUrl('optout/removetokens', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken, 'global' => true));
+                $postLink = Yii::app()->createUrl('optout/removetoken', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken, 'global' => true));
             } elseif (!$optedOutFromSurvey) {
                 $message = gT('Please confirm that you want to opt out of this survey by clicking the button below.') . '<br>' . gT("After confirmation you won't receive any invitations or reminders for this survey anymore.");
-                $link = Yii::app()->createUrl('optout/removetoken', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken));
+                $link = Yii::app()->createUrl('optout/removetokens', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken));
+                $postLink = Yii::app()->createUrl('optout/removetoken', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken));
             } else {
                 $message = gT('You have already been removed from the central participant list for this site.');
             }
@@ -131,7 +134,7 @@ class OptoutController extends LSYii_Controller
             }
         }
 
-        $this->renderHtml($message, $survey, $link, $tokenAttributes, $participantAttributes);
+        $this->renderHtml($message, $survey, $link, $tokenAttributes, $participantAttributes, $postLink ?? '');
     }
 
     /**
@@ -250,7 +253,10 @@ class OptoutController extends LSYii_Controller
         } else {
             if (substr((string) $token->emailstatus, 0, strlen('OptOut')) !== 'OptOut') {
                 $token->emailstatus = 'OptOut';
-                $token->save();
+                if (!$token->save()) {
+                    // Not translated because it is extremely unlikely that this will ever be seen by a user
+                    throw new CHttpException(500, 'We could not complete your opt-out request. Please try again later.');
+                }
                 $message = gT('You have been successfully removed from this survey.');
             } else {
                 $message = gT('You have already been removed from this survey.');
@@ -282,15 +288,17 @@ class OptoutController extends LSYii_Controller
      * @param string $link
      * @param array<string,mixed> $token
      * @param array<string,mixed> $participant
+     * @param string $postLink URL for the POST-only removetoken endpoint (for updated templates)
      * @return void
      */
-    private function renderHtml($message, $survey, $link = '', $token = [], $participant = [])
+    private function renderHtml($message, $survey, $link = '', $token = [], $participant = [], $postLink = '')
     {
         $aSurveyInfo = getSurveyInfo($survey->primaryKey);
 
         $aSurveyInfo['include_content'] = 'optout';
         $aSurveyInfo['optin_message'] = $message;
         $aSurveyInfo['optin_link'] = $link;
+        $aSurveyInfo['optin_post_link'] = $postLink;
         $aSurveyInfo['optin_csrf_token_name'] = Yii::app()->request->csrfTokenName;
         $aSurveyInfo['optin_csrf_token_value'] = Yii::app()->request->csrfToken;
         $aSurveyInfo['aCompleted'] = true;  // Avoid showing the progress bar

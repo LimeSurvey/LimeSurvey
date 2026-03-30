@@ -1,7 +1,9 @@
 <p>{{ aSurveyInfo.optin_message }} </p>
-{% if aSurveyInfo.optin_link %}
-    <form method="POST" action="{{ aSurveyInfo.optin_link }}">
+{% if aSurveyInfo.optin_post_link is defined and aSurveyInfo.optin_post_link %}
+    <form method="POST" action="{{ aSurveyInfo.optin_post_link }}">
         <input type="hidden" name="{{ aSurveyInfo.optin_csrf_token_name }}" value="{{ aSurveyInfo.optin_csrf_token_value }}">
         <p><button type="submit" class="btn btn-outline-secondary btn-lg"> {{ gT("I confirm") }} </button></p>
     </form>
+{% elseif aSurveyInfo.optin_link %}
+    <p><a href="{{ aSurveyInfo.optin_link }}" class="btn btn-outline-secondary btn-lg"> {{ gT("I confirm") }} </a></p>
 {% endif %}
