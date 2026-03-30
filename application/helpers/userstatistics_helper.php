@@ -618,7 +618,7 @@ class userstatistics_helper
 
             //Add the "other" answer if it exists
             if ($qother == "Y") {
-                $mfield = $rt . "_Cother";
+                $mfield = substr($rt, 1) . "_Cother";
                 $alist[] = array(gT("Other"), gT("Other"), $mfield);
             }
         } //S - Short free text and T - Long free text
