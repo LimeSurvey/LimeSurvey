@@ -103,7 +103,12 @@ class CopySurvey
         $copySurveyResult->setCopiedSurvey($destinationSurvey);
 
         $this->copySurveyLanguages($copySurveyResult, $destinationSurvey);
-        $destinationSurvey->currentLanguageSettings->surveyls_title = $this->sourceSurvey->currentLanguageSettings->surveyls_title . ' - Copy';
+        $newTitle = $this->options->getNewTitle();
+        if ($newTitle !== null && $newTitle !== '') {
+            $destinationSurvey->currentLanguageSettings->surveyls_title = $newTitle;
+        } else {
+            $destinationSurvey->currentLanguageSettings->surveyls_title = sprintf(gT('Copy of %s', 'unescaped', $this->sourceSurvey->language), $this->sourceSurvey->currentLanguageSettings->surveyls_title);
+        }
         $destinationSurvey->currentLanguageSettings->save();
         $mappingGroupIdsAndQuestionIds = $this->copyGroupsAndQuestions($copySurveyResult, $destinationSurvey);
         $this->copySurveyAssessments($copySurveyResult, $destinationSurvey, $mappingGroupIdsAndQuestionIds['questionGroupIds']);

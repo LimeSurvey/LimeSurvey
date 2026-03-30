@@ -386,7 +386,7 @@ class SurveyCommonAction extends CAction
             $updateNotification = $updateModel->updateNotification;
 
             if ($updateNotification->result) {
-                $scriptToRegister = App()->getConfig('packages') . DIRECTORY_SEPARATOR . 'comfort_update' . DIRECTORY_SEPARATOR. 'comfort_update.js';
+                $scriptToRegister = App()->getConfig('packages') . DIRECTORY_SEPARATOR . 'comfort_update' . DIRECTORY_SEPARATOR . 'comfort_update.js';
                 App()->getClientScript()->registerScriptFile($scriptToRegister);
                 return $this->getController()->renderPartial("/admin/update/_update_notification", array('security_update_available' => $updateNotification->security_update));
             }
@@ -512,12 +512,13 @@ class SurveyCommonAction extends CAction
      *
      * @return Menu
      */
-    public function getCreateMenu() {
+    public function getCreateMenu()
+    {
         $itemClass = 'create-menu-item';
         $menuItemHeader = [
             'isDivider' => false,
             'isSmallText' => true,
-            'label' => gT('Create new...'),
+            'label' => gT('New survey...'),
             'href' => '#',
             'iconClass' => 'ri-add-line',
         ];
@@ -526,7 +527,7 @@ class SurveyCommonAction extends CAction
         $menuItemNewSurvey = [
             'isDivider' => false,
             'isSmallText' => false,
-            'label' => gT('Survey'),
+            'label' => gT('Create'),
             'href' => \Yii::app()->createUrl('surveyAdministration/newSurvey'),
             'iconClass' => 'ri-add-line',
             'id' => 'create-survey-link',
@@ -534,20 +535,21 @@ class SurveyCommonAction extends CAction
         ];
         $menuItems[] = (new MenuItem($menuItemNewSurvey));
 
-        $menuItemNewSurvey = [
+        $menuItemCopySurvey = [
             'isDivider' => false,
             'isSmallText' => false,
-            'label' => gT('Survey group'),
-            'href' => \Yii::app()->createUrl('admin/surveysgroups/sa/create'),
-            'iconClass' => 'ri-add-circle-line',
+            'label' => gT('Copy'),
+            'isModal' => true,
+            'modalId' => 'copySurvey_modal',
+            'iconClass' => 'ri-file-copy-line',
             'itemClass' => $itemClass
         ];
-        $menuItems[] = (new MenuItem($menuItemNewSurvey));
+        $menuItems[] = (new MenuItem($menuItemCopySurvey));
 
         $menuItemNewSurvey = [
             'isDivider' => false,
             'isSmallText' => false,
-            'label' => gT('Import survey'),
+            'label' => gT('Import'),
             'isModal' => true,
             'modalId' => 'importSurvey_modal',
             'iconClass' => 'ri-upload-line',

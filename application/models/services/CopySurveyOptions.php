@@ -29,6 +29,9 @@ class CopySurveyOptions
     /** @var bool whether to reset a surveys response start-id */
     private bool $resetResponseStartId;
 
+    /** @var string|null custom title for the copied survey (null = use default " - Copy" suffix) */
+    private ?string $newTitle = null;
+
     /**
      * Sets an initial state for copying options.
      *
@@ -113,5 +116,15 @@ class CopySurveyOptions
     public function setResetResponseStartId(bool $resetResponseStartId): void
     {
         $this->resetResponseStartId = $resetResponseStartId;
+    }
+
+    public function getNewTitle(): ?string
+    {
+        return $this->newTitle;
+    }
+
+    public function setNewTitle(?string $newTitle): void
+    {
+        $this->newTitle = $newTitle;
     }
 }

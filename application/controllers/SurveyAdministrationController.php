@@ -46,6 +46,7 @@ class SurveyAdministrationController extends LSBaseController
                     'fakebrowser',
                     'getAjaxMenuArray',
                     'getAjaxQuestionGroupArray',
+                    'getAjaxSurveyList',
                     'getCurrentEditorValues',
                     'getDataSecTextSettings',
                     'getDateFormatOptions',
@@ -1178,6 +1179,49 @@ class SurveyAdministrationController extends LSBaseController
             false,
             false
         );
+    }
+
+    /**
+     * Returns a JSON list of surveys the current user has export permission on,
+     * filtered by an optional search term. Used by Select2 AJAX in the copy survey modal.
+     *
+     * @return void
+     */
+    public function actionGetAjaxSurveyList()
+    {
+        $term = Yii::app()->request->getParam('term', '');
+        $userId = (int) Yii::app()->session['loginID'];
+
+        $criteria = new CDbCriteria();
+        $criteria->with = ['correct_relation_defaultlanguage'];
+        $criteria->together = true;
+        $criteria->order = 't.sid DESC';
+        $criteria->limit = 50;
+
+        if ($term !== '') {
+            $criteria->addCondition(
+                'CAST(t.sid AS CHAR) LIKE :termPrefix OR correct_relation_defaultlanguage.surveyls_title LIKE :termLike'
+            );
+            $criteria->params[':termPrefix'] = $term . '%';
+            $criteria->params[':termLike'] = '%' . $term . '%';
+        }
+
+        $surveys = Survey::model()->permission($userId)->findAll($criteria);
+        $results = [];
+        foreach ($surveys as $survey) {
+            $title = isset($survey->correct_relation_defaultlanguage->surveyls_title)
+                ? $survey->correct_relation_defaultlanguage->surveyls_title
+                : '';
+            $results[] = [
+                'id' => (int) $survey->sid,
+                'text' => $survey->sid . ' - ' . $title,
+                'title' => $title,
+            ];
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode(['results' => $results]);
+        Yii::app()->end();
     }
 
     /**
@@ -2328,66 +2372,15 @@ class SurveyAdministrationController extends LSBaseController
         $option = $request->getPost('resetResponseStartId');
         $optionsDataContainer->setResetResponseStartId(isset($option) && $option == "1");
 
+        $newTitle = $request->getPost('copysurveytitle');
+        if ($newTitle !== null && trim($newTitle) !== '') {
+            $optionsDataContainer->setNewTitle(trim($newTitle));
+        }
+
         return $optionsDataContainer;
     }
 
-    /**
-     * @param int $surveyIdToCopy
-     * @return void
-     * @throws Exception
-     */
-    public function actionCopySimple($surveyIdToCopy)
-    {
-        //everybody who has permission to create surveys
-        if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
-            App()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(App()->request->urlReferrer);
-        }
 
-        $surveyId = sanitize_int($surveyIdToCopy);
-        $survey = Survey::model()->findByPk($surveyId);
-        if (!$survey) {
-            App()->user->setFlash('error', gT("Survey does not exist."));
-            $this->redirect(App()->request->urlReferrer);
-        }
-
-        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'export')) {
-            App()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(App()->request->urlReferrer);
-        }
-        $optionsDataContainer = new CopySurveyOptions();
-        //start and enddate should be copied in the simple copy process
-        $optionsDataContainer->setStartAndEndDate(true);
-        $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
-            $survey,
-            $optionsDataContainer,
-        );
-
-        $copyResults = $copySurveyService->copy();
-
-        $copiedSurvey = $copyResults->getCopiedSurvey();
-        if ($copiedSurvey !== null) {
-            $groupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
-            $this->resetExpressionManager($copiedSurvey, $groupList);
-        }
-
-        if (empty($copyResults->getErrors())) {
-            App()->user->setFlash('success', gT("Survey copied successfully."));
-        } else {
-            App()->user->setFlash('error', gT("Error while copying the survey."));
-        }
-
-        $redirectUrl = App()->request->urlReferrer;
-        if ($copiedSurvey !== null) {
-            $redirectUrl = App()->createUrl("surveyAdministration/view/", ["iSurveyID" => $copiedSurvey->sid]);
-            $copiedSurvey->setOptions();
-            if ((App()->getConfig("editorEnabled")) && $copiedSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
-                $redirectUrl = App()->createUrl("editorLink/index", ["route" => "survey/" . $copiedSurvey->sid]);
-            }
-        }
-
-        $this->redirect($redirectUrl);
-    }
 
     public function actionImport()
     {
