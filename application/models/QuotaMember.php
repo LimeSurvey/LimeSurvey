@@ -135,18 +135,4 @@ class QuotaMember extends LSActiveRecord
         }
         return [];
     }
-
-    /**
-     * @param $data
-     * @return bool
-     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $members = new self();
-        foreach ($data as $k => $v) {
-                    $members->$k = $v;
-        }
-        return $members->save();
-    }
 }

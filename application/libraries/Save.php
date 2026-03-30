@@ -114,7 +114,7 @@ class Save
         $survey = Survey::model()->findByPk($surveyid);
 
         $aSaveForm  = array();
-        $timeadjust = getGlobalSetting('timeadjust');
+        $timeadjust = Yii::app()->getConfig('timeadjust');
         $this->saveData = array(
             'identifier'  => App()->request->getPost('savename'),
             'email' => App()->request->getPost('saveemail'),
@@ -205,7 +205,7 @@ class Save
             $_SESSION['responses_' . $surveyid]['holdpass'] = $this->saveData['clearpassword']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
 
             //Email if needed
-            if ($this->saveData['email'] && validateEmailAddress($this->saveData['email'])) {
+            if ($this->saveData['email'] && LimeMailer::validateAddress($this->saveData['email'])) {
                 $mailer = new \LimeMailer();
                 $mailer->setSurvey($thissurvey['sid']);
                 $mailer->emailType = 'savesurveydetails';

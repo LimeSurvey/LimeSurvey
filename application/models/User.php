@@ -487,19 +487,6 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Adds user record
-     *
-     * @access public
-     * @param array $data
-     * @deprecated : just don't use it
-     * @return string
-     */
-    public function insertRecords($data)
-    {
-        return $this->getDb()->insert('users', $data);
-    }
-
-    /**
      * Returns User ID common in Survey_Permissions and User_in_groups
      * @param $surveyid
      * @param $postusergroupid

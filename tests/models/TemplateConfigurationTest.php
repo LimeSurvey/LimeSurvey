@@ -15,7 +15,6 @@ class TemplateConfigurationTest extends TestBaseClass
      */
     public function testCopyMinimalTemplate()
     {
-        \Yii::import('application.helpers.globalsettings_helper', true);
         $tempConf = \TemplateConfiguration::getInstanceFromTemplateName('default');
         $tempConf->prepareTemplateRendering('default');
 

@@ -30,7 +30,7 @@ class Tokens extends SurveyCommonAction
      */
     public function index(int $surveyid, $limit = 50, $start = 0)
     {
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = $surveyid;
         $iSurveyId = (int) $iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
@@ -190,7 +190,7 @@ class Tokens extends SurveyCommonAction
             return;
         }
 
-        if ($thissurvey['bounceprocessing'] != 'N' || ($thissurvey['bounceprocessing'] == 'G' && getGlobalSetting('bounceaccounttype') != 'off')) {
+        if ($thissurvey['bounceprocessing'] != 'N' || ($thissurvey['bounceprocessing'] == 'G' && Yii::app()->getConfig('bounceaccounttype') != 'off')) {
             if (!function_exists('imap_open')) {
                 eT("The imap PHP library is not installed or not activated. Please contact your system administrator.");
                 return;
@@ -198,11 +198,11 @@ class Tokens extends SurveyCommonAction
             $bouncetotal = 0;
             $checktotal = 0;
             if ($thissurvey['bounceprocessing'] == 'G') {
-                $accounttype    = strtoupper((string) getGlobalSetting('bounceaccounttype'));
-                $hostname       = getGlobalSetting('bounceaccounthost');
-                $username       = getGlobalSetting('bounceaccountuser');
-                $pass           = LSActiveRecord::decryptSingle(getGlobalSetting('bounceaccountpass'));
-                $hostencryption = strtolower((string) getGlobalSetting('bounceencryption'));
+                $accounttype    = strtoupper((string) Yii::app()->getConfig('bounceaccounttype'));
+                $hostname       = Yii::app()->getConfig('bounceaccounthost');
+                $username       = Yii::app()->getConfig('bounceaccountuser');
+                $pass           = LSActiveRecord::decryptSingle(Yii::app()->getConfig('bounceaccountpass'));
+                $hostencryption = strtolower((string) Yii::app()->getConfig('bounceencryption'));
             } else {
                 $accounttype    = strtoupper((string) $thissurvey['bounceaccounttype']);
                 $hostname       = $thissurvey['bounceaccounthost'];
@@ -422,7 +422,7 @@ class Tokens extends SurveyCommonAction
         );
 
         // Javascript
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
 
         Yii::app()->loadHelper('surveytranslator');
         Yii::import('application.libraries.Date_Time_Converter', true);
@@ -772,7 +772,7 @@ class Tokens extends SurveyCommonAction
      */
     public function edit($iSurveyId, $iTokenId, $deprecated = null)
     {
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = (int) $iSurveyId;
         $iTokenId = (int) $iTokenId;
         $survey = Survey::model()->findByPk($iSurveyId);
@@ -941,7 +941,7 @@ class Tokens extends SurveyCommonAction
      */
     public function delete($iSurveyID)
     {
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyID = (int) $iSurveyID;
         $sTokenIDs = Yii::app()->request->getPost('tid', '');
         $survey = Survey::model()->findByPk($iSurveyID);
@@ -2119,7 +2119,7 @@ class Tokens extends SurveyCommonAction
                                 if ($filterblankemail && $myemail == '') {
                                     $invalidemail = true;
                                     $invalidemaillist[] = $myfirstname . " " . $mylastname . " ( )";
-                                } elseif ($myemail != '' && !validateEmailAddress($myemail)) {
+                                } elseif ($myemail != '' && !LimeMailer::validateAddress($myemail)) {
                                     $invalidemail = true;
                                     $invalidemaillist[] = $myfirstname . " " . $mylastname . " (" . $myemail . ")";
                                 }
@@ -2232,7 +2232,7 @@ class Tokens extends SurveyCommonAction
             ],
             true
         );
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokensimport.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'tokensimport.js');
         $aEncodings = aEncodingsArray();
 
         if (Yii::app()->request->isPostRequest) {
@@ -2411,7 +2411,7 @@ class Tokens extends SurveyCommonAction
                         if (!$bDuplicateFound && $aWriteArray['email'] != '') {
                             $aEmailAddresses = preg_split("/(,|;)/", $aWriteArray['email']);
                             foreach ($aEmailAddresses as $sEmailaddress) {
-                                if (!validateEmailAddress($sEmailaddress)) {
+                                if (!LimeMailer::validateAddress($sEmailaddress)) {
                                     if ($bAllowInvalidEmail) {
                                         $iInvalidEmailCount++;
                                         if (empty($aWriteArray['emailstatus']) || strtoupper($aWriteArray['emailstatus'] == "OK")) {
@@ -2536,7 +2536,7 @@ class Tokens extends SurveyCommonAction
         $aData['aTokenTableFields'] = $aNewTokenTableFields;
 
         // Get default character set from global settings
-        $thischaracterset = getGlobalSetting('characterset');
+        $thischaracterset = Yii::app()->getConfig('characterset');
         // If no encoding was set yet, use the old "auto" default
         if ($thischaracterset == "") {
             $thischaracterset = "auto";
@@ -3051,7 +3051,7 @@ class Tokens extends SurveyCommonAction
      */
     protected function renderWrappedTemplate($sAction = 'token', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        $aData['imageurl'] = App()->getConfig('adminimageurl');
+        $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
         $aData['display']['menu_bars'] = false;
         $aData['subaction'] = gT('Survey participants');
 
