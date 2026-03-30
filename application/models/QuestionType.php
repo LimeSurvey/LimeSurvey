@@ -128,7 +128,7 @@ class QuestionType extends StaticModel
     {
         $this->question = $oQuestion;
         if ((!$oQuestion->survey) && ($oQuestion->sid)) {
-            $oQuestion->survey = Survey::mode()->findByPk($oQuestion->sid);
+            $oQuestion->survey = Survey::model()->findByPk($oQuestion->sid);
         }
         $aSettingsArray = self::modelsAttributes($oQuestion->survey->language)[$oQuestion->type];
         foreach ($aSettingsArray as $settingKey => $setting) {
