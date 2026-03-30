@@ -302,10 +302,11 @@ class StatisticsUserController extends SurveyController
                         'params'    => [':language' => $this->sLanguage, ':qid' => $flt->qid],
                         'order'     => 'sortorder'
                     ]);
-                    $count = count($results);
-                    //loop through all answers. if there are 3 items to rate there will be 3 statistics
-                    for ($i = 0; $i < $count; $i++) {
-                        $allfields[] = $flt->type . "Q" . $SGQidentifier . "_R" . $results[$i]->code . "-" . strlen($i);
+                    // Format: "R" + fieldmap key "Q{qid}_R{aid}"
+                    // The "R" prefix triggers the ranking in buildOutputList.
+                    // "Q{qid}_R{aid}" matches the actual responses table column name.
+                    foreach ($results as $answer) {
+                        $allfields[] = 'R' . $SGQidentifier . '_R' . $answer->aid;
                     }
                     break;
                 //Boilerplate questions are only used to put some text between other questions -> no analysis needed
