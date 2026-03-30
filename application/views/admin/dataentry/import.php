@@ -23,7 +23,7 @@
                     gT('Cancel')           => [
                         'type'  => 'link',
                         'class' => ['d-none'],
-                        'href'  => App()->createUrl('plugins/index')
+                        'href'  => App()->createUrl('admin/pluginmanager/sa/index')
                     ]
                 ]
             ]);
