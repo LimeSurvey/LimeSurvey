@@ -1205,7 +1205,9 @@ class Update_700 extends DatabaseUpdateBase
                             $this->fixText($entity, $ef['fields'], $additionalNames)
                         ];
                         if ($save[0] || $save[1] || $save[2]) {
-                            $entity->save();
+                            if (!(in_array('relevance', $ef['fields']) && $entity->qid && (!$entity->survey))) {
+                                $entity->save();
+                            }
                         }
                     }
                 }
