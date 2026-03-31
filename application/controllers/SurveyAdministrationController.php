@@ -1182,8 +1182,14 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
-     * Returns a JSON list of surveys the current user has export permission on,
+     * Returns a JSON list of surveys the current user has read permission on,
      * filtered by an optional search term. Used by Select2 AJAX in the copy survey modal.
+     *
+     * Note: This filters by read permission only (via Survey::permission()), matching the
+     * pattern used by the survey list grid. The actual copy action (actionCopy) additionally
+     * checks surveycontent.export permission and will reject unauthorized attempts server-side.
+     * Filtering by export permission at the SQL level would require a significantly more complex
+     * query that diverges from the established permission scope pattern.
      *
      * @return void
      */
