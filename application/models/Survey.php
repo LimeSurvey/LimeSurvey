@@ -1713,7 +1713,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
      *
      * $options = [
      *  'pageSize' => 10,
-     *  'currentPage' => 1
+     *  'currentPage' => 1,
+     *  'skipCacheFlush' => false  // Set to true to skip cache flush (useful for AJAX/modal queries)
      * ];
      *
      * @param array $options
@@ -1723,7 +1724,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         $options = $options ?? [];
         // Flush cache to get proper counts for partial/complete/total responses
-        if (method_exists(Yii::app()->cache, 'flush')) {
+        // Skip flush for AJAX/modal queries to avoid overhead (e.g., Select2 survey picker)
+        $skipCacheFlush = isset($options['skipCacheFlush']) && $options['skipCacheFlush'];
+        if (!$skipCacheFlush && method_exists(Yii::app()->cache, 'flush')) {
             Yii::app()->cache->flush();
         }
         $pagination = [

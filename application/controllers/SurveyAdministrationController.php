@@ -1200,6 +1200,7 @@ class SurveyAdministrationController extends LSBaseController
         $dataProvider = $model->search([
             'pageSize' => 10,
             'currentPage' => 0,
+            'skipCacheFlush' => true,
         ]);
 
         $results = [];
