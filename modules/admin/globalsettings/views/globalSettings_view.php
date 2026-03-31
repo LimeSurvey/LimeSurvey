@@ -21,6 +21,7 @@ echo viewHelper::getViewTestTag('globalsettings');
     <li role="presentation" class="nav-item"><a role="tab" class="nav-link" data-bs-toggle="tab" href='#language'><?php eT("Language"); ?></a></li>
     <li role="presentation" class="nav-item"><a role="tab" class="nav-link" data-bs-toggle="tab" href='#interfaces'><?php eT("Interfaces"); ?></a></li>
     <li role="presentation" class="nav-item"><a role="tab" class="nav-link" data-bs-toggle="tab" href='#storage'><?php eT("Storage"); ?></a></li>
+    <li role="presentation" class="nav-item"><a role="tab" class="nav-link" data-bs-toggle="tab" href='#updates'><?php eT("Updates"); ?></a></li>
 </ul>
 <?php echo CHtml::form(["admin/globalsettings"], 'post', ['class' => '', 'id' => 'frmglobalsettings', 'name' => 'frmglobalsettings', 'autocomplete' => 'off']); ?>
 <div class="tab-content">
@@ -99,6 +100,10 @@ echo viewHelper::getViewTestTag('globalsettings');
 
     <div id="storage" class="tab-pane col-lg-6 offset-lg-1">
         <?php $this->renderPartial("./globalsettings/_storage"); ?>
+    </div>
+
+    <div id="updates" class="tab-pane col-lg-10 offset-lg-1">
+        <?php $this->renderPartial("./globalsettings/_updates"); ?>
     </div>
 </div>
 <input type='hidden' name='restrictToLanguages' id='restrictToLanguages' value='<?php implode(' ', $restrictToLanguages); ?>'/>
