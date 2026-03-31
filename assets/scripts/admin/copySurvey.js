@@ -48,13 +48,23 @@ $(document).ready(function () {
 
     // Reset modal state when it closes to ensure clean state on next open
     $('#copySurvey_modal').on('hidden.bs.modal', function () {
+        var $modal = $('#copySurvey_modal');
+        var $form = $modal.find('form').first();
         var $select = $('#surveyIdToCopy');
+
+        // Reset the entire form to clear all inputs and checkboxes
+        if ($form.length) {
+            $form[0].reset();
+        }
+
         // Clear Select2 value using proper Select2 method
         $select.val(null).trigger('change');
-        // Reset title field
-        $('#copysurveytitle').val('');
+
         // Remove any custom data attributes
         $select.removeData('copy-format');
+
+        // Collapse the advanced options section
+        $('#copySurveyAdvanced').removeClass('show');
     });
 });
 
