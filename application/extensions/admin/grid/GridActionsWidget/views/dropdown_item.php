@@ -13,7 +13,6 @@
     <a id="<?= $linkId ?? '' ?>"
        class="dropdown-item <?= $enabledCondition ? "" : "disabled" ?> <?= $linkClass ?? '' ?>"
        href="<?= $url ?? '#' ?>"
-       role="button"
         <?php if (isset($linkAttributes) && is_array($linkAttributes)) : ?>
             <?php foreach ($linkAttributes as $attribute => $value) : ?>
                 <?= "$attribute='$value'" ?>
