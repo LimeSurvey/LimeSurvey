@@ -956,7 +956,7 @@ class LimeMailer extends PHPMailer
     /**
      * Check if an specific attatchemnt exist
      * Not needed anymore, SurveyLanuageSetttings return existing file only, keep it for plugin ?
-     * @deprecated 6.16.14
+     * @deprecated 6.16.17
      * @param string[] attachment info
      * @return boolean
      **/

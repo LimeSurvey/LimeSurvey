@@ -568,6 +568,10 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             $results['conditions']++;
         }
     }
+
+    // Update question code references in custom conditions and relevance expressions
+    replaceExpressionCodes($iNewSID, $aQuestionCodeReplacements);
+
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
     LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
 

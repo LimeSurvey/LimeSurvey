@@ -33,7 +33,7 @@ class UpdateDBCommand extends CConsoleCommand
         $currentDbVersion = intval(Yii::app()->getConfig('DBVersion'));
 
         if (!$currentDbVersion) {
-            throw new CException("DataBase version are not found, seems LimeSurvey are not installed.");
+            throw new CException("Database version was not found, LimeSurvey is not correctly installed.");
         }
 
         if ($newDbVersion > $currentDbVersion) {
