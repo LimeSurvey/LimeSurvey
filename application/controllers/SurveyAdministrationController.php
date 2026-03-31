@@ -1185,39 +1185,28 @@ class SurveyAdministrationController extends LSBaseController
      * Returns a JSON list of surveys the current user has read permission on,
      * filtered by an optional search term. Used by Select2 AJAX in the copy survey modal.
      *
-     * Note: This filters by read permission only (via Survey::permission()), matching the
-     * pattern used by the survey list grid. The actual copy action (actionCopy) additionally
-     * checks surveycontent.export permission and will reject unauthorized attempts server-side.
-     * Filtering by export permission at the SQL level would require a significantly more complex
-     * query that diverges from the established permission scope pattern.
+     * Reuses Survey::search() so that the filtering logic (SID, title, admin, owner,
+     * survey group) and permission scoping stay consistent with the main survey list grid.
+     *
+     * Note: The permission scope filters by read only. The actual copy action (actionCopy)
+     * additionally checks surveycontent.export permission server-side.
      *
      * @return void
      */
     public function actionGetAjaxSurveyList()
     {
         $term = Yii::app()->request->getParam('term', '');
-        $userId = (int) Yii::app()->session['loginID'];
 
-        $criteria = new CDbCriteria();
-        $criteria->with = ['correct_relation_defaultlanguage'];
-        $criteria->together = true;
-        $criteria->order = 't.sid DESC';
-        $criteria->limit = 50;
+        $model = new Survey('search');
+        $model->searched_value = $term;
 
-        if ($term !== '') {
-            $sidRef = (Yii::app()->db->getDriverName() == 'pgsql')
-                ? 't.sid::varchar'
-                : 't.sid';
-            $criteria->addCondition(
-                $sidRef . ' LIKE :termPrefix OR correct_relation_defaultlanguage.surveyls_title LIKE :termLike'
-            );
-            $criteria->params[':termPrefix'] = $term . '%';
-            $criteria->params[':termLike'] = '%' . $term . '%';
-        }
+        $dataProvider = $model->search([
+            'pageSize' => 10,
+            'currentPage' => 0,
+        ]);
 
-        $surveys = Survey::model()->permission($userId)->findAll($criteria);
         $results = [];
-        foreach ($surveys as $survey) {
+        foreach ($dataProvider->getData() as $survey) {
             $title = isset($survey->correct_relation_defaultlanguage->surveyls_title)
                 ? $survey->correct_relation_defaultlanguage->surveyls_title
                 : '';
