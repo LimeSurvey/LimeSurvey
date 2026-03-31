@@ -2,7 +2,7 @@
 
 ?>
 
-<div id="copySurvey_modal" class="modal fade" role="dialog">
+<div id="copySurvey_modal" class="modal fade" role="dialog" aria-modal="true" aria-labelledby="copySurveyModalTitle">
     <div class="modal-dialog import-modal">
         <!-- Modal content-->
         <div class="modal-content">
@@ -10,7 +10,7 @@
             //modal header
             App()->getController()->renderPartial(
                 '/layouts/partial_modals/modal_header',
-                ['modalTitle' => gT('Copy survey')]
+                ['modalTitle' => gT('Copy survey'), 'modalTitleId' => 'copySurveyModalTitle']
             );
             ?>
             <?php echo CHtml::form(
@@ -30,22 +30,22 @@
                     </div>
 
                     <div class="mb-3">
-                        <a class="btn btn-outline-secondary btn-sm" data-bs-toggle="collapse" href="#copySurveyAdvanced" role="button" aria-expanded="false" aria-controls="copySurveyAdvanced">
-                            <?php eT("Advanced"); ?>
-                        </a>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="collapse" data-bs-target="#copySurveyAdvanced" aria-expanded="false" aria-controls="copySurveyAdvanced" aria-label="<?php echo eT('Toggle advanced options'); ?>">
+                            <?php eT("Advanced options"); ?>
+                        </button>
                     </div>
                     <div class="collapse" id="copySurveyAdvanced">
                         <div class="row mb-3">
                             <!-- New survey ID -->
                             <label class=" form-label" for='copysurveyid'><?php echo  eT("New survey ID:"); ?> </label>
-                            <input type='number' step="1" min="1" max="999999" id='copysurveyid' size='82' name='copysurveyid' value='' class="form-control" />
-                            <p class="form-control-static">
+                            <input type='number' step="1" min="1" max="999999" id='copysurveyid' size='82' name='copysurveyid' value='' class="form-control" aria-describedby="copysurveyidHelp" />
+                            <p class="form-control-static" id="copysurveyidHelp">
                                 <span class='reg12'><?php echo  gT("Optional - Leave this field empty to assign a new ID automatically"); ?> </span>
                             </p>
                         </div>
 
-                        <div class="row">
-                            <label class=" form-label semibold12" ><?php echo  eT("Select the elements to include:"); ?> </label>
+                        <fieldset>
+                            <legend class=" form-label semibold12"><?php echo  eT("Select the elements to include:"); ?></legend>
                             <!-- Convert resource links -->
                             <div class="form-check">
                                 <input id="copyResourcesAndLinks" name="copyResourcesAndLinks" type="checkbox" value="1" checked>
@@ -86,7 +86,7 @@
                                 <input id="resetResponseStartId" name="resetResponseStartId" type="checkbox" value="1" checked>
                                 <label class=" form-label reg16" for='resetResponseStartId'><?php echo  eT("Reset response start ID"); ?> </label>
                             </div>
-                        </div>
+                        </fieldset>
                     </div>
             </div>
             <div class="modal-footer">
