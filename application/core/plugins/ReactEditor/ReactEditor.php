@@ -31,6 +31,7 @@ class ReactEditor extends \PluginBase
         $this->subscribe('beforeRenderSurveySidemenu');
         $this->subscribe('beforeAdminMenuRender');
         $this->subscribe('beforeSurveySettingsSave');
+        $this->subscribe('beforeSurveyAdminView');
     }
 
     public function beforeDeactivate()
@@ -270,17 +271,48 @@ class ReactEditor extends \PluginBase
     public function beforeSurveySettingsSave()
     {
         if ($this->isEditorEnabled()) {
-            $event = $this->getEvent();
-            $savedSurvey = $event->get('modifiedSurvey');
-            if (
-                $savedSurvey->getTemplateEffectiveName()
-                !== 'fruity_twentythree'
-            ) {
-                App()->setFlashMessage(
-                    gT("The new editor is currently only compatible with the 'Fruity TwentyThree' theme"),
-                    'warning'
-                );
-            }
+            $this->warnIfIncompatibleTheme(
+                $this->getEvent()->get('modifiedSurvey')
+            );
+        }
+    }
+
+    /**
+     * Validates theme compatibility when a survey is opened in the admin view.
+     *
+     * When the React editor is enabled, this method checks whether the survey
+     * is using the 'Fruity TwentyThree' theme. If a different theme is detected,
+     * a warning flash message is displayed to inform the user.
+     *
+     * @return void
+     */
+    public function beforeSurveyAdminView()
+    {
+        if ($this->isEditorEnabled()) {
+            $survey = Survey::model()->findByPk(
+                (int) $this->getEvent()->get('surveyId')
+            );
+            $this->warnIfIncompatibleTheme($survey);
+        }
+    }
+
+    /**
+     * Shows a warning flash message if the survey's effective theme is not
+     * compatible with the React editor.
+     *
+     * @param Survey|null $survey
+     * @return void
+     */
+    private function warnIfIncompatibleTheme(?Survey $survey): void
+    {
+        if (
+            $survey !== null
+            && $survey->getTemplateEffectiveName() !== 'fruity_twentythree'
+        ) {
+            App()->setFlashMessage(
+                gT("The new editor is currently only compatible with the 'Fruity TwentyThree' theme"),
+                'warning'
+            );
         }
     }
 }
