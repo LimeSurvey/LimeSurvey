@@ -118,11 +118,18 @@ class CopySurveyOptions
         $this->resetResponseStartId = $resetResponseStartId;
     }
 
+    /**
+     * @return string|null Custom title for the copied survey, or null to use default.
+     */
     public function getNewTitle(): ?string
     {
         return $this->newTitle;
     }
 
+    /**
+     * @param string|null $newTitle Custom title for the copied survey, or null to use default.
+     * @return void
+     */
     public function setNewTitle(?string $newTitle): void
     {
         $this->newTitle = $newTitle;

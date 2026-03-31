@@ -156,7 +156,7 @@ class LayoutHelper
     }
 
     /**
-     * Returns extra menu for the new create process (including survey, survey group, import survey)
+     * Returns extra menu for the new create process (including create, copy, and import survey).
      *
      * @return Menu
      */

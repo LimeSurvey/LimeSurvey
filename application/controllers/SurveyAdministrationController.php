@@ -2341,9 +2341,10 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
-     * Initialises the necessary options.
+     * Reads POST parameters from the copy survey form and builds a CopySurveyOptions container.
+     * Handles all checkbox options (resources, quotas, permissions, etc.) and the optional custom title.
      *
-     * @param $request
+     * @param CHttpRequest $request
      * @return CopySurveyOptions
      */
     private function getPostParamsForCopySurvey($request): CopySurveyOptions

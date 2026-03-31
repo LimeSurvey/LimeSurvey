@@ -510,6 +510,8 @@ class SurveyCommonAction extends CAction
      * REFACTORED in LayoutHelper (necessary to have it here,
      * until all controllers have been refactored...)
      *
+     * Returns extra menu for the new create process (including create, copy, and import survey).
+     *
      * @return Menu
      */
     public function getCreateMenu()
