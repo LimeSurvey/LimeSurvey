@@ -202,30 +202,19 @@ class SurveyLanguageSetting extends LSActiveRecord
     }
 
     /**
-     * Defines the customs validation rule attachmentsInfo
+     * Customs validation rule, filter attachments
      *
-     * @param mixed $attribute
+     * @param string $attribute
+     * return null|string
      */
     public function attachmentsInfo($attribute)
     {
-        if (empty($this->$attribute)) {
-            return;
+        $attachmentsByType = $this->validateAttachments($attribute, $this->scenario != 'import');
+        if (empty($attachmentsByType)) {
+            // Save empty attachments as null value
+            return null;
         }
-
-        $value = [];
-        $attachmentsByType = unserialize($this->$attribute);
-        if (is_array($attachmentsByType)) {
-            foreach ($attachmentsByType as $type => $attachments) {
-                if (is_array($attachments)) {
-                    foreach ($attachments as $key => $attachment) {
-                        if (isset($attachment['url']) && isset($attachment['size']) && isset($attachment['relevance'])) {
-                            $value[$type][$key] = $attachment;
-                        }
-                    }
-                }
-            }
-        }
-        return serialize($value);
+        return json_encode($attachmentsByType);
     }
 
     /**
@@ -350,14 +339,12 @@ class SurveyLanguageSetting extends LSActiveRecord
 
     /**
      * Returns the array of email attachments data without exposing sensitive paths
-     * @return array<string,array<string,mixed>>
+     * Used for export_helper
+     * @return array of array of array of string
      */
     public function getAttachmentsData()
     {
-        if (empty($this->attachments)) {
-            return [];
-        }
-        $attachments = unserialize($this->attachments);
+        $attachments = $this->getValidAttachments(false); // Do not check when export
         if (is_array($attachments)) {
             $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
             foreach ($attachments as &$template) {
@@ -371,5 +358,78 @@ class SurveyLanguageSetting extends LSActiveRecord
             }
         }
         return $attachments;
+    }
+
+    /**
+     * Get valid attachements in array
+     * @param boolean $exist check if file exist in a valid directory
+     * @return string[][][]
+     **/
+    public function getValidAttachments($exist = true)
+    {
+        return $this->validateAttachments($this->attachments, $exist);
+    }
+    /**
+     * Get valid attachements in array
+     * @param string $attachement the attahcment string to be filtered
+     * @param boolean $exist check if file exist in a valid directory
+     * @return string[][][]
+     **/
+     public function validateAttachments($string, $exist = true)
+     {
+         if (empty($string)) {
+             return [];
+         }
+         $attachments = json_decode($string, 1);
+         if (empty($attachments) || !is_array($attachments)) {
+             return [];
+         }
+         $validAttachements = [];
+         foreach ($attachments as $template => $templateAttachements) {
+             foreach ($templateAttachements as $attachment) {
+                 if (!isset($attachment['url'])) {
+                     continue;
+                 }
+                 if ($exist) {
+                     $attachment['url'] = $this->getAttachmentFileExist($attachment['url']);
+                 }
+                 if (!$attachment['url']) {
+                     continue;
+                 }
+                 if ($exist) {
+                     $attachment['size'] = filesize($attachment['url']);
+                 }
+                 $validAttachements[$template][] = [
+                    'url' => $attachment['url'],
+                    'size' => $attachment['size'] ?? '0',
+                    'relevance' => $attachment['relevance'] ?? '1',
+                 ];
+             }
+        }
+        return $validAttachements;
+     }
+
+    /**
+     * Check if a file for attachment exist
+     * @param string $file
+     * @return boolean
+     */
+    public function getAttachmentFileExist($file)
+    {
+        if (App()->is_file(
+            $file,
+            App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $this->surveyls_survey_id,
+            false
+        )) {
+            return true;
+        }
+        if (App()->is_file(
+            $file,
+            App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "global",
+            false
+        )) {
+            return true;
+        }
+        return false;
     }
 }
