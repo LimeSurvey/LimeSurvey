@@ -3,7 +3,7 @@
         <i class="ri-questionnaire-line remix-xl"></i>
     </button>
     <ul class="dropdown-menu">
-        <li>
+        <li role="presentation">
             <span class="dropdown-header"><?php eT("Useful resources") ?></span>
         </li>
         <li>
