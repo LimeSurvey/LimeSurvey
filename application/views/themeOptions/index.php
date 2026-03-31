@@ -249,7 +249,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                 <td class="col-lg-1">
                                     <?php if (TemplateConfig::isCompatible($oTheme->path . 'config.xml')): ?>
                                         <?php if ($oTheme->name === App()->getConfig('admintheme')) : ?>
-                                            <h3><strong class="text-info"><?php eT("Selected") ?></strong></h3>
+                                            <h3 role="presentation"><strong class="text-info"><?php eT("Selected") ?></strong></h3>
                                         <?php else : ?>
                                             <a href="<?= $this->createUrl("themeOptions/setAdminTheme/", ['sAdminThemeName' => $oTheme->name]) ?>"
                                                class="btn btn-outline-secondary btn-sm">
