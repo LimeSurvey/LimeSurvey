@@ -67,7 +67,7 @@ class SurveyPermissionsController extends LSBaseController
 
         // Register client scripts for grid action dropdown
         // This is usually done inside the grid widget.
-        // Still, in case no users are added yet, the grid widget doesn't render any row 
+        // Still, in case no users are added yet, the grid widget doesn't render any row
         // and doesn't include this widget.
         // As this page reloads through ajax when adding a new row, we need the GridActionsWidget to be already loaded
         // In the future, the Grid widget could have a callback to allow to register widgets, even when no rows.
