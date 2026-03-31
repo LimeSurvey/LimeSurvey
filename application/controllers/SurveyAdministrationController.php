@@ -1199,8 +1199,11 @@ class SurveyAdministrationController extends LSBaseController
         $criteria->limit = 50;
 
         if ($term !== '') {
+            $sidRef = (Yii::app()->db->getDriverName() == 'pgsql')
+                ? 't.sid::varchar'
+                : 't.sid';
             $criteria->addCondition(
-                'CAST(t.sid AS CHAR) LIKE :termPrefix OR correct_relation_defaultlanguage.surveyls_title LIKE :termLike'
+                $sidRef . ' LIKE :termPrefix OR correct_relation_defaultlanguage.surveyls_title LIKE :termLike'
             );
             $criteria->params[':termPrefix'] = $term . '%';
             $criteria->params[':termLike'] = '%' . $term . '%';
