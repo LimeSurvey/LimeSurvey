@@ -39,13 +39,13 @@
 
                         <!-- Exclude quotas -->
                         <div class="form-check">
-                            <input name="copySurveyQuotas" type="checkbox" value="1">
+                            <input name="copySurveyQuotas" type="checkbox" value="1" checked>
                             <label class=" form-label reg16" for='copySurveyQuotas'><?php echo  eT("Survey quotas"); ?> </label>
                         </div>
 
                         <!-- Exclude survey permissions -->
                         <div class="form-check">
-                            <input name="copySurveyPermissions" type="checkbox" value="1">
+                            <input name="copySurveyPermissions" type="checkbox" value="1"checked>
                             <label class=" form-label reg16" for='copySurveyPermissions'><?php echo  eT("Survey permissions"); ?> </label>
                         </div>
 
@@ -57,18 +57,18 @@
 
                         <!-- Reset conditions/relevance -->
                         <div class="form-check">
-                            <input name="copySurveyConditions" type="checkbox" value="1">
+                            <input name="copySurveyConditions" type="checkbox" value="1" checked>
                             <label class=" form-label reg16" for='copySurveyConditions'><?php echo  eT("Survey conditions"); ?> </label>
                         </div>
 
                         <!-- Reset start/end date/time -->
                         <div class="form-check">
-                            <input name="copyStartEndDate" type="checkbox" value="1">
+                            <input name="copyStartEndDate" type="checkbox" value="1" checked>
                             <label class=" form-label reg16" for='copyStartEndDate'><?php echo  eT("Start/end date/time"); ?> </label>
                         </div>
 
                         <div class="form-check">
-                            <input name="resetResponseStartId" type="checkbox" value="1">
+                            <input name="resetResponseStartId" type="checkbox" value="1" checked>
                             <label class=" form-label reg16" for='resetResponseStartId'><?php echo  eT("Reset response start ID"); ?> </label>
                         </div>
                     </div>

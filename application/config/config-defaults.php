@@ -783,6 +783,13 @@ $config['sideMenuBehaviour'] = 'adaptive';
 // Hide update key
 $config['hide_update_key'] = false;
 
+/**
+ * Minimum stability level for update notifications.
+ * Valid values: 'alpha', 'beta', 'rc', 'stable'
+ * 'alpha' shows all updates, 'stable' shows only stable releases.
+ */
+$config['minimum_update_stability'] = 'rc';
+
 // Dev part
 // 1 : looking for errors, 2 : PHP STRICT error messages
 $config['debug'] = 0;
