@@ -1083,7 +1083,7 @@ class Update_700 extends DatabaseUpdateBase
             }
             $scripts[$TABLE_NAME]['handled'] = true;
                 if (!isset($scripts[$TABLE_NAME]['new_name'])) {
-                    echo var_dump($scripts[$TABLE_NAME]);
+                    echo var_dump($TABLE_NAME);
                 }
             $scripts[$TABLE_NAME]['CREATE'] = str_replace("{$TABLE_NAME}", "{$scripts[$TABLE_NAME]['new_name']}", $scripts[$TABLE_NAME]['CREATE']);
             foreach ($fields as $oldField => $newField) {
