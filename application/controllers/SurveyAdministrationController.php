@@ -116,8 +116,6 @@ class SurveyAdministrationController extends LSBaseController
      * Load complete view of survey properties and actions specified by $iSurveyID
      *
      * @return void
-     *
-     * @access public
      * @throws CException
      */
     public function actionView()
@@ -631,7 +629,6 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @todo is this function used? the function editlocalsetting does not exists  (also not in old controller surveyadmin)
      *
-     * @access public
      * @return void
      */
     public function actionImportsurveyresources()
@@ -735,11 +732,11 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Function to call current Editor Values by Ajax
      *
-     * @param integer $sid Given Survey ID
+     * @param int $sid Given Survey ID
      *
      * is still used in sidemenu Text elemnts (see vue.js ajaxcall)
      *
-     * @return JSON
+     * @return void
      * @throws CException
      */
     public function actionGetCurrentEditorValues($sid)
@@ -1217,9 +1214,10 @@ class SurveyAdministrationController extends LSBaseController
             ];
         }
 
-        header('Content-Type: application/json');
-        echo json_encode(['results' => $results]);
-        Yii::app()->end();
+        return $this->renderPartial(
+            '/admin/super/_renderJson',
+            array('data' => ['results' => $results])
+        );
     }
 
     /**
@@ -1359,10 +1357,9 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Collect the data necessary for the data security settings and return a JSON document
      *
-     * @param integer|null $sid Survey ID
+     * @param int|null $sid Survey ID
      *
-     * @return JSON | string
-     *
+     * @return void
      * @throws CException
      */
     public function actionGetDataSecTextSettings($sid = null)
@@ -1448,10 +1445,9 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Method to store data edited in the data security text editor component
      *
-     * @param integer $sid Survey ID
+     * @param int $sid Survey ID
      *
-     * @return JSON | string
-     *
+     * @return void
      * @throws CException
      */
     public function actionSaveDataSecTextData($sid)
@@ -1521,7 +1517,7 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Apply current theme options for imported survey theme
      *
-     * @param integer $iSurveyID The survey ID of imported survey
+     * @param int $iSurveyID The survey ID of imported survey
      *
      * @return void
      */
@@ -1649,7 +1645,6 @@ class SurveyAdministrationController extends LSBaseController
      * Function responsible to deactivate a survey.
      *
      * @return void
-     * @access public
      * @throws CException
      */
     public function actionDeactivate()
@@ -1924,7 +1919,6 @@ class SurveyAdministrationController extends LSBaseController
      * Function responsible to delete a survey.
      *
      * @return string
-     * @access public
      */
     public function actionDelete()
     {
@@ -2253,7 +2247,6 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Function responsible to copy a survey.
      *
-     * @access public
      * @return void
      * @throws CException
      * @throws Exception
@@ -2861,9 +2854,9 @@ class SurveyAdministrationController extends LSBaseController
      * This method will return the url for the current survey and set
      * the direction for the sidemenue.
      *
-     * @param integer $sid Given Survey ID
-     * @param integer $gid Given Group ID
-     * @param integer $qid Given Question ID
+     * @param int $sid Given Survey ID
+     * @param int $gid Given Group ID
+     * @param int $qid Given Question ID
      * @param string $landOnSideMenuTab Given SideMenuTab
      *
      * @return string
@@ -3223,7 +3216,7 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Returns Data for general template.
      *
-     * @param integer $iSurveyID Given Survey ID
+     * @param int $iSurveyID Given Survey ID
      *
      * @return array
      */
