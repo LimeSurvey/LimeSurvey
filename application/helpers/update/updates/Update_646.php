@@ -11,7 +11,7 @@ class Update_646 extends DatabaseUpdateBase
             ->select(['surveyls_survey_id', 'surveyls_language', 'attachments'])
             ->from('{{surveys_languagesettings}}')
             ->where("attachments <> '' AND attachments IS NOT NULL AND attachments <> :emptyarray")
-            ->params([":emptyarray" => serialize([]))
+            ->params([":emptyarray" => serialize([])])
             ->queryAll();
         foreach ($surveyslanguage as $surveylanguage) {
             /* Check if it can be a json */
