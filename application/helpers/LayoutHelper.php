@@ -408,7 +408,7 @@ class LayoutHelper
 
         $survey = Survey::model()->findByPk($iSurveyID);
 
-        if (App()->getConfig('editorEnabled') && $survey->getTemplateEffectiveName() == 'fruity_twentythree') {
+        if ($survey->hasNewEditor) {
             App()->controller->widget('ext.admin.survey.SurveySidemenuWidget.SurveySidemenuWidget', ['sid' => $iSurveyID]);
             return;
         }
