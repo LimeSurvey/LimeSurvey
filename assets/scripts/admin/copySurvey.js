@@ -34,6 +34,28 @@ $(document).ready(function () {
             });
         }
     });
+
+    // Handle focus after modal is fully shown
+    $('#copySurvey_modal').on('shown.bs.modal', function () {
+        var $select = $('#surveyIdToCopy');
+        // If source survey is empty, focus on and open the survey picker; otherwise focus on title field
+        if (!$select.val()) {
+            $select.select2('open');
+        } else {
+            document.getElementById('copysurveytitle').focus();
+        }
+    });
+
+    // Reset modal state when it closes to ensure clean state on next open
+    $('#copySurvey_modal').on('hidden.bs.modal', function () {
+        var $select = $('#surveyIdToCopy');
+        // Clear Select2 value using proper Select2 method
+        $select.val(null).trigger('change');
+        // Reset title field
+        $('#copysurveytitle').val('');
+        // Remove any custom data attributes
+        $select.removeData('copy-format');
+    });
 });
 
 /**
@@ -56,8 +78,5 @@ function copySurveyOptions(surveyId, defaultTitle, surveyText) {
         }
 
         $('#copysurveytitle').val(defaultTitle || '');
-        $('#copySurvey_modal').one('shown.bs.modal', function () {
-            var input = document.getElementById('copysurveytitle');
-            input.focus();
-        });
+        // Focus is now handled by the shown.bs.modal event handler based on survey selection state
 }

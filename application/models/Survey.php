@@ -1531,7 +1531,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'linkAttributes'   => [
                 'data-bs-toggle' => "modal",
                 'data-bs-target' => "#copySurvey_modal",
-                'onclick' => "copySurveyOptions(" . (int)$this->sid . ", " . json_encode(sprintf(gT('Copy of %s', 'unescaped', $this->language), $this->currentLanguageSettings->surveyls_title)) . ", " . json_encode($this->sid . ' - ' . $this->currentLanguageSettings->surveyls_title) . ")",
+                'onclick' => "copySurveyOptions(" . (int)$this->sid . ", " . json_encode(sprintf(gT('Copy of %s', 'unescaped'), $this->currentLanguageSettings->surveyls_title)) . ", " . json_encode($this->sid . ' - ' . $this->currentLanguageSettings->surveyls_title) . ")",
             ],
         ];
         $dropdownItems[] = [
