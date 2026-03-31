@@ -225,7 +225,7 @@ class DataEntry extends SurveyCommonAction
         asort($aEncodings);
 
         // Get default character set from global settings
-        $thischaracterset = getGlobalSetting('characterset');
+        $thischaracterset = Yii::app()->getConfig('characterset');
 
         // If no encoding was set yet, use the old "utf8" default
         if ($thischaracterset == "") {
@@ -946,7 +946,7 @@ class DataEntry extends SurveyCommonAction
                         $questionInput .= "</div>";
                         $questionInput .= '</div>';
                         App()->getClientScript()->registerPackage('jquery-actual');
-                        App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts') . 'ranking.js');
+                        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
                         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
                         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery-ui-custom.css');
 
@@ -1974,7 +1974,7 @@ class DataEntry extends SurveyCommonAction
                         }
                         if ($saver['email']) {
                             //Send email
-                            if (validateEmailAddress($saver['email']) && !returnGlobal('redo')) {
+                            if (LimeMailer::validateAddress($saver['email']) && !returnGlobal('redo')) {
                                 $mailer = new \LimeMailer();
                                 $mailer->addAddress($saver['email']);
                                 $mailer->setSurvey($surveyid);
@@ -2347,7 +2347,7 @@ class DataEntry extends SurveyCommonAction
                             $cdata['anscount'] = $anscount;
                             $cdata['answers'] = $arAnswers;
                             App()->getClientScript()->registerPackage('jquery-actual');
-                            App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts') . 'ranking.js');
+                            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
                             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
                             break;
                         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox (Quite tricky really!)

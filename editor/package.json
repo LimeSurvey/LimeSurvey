@@ -92,7 +92,6 @@
     "dev": "rsbuild dev",
     "start": "export REACT_APP_COMMIT_HASH=$(git rev-parse HEAD) && rsbuild dev",
     "start-https": "HTTPS=true rsbuild preview",
-    "prebuild": "npm run collect-translations",
     "build": "export REACT_APP_COMMIT_HASH=$(git rev-parse HEAD) && rsbuild build",
     "build-https": "HTTPS=true rsbuild build",
     "build-demo": "PUBLIC_URL=/ REACT_APP_DEV_MODE= REACT_APP_DEMO_MODE=true rsbuild build",
@@ -108,8 +107,7 @@
     "eslint": "eslint src --ext .js --max-warnings 0",
     "prettier:check": "prettier --check src",
     "prettier:format": "prettier --write src",
-    "prepare": "husky",
-    "collect-translations": "node src/i18n/scripts/collectTranslationStrings.js"
+    "prepare": "husky"
   },
   "devDependencies": {
     "@babel/core": "^7.26.10",

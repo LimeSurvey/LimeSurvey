@@ -317,7 +317,7 @@ class Authentication extends SurveyCommonAction
     {
         // Check if the DB is up to date
         if (Yii::app()->db->schema->getTable('{{surveys}}')) {
-            $sDBVersion = getGlobalSetting('DBVersion');
+            $sDBVersion = Yii::app()->getConfig('DBVersion');
             if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber')) {
                 // Try a silent update first
                 Yii::app()->loadHelper('update.updatedb');

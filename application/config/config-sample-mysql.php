@@ -43,7 +43,9 @@ return array(
         // ),
 
         'urlManager' => array(
-            'urlFormat' => 'get',
+            // This is required for proper REST API and React Editor functionality.
+            // If you change it back to 'get', the new editor won't work
+            'urlFormat' => 'path',
             'rules' => array(
                 // You can add your own rules here
             ),
