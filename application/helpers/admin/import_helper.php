@@ -2316,6 +2316,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (is_null($attachments)) {
                 if (App()->getConfig('allow_unserialize_attachments')) {
                     $attachments = unserialize($insertdata['attachments'], ['allowed_classes' => false]);
+                    /* If it's a broken unserialize : it's NOT a wrongAttachmentsFormat, it's just invalid */
                 } else {
                     $wrongAttachmentsFormat = true;
                 }
@@ -2337,7 +2338,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     }
                 }
             }
-            $insertdata['attachments'] = json_encode($attachments);
+            /* Set as json only if not empty */
+            $insertdata['attachments'] = !empty($attachments) ? json_encode($attachments) : "";
         }
 
         if (isset($insertdata['surveyls_attributecaptions']) && substr((string) $insertdata['surveyls_attributecaptions'], 0, 1) != '{') {

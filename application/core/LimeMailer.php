@@ -3,7 +3,6 @@
 use PHPMailer\PHPMailer\PHPMailer;
 
 /**
- * WIP
  * A SubClass of phpMailer adapted for LimeSurvey
  */
 class LimeMailer extends PHPMailer

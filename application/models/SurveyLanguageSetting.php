@@ -209,7 +209,7 @@ class SurveyLanguageSetting extends LSActiveRecord
      */
     public function attachmentsInfo($attribute)
     {
-        $attachmentsByType = $this->validateAttachments($attribute, $this->scenario != 'import');
+        $attachmentsByType = $this->validateAttachments($this->$attribute, $this->scenario != 'import');
         if (empty($attachmentsByType)) {
             // Save empty attachments as null value
             return null;
@@ -375,39 +375,36 @@ class SurveyLanguageSetting extends LSActiveRecord
      * @param boolean $exist check if file exist in a valid directory
      * @return string[][][]
      **/
-     public function validateAttachments($string, $exist = true)
-     {
-         if (empty($string)) {
-             return [];
-         }
-         $attachments = json_decode($string, 1);
-         if (empty($attachments) || !is_array($attachments)) {
-             return [];
-         }
-         $validAttachements = [];
-         foreach ($attachments as $template => $templateAttachements) {
-             foreach ($templateAttachements as $attachment) {
-                 if (!isset($attachment['url'])) {
-                     continue;
-                 }
-                 if ($exist) {
-                     $attachment['url'] = $this->getAttachmentFileExist($attachment['url']);
-                 }
-                 if (!$attachment['url']) {
-                     continue;
-                 }
-                 if ($exist) {
-                     $attachment['size'] = filesize($attachment['url']);
-                 }
-                 $validAttachements[$template][] = [
+    public function validateAttachments($string, $exist = true)
+    {
+        if (empty($string)) {
+            return [];
+        }
+        $attachments = json_decode($string, 1);
+        if (empty($attachments) || !is_array($attachments)) {
+            return [];
+        }
+        $validAttachements = [];
+        foreach ($attachments as $template => $templateAttachements) {
+            foreach ($templateAttachements as $attachment) {
+                if (!isset($attachment['url'])) {
+                    continue;
+                }
+                if ($exist && !$this->getAttachmentFileExist($attachment['url'])) {
+                    continue;
+                }
+                if ($exist) {
+                    $attachment['size'] = filesize($attachment['url']);
+                }
+                $validAttachements[$template][] = [
                     'url' => $attachment['url'],
                     'size' => $attachment['size'] ?? '0',
                     'relevance' => $attachment['relevance'] ?? '1',
-                 ];
-             }
+                ];
+            }
         }
         return $validAttachements;
-     }
+    }
 
     /**
      * Check if a file for attachment exist
@@ -416,18 +413,22 @@ class SurveyLanguageSetting extends LSActiveRecord
      */
     public function getAttachmentFileExist($file)
     {
-        if (App()->is_file(
-            $file,
-            App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $this->surveyls_survey_id,
-            false
-        )) {
+        if (
+            App()->is_file(
+                realpath($file),
+                realpath(App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $this->surveyls_survey_id),
+                false
+            )
+        ) {
             return true;
         }
-        if (App()->is_file(
-            $file,
-            App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "global",
-            false
-        )) {
+        if (
+            App()->is_file(
+                realpath($file),
+                realpath(App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "global"),
+                false
+            )
+        ) {
             return true;
         }
         return false;
