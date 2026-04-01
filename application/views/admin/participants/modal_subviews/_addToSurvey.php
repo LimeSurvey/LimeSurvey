@@ -40,6 +40,7 @@
                 <div class='col-md-8'>
                     <?php App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => "redirect",
+                        'ariaLabel'    => gT('Display survey participant list after addition'),
                         'checkedOption' => "0",
                         'selectOptions' => [
                             '1' => gT('Yes'),

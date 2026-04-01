@@ -158,11 +158,6 @@ class LimeMailer extends PHPMailer
         /* Default language to current one */
         $this->mailLanguage = Yii::app()->getLanguage();
 
-        $this->SMTPDebug = Yii::app()->getConfig("emailsmtpdebug");
-        $this->Debugoutput = function ($str, $level) {
-            $this->addDebug($str);
-        };
-
         if (Yii::app()->getConfig('demoMode')) {
             /* in demo mode no need to do something else */
             return;
@@ -180,7 +175,14 @@ class LimeMailer extends PHPMailer
             case self::MethodSmtp:
                 $this->IsSMTP();
                 $this->SMTPKeepAlive = true;
+                $this->Debugoutput = function ($str, $level) {
+                    $this->addDebug($str);
+                };
                 if ($emailsmtpdebug > 0) {
+                    if ($emailsmtpdebug == 1) {
+                        // Map "On errors" to PHPMailer debug level 2
+                        $emailsmtpdebug = 2;
+                    }
                     $this->SMTPDebug = $emailsmtpdebug;
                 }
                 if (strpos((string) $emailsmtphost, ':') > 0) {
@@ -227,8 +229,9 @@ class LimeMailer extends PHPMailer
     public function init()
     {
         // Make sure that any existing SMTP connection is closed
-        $this->smtpClose();
-        $this->debug = [];
+        if ($this->Mailer != 'smtp') {
+            $this->debug = [];
+        }
         $this->ContentType = self::CONTENT_TYPE_PLAINTEXT;
         $this->clearCustomHeaders();
         $this->clearAddresses();
@@ -465,7 +468,7 @@ class LimeMailer extends PHPMailer
      */
     public function addDebug($str, $level = 0)
     {
-        $this->debug[] = rtrim((string) $str) . "\n";
+        $this->debug[] = '[' . date('Y-m-d H:i:s') . "] " . rtrim((string) $str) . "\n";
     }
 
     /**
@@ -650,7 +653,6 @@ class LimeMailer extends PHPMailer
                 return $event->get('error') == null;
             }
         }
-
         return parent::Send();
     }
 

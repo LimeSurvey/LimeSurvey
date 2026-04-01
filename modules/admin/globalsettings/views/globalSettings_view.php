@@ -10,7 +10,7 @@ echo viewHelper::getViewTestTag('globalsettings');
 <script type="text/javascript">
     var msgCantRemoveDefaultLanguage = '<?php eT("You can't remove the default language.", 'js'); ?>';
 </script>
-<ul class="nav nav-tabs" id="settingTabs">
+<ul class="nav nav-tabs" id="settingTabs" role="tablist">
     <li role="presentation" class="nav-item"><a role="tab" class="nav-link active" data-bs-toggle="tab" href='#overview'><?php eT("Overview"); ?></a></li>
     <li role="presentation" class="nav-item"><a role="tab" class="nav-link" data-bs-toggle="tab" href='#general'><?php eT("General"); ?></a></li>
     <li role="presentation" class="nav-item"><a role="tab" class="nav-link" data-bs-toggle="tab" href='#email'><?php eT("Email settings"); ?></a></li>
@@ -21,6 +21,7 @@ echo viewHelper::getViewTestTag('globalsettings');
     <li role="presentation" class="nav-item"><a role="tab" class="nav-link" data-bs-toggle="tab" href='#language'><?php eT("Language"); ?></a></li>
     <li role="presentation" class="nav-item"><a role="tab" class="nav-link" data-bs-toggle="tab" href='#interfaces'><?php eT("Interfaces"); ?></a></li>
     <li role="presentation" class="nav-item"><a role="tab" class="nav-link" data-bs-toggle="tab" href='#storage'><?php eT("Storage"); ?></a></li>
+    <li role="presentation" class="nav-item"><a role="tab" class="nav-link" data-bs-toggle="tab" href='#updates'><?php eT("Updates"); ?></a></li>
 </ul>
 <?php echo CHtml::form(["admin/globalsettings"], 'post', ['class' => '', 'id' => 'frmglobalsettings', 'name' => 'frmglobalsettings', 'autocomplete' => 'off']); ?>
 <div class="tab-content">
@@ -99,6 +100,10 @@ echo viewHelper::getViewTestTag('globalsettings');
 
     <div id="storage" class="tab-pane col-lg-6 offset-lg-1">
         <?php $this->renderPartial("./globalsettings/_storage"); ?>
+    </div>
+
+    <div id="updates" class="tab-pane col-lg-10 offset-lg-1">
+        <?php $this->renderPartial("./globalsettings/_updates"); ?>
     </div>
 </div>
 <input type='hidden' name='restrictToLanguages' id='restrictToLanguages' value='<?php implode(' ', $restrictToLanguages); ?>'/>
