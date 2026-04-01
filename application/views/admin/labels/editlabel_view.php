@@ -18,15 +18,33 @@
     <div class="row">
         <div class="col-12 content-right">
             <!-- Tabs -->
-            <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
-                <li class="nav-item">
-                    <a class="nav-link active" href='#neweditlblset0' data-bs-toggle="tab">
+            <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a
+                        class="nav-link active"
+                        id="edit-labels-tab-main"
+                        href="#neweditlblset0"
+                        data-bs-toggle="tab"
+                        role="tab"
+                        aria-selected="true"
+                        aria-controls="neweditlblset0"
+                        tabindex="0"
+                    >
                         <?php echo $tabitem; ?>
                     </a>
                 </li>
                 <?php if ($action === "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'import')): ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href='#neweditlblset1' data-bs-toggle="tab">
+                    <li class="nav-item" role="presentation">
+                        <a
+                            class="nav-link"
+                            id="edit-labels-tab-import"
+                            href="#neweditlblset1"
+                            data-bs-toggle="tab"
+                            role="tab"
+                            aria-selected="false"
+                            aria-controls="neweditlblset1"
+                            tabindex="-1"
+                        >
                             <?php eT("Import label set(s)"); ?>
                         </a>
                     </li>
@@ -36,7 +54,12 @@
 
             <!-- Tabs content -->
             <div class="tab-content">
-                <div id='neweditlblset0' class="tab-pane fade show active">
+                <div
+                    id="neweditlblset0"
+                    class="tab-pane fade show active"
+                    role="tabpanel"
+                    aria-labelledby="edit-labels-tab-main"
+                >
                     <!-- Form -->
                     <?php echo CHtml::form(["admin/labels/sa/process"], 'post', ['class' => 'form form30 ', 'id' => 'labelsetform', 'onsubmit' => "return isEmpty(document.getElementById('label_name'), '" . gT("Error: You have to enter a name for this label set.", "js") . "')"]); ?>
                     <!-- Set name -->
@@ -94,7 +117,12 @@
                 </div>
                 <!-- Import -->
                 <?php if ($action === "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'import')): ?>
-                    <div id='neweditlblset1' class="tab-pane fade">
+                    <div
+                        id="neweditlblset1"
+                        class="tab-pane fade"
+                        role="tabpanel"
+                        aria-labelledby="edit-labels-tab-import"
+                    >
                         <?php echo CHtml::form(["admin/labels/sa/import"], 'post', ['enctype' => 'multipart/form-data', 'class' => 'form', 'id' => 'importlabels', 'name' => "importlabels"]); ?>
                         <div class="mb-3 col-6">
                             <label class="form-label" for='the_file'>
@@ -124,4 +152,78 @@
             </div>
         </div>
     </div>
+
+<script type="text/javascript">
+    (function() {
+        var $tabList = $('#edit-survey-text-element-language-selection');
+        if ($tabList.length === 0) {
+            return;
+        }
+
+        function getTabs() {
+            return $tabList
+                .find('[role="tab"]')
+                .filter(':visible')
+                .filter(function() {
+                    return !$(this).hasClass('disabled')
+                        && !$(this).is('[disabled]')
+                        && $(this).attr('aria-disabled') !== 'true';
+                });
+        }
+
+        function setActiveTab($next) {
+            var $tabs = getTabs();
+            $tabs.attr({
+                'tabindex': '-1',
+                'aria-selected': 'false'
+            }).removeClass('active');
+
+            $next.attr({
+                'tabindex': '0',
+                'aria-selected': 'true'
+            }).addClass('active').trigger('focus');
+
+            if (window.bootstrap && window.bootstrap.Tab) {
+                window.bootstrap.Tab.getOrCreateInstance($next[0]).show();
+            } else if (typeof $next.tab === 'function') {
+                $next.tab('show');
+            } else {
+                $next.trigger('click');
+            }
+        }
+
+        $tabList.on('keydown', '[role="tab"]', function(event) {
+            var key = event.key;
+            if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].indexOf(key) === -1) {
+                return;
+            }
+
+            var $tabs = getTabs();
+            if ($tabs.length < 2) {
+                return;
+            }
+
+            var $current = $(this);
+            var currentIndex = $tabs.index($current);
+            if (currentIndex < 0) {
+                return;
+            }
+
+            event.preventDefault();
+
+            var nextIndex = currentIndex;
+            if (key === 'ArrowLeft' || key === 'ArrowUp') {
+                nextIndex = (currentIndex - 1 + $tabs.length) % $tabs.length;
+            } else if (key === 'ArrowRight' || key === 'ArrowDown') {
+                nextIndex = (currentIndex + 1) % $tabs.length;
+            } else if (key === 'Home') {
+                nextIndex = 0;
+            } else if (key === 'End') {
+                nextIndex = $tabs.length - 1;
+            }
+
+            setActiveTab($tabs.eq(nextIndex));
+        });
+    })();
+</script>
 </div>
