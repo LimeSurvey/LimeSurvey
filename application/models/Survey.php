@@ -106,6 +106,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property boolean $hasTokensTable Whether survey has a tokens table or not
  * @property boolean $hasResponsesTable Wheteher the survey responses (data) table exists in DB
  * @property boolean $hasTimingsTable Wheteher the survey timings table exists in DB
+ * @property boolean $hasNewEditor Whether the new React editor should be used for this survey
  * @property string $googleanalyticsapikeysetting Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
  * @property integer $countTotalQuestions Count of questions (in that language, without subquestions)
  * @property integer $countInputQuestions Count of questions that need input (skipping text-display etc.)
@@ -910,6 +911,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
 
         return $sTemplateName;
+    }
+
+    /**
+     * Returns whether the new React editor should be used for this survey.
+     * Checks global editorEnabled config and that the survey uses a compatible theme.
+     */
+    public function getHasNewEditor(): bool
+    {
+        return App()->getConfig('editorEnabled')
+            && $this->getTemplateEffectiveName() === 'fruity_twentythree';
     }
 
     /**
