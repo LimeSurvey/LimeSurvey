@@ -6,3 +6,8 @@ body {
     min-height       : 100vh;
     flex-direction   : column;
 }
+
+.topbar-back-link:focus{
+    outline: 2px solid currentColor !important;
+    outline-offset: 2px !important;
+}

@@ -16497,6 +16497,11 @@ body {
   flex-direction: column;
 }
 
+.topbar-back-link:focus {
+  outline: 2px solid currentColor !important;
+  outline-offset: 2px !important;
+}
+
 .container-40 {
   padding: 0 40px;
   width: 100%;
@@ -18706,6 +18711,11 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 .cke_button_icon {
   opacity: unset !important;
+}
+
+.cke_reset_all,
+.cke_reset_all * {
+  color: #1E1E1E !important;
 }
 
 .cke_contents {
