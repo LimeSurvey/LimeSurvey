@@ -69,6 +69,27 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         return false;
     }
 
+    // Enable maintenance mode during critical updates so survey participants
+    // see a maintenance page. Preserve the previous value to restore it afterwards.
+    $bIsCriticalUpdate = count(array_intersect($aCriticalDBVersions, $aAllUpdates)) > 0;
+    $sPreviousMaintenanceMode = getGlobalSetting('maintenancemode');
+    $bMaintenanceModeRestored = true;
+    if ($bIsCriticalUpdate && $sPreviousMaintenanceMode !== 'hard') {
+        SettingGlobal::setSetting('maintenancemode', 'hard');
+        $bMaintenanceModeRestored = false;
+
+        // Safety net: restore maintenance mode even on fatal error / timeout.
+        register_shutdown_function(function () use ($sPreviousMaintenanceMode, &$bMaintenanceModeRestored) {
+            if (!$bMaintenanceModeRestored) {
+                try {
+                    SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
+                } catch (\Throwable $t) {
+                    // DB may be unavailable at this point, nothing we can do.
+                }
+            }
+        });
+    }
+
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
 
@@ -111,6 +132,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             . '</p><br />'
             . sprintf(gT('File %s, line %s.'), $file, $trace[1]['line'])
         );
+        // Restore previous maintenance mode
+        $bMaintenanceModeRestored = true;
+        SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
         // If we're debugging, re-throw the exception.
         if (defined('YII_DEBUG') && YII_DEBUG) {
             throw $e;
@@ -161,6 +185,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
     fixLanguageConsistencyAllSurveys();
 
+    // Restore previous maintenance mode
+    $bMaintenanceModeRestored = true;
+    SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
     Yii::app()->setConfig('Updating', false);
     return true;
 }
@@ -176,7 +203,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 function getDatabaseUpdateLock()
 {
     static $pLock = null;
-    $pLock = @fopen(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'dbupdate.lock', 'w+');
+    $pLock = @fopen(Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'dbupdate.lock', 'w+');
     if (!$pLock) {
         return false;
     }
