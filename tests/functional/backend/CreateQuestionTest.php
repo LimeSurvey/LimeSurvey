@@ -7,7 +7,7 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\StaleElementReferenceException;
 use Facebook\WebDriver\Exception\UnknownServerException;
-use Facebook\WebDriver\Exception\TimeOutException;
+use Facebook\WebDriver\Exception\TimeoutException;
 use Facebook\WebDriver\Exception\ElementNotVisibleException;
 
 /**
@@ -74,7 +74,7 @@ class CreateQuestionTest extends TestBaseClassWeb
                 $button->click();
             } catch (NoSuchElementException $ex) {
                 // Do nothing.
-            } catch (TimeOutException $ex) {
+            } catch (TimeoutException $ex) {
                 // Do nothing.
             }
 

@@ -2459,13 +2459,13 @@ function upgradeTokens148()
 function upgradeQuestionAttributes148()
 {
     $sSurveyQuery = "SELECT sid,language,additional_languages FROM {{surveys}}";
-    $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
+    $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->query();
     $aAllAttributes = \LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
     foreach ($oSurveyResult->readAll() as $aSurveyRow) {
         $iSurveyID = $aSurveyRow['sid'];
         $aLanguages = array_merge(array($aSurveyRow['language']), explode(' ', (string) $aSurveyRow['additional_languages']));
         $sAttributeQuery = "select q.qid,attribute,value from {{question_attributes}} qa , {{questions}} q where q.qid=qa.qid and sid={$iSurveyID}";
-        $oAttributeResult = dbExecuteAssoc($sAttributeQuery);
+        $oAttributeResult =  Yii::app()->db->createCommand($sAttributeQuery)->query();
         foreach ($oAttributeResult->readAll() as $aAttributeRow) {
             if (isset($aAllAttributes[$aAttributeRow['attribute']]['i18n']) && $aAllAttributes[$aAttributeRow['attribute']]['i18n']) {
                 Yii::app()->getDb()->createCommand("delete from {{question_attributes}} where qid={$aAttributeRow['qid']} and attribute='{$aAttributeRow['attribute']}'")->execute();
@@ -2502,7 +2502,7 @@ function upgradeTokens145()
 function upgradeSurveys145()
 {
     $sSurveyQuery = "SELECT * FROM {{surveys}} where notification<>'0'";
-    $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
+    $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->query();
     foreach ($oSurveyResult->readAll() as $aSurveyRow) {
         if ($aSurveyRow['notification'] == '1' && trim((string) $aSurveyRow['adminemail']) != '') {
             $aEmailAddresses = explode(';', (string) $aSurveyRow['adminemail']);

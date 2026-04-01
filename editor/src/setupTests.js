@@ -6,6 +6,9 @@
 import '@testing-library/jest-dom'
 import { TextEncoder, TextDecoder } from 'util'
 
+// Tell React 18 the test environment supports act() so it flushes updates correctly
+global.IS_REACT_ACT_ENVIRONMENT = true
+
 global.TextEncoder = TextEncoder
 global.TextDecoder = TextDecoder
 
@@ -47,11 +50,9 @@ const originalError = console.error
 
 // todo: fix the act issue (it's not important to fix, but it's a good practice to have)
 console.error = jest.fn((message, ...args) => {
-  if (
-    typeof message === 'string' &&
-    message.includes('inside a test was not wrapped in act')
-  ) {
-    return
+  if (typeof message === 'string') {
+    if (message.includes('inside a test was not wrapped in act')) return
+    if (message.includes('not configured to support act')) return
   }
   originalError(message, ...args)
 })

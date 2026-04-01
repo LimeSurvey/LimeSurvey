@@ -148,7 +148,7 @@ class SurveyIndex extends CAction
         }
 
         // maintenance mode
-        $sMaintenanceMode = getGlobalSetting('maintenancemode');
+        $sMaintenanceMode = Yii::app()->getConfig('maintenancemode');
         if ($sMaintenanceMode == 'hard') {
             if ($previewmode === false) {
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_maintenance.twig", array('oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey), false);
@@ -465,7 +465,7 @@ class SurveyIndex extends CAction
             }
 
             if (FailedLoginAttempt::model()->isLockedOut(FailedLoginAttempt::TYPE_TOKEN)) {
-                $aLoadErrorMsg['tooManyRetries'] = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutParticipants') / 60);
+                $aLoadErrorMsg['tooManyRetries'] = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), Yii::app()->getConfig('timeOutParticipants') / 60);
             }
 
             if (empty($aLoadErrorMsg)) {

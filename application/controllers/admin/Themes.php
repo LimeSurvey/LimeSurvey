@@ -300,7 +300,7 @@ class Themes extends SurveyCommonAction
         $themeType = returnGlobal('theme');
         if ($themeType === 'question') {
             // Make questiontheme upload folder if it doesn't exist
-            if (!is_dir($questionthemerootdir = App()->getConfig('userquestionthemerootdir'))) {
+            if (!is_dir($questionthemerootdir = Yii::app()->getConfig('userquestionthemerootdir'))) {
                 mkdir($questionthemerootdir, 0777, true);
             }
 
@@ -356,7 +356,7 @@ class Themes extends SurveyCommonAction
         $sNewDirectoryName = $this->getNewDirectoryName($themeType, $_FILES['the_file']['tmp_name']);
 
         if ($themeType == 'survey') {
-            $destdir = App()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $sNewDirectoryName;
+            $destdir = Yii::app()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $sNewDirectoryName;
         } else {
             App()->setFlashMessage(
                 sprintf(
@@ -552,7 +552,7 @@ class Themes extends SurveyCommonAction
     public function index(string $editfile = '', string $screenname = 'welcome', string $templatename = '')
     {
         if ($templatename == '') {
-            $templatename = App()->getConfig('defaulttheme');
+            $templatename = Yii::app()->getConfig('defaulttheme');
         }
 
         // This can happen if the global default template is deleted
@@ -560,7 +560,7 @@ class Themes extends SurveyCommonAction
         if (!Template::checkIfTemplateExists($templatename)) {
             // Redirect to the default template
             Yii::app()->setFlashMessage(sprintf(gT('Theme %s does not exist.'), htmlspecialchars((string) $templatename, ENT_QUOTES)), 'error');
-            $this->getController()->redirect(array('admin/themes/sa/view/', 'templatename' => getGlobalSetting('defaulttheme')));
+            $this->getController()->redirect(array('admin/themes/sa/view/', 'templatename' => Yii::app()->getConfig('defaulttheme')));
         }
 
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
@@ -586,7 +586,7 @@ JAVASCRIPT
             ,
             CClientScript::POS_BEGIN
         );
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'templates.js', CClientScript::POS_END);
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'templates.js', CClientScript::POS_END);
         App()->getClientScript()->registerPackage('ace');
         App()->getClientScript()->registerPackage('jsuri');
         AdminTheme::getInstance()->registerStylesAndScripts();
@@ -685,7 +685,8 @@ JAVASCRIPT
             if ($sNewName && $sOldName) {
                 $sNewDirectoryPath = Yii::app()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $sNewName;
                 $sOldDirectoryPath = Yii::app()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $sOldName;
-                if (Template::isStandardTemplate($sNewName)) {
+                Yii::import('application.helpers.SurveyThemeHelper');
+                if (SurveyThemeHelper::isStandardTemplate($sNewName)) {
                     App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("This name is reserved for standard template."));
                 } elseif (file_exists($sNewDirectoryPath)) {
                     App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("A template with that name already exists."));
@@ -696,7 +697,7 @@ JAVASCRIPT
                     $oTemplate = Template::model()->findByAttributes(array('name' => $sOldName));
                     if (is_a($oTemplate, 'Template')) {
                         $oTemplate->renameTo($sNewName);
-                        if (App()->getConfig('defaulttheme') == $sOldName) {
+                        if (Yii::app()->getConfig('defaulttheme') == $sOldName) {
                             SettingGlobal::setSetting('defaulttheme', $sNewName);
                         }
                         $this->getController()->redirect(array('admin/themes', 'sa' => 'view', 'editfile' => 'layout_global.twig', 'screenname' => 'welcome', 'templatename' => $sNewName));
@@ -788,14 +789,14 @@ JAVASCRIPT
                         $surveys = Survey::model()->findAllByAttributes(array('template' => $templatename));
 
                         // The default template could be the same as the one we're trying to remove
-                        $globalDefaultIsGettingDeleted = getGlobalSetting('defaulttheme') == $templatename;
+                        $globalDefaultIsGettingDeleted = Yii::app()->getConfig('defaulttheme') == $templatename;
 
                         if ($globalDefaultIsGettingDeleted) {
-                            SettingGlobal::setSetting('defaulttheme', getGlobalSetting('defaulttheme'));
+                            SettingGlobal::setSetting('defaulttheme', Yii::app()->getConfig('defaulttheme'));
                         }
 
                         foreach ($surveys as $s) {
-                            $s->template = getGlobalSetting('defaulttheme');
+                            $s->template = Yii::app()->getConfig('defaulttheme');
                             $s->save();
                         }
 
@@ -859,15 +860,15 @@ JAVASCRIPT
         $templatename = CHtml::decode($templatename);
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
-            $completeFileName = realpath(App()->getConfig('userthemerootdir') . "/" . $templatename);
+            $completeFileName = realpath(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename);
             /* If retuirn false, not a dir or not inside userthemerootdir: try to hack : throw a 403 for security */
-            if (!is_dir($completeFileName) || strpos($completeFileName, App()->getConfig('userthemerootdir')) !== 0) {
+            if (!is_dir($completeFileName) || strpos($completeFileName, Yii::app()->getConfig('userthemerootdir')) !== 0) {
                 throw new CHttpException(403, "Disable for security reasons.");
             }
             // CheckIfTemplateExists check if the template is installed....
                 Yii::import('application.helpers.SurveyThemeHelper');
             if (! Template::checkIfTemplateExists($templatename) && !SurveyThemeHelper::isStandardTemplate($templatename)) {
-                if (rmdirr(App()->getConfig('userthemerootdir') . "/" . $templatename)) {
+                if (rmdirr(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename)) {
                     App()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
                 } else {
                     App()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename), 'error');
@@ -972,31 +973,6 @@ JAVASCRIPT
     }
 
     /**
-     * Load menu bar related to a template.
-     *
-     * @access protected
-     * @param string $screenname
-     * @param string $editfile
-     * @param string $screens
-     * @param string $tempdir
-     * @param string $templatename
-     * @return void
-     * @deprecated ? 151005
-     */
-    protected function templatebar($screenname, $editfile, $screens, $tempdir, $templatename)
-    {
-        $aData = array();
-        $aData['screenname'] = $screenname;
-        $aData['editfile'] = $editfile;
-        $aData['screens'] = $screens;
-        $aData['tempdir'] = $tempdir;
-        $aData['templatename'] = $templatename;
-        $aData['userthemerootdir'] = Yii::app()->getConfig('userthemerootdir');
-
-        $this->getController()->renderPartial("/admin/themes/templatebar_view", $aData);
-    }
-
-    /**
      * Load CodeMirror editor and various files information.
      *
      * @access protected
@@ -1018,7 +994,7 @@ JAVASCRIPT
         $aData = array();
         $time = date("ymdHis");
         // Prepare textarea class for optional javascript
-        $templateclasseditormode = getGlobalSetting('defaultthemeteeditormode'); // default
+        $templateclasseditormode = Yii::app()->getConfig('defaultthemeteeditormode'); // default
         if (Yii::app()->session['templateeditormode'] == 'none') {
             $templateclasseditormode = 'none';
         }
@@ -1050,7 +1026,7 @@ JAVASCRIPT
         if (Yii::app()->session['templateeditormode'] !== 'default') {
             $sTemplateEditorMode = Yii::app()->session['templateeditormode'];
         } else {
-            $sTemplateEditorMode = getGlobalSetting('templateeditormode');
+            $sTemplateEditorMode = Yii::app()->getConfig('templateeditormode');
         }
         $sExtension = substr(strrchr($editfile, '.'), 1);
 
@@ -1150,7 +1126,7 @@ JAVASCRIPT
         }
         $aAllTemplates = Template::getTemplateList();
         if (!isset($aAllTemplates[$templatename])) {
-            $templatename = getGlobalSetting('defaulttheme');
+            $templatename = Yii::app()->getConfig('defaulttheme');
         }
 
         $normalfiles = array("DUMMYENTRY", ".", "..", "preview.png");

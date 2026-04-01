@@ -136,9 +136,7 @@ export const SingleChoiceAnswers = ({
       </div>
       {showDropDownAnswers && (
         <div className="added-choice-number">
-          {answers.length === 1
-            ? t('1 answer option')
-            : format(t('%d answer options'), answers.length)}
+          {format(t('%d answer options'), answers.length)}
         </div>
       )}
       <div>

@@ -8,6 +8,73 @@ const { publicVars, rawPublicVars } = loadEnv({
   prefixes: ['REACT_APP_', 'HTTPS', 'HOST', 'PORT', 'PUBLIC_URL'],
 })
 
+// Warn when running a non-production build.
+if (
+  process.env.NODE_ENV !== 'production' ||
+  process.env.REACT_APP_DEV_MODE === 'true' ||
+  process.env.REACT_APP_DEMO_MODE === 'true'
+) {
+  // eslint-disable-next-line no-console
+  console.warn(
+    '\x1b[1m\x1b[33m\n' +
+      '================================================================================\n' +
+      ` WARNING: This is a non-production build (NODE_ENV="${process.env.NODE_ENV}").\n` +
+      ' Do not deploy this build to production.\n' +
+      '================================================================================\n' +
+      '\x1b[0m'
+  )
+}
+
+// Ensure REACT_APP_DEV_MODE and REACT_APP_DEMO_MODE is never true in production builds,
+// regardless of what was set in the environment or .env files.
+if (process.env.NODE_ENV !== 'development') {
+  if (process.env.REACT_APP_DEV_MODE === 'true') {
+    // eslint-disable-next-line no-console
+    console.error(
+      '\x1b[1m\x1b[31m\n' +
+        '================================================================================\n' +
+        ' WARNING: REACT_APP_DEV_MODE is set to true in a production build!\n' +
+        ' This will expose dev code that is not ready for production.\n' +
+        ' It will be ignored and deleted.\n' +
+        '================================================================================\n' +
+        '\x1b[0m'
+    )
+  }
+
+  delete process.env.REACT_APP_DEV_MODE
+
+  for (const key of Object.keys(rawPublicVars)) {
+    if (key.includes('REACT_APP_DEV_MODE')) delete rawPublicVars[key]
+  }
+
+  for (const key of Object.keys(publicVars)) {
+    if (key.includes('REACT_APP_DEV_MODE')) delete publicVars[key]
+  }
+
+  if (process.env.REACT_APP_DEMO_MODE === 'true') {
+    // eslint-disable-next-line no-console
+    console.error(
+      '\x1b[1m\x1b[31m\n' +
+        '================================================================================\n' +
+        ' WARNING: REACT_APP_DEMO_MODE is set to true in a production build!\n' +
+        ' This will expose demo code that should not be in production.\n' +
+        ' It will be ignored and deleted.\n' +
+        '================================================================================\n' +
+        '\x1b[0m'
+    )
+  }
+
+  delete process.env.REACT_APP_DEMO_MODE
+
+  for (const key of Object.keys(rawPublicVars)) {
+    if (key.includes('REACT_APP_DEMO_MODE')) delete rawPublicVars[key]
+  }
+
+  for (const key of Object.keys(publicVars)) {
+    if (key.includes('REACT_APP_DEMO_MODE')) delete publicVars[key]
+  }
+}
+
 export default defineConfig({
   plugins: [
     pluginEslint({

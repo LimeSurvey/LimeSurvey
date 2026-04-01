@@ -104,25 +104,6 @@ class Quota extends LSActiveRecord
     }
 
     /**
-     * @param $data
-     * @return bool|int
-     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $quota = new self();
-        foreach ($data as $k => $v) {
-            $quota->$k = $v;
-        }
-        try {
-            $quota->save();
-            return $quota->id;
-        } catch (Exception $e) {
-            return false;
-        }
-    }
-
-    /**
      * @param mixed|bool $condition
      * @param bool $recursive
      */
@@ -195,7 +176,7 @@ class Quota extends LSActiveRecord
         foreach ($this->quotaMembers as $quotaMember) {
             $members[] = $quotaMember->memberInfo;
         }
-        $attributes = $this->attributes;
+        $attributes = $this->attributes ?? [];
 
         $defaultLanguageAttributes = [
             'quotals_message'     => gT("Sorry your responses have exceeded a quota on this survey."),

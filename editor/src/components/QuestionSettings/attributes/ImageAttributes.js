@@ -20,6 +20,7 @@ export const ImageAttributes = ({
   update,
   value = {},
   isSimpleSettings = false,
+  disabled = false,
 }) => {
   const charLimit = 125
   const [show, setShow] = useState(false)
@@ -139,6 +140,7 @@ export const ImageAttributes = ({
           image={previewUrl}
           dataTestId="add-image-or-video"
           trashIconEnabled={false}
+          disabled={disabled}
         />
 
         {previewUrl && (

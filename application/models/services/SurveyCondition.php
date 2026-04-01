@@ -1049,7 +1049,7 @@ class SurveyCondition
         $theserows2 = array();
         foreach ($theserows as $row) {
             $question = strip_tags((string) $row['question']);
-            $questionselecter = \viewHelper::flatEllipsizeText($question, true, '40');
+            $questionselecter = \viewHelper::flatEllipsizeText($question, true, 40);
             $theserows2[] = array(
                 'value' => $caller->createNavigatorUrl($row['gid'], $row['qid']),
                 'text' => strip_tags((string) $row['title']) . ':' . $questionselecter
@@ -1059,7 +1059,7 @@ class SurveyCondition
         $postrows2 = array();
         foreach ($postrows as $row) {
             $question = strip_tags((string) $row['question']);
-            $questionselecter = \viewHelper::flatEllipsizeText($question, true, '40');
+            $questionselecter = \viewHelper::flatEllipsizeText($question, true, 40);
             $postrows2[] = array(
                 'value' => $caller->createNavigatorUrl($row['gid'], $row['qid']),
                 'text' => strip_tags((string) $row['title']) . ':' . $questionselecter
@@ -1070,7 +1070,7 @@ class SurveyCondition
             'theserows' => $theserows2,
             'postrows' => $postrows2,
             'currentValue' => $caller->createNavigatorUrl($gid, $qid),
-            'currentText' => $questiontitle . ':' . \viewHelper::flatEllipsizeText(strip_tags((string) $sCurrentFullQuestionText), true, '40')
+            'currentText' => $questiontitle . ':' . \viewHelper::flatEllipsizeText(strip_tags((string) $sCurrentFullQuestionText), true, 40)
         );
 
         return $caller->renderPartialView('navigator', $data, true);
@@ -1387,7 +1387,7 @@ class SurveyCondition
             $aData['extraGetParams'] = $extraGetParams;
             $aData['questionNavOptions'] = $questionNavOptions;
             $aData['javascriptpre'] = $javascriptpre;
-            $aData['sCurrentQuestionText'] = $questiontitle . ': ' . \viewHelper::flatEllipsizeText($sCurrentFullQuestionText, true, '120');
+            $aData['sCurrentQuestionText'] = $questiontitle . ': ' . \viewHelper::flatEllipsizeText($sCurrentFullQuestionText, true, 120);
 
             $aData['scenariocount'] = $scenariocount;
             if (empty(trim((string) $oQuestion->relevance)) || !empty($oQuestion->conditions)) {

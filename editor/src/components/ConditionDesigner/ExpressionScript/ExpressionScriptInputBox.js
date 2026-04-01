@@ -26,8 +26,9 @@ export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
     if (hasConditions) {
       showWarningMessage(
         t(
-          'Conditions written in ExpressionScript mode can’t be displayed inside the visual condition builder.'
-        )
+          `Conditions written in ExpressionScript mode can't be displayed inside the visual condition builder.`
+        ),
+        'bottom-center'
       )
     }
   }

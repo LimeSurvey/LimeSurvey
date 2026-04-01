@@ -1,6 +1,6 @@
 {
   "name": "limesurvey-editor",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "homepage": ".",
   "private": true,
   "type": "module",
@@ -89,7 +89,6 @@
     "util": "^0.12.5"
   },
   "scripts": {
-    "prestart": "npm run collect-translations",
     "dev": "rsbuild dev",
     "start": "export REACT_APP_COMMIT_HASH=$(git rev-parse HEAD) && rsbuild dev",
     "start-https": "HTTPS=true rsbuild preview",
@@ -108,8 +107,7 @@
     "eslint": "eslint src --ext .js --max-warnings 0",
     "prettier:check": "prettier --check src",
     "prettier:format": "prettier --write src",
-    "prepare": "husky",
-    "collect-translations": "node src/i18n/scripts/collectTranslationStrings.js"
+    "prepare": "husky"
   },
   "devDependencies": {
     "@babel/core": "^7.26.10",

@@ -27,8 +27,6 @@ class questionHelper
 {
     /* @var array[]|null The question attribute definition for this LimeSurvey installation */
     protected static $attributes;
-    /* @var array[] The question attribute (settings) by question type*/
-    protected static $questionAttributesSettings = array();
 
     /**
      * Return all the definitions of Question attributes core+extended value
@@ -1641,28 +1639,5 @@ class questionHelper
         // );
 
         return self::$attributes;
-    }
-
-    /**
-     * Return the question Theme preview URL
-     * @param $sType: type pof question
-     * @return string : question theme preview URL
-     * @deprecated use QuestionTheme::getQuestionThemePreviewUrl
-     */
-    public static function getQuestionThemePreviewUrl($sType = null)
-    {
-        if ($sType == '*') {
-            $preview_filename = 'EQUATION.png';
-        } elseif ($sType == ':') {
-            $preview_filename = 'COLON.png';
-        } elseif ($sType == '|') {
-            $preview_filename = 'PIPE.png';
-        } elseif (!empty($sType)) {
-            $preview_filename = $sType . '.png';
-        } else {
-            $preview_filename = '.png';
-        }
-
-        return App()->getConfig("imageurl") . '/screenshots/' . $preview_filename;
     }
 }
