@@ -151,8 +151,7 @@ class SurveyLanguageSetting extends LSActiveRecord
 
             array('surveyls_dateformat', 'numerical', 'integerOnly' => true, 'min' => '1', 'max' => '12', 'allowEmpty' => true),
             array('surveyls_numberformat', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '1', 'allowEmpty' => true),
-
-            array('attachments', 'attachmentsInfo'),
+            array('attachments','filter','filter' => array($this, 'filterAttachments')),
         );
     }
 
@@ -202,19 +201,31 @@ class SurveyLanguageSetting extends LSActiveRecord
     }
 
     /**
-     * Customs validation rule, filter attachments
+     * Customs filter for rules attachments
      *
      * @param string $attribute
-     * return null|string
+     * @return null|string
      */
-    public function attachmentsInfo($attribute)
+    public function filterAttachments($attribute)
     {
-        $attachmentsByType = $this->validateAttachments($this->$attribute, $this->scenario != 'import');
+        $attachmentsByType = $this->validateAttachments($attribute, $this->scenario != 'import');
         if (empty($attachmentsByType)) {
             // Save empty attachments as null value
             return null;
         }
         return json_encode($attachmentsByType);
+    }
+
+    /**
+     * Previously broken validatioin rules, replace by filter
+     *
+     * @deprecated 6.16.16
+     * @param string $attribute
+     * @return null|string
+     */
+    public function attachmentsInfo($attribute)
+    {
+        return $this->filterAttachments($this->$attribute);
     }
 
     /**
@@ -377,7 +388,7 @@ class SurveyLanguageSetting extends LSActiveRecord
      **/
     public function validateAttachments($string, $exist = true)
     {
-        if (empty($string)) {
+        if (empty($string) || is_string($string)) {
             return [];
         }
         $attachments = json_decode($string, 1);
