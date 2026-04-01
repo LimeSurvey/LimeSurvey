@@ -208,7 +208,7 @@ class SurveyLanguageSetting extends LSActiveRecord
      */
     public function filterAttachments($attribute)
     {
-        $attachmentsByType = $this->validateAttachments($attribute, $this->scenario != 'import');
+        $attachmentsByType = $this->validateAttachments($attribute, !in_array($this->scenario, ['import', 'copy']));
         if (empty($attachmentsByType)) {
             // Save empty attachments as null value
             return null;
@@ -388,7 +388,7 @@ class SurveyLanguageSetting extends LSActiveRecord
      **/
     public function validateAttachments($string, $exist = true)
     {
-        if (empty($string) || is_string($string)) {
+        if (empty($string) || !is_string($string)) {
             return [];
         }
         $attachments = json_decode($string, 1);
