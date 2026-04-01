@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\Quotas;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 /**
  * LimeSurvey
@@ -200,7 +201,7 @@ class SurveyRuntimeHelper
 
         ///////////////////////////////////////////////////////////
         // 1: We check if token and/or captcha form shouls be shown
-        if (!isset($_SESSION[$this->LEMsessid]['step'])) {
+        if ((!isset($_SESSION[$this->LEMsessid]['step'])) || (Yii::app()->request->getParam('filltoken') === 'true')) {
             $this->showTokenOrCaptchaFormsIfNeeded();
         }
         if (!$this->previewgrp && !$this->previewquestion) {
@@ -209,10 +210,28 @@ class SurveyRuntimeHelper
             if (EmCacheHelper::useCache()) {
                 $this->aSurveyInfo['emcache'] = true;
             }
+            if (intval($_SESSION[$this->LEMsessid]['filltoken'] ?? 0)) {
+                $this->aSurveyInfo['filltoken'] = true;
+            }
             $this->checkQuotas(); // check quotas (then the process will stop here)
             $this->displayFirstPageIfNeeded();
             $this->saveAllIfNeeded();
             $this->saveSubmitIfNeeded();
+            $tokenValue = ($_SESSION[$this->LEMsessid]['filltoken'] ?? ($_SESSION[$this->LEMsessid]['token'] ?? ''));
+            if ($tokenValue && isset($_SESSION[$this->LEMsessid]['srid'])) {
+                $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $_SESSION[$this->LEMsessid]['srid']]);
+                if ($oSurveyResponse && $oSurveyResponse->hasAttribute('token')) {
+                    $oSurveyResponse->token = $tokenValue;
+                }
+                if (isset($_SESSION[$this->LEMsessid]['filltoken'])) {
+                    unset($_SESSION[$this->LEMsessid]['filltoken']);
+                }
+                if (isset($_SESSION[$this->LEMsessid]['token'])) {
+                    $_SESSION[$this->LEMsessid]['tokenused'] = $_SESSION[$this->LEMsessid]['token'];
+                }
+                $oSurveyResponse->save();
+                $survey = Survey::model()->findByPk($surveyid);
+            }
             // TODO: move somewhere else
             $this->setNotAnsweredAndNotValidated();
         } else {
@@ -441,15 +460,8 @@ class SurveyRuntimeHelper
                 'GROUPNAME' => $aGroup['name'],
             ));
             $aGroup['gseq']        = $_gseq;
-            $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
-            $aSurveyinfo           = getSurveyInfo($this->iSurveyid, App()->getLanguage());
-
-            // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings
-            if (($aSurveyinfo['showgroupinfo'] == $showgroupinfo_global_) || ($showgroupinfo_global_ == 'choose')) {
-                $showgroupinfo_ = $aSurveyinfo['showgroupinfo'];
-            } else {
-                $showgroupinfo_ = $showgroupinfo_global_;
-            }
+            // Use survey level settings
+            $showgroupinfo_ = $this->aSurveyInfo['showgroupinfo'];
 
             $showgroupdesc_ = $showgroupinfo_ == 'B' /* both */ || $showgroupinfo_ == 'D'; /* (group-) description */
 
@@ -490,7 +502,7 @@ class SurveyRuntimeHelper
                         'SGQ' => $qa[7],
                         'QUESTION_CODE' => $qa[0]['code'], // Always ?
                     ));
-
+                    $questionAttributes = QuestionAttribute::model()->getQuestionAttributes($qid);
                     // easier to understand for survey maker
                     $aGroup['aQuestions'][$qid]['qid']                  = $qa[4];
                     $aGroup['aQuestions'][$qid]['gid']                  = $qinfo['info']['gid'];
@@ -508,6 +520,7 @@ class SurveyRuntimeHelper
                     $aGroup['aQuestions'][$qid]['answer']               = $qa[1];
                     $aGroup['aQuestions'][$qid]['help']['show']         = (flattenText($lemQuestionInfo['info']['help'], true, true) != '');
                     $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], null, 3, 1, false, true, false);
+                    $aGroup['aQuestions'][$qid]['image']                 = is_array($questionAttributes) && array_key_exists('image', $questionAttributes) ? $questionAttributes['image'] : [];
                     $aGroup['aQuestions'][$qid] = $this->doBeforeQuestionRenderEvent($aGroup['aQuestions'][$qid]);
                     LimeExpressionManager::updateReplacementFields(array(
                         'QID' => null,
@@ -594,17 +607,8 @@ class SurveyRuntimeHelper
      */
     public function getShowNumAndCode()
     {
-        $showqnumcode_global_ = getGlobalSetting('showqnumcode');
-        $showqnumcode_survey_ = $this->aSurveyInfo['showqnumcode'];
-
-        // Check global setting to see if survey level setting should be applied
-        if ($showqnumcode_global_ == 'choose') {
-            // Use survey level settings
-            $showqnumcode_ = $showqnumcode_survey_; //B, N, C, or X
-        } else {
-            // Use global setting
-            $showqnumcode_ = $showqnumcode_global_; //both, number, code, or none
-        }
+        // Use survey level settings
+        $showqnumcode_ = $this->aSurveyInfo['showqnumcode']; //B, N, C, or X
 
         $aShow = [];
 
@@ -698,7 +702,17 @@ class SurveyRuntimeHelper
             //Before doing the "templatereplace()" function, check the $this->aSurveyInfo['url']
             //field for limereplace stuff, and do transformations!
             $this->aSurveyInfo['surveyls_url'] = passthruReplace($this->aSurveyInfo['surveyls_url'], $this->aSurveyInfo);
-            $this->aSurveyInfo['surveyls_url'] = templatereplace((string) $this->aSurveyInfo['surveyls_url'], array(), $redata, 'URLReplace', false, null, array(), true); // to do INSERTANS substitutions
+            $this->aSurveyInfo['surveyls_url'] = templatereplace(
+                (string)$this->aSurveyInfo['surveyls_url'],
+                array(),
+                $redata,
+                'URLReplace',
+                false,
+                null,
+                array(),
+                true,
+                $this->oTemplate
+            ); // to do INSERTANS substitutions
         }
     }
 
@@ -911,7 +925,7 @@ class SurveyRuntimeHelper
      */
     private function setPrevStep()
     {
-        if (isset($this->sMove)) {
+        if (isset($this->sMove) && $this->sMove !== "") {
             if (!in_array($this->sMove, array("clearall", "changelang", "saveall", "reload"))) {
                 $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$this->LEMsessid]['step'];
             } else {
@@ -1579,6 +1593,7 @@ class SurveyRuntimeHelper
     private function showTokenOrCaptchaFormsIfNeeded()
     {
         $this->iSurveyid   = $this->aSurveyInfo['sid'];
+        $accessMode        = $this->aSurveyInfo['access_mode'];
         $preview           = $this->preview;
 
         // Template settings
@@ -1601,7 +1616,7 @@ class SurveyRuntimeHelper
          */
 
         $scenarios = array(
-            "tokenRequired"   => ($tokensexist == 1),
+            "tokenRequired"   => ($this->aSurveyInfo['active'] === 'Y') && (($accessMode === SurveyAccessModeService::$ACCESS_TYPE_CLOSED) || (Yii::app()->request->getParam('filltoken') === 'true')),
             "captchaRequired" => (isCaptchaEnabled('surveyaccessscreen', $this->aSurveyInfo['usecaptcha']) && !isset($_SESSION['survey_' . $this->iSurveyid]['captcha_surveyaccessscreen']))
         );
 
@@ -1630,7 +1645,7 @@ class SurveyRuntimeHelper
         if ($scenarios['captchaRequired']) {
             //Check if the Captcha was correct
             $captcha                        = Yii::app()->getController()->createAction('captcha');
-            $subscenarios['captchaCorrect'] = $captcha->validate(App()->getRequest()->getPost('loadsecurity'), false);
+            $subscenarios['captchaCorrect'] = $captcha->validate(App()->getRequest()->getPost('loadsecurity',''), false);
         } else {
             $subscenarios['captchaCorrect'] = true;
         }
@@ -1696,6 +1711,18 @@ class SurveyRuntimeHelper
 
         if ($FlashError) {
             $aEnterErrors['flash'] = $FlashError;
+        } else {
+            if ((Yii::app()->request->getParam('filltoken') === 'true') && (Yii::app()->request->getPost('token', '') !== '')) {
+                if (isset($_SESSION[$this->LEMsessid]['srid'])) {
+                    $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $_SESSION[$this->LEMsessid]['srid']]);
+                    if ($oSurveyResponse && $oSurveyResponse->hasAttribute('token')) {
+                        $oSurveyResponse->token = Yii::app()->request->getPost('token');
+                    }
+                    $oSurveyResponse->save();
+                } else {
+                    $_SESSION[$this->LEMsessid]['filltoken'] = Yii::app()->request->getPost('token');
+                }
+            }
         }
 
         $aEnterTokenData['aEnterErrors']    = $aEnterErrors;

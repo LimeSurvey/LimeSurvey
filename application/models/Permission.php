@@ -700,6 +700,7 @@ class Permission extends LSActiveRecord
 
     /**
      * Checks if a user has a certain permission in the given survey
+     * Note: This function automatically also takes global permissions into account
      *
      * @param $iSurveyID integer The survey ID
      * @param $sPermission string Name of the permission
@@ -793,11 +794,14 @@ class Permission extends LSActiveRecord
     /**
      * get the connected user role
      * @param integer $iUserID user id
-     * @return int roleId
-     * @throws Exception
+     * @return array of UserInPermissionrole records
      */
     public static function getUserRole($iUserID)
     {
+        if (App()->getConfig("DBVersion") < 419) {
+            /* No UserInPermissionrole column before 419 */
+            return [];
+        }
         return UserInPermissionrole::model()->getRoleForUser($iUserID);
     }
 

@@ -8,6 +8,5 @@ class Update_158 extends DatabaseUpdateBase
 {
     public function up()
     {
-        LimeExpressionManager::UpgradeConditionsToRelevance();
     }
 }

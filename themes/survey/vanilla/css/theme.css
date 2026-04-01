@@ -237,12 +237,6 @@ body {
     margin: 0 auto;
 }
 
-.radio-list li {
-    display: block;
-    clear: both;
-    margin-right: 3rem;
-}
-
 .question-item .other-label {
     margin: 0px;
     padding: 0px;
@@ -824,7 +818,7 @@ label::after {
     color: #333;
 }
 
-.dropdown-item:focus, .dropdown-item:hover {
+.list-group-itemindex-item a:hover, .list-group-itemindex-item a:focus {
     background-color: #e9ecef !important;
 }
 

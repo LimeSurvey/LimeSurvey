@@ -530,7 +530,7 @@ class LsDefaultDataSets
                 '',
                 'remix',
                 '',
-                'admin/statistics/sa/index/',
+                'admin/statistics/sa/simpleStatistics/',
                 '',
                 '',
                 '',
@@ -970,9 +970,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/variations/theme_apple.css","css/base.css","css/custom.css"], "remove":["survey.css", "template-core.css", "awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css", "awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/custom.js"], "remove":["survey.js", "template-core.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"hideprivacyinfo":"off","showpopups":"1","showclearall":"off","questionhelptextposition":"top","fixnumauto":"enable","backgroundimage":"off","backgroundimagefile":".\/files\/pattern.png",
-                                     "brandlogo":"off","brandlogofile":"image::theme::files\/logo.png","font":"ibm-sans",
-                                     "cssframework":"Apple"}',
+            'options'           => '{"hideprivacyinfo":"off","showpopups":"1","showclearall":"off","questionhelptextposition":"top","fixnumauto":"enable","backgroundimage":"off","backgroundimagefile":".\/files\/pattern.png","brandlogo":"off","brandlogofile":"image::theme::files\/logo.png","font":"ibm-sans", "bodybackgroundcolor":"#ffffff","fontcolor":"#444444", "questionbackgroundcolor":"#ffffff", "checkicon":"EB7A","cssframework":"Apple"}',
             'cssframework_name' => '',
             'cssframework_css'  => '',
             'cssframework_js'   => '',
@@ -1718,7 +1716,7 @@ class LsDefaultDataSets
             array(
                 'teid' => 35,
                 'ordering' => 35,
-                'title' => gT('Activate survey participants table'),
+                'title' => gT('Activate survey participant list'),
                 'content' => gT("Here you can select to start your survey in closed access mode.") . "<br/>"
                 . gT("For our simple survey it is better to start in open access mode.") . "<br/>"
                 . gT("The closed access mode needs a participant list, which you may create by clicking on the menu entry 'Participants'.") . "<br/>"

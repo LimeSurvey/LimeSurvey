@@ -292,6 +292,7 @@ class Participant extends LSActiveRecord
         if ($this->userHasPermissionToEdit()) {
             $inputHtml = App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                 'name'          => 'blacklisted_' . $this->participant_id,
+                'ariaLabel'    => gT('Blocklisted'),
                 'checkedOption' => $this->blacklisted === "Y" ? "1" : "0",
                 'selectOptions' => [
                     '1' => gT('Yes'),
@@ -901,7 +902,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * This function deletes the participant from the participants table,
+     * This function deletes the participant from the participant list,
      * references in the survey_links table (but not in matching tokens tables)
      * and then all the participants attributes.
      * @param string $rows Participants ID separated by comma
@@ -967,7 +968,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Deletes CPDB participants identified by their participant ID from survey participants tables
+     * Deletes CPDB participants identified by their participant ID from survey participant lists
      *
      * @param string $sParticipantsIDs
      *
@@ -976,7 +977,7 @@ class Participant extends LSActiveRecord
      */
     public function deleteParticipantToken($sParticipantsIDs)
     {
-        /* This function deletes the participant from the participants table,
+        /* This function deletes the participant from the participant list,
            the participant from any tokens table they're in (using the survey_links table to find them)
            and then all the participants attributes. */
         $aParticipantsIDChunks = array_chunk(explode(",", $sParticipantsIDs), 100);
@@ -1017,7 +1018,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * This function deletes the participant from the participants table,
+     * This function deletes the participant from the participant list,
      * the participant from any tokens table they're in (using the survey_links table to find them),
      * all responses in surveys they've been linked to,
      * and then all the participants attributes.
@@ -1470,26 +1471,28 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Update stuff?
-     * If automapping is enabled then update the token field properties with the mapped CPDB field ID
-     * TODO: What is this?
+     * Updates the token attribute properties of a survey to include the mapping to Central Participant Database (CPDB) attributes.
+     * If automapping is enabled, this function updates the token field properties with the mapped CPDB field ID.
      *
-     * @param int $surveyId
-     * @param array $mappedAttributes
-     * @param integer $surveyId
+     * @param int   $surveyId         The ID of the survey.
+     * @param array $mappedAttributes An associative array where keys are token attribute field names and values are the corresponding CPDB attribute IDs.
      * @return void
      */
     private function updateTokenFieldProperties($surveyId, array $mappedAttributes)
     {
+        $tokenAttributes = Survey::model()->findByPk($surveyId)->tokenattributes;
+        $attributesChanged = false;
         foreach ($mappedAttributes as $key => $iIDAttributeCPDB) {
             if (is_numeric($iIDAttributeCPDB)) {
                 /* Update the attribute descriptions info */
-                $tokenAttributes = Survey::model()->findByPk($surveyId)->tokenattributes;
                 $tokenAttributes[$key]['cpdbmap'] = $iIDAttributeCPDB;
+                $attributesChanged = true;
+            }
+        }
+        if ($attributesChanged) {
                 Yii::app()->db
                     ->createCommand()
                     ->update('{{surveys}}', array("attributedescriptions" => json_encode($tokenAttributes)), 'sid = ' . $surveyId);
-            }
         }
     }
 
@@ -1598,18 +1601,19 @@ class Participant extends LSActiveRecord
             $aTokenAttributes[$key] = $iIDAttributeCPDB;
         }
 
-        $aTokenAttributes = serialize($aTokenAttributes);
+        $aTokenAttributes = json_encode($aTokenAttributes);
 
         Yii::app()->db
             ->createCommand()
             ->update('{{surveys}}', array("attributedescriptions" => $aTokenAttributes), 'sid = ' . intval($surveyId)); // load description in the surveys table
 
         //Actually create the fields in the tokens table
-        Yii::app()->loadHelper('update/updatedb');
+        Yii::app()->loadHelper('update.updatedb');
         foreach ($fields as $key => $value) {
             addColumn("{{tokens_$surveyId}}", $key, $value['type']);
         }
         Yii::app()->db->schema->getTable("{{tokens_$surveyId}}", true); // Refresh schema cache just
+        Token::model($surveyId)->refreshMetaData(); // Refresh model meta data
 
         return array($addedAttributes, $addedAttributeIds);
     }
@@ -1656,7 +1660,7 @@ class Participant extends LSActiveRecord
                 return $carry ? $carry : ($oToken->participant_id == $oParticipant->participant_id);
             }, false);
             if ($isDuplicate) {
-                //Participant already exists in survey participants table - don't copy
+                //Participant already exists in survey participant list - don't copy
                 $duplicate++;
 
                 // Here is where we can put code for overwriting the attribute data if so required
@@ -1750,7 +1754,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Copies central attributes/participants to an individual survey survey participants table
+     * Copies central attributes/participants to an individual survey survey participant list
      *
      * @param int $surveyId The survey ID
      * @param string $participantIds Array containing the participant ids of the participants we are adding
@@ -1788,7 +1792,7 @@ class Participant extends LSActiveRecord
         // TODO: Why use two variables for this?
         [$addedAttributes, $addedAttributeIds] = $this->createColumnsInTokenTable($surveyId, $newAttributes);
 
-        //Write each participant to the survey survey participants table
+        //Write each participant to the survey survey participant list
         [$successful, $duplicate, $blacklistSkipped] = $this->writeParticipantsToTokenTable(
             $surveyId,
             $participantIds,
@@ -1810,12 +1814,12 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Updates a field in the survey participants table with a value from the participant attributes table
+     * Updates a field in the survey participant list with a value from the participant attributes table
      *
      * @param int $surveyId Survey ID number
      * @param string $participantId unique key for the participant
      * @param int $participantAttributeId the unique key for the participant_attribute table
-     * @param int $tokenFieldname fieldname in the survey participants table
+     * @param int $tokenFieldname fieldname in the survey participant list
      *
      * @return bool true/false
      */
@@ -1847,12 +1851,12 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Updates or creates a field in the survey participants table with a value from the participant attributes table
+     * Updates or creates a field in the survey participant list with a value from the participant attributes table
      *
      * @param int $surveyId Survey ID number
      * @param int $participantId unique key for the participant
      * @param int $participantAttributeId the unique key for the participant_attribute table
-     * @param int $tokenFieldname fieldname in the survey participants table
+     * @param int $tokenFieldname fieldname in the survey participant list
      *
      * @return boolean|null true/false
      */
@@ -1895,7 +1899,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Copies token participants to the central participants table, and also copies
+     * Copies token participants to the central participant list, and also copies
      * token attribute values where applicable. It checks for matching entries using
      * firstname/lastname/email combination.
      *
@@ -1913,7 +1917,7 @@ class Participant extends LSActiveRecord
     public function copyToCentral($surveyid, $aAttributesToBeCreated, $aMapped, $overwriteauto = false, $overwriteman = false, $createautomap = true)
     {
         $survey = Survey::model()->findByPk($surveyid);
-        $tokenid_string = Yii::app()->session['participantid']; //List of token_id's to add to participants table
+        $tokenid_string = Yii::app()->session['participantid']; //List of token_id's to add to participant list
         $tokenids = json_decode((string) $tokenid_string, true);
         $duplicate = 0;
         $sucessfull = 0;
@@ -1926,7 +1930,7 @@ class Participant extends LSActiveRecord
         if (!empty($aAttributesToBeCreated)) {
             foreach ($aAttributesToBeCreated as $key => $value) {
                 //creating new central attribute
-                /* $key is the fieldname from the survey participants table (ie "attribute_1")
+                /* $key is the fieldname from the survey participant list (ie "attribute_1")
                  * $value is the 'friendly name' for the attribute (ie "Gender")
                  */
                 $insertnames = [
@@ -1989,7 +1993,7 @@ class Participant extends LSActiveRecord
                         }
                     }
                 } /* If there isn't an existing entry, create one! */ else {
-                    /* Create entry in participants table */
+                    /* Create entry in participant list */
                     $black = !empty($oTokenDynamic->blacklisted) ? $oTokenDynamic->blacklisted : 'N';
                     $pid = !empty($oTokenDynamic->participant_id) ? $oTokenDynamic->participant_id : $this->genUuid();
 
@@ -2008,7 +2012,7 @@ class Participant extends LSActiveRecord
                     $oParticipant->setAttributes($writearray, false);
                     $oParticipant->encryptSave();
 
-                    //Update survey participants table and insert the new UUID
+                    //Update survey participant list and insert the new UUID
                     $oTokenDynamic->participant_id = $pid;
                     $oTokenDynamic->encryptSave();
 

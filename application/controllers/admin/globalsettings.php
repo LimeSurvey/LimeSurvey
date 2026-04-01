@@ -64,18 +64,27 @@ class GlobalSettings extends SurveyCommonAction
         phpinfo();
     }
 
+
     /**
-     * Refresh Assets
+     * Clears assets and cache directories.
+     *
+     * This function is used to refresh the assets and cache directories when necessary.
+     * It should only be accessible to people who have at least the permission to create or update themes.
+     *
+     * @return void
+     * @throws CHttpException If the user does not have the necessary permissions.
      */
-    public function refreshAssets()
+    public function clearAssetsAndCache()
     {
-        // Only people who can create or update themes should be allowed to refresh the assets
         if (Permission::model()->hasGlobalPermission('templates', 'create')) {
             SettingGlobal::increaseCustomAssetsversionnumber();
+            cleanAssetCacheDirectory();
+            cleanTwigCacheDirectory();
             $this->getController()->redirect(array("admin/globalsettings"));
+        } else {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
     }
-
     /**
      * Displays the settings.
      * @throws CHttpException
@@ -138,6 +147,11 @@ class GlobalSettings extends SurveyCommonAction
         //Prepare editor script for global settings tabs / Textarea fields
         App()->loadHelper("admin.htmleditor");
         $data['scripts'] = PrepareEditorScript(false, $this->getController());
+
+        // event to attach general settings defined by the event beforeGlobalGeneralSettings
+        $beforeGlobalGeneralSettings = new PluginEvent('beforeGlobalGeneralSettings');
+        App()->getPluginManager()->dispatchEvent($beforeGlobalGeneralSettings);
+        $data['globalGeneralSettings'] = $beforeGlobalGeneralSettings->get('globalGeneralSettings') ?? [];
 
         // Get current setting from DB
         $data['thischaracterset'] = getGlobalSetting('characterset');
@@ -307,6 +321,19 @@ class GlobalSettings extends SurveyCommonAction
             SettingGlobal::setSetting('allow_unstable_extension_update', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('allow_unstable_extension_update', false)));
         }
 
+        // Minimum stability for update notifications
+        $minimumUpdateStability = Yii::app()->getRequest()->getPost('minimum_update_stability')
+            ?: Yii::app()->getConfig('minimum_update_stability');
+        if (in_array($minimumUpdateStability, ['alpha', 'beta', 'rc', 'stable'])) {
+            SettingGlobal::setSetting('minimum_update_stability', $minimumUpdateStability);
+            // Clear cached update check so the new stability filter takes effect immediately
+            Yii::app()->session['next_update_check'] = null;
+            Yii::app()->session['update_result'] = null;
+            Yii::app()->session['security_update'] = null;
+            Yii::app()->session['unstable_update'] = null;
+            Yii::app()->session['update_stability_labels'] = null;
+        }
+
         SettingGlobal::setSetting('createsample', Yii::app()->getRequest()->getPost('createsample'));
 
         if (!Yii::app()->getConfig('demoMode')) {
@@ -351,7 +378,7 @@ class GlobalSettings extends SurveyCommonAction
         }
 
         SettingGlobal::setSetting('emailsmtpssl', sanitize_paranoid_string(Yii::app()->request->getPost('emailsmtpssl', '')));
-        SettingGlobal::setSetting('emailsmtpdebug', sanitize_int(Yii::app()->request->getPost('emailsmtpdebug', '0')));
+        SettingGlobal::setSetting('emailsmtpdebug', sanitize_int(Yii::app()->request->getPost('emailsmtpdebug', '0'), 0, 3));
         SettingGlobal::setSetting('emailsmtpuser', strip_tags((string) returnGlobal('emailsmtpuser')));
         SettingGlobal::setSetting('filterxsshtml', strip_tags(Yii::app()->getRequest()->getPost('filterxsshtml', '')));
         SettingGlobal::setSetting('disablescriptwithxss', strip_tags(Yii::app()->getRequest()->getPost('disablescriptwithxss', '')));
@@ -434,6 +461,10 @@ class GlobalSettings extends SurveyCommonAction
         }
 
         SettingGlobal::setSetting('usercontrolSameGroupPolicy', strip_tags(Yii::app()->getRequest()->getPost('usercontrolSameGroupPolicy', '')));
+
+        // event to attach general settings defined by the event beforeGlobalGeneralSettings
+        $beforeGlobalGeneralSettings = new PluginEvent('beforeGlobalGeneralSettings');
+        App()->getPluginManager()->dispatchEvent($beforeGlobalGeneralSettings);
 
         $request = App()->request;
         Yii::app()->formExtensionService->applySave('globalsettings', $request);
@@ -550,7 +581,6 @@ class GlobalSettings extends SurveyCommonAction
             $this->getController()->redirect($this->getController()->createUrl('dashboard/view'));
         }
 
-        Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
         Yii::app()->clientScript->registerPackage('globalsidepanel');
 
         $aData['aDateFormatDetails'] = getDateFormatData(Yii::app()->session['dateformat']);

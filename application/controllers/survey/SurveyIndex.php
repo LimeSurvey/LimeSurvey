@@ -18,7 +18,7 @@ class SurveyIndex extends CAction
 
     public function run()
     {
-        useFirebug();
+
         $this->action();
     }
 
@@ -61,7 +61,7 @@ class SurveyIndex extends CAction
             $event->set('surveyId', $surveyid);
             $event->set('reason', 'surveyDoesNotExist');
             App()->getPluginManager()->dispatchEvent($event);
-            throw new CHttpException(404, gT("The survey in which you are trying to participate does not seem to exist."));
+            throw new CHttpException(404, gT("The survey in which you are trying to participate does not seem to exist.", 'unescaped'));
             /* Alt solution */
             //~ header("HTTP/1.0 404 Not Found",true,404);
             //~ Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig",
@@ -176,6 +176,12 @@ class SurveyIndex extends CAction
                 // #16142 quick fix : unset invalid token
                 $token = null;
             }
+        }
+
+        // If the session was already initiated before accessing the survey with a token,
+        // add it to the session to be taken into account.
+        if (empty($_SESSION['survey_' . $surveyid]['token']) && $token) {
+            $_SESSION['survey_' . $surveyid]['token'] = $token;
         }
 
         $this->loadLimesurveyLang($surveyid);

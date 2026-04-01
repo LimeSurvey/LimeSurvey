@@ -350,6 +350,7 @@ class TopbarConfiguration
             'hasTokensUpdatePermission' => $hasTokensUpdatePermission,
             'hasTokensDeletePermission' => $hasTokensDeletePermission,
             'hasSurveySettingsUpdatePermission' => $hasSurveySettingsUpdatePermission,
+            'tokenexists' => $survey->hasTokensTable
         );
     }
 

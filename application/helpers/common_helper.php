@@ -27,6 +27,9 @@ Yii::import('application.helpers.sanitize_helper', true);
  */
 function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = null)
 {
+    if (($sToTranslate == '')) {
+        return '';
+    }
     return quoteText(Yii::t('', $sToTranslate, array(), null, $sLanguage), $sEscapeMode);
 }
 
@@ -763,18 +766,33 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
         $thissurvey = $staticSurveyInfo[$surveyid][$languagecode];
     } else {
         $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+        $resultBaseLanguage = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $oSurvey->language));
         if (is_null($result)) {
             // When additional language was added, but not saved it does not exists
             // We should revert to the base language then
             $languagecode = $oSurvey->language;
-            $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+            $result = $resultBaseLanguage;
         }
         if ($result) {
             $aSurveyAtrributes = array_replace($result->survey->attributes, $aSurveyOptions);
             $thissurvey = array_merge($aSurveyAtrributes, $result->attributes);
             $thissurvey['name'] = $thissurvey['surveyls_title'];
+            if (($languagecode != $oSurvey->language) && empty($thissurvey['name']) || $thissurvey['name'] == '') {
+                $thissurvey['name'] = $resultBaseLanguage->surveyls_title;
+            }
             $thissurvey['description'] = $thissurvey['surveyls_description'];
+            if (($languagecode != $oSurvey->language) && empty($thissurvey['description']) || $thissurvey['description'] == '') {
+                $thissurvey['description'] = $resultBaseLanguage->surveyls_description;
+            }
             $thissurvey['welcome'] = $thissurvey['surveyls_welcometext'];
+            // if there is no welcome message for an additional language, we try to get it from the base language
+            if (($languagecode != $oSurvey->language) && empty($thissurvey['welcome']) || $thissurvey['welcome'] == '') {
+                $thissurvey['welcome'] = $resultBaseLanguage->surveyls_welcometext;
+            }
+            // if there is no end message for an additional language, we try to get it from the base language
+            if (($languagecode != $oSurvey->language) && empty($thissurvey['surveyls_endtext']) || $thissurvey['surveyls_endtext'] == '') {
+                $thissurvey['surveyls_endtext'] = $resultBaseLanguage->surveyls_endtext;
+            }
             $thissurvey['datasecurity_notice_label'] = $thissurvey['surveyls_policy_notice_label'];
             $thissurvey['datasecurity_error'] = $thissurvey['surveyls_policy_error'];
             $thissurvey['datasecurity_notice'] = $thissurvey['surveyls_policy_notice'];
@@ -795,6 +813,8 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             $thissurvey['attributedescriptions'] = $result->survey->tokenAttributes;
             $thissurvey['attributecaptions'] = $result->attributeCaptions;
             $thissurvey['googleanalyticsapikey'] = $oSurvey->getGoogleanalyticsapikey();
+            $thissurvey['hastokenstable'] = $oSurvey->hasTokensTable;
+            $thissurvey['filltoken'] = (Yii::app()->request->getParam('filltoken') === 'true');
             if (!isset($thissurvey['adminname'])) {
                 $thissurvey['adminname'] = Yii::app()->getConfig('siteadminemail');
             }
@@ -1463,7 +1483,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     . " g.sid={$surveyid} AND"
     . " q.parent_qid=0";
     if ($questionid !== false) {
-        $aquery .= " and questions.qid={$questionid} ";
+        $aquery .= " and q.qid={$questionid} ";
     }
     $aquery .= " ORDER BY group_order, question_order";
     /** @var Question[] $questions */
@@ -1663,7 +1683,16 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
 
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => $abrow['title'], "scale_id" => 0);
+                $fieldmap[$fieldname] = array(
+                    "fieldname" => $fieldname,
+                    'type' => $arow['type'],
+                    'sid' => $surveyid,
+                    "gid" => $arow['gid'],
+                    "qid" => $arow['qid'],
+                    "sqid" => $abrow['qid'],
+                    "aid" => $abrow['title'],
+                    "scale_id" => 0,
+                );
                 if (isset($answerColumnDefinition)) {
                     $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                 }
@@ -1687,7 +1716,16 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => $abrow['title'], "scale_id" => 1);
+                $fieldmap[$fieldname] = array(
+                    "fieldname" => $fieldname,
+                    'type' => $arow['type'],
+                    'sid' => $surveyid,
+                    "gid" => $arow['gid'],
+                    "qid" => $arow['qid'],
+                    "sqid" => $abrow['qid'],
+                    "aid" => $abrow['title'],
+                    "scale_id" => 1,
+                );
                 if (isset($answerColumnDefinition)) {
                     $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                 }
@@ -1962,7 +2000,7 @@ function hasFileUploadQuestion($iSurveyID)
 * @param string $surveyid The Survey ID
 * @param string $style 'short' (default) or 'full' - full creates extra information like default values
 * @param boolean $force_refresh - Forces to really refresh the array, not just take the session copy
-* @param int $questionid Limit to a certain qid only (for question preview) - default is false
+* @param int|false $questionid Limit to a certain qid only (for question preview) - default is false
 * @param string $sQuestionLanguage The language to use
 * @return array
 */
@@ -2445,6 +2483,55 @@ function rmdirr($dirname)
 }
 
 /**
+ * Removes a directory recursively with adjustment to not throw error on empty directories.
+ * @param string $directory to be deleted recursively.
+ * @param array $options for the directory removal. Valid options are:
+ * <ul>
+ * <li>traverseSymlinks: boolean, whether symlinks to the directories should be traversed too.
+ * Defaults to `false`, meaning that the content of the symlinked directory would not be deleted.
+ * Only symlink would be removed in that default case.</li>
+ * </ul>
+ * @link CFileHelper::removeDirectory()
+ */
+function removeDirectoryCustom($directory, $options = [])
+{
+    if (!isset($options['traverseSymlinks'])) {
+        $options['traverseSymlinks'] = false;
+    }
+
+    $itemsWithoutDot = glob($directory . DIRECTORY_SEPARATOR . '*', GLOB_MARK);
+    $itemsWithoutDot = $itemsWithoutDot === false ? [] : $itemsWithoutDot;
+    $itemsWithDot = glob($directory . DIRECTORY_SEPARATOR . '.*', GLOB_MARK);
+    $itemsWithDot = $itemsWithDot === false ? [] : $itemsWithDot;
+    $items = array_merge(
+        $itemsWithoutDot,
+        $itemsWithDot
+    );
+    foreach ($items as $item) {
+        if (basename($item) === '.' || basename($item) === '..') {
+            continue;
+        }
+        if (substr($item, -1) == DIRECTORY_SEPARATOR) {
+            if (!$options['traverseSymlinks'] && is_link(rtrim($item, DIRECTORY_SEPARATOR))) {
+                unlink(rtrim($item, DIRECTORY_SEPARATOR));
+            } else {
+                removeDirectoryCustom($item, $options);
+            }
+        } else {
+            unlink($item);
+        }
+    }
+    if (is_dir($directory = rtrim($directory, '\\/'))) {
+        if (is_link($directory)) {
+            unlink($directory);
+        } else {
+            rmdir($directory);
+        }
+    }
+}
+
+
+/**
 * This function removes surrounding and masking quotes from the CSV field
 *
 * @param mixed $field
@@ -2563,7 +2650,7 @@ function tableExists($sTableName)
 }
 
 // Returns false if the survey is anonymous,
-// and a survey participants table exists: in this case the completed field of a token
+// and a survey participant list exists: in this case the completed field of a token
 // will contain 'Y' instead of the submitted date to ensure privacy
 // Returns true otherwise
 function isTokenCompletedDatestamped($thesurvey)
@@ -2897,7 +2984,7 @@ function filterForAttributes(string $fieldname)
 }
 
 /**
-* Retrieves the attribute field names from the related survey participants table
+* Retrieves the attribute field names from the related survey participant list
 *
 * @param mixed $iSurveyID  The survey ID
 * @return array The fieldnames
@@ -2933,7 +3020,7 @@ function getParticipantAttributes($iSurveyID)
 
 
 /**
-* Retrieves the attribute names from the related survey participants table
+* Retrieves the attribute names from the related survey participant list
 *
 * @param mixed $surveyid  The survey ID
 * @param boolean $bOnlyAttributes Set this to true if you only want the fieldnames of the additional attribue fields - defaults to false
@@ -3058,33 +3145,109 @@ function showJavaScript($sContent)
 }
 
 /**
-* This function cleans files from the temporary directory being older than 1 day
-* @todo Make the days configurable
-*/
-function cleanTempDirectory()
+ * Only clean temp directory if modification date of any non-symlinked directory found is older then 25 hours
+ * Even if the setting is activated to only symlink assets, there are still some asset dirs that are not symlinked.
+ * @return void
+ */
+function cleanCacheTempDirectoryDaily()
+{
+    $assetsPath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
+    $selectedDirectory = null;
+
+    foreach (glob($assetsPath . '/*') as $dir) {
+        if (is_dir($dir) && !is_link($dir) && (filemtime($dir) < (strtotime('-24 hours')))) {
+            cleanCacheTempDirectory();
+            break;
+        }
+    }
+}
+
+/**
+ * Cleans the temporary directory by removing files older than 1 day.
+ * It also cleans the 'upload' subdirectory within the temporary directory.
+ * Additionally, it calls the 'cleanAssetCacheDirectory' function to clean the asset cache directory.
+ *
+ * @return void
+ */
+function cleanCacheTempDirectory()
 {
     $dir = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR;
     $dp = opendir($dir) or safeDie('Could not open temporary directory');
+
     while ($file = readdir($dp)) {
         if (is_file($dir . $file) && (filemtime($dir . $file)) < (strtotime('-1 days')) && $file != 'index.html' && $file != '.gitignore' && $file != 'readme.txt') {
             /** @scrutinizer ignore-unhandled */ @unlink($dir . $file);
         }
     }
+
     $dir = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR;
     $dp = opendir($dir) or safeDie('Could not open temporary upload directory');
+
     while ($file = readdir($dp)) {
         if (is_file($dir . $file) && (filemtime($dir . $file)) < (strtotime('-1 days')) && $file != 'index.html' && $file != '.gitignore' && $file != 'readme.txt') {
             /** @scrutinizer ignore-unhandled */ @unlink($dir . $file);
         }
     }
+
     closedir($dp);
+    cleanAssetCacheDirectory(60);
+}
+/**
+ * This function cleans the asset directory by removing directories that are older than a certain threshold.
+ *
+ * @return void
+ */
+function cleanAssetCacheDirectory($minutes = 1)
+{
+    // Define the path to the assets directory
+    $assetsPath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
+
+    // Define the threshold for removing directories (in this case, 60 seconds ago)
+    $threshold = time() - (60 * $minutes);
+
+    // Loop through all directories in the assets directory
+    foreach (glob($assetsPath . '*') as $path) {
+        // check if the directory is older than the threshold and the path is a symlink then delete it
+        if (is_link($path) && filemtime($path) < $threshold) {
+            unlink($path);
+            continue;
+        }
+        // check if the directory is older than the threshold and the path is a directory then remove it
+        if (is_dir($path) && filemtime($path) < $threshold) {
+            // Remove the directory and all its contents recursively
+            removeDirectoryCustom($path);
+        }
+    }
 }
 
-function useFirebug()
+/**
+ * This function removes the Twig cache directory by looping through all directories
+ * within the Twig cache directory and removing each directory.
+ *
+ * @return void
+ */
+function cleanTwigCacheDirectory()
 {
-    if (FIREBUG == true) {
-        App()->getClientScript()->registerScriptFile('http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js');
-    };
+    $runtimePath = rtrim(Yii::app()->getRuntimePath(), DIRECTORY_SEPARATOR);
+    $twigDir = $runtimePath . DIRECTORY_SEPARATOR . 'twig_cache';
+
+    if (!is_dir($twigDir) || !is_writable($runtimePath)) {
+        return;
+    }
+
+    // read and store the permissions of the Twig cache directory to apply it later
+    $oldPermissions = fileperms($twigDir);
+    try {
+        CFileHelper::removeDirectory($twigDir);
+    } catch (Exception $e) {
+        Yii::log("Failed to remove Twig cache directory '{$twigDir}': " . $e->getMessage(), \CLogger::LEVEL_WARNING, 'application.cleanup');
+        return;
+    }
+
+    // Recreate directory to avoid downstream failures expecting it present
+    if (!@mkdir($twigDir, $oldPermissions, true) && !is_dir($twigDir)) {
+        Yii::log("Failed to recreate Twig cache directory '{$twigDir}' after cleanup.", \CLogger::LEVEL_WARNING, 'application.cleanup');
+    }
 }
 
 /**
@@ -4318,12 +4481,11 @@ function modifyDatabase($sqlfile = '', $sqlstring = '')
 {
     Yii::app()->loadHelper('database');
 
-
-    global $siteadminemail;
-    global $siteadminname;
     global $codeString;
     global $modifyoutput;
 
+    $siteadminname = Yii::app()->getConfig('siteadminname');
+    $siteadminemail = Yii::app()->getConfig('siteadminemail');
     $success = true; // Let's be optimistic
     $modifyoutput = '';
     $lines = [];
@@ -4544,17 +4706,21 @@ function ls_json_encode($content)
 }
 
 /**
- * Decode a json string, sometimes needs stripslashes
+ * Decodes a json string, sometimes needs stripslashes
  *
  * @param string $jsonString
  * @return mixed
  */
 function json_decode_ls($jsonString)
 {
+    if ($jsonString === null) {
+        return null;
+    }
+
     $decoded = json_decode($jsonString, true);
 
     if (is_null($decoded) && !empty($jsonString)) {
-        // probably we need stipslahes
+        // probably we need stripslashes
         $decoded = json_decode(stripslashes($jsonString), true);
     }
 
@@ -4570,48 +4736,12 @@ function json_decode_ls($jsonString)
  */
 function aEncodingsArray()
 {
-        $aEncodings = array(
-        "armscii8" => gT("ARMSCII-8 Armenian"),
-        "ascii" => gT("US ASCII"),
-        "big5" => gT("Big5 Traditional Chinese"),
-        "binary" => gT("Binary pseudo charset"),
-        "cp1250" => gT("Windows Central European (Windows-1250)"),
-        "cp1251" => gT("Windows Cyrillic (Windows-1251)"),
-        "cp1256" => gT("Windows Arabic (Windows-1256)"),
-        "cp1257" => gT("Windows Baltic (Windows-1257)"),
-        "cp850" => gT("DOS West European (cp850)"),
-        "cp852" => gT("DOS Central European (cp852)"),
-        "cp866" => gT("DOS Cyrillic (cp866)"),
-        "cp932" => gT("Windows-31J - SJIS for Windows Japanese (cp932)"),
-        "dec8" => gT("DEC West European"),
-        "eucjpms" => gT("UJIS for Windows Japanese"),
-        "euckr" => gT("EUC-KR Korean"),
-        "gb2312" => gT("GB2312 Simplified Chinese"),
-        "gbk" => gT("GBK Simplified Chinese"),
-        "geostd8" => gT("GEOSTD8 Georgian"),
-        "greek" => gT("ISO 8859-7 Greek"),
-        "hebrew" => gT("ISO 8859-8 Hebrew"),
-        "hp8" => gT("HP West European"),
-        "keybcs2" => gT("DOS Kamenicky Czech-Slovak (cp895)"),
-        "koi8r" => gT("KOI8-R Relcom Russian"),
-        "koi8u" => gT("KOI8-U Ukrainian"),
-        "latin1" => gT("ISO 8859-1 West European (latin1)"),
-        "latin2" => gT("ISO 8859-2 Central European (latin2)"),
-        "latin5" => gT("ISO 8859-9 Turkish (latin5)"),
-        "latin7" => gT("ISO 8859-13 Baltic (latin7)"),
-        "macce" => gT("Mac Central European"),
-        "macroman" => gT("Mac West European"),
-        "sjis" => gT("Shift-JIS Japanese"),
-        "swe7" => gT("7bit Swedish"),
-        "tis620" => gT("TIS620 Thai"),
-        "ucs2" => gT("UCS-2 Unicode"),
-        "ujis" => gT("EUC-JP Japanese"),
-        "utf8" => gT("UTF-8 Unicode"),
-        );
-        // Sort list of encodings
-        asort($aEncodings);
-        $aEncodings = array("auto" => gT("(Automatic)")) + $aEncodings;
-        return $aEncodings;
+    // create a list of key -> value array for accepted encodings
+    $encodings = array_combine(array_values(mb_list_encodings()), array_values(mb_list_encodings()));
+    // Sort list of encodings
+    asort($encodings);
+    $encodings = array("auto" => gT("(Automatic)")) + $encodings;
+    return $encodings;
 }
 
 
@@ -4688,6 +4818,20 @@ function getRealIPAddress()
     $sIPAddress = '127.0.0.1';
     if (!empty($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) !== false) {
         $sIPAddress = $_SERVER['REMOTE_ADDR'];
+    }
+    // If there is a list of reverse proxy IP addresses, and the current IP address is in that list, we will
+    // look for the header that contains the client IP address.
+    if (!empty(Yii::app()->getConfig('reverseProxyIpAddresses'))) {
+        $reverseProxyIpAddresses = Yii::app()->getConfig('reverseProxyIpAddresses');
+        if (in_array($sIPAddress, $reverseProxyIpAddresses)) {
+            $reverseProxyIpHeader = Yii::app()->getConfig('reverseProxyIpHeader');
+            if (empty($reverseProxyIpHeader)) {
+                $reverseProxyIpHeader = 'HTTP_X_FORWARDED_FOR';
+            }
+            if (isset($_SERVER[$reverseProxyIpHeader]) && filter_var($_SERVER[$reverseProxyIpHeader], FILTER_VALIDATE_IP) !== false) {
+                $sIPAddress = $_SERVER[$reverseProxyIpHeader];
+            }
+        }
     }
     return $sIPAddress;
 }
@@ -4839,16 +4983,19 @@ function decodeTokenAttributes(string $tokenAttributeData)
         return array();
     }
     if (substr($tokenAttributeData, 0, 1) != '{' && substr($tokenAttributeData, 0, 1) != '[') {
+        if (!App()->getConfig('allow_unserialize_attributedescriptions')) {
+            return array();
+        }
+        // minimal broken securisation, mantis issue #20144
         $sSerialType = getSerialClass($tokenAttributeData);
         if ($sSerialType == 'array') {
-// Safe to decode
-            $aReturnData = unserialize($tokenAttributeData) ?? [];
+            $aReturnData = unserialize($tokenAttributeData, ["allowed_classes" => false]) ?? [];
         } else {
-// Something else, might be unsafe
+            // Something else, sure it's unsafe
             return array();
         }
     } else {
-            $aReturnData = json_decode($tokenAttributeData, true) ?? [];
+        $aReturnData = json_decode($tokenAttributeData, true) ?? [];
     }
     if ($aReturnData === false || $aReturnData === null) {
         return array();
@@ -5140,9 +5287,16 @@ function recursive_preg_replace($pattern, $replacement, $subject, $limit = -1, &
  */
 function standardDeviation(array $numbers): float
 {
-    // Filter empty "" records
-    $numbers = array_filter($numbers);
+    // Filter empty ("" and null) records (keeping zeroes)
+    $numbers = array_filter($numbers, fn($value) => $value !== "" && $value !== null);
     $numberOfElements = count($numbers);
+
+    if ($numberOfElements === 0) {
+        /**
+         * @todo Should this be null? Function signature says float
+         */
+        return 0.0;
+    }
 
     $variance = 0.0;
     $average = array_sum($numbers) / $numberOfElements;

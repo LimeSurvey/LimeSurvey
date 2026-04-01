@@ -111,7 +111,7 @@ $config['allowedfileuploads'] = [
     'mp4', 'avi', 'mkv', 'mpeg', 'mpg', 'wmv', 'h264', 'h265', 'mov', 'webm', 'divx', 'xvid',
 ];
 // NB: Allowing XML enables XSS, since XML can be an HTML page.
-$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
+$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,dotx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 $config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo,xsd,lss,lsa,lsq,lsg';
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
@@ -312,15 +312,6 @@ $config['column_style'] = 'ul';
 * hide_groupdescr_allinone can be set to true or false (default: true)
 */
 $config['hide_groupdescr_allinone'] = true;
-
-
-/**
-* use_firebug_lite
-* Use FireBug Lite for JavaScript and theme development and testing.
-* This allows you to use all the features of Firebug in any browser.
-* see http://getfirebug.com/lite.html for more info.
-*/
-$config['use_firebug_lite'] = false;
 
 /*
 * showaggregateddata
@@ -792,6 +783,13 @@ $config['sideMenuBehaviour'] = 'adaptive';
 // Hide update key
 $config['hide_update_key'] = false;
 
+/**
+ * Minimum stability level for update notifications.
+ * Valid values: 'alpha', 'beta', 'rc', 'stable'
+ * 'alpha' shows all updates, 'stable' shows only stable releases.
+ */
+$config['minimum_update_stability'] = 'rc';
+
 // Dev part
 // 1 : looking for errors, 2 : PHP STRICT error messages
 $config['debug'] = 0;
@@ -852,6 +850,21 @@ $config['registrationEmailDelay'] = '1 hour';
 
 // Participants token sanitizing rules as regex pattern
 $config['allowedcharacters_pattern_token'] = '/[^0-9a-zA-Z_\-~]/';
+
+// List of reverse proxy IP addresses
+// If the instance is behind a reverse proxy, the IP addresses of the reverse proxy should be listed in this setting
+// in order to be able to detect the real client IP address. Works together with "reverseProxyIpHeader" setting.
+$config['reverseProxyIpAddresses'] = [];
+
+// Name of the header that contains the client IP address in case the instance is behind a reverse proxy.
+// Works together with "reverseProxyIpAddresses" setting.
+$config['reverseProxyIpHeader'] = 'HTTP_X_FORWARDED_FOR';
+
+// Allow unserializing (with PHP unserialize function) token attributes when importing or reading a survey object
+// Since LimeSurvey 3, token attributes data is saved as JSON. If you use an older survey file and need to get token attributes, you must enable this setting.
+// Warning: Unserialization can result in code being loaded and executed due to object instantiation and autoloading, and a malicious user may be able to exploit this.
+// @see https://www.php.net/unserialize
+$config['allow_unserialize_attributedescriptions'] = false;
 
 return $config;
 //settings deleted

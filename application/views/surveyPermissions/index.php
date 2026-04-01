@@ -73,7 +73,7 @@
                         </select>
                     </div>
                     <div class="col-3">
-                    <button id="SurveyPermissions-addusergroup-submit" class='btn btn-outline-secondary w-100' type='submit'><?= gT("Add group users") ?></button>
+                    <button id="SurveyPermissions-addusergroup-submit" class='btn btn-outline-secondary w-100' type='button'><?= gT("Add group users") ?></button>
                     <input type='hidden' name='action' value='addusergroupsurveysecurity'/>
                     </div>
                 </div>

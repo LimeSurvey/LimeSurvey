@@ -153,6 +153,14 @@ class RemoteControl extends SurveyCommonAction
             if ($aResult['status'] == 'OK') {
                 echo 'Removed Arabian as additional language' . '<br>';
             }
+            $aResult = $client->call('add_participants', array($sSessionKey, $iSurveyID, array(array('firstname' => 'Some', 'lastname' => 'Body', 'email' => 'somebody@test.com'))));
+            if (!array_key_exists('status', $aResult)) {
+                echo 'Added a participant to survey ' . $iSurveyID . '<br>';
+            }
+            $aResult = $client->call('set_participant_properties', array($sSessionKey, $iSurveyID, array('email' => 'somebody@test.com'), array('lastname' => 'One', 'email' => 'someone@test.com')));
+            if (!array_key_exists('status', $aResult)) {
+                echo 'Modified participant properties in survey ' . $iSurveyID . '<br>';
+            }
 
             //Very simple example to export responses as Excel file
             //$aResult=$client->call('export_responses', array($sSessionKey,$iSurveyID,'xls'));

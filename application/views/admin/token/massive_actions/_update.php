@@ -35,6 +35,8 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
         <!-- Tabs content-->
         <div class="tab-content">
             <div id="massive-general" class="tab-pane fade show active">
+                <fieldset class="mb-0" aria-labelledby="massedit-modify-legend">
+                    <legend id="massedit-modify-legend" class="visually-hidden"><?php eT("Modify"); ?></legend>
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
@@ -47,10 +49,10 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-                            <input type="checkbox" class="action_check_to_keep_old_value"></input>
+                            <input type="checkbox" id="massedit_completed_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_completed_fieldlabel">
                         </label>
                     </div>
-                    <label class="col-md-3 form-label" for='massedit_completed'><?php eT("Completed?"); ?></label>
+                    <label id="massedit_completed_fieldlabel" class="col-md-3 form-label" for='massedit_completed'><?php eT("Completed?"); ?></label>
                     <div class="col-md-8 <?php echo ($oSurvey->anonymized != 'Y' ? 'yes-no-date-container' : 'yes-no-container'); ?>" id="massedit_completed-yes-no-date-container" data-locale="<?php echo $locale ?>">
                         <div class="row">
 
@@ -60,7 +62,8 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "completed-switch",
                                         'id'            => "massedit_completed-switch",
-                                        'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch bootstrap-switch-integer", 'disabled' => true],
+                                        'ariaLabel'     => gT('Completed?'),
+                                        'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch", 'disabled' => true],
                                         'checkedOption' => 0,
                                         'selectOptions' => [
                                             '1' => gT('Yes'),
@@ -78,7 +81,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                         [
                                             'name'        => "completed-switch",
                                             'id'          => "massedit_completed-switch",
-                                            'htmlOptions' => ['class' => "YesNoSwitch bootstrap-switch-integer", 'disabled' => true],
+                                            'htmlOptions' => ['class' => "YesNoSwitch", 'disabled' => true],
                                             'checkedOption'       => 0,
                                             'selectOptions' => [
                                                 '1' => gT('Yes'),
@@ -110,10 +113,10 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-                            <input type="checkbox" class="action_check_to_keep_old_value"></input>
+                            <input type="checkbox" id="massedit_firstname_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_firstname_fieldlabel">
                         </label>
                     </div>
-                    <label class="col-md-3 form-label" for='massedit_firstname'><?php eT("First name:"); ?></label>
+                    <label id="massedit_firstname_fieldlabel" class="col-md-3 form-label" for='massedit_firstname'><?php eT("First name:"); ?></label>
                     <div class="col-md-8">
                         <input class='form-control custom-data selector_submitField' type='text' size='30' id='massedit_firstname' name='firstname' value="lskeep" disabled />
                     </div>
@@ -123,10 +126,10 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-                            <input type="checkbox" class="action_check_to_keep_old_value"></input>
+                            <input type="checkbox" id="massedit_lastname_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_lastname_fieldlabel">
                         </label>
                     </div>
-                    <label class="col-md-3 form-label" for='massedit_lastname'><?php eT("Last name:"); ?></label>
+                    <label id="massedit_lastname_fieldlabel" class="col-md-3 form-label" for='massedit_lastname'><?php eT("Last name:"); ?></label>
                     <div class="col-md-8">
                         <input class='form-control custom-data selector_submitField' type='text' size='30' id='massedit_lastname' name='lastname' value="lskeep" disabled />
                     </div>
@@ -136,10 +139,10 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-                            <input type="checkbox" class="action_check_to_keep_old_value"></input>
+                            <input type="checkbox" id="massedit_language_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_language_fieldlabel">
                         </label>
                     </div>
-                    <label class="col-md-3 form-label" for='massedit_language'><?php eT("Language:"); ?></label>
+                    <label id="massedit_language_fieldlabel" class="col-md-3 form-label" for='massedit_language'><?php eT("Language:"); ?></label>
                     <div class="col-md-8">
                         <?php echo CHtml::dropDownList('language', '', array_merge(['lskeep' => ''], $aLanguages), ['id' => 'massedit_language', 'class' => 'form-select custom-data selector_submitField', 'disabled' => 'disabled']); ?>
                     </div>
@@ -150,10 +153,10 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                     <div class="row mb-2">
                         <div class="col-md-1">
                             <label class="">
-                                <input type="checkbox" class="action_check_to_keep_old_value"></input>
+                                <input type="checkbox" id="massedit_email_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_email_fieldlabel">
                             </label>
                         </div>
-                        <label class="col-md-3 form-label" for='massedit_email'><?php eT("Email:"); ?></label>
+                        <label id="massedit_email_fieldlabel" class="col-md-3 form-label" for='massedit_email'><?php eT("Email:"); ?></label>
                         <div class="col-md-8">
                             <input class='form-control custom-data selector_submitField action_validate_email' data-targetfield="#massedit_emailstatus" type='text' maxlength='320' size='50' id='massedit_email' name='email' value="lskeep" disabled />
                         </div>
@@ -172,18 +175,19 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-                            <input type="checkbox" class="action_check_to_keep_old_value"></input>
+                            <input type="checkbox" id="massedit_sent_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_sent_fieldlabel">
                         </label>
                     </div>
-                    <label class="col-md-3 form-label" for='sent'><?php eT("Invitation sent?"); ?></label>
+                    <label id="massedit_sent_fieldlabel" class="col-md-3 form-label" for='massedit_sent'><?php eT("Invitation sent?"); ?></label>
                     <div class="col-md-8 <?php echo $sCointainerClass; ?>" id="massedit_sent-yes-no-date-container" data-locale="<?php echo $locale ?>">
                         <div class="row">
                             <div class="col-md-4">
                                 <?php if ($oSurvey->anonymized !== 'Y') : ?>
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "sent-switch",
+                                        'ariaLabel'     => gT('Invitation sent?'),
                                         'id'            => "massedit_sent-switch",
-                                        'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch bootstrap-switch-integer", 'disabled' => true],
+                                        'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch", 'disabled' => true],
                                         'checkedOption' => 0,
                                         'selectOptions' => [
                                             '1' => gT('Yes'),
@@ -194,7 +198,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "sent-switch",
                                         'id'            => "massedit_sent-switch",
-                                        'htmlOptions'   => ['class' => "YesNoSwitch bootstrap-switch-integer", 'disabled' => true],
+                                        'htmlOptions'   => ['class' => "YesNoSwitch", 'disabled' => true],
                                         'checkedOption' => 0,
                                         'selectOptions' => [
                                             '1' => gT('Yes'),
@@ -221,11 +225,11 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-                            <input type="checkbox" class="action_check_to_keep_old_value"></input>
+                            <input type="checkbox" id="massedit_remindersent_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_remindersent_fieldlabel">
                         </label>
                     </div>
                     <!-- Reminder sent -->
-                    <label class="col-md-3 form-label" for='massedit_remindersent'><?php eT("Reminder sent?"); ?></label>
+                    <label id="massedit_remindersent_fieldlabel" class="col-md-3 form-label" for='massedit_remindersent'><?php eT("Reminder sent?"); ?></label>
                     <div class="col-md-8 <?php echo $sCointainerClass; ?>" id="massedit_remind-yes-no-date-container" data-locale="<?php echo $locale ?>">
 
                         <div class="row">
@@ -234,7 +238,8 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "remind-switch",
                                         'id'            => "massedit_remind-switch",
-                                        'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch bootstrap-switch-integer", 'disabled' => true],
+                                        'ariaLabel'     => gT('Reminder sent?'),
+                                        'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch", 'disabled' => true],
                                         'checkedOption' => 0,
                                         'selectOptions' => [
                                             '1' => gT('Yes'),
@@ -245,7 +250,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "sent-switch",
                                         'id'            => "massedit_sent-switch",
-                                        'htmlOptions'   => ['class' => "YesNoSwitch bootstrap-switch-integer", 'disabled' => true],
+                                        'htmlOptions'   => ['class' => "YesNoSwitch", 'disabled' => true],
                                         'checkedOption' => 0,
                                         'selectOptions' => [
                                             '1' => gT('Yes'),
@@ -274,11 +279,10 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-
-                            <input type="checkbox" class="action_check_to_keep_old_value"></input>
+                            <input type="checkbox" id="massedit_remindercount_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_remindercount_fieldlabel">
                         </label>
                     </div>
-                    <label class="col-md-3 form-label" for='massedit_remindercount'><?php eT("Reminder count:"); ?></label>
+                    <label id="massedit_remindercount_fieldlabel" class="col-md-3 form-label" for='massedit_remindercount'><?php eT("Reminder count:"); ?></label>
                     <div class="col-md-8">
                         <input class='form-control custom-data selector_submitField' type='text' size='6' id='massedit_remindercount' name='remindercount' value="lskeep" disabled />
                     </div>
@@ -288,11 +292,10 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-
-                            <input type="checkbox" class="action_check_to_keep_old_value"></input>
+                            <input type="checkbox" id="massedit_usesleft_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_usesleft_fieldlabel">
                         </label>
                     </div>
-                    <label class="col-md-3 form-label" for='massedit_usesleft'><?php eT("Uses left:"); ?></label>
+                    <label id="massedit_usesleft_fieldlabel" class="col-md-3 form-label" for='massedit_usesleft'><?php eT("Uses left:"); ?></label>
                     <div class="col-md-8">
                         <input class='form-control custom-data selector_submitField' type='text' size='20' id='massedit_usesleft' name='usesleft' value="lskeep" disabled />
                     </div>
@@ -302,17 +305,17 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-                            <input type="checkbox" class="action_check_to_keep_old_value"></input>
+                            <input type="checkbox" id="massedit_validfrom_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_validfrom_fieldlabel">
                         </label>
                     </div>
 
-                    <label class="col-md-3 form-label" for='massedit_validfrom'><?php eT("Valid from"); ?>:</label>
-                    <div class="col-md-8 has-feedback">
+                    <label id="massedit_validfrom_fieldlabel" class="col-md-3 form-label" for='massedit_validfrom'><?php eT("Valid from"); ?>:</label>
+                    <div class="col-md-8 has-feedback date-picker-container">
                         <div id="massedit_validfrom_datetimepicker" class="input-group date">
-                            <input class="YesNoDatePicker form-control action_datepickerUpdateHiddenField" id="massedit_validfrom" type="text" value="lskeep" name="validfrom_date" data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm" data-locale="<?php echo $locale ?>" disabled>
+                            <input class="DatePicker form-control action_datepickerUpdateHiddenField" id="massedit_validfrom" type="text" value="" name="validfrom_date" data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm" data-locale="<?php echo $locale ?>" disabled>
                             <span class="input-group-text"><span class="ri-calendar-2-fill"></span></span>
                         </div>
-                        <input id="sbmtvalid" type="hidden" name="validfrom" value="lskeep" class="custom-data selector_submitField" />
+                        <input id="sbmtvalidfrom" type="hidden" name="validfrom" value="lskeep" class="custom-data selector_submitField" />
                     </div>
                 </div>
 
@@ -320,16 +323,16 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
-                            <input type="checkbox" class="action_check_to_keep_old_value"></input>
+                            <input type="checkbox" id="massedit_validuntil_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-legend massedit_validuntil_fieldlabel">
                         </label>
                     </div>
-                    <label class="col-md-3 form-label" for='massedit_validuntil'><?php eT('Until:'); ?></label>
-                    <div class="col-md-8 has-feedback">
+                    <label id="massedit_validuntil_fieldlabel" class="col-md-3 form-label" for='massedit_validuntil'><?php eT('Until:'); ?></label>
+                    <div class="col-md-8 has-feedback date-picker-container">
                         <div id="massedit_validuntil_datetimepicker" class="input-group date">
-                            <input class="YesNoDatePicker form-control action_datepickerUpdateHiddenField" id="massedit_validuntil" type="text" value="lskeep" name="validuntil_date" data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm" data-locale="<?php echo $locale ?>" disabled>
+                            <input class="DatePicker form-control action_datepickerUpdateHiddenField" id="massedit_validuntil" type="text" value="" name="validuntil_date" data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm" data-locale="<?php echo $locale ?>" disabled>
                             <span class="input-group-text"><span class="ri-calendar-2-fill"></span></span>
                         </div>
-                        <input id="sbmtvalid" type="hidden" name="validuntil" value="lskeep" class="custom-data selector_submitField" />
+                        <input id="sbmtvaliduntil" type="hidden" name="validuntil" value="lskeep" class="custom-data selector_submitField" />
                     </div>
                 </div>
 
@@ -346,10 +349,13 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <?php endforeach;?>
                 */ ?>
 
+                </fieldset>
             </div>
 
             <!-- Custom attibutes -->
             <div id="massive-custom" class="tab-pane fade">
+                <fieldset class="mb-0" aria-labelledby="massedit-modify-custom-legend">
+                    <legend id="massedit-modify-custom-legend" class="visually-hidden"><?php eT("Modify"); ?></legend>
                 <div class="ex-form-group mb-3 row">
                     <div class="col-md-1">
                         <label class="">
@@ -360,19 +366,20 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 </div>
                 <!-- Attributes -->
                 <?php foreach ($attrfieldnames as $attr_name => $attr_description) : ?>
+                    <?php $fieldLabelId = 'massedit_' . preg_replace('/[^a-z0-9_]/i', '_', $attr_name) . '_fieldlabel'; ?>
                     <div class="ex-form-group mb-3 row">
                         <div class="col-md-1">
                             <label class="">
-
-                                <input type="checkbox" class="action_check_to_keep_old_value"></input>
+                                <input type="checkbox" id="massedit_<?php echo CHtml::encode($attr_name); ?>_modify" class="action_check_to_keep_old_value" aria-labelledby="massedit-modify-custom-legend <?php echo CHtml::encode($fieldLabelId); ?>">
                             </label>
                         </div>
-                        <label class="col-md-3 form-label" for='massedit_<?php echo $attr_name; ?>'><?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:</label>
+                        <label id="<?php echo $fieldLabelId; ?>" class="col-md-3 form-label" for='massedit_<?php echo $attr_name; ?>'><?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:</label>
                         <div class="col-md-8">
                             <input type='text' class="form-control custom-data selector_submitField" size='55' id='massedit_<?php echo $attr_name; ?>' disabled name='<?php echo $attr_name; ?>' value='lskeep' />
                         </div>
                     </div>
                 <?php endforeach; ?>
+                </fieldset>
             </div>
         </div>
         <input type="hidden" id="sid" name="sid" class="custom-data" value="<?php echo $iSurveyId; ?>" />
@@ -403,11 +410,6 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
         var myFormGroup = $(this).closest('.ex-form-group');
         
         myFormGroup.find('input:not(.action_check_to_keep_old_value),select:not(.action_check_to_keep_old_value)').prop('disabled', currentValue)
-
-        if(myFormGroup.find('.bootstrap-switch-container').length > 0){
-            myFormGroup.find('.bootstrap-switch-container input[type=checkbox]').bootstrapSwitch('disabled', currentValue);
-
-        }
 
         if(currentValue){
             myFormGroup.find('.selector_submitField').val('lskeep');

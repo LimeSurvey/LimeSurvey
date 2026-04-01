@@ -1,5 +1,7 @@
 # adminsidepanel
 
+### Node version needs to be 14 - not higher! ###
+
 ## Project setup
 ```
 yarn install

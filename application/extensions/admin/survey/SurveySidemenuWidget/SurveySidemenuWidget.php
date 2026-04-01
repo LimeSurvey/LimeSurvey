@@ -87,7 +87,9 @@ class SurveySidemenuWidget extends WhSelect2
                 ],
                 [
                     'name' => 'responses',
-                    'disabled' => $oSurvey->active != 'Y'
+                    'disabled' => $oSurvey->active != 'Y',
+                    'route' => 'editorLink/index',
+                    'params' => array('route' => 'responses/' . $this->sid),
                 ],
                 [
                     'name' => 'statistics',
@@ -133,11 +135,15 @@ class SurveySidemenuWidget extends WhSelect2
             ),
             'presentation' => array(
                 [
+                    'name' => 'theme_options',
+                    'route' => 'editorLink/index',
+                    'params' =>  array('route' => 'survey/' . $this->sid . '/presentation/theme_options'),
+                ],
+                [
                     'name' => 'presentation',
                     'route' => 'editorLink/index',
                     'params' =>  array('route' => 'survey/' . $this->sid . '/presentation/presentation'),
                 ],
-                [ 'name' => 'theme_options' ],
             )
         );
 

@@ -14,6 +14,7 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerSurveyTrait,
     OpHandlerValidationTrait
 };
+use Survey;
 
 class OpHandlerSurveyStatus implements OpHandlerInterface
 {
@@ -22,6 +23,8 @@ class OpHandlerSurveyStatus implements OpHandlerInterface
     use OpHandlerValidationTrait;
 
     protected TransformerInputSurvey $transformer;
+
+    protected string $action = '';
 
     public function __construct(TransformerInputSurvey $transformer)
     {
@@ -36,8 +39,15 @@ class OpHandlerSurveyStatus implements OpHandlerInterface
     {
         $isUpdateOperation = $op->getType()->getId() === OpTypeUpdate::ID;
         $isSurveyStatus = $op->getEntityType() === 'surveyStatus';
+        $props = $op->getProps();
 
-        return $isUpdateOperation && $isSurveyStatus;
+        foreach (['activate', 'deactivate', 'expire'] as $actionCandidate) {
+            if ($props[$actionCandidate] ?? false) {
+                $this->action = $actionCandidate;
+            }
+        }
+
+        return $isUpdateOperation && $isSurveyStatus && (!!$this->action);
     }
 
     /**
@@ -56,7 +66,7 @@ class OpHandlerSurveyStatus implements OpHandlerInterface
 
      *
      * @param OpInterface $op
-     * @return void
+     * @return array
      * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
      * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
      * @throws \LimeSurvey\ObjectPatch\OpHandler\OpHandlerException
@@ -68,11 +78,18 @@ class OpHandlerSurveyStatus implements OpHandlerInterface
             SurveyAggregateService::class
         );
         $props = $op->getProps();
-        $action = (($props['activate'] ?? false) ? 'activate' : 'deactivate');
         if (!isset($props['ok'])) {
             $props['ok'] = true;
         }
-        $surveyActivateService->{$action}($op->getEntityId(), $props);
+        $surveyActivateService->{$this->action}($op->getEntityId(), $props);
+        $return = [];
+        $survey = Survey::model()->findByPk($op->getEntityId());
+        if (($this->action === 'expire') && $survey && $survey->expires) {
+            $return['additional'] = [
+                'expire' => $survey->expires
+            ];
+        }
+        return $return;
     }
 
     /**

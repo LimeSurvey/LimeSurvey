@@ -123,7 +123,7 @@ class TokenDynamic extends LSActiveRecord
      * (some older tokens tables dont' get udated properly)
      *
      * This method should be moved to db update for 2.05 version so it runs only
-     * once per survey participants table / backup survey participants table
+     * once per survey participant list / backup survey participant list
      */
     public function checkColumns()
     {
@@ -135,7 +135,7 @@ class TokenDynamic extends LSActiveRecord
         $missingcolumns = array_diff($columncheck, $columns);
         //Some columns are missing - we need to create them
         if (count($missingcolumns) > 0) {
-            Yii::app()->loadHelper('update/updatedb'); //Load the admin helper to allow column creation
+            Yii::app()->loadHelper('update.updatedb'); //Load the admin helper to allow column creation
             $columninfo = array(
                     'validfrom' => 'datetime',
                     'validuntil' => 'datetime',
@@ -155,7 +155,7 @@ class TokenDynamic extends LSActiveRecord
             foreach ($columns as $columnname) {
                 $definition = $tableSchema->getColumn($columnname);
                 if ($definition->allowNull != true) {
-                    Yii::app()->loadHelper('update/updatedb'); //Load the admin helper to allow column creation
+                    Yii::app()->loadHelper('update.updatedb'); //Load the admin helper to allow column creation
                     Yii::app()->db->createCommand()->alterColumn($sTableName, $columnname, "string({$definition->size}})");
                     Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
                 }
@@ -222,20 +222,71 @@ class TokenDynamic extends LSActiveRecord
     }
 
     /**
-     * @param int[]|bool $aTokenIds
-     * @param int $iMaxEmails
-     * @param bool $bEmail
-     * @param string $SQLemailstatuscondition
-     * @param string $SQLremindercountcondition
-     * @param string $SQLreminderdelaycondition
-     * @return array|CDbDataReader
+     * Find participant IDs matching email criteria (invitations or reminders)
+     * Optimized to fetch only IDs without loading full token records (issue #20465)
+     * @param int[]|bool $aTokenIds Optional array of specific token IDs to filter
+     * @param int $iMaxEmails Maximum number of records to return
+     * @param bool $bEmail If true, find uninvited participants; if false, find reminded participants
+     * @param string $SQLemailstatuscondition Additional email status condition
+     * @param string $SQLremindercountcondition Reminder count condition
+     * @param string $SQLreminderdelaycondition Reminder delay condition
+     * @return array Array of token IDs
      */
-    public function findUninvitedIDs($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
+    public function findParticipantIDs($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
     {
-        $tokens = $this->findUninvited($aTokenIds, $iMaxEmails, $bEmail, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
-        $ids = array_map(function ($item) {
-            return $item->tid;
-        }, $tokens);
+        // Optimized version that only fetches and returns IDs to avoid memory exhaustion (issue #20465)
+        // Use CDbCommand for safe SQL generation with proper column quoting
+        $db = Yii::app()->db;
+        $command = $db->createCommand()
+            ->select('tid, participant_id')
+            ->from($this->tableName());
+
+        // Build conditions using Yii's safe quoting methods
+        $command->andWhere($db->quoteColumnName('completed') . " IN ('N', '')");
+        $command->andWhere($db->quoteColumnName('token') . ' <> ' . $db->quoteValue(''));
+        $command->andWhere($db->quoteColumnName('email') . ' <> ' . $db->quoteValue(''));
+
+        if ($bEmail) {
+            $command->andWhere($db->quoteColumnName('sent') . " IN ('N', '')");
+        } else {
+            $command->andWhere($db->quoteColumnName('sent') . " NOT IN ('N', '')");
+        }
+
+        if ($SQLemailstatuscondition) {
+            $command->andWhere($SQLemailstatuscondition);
+        }
+
+        if ($SQLremindercountcondition) {
+            $command->andWhere($SQLremindercountcondition);
+        }
+
+        if ($SQLreminderdelaycondition) {
+            $command->andWhere($SQLreminderdelaycondition);
+        }
+
+        if ($aTokenIds) {
+            $ids = array_map('intval', $aTokenIds);
+            $placeholders = implode(',', array_fill(0, count($ids), '?'));
+            $command->andWhere($db->quoteColumnName('tid') . " IN ($placeholders)", $ids);
+        }
+
+        $command->order('tid');
+
+        if ($iMaxEmails) {
+            $command->limit($iMaxEmails);
+        }
+
+        $results = $command->queryAll();
+
+        // Filter out blocklisted participants (same approach as findUninvited)
+        $cpdbBlocklisted = Participant::model()->getBlacklistedParticipantIds();
+        $results = array_filter($results, function ($item) use ($cpdbBlocklisted) {
+            return empty($item['participant_id']) || !in_array($item['participant_id'], $cpdbBlocklisted);
+        });
+
+        // Extract IDs only
+        $ids = array_column($results, 'tid');
+
         return $ids;
     }
 

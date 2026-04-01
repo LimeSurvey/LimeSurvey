@@ -23,6 +23,7 @@ class QuestionAttributeFetcher
                 new CoreQuestionAttributeProvider(),
                 new ThemeQuestionAttributeProvider(),
                 new PluginQuestionAttributeProvider(),
+                new HiddenQuestionAttributeProvider(),
             ];
         }
         $this->providers = $providers;

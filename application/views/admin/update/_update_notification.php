@@ -1,9 +1,10 @@
 <?php
 /**
- * This view render the Update Notfication displayed on top of the LimeSurvey admin interface.
- * It is called from SurveyCommonAction which launch AdminController::_getUpdateNotification();
+ * This view renders the update notification displayed on top of the LimeSurvey admin interface.
+ * It is called from LayoutHelper::updatenotification() and SurveyCommonAction::updatenotification().
  *
- * @var $security_update_available
+ * @var bool $security_update_available Whether a security update is available
+ * @var string[] $stability_labels Array of non-stable stability levels present in filtered updates (e.g. ['alpha', 'beta'])
  */
 
 ?>
@@ -25,8 +26,16 @@
             ?>
         <?php elseif(Yii::app()->session['unstable_update']):?>
             <?php
+            $labelMap = ['alpha' => gT('Alpha'), 'beta' => gT('Beta'), 'rc' => gT('Release Candidate')];
+            $labelNames = [];
+            foreach ($stability_labels as $label) {
+                if (isset($labelMap[$label])) {
+                    $labelNames[] = $labelMap[$label];
+                }
+            }
+            $stabilityText = !empty($labelNames) ? implode(', ', $labelNames) : gT('unstable');
             $this->widget('ext.AlertWidget.AlertWidget', [
-                'text' => '<strong>' . gT("New UNSTABLE update available:") . '</strong> <a href="' . $urlUpdate . '"> ' . gT('Click here to use ComfortUpdate or to download it.') . ' <strong>' . gT("You don't need an update key.") . '</strong></a>',
+                'text' => '<strong>' . sprintf(gT('New %s update available:'), $stabilityText) . '</strong> <a href="' . $urlUpdate . '"> ' . gT('Click here to use ComfortUpdate or to download it.') . ' <strong>' . gT("You don't need an update key.") . '</strong></a>',
                 'type' => 'info',
                 'showCloseButton' => true,
                 'htmlOptions' => ['id' => 'update-alert', 'data-url-notification-state' => $urlUpdateNotificationState]
