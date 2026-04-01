@@ -1842,7 +1842,9 @@ class Tokens extends SurveyCommonAction
             $aFilterByLanguage = array('' => gT('All'));
             foreach ($oTokenLanguages as $oTokenLanguage) {
                 $sLanguageCode = \LSYii_Validators::languageCodeFilter($oTokenLanguage->language);
-                $aFilterByLanguage[$sLanguageCode] = getLanguageNameFromCode($sLanguageCode, false);
+                if ($sLanguageCode !== '') {
+                    $aFilterByLanguage[$sLanguageCode] = getLanguageNameFromCode($sLanguageCode, false);
+                }
             }
             // The following array does not seem to be used at all by the view, yet
             $aData['aSettings'] = array(
