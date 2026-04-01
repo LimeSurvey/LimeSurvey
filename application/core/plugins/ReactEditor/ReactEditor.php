@@ -30,7 +30,6 @@ class ReactEditor extends \PluginBase
         $this->subscribe('beforeControllerAction', 'redirectToDifferentCreateSurveyRoute');
         $this->subscribe('beforeRenderSurveySidemenu');
         $this->subscribe('beforeAdminMenuRender');
-        $this->subscribe('beforeSurveySettingsSave');
         $this->subscribe('beforeSurveyAdminView');
     }
 
@@ -256,25 +255,6 @@ class ReactEditor extends \PluginBase
     private function hasPathUrlFormat(): bool
     {
          return App()->getUrlManager()->getUrlFormat() === 'path';
-    }
-
-    /**
-     * Validates theme compatibility before survey settings are saved.
-     *
-     * When the React editor is enabled, this method checks whether the survey
-     * is using the 'Fruity TwentyThree' theme, which is the only theme currently
-     * supported by the new editor. If a different theme is detected, a warning
-     * flash message is displayed to inform the user, but the save is not blocked.
-     *
-     * @return void
-     */
-    public function beforeSurveySettingsSave()
-    {
-        if ($this->isEditorEnabled()) {
-            $this->warnIfIncompatibleTheme(
-                $this->getEvent()->get('modifiedSurvey')
-            );
-        }
     }
 
     /**
