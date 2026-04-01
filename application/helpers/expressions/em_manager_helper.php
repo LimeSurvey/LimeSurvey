@@ -964,12 +964,17 @@ class LimeExpressionManager
                 $subqid = $fieldname;
                 $value = $row['value'];
             } elseif ($row['type'] == Question::QT_M_MULTIPLE_CHOICE || $row['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
+                $oQuestion = Question::model()->findByPk($row['cqid']);
                 if ((string)substr((string) $row['cfieldname'], 0, 1) == '+') {
                     // if prefixed with +, then a fully resolved name
                     $row['cfieldname'] = (string)substr((string) $row['cfieldname'], 1);
                     if (isset($aDictionary[$row['cfieldname']])) {
                         $row['cfieldname'] = $aDictionary[$row['cfieldname']];
                     }
+                    $fieldname = $row['cfieldname'] . '.NAOK';
+                    $subqid = $fieldname;
+                    $value = $row['value'];
+                } elseif (strlen($row['cfieldname']) > 5 && substr($row['cfieldname'], -5) === 'other' && $oQuestion && $oQuestion->other == "Y") {
                     $fieldname = $row['cfieldname'] . '.NAOK';
                     $subqid = $fieldname;
                     $value = $row['value'];
@@ -1007,7 +1012,6 @@ class LimeExpressionManager
             } elseif ((string)(float)$value !== (string)$value) {
                 $value = '"' . $value . '"';
             }
-
             // add equation
             if ($row['method'] == 'RX') {
                 $relOrList[] = "regexMatch(" . $value . "," . $fieldname . ")";
@@ -1459,7 +1463,7 @@ class LimeExpressionManager
                             'qtype' => $type,
                             'type'  => 'default',
                             'class' => 'default',
-                            'eqn'   => 'unique(' . implode(',', $sq_names) . ') and count(' . implode(',', $sq_names) . ')==max(' . implode(',', $sq_eqPart) . ')',
+                            'eqn'   => 'unique(' . implode(',', $sq_names) . ')',
                             'qid'   => $questionNum,
                         ];
                     }
@@ -3035,7 +3039,7 @@ class LimeExpressionManager
                 //Get date format of current question and convert date in help text accordingly
                 $LEM =& LimeExpressionManager::singleton();
                 $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $questionNum, $_SESSION['LEMlang']);
-                $aDateFormatData = getDateFormatDataForQID($aAttributes[$questionNum], $LEM->surveyOptions);
+                $aDateFormatData = getDateFormatDataForQID($aAttributes[$questionNum] ?? [], $LEM->surveyOptions);
                 $_minV = (($date_min == '') ? "''" : "if((strtotime(" . $date_min . ")), date('" . $aDateFormatData['phpdate'] . "', strtotime(" . $date_min . ")),'')");
                 $_maxV = (($date_max == '') ? "''" : "if((strtotime(" . $date_max . ")), date('" . $aDateFormatData['phpdate'] . "', strtotime(" . $date_max . ")),'')");
                 $qtips['value_range'] =
@@ -3933,6 +3937,12 @@ class LimeExpressionManager
             if (!isset($this->qcode2sgqa[$varName])) {
                 $this->qcode2sgqa[$varName] = $sgqa;
             }
+            $tokens = explode("_", $varName);
+            if (count($tokens) > 1) {
+                $tokens = implode("_", $tokens);
+                $varName2 = explode("_", $sgqa)[0] . substr($tokens, strpos($tokens, "_") + 1);
+                $this->tempVars[$varName2] = $varInfo_Code;
+            }
             $this->jsVar2qid[$jsVarName] = $questionNum;
             $this->qcode2sgq[$fielddata['title']] = 'Q' . $questionNum;
 
@@ -4276,7 +4286,7 @@ class LimeExpressionManager
     {
         // These will be called in the order that questions are supposed to be asked
         // TODO - cache results and generated JavaScript equations?
-        if (!isset($eqn) || trim($eqn == '') || trim($eqn) == '1') {
+        if (!isset($eqn) || trim((string) $eqn) == '' || trim((string) $eqn) == '1') {
             $this->groupRelevanceInfo[] = [
                 'qid'           => $questionNum,
                 'gseq'          => $gseq,
@@ -4338,7 +4348,7 @@ class LimeExpressionManager
     private function _ProcessSubQRelevance($eqn, $questionNum = null, $rowdivid = null, $type = null, $qtype = null, $sgqa = null, $isExclusive = '', $irrelevantAndExclusive = '')
     {
         // These will be called in the order that questions are supposed to be asked
-        if (!isset($eqn) || trim($eqn == '') || trim($eqn) == '1') {
+        if (!isset($eqn) || trim((string) $eqn) == '' || trim((string) $eqn) == '1') {
             return true;
         }
         $questionSeq = -1;
@@ -4419,7 +4429,7 @@ class LimeExpressionManager
         }
 
         $eqn = (isset($this->gseq2info[$groupSeq]['grelevance']) ? $this->gseq2info[$groupSeq]['grelevance'] : 1);
-        if (is_null($eqn) || trim($eqn == '') || trim((string) $eqn) == '1') {
+        if (is_null($eqn) || trim((string) $eqn) == '' || trim((string) $eqn) == '1') {
             $this->gRelInfo[$groupSeq] = [
                 'gseq'          => $groupSeq,
                 'eqn'           => '',
@@ -5239,9 +5249,25 @@ class LimeExpressionManager
             }
 
             if (isset($_SESSION[$this->sessid]['srid']) && $this->surveyOptions['active']) {
-                $oResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
+                try {
+                    $oResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
+                } catch (\Exception $ex) {
+                    // The response table no longer exists (survey deactivated/deleted while user had a stale session).
+                    // Kill the stale session and redirect to the survey start page for a fresh start.
+                    killSurveySession($this->sid);
+                    $survey = Survey::model()->findByPk($this->sid);
+                    if ($survey) {
+                        App()->getController()->redirect($survey->getSurveyUrl());
+                    }
+                }
                 if (empty($oResponse)) {
-                    // This can happen if admin deletes incomple response while survey is running.
+                    // The response row was deleted (e.g. admin deleted incomplete response while survey was running).
+                    // Kill the stale session and redirect to the survey start page for a fresh start.
+                    killSurveySession($this->sid);
+                    $survey = Survey::model()->findByPk($this->sid);
+                    if ($survey) {
+                        App()->getController()->redirect($survey->getSurveyUrl());
+                    }
                     $message = submitfailed($this->gT('The data could not be saved because the response does not exist in the database.'));
                     LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
                     return $message;
@@ -8898,7 +8924,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         case Question::QT_D_DATE: //DATE
                             $LEM =& LimeExpressionManager::singleton();
                             $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $var['qid'], $_SESSION['LEMlang']);
-                            $aDateFormatData = getDateFormatDataForQID($aAttributes[$var['qid']], $LEM->surveyOptions);
+                            $aDateFormatData = getDateFormatDataForQID($aAttributes[$var['qid']] ?? [], $LEM->surveyOptions);
                             $shown = '';
                             if (strtotime((string) $code) !== false) {
                                 $shown = date($aDateFormatData['phpdate'], strtotime((string) $code));

@@ -1,0 +1,48 @@
+.theme-options-preview-container {
+  position: fixed;
+  top: 7rem;
+  right: 1rem;
+  height: 80vh;
+  transition: width 0.3s ease;
+}
+
+.theme-options-preview-container-inner {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.theme-options-preview-iframe {
+  width: 100%;
+  height: 100%;
+  border: 1px solid $black;
+  background-color: #e4edfc;
+  border-radius: 5px;
+}
+
+.theme-options-preview-normalSize {
+  width: 275px !important;
+}
+
+.theme-options-preview-largeSize {
+  width: 450px !important;
+}
+
+.theme-options-preview-hidden {
+  width: 0 !important;
+}
+
+.theme-options-preview-loading {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  top: calc(50% - 25px);
+  left: calc(50% - 25px);
+}
+
+.theme-options-preview-icon {
+  position: absolute;
+  top: 3rem;
+  left: -28px; // icon width
+  cursor: pointer;
+}

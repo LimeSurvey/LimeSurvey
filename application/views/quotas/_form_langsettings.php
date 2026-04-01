@@ -8,10 +8,11 @@
 <div class="row">
     <div class="col-12 border-start border-2 border-secondary">
         <!-- Language tabs -->
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs" role="tablist">
             <?php foreach ($oQuota->survey->getAllLanguages() as $lang): ?>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link <?= ($lang == $oQuota->survey->language) ? 'active' : null ?>"
+                    <a class="nav-link <?= ($lang == $oQuota->survey->language) ? 'active' : null ?>" role="tab"
+                        aria-selected="<?= ($lang == $oQuota->survey->language) ? 'true' : 'false' ?>"
                        data-bs-toggle="tab" href="#edittxtele<?php echo $lang ?>">
                         <?php echo getLanguageNameFromCode($lang, false); ?>
                         <?php echo($lang == $oQuota->survey->language ? '(' . gT("Base language") . ')' : null); ?>

@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\DI;
+use LimeSurvey\Models\Services\SurveyDetailService;
 use LimeSurvey\Models\Services\SurveyThemeConfiguration;
 
 /**
@@ -350,6 +351,8 @@ class ThemeOptionsController extends LSBaseController
         if (isset($_POST['TemplateConfiguration'])) {
             $model->attributes = $_POST['TemplateConfiguration'];
             if ($model->save()) {
+                $surveyDetailService = DI::getContainer()->get(SurveyDetailService::class);
+                $surveyDetailService->removeCache($sid);
                 App()->user->setFlash('success', gT('Theme options saved.'));
             }
         }
@@ -361,13 +364,13 @@ class ThemeOptionsController extends LSBaseController
      * used when setting the theme options through a survey groups theme options menu.
      * If update is successful, the browser will be redirected to the 'view' page.
      *
-     * @param integer $id   ID of model.
-     * @param integer $gsid id of survey group
+     * @param null|integer $id   ID of model.
+     * @param null|integer $gsid id of survey group
      * @param null    $l    ?
      *
      * @return void
      */
-    public function actionUpdateSurveyGroup(int $id = null, int $gsid, $l = null)
+    public function actionUpdateSurveyGroup(?int $id = null, ?int $gsid = null, ?int $l = null)
     {
         if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
             if (empty($gsid)) {

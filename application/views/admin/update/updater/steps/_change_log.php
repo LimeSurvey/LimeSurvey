@@ -25,7 +25,7 @@
 $changelog = "";
 $currentVersion = Yii::app()->getConfig("versionnumber") . " Build " . Yii::app()->getConfig("buildnumber");
 foreach (array_reverse($changelogs->changelogentries) as $changelogentry) {
-    if (trim($changelogentry->changelog != '')) {
+    if (trim((string) $changelogentry->changelog) != '') {
           $tempfromversion = $changelogentry->versionnumber;
           $tempfrombuild = $changelogentry->build;
 

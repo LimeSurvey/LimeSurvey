@@ -1,0 +1,33 @@
+.btn {
+  font-size: $font-size-sm;
+  font-style: $font-style-base;
+  font-weight: $font-weight-500;
+  line-height: $line-height-20;
+  display: flex;
+  align-items: center;
+}
+.btn-orange,
+.btn-orange-light,
+.btn-warning,
+.btn-light,
+.btn-grey,
+.btn-cancel {
+  color: $g-900;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-success,
+.btn-danger,
+.btn-info,
+.btn-dark,
+.btn-black60 {
+  color: $white;
+}
+
+.btn-outline-success {
+  &:active,
+  &:hover {
+    color: $white !important;
+  }
+}

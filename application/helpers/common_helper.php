@@ -107,7 +107,7 @@ function quoteText($sText, $sEscapeMode = 'html')
 function getSurveyList($bReturnArray = false)
 {
     static $cached = null;
-    $timeadjust = getGlobalSetting('timeadjust');
+    $timeadjust = Yii::app()->getConfig('timeadjust');
     App()->setLanguage((Yii::app()->session['adminlang'] ?? 'en'));
     $surveynames = array();
 
@@ -670,7 +670,7 @@ function getUserList($outputformat = 'fullinfoarray')
     if (!empty(Yii::app()->session['loginID'])) {
         $myuid = sanitize_int(Yii::app()->session['loginID']);
     }
-    $usercontrolSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy');
+    $usercontrolSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
     if (
         !Permission::model()->hasGlobalPermission('superadmin', 'read') && isset($usercontrolSameGroupPolicy) &&
         $usercontrolSameGroupPolicy == true
@@ -1174,31 +1174,6 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
     } else {
         return $sValue;
     }
-}
-
-/**
-* Validate an email address - also supports IDN email addresses
-* @deprecated : use LimeMailer::validateAddress($sEmailAddress);
-* @returns True/false for valid/invalid
-*
-* @param mixed $sEmailAddress  Email address to check
-*/
-function validateEmailAddress($sEmailAddress)
-{
-    return LimeMailer::validateAddress($sEmailAddress);
-}
-
-/**
-* Validate an list of email addresses - either as array or as semicolon-limited text
-* @deprecated : use LimeMailer::validateAddresses($aEmailAddressList);
-* @return string List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
-*
-* @param string $aEmailAddressList  Email address to check
-* @returns array
-*/
-function validateEmailAddresses($aEmailAddressList)
-{
-    return LimeMailer::validateAddresses($aEmailAddressList);
 }
 
 /**
@@ -2189,7 +2164,7 @@ function hasFileUploadQuestion($iSurveyID)
 * @param string $surveyid The Survey ID
 * @param string $style 'short' (default) or 'full' - full creates extra information like default values
 * @param boolean $force_refresh - Forces to really refresh the array, not just take the session copy
-* @param int $questionid Limit to a certain qid only (for question preview) - default is false
+* @param int|false $questionid Limit to a certain qid only (for question preview) - default is false
 * @param string $sQuestionLanguage The language to use
 * @return array
 */
@@ -2365,78 +2340,6 @@ function jsonEscape(string $str, $strip_tags = false, $htmldecode = false)
     }
     return str_replace(array('"','\''), array("&apos;","&apos;"), $str);
 }
-
-/**
-* This function mails a text $body to the recipient $to.
-* You can use more than one recipient when using a semicolon separated string with recipients.
-* @deprecated : leave it in 4.0 for plugins ? Must remove in 5.0 at minima.
-*
-* @param string $body Body text of the email in plain text or HTML
-* @param mixed $subject Email subject
-* @param mixed $to Array with several email addresses or single string with one email address
-* @param string $from
-* @param mixed $sitename
-* @param boolean $ishtml
-* @param mixed $bouncemail
-* @param mixed $attachments
-* @return bool If successful returns true
-*/
-function SendEmailMessage($body, $subject, $to, string $from, $sitename, $ishtml = false, $bouncemail = null, $attachments = null, $customheaders = "")
-{
-    global $maildebug;
-
-    if (!is_array($to)) {
-        $to = array($to);
-    }
-
-    if (!is_array($customheaders) && $customheaders == '') {
-        $customheaders = array();
-    }
-
-    $mail =  new LimeMailer();
-    $mail->emailType = 'deprecated';
-
-    $fromname = '';
-    $fromemail = $from;
-    if (strpos($from, '<')) {
-        $fromemail = substr($from, strpos($from, '<') + 1, strpos($from, '>') - 1 - strpos($from, '<'));
-        $fromname = trim(substr($from, 0, strpos($from, '<') - 1));
-    }
-    if (is_null($bouncemail)) {
-        $senderemail = $fromemail;
-    } else {
-        $senderemail = $bouncemail;
-    }
-
-    $mail->SetFrom($fromemail, $fromname);
-    $mail->Sender = $senderemail; // Sets Return-Path for error notifications
-    foreach ($to as $singletoemail) {
-        $mail->addAddress($singletoemail);
-    }
-    if (is_array($customheaders)) {
-        foreach ($customheaders as $key => $val) {
-            $mail->AddCustomHeader($val);
-        }
-    }
-    $mail->Subject = $subject;
-    $mail->Body = $body;
-    $mail->IsHTML($ishtml);
-    // Add attachments if they are there.
-    if (is_array($attachments)) {
-        foreach ($attachments as $attachment) {
-            // Attachment is either an array with filename and attachment name.
-            if (is_array($attachment)) {
-                $mail->AddAttachment($attachment[0], $attachment[1]);
-            } else {
-                // Or a string with the filename.
-                $mail->AddAttachment($attachment);
-            }
-        }
-    }
-    $mail->Subject = $subject;
-    return $mail->Send();
-}
-
 
 /**
 *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
@@ -2927,7 +2830,7 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
     if ($sType == 'survey') {
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_:])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
         if ($isLocalPath) {
-            $sReplace = rtrim(App()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
+            $sReplace = rtrim(Yii::app()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
             return preg_replace('/' . $sPattern . '/u', $sReplace, $sString);
         } else {
             // Make the replacement conditionaly.
@@ -2939,9 +2842,9 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
                 $parsedUrl = parse_url($url);
                 $replacementUrl = "/upload/surveys/{$iNewSurveyID}/";
                 if (isset($parsedUrl['scheme']) && isset($parsedUrl['host'])) {
-                    return rtrim(App()->getPublicBaseUrl(true), "/") . $replacementUrl;
+                    return rtrim(Yii::app()->getPublicBaseUrl(true), "/") . $replacementUrl;
                 } else {
-                    return rtrim(App()->getConfig("publicurl"), '/') . $replacementUrl;
+                    return rtrim(Yii::app()->getConfig("publicurl"), '/') . $replacementUrl;
                 }
             }, $sString);
         }
@@ -2954,7 +2857,7 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
             if (isset($parsedUrl['scheme']) && isset($parsedUrl['host'])) {
                 return rtrim(App()->getPublicBaseUrl(true), "/") . $replacementUrl;
             } else {
-                return rtrim(App()->getConfig("publicurl"), '/') . $replacementUrl;
+                return rtrim(Yii::app()->getConfig("publicurl"), '/') . $replacementUrl;
             }
         }, $sString);
     } else // unknown type
@@ -3192,9 +3095,34 @@ function getParticipantAttributes($iSurveyID)
     return getTokenFieldsAndNames($iSurveyID, true);
 }
 
+/**
+ * Decodes and formats attribute select options from JSON string to associative array.
+ *
+ * This method checks if the 'type_options' key exists in the provided attribute data array
+ * and if it contains a JSON string. If so, it decodes the JSON and converts a numeric array
+ * into an associative array where each value serves as both the key and value. This is useful
+ * for formatting select/dropdown options for form rendering.
+ *
+ * @param array $attrData The attribute data array that may contain a 'type_options' key with JSON string value
+ * @return array The modified attribute data array with decoded and formatted type_options, or the original array if no changes were made
+ */
+function decodeAttributeSelectOptions(array $attrData)
+{
+    if (array_key_exists('type_options', $attrData) && is_string($attrData['type_options'])) {
+        static $attributeService = null;
+        if ($attributeService === null) {
+            $diContainer = \LimeSurvey\DI::getContainer();
+            $attributeService = $diContainer->get(
+                LimeSurvey\Models\Services\ParticipantAttributeService::class
+            );
+        }
+        $decodedOptions = $attributeService->decodeJsonEncodedTypeOptions($attrData['type_options']);
+        // Always normalize to array for downstream form rendering (even if empty / invalid -> []).
+        $attrData['type_options'] = $decodedOptions;
+    }
 
-
-
+    return $attrData;
+}
 
 /**
 * Retrieves the attribute names from the related survey participant list
@@ -3281,6 +3209,7 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
         } elseif (empty($aSavedExtraTokenFields[$sField]['description'])) {
             $aSavedExtraTokenFields[$sField]['description'] = $sField;
         }
+        $aSavedExtraTokenFields[$sField] = decodeAttributeSelectOptions($aSavedExtraTokenFields[$sField]);
     }
     if ($bOnlyAttributes) {
         return $aSavedExtraTokenFields;
@@ -3593,7 +3522,7 @@ function enforceSSLMode()
     (isset($_SERVER['HTTP_FORWARDED_PROTO']) && $_SERVER['HTTP_FORWARDED_PROTO'] == "https") ||
     (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == "https"));
     if (Yii::app()->getConfig('ssl_emergency_override') !== true) {
-        $bForceSSL = strtolower((string) getGlobalSetting('force_ssl'));
+        $bForceSSL = strtolower((string) Yii::app()->getConfig('force_ssl'));
     }
     if ($bForceSSL == 'on' && !$bSSLActive) {
         SSLRedirect('s');
@@ -4603,7 +4532,7 @@ function checkMoveQuestionConstraintsForConditions($sid, $qid, $newgid = "all")
 */
 function shouldFilterUserGroupList()
 {
-    $bUserControlSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy', true);
+    $bUserControlSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy', true);
     $bUserHasSuperAdminReadPermissions = Permission::model()->hasGlobalPermission('superadmin', 'read');
     return $bUserControlSameGroupPolicy && !$bUserHasSuperAdminReadPermissions;
 }
@@ -4883,17 +4812,21 @@ function ls_json_encode($content)
 }
 
 /**
- * Decode a json string, sometimes needs stripslashes
+ * Decodes a json string, sometimes needs stripslashes
  *
  * @param string $jsonString
  * @return mixed
  */
 function json_decode_ls($jsonString)
 {
+    if ($jsonString === null) {
+        return null;
+    }
+
     $decoded = json_decode($jsonString, true);
 
     if (is_null($decoded) && !empty($jsonString)) {
-        // probably we need stipslahes
+        // probably we need stripslashes
         $decoded = json_decode(stripslashes($jsonString), true);
     }
 
@@ -5150,7 +5083,7 @@ function decodeTokenAttributes(string $tokenAttributeData)
         return array();
     }
     if (substr($tokenAttributeData, 0, 1) != '{' && substr($tokenAttributeData, 0, 1) != '[') {
-        if (!App()->getConfig('allow_unserialize_attributedescriptions')) {
+        if (!Yii::app()->getConfig('allow_unserialize_attributedescriptions')) {
             return array();
         }
         // minimal broken securisation, mantis issue #20144
@@ -5454,9 +5387,16 @@ function recursive_preg_replace($pattern, $replacement, $subject, $limit = -1, &
  */
 function standardDeviation(array $numbers): float
 {
-    // Filter empty "" records
-    $numbers = array_filter($numbers);
+    // Filter empty ("" and null) records (keeping zeroes)
+    $numbers = array_filter($numbers, fn($value) => $value !== "" && $value !== null);
     $numberOfElements = count($numbers);
+
+    if ($numberOfElements === 0) {
+        /**
+         * @todo Should this be null? Function signature says float
+         */
+        return 0.0;
+    }
 
     $variance = 0.0;
     $average = array_sum($numbers) / $numberOfElements;

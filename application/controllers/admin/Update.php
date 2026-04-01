@@ -105,7 +105,7 @@ class Update extends DynamicSurveyCommonAction
             $this->getController()->redirect(App()->getController()->createUrl("/admin"));
         }
 
-        if (App()->getConfig('demoMode')) {
+        if (Yii::app()->getConfig('demoMode')) {
             App()->setFlashMessage(gT('This function cannot be executed because demo mode is active.'), 'error');
             $this->getController()->redirect(App()->getController()->createUrl("/admin"));
         }
@@ -121,9 +121,9 @@ class Update extends DynamicSurveyCommonAction
             true
         );
 
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/comfortupdate.js');
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/buildComfortButtons.js');
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/displayComfortStep.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'comfortupdate/comfortupdate.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'comfortupdate/buildComfortButtons.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'comfortupdate/displayComfortStep.js');
 
         $this->renderWrappedTemplate('update', '_updateContainer', $aData);
     }
@@ -135,7 +135,7 @@ class Update extends DynamicSurveyCommonAction
             $updateModel = new UpdateForm();
             $serverAnswer = $updateModel->getUpdateInfo($buttons);
             $aData['serverAnswer'] = $serverAnswer;
-            $updateKey = $aData['updateKey'] = getGlobalSetting('update_key');
+            $updateKey = $aData['updateKey'] = Yii::app()->getConfig('update_key');
 
             if (!$updateKey) {
                 $pageTitle = gT('Subscribe to ComfortUpdate');
@@ -254,7 +254,7 @@ class Update extends DynamicSurveyCommonAction
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             // We get the update key in the database. If it's empty, getWelcomeMessage will return subscription
-            $updateKey = getGlobalSetting("update_key");
+            $updateKey = Yii::app()->getConfig("update_key");
             $updateModel = new UpdateForm();
             $destinationBuild = $_REQUEST['destinationBuild'];
                 $welcome = (array) $updateModel->getWelcomeMessage($updateKey, $destinationBuild);
@@ -333,7 +333,7 @@ class Update extends DynamicSurveyCommonAction
             if (isset($_REQUEST['destinationBuild'])) {
                 $tobuild = $_REQUEST['destinationBuild'];
                 $access_token = $_REQUEST['access_token'];
-                $frombuild = App()->getConfig("buildnumber");
+                $frombuild = Yii::app()->getConfig("buildnumber");
 
                 $updateModel = new UpdateForm();
                 $changedFiles = $updateModel->getChangedFiles($tobuild);

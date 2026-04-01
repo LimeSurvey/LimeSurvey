@@ -1,0 +1,33 @@
+.dropzone {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  border-radius: $border-radius;
+  background: $g-100;
+  border: 1px dashed $g-700;
+  outline: none;
+  transition: border 0.24s ease-in-out;
+
+  .label {
+    font-weight: $font-weight-normal;
+    font-size: $font-size-sm;
+    line-height: $line-height-20;
+    letter-spacing: -0.017em;
+    color: $g-700;
+    margin: 0;
+  }
+
+  .icon {
+    color: $g-700;
+    fill: currentColor;
+    font-size: $font-size-lg;
+  }
+}
+
+.right-side-bar-settings .dropzone {
+  min-width: 243px;
+  min-height: 100px;
+}

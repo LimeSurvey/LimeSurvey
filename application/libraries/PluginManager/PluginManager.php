@@ -81,29 +81,6 @@ class PluginManager extends \CApplicationComponent
         }
         $this->loadPlugins();
     }
-    /**
-     * Return a list of installed plugins, but only if the files are still there
-     * @deprecated unused in 5.3.8
-     * This prevents errors when a plugin was installed but the files were removed
-     * from the server.
-     *
-     * @return array
-     */
-    public function getInstalledPlugins()
-    {
-        $pluginModel = Plugin::model();
-        $records = $pluginModel->findAll(['order' => 'priority DESC']);
-
-        $plugins = array();
-
-        foreach ($records as $record) {
-            // Only add plugins we can find
-            if ($this->loadPlugin($record->name, $record->id, $record->active) !== false) {
-                $plugins[$record->id] = $record;
-            }
-        }
-        return $plugins;
-    }
 
     /**
      * @param string $destdir
@@ -698,6 +675,7 @@ class PluginManager extends \CApplicationComponent
             'UpdateCheck',
             'AzureOAuthSMTP',
             'GoogleOAuthSMTP',
+            'ReactEditor',
         ];
     }
 

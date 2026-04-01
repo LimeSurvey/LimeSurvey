@@ -15,6 +15,8 @@
 
 /**
  * Class DefaultValue
+ * The default values are default answers for questions that could be selected by the user.
+ * (e.g. a subquestion that is selected as the default answer for the question in advance)
  *
  * @property integer $dvid primary key
  * @property integer $qid The question id
@@ -72,27 +74,4 @@ class DefaultValue extends LSActiveRecord
             array('qid,sqid,scale_id', 'numerical', 'integerOnly' => true),
         );
     }
-
-    /**
-     * @param $data
-     * @return bool
-     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $oRecord = new self();
-        foreach ($data as $k => $v) {
-            $oRecord->$k = $v;
-        }
-        if ($oRecord->validate()) {
-            return $oRecord->save();
-        }
-        tracevar($oRecord->getErrors());
-    }
-    /*
-    public function getDefaultValue($language = 'en')
-    {
-        $oDefaultValue = $this->with('defaultvaluel10ns')->find('language = :language', array(':language' => $language));
-        return $oDefaultValue->defaultvaluel10ns[$language]->defaultvalue;
-    }*/
 }

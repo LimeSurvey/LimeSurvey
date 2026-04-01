@@ -102,7 +102,7 @@ class LSBaseController extends LSYii_Controller
     public function run($action)
     {
         // Check if the DB is up to date
-        $sDBVersion = getGlobalSetting('DBVersion');
+        $sDBVersion = Yii::app()->getConfig('DBVersion');
 
         if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate') {
             // Try a silent update first
@@ -133,7 +133,7 @@ class LSBaseController extends LSYii_Controller
                 /** @var LSUserIdentity */
                 $user = Yii::app()->user;
                 /** @var string */
-                $hash = hash('sha256', getGlobalSetting('SessionName') . $user->getName() . $user->getId());
+                $hash = hash('sha256', Yii::app()->getConfig('SessionName') . $user->getName() . $user->getId());
                 if (Yii::app()->session['session_hash'] != $hash) {
                     Yii::app()->session->clear();
                     Yii::app()->session->close();

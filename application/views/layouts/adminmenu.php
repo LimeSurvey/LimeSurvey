@@ -8,7 +8,9 @@
  * @var array $extraMenus   //menu items fetched from plugins
  */
 ?>
-
+<?php /* Register needed script used at different point even if not needed in loaded page see #20391 */
+	App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
+?>
 <!-- admin menu bar -->
 <nav class="navbar navbar-expand-md">
     <div class="container-fluid">
@@ -48,7 +50,7 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <!-- Maintenance mode -->
-                <?php $sMaintenanceMode = getGlobalSetting('maintenancemode');
+                <?php $sMaintenanceMode = Yii::app()->getConfig('maintenancemode');
                 if ($sMaintenanceMode === 'hard' || $sMaintenanceMode === 'soft') { ?>
                     <li class="nav-item">
                         <a class="nav-link text-warning" href="<?php echo $this->createUrl("admin/globalsettings"); ?>" title="<?php eT("Click here to change maintenance mode setting."); ?>">
@@ -62,8 +64,10 @@
                 <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => true, 'prependedMenu' => true]); ?>
 
                 <!-- Render the modal for importing a survey -->
-                <?php App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'importSurveyFileUpload.js', LSYii_ClientScript::POS_BEGIN); ?>
+                <?php App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'importSurveyFileUpload.js', LSYii_ClientScript::POS_BEGIN); ?>
                 <?php $this->renderPartial("/surveyAdministration/partial/_modalImportSurvey", []);?>
+
+                <?php App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'copySurvey.js', LSYii_ClientScript::POS_BEGIN); ?>
 
                 <li
                     class="nav-item d-flex"><a

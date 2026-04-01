@@ -14,7 +14,7 @@
                 </label>
                 <select class="form-select"  name='defaultlang' id='defaultlang'>
                 <?php
-                    $actuallang=getGlobalSetting('defaultlang');
+                    $actuallang = Yii::app()->getConfig('defaultlang');
                     foreach (getLanguageData(true) as  $langkey2=>$langname)
                     {
                     ?>
@@ -30,7 +30,7 @@
 
             <div class="mb-3">
                 <label class=" form-label"  for='includedLanguages'><?php eT("Available languages:"); ?></label>
-                    <table id='languageSelection'>
+                    <table id='languageSelection' role="presentation">
                     <tr>
                         <td>
                             <?php eT("Visible:"); ?>

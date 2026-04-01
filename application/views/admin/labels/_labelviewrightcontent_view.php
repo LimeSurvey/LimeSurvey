@@ -19,7 +19,7 @@
             <div id="upload-form-container">
 
               <!-- Form browselabelresources -->
-              <?php echo CHtml::form(Yii::app()->baseUrl.'/vendor/kcfinder/browse.php?language='.sTranslateLangCode2CK(App()->language), 'get', array('id'=>'browselabelresources','class'=>'form30','name'=>'browselabelresources','target'=>'_blank')); ?>
+              <?php echo CHtml::form(Yii::app()->baseUrl.'/assets/packages/kcfinder/browse.php?language='.sTranslateLangCode2CK(App()->language), 'get', array('id'=>'browselabelresources','class'=>'form30','name'=>'browselabelresources','target'=>'_blank')); ?>
 
                   <!-- Browse uploaded resources -->
                     <div class="row mb-2">

@@ -19,8 +19,6 @@ class SchemaFactorySurveyStatisticsGlance
             ->properties(
                 Schema::integer('totalResponses')->default(0),
                 Schema::integer('incompleteResponses')->default(0),
-                Schema::integer('completedWithoutAnswers')->default(0),
-                Schema::integer('incompletedWithoutAnswers')->default(0),
                 Schema::string('completionRate')->default('0.00'),
                 Schema::string('avgCompletionTime')->default('0.0000')
             );

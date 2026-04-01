@@ -60,7 +60,7 @@ class SurveyIndex extends CAction
             $event->set('surveyId', $surveyid);
             $event->set('reason', 'surveyDoesNotExist');
             App()->getPluginManager()->dispatchEvent($event);
-            throw new CHttpException(404, gT("The survey in which you are trying to participate does not seem to exist."));
+            throw new CHttpException(404, gT("The survey in which you are trying to participate does not seem to exist.", 'unescaped'));
             /* Alt solution */
             //~ header("HTTP/1.0 404 Not Found",true,404);
             //~ Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig",
@@ -148,7 +148,7 @@ class SurveyIndex extends CAction
         }
 
         // maintenance mode
-        $sMaintenanceMode = getGlobalSetting('maintenancemode');
+        $sMaintenanceMode = Yii::app()->getConfig('maintenancemode');
         if ($sMaintenanceMode == 'hard') {
             if ($previewmode === false) {
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_maintenance.twig", array('oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey), false);
@@ -466,7 +466,7 @@ class SurveyIndex extends CAction
             }
 
             if (FailedLoginAttempt::model()->isLockedOut(FailedLoginAttempt::TYPE_TOKEN)) {
-                $aLoadErrorMsg['tooManyRetries'] = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutParticipants') / 60);
+                $aLoadErrorMsg['tooManyRetries'] = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), Yii::app()->getConfig('timeOutParticipants') / 60);
             }
 
             if (empty($aLoadErrorMsg)) {

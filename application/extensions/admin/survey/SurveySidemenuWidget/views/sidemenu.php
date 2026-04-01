@@ -3,70 +3,92 @@
 <div id="left-sidebar" class="fade sidebar sidebar-left show">
     <div class="d-flex">
         <div class="sidebar-icons-container">
-            <div class="sidebar-icons-item">
-                <div class="sidebar-icon" onclick="window.location='<?php echo App()->createUrl('editorLink/index', ['route' => 'survey/' . $sid]);?>'">
-                    <div data-bs-toggle="tooltip"
-                         title="<?php echo gT('Survey structure'); ?>"
-                         data-bs-offset="0, 20"
-                         data-bs-placement="right">
-                        <i class="ri-bar-chart-horizontal-line btn btn-g-800 btn-icon"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="sidebar-icons-item">
-                <div class="sidebar-icon" data-target="#survey-settings-panel" onclick="window.location='<?php echo App()->createUrl('editorLink/index', ['route' => 'survey/' .  $sid . '/settings/generalsettings']);?>'">
-                    <div data-bs-toggle="tooltip"
-                         title="<?php echo gT('Survey settings'); ?>"
-                         data-bs-offset="0, 20"
-                         data-bs-placement="right">
-                        <i class="ri-settings-3-fill btn btn-g-800 btn-icon <?php echo $this->activePanel == 'survey-settings-panel' ? 'active' : ''?>"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="sidebar-icons-item">
-                <div class="sidebar-icon" data-target="#survey-presentation-panel" onclick="window.location='<?php echo App()->createUrl('editorLink/index', ['route' => 'survey/' .  $sid . '/presentation/theme_options']); ?>'">
-                    <div data-bs-toggle="tooltip"
-                         title="<?php echo gT('Survey presentation'); ?>"
-                         data-bs-offset="0, 20"
-                         data-bs-placement="right">
-                        <i class="ri-paint-fill btn btn-g-800 btn-icon <?php echo $this->activePanel == 'survey-presentation-panel' ? 'active' : ''?>"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="sidebar-icons-item">
-                <div class="sidebar-icon" data-target="#survey-menu-panel" onclick="window.location='<?php echo App()->createUrl("admin/tokens/sa/index/surveyid/" . $sid);?>'">
-                        <div data-bs-toggle="tooltip"
-                         title="<?php echo gT('Survey menu'); ?>"
-                         data-bs-offset="0, 20"
-                         data-bs-placement="right">
-                        <i class="ri-file-text-line btn btn-g-800 btn-icon <?php echo $this->activePanel == 'survey-menu-panel' ? 'active' : ''?>"></i>
-                    </div>
-                </div>
-            </div>
+            <?php
+            // Define all sidebar icons
+            $sidebarIcons = [
+                // Survey structure
+                [
+                    'onClick' => "window.location='" . App()->createUrl(
+                            'editorLink/index',
+                            ['route' => 'survey/' . $sid]
+                        ) . "'",
+                    'tooltip' => gT('Survey structure'),
+                    'iconClass' => 'ri-bar-chart-horizontal-line'
+                ],
+                // Survey settings
+                [
+                    'dataTarget' => '#survey-settings-panel',
+                    'onClick' => "window.location='" . App()->createUrl(
+                            'editorLink/index',
+                            [
+                                'route' => 'survey/' . $sid
+                                    . '/settings/generalsettings'
+                            ]
+                        ) . "'",
+                    'tooltip' => gT('Survey settings'),
+                    'activePanel' => $this->activePanel == 'survey-settings-panel',
+                    'iconClass' => 'ri-settings-3-fill'
+                ],
+                // Survey presentation
+                [
+                    'dataTarget' => '#survey-presentation-panel',
+                    'onClick' => "window.location='" . App()->createUrl(
+                            'editorLink/index',
+                            [
+                                'route' => 'survey/' . $sid
+                                    . '/presentation/theme_options'
+                            ]
+                        ) . "'",
+                    'tooltip' => gT('Survey presentation'),
+                    'activePanel' => $this->activePanel == 'survey-presentation-panel',
+                    'iconClass' => 'ri-paint-fill'
+                ],
+                // Survey menu
+                [
+                    'dataTarget' => '#survey-menu-panel',
+                    'onClick' => "window.location='" . App()->createUrl(
+                            'admin/tokens/sa/index/surveyid/'
+                            . $sid
+                        ) . "'",
+                    'tooltip' => gT('Survey menu'),
+                    'activePanel' => $this->activePanel == 'survey-menu-panel',
+                    'iconClass' => 'ri-file-text-line'
+                ],
+                // Survey permissions
+                [
+                    'dataTarget' => '#survey-permissions-panel',
+                    'onClick' => "window.location='" . App()->createUrl(
+                            'surveyPermissions/index/',
+                            ['surveyid' => $sid]
+                        ) . "'",
+                    'tooltip' => gT('Survey permissions'),
+                    'activePanel' => $this->activePanel == 'survey-permissions-panel',
+                    'iconClass' => 'ri-group-line'
+                ],
+                // Quick translation
+                [
+                    'dataTarget' => '#survey-quick-translation',
+                    'disabled' => count($this->allLanguages) <= 1,
+                    'onClick' => "window.location='" . App()->createUrl(
+                            'quickTranslation/index/',
+                            ['surveyid' => $sid]
+                        ) . "'",
+                    'tooltip' => gT('Quick translation'),
+                    'tooltipDisabled' => gT('Quick translation') . ': '
+                        . gT(
+                            'Currently there are no additional languages configured for this survey.'
+                        ),
+                    'activePanel' => $this->activePanel == 'survey-quick-translation',
+                    'iconClass' => 'ri-translate-2'
+                ]
+            ];
 
-            <div class="sidebar-icons-item">
-                <div class="sidebar-icon" data-target="#survey-permissions-panel" onclick="window.location='<?php echo App()->createUrl('surveyPermissions/index/', ['surveyid' => $sid]);?>'">
-                    <div data-bs-toggle="tooltip"
-                         title="<?php echo gT('Survey permissions'); ?>"
-                         data-bs-offset="0, 20"
-                         data-bs-placement="right">
-                        <i class="ri-group-line btn btn-g-800 btn-icon <?php echo $this->activePanel == 'survey-permissions-panel' ? 'active' : ''?>"></i>
-                    </div>
-                </div>
-            </div>
-            <?php if (count($this->allLanguages) > 1) : ?>
-                <div class="sidebar-icons-item">
-                    <div class="sidebar-icon" data-target="#survey-quick-translation" onclick="window.location='<?php echo App()->createUrl('quickTranslation/index/', ['surveyid' => $sid]);?>'">
-                        <div style="z-index: 5000;"
-                             data-bs-toggle="tooltip"
-                             title="<?php echo gT('Quick translation'); ?>"
-                             data-bs-offset="0, 20"
-                             data-bs-placement="right">
-                            <i class="ri-translate-2 btn btn-g-800 btn-icon <?php echo $this->activePanel == 'survey-quick-translation' ? 'active' : ''?>"></i>
-                        </div>
-                    </div>
-                </div>
-            <?php endif; ?>
+            // Render all sidebar icons
+            foreach ($sidebarIcons as $iconData) {
+                $this->render('sidebarIconsItem', $iconData);
+            }
+            ?>
+
         </div>
         <div class="panels">
             <div id="survey-settings-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-settings-panel' ? 'd-none' : ''?>">
@@ -92,7 +114,7 @@
                             <a href="<?php echo $item['url']; ?>">
                                 <div class="survey-settings-panel-item text-black <?php echo (isset($item['selected']) && $item['selected']) ? ' bg-primary' : ''; ?>">
                                     <label class=" cursor-pointer mb-0 form-label <?php echo (isset($item['selected']) && $item['selected']) ? ' text-white' : ' text-black'; ?>">
-                                        <?php echo $item['name']; ?>
+                                        <?php echo gT($item['name']); ?>
                                     </label>
                                 </div>
                             </a>
@@ -122,7 +144,7 @@
                             <a href="<?php echo $item['disabled'] ?? false ? '#' : $item['url']; ?>" class="<?php echo $item['disabled'] ?? false ? 'disabled' : ''; ?>">
                                 <div class="survey-settings-panel-item text-black <?php echo (isset($item['selected']) && $item['selected']) ? ' bg-primary' : ''; ?>">
                                     <label class=" cursor-pointer mb-0 form-label <?php echo (isset($item['selected']) && $item['selected'])? ' text-white' : ' text-black'; ?>">
-                                        <?php echo $item['name']; ?>
+                                        <?php echo gT($item['name']); ?>
                                     </label>
                                 </div>
                             </a>
@@ -152,7 +174,7 @@
                             <a href="<?php echo $item['url']; ?>">
                                 <div class="survey-settings-panel-item text-black <?php echo (isset($item['selected']) && $item['selected'])? ' bg-primary' : ''; ?>">
                                     <label class=" cursor-pointer mb-0 form-label <?php echo (isset($item['selected']) && $item['selected']) ? ' text-white' : ' text-black'; ?>">
-                                        <?php echo $item['name']; ?>
+                                        <?php echo gT($item['name']); ?>
                                     </label>
                                 </div>
                             </a>

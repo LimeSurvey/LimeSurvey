@@ -970,9 +970,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/variations/theme_apple.css","css/base.css","css/custom.css"], "remove":["survey.css", "template-core.css", "awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css", "awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/custom.js"], "remove":["survey.js", "template-core.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"hideprivacyinfo":"off","showpopups":"1","showclearall":"off","questionhelptextposition":"top","fixnumauto":"enable","backgroundimage":"off","backgroundimagefile":".\/files\/pattern.png",
-                                     "brandlogo":"off","brandlogofile":"image::theme::files\/logo.png","font":"ibm-sans",
-                                     "cssframework":"Apple"}',
+            'options'           => '{"hideprivacyinfo":"off","showpopups":"1","showclearall":"off","questionhelptextposition":"top","fixnumauto":"enable","backgroundimage":"off","backgroundimagefile":".\/files\/pattern.png","brandlogo":"off","brandlogofile":"image::theme::files\/logo.png","font":"ibm-sans", "bodybackgroundcolor":"#ffffff","fontcolor":"#444444", "questionbackgroundcolor":"#ffffff", "checkicon":"f00c","cssframework":"Apple"}',
             'cssframework_name' => '',
             'cssframework_css'  => '',
             'cssframework_js'   => '',
@@ -1779,7 +1777,7 @@ class LsDefaultDataSets
          * @param int $active
          * @return array
          */
-        $addRow = function ($name, $active = 0, $version = '1.0.0') {
+        $addRow = function ($name, $active = 0, $version = '1.0.0', $priority = 0) {
             return [
                 'id' => null,
                 'name'               => $name,
@@ -1787,7 +1785,8 @@ class LsDefaultDataSets
                 'active'             => $active,
                 'version'            => $version,
                 'load_error'         => 0,
-                'load_error_message' => null
+                'load_error_message' => null,
+                'priority'           => $priority,
             ];
         };
 
@@ -1796,6 +1795,7 @@ class LsDefaultDataSets
             $addRow('PasswordRequirement', 1),
             $addRow('ComfortUpdateChecker', 1),
             $addRow('Authdb', 1),
+            $addRow('ReactEditor', 1),
             // Inactive plugins below.
             $addRow('AuthLDAP'),
             $addRow('AuditLog'),

@@ -1,0 +1,120 @@
+# Workflow for installing dependencies, running tests, and linting for the QuestionEditor
+name: QuestionEditor - CI pipeline
+
+on:
+  push:
+    paths:
+      - 'editor/**' # Only run when files in the editor folder change
+      - '.github/workflows/editor.yml'
+  workflow_dispatch:
+
+# Set the default working directory for all jobs to the editor folder
+defaults:
+  run:
+    working-directory: ./editor
+
+jobs:
+  Install-dependencies:
+    name: Install dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows
+      - name: Attempt to restore the cache
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: ./editor/node_modules
+          # The hashFiles function is used to generate a unique key for the cache based on the contents of the package-lock.json file.
+          # This ensures that the cache is only invalidated when the dependencies of the project change.
+          key: ${{ runner.os }}-node-${{ hashFiles('editor/package-lock.json') }}
+          # 'restore-keys' are fallback keys used if a cache miss occurs on the 'key' field. They provide a way to restore
+          # a cache from a previous state that doesn't match exactly with the 'key'. They are checked sequentially until a cache hit is found.
+          # A list of restore-keys is useful when you are restoring a cache from another branch because restore-keys can partially match cache keys.
+          restore-keys: |
+            ${{ runner.os }}-node-
+            ${{ runner.os }}-
+
+      - name: Install dependencies if cache miss
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
+
+      - name: Save the cache after installing dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache@v4
+        with:
+          path: ./editor/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('editor/package-lock.json') }}
+
+  Lint:
+    name: Lint
+    needs: Install-dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Attempt to restore the cache
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: ./editor/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('editor/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+            ${{ runner.os }}-
+
+      - name: Install dependencies if cache miss
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
+
+      - name: Run eslint checks
+        run: npm run eslint
+
+  Prettier:
+    name: Prettier
+    needs: Install-dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Attempt to restore the cache
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: ./editor/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('editor/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+            ${{ runner.os }}-
+
+      - name: Install dependencies if cache miss
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
+
+      - name: Run pretter check
+        run: npm run prettier:check
+
+  Jest-tests:
+    name: Jest tests
+    needs: [Install-dependencies, Prettier, Lint]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Attempt to restore the cache
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: ./editor/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('editor/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+            ${{ runner.os }}-
+
+      - name: Install dependencies if cache miss
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
+
+      - name: Run jest tests
+        continue-on-error: false
+        run: npm run test -- --ci --bail --coverage
+

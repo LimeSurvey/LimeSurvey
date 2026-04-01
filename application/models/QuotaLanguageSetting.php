@@ -102,22 +102,4 @@ class QuotaLanguageSetting extends LSActiveRecord
             'quotals_urldescrip' => gT("URL Description:"),
         );
     }
-
-    /**
-     * @param $data
-     * @return bool
-     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $settings = new self();
-        foreach ($data as $k => $v) {
-            if ($k === 'autoload_url') {
-                $settings->quota->autoload_url = $v;
-            } else {
-                $settings->$k = $v;
-            }
-        }
-        return $settings->save();
-    }
 }

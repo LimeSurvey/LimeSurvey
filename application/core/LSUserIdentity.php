@@ -57,7 +57,7 @@ class LSUserIdentity extends CUserIdentity
 
         // Check if the ip is locked out
         if (FailedLoginAttempt::model()->isLockedOut(FailedLoginAttempt::TYPE_LOGIN)) {
-            $message = sprintf(gT('You have exceeded the number of maximum login attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutTime') / 60);
+            $message = sprintf(gT('You have exceeded the number of maximum login attempts. Please wait %d minutes before trying again.'), Yii::app()->getConfig('timeOutTime') / 60);
             $result->setError(self::ERROR_IP_LOCKED_OUT, $message);
         }
 
@@ -153,7 +153,7 @@ class LSUserIdentity extends CUserIdentity
         Yii::app()->session['templateeditormode'] = $user->templateeditormode;
         Yii::app()->session['questionselectormode'] = $user->questionselectormode;
         Yii::app()->session['dateformat'] = $user->dateformat;
-        Yii::app()->session['session_hash'] = hash('sha256', getGlobalSetting('SessionName') . $user->users_name . $user->uid);
+        Yii::app()->session['session_hash'] = hash('sha256', Yii::app()->getConfig('SessionName') . $user->users_name . $user->uid);
 
         // Perform language settings
         if (

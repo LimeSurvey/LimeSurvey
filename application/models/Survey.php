@@ -208,7 +208,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $this->tokenencryptionoptions = '';
 
         // Default setting is to use the global Google Analytics key If one exists
-        $globalKey = App()->getConfig('googleanalyticsapikey');
+        $globalKey = Yii::app()->getConfig('googleanalyticsapikey');
         if ($globalKey != "") {
             $this->googleanalyticsapikey = "9999useGlobal9999";
             $this->googleanalyticsapikeysetting = "G";
@@ -216,11 +216,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
         /* default template */
         $this->template = 'inherit';
         /* default language */
-        $this->language = \LSYii_Validators::languageCodeFilter(App()->getConfig('defaultlang'));
+        $this->language = \LSYii_Validators::languageCodeFilter(Yii::app()->getConfig('defaultlang'));
         /* default user */
         $this->owner_id = 1;
-        $this->admin = App()->getConfig('siteadminname');
-        $this->adminemail = App()->getConfig('siteadminemail');
+        $this->admin = Yii::app()->getConfig('siteadminname');
+        $this->adminemail = Yii::app()->getConfig('siteadminemail');
         if (!(Yii::app() instanceof CConsoleApplication)) {
             $iUserid = Permission::model()->getUserId();
             if ($iUserid) {
@@ -605,7 +605,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 $oSurvey = self::model()->findByPk($this->sid);
                 if ($oSurvey->template != $sTemplateName) {
                     // No need to test !is_null($oSurvey)
-                    $sTemplateName = getGlobalSetting('defaulttheme');
+                    $sTemplateName = Yii::app()->getConfig('defaulttheme');
                 }
             } else {
                 $sTemplateName = 'inherit';
@@ -1166,7 +1166,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getRunning()
     {
-            $onclick = App()->getConfig('editorEnabled')
+            $onclick = Yii::app()->getConfig('editorEnabled')
                 ? ' onclick="return  false;" '
                 : '';
 
@@ -1502,19 +1502,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getButtons(): string
     {
-        $permissions = [
-            'statistics_read'  => Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read'),
-            'survey_update'    => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update'),
-            'responses_create' => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'create'),
-        ];
 
         $dropdownItems = [];
         $dropdownItems[] = [
             'title' => gT('General settings'),
-            'url' => App()->getConfig('editorEnabled')
-                ? App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/generalsettings'])
-                : App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
-            'enabledCondition' => $permissions['survey_update'],
+            'url' => App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'surveysettings', 'read'),
         ];
         $dropdownItems[] = [
             'title'            => gT('Preview'),
@@ -1522,33 +1515,53 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 "survey/index",
                 ['sid' => $this->sid, 'newtest' => "Y", 'lang' => $this->language]
             ),
-            'enabledCondition' => $permissions['survey_update'],
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'read'),
             'linkAttributes'   => ['target' => '_blank'],
         ];
         $dropdownItems[] = [
             'title' => gT('Share'),
             'url' => App()->createUrl("/surveyAdministration/view", array('iSurveyID' => $this->sid)),
-            'enabledCondition' => $permissions['survey_update'],
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'read'),
         ];
         $dropdownItems[] = [
+            'submenu' => true,
             'title' => gT('Copy'),
-            'url' => App()->createUrl("/surveyAdministration/newSurvey", ['tab' => 'copy']),
-
-            'enabledCondition' => $permissions['survey_update'],
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read'),
+            'submenu_items' => $this->getSubmenuItemsCopy(Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')),
         ];
         $dropdownItems[] = [
             'title' => gT('Add user'),
             'url' => App()->createUrl('/surveyPermissions/index', ['surveyid' => $this->sid]),
-            'enabledCondition' => $permissions['survey_update'],
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'surveysecurity', 'create'),
         ];
 
         $dropdownItems[] = [
             'title' => gT('Delete'),
             'url' => App()->createUrl("/surveyAdministration/delete", array('iSurveyID' => $this->sid)),
-            'enabledCondition' => $permissions['survey_update'],
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'delete'),
         ];
 
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
+    }
+
+    private function getSubmenuItemsCopy($enableCondition = true)
+    {
+        $submenuItems = [];
+        $submenuItems[] = [
+            'title' => gT('Quick copy'),
+            'url' => App()->createUrl("/surveyAdministration/copySimple", ['surveyIdToCopy' => $this->sid]),
+            'enabledCondition' => $enableCondition,
+        ];
+        $submenuItems[] = [
+            'title' => gT('Custom copy'),
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-bs-target' => "#copySurvey_modal",
+                'onclick' => "copySurveyOptions(" . (int)$this->sid . ")",
+            ],
+            'enabledCondition' => $enableCondition,
+        ];
+        return $submenuItems;
     }
 
     /**
@@ -1559,39 +1572,30 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getActionButtons(): string
     {
-        $permissions = [
-            'statistics_read'  => Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read'),
-            'survey_update'    => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update'),
-            'responses_create' => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'create'),
-        ];
-
         $items = [];
         $items[] = [
             'title' => gT('Edit survey'),
             'url' => App()->createUrl('surveyAdministration/view', ['iSurveyID' => $this->sid]),
             'iconClass' => 'ri-edit-line',
-            'enabledCondition' => $this->active !== "Y" && $permissions['responses_create']
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'),
         ];
-
         $items[] = [
             'title' => gT('Activate'),
             'url' => App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
             'iconClass' => 'ri-check-line',
             'enabledCondition' =>
                 $this->active === "N"
-                && $permissions['survey_update']
+                && Permission::model()->hasSurveyPermission($this->sid, 'surveyactivation', 'update')
                 && $this->groupsCount > 0
                 && $this->getQuestionsCount() > 0
         ];
         $items[] = [
             'title' => gT('Statistics'),
-            'url' => App()->getConfig('editorEnabled')
-                ? App()->createUrl('editorLink/index', ['route' => 'responses/' . $this->sid])
-                : App()->createUrl('admin/statistics/sa/simpleStatistics', ['surveyid' => $this->sid]),
+            'url' => App()->createUrl('admin/statistics/sa/simpleStatistics', ['surveyid' => $this->sid]),
             'iconClass' => 'ri-bar-chart-2-line',
             'enabledCondition' =>
                 $this->active === "Y"
-                && $permissions['statistics_read'],
+                && Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read'),
         ];
 
         return App()->getController()->widget('ext.admin.grid.BarActionsWidget.BarActionsWidget', ['items' => $items], true);
@@ -1916,7 +1920,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $criteriaPerm->compare("surveysingrouppermissions{$userid}.read_p", '1', false, 'OR'); // This mean : update, export … didn't allow see in list
 
             /* Under condition : owner of group */
-            if (App()->getConfig('ownerManageAllSurveysInGroup')) {
+            if (Yii::app()->getConfig('ownerManageAllSurveysInGroup')) {
                 $criteriaPerm->mergeWith(
                     array(
                         'join' => "LEFT JOIN {{surveys_groups}} AS surveysgroupsowner{$userid} ON (surveysgroupsowner{$userid}.gsid = t.gsid) ",
@@ -1963,7 +1967,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * @return string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
      */
-    public static function saveTranscribeCaptchaOptions(Survey $oSurvey = null)
+    public static function saveTranscribeCaptchaOptions(?Survey $oSurvey = null)
     {
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess', null);
         $registration = App()->request->getPost('usecaptcha_registration', null);
@@ -1977,35 +1981,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         $surveyUseCaptcha = new \LimeSurvey\Models\Services\SurveyUseCaptcha(0, $oSurvey);
         return $surveyUseCaptcha->convertUseCaptchaForDB($surveyaccess, $registration, $saveandload);
-    }
-
-
-    /**
-     * Method to make an approximation on how long a survey will last
-     * Approx is 3 questions each minute.
-     *
-     * @deprecated Unused since 3.X
-     * @return double
-     */
-    public function calculateEstimatedTime()
-    {
-        //@TODO make the time_per_question variable user configureable
-        $time_per_question = 0.5;
-        $criteria = new CDbCriteria();
-        $criteria->addCondition('sid = ' . $this->sid);
-        $criteria->addCondition('parent_qid = 0');
-        $criteria->addCondition('language = \'' . $this->language . '\'');
-        $baseQuestions = Question::model()->count($criteria);
-        // Note: An array questions with one sub question is fetched as 1 base question + 1 sub question
-        $criteria = new CDbCriteria();
-        $criteria->addCondition('sid = ' . $this->sid);
-        $criteria->addCondition('parent_qid != 0');
-        $criteria->addCondition('language = \'' . $this->language . '\'');
-        $subQuestions = Question::model()->count($criteria);
-        // Subquestions are worth less "time" than base questions
-        $subQuestions = intval(($subQuestions - $baseQuestions) / 2);
-        $subQuestions = $subQuestions < 0 ? 0 : $subQuestions;
-        return ceil(($subQuestions + $baseQuestions) * $time_per_question);
     }
 
     /**

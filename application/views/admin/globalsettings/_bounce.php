@@ -11,7 +11,7 @@
 <div class="mb-3">
     <label class=" form-label" for='siteadminbounce'><?php eT("Default site bounce email:"); ?></label>
     <div class="">
-        <input class="form-control" type='text' size='50' id='siteadminbounce' name='siteadminbounce' value="<?php echo htmlspecialchars((string) getGlobalSetting('siteadminbounce')); ?>" />
+        <input class="form-control" type='text' size='50' id='siteadminbounce' name='siteadminbounce' value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('siteadminbounce')); ?>" />
     </div>
 </div>
 
@@ -20,7 +20,8 @@
     <div>
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
             'name'          => 'bounceaccounttype',
-            'checkedOption' => getGlobalSetting('bounceaccounttype'),
+            'ariaLabel'     => gT('Server type:'),
+            'checkedOption' => Yii::app()->getConfig('bounceaccounttype'),
             'selectOptions' => [
                 "off"  => gT("Off", 'unescaped'),
                 "IMAP" => gT("IMAP", 'unescaped'),
@@ -34,8 +35,8 @@
 <div class="mb-3">
     <label class=" form-label"  for='bounceaccounthost'><?php eT("Server name & port:"); ?></label>
     <div class="">
-        <input class="form-control" type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value="<?php echo htmlspecialchars((string) getGlobalSetting('bounceaccounthost'))?>" />
-        <span class='hint'><?php eT("Enter your hostname and port, e.g.: imap.gmail.com:993"); ?></span>
+        <input class="form-control" type='text' size='50' id='bounceaccounthost' aria-describedby="bounce_ins" name='bounceaccounthost' value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('bounceaccounthost'))?>" />
+        <span id="bounce_ins" class='hint'><?php eT("Enter your hostname and port, e.g.: imap.gmail.com:993"); ?></span>
     </div>
 
 </div>
@@ -44,7 +45,7 @@
     <label class=" form-label"  for='bounceaccountuser'><?php eT("User name:"); ?></label>
     <div class="">
         <input class="form-control" type='text' size='50' id='bounceaccountuser' name='bounceaccountuser'
-            value="<?php echo htmlspecialchars((string) getGlobalSetting('bounceaccountuser'))?>" />
+            value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('bounceaccountuser'))?>" />
     </div>
 </div>
 
@@ -60,7 +61,8 @@
     <div>
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
             'name'          => 'bounceencryption',
-            'checkedOption' => strtolower((string) getGlobalSetting('bounceencryption')),
+            'ariaLabel'=> gT('Encryption type'),
+            'checkedOption' => strtolower((string) Yii::app()->getConfig('bounceencryption')),
             'selectOptions' => [
                 "off" => gT("Off (unsafe)", 'unescaped'),
                 "ssl" => "SSL/TLS",

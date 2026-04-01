@@ -108,7 +108,7 @@ class Export extends SurveyCommonAction
 
         Yii::app()->loadHelper("admin.exportresults");
 
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . '/exportresults.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . '/exportresults.js');
 
         $sExportType = Yii::app()->request->getPost('type');
         $sHeadingFormat = Yii::app()->request->getPost('headstyle');
@@ -225,12 +225,21 @@ class Export extends SurveyCommonAction
             $data['topBar']['showExportButton'] = true;
             $data['topBar']['showCloseButton'] = true;
 
+            // If editor is enabled, redirect to editor results list
+            $editorEnabled = Yii::app()->getConfig('editorEnabled');
+            if ($editorEnabled) {
+                $closeUrl = Yii::app()->createUrl('editorLink/index', ['route' => 'responses/' . $survey->sid . '/results/list']);
+            } else {
+                // Default redirect to responses browse
+                $closeUrl = Yii::app()->createUrl('responses/browse', ['surveyId' => $survey->sid]);
+            }
+
             $data['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
                 '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
                 [
                     'showExportButton' => true,
                     'showCloseButton' => true,
-                    'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $survey->sid])
+                    'closeUrl' => $closeUrl
                 ],
                 true
             );
@@ -872,7 +881,7 @@ class Export extends SurveyCommonAction
         $xml->startDocument('1.0', 'UTF-8');
         $xml->startElement('document');
         $xml->writeElement('LimeSurveyDocType', 'Label set');
-        $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
+        $xml->writeElement('DBVersion', Yii::app()->getConfig("DBVersion"));
 
         // Label sets table
         $lsquery = "SELECT * FROM {{labelsets}} WHERE lid=" . implode(' or lid=', $lids);
@@ -1211,7 +1220,7 @@ class Export extends SurveyCommonAction
         $queXMLSettings = $defaultquexmlpdf->_quexmlsettings();
 
         foreach ($queXMLSettings as $s) {
-            $aData[$s] = getGlobalSetting($s);
+            $aData[$s] = Yii::app()->getConfig($s);
 
             if ($aData[$s] === null || trim((string) $aData[$s]) === '') {
                 $method = str_replace("queXML", "get", $s);

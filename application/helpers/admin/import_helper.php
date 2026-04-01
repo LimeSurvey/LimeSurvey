@@ -3179,7 +3179,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $oldid = $insertdata['id'];
             unset($insertdata['id']);
             // now translate any links
-            $result = Quota::model()->insertRecords($insertdata);
+            $newQuota = new Quota();
+            $newQuota->setAttributes($insertdata, false);
+            $result = $newQuota->save();
             if (!$result) {
                 throw new Exception(gT("Error") . ": Failed to insert data[12]<br />");
             }
@@ -3803,7 +3805,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
             if ($aOptions['bNotFinalized']) {
                 $oSurvey->submitdate = new CDbExpression('NULL');
             } elseif (is_int($iSubmitdateKey)) {
-                if ($aResponses[$iSubmitdateKey] == '{question_not_shown}' || trim($aResponses[$iSubmitdateKey] == '')) {
+                if ($aResponses[$iSubmitdateKey] == '{question_not_shown}' || trim((string) $aResponses[$iSubmitdateKey]) == '') {
                     $oSurvey->submitdate = new CDbExpression('NULL');
                 } else {
                     // Maybe control valid date : see http://php.net/manual/en/function.checkdate.php#78362 for example
@@ -3941,6 +3943,11 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
             if ($key[0] == '_') {
                 $key = substr($key, 1);
             }
+            if (strpos($key, "X") !== false) {
+                $parts = explode("X", $key);
+                $prefix = (count($parts) >= 3) ? 'Q' : 'G';
+                $key = $prefix . $parts[count($parts) - 1];
+            }
             if (isset($aFieldReMap[substr($key, 0, -4)])) {
                 $key = $aFieldReMap[substr($key, 0, -4)] . 'time';
             }
@@ -3970,8 +3977,6 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 */
 function TSVImportSurvey($sFullFilePath)
 {
-    $baselang = 'en'; // TODO set proper default
-
     $aAttributeList = array(); //QuestionAttribute::getQuestionAttributesSettings();
     $tmp = fileCsvToUtf8($sFullFilePath);
 
@@ -4000,6 +4005,12 @@ function TSVImportSurvey($sFullFilePath)
         $adata[] = $rowarray;
     }
     fclose($tmp);
+    /* Check minimal headers */
+    $necessaryHeader = ['class', 'name', 'text'];
+    if (count(array_diff($necessaryHeader, $rowheaders)) > 0) {
+        $results['error'] = gT("The file does not seem to be a valid survey file. The necessary headers are not present.");
+        return $results;
+    }
     unset($rowheaders);
     unset($rowarray) ;
 
@@ -4034,7 +4045,11 @@ function TSVImportSurvey($sFullFilePath)
                 break;
         }
     }
-
+    if (!isset($surveyinfo['language'])) {
+        $results['error'] = gT("The file do not seem to be a valid tab-separated-values survey file. No language set.");
+        return $results;
+    }
+    $baselang = $surveyinfo['language']; // the base language
 
     // Create the survey entry
     $surveyinfo['startdate'] = null;
@@ -4065,9 +4080,6 @@ function TSVImportSurvey($sFullFilePath)
     $sqinfo = array();
     $asinfo = array();
 
-    if (isset($surveyinfo['language'])) {
-        $baselang = $surveyinfo['language']; // the base language
-    }
     /* Keep track of id for group */
     $groupIds = [];
     /* Keep track of id for question (can come from tsv and can be broken : issue #17980 */

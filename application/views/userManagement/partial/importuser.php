@@ -40,9 +40,8 @@ Yii::app()->getController()->renderPartial(
     </div>
 
     <div class="mb-3">
-        <label class="form-label" for="the_file"><?= sprintf(gT('Select %s file:', 'js'), $importFormat); ?></label>
-        <input class="form-control" id="the_file" type="file" accept="<?= $allowFile ?>" name="the_file" id="the_file"
-               class="form control" required/>
+        <label class="form-label" for="the_file"><?= sprintf(gT('Select %s file:', 'js'), $importFormat); ?> </label> 
+        <input class="form-control" id="the_file" type="file" accept="<?= $allowFile ?>" name="the_file" required="required"/>
     </div>
 </div>
 

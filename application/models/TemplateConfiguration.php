@@ -355,7 +355,7 @@ class TemplateConfiguration extends TemplateConfig
 
     /**
      * Get an instance of a fitting TemplateConfiguration
-     * NOTE: for rendering prupose, you should never call this function directly, but rather Template::getInstance.
+     * NOTE: for rendering purpose, you should never call this function directly, but rather Template::getInstance.
      * if force_xmlsettings_for_survey_rendering is on, then the configuration from the XML file should be loaded,
      * not the one from database
      *
@@ -577,7 +577,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Sets all available inheritance fields of the class::TemplateConfiguration to the value inherit as string
      */
     public function setToInherit()
     {
@@ -947,7 +947,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Fetches the imageFileList and the maxFileSize for the current theme and adds them to a new array which includes all TemplateConfiguration attributes
      *
      * @return array
      */
@@ -1004,8 +1004,6 @@ class TemplateConfiguration extends TemplateConfig
         $oSimpleInheritance->options = 'inherit';
         $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering($this->template->name);
 
-        // TODO: It's not clear which class prepareTemplateRendering() returns or should return.
-        /** @var Template */
         $oTemplate = $this->prepareTemplateRendering($this->template->name);
 
         $renderArray = array('templateConfiguration' => $oTemplate->getOptionPageAttributes());

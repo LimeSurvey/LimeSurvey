@@ -470,17 +470,6 @@ class Permission extends LSActiveRecord
 
     /**
      * @param array $data
-     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        foreach ($data as $item) {
-            $this->insertSomeRecords($item);
-        }
-    }
-
-    /**
-     * @param array $data
      * @return bool
      */
     public function insertSomeRecords($data)
@@ -700,6 +689,7 @@ class Permission extends LSActiveRecord
 
     /**
      * Checks if a user has a certain permission in the given survey
+     * Note: This function automatically also takes global permissions into account
      *
      * @param $iSurveyID integer The survey ID
      * @param $sPermission string Name of the permission

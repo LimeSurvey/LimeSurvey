@@ -225,7 +225,7 @@ class DataEntry extends SurveyCommonAction
         asort($aEncodings);
 
         // Get default character set from global settings
-        $thischaracterset = getGlobalSetting('characterset');
+        $thischaracterset = Yii::app()->getConfig('characterset');
 
         // If no encoding was set yet, use the old "utf8" default
         if ($thischaracterset == "") {
@@ -946,7 +946,7 @@ class DataEntry extends SurveyCommonAction
                         $questionInput .= "</div>";
                         $questionInput .= '</div>';
                         App()->getClientScript()->registerPackage('jquery-actual');
-                        App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts') . 'ranking.js');
+                        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
                         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
                         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery-ui-custom.css');
 
@@ -1387,6 +1387,7 @@ class DataEntry extends SurveyCommonAction
                                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                     'allowInputToggle' => true,
                                     'showClear' => true,
+                                    'theme' => 'light',
                                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']),
                                 )
                             ),
@@ -1973,7 +1974,7 @@ class DataEntry extends SurveyCommonAction
                         }
                         if ($saver['email']) {
                             //Send email
-                            if (validateEmailAddress($saver['email']) && !returnGlobal('redo')) {
+                            if (LimeMailer::validateAddress($saver['email']) && !returnGlobal('redo')) {
                                 $mailer = new \LimeMailer();
                                 $mailer->addAddress($saver['email']);
                                 $mailer->setSurvey($surveyid);
@@ -2196,9 +2197,9 @@ class DataEntry extends SurveyCommonAction
                     $cdata['qidattributes'] = $qidattributes;
 
                     $qinfo = LimeExpressionManager::GetQuestionStatus($arQuestion['qid']);
-                    $relevance = trim((string) $qinfo['info']['relevance']);
-                    $explanation = trim((string) $qinfo['relEqn']);
-                    $validation = trim((string) $qinfo['prettyValidTip']);
+                    $relevance = trim((string)($qinfo['info']['relevance'] ?? ''));
+                    $explanation = trim((string)($qinfo['relEqn'] ?? ''));
+                    $validation = trim((string)($qinfo['prettyValidTip'] ?? ''));
                     $arrayFilterHelp = flattenText($this->arrayFilterHelp($qidattributes, $sDataEntryLanguage, $surveyid));
 
                     if (true || ($relevance != '' && $relevance != '1') || ($validation != '') || ($arrayFilterHelp != '')) {
@@ -2300,7 +2301,7 @@ class DataEntry extends SurveyCommonAction
                                 $optgroups = array();
 
                                 foreach ($arAnswers as $aAnswer) {
-                                    list ($categorytext, $answertext) = explode($optCategorySeparator, (string) $aAnswer->answerl10ns[$sDataEntryLanguage]->answer);
+                                    [$categorytext, $answertext] = explode($optCategorySeparator, (string) $aAnswer->answerl10ns[$sDataEntryLanguage]->answer);
                                     if ($categorytext == '') {
                                         $defaultopts[] = array('code' => $aAnswer['code'], 'answer' => $answertext, 'default_value' => $aAnswer['assessment_value']);
                                     } else {
@@ -2346,7 +2347,7 @@ class DataEntry extends SurveyCommonAction
                             $cdata['anscount'] = $anscount;
                             $cdata['answers'] = $arAnswers;
                             App()->getClientScript()->registerPackage('jquery-actual');
-                            App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts') . 'ranking.js');
+                            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
                             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
                             break;
                         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox (Quite tricky really!)
