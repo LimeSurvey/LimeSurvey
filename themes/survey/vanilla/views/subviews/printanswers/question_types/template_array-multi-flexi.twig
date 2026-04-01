@@ -3,7 +3,7 @@
  <div class="col-lg-8">
     <table class="table table-condensed table-striped">
     {% for subquestionId, subquestion in question.subquestions %}
-        {% if subquestion.question_order == 1 %}
+        {% if loop.first %}
             <tr>
                 <th></th>
                 {% for colname, value in subquestion.answervalueslabels %}

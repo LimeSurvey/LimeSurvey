@@ -893,12 +893,12 @@ class SurveyDynamic extends LSActiveRecord
             in_array($oQuestion->type, ["F", "A", "B", "E", "C", "H", "Q", "K", "M", "P", ";",":","1"])
             || ($oQuestion->type == 'T' && $oQuestion->parent_qid != 0)
         ) {
-            $fieldname .= $oQuestion->title;
+            $fieldname .= '_S' . $oQuestion->qid;
         }
 
 
         if ($getCommentOnly) {
-            $fieldname .= 'comment';
+            $fieldname .= '_Ccomment';
         }
 
         $aQuestionAttributes['fieldname'] = $fieldname;
@@ -938,7 +938,7 @@ class SurveyDynamic extends LSActiveRecord
                 );
             } elseif ($oQuestion->other == 'Y') {
                 $aQuestionAttributes['answervalue'] = !empty($attributes['other_replace_text'][$sLanguage]) ? $attributes['other_replace_text'][$sLanguage] : gT("Other");
-                $aQuestionAttributes['answeroption']['answer'] = $oResponses[$fieldname . 'other'] ?? null;
+                $aQuestionAttributes['answeroption']['answer'] = $oResponses[$fieldname . '_Cother'] ?? null;
             }
         }
 
@@ -964,12 +964,12 @@ class SurveyDynamic extends LSActiveRecord
 
             $tempFieldname = $fieldname . '#0';
             $sAnswerCode = $oResponses[$tempFieldname] ?? null;
-            $sAnswerText = isset($aAnswerText[0][$oResponses[$tempFieldname]]) ? $aAnswerText[0][$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
+            $sAnswerText = isset($aAnswerText[0][$sAnswerCode]) ? $aAnswerText[0][$sAnswerCode] . ' (' . $sAnswerCode . ')' : null;
             $aQuestionAttributes['answervalues'][0] = $sAnswerText;
 
             $tempFieldname = $fieldname . '#1';
             $sAnswerCode = $oResponses[$tempFieldname] ?? null;
-            $sAnswerText = isset($aAnswerText[1][$oResponses[$tempFieldname]]) ? $aAnswerText[1][$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
+            $sAnswerText = isset($aAnswerText[1][$sAnswerCode]) ? $aAnswerText[1][$sAnswerCode] . ' (' . $sAnswerCode . ')' : null;
             $aQuestionAttributes['answervalues'][1] = $sAnswerText;
         }
 
@@ -983,12 +983,14 @@ class SurveyDynamic extends LSActiveRecord
 
         if ($aQuestionAttributes['questionclass'] === 'ranking') {
             $aQuestionAttributes['answervalues'] = array();
-            $iterator = 1;
-            do {
-                $currentResponse = $oResponses[$fieldname . $iterator];
+            foreach ($oQuestion->answers as $oAnswer) {
+                if (!isset($oResponses[$fieldname . '_R' . $oAnswer->aid]) || $oResponses[$fieldname . '_R' . $oAnswer->aid] === '') {
+                    continue;
+                }
+                $currentResponse = $oResponses[$fieldname . '_R' . $oAnswer->aid];
 
-                $oSelectedAnswerOption = array_reduce($oQuestion->answers, function ($carry, $oAnswer) use ($currentResponse) {
-                    return $currentResponse == $oAnswer->code ? $oAnswer : $carry;
+                $oSelectedAnswerOption = array_reduce($oQuestion->answers, function ($carry, $oAns) use ($currentResponse) {
+                    return $currentResponse == $oAns->code ? $oAns : $carry;
                 });
 
                 $option = '';
@@ -999,9 +1001,7 @@ class SurveyDynamic extends LSActiveRecord
                     );
                 }
                 $aQuestionAttributes['answervalues'][] = ['value' => $currentResponse, 'option' => $option];
-
-                $iterator++;
-            } while (isset($oResponses[$fieldname . $iterator]));
+            }
         }
 
         /* Second (X) scale for array text and array number */
@@ -1012,7 +1012,7 @@ class SurveyDynamic extends LSActiveRecord
                 'params' => array(':parent_qid' => $aQuestionAttributes['parent_qid'], ':scale_id' => 1),
             ));
             foreach ($oScaleXSubquestions as $oScaleSubquestion) {
-                $tempFieldname = $fieldname . '_' . $oScaleSubquestion->title;
+                $tempFieldname = $fieldname . '_S' . $oScaleSubquestion->qid;
                 $aQuestionAttributes['answervalues'][$oScaleSubquestion->title] = $oResponses[$tempFieldname] ?? null;
                 /* Isue with language, need #15907 fixed */
                 $aQuestionAttributes['answervalueslabels'][$oScaleSubquestion->title] = $oScaleSubquestion->questionl10ns[$sLanguage]->question ?? null;
