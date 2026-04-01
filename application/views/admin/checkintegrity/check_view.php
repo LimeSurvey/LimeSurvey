@@ -20,7 +20,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     <ul class="list-unstyled">
                         <?php
                         foreach ($conditions as $condition) { ?>
-                            <li>CID:<?php echo $condition['cid'] . ' ' . gT("Reason:") . " {$condition['reason']}"; ?></li><?php
+                            <li><?php printf(gT("Condition ID: %s"), $condition['cid']); ?> <?php printf(gT("Reason: %s"), $condition['reason']); ?></li><?php
                         } ?>
                     </ul>
                     <?php
@@ -69,7 +69,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($assessments as $assessment) { ?>
-                                <li>AID:<?php echo $assessment['id']; ?><?php eT("Assessment:"); ?><?php eT("Reason:"); ?> <?php echo $assessment['reason']; ?></li><?php
+                                <li>AID:<?php echo $assessment['id']; ?> <?php printf(gT("Assessment: %s"), $assessment['assessment']); ?> <?php printf(gT("Reason: %s"), $assessment['reason']); ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -84,7 +84,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($answers as $answer) { ?>
-                                <li>QID:<?php echo $answer['qid']; ?> <?php eT("Code:"); ?> <?php echo $answer['code']; ?> <?php eT("Reason:"); ?><?php echo $answer['reason']; ?></li><?php
+                                <li>QID:<?php echo $answer['qid']; ?> <?php printf(gT("Code: %s"), $answer['code']); ?> <?php printf(gT("Reason: %s"), $answer['reason']); ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -99,7 +99,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($answer_l10ns as $answer) { ?>
-                                <li>AID:<?php echo $answer['aid']; ?> <?php printf(gT("ID: %s"), $answer['id']); ?> <?php eT("Reason:"); ?><?php echo $answer['reason']; ?></li><?php
+                                <li>AID:<?php echo $answer['aid']; ?> <?php printf(gT("ID: %s"), $answer['id']); ?> <?php printf(gT("Reason: %s"), $answer['reason']); ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -114,7 +114,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($surveys as $survey) { ?>
-                                <li>SID:<?php echo $survey['sid']; ?> <?php eT("Reason:"); ?><?php echo $survey['reason']; ?></li><?php
+                                <li>SID:<?php echo $survey['sid']; ?> <?php printf(gT("Reason: %s"), $survey['reason']); ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -129,7 +129,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($surveylanguagesettings as $surveylanguagesetting) { ?>
-                                <li>SLID:<?php echo $surveylanguagesetting['slid']; ?> <?php eT("Reason:"); ?><?php echo $surveylanguagesetting['reason']; ?></li><?php
+                                <li><?php printf(gT("Survey Language Setting ID: %s"), $surveylanguagesetting['slid']); ?> <?php printf(gT("Reason: %s"), $surveylanguagesetting['reason']); ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -144,7 +144,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($questions as $question) { ?>
-                                <li><?php printf(gT("Question ID: %s"), $question['id']); ?> <?php eT("Reason:"); ?><?php echo $question['reason']; ?></li><?php
+                                <li><?php printf(gT("Question ID: %s"), $question['id']); ?> <?php printf(gT("Reason: %s"), $question['reason']); ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -159,7 +159,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($question_l10ns as $question) { ?>
-                                <li><?php printf(gT("Question ID: %s"), $question['id']); ?> <?php eT("Reason:"); ?><?php echo $question['reason']; ?></li><?php
+                                <li><?php printf(gT("Question ID: %s"), $question['id']); ?> <?php printf(gT("Reason: %s"), $question['reason']); ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -174,10 +174,10 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     <ul>
                         <?php foreach ($questionOrderDuplicates as $info) : ?>
                             <li>
-                                SID: <a href="<?php echo $info['viewSurveyLink']; ?>"><?php echo $info['sid']; ?></a>
-                                GID: <a href="<?php echo $info['viewGroupLink']; ?>"><?php echo $info['gid']; ?></a>
+                                <?php printf(gT("Survey ID: %s"), '<a href="' . $info['viewSurveyLink'] . '">' . $info['sid'] . '</a>'); ?>
+                                <?php printf(gT("Group ID: %s"), '<a href="' . $info['viewGroupLink'] . '">' . $info['gid'] . '</a>'); ?>
                                 <?php if ($info['parent_qid'] != 0) : ?>
-                                    Parent QID: <a href="<?php echo $info['questionSummaryLink']; ?>"><?php echo $info['parent_qid']; ?></a>
+                                    <?php printf(gT("Parent question ID: %s"), '<a href="' . $info['questionSummaryLink'] . '">' . $info['parent_qid'] . '</a>'); ?>
                                 <?php endif; ?>
                             </li>
                         <?php endforeach; ?>
@@ -192,7 +192,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($groups as $group) { ?>
-                                <li>GID:<?php echo $group['gid']; ?> <?php eT("Reason:"); ?><?php echo $group['reason']; ?></li><?php
+                                <li><?php printf(gT("ID: %s"), $group['id']); ?> <?php printf(gT("Reason: %s"), $group['reason']); ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -207,7 +207,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($group_l10ns as $group) { ?>
-                                <li>GID:<?php echo $group['gid']; ?><?php printf(gT("ID: %s"), $group['id']); ?> <?php eT("Reason:"); ?><?php echo $group['reason']; ?></li><?php
+                                <li><?php printf(gT("ID: %s"), $group['id']); ?> <?php printf(gT("Reason: %s"), $group['reason']); ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -222,7 +222,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($user_in_groups as $user_in_group) { ?>
-                                <li>UID:<?php echo $user_in_group['uid']; ?> UGID:<?php echo $user_in_group['ugid']; ?> <?php eT("Reason:"); ?><?php echo $user_in_group['reason']; ?></li><?php
+                                <li><?php printf(gT("User ID: %s"), $user_in_group['uid']); ?> <?php printf(gT("UGID: %s"), $user_in_group['ugid']); ?> <?php printf(gT("Reason: %s"), $user_in_group['reason']); ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -236,7 +236,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     <ul>
                         <?php foreach ($groupOrderDuplicates as $info) : ?>
                             <li>
-                                SID: <a href="<?php echo $info['organizerLink']; ?>"><?php echo $info['sid']; ?></a>
+                                <?php printf(gT("Survey ID: %s"), '<a href="' . $info['organizerLink'] . '">' . $info['sid'] . '</a>'); ?>
                             </li>
                         <?php endforeach; ?>
                     </ul>
