@@ -280,15 +280,26 @@ class ReactEditor extends \PluginBase
      * Shows a warning flash message if the survey's effective theme is not
      * compatible with the React editor.
      *
+     * If Survey::getTemplateEffectiveName() throws (e.g. when the survey
+     * inherits a missing group template), the exception is caught
+     * and the theme is treated as incompatible so the warning is still shown.
+     *
      * @param Survey|null $survey
      * @return void
      */
     private function warnIfIncompatibleTheme(?Survey $survey): void
     {
-        if (
-            $survey !== null
-            && $survey->getTemplateEffectiveName() !== 'fruity_twentythree'
-        ) {
+        if ($survey === null) {
+            return;
+        }
+
+        try {
+            $isCompatible = $survey->getTemplateEffectiveName() === 'fruity_twentythree';
+        } catch (\Throwable $e) {
+            $isCompatible = false;
+        }
+
+        if (!$isCompatible) {
             App()->setFlashMessage(
                 gT("The new editor is currently only compatible with the 'Fruity TwentyThree' theme"),
                 'warning'
