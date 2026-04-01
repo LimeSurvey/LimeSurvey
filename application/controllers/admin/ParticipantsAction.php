@@ -1085,7 +1085,7 @@ class ParticipantsAction extends SurveyCommonAction
                     $aEmailAddresses = explode(';', $writearray['email']);
                     // Ignore additional email addresses
                     $sEmailaddress = $aEmailAddresses[0];
-                    if (!validateEmailAddress($sEmailaddress)) {
+                    if (!LimeMailer::validateAddress($sEmailaddress)) {
                         $invalidemail = true;
                         $invalidemaillist[] = CHtml::encode($line[0] . " " . $line[1] . " (" . $line[2] . ")");
                     }
@@ -1098,7 +1098,7 @@ class ParticipantsAction extends SurveyCommonAction
                         $uuid = Participant::genUuid(); //Generate a UUID for the new participant
                         $writearray['participant_id'] = $uuid;
                     }
-                    if (isset($writearray['emailstatus']) && trim($writearray['emailstatus'] == '')) {
+                    if (isset($writearray['emailstatus']) && trim((string) $writearray['emailstatus']) == '') {
                         unset($writearray['emailstatus']);
                     }
                     if (!isset($writearray['language']) || $writearray['language'] == "") {
@@ -1108,10 +1108,10 @@ class ParticipantsAction extends SurveyCommonAction
                         $writearray['blacklisted'] = "N";
                     }
                     $writearray['owner_uid'] = Yii::app()->session['loginID'];
-                    if (isset($writearray['validfrom']) && trim($writearray['validfrom'] == '')) {
+                    if (isset($writearray['validfrom']) && trim((string) $writearray['validfrom']) == '') {
                         unset($writearray['validfrom']);
                     }
-                    if (isset($writearray['validuntil']) && trim($writearray['validuntil'] == '')) {
+                    if (isset($writearray['validuntil']) && trim((string) $writearray['validuntil']) == '') {
                         unset($writearray['validuntil']);
                     }
                     $dontimport = false;

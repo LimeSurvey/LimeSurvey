@@ -169,22 +169,18 @@ class Variable extends Record
         $this->writeBlank($buffer, $seg0width);
 
         // Write additional segments for very long string variables.
-        if (self::isVeryLong($this->width) !== 0) {
+        if (self::isVeryLong($this->width) !== false) {
             $segmentCount = Utils::widthToSegments($this->width);
             for ($i = 1; $i < $segmentCount; $i++) {
                 $segmentWidth = Utils::segmentAllocWidth($this->width, $i);
                 $format       = Utils::bytesToInt([0, 1, max($segmentWidth, 1), 0]);
                 $buffer->writeInt(self::TYPE);
                 $buffer->writeInt($segmentWidth);
-                $buffer->writeInt($hasLabel); // No variable label
+                $buffer->writeInt(0); // No variable label
                 $buffer->writeInt(0); // No missing values
                 $buffer->writeInt($format); // Print format
                 $buffer->writeInt($format); // Write format
                 $buffer->writeString($this->getSegmentName($i - 1), 8);
-                if ($hasLabel) {
-                    $buffer->writeInt($labelLengthBytes);
-                    $buffer->writeString($label, Utils::roundUp($labelLengthBytes, 4));
-                }
 
                 $this->writeBlank($buffer, $segmentWidth);
             }
@@ -218,10 +214,14 @@ class Variable extends Record
     public function getSegmentName($seg = 0)
     {
         // TODO: refactory
-        $name = $this->name;
-        $name = mb_substr($name, 0, 6);
-        $name .= $seg;
-
-        return mb_strtoupper($name);
+        $str = "a";
+        for ($i = 0; $i < $seg; $i++) {
+            ++$str;
+        }
+        if (($this->name[0] === 'V') && is_numeric(mb_substr($this->name, 1))) {
+            return mb_strtoupper($this->name);
+        }
+        $sufix = str_pad($str, 2, "_", STR_PAD_LEFT);
+        return mb_strtoupper(mb_substr($this->name.$sufix, 0, 8));
     }
 }

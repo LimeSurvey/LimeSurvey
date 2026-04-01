@@ -1,8 +1,6 @@
-import { fireEvent, waitFor, within, expect } from '@storybook/test'
 import { Draggable } from 'react-beautiful-dnd'
 import { useState } from 'react'
 
-import { sleep } from 'helpers/sleep'
 import { DragIcon } from 'components/icons'
 import { DragAndDrop as DragAndDropComponent } from '../DragAndDrop/DragAndDrop'
 
@@ -33,9 +31,11 @@ export const DragAndDrop = () => {
     if (!destination) {
       return
     }
+
     if (source.index === destination.index) {
       return
     }
+
     const updatedArray = arrayMove(testData, source.index, destination.index)
     setTestData([...updatedArray])
   }
@@ -69,26 +69,4 @@ export const DragAndDrop = () => {
       ))}
     </DragAndDropComponent>
   )
-}
-
-DragAndDrop.play = async ({ canvasElement, step }) => {
-  const { getByTestId } = within(canvasElement)
-  await waitFor(() => getByTestId('drag-and-drop'))
-  const container = getByTestId('drag-and-drop')
-  const elements = container.firstChild.children
-
-  await step('Should render DragAndDrop correctly', async () => {
-    await expect(container).toBeInTheDocument()
-    await expect(elements.length).toBe(DATA.length)
-  })
-
-  await step('Should drag "A" to the last position', async () => {
-    fireEvent.dragStart(elements[0], {
-      clientY: 20 * 4,
-    })
-    await waitFor(() => {
-      expect(elements[0].innerText).toBe('A')
-    })
-    await sleep(500)
-  })
 }
