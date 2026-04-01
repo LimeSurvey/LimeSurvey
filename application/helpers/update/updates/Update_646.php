@@ -2,44 +2,43 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use CException;
+
 class Update_646 extends DatabaseUpdateBase
 {
+    /**
+     * @inheritDoc
+     * @throws CException
+     */
     public function up()
     {
-        // Fix serialized attachments, get only needed surveys_languagesettings row
-        $surveyslanguage = \Yii::app()->db->createCommand()
-            ->select(['surveyls_survey_id', 'surveyls_language', 'attachments'])
-            ->from('{{surveys_languagesettings}}')
-            ->where("attachments <> '' AND attachments IS NOT NULL AND attachments <> :emptyarray")
-            ->bindValue(":emptyarray", serialize([]))
+        $templateConfigurations = $this->db->createCommand()
+            ->select('id, options')
+            ->from('{{template_configuration}}')
+            ->where(
+                'template_name = :template_name AND options <> :optionValue',
+                [
+                    ':template_name' => 'fruity_twentythree',
+                    ':optionValue' => 'inherit'
+                ]
+            )
             ->queryAll();
-        foreach ($surveyslanguage as $surveylanguage) {
-            /* Check if it can be a json */
-            if (!empty($surveylanguage['attachments']) && substr($surveylanguage['attachments'], 0, 1) != '{' && substr($surveylanguage['attachments'], 0, 1) != '[') {
-                $sSerialType = getSerialClass($surveylanguage['attachments']);
-                if ($sSerialType == 'array') {
-                    $unserialized = unserialize($surveylanguage['attachments'], ["allowed_classes" => false]);
-                    if (empty($unserialized) || !is_array($unserialized)) {
-                        /* Save broken as empty string */
-                        $newAttachments = "";
-                    } else {
-                        $newAttachments = json_encode($unserialized);
-                        if ($newAttachments === false) {
-                            /* JSON encoding failed, save as empty string */
-                            $newAttachments = "";
-                        }
-                    }
-                } else {
-                    /* All other as empty string */
-                    $newAttachments = "";
+
+        if (!empty($templateConfigurations)) {
+            foreach ($templateConfigurations as $templateConfiguration) {
+                $optionsJson = $templateConfiguration['options'];
+                $oldOptions = json_decode($optionsJson);
+                if (empty($oldOptions->notables)) {
+                    $oldOptions->notables = '1';
+                    $newOptionsJson = json_encode($oldOptions);
+
+                    $this->db->createCommand()->update(
+                        '{{template_configuration}}',
+                        ['options' => $newOptionsJson],
+                        'id = :id',
+                        [':id' => $templateConfiguration['id']]
+                    );
                 }
-                $updateCommand = \Yii::app()->db->createCommand();
-                $updateCommand->update(
-                    '{{surveys_languagesettings}}',
-                    array('attachments' => $newAttachments),
-                    'surveyls_survey_id = :sid and surveyls_language = :language',
-                    array(':sid' => $surveylanguage['surveyls_survey_id'], ':language' => $surveylanguage['surveyls_language'])
-                );
             }
         }
     }
