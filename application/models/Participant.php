@@ -1110,7 +1110,7 @@ class Participant extends LSActiveRecord
         //
         $i = 0;
         $start = $limit * $page - $limit;
-        /* @var string[] available columln name */
+        /* @var string[] available column name */
         $columnNames = Participant::model()->attributeNames();
         /* @var CDbCriteria */
         $command = new CDbCriteria();
@@ -1274,7 +1274,7 @@ class Participant extends LSActiveRecord
                     $command->params = array_merge($command->params, array($condition1name => $condition[$i + 1], $condition2name => $condition[$i + 3]));
                 } else {
                     if (!in_array($condition[$i + 1], $columnNames)) {
-                        throw new CHttpException(400, 'Invalid column name in condition: ' . $condition[0]);
+                        throw new CHttpException(400, 'Invalid column name in condition: ' . $condition[$i + 1]);
                     }
                     $command->addCondition($condition[$i + 1] . ' ' . $operator . ' ' . $condition2name, $booloperator);
                     $command->params = array_merge($command->params, array($condition2name => $condition[$i + 3]));
@@ -1406,19 +1406,9 @@ class Participant extends LSActiveRecord
                 //Searching for an attribute
                 $command->addCondition('attribute' . $sFieldname . '.value ' . $operator . ' ' . $param, $booloperator);
             } else {
-                // Check if fieldname exists to prevent SQL injection
-                $aSafeFieldNames = array(
-                    'firstname',
-                    'lastname',
-                    'email',
-                    'blacklisted',
-                    'surveys',
-                    'survey',
-                    'language',
-                    'owner_uid',
-                    'owner_name'
-                );
-                if (!in_array($sFieldname, $aSafeFieldNames)) {
+                /* @var string[] available column name */
+                $columnNames = Participant::model()->attributeNames();
+                if (!in_array($sFieldname, $columnNames)) {
                     // Skip invalid fieldname
                     continue;
                 }
@@ -1448,7 +1438,7 @@ class Participant extends LSActiveRecord
             return true;
         }
 
-        $userid = Yii::app()->session['loginID'];
+        $userid = App()->session['loginID'];
 
         $isOwner = Yii::app()
             ->db
