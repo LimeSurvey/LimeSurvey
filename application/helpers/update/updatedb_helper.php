@@ -132,9 +132,15 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             . '</p><br />'
             . sprintf(gT('File %s, line %s.'), $file, $trace[1]['line'])
         );
-        // Restore previous maintenance mode
-        $bMaintenanceModeRestored = true;
-        SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
+        // Restore previous maintenance mode if it was changed
+        if (!$bMaintenanceModeRestored) {
+            try {
+                SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
+                $bMaintenanceModeRestored = true;
+            } catch (\Throwable $t) {
+                Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
+            }
+        }
         // If we're debugging, re-throw the exception.
         if (defined('YII_DEBUG') && YII_DEBUG) {
             throw $e;
@@ -185,9 +191,15 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
     fixLanguageConsistencyAllSurveys();
 
-    // Restore previous maintenance mode
-    $bMaintenanceModeRestored = true;
-    SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
+    // Restore previous maintenance mode if it was changed
+    if (!$bMaintenanceModeRestored) {
+        try {
+            SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
+            $bMaintenanceModeRestored = true;
+        } catch (\Throwable $t) {
+            Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
+        }
+    }
     Yii::app()->setConfig('Updating', false);
     return true;
 }
