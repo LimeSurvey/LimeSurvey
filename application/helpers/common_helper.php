@@ -2798,7 +2798,7 @@ function translateJsonLinks($iOldSurveyID, $iNewSurveyID, $sString)
     }
     $sPattern = '(([a-z0-9\/\.\-\_:])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
     $sReplace = rtrim(App()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
-    array_walk_recursive($decodedString, function(&$value, $key) use ($sPattern, $sReplace) {
+    array_walk_recursive($decodedString, function (&$value, $key) use ($sPattern, $sReplace) {
         if (is_string($value)) {
             $value = preg_replace('/' . $sPattern . '/u', $sReplace, $value);
         }
