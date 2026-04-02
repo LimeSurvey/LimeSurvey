@@ -156,7 +156,7 @@ class UserAction extends SurveyCommonAction
         $aData['sSavedLanguage'] = $oUser->lang;
         $aData['sUsername'] = $oUser->users_name;
         $aData['sFullname'] = $oUser->full_name;
-        $aData['sEmailAdress'] = $oUser->email;
+        $aData['sEmailAddress'] = $oUser->email;
         $aData['passwordHelpText'] = $oUser->getPasswordHelpText();
 
         $aData['topbar']['title'] = gT('Account');

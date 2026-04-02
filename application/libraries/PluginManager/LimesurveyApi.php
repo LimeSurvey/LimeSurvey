@@ -664,7 +664,7 @@ class LimesurveyApi
      * Used to return date from date input in admin
      * @param string $dateValue the string as date value
      * @param string $returnFormat the final date format
-     * @param integer|null $currentFormat the current format of dateValue, defaut from App()->session['dateformat'] @see getDateFormatData function (in surveytranslator_helper)
+     * @param integer|null $currentFormat the current format of dateValue, default from App()->session['dateformat'] @see getDateFormatData function (in surveytranslator_helper)
      * @return string
      */
     public static function getFormattedDateTime($dateValue, $returnFormat, $currentFormat = null)

@@ -63,7 +63,7 @@ class LimeMailer extends PHPMailer
      * for survey (admin or not) : admin_notification, admin_responses, savesurveydetails, errorsavingresults
      * other : addadminuser, passwordreminderadminuser, mailsendusergroup …
      **/
-    public $emailType = 'unknow';
+    public $emailType = 'unknown';
 
     /**
      * Attachments by type : using different key for all this part …

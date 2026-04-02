@@ -217,7 +217,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $oEvent = $this->getEvent();
         $onepass = App()->request->getParam('onepass');
 
-        // skip 2fa when theres an active and verified onetimepassword used (verification is allready done before getting here)
+        // skip 2fa when theres an active and verified onetimepassword used (verification is already done before getting here)
         if (App()->getConfig('use_one_time_passwords') && isset($onepass)) {
             return;
         }

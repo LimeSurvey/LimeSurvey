@@ -183,7 +183,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                     $dispVal = rtrim(rtrim($dispVal, "0"), ".");
                 }
             }
-            $sUnformatedValue = $dispVal; // Send the real value for slider
+            $sUnformattedValue = $dispVal; // Send the real value for slider
             $dispVal = str_replace('.', $this->sSeparator, (string) $dispVal);
 
             if (!$this->useSliderLayout) {
@@ -236,7 +236,8 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                         'dispVal'                => $dispVal,
                         'sliderleft'             => $sliderleft,
                         'sliderright'            => $sliderright,
-                        'sUnformatedValue'       => $sUnformatedValue,
+                        'sUnformattedValue'      => $sUnformattedValue,
+                        'sUnformatedValue'       => $sUnformattedValue, // Backward compatibility for custom question themes
                         'extraclass'             => $this->extraclass,
                         'qid'                    => $this->oQuestion->qid,
                         'prefix'                 => $this->prefix,

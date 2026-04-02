@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
@@ -775,8 +775,8 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             $result = $resultBaseLanguage;
         }
         if ($result) {
-            $aSurveyAtrributes = array_replace($result->survey->attributes, $aSurveyOptions);
-            $thissurvey = array_merge($aSurveyAtrributes, $result->attributes);
+            $aSurveyAttributes = array_replace($result->survey->attributes, $aSurveyOptions);
+            $thissurvey = array_merge($aSurveyAttributes, $result->attributes);
             $thissurvey['name'] = $thissurvey['surveyls_title'];
             if (($languagecode != $oSurvey->language) && empty($thissurvey['name']) || $thissurvey['name'] == '') {
                 $thissurvey['name'] = $resultBaseLanguage->surveyls_title;
@@ -965,7 +965,7 @@ function returnGlobal($stringname, $bRestrictToString = false)
 function sendSurveyHttpHeaders()
 {
     if (!headers_sent()) {
-        // Default headers für surveys
+        // Default headers f�r surveys
         $headers = [
                      'Cache-Control: no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0',
                      'Pragma: no-cache',
@@ -5448,10 +5448,10 @@ function csvEscape($string)
  *
  * Converts {INSERTANS:SIDXGIDXQID} format to questionTitle.shown format
  * Examples:
- * - {INSERTANS:554233X11X1} → G01Q02.shown (if QID 1 exists)
- * - {INSERTANS:554233X11X11} → {INSERTANS:554233X11X11} (if QID 11 doesn't exist)
- * - {INSERTANS:554233X11X1someText} → someText.shown (if QID 1 exists)
- * - {INSERTANS:554233X11X11someText} → {INSERTANS:554233X11X11someText} (if QID 11 doesn't exist)
+ * - {INSERTANS:554233X11X1} ? G01Q02.shown (if QID 1 exists)
+ * - {INSERTANS:554233X11X11} ? {INSERTANS:554233X11X11} (if QID 11 doesn't exist)
+ * - {INSERTANS:554233X11X1someText} ? someText.shown (if QID 1 exists)
+ * - {INSERTANS:554233X11X11someText} ? {INSERTANS:554233X11X11someText} (if QID 11 doesn't exist)
  *
  * @param string $text The text containing INSERTANS tags
  * @param array $questions The list of all questions
