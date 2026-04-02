@@ -1067,14 +1067,11 @@ class Update_700 extends DatabaseUpdateBase
                 }
                 $commaSeparatedQIDs = implode(",", $qids);
                 $questions = Question::model()->with('answers')->findAll([
-                    'condition' => "sid = {$sid} and ((t.qid in ({$commaSeparatedQIDs}) and gid = {$gid}) or parent_qid in ({$commaSeparatedQIDs}))"
+                    'condition' => "sid = {$sid} and gid = {$gid} and (t.qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
                 ]);
             }
             $questionsToPass = $questions ?? [];
             if (count($questionsToPass ?? []) || ((strpos($tableName, "timings") !== false) && (count($split) > 1))) {
-            if ($fieldName === "715687X136X1351") {
-                echo "\nI AM HERE2\n";
-            }
                 $fieldMap[$tableName][$fieldName] = getFieldName($tableName, $fieldName, $questionsToPass, (int)$sid, (int)$gid);
             }
         }
@@ -1264,9 +1261,6 @@ class Update_700 extends DatabaseUpdateBase
                         ]);
                         $prefix = Yii::app()->db->tablePrefix ?? "";
                         if (count($questionsTemp)) {
-            if ($fieldName === "715687X136X1351") {
-                echo "\nI AM HERE\n";
-            }
                             $newFieldName = getFieldName($prefix . "survey_" . $passiveSurvey->sid, $oldField, $questionsTemp, (int)$sid, (int)$gid);
                             if ($newFieldName) {
                                 $newFields[$oldField] = $newFieldName;
