@@ -1072,6 +1072,9 @@ class Update_700 extends DatabaseUpdateBase
             }
             $questionsToPass = $questions ?? [];
             if (count($questionsToPass ?? []) || ((strpos($tableName, "timings") !== false) && (count($split) > 1))) {
+            if ($fieldName === "715687X136X1351") {
+                echo "\nI AM HERE2\n";
+            }
                 $fieldMap[$tableName][$fieldName] = getFieldName($tableName, $fieldName, $questionsToPass, (int)$sid, (int)$gid);
             }
         }
@@ -1261,6 +1264,9 @@ class Update_700 extends DatabaseUpdateBase
                         ]);
                         $prefix = Yii::app()->db->tablePrefix ?? "";
                         if (count($questionsTemp)) {
+            if ($fieldName === "715687X136X1351") {
+                echo "\nI AM HERE\n";
+            }
                             $newFieldName = getFieldName($prefix . "survey_" . $passiveSurvey->sid, $oldField, $questionsTemp, (int)$sid, (int)$gid);
                             if ($newFieldName) {
                                 $newFields[$oldField] = $newFieldName;

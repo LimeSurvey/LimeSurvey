@@ -1334,9 +1334,6 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
         $rootQuestion = $rawQuestions[0];
         $questionIndex = 0;
         while ($questionIndex < count($rawQuestions)) {
-            if ($fieldName === "715687X136X1351") {
-                echo "qid: " . $rawQuestions[$questionIndex]->qid . " type: " . $rawQuestions[$questionIndex]->type . "\n";
-            }
             if (!$rawQuestions[$questionIndex]->parent_qid) {
                 if (($rawQuestions[$questionIndex]->gid == $gid) && ($rootQuestion->parent_qid || ($rootQuestion->gid != $gid) || (($rootQuestion->gid == $gid) && ($rootQuestion->qid < $rawQuestions[$questionIndex]->qid)))) {
                     $rootQuestion = $rawQuestions[$questionIndex];
