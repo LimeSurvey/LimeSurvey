@@ -118,9 +118,13 @@ var RankingQuestion = function (options) {
         updateDragDropRank = function () {
             $('#question' + questionId + ' .select-item select').val('');
             $('#sortable-rank-' + questionId + ' li').each(function (index) {
-                $('#question' + questionId + ' .select-item select').eq(index).data("old-val", $('#question' + questionId + ' .select-item select').eq(index).val());
-                $('#question' + questionId + ' .select-item select').eq(index).val($(this).data("value"));
-                /* todo ? Set next option with same value disable ? */
+               // update the select with the corresponsing sortorder ( needed because of randomization order )
+               var $targetSelect = $('#question' + questionId + ' .select-item select[data-sortorder="' + index + '"]');
+               if ($targetSelect.length > 0) {
+                    $targetSelect.data("old-val", $targetSelect.val());
+                    var valToSet = $(this).data("value");
+                    $targetSelect.val(valToSet);
+                }
             });
 
             // Update #relevance and lauch checkconditions function
