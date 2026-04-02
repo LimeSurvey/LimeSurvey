@@ -51,7 +51,7 @@
         <?php } ?>
         <li><?php eT("Question attributes:"); ?> <?php echo $aImportResults['question_attributes']; ?></li>
         <li><?php eT("Assessments:"); ?> <?php echo $aImportResults['assessments']; ?></li>
-        <li><?php printf(eT("Quotas: %d (%d quota members and %d quota language settings)"), $aImportResults['quota'], $aImportResults['quotamembers'], $aImportResults['quotals']); ?></li></ul><br />
+        <li><?php printf(gt("Quotas: %d (%d quota members and %d quota language settings)"), $aImportResults['quota'], $aImportResults['quotamembers'], $aImportResults['quotals']); ?></li></ul><br />
     </p>
 
     <!-- Warnings -->

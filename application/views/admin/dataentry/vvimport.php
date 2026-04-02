@@ -96,7 +96,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="dontdeletefirstline" class=" form-label" title='<?php eT("Normally questions codes are stored in the second row"); ?>' data-bs-toggle="tooltip" data-bs-placement="right">
+                <label for="dontdeletefirstline" class=" form-label" title='<?php eT("Normally question codes are stored in the second row"); ?>' data-bs-toggle="tooltip" data-bs-placement="right">
                     <?php eT("First row contains the code of questions:"); ?>
                 </label>
                 <div class="">

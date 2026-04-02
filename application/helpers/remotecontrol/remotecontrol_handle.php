@@ -3750,7 +3750,7 @@ class remotecontrol_handle
         }
 
         if (empty($responseId) and empty($sToken)) {
-            return ['status' => 'Invalid arguments: both Token and Reponse ID are empty'];
+            return ['status' => 'Invalid arguments: both Token and Response ID are empty'];
         }
         $criteria = new CDbCriteria();
         if (!empty($responseId)) {

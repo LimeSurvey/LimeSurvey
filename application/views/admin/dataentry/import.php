@@ -7,7 +7,7 @@
 
 ?>
 <div class="side-body">
-    <h3><?php eT("Import responses from an archived reponse table"); ?></h3>
+    <h3><?php eT("Import responses from an archived response table"); ?></h3>
     <div class="row">
         <div class="col-12 content-right">
             <?php
