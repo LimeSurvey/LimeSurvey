@@ -3044,7 +3044,7 @@ ol.breadcrumb.title-bar-breadcrumb {
 
 
 
-/* Define the color for Awesome Bootsrap Checkboxes ; based on bg-primary background-color*/
+/* Define the color for Awesome Bootstrap Checkboxes ; based on bg-primary background-color*/
 body .answer-item label::after{background-color: $base-color}
 
 .checkbox-item input[type="checkbox"]:checked + label::after, .checkbox-item input[type="radio"]:checked + label::after { background-color:$base-color; color: white; }

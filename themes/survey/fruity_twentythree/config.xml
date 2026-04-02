@@ -529,7 +529,7 @@
                         <![CDATA[ {{ gT("You got {TOTAL} points out of 3 possible points.") }} ]]></message>
                 </assessments>
 
-                <!-- This is an exemple to show you how to add your custom screen in the theme editor with custom values -->
+                <!-- This is an example to show you how to add your custom screen in the theme editor with custom values -->
                 <!-- The name of the array inside aSurveyInfo that feed your twig view is specified as "array-name". If you check quotas.twig, you'll notice the main variable is aSurveyInfo.aQuotas -->
                 <!-- Notice that the data you pass here are simple. You can't pass complex arrays inside the array, only key => value pairs.-->
                 <quotas type="custom" arrayName="aQuotas">

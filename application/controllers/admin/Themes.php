@@ -563,7 +563,7 @@ class Themes extends SurveyCommonAction
             $this->getController()->redirect(array('admin/themes/sa/view/', 'templatename' => Yii::app()->getConfig('defaulttheme')));
         }
 
-        /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
+        /* Keep Bootstrap package clean after loading template, because template can update Bootstrap */
 
         $aViewUrls = $this->initialise($templatename, $screenname, $editfile, true, true);
 
