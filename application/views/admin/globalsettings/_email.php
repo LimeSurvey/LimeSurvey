@@ -67,7 +67,7 @@
                         'ariaLabel' => gT("SMTP encryption:"),
                         'checkedOption' => Yii::app()->getConfig('emailsmtpssl'),
                         'selectOptions' => array(
-                            "" => gT("Off (unsafe)", 'unescaped'),
+                            "" => gT("Off", 'unescaped'),
                             "ssl" => gT("SSL/TLS", 'unescaped'),
                             "tls" => gT("StartTLS", 'unescaped')
                         )

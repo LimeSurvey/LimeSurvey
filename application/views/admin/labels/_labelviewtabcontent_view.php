@@ -58,7 +58,7 @@ $codeids = '';
                 if ($updatePermission) : ?>
                     <button type="button" id='btnquickadd_<?php echo $i ?>' class="btnquickadd btn btn-outline-secondary " data-bs-toggle="modal"
                             data-bs-target="#quickadd">
-                        <?php eT('Quick add labels') ?>
+                        <?php eT('Quick-add labels') ?>
                     </button>
                 <?php endif; ?>
             </div>

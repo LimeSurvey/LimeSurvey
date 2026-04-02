@@ -566,7 +566,7 @@ class Tokens extends SurveyCommonAction
                     if (trim(Yii::app()->request->getPost($attr_name, 'lskeep')) != 'lskeep') {
                         $value = App()->request->getPost($attr_name, '');
                         if ($desc['mandatory'] == 'Y' && trim($value) == '') {
-                            Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
+                            Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty.'), $desc['description']), 'error');
                             $this->getController()->refresh();
                         }
                         $aData[$attr_name] = $attributeService->convertDateAttribute($desc, $value);
@@ -705,7 +705,7 @@ class Tokens extends SurveyCommonAction
                 }
                 $value = App()->getRequest()->getPost($attr_name, '');
                 if ($desc['mandatory'] == 'Y' && trim($value) == '') {
-                    App()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
+                    App()->setFlashMessage(sprintf(gT('%s cannot be left empty.'), $desc['description']), 'error');
                     $this->getController()->refresh();
                 }
                 $aData[$attr_name] = $attributeService->convertDateAttribute(
@@ -1051,7 +1051,7 @@ class Tokens extends SurveyCommonAction
             foreach ($attrfieldnames as $attr_name => $desc) {
                 $value = App()->request->getPost($attr_name, '');
                 if ($desc['mandatory'] == 'Y' && trim($value) == '') {
-                    Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
+                    Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty.'), $desc['description']), 'error');
                     $cntAttributeErrors += 1;
                 }
                 $aData[$attr_name] = $attributeService->convertDateAttribute($desc, $value);
@@ -1309,7 +1309,7 @@ class Tokens extends SurveyCommonAction
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         // CHECK TO SEE IF A Survey participant list EXISTS FOR THIS SURVEY
         if (!$oSurvey->hasTokensTable) {
-            Yii::app()->session['flashmessage'] = gT("No survey participant list.");
+            Yii::app()->session['flashmessage'] = "No survey participant list.";
             $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update')) {
@@ -1762,7 +1762,7 @@ class Tokens extends SurveyCommonAction
                             $aData['tokenoutput'] .= "<li>" . gT("Some emails were not sent because the server did not accept the email(s) or some other error occurred.") . "</li>";
                         }
                         $aData['tokenoutput'] .= '</ul>';
-                        $aData['tokenoutput'] .= '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary">' . gT("Ok") . '</a></p>';
+                        $aData['tokenoutput'] .= '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary">' . gT("OK") . '</a></p>';
                     }
                 }
                 $aViewUrls[] = 'emailpost';
@@ -2429,13 +2429,13 @@ class Tokens extends SurveyCommonAction
 
                         if (!$bDuplicateFound && !$bInvalidEmail && isset($aWriteArray['token']) && trim((string) $aWriteArray['token']) != '') {
                             if (trim((string) $aWriteArray['token']) != Token::sanitizeToken($aWriteArray['token'])) {
-                                $aInvalidTokenList[] = sprintf(gT("Line %s : %s %s (%s) - token : %s"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']), CHtml::encode($aWriteArray['email']), CHtml::encode($aWriteArray['token']));
+                                $aInvalidTokenList[] = sprintf(gT("Line %s : %s %s (%s) - access code: %s"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']), CHtml::encode($aWriteArray['email']), CHtml::encode($aWriteArray['token']));
                                 $bInvalidToken = true;
                             }
                             // We always search for duplicate token (it's in model. Allow to reset or update token ?
                             if (Token::model($iSurveyId)->count("token=:token", array(":token" => $aWriteArray['token']))) {
                                 $bDuplicateFound = true;
-                                $aDuplicateList[] = sprintf(gT("Line %s : %s %s (%s) - token : %s"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']), CHtml::encode($aWriteArray['email']), CHtml::encode($aWriteArray['token']));
+                                $aDuplicateList[] = sprintf(gT("Line %s : %s %s (%s) - access code: %s"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']), CHtml::encode($aWriteArray['email']), CHtml::encode($aWriteArray['token']));
                             }
                         }
 
@@ -2594,11 +2594,11 @@ class Tokens extends SurveyCommonAction
                 $aData['success'] = false;
                 $message = ngT('Only {n} access code has been created.|Only {n} access codes have been created.', $newtokencount)
                     . ngT('Need {n} access code.|Need {n} access codes.', $neededtokencount);
-                $message .= '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary ">' . gT("Ok") . '</a></p>';
+                $message .= '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary ">' . gT("OK") . '</a></p>';
             } else {
                 $aData['success'] = true;
                 $message = ngT('{n} access code has been created.|{n} access codes have been created.', $newtokencount);
-                $message .= '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary ">' . gT("Ok") . '</a></p>';
+                $message .= '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary ">' . gT("OK") . '</a></p>';
             }
             $this->renderWrappedTemplate('token', array('message' => array(
                 'title' => gT("Create access codes"),

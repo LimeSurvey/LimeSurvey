@@ -435,14 +435,14 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aLoadForm']['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid' => 1));
 
         // Those values can be overwritten by XML
-        $thissurvey['name'] = gT("Template Sample");
+        $thissurvey['name'] = gT("Template sample");
         $thissurvey['description'] =
         "<p>" . gT('This is a sample survey description. It could be quite long.') . "</p>" .
         "<p>" . gT("But this one isn't.") . "<p>";
         $thissurvey['welcome'] =
         "<p>" . gT('Welcome to this sample survey') . "<p>" .
-        "<p>" . gT('You should have a great time doing this') . "<p>";
-        $thissurvey['therearexquestions'] = gT('There is 1 question in this survey');
+        "<p>" . gT('You should have a great time doing this.') . "<p>";
+        $thissurvey['therearexquestions'] = gT('There is 1 question in this survey.');
         $thissurvey['surveyls_url'] = "https://www.limesurvey.org/";
         $thissurvey['surveyls_urldescription'] = gT("Some URL description");
 
@@ -1535,7 +1535,7 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($coreFontPackages as $coreKey => $corePackage) {
             $i += 1;
             if ($i === 1) {
-                $fontOptions .= '<optgroup  label="' . gT("Local Server") . ' - ' . gT("Core") . '">';
+                $fontOptions .= '<optgroup  label="' . gT("Local server") . ' - ' . gT("Core") . '">';
             }
             $fontOptions .= '<option class="font-' . $coreKey . '"     value="' . $coreKey . '"     data-font-package="' . $coreKey . '"      >' . $corePackage['title'] . '</option>';
         }
@@ -1548,7 +1548,7 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($userFontPackages as $userKey => $userPackage) {
             $i += 1;
             if ($i === 1) {
-                $fontOptions .= '<optgroup  label="' . gT("Local Server") . ' - ' . gT("User") . '">';
+                $fontOptions .= '<optgroup  label="' . gT("Local server") . ' - ' . gT("User") . '">';
             }
             $fontOptions .= '<option class="font-' . $userKey . '"     value="' . $userKey . '"     data-font-package="' . $userKey . '"      >' . $userPackage['title'] . '</option>';
         }

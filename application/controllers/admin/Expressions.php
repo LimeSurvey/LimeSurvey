@@ -85,7 +85,7 @@ class Expressions extends SurveyCommonAction
     }
 
     /**
-     * Survey Logic file
+     * Survey Logic overview
      * NB: To apply PSR-12 to function name, database must be changed for menu entries.
      **/
     // phpcs:ignore
@@ -119,8 +119,8 @@ class Expressions extends SurveyCommonAction
         $aData['sid'] = $sid;
         $aData['gid'] = $gid;
         $aData['qid'] = $qid;
-        $aData['title_bar']['title'] = gT("Survey logic file");
-        $aData['subaction'] = gT("Survey logic file");
+        $aData['title_bar']['title'] = gT("Survey logic overview");
+        $aData['subaction'] = gT("Survey logic overview");
         $aData['sidemenu']['state'] = false;
         $aData['survey'] = $oSurvey;
         $LEM_DEBUG_TIMING = Yii::app()->request->getParam('LEM_DEBUG_TIMING', (App()->getConfig('debug') > 0) ? LEM_DEBUG_TIMING : 0);
@@ -288,7 +288,7 @@ class Expressions extends SurveyCommonAction
                 return 'Test Evaluation of Strings Containing Expressions';
                 break;
             case 'survey_logic_file':
-                return 'Survey logic file';
+                return 'Survey logic overview';
                 break;
             case 'syntax_errors':
                 echo 'Show Log of Syntax Errors';

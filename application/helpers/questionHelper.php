@@ -32,7 +32,7 @@ class questionHelper
      * Return all the definitions of Question attributes core+extended value
      * @return array[]
      *
-     *@deprecated  used only as fall back method and for import/exports of LS v1 and for Survey Logic File
+     *@deprecated  used only as fall back method and for import/exports of LS v1 and for Survey Logic overview
      * use QuestionAttribute::getQuestionAttributesSettings function to get attributes
      */
     public static function getAttributesDefinitions()
@@ -431,10 +431,10 @@ class questionHelper
             'options' => array(
                 0 => gT('Bar chart'),
                 1 => gT('Pie chart'),
-                2 => gT('Radar'),
-                3 => gT('Line'),
-                4 => gT('PolarArea'),
-                5 => gT('Doughnut'),
+                2 => gT('Radar chart'),
+                3 => gT('Line chart'),
+                4 => gT('Polar chart'),
+                5 => gT('Doughnut chart'),
             ),
             'help' => gT("Select the type of chart to be displayed"),
             'caption' => gT("Chart type"),
@@ -963,7 +963,7 @@ class questionHelper
             'sortorder' => 110,
             'inputtype' => 'text',
             'expression' => 2,
-            "help" => gT('You can use Expression manager, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used.'),
+            "help" => gT('You can use ExpressionScript, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used.'),
             "caption" => gT('Slider minimum value')
         );
 
@@ -973,7 +973,7 @@ class questionHelper
             'sortorder' => 120,
             'inputtype' => 'text',
             'expression' => 2,
-            "help" => gT('You can use Expression manager, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used.'),
+            "help" => gT('You can use ExpressionScript, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used.'),
             "caption" => gT('Slider maximum value')
         );
 
@@ -983,7 +983,7 @@ class questionHelper
             'sortorder' => 130,
             'inputtype' => 'text',
             'expression' => 2,
-            "help" => gT('You can use Expression manager, but this must be a number before showing the page else set to 1.'),
+            "help" => gT('You can use ExpressionScript, but this must be a number before showing the page else set to 1.'),
             "caption" => gT('Slider accuracy')
         );
 
@@ -993,7 +993,7 @@ class questionHelper
             'sortorder' => 210,
             'inputtype' => 'text',
             'expression' => 2, // must be controlled : unsure
-            "help" => gT('Slider start as this value. You can use Expression manager, but this must be a number before showing the page. This setting has priority over slider starts at the middle position.'),
+            "help" => gT('Slider start as this value. You can use ExpressionScript, but this must be a number before showing the page. This setting has priority over slider starts at the middle position.'),
             "caption" => gT('Slider initial value')
         );
         self::$attributes["slider_default_set"] = array(
@@ -1255,7 +1255,7 @@ class questionHelper
             'inputtype' => 'buttongroup',
             'options' => array(
                 0 => gT('None', 'unescaped'),
-                1 => gT('Order - like 3)', 'unescaped'),
+                1 => gT('Numbered: 1).. 2).. 3)..', 'unescaped'),
                 // 2=>gT('Code - like A1','unescaped'), // Just an idea ;)
             ),
             'default' => 0,
@@ -1549,7 +1549,7 @@ class questionHelper
             'min' => 1,
             'default' => '1',
             "help" => gT("Maximum number of files that the participant can upload for this question"),
-            "caption" => gT("Max number of files")
+            "caption" => gT("Maximum number of files")
         );
 
         self::$attributes["min_num_of_files"] = array(
@@ -1560,7 +1560,7 @@ class questionHelper
             'default' => '0',
             'min' => 0,
             "help" => gT("Minimum number of files that the participant must upload for this question"),
-            "caption" => gT("Min number of files")
+            "caption" => gT("Minimum number of files")
         );
 
         self::$attributes["allowed_filetypes"] = array(

@@ -394,7 +394,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     $surveyId = Yii::app()->getConfig('surveyID');
     $langTimer = array(
         'hours' => gT("hours"),
-        'mins' => gT("mins"),
+        'mins' => gT("minutes"),
         'seconds' => gT("seconds"),
     );
     /* Registering script : don't go to EM : no need usage of ls_json_encode */
@@ -1743,7 +1743,6 @@ function do_array_texts($ia)
     $coreClass                  = "ls-answers subquestion-list questions-list text-array";
     $extraclass                 = "";
     $coreRowClass               = "subquestion-list questions-list";
-    $caption                    = gT("A table of subquestions on each cell. The subquestion texts are in the column header and relate the particular row header.");
 
     $checkconditionFunction = "checkconditions";
     $sSeparator             = getRadixPointData($thissurvey['surveyls_numberformat']);
@@ -1795,7 +1794,6 @@ function do_array_texts($ia)
 
         $coreClass .= " number-array";
         $coreRowClass .= " number-list";
-        $caption    .= gT("Each answer may only be a number.");
         $col_head    = '';
         switch ($aQuestionAttributes['show_totals']) {
             case 'R':
@@ -1828,7 +1826,6 @@ function do_array_texts($ia)
                         true
                     );
                 };
-                $caption .= gT("The last row shows the total for the column.");
                 break;
 
             case 'C':
@@ -1861,7 +1858,6 @@ function do_array_texts($ia)
                         true
                     );
                 };
-                $caption .= gT("The last column shows the total for the row.");
                 break;
 
             case 'B':
@@ -1900,7 +1896,6 @@ function do_array_texts($ia)
                         true
                     );
                 };
-                $caption .= gT("The last row shows the total for the column and the last column shows the total for the row.");
                 break;
         };
 
@@ -2142,7 +2137,6 @@ function do_array_multiflexi($ia)
     $coreRowClass = "subquestion-list questions-list";
     $extraclass                 = "";
     $answertypeclass            = "";
-    $caption                    = gT("A table of subquestions on each cell. The subquestion texts are in the colum header and concern the row header.");
     $checkconditionFunction     = "fixnum_checkconditions";
 
     /*
@@ -2192,7 +2186,6 @@ function do_array_multiflexi($ia)
         $answertypeclass     = " checkbox-item";
         $coreClass          .= " checkbox-array";
         $coreRowClass .= " checkbox-list";
-        $caption            .= gT("Please check the matching combinations.");
         $textAlignment       = 'center';
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . "array-number-checkbox.js", CClientScript::POS_BEGIN);
         App()->getClientScript()->registerScript("doArrayNumberCheckbox", "doArrayNumberCheckbox();\n", LSYii_ClientScript::POS_POSTSCRIPT);
@@ -2203,14 +2196,12 @@ function do_array_multiflexi($ia)
         $coreClass          .= " text-array number-array";
         $coreRowClass .= " text-list number-list";
         $extraclass         .= " numberonly";
-        $caption            .= gT("Please enter only numbers.");
     } else {
         $layout = "dropdown";
         $answertypeclass     = " ls-dropdown-item";
 
         $coreClass          .= " dropdown-array";
         $coreRowClass .= " dropdown-list";
-        $caption            .= gT("Please select an answer for each combination.");
     }
 
     if (ctype_digit(trim((string) $aQuestionAttributes['repeat_headings'])) && trim((string) $aQuestionAttributes['repeat_headings']) != "") {

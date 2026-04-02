@@ -236,7 +236,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function attributeLabels()
     {
         return array(
-            'running' => gT('running')
+            'running' => gT('Running')
         );
     }
 
