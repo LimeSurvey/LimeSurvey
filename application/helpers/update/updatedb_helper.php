@@ -1534,6 +1534,9 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
     // TODO: Don't use models in updatedb_helper.
     $attributes = $settings1->attributes;
     unset($attributes['ipanonymize']);
+    // Same as ipanonymize, stale schema persists on model after column is removed from db,
+    // and interacts with older updates
+    unset($attributes['nokeyboard']);
 
     $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes);
 
