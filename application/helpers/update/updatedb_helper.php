@@ -1328,7 +1328,7 @@ function upgrade328($oDB)
 */
 function upgrade327($oDB)
 {
-    // Update the box value so it uses to the the themeoptions controller
+    // Update the box value so it uses the themeoptions controller
     $oDB->createCommand()->update('{{boxes}}', array(
         'position' =>  '6',
         'url'      =>  'admin/themeoptions',

@@ -129,7 +129,7 @@ class SurveyCommonAction extends CAction
         // Foreach pseudo, take the key, if it exists,
         // Populate the values (taken as an array) as keys in params
         // with that key's value in the params
-        // Check is 2 params are equal for security issue.
+        // Check whether two params differ (security check)
         foreach ($pseudos as $key => $pseudo) {
             // We care only for user parameters, not by code parameters (see issue #15221)
             if ($checkParam = Yii::app()->getRequest()->getParam($key)) {

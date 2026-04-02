@@ -1413,7 +1413,7 @@ class SurveyRuntimeHelper
     /**
      * Check in a string if it uses expressions to replace them
      * @param string|null $sString the string to evaluate
-     * @param integer $numRecursionLevels - the number of times to recursively substitute values in this string
+     * @param integer $iRecursionLevel - the number of times to recursively substitute values in this string
      * @param boolean $static - return static string
      * @return string
      * @todo : find/get current qid for processing string

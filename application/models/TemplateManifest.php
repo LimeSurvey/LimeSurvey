@@ -1370,6 +1370,19 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
+     * Deprecated alias for getAssetsToReplaceFormatted()
+     * @deprecated Use getAssetsToReplaceFormatted() instead
+     * @param string  $sType            css|js the type of file
+     * @param boolean $bInlcudeRemove   also get the files to remove
+     * @return stdClass
+     */
+    public static function getAssetsToReplaceFormated($oEngine, $sType, $bInlcudeRemove = false)
+    {
+        trigger_error('getAssetsToReplaceFormated() is deprecated, use getAssetsToReplaceFormatted() instead', E_USER_DEPRECATED);
+        return self::getAssetsToReplaceFormatted($oEngine, $sType, $bInlcudeRemove);
+    }
+
+    /**
      * Get the list of file replacement from Engine Framework
      * @param string  $sType            css|js the type of file
      * @return array

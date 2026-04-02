@@ -272,7 +272,7 @@ class Quotas
     }
 
     /**
-     * Return
+     * Return a new QuotaLanguageSetting instance initialized with default values for the given quota and language
      *
      * @param Quota $oQuota
      * @param $language

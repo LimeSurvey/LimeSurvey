@@ -222,7 +222,7 @@ The form will not be posted to the url directly by the ajax request. Indeed, the
 ```
 
 ## Special cases with special classes:
-To fit LimeSurvey specifities, two special cases has been added to make the code dryer:
+To fit LimeSurvey specifics, two special cases has been added to make the code dryer:
 - A special case for defining question attributes (adding a class "attributes-to-update" to a custom-data)
 
 ### Question attributes

@@ -560,7 +560,7 @@ class Tokens extends SurveyCommonAction
                     }
                 }
 
-                // Attributes fields
+                // Attribute fields
                 $attrfieldnames = GetParticipantAttributes($iSurveyId);
                 foreach ($attrfieldnames as $attr_name => $desc) {
                     if (trim(Yii::app()->request->getPost($attr_name, 'lskeep')) != 'lskeep') {
@@ -1687,7 +1687,7 @@ class Tokens extends SurveyCommonAction
                         }
                         $tokenSaveError = "";
                         if (
-                            !$oToken->save( // Save only unencrypted value, no need to crypt/encryt
+                            !$oToken->save( // Save only unencrypted value, no need to crypt/encrypt
                                 true, // Validate but only the date part
                                 array(
                                     'sent',

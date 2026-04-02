@@ -120,7 +120,7 @@ class TokenDynamic extends LSActiveRecord
 
     /**
      * Checks to make sure that all required columns exist in this tokens table
-     * (some older tokens tables dont' get updated properly)
+     * (some older token tables don't get updated properly)
      *
      * This method should be moved to db update for 2.05 version so it runs only
      * once per survey participant list / backup survey participant list

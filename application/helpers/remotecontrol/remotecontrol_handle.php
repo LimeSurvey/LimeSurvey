@@ -1546,7 +1546,10 @@ class remotecontrol_handle
 
         $sGroupSurveyID = $oGroup['sid'];
         if ($sGroupSurveyID != $iSurveyID) {
-            return array('status' => 'Error: Mismatch in surveyid and groupid');
+            return array(
+                'status' => 'Error: Mismatch in surveyid and groupid',
+                'error_code' => 'ERR_MISMATCH_SURVEY_GROUP'
+            );
         }
         /* Check unicity of title, and set autorename to true if it's set */
         $importOptions = ['autorename' => false];
@@ -2427,7 +2430,10 @@ class remotecontrol_handle
                     }
 
                     if ($oGroup->sid != $oSurvey->sid) {
-                        return ['status' => 'Error: Mismatch in surveyid and groupid'];
+                        return [
+                            'status' => 'Error: Mismatch in surveyid and groupid',
+                            'error_code' => 'ERR_MISMATCH_SURVEY_GROUP'
+                        ];
                     } else {
                         $aQuestionList = $oGroup->allQuestions;
                     }

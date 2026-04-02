@@ -292,7 +292,7 @@ class SurveyThemeHelper
         // Technically the theme's folder name is saved in the model ($template->folder),
         // but we use the theme name here, to avoid using the model and/or database calls.
         // Throughout the code, it is assumed that the theme's folder matches the theme name.
-        // Seems that assumption has it's root source in the isStandardTemplate() method.
+        // Seems that assumption has its root source in the isStandardTemplate() method.
         $path = $basePath . DIRECTORY_SEPARATOR . $themeName . DIRECTORY_SEPARATOR;
         return $path;
     }

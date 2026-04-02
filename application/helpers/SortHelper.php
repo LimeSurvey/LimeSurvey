@@ -103,7 +103,7 @@ class SortHelper
     }
 
     /**
-     * Return flag type depend on function used
+     * Returns the flag type depending on the function used
      * @param integer
      * @return integer
      */

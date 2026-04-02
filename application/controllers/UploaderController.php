@@ -363,7 +363,7 @@ class UploaderController extends SurveyController
                     Yii::app()->end();
                 }
             }
-            /* We get there : an unknown error happen … maybe a move_uploaded_file error (with debug=0) */
+            /* We get there : an unknown error happened … maybe a move_uploaded_file error (with debug=0) */
             $return = array(
                 "success" => false,
                 "msg" => gT("An unknown error occurred")
