@@ -5122,8 +5122,8 @@ class LimeExpressionManager
                 if($this->surveyOptions['anonymized'] == true) {
                     // we set a default timestamp here, in the responses view it
                     // should be clear that this response is anonymized
-                    $sdata['datestamp'] = date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
-                    $sdata['startdate'] = date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
+                    $sdata['datestamp'] = $this->defaultDateTime();
+                    $sdata['startdate'] = $this->defaultDateTime();
                 } else {
                     $sdata['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
                     $sdata['startdate'] = $_SESSION[$this->sessid]['datestamp'];
@@ -5205,7 +5205,7 @@ class LimeExpressionManager
             if ($this->surveyOptions['datestamp'] && isset($_SESSION[$this->sessid]['datestamp'])) {
                 $_SESSION[$this->sessid]['datestamp'] = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
                 if($this->surveyOptions['anonymized'] == true) {
-                    $aResponseAttributes['datestamp'] = date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
+                    $aResponseAttributes['datestamp'] = $this->defaultDateTime();
                 } else {
                     $aResponseAttributes['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
                 }
@@ -5336,12 +5336,12 @@ class LimeExpressionManager
                         /* Less update : just do what you need to to */
                         if ($this->surveyOptions['datestamp']) {
                             if($this->surveyOptions['anonymized'] == true) {
-                                $submitdate = date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
+                                $submitdate = $this->defaultDateTime();
                             } else {
                                 $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
                             }
                         } else {
-                            $submitdate = date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
+                            $submitdate = $this->defaultDateTime();
                         }
                         if (!Response::model($this->sid)->updateByPk($oResponse->id, ['submitdate' => $submitdate]) && $submitdate != $oResponse->submitdate) {
                             LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('An error happened when trying to submit your response.'), $this->sid);
@@ -5357,6 +5357,17 @@ class LimeExpressionManager
             'readWrite' => 'N',
         ];
         return $message;
+    }
+
+    /**
+     * Returns the default dateTime we use to initialize or make the date anonymized
+     * It is set to "01-01-1980 00:00:00"
+     *
+     * @return string
+     */
+    private function defaultDateTime()
+    {
+        return date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
     }
 
     /**
