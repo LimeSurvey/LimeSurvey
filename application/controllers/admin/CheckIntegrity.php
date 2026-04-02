@@ -643,7 +643,7 @@ class CheckIntegrity extends SurveyCommonAction
                     foreach ($aColumns as $oColumn) {
                         // Question columns start with the SID
                         if (strpos((string) $oColumn->name, (string)$oSurvey->sid) !== false) {
-                            // Fields are separated by X
+                            // Fields are separated by '_' — extract the question id from the first segment
                             $qid = substr(explode("_", (string) $oColumn->Name)[0], 1);
 
                             if (isset($questions[$qid])) {
@@ -1165,8 +1165,8 @@ class CheckIntegrity extends SurveyCommonAction
         $aDelete['questionOrderDuplicates'] = $this->checkQuestionOrderDuplicates();
 
         /**********************************************************************/
-        /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDANT Survey participant listS       */
-        /**********************************************************************/
+        /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDANT Survey participant lists       */
+        /*********************************************************************/
         //1: Get distinct list of survey_link survey IDs, check if tokens
         //   table still exists for each one, and remove if not
 

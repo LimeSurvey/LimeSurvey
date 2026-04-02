@@ -173,7 +173,7 @@ $ldap_queries[$query_id]['attr2'] = '';
 
 
 // This query is an example of a group search in which group members are UIDs
-// an additional user filter is applied to a already found users
+// an additional user filter is applied to users already found
 $query_id++;
 $ldap_queries[$query_id]['ldapServerId'] = 0;
 $ldap_queries[$query_id]['name'] = 'Admins via POSIXGroups';

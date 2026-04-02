@@ -493,7 +493,7 @@ class questionHelper
             'sortorder' => 101,
             'inputtype' => 'text',
             'expression' => 1,/* As static */
-            "help" => gT('Default coordinates of the map when the page first loads. Format: latitude [space] longitude. Latitude and longitude should be in decimal dot notation (for example "-3.1234 5.1424".'),
+            "help" => gT('Default coordinates of the map when the page first loads. Format: latitude [space] longitude. Latitude and longitude should be in decimal dot notation (for example "-3.1234 5.1424").'),
             "caption" => gT('Default position')
         );
 

@@ -64,7 +64,7 @@ class questionIndexHelper
         //~ if(isset($this->indexItems) && $this->iSurveyId!=LimeExpressionManager::getLEMsurveyId()){
             //~ $this->indexItems=null;
         //~ }
-        /* Put all in construct variable ? */
+        /* Put all in constructor variables? */
         $this->iSurveyId = $iSurveyId;
         $oSurvey = \Survey::model()->findByPk($this->iSurveyId);
         if ($oSurvey) {

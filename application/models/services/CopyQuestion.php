@@ -35,7 +35,7 @@ class CopyQuestion
      *                           ['copyAnswerOptions'] --> true if answer options should be copied
      *                           ['copyDefaultAnswers'] --> true if default answers should be copied
      *                           ['copySettings'] --> generalSettings and advancedSettings
-     *                           ['adjustLinks']  --> true if links just be adjusted to a new survey id
+     *                           ['adjustLinks']  --> true if links should be adjusted to a new survey id
      *                                                (e.g. /upload/348592/images)
      */
     private array $copyOptions = [];

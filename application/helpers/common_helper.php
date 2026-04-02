@@ -965,7 +965,7 @@ function returnGlobal($stringname, $bRestrictToString = false)
 function sendSurveyHttpHeaders()
 {
     if (!headers_sent()) {
-        // Default headers für surveys
+        // Default headers for surveys
         $headers = [
                      'Cache-Control: no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0',
                      'Pragma: no-cache',

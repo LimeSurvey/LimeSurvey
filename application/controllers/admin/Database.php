@@ -191,7 +191,7 @@ class Database extends SurveyCommonAction
         if ($questionThemeMetaData['settings']->answerscales == 0 && $questionThemeMetaData['settings']->subquestions == 0) {
             foreach ($aSurveyLanguages as $sLanguage) {
                 // Qick and dirty insert for yes/no defaul value
-                // write the the selectbox option, or if "EM" is selected, this value to table
+                // write the selectbox option, or if "EM" is selected, this value to table
                 if ($sQuestionType == 'Y') {
                     /// value for all langs
                     if (Yii::app()->request->getPost('samedefault') == 1) {

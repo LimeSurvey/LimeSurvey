@@ -600,7 +600,7 @@ class LSYii_Application extends CWebApplication
 
     /**
      * Get survey survey id by param
-     * @param boolean throw error
+     * @param boolean $throwError Whether to throw an error
      * @return false|integer
      */
      public static function getSurveyId($throwError = true)

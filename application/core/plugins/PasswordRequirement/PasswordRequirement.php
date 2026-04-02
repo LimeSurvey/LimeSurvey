@@ -151,7 +151,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     }
 
     /**
-     * Check the validity of a pasword according to option
+     * Check the validity of a password according to option
      * @param string $password
      * @param boolean $needsNumber
      * @param boolean $needsUppercase
