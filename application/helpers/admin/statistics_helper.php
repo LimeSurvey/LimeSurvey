@@ -590,7 +590,7 @@ class statistics_helper
      */
     protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage, $browse = true)
     {
-        $language = sanitize_languagecode($language);
+        $language = \LSYii_Validators::languageCodeFilter($language);
         $surveyid = (int) $surveyid;
 
         //Set up required variables

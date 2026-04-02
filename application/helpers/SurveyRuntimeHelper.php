@@ -1569,7 +1569,7 @@ class SurveyRuntimeHelper
             }
 
             if (!empty(App()->getLanguage())) {
-                $restartparam['lang'] = sanitize_languagecode(App()->getLanguage());
+                $restartparam['lang'] = \LSYii_Validators::languageCodeFilter(App()->getLanguage());
             } else {
                 $s_lang = Yii::app()->session['responses_' . $this->iSurveyid]['s_lang'] ?? 'en';
                 $restartparam['lang'] = $s_lang;
