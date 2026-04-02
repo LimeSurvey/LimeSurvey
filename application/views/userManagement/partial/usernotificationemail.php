@@ -262,7 +262,8 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                                <!--[if mso | IE]></td></tr><![endif]--><!-- <?php if ($showPasswordSection) { ?> --><!--[if mso | IE]>
+                                <!--[if mso | IE]></td></tr><![endif]--><!-- <?php if ($showPasswordSection) {
+                                    ?> --><!--[if mso | IE]>
                                 <tr>
                                     <td class="" width="1920px"><![endif]-->
                                 <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#ffffff;background-color:#ffffff;width:100%;">
@@ -278,7 +279,8 @@
                                                     <tr>
                                                         <td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;vertical-align:top;"><!--[if mso | IE]>
                                                             <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                                                                <tr><![endif]--><!-- <?php if ($showPassword) { ?> --><!--[if mso | IE]>
+                                                                <tr><![endif]--><!-- <?php if ($showPassword) {
+                                                                    ?> --><!--[if mso | IE]>
                                                             <td class="" style="vertical-align:top;width:960px;"><![endif]-->
                                                             <div class="mj-column-per-50 outlook-group-fix" style="font-size:13px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
                                                                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
@@ -300,7 +302,9 @@
                                                                     </tr>
                                                                 </table>
                                                             </div>
-                                                            <!--[if mso | IE]></td><![endif]--> <!-- ALTERNATIVES! --><!-- <?php } else { ?> --><!-- ALTERNATIVES! --><!--[if mso | IE]>
+                                                            <!--[if mso | IE]></td><![endif]--> <!-- ALTERNATIVES! --><!-- 
+                                                                                     <?php } else {
+                                                                                            ?> --><!-- ALTERNATIVES! --><!--[if mso | IE]>
                                                             <td class="" style="vertical-align:top;width:960px;"><![endif]-->
                                                             <div class="mj-column-per-50 outlook-group-fix" style="font-size:13px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
                                                                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
@@ -313,7 +317,8 @@
                                                                     </tr>
                                                                 </table>
                                                             </div>
-                                                            <!--[if mso | IE]></td><![endif]--> <!-- ALTERNATIVES END --><!-- <?php } ?> --><!--[if mso | IE]></tr></table><![endif]--></td>
+                                                            <!--[if mso | IE]></td><![endif]--> <!-- ALTERNATIVES END --><!-- 
+                                                                                     <?php } ?> --><!--[if mso | IE]></tr></table><![endif]--></td>
                                                     </tr>
                                                     </tbody>
                                                 </table>
@@ -322,7 +327,8 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                                <!--[if mso | IE]></td></tr><![endif]--> <!-- <?php } ?> --><!-- ADDITION START --><!--[if mso | IE]>
+                                <!--[if mso | IE]></td></tr><![endif]--> <!-- 
+                                                                             <?php } ?> --><!-- ADDITION START --><!--[if mso | IE]>
                                 <tr>
                                     <td class="" width="1920px"><![endif]-->
                                 <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#ffffff;background-color:#ffffff;width:100%;">

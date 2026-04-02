@@ -22,7 +22,7 @@ class RenderLongFreeText extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/longfreetext/answer';
     }
-    
+
     public function getRows()
     {
         return;
@@ -48,14 +48,14 @@ class RenderLongFreeText extends QuestionBaseRenderer
             $maxlength = intval(trim((string) $this->getQuestionAttribute('maximum_chars')));
             $extraclass .= " ls-input-maxchars";
         }
-    
+
         // text_input_width can not be empty, except with old survey (wher can be empty or up to 12 see bug #11743
         if (trim((string) $this->getQuestionAttribute('text_input_width')) != '') {
             $col         = ($this->getQuestionAttribute('text_input_width') <= 12) ? $this->getQuestionAttribute('text_input_width') : 12;
             $extraclass .= " col-md-" . trim((string) $col);
             $withColumn = true;
         }
-        
+
         if (ctype_digit(trim((string) $this->getQuestionAttribute('input_size')))) {
             $inputsize = trim((string) $this->getQuestionAttribute('input_size'));
             $extraclass .= " ls-input-sized";
@@ -85,7 +85,7 @@ class RenderLongFreeText extends QuestionBaseRenderer
         }
 
         $inputnames[] = $this->sSGQA;
-        
+
         $this->registerAssets();
         return array($answer, $inputnames);
     }

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
     /*
@@ -36,7 +38,7 @@
     * ADD TRAILING SLASH!
     ***********************************************************/
 
-    $tcpdf['base_directory'] = APPPATH.'vendor'.DIRECTORY_SEPARATOR.'tcpdf'.DIRECTORY_SEPARATOR;
+    $tcpdf['base_directory'] = APPPATH . 'vendor' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR;
 
 
     /************************************************************
@@ -62,7 +64,7 @@
     * ADD TRAILING SLASH!
     ***********************************************************/
 
-    $tcpdf['fonts_directory'] = $tcpdf['base_directory'].'fonts'.DIRECTORY_SEPARATOR;
+    $tcpdf['fonts_directory'] = $tcpdf['base_directory'] . 'fonts' . DIRECTORY_SEPARATOR;
 
 
     /************************************************************
@@ -75,7 +77,7 @@
     ***********************************************************/
 
     $tcpdf['enable_disk_cache'] = false;
-    $tcpdf['cache_directory'] = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR;
+    $tcpdf['cache_directory'] = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR;
 
 
     /************************************************************
@@ -97,7 +99,7 @@
     * image.
     ***********************************************************/
 
-    $tcpdf['blank_image'] = $tcpdf['image_directory'].'_blank.png';
+    $tcpdf['blank_image'] = $tcpdf['image_directory'] . '_blank.png';
 
 
 

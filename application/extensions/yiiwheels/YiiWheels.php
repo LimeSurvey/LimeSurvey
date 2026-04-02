@@ -1,4 +1,5 @@
 <?php
+
 /**
  * YiiWheels class file.
  * @author Antonio Ramirez <amigo.cobos@gmail.com>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var FailedEmailController $this
  * @var int $successfullEmailCount how many emails succeeded

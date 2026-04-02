@@ -1,8 +1,10 @@
 <?php
+
 /**
  * This view generate the 'bounce' tab inside global settings.
  *
  */
+
 ?>
 
 <div class="container">
@@ -61,7 +63,7 @@
     <div>
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
             'name'          => 'bounceencryption',
-            'ariaLabel'=> gT('Encryption type'),
+            'ariaLabel' => gT('Encryption type'),
             'checkedOption' => strtolower((string) Yii::app()->getConfig('bounceencryption')),
             'selectOptions' => [
                 "off" => gT("Off", 'unescaped'),
@@ -77,6 +79,6 @@
 </div>
 
 
-<?php if (Yii::app()->getConfig("demoMode")==true):?>
+<?php if (Yii::app()->getConfig("demoMode") == true) :?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
 <?php endif; ?>

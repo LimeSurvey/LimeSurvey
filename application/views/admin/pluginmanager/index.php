@@ -28,7 +28,11 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
             </a>
              */ ?>
         <?php foreach ($extraMenus as $menu) : ?>
-            <a href='<?php echo $menu->getHref(); ?>' <?php if ($menu->getOnClick()) : ?> onclick='<?php echo $menu->getOnClick(); ?>' <?php endif; ?> <?php if ($menu->getTooltip()) : ?> data-bs-toggle='tooltip' data-title='<?php echo $menu->getTooltip(); ?>' <?php endif; ?> class='btn btn-outline-secondary'>
+            <a href='<?php echo $menu->getHref(); ?>' <?php if ($menu->getOnClick()) :
+                ?> onclick='<?php echo $menu->getOnClick(); ?>' <?php
+                     endif; ?> <?php if ($menu->getTooltip()) :
+    ?> data-bs-toggle='tooltip' data-title='<?php echo $menu->getTooltip(); ?>' <?php
+                     endif; ?> class='btn btn-outline-secondary'>
                 <?php if ($menu->getIconClass()) : ?>
                     <i class='<?php echo $menu->getIconClass(); ?>'></i>&nbsp;
                 <?php endif; ?>

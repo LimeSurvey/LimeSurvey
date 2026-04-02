@@ -609,8 +609,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 $insertdata["method"] = '==';
             }
 
-            $insertdata['value'] = fixText(convertLegacyInsertans($insertdata['value']?? "", $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
-            $insertdata['cfieldname'] = fixText($insertdata['cfieldname']?? "", $allImportedQuestions, $oldNewFieldRoots);
+            $insertdata['value'] = fixText(convertLegacyInsertans($insertdata['value'] ?? "", $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
+            $insertdata['cfieldname'] = fixText($insertdata['cfieldname'] ?? "", $allImportedQuestions, $oldNewFieldRoots);
 
             // now translate any links
             Yii::app()->db->createCommand()->insert('{{conditions}}', $insertdata);
@@ -769,7 +769,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 );
                 return $results;
             }
-            if($supportArchivedFields) {
+            if ($supportArchivedFields) {
                 $oldNewFieldRoots["{$iOldSID}X{$iOldGID}X{$iOldQID}"] = "{$oQuestion->sid}X{$oQuestion->gid}X{$oQuestion->qid}";
             }
             switchMSSQLIdentityInsert('questions', false);
@@ -1700,7 +1700,7 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
             ;
             break;
         case 'pgsql':
-        $command = "
+            $command = "
         SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
         FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
         JOIN " . Yii::app()->db->tablePrefix . "questions new_q
@@ -1711,11 +1711,11 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
         ON old_s_c.COLUMN_NAME = new_s_c.COLUMN_NAME
         ;
         "
-        ;
-        break;
+            ;
+            break;
         case 'mssql':
         case 'sqlsrv':
-        $command = "
+            $command = "
         SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
         FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
         JOIN " . Yii::app()->db->tablePrefix . "questions new_q
@@ -1726,8 +1726,8 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
         ON old_s_c.COLUMN_NAME = new_s_c.COLUMN_NAME
         ;
         "
-        ;
-        break;
+            ;
+            break;
     }
 
     $rawResults = Yii::app()->db->createCommand($command)->queryAll();
@@ -4552,7 +4552,7 @@ function createXMLfromData($aData = array())
  * @param array &$results
  * @return void
  */
-function importDefaultValues(SimpleXMLElement $xml, $aLanguagesSupported, $aQIDReplacements, array &$results, $allImportedQuestions = [] , $newOldQidMapping = [], $oldNewFieldRoots = [])
+function importDefaultValues(SimpleXMLElement $xml, $aLanguagesSupported, $aQIDReplacements, array &$results, $allImportedQuestions = [], $newOldQidMapping = [], $oldNewFieldRoots = [])
 {
     // Default value id replacements
     $aDvidReplacements = [];
@@ -4787,7 +4787,7 @@ function processPendingInsertansUpdates(&$pendingInsertansUpdates, $allImportedQ
 
         $models = $modelClass::model()->findAllByAttributes($idCriteria);
 
-        if(!empty($models)) {
+        if (!empty($models)) {
             foreach ($models as $model) {
                 $changed = false;
                 foreach ($record['fields'] as $fieldName => $fieldValue) {

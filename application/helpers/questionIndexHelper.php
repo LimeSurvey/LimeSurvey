@@ -25,7 +25,6 @@ use LimeExpressionManager;
 
 class questionIndexHelper
 {
-
     /**
      * Singleton
      * @var questionIndexHelper

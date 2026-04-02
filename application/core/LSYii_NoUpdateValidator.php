@@ -18,7 +18,6 @@
 
 class LSYii_NoUpdateValidator extends CValidator
 {
-
     /**
      * @inheritdoc
      * Filter attribute transparently to disallow update

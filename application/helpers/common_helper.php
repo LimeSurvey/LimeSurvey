@@ -1289,14 +1289,14 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 
 /**
  * Returns the field name of a table's question or subquestion
- * 
+ *
  * @param string $tableName
  * @param string $fieldName
  * @param array $questions a collection of questions containing a question and its subquestions
  * @param int $sid
  * @param int $gid
  * @param bool $cd is it the condition designer
- * 
+ *
  * @return string the field's name
  */
 function getFieldName(string $tableName, string $fieldName, array $questions, int $sid, int $gid, bool $cd = false)
@@ -1331,7 +1331,7 @@ function getFieldName(string $tableName, string $fieldName, array $questions, in
                 foreach ($questions as $question) {
                     if ($hashPos && ($question->title === substr($fieldName, $length, ($hashPos !== false) ? ($hashPos - $length) : null))) {
                         $currentQuestion = $question;
-                    } else if ($question->title === substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"))) {
+                    } elseif ($question->title === substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"))) {
                         $currentQuestion = $question;
                     }
                 }
@@ -1909,8 +1909,9 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             $columnsCount = (!$maxDbAnswer || intval($maxDbAnswer->value) < 1) ? $answersCount : intval($maxDbAnswer->value);
             $columnsCount = min($columnsCount, $answersCount); // Can not be upper than current answers #14899
 
-            if($includeAllAnswerOptions)
+            if ($includeAllAnswerOptions) {
                 $columnsCount = $answersCount;
+            }
 
             for ($i = 1; $i <= $columnsCount; $i++) {
                 $fieldname = "Q{$arow['qid']}_R" . $answers[$i - 1]->aid;
@@ -2915,7 +2916,7 @@ function reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQID
         $forceRefresh = false;
     }
     $dupes = [];
-    $aFieldMap = createFieldMap($oNewSurvey, 'short', $forceRefresh, false, $oNewSurvey->language, $dupes ,$aQIDReplacements);
+    $aFieldMap = createFieldMap($oNewSurvey, 'short', $forceRefresh, false, $oNewSurvey->language, $dupes, $aQIDReplacements);
 
     $aFieldMappings = array();
     foreach ($aFieldMap as $sFieldname => $aFieldinfo) {
@@ -5483,8 +5484,9 @@ function convertLegacyInsertans($text, array $questions = [], $newOldSurveyQuest
             if (preg_match('/^(\d+)([a-zA-Z].*)$/', $title, $match)) {
                 $oldQid = (int) $match[1];
                 $title = $match[2];
-                if(!isset($questionCodes[$oldQid]))
+                if (!isset($questionCodes[$oldQid])) {
                     $title = "";
+                }
             } else {
                 $title = $questionCodes[$title] ?? "";
             }
@@ -5505,7 +5507,7 @@ function convertLegacyInsertans($text, array $questions = [], $newOldSurveyQuest
 function sortByKeyLengthDescending($input)
 {
     $keys = array_keys($input);
-    usort($keys, function($a, $b) {
+    usort($keys, function ($a, $b) {
         return strlen($b) - strlen($a);
     });
     $output = [];

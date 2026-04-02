@@ -7,4 +7,4 @@ echo viewHelper::getViewTestTag('expressionsRelevance');
 
 <?php
 LimeExpressionManager::UnitTestRelevance();
-?>
+

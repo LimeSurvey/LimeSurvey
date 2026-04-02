@@ -17,10 +17,10 @@ if ($tokenexists) {
             ]
         );
     }
-    
+
     // Include the default buttons
     $this->renderPartial('/surveyAdministration/partial/topbar/surveyTopbarRight_view', get_defined_vars());
-    
+
     if (!empty($showDownloadButton)) {
         $this->widget(
             'ext.ButtonWidget.ButtonWidget',
@@ -37,7 +37,7 @@ if ($tokenexists) {
             ]
         );
     }
-    
+
     if (!empty($showSendInvitationButton)) {
         $this->widget(
             'ext.ButtonWidget.ButtonWidget',
@@ -53,7 +53,7 @@ if ($tokenexists) {
             ]
         );
     }
-    
+
     if (!empty($showSendReminderButton)) {
         $this->widget(
             'ext.ButtonWidget.ButtonWidget',

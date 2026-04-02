@@ -14,7 +14,6 @@
  */
 class InstallFromConfigCommand extends CConsoleCommand
 {
-
     /**
      * If true, output trace.
      * @var boolean
@@ -40,12 +39,12 @@ class InstallFromConfigCommand extends CConsoleCommand
      */
     public function run($args)
     {
-        
+
         if (isset($args) && isset($args[0])) {
             $readFromConfig = realpath($args[0]);
             $this->configuration = include($readFromConfig);
             $this->dbConnectionArray = $this->configuration['components']['db'];
-            
+
             foreach ($this->configuration as $configKey => $configValue) {
                 Yii::app()->params[$configKey] = $configValue;
             }
@@ -154,13 +153,13 @@ class InstallFromConfigCommand extends CConsoleCommand
     {
         $this->output('Creating database...');
         App()->configure(array('components' => array('db' => array('autoConnect' => false))));
-        
+
         $dbConnectArray = $this->configuration['components']['db'];
 
         $connectionString = $dbConnectArray['connectionString'];
         $this->output($connectionString);
         $dbConnectArray['connectionString'] = preg_replace('/dbname=([^;]*)/', '', (string) $connectionString);
-        
+
         $this->connection = App()->getDb();
         $this->connection->connectionString = $dbConnectArray['connectionString'];
         $this->connection->username = $dbConnectArray['username'];
@@ -168,7 +167,7 @@ class InstallFromConfigCommand extends CConsoleCommand
 
         $this->connection->setAttributes($dbConnectArray);
         $this->connection->init();
-        
+
         try {
             $this->output('Opening connection...');
             $this->connection->active = true;

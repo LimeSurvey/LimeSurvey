@@ -59,7 +59,7 @@ if ($bShowInherited) {
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->shownoanswer . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
+                                                                ?>
                 </div>
             </div>
 
@@ -163,7 +163,7 @@ if ($bShowInherited) {
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->showwelcome . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
+                                                                ?>
                 </div>
             </div>
 
@@ -181,7 +181,7 @@ if ($bShowInherited) {
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->showprogress . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
+                                                                ?>
                 </div>
             </div>
 
@@ -198,7 +198,7 @@ if ($bShowInherited) {
                             'selectOptions' => $optionsQuestionIndex
                         )
                     );
-                    ?>
+                                                                ?>
                 </div>
             </div>
 
@@ -250,7 +250,7 @@ if ($bShowInherited) {
                                 ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->autoredirect . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
+                                                                ?>
                 </div>
             </div>
         </div>
@@ -269,7 +269,7 @@ if ($bShowInherited) {
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->allowprev . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
+                                                            ?>
                 </div>
             </div>
             <!-- Participants may print answers -->
@@ -286,7 +286,7 @@ if ($bShowInherited) {
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->printanswers . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
+                                                                ?>
                 </div>
             </div>
         </div>
@@ -309,7 +309,7 @@ if ($bShowInherited) {
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->publicstatistics . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
+                                                                    ?>
                 </div>
             </div>
         </div>
@@ -330,7 +330,7 @@ if ($bShowInherited) {
                             array_merge($optionsOnOff, array('I' => $oSurveyOptions->publicgraphs . " ᴵ")) : $optionsOnOff
                     )
                 );
-                ?>
+                                                                    ?>
             </div>
         </div>
     </div>

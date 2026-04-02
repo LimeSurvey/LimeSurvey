@@ -64,7 +64,7 @@ class expressionQuestionForAll extends PluginBase
         $criteria->compare('parent_qid', 0);
         $criteria->addInCondition('type', $aQuestionManaged);
         $aoQuestions = \Question::model()->findAll($criteria);
-        
+
         $newKnownVars = array();
         foreach ($aoQuestions as $oQuestion) {
             $oQuestionL10n = \QuestionL10n::model()->find("qid = :qid and language = :language", array(":qid" => $oQuestion->qid,":language" => $language));

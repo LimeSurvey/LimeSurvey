@@ -21,12 +21,12 @@ $active = 1; ?>
         <div class="col-12">
             <!-- Tabs -->
             <ul class="nav nav-tabs">
-                <?php foreach ($grplangs as $grouplang): ?>
+                <?php foreach ($grplangs as $grouplang) : ?>
                     <li role="presentation" class="nav-item">
                         <a class="nav-link <?php if ($active) {
                             echo 'active';
                             $active = 0;
-                        } ?>" role="tab" data-bs-toggle="tab" href="#<?php echo $grouplang; ?>">
+                                           } ?>" role="tab" data-bs-toggle="tab" href="#<?php echo $grouplang; ?>">
                             <?= getLanguageNameFromCode($grouplang, false) . " " . (($grouplang == $baselang) ? "(" . gT("Base language") . ")" : "") ?>
                         </a>
                     </li>
@@ -34,7 +34,8 @@ $active = 1; ?>
 
             </ul>
             <!-- form -->
-            <?php echo CHtml::form(array("questionGroupsAdministration/saveQuestionGroupData/sid/{$surveyid}"),
+            <?php echo CHtml::form(
+                array("questionGroupsAdministration/saveQuestionGroupData/sid/{$surveyid}"),
                 'post',
                 array('id' => 'newquestiongroup', 'name' => 'newquestiongroup', 'class' => 'form30 ')
             ); ?>
@@ -42,12 +43,12 @@ $active = 1; ?>
             <!-- tab content -->
             <div class="tab-content bg-white ps-2 pe-2 pb-1">
                 <?php $active = 1;
-                foreach ($grplangs as $grouplang): ?>
+                foreach ($grplangs as $grouplang) : ?>
                     <!-- Lang Content -->
                     <div id="<?php echo $grouplang; ?>" class="tab-pane fade <?php if ($active) {
                         echo 'show active';
                         $active = 0;
-                    } ?> ">
+                             } ?> ">
                         <div>
                             <!-- Title -->
                             <div class="mb-3">
@@ -62,7 +63,8 @@ $active = 1; ?>
                             <div class="mb-3">
                                 <label class="form-label " for='description_<?php echo $grouplang; ?>'><?php eT("Description:"); ?></label>
                                 <div class=" input-group">
-                                    <?php echo CHtml::textArea("questionGroupI10N[{$grouplang}][description]",
+                                    <?php echo CHtml::textArea(
+                                        "questionGroupI10N[{$grouplang}][description]",
                                         "",
                                         array('class' => 'form-control', 'cols' => '60', 'rows' => '8', 'id' => "description_{$grouplang}")
                                     ); ?>

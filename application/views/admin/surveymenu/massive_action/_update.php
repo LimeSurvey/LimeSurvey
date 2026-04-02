@@ -1,15 +1,17 @@
 <?php
+
 /**
  * Render the selector for surveys massive actions.
  *
  */
+
 ?>
 <?php
     $model = Surveymenu::model();
 ?>
 
 <form class="custom-modal-datas form form-horizontal">
-	<div class="container-fluid">
+    <div class="container-fluid">
         <div class="ex-form-group mb-3">
             <div class="col-md-1">
                 <label class="" >
@@ -26,11 +28,11 @@
             </div>
             <label class="col-md-3 form-label"  for='menu_id'><?php eT("Position:"); ?></label>
             <div class="col-md-8">
-                <?php echo TbHtml::dropDownList('position', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getPositionOptions()), ['disabled'=>'disabled','class'=>'form-select custom-data selector_submitField'] );?>
+                <?php echo TbHtml::dropDownList('position', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getPositionOptions()), ['disabled' => 'disabled','class' => 'form-select custom-data selector_submitField']);?>
             </div>
         </div>
         
-		<div class="ex-form-group mb-3">
+        <div class="ex-form-group mb-3">
             <div class="col-md-1">
                 <label class="" >
                     <input type="checkbox" class="action_check_to_keep_old_value"></input>
@@ -38,7 +40,7 @@
             </div>
             <label class="col-md-3 form-label"  for='menu_class'><?php eT("Parent menu:"); ?></label>
             <div class="col-md-8">
-                    <?php echo TbHtml::dropDownList('parent_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getMenuIdOptions()), ['disabled'=>'disabled','class'=>'form-select custom-data selector_submitField'] );?>
+                    <?php echo TbHtml::dropDownList('parent_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getMenuIdOptions()), ['disabled' => 'disabled','class' => 'form-select custom-data selector_submitField']);?>
                 </div>
             </div>
             
@@ -51,11 +53,11 @@
                 </div>
                 <label class="col-md-3 form-label"  for='permission'><?php eT("Survey:"); ?></label>
                 <div class="col-md-8">
-                    <?php echo TbHtml::dropDownList('survey_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getSurveyIdOptions()), ['disabled'=>'disabled','class'=>'form-select custom-data selector_submitField'] );?>
+                    <?php echo TbHtml::dropDownList('survey_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getSurveyIdOptions()), ['disabled' => 'disabled','class' => 'form-select custom-data selector_submitField']);?>
             </div>
-		</div>
+        </div>
 
-		<div class="ex-form-group mb-3">
+        <div class="ex-form-group mb-3">
             <div class="col-md-1">
                 <label class="" >
                     <input type="checkbox" class="action_check_to_keep_old_value"></input>
@@ -63,14 +65,14 @@
             </div>
             <label class="col-md-3 form-label"  for='permission_grade'><?php eT("User:"); ?></label>
             <div class="col-md-8">
-                <?php echo TbHtml::dropDownList('user_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getUserIdOptions()), ['disabled'=>'disabled','class'=>'form-select custom-data selector_submitField'] );?>
+                <?php echo TbHtml::dropDownList('user_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getUserIdOptions()), ['disabled' => 'disabled','class' => 'form-select custom-data selector_submitField']);?>
             </div>
-		</div>
+        </div>
 
-		<?php echo TbHtml::hiddenField('changed_by', Yii::app()->user->id, ['class'=>'custom-data']);?>
-		<?php echo TbHtml::hiddenField('changed_at', date('Y-m-d H:i:s'), ['class'=>'custom-data']);?>
-		
-	</div>
+        <?php echo TbHtml::hiddenField('changed_by', Yii::app()->user->id, ['class' => 'custom-data']);?>
+        <?php echo TbHtml::hiddenField('changed_at', date('Y-m-d H:i:s'), ['class' => 'custom-data']);?>
+        
+    </div>
 </form>
 <!-- form -->
 <script>

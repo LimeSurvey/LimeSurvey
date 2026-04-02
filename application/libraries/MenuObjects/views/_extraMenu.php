@@ -1,4 +1,5 @@
 <?php
+
 /** @var array $extraMenus */
 
 /** @var bool $middleSection */
@@ -8,13 +9,13 @@
 use LimeSurvey\Menu\Menu;
 use LimeSurvey\Menu\MenuButton;
 
-foreach ($extraMenus as $menu): ?>
+foreach ($extraMenus as $menu) : ?>
     <?php
     $menuId = $menu->getId();
     $menuLabel = $menu->getLabel();
     $menuIconClass = $menu->getIconClass();
     $menuHref = $menu->getHref();
-    $idAttr = ($menu->getId())? 'id="'. $menuId.'"' : '';
+    $idAttr = ($menu->getId()) ? 'id="' . $menuId . '"' : '';
     $ariaLabelledBy = $idAttr ? 'aria-labelledby="' . $menuId . '"' : '';
     $sectionFilter = (($middleSection && $menu->isInMiddleSection()) || (!$middleSection && !$menu->isInMiddleSection()));
     $prependedFilter = (($prependedMenu && $menu->isPrepended()) || (!$prependedMenu && !$menu->isPrepended()));
@@ -22,7 +23,7 @@ foreach ($extraMenus as $menu): ?>
     if ($sectionFilter && $prependedFilter) : ?>
         <li class="dropdown nav-item extra-menu-dropdown">
             <?php
-            if ($menu->isDropDown()): ?>
+            if ($menu->isDropDown()) : ?>
                 <?php if ($menu->isDropDownButton()) { ?>
                     <button type="button"
                             <?= $idAttr ?>
@@ -46,52 +47,52 @@ foreach ($extraMenus as $menu): ?>
                 <?php }?>
                 <ul class="dropdown-menu" <?= $ariaLabelledBy ?>>
                     <?php
-                    foreach ($menu->getMenuItems() as $menuItem): ?>
+                    foreach ($menu->getMenuItems() as $menuItem) : ?>
                         <?php
                         $menuItemLabel = $menuItem->getLabel();
                         $menuItemIconClass = $menuItem->getIconClass();
-                        if ($menuItem->isDivider()): ?>
+                        if ($menuItem->isDivider()) : ?>
                             <li class="dropdown-divider" role="separator"></li>
-                        <?php
-                        elseif ($menuItem->isSmallText()): ?>
+                            <?php
+                        elseif ($menuItem->isSmallText()) : ?>
                             <li class="dropdown-header" role="presentation">
                                 <span role="doc-subtitle" aria-label="<?= $menuItemLabel ?>"><?= $menuItemLabel ?></span>
                             </li>
-                        <?php
-                        else: ?>
+                            <?php
+                        else : ?>
                             <li class="<?= $menuItem->getItemClass() ?> ms-3 me-3">
                                 <?php
                                 $menuItemId = ($menuItem->getId()) ? 'id="' . $menuItem->getId() . '"' : '';
                                 ?>
-                                <?php if ($menuItem->isModal()): ?>
+                                <?php if ($menuItem->isModal()) : ?>
                                     <button class="dropdown-item"
                                             type="button"
                                             data-bs-toggle="modal"
                                             data-bs-target="#<?= $menuItem->getModalId() ?>"
                                         <?= $menuItemId ?>>
-                                        <?php if ($menuItem->getIconClass() != ''): ?>
+                                        <?php if ($menuItem->getIconClass() != '') : ?>
                                             <span class="<?= $menuItemIconClass ?>" aria-hidden="true"></span>
                                         <?php endif; ?>
                                         <?= $menuItemLabel ?>
                                     </button>
-                                <?php else: ?>
+                                <?php else : ?>
                                     <a href="<?= $menuItem->getHref() ?>"
                                        class="dropdown-item"
                                         <?= $menuItemId ?>>
-                                        <?php if ($menuItem->getIconClass() != ''): ?>
+                                        <?php if ($menuItem->getIconClass() != '') : ?>
                                             <span class="<?= $menuItemIconClass ?>" aria-hidden="true"></span>
                                         <?php endif; ?>
                                         <?= $menuItemLabel ?>
                                     </a>
                                 <?php endif; ?>
                             </li>
-                        <?php
+                            <?php
                         endif; ?>
-                    <?php
+                        <?php
                     endforeach; ?>
                 </ul>
-            <?php
-            elseif ($menu->isButton()): ?>
+                <?php
+            elseif ($menu->isButton()) : ?>
                 <?php
                 $menuButton = $menu;
                 $menuButtonLabel = $menuButton->getLabel();
@@ -108,22 +109,24 @@ foreach ($extraMenus as $menu): ?>
                    data-bs-placement="bottom"
                    onclick="<?= $menuButton->getOnClick() ?>"
                    target="<?= $target ?>"
-                   <?php if ($relAttribute): ?>rel="<?= $relAttribute ?>"<?php endif; ?>
+                   <?php if ($relAttribute) :
+                        ?>rel="<?= $relAttribute ?>"<?php
+                   endif; ?>
                    aria-label="<?= $menuButtonTooltip ?>">
                     <?= $menuButtonLabel ?>
                 </a>
-            <?php
-            else: ?>
+                <?php
+            else : ?>
                 <a href="<?= $menuHref ?>" class="nav-link" <?= $idAttr ?>>
-                    <?php if ($menu->getIconClass()): ?>
+                    <?php if ($menu->getIconClass()) : ?>
                         <i class="<?= $menuIconClass ?>" aria-hidden="true"></i>
                     <?php endif; ?>
                     <?= $menuLabel ?>
                 </a>
-            <?php
+                <?php
             endif; ?>
         </li>
-    <?php
+        <?php
     endif; ?>
-<?php
+    <?php
 endforeach; ?>

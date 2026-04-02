@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhDetailView widget class
  *
@@ -14,7 +15,6 @@ Yii::import('zii.widgets.CDetailView');
 
 class WhDetailView extends CDetailView
 {
-
     /**
      * @var string|array the table type.
      * Valid values are TbHtml::GRID_STRIPED, TbHtml::GRID_BORDERED and/or TbHtml::GRID_CONDENSED.

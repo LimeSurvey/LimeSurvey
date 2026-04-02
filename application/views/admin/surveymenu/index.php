@@ -45,14 +45,14 @@ echo viewHelper::getViewTestTag('surveyMenus');
                                 'filter' => $model,
                                 'emptyText' => gT('No customizable entries found.'),
                                 'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                                        gT('%s rows per page'),
-                                        CHtml::dropDownList(
-                                            'pageSize',
-                                            $pageSize,
-                                            Yii::app()->params['pageSizeOptions'],
-                                            ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                                        )
-                                    ),
+                                    gT('%s rows per page'),
+                                    CHtml::dropDownList(
+                                        'pageSize',
+                                        $pageSize,
+                                        Yii::app()->params['pageSizeOptions'],
+                                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                                    )
+                                ),
                                 'rowHtmlOptionsExpression' => '["data-surveymenu-id" => $data->id]',
                                 'ajaxType' => 'POST',
                                 'ajaxUpdate' => 'surveymenu-grid',

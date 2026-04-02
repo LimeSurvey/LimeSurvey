@@ -21,13 +21,11 @@
                 <h2 class="card-header h3"><?php eT("Unmapped survey participant attributes") ?></h2>
                 <div id="tokenatt" class="tokenatt droppable">
                     <?php
-                        if (!empty($tokenattribute))
-                        {
-                            foreach ($tokenattribute as $key => $value)
-                            {
-                                echo "<div id='t_" . $value . "' data-name='" . $key . "' class='card token-attribute attribute-item draggable'><div title='".gT("Drag this attribute to another column to map it to the central participants database")."' data-name=\"$key\" class=\"card-body\">" . $key . "</div></div>";
-                            }
+                    if (!empty($tokenattribute)) {
+                        foreach ($tokenattribute as $key => $value) {
+                            echo "<div id='t_" . $value . "' data-name='" . $key . "' class='card token-attribute attribute-item draggable'><div title='" . gT("Drag this attribute to another column to map it to the central participants database") . "' data-name=\"$key\" class=\"card-body\">" . $key . "</div></div>";
                         }
+                    }
                     ?>
                 </div>
 
@@ -47,10 +45,8 @@
                 <h2 class="card-header h3"><?php eT("Existing participant attributes")?></h2>
                 <div class="centralatt">
                     <?php
-                    if (!empty($attribute))
-                    {
-                        foreach ($attribute as $key => $value)
-                        {
+                    if (!empty($attribute)) {
+                        foreach ($attribute as $key => $value) {
                             echo "<div class='card mappable-attribute-wrapper droppable'><div class=\"card-body mappable-attribute attribute-item\" id='c_" . $key . "' data-name='c_" . $key . "'>" . $value . "</div></div>";
                         }
                     }
@@ -69,16 +65,14 @@
                     </div>
                 </div>
                 <?php } else { ?>
-
                 <?php }
-                if(!empty($alreadymappedattributename)) {
+                if (!empty($alreadymappedattributename)) {
                     ?>
                     <div class='heading text-center'><?php eT("Pre-mapped attributes") ?></div>
                     <div class="notsortable">
                     <?php
-                    foreach ($alreadymappedattributename as $key => $value)
-                    {
-                        echo "<div title='".gT("This attribute is automatically mapped")."' data-name='$value' class=\"already-mapped-attribute\" >" . $alreadymappedattdescription[$value] . "</div>";
+                    foreach ($alreadymappedattributename as $key => $value) {
+                        echo "<div title='" . gT("This attribute is automatically mapped") . "' data-name='$value' class=\"already-mapped-attribute\" >" . $alreadymappedattdescription[$value] . "</div>";
                     }
                     ?>
                     </div>

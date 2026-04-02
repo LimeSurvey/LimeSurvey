@@ -22,12 +22,12 @@ class RenderLanguageSelector extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/language/answer';
     }
-    
+
     public function getRows()
     {
         $answerlangs            = $this->oQuestion->survey->additionalLanguages;
         $answerlangs[]          = $this->oQuestion->survey->language;
-        
+
         return $answerlangs;
     }
 
@@ -55,7 +55,7 @@ class RenderLanguageSelector extends QuestionBaseRenderer
             'answerlangs' => $aAnswerlangs,
             'sLang' => $sLanguage,
             ), true);
-            
+
         $this->registerAssets();
         $inputnames[] = $this->sSGQA;
         return array($answer, $inputnames);

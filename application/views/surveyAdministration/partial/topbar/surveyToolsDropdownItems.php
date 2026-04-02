@@ -3,8 +3,7 @@
 ?>
 
 <ul class="dropdown-menu">
-    <?php if ($hasDeletePermission): ?>
-
+    <?php if ($hasDeletePermission) : ?>
         <!-- Delete survey -->
         <li>
             <a class="dropdown-item"
@@ -15,11 +14,10 @@
         </li>
     <?php endif; ?>
 
-    <?php if ($hasSurveyTranslatePermission): ?>
+    <?php if ($hasSurveyTranslatePermission) : ?>
         <!-- surveytranslate -->
 
-        <?php if ($hasAdditionalLanguages): ?>
-
+        <?php if ($hasAdditionalLanguages) : ?>
             <!-- Quick-translation -->
             <li>
                 <a class="dropdown-item"
@@ -29,8 +27,7 @@
                 </a>
             </li>
 
-        <?php else: ?>
-
+        <?php else : ?>
             <!-- Quick-translation disabled -->
             <li class="disabled">
                 <a class="dropdown-item" href="#" class="btntooltip disabled" data-bs-toggle="tooltip"
@@ -43,8 +40,8 @@
         <?php endif; ?>
     <?php endif; ?>
 
-    <?php if ($hasSurveyContentPermission): ?>
-        <?php if ($conditionsCount > 0): ?>
+    <?php if ($hasSurveyContentPermission) : ?>
+        <?php if ($conditionsCount > 0) : ?>
             <li>
                 <!-- condition -->
                 <a class="dropdown-item"
@@ -66,10 +63,10 @@
         <?php endif; ?>
     <?php endif; ?>
 
-    <?php if ($hasSurveyReadPermission): ?>
+    <?php if ($hasSurveyReadPermission) : ?>
         <!-- survey content -->
 
-        <?php if (count($oSurvey->allLanguages) == 1): ?>
+        <?php if (count($oSurvey->allLanguages) == 1) : ?>
             <!-- one language -->
 
             <!-- Survey logic overview -->
@@ -98,8 +95,8 @@
             </li>
 
             <!-- Additional languages -->
-            <?php if (count($oSurvey->additionalLanguages) <= 2): ?>
-                <?php foreach ($oSurvey->additionalLanguages as $tmp_lang): ?>
+            <?php if (count($oSurvey->additionalLanguages) <= 2) : ?>
+                <?php foreach ($oSurvey->additionalLanguages as $tmp_lang) : ?>
                     <li>
                         <a class="dropdown-item"
                             href='<?php echo App()->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/lang/$tmp_lang"); ?>'>
@@ -108,16 +105,16 @@
                         </a>
                     </li>
                 <?php endforeach; ?>
-            <?php else: ?>
+            <?php else : ?>
                 <?php
                     $languageOptions = [];
-                    foreach ($oSurvey->additionalLanguages as $language) {
-                        $languageOptions[] = [
-                            'key' => $language,
-                            'href' => Yii::app()->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/lang/$language"),
-                            'text' => getLanguageNameFromCode($language, false),
-                        ];
-                    }
+                foreach ($oSurvey->additionalLanguages as $language) {
+                    $languageOptions[] = [
+                        'key' => $language,
+                        'href' => Yii::app()->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/lang/$language"),
+                        'text' => getLanguageNameFromCode($language, false),
+                    ];
+                }
 
                     $languagesModal = $this->widget('ext.OptionsModalWidget.OptionsModalWidget', [
                         'modalTitle' => gT("Select language to show survey logic overview"),
@@ -134,7 +131,7 @@
         <?php endif; ?>
     <?php endif; ?>
 
-    <?php if (!$oSurvey->isActive && $hasSurveyContentPermission): ?>
+    <?php if (!$oSurvey->isActive && $hasSurveyContentPermission) : ?>
         <li role="separator" class="dropdown-divider"></li>
 
         <!-- Regenerate question codes -->
@@ -161,17 +158,17 @@
         </li>
     <?php endif; ?>
 
-    <?php if (!empty($extraToolsMenuItems)): ?>
-        <?php foreach ($extraToolsMenuItems as $menuItem): ?>
-            <?php if ($menuItem->isDivider()): ?>
+    <?php if (!empty($extraToolsMenuItems)) : ?>
+        <?php foreach ($extraToolsMenuItems as $menuItem) : ?>
+            <?php if ($menuItem->isDivider()) : ?>
                 <li class="dropdown-divider"></li>
-            <?php elseif ($menuItem->isSmallText()): ?>
+            <?php elseif ($menuItem->isSmallText()) : ?>
                 <li class="dropdown-header"><?php echo $menuItem->getLabel(); ?></li>
-            <?php else: ?>
+            <?php else : ?>
                 <li>
                     <a class="dropdown-item" href="<?php echo $menuItem->getHref(); ?>">
                         <!-- Spit out icon if present -->
-                        <?php if ($menuItem->getIconClass() != ''): ?>
+                        <?php if ($menuItem->getIconClass() != '') : ?>
                             <span class="<?php echo $menuItem->getIconClass(); ?>">&nbsp;</span>
                         <?php endif; ?>
                         <?php echo $menuItem->getLabel(); ?>

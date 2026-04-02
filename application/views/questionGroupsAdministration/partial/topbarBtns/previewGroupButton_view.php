@@ -1,6 +1,6 @@
 
 
-<?php if($hasSurveyContentUpdatePermission): ?>
+<?php if ($hasSurveyContentUpdatePermission) : ?>
     <?php
     $languagesDropDownItems = '';
     if (count($surveyLanguages) > 1) {
@@ -19,7 +19,7 @@
     }
     ?>
 <!-- Preview group -->
-<?php
+    <?php
     $this->widget('ext.ButtonWidget.ButtonWidget', [
         'name' => 'ls-group-preview-button',
         'id' => 'ls-group-preview-button',

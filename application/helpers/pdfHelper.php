@@ -21,7 +21,6 @@ if (!defined('BASEPATH')) {
  */
 class pdfHelper
 {
-
     /**
      * getPdfLanguageSettings
      *

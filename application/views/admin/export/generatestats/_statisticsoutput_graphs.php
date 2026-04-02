@@ -13,11 +13,11 @@
  *
  */
  // TODO: move to controller
- $qqid = str_replace ( '-', '__' , (string) $qqid );
+ $qqid = str_replace('-', '__', (string) $qqid);
 ?>
 <tr>
     <td colspan='4' id='statzone_<?php echo $rt;?>'>
-    <?php if(count($labels) < 70): ?>
+    <?php if (count($labels) < 70) : ?>
         <!-- Charts -->
         <div class="row">
             <div class="col-xl-8 col-12 chartjs-container text-center" id="chartjs-container-<?php echo $qqid; ?>"
@@ -27,7 +27,7 @@
                 data-color="<?php echo $color; // the background color for bar, etc. ?>"
             >
 
-            <?php if (array_sum($grawdata_percent)<1):?>
+            <?php if (array_sum($grawdata_percent) < 1) :?>
                 <div class="stat-no-answer text-center" id="stat-no-answer-<?php echo $qqid; ?>" style="position: relative; top: 300px; display: none;" >
                     <?php eT('Not enough values for calculation');?>
                 </div>
@@ -41,8 +41,9 @@
             </div>
             <!-- legends -->
             <div class="legend legend-no-percent col-xl-4 col-12" id="legend-no-percent-<?php echo $qqid;?>">
-                <?php foreach($labels as $i=>$label): ?>
-                    <?php $colorindex = $color+$i; $colorindex = ($colorindex < 72)?$colorindex:0;?>
+                <?php foreach ($labels as $i => $label) : ?>
+                    <?php $colorindex = $color + $i;
+                    $colorindex = ($colorindex < 72) ? $colorindex : 0;?>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-1">
                             <span style="background-color:rgba(<?php echo $COLORS_FOR_SURVEY[$colorindex];?>,0.6) !important; display: block;    width: 20px;    height: 20px;    border-radius: 5px; margin: 0px; padding: 0px;">
@@ -103,7 +104,7 @@
         </div>
         <div id='stats_<?php echo $rt;?>' class='graphdisplay' style="text-align:center">
         </div>
-<?php else: ?>
+    <?php else : ?>
         <div class="row">
             <div class="col-md-12">
                 <?php

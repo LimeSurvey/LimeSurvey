@@ -33,7 +33,6 @@ require('pdf.php');
 */
 class quexmlpdf extends pdf
 {
-
     /**
      * Define an inch in MM
      *

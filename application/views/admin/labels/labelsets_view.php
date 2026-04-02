@@ -23,14 +23,14 @@ echo viewHelper::getViewTestTag('viewLabelSets');
                 'emptyText' => gT('No label sets found.'),
                 'ajaxUpdate' => 'labelsets-grid',
                 'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                        gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'pageSize',
-                            $pageSize,
-                            Yii::app()->params['pageSizeOptions'],
-                            ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                        )
-                    ),
+                    gT('%s rows per page'),
+                    CHtml::dropDownList(
+                        'pageSize',
+                        $pageSize,
+                        Yii::app()->params['pageSizeOptions'],
+                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                    )
+                ),
                 'columns' => [
                     [
                         'header' => gT('Label set ID'),

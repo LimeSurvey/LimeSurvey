@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Result of ldap upload
  */
+
 ?>
 
 <div class='side-body'>
@@ -9,13 +11,13 @@
         <div class="col-12 content-right">
             
             <!-- Success -->
-            <?php if ($xz != 0): ?>
+            <?php if ($xz != 0) : ?>
                 <div class="jumbotron message-box">
                     <h2 class="text-success"><?php eT("Success"); ?></h2>
                     <p><?php echo $resultnum; ?></p>
                     <p>
                         <?php eT("Results from LDAP Query."); ?><br />
-                        <?php printf(gT("%s records met minimum requirements"),$xv); ?><br />
+                        <?php printf(gT("%s records met minimum requirements"), $xv); ?><br />
                         <?php echo $xz; ?> <?php eT("Records imported"); ?>.<br />
                         <?php echo $xy; ?> <?php eT("Duplicate records skipped"); ?>                        
                     </p>
@@ -32,13 +34,13 @@
                 </div>
                 
             <!-- Error -->
-            <?php else: ?>
+            <?php else : ?>
                 <div class="jumbotron message-box message-box-error">
                     <h2 class="text-danger"><?php eT("Error"); ?></h2>
                     <p><?php echo $resultnum; ?></p>
                     <p>
                         <?php eT("Results from LDAP Query."); ?><br />
-                        <?php printf(gT("%s records met minimum requirements"),$xv); ?><br />
+                        <?php printf(gT("%s records met minimum requirements"), $xv); ?><br />
                         <?php echo $xz; ?> <?php eT("Records imported"); ?>.<br />
                         <?php echo $xy; ?> <?php eT("Duplicate records skipped"); ?>                        
                     </p>

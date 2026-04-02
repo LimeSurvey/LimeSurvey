@@ -25,7 +25,8 @@ echo viewHelper::getViewTestTag('globalsettings');
     <?php echo CHtml::form(["admin/globalsettings"], 'post', ['class' => '', 'id' => 'frmglobalsettings', 'name' => 'frmglobalsettings', 'autocomplete' => 'off']); ?>
     <div class="tab-content">
         <div id="overview" class="tab-pane show active col-lg-6 offset-lg-1">
-            <?php $this->renderPartial("./globalsettings/_overview",
+            <?php $this->renderPartial(
+                "./globalsettings/_overview",
                 [
                     'usercount'          => $usercount,
                     'surveycount'        => $surveycount,
@@ -33,16 +34,19 @@ echo viewHelper::getViewTestTag('globalsettings');
                     'deactivatedsurveys' => $deactivatedsurveys,
                     'activetokens'       => $activetokens,
                     'deactivatedtokens'  => $deactivatedtokens,
-                ]); ?>
+                ]
+            ); ?>
         </div>
         <div id="general" class="tab-pane col-lg-10 offset-lg-1">
-            <?php $this->renderPartial("./globalsettings/_general",
+            <?php $this->renderPartial(
+                "./globalsettings/_general",
                 [
                     'aListOfThemeObjects' => $aListOfThemeObjects,
                     'aEncodings'          => $aEncodings,
                     'thischaracterset'    => $thischaracterset,
                     'sideMenuBehaviour'   => $sideMenuBehaviour
-                ]); ?>
+                ]
+            ); ?>
         </div>
 
         <div id="email" class="tab-pane col-lg-10 offset-lg-1">
@@ -57,12 +61,14 @@ echo viewHelper::getViewTestTag('globalsettings');
             <?php $this->renderPartial("./globalsettings/_security"); ?>
         </div>
         <div id="useradmin" class="tab-pane col-lg-10-10 offset-lg-1">
-            <?php $this->renderPartial("./globalsettings/_useradministration",
+            <?php $this->renderPartial(
+                "./globalsettings/_useradministration",
                 [
                     'sSendAdminCreationEmail'     => $sGlobalSendAdminCreationEmail,
                     'sAdminCreationEmailSubject'  => $sGlobalAdminCreationEmailSubject,
                     'sAdminCreationEmailTemplate' => $sGlobalAdminCreationEmailTemplate,
-                ]); ?>
+                ]
+            ); ?>
         </div>
 
         <div id="presentation" class="tab-pane col-lg-10-10 offset-lg-1">
@@ -70,12 +76,14 @@ echo viewHelper::getViewTestTag('globalsettings');
         </div>
 
         <div id="language" class="tab-pane col-lg-10-10 offset-lg-1">
-            <?php $this->renderPartial("./globalsettings/_language",
+            <?php $this->renderPartial(
+                "./globalsettings/_language",
                 [
                     'restrictToLanguages' => $restrictToLanguages,
                     'allLanguages'        => $allLanguages,
                     'excludedLanguages'   => $excludedLanguages
-                ]); ?>
+                ]
+            ); ?>
         </div>
 
         <div id="interfaces" class="tab-pane col-lg-10-6 offset-lg-1">

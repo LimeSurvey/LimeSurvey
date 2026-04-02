@@ -7,7 +7,8 @@
 /* @var $icons array */
 ?>
 <div class="container">
-    <?php $form = $this->beginWidget('TbActiveForm',
+    <?php $form = $this->beginWidget(
+        'TbActiveForm',
         array(
             'id' => 'boxes-form',
             // Please note: When you enable ajax validation, make sure the corresponding
@@ -28,7 +29,7 @@
         <div class=''>
             <?php echo $form->numberField($model, 'position', array('class' => 'form-control')); ?>
         </div>
-        <?php if ($form->error($model, 'position')): ?>
+        <?php if ($form->error($model, 'position')) : ?>
             <div class=" text-danger">
                 <?php echo $form->error($model, 'position'); ?>
             </div>
@@ -40,7 +41,7 @@
         <div class=''>
             <?php echo $form->textField($model, 'url', array('class' => 'form-control')); ?>
         </div>
-        <?php if ($form->error($model, 'url')): ?>
+        <?php if ($form->error($model, 'url')) : ?>
             <div class=' text-danger'>
                 <?php echo $form->error($model, 'url'); ?>
             </div>
@@ -52,7 +53,7 @@
         <div class=''>
             <?php echo $form->textField($model, 'title', array('class' => 'form-control')); ?>
         </div>
-        <?php if ($form->error($model, 'title')): ?>
+        <?php if ($form->error($model, 'title')) : ?>
             <div class=" text-danger">
                 <?php echo $form->error($model, 'title'); ?>
             </div>
@@ -80,7 +81,7 @@
             <?php echo $form->textField($model, 'ico', array('size' => 60, 'maxlength' => 255, 'class' => 'form-control d-none')); ?>
         </div>
 
-        <?php if ($form->error($model, 'ico')): ?>
+        <?php if ($form->error($model, 'ico')) : ?>
             <div class=" text-danger">
                 <?php echo $form->error($model, 'ico'); ?>
             </div>
@@ -92,7 +93,7 @@
         <div class=''>
             <?php echo $form->textArea($model, 'desc', array('rows' => 6, 'cols' => 50, 'class' => 'form-control')); ?>
         </div>
-        <?php if ($form->error($model, 'desc')): ?>
+        <?php if ($form->error($model, 'desc')) : ?>
             <div class=" text-danger" role="alert">
                 <?php echo $form->error($model, 'desc'); ?>
             </div>
@@ -101,9 +102,9 @@
 
     <!-- Page -->
     <div class="mb-3">
-        <?php if ($action == 'create'): ?>
+        <?php if ($action == 'create') : ?>
             <input name="Box[page]" id="Boxes_page" type="hidden" value="welcome">
-        <?php else: ?>
+        <?php else : ?>
             <?php echo $form->hiddenField($model, 'page', array()); ?>
         <?php endif; ?>
     </div>
@@ -130,7 +131,7 @@
             ); ?>
         </div>
 
-        <?php if ($form->error($model, 'usergroup')): ?>
+        <?php if ($form->error($model, 'usergroup')) : ?>
             <div class=" text-danger">
                 <?php echo $form->error($model, 'usergroup'); ?>
             </div>

@@ -18,7 +18,6 @@ if (!defined('BASEPATH')) {
 
 class LSYii_EmailIDNAValidator extends CValidator
 {
-
     public $allowEmpty = false;
     public $allowMultiple = false;
     public $allowInherit = false;

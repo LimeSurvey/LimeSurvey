@@ -541,7 +541,7 @@ class LSYii_Application extends CWebApplication
         $alias = explode("/", $route)[0];
         /* Remove all non printable see mantis #20090 */
         /* @see https://stackoverflow.com/a/66587087 for regexp source */
-        $alias = preg_replace('/[^\PCc^\PCn^\PCs]/u','', $alias);
+        $alias = preg_replace('/[^\PCc^\PCn^\PCs]/u', '', $alias);
         if (empty($alias)) {
             return null;
         }
@@ -603,28 +603,28 @@ class LSYii_Application extends CWebApplication
      * @param boolan throw error
      * @return false|integer
      */
-     public static function getSurveyId($throwError = true)
-     {
-         if (is_int(self::$surveyId)) {
-             /* Survey is set and is valid */
-             return self::$surveyId;
-         }
-         $surveyId = Yii::app()->request->getParam(
+    public static function getSurveyId($throwError = true)
+    {
+        if (is_int(self::$surveyId)) {
+            /* Survey is set and is valid */
+            return self::$surveyId;
+        }
+        $surveyId = Yii::app()->request->getParam(
             'sid',
             Yii::app()->request->getParam(
                 'surveyid',
                 Yii::app()->request->getParam('surveyId')
             )
-         );
-         if (!$surveyId) {
-             return false;
-         }
-         $intSurveyId = intval($surveyId);
-         if (strval($intSurveyId) !== strval($surveyId)) {
-             if ($throwError) {
-                 throw new CHttpException(400, gT('Your request is invalid.'));
-             }
-             return false;
+        );
+        if (!$surveyId) {
+            return false;
+        }
+        $intSurveyId = intval($surveyId);
+        if (strval($intSurveyId) !== strval($surveyId)) {
+            if ($throwError) {
+                throw new CHttpException(400, gT('Your request is invalid.'));
+            }
+            return false;
         }
         $surveyId = intval($surveyId);
         /* surveyId is set and is an integer */

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2026 The LimeSurvey Project Team
@@ -16,14 +17,14 @@
  */
 class LSGettextMoFile extends CGettextMoFile
 {
-	/**
-	 * @inheritdoc
-	 */
-	protected function readString($fr, $length, $offset = null)
-	{
-		if($offset !== null) {
-			fseek($fr, $offset);
+    /**
+     * @inheritdoc
+     */
+    protected function readString($fr, $length, $offset = null)
+    {
+        if ($offset !== null) {
+            fseek($fr, $offset);
         }
-		return (string) $this->readByte($fr, $length);
-	}
+        return (string) $this->readByte($fr, $length);
+    }
 }

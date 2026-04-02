@@ -10,7 +10,7 @@
 
 $name = CHtml::encode($name);
 $defaultname = CHtml::encode($defaultname);
-$elementId = 'Attributes_'. $name;
+$elementId = 'Attributes_' . $name;
 $inputName = "Attributes[$name]";
 ?>
 <div class="mb-3">
@@ -27,7 +27,7 @@ $inputName = "Attributes[$name]";
                     'allowInputToggle' => true,
                     'theme' => 'light',
                     'locale' => convertLStoDateTimePickerLocale(
-                            App()->session['adminlang']
+                        App()->session['adminlang']
                     )
             ]
     ]);

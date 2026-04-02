@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This view generate the presentation tab inside global settings.
  *
@@ -60,7 +61,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'pdfshowsurveytitle',
-                        'ariaLabel'=> gT('Show survey title in export PDFs:'),
+                        'ariaLabel' => gT('Show survey title in export PDFs:'),
                         'checkedOption' => Yii::app()->getConfig('pdfshowsurveytitle') === 'Y' ? '1' : 0,
                         'selectOptions' => [
                             '1' => gT('On'),
@@ -75,7 +76,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'pdfshowheader',
-                        'ariaLabel'=> gT('Show header in answers export PDFs:'),
+                        'ariaLabel' => gT('Show header in answers export PDFs:'),
                         'checkedOption' => Yii::app()->getConfig('pdfshowheader') === 'Y' ? '1' : 0,
                         'selectOptions' => [
                             '1' => gT('On'),
@@ -104,7 +105,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'bPdfQuestionBold',
-                        'ariaLabel'=> gT('PDF questions in bold:'),
+                        'ariaLabel' => gT('PDF questions in bold:'),
                         'checkedOption' => Yii::app()->getConfig('bPdfQuestionBold'),
                         'selectOptions' => [
                             '1' => gT('On'),
@@ -119,7 +120,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'bPdfQuestionBorder',
-                        'ariaLabel'=> gT('Borders around questions in PDF:'),
+                        'ariaLabel' => gT('Borders around questions in PDF:'),
                         'checkedOption' => Yii::app()->getConfig('bPdfQuestionBorder'),
                         'selectOptions' => [
                             '1' => gT('On'),
@@ -134,7 +135,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'bPdfResponseBorder',
-                        'ariaLabel'=> gT('Borders around responses in PDF:'),
+                        'ariaLabel' => gT('Borders around responses in PDF:'),
                         'checkedOption' => Yii::app()->getConfig('bPdfResponseBorder'),
                         'selectOptions' => [
                             '1' => gT('On'),
@@ -147,6 +148,6 @@
     </div>
 </div>
 
-<?php if (Yii::app()->getConfig("demoMode") == true): ?>
+<?php if (Yii::app()->getConfig("demoMode") == true) : ?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
 <?php endif; ?>

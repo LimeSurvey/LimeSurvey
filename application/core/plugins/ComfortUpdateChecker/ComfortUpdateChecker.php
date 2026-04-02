@@ -12,7 +12,6 @@
 
 class ComfortUpdateChecker extends PluginBase
 {
-
     protected $storage = 'DbStorage';
 
     protected static $description = 'Update Checker for Comfort Update users';

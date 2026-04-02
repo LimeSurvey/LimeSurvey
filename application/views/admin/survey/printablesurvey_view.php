@@ -7,11 +7,8 @@ echo $welcome . "<br /><br />";
 
 echo $numques;
 
-foreach ($survey_output as $key => $val)
-{
-    if ($key == "GROUPS")
-    {
-
+foreach ($survey_output as $key => $val) {
+    if ($key == "GROUPS") {
         echo "$val<br>";
     }
 }
@@ -21,4 +18,3 @@ echo $survey_output['SUBMIT_BY'] . "<br /><br />";
 echo $survey_output['SUBMIT_TEXT'];
 echo "<br />";
 echo $survey_output['THANKS'];
-?>

@@ -77,7 +77,7 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                             'header' => gT('Target question'),
                             'name'   => 'target_question',
                             'value'  => '$data->questionTitle',
-                            'type'=>'raw'
+                            'type' => 'raw'
                         ],
                         // Action buttons (defined in model)
                         [

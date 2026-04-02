@@ -1,8 +1,10 @@
 <?php
+
 /**
 * This view generate the interface tab inside global settings.
 *
 */
+
 ?>
 
 <?php $RPCInterface = Yii::app()->getConfig('RPCInterface'); ?>
@@ -12,7 +14,7 @@
     <div>
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
             'name'          => 'RPCInterface',
-            'ariaLabel'=> gT('RPC interface enabled:'),
+            'ariaLabel' => gT('RPC interface enabled:'),
             'checkedOption' => $RPCInterface,
             'selectOptions' => [
                 "off"  => gT("Off", 'unescaped'),
@@ -35,7 +37,7 @@
     <div>
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
             'name'          => "rpc_publish_api",
-            'ariaLabel'=> gT('Publish API on /admin/remotecontrol:'),
+            'ariaLabel' => gT('Publish API on /admin/remotecontrol:'),
             'checkedOption' => Yii::app()->getConfig('rpc_publish_api'),
             'selectOptions' => [
                 '1' => gT('On'),
@@ -50,7 +52,7 @@
     <div>
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
             'name'          => 'add_access_control_header',
-            'ariaLabel'=> gT('Set Access-Control-Allow-Origin header:'),
+            'ariaLabel' => gT('Set Access-Control-Allow-Origin header:'),
             'checkedOption' => Yii::app()->getConfig('add_access_control_header'),
             'selectOptions' => [
                 '1' => gT('On'),
@@ -60,7 +62,7 @@
     </div>
 </div>
 
-<?php if (Yii::app()->getConfig("demoMode")==true):?>
+<?php if (Yii::app()->getConfig("demoMode") == true) :?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
-    <?php endif; ?>
+<?php endif; ?>
 </div>

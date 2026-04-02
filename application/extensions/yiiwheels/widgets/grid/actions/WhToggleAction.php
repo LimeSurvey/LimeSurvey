@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhToggleAction action class
  *

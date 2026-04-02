@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Add dummy token
  */
+
 ?>
 
 <div class='side-body'>
@@ -9,7 +11,7 @@
 
     <div class="row">
         <div class="col-12 content-right">
-            <?php echo CHtml::form(array("admin/tokens/sa/adddummies/surveyid/{$surveyid}/subaction/add"), 'post', array('id'=>'edittoken', 'name'=>'edittoken', 'class'=>'form30 ')); ?>
+            <?php echo CHtml::form(array("admin/tokens/sa/adddummies/surveyid/{$surveyid}/subaction/add"), 'post', array('id' => 'edittoken', 'name' => 'edittoken', 'class' => 'form30 ')); ?>
             <div class="row">
                 <!-- ID  -->
                 <div class="mb-3 col-12">
@@ -80,15 +82,13 @@
                 </div>
             </div>
             <?php
-                if (isset($validfrom) && $validfrom != 'N')
-                {
-                    $validfrom = convertToGlobalSettingFormat($validfrom, true);
-                }
+            if (isset($validfrom) && $validfrom != 'N') {
+                $validfrom = convertToGlobalSettingFormat($validfrom, true);
+            }
 
-                if (isset($validuntil) && $validuntil != 'N')
-                {
-                    $validuntil = convertToGlobalSettingFormat($validuntil, true);
-                }
+            if (isset($validuntil) && $validuntil != 'N') {
+                $validuntil = convertToGlobalSettingFormat($validuntil, true);
+            }
             ?>
             <div class="row">
                 <!--  Validity -->
@@ -106,7 +106,7 @@
                                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                                 ]
                             ]);
-                        ?>
+                                                                ?>
                         <?php
                         $this->widget('ext.AlertWidget.AlertWidget', [
                             'text'        => sprintf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')),
@@ -129,7 +129,7 @@
                                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                                 )
                             ));
-                        ?>
+                                                                    ?>
                         <?php
                         $this->widget('ext.AlertWidget.AlertWidget', [
                             'text'        => sprintf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')),
@@ -141,11 +141,11 @@
                 </div>
             </div>
                 <!-- Attribute fields  -->
-                <?php foreach ($aAttributeFields as $attrName => $attrDescription): ?>
+                <?php foreach ($aAttributeFields as $attrName => $attrDescription) : ?>
                     <?php
                     $this->renderPartial(
-                            '/admin/token/attribute_subviews/tokenformAttributesWrapper',
-                            [
+                        '/admin/token/attribute_subviews/tokenformAttributesWrapper',
+                        [
                                     'attrDescription' => $attrDescription,
                                     'attrName' => $attrName,
                                     'inputValue' => null,

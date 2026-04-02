@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TbModal class file.
  * @author Antonio Ramirez <ramirez.cobos@gmail.com>
@@ -120,7 +121,7 @@ class TbModal extends CWidget
      */
     public function init()
     {
-        $this->attachBehavior('TbWidget', new TbWidget);
+        $this->attachBehavior('TbWidget', new TbWidget());
 
         TbArray::defaultValue('id', $this->getId(), $this->htmlOptions);
         TbArray::defaultValue('role', 'dialog', $this->htmlOptions);

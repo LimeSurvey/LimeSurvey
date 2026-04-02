@@ -50,12 +50,14 @@ class AdvancedSettingWidget extends CWidget
             }
         }
 
-        $inputBaseName = "advancedSettings[" . strtolower((string) $this->setting['category']) . "][" . $this->setting['name'] ."]";
-        $content = $this->render($this->setting['inputtype'],
-            ['inputBaseName' => $inputBaseName]
-            , true
+        $inputBaseName = "advancedSettings[" . strtolower((string) $this->setting['category']) . "][" . $this->setting['name'] . "]";
+        $content = $this->render(
+            $this->setting['inputtype'],
+            ['inputBaseName' => $inputBaseName],
+            true
         );
-        $this->render('layout',
+        $this->render(
+            'layout',
             [
                 'content' => $content,
                 'inputBaseName' => $inputBaseName

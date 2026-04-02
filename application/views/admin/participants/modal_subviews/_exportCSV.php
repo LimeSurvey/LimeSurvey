@@ -16,7 +16,8 @@
                             </label>
                         </div>
                         <div class='col-8'>
-                            <?php $this->widget('yiiwheels.widgets.select2.WhSelect2',
+                            <?php $this->widget(
+                                'yiiwheels.widgets.select2.WhSelect2',
                                 array(
                                     'asDropDownList' => true,
                                     'htmlOptions' => ['multiple' => 'multiple', 'id' => 'attributes'],
@@ -28,7 +29,7 @@
                             ); ?>
                         </div>
                     </div>
-                <?php if (Yii::app()->getConfig('hideblacklisted') != 'N'): ?>
+                <?php if (Yii::app()->getConfig('hideblacklisted') != 'N') : ?>
                     <?php
                     $this->widget('ext.AlertWidget.AlertWidget', [
                         'text' => gT('If you want to export blocklisted participants, set "Hide blocklisted participants" to "No" in CPDB settings.'),

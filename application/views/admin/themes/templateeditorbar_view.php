@@ -72,12 +72,14 @@ $importModal = false;
             <select class="col listboxtemplates form-select activate-search" id='templatedir' name='templatedir'
                     onchange="javascript: var uri = new Uri('<?php
                     // Don't put 'sa' into the URL dirctly because Yii will then try to use filenames directly in the path because of the route
-                    echo $this->createUrl("admin/themes",
+                    echo $this->createUrl(
+                        "admin/themes",
                         [
                             'sa'         => 'view',
                             'editfile'   => $relativePathEditfile,
                             'screenname' => $screenname
-                        ]); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
+                        ]
+                    ); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
                 <?php echo themeoptions($templates, $templatename); ?>
             </select>
         </div>
@@ -85,19 +87,23 @@ $importModal = false;
         <!-- Screen Select Box -->
         <label class="col col-form-label text-nowrap" for='listboxtemplates'><?php eT("Screen:"); ?></label>
         <div>
-            <?php echo CHtml::dropDownList('screenname',
+            <?php echo CHtml::dropDownList(
+                'screenname',
                 $screenname,
                 $screens,
                 [
                     'id'       => 'listboxtemplates',
                     'class'    => "col listboxtemplates form-select activate-search",
-                    'onchange' => "javascript:  var uri = new Uri('" . $this->createUrl("admin/themes",
-                            [
+                    'onchange' => "javascript:  var uri = new Uri('" . $this->createUrl(
+                        "admin/themes",
+                        [
                                 'sa'           => 'view',
                                 'editfile'     => $relativePathEditfile,
                                 'templatename' => $templatename
-                            ]) . "'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
-                ]); ?>
+                        ]
+                    ) . "'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
+                ]
+            ); ?>
         </div>
 <!--        @TODO unused button???-->
         <?php if (isset($fullpagebar['savebutton']['form'])) : ?>

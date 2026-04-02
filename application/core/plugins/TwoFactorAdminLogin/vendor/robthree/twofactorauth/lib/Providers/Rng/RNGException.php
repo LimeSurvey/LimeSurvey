@@ -2,4 +2,6 @@
 
 use RobThree\Auth\TwoFactorAuthException;
 
-class RNGException extends TwoFactorAuthException {}
+class RNGException extends TwoFactorAuthException
+{
+}

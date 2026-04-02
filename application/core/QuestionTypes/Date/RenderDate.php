@@ -18,7 +18,6 @@
  */
 class RenderDate extends QuestionBaseRenderer
 {
-
     protected $aDateformatDetails;
     protected $minDate;
     protected $maxDate;
@@ -27,7 +26,7 @@ class RenderDate extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/date/';
     }
-    
+
     public function getRows()
     {
         return;
@@ -82,7 +81,7 @@ class RenderDate extends QuestionBaseRenderer
         if (trim((string) $this->getQuestionAttribute('date_min')) != '') {
             $date_min      = trim((string) $this->getQuestionAttribute('date_min'));
             $date_time_em  = strtotime((string) LimeExpressionManager::ProcessString("{" . $date_min . "}", $this->oQuestion->qid));
-        
+
             if (ctype_digit($date_min) && (strlen($date_min) == 4)) {
                 $this->minDate = $date_min . '-01-01'; // backward compatibility: if only a year is given, add month and day
             } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_min)) {
@@ -104,7 +103,7 @@ class RenderDate extends QuestionBaseRenderer
         if (trim((string) $this->getQuestionAttribute('date_max')) != '') {
             $date_max     = trim((string) $this->getQuestionAttribute('date_max'));
             $date_time_em = strtotime((string) LimeExpressionManager::ProcessString("{" . $date_max . "}", $this->oQuestion->qid));
-        
+
             if (ctype_digit($date_max) && (strlen($date_max) == 4)) {
                 $this->maxDate = $date_max . '-12-31'; // backward compatibility: if only a year is given, add month and day
             } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_max)) {
@@ -141,7 +140,7 @@ class RenderDate extends QuestionBaseRenderer
 
     private function getMonthSelect($iCurrent)
     {
-        
+
         return Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView() . '/dropdown/rows/month',
             array(
@@ -189,7 +188,7 @@ class RenderDate extends QuestionBaseRenderer
             $step = -1;
             $reverse = false;
         }
-                   
+
         return Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView() . '/dropdown/rows/year',
             array(
@@ -206,7 +205,7 @@ class RenderDate extends QuestionBaseRenderer
             true
         );
     }
-    
+
     private function getHourSelect($iCurrent, $datepart)
     {
         return Yii::app()->twigRenderer->renderQuestion(
@@ -308,7 +307,7 @@ class RenderDate extends QuestionBaseRenderer
             $currentminute = App()->request->getPost("minute{$this->sSGQA}", '');
         }
         $dateorder = preg_split('/([-\.\/ :])/', (string) $this->aDateformatDetails['phpdate'], -1, PREG_SPLIT_DELIM_CAPTURE);
-    
+
         $sRows = '';
         foreach ($dateorder as $datepart) {
             switch ($datepart) {
@@ -375,7 +374,7 @@ class RenderDate extends QuestionBaseRenderer
             ),
             true
         );
-        
+
         return $answer;
     }
 
@@ -398,7 +397,7 @@ class RenderDate extends QuestionBaseRenderer
                 $dateoutput = ''; // Imported value and some old survey can have 0000-00-00 00:00:00
             }
         }
-        
+
         //throw new Error("<pre>HALT!".print_r($this->oQuestion,true)."</pre>");
         if (trim((string) $this->getQuestionAttribute('dropdown_dates')) == 1) {
             $answer = $this->renderDropdownDates($dateoutput, $coreClass);
@@ -408,7 +407,7 @@ class RenderDate extends QuestionBaseRenderer
 
         $this->registerAssets();
         $inputnames[] = $this->sSGQA;
-        
+
         return array($answer, $inputnames);
     }
 }

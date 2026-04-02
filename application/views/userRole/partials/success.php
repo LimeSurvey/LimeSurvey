@@ -17,17 +17,17 @@
     </div>
     <div class="row">
         <div class="col-12 text-center">
-            <?php if (isset($sMessage)): ?>
+            <?php if (isset($sMessage)) : ?>
                 <?= $sMessage ?>
             <?php endif; ?>
-            <?php if (isset($sDebug) && Yii::app()->getConfig('debug') > 0): ?>
+            <?php if (isset($sDebug) && Yii::app()->getConfig('debug') > 0) : ?>
                 <?= $sDebug ?>
             <?php endif; ?>
         </div>
     </div>
 </div>
 <div class="modal-footer">
-    <?php if (!isset($noButton)): ?>
+    <?php if (!isset($noButton)) : ?>
         <button id="exitForm" data-bs-dismiss="modal" class="btn btn-cancel">
             <?= gT('Close') ?>
         </button>

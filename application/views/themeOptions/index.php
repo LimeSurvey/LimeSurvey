@@ -41,8 +41,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                 <?php $this->renderPartial('./surveythemelist', [
                         'oSurveyTheme' => $oSurveyTheme,
                         'pageSize'     => $pageSize
-                    ]
-                ); ?>
+                    ]); ?>
                 <!-- Available Themes -->
                 <?php if (!empty($aTemplatesWithoutDB['valid'])) : ?>
                     <h3><?php eT('Available survey themes:'); ?></h3>
@@ -69,9 +68,9 @@ echo viewHelper::getViewTestTag('templateOptions');
                                     <td class="col-lg-3"><?php echo $oTemplate->getDescription(); ?></td>
                                     <td class="col-lg-2"><?php eT('XML themes'); ?></td>
                                     <td class="col-lg-1"><?php echo $oTemplate->config->metadata->extends; ?></td>
-                                    <?php if (TemplateConfig::isCompatible($oTemplate->path . 'config.xml')): ?>
+                                    <?php if (TemplateConfig::isCompatible($oTemplate->path . 'config.xml')) : ?>
                                         <td class="col-lg-2"><?php echo $oTemplate->getButtons(); ?></td>
-                                    <?php else: ?>
+                                    <?php else : ?>
                                         <td class="col-lg-2">
                                             <div class="d-grid gap-2">
                                                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
@@ -247,7 +246,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                 <td class="col-lg-3"><?php echo $oTheme->metadata->description; ?></td>
                                 <td class="col-lg-2"><?php eT('Core admin theme'); ?></td>
                                 <td class="col-lg-1">
-                                    <?php if (TemplateConfig::isCompatible($oTheme->path . 'config.xml')): ?>
+                                    <?php if (TemplateConfig::isCompatible($oTheme->path . 'config.xml')) : ?>
                                         <?php if ($oTheme->name === App()->getConfig('admintheme')) : ?>
                                             <h3><strong class="text-info"><?php eT("Selected") ?></strong></h3>
                                         <?php else : ?>
@@ -256,7 +255,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                 <?= gT("Select") ?>
                                             </a>
                                         <?php endif; ?>
-                                    <?php else: ?>
+                                    <?php else : ?>
                                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#admin_theme_error_<?= $adminThemeIterator ?>">
                                             <i class="ri-error-warning-fill"></i><?= gT('Show errors') ?>
                                         </button>
@@ -303,10 +302,10 @@ echo viewHelper::getViewTestTag('templateOptions');
 </div>
 
 <?php $this->renderPartial(
-        './surveythememenu',
-        [
-            'canImport'=>$canImport,
-            'importErrorMessage'=>$importErrorMessage,
+    './surveythememenu',
+    [
+            'canImport' => $canImport,
+            'importErrorMessage' => $importErrorMessage,
             'importModal' => 'importSurveyModal',
             'importTemplate' => 'importSurveyTemplate',
             'themeType' => 'survey'
@@ -314,8 +313,8 @@ echo viewHelper::getViewTestTag('templateOptions');
 ); ?>
 
 <?php $this->renderPartial(
-        './surveythememenu',
-        [
+    './surveythememenu',
+    [
             'canImport' => $canImport,
             'importErrorMessage' => $importErrorMessage,
             'importModal' => 'importQuestionModal',

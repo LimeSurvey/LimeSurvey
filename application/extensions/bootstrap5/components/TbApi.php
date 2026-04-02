@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TbApi class file.
  * @author Christoffer Niska <christoffer.niska@gmail.com>
@@ -128,7 +129,7 @@ class TbApi extends CApplicationComponent
      * Registers jQuery and Bootstrap JavaScript.
      * @param string $url the URL to the JavaScript file to register.
      * @param int $position the position of the JavaScript code.
-     * 20210322: GJ - Commenting the whole method implementation. JS and CSS are not needed 
+     * 20210322: GJ - Commenting the whole method implementation. JS and CSS are not needed
      * and by commenting them, we don't need to mantain them.
      */
     public function registerCoreScripts($url = null, $position = CClientScript::POS_END)
@@ -243,7 +244,7 @@ class TbApi extends CApplicationComponent
             } else {
                 if (($path = Yii::getPathOfAlias($this->bootstrapPath)) !== false) {
                     $this->bootstrapPath = $path;
-                } else if ($this->bootstrapPath === false) {
+                } elseif ($this->bootstrapPath === false) {
                     throw new Exception("Invalid Bootstrap path and CDN URL not set. Set vendor.twbs.bootstrap.dist alias or cdnUrl parameter in the configuration file.");
                 }
                 $this->_bootstrapUrl = Yii::app()->assetManager->publish($this->bootstrapPath, false, -1, $this->forceCopyAssets);

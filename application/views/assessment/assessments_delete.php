@@ -6,7 +6,7 @@
 <div id="assesements-delete" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <?php echo CHtml::form(array("assessment/delete/surveyid/$surveyid"), 'post', array('class'=>'form','id'=>'assessmentsdeleteform','name'=>'assessmentsdeleteform', 'role' => 'form'));?>
+            <?php echo CHtml::form(array("assessment/delete/surveyid/$surveyid"), 'post', array('class' => 'form','id' => 'assessmentsdeleteform','name' => 'assessmentsdeleteform', 'role' => 'form'));?>
             <?php
             Yii::app()->getController()->renderPartial(
                 '/layouts/partial_modals/modal_header',

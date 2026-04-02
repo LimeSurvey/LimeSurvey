@@ -1,4 +1,5 @@
 <?php
+
 /** @var string $class */
 /** @var string $dataTarget */
 /** @var boolean $disabled */

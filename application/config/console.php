@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -29,18 +31,18 @@ $config['rootdir']                  = (string) Yii::getPathOfAlias('webroot');
 
 $config['publicdir']                = $config['rootdir'];
 $config['homedir']                  = $config['rootdir'];
-$config['configdir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config';
-$config['tempdir']                  = $config['rootdir'].DIRECTORY_SEPARATOR."tmp";
-$config['imagedir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."assets".DIRECTORY_SEPARATOR."images";
-$config['uploaddir']                = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
-$config['standardthemerootdir']     = $config['rootdir'].DIRECTORY_SEPARATOR."themes".DIRECTORY_SEPARATOR."survey";
-$config['publicstylepath']          = $config['rootdir'].DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'styles-public';
-$config['corequestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question";
-$config['corequestionthemerootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR.$config['corequestionthemedir'];
-$config['styledir']                 = $config['rootdir'].DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'admin';
-$config['questiontypedir']          = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
-$config['userthemerootdir']         = $config['uploaddir'].DIRECTORY_SEPARATOR."themes".DIRECTORY_SEPARATOR."survey";
-$config['customquestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question";
-$config['userquestionthemerootdir'] = $config['uploaddir'].DIRECTORY_SEPARATOR.$config['customquestionthemedir'];
+$config['configdir']                = $config['rootdir'] . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'config';
+$config['tempdir']                  = $config['rootdir'] . DIRECTORY_SEPARATOR . "tmp";
+$config['imagedir']                 = $config['rootdir'] . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "images";
+$config['uploaddir']                = $config['rootdir'] . DIRECTORY_SEPARATOR . "upload";
+$config['standardthemerootdir']     = $config['rootdir'] . DIRECTORY_SEPARATOR . "themes" . DIRECTORY_SEPARATOR . "survey";
+$config['publicstylepath']          = $config['rootdir'] . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'styles-public';
+$config['corequestionthemedir']     = "themes" . DIRECTORY_SEPARATOR . "question";
+$config['corequestionthemerootdir'] = $config['rootdir'] . DIRECTORY_SEPARATOR . $config['corequestionthemedir'];
+$config['styledir']                 = $config['rootdir'] . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . 'admin';
+$config['questiontypedir']          = $config['rootdir'] . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR . 'questionTypes';
+$config['userthemerootdir']         = $config['uploaddir'] . DIRECTORY_SEPARATOR . "themes" . DIRECTORY_SEPARATOR . "survey";
+$config['customquestionthemedir']     = "themes" . DIRECTORY_SEPARATOR . "question";
+$config['userquestionthemerootdir'] = $config['uploaddir'] . DIRECTORY_SEPARATOR . $config['customquestionthemedir'];
 
 return $config;

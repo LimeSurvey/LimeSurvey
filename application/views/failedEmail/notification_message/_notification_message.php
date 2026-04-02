@@ -19,6 +19,6 @@
                 Yii::app()->createUrl("failedEmail/index/", ['surveyid' => $surveyId])
             ) ?>
         </li>
-    <?php
+        <?php
     endforeach; ?>
 </ul>

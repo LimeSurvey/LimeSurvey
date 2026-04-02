@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This view generate the 'general' tab inside global settings.
  *
@@ -61,7 +62,8 @@
         <div class="mb-3">
             <label class="  form-label" for='emailsmtpssl'><?php eT("SMTP encryption:"); ?></label>
             <div class="">
-                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
+                <?php $this->widget(
+                    'ext.ButtonGroupWidget.ButtonGroupWidget',
                     array(
                         'name' => 'emailsmtpssl',
                         'ariaLabel' => gT("SMTP encryption:"),
@@ -99,8 +101,8 @@
             <div class="col-12">
                 <select class="form-select" name="emailplugin" id="emailplugin" <?= (Yii::app()->getConfig('emailmethod') == LimeMailer::MethodPlugin) ? '' : 'disabled' ?>>
                     <option value=''><?php eT("None"); ?></option>
-                    <?php if (!empty($emailPlugins)): ?>
-                        <?php foreach ($emailPlugins as $emailPluginDetails): ?>
+                    <?php if (!empty($emailPlugins)) : ?>
+                        <?php foreach ($emailPlugins as $emailPluginDetails) : ?>
                             <option value='<?= $emailPluginDetails->class ?>' <?= ($emailPluginDetails->class == Yii::app()->getConfig('emailplugin')) ? "selected='selected'" : "" ?>>
                                 <?= $emailPluginDetails->name ?>
                             </option>
@@ -166,6 +168,6 @@
 </div>
 </div>
 
-<?php if (Yii::app()->getConfig("demoMode") == true): ?>
+<?php if (Yii::app()->getConfig("demoMode") == true) : ?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
 <?php endif; ?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhPlugin class file.
  * Extends the plugins with common shared methods.

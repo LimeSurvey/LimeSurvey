@@ -23,23 +23,22 @@
     <td align='right' ><?php echo $label[$i]; ?></td>
     <td align='center' ><?php echo $grawdata[$i]; ?></td>
 
-    <?php if ($bNAgData): ?>
-
+    <?php if ($bNAgData) : ?>
         <td  align='right' >
             <?php echo sprintf("%01.2f", $gdata[$i]); ?>%
         </td>
 
-        <?php if ($bNAgDataExtraLine): ?>
+        <?php if ($bNAgDataExtraLine) : ?>
             <?php echo $bNAgDataExtraLine; ?>
         <?php endif;?>
 
-        <?php if ($showAggregatedPercentage):?>
+        <?php if ($showAggregatedPercentage) :?>
             <td  align='right' colspan="2">
-                <?php if ($aggregatedPercentage !== false){ ?>
+                <?php if ($aggregatedPercentage !== false) { ?>
                     <?php echo sprintf("%01.2f", $aggregatedPercentage); ?>%
                 <?php } ?>
             </td>
-        <?php elseif($showEmptyAggregatedPercentage):?>
+        <?php elseif ($showEmptyAggregatedPercentage) :?>
             <td  align='right' colspan="2">
                 &nbsp;
             </td>
@@ -48,7 +47,7 @@
     <?php endif; ?>
 </tr>
 
-<?php if ($bShowSumAnswer ):?>
+<?php if ($bShowSumAnswer) :?>
     <tr>
         <td align='right'>
             <strong>

@@ -562,31 +562,31 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
             case 'datestamp':
                 $fieldtype = 'DATETIME23.2';
                 break;
-            case 'startlanguage';
+            case 'startlanguage':
                 $fieldtype = 'A';
                 $val_size = 20;
                 break;
-            case 'token';
+            case 'token':
                 $fieldtype = 'A';
                 $val_size = Token::MAX_LENGTH;
                 break;
-            case 'id';
+            case 'id':
                 $fieldtype = 'F';
                 $val_size = 7; //Arbitrarilty restrict to 9,999,999 (7 digits) responses/survey
                 break;
-            case 'ipaddr';
+            case 'ipaddr':
                 $fieldtype = 'A';
                 $val_size = 45; // IPv6 + IPv4-mapped feature : 39+1+15
                 break;
-            case 'refurl';
+            case 'refurl':
                 $fieldtype = 'A';
                 $val_size = 255;
                 break;
-            case 'lastpage';
+            case 'lastpage':
                 $fieldtype = 'F';
                 $val_size = 7;
                 break;
-            case 'seed';
+            case 'seed':
                 $fieldtype = 'A';
                 $val_size = 31;
                 break;
@@ -1215,12 +1215,12 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
 
     foreach ($Rows as $Row) {
         $category = $dom->createElement("category");
-	$title = $Row['title'];
+        $title = $Row['title'];
         if ($EMreplace) {
-            $title = LimeExpressionManager::ProcessStepString($title,null,3,true);
+            $title = LimeExpressionManager::ProcessStepString($title, null, 3, true);
         }
 
-	$label = $dom->createElement("label", QueXMLCleanup($title,''));
+        $label = $dom->createElement("label", QueXMLCleanup($title, ''));
 
         $value = $dom->createElement("value", QueXMLCleanup($Row['code']));
 
@@ -1240,9 +1240,9 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
     if ($other) {
         $category = $dom->createElement("category");
 
-	$rtext = quexml_get_lengthth($qid, "other_replace_text", gT("Other"), $quexmllang);
+        $rtext = quexml_get_lengthth($qid, "other_replace_text", gT("Other"), $quexmllang);
         if ($EMreplace) {
-            $rtext = LimeExpressionManager::ProcessStepString($rtext,null,3,true);
+            $rtext = LimeExpressionManager::ProcessStepString($rtext, null, 3, true);
         }
 
         $label = $dom->createElement("label", QueXMLCleanup($rtext));
@@ -1323,9 +1323,9 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
     }
     $QueryResult = Question::model()->with('questionl10ns')->findAllByAttributes($aCondition, ['order' => 'question_order']);
     foreach ($QueryResult as $Row) {
-	$qtext = $Row->questionl10ns[$quexmllang]->question;
+        $qtext = $Row->questionl10ns[$quexmllang]->question;
         if ($EMreplace) {
-           $qtext = LimeExpressionManager::ProcessStepString($qtext,null,3,true);
+            $qtext = LimeExpressionManager::ProcessStepString($qtext, null, 3, true);
         }
         $response = $dom->createElement("response");
         if ($free == false) {
@@ -1453,7 +1453,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
             $text = $dom->createElement("text", QueXMLCleanup($Row->answerl10ns[$quexmllang]->answer, ''));
         } else {
             if ($EMreplace) {
-                $text = $dom->createElement("text", QueXMLCleanup(LimeExpressionManager::ProcessStepString($Row->questionl10ns[$quexmllang]->question,null,3,true), ''));
+                $text = $dom->createElement("text", QueXMLCleanup(LimeExpressionManager::ProcessStepString($Row->questionl10ns[$quexmllang]->question, null, 3, true), ''));
             } else {
                 $text = $dom->createElement("text", QueXMLCleanup($Row->questionl10ns[$quexmllang]->question, ''));
             }
@@ -1793,7 +1793,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
         foreach ($Rows as $RowQ) {
             // placeholder substitution
             if ($EMreplace) {
-                $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'],$RowQReplacements,3,true);
+                $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'], $RowQReplacements, 3, true);
             }
             $sectionInfo = $dom->createElement("sectionInfo");
             $position = $dom->createElement("position", "before");
@@ -1820,7 +1820,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
 
             // placeholder substitution
             if ($EMreplace) {
-                $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'],$RowQReplacements,3,true);
+                $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'], $RowQReplacements, 3, true);
             }
             $other = false;
             if ($RowQ['other'] == 'Y') {

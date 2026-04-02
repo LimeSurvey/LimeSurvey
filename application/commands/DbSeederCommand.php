@@ -1,6 +1,6 @@
 <?php
 
-use \tebazil\yii1seeder\Seeder;
+use tebazil\yii1seeder\Seeder;
 
 class IdValidator
 {
@@ -88,7 +88,9 @@ class DbSeederCommand extends CConsoleCommand
                 'sortorder' => function () use (&$i) {
                     return $i++;
                 },
-                'assessment_value' => function () { return rand(1, 10); }
+                'assessment_value' => function () {
+                    return rand(1, 10);
+                }
             ]
         )->rowQuantity(30);
 

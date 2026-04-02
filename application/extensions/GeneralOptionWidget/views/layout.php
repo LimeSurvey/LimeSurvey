@@ -8,7 +8,7 @@ $labelAttr .= CHtml::getIdByName($this->generalOption->name) . '"';
             <label <?= $labelAttr; ?>>
                 <?= $this->generalOption->title; ?>
             </label>
-        <?php if ($this->generalOption->formElement->help): ?>
+        <?php if ($this->generalOption->formElement->help) : ?>
             <a
                 role="button"
                 data-bs-toggle="collapse"

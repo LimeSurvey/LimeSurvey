@@ -1,8 +1,9 @@
 <?php
+
 // English shortened
 return array(
-    'prefixAgo' => NULL,
-    'prefixFromNow' => NULL,
+    'prefixAgo' => null,
+    'prefixFromNow' => null,
     'suffixAgo' => "",
     'suffixFromNow' => "",
     'seconds' => "1m",

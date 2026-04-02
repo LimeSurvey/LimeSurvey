@@ -4,14 +4,14 @@
 
 <div class="col-12 content-right">
     <?php echo $this->renderPartial(
-                'partial/topbarBtns/listquestionsTopbarLeft_view',
-                [
+        'partial/topbarBtns/listquestionsTopbarLeft_view',
+        [
                     'oSurvey' => $oSurvey,
                     'hasSurveyContentCreatePermission' => $hasSurveyContentCreatePermission
                 ],
-                true
-            );
-         ?>
+        true
+    );
+?>
 
     <!-- Search Box -->
     <div class="row mt-4">
@@ -69,7 +69,7 @@
                         <?php foreach ($oSurvey->groups as $group) : ?>
                             <option value="<?php echo $group->gid; ?>" <?php if ($group->gid == $questionModel->gid) {
                                                                             echo 'selected';
-                                                                        } ?>>
+                                           } ?>>
                                 <?php echo flattenText($group->questiongroupl10ns[$oSurvey->language]->group_name); ?>
                             </option>
                         <?php endforeach ?>

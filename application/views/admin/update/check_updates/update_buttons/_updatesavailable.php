@@ -8,17 +8,17 @@
 ?>
 <?php
     // First we check if the server provided a specific HTML message
-    if(isset($updateInfos->html))
-    {
-        if($updateInfos->html != "")
-            echo $updateInfos->html;
-        // And we unset this html message for the loop on update versions don't crush on it
-        unset($updateInfos->html);
+if (isset($updateInfos->html)) {
+    if ($updateInfos->html != "") {
+        echo $updateInfos->html;
     }
+    // And we unset this html message for the loop on update versions don't crush on it
+    unset($updateInfos->html);
+}
 ?>
 
-<?php if(isset($updateInfos->alert)): // First we check if the server provided a specific alert message ?>
-    <?php if($updateInfos->alert != ""):?>
+<?php if (isset($updateInfos->alert)) : // First we check if the server provided a specific alert message ?>
+    <?php if ($updateInfos->alert != "") :?>
         <!-- Alert from server -->
         <?php
         $this->widget('ext.AlertWidget.AlertWidget', [
@@ -57,7 +57,7 @@
     </thead>
 
     <!-- rows for each version -->
-    <?php foreach ($updateInfos as $aUpdateVersion):?>
+    <?php foreach ($updateInfos as $aUpdateVersion) :?>
         <?php $aUpdateVersion = (array) $aUpdateVersion;?>
         <tr>
 
@@ -67,30 +67,30 @@
                      // display infos about the update. e.g : "2.05+ (150508) (stable)"
                      echo $aUpdateVersion['versionnumber'];?> (<?php echo $aUpdateVersion['build'];?>)
 
-                <?php if(isset($aUpdateVersion['html'])):?>
-                    <?php if($aUpdateVersion['html']!=''):?>
+                <?php if (isset($aUpdateVersion['html'])) :?>
+                    <?php if ($aUpdateVersion['html'] != '') :?>
                         <?php echo $aUpdateVersion['html'];?>
                     <?php endif;?>
                 <?php endif;?>
             </td>
 
             <!-- stable / unstable -->
-            <?php if (!in_array($aUpdateVersion['branch'], ['master','5.x','3.x-LTS'])):?>
+            <?php if (!in_array($aUpdateVersion['branch'], ['master','5.x','3.x-LTS'])) :?>
                 <td class="text-danger">
                     <?php  eT('unstable'); ?>
                 </td>
-            <?php else: ?>
+            <?php else : ?>
                 <td>
                     <?php eT('stable');?>
                 </td>
             <?php endif;?>
 
             <!-- security / regular -->
-            <?php if($aUpdateVersion['security_update']):?>
+            <?php if ($aUpdateVersion['security_update']) :?>
             <td class="text-danger">
                     <?php eT("Yes");?>
             </td>
-            <?php else: ?>
+            <?php else : ?>
             <td>
                 <?php eT("No");?>
             </td>
@@ -99,8 +99,8 @@
             <!-- button -->
             <td class="text-end">
                 <!-- The form launching an update process. First step is the welcome message. The form is not submitted, but catch by the javascript inserted in the end of this file -->
-                <?php echo CHtml::beginForm(App()->createUrl('admin/update/sa/getwelcome'), 'post', array('class'=>'launchUpdateForm')); ?>
-                    <?php echo CHtml::hiddenField('destinationBuild' , $aUpdateVersion['build']); ?>
+                <?php echo CHtml::beginForm(App()->createUrl('admin/update/sa/getwelcome'), 'post', array('class' => 'launchUpdateForm')); ?>
+                    <?php echo CHtml::hiddenField('destinationBuild', $aUpdateVersion['build']); ?>
 
                     <!-- the button launching the update -->
                     <button type="submit" class="btn btn-sm btn-outline-secondary ajax_button launch_update">

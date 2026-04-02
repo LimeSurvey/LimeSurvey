@@ -239,7 +239,6 @@ class JsonOutputSuccess extends JsonOutput
  */
 class JsonOutputModal extends JsonOutput
 {
-
     /**
      * @var string
      */
@@ -307,7 +306,6 @@ class JsonOutputNotLoggedIn extends JsonOutputModal
  */
 class JsonOutputHtml extends JsonOutput
 {
-
     /**
      * Content.
      * @var string

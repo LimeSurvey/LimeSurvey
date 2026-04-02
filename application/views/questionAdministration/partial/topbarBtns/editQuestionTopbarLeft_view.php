@@ -1,4 +1,4 @@
-<?php if ($oQuestion->qid !== 0): ?>
+<?php if ($oQuestion->qid !== 0) : ?>
     <?php
     $this->renderPartial(
         '/surveyAdministration/partial/topbar/previewOrRunButton_view',
@@ -9,16 +9,16 @@
     );
     ?>
 
-    <?php if($hasSurveyContentUpdatePermission): ?>
+    <?php if ($hasSurveyContentUpdatePermission) : ?>
         <?php
         $this->renderPartial('/questionGroupsAdministration/partial/topbarBtns/previewGroupButton_view', get_defined_vars());
         $this->renderPartial('partial/topbarBtns/previewQuestionButton_view', get_defined_vars());
         ?>
     <?php endif; ?>
-<?php else: ?>
+<?php else : ?>
     <!-- Import -->
-    <?php if($hasSurveyContentCreatePermission):?>
-        <?php if($oSurvey->active!='Y'): ?>
+    <?php if ($hasSurveyContentCreatePermission) :?>
+        <?php if ($oSurvey->active != 'Y') : ?>
             <?php
             $this->widget(
                 'ext.ButtonWidget.ButtonWidget',
@@ -35,7 +35,7 @@
                 ]
             );
             ?>
-        <?php else: ?>
+        <?php else : ?>
         <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You can not import questions because the survey is currently active."); ?>">
             <?php
             $this->widget(

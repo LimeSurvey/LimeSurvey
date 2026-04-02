@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Render the result of the import survey action
  */
@@ -12,7 +13,6 @@ use LimeSurvey\Models\Services\CopySurveyResult;
 
 <!-- Import Failed -->
 <?php if ($copyResults->getErrors()) {?>
-
     <div class="jumbotron message-box message-box-error">
         <h2 class="danger"><?php eT("Copy survey");?></h2>
         <p class="lead text-danger">
@@ -70,12 +70,11 @@ use LimeSurvey\Models\Services\CopySurveyResult;
             </div>
         </div>
         <!-- Warnings -->
-        <?php if (count($copyResults->getWarnings())>0): ?>
+        <?php if (count($copyResults->getWarnings()) > 0) : ?>
             <h2 class="warning"><?php eT("Warnings");?>:</h2>
             <ul  class="list-unstyled">
                 <?php
-                foreach ($copyResults->getWarnings() as $warning)
-                { ?>
+                foreach ($copyResults->getWarnings() as $warning) { ?>
                     <li><?php echo $warning; ?></li>
                     <?php
                 } ?>

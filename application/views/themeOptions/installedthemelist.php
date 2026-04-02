@@ -25,14 +25,14 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
     'id'                    => 'questionthemes-grid',
     'massiveActionTemplate' => $massiveAction,
     'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-            gT('%s rows per page'),
-            CHtml::dropDownList(
-                'pageSize',
-                $pageSize,
-                App()->params['pageSizeOptions'],
-                ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-            )
-        ),
+        gT('%s rows per page'),
+        CHtml::dropDownList(
+            'pageSize',
+            $pageSize,
+            App()->params['pageSizeOptions'],
+            ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+        )
+    ),
     'columns'               => [
         [
             'id'             => 'questionId',
@@ -126,5 +126,5 @@ $script = '
                 }
                 ';
 App()->getClientScript()->registerScript('questionthemes-grid', $script, LSYii_ClientScript::POS_POSTSCRIPT);
-?>
+
 

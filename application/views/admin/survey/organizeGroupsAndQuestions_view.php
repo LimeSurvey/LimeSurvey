@@ -26,7 +26,7 @@ App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl'
     <div class='movableList'>
         <ol class="organizer group-list list-unstyled" data-level='group' data-disableparentchange='<?= intval($surveyActivated) ?>'>
             <?php
-            foreach ($aGroupsAndQuestions as  $aGroupAndQuestions) { ?>
+            foreach ($aGroupsAndQuestions as $aGroupAndQuestions) { ?>
                 <li id='list_g<?php echo $aGroupAndQuestions['gid']; ?>' class='card mjs-nestedSortable-expanded mt-2' data-level='group'>
 
                     <div class="h2 card-header bg-white">
@@ -48,12 +48,12 @@ App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl'
                         </ol>
                     <?php } ?>
                 </li>
-            <?php
+                <?php
             } ?>
         </ol>
     </div>
 
-    <?php echo CHtml::form(array("surveyAdministration/organize/surveyid/{$surveyid}"), 'post', array('id' => 'frmOrganize', 'style'=>'height:40px')); ?>
+    <?php echo CHtml::form(array("surveyAdministration/organize/surveyid/{$surveyid}"), 'post', array('id' => 'frmOrganize', 'style' => 'height:40px')); ?>
     <p>
         <input type='hidden' id='orgdata' name='orgdata' value='' />
         <!-- set close-after-save true for redirecting to listQuestion page after save -->

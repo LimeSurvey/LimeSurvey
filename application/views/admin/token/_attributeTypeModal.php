@@ -19,10 +19,10 @@
                     <label for="attributeTypeSelect" class="form-label"><?php eT('Select attribute type:'); ?></label>
                     <?php
                     echo CHtml::dropDownList(
-                            'attributeTypeSelect',
-                            'TB',
-                            $attributeTypeDropdownArray,
-                            array(
+                        'attributeTypeSelect',
+                        'TB',
+                        $attributeTypeDropdownArray,
+                        array(
                                     'class' => 'form-select',
                                     'id' => 'attributeTypeSelect'
                             )

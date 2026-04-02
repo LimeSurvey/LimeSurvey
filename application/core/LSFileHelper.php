@@ -21,7 +21,6 @@
 
 class LSFileHelper extends CFileHelper
 {
-
     /**
      * @inheritdoc
      * Can not call parent since usage of self::getMimeType
@@ -36,7 +35,7 @@ class LSFileHelper extends CFileHelper
             $magicFile = Yii::app()->getConfig('magic_file');
         }
         if (empty($magicFile) && $mimeTypes === null) {
-            $mimeTypes=require(Yii::getPathOfAlias('application.core.utils.fileExtensions').'.php');
+            $mimeTypes = require(Yii::getPathOfAlias('application.core.utils.fileExtensions') . '.php');
         } elseif ($magicFile !== null && !isset($customMimeTypes[$magicFile])) {
             $customMimeTypes[$magicFile] = require($magicFile);
         }

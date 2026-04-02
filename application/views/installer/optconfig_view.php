@@ -54,38 +54,35 @@
             'description' => gT("This name will appear in the survey list overview and in the administration header."),
             'control' => CHtml::activeTextField($model, 'siteName', array('class' => 'form-control'))
         );
-        foreach(getLanguageData(true, Yii::app()->session['installerLang']) as $langkey => $languagekind)
-        {
+        foreach (getLanguageData(true, Yii::app()->session['installerLang']) as $langkey => $languagekind) {
             $languages[$langkey] = sprintf('%s - %s', $languagekind['nativedescription'], $languagekind['description']);
         }
 
         $rows[] = array(
             'label' => CHtml::activeLabelEx($model, 'surveylang', array('class' => 'form-label ', 'label' => gT("Default language"))),
             'description' => gT("This will be your default language."),
-            'control' => CHtml::activeDropDownList($model, 'surveylang', $languages, array('style' => '', 'class'=>'form-control', 'encode' => false, 'options'=>array('en' => array('selected' => true))))
+            'control' => CHtml::activeDropDownList($model, 'surveylang', $languages, array('style' => '', 'class' => 'form-control', 'encode' => false, 'options' => array('en' => array('selected' => true))))
         );
 
-        foreach ($rows as $row)
-        {
+        foreach ($rows as $row) {
             echo CHtml::openTag('div', array('class' => 'mb-3'));
                 echo $row['label'];
 
                 echo CHtml::openTag('div', array('class' => ''));
                 echo $row['control'];
-                if (isset($row['description']))
-                {
-                    echo CHtml::tag('div', array('class' => 'help-block'), $row['description']);
-                }
+            if (isset($row['description'])) {
+                echo CHtml::tag('div', array('class' => 'help-block'), $row['description']);
+            }
                 echo CHtml::closeTag('div');
             echo CHtml::closeTag('div');
         }
-    ?>
+        ?>
         <div class="row navigator">
             <div class="col-lg-4">
             </div>
             <div class="col-lg-4"></div>
             <div class="col-lg-4">
-                <?php echo CHtml::submitButton(gT("Next",'unescaped'), array('class' => 'btn btn-outline-secondary')); ?>
+                <?php echo CHtml::submitButton(gT("Next", 'unescaped'), array('class' => 'btn btn-outline-secondary')); ?>
             </div>
         </div>
 

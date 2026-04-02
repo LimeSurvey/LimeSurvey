@@ -35,7 +35,9 @@
         <tr>
             <td align='right'><?php eT("Identifier:"); ?></td>
             <td>
-                <input type='text' name='save_identifier' <?php if (returnGlobal('identifier')) { ?> value="<?php echo CHtml::encode(returnGlobal('identifier')); ?>" <?php } ?> />
+                <input type='text' name='save_identifier' <?php if (returnGlobal('identifier')) {
+                    ?> value="<?php echo CHtml::encode(returnGlobal('identifier')); ?>" <?php
+                                                          } ?> />
             </td>
         </tr>
     </table>

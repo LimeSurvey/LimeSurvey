@@ -1516,7 +1516,7 @@ class statistics_helper
                         $othEncrypted = getEncryptedCondition($responseModel, $columnName, '-oth-');
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($columnName) . "='$othEncrypted'";
                     } else {
-                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al[2])." <> ''" ;
+                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($al[2]) . " <> ''" ;
                     }
                 }
 
@@ -1535,20 +1535,20 @@ class statistics_helper
                     //free text answers
                     if ($al[0] == "Answer") {
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn)." != ''" : "NOT (".Yii::app()->db->quoteColumnName($cn)." LIKE '')";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn) . " != ''" : "NOT (" . Yii::app()->db->quoteColumnName($cn) . " LIKE '')";
                     }
                     //"no answer" handling
                     elseif ($al[0] == "NoAnswer") {
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ( ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn)." = '')" : " (".Yii::app()->db->quoteColumnName($cn)." LIKE ''))";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn) . " = '')" : " (" . Yii::app()->db->quoteColumnName($cn) . " LIKE ''))";
                     }
                 } elseif ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
                     $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ( ";
-                    $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn)." <> '')" : " (".Yii::app()->db->quoteColumnName($cn)." NOT LIKE ''))";
+                    $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn) . " <> '')" : " (" . Yii::app()->db->quoteColumnName($cn) . " NOT LIKE ''))";
                 // all other question types
                 } else {
                     //ranking question?
-                    $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al[2])." =";
+                    $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($al[2]) . " =";
                     if (substr((string) $rt, 0, 1) == "R") {
                         $query .= " '$al[0]'";
                     } else {
@@ -1562,9 +1562,9 @@ class statistics_helper
                     //get more data
                     if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
                         // mssql cannot compare text blobs so we have to cast here
-                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE cast(".Yii::app()->db->quoteColumnName($rt)." as varchar)= '$al[0]'";
+                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE cast(" . Yii::app()->db->quoteColumnName($rt) . " as varchar)= '$al[0]'";
                     } else {
-                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($rt)." = '$al[0]'";
+                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($rt) . " = '$al[0]'";
                     }
                 } else {
                     // This is for the 'NoAnswer' case
@@ -1578,12 +1578,12 @@ class statistics_helper
                     if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
                         // mssql cannot compare text blobs so we have to cast here
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ( "
-                            . "cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = '' "
-                            . "OR cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = ' ' )";
+                            . "cast(" . Yii::app()->db->quoteColumnName($rt) . " as varchar) = '' "
+                            . "OR cast(" . Yii::app()->db->quoteColumnName($rt) . " as varchar) = ' ' )";
                     } else {
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ( "
-                            . " ".Yii::app()->db->quoteColumnName($rt)." = '' "
-                            . "OR ".Yii::app()->db->quoteColumnName($rt)." = ' ') ";
+                            . " " . Yii::app()->db->quoteColumnName($rt) . " = '' "
+                            . "OR " . Yii::app()->db->quoteColumnName($rt) . " = ' ') ";
                     }
                 }
             }
@@ -2055,7 +2055,6 @@ class statistics_helper
                 'grawdata' => $grawdata
             );
             Yii::app()->session['stats'] = $stats;
-
         }
 
 
@@ -2239,11 +2238,11 @@ class statistics_helper
                         /* This query selects a count of responses where "other" has been selected */
                         $columnName = $cn . "_Cother";
                         $othEncrypted = getEncryptedCondition($responseModel, $columnName, '-oth-');
-                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($columnName)."='{$othEncrypted}'";
+                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($columnName) . "='{$othEncrypted}'";
                     } else {
                         //get data - select a count of responses where no answer is provided
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2]) . " != ''" : "NOT (" . Yii::app()->db->quoteColumnName($al[2]) . " LIKE '')";
                     }
                 }
 
@@ -2264,21 +2263,21 @@ class statistics_helper
                     //free text answers
                     if ($al[0] == "Answer") {
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn)." != ''" : "NOT (".Yii::app()->db->quoteColumnName($cn)." LIKE '')";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn) . " != ''" : "NOT (" . Yii::app()->db->quoteColumnName($cn) . " LIKE '')";
                     }
                     //"no answer" handling
                     elseif ($al[0] == "NoAnswer") {
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ( ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn)." = '')" : " (".Yii::app()->db->quoteColumnName($cn)." LIKE ''))";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn) . " = '')" : " (" . Yii::app()->db->quoteColumnName($cn) . " LIKE ''))";
                     }
                 } elseif ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
                     $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ( ";
-                    $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn)." <> '')" : " (".Yii::app()->db->quoteColumnName($cn)." NOT LIKE ''))";
+                    $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn) . " <> '')" : " (" . Yii::app()->db->quoteColumnName($cn) . " NOT LIKE ''))";
                 // all other question types
                 } else {
                     $value = (substr((string) $rt, 0, 1) == "R") ? $al[0] : 'Y';
                     $encryptedValue = getEncryptedCondition($responseModel, $al[2], $value);
-                    $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al[2])." = '$encryptedValue'";
+                    $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($al[2]) . " = '$encryptedValue'";
                 }
             }    //end if -> alist set
             else {
@@ -2288,9 +2287,9 @@ class statistics_helper
                     $encryptedValue = getEncryptedCondition($responseModel, $rt, $al[0]);
                     if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
                         // mssql cannot compare text blobs so we have to cast here
-                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE cast(".Yii::app()->db->quoteColumnName($cn)." as varchar)= '$encryptedValue'";
+                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE cast(" . Yii::app()->db->quoteColumnName($cn) . " as varchar)= '$encryptedValue'";
                     } else {
-                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($cn)." = '$encryptedValue'";
+                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($cn) . " = '$encryptedValue'";
                     }
                 } else {
                     // This is for the 'NoAnswer' case
@@ -2306,18 +2305,18 @@ class statistics_helper
                         //$query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE (".sanitize_int($rt)." IS NULL "
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ( "
                         //                                    . "OR cast(".sanitize_int($rt)." as varchar) = '' "
-                        . "cast(".Yii::app()->db->quoteColumnName($cn)." as varchar) = '' "
-                        . "OR cast(".Yii::app()->db->quoteColumnName($cn)." as varchar) = ' ' )";
+                        . "cast(" . Yii::app()->db->quoteColumnName($cn) . " as varchar) = '' "
+                        . "OR cast(" . Yii::app()->db->quoteColumnName($cn) . " as varchar) = ' ' )";
                     } elseif ($sDatabaseType == 'pgsql') {
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ( "
                         //                                    . "OR ".sanitize_int($rt)." = '' "
-                        . " ".Yii::app()->db->quoteColumnName($cn)."::text = '' "
-                        . "OR ".Yii::app()->db->quoteColumnName($cn)."::text = ' ') ";
+                        . " " . Yii::app()->db->quoteColumnName($cn) . "::text = '' "
+                        . "OR " . Yii::app()->db->quoteColumnName($cn) . "::text = ' ') ";
                     } else {
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ( "
                         //                                    . "OR ".sanitize_int($rt)." = '' "
-                        . " ".Yii::app()->db->quoteColumnName($cn)." = '' "
-                        . "OR ".Yii::app()->db->quoteColumnName($cn)." = ' ') ";
+                        . " " . Yii::app()->db->quoteColumnName($cn) . " = '' "
+                        . "OR " . Yii::app()->db->quoteColumnName($cn) . " = ' ') ";
                     }
                 }
             }

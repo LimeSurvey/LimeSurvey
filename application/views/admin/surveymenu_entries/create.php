@@ -8,11 +8,11 @@ $this->breadcrumbs = array(
 );
 
 $this->menu = array(
-    array('label'=>gT('List menu entries'), 'url'=>array('index')),
-    array('label'=>gT('Manage menu entries'), 'url'=>array('admin')),
+    array('label' => gT('List menu entries'), 'url' => array('index')),
+    array('label' => gT('Manage menu entries'), 'url' => array('admin')),
 );
 ?>
 
 <h1><?php eT('Create survey menu entries'); ?></h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php $this->renderPartial('_form', array('model' => $model)); ?>

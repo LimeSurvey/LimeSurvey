@@ -32,12 +32,12 @@ echo viewHelper::getViewTestTag('importParticipants');
                             <div class="col-12">
                                 <select id="characterset" name="characterset" class="form-select">
                                     <?php
-                                    foreach (aEncodingsArray() as $key => $encoding):
+                                    foreach (aEncodingsArray() as $key => $encoding) :
                                         ?>
                                         <option value="<?php echo $key; ?>" <?php if ($encoding == gT('Automatic')) {
                                             echo 'selected="selected"';
-                                        } ?> ><?php echo $encoding; ?></option>
-                                    <?php
+                                                       } ?> ><?php echo $encoding; ?></option>
+                                        <?php
                                     endforeach;
                                     ?>
                                 </select>
@@ -61,10 +61,10 @@ echo viewHelper::getViewTestTag('importParticipants');
                                 <select name="separatorused" id="separatorused" class="form-select">
                                     <option value="auto" selected="selected"><?php eT("(Autodetect)"); ?></option>
                                     <?php
-                                    foreach ($separatorused as $key => $separator):
+                                    foreach ($separatorused as $key => $separator) :
                                         ?>
                                         <option value="<?php echo $key; ?>"><?php echo $separator; ?></option>
-                                    <?php
+                                        <?php
                                     endforeach;
                                     ?>
                                 </select>

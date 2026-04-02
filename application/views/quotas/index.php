@@ -42,18 +42,18 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                         'emptyText'             => gT('No quotas'),
                         'massiveActionTemplate' => $massiveAction,
                         'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                                gT('%s rows per page'),
-                                CHtml::dropDownList(
-                                    'pageSize',
-                                    $iGridPageSize,
-                                    Yii::app()->params['pageSizeOptions'],
-                                    [
+                            gT('%s rows per page'),
+                            CHtml::dropDownList(
+                                'pageSize',
+                                $iGridPageSize,
+                                Yii::app()->params['pageSizeOptions'],
+                                [
                                         'class'    => 'changePageSize form-select',
                                         'style'    => 'display: inline; width: auto',
                                         'onchange' => "$.fn.yiiGridView.update('quota-grid',{ data:{ pageSize: $(this).val() }})"
                                     ]
-                                )
-                            ),
+                            )
+                        ),
                         'columns'               => [
                             [
                                 'id'             => 'id',
@@ -68,14 +68,14 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                                 'value'       => function ($oQuota) use ($oSurvey, $aQuotaItems) {
                                     /** @var Quota $oQuota */
                                     $out = '<p>' . $this->renderPartial(
-                                            '/quotas/viewquotas_quota_members',
-                                            [
+                                        '/quotas/viewquotas_quota_members',
+                                        [
                                                 'oSurvey'     => $oSurvey,
                                                 'oQuota'      => $oQuota,
                                                 'aQuotaItems' => $aQuotaItems,
                                             ],
-                                            true
-                                        ) . '<p>';
+                                        true
+                                    ) . '<p>';
                                     return $out;
                                 },
                             ],
@@ -105,7 +105,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                     ]);
                     ?>
                 </div>
-                <?php endif; ?>
+            <?php endif; ?>
                 <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas', 'create')) :?>
                     <div class="float-end">
                         <?php echo CHtml::beginForm(array("quotas/newquota/surveyid/{$oSurvey->getPrimaryKey()}"), 'post'); ?>

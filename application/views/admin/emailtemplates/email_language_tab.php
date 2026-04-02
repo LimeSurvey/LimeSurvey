@@ -5,7 +5,7 @@ $tabs = emailtemplates::getTabTypeArray($surveyid);
     <ul class="nav nav-tabs">
         <?php $count = 0;
         $state = 'active'; ?>
-        <?php foreach ($tabs as $tab => $details): ?>
+        <?php foreach ($tabs as $tab => $details) : ?>
             <li role='presentation' class='nav-item'>
                 <a class="nav-link <?= $state ?>" data-bs-toggle='tab' href='#tab-<?= $grouplang ?>-<?= $tab ?>'>
                     <?= $details['title'] ?>

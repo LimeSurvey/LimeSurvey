@@ -36,7 +36,7 @@
                         </button>
                     </div>
                     <div class="mb-3 responses-multiselect-checkboxes">
-                        <?php foreach ($filterableColumns as $columnName => $columnTitle): ?>
+                        <?php foreach ($filterableColumns as $columnName => $columnTitle) : ?>
                             <div class="checkbox">
                                 <label>
                                     <input name="columns[]" type="checkbox" value="<?php echo $columnName ?>"<?php echo !isset($filteredColumns) || in_array($columnName, $filteredColumns) ? 'checked' : '' ?>>

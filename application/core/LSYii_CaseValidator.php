@@ -18,7 +18,6 @@ if (!defined('BASEPATH')) {
 
 class LSYii_CaseValidator extends CValidator
 {
-
     public $type = 'lower';
 
 

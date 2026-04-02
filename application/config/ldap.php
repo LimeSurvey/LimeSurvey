@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2026 The LimeSurvey Project Team
@@ -62,8 +63,8 @@ $ldap_server[$serverId]['referrals'] = false;
 // you are authorized to read its content. Remeber as well that user's DN
 // in AD are in the form of CN=username,CN=Users,DC=WindowsDomainName,DC=mycompany,DC=org
 //
-$ldap_server[$serverId]['binddn']	= "uid=mybinduser,dc=mycompany,dc=org";
-$ldap_server[$serverId]['bindpw']	= "AsecretPassword";
+$ldap_server[$serverId]['binddn']   = "uid=mybinduser,dc=mycompany,dc=org";
+$ldap_server[$serverId]['bindpw']   = "AsecretPassword";
 
 /********* Copy for more definitions *****
  $serverId++;
@@ -72,8 +73,8 @@ $ldap_server[$serverId]['bindpw']	= "AsecretPassword";
  $ldap_server[$serverId]['protoversion'] = "ldapv3";
  $ldap_server[$serverId]['encrypt'] = "start-tls";
  $ldap_server[$serverId]['referrals'] = false;
- $ldap_server[$serverId]['binddn']	=	"uid=mybinduser,dc=mycompany,dc=org";
- $ldap_server[$serverId]['bindpw']	=	"AsecretPassword";
+ $ldap_server[$serverId]['binddn']  =   "uid=mybinduser,dc=mycompany,dc=org";
+ $ldap_server[$serverId]['bindpw']  =   "AsecretPassword";
  *****************************************/
 
 /**********************************************************************/
