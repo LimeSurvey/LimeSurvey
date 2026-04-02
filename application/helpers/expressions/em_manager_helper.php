@@ -5119,8 +5119,15 @@ class LimeExpressionManager
                 $sdata['token'] = $this->surveyOptions['token'];
             }
             if ($this->surveyOptions['datestamp'] == true) {
-                $sdata['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
-                $sdata['startdate'] = $_SESSION[$this->sessid]['datestamp'];
+                if($this->surveyOptions['anonymized'] == true) {
+                    // we set a default timestamp here, in the responses view it
+                    // should be clear that this response is anonymized
+                    $sdata['datestamp'] = date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
+                    $sdata['startdate'] = date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
+                } else {
+                    $sdata['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
+                    $sdata['startdate'] = $_SESSION[$this->sessid]['datestamp'];
+                }
             }
             if ($this->surveyOptions['ipaddr'] == true) {
                 $sdata['ipaddr'] = getIPAddress();
@@ -5197,7 +5204,11 @@ class LimeExpressionManager
 
             if ($this->surveyOptions['datestamp'] && isset($_SESSION[$this->sessid]['datestamp'])) {
                 $_SESSION[$this->sessid]['datestamp'] = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
-                $aResponseAttributes['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
+                if($this->surveyOptions['anonymized'] == true) {
+                    $aResponseAttributes['datestamp'] = date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
+                } else {
+                    $aResponseAttributes['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
+                }
             }
             if ($this->surveyOptions['ipaddr']) {
                 $aResponseAttributes['ipaddr'] = getIPAddress();
@@ -5324,7 +5335,11 @@ class LimeExpressionManager
                     if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion)) {
                         /* Less update : just do what you need to to */
                         if ($this->surveyOptions['datestamp']) {
-                            $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+                            if($this->surveyOptions['anonymized'] == true) {
+                                $submitdate = date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
+                            } else {
+                                $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+                            }
                         } else {
                             $submitdate = date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
                         }
