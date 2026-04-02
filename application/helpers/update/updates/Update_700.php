@@ -1083,9 +1083,6 @@ class Update_700 extends DatabaseUpdateBase
                 $postinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} OFF;";
             }
             $scripts[$TABLE_NAME]['handled'] = true;
-            if (!isset($scripts[$TABLE_NAME]['new-name'])) {
-                continue;
-            }
             $scripts[$TABLE_NAME]['CREATE'] = str_replace("{$TABLE_NAME}", "{$scripts[$TABLE_NAME]['new_name']}", $scripts[$TABLE_NAME]['CREATE']);
             foreach ($fields as $oldField => $newField) {
                 $scripts[$TABLE_NAME]['CREATE'] = str_replace($leftSeparator . "{$oldField}" . $rightSeparator, $leftSeparator . "{$newField}" . $rightSeparator, $scripts[$TABLE_NAME]['CREATE']);
