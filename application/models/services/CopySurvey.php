@@ -104,7 +104,8 @@ class CopySurvey
 
         $this->copySurveyLanguages($copySurveyResult, $destinationSurvey);
         $destinationSurvey->currentLanguageSettings->surveyls_title = $this->sourceSurvey->currentLanguageSettings->surveyls_title . ' - Copy';
-        $destinationSurvey->currentLanguageSettings->save();
+        /* Only save surveyls_title to diable other filter (email attachements) */
+        $destinationSurvey->currentLanguageSettings->save(true, ['surveyls_title']);
         $mappingGroupIdsAndQuestionIds = $this->copyGroupsAndQuestions($copySurveyResult, $destinationSurvey);
         $this->copySurveyAssessments($copySurveyResult, $destinationSurvey, $mappingGroupIdsAndQuestionIds['questionGroupIds']);
 
@@ -178,7 +179,7 @@ class CopySurvey
         );
         $cntCopiedLanguageSettings = 0;
         foreach ($sourceLanguageSettings as $sourceLanguageSetting) {
-            $destLangSet = new SurveyLanguageSetting();
+            $destLangSet = new SurveyLanguageSetting('copy');
             $destLangSet->attributes = $sourceLanguageSetting->attributes;
             $destLangSet->surveyls_attributecaptions = $sourceLanguageSetting->surveyls_attributecaptions;
             if ($this->options->isResourcesAndLinks()) {
@@ -248,12 +249,10 @@ class CopySurvey
                     $destinationSurvey->sid,
                     $destLangSet->email_admin_responses
                 );
-                $destLangSet->attachments = translateLinks(
-                    'survey',
+                $destLangSet->attachments = translateJsonLinks(
                     $this->sourceSurvey->sid,
                     $destinationSurvey->sid,
-                    $destLangSet->attachments,
-                    true
+                    $destLangSet->attachments
                 );
             }
             $destLangSet->surveyls_survey_id = $destinationSurvey->sid;
