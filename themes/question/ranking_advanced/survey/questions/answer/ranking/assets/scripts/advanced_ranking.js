@@ -128,8 +128,7 @@ var AdvancedRankingQuestion = function (options) {
         }
         $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function (index,item) {
            var valToSet = $(this).data("value");
-           // update the select with the corresponsing sortorder ( needed because of randomization order )
-           var $targetSelect = $('#question' + questionId + ' .select-item select[data-sortorder="' + index + '"]');
+           var $targetSelect = $('#question' + questionId + ' .select-item select').eq(index);
         
             if ($targetSelect.length > 0) {
                 $targetSelect.val(valToSet).trigger("change", { source: 'dragdrop' });

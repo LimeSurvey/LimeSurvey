@@ -118,8 +118,7 @@ var RankingQuestion = function (options) {
         updateDragDropRank = function () {
             $('#question' + questionId + ' .select-item select').val('');
             $('#sortable-rank-' + questionId + ' li').each(function (index) {
-               // update the select with the corresponsing sortorder ( needed because of randomization order )
-               var $targetSelect = $('#question' + questionId + ' .select-item select[data-sortorder="' + index + '"]');
+               var $targetSelect = $('#question' + questionId + ' .select-item select').eq(index);
                if ($targetSelect.length > 0) {
                     $targetSelect.data("old-val", $targetSelect.val());
                     var valToSet = $(this).data("value");

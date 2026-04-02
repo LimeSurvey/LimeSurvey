@@ -76,7 +76,6 @@ class RenderRanking extends QuestionBaseRenderer
 
         for ($i = 1; $i <= $maxAnswersPossible; $i++) {
             $myfname = $this->sSGQA . '_R' . $answerOptions[$i - 1]->aid;
-            $rankingSortOrder = $answerOptions[$i - 1]->sortorder;
             $this->sLabeltext = ($i == 1) ? gT('First choice') : sprintf(gT('Choice of rank %s'), $i);
             $aItemData = [];
 
@@ -115,7 +114,6 @@ class RenderRanking extends QuestionBaseRenderer
                     'labeltext' => $this->sLabeltext,
                     'options' => $aItemData,
                     'thisvalue' => $curValue,
-                    'sortorder' => $rankingSortOrder
                 ),
                 true
             );
