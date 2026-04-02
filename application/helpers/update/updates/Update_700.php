@@ -1067,7 +1067,7 @@ class Update_700 extends DatabaseUpdateBase
                 }
                 $commaSeparatedQIDs = implode(",", $qids);
                 $questions = Question::model()->with('answers')->findAll([
-                    'condition' => "sid = {$sid} and gid = {$gid} and (t.qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
+                    'condition' => "sid = {$sid} and ((t.qid in ({$commaSeparatedQIDs}) and gid = {$gid}) or parent_qid in ({$commaSeparatedQIDs}))"
                 ]);
             }
             $questionsToPass = $questions ?? [];
@@ -1257,7 +1257,7 @@ class Update_700 extends DatabaseUpdateBase
                         }
                         $commaSeparatedQIDs = implode(",", $tempqids);
                         $questionsTemp = Question::model()->with('answers')->findAll([
-                            'condition' => "sid = {$sid} and gid = {$gid} and (t.qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
+                            'condition' => "sid = {$sid} and ((t.qid in ({$commaSeparatedQIDs}) and gid = {$gid}) or parent_qid in ({$commaSeparatedQIDs}))"
                         ]);
                         $prefix = Yii::app()->db->tablePrefix ?? "";
                         if (count($questionsTemp)) {
