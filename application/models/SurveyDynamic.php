@@ -893,7 +893,7 @@ class SurveyDynamic extends LSActiveRecord
             in_array($oQuestion->type, ["F", "A", "B", "E", "C", "H", "Q", "K", "M", "P", ";",":","1"])
             || ($oQuestion->type == 'T' && $oQuestion->parent_qid != 0)
         ) {
-            $fieldname .= '_S' . $oQuestion->qid;
+            $fieldname .= "_S{$oQuestion->qid}";
         }
 
 
@@ -984,10 +984,11 @@ class SurveyDynamic extends LSActiveRecord
         if ($aQuestionAttributes['questionclass'] === 'ranking') {
             $aQuestionAttributes['answervalues'] = array();
             foreach ($oQuestion->answers as $oAnswer) {
-                if (!isset($oResponses[$fieldname . '_R' . $oAnswer->aid]) || $oResponses[$fieldname . '_R' . $oAnswer->aid] === '') {
+                $answerFieldname = $fieldname . '_R' . $oAnswer->aid;
+                if (!isset($oResponses[$answerFieldname]) || $oResponses[$answerFieldname] === '') {
                     continue;
                 }
-                $currentResponse = $oResponses[$fieldname . '_R' . $oAnswer->aid];
+                $currentResponse = $oResponses[$answerFieldname];
 
                 $oSelectedAnswerOption = array_reduce($oQuestion->answers, function ($carry, $oAns) use ($currentResponse) {
                     return $currentResponse == $oAns->code ? $oAns : $carry;
