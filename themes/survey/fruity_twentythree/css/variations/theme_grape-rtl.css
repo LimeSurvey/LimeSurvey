@@ -2497,7 +2497,7 @@ textarea.form-control-lg {
 .form-floating > .form-control::placeholder {
   color: transparent;
 }
-.form-floating > .form-control:not(:-moz-placeholder-shown) {
+.form-floating > .form-control:not(:-moz-placeholder) {
   padding-top: 1.625rem;
   padding-bottom: 0.625rem;
 }
@@ -2513,7 +2513,7 @@ textarea.form-control-lg {
   padding-top: 1.625rem;
   padding-bottom: 0.625rem;
 }
-.form-floating > .form-control:not(:-moz-placeholder-shown) ~ label {
+.form-floating > .form-control:not(:-moz-placeholder) ~ label {
   opacity: 0.65;
   transform: scale(0.85) translateY(-0.5rem) translateX(-0.15rem);
 }
@@ -14627,8 +14627,14 @@ a [class^=ri-], a [class*=" ri-"] {
   height: 300px;
 }
 
+.alert-dismissible .btn-close:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
 .question-container {
-  margin-bottom: 3em;
+  margin-bottom: 24px;
+  padding: 12px 0;
 }
 .question-container .ls-label-question {
   font-size: 24px;
@@ -15602,6 +15608,216 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
 .space-col {
   margin-top: 1em;
   margin-bottom: 2em;
+}
+
+.no-tables-general .slider-list .slider-left {
+  text-align: right;
+}
+.no-tables-general .slider-list .slider-right {
+  text-align: left;
+}
+.no-tables-general table.ls-answers,
+.no-tables-general table.ls-answers thead,
+.no-tables-general table.ls-answers tbody,
+.no-tables-general table.ls-answers th,
+.no-tables-general table.ls-answers td,
+.no-tables-general table.ls-answers tr {
+  display: block;
+}
+.no-tables-general table.ls-answers, .no-tables-general table.ls-answers thead, .no-tables-general table.ls-answers tbody, .no-tables-general table.ls-answers th, .no-tables-general table.ls-answers td,
+.no-tables-general table.ls-answers tr {
+  text-align: right;
+}
+.no-tables-general table.ls-answers thead {
+  display: none;
+}
+.no-tables-general {
+  /* We don't need it for accessibility : we already have the label */
+}
+.no-tables-general table.ls-answers tbody td {
+  text-align: right;
+  height: auto;
+  overflow: visible;
+}
+.no-tables-general table.ls-answers .information-item:empty {
+  display: none;
+}
+.no-tables-general .ls-answers td.radio-item,
+.no-tables-general .ls-answers td.checkbox-item {
+  padding: 4px;
+}
+.no-tables-general .ls-answers td.radio-item, .no-tables-general .ls-answers td.checkbox-item {
+  padding-right: 24px;
+  padding-left: 4px;
+}
+.no-tables-general table.ls-answers tbody .control-label {
+  text-align: right;
+}
+.no-tables-general table.ls-answers .answertext {
+  margin-bottom: 0;
+}
+.no-tables-general table.ls-answers .answertextright {
+  text-align: left;
+}
+.no-tables-general {
+  /* Show the label */
+}
+.no-tables-general table.ls-answers .ls-label-xs-visibility {
+  display: block;
+  position: relative;
+  width: auto;
+  height: auto;
+  overflow: initial;
+  white-space: normal;
+}
+.no-tables-general table.ls-answers .ls-label-xs-visibility {
+  right: auto;
+}
+.no-tables-general table.ls-answers .radio-item .ls-label-xs-visibility,
+.no-tables-general table.ls-answers .checkbox-item .ls-label-xs-visibility {
+  line-height: initial;
+  text-indent: initial;
+}
+.no-tables-general table.ls-answers .radio-item .ls-label-xs-visibility, .no-tables-general table.ls-answers .checkbox-item .ls-label-xs-visibility {
+  margin-right: 0;
+}
+.no-tables-general table.ls-answers .ls-label-xs-visibility > * {
+  position: relative;
+  top: auto;
+  width: auto;
+  height: auto;
+  overflow: auto;
+}
+.no-tables-general table.ls-answers .ls-label-xs-visibility > * {
+  right: auto;
+}
+.no-tables-general table.ls-answers .radio-item label.ls-label-xs-visibility::before, .no-tables-general table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
+  margin-right: -20px;
+}
+.no-tables-general table.ls-answers .radio-item label.ls-label-xs-visibility::after, .no-tables-general table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
+  margin-right: -18px;
+}
+.no-tables-general table.ls-answers > tbody > tr:hover {
+  background-color: transparent;
+}
+.no-tables-general {
+  /* bs fix */
+}
+.no-tables-general table.ls-answers td.visible-xs,
+.no-tables-general table.ls-answers th.visible-xs {
+  display: block !important;
+}
+
+@media only screen and (max-width: 760px) {
+  .no-tables-mobile .slider-list .slider-left {
+    text-align: right !important;
+  }
+  .no-tables-mobile .slider-list .slider-right {
+    text-align: left !important;
+  }
+}
+.no-tables-mobile {
+  /*
+  Max width before this PARTICULAR table gets nasty
+  For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)
+  */
+}
+@media only screen and (max-width: 767px) {
+  .no-tables-mobile table.ls-answers,
+  .no-tables-mobile table.ls-answers thead,
+  .no-tables-mobile table.ls-answers tbody,
+  .no-tables-mobile table.ls-answers th,
+  .no-tables-mobile table.ls-answers td,
+  .no-tables-mobile table.ls-answers tr {
+    display: block;
+  }
+  .no-tables-mobile table.ls-answers, .no-tables-mobile table.ls-answers thead, .no-tables-mobile table.ls-answers tbody, .no-tables-mobile table.ls-answers th, .no-tables-mobile table.ls-answers td,
+  .no-tables-mobile table.ls-answers tr {
+    text-align: right;
+  }
+  .no-tables-mobile table.ls-answers thead {
+    display: none;
+  }
+  .no-tables-mobile {
+    /* We don't need it for accessibility : we already have the label */
+  }
+  .no-tables-mobile table.ls-answers tbody td {
+    text-align: right;
+  }
+  .no-tables-mobile table.ls-answers .information-item:empty {
+    display: none;
+  }
+  .no-tables-mobile .ls-answers td.radio-item,
+  .no-tables-mobile .ls-answers td.checkbox-item {
+    padding: 4px;
+  }
+  .no-tables-mobile .ls-answers td.radio-item, .no-tables-mobile .ls-answers td.checkbox-item {
+    padding-right: 24px;
+    padding-left: 4px;
+  }
+  .no-tables-mobile table.ls-answers tbody .control-label {
+    text-align: right;
+  }
+  .no-tables-mobile table.ls-answers .answertext {
+    margin-bottom: 0;
+  }
+  .no-tables-mobile table.ls-answers .answertextright {
+    text-align: left;
+  }
+  .no-tables-mobile {
+    /* Show the label */
+  }
+  .no-tables-mobile table.ls-answers .ls-label-xs-visibility {
+    display: block;
+    position: relative;
+    width: auto;
+    height: auto;
+    overflow: initial;
+    white-space: normal;
+  }
+  .no-tables-mobile table.ls-answers .ls-label-xs-visibility {
+    right: auto;
+  }
+  .no-tables-mobile table.ls-answers .radio-item .ls-label-xs-visibility,
+  .no-tables-mobile table.ls-answers .checkbox-item .ls-label-xs-visibility {
+    line-height: initial;
+    text-indent: initial;
+  }
+  .no-tables-mobile table.ls-answers .radio-item .ls-label-xs-visibility, .no-tables-mobile table.ls-answers .checkbox-item .ls-label-xs-visibility {
+    margin-right: 0;
+  }
+  .no-tables-mobile table.ls-answers .ls-label-xs-visibility > * {
+    position: relative;
+    top: auto;
+    width: auto;
+    height: auto;
+    overflow: auto;
+  }
+  .no-tables-mobile table.ls-answers .ls-label-xs-visibility > * {
+    right: auto;
+  }
+  .no-tables-mobile table.ls-answers .radio-item label.ls-label-xs-visibility::before, .no-tables-mobile table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
+    margin-right: -20px;
+  }
+  .no-tables-mobile table.ls-answers .radio-item label.ls-label-xs-visibility::after, .no-tables-mobile table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
+    margin-right: -20px;
+  }
+  .no-tables-mobile table.ls-answers > tbody > tr:hover {
+    background-color: transparent;
+  }
+  .no-tables-mobile {
+    /* bs fix */
+  }
+  .no-tables-mobile table.ls-answers td.visible-xs,
+  .no-tables-mobile table.ls-answers th.visible-xs {
+    display: block !important;
+  }
+  .no-tables-mobile {
+    /* Don't display repeating header on mobile devices'*/
+  }
+  .no-tables-mobile table.ls-answers tr.ls-heading-repeat {
+    display: none;
+  }
 }
 
 .darkmode-on {

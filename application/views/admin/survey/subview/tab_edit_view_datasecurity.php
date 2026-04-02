@@ -43,11 +43,11 @@ PrepareEditorScript(false, $this);
     </div>
 </div>
 <nav>
-    <div class="nav nav-tabs" id="edit-survey-datasecurity-element-language-selection">
+    <div class="nav nav-tabs" id="edit-survey-datasecurity-element-language-selection" role="tablist">
         <?php foreach ($aTabTitles as $i => $eachtitle): ?>
             <button class="nav-link <?php if ($count == 0) {
                 echo "active";
-            } ?>" data-bs-toggle="tab" data-bs-target="#editdatasecele-<?php echo $count;
+            } ?>"  role="tab" data-bs-toggle="tab" data-bs-target="#editdatasecele-<?php echo $count;
             $count++; ?>" type="button">
                 <?php echo $eachtitle; ?>
             </button>

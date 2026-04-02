@@ -8,7 +8,7 @@ body {
 
 h1,
 .h1 {
-  @include h1
+  @include h1;
 }
 
 h2,
@@ -23,6 +23,28 @@ h2,
 h3,
 .h3 {
   @include h3
+}
+
+.pagetitle {
+  display        : flex;
+  align-items    : baseline;
+  gap            : 0.5rem;
+  padding-bottom : 4px;
+  border-bottom  : solid 2px $g-400;
+  position       : relative;
+  margin-bottom  : 1em;
+  h1 {
+    margin-bottom : 0;
+  }
+  &.h3 {
+    @include h3;
+  }
+  &__description {
+    font-weight : $font-weight-normal;
+    font-size   : $font-size-sm;
+    line-height : $line-height-26;
+    color       : $heading-sub-title-color;
+  }
 }
 
 label {
@@ -56,10 +78,6 @@ dl {
 a {
   color       : $link-color;
   font-weight : $font-weight-500;
-
-  &:focus {
-    outline : 2px solid currentColor !important;
-  }
 }
 
 .has-link {
@@ -73,4 +91,31 @@ a {
 .has-link a {
   color: $g-900;
   font-weight: $font-weight-normal;
+}
+
+.reg12 {
+  color: $g-700;
+  font-weight: $font-weight-normal;
+  font-size: $font-size-xs;
+  line-height : $line-height-16;
+  letter-spacing: -0.5px;
+  font-family : $ibm-font-family;
+}
+
+.reg16 {
+  color: $g-900;
+  font-weight: $font-weight-normal;
+  font-size: $font-size-base;
+  line-height : $line-height-20;
+  letter-spacing: -0.272px;
+  font-family : $ibm-font-family;
+}
+
+.semibold12 {
+  color: $g-900;
+  font-weight: $font-weight-600;
+  font-size: $font-size-xs;
+  line-height : $line-height-16;
+  letter-spacing: -0.204px;
+  font-family : $ibm-font-family;
 }
