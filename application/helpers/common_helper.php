@@ -2781,7 +2781,7 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
 *
 * @param mixed $iOldSurveyID Source SurveyId to be replaced
 * @param mixed $iNewSurveyID New SurveyId to be used
-* @param string $sString Link (url or local path) to be translated
+* @param string $sString Link (local path) to be translated
 * @return string
 */
 function translateJsonLinks($iOldSurveyID, $iNewSurveyID, $sString)

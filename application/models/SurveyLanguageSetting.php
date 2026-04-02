@@ -351,7 +351,7 @@ class SurveyLanguageSetting extends LSActiveRecord
     /**
      * Returns the array of email attachments data without exposing sensitive paths
      * Used for export_helper
-     * @return array of array of array of string
+     * @return string[][][] : array of attachments array by template, sambnle by key [template][][url,size,relevance]
      */
     public function getAttachmentsData()
     {
@@ -374,7 +374,7 @@ class SurveyLanguageSetting extends LSActiveRecord
     /**
      * Get valid attachements in array
      * @param boolean $exist check if file exist in a valid directory
-     * @return string[][][]
+     * @return string[][][] : array of attachments array by template, sambnle by key [template][][url,size,relevance]
      **/
     public function getValidAttachments($exist = true)
     {
@@ -384,7 +384,7 @@ class SurveyLanguageSetting extends LSActiveRecord
      * Get valid attachements in array
      * @param string $attachement the attahcment string to be filtered
      * @param boolean $exist check if file exist in a valid directory
-     * @return string[][][]
+     * @return string[][][] : array of attachments array by template, sample by key [template][][url,size,relevance]
      **/
     public function validateAttachments($string, $exist = true)
     {

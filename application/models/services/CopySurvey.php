@@ -104,6 +104,7 @@ class CopySurvey
 
         $this->copySurveyLanguages($copySurveyResult, $destinationSurvey);
         $destinationSurvey->currentLanguageSettings->surveyls_title = $this->sourceSurvey->currentLanguageSettings->surveyls_title . ' - Copy';
+        /* Only save surveyls_title to diable other filter (email attachements) */
         $destinationSurvey->currentLanguageSettings->save(true, ['surveyls_title']);
         $mappingGroupIdsAndQuestionIds = $this->copyGroupsAndQuestions($copySurveyResult, $destinationSurvey);
         $this->copySurveyAssessments($copySurveyResult, $destinationSurvey, $mappingGroupIdsAndQuestionIds['questionGroupIds']);
