@@ -83,7 +83,7 @@ class LayoutHelper
     }
 
     /**
-     * This is the topbar for the whole application consiting of:
+     * This is the topbar for the whole application consisting of:
      * -- Create survey (link)
      * -- Surveys
      * -- Help

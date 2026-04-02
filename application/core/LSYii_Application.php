@@ -148,7 +148,7 @@ class LSYii_Application extends CWebApplication
     public function setConfigs()
     {
 
-        // TODO: check the whole configuration process. It must be easier and clearer. Too many repitions
+        // TODO: check the whole configuration process. It must be easier and clearer. Too many repetitions
 
         /* Default config */
         $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
@@ -226,7 +226,7 @@ class LSYii_Application extends CWebApplication
      * Loads a library
      *
      * @access public
-     * @param string $library Libraby name
+     * @param string $library Library name
      * @return void
      */
     public function loadLibrary($library)
@@ -250,7 +250,7 @@ class LSYii_Application extends CWebApplication
     /**
      * Set a 'flash message'.
      *
-     * A flahs message will be shown on the next request and can contain a message
+     * A flash message will be shown on the next request and can contain a message
      * to tell that the action was successful or not. The message is displayed and
      * cleared when it is shown in the view using the widget:
      * <code>
@@ -547,7 +547,7 @@ class LSYii_Application extends CWebApplication
         }
 
         // When updating from versions that didn't support short urls, this code runs before the update process,
-        // so we cannot asume the field exists. We try to retrieve the Survey Language Settings and, if it fails,
+        // so we cannot assume the field exists. We try to retrieve the Survey Language Settings and, if it fails,
         // just don't do anything.
         try {
             $criteria = new CDbCriteria();
@@ -600,7 +600,7 @@ class LSYii_Application extends CWebApplication
 
     /**
      * Get survey survey id by param
-     * @param boolan throw error
+     * @param boolean throw error
      * @return false|integer
      */
      public static function getSurveyId($throwError = true)

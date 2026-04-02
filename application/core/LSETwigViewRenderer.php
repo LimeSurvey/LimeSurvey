@@ -55,7 +55,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * @param string $sLayout the name of the layout to render
      * @param array $aData the datas needed to fill the layout
      * @param boolean $bReturn if true, it will return the html string without
-     *                         rendering the whole page. Usefull for debuging, and used for Print Answers
+     *                         rendering the whole page. Useful for debugging, and used for Print Answers
      * @return mixed|string
      * @throws CException
      * @throws Throwable
@@ -115,7 +115,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * @param array $aData the datas needed to fill the layout
      * @param bool $root
      * @param boolean $bReturn if true, it will return the html string without
-     *                         rendering the whole page. Usefull for debuging, and used for Print Answers
+     *                         rendering the whole page. Useful for debugging, and used for Print Answers
      * @return mixed|string
      * @throws CException
      * @throws Throwable
@@ -217,11 +217,11 @@ window.addEventListener('message', function(event) {
 
     /**
      * Main method to render an admin page or block.
-     * Extendable to use admin templates in the future currently running on pathes, like the yii render methods go.
+     * Extendable to use admin templates in the future currently running on paths, like the yii render methods go.
      * @param $sLayoutFilePath
      * @param array $aData the datas needed to fill the layout
      * @param boolean $bReturn if true, it will return the html string without rendering the whole page.
-     *                         Usefull for debuging, and used for Print Answers
+     *                         Useful for debugging, and used for Print Answers
      * @param boolean $bUseRootDir Prepend application root dir to sLayoutFilePath if true.
      * @return string HTML
      * @throws CException
@@ -285,7 +285,7 @@ window.addEventListener('message', function(event) {
             $sTemplateFolderName = $oQuestionTemplate->getQuestionTemplateFolderName();
         }
         // Check if question use a custom template and that it provides its own twig view
-        $sDirName = null; // Extra dir name to readed from template before question template
+        $sDirName = null; // Extra dir name to read from template before question template
         if ($sTemplateFolderName) {
             // A template can change only one of the view of the question type.
             // So other views should be rendered by core.
@@ -734,8 +734,8 @@ window.addEventListener('message', function(event) {
     /**
      * It can happen that user set incoherent values for options (like background is on, but no image file is selected)
      * With some server configuration, it can lead to critical errors : empty values in image src or url()
-     * can block submition
-     * This function will check thoses cases. It can be used in the future for further checks
+     * can block submission
+     * This function will check those cases. It can be used in the future for further checks
      * @param array $aData
      * @return array
      *

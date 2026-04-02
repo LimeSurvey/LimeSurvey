@@ -978,7 +978,7 @@ class userstatistics_helper
 
                     /* IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT */
                     /* IF YOU DON'T UNDERSTAND WHAT QUARTILES ARE DO NOT MODIFY THIS CODE */
-                    /* Quartiles and Median values are NOT related to average, and the sum is irrelevent */
+                    /* Quartiles and Median values are NOT related to average, and the sum is irrelevant */
 
                     if (isset($quartiles[1])) {
                         $showem[] = array(gT("1st quartile (Q1)"), $quartiles[1]);
@@ -1160,7 +1160,7 @@ class userstatistics_helper
                     // Array of Yes/No/gT("Uncertain")
                     case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
                         $qresult = Question::model()->findAll(array('condition' => 'parent_qid=:parent_qid AND title=:title', 'params' => array(":parent_qid" => $qiqid, ':title' => $qanswer)));
-                        //loop thorugh results
+                        //loop through results
                         foreach ($qresult as $qrow) {
                             //add results
                             $alist[] = array("Y", gT("Yes"));
@@ -1801,7 +1801,7 @@ class userstatistics_helper
             //put only the code into the array
             $justcode[] = $al[0];
 
-            //edit labels and put them into antoher array
+            //edit labels and put them into another array
 
             //first check if $tempcount is > 0. If yes, $row has been modified and $tempcount has the original count.
             if ($tempcount > -1) {
@@ -2023,7 +2023,7 @@ class userstatistics_helper
             else {
                 //check if data should be aggregated
                 if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_POINT)) {
-                    //mark that we have done soemthing special here
+                    //mark that we have done something special here
                     $aggregated = true;
 
                     if (($results - $grawdata[5]) > 0) {
@@ -2258,8 +2258,8 @@ class userstatistics_helper
                         //2 = create square value of difference
                         $squarevalue = square($diff);
 
-                        //3 = sum up square values and multiply them with the occurence
-                        //prevent divison by zero
+                        //3 = sum up square values and multiply them with the occurrence
+                        //prevent division by zero
                         if ($squarevalue != 0 && $stddevarray[$j] != 0) {
                             $stddev += $squarevalue * $stddevarray[$j];
                         }

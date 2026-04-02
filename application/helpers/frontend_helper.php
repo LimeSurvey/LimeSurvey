@@ -811,7 +811,7 @@ function buildsurveysession($surveyid, $preview = false)
     resetAllSessionVariables($surveyid);
 
     // NOTE: All of this is already done in survey controller.
-    // We keep it here only for Travis Tested thar are still not using Selenium
+    // We keep it here only for Travis Tested that are still not using Selenium
     // As soon as the tests are rewrote to use selenium, those lines can be removed
     $lang = $_SESSION['responses_' . $surveyid]['s_lang'] ?? '';
     if (empty($lang)) {
@@ -1583,7 +1583,7 @@ function getNavigatorDatas()
 }
 
 /**
- * Caculate assessement scores
+ * Calculate assessment scores
  *
  * @param integer $surveyid
  * @param boolean $onlyCurrent : only current ( ASSESSMENT_CURRENT_TOTAL )
@@ -1652,7 +1652,7 @@ function doAssessment($surveyid, $onlyCurrent = true)
             }
             $groups[] = $field['gid'];
         }
-        // If this is a question (and not a survey field, like ID), save asessment value
+        // If this is a question (and not a survey field, like ID), save assessment value
         if ($field['qid'] > 0) {
             /**
              * Allow Plugin to update assessment value
@@ -1710,7 +1710,7 @@ function doAssessment($surveyid, $onlyCurrent = true)
         $subtotal[$group] = $grouptotal;
     }
 
-    /* Get current assesment (can be only for last page …) */
+    /* Get current assessment (can be only for last page …) */
     $aoAssessements = Assessment::model()->findAll(array(
         'condition' => "sid = :sid and language = :language",
         'order' => 'scope,id', // No real order in assessment, here : group first (why ?) and by creation

@@ -117,7 +117,7 @@ class ResponsesController extends LSBaseController
     public function actionView(int $surveyId, int $id, string $browseLang = ''): void
     {
 
-        // logging for webserver when parameter is somehting like $surveyid=125<script ...
+        // logging for webserver when parameter is something like $surveyid=125<script ...
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
             throw new CHttpException(403, gT("Invalid survey ID"));
         }
@@ -129,7 +129,7 @@ class ResponsesController extends LSBaseController
         if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
             App()->user->setFlash('error', gT("You do not have permission to access this page."));
             $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
-            App()->end(); // More clear, uneeded.
+            App()->end(); // More clear, unneeded.
         }
         /* TODO : Check if response still exist, after checking survey */
         $aData = $this->getData($surveyId, $id, $browseLang);
@@ -410,7 +410,7 @@ class ResponsesController extends LSBaseController
     {
         // Force it to accept `surveyid` as well, to maintain consistency with other menu entries.
         $surveyId = !empty($surveyId) ? $surveyId : (!empty($surveyid) ? $surveyid : null);
-        // logging for webserver when parameter is somehting like $surveyid=125<script ...
+        // logging for webserver when parameter is something like $surveyid=125<script ...
         if (!is_numeric($surveyId)) {
             throw new CHttpException(403, gT("Invalid survey ID"));
         }

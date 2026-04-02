@@ -249,17 +249,17 @@ class Assessment extends LSActiveRecord
     }
 
     /**
-     * Checks for a survey if it has asssessment activated. Checks also inherited status ('I')
+     * Checks for a survey if it has assessment activated. Checks also inherited status ('I')
      *
      * @param $surveyid
-     * @return boolean true if it is actice, false otherwise and if survey does not exist
+     * @return boolean true if it is active, false otherwise and if survey does not exist
      */
     public static function isAssessmentActive($surveyid)
     {
         $bActive = false;
         $oSurvey = Survey::model()->findByPk($surveyid);
         if ($oSurvey !== null) {
-            $assessmentActivated = $oSurvey->assessments; // colud be Y, N or I (check inheritance ...)
+            $assessmentActivated = $oSurvey->assessments; // could be Y, N or I (check inheritance ...)
             if ($assessmentActivated === 'I') { //then value is inherited, check survey group value ...
                 if ($oSurvey->gsid === 1) { //this is the default group (it's always set to 'N')
                     $bActive = false;

@@ -249,7 +249,7 @@ class QuestionAttributeHelper
 
     /**
      * Returns the array of categories with their assigned order.
-     * The array doesn't contain all the posible categories, only those with an order assigned.
+     * The array doesn't contain all the possible categories, only those with an order assigned.
      *
      * @return array<string,int>
      */

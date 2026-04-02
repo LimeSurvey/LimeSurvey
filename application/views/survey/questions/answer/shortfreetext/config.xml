@@ -831,7 +831,7 @@
             <sortorder>101</sortorder>
             <inputtype>text</inputtype>
             <expression>1</expression>
-            <help>Default coordinates of the map when the page first loads. Format: latitude [space] longtitude</help>
+            <help>Default coordinates of the map when the page first loads. Format: latitude [space] longitude</help>
             <caption>Default position</caption>
             <i18n></i18n>
             <readonly></readonly>

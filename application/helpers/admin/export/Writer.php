@@ -249,7 +249,7 @@ abstract class Writer implements IWriter
      * initialization process that must take place prior to any of the translation
      * infrastructure to work.
      *
-     * The inialization process is dependent upon the survey being passed into the
+     * The initialization process is dependent upon the survey being passed into the
      * write function and so must be performed when the method is called and not
      * prior to (such as in a constructor).
      *

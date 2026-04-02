@@ -249,7 +249,7 @@ $internalConfig = array(
                 '\Twig\Extension\SandboxExtension',
                 '\Twig\Extension\StringLoaderExtension',
                 '\Twig\Extension\DebugExtension',
-                // 'Twig_Extension_Escaper' // In the future, this extenstion could be use to build a powerfull XSS filter
+                // 'Twig_Extension_Escaper' // In the future, this extension could be use to build a powerful XSS filter
             ),
             'globals' => array(
                 'html' => 'CHtml'

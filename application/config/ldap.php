@@ -28,7 +28,7 @@ $serverId = 0;
 // corresponds to the certificate's identity
 $ldap_server[$serverId]['server'] = "ldap.mycompany.org";
 
-// Define the TCP port on which the LDAP server is listenning
+// Define the TCP port on which the LDAP server is listening
 // This should be 389 for standard LDAP servers
 // or 636 for standard LDAPS connections
 $ldap_server[$serverId]['port'] = "636";
@@ -39,8 +39,8 @@ $ldap_server[$serverId]['protoversion'] = "ldapv2";
 
 // Define the encryption method to use
 // 'ldaps' is supported for 'ldapv2' servers
-// 'start-tls' is supproted for 'ldapv3' servers
-// 'none' is supproted for no encryption at all
+// 'start-tls' is supported for 'ldapv3' servers
+// 'none' is supported for no encryption at all
 // Don't forget to setup your CA's certificate in
 // the openldap ldap.conf file
 $ldap_server[$serverId]['encrypt'] = "ldaps";
@@ -59,7 +59,7 @@ $ldap_server[$serverId]['referrals'] = false;
 // We currently support simple authentication
 // If anonymous bind must be performed, comment the following two lines
 // Note that Active Directory (AD) usually requires authentication before
-// you are authorized to read its content. Remeber as well that user's DN
+// you are authorized to read its content. Remember as well that user's DN
 // in AD are in the form of CN=username,CN=Users,DC=WindowsDomainName,DC=mycompany,DC=org
 //
 $ldap_server[$serverId]['binddn']	= "uid=mybinduser,dc=mycompany,dc=org";
@@ -145,7 +145,7 @@ $query_id++;
 $ldap_queries[$query_id]['ldapServerId'] = 0;
 $ldap_queries[$query_id]['name'] = 'Administrator group';
 // Define a group filter (base, filter, scope)
-// Note that in AD, user groups are defined in the foloowing base:
+// Note that in AD, user groups are defined in the following base:
 // CN=Users,DC=WindowsDomainName,DC=mycompany,DC=org
 $ldap_queries[$query_id]['groupbase'] = 'ou=groups,dc=mycompany,dc=org';
 $ldap_queries[$query_id]['groupfilter'] = '(&(objectClass=groupOfNames)(cn=AdministratorGroup))';
@@ -155,7 +155,7 @@ $ldap_queries[$query_id]['groupmemberattr'] = 'member';
 // Define if the groupmemberattr contains users's DNs or NOT
 $ldap_queries[$query_id]['groupmemberisdn'] = true;
 
-// optionally you can complete the group query with an additionnal
+// optionally you can complete the group query with an additional
 // user filter that will be applied to the user's found by the group search
 // Comment the userbase, userfilter, and userscope lines
 // if you don't use this extra filter.
@@ -173,7 +173,7 @@ $ldap_queries[$query_id]['attr2'] = '';
 
 
 // This query is an example of a group search in which group members are UIDs
-// an additionnal user filter is applied to a already found users
+// an additional user filter is applied to a already found users
 $query_id++;
 $ldap_queries[$query_id]['ldapServerId'] = 0;
 $ldap_queries[$query_id]['name'] = 'Admins via POSIXGroups';
@@ -189,7 +189,7 @@ $ldap_queries[$query_id]['groupmemberisdn'] = false;
 $ldap_queries[$query_id]['useridattr'] = 'uid';
 // Give the base DN used to search the users based on the users' IDs
 $ldap_queries[$query_id]['userbase'] = 'ou=people,dc=mycompany,dc=org';
-// optionally give an additionnal filter to filter users
+// optionally give an additional filter to filter users
 $ldap_queries[$query_id]['userfilter'] = '(objectclass=*)';
 $ldap_queries[$query_id]['userscope'] = 'sub';
 

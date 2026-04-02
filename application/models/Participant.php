@@ -838,7 +838,7 @@ class Participant extends LSActiveRecord
             array_push($joinValue, "LEFT JOIN {{participant_attribute}} attribute" . $iAttributeID . " ON attribute" . $iAttributeID . ".participant_id=p.participant_id AND attribute" . $iAttributeID . ".attribute_id=" . $iAttributeID);
         }
 
-        $aConditions = array(); // this wil hold all conditions
+        $aConditions = array(); // this will hold all conditions
         $aParams = array();
         if (!is_null($userid)) {
             // We are not superadmin so we need to limit to our own or shared with us
@@ -1104,7 +1104,7 @@ class Participant extends LSActiveRecord
      *
      * @param array $condition an array containing the search string exploded using || so that "firstname||equal||jason" is $condition(1=>'firstname', 2=>'equal', 3=>'jason')
      * @param int $page Which page number to display
-     * @param int $limit The limit/number of reords to return
+     * @param int $limit The limit/number of records to return
      *
      * @return array $output
      */
@@ -2066,7 +2066,7 @@ class Participant extends LSActiveRecord
      * @param bool $overwriteauto If true, overwrites existing automatically mapped attribute values
      * @param bool $overwriteman If true, overwrites manually mapped attribute values (where token fieldname=attribute_n)
      * @param bool $createautomap If true, updates tokendescription field with new mapping
-     * @return array An array contaning list of successful and list of failed ids
+     * @return array An array containing list of successful and list of failed ids
      */
     public function copyToCentral($surveyid, $aAttributesToBeCreated, $aMapped, $overwriteauto = false, $overwriteman = false, $createautomap = true)
     {

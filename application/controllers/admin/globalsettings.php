@@ -596,7 +596,7 @@ class GlobalSettings extends SurveyCommonAction
     }
 
     /**
-     * Survey Setting Menues
+     * Survey Setting Menus
      */
     public function surveysettingmenues()
     {

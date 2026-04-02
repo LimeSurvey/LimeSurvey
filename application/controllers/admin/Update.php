@@ -37,7 +37,7 @@
 *
 *  Some steps must be shown out of the chronological process: getNewKey and submitKey. They are at the end of the controller's interface.
 *  Some steps must be 'checked again' after the user fixed some errors (such as file permissions).
-*  Those steps are/can be diplayed by the plugin displayComfortStep.js. They are called from buttons like :
+*  Those steps are/can be displayed by the plugin displayComfortStep.js. They are called from buttons like :
 *
 *  <a class='button' href='<?php App()->createUrl('admin/globalsettings', array('update'=>'methodToCall', 'neededVariable'=>$value));?>'>
 *    <span class='ui-button-text'>button text</span>
@@ -48,14 +48,14 @@
 * The comfortupdate.js check the value of the hidden field update, and if the update's one contain a step, it call displayComfortStep.js which will display the right step instead of the 'check update' buttons.
 *
 * Most steps are retrieving datas from the comfort update server thanks to the model UpdateForm's methods.
-* The server return an answer object, with a property 'result' to tell if the process was succesfull or if it failed. This object contains in general all the necessary datas for the views.
+* The server return an answer object, with a property 'result' to tell if the process was successful or if it failed. This object contains in general all the necessary datas for the views.
 *
 *
 * Handling errors :
 * They are different types of possible errors :
 * - Warning message (like : modified files, etc.) : they don't stop the process, they are parsed to the step view, and the view manage how to display them. They can be generated from the ComfortUpdate server ($answer_from_server->result == TRUE ; and something like $answer_from_server->error == message or anything else that the step view manage ), or in the LimeSurvey update controller/model
 * - Error while processing a request on the server part : should never happen, but if something goes wrong in the server side (like generating an object from model), the server returns an error object ($answer_from_server->result == FALSE ; $answer_from_server->error == message )
-*   Those errors stop the process, and are display in _error view. Very usefull to debug. They are parsed directly to $this->renderError
+*   Those errors stop the process, and are display in _error view. Very useful to debug. They are parsed directly to $this->renderError
 * - Error while checking needed datas in the LimeSurvey update controller : the controller always check if it has the needed datas (such as destintion_build, or zip_file), or the state of the key (outdated, etc). For the code to be dryer, the method parse an error string to $this->renderErrorString($error), which generate the error object, and then render the error view
 *
 * @package       LimeSurvey
@@ -322,7 +322,7 @@ class Update extends DynamicSurveyCommonAction
     }
 
     /**
-     * diaplay the result of the changed files check
+     * display the result of the changed files check
      *
      * @return string  HTML
      */

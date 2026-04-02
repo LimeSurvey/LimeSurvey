@@ -405,7 +405,7 @@ class QuestionTheme extends LSActiveRecord
                 ':extends'       => '',
             ]
         );
-        //set extends if there is allready an existing Question with this type
+        //set extends if there is already an existing Question with this type
         if (empty($aQuestionThemes)) {
             $questionMetaData['extends'] = '';
         } else {

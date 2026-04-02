@@ -52,7 +52,7 @@ class LSUserIdentity extends CUserIdentity
 
     public function authenticate()
     {
-        // First initialize the result, we can later retieve it to get the exact error code/message
+        // First initialize the result, we can later retrieve it to get the exact error code/message
         $result = new LSAuthResult(self::ERROR_NONE);
 
         // Check if the ip is locked out

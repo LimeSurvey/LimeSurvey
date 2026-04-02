@@ -362,7 +362,7 @@ class PluginManagerController extends SurveyCommonAction
                 ),
             );
         }
-        // Send to view plugin porperties: name and description
+        // Send to view plugin properties: name and description
         $aPluginProp = App()->getPluginManager()->getPluginInfo($plugin->name);
 
         $topbar['title'] = gT('Plugins') . ' ' . $plugin['name'];

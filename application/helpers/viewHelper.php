@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
@@ -33,7 +33,7 @@ class viewHelper
      * @param string $linkTxt Text to show for the link
      * @param string $linkTarget Optional target to use for the link
      * @param string $linkClass Optional class to add to the link
-     * @param array  $attribs Optional array of attirbutes to set on the link
+     * @param array  $attribs Optional array of attributes to set on the link
      */
     public static function getImageLink($imgName, $linkUrl, $linkTxt, $linkTarget = null, $linkClass = 'imagelink', $attribs = array())
     {
@@ -70,7 +70,7 @@ class viewHelper
      * @param string $linkTxt Text to show for the link
      * @param string $linkTarget Optional target to use for the link
      * @param string $linkClass Optional class to add to the link
-     * @param array  $attribs Optional array of attirbutes to set on the link
+     * @param array  $attribs Optional array of attributes to set on the link
      */
     public static function getIconLink($icoClasses, $linkUrl, $linkTxt, $linkTarget = null, $linkClass = 'imagelink', $attribs = array())
     {
@@ -243,7 +243,7 @@ class viewHelper
     }
 
     /**
-     * Deactivate script but show it for debuging
+     * Deactivate script but show it for debugging
      * This only filter script tag
      * @todo : filter inline javascript (onclick etc ..., but don't filter EM javascript)
      * Maybe doing it directly in LEM->GetLastPrettyPrintExpression();

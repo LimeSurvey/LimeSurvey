@@ -64,7 +64,7 @@ class questionIndexHelper
         //~ if(isset($this->indexItems) && $this->iSurveyId!=LimeExpressionManager::getLEMsurveyId()){
             //~ $this->indexItems=null;
         //~ }
-        /* Put all in contruct variable ? */
+        /* Put all in construct variable ? */
         $this->iSurveyId = $iSurveyId;
         $oSurvey = \Survey::model()->findByPk($this->iSurveyId);
         if ($oSurvey) {
@@ -115,7 +115,7 @@ class questionIndexHelper
     }
 
     /**
-     * return the index item in goup by group mode
+     * return the index item in group by group mode
      * @param integer $type : 0 : None , 1 : Incremental, 2: full
      */
     private function getIndexItemsGroups($type)
@@ -173,7 +173,7 @@ class questionIndexHelper
         /* get field map : have more info*/
         /* get group list : for information about group ...*/
         $groupList = $sessionLem['grouplist'];
-        /* get the step infor from LEM : for alreay seen questin : give if error/show and answered ...*/
+        /* get the step info from LEM : for already seen question : give if error/show and answered ...*/
         $stepInfos = LimeExpressionManager::GetStepIndexInfo();
 
         /* The final step index to return */

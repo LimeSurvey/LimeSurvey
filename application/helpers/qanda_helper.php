@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /*
 * LimeSurvey
@@ -859,7 +859,7 @@ function do_shortfreetext($ia)
         $coreClass       = "ls-answers map-item geoloc-item";
         $currentLocation = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]];
         $currentLatLong  = null;
-        // Get the latitude/longtitude for the point that needs to be displayed by default
+        // Get the latitude/longitude for the point that needs to be displayed by default
         if (strlen((string) $currentLocation) > 2 && strpos((string) $currentLocation, ";")) { // Quick check if current location is OK
             $currentLatLong = explode(';', (string) $currentLocation);
             $currentLatLong = array($currentLatLong[0], $currentLatLong[1]);
@@ -937,7 +937,7 @@ function do_shortfreetext($ia)
         $coreClass       = "ls-answers map-item geoloc-item";
         $currentLocation = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]];
         $currentCenter   = $currentLatLong = null;
-        // Get the latitude/longtitude for the point that needs to be displayed by default
+        // Get the latitude/longitude for the point that needs to be displayed by default
         if (strlen((string) $currentLocation) > 2 && strpos((string) $currentLocation, ";")) {
             $currentLatLong = explode(';', (string) $currentLocation);
             $currentCenter  = $currentLatLong = array($currentLatLong[0], $currentLatLong[1]);
@@ -2255,7 +2255,7 @@ function do_array_multiflexi($ia)
         // There are no "No answer" column
         $cellwidth  = $columnswidth / $numrows;
         $iCount = Question::model()->with(array('questionl10ns' => array('condition' => "question like '%|%'")))->countByAttributes([], 'parent_qid=:parent_qid AND scale_id=0', array(':parent_qid' => $ia[0]));
-        // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
+        // $right_exists is a flag to find out if there are any right hand answer parts. If there aren't we can leave out the right td column
         if ($iCount > 0) {
             $right_exists = true;
             if (!$defaultWidth) {
@@ -2600,7 +2600,7 @@ function do_arraycolumns($ia)
                 }
             }
 
-            // Whats happening here?
+            // What's happening here?
             foreach ($anscode as $j => $ld) {
                 $myfname = $ia[1] . "_S" . $ld;
 
@@ -2733,7 +2733,7 @@ function fillDate($dateString)
  * Render the question view.
  *
  * By default, it just renders the required core view from application/views/survey/...
- * If user added a question template in the upload dirctory, add applied it to the question in its display settings, then the function will check if the required view exist in this directory
+ * If user added a question template in the upload directory, add applied it to the question in its display settings, then the function will check if the required view exist in this directory
  * and then will use this one to render the question.
  *
  * Rem: all the logic has been moved to LSETwigViewRenderer::renderQuestion()

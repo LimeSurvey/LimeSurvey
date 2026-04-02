@@ -214,7 +214,7 @@ class questionHelper
             'sortorder' => 110,
             'inputtype' => 'text',
             'expression' => 2, /* What for "tomorrow" etc ....*/
-            "help" => gT('Minimum date, valide date in YYYY-MM-DD format or any English textual datetime description. Expression Managed can be used (only with YYYY-MM-DD format). For dropdown : only the year is restricted if date use variable not in same page.'),
+            "help" => gT('Minimum date, valid date in YYYY-MM-DD format or any English textual datetime description. Expression Managed can be used (only with YYYY-MM-DD format). For dropdown : only the year is restricted if date use variable not in same page.'),
             "caption" => gT('Minimum date')
         );
 
@@ -224,7 +224,7 @@ class questionHelper
             'sortorder' => 111,
             'inputtype' => 'text',
             'expression' => 2,
-            "help" => gT('Maximum date, valide date in any English textual datetime description (YYYY-MM-DD for example). Expression Managed can be used (only with YYYY-MM-DD format) value. For dropdown : only the year is restricted if date use variable not in same page.'),
+            "help" => gT('Maximum date, valid date in any English textual datetime description (YYYY-MM-DD for example). Expression Managed can be used (only with YYYY-MM-DD format) value. For dropdown : only the year is restricted if date use variable not in same page.'),
             "caption" => gT('Maximum date')
         );
 
@@ -493,7 +493,7 @@ class questionHelper
             'sortorder' => 101,
             'inputtype' => 'text',
             'expression' => 1,/* As static */
-            "help" => gT('Default coordinates of the map when the page first loads. Format: latitude [space] longtitude. Latitude and longtitude should be in decimal dot notation (for example "-3.1234 5.1424").'),
+            "help" => gT('Default coordinates of the map when the page first loads. Format: latitude [space] longitude. Latitude and longitude should be in decimal dot notation (for example "-3.1234 5.1424".'),
             "caption" => gT('Default position')
         );
 

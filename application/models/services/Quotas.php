@@ -272,7 +272,7 @@ class Quotas
     }
 
     /**
-     * Retunr
+     * Return
      *
      * @param Quota $oQuota
      * @param $language
@@ -300,7 +300,7 @@ class Quotas
      * @param \Question $oQuestion
      * @param array $aQuestionAnswers  array list with possible question answers
      *                                  and already used answers (see getQuotaAnswer)
-     * @return bool true if all possible answers are alreday selected, false otherwise
+     * @return bool true if all possible answers are already selected, false otherwise
      */
     public function allAnswersSelected(\Question $oQuestion, array $aQuestionAnswers)
     {

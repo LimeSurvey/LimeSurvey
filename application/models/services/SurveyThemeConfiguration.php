@@ -96,7 +96,7 @@ class SurveyThemeConfiguration
     }
 
     /**
-     * Returns all attributes and options needed to display the themeoptions inlcuding inheritance.
+     * Returns all attributes and options needed to display the themeoptions including inheritance.
      *
      * @param TemplateConfiguration $themeConfiguration Template Configuration
      * @param int|null $sid Survey ID

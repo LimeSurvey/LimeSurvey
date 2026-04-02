@@ -287,7 +287,7 @@ function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $
     // - replace any opening square brackets or "-" from the fieldname, to "_"
     // - remove closing square brackets
     //
-    // Note: This sanitization process is not much needed now, but leave it in case is usefull for laters.
+    // Note: This sanitization process is not much needed now, but leave it in case is useful for laters.
     // This was used before by this function, when in prior times, fieldname could be derived
     // from the name of a textarea, and not just the id (as now)
     // The name of a texarea can contain quare brackets. Then we needed to sanitize.
@@ -316,7 +316,7 @@ function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $
     /* fieldtype have language at end , set fullpage for email HTML edit */
     if (substr((string) $fieldtype, 0, 6) === 'email-') {
         $htmlformatoption = ",fullPage:true\n";
-        //~ $htmlformatoption = ",allowedContent:true\n"; // seems uneeded
+        //~ $htmlformatoption = ",allowedContent:true\n"; // seems unneeded
     }
     if ($surveyID == '') {
         $sFakeBrowserURL = Yii::app()->getController()->createUrl('admin/survey/sa/fakebrowser');

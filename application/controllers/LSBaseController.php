@@ -148,7 +148,7 @@ class LSBaseController extends LSYii_Controller
     /**
      * Load and set session vars
      *
-     * todo REFACTORING see comments in mehtod
+     * todo REFACTORING see comments in method
      *
      * @access protected
      * @return void

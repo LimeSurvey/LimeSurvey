@@ -445,7 +445,7 @@ class ParticipantsAction extends SurveyCommonAction
             // Deletes from central and survey participant list
             $deletedParticipants = Participant::model()->deleteParticipantToken($participantIds);
         } elseif ($selectoption == 'ptta') {
-            // Deletes from central , token and assosiated responses as well
+            // Deletes from central , token and associated responses as well
             $deletedParticipants = Participant::model()->deleteParticipantTokenAnswer($participantIds);
         } else {
             // Internal error
@@ -899,7 +899,7 @@ class ParticipantsAction extends SurveyCommonAction
     }
 
     /**
-     * Uploads the file to the server and process it for valid enteries and import them into database
+     * Uploads the file to the server and process it for valid entries and import them into database
      * Also creates attributes from the mapping drag-n-drop form.
      */
     public function uploadCSV()
@@ -2172,7 +2172,7 @@ class ParticipantsAction extends SurveyCommonAction
             echo $participantid; //echo the participant id's
         } else {
             // if no search condition
-            $participantid = ""; // initiallise the participant id to blank
+            $participantid = ""; // initialise the participant id to blank
             if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 //If super admin all the participants will be visible
                 $query = Participant::model()->getParticipantsWithoutLimit(); // get all the participant id if it is a super admin

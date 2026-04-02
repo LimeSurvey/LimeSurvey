@@ -88,7 +88,7 @@ class UpdateForm extends CFormModel
     }
 
     /**
-     * The server will do some checks and will ask for the correct view to be diplayed.
+     * The server will do some checks and will ask for the correct view to be displayed.
      *
      * @param string $updateKey the update key -
      * @param string $destinationBuild
@@ -210,7 +210,7 @@ class UpdateForm extends CFormModel
 
 
     /**
-     * This function requests the change log between the curent build and the destination build
+     * This function requests the change log between the current build and the destination build
      *
      * @param int $destinationBuild
      * @return mixed|stdClass
@@ -393,7 +393,7 @@ class UpdateForm extends CFormModel
     }
 
     /**
-     * This function provide status information about files presents on the system that will be afected by the update : do they exist ? are they writable ? modified ?
+     * This function provide status information about files presents on the system that will be affected by the update : do they exist ? are they writable ? modified ?
      *
      * @param array $updateinfo Array of updated files
      * @return array
@@ -747,7 +747,7 @@ class UpdateForm extends CFormModel
     /**
      * Check if a file (added/deleted/) on the update yet exists on the server, or has been modified
      *
-     * @param array $file  array of files to update (must contain file, type and chekcsum indexes)
+     * @param array $file  array of files to update (must contain file, type and checksum indexes)
      * @return stdClass containing a list of read only files
      */
     private function getCheckedFile($file)
@@ -786,7 +786,7 @@ class UpdateForm extends CFormModel
         $content = $this->performRequest($getters);
         $fileSystemCheck = $content->list;
 
-        // Strategy Pattern : different way to buil the path of the file
+        // Strategy Pattern : different way to build the path of the file
         // Right now, calling fileSystemCheckAppath() or fileSystemCheckConfig()
         // Could also use params in the futur : YAGNI !!!!!
         $files = array();
@@ -1009,7 +1009,7 @@ class UpdateForm extends CFormModel
             }
             return $content_decoded;
         } else {
-            // Should happen only on first step (get buttons), diplayed in check_updates/update_buttons/_updatesavailable_error.php
+            // Should happen only on first step (get buttons), displayed in check_updates/update_buttons/_updatesavailable_error.php
             // Could rather define a call to httprequest2 functions.
             return (object) array('result' => false, 'error' => "php_curl_not_loaded");
         }

@@ -19,7 +19,7 @@
 /*********************************************/
 
 /**
- * Create the ldap connexion for token management
+ * Create the ldap connection for token management
  * @param int|null $server_id
  * @return LDAP\Connection|false
  */

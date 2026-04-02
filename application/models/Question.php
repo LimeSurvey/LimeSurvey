@@ -32,7 +32,7 @@ use LimeSurvey\Helpers\questionHelper;
  * @property integer $parent_qid Questions parent question ID eg for subquestions
  * @property integer $scale_id  The scale ID
  * @property integer $same_default Saves if user set to use the same default value across languages in default options dialog ('Edit default answers')
- * @property string $relevance Questions relevane equation
+ * @property string $relevance Questions relevance equation
  * @property string $modulename
  * @property integer $same_script Whether the same script should be used for all languages
  *
@@ -40,7 +40,7 @@ use LimeSurvey\Helpers\questionHelper;
  * @property QuestionGroup $group
  * @property Question $parent
  * @property Question[] $subquestions
- * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
+ * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models for this QID regardless of the specified language
  * @property QuestionL10n[] $questionl10ns Question Languagesettings indexd by language code
  * @property string[] $quotableTypes Question types that can be used for quotas
  * @property Answer[] $answers
@@ -98,9 +98,9 @@ class Question extends LSActiveRecord
     /** @var string $group_name Stock the active group_name for questions list filtering */
     public $group_name;
     public $gid;
-    /** Defaut relevance **/
+    /** Default relevance **/
     public $relevance = '';
-    /** defaut same_script , avoid public break during update **/
+    /** Default same_script , avoid public break during update **/
     public $same_script = 0;
 
     /** @var QuestionTheme cached question theme*/
@@ -500,7 +500,7 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * TODO: replace it everywhere by Answer::model()->findAll([Critieria Object])
+     * TODO: replace it everywhere by Answer::model()->findAll([Criteria Object])
      * @param string $fields
      * @param mixed $condition
      * @param string|false $orderby

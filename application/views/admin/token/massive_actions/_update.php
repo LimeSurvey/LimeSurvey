@@ -23,7 +23,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                     </a>
                 </li>
 
-                <!-- Custom attibutes -->
+                <!-- Custom attributes -->
                 <li role="presentation" class="nav-item">
                     <a class="nav-link" data-bs-toggle="tab" href="#massive-custom" aria-expanded="false">
                         <?php eT('Additional attributes'); ?>
@@ -352,7 +352,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 </fieldset>
             </div>
 
-            <!-- Custom attibutes -->
+            <!-- Custom attributes -->
             <div id="massive-custom" class="tab-pane fade">
                 <fieldset class="mb-0" aria-labelledby="massedit-modify-custom-legend">
                     <legend id="massedit-modify-custom-legend" class="visually-hidden"><?php eT("Modify"); ?></legend>

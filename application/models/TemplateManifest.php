@@ -237,7 +237,7 @@ class TemplateManifest extends TemplateConfiguration
          * It implies they respect the convention :
          * $aSurveyData[custom screen name][custom variable] = custom variable value
          * Where custom variable value can't be an array.
-         * TODO: for LS5, refactor all the twig views and theme editor so we use only this convetion.
+         * TODO: for LS5, refactor all the twig views and theme editor so we use only this convention.
          * Eg: don't use arrays like $thissurvey['aAssessments']["datas"]["total"][0] or $thissurvey['aGroups'][1]["aQuestions"][1]
         */
         $thissurvey = $this->getCustomScreenData($thissurvey);
@@ -502,7 +502,7 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
-     * Retreives the absolute path for a file to edit (current template, mother template, etc)
+     * Retrieves the absolute path for a file to edit (current template, mother template, etc)
      * Also perform few checks (permission to edit? etc)
      *
      * @param string $sFile relative path to the file to edit
@@ -979,7 +979,7 @@ class TemplateManifest extends TemplateConfiguration
      * 1. Delete files and engine nodes
      * 2. Update the name of the template
      * 3. Change the creation/modification date to the current date
-     * 4. Change the autor name to the current logged in user
+     * 4. Change the author name to the current logged in user
      * 5. Change the author email to the admin email
      *
      * Used in template editor
@@ -1229,7 +1229,7 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Proxy for Yii::app()->clientScript->removeFileFromPackage()
-     * It's not realy needed here, but it is needed for TemplateConfiguration model.
+     * It's not really needed here, but it is needed for TemplateConfiguration model.
      * So, we use it here to have the same interface for TemplateManifest and TemplateConfiguration,
      * So, in the future, we'll can both inherit them from a same object (best would be to extend CModel to create a LSYii_Template)
      *
@@ -1298,7 +1298,7 @@ class TemplateManifest extends TemplateConfiguration
             $this->oOptions = new stdClass();
         }
 
-        // Not mandatory (use package dependances)
+        // Not mandatory (use package dependencies)
         $this->cssFramework             = (!empty($this->config->xpath("//cssframework"))) ? $this->config->engine->cssframework : '';
         // Add depend package according to packages
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
@@ -1575,7 +1575,7 @@ class TemplateManifest extends TemplateConfiguration
             $sDescription = App()->twigRenderer->convertTwigToHtml($this->config->metadata->description);
             $sDescription = viewHelper::purified($sDescription);
         } catch (\Exception $e) {
-            // It should never happen, but let's avoid to anoy final user in production mode :)
+            // It should never happen, but let's avoid to annoy final user in production mode :)
             if (YII_DEBUG) {
                 App()->setFlashMessage(
                     "Twig error in template " .

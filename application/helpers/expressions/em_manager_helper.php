@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * LimeSurvey
@@ -190,7 +190,7 @@ class LimeExpressionManager
      * a set of global survey options passed from LimeSurvey
      *
      * For example, array(
-     * 'rooturl' => // URL prefix needed to be able to click on a syntax-highlighted variable name and have it open the needed editting window
+     * 'rooturl' => // URL prefix needed to be able to click on a syntax-highlighted variable name and have it open the needed editing window
      * 'hyperlinkSyntaxHighlighting' => // true if should be able to click on variables to edit them
      * 'active' => // 0 for inactive, 1 for active survey
      * 'allowsave' => // 0 for do not allow save; 1 for allow save
@@ -655,7 +655,7 @@ class LimeExpressionManager
      */
     private $numGroups = 0;
     /**
-     * Numer of questions in survey (counting display-only ones?)
+     * Number of questions in survey (counting display-only ones?)
      * @var integer
      */
     private $numQuestions = 0;
@@ -894,7 +894,7 @@ class LimeExpressionManager
      * If $qid is set, returns the relevance equation generated from conditions (or NULL if there are no conditions for that $qid)
      * If $qid is NULL, returns an array of relevance equations generated from Condition, keyed on the question ID
      * @param integer $surveyId
-     * @param integer|null $qid - if passed, only generates relevance equation for that question - otherwise genereates for all questions with conditions
+     * @param integer|null $qid - if passed, only generates relevance equation for that question - otherwise generates for all questions with conditions
      * @return array of generated relevance strings, indexed by $qid
      */
     public static function ConvertConditionsToRelevance($surveyId, $qid = null)
@@ -1867,7 +1867,7 @@ class LimeExpressionManager
                         $relevanceVars = implode('|', $this->em->GetJSVarsUsed());
                         $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
 
-                        // Unset all checkboxes and hidden values for this question (irregardless of whether they are array filtered)
+                        // Unset all checkboxes and hidden values for this question (regardless of whether they are array filtered)
                         $eosaJS = "if (" . $relevanceJS . ") {\n";
                         $eosaJS .= "  $('#question" . $questionNum . " [type=checkbox]').prop('checked',false);\n";
                         $eosaJS .= "  $('#java" . $qinfo['sgqa'] . "_Cother').val('');\n";
@@ -3314,7 +3314,7 @@ class LimeExpressionManager
         $now = microtime(true);
         $this->em->SetSurveyMode($this->surveyMode);
         $survey = Survey::model()->findByPk($surveyid);
-        // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
+        // TODO - do I need to force refresh, or trust that createFieldMap will cache languages properly?
         $fieldmap = createFieldMap($survey, $style = 'full', $forceRefresh, false, $_SESSION['LEMlang']);
         $this->sid = $surveyid;
         $this->sessid = 'responses_' . $this->sid;
@@ -4188,7 +4188,7 @@ class LimeExpressionManager
      * @param string|null $string - the string to be replaced
      * @param integer $questionNum - the $qid of question being replaced - needed for properly alignment of question-level relevance and tailoring
      * @param array|null $replacementFields - optional replacement values
-     * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
+     * @param integer $numRecursionLevels - the number of times to recursively substitute values in this string
      * @param integer $whichPrettyPrintIteration - if want to pretty-print the source string, which recursion  level should be pretty-printed
      * @param boolean $noReplacements - true if we already know that no replacements are needed (e.g. there are no curly braces)
      * @param boolean $timeit
@@ -4228,7 +4228,7 @@ class LimeExpressionManager
      * Translate all Expressions, Macros, registered variables, etc. in $string for current step
      * @param string|null $string - the string to be replaced
      * @param array $replacementFields - optional replacement values
-     * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
+     * @param integer $numRecursionLevels - the number of times to recursively substitute values in this string
      * @param boolean $static - return static string (without any javascript)
      * @return string - the original $string with all replacements done.
      */
@@ -4336,7 +4336,7 @@ class LimeExpressionManager
     /**
      * Create JavaScript needed to process subquestion-level relevance (e.g. for array_filter and  _exclude)
      * @param string $eqn - the equation to parse
-     * @param string $questionNum - the question number - needed to align relavance and tailoring blocks
+     * @param string $questionNum - the question number - needed to align relevance and tailoring blocks
      * @param string $rowdivid - the javascript ID that needs to be shown/hidden in order to control array_filter visibility
      * @param string $type - the type of subquestion relevance (e.g. 'array_filter', 'array_filter_exclude')
      * @param string $qtype
@@ -5202,7 +5202,7 @@ class LimeExpressionManager
             if ($this->surveyOptions['ipaddr']) {
                 $aResponseAttributes['ipaddr'] = getIPAddress();
 
-                //anonymize ip adress
+                //anonymize ip address
                 if ($this->surveyOptions['ipAnonymize']) {
                     $ipAddressAnonymizer = new LimeSurvey\Models\Services\IpAddressAnonymizer($aResponseAttributes['ipaddr']);
                     $result = $ipAddressAnonymizer->anonymizeIpAddress();
@@ -5215,7 +5215,7 @@ class LimeExpressionManager
             foreach ($updatedValues as $key => $value) {
                 $val = (is_null($value) ? null : $value['value']);
                 $type = (is_null($value) ? null : $value['type']);
-                // Clean up the values to cope with database storage requirements : some value are fitered in ProcessCurrentResponses
+                // Clean up the values to cope with database storage requirements : some value are filtered in ProcessCurrentResponses
                 // @todo These validations need to be moved to the question models
                 switch ($type) {
                     case Question::QT_D_DATE: //DATE
@@ -5758,9 +5758,9 @@ class LimeExpressionManager
 
         $grel = false;  // assume irrelevant until find a relevant question
         $ghidden = true;   // assume hidden until find a non-hidden question.  If there are no relevant questions on this page, $ghidden will stay true
-        $gmandViolation = false;  // assume that the group contains no manditory questions that have not been fully answered
-        $gmandSoft = false;  // assume that the group contains no SOFT manditory questions that have not been fully answered
-        $gmandNonSoft = false;  // is there any non SOFT manditory questions that have not been fully answered
+        $gmandViolation = false;  // assume that the group contains no mandatory questions that have not been fully answered
+        $gmandSoft = false;  // assume that the group contains no SOFT mandatory questions that have not been fully answered
+        $gmandNonSoft = false;  // is there any non SOFT mandatory questions that have not been fully answered
         $gvalid = true;   // assume valid until discover otherwise
         $debug_message = '';
         $messages = [];
@@ -6404,7 +6404,7 @@ class LimeExpressionManager
             if (is_string($mandSoftPost)) {
                 $qmandViolation = false;
                 $mandatoryTip = '';
-                /* Set this question mandSoftForced : double assigment : in $LEM and $qInfo */
+                /* Set this question mandSoftForced : double assignment : in $LEM and $qInfo */
                 $this->questionSeq2relevance[$questionSeq]['mandSoftForced'] = $qInfo['mandSoftForced'] = true;
             }
             /* New system mandSoft are an array with Y/N for each question in page */
@@ -6414,7 +6414,7 @@ class LimeExpressionManager
                         // Currently, input are not shown after selection done. (no mandatory violation)
                         $this->questionSeq2relevance[$questionSeq]['mandSoftForced'] = $qInfo['mandSoftForced'] = false;
                     } else {
-                        /* Set this question mandSoftForced : double assigment : in $LEM and $qInfo */
+                        /* Set this question mandSoftForced : double assignment : in $LEM and $qInfo */
                         $this->questionSeq2relevance[$questionSeq]['mandSoftForced'] = $qInfo['mandSoftForced'] = true;
                     }
                 }
@@ -6518,7 +6518,7 @@ class LimeExpressionManager
                 foreach ($LEM->qid2validationEqn[$qid]['tips'] as $vclass => $vtip) {
                     // Only add non-empty tip
                     if (trim((string) $vtip) != "") {
-                        // set hideTip from question atrribute
+                        // set hideTip from question attribute
                         $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : [];
                         $hideTip = array_key_exists('hide_tip', $qattr) ? $qattr['hide_tip'] : 0;
 
@@ -7079,7 +7079,7 @@ class LimeExpressionManager
         $rowdividList = [];   // list of subquestions needing relevance entries
         /* All function for expression manager */
         App()->getClientScript()->registerPackage("expressions"); // Be sure to load, think we can remove ALL other call
-        /* Call the function when trigerring event */
+        /* Call the function when triggering event */
         App()->getClientScript()->registerScript(
             "triggerEmClassChange",
             "
@@ -7980,10 +7980,10 @@ class LimeExpressionManager
         ];
 
         $tests = "This example shows escaping of the curly braces: \{\{test\}\} {if(1==1,'{{test}}', '1 is not 1?')} should not throw any errors.
-<b>Here is an example of OK syntax with tooltips</b><br />Hello {if(gender=='M','Mr.','Mrs.')} {surname}, it is now {date('g:i a',time())}.  Do you know where your {sum(numPets,numKids)} chidren and pets are?
+<b>Here is an example of OK syntax with tooltips</b><br />Hello {if(gender=='M','Mr.','Mrs.')} {surname}, it is now {date('g:i a',time())}.  Do you know where your {sum(numPets,numKids)} children and pets are?
 <b>Here are common errors so you can see the tooltips</b><br />Variables used before they are declared:  {notSetYet}<br />Unknown Function:  {iff(numPets>numKids,1,2)}<br />Unknown Variable: {sum(age,num_pets,numKids)}<br />Wrong # parameters: {sprintf()},{if(1,2)},{date()}<br />Assign read-only-vars:{TOKEN:ATTRIBUTE_1+=10},{name='Sally'}<br />Unbalanced parentheses: {pow(3,4},{(pow(3,4)},{pow(3,4))}
 <b>Here is some of the unsupported syntax</b><br />No support for '++', '--', '%',';': {min(++age, --age,age % 2);}<br />Nor '|', '&', '^': {(sum(2 | 3,3 & 4,5 ^ 6)}}<br />Nor arrays: {name[2], name['mine']}
-<b>Inline JavaScipt that forgot to add spaces after curly brace</b><br />[script type=\"text/javascript\" language=\"Javascript\"] var job='{TOKEN:ATTRIBUTE_1}'; if (job=='worker') {document.write('BOSSES');}[/script]
+<b>Inline JavaScript that forgot to add spaces after curly brace</b><br />[script type=\"text/javascript\" language=\"Javascript\"] var job='{TOKEN:ATTRIBUTE_1}'; if (job=='worker') {document.write('BOSSES');}[/script]
 <b>Unknown/Misspelled Variables, Functions, and Operators</b><br />{if(sex=='M','Mr.','Mrs.')} {surname}, next year you will be {age++} years old.
 <b>Warns if use = instead of == or perform value assignments</b><br>Hello, {if(gender='M','Mr.','Mrs.')} {surname}, next year you will be {age+=1} years old.
 <b>Wrong number of arguments for functions:</b><br />{if(gender=='M','Mr.','Mrs.','Other')} {surname}, sum(age,numKids,numPets)={sum(age,numKids,numPets,)}
@@ -8004,7 +8004,7 @@ Since you have more {if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'children','
 {INSERTANS:61764X1X1}, you said that you are {INSERTANS:61764X1X2} years old, and that you have {INSERTANS:61764X1X3} {if((INSERTANS:61764X1X3==1),'child','children','kiddies')} and {INSERTANS:61764X1X4} {if((INSERTANS:61764X1X4==1),'pet','pets')} running around the house.  So, you have {INSERTANS:61764X1X3 + INSERTANS:61764X1X4} wild {if((INSERTANS:61764X1X3 + INSERTANS:61764X1X4 ==1),'beast','beasts')} to chase around every day.
 This line should throw errors since the curly-brace enclosed functions do not have linefeeds after them (and before the closing curly brace): var job='{TOKEN:ATTRIBUTE_1}'; if (job=='worker') { document.write('BOSSES') } else { document.write('WORKERS') }
 This line has a script section, but if you look at the source, you will see that it has errors: <script type=\"text/javascript\" language=\"Javascript\">var job='{TOKEN:ATTRIBUTE_1}'; if (job=='worker') {document.write('BOSSES')} else {document.write('WORKERS')} </script>.
-Substitions that begin or end with a space should be ignored: { name} {age }";
+Substitutions that begin or end with a space should be ignored: { name} {age }";
 
         $alltests = explode("\n", $tests);
 
@@ -9978,7 +9978,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 // @ todo Review if value is totally saved in DB, EM test if is numeric */
                 break;
             case ";": // Array text
-                /* No validty control ? size ? */
+                /* No validity control ? size ? */
                 break;
             case 'C': // Array Yes No Uncertain
                 if (!in_array($value, ["Y", "N", "U"])) {
@@ -10003,7 +10003,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 /*  @todo : but are already partially in EM and in old function ? */
                 break;
             case '*': // Equation
-                /* No validty control ? size ? */
+                /* No validity control ? size ? */
                 break;
             case '|': // File upload
                 /* @todo ? seems to be in old function ? */
@@ -10034,7 +10034,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 }
                 break;
             case 'X': // Text display
-                /* No validty control ; but always reset the value to null ? */
+                /* No validity control ; but always reset the value to null ? */
                 return false; // Can not be set : set it to null
             case 'Y': // Gender
                 if (!in_array($value, ["Y", "N"])) {
@@ -10046,7 +10046,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             case 'T': // Long text
             case 'Q': // Multiple text
             case 'S': // Short text
-                /* No validty control ? size ? */
+                /* No validity control ? size ? */
                 break;
             case 'M':
                 if (

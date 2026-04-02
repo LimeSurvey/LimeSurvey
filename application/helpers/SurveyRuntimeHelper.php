@@ -25,7 +25,7 @@ class SurveyRuntimeHelper
      * Those private variables are just a step to make easier refactorisation
      * of this file, to have a global overview about what is set in this
      * helper, and to move easily piece of code to new methods:
-     * The methods get/set the private variables, and defore calling
+     * The methods get/set the private variables, and before calling
      * get_defined_vars, variables are created from those private variables.
      * It's just a first step. get_defined_vars should be removed, and most of
      * the private variables here should be moved to the correct object:
@@ -115,7 +115,7 @@ class SurveyRuntimeHelper
     private $sSurveyMode = null;
 
     /**
-     * Few options comming from thissurvey, App->getConfig, LEM. Could be
+     * Few options coming from thissurvey, App->getConfig, LEM. Could be
      * replaced by $oSurvey + relations ; the one coming from LEM and
      * getConfig should be public variable on the surveyModel, set via
      * public methods (active, allowsave, anonymized, assessments,
@@ -200,7 +200,7 @@ class SurveyRuntimeHelper
         extract($args);
 
         ///////////////////////////////////////////////////////////
-        // 1: We check if token and/or captcha form shouls be shown
+        // 1: We check if token and/or captcha form should be shown
         if ((!isset($_SESSION[$this->LEMsessid]['step'])) || (Yii::app()->request->getParam('filltoken') === 'true')) {
             $this->showTokenOrCaptchaFormsIfNeeded();
         }
@@ -276,12 +276,12 @@ class SurveyRuntimeHelper
 
                     // Make $qanda only for needed question $ia[10] is the randomGroup and $ia[5] the real group
                     if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid)) {
-                        // In question by question mode, we only procceed current question
+                        // In question by question mode, we only proceed current question
                         if ($this->sSurveyMode == 'question' && $ia[0] != $this->aStepInfo['qid']) {
                             continue;
                         }
 
-                        // In group by group mode, we only procceed current group
+                        // In group by group mode, we only proceed current group
                         if ($this->sSurveyMode == 'group' && $ia[5] != $this->aStepInfo['gid']) {
                             if (isset($_SESSION[$this->LEMsessid]['fieldmap-' . $this->iSurveyid . '-randMaster'])) {
                                 // This is a randomized survey, don't continue.
@@ -303,7 +303,7 @@ class SurveyRuntimeHelper
 
                         if ($plus_qanda) {
                             $plus_qanda[] = $ia[4];
-                            $plus_qanda[] = $ia[6]; // adds madatory identifyer for adding mandatory class to question wrapping div
+                            $plus_qanda[] = $ia[6]; // adds mandatory identifier for adding mandatory class to question wrapping div
 
                             // Add a finalgroup in qa array , needed for random attribute : TODO: find a way to have it in new quanda_helper in 2.1
                             if (isset($ia[10])) {
@@ -551,7 +551,7 @@ class SurveyRuntimeHelper
         }
 
         /**
-         *  ExpressionScript Engine Scrips and inputs
+         *  ExpressionScript Engine Scripts and inputs
          */
         $step = $_SESSION[$this->LEMsessid]['step'] ?? '';
         $this->aSurveyInfo['EM']['ScriptsAndHiddenInputs'] = "<!-- emScriptsAndHiddenInputs -->";
@@ -750,7 +750,7 @@ class SurveyRuntimeHelper
     }
 
     /**
-     * Retreives dew options comming from thissurvey, App->getConfig, LEM.
+     * Retrieves few options coming from thissurvey, App->getConfig, LEM.
      * TODO: move to survey model
      *
      */
@@ -1091,7 +1091,7 @@ class SurveyRuntimeHelper
         $this->aSurveyInfo['move'] = $this->sMove ?? '';
 
         if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
-            //Failsave to have a general standard value
+            //Failsafe to have a general standard value
             if (empty($this->aSurveyInfo['datasecurity_notice_label'])) {
                 $this->aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey privacy policy.");
             }
@@ -1413,7 +1413,7 @@ class SurveyRuntimeHelper
     /**
      * Check in a string if it uses expressions to replace them
      * @param string|null $sString the string to evaluate
-     * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
+     * @param integer $numRecursionLevels - the number of times to recursively substitute values in this string
      * @param boolean $static - return static string
      * @return string
      * @todo : find/get current qid for processing string

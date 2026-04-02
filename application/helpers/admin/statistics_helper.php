@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /*
 * LimeSurvey
@@ -399,7 +399,7 @@ function buildSelects($allfields, $surveyid, $language)
                         $mselects[] = Yii::app()->db->quoteColumnName($fieldname) . " = " . Yii::app()->db->quoteValue(getEncryptedCondition($responseModel, $fieldname, 'Y'));
                     }
                 }
-                /* If there are mutliple conditions generated from this multiple choice question, join them using the boolean "OR" */
+                /* If there are multiple conditions generated from this multiple choice question, join them using the boolean "OR" */
                 if ($mselects) {
                     $thismulti = implode(" OR ", $mselects);
                     $selects[] = "($thismulti)";
@@ -448,7 +448,7 @@ function buildSelects($allfields, $surveyid, $language)
                 //Q - Multiple short text
             elseif (($firstletter == "T" || $firstletter == "Q") && $_POST[$pv] != "") {
                 $selectSubs = array();
-                //We intepret and * and % as wildcard matches, and use ' OR ' and , as the separators
+                //We interpret and * and % as wildcard matches, and use ' OR ' and , as the separators
                 $pvParts = explode(",", str_replace('*', '%', str_replace(' OR ', ',', (string) $_POST[$pv])));
                 if (is_array($pvParts) and count($pvParts)) {
                     foreach ($pvParts as $pvPart) {
@@ -1023,7 +1023,7 @@ class statistics_helper
 
                 /* IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT */
                 /* IF YOU DON'T UNDERSTAND WHAT QUARTILES ARE DO NOT MODIFY THIS CODE */
-                /* Quartiles and Median values are NOT related to average, and the sum is irrelevent */
+                /* Quartiles and Median values are NOT related to average, and the sum is irrelevant */
 
                 if (isset($quartiles[1])) {
                     $showem[] = array(gT("1st quartile (Q1)"), $quartiles[1]);
@@ -1226,7 +1226,7 @@ class statistics_helper
                     // Array of Yes/No/gT("Uncertain")
                 case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
                     $qresult = Question::model()->findAll(array('condition' => 'parent_qid=:parent_qid AND title=:title', 'params' => array(":parent_qid" => $qiqid, ':title' => $qanswer)));
-                    //loop thorugh results
+                    //loop through results
                     foreach ($qresult as $qrow) {
                         //add results
                         $alist[] = array("Y", gT("Yes"));
@@ -1695,7 +1695,7 @@ class statistics_helper
             //put question title and code into array
             $label[] = $fname;
 
-            //edit labels and put them into antoher array
+            //edit labels and put them into another array
 
             //first check if $tempcount is > 0. If yes, $row has been modified and $tempcount has the original count.
             if ($tempcount > -1) {
@@ -1845,7 +1845,7 @@ class statistics_helper
             if (($gdata[$i] !== "N/A")) {
                 //check if data should be aggregated
                 if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_POINT)) {
-                    //mark that we have done soemthing special here
+                    //mark that we have done something special here
                     $aggregated = true;
 
                     if (($results - $grawdata[5]) > 0) {
@@ -1969,7 +1969,7 @@ class statistics_helper
                     /*
                     * four steps to calculate the standard deviation
                     * 1 = calculate difference between item and arithmetic mean and multiply with the number of elements
-                    * 2 = create sqaure value of difference
+                    * 2 = create square value of difference
                     * 3 = sum up square values
                     * 4 = multiply result with 1 / (number of items)
                     * 5 = get root
@@ -1984,8 +1984,8 @@ class statistics_helper
                         //2 = create square value of difference
                         $squarevalue = square($diff);
 
-                        //3 = sum up square values and multiply them with the occurence
-                        //prevent divison by zero
+                        //3 = sum up square values and multiply them with the occurrence
+                        //prevent division by zero
                         if ($squarevalue != 0 && $stddevarray[$j] != 0) {
                             $stddev += $squarevalue * $stddevarray[$j];
                         }
@@ -2559,7 +2559,7 @@ class statistics_helper
             //put only the code into the array
             $justcode[] = $al[0];
 
-            //edit labels and put them into antoher array
+            //edit labels and put them into another array
 
             //first check if $tempcount is > 0. If yes, $row has been modified and $tempcount has the original count.
             if ($tempcount > -1) {
@@ -2846,7 +2846,7 @@ class statistics_helper
             else {
                 //check if data should be aggregated
                 if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_POINT)) {
-                    //mark that we have done soemthing special here
+                    //mark that we have done something special here
                     $aggregated = true;
 
                     if (($results - $grawdata[5] - $TotalIncomplete) > 0) {
@@ -3109,7 +3109,7 @@ class statistics_helper
                     /*
                     * four steps to calculate the standard deviation
                     * 1 = calculate difference between item and arithmetic mean and multiply with the number of elements
-                    * 2 = create sqaure value of difference
+                    * 2 = create square value of difference
                     * 3 = sum up square values
                     * 4 = multiply result with 1 / (number of items)
                     * 5 = get root
@@ -3124,8 +3124,8 @@ class statistics_helper
                         //2 = create square value of difference
                         $squarevalue = square($diff);
 
-                        //3 = sum up square values and multiply them with the occurence
-                        //prevent divison by zero
+                        //3 = sum up square values and multiply them with the occurrence
+                        //prevent division by zero
                         if ($squarevalue != 0 && $stddevarray[$j] != 0) {
                             $stddev += $squarevalue * $stddevarray[$j];
                         }
@@ -3223,7 +3223,7 @@ class statistics_helper
         //PCHART has to be enabled and we need some data
         //
         if ($usegraph == 1) {
-            // NOTE: in ls3, not so many tests were needed. We suscpect that a bug has been introduced (like no "show graph" attribute for certains question type, also, why now sometime $outputs['parentqid']=0 at this point? )
+            // NOTE: in ls3, not so many tests were needed. We suscpect that a bug has been introduced (like no "show graph" attribute for certain question type, also, why now sometime $outputs['parentqid']=0 at this point? )
             //       so if debug mode is on, we'll show a warning, so dev will not strugle to find a deeper bug.
             if (YII_DEBUG) {
                 if (!$aattr) {

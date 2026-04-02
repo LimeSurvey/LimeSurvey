@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * LimeSurvey
@@ -64,7 +64,7 @@ class ExpressionManager
     private $RDP_CategorizeTokensRegex;
     private $RDP_ValidFunctions; // names and # params of valid functions
 
-    // Thes variables are used while  processing the equation
+    // These variables are used while  processing the equation
     private $RDP_expr; // the source expression
     private $RDP_tokens; // the list of generated tokens
     private $RDP_count; // total number of $RDP_tokens
@@ -83,7 +83,7 @@ class ExpressionManager
     // These  variables are only used by sProcessStringContainingExpressions
     private $allVarsUsed; // full list of variables used within the string, even if contains multiple expressions
     private $prettyPrintSource; // HTML formatted output of running sProcessStringContainingExpressions
-    private $substitutionNum; // Keeps track of number of substitions performed XXX
+    private $substitutionNum; // Keeps track of number of substitutions performed XXX
 
     /**
      * @var array
@@ -191,7 +191,7 @@ class ExpressionManager
         $this->RDP_CategorizeTokensRegex[] = '/.+/';
         $this->RDP_TokenType[] = 'OTHER';
         // Each allowed function is a mapping from local name to external name + number of arguments
-        // Functions can have a list of serveral allowable #s of arguments.
+        // Functions can have a list of several allowable #s of arguments.
         // If the value is -1, the function must have a least one argument but can have an unlimited number of them
         // -2 means that at least one argument is required.  -3 means at least two arguments are required, etc.
         $this->RDP_ValidFunctions = array(
@@ -206,7 +206,7 @@ class ExpressionManager
             'cos' => array('cos', 'Decimal.asNum.cos', gT('Cosine'), 'number cos(number)', 'http://php.net/cos', 1),
             'count' => array('exprmgr_count', 'LEMcount', gT('Count the number of answered questions in the list'), 'number count(arg1, arg2, ... argN)', '', -1),
             'countif' => array('exprmgr_countif', 'LEMcountif', gT('Count the number of answered questions in the list equal the first argument'), 'number countif(matches, arg1, arg2, ... argN)', '', -2),
-            'countifop' => array('exprmgr_countifop', 'LEMcountifop', gT('Count the number of answered questions in the list which pass the critiera (arg op value)'), 'number countifop(op, value, arg1, arg2, ... argN)', '', -3),
+            'countifop' => array('exprmgr_countifop', 'LEMcountifop', gT('Count the number of answered questions in the list which pass the criteria (arg op value)'), 'number countifop(op, value, arg1, arg2, ... argN)', '', -3),
             'date' => array('exprmgr_date', 'date', gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://php.net/date', 1, 2),
             'exp' => array('exp', 'Decimal.asNum.exp', gT('Calculates the exponent of e'), 'number exp(number)', 'http://php.net/exp', 1),
             'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', gT('Display numbers with comma as decimal separator, if needed'), 'string fixnum(number)', '', 1),
@@ -269,7 +269,7 @@ class ExpressionManager
             'strtoupper' => array('exprmgr_strtoupper', 'LEMstrtoupper', gT('Convert a string to uppercase'), 'string strtoupper(string)', 'http://php.net/strtoupper', 1),
             'substr' => array('exprmgr_substr', 'substr', gT('Return part of a string'), 'string substr(string, start [, length])', 'http://php.net/substr', 2, 3),
             'sum' => array('exprmgr_array_sum', 'LEMsum', gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
-            'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', gT('Sum the values of answered questions in the list which pass the critiera (arg op value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
+            'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', gT('Sum the values of answered questions in the list which pass the criteria (arg op value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
             'tan' => array('tan', 'Decimal.asNum.tan', gT('Tangent'), 'number tan(arg)', 'http://php.net/tan', 1),
             'convert_value' => array('exprmgr_convert_value', 'LEMconvert_value', gT('Convert a numerical value using a inputTable and outputTable of numerical values'), 'number convert_value(fValue, iStrict, sTranslateFromList, sTranslateToList)', '', 4),
             'time' => array('time', 'time', gT('Return current UNIX timestamp'), 'number time()', 'http://php.net/time', 0),
@@ -349,7 +349,7 @@ class ExpressionManager
     }
 
     /**
-     * Get informatin about type mismatch between arguments.
+     * Get information about type mismatch between arguments.
      * @param Token $arg1
      * @param Token $arg2
      * @return boolean[] Like (boolean $bMismatchType, boolean $bBothNumeric, boolean $bBothString)
@@ -558,7 +558,7 @@ class ExpressionManager
             $this->RDP_AddError(self::gT("Invalid value(s) on the stack"), $token);
             return false;
         }
-        // If argmument is empty, then assume it is 0
+        // If argument is empty, then assume it is 0
         if ($arg1[0] == '') {
              $arg1[0] = 0;
         };
@@ -1239,7 +1239,7 @@ class ExpressionManager
 
     /**
      * Converts the most recent expression into a valid JavaScript expression, mapping function and variable names and operators as needed.
-     * @return string the JavaScript expresssion
+     * @return string the JavaScript expression
      */
     public function GetJavaScriptEquivalentOfExpression()
     {
@@ -1634,7 +1634,7 @@ class ExpressionManager
                                 $class = 'em-var-after em-var-inpage';
                             }
                         }
-                        // prevent EM prcessing of messages within span
+                        // prevent EM processing of messages within span
                         $message = implode('; ', $messages);
                         $message = str_replace(array('{', '}'), array('{ ', ' }'), $message);
 
@@ -1926,7 +1926,7 @@ class ExpressionManager
     }
 
     /**
-     * Start processing a group of substitions - will be incrementally numbered
+     * Start processing a group of substitutions - will be incrementally numbered
      */
 
     public function StartProcessingGroup($sid = null, $rooturl = '', $hyperlinkSyntaxHighlighting = true)
@@ -1985,7 +1985,7 @@ class ExpressionManager
                 $prettyPrintIterationDone = true;
             }
         }
-        $this->prettyPrintSource = $prettyPrint; // ensure that if doing recursive substition, can get original source to pretty print
+        $this->prettyPrintSource = $prettyPrint; // ensure that if doing recursive substitution, can get original source to pretty print
         $result = str_replace(array('\{', '\}',), array('{', '}'), $result);
         return $result;
     }
@@ -2070,7 +2070,7 @@ class ExpressionManager
             switch ($token[2]) {
                 case 'SGQA':
                 case 'WORD':
-                    $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*'; // self or that, optionaly followed by dot and alnum
+                    $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*'; // self or that, optionally followed by dot and alnum
                     if (preg_match("/" . $splitter . "/", (string) $token[0])) {
                         $setInCache = false;
                         $expandedVar .= LimeExpressionManager::GetAllVarNamesForQ($this->questionSeq, $token[0]);
@@ -2936,8 +2936,8 @@ function exprmgr_checkdate($month, $day, $year)
  * @param double $fValueToReplace
  * @param integer $iStrict - 1 for exact matches only otherwise interpolation the
  *          closest value should be returned
- * @param string $sTranslateFromList - comma seperated list of numeric values to translate from
- * @param string $sTranslateToList - comma seperated list of numeric values to translate to
+ * @param string $sTranslateFromList - comma separated list of numeric values to translate from
+ * @param string $sTranslateToList - comma separated list of numeric values to translate to
  * @return integer|null
  */
 function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, $sTranslateToList)
@@ -3082,7 +3082,7 @@ function exprmgr_list($args)
 
 /**
  * Implementation of listifop( $cmpAttr, $op, $value, $retAttr, $glue, $sgqa1, ..., sgqaN )
- * Return a list of retAttr from sgqa1...sgqaN which pass the critiera (cmpAttr op value)
+ * Return a list of retAttr from sgqa1...sgqaN which pass the criteria (cmpAttr op value)
  * @param array $args
  * @return string
  */
@@ -3302,7 +3302,7 @@ function expr_mgr_htmlspecialchars_decode($string)
  */
 function exprmgr_regexMatch($pattern, $input)
 {
-    // Test the regexp pattern agains null : must always return 0, false if error happen
+    // Test the regexp pattern against null : must always return 0, false if error happen
     if (@preg_match($pattern . 'u', '') === false) {
         return false; // invalid : true or false ?
     }

@@ -60,7 +60,7 @@ class QuickTranslationController extends LSBaseController
     public function actionIndex($surveyid)
     {
         /* existing + read (survey) already checked in SurveyCommonAction : existing use model : then if surveyid is not valid : return a 404 */
-        /* survey : read OK, not survey:tranlations:read … */
+        /* survey : read OK, not survey:translations:read … */
         if (!Permission::model()->hasSurveyPermission($surveyid, 'translations', 'read')) {
             throw new CHttpException(401, "401 Unauthorized");
         }
@@ -446,7 +446,7 @@ class QuickTranslationController extends LSBaseController
     public function actionAjaxtranslategoogleapi($surveyid)
     {
         // Ensure YII_CSRF_TOKEN, we are in admin, then only user with admin right can post
-        /* No Permission check on survey, seems unneded (return a josn with current string posted */
+        /* No Permission check on survey, seems unneeded (return a josn with current string posted */
 
         //todo: check if googletranslate is activated ...
         if (!Permission::model()->hasSurveyPermission($surveyid, 'translations', 'read')) {

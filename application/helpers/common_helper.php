@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
@@ -391,8 +391,8 @@ function getMaxQuestionOrder($gid)
 * It returns an array with the following items:
 *    $wrapper['whole-start']   = Opening wrapper for the whole list
 *    $wrapper['whole-end']     = closing wrapper for the whole list
-*    $wrapper['col-devide']    = normal column devider
-*    $wrapper['col-devide-last'] = the last column devider (to allow
+*    $wrapper['col-devide']    = normal column divider
+*    $wrapper['col-devide-last'] = the last column divider (to allow
 *                                for different styling of the last
 *                                column
 *    $wrapper['item-start']    = opening wrapper tag for individual
@@ -417,8 +417,8 @@ function getMaxQuestionOrder($gid)
 * -  Using inline or float to create columns, causes the answers
 *    flows horizontally, not vertically which is not ideal visually.
 * -  Using CSS3 columns is also a problem because of browser support
-*    and also because if you have answeres split across two or more
-*    lines, and those answeres happen to fall at the bottom of a
+*    and also because if you have answers split across two or more
+*    lines, and those answers happen to fall at the bottom of a
 *    column, the answer might be split across columns as well as
 *    lines.
 * -  Using nested unordered list with the first level of <LI>s
@@ -534,7 +534,7 @@ function setupColumns($columns, $answer_count, $wrapperclass = "", $itemclass = 
 function alternation($alternate = '', $type = 'col')
 {
     /**
-     * alternation() Returns a class identifyer for alternating between
+     * alternation() Returns a class identifier for alternating between
      * two options. Used to style alternate elements differently. creates
      * or alternates between the odd string and the even string used in
      * as column and row classes for array type questions.
@@ -2263,7 +2263,7 @@ function buildLabelSetCheckSumArray()
 * @author: lemeur
 * @param $questionAttributeArray
 * @param string $attributeName
-* @param $language string Optional: The language if the particualr attributes is localizable
+* @param $language string Optional: The language if the particular attributes is localizable
 * @return string
 */
 function getQuestionAttributeValue($questionAttributeArray, $attributeName, $language = '')
@@ -2833,7 +2833,7 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
             $sReplace = rtrim(Yii::app()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
             return preg_replace('/' . $sPattern . '/u', $sReplace, $sString);
         } else {
-            // Make the replacement conditionaly.
+            // Make the replacement conditionally.
             // If the URL is absolute, make sure we keep it absolute.
             // If it is relative, use the publicurl config (if the publicurl is absolute we assume it
             // makes sense to make the urls absolute)
@@ -3128,7 +3128,7 @@ function decodeAttributeSelectOptions(array $attrData)
 * Retrieves the attribute names from the related survey participant list
 *
 * @param mixed $surveyid  The survey ID
-* @param boolean $bOnlyAttributes Set this to true if you only want the fieldnames of the additional attribue fields - defaults to false
+* @param boolean $bOnlyAttributes Set this to true if you only want the fieldnames of the additional attribute fields - defaults to false
 * @return array The fieldnames as key and names as value in an Array
 */
 function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
@@ -3357,7 +3357,7 @@ function cleanTwigCacheDirectory()
 }
 
 /**
-* This is a convenience function for the coversion of datetime values
+* This is a convenience function for the conversion of datetime values
 *
 * @param mixed $value
 * @param string $fromdateformat
@@ -3377,7 +3377,7 @@ function convertDateTimeFormat($value, $fromdateformat, $todateformat)
 
 /**
 * This is a convenience function to convert any date, in any date format, to the global setting date format
-* Check if the time shoul be rendered also
+* Check if the time should be rendered also
 *
 * @param string $sDate
 * @param boolean $withTime
@@ -4168,7 +4168,7 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
 }
 
 /**
- * Retrieves the last Insert ID realiable for cross-DB applications
+ * Retrieves the last Insert ID reliable for cross-DB applications
  *
  * @param string $sTableName Needed for Postgres and MSSQL
  * @return string
@@ -4191,9 +4191,9 @@ function getLastInsertID($sTableName)
 * @param string $targgid - (optional) get only the dependencies for groups dependents on group targgid
 * @param string $indexby - (optional) "by-depgid" for result indexed with $res[$depgid][$targgid]
 *                   "by-targgid" for result indexed with $res[$targgid][$depgid]
-* @return array - returns an array describing the conditions or NULL if no dependecy is found
+* @return array - returns an array describing the conditions or NULL if no dependency is found
 *
-* Example outupt assumin $index-by="by-depgid":
+* Example output assuming $index-by="by-depgid":
 *Array
 *(
 *    [125] => Array             // Group Id 125 is dependent on
@@ -4311,14 +4311,14 @@ function getGroupDepsForConditions($sid, $depgid = "all", $targgid = "all", $ind
 /**
 * getQuestDepsForConditions() get Dependencies between groups caused by conditions
 * @param string $sid - the currently selected survey
-* @param string $gid - (optional) only search dependecies inside the Group Id $gid
+* @param string $gid - (optional) only search dependencies inside the Group Id $gid
 * @param string $depqid - (optional) get only the dependencies applying to the question with qid depqid
 * @param string $targqid - (optional) get only the dependencies for questions dependents on question Id targqid
 * @param string $indexby - (optional) "by-depqid" for result indexed with $res[$depqid][$targqid]
 *                   "by-targqid" for result indexed with $res[$targqid][$depqid]
-* @return array - returns an array describing the conditions or NULL if no dependecy is found
+* @return array - returns an array describing the conditions or NULL if no dependency is found
 *
-* Example outupt assumin $index-by="by-depqid":
+* Example output assuming $index-by="by-depqid":
 *Array
 *(
 *    [184] => Array     // Question Id 184
@@ -4682,7 +4682,7 @@ function getHeader($meta = false)
     $oSurvey = Survey::model()->findByPk($surveyid);
     Yii::app()->loadHelper('surveytranslator');
 
-    // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
+    // Set Language // TODO remove one of the Yii::app()->session see bug #5901
     if (Yii::app()->session['responses_' . $surveyid]['s_lang']) {
         $languagecode = Yii::app()->session['responses_' . $surveyid]['s_lang'];
     } elseif (isset($surveyid) && $surveyid && $oSurvey) {
@@ -5197,7 +5197,7 @@ function createRandomTempDir($dir = null, $prefix = '', $mode = 0700)
 
 /**
  * Generate a random string, using openssl if available, else using md5
- * @param  int    $length wanted lenght of the random string (only for openssl mode)
+ * @param  int    $length wanted length of the random string (only for openssl mode)
  * @return string
  */
 function getRandomString($length = 32)

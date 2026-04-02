@@ -1443,7 +1443,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             }
             return $aImportResults;
         default:
-            // Unknow file , return null why not throw error ?
+            // Unknown file , return null why not throw error ?
             return null;
     }
 }
@@ -2201,7 +2201,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         if (isset($insertdata['tokenlength']) && $insertdata['tokenlength'] > Token::MAX_LENGTH) {
             $insertdata['tokenlength'] = Token::MAX_LENGTH;
         }
-        /* Remove unknow column */
+        /* Remove unknown column */
         $aSurveyModelsColumns = Survey::model()->attributes;
         $aSurveyModelsColumns['wishSID'] = null; // Can not be imported
         $aBadData = array_diff_key($insertdata, $aSurveyModelsColumns);
@@ -2223,7 +2223,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         }
     }
 
-    // Single flag to indicate if the attachements format is wrong, to avoid showing the warning multiple times
+    // Single flag to indicate if the attachments format is wrong, to avoid showing the warning multiple times
     $wrongAttachmentsFormat = false;
 
     // Import survey languagesettings table ===================================================================================
@@ -3667,7 +3667,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     $aCsvHeader = array_shift($aFileResponses);
     LimeExpressionManager::SetDirtyFlag(); // Be sure survey EM code are up to date
     $aLemFieldNames = LimeExpressionManager::getLEMqcode2sgqa($iSurveyId);
-    $aKeyForFieldNames = array(); // An array assicated each fieldname with corresponding responses key
+    $aKeyForFieldNames = array(); // An array associated each fieldname with corresponding responses key
     if (empty($aCsvHeader)) {
         $CSVImportResult['errors'][] = gT("File seems empty or has only one line");
         return $CSVImportResult;
@@ -3683,7 +3683,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
             if (in_array($sLemFieldName, $aCsvHeader)) {
                 $aKeyForFieldNames[$sFieldName] = array_search($sLemFieldName, $aCsvHeader);
             } elseif ($aOptions['bForceImport']) {
-                // as fallback just map questions in order of apperance
+                // as fallback just map questions in order of appearance
 
                 // find out where the answer data columns start in CSV
                 if (!isset($csv_ans_start_index)) {
@@ -3723,7 +3723,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
         return $CSVImportResult;
     }
 
-    // make sure at least one answer was imported before commiting
+    // make sure at least one answer was imported before committing
     $isAnswerMapped = array_key_exists('id', $aKeyForFieldNames) ? (count($aKeyForFieldNames) > 1) : (count($aKeyForFieldNames) > 0);
     if (!$isAnswerMapped) {
         $CSVImportResult['errors'][] = gT("Import failed: No answers could be mapped.");
@@ -4700,7 +4700,7 @@ function fileCsvToUtf8($fullfilepath, $encoding = 'auto')
     unset($file);
     // Delete not needed file
     unlink($fullfilepath);
-    /* Return the tempory ressource */
+    /* Return the temporary resource */
     rewind($tmp);
     return $tmp;
 }
