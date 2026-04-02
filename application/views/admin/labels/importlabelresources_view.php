@@ -28,7 +28,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) {
 }
 ?>
 
-    <p><strong><?php printf(gT("Imported resources for LID %s"), $lid); ?></strong><br /><br /><p>
+    <p><strong><?php printf(gT("Imported resources for LID %s"), $lid); ?></strong><br /><br /></p>
     <p class="<?php echo $statusClass ?>"><?php echo $status ?></p><br />
     <p><strong><u><?php eT("Resources import summary") ?></u></strong><br /></p>
     <p><?php echo gT("Total imported files") . ": $okfiles" ?><br /></p>
