@@ -1511,7 +1511,6 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
         'showprogress' => "string(1) NULL DEFAULT 'Y'",
         'questionindex' => "integer NULL DEFAULT '0'",
         'navigationdelay' => "integer NULL DEFAULT '0'",
-        'nokeyboard' => "string(1) NULL DEFAULT 'N'",
         'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'"
     ));
     addPrimaryKey('surveys_groupsettings', array('gsid'));
@@ -1535,6 +1534,9 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
     // TODO: Don't use models in updatedb_helper.
     $attributes = $settings1->attributes;
     unset($attributes['ipanonymize']);
+    // Same as ipanonymize, stale schema persists on model after column is removed from db,
+    // and interacts with older updates
+    unset($attributes['nokeyboard']);
 
     $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes);
 
@@ -1585,7 +1587,6 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
         "showprogress" => "I",
         "questionindex" => -1,
         "navigationdelay" => -1,
-        "nokeyboard" => "I",
         "alloweditaftercompletion" => "I",
     );
 

@@ -429,21 +429,6 @@ abstract class QuestionBaseRenderer extends StaticModel
     }
 
     /**
-    * Include Keypad headers
-    */
-    public function includeKeypad()
-    {
-        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('vendor') . "jquery-keypad/jquery.keypad.alt.css");
-
-        $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.plugin.min.js', 'position' => LSYii_ClientScript::POS_BEGIN];
-        $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad.min.js', 'position' => LSYii_ClientScript::POS_BEGIN];
-        $localefile = Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js';
-        if (App()->language != 'en' && file_exists($localefile)) {
-            $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js', 'position' => LSYii_ClientScript::POS_BEGIN];
-        }
-    }
-
-    /**
      * Returns the question script to render depending on the language.
      * If "Use for all languages" is set, the base language's script is used.
      * @return string|null

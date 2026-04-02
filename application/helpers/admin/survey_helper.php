@@ -24,7 +24,6 @@ function getSurveyDefaultSettings()
     'template'                 => Yii::app()->getConfig('defaulttheme'),
     'allowsave'                => 'Y',
     'allowprev'                => 'N',
-    'nokeyboard'               => 'N',
     'printanswers'             => 'N',
     'publicstatistics'         => 'N',
     'publicgraphs'             => 'N',

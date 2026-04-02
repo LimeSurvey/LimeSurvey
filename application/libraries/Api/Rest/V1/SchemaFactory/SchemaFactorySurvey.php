@@ -70,7 +70,6 @@ class SchemaFactorySurvey
                 Schema::boolean('showProgress')->default(null),
                 Schema::integer('questionIndex')->default(null),
                 Schema::integer('navigationDelay')->default(null),
-                Schema::boolean('noKeyboard')->default(null),
                 Schema::boolean('allowedItAfterCompletion')->default(null),
                 Schema::integer('googleAnalyticsStyle')->default(null),
                 Schema::string('googleAnalyticsApiKey')->default(null),
