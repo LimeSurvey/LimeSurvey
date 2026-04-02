@@ -8,7 +8,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                UNKNOW MODAL VIEW TYPE IN MASSSIVE ACTIONS WIDGET !
+                UNKNOWN MODAL VIEW TYPE IN MASSIVE ACTIONS WIDGET!
             </div>
             <div class="modal-footer modal-footer-buttons">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
