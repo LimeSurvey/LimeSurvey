@@ -3157,6 +3157,7 @@ class Tokens extends SurveyCommonAction
         $bEmail = $sSubAction == 'invite';
         $aTokenIds = $this->getTokenIds();
         $aData['warnings'] = [];
+        $countInvalidAttachments = 0;
         // Fill empty email template by default text
         foreach ($aSurveyLangs as $sSurveyLanguage) {
             $aData['thissurvey'][$sSurveyLanguage] = getSurveyInfo($iSurveyId, $sSurveyLanguage);
@@ -3182,13 +3183,13 @@ class Tokens extends SurveyCommonAction
                     "<a href='" . App()->createUrl("admin/emailtemplates", ["sa" => "index", "surveyid" => $iSurveyId]) . "'>",
                     "</a>"
                 );
-                break;
+                $countInvalidAttachments++;
             }
         }
         if (empty($aData['tokenids'])) {
             $aData['tokenids'] = TokenDynamic::model($iSurveyId)->findParticipantIDs($aTokenIds, 0, $bEmail, $SQLemailstatuscondition);
         }
-
+        $aData['countInvalidAttachments'] = $countInvalidAttachments;
         if (Yii::app()->request->getParam('action') == "remind") {
             // Send Reminders Button
             $aData['topbar']['showSendReminderButton'] = true;
