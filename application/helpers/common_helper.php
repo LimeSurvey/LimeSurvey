@@ -1344,6 +1344,11 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
         usort($rootQuestions, function($a, $b) {
             strlen($b->qid) - strlen($a->qid);
         });
+        if ($fieldName === "597953X1X16") {
+            foreach ($rootQuestions as $rootQuestion) {
+                echo "\nqid is" . $rootQuestion->qid . "\n";
+            }
+        }
         foreach ($rootQuestions as $rootQuestion) {
             $questions = [$rootQuestion];
             foreach ($rawQuestions as $rawQuestion) {
