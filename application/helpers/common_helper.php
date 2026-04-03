@@ -1341,6 +1341,9 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
             }
             $questionIndex++;
         }
+        usort($rootQuestions, function($a, $b) {
+            strlen($a->qid) - strlen($b);
+        });
         foreach ($rootQuestions as $rootQuestion) {
             $questions = [$rootQuestion];
             foreach ($rawQuestions as $rawQuestion) {
