@@ -140,8 +140,8 @@ $questionEditor = $questionEditor ?? false;
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT("Confirm"); ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h2 class="modal-title h5"><?php eT("Confirm"); ?></h2>
+                <button aria-label="<?php eT('close'); ?>" type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php eT("Are you sure?"); ?></p>
@@ -161,7 +161,7 @@ $questionEditor = $questionEditor ?? false;
             </div>
             <div class="modal-footer modal-footer-yes-no">
                 <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
-                <a id="actionBtn" class="btn btn-ok" data-actionbtntext="<?php eT('Confirm'); ?>"></a>
+                <a id="actionBtn" tabindex="0"  role="button" class="btn btn-ok" data-actionbtntext="<?php eT('Confirm'); ?>"></a>
             </div>
             <div class="modal-footer-close modal-footer" style="display: none;">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
