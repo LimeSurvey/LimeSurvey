@@ -250,6 +250,10 @@ class Update_700 extends DatabaseUpdateBase
             // Types "L", "!", "O", "D", "G", "N", "X", "Y", "5", "S", "T", "U"
             $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
 
+            if ($arow['type'] === "") {
+                echo var_dump($arow);
+            }
+
             if ($questionTypeMetaData[$arow['type']]['settings']->subquestions == 0 && $arow['type'] != Question::QT_R_RANKING && $arow['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
