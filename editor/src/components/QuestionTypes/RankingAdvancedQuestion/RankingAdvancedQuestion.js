@@ -4,7 +4,7 @@ import { PlusLg } from 'react-bootstrap-icons'
 import { Button } from 'react-bootstrap'
 import { useState } from 'react'
 import { cloneDeep } from 'lodash'
-
+import { showErrorMessage } from 'components/ConditionDesigner/utils/conditionAlertHelpers'
 import { Entities, getInfoFromObjectByIndex, Toast } from 'helpers'
 
 import { RankingAdvancedQuestionAnswersPlaceholder } from './RankingAdvancedQuestionAnswersPlaceholder'
@@ -24,6 +24,7 @@ export const RankingAdvancedQuestion = ({
   participantMode,
   language,
   onValueChange = () => {},
+  validateCode,
 }) => {
   const [answersHeight, setAnswersHeight] = useState([])
   const [answersValue, setAnswersValue] = useState(cloneDeep(values))
@@ -95,6 +96,29 @@ export const RankingAdvancedQuestion = ({
     handleChildDelete(answer.aid, questionAnswers, Entities.answer)
   }
 
+  const handleLocalCodeUpdate = (value, index) => {
+    const validationMessage = validateCode(
+      { titleKey: 'answer', items: questionAnswers },
+      index,
+      value
+    )
+    if (validationMessage === '') {
+      handleCodeUpdate(value, index)
+    } else {
+      showErrorMessage(validationMessage, 'top-center')
+    }
+  }
+
+  const handleCodeUpdate = (entitiesInfo, value, index) => {
+    handleChildLUpdate(
+      value,
+      index,
+      entitiesInfo.items,
+      entitiesInfo.entity,
+      false
+    )
+  }
+
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <div
@@ -112,6 +136,7 @@ export const RankingAdvancedQuestion = ({
                 qid={qid}
                 setAnswersHeight={setAnswersHeight}
                 language={language}
+                handleLocalCodeUpdate={handleLocalCodeUpdate}
               />
               {provided.placeholder}
             </div>

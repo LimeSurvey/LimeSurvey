@@ -16,6 +16,7 @@ export const SingleChoice = ({
   handleOnChildDragEnd,
   handleChildDelete,
   value,
+  validateCode,
 }) => {
   const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
 
@@ -43,6 +44,7 @@ export const SingleChoice = ({
 
   return (
     <SingleChoiceAnswers
+      validateCode={validateCode}
       handleChildAdd={() => handleChildAdd(answers, Entities.answer)}
       handleOnDragEnd={handleOnDragEnd}
       handleRemovingAnswers={handleRemovingAnswers}

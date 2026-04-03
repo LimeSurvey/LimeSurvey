@@ -46,6 +46,8 @@ export const ArrayColumnsTitles = ({
   handleHeaderHeightChange = () => {},
   headersHeight,
   showNoAnswer = false,
+  validateCode = () => {},
+  handleCodeUpdate = () => {},
 }) => {
   const [isReorderingAnswers, setIsReorderingAnswers] = useState(false)
   const [headerValue, setHeaderValue] = useState('')
@@ -95,6 +97,7 @@ export const ArrayColumnsTitles = ({
         idKey: 'qid',
         sortKey: 'sortOrder',
         titleKey: 'question',
+        codeKey: 'title',
         rowName: 'subquestion',
         placeholder: t('Subquestion'),
         scaleId: isArrayByColumn ? undefined : SCALE_2,
@@ -112,6 +115,7 @@ export const ArrayColumnsTitles = ({
         idKey: 'aid',
         sortKey: 'sortOrder',
         titleKey: 'answer',
+        codeKey: 'code',
         rowName: 'answer option',
         placeholder: t('Answer option'),
         scaleId: scaleId ? scaleId : SCALE_1,
@@ -270,12 +274,19 @@ export const ArrayColumnsTitles = ({
                           language: activeLanguage,
                           l10ns: entity.l10ns,
                         })}
+                        code={entity[entitiesInfo.codeKey]}
                         handleUpdateL10ns={(value, index) =>
                           handleUpdateL10ns(value, entitiesInfo, index)
                         }
                         placeholder={entitiesInfo.placeholder}
                         itemsKey={entitiesInfo.itemsKey}
                         entity={entity}
+                        validateCode={(index, newCode) =>
+                          validateCode(entitiesInfo, index, newCode)
+                        }
+                        handleCodeLUpdate={(value, index) =>
+                          handleCodeUpdate(entitiesInfo, value, index)
+                        }
                       />
                     </div>
                   )}
@@ -294,6 +305,12 @@ export const ArrayColumnsTitles = ({
                   handleUpdateL10ns={() => {}}
                   itemsKey={entitiesInfo.itemsKey}
                   isNoAnswer={true}
+                  validateCode={(index, newCode) =>
+                    validateCode(entitiesInfo, index, newCode)
+                  }
+                  handleCodeLUpdate={(value, index) =>
+                    handleCodeUpdate(entitiesInfo, value, index)
+                  }
                 />
               </div>
             )}

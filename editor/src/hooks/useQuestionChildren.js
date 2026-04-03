@@ -12,8 +12,9 @@ import {
   getQuestionExample,
   getNextSubQuestionCode,
 } from 'helpers'
-import { singleChoiceThemes } from 'components/QuestionTypes'
 import { reportExtras } from 'appInstrumentation'
+import { singleChoiceThemes } from 'components/QuestionTypes'
+import { TestValidation } from 'components/Survey/Questions/QuestionCodeSchema'
 
 export const useQuestionChildren = ({
   question,
@@ -205,7 +206,7 @@ export const useQuestionChildren = ({
     const updatedChildren = [...childArray]
     const l10nsKey = entityType === Entities.answer ? 'answer' : 'question'
     const childKey = entityType === Entities.answer ? 'answers' : 'subquestions'
-    const idKey = entityType === Entities.answer ? 'code' : 'title'
+    const codeKey = entityType === Entities.answer ? 'code' : 'title'
 
     if (updatedChildren[childIndex] === undefined) {
       reportExtras({
@@ -238,7 +239,7 @@ export const useQuestionChildren = ({
     } else {
       updatedChildren[childIndex] = {
         ...updatedChildren[childIndex],
-        [idKey]: newValue,
+        [codeKey]: newValue,
       }
     }
 
@@ -253,6 +254,33 @@ export const useQuestionChildren = ({
 
     addToBuffer(operation)
     handleUpdate({ [childKey]: updatedChildren })
+  }
+
+  const validateCode = (entitiesInfo, index, newCode) => {
+    const titleKey = entitiesInfo.titleKey === 'answer' ? 'code' : 'title'
+    const newCodeIndex = entitiesInfo.items
+      ? entitiesInfo.items.findIndex((item) => item[titleKey] === newCode)
+      : -1
+
+    const codeExist = newCodeIndex !== index && newCodeIndex !== -1
+
+    let newErrorMessage = ''
+
+    if (newCode) {
+      newErrorMessage = TestValidation(newCode.toUpperCase()).error
+        ? t('Only letters and numbers are allowed.')
+        : ''
+    }
+
+    if (codeExist) {
+      if (entitiesInfo.titleKey === 'answer') {
+        newErrorMessage = t('Answer codes must be unique.')
+      } else {
+        newErrorMessage = t('Subquestion codes must be unique.')
+      }
+    }
+
+    return newErrorMessage
   }
 
   useEffect(() => {
@@ -290,6 +318,7 @@ export const useQuestionChildren = ({
     handleChildDelete,
     handleOnChildDragEnd,
     handleChildLUpdate,
+    validateCode,
     activeLanguage,
   }
 }

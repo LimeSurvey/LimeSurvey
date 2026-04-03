@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { htmlPopup, Toast } from 'helpers'
-import { CheckIcon, ExclamationIcon } from 'components/icons'
+import { CheckIcon, ExclamationIcon, ExclamationMark } from 'components/icons'
 
 import {
   ConditionOverwriteConfirmation,
@@ -34,6 +34,17 @@ export const showWarningMessage = (message, position = 'bottom-right') => {
     position: position,
     className: 'generic-toast yellow-left-mark',
     leftIcon: <ExclamationIcon />,
+  })
+}
+
+export const showErrorMessage = (message, position = 'bottom-right') => {
+  if (!message) return
+
+  Toast({
+    message: message,
+    position: position,
+    className: 'generic-toast error-left-mark',
+    leftIcon: <ExclamationMark className="mb-1" />,
   })
 }
 

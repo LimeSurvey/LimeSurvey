@@ -1,5 +1,6 @@
 import { Entities } from 'helpers'
 import { RankingQuestionAnswers } from './RankingQuestionAnswers'
+import { showErrorMessage } from 'components/ConditionDesigner/utils/conditionAlertHelpers'
 
 export const RankingQuestion = ({
   question: { answers = [] } = {},
@@ -10,6 +11,7 @@ export const RankingQuestion = ({
   handleChildAdd,
   handleChildDelete,
   handleOnChildDragEnd,
+  validateCode,
 }) => {
   const handleAnswerUpdate = (value, index) => {
     handleChildLUpdate(value, index, answers, Entities.answer)
@@ -23,6 +25,29 @@ export const RankingQuestion = ({
     handleChildDelete(answerId, answers, Entities.answer)
   }
 
+  const handleLocalCodeUpdate = (value, index) => {
+    const validationMessage = validateCode(
+      { titleKey: 'answer', items: answers },
+      index,
+      value
+    )
+    if (validationMessage === '') {
+      handleCodeUpdate(value, index)
+    } else {
+      showErrorMessage(validationMessage, 'top-center')
+    }
+  }
+
+  const handleCodeUpdate = (entitiesInfo, value, index) => {
+    handleChildLUpdate(
+      value,
+      index,
+      entitiesInfo.items,
+      entitiesInfo.entity,
+      false
+    )
+  }
+
   return (
     <div data-testid="ranking-question">
       <RankingQuestionAnswers
@@ -33,6 +58,7 @@ export const RankingQuestion = ({
         question={question}
         handleRemovingAnswers={handleRemovingAnswers}
         handleOnDragEnd={handleOnDragEnd}
+        handleLocalCodeUpdate={handleLocalCodeUpdate}
       />
     </div>
   )

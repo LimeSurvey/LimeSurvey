@@ -12,8 +12,25 @@
   line-height: 16px;
   letter-spacing: -0.5px;
   height: 28px;
-  min-width: 60px;
+  width: 60px;
   white-space: nowrap; /* Prevents text from wrapping */
   overflow: hidden; /* Hides overflow text */
   text-overflow: ellipsis; /* Shows "..." when text overflows */
+  margin-left: 20px;
+}
+
+.question-code-icon-error {
+  height: 16px;
+  width: 16px;
+  fill: $error;
+}
+
+.question-code-container {
+  min-width: 60px;
+}
+
+.question-code-tag-error {
+  font-size: 10px;
+  font-weight: 500;
+  margin-left: 20px;
 }

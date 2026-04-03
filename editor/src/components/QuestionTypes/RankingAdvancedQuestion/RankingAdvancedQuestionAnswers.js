@@ -1,7 +1,10 @@
 import { useEffect, useRef } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import classNames from 'classnames'
-
+import { SubquestionCodeInput } from '../subquestionCodeComponents'
+import { useSurvey, useAppState } from 'hooks'
+import { STATES } from 'helpers'
+import { useParams } from 'react-router-dom'
 import { ContentEditor } from 'components/UIComponents'
 import { CloseCircleFillIcon, DragIcon } from 'components/icons'
 import { L10ns } from 'helpers'
@@ -14,8 +17,12 @@ export const RankingAdvancedQuestionAnswers = ({
   answers = [],
   qid,
   language,
+  handleLocalCodeUpdate,
 }) => {
   const answersRef = useRef(null)
+  const { surveyId } = useParams()
+  const { survey } = useSurvey(surveyId)
+  const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
 
   useEffect(() => {
     if (!setAnswersHeight) {
@@ -85,23 +92,34 @@ export const RankingAdvancedQuestionAnswers = ({
                         style={{ height: 14 }}
                       />
                     </div>
-                    <ContentEditor
-                      key={`Ranking-Advanced-Answer-${qid}`}
-                      value={L10ns({
-                        l10ns: answer.l10ns,
-                        language,
-                        prop: 'answer',
-                      })}
-                      update={(value) => handleAnswerUpdate(value, index)}
-                      placeholder={t('Answer option')}
-                      className={classNames(
-                        'choice ranking-advanced-answer-content-editor w-100',
-                        {
-                          'focus-element': snapshot.isDragging,
-                        }
+                    <div className="d-flex align-items-center gap-5">
+                      {isFocused && survey.showQNumCode?.showNumber && (
+                        <SubquestionCodeInput
+                          isSurveyActive={isSurveyActive}
+                          code={answer.code}
+                          onChange={(e) =>
+                            handleLocalCodeUpdate(e.target.value, index, false)
+                          }
+                        />
                       )}
-                      testId="ranking-advanced-answer-content-editor"
-                    />
+                      <ContentEditor
+                        key={`Ranking-Advanced-Answer-${qid}`}
+                        value={L10ns({
+                          l10ns: answer.l10ns,
+                          language,
+                          prop: 'answer',
+                        })}
+                        update={(value) => handleAnswerUpdate(value, index)}
+                        placeholder={t('Answer option')}
+                        className={classNames(
+                          'choice ranking-advanced-answer-content-editor w-100',
+                          {
+                            'focus-element': snapshot.isDragging,
+                          }
+                        )}
+                        testId="ranking-advanced-answer-content-editor"
+                      />
+                    </div>
                     <div
                       {...provided.dragHandleProps}
                       style={{

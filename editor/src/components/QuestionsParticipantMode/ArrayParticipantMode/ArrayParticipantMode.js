@@ -13,7 +13,7 @@ import {
   Select,
   selectName,
 } from 'components/UIComponents'
-import { Entities, L10ns, mockAnswer, SCALE_1, SCALE_2 } from 'helpers'
+import { Entities, isTrue, L10ns, mockAnswer, SCALE_1, SCALE_2 } from 'helpers'
 
 const arrayOrDualScaleIsChecked = (
   rowId,
@@ -117,6 +117,7 @@ export const ArrayParticipantMode = ({
       multiflexible_max: maxValue,
       multiflexible_min: minValue,
       multiflexible_step: valueStep,
+      input_boxes: inputBoxes,
     } = {},
   },
   values = {},
@@ -147,8 +148,10 @@ export const ArrayParticipantMode = ({
   const type = useMemo(() => {
     if (isArrayByText) {
       return 'text'
+    } else if (isArrayByNumbers && isTrue(inputBoxes[''])) {
+      return 'select'
     } else if (isArrayByNumbers) {
-      return 'select' // not important, could return null but just to make it more readable
+      return 'number'
     } else {
       return 'radio'
     }
@@ -159,7 +162,9 @@ export const ArrayParticipantMode = ({
       [getQuestionTypeInfo().ARRAY.theme]: FormCheck,
       [getQuestionTypeInfo().ARRAY_COLUMN.theme]: FormCheck,
       [getQuestionTypeInfo().ARRAY_DUAL_SCALE.theme]: FormCheck,
-      [getQuestionTypeInfo().ARRAY_NUMBERS.theme]: Select,
+      [getQuestionTypeInfo().ARRAY_NUMBERS.theme]: isTrue(inputBoxes[''])
+        ? Input
+        : Select,
       [getQuestionTypeInfo().ARRAY_TEXT.theme]: Input,
       [getNotSupportedQuestionTypeInfo().ARRAY_FIVE_POINT.theme]: FormCheck,
       [getNotSupportedQuestionTypeInfo().ARRAY_TEN_POINT.theme]: FormCheck,
@@ -429,6 +434,12 @@ export const ArrayParticipantMode = ({
                     valuesInfo[rowIndex * columns?.items?.length + columnIndex]
                       ?.value
 
+                  // for array by numbers the value is an object {value: '1', label: '1'} so we need to get the value property.
+                  value =
+                    isArrayByNumbers && !isTrue(inputBoxes[''])
+                      ? value.value
+                      : value
+                  // for checkbox values, we are getting the codekey of the answer/subquestion instead of the value, so we need to find the value based on the codekey
                   value =
                     UiComponentToRender.name === formCheckName
                       ? isArrayByColumn

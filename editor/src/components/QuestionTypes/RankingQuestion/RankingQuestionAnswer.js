@@ -4,7 +4,10 @@ import { isString } from 'lodash'
 import { EditableImage } from 'components/EditableImage/EditableImage'
 import { ContentEditor, DropZone } from 'components/UIComponents'
 import { CloseCircleFillIcon, DragIcon } from 'components/icons'
-
+import { useParams } from 'react-router-dom'
+import { useSurvey, useAppState } from 'hooks'
+import { STATES } from 'helpers'
+import { SubquestionCodeInput } from '../subquestionCodeComponents'
 // Todo: handle switching between image and text using attributes.
 export const RankingQuestionAnswer = ({
   answer,
@@ -13,7 +16,14 @@ export const RankingQuestionAnswer = ({
   isFocused,
   provided = {},
   handleRemovingAnswers,
+  handleLocalCodeUpdate,
+  index,
+  code,
 }) => {
+  const { surveyId } = useParams()
+  const { survey } = useSurvey(surveyId)
+  const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
+
   const handleAnswerUpdate = (value) => {
     onChange(value)
   }
@@ -39,13 +49,24 @@ export const RankingQuestionAnswer = ({
       >
         <DragIcon className="text-secondary fill-current me-2" />
       </div>
-      <div className="d-flex align-items-center gap-3">
+      <div className="d-flex align-items-center ">
         {!answer?.preview && isString(answer) && (
-          <ContentEditor
-            update={handleAnswerUpdate}
-            value={answer}
-            placeholder={t('Add text here...')}
-          />
+          <div className="d-flex align-items-center gap-3">
+            {isFocused && survey.showQNumCode?.showNumber && (
+              <SubquestionCodeInput
+                isSurveyActive={isSurveyActive}
+                code={code}
+                onChange={(e) =>
+                  handleLocalCodeUpdate(e.target.value, index, false)
+                }
+              />
+            )}
+            <ContentEditor
+              update={handleAnswerUpdate}
+              value={answer}
+              placeholder={t('Add text here...')}
+            />
+          </div>
         )}
         {isFocused && !answer && process.env.REACT_APP_DEV_MODE && (
           <div>{t('OR')}</div>

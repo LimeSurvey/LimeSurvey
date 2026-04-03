@@ -51,6 +51,9 @@ const ThemeOptionsIconSelect = ({
   const colorSwatch = setting?.attribute?.colorSwatch || false
   const dropdownOptionsArray = setting?.attribute?.dropdownoptionsArray
 
+  const effectiveValue = (option) =>
+    option.value === 'inherit' ? option.parentValue : option.value
+
   const close = () => toggle(false)
   const open = () => toggle(true)
 
@@ -76,7 +79,9 @@ const ThemeOptionsIconSelect = ({
   const selectedDisplayValue = useMemo(
     () =>
       colorSwatch
-        ? getHexValue(options.find((opt) => opt.value === value))
+        ? getHexValue(
+            options.find((opt) => opt.value === value || opt.label === value)
+          )
         : value,
     [colorSwatch, dropdownOptionsArray, options, value]
   )
@@ -104,7 +109,7 @@ const ThemeOptionsIconSelect = ({
             <div
               key={option.value}
               className={classNames('icon-select-option', {
-                selected: option.value === value,
+                selected: option.value === effectiveValue(value),
               })}
               onClick={() => handleSelect(option.value)}
             >

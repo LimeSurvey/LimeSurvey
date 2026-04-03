@@ -30,6 +30,7 @@ export const ArrayQuestion = ({
   handleChildAdd,
   handleChildDelete,
   handleOnChildDragEnd,
+  validateCode,
 }) => {
   const { addToBuffer } = useBuffer()
   const [highestHeight1, setHighestHeight1] = useState(0)
@@ -148,6 +149,16 @@ export const ArrayQuestion = ({
     handleUpdate(question)
   }
 
+  const handleCodeUpdate = (entitiesInfo, value, index) => {
+    handleChildLUpdate(
+      value,
+      index,
+      entitiesInfo.items,
+      entitiesInfo.entity,
+      false
+    )
+  }
+
   return (
     <>
       <div className="array-question d-flex gap-5" data-testid="array-question">
@@ -173,6 +184,8 @@ export const ArrayQuestion = ({
               handleHeaderHeightChange={handleHeaderHeightChange}
               headersHeight={headersHeight}
               showNoAnswer={showNoAnswer && isArrayPointChoice}
+              validateCode={validateCode}
+              handleCodeUpdate={handleCodeUpdate}
             />
             <ArrayRows
               onDragEndCallback={handleOnDragEnd}
@@ -196,6 +209,8 @@ export const ArrayQuestion = ({
               handleUpdateL10ns={handleUpdateL10ns}
               setVerticalEntitiesInfo={setVerticalEntitiesInfo}
               showNoAnswer={showNoAnswer}
+              validateCode={validateCode}
+              handleCodeUpdate={handleCodeUpdate}
             />
           </div>
           <div
@@ -251,6 +266,7 @@ export const ArrayQuestion = ({
                 handleHeaderHeightChange={handleHeaderHeightChange}
                 headersHeight={headersHeight}
                 showNoAnswer={showNoAnswer}
+                handleChildLUpdate={handleChildLUpdate}
               />
               <ArrayRows
                 onDragEndCallback={handleOnDragEnd}
@@ -274,6 +290,7 @@ export const ArrayQuestion = ({
                 removeItem={removeItem}
                 handleUpdateL10ns={handleUpdateL10ns}
                 setVerticalEntitiesInfo={setVerticalEntitiesInfo}
+                handleChildLUpdate={handleChildLUpdate}
               />
             </div>
             <div

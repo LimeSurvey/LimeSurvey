@@ -62,7 +62,9 @@ export const Select = ({
     !isMultiselect &&
     options?.length
   ) {
-    value = options.find((option) => option.value === value)
+    // the reason for using "==" instead of "===" is that sometimes the backend returns numbers and sometimes strings, we want to make sure it works in both cases
+    // till we have a backend that is consistent in the types it returns, we need to keep this logic here
+    value = options.find((option) => option.value == value)
   }
 
   if (
@@ -71,7 +73,9 @@ export const Select = ({
     !isMultiselect &&
     options?.length
   ) {
-    defaultValue = options.find((option) => option.value === defaultValue)
+    // the reason for using "==" instead of "===" is that sometimes the backend returns numbers and sometimes strings, we want to make sure it works in both cases
+    // till we have a backend that is consistent in the types it returns, we need to keep this logic here
+    defaultValue = options.find((option) => option.value == defaultValue)
   }
 
   const handleOnChange = (selectedOption) => {
