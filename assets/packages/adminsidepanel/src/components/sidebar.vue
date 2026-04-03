@@ -170,42 +170,57 @@ export default {
             //check for corresponding question group object
             let lastQuestionGroupObject = false;
             LS.ld.each(this.questiongroups, (itm, i) => {
-                let regTest = new RegExp(
-                    'questionGroupsAdministration/view\\?surveyid=\\d*&gid=' + itm.gid +
-                    '|questionGroupsAdministration/edit\\?surveyid=\\d*&gid=' + itm.gid +
-                    '|questionGroupsAdministration/view/surveyid/\\d*/gid/' + itm.gid +
-                    '|questionGroupsAdministration/edit/surveyid/\\d*/gid/' + itm.gid
-                );
-                lastQuestionGroupObject =
-                    regTest.test(currentUrl) || LS.ld.endsWith(currentUrl, itm.link)
-                        ? itm
-                        : lastQuestionGroupObject;
-                if (lastQuestionGroupObject !== false) {
-                    return false;
-                }
+              let regTest = new RegExp(
+                'questionGroupsAdministration/view\\?surveyid=\\d*&gid=' + itm.gid +
+                '|questionGroupsAdministration/edit\\?surveyid=\\d*&gid=' + itm.gid +
+                '|questionGroupsAdministration/view/surveyid/\\d*/gid/' + itm.gid +
+                '|questionGroupsAdministration/edit/surveyid/\\d*/gid/' + itm.gid
+              );
+              lastQuestionGroupObject =
+                regTest.test(currentUrl) || LS.ld.endsWith(currentUrl, itm.link)
+                    ? itm
+                    : lastQuestionGroupObject;
+              if (lastQuestionGroupObject !== false) {
+                return false;
+              }
             });
 
-			//check for corresponding question
-			let lastQuestionObject = false;
-			let questionId = document.querySelector('#edit-question-form [name="question[qid]"]');
-			if (questionId !== null) {
-				questionId = questionId.value;
-				LS.ld.each(this.questiongroups, (itm, i) => {
-					LS.ld.each(itm.questions, (itmm, j) => {
-						lastQuestionObject = questionId === itmm.qid
-								? itmm
-								: lastQuestionObject;
-						if (lastQuestionObject !== false) {
-							lastQuestionGroupObject = itm;
-							return false;
-						}
-					});
-					if (lastQuestionObject !== false) {
-						lastQuestionGroupObject = itm;
-						return false;
-					}
-				});
-			}
+            //check for corresponding question
+            let lastQuestionObject = false;
+            LS.ld.each(this.questiongroups, (itm, i) => {
+              LS.ld.each(itm.questions, (itmm, j) => {
+                if (LS.ld.endsWith(currentUrl, itmm.link)) {
+                  lastQuestionObject = itmm;
+                  lastQuestionGroupObject = itm;
+                  return false;
+                }
+              });
+              if (lastQuestionObject !== false) {
+                return false;
+              }
+            });
+
+            if (lastQuestionObject === false) {
+              let questionId = document.querySelector('#edit-question-form [name="question[qid]"]');
+              if (questionId !== null) {
+                questionId = questionId.value;
+                LS.ld.each(this.questiongroups, (itm, i) => {
+                  LS.ld.each(itm.questions, (itmm, j) => {
+                    lastQuestionObject = questionId === itmm.qid
+                        ? itmm
+                        : lastQuestionObject;
+                    if (lastQuestionObject !== false) {
+                      lastQuestionGroupObject = itm;
+                      return false;
+                    }
+                  });
+                  if (lastQuestionObject !== false) {
+                    lastQuestionGroupObject = itm;
+                    return false;
+                  }
+                });
+              }
+            }
 
             //unload every selection
             this.$store.commit("closeAllMenus");
@@ -504,7 +519,8 @@ export default {
         >
             <button 
                 v-show="!$store.getters.isCollapsed" 
-                class="btn " 
+                aria-label="resize handle"
+                class="btn" 
                 @mousedown="mousedown" @click.prevent="()=>{return false;}"
             >
               <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">

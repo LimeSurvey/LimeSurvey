@@ -5,7 +5,7 @@
 ?>
 
 <div class='side-body'>
-    <h3><?php eT("Send email reminder"); ?></h3>
+    <h1 class="h3"><?php eT("Send email reminder"); ?></h1>
     <div class="row">
         <div class="col-12 content-right">
             <?php echo PrepareEditorScript(true, $this); ?>
@@ -49,6 +49,7 @@
                         <div>
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                 'name'          => 'bypassbademails',
+                                'ariaLabel'    => gT("Bypass participants with failing email addresses"),
                                 'checkedOption' => '1',
                                 'selectOptions' => [
                                     '1' => gT('On'),
@@ -69,6 +70,7 @@
                         <div>
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                 'name'          => 'bypassdatecontrol',
+                                'ariaLabel'    => gT("Bypass date control before sending email"),
                                 'checkedOption' => '0',
                                 'selectOptions' => [
                                     '1' => gT('On'),
@@ -89,6 +91,7 @@
                             ?>
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                 'name' => 'partialonly',
+                                'ariaLabel'    => gT('Send email only to participants with partial responses'),
                                 'checkedOption' => '0',
                                 'htmlOptions' => [
                                     'title' => $oSurvey->anonymized == 'Y' ? $disabledTip : '',

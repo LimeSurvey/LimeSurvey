@@ -46,7 +46,7 @@ class AdvancedSettingWidget extends CWidget
         // Translate options
         if (!empty($this->setting['options'])) {
             foreach ($this->setting['options'] as $optionValue => $optionText) {
-                $this->setting['options'][$optionValue] = is_string($optionText) ? gT($optionText) : $optionText;
+                $this->setting['options'][$optionValue] = is_string($optionText) ? gT($optionText, 'unescaped') : $optionText;
             }
         }
 

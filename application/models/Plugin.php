@@ -71,14 +71,52 @@ class Plugin extends LSActiveRecord
      */
     public function setLoadError(array $error)
     {
+        if (!function_exists('gT')) {
+            \Yii::app()->loadHelper('common');
+        }
         // NB: Don't use ActiveRecord here, since it will trigger events and
         // load the plugin system all over again.
         // TODO: Works on all SQL systems?
-        $sql = sprintf(
-            "UPDATE {{plugins}} SET load_error = 1, load_error_message = '%s' WHERE id = " . $this->id,
-            addslashes($error['message'] . ' ' . $error['file'])
+        $sql = "UPDATE {{plugins}} SET load_error = 1, load_error_message = :error_message WHERE id = :id";
+        $params = [
+            ':error_message' => $error['message'] . ' ' . $error['file'],
+            ':id' => $this->id
+        ];
+        $rowNumber = \Yii::app()->db->createCommand($sql)->bindValues($params)->execute();
+
+        $message = sprintf(
+            "Plugin %s (%s) deactivated with error “%s” at file %s",
+            $this->name,
+            $this->id,
+            $error['message'],
+            $error['file']
         );
-        return \Yii::app()->db->createCommand($sql)->execute();
+        Yii::log(
+            $message,
+            CLogger::LEVEL_ERROR,
+            'application.model.plugin.setLoadError'
+        );
+
+        $body = sprintf(gT("Plugin error on %s"), App()->getConfig('sitename')) . "\n";
+        $body .= sprintf(
+            gT("Plugin %s (%s) deactivated with error “%s” at file %s"),
+            $this->name,
+            $this->id,
+            $error['message'],
+            $error['file']
+        );
+        $mailer = new \LimeMailer();
+        $mailer->emailType = "pluginsetloaderror";
+        $mailer->isHtml(false);
+        $mailer->Subject = gT("[Error] Plugin deactivated in LimeSurvey", "unescaped");
+        $mailer->Body = $body;
+        $mailer->addAddress(App()->getConfig('siteadminemail'), App()->getConfig('siteadminname'));
+        try {
+            $mailer->sendMessage();
+        } catch (\Exception $e) {
+            // Must be loggued by LimeMailer : it's an issue from LimeMailer
+        }
+        return $rowNumber;
     }
 
     /**

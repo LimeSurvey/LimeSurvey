@@ -964,12 +964,17 @@ class LimeExpressionManager
                 $subqid = $fieldname;
                 $value = $row['value'];
             } elseif ($row['type'] == Question::QT_M_MULTIPLE_CHOICE || $row['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
+                $oQuestion = Question::model()->findByPk($row['cqid']);
                 if ((string)substr((string) $row['cfieldname'], 0, 1) == '+') {
                     // if prefixed with +, then a fully resolved name
                     $row['cfieldname'] = (string)substr((string) $row['cfieldname'], 1);
                     if (isset($aDictionary[$row['cfieldname']])) {
                         $row['cfieldname'] = $aDictionary[$row['cfieldname']];
                     }
+                    $fieldname = $row['cfieldname'] . '.NAOK';
+                    $subqid = $fieldname;
+                    $value = $row['value'];
+                } elseif (strlen($row['cfieldname']) > 5 && substr($row['cfieldname'], -5) === 'other' && $oQuestion && $oQuestion->other == "Y") {
                     $fieldname = $row['cfieldname'] . '.NAOK';
                     $subqid = $fieldname;
                     $value = $row['value'];
@@ -1007,7 +1012,6 @@ class LimeExpressionManager
             } elseif ((string)(float)$value !== (string)$value) {
                 $value = '"' . $value . '"';
             }
-
             // add equation
             if ($row['method'] == 'RX') {
                 $relOrList[] = "regexMatch(" . $value . "," . $fieldname . ")";
@@ -1215,7 +1219,7 @@ class LimeExpressionManager
                                                 $fsqs[] = $sgq . $fsq['csuffix'] . '.NAOK=="1"';
                                             }
                                         } else {
-                                            if ($fsq['sqsuffix'] == $sq['sqsuffix']) {
+                                            if (isset($fsq['sqsuffix']) && $fsq['sqsuffix'] == $sq['sqsuffix']) {
                                                 $fsqs[] = '!is_empty(' . $sgq . $fsq['csuffix'] . '.NAOK)';
                                             }
                                         }
@@ -1581,8 +1585,25 @@ class LimeExpressionManager
                                     }
                                 }
 
+                                // If the input format does not include a time, the minimum date should either not
+                                // include a time or be 00:00.
+                                //
+                                // If this does not occur, and the minimum date has a time (Ex: 2025-04-29 15:30):
+                                // - The date selected by the date picker will be 00:00 (Ex: 2025-04-29 00:00).
+                                // - The minimum date will have a later time (Ex: 2025-04-29 15:30).
+                                // Due to the implementation of the date picker, it will allow 2025-04-29 to be
+                                // selected, but then this validation will fail.
+                                //
+                                // So, we adapt the validation as to consider the input format.
+                                //
+                                // An expression in the minimum date, such as "+6 days," resolves to a date that
+                                // has a time, such as 2025-04-29 15:30. That produces the issue.
+                                //
+                                // This doesn't happen with maximum date validation, since a date with a time of
+                                // 00:00 will always be less than or equal to the date resulting from the "+6 days"
+                                // expression.
                                 $sq_name = ($this->sgqaNaming) ? $sq['rowdivid'] . ".NAOK" : $sq['varName'] . ".NAOK";
-                                $sq_name = '(is_empty(' . $sq_name . ') || (' . $sq_name . ' >= date("Y-m-d H:i", strtotime(' . $date_min . ')) ))';
+                                $sq_name = '(is_empty(' . $sq_name . ') || (' . $sq_name . ' >= date(if(regexMatch("/00:00$/", ' . $sq_name . '), "Y-m-d", "Y-m-d H:i"), strtotime(' . $date_min . ')) ))';
                                 $subqValidSelector = '';
                                 break;
                             default:
@@ -4541,7 +4562,7 @@ class LimeExpressionManager
         $LEM->processedRelevance = false;
         $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] = true;    // this will be temporary - should be reset in running survey
         $LEM->qid2exclusiveAuto = [];
-        self::resetTempVars();
+        //self::resetTempVars();
         $surveyinfo = (isset($LEM->sid) ? getSurveyInfo($LEM->sid) : null);
         if (isset($surveyinfo['assessments']) && $surveyinfo['assessments'] == 'Y') {
             $LEM->surveyOptions['assessments'] = true;
@@ -4802,7 +4823,7 @@ class LimeExpressionManager
                         // display new question : Ging backward : maxQuestionSeq>currentQuestionSeq is always true.
                         $message .= $LEM->_UpdateValuesInDatabase();
                         $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
-                        return [
+                        $LEM->lastMoveResult = [
                             'at_start'      => false,
                             'finished'      => false,
                             'message'       => $message,
@@ -4818,6 +4839,7 @@ class LimeExpressionManager
                             'notRelevantSteps'   => $notRelevantSteps,
                             'hiddenSteps'   => $hiddenSteps
                         ];
+                        return $LEM->lastMoveResult;
                     }
                 }
                 break;
@@ -6337,6 +6359,7 @@ class LimeExpressionManager
                     break;
             }
         }
+        /* mandSoftForced management */
         if (
             $qmandViolation
             && $qInfo['mandatory'] == 'S'
@@ -6346,13 +6369,17 @@ class LimeExpressionManager
             if (is_string($mandSoftPost)) {
                 $qmandViolation = false;
                 $mandatoryTip = '';
+                /* Set this question mandSoftForced : double assigment : in $LEM and $qInfo */
+                $this->questionSeq2relevance[$questionSeq]['mandSoftForced'] = $qInfo['mandSoftForced'] = true;
             }
             /* New system mandSoft are an array with Y/N for each question in page */
             if (is_array($mandSoftPost)) {
                 if (isset($mandSoftPost[$questionSeq])) {
-                    if ($mandSoftPost[$questionSeq] == "N") { // Currently, input are not shown after selection done. (no mandatiry violation)
+                    if ($mandSoftPost[$questionSeq] == "N") {
+                        // Currently, input are not shown after selection done. (no mandatory violation)
                         $this->questionSeq2relevance[$questionSeq]['mandSoftForced'] = $qInfo['mandSoftForced'] = false;
                     } else {
+                        /* Set this question mandSoftForced : double assigment : in $LEM and $qInfo */
                         $this->questionSeq2relevance[$questionSeq]['mandSoftForced'] = $qInfo['mandSoftForced'] = true;
                     }
                 }
@@ -6362,8 +6389,8 @@ class LimeExpressionManager
                 }
             }
         } else {
-            /* If question are answered (or are not mandatory soft) : always set mandSoftForced to false */
-            $LEM->questionSeq2relevance[$questionSeq]['mandSoftForced'] = false;
+            /* If question are answered (or are not mandatory soft) : always set mandSoftForced to false, in $LEM and $qInfo */
+            $LEM->questionSeq2relevance[$questionSeq]['mandSoftForced'] = $qInfo['mandSoftForced'] = false;
         }
         /////////////////////////////////////////////////////////////
         // DETECT WHETHER QUESTION SHOULD BE FLAGGED AS UNANSWERED //
@@ -6496,17 +6523,19 @@ class LimeExpressionManager
         foreach ($sgqas as $sgqa) {
             $validityString = self::getValidityString($sgqa);
             if ($validityString && $qrel && !$qhidden) {
-                /* Add the string to be showned , no js error or another class ? */
-                $stringToParse .= App()->twigRenderer->renderPartial(
-                    '/survey/questions/question_help/error_tip.twig',
-                    [
-                        'qid'       => $qid,
-                        'coreId'    => "vmsg_{$qid}_dberror",
-                        'vclass'    => 'dberror',
-                        'coreClass' => 'ls-em-tip em_dberror',
-                        'vtip'      => $validityString,
-                    ]
-                );
+                /* Add the string if current question is valid , see #18229: Faulty message on numeric questions */
+                if ($qvalid) {
+                    $stringToParse .= App()->twigRenderer->renderPartial(
+                        '/survey/questions/question_help/error_tip.twig',
+                        [
+                            'qid'       => $qid,
+                            'coreId'    => "vmsg_{$qid}_dberror",
+                            'vclass'    => 'dberror',
+                            'coreClass' => 'ls-em-tip em_dberror',
+                            'vtip'      => $validityString,
+                        ]
+                    );
+                }
                 /* Set this question invalid (only if move next due to $force) */
                 $qvalid = false;
             }

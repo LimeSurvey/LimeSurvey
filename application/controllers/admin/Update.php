@@ -542,7 +542,7 @@ class Update extends DynamicSurveyCommonAction
      */
     public function db($continue = null)
     {
-        App()->loadHelper("update/update");
+        App()->loadHelper("update.update");
         if (isset($continue) && $continue == "yes") {
             $aViewUrls['output'] = CheckForDBUpgrades($continue);
             $aData['display']['header'] = false;

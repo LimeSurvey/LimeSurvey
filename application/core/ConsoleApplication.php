@@ -122,22 +122,27 @@ class ConsoleApplication extends CConsoleApplication
         return $this;
     }
 
-
     /**
-     * Returns a config variable from the config
+     * Returns a configuration variable from the config array or object properties.
+     *
+     * This method searches for the requested configuration value in the following order:
+     * 1. As a property of the current object
+     * 2. In the config array
+     * 3. If not found, returns the provided default value, otherwise false.
      *
      * @access public
-     * @param string $name
-     * @return mixed
+     * @param string|null $name The name of the configuration variable to retrieve. If null, the default value will be returned.
+     * @param mixed $default The default value to return if the configuration variable is not found. Defaults to false.
+     * @return mixed The value of the configuration variable if found, otherwise the default value or false if no default value was provided
      */
-    public function getConfig($name = null)
+    public function getConfig($name = null, $default = false)
     {
         if (isset($this->$name)) {
             return $this->name;
         } elseif (isset($this->config[$name])) {
             return $this->config[$name];
         } else {
-            return false;
+            return $default;
         }
     }
 

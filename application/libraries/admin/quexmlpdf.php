@@ -1866,14 +1866,14 @@ class quexmlpdf extends pdf
      */
     public function numberToLetter($number)
     {
-        if ($number < 1) {
-            $number = 1;
+        if (empty($number)) {
+            return "A";
         }
 
         if ($number > 26) {
-            return chr((($number - 1) / 26) + 64) . chr((($number - 1) % 26) + 65);
+            return chr((int) (($number - 1) / 26) + 64) . chr((int) (($number - 1) % 26) + 65);
         } else {
-            return chr($number + 64);
+            return chr((int) ($number + 64));
         }
     }
 

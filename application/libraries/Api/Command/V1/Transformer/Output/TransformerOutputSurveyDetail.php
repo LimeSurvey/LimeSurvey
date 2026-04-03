@@ -4,8 +4,11 @@ namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
 use Survey;
 use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
+use LimeSurvey\Models\Services\SurveyCondition;
+use LimeSurvey\Models\Services\SurveyThemeConfiguration;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 use SurveysGroups;
+use TemplateConfiguration;
 
 /**
  * TransformerOutputSurveyDetail
@@ -34,9 +37,11 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     private TransformerOutputAnswer $transformerAnswer;
     private TransformerOutputSurveyOwner $transformerSurveyOwner;
     private QuestionService $questionService;
+    private SurveyThemeConfiguration $surveyThemeConfiguration;
     private TransformerOutputAnswerL10ns $transformerAnswerL10ns;
     private TransformerOutputSurveyMenus $transformerOutputSurveyMenus;
     private TransformerOutputSurveyMenuItems $transformerOutputSurveyMenuItems;
+    private SurveyCondition $surveyCondition;
 
     /**
      * Construct
@@ -54,7 +59,9 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         TransformerOutputSurveyOwner $transformerOutputSurveyOwner,
         TransformerOutputSurveyMenus $transformerOutputSurveyMenus,
         TransformerOutputSurveyMenuItems $transformerOutputSurveyMenuItems,
-        QuestionService $questionService
+        QuestionService $questionService,
+        SurveyCondition $surveyCondition,
+        SurveyThemeConfiguration $surveyThemeConfiguration
     ) {
         $this->transformerSurvey = $transformerOutputSurvey;
         $this->transformerSurveyGroup = $transformerOutputSurveyGroup;
@@ -69,6 +76,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $this->transformerOutputSurveyMenus = $transformerOutputSurveyMenus;
         $this->transformerOutputSurveyMenuItems = $transformerOutputSurveyMenuItems;
         $this->questionService = $questionService;
+        $this->surveyCondition = $surveyCondition;
+        $this->surveyThemeConfiguration = $surveyThemeConfiguration;
     }
 
     /**
@@ -93,10 +102,9 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $data = $this->setInheritedBetaOptions($data);
         $survey = $this->transformerSurvey->transform($data);
         $survey['templateInherited'] = $data->oOptions->template;
-        $templateConf = \TemplateConfiguration::getInstanceFromTemplateName($data['template']);
-        $survey['templatePreview'] = $templateConf->getPreview(true);
         $survey['formatInherited'] = $data->oOptions->format;
         $survey['languages'] = $data->allLanguages;
+        $survey['hasTokens'] = $data->hasTokensTable;
         $survey['previewLink'] = App()->createUrl(
             "survey/index",
             array(
@@ -184,20 +192,12 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 
         //todo: later this should be done with an separate endpoint or service
         $survey['groupsList'] = SurveysGroups::getSurveyGroupsList();
-        if ($survey['active']) {
-            $survey['responsesTotal'] = (int)\SurveyDynamic::model(
-                $data->sid
-            )->count();
-            $survey['responsesCompleted'] = (int)\SurveyDynamic::model(
-                $data->sid
-            )->count('submitdate IS NOT NULL');
-            $survey['responsesIncomplete'] = $survey['responsesTotal']
-                - $survey['responsesCompleted'];
-        } else {
-            $survey['responsesTotal'] = 0;
-            $survey['responsesCompleted'] = 0;
-            $survey['responsesIncomplete'] = 0;
-        }
+
+        $survey['attributeDescriptions'] = $data->getDecodedAttributedescriptions();
+
+        $survey['themesettings'] = [];
+        $survey['templatePreview'] = '';
+        $this->transformThemeSettings($survey['themesettings'], $survey['templatePreview'], $data);
 
         return $survey;
     }
@@ -210,6 +210,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * @param array $questionLookup
      * @param array $questions
      * @param ?array $options
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @return void
      */
     private function transformQuestions(
@@ -236,6 +237,10 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 ),
                 $options
             );
+
+            $question['scenarios'] = $this->surveyCondition->getScenariosAndConditionsOfQuestion($questionModel->qid);
+
+            $question['conditiontext'] = $this->surveyCondition->getConditionText($questionModel);
 
             if ($questionModel->subquestions) {
                 $question['subquestions'] = $this->transformerQuestion->transformAll(
@@ -374,5 +379,25 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 $options
             );
         }
+    }
+
+    /**
+     * Prepares theme settings necessary values, including inheritance
+     * @param-out array<array-key, mixed> $aThemeSettings
+     * @param-out string $sTemplatePreview
+     * @param Survey $survey
+     * @return void
+     */
+    private function transformThemeSettings(array &$aThemeSettings, string &$sTemplatePreview, $survey)
+    {
+        $themeConfiguration = TemplateConfiguration::getInstance(null, null, $survey->sid);
+        // loads all information available for the theme including inheritance
+        $themeData = $this->surveyThemeConfiguration->updateCommon($themeConfiguration, $survey->sid, $survey->gsid);
+        // parse themeOptions to object
+        if (is_string($themeData['aTemplateConfiguration']['options'])) {
+            $themeData['aTemplateConfiguration']['options'] = json_decode($themeData['aTemplateConfiguration']['options']);
+        }
+        $aThemeSettings = $this->surveyThemeConfiguration->getSurveyThemeOptionsAttributes($themeData);
+        $sTemplatePreview = $themeConfiguration->getPreview(true);
     }
 }

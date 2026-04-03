@@ -198,8 +198,15 @@ class DateTimePicker extends CInputWidget
         }
         $localeScript .= "      dayViewHeaderFormat: { month: 'long', year: 'numeric' },\n" .
             "      locale: '$locale',\n" .
-            "      format: '$dateFormat',\n" .
-            "      hourCycle: 'h24'\n";
+            "      format: '$dateFormat',\n";
+
+        // Try to guess the right hour cycle from the format
+        // The old datetimepicker did that, but Tempus Dominus does not (it guesses from the locale, not the format)
+        if (strpos(strtolower($dateFormat), 'a') === false && strpos($dateFormat, 'h') === false) {
+            $localeScript .= "      hourCycle: 'h24',\n";
+        } else {
+            $localeScript .= "      hourCycle: 'h12',\n";
+        }
 
         return "{
           $localeScript

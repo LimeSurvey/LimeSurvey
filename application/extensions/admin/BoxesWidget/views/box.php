@@ -41,12 +41,19 @@
                 <div class="box-widget-card-body">
                     <div class="box-widget-card-header">
                         <div class="box-widget-card-title">
-                            <?php echo viewHelper::filterScript(gT($item['survey']->defaultlanguage->surveyls_title)); ?>
+                            <?php
+                            $surveyls_title = "";
+                            $defaultlanguage = $item['survey']->defaultlanguage;
+                            if (isset($defaultlanguage)) {
+                                $surveyls_title = $defaultlanguage->surveyls_title;
+                            }
+                            ?>
+                            <?php echo viewHelper::filterScript($surveyls_title); ?>
                         </div>
                     </div>
                     <div class="box-widget-card-text">
                         <div class="box-widget-card-date">
-                            <?= $item['survey']->creationdate ?>
+                            <?= $item['survey']->getLastModifiedDate() ?>
                         </div>
                         <div class="box-widget-card-status">
                             <?= $item['survey']->getRunning() ?>
@@ -55,7 +62,17 @@
                     <div class="box-widget-card-footer">
                         <div class="box-widget-card-footer-items">
                             <div class="box-widget-card-footer-response">
-                                <?php echo $item['survey']->countFullAnswers == 0 ? 'No' : $item['survey']->countFullAnswers ?> responses
+                                <?php
+                                if ($item['survey']->countFullAnswers == 0) {
+                                    $responsesInfo = gT('No responses');
+                                } else {
+                                    $responsesInfo = sprintf(
+                                        gT('%d responses'),
+                                        $item['survey']->countFullAnswers
+                                    );
+                                }
+                                echo $responsesInfo;
+                                ?>
                             </div>
                             <div class="icons">
                                 <?php if (
@@ -102,6 +119,9 @@
                     <i class="<?= $item['icon'] ?>"></i>
                     <?= $item['text'] ?>
                 </div>
+            </div>
+        <?php elseif ($item['type'] == BoxesWidget::TYPE_PLACEHOLDER) : ?>
+            <div class="box-widget-card card-link card-placeholder d-inline-block">
             </div>
         <?php endif; ?>
     <?php endforeach; ?>

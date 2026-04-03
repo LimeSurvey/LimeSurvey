@@ -68,7 +68,8 @@
     &[data-bs-popper] {
       margin-top: -0.5rem;
     }
-    & > li > a {
+    & > li > a,
+    & > li > button {
       font-weight : $font-weight-500;
     }
   }
@@ -172,4 +173,21 @@
   }
 }
 
+.create-menu-item {
+  width: 222px;
+  border: 1px solid $white;
+  &:hover {
+    border-color: $grape !important;
+    border: 1px solid;
+    border-radius: 2px;
+    background-color: $white !important;
+  }
+}
 
+.dropdown-toggle-no-caret::after {
+    display: none !important;
+}
+
+.extra-menu-dropdown {
+    padding : 1rem;
+}

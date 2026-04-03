@@ -330,13 +330,6 @@ return array(
         )
     ),
 
-    'es6promise' => array(
-        'basePath' => 'vendor.es6promise',
-        'js' => array(
-            'es6-promise.auto.min.js'
-        )
-    ),
-
     'dom2image' => array(
         'basePath' => 'node_modules.dom-to-image',
         'js' => array(
@@ -348,11 +341,10 @@ return array(
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jspdf.umd.min.js',
-            'jspdf.min.js'
+            'jspdf.es.min.js'
         ),
         'depends' => array(
             'dom2image',
-            'es6promise',
             'jquery',
             'jszip'
         )

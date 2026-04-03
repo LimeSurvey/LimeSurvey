@@ -13,7 +13,7 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
 
     public static function setUpBeforeClass(): void
     {
-        Yii::app()->loadHelper('admin/statistics');
+        Yii::app()->loadHelper('admin.statistics');
         Yii::app()->loadHelper('common');
 
         parent::setUpBeforeClass();

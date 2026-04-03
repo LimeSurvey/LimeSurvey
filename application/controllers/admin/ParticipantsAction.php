@@ -373,7 +373,6 @@ class ParticipantsAction extends SurveyCommonAction
         $searchstring = $request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
         Yii::app()->clientScript->registerPackage('bootstrap-datetimepicker');
-        Yii::app()->clientScript->registerPackage('bootstrap-switch');
 
         // check global and custom permissions and pass them to $aData
         $aData['permissions'] = permissionsAsArray(
@@ -443,7 +442,7 @@ class ParticipantsAction extends SurveyCommonAction
         if ($selectoption == 'po') {
             $deletedParticipants = Participant::model()->deleteParticipants($participantIds, !$deletePermission);
         } elseif ($selectoption == 'ptt') {
-            // Deletes from central and survey participants table
+            // Deletes from central and survey participant list
             $deletedParticipants = Participant::model()->deleteParticipantToken($participantIds);
         } elseif ($selectoption == 'ptta') {
             // Deletes from central , token and assosiated responses as well
@@ -784,7 +783,6 @@ class ParticipantsAction extends SurveyCommonAction
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
         );
         $aData['topbar'] = $this->getTopBarComponents($title, false, false);
-        Yii::app()->clientScript->registerPackage('bootstrap-switch');
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'importCSV'), $aData);
     }
 
@@ -1017,29 +1015,31 @@ class ParticipantsAction extends SurveyCommonAction
                 $thisduplicate = 0;
 
                 //Check for duplicate participants
-                //HACK - converting into SQL instead of doing an array search
                 if (in_array('participant_id', $firstline)) {
                     $dupreason = "participant_id";
-                    $aData = "participant_id = " . Yii::app()->db->quoteValue($writearray['participant_id']);
+                    $duplicateCriteriaAttributes = ['participant_id' => $writearray['participant_id']];
                 } else {
                     $dupreason = "nameemail";
-                    $aData = "firstname = " . Yii::app()->db->quoteValue($writearray['firstname']) . " AND lastname = " . Yii::app()->db->quoteValue($writearray['lastname']) . " AND email = " . Yii::app()->db->quoteValue($writearray['email']) . " AND owner_uid = '" . Yii::app()->session['loginID'] . "'";
+                    $duplicateCriteriaAttributes = [
+                        'firstname' => $writearray['firstname'],
+                        'lastname'  => $writearray['lastname'],
+                        'email'     => $writearray['email'],
+                        'owner_uid' => Yii::app()->session['loginID']
+                    ];
                 }
-                //End of HACK
-                $aData = Participant::model()->checkforDuplicate($aData, "participant_id");
-                if ($aData !== false) {
+                $existingParticipant = Participant::model()->findByAttributes($duplicateCriteriaAttributes);
+                if (!empty($existingParticipant)) {
                     $thisduplicate = 1;
                     $dupcount++;
                     if ($overwrite == "true") {
                         // We want all the non filtering internal attributes to be updated,too
-                        $oParticipant = Participant::model()->findByPk($aData);
                         foreach ($writearray as $attribute => $value) {
                             if (in_array($attribute, ['firstname', 'lastname', 'email'])) {
                                 continue;
                             }
-                            $oParticipant->$attribute = $value;
+                            $existingParticipant->$attribute = $value;
                         }
-                        $oParticipant->save();
+                        $existingParticipant->save();
                         //Although this person already exists, we want to update the mapped attribute values
                         if (!empty($mappedarray)) {
                             //The mapped array contains the attributes we are
@@ -1047,7 +1047,7 @@ class ParticipantsAction extends SurveyCommonAction
                             foreach ($mappedarray as $attid => $attname) {
                                 if (!empty($attname)) {
                                     $bData = array(
-                                        'participant_id' => $aData,
+                                        'participant_id' => $existingParticipant->participant_id,
                                         'attribute_id' => $attid,
                                         'value' => $writearray[strtolower((string) $attname)]
                                     );
@@ -1303,7 +1303,6 @@ class ParticipantsAction extends SurveyCommonAction
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
         );
         $aData['topbar'] = $this->getTopBarComponents($title, false, false);
-        Yii::app()->clientScript->registerPackage('bootstrap-switch');
 
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'blacklist'), $aData);
     }
@@ -1397,7 +1396,6 @@ class ParticipantsAction extends SurveyCommonAction
         $searchstring = Yii::app()->request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
         // loads the participant panel view and display participant view
-        Yii::app()->clientScript->registerPackage('bootstrap-switch');
 
         $aData['massiveAction'] = App()->getController()->renderPartial(
             '/admin/participants/massive_actions/_selector_attribute',
@@ -1407,7 +1405,6 @@ class ParticipantsAction extends SurveyCommonAction
         );
         $aData['topbar'] = $this->getTopBarComponents($title, false, true);
 
-        Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'attributeControl'), $aData);
     }
 
@@ -2005,7 +2002,6 @@ class ParticipantsAction extends SurveyCommonAction
         $aData['pageSizeShareParticipantView'] = Yii::app()->user->getState('pageSizeShareParticipantView');
         $searchstring = Yii::app()->request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
-        App()->getClientScript()->registerPackage('bootstrap-switch');
 
         $aData['massiveAction'] = App()->getController()->renderPartial('/admin/participants/massive_actions/_selector_share', array(), true, false);
         $aData['topbar'] = $this->getTopBarComponents($title, false, false);
@@ -2491,7 +2487,7 @@ class ParticipantsAction extends SurveyCommonAction
         $response = Participant::model()->copyToCentral((int) Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);
 
         echo "<p>";
-        printf(gT("%s participants have been copied to the central participants table"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>&nbsp;");
+        printf(gT("%s participants have been copied to the central participant list"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>&nbsp;");
         echo "</p>";
         if ($response['duplicate'] > 0) {
             echo "<p>";
@@ -2553,7 +2549,7 @@ class ParticipantsAction extends SurveyCommonAction
 
         // TODO: This code can't be reached
         echo "<p>";
-        printf(gT("%s participants have been copied to the survey survey participants table"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>");
+        printf(gT("%s participants have been copied to the survey participant list"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>");
         echo "</p>";
         if ($response['duplicate'] > 0) {
             echo "<p>";

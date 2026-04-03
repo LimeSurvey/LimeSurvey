@@ -101,7 +101,7 @@ class TFAYubikeyOtpHelper
                     $this->setLastError(gT("Unexpected error in YubiCloud server."));
                     break;
                 case 'NOT_ENOUGH_ANSWERS':
-                    $this->setLastError(gT("Server could not get requested number of syncs during before timeout"));
+                    $this->setLastError(gT("Server could not get the requested number of syncs before timeout."));
                     break;
                 case 'REPLAYED_REQUEST':
                     $this->setLastError(gT("Server has seen the OTP/nonce combination before"));

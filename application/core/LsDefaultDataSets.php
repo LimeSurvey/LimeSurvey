@@ -530,7 +530,7 @@ class LsDefaultDataSets
                 '',
                 'remix',
                 '',
-                'admin/statistics/sa/index/',
+                'admin/statistics/sa/simpleStatistics/',
                 '',
                 '',
                 '',
@@ -970,9 +970,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/variations/theme_apple.css","css/base.css","css/custom.css"], "remove":["survey.css", "template-core.css", "awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css", "awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/custom.js"], "remove":["survey.js", "template-core.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"hideprivacyinfo":"off","showpopups":"1","showclearall":"off","questionhelptextposition":"top","fixnumauto":"enable","backgroundimage":"off","backgroundimagefile":".\/files\/pattern.png",
-                                     "brandlogo":"off","brandlogofile":"image::theme::files\/logo.png","font":"ibm-sans",
-                                     "cssframework":"Apple"}',
+            'options'           => '{"hideprivacyinfo":"off","showpopups":"1","showclearall":"off","questionhelptextposition":"top","fixnumauto":"enable","backgroundimage":"off","backgroundimagefile":".\/files\/pattern.png","brandlogo":"off","brandlogofile":"image::theme::files\/logo.png","font":"ibm-sans", "bodybackgroundcolor":"#ffffff","fontcolor":"#444444", "questionbackgroundcolor":"#ffffff", "checkicon":"EB7A","cssframework":"Apple", "notables":"1"}',
             'cssframework_name' => '',
             'cssframework_css'  => '',
             'cssframework_js'   => '',
@@ -1007,6 +1005,28 @@ class LsDefaultDataSets
     }
 
 
+    /**
+     * Provides the default set of theme/template metadata used by the application to update database.
+     *
+     * Each element is an associative array describing a template/theme and includes the following keys:
+     * - `name`: internal template identifier
+     * - `folder`: template folder name
+     * - `title`: human-readable title
+     * - `creation_date`: creation timestamp (YYYY-MM-DD HH:MM:SS)
+     * - `author`, `author_email`, `author_url`: author metadata
+     * - `copyright`: copyright notice
+     * - `license`: license information
+     * - `version`: template version
+     * - `api_version`: compatible API/version marker
+     * - `view_folder`: folder for view files
+     * - `files_folder`: folder for asset files
+     * - `description`: localized or HTML description
+     * - `last_update`: last update timestamp or null
+     * - `owner_id`: owner user id
+     * - `extends`: name of a parent template this one extends (empty if none)
+     *
+     * @return array[] Array of template metadata records.
+     */
     public static function getTemplatesData()
     {
         $returnArray = [];
@@ -1063,7 +1083,7 @@ class LsDefaultDataSets
             'api_version'   => '3.0',
             'view_folder'   => 'views',
             'files_folder'  => 'files',
-            'description'   => gT("Based on BootsWatch Themes:") . "<br><a href='https://bootswatch.com/3/'>" . gT("Visit Bootswatch page") . "</a>",
+            'description'   => '{{gT("Based on BootsWatch Themes:")}}<br><a href=\'https://bootswatch.com/3/\' target=\'_blank\' rel=\'external\' title=\'{{gT("Visit Bootswatch page in a new window.")}}\'>{{gT("Visit Bootswatch page")}} <i class=\'ri-external-link-line\'></i><span class=\'visually-hidden\'>{{gT("(Opens in a new window)")}}</span></a>',
             'last_update'   => null,
             'owner_id'      => 1,
             'extends'       => 'vanilla',
@@ -1718,7 +1738,7 @@ class LsDefaultDataSets
             array(
                 'teid' => 35,
                 'ordering' => 35,
-                'title' => gT('Activate survey participants table'),
+                'title' => gT('Activate survey participant list'),
                 'content' => gT("Here you can select to start your survey in closed access mode.") . "<br/>"
                 . gT("For our simple survey it is better to start in open access mode.") . "<br/>"
                 . gT("The closed access mode needs a participant list, which you may create by clicking on the menu entry 'Participants'.") . "<br/>"
@@ -2627,7 +2647,7 @@ class LsDefaultDataSets
                 "name" => "browserdetect",
                 "visible" => "Y",
                 "xml_path" => "themes/question/browserdetect/survey/questions/answer/shortfreetext",
-                "image_path" => "/assets/images/screenshots/S.png",
+                "image_path" => "themes/question/browserdetect/survey/questions/answer/shortfreetext/assets/browserdetect.png",
                 "title" => "Browser detection",
                 "creation_date" => "2017-07-09 00:00:00",
                 "author" => "LimeSurvey GmbH",
@@ -2651,7 +2671,7 @@ class LsDefaultDataSets
                 "name" => "image_select-listradio",
                 "visible" => "Y",
                 "xml_path" => "themes/question/image_select-listradio/survey/questions/answer/listradio",
-                "image_path" => "/assets/images/screenshots/L.png",
+                "image_path" => "themes/question/image_select-listradio/survey/questions/answer/listradio/assets/image_select_listradio.png",
                 "title" => "Image select list (Radio)",
                 "creation_date" => "1970-01-01 01:00:00",
                 "author" => "LimeSurvey GmbH",
@@ -2675,7 +2695,7 @@ class LsDefaultDataSets
                 "name" => "image_select-multiplechoice",
                 "visible" => "Y",
                 "xml_path" => "themes/question/image_select-multiplechoice/survey/questions/answer/multiplechoice",
-                "image_path" => "/assets/images/screenshots/M.png",
+                "image_path" => "themes/question/image_select-multiplechoice/survey/questions/answer/multiplechoice/assets/image_select_multiplechoice.png",
                 "title" => "Image select multiple choice",
                 "creation_date" => "1970-01-01 01:00:00",
                 "author" => "LimeSurvey GmbH",
@@ -2699,7 +2719,7 @@ class LsDefaultDataSets
                 "name" => "inputondemand",
                 "visible" => "Y",
                 "xml_path" => "themes/question/inputondemand/survey/questions/answer/multipleshorttext",
-                "image_path" => "/assets/images/screenshots/Q.png",
+                "image_path" => "themes/question/inputondemand/survey/questions/answer/multipleshorttext/assets/inputondemand.png",
                 "title" => "Input on demand",
                 "creation_date" => "2019-10-04 00:00:00",
                 "author" => "LimeSurvey GmbH",
@@ -2723,7 +2743,7 @@ class LsDefaultDataSets
                 "name" => "ranking_advanced",
                 "visible" => "Y",
                 "xml_path" => "themes/question/ranking_advanced/survey/questions/answer/ranking",
-                "image_path" => "/assets/images/screenshots/R.png",
+                "image_path" => "themes/question/ranking_advanced/survey/questions/answer/ranking/assets/advanced_ranking.png",
                 "title" => "Ranking advanced",
                 "creation_date" => "1970-01-01 01:00:00",
                 "author" => "LimeSurvey GmbH",

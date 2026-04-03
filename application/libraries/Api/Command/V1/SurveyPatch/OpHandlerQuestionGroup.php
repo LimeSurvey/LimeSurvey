@@ -168,7 +168,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
         }
         $questionGroup = $this->questionGroupService->getQuestionGroupForUpdate(
             $surveyId,
-            $op->getEntityId()
+            (int)$op->getEntityId()
         );
         if (!empty($transformedProps['questionGroup'])) {
             $this->questionGroupService->updateQuestionGroup(
