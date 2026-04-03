@@ -1348,6 +1348,9 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
             }
         }
         $qid = $rootQuestion->qid;
+        if ($fieldName === "260105X3X56") {
+            echo var_dump([$rootQuestion->qid, $rootQuestion->type]);
+        }
         switch ($rootQuestion->type) {
             case \Question::QT_1_ARRAY_DUAL:
             case \Question::QT_5_POINT_CHOICE:
