@@ -1331,204 +1331,206 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
         $X = explode("X", $fieldName);
         $newFieldName = ((count($X) > 2) ? "Q" : "G") . $X[count($X) - 1];
     } else {
-        $rootQuestion = $rawQuestions[0];
+        $rootQuestions = [];
         $questionIndex = 0;
         while ($questionIndex < count($rawQuestions)) {
             if (!$rawQuestions[$questionIndex]->parent_qid) {
-                if (($rawQuestions[$questionIndex]->gid == $gid) && ($rootQuestion->parent_qid || ($rootQuestion->gid != $gid) || (($rootQuestion->gid == $gid) && ($rootQuestion->qid < $rawQuestions[$questionIndex]->qid)))) {
-                    $rootQuestion = $rawQuestions[$questionIndex];
+                if (($rawQuestions[$questionIndex]->gid == $gid) && (!$rawQuestions[$questionIndex]->parent_qid)) {
+                    $rootQuestions[] = $rawQuestions[$questionIndex];
                 }
             }
             $questionIndex++;
         }
-        $questions = [$rootQuestion];
-        foreach ($rawQuestions as $rawQuestion) {
-            if ($rawQuestion->parent_qid == $rootQuestion->qid) {
-                $questions[] = $rawQuestion;
+        foreach ($rootQuestions as $rootQuestion) {
+            $questions = [$rootQuestion];
+            foreach ($rawQuestions as $rawQuestion) {
+                if ($rawQuestion->parent_qid == $rootQuestion->qid) {
+                    $questions[] = $rawQuestion;
+                }
             }
-        }
-        $qid = $rootQuestion->qid;
-        if ($fieldName === "260105X3X56") {
-            echo var_dump([$rootQuestion->qid, $rootQuestion->type]);
-        }
-        switch ($rootQuestion->type) {
-            case \Question::QT_1_ARRAY_DUAL:
-            case \Question::QT_5_POINT_CHOICE:
-            case \Question::QT_L_LIST:
-            case \Question::QT_M_MULTIPLE_CHOICE:
-            case \Question::QT_N_NUMERICAL:
-            case \Question::QT_O_LIST_WITH_COMMENT:
-            case \Question::QT_EXCLAMATION_LIST_DROPDOWN:
-                $currentQuestion = null;
-                $length = strlen("{$sid}X{$gid}X{$qid}");
-                $hashPos = strpos($fieldName, '#');
-                foreach ($questions as $question) {
-                    if ($hashPos && ($question->title === substr($fieldName, $length, ($hashPos !== false) ? ($hashPos - $length) : null))) {
-                        $currentQuestion = $question;
-                    } else if ($question->title === substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"))) {
-                        $currentQuestion = $question;
-                    }
-                }
-                $hashTags = explode("#", $fieldName);
-                if (($rootQuestion->type === \Question::QT_M_MULTIPLE_CHOICE) && ($length < strlen($hashTags[0]))) {
-                    $currentQuestion = \Question::model()->find("parent_qid = {$qid} and title = :title", [
-                        ":title" => substr($hashTags[0], $length)
-                    ]);
-                }
-                if (!$currentQuestion) {
-                    $newFieldName = "Q{$qid}";
-                    if (strlen($fieldName) > strlen("{$sid}X{$gid}X{$qid}")) {
-                        $newFieldName .= "_C" . substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
-                    }
-                } else {
-                    $newFieldName = "Q{$qid}_S{$currentQuestion->qid}";
-                    if (count($hashTags)) {
-                        for ($index = 1; $index < count($hashTags); $index++) {
-                            $newFieldName .= "#{$hashTags[$index]}";
-                        }
-                    }
-                }
-                break;
-            case \Question::QT_A_ARRAY_5_POINT:
-            case \Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
-            case \Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
-            case \Question::QT_E_ARRAY_INC_SAME_DEC:
-            case \Question::QT_F_ARRAY:
-            case \Question::QT_H_ARRAY_COLUMN:
-            case \Question::QT_K_MULTIPLE_NUMERICAL:
-            case \Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
-            case \Question::QT_Q_MULTIPLE_SHORT_TEXT:
-                $code = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
-                if ($code === '') {
-                    return "Q{$qid}";
-                }
-                $commentText = false;
-                $currentQuestion = null;
-                $excludeSubquestion = false;
-                foreach ($questions as $question) {
-                    if ($question->title === $code) {
-                        $currentQuestion = $question;
-                    } elseif (in_array($code, ["other", "comment", "othercomment", $question->title . "other", $question->title . "comment", $question->title . "othercomment"])) {
-                        $currentQuestion = $question;
-                        $commentText = $code;
-                        if (strpos($code, $question->title) === 0) {
-                            $commentText = substr($code, strlen($question->title));
-                        } else {
-                            $excludeSubquestion = true;
-                        }
-                    }
-                }
-                if ($currentQuestion) {
-                    $newFieldName = "Q{$qid}" . ($excludeSubquestion ? "" : "_S{$currentQuestion->qid}");
-                    if ($commentText) {
-                        $newFieldName = $newFieldName . "_C" . $commentText;
-                    }
-                }
-                break;
-            case \Question::QT_SEMICOLON_ARRAY_TEXT:
-            case \Question::QT_COLON_ARRAY_NUMBERS:
-                if (strpos($tableName, "timings") !== false) {
-                    $newFieldName = "Q{$qid}_Ctime";
-                } else {
-                    $scales = [0 => [], 1 => []];
-                    foreach ($questions as $question) {
-                        if ($question->parent_qid != 0) {
-                            $scales[$question->scale_id][$question->title] = $question->qid;
-                        }
-                    }
-                    $partialFieldName = substr($fieldName, 0, strlen("{$sid}X{$gid}X{$qid}"));
-                    foreach ($scales[0] as $title1 => $qid1) {
-                        if (count($scales[1])) {
-                            foreach ($scales[1] as $title2 => $qid2) {
-                                if ($fieldName === "{$partialFieldName}{$title1}_{$title2}") {
-                                    return "Q{$qid}_S{$qid1}_S{$qid2}";
-                                }
-                            }
-                        } else if ($fieldName === "{$partialFieldName}{$title1}") {
-                            return "Q{$qid}_S{$qid1}";
-                        }
-                    }
-                }
-                break;
-            case \Question::QT_D_DATE:
-            case \Question::QT_G_GENDER:
-            case \Question::QT_I_LANGUAGE:
-            case \Question::QT_S_SHORT_FREE_TEXT:
-            case \Question::QT_T_LONG_FREE_TEXT:
-            case \Question::QT_U_HUGE_FREE_TEXT:
-            case \Question::QT_X_TEXT_DISPLAY:
-            case \Question::QT_Y_YES_NO_RADIO:
-            case \Question::QT_VERTICAL_FILE_UPLOAD:
-            case \Question::QT_ASTERISK_EQUATION:
-                $isRoot = ((strpos($tableName, "timings") !== false) || (($rootQuestion->parent_qid ?? 0) == "0"));
-                $newFieldName = ($isRoot ? "Q{$qid}" : "Q{$rootQuestion->parent_qid}");
-                $suffix = "";
-                $isComment = false;
-                if (!$isRoot) {
+            $qid = $rootQuestion->qid;
+            switch ($rootQuestion->type) {
+                case \Question::QT_1_ARRAY_DUAL:
+                case \Question::QT_5_POINT_CHOICE:
+                case \Question::QT_L_LIST:
+                case \Question::QT_M_MULTIPLE_CHOICE:
+                case \Question::QT_N_NUMERICAL:
+                case \Question::QT_O_LIST_WITH_COMMENT:
+                case \Question::QT_EXCLAMATION_LIST_DROPDOWN:
+                    $currentQuestion = null;
                     $length = strlen("{$sid}X{$gid}X{$qid}");
                     $hashPos = strpos($fieldName, '#');
-                    $code = substr($fieldName, $length, ($hashPos !== false) ? ($hashPos - $length) : 2000);
-                    $suffix = "_C{$code}";
+                    foreach ($questions as $question) {
+                        if ($hashPos && ($question->title === substr($fieldName, $length, ($hashPos !== false) ? ($hashPos - $length) : null))) {
+                            $currentQuestion = $question;
+                        } else if ($question->title === substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"))) {
+                            $currentQuestion = $question;
+                        }
+                    }
+                    $hashTags = explode("#", $fieldName);
+                    if (($rootQuestion->type === \Question::QT_M_MULTIPLE_CHOICE) && ($length < strlen($hashTags[0]))) {
+                        $currentQuestion = \Question::model()->find("parent_qid = {$qid} and title = :title", [
+                            ":title" => substr($hashTags[0], $length)
+                        ]);
+                    }
+                    if (!$currentQuestion) {
+                        $newFieldName = "Q{$qid}";
+                        if (strlen($fieldName) > strlen("{$sid}X{$gid}X{$qid}")) {
+                            $newFieldName .= "_C" . substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                        }
+                    } else {
+                        $newFieldName = "Q{$qid}_S{$currentQuestion->qid}";
+                        if (count($hashTags)) {
+                            for ($index = 1; $index < count($hashTags); $index++) {
+                                $newFieldName .= "#{$hashTags[$index]}";
+                            }
+                        }
+                    }
+                    break;
+                case \Question::QT_A_ARRAY_5_POINT:
+                case \Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
+                case \Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
+                case \Question::QT_E_ARRAY_INC_SAME_DEC:
+                case \Question::QT_F_ARRAY:
+                case \Question::QT_H_ARRAY_COLUMN:
+                case \Question::QT_K_MULTIPLE_NUMERICAL:
+                case \Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
+                case \Question::QT_Q_MULTIPLE_SHORT_TEXT:
+                    $code = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                    if ($code === '') {
+                        return "Q{$qid}";
+                    }
+                    $commentText = false;
+                    $currentQuestion = null;
+                    $excludeSubquestion = false;
                     foreach ($questions as $question) {
                         if ($question->title === $code) {
-                            $suffix = "_S{$question->qid}";
-                        } elseif ($question->title . "comment" === $code) {
-                            $suffix = "_S{$question->qid}";
-                            $isComment = true;
+                            $currentQuestion = $question;
+                        } elseif (in_array($code, ["other", "comment", "othercomment", $question->title . "other", $question->title . "comment", $question->title . "othercomment"])) {
+                            $currentQuestion = $question;
+                            $commentText = $code;
+                            if (strpos($code, $question->title) === 0) {
+                                $commentText = substr($code, strlen($question->title));
+                            } else {
+                                $excludeSubquestion = true;
+                            }
                         }
                     }
-                }
-                $newFieldName .= $suffix;
-                if (strpos($fieldName, "time") !== false) {
-                    $newFieldName .= "_Ctime";
-                } elseif (strpos($fieldName, "filecount") !== false) {
-                    $newFieldName .= "_Cfilecount";
-                }
-                if ($isComment) {
-                    $newFieldName .= "_Ccomment";
-                }
-                break;
-            case \Question::QT_R_RANKING:
-                $prefix = ((strpos($tableName, "timing") !== false) ? "C" : "R");
-                $index = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
-                try {
-                    $rankingSuffix = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
-                    $iRankingSuffix = intval($rankingSuffix);
-                    if ((intval($iRankingSuffix) > 0) && isset($questions[0]->answers[($iRankingSuffix - 1)])) {
-                        $aid = $cd ? $index : $questions[0]->answers[($iRankingSuffix - 1)]->aid;
-                        $newFieldName = "Q{$qid}_{$prefix}" . $aid;
+                    if ($currentQuestion) {
+                        $newFieldName = "Q{$qid}" . ($excludeSubquestion ? "" : "_S{$currentQuestion->qid}");
+                        if ($commentText) {
+                            $newFieldName = $newFieldName . "_C" . $commentText;
+                        }
+                    }
+                    break;
+                case \Question::QT_SEMICOLON_ARRAY_TEXT:
+                case \Question::QT_COLON_ARRAY_NUMBERS:
+                    if (strpos($tableName, "timings") !== false) {
+                        $newFieldName = "Q{$qid}_Ctime";
                     } else {
-                        $answers = \Answer::model()->findAll("qid = :qid", [
-                            ':qid' => $qid
-                        ]);
-                        $minSortOrder = 999;
-                        foreach ($answers as $answer) {
-                            $so = (int)$answer->sortorder;
-                            if ($so < $minSortOrder) {
-                                $minSortOrder = $so;
+                        $scales = [0 => [], 1 => []];
+                        foreach ($questions as $question) {
+                            if ($question->parent_qid != 0) {
+                                $scales[$question->scale_id][$question->title] = $question->qid;
                             }
                         }
-                        $diff = 0;
-                        if ($minSortOrder === 0) {
-                            $diff = -1;
-                        } else if ($minSortOrder > 1) {
-                            $diff = $minSortOrder;
-                        }
-                        foreach ($answers as $answer) {
-                            if (($rankingSuffix == $answer->code) || ((intval($iRankingSuffix) > 0) && ($rankingSuffix + $diff == $answer->sortorder))) {
-                                $newFieldName = "Q{$qid}_{$prefix}{$answer->aid}";
+                        $partialFieldName = substr($fieldName, 0, strlen("{$sid}X{$gid}X{$qid}"));
+                        foreach ($scales[0] as $title1 => $qid1) {
+                            if (count($scales[1])) {
+                                foreach ($scales[1] as $title2 => $qid2) {
+                                    if ($fieldName === "{$partialFieldName}{$title1}_{$title2}") {
+                                        return "Q{$qid}_S{$qid1}_S{$qid2}";
+                                    }
+                                }
+                            } else if ($fieldName === "{$partialFieldName}{$title1}") {
+                                return "Q{$qid}_S{$qid1}";
                             }
                         }
-                        if (!$newFieldName) {
-                            $newFieldName = $fieldName;
+                    }
+                    break;
+                case \Question::QT_D_DATE:
+                case \Question::QT_G_GENDER:
+                case \Question::QT_I_LANGUAGE:
+                case \Question::QT_S_SHORT_FREE_TEXT:
+                case \Question::QT_T_LONG_FREE_TEXT:
+                case \Question::QT_U_HUGE_FREE_TEXT:
+                case \Question::QT_X_TEXT_DISPLAY:
+                case \Question::QT_Y_YES_NO_RADIO:
+                case \Question::QT_VERTICAL_FILE_UPLOAD:
+                case \Question::QT_ASTERISK_EQUATION:
+                    $isRoot = ((strpos($tableName, "timings") !== false) || (($rootQuestion->parent_qid ?? 0) == "0"));
+                    $newFieldName = ($isRoot ? "Q{$qid}" : "Q{$rootQuestion->parent_qid}");
+                    $suffix = "";
+                    $isComment = false;
+                    if (!$isRoot) {
+                        $length = strlen("{$sid}X{$gid}X{$qid}");
+                        $hashPos = strpos($fieldName, '#');
+                        $code = substr($fieldName, $length, ($hashPos !== false) ? ($hashPos - $length) : 2000);
+                        $suffix = "_C{$code}";
+                        foreach ($questions as $question) {
+                            if ($question->title === $code) {
+                                $suffix = "_S{$question->qid}";
+                            } elseif ($question->title . "comment" === $code) {
+                                $suffix = "_S{$question->qid}";
+                                $isComment = true;
+                            }
                         }
                     }
-                } catch (\Exception $ex) {
-                    if (strpos($tableName, 'old') === false) {
-                        throw $ex; //Ignore inconsistencies in archive rankings
+                    $newFieldName .= $suffix;
+                    if (strpos($fieldName, "time") !== false) {
+                        $newFieldName .= "_Ctime";
+                    } elseif (strpos($fieldName, "filecount") !== false) {
+                        $newFieldName .= "_Cfilecount";
                     }
-                }
-                break;
+                    if ($isComment) {
+                        $newFieldName .= "_Ccomment";
+                    }
+                    break;
+                case \Question::QT_R_RANKING:
+                    $prefix = ((strpos($tableName, "timing") !== false) ? "C" : "R");
+                    $index = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                    try {
+                        $rankingSuffix = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                        $iRankingSuffix = intval($rankingSuffix);
+                        if ((intval($iRankingSuffix) > 0) && isset($questions[0]->answers[($iRankingSuffix - 1)])) {
+                            $aid = $cd ? $index : $questions[0]->answers[($iRankingSuffix - 1)]->aid;
+                            $newFieldName = "Q{$qid}_{$prefix}" . $aid;
+                        } else {
+                            $answers = \Answer::model()->findAll("qid = :qid", [
+                                ':qid' => $qid
+                            ]);
+                            $minSortOrder = 999;
+                            foreach ($answers as $answer) {
+                                $so = (int)$answer->sortorder;
+                                if ($so < $minSortOrder) {
+                                    $minSortOrder = $so;
+                                }
+                            }
+                            $diff = 0;
+                            if ($minSortOrder === 0) {
+                                $diff = -1;
+                            } else if ($minSortOrder > 1) {
+                                $diff = $minSortOrder;
+                            }
+                            foreach ($answers as $answer) {
+                                if (($rankingSuffix == $answer->code) || ((intval($iRankingSuffix) > 0) && ($rankingSuffix + $diff == $answer->sortorder))) {
+                                    $newFieldName = "Q{$qid}_{$prefix}{$answer->aid}";
+                                }
+                            }
+                            if (!$newFieldName) {
+                                $newFieldName = $fieldName;
+                            }
+                        }
+                    } catch (\Exception $ex) {
+                        if (strpos($tableName, 'old') === false) {
+                            throw $ex; //Ignore inconsistencies in archive rankings
+                        }
+                    }
+                    break;
+            }
+            if ($newFieldName) {
+                return $newFieldName;
+            }
         }
     }
     return $newFieldName;
