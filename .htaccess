@@ -1,9 +1,11 @@
 <IfModule mod_rewrite.c>
     RewriteEngine on
 
+    # If the request is NOT for the editor folder"
+    RewriteCond %{REQUEST_URI} !^/editor [NC]
     # if a directory or a file exists, use it directly
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
+    # RewriteCond %{REQUEST_FILENAME} !-d
 
     # otherwise forward it to index.php
     RewriteRule . index.php
