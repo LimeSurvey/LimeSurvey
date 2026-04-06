@@ -53,6 +53,23 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
         );
     }
 
+    private function getDateDiffClause()
+    {
+        switch (\Yii::app()->db->getDriverName()) {
+            case 'mysqli':
+            case 'mysql':
+                return "AVG(CASE WHEN submitdate IS NOT NULL THEN TIMESTAMPDIFF(SECOND, startdate, submitdate) ELSE 0 END) AS avgCompletionTime";
+            case 'mssql':
+            case 'sqlsrv':
+            case 'dblib':
+                return "AVG(datediff(s, startdate, coalesce(submitdate, startdate))) AS avgCompletionTime";
+            case 'pgsql':
+                return "AVG(CASE WHEN submitdate IS NOT NULL THEN TIMESTAMPDIFF(SECOND, startdate, submitdate) ELSE 0 END) AS avgCompletionTime";
+            default:
+                return '';
+        }
+    }
+
     /**
      * Fetch overview statistics for the survey
      *
@@ -77,7 +94,7 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
 
         // datestamps is not enabled, therefor we cannot calculate avg completion time
         $selectParams[] = isset($tableSchema->columns['startdate'])
-            ? 'AVG(CASE WHEN submitdate IS NOT NULL THEN TIMESTAMPDIFF(SECOND, startdate, submitdate) END) AS avgCompletionTime'
+            ? $this->getDateDiffClause()
             : new CDbExpression('NULL AS avgCompletionTime');
 
         // Build and execute query with proper parameter binding
