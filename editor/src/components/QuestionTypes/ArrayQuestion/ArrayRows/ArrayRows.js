@@ -28,8 +28,7 @@ export const ArrayRows = ({
   handleUpdateL10ns = () => {},
   setVerticalEntitiesInfo,
   showNoAnswer = false,
-  validateCode = () => {},
-  handleCodeUpdate = () => {},
+  handleChildCodeUpdate = () => {},
 }) => {
   const subQuestionsContainerRef = useRef(null)
   const isArrayByColumn =
@@ -202,11 +201,14 @@ export const ArrayRows = ({
                   scaleId={scaleId}
                   code={entity[entitiesInfo.codeKey]}
                   showQuestionCode={showQuestionCode}
-                  validateCode={(index, newCode) =>
-                    validateCode(entitiesInfo, index, newCode)
-                  }
-                  handleCodeLUpdate={(value, index) =>
-                    handleCodeUpdate(entitiesInfo, value, index)
+                  handleCodeUpdate={(value, index) =>
+                    handleChildCodeUpdate({
+                      newCode: value,
+                      childIndex: index,
+                      childArray: (isArrayByText || isArrayByNumbers) ? subquestions: entitiesInfo.items,
+                      entityType: entitiesInfo.entity,
+                      entityTitleKey: entitiesInfo.titleKey,
+                    })
                   }
                 />
               </div>
@@ -233,11 +235,14 @@ export const ArrayRows = ({
             removeItem={() => {}}
             itemsKey={entitiesInfo.itemsKey}
             isNoAnswer={true}
-            handleCodeLUpdate={(value, index) =>
-              handleCodeUpdate(entitiesInfo, value, index)
-            }
-            validateCode={(index, newCode) =>
-              validateCode(entitiesInfo, index, newCode)
+            handleCodeUpdate={(value, index) =>
+              handleChildCodeUpdate({
+                newCode: value,
+                childIndex: index,
+                childArray: entitiesInfo.items,
+                entityType: entitiesInfo.entity,
+                entityTitleKey: entitiesInfo.titleKey,
+              })
             }
           />
         </div>

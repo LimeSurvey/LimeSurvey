@@ -26,7 +26,7 @@ export const ArrayRow = ({
   provided = {},
   index,
   handleUpdateL10ns,
-  handleCodeLUpdate,
+  handleCodeUpdate,
   removeItem,
   showContentEditor,
   showQuestionCode,
@@ -36,7 +36,6 @@ export const ArrayRow = ({
   placeholder = 'Subquestion',
   itemsKey,
   isNoAnswer = false,
-  validateCode,
   code,
   scaleId,
 }) => {
@@ -47,15 +46,6 @@ export const ArrayRow = ({
   const showQNumCode = survey.showQNumCode
   const isArrayByColumn =
     questionThemeName === getQuestionTypeInfo().ARRAY_COLUMN.theme
-
-  const handleLocalCodeUpdate = (value, index) => {
-    const validationMessage = validateCode(index, value)
-    if (validationMessage === '') {
-      handleCodeLUpdate(value, index)
-    } else {
-      showErrorMessage(validationMessage, 'top-center')
-    }
-  }
 
   return (
     <div>
@@ -89,7 +79,7 @@ export const ArrayRow = ({
               <SubquestionCodeInput
                 isSurveyActive={isSurveyActive}
                 code={code}
-                onChange={(e) => handleLocalCodeUpdate(e.target.value, index)}
+                onChange={(e) => handleCodeUpdate(e.target.value, index)}
               />
             )}
         </div>

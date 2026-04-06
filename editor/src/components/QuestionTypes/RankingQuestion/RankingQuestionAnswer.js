@@ -16,7 +16,7 @@ export const RankingQuestionAnswer = ({
   isFocused,
   provided = {},
   handleRemovingAnswers,
-  handleLocalCodeUpdate,
+  handleCodeUpdate,
   index,
   code,
 }) => {
@@ -57,7 +57,7 @@ export const RankingQuestionAnswer = ({
                 isSurveyActive={isSurveyActive}
                 code={code}
                 onChange={(e) =>
-                  handleLocalCodeUpdate(e.target.value, index, false)
+                  handleCodeUpdate(e.target.value, index)
                 }
               />
             )}

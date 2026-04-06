@@ -15,6 +15,7 @@ import {
 import { reportExtras } from 'appInstrumentation'
 import { singleChoiceThemes } from 'components/QuestionTypes'
 import { TestValidation } from 'components/Survey/Questions/QuestionCodeSchema'
+import { showErrorMessage } from 'components/ConditionDesigner/utils'
 
 export const useQuestionChildren = ({
   question,
@@ -200,13 +201,11 @@ export const useQuestionChildren = ({
     newValue = '',
     childIndex,
     childArray = [],
-    entityType,
-    isL10nsUpdate = true
+    entityType
   ) => {
     const updatedChildren = [...childArray]
     const l10nsKey = entityType === Entities.answer ? 'answer' : 'question'
     const childKey = entityType === Entities.answer ? 'answers' : 'subquestions'
-    const codeKey = entityType === Entities.answer ? 'code' : 'title'
 
     if (updatedChildren[childIndex] === undefined) {
       reportExtras({
@@ -222,25 +221,18 @@ export const useQuestionChildren = ({
       return
     }
 
-    if (isL10nsUpdate) {
-      const l10ns = updatedChildren[childIndex]['l10ns'] || {}
+    const l10ns = updatedChildren[childIndex]['l10ns'] || {}
 
-      updatedChildren[childIndex] = {
-        ...updatedChildren[childIndex],
-        l10ns: {
-          ...l10ns,
-          [activeLanguage]: {
-            ...l10ns[activeLanguage],
-            [l10nsKey]: newValue,
-            language: activeLanguage,
-          },
+    updatedChildren[childIndex] = {
+      ...updatedChildren[childIndex],
+      l10ns: {
+        ...l10ns,
+        [activeLanguage]: {
+          ...l10ns[activeLanguage],
+          [l10nsKey]: newValue,
+          language: activeLanguage,
         },
-      }
-    } else {
-      updatedChildren[childIndex] = {
-        ...updatedChildren[childIndex],
-        [codeKey]: newValue,
-      }
+      },
     }
 
     const operation =
@@ -256,13 +248,73 @@ export const useQuestionChildren = ({
     handleUpdate({ [childKey]: updatedChildren })
   }
 
-  const validateCode = (entitiesInfo, index, newCode) => {
-    const titleKey = entitiesInfo.titleKey === 'answer' ? 'code' : 'title'
-    const newCodeIndex = entitiesInfo.items
-      ? entitiesInfo.items.findIndex((item) => item[titleKey] === newCode)
+  const handleChildCodeUpdate = ({
+    newCode = '',
+    childIndex,
+    childArray = [],
+    entityType,
+    entityTitleKey,
+  }) => {
+    const validationMessage = validateCode({
+      entityTitleKey,
+      entityItems: childArray,
+      childIndex,
+      newCode,
+    })
+
+    if (validationMessage !== '') {
+      showErrorMessage(validationMessage, 'top-center')
+      return
+    }
+
+    const updatedChildren = [...childArray]
+    const childKey = entityType === Entities.answer ? 'answers' : 'subquestions'
+    const codeKey = entityType === Entities.answer ? 'code' : 'title'
+
+    if (updatedChildren[childIndex] === undefined) {
+      reportExtras({
+        extraData: {
+          questionThemeName: question.questionThemeName,
+          updatedEntities: updatedChildren,
+          updateKey: childKey,
+          index: childIndex,
+          question,
+        },
+        message: `Error while updating code in ${question.questionThemeName} - unable to find item`,
+      })
+      return
+    }
+
+    updatedChildren[childIndex] = {
+      ...updatedChildren[childIndex],
+      [codeKey]: newCode,
+    }
+    
+    const operation =
+      entityType === Entities.answer
+        ? createBufferOperation(question.qid)
+            .answer()
+            .update([...updatedChildren])
+        : createBufferOperation(question.qid)
+            .subquestion()
+            .update([...updatedChildren])
+
+    addToBuffer(operation)
+    handleUpdate({ [childKey]: updatedChildren })
+  }
+
+  const validateCode = ({
+    newCode,
+    childIndex,
+    entityItems,
+    entityTitleKey,
+  }) => {
+    const titleKey = entityTitleKey === 'answer' ? 'code' : 'title'
+    const newCodeIndex = entityItems
+      ? entityItems.findIndex((item) => item[titleKey] === newCode)
       : -1
 
-    const codeExist = newCodeIndex !== index && newCodeIndex !== -1
+    const codeExist = newCodeIndex !== childIndex && newCodeIndex !== -1
 
     let newErrorMessage = ''
 
@@ -273,7 +325,7 @@ export const useQuestionChildren = ({
     }
 
     if (codeExist) {
-      if (entitiesInfo.titleKey === 'answer') {
+      if (entityTitleKey === 'answer') {
         newErrorMessage = t('Answer codes must be unique.')
       } else {
         newErrorMessage = t('Subquestion codes must be unique.')
@@ -318,7 +370,7 @@ export const useQuestionChildren = ({
     handleChildDelete,
     handleOnChildDragEnd,
     handleChildLUpdate,
-    validateCode,
+    handleChildCodeUpdate,
     activeLanguage,
   }
 }

@@ -19,22 +19,12 @@ export const ArrayColumnTitle = ({
   itemsKey,
   isNoAnswer = false,
   code,
-  handleCodeLUpdate,
-  validateCode,
+  handleChildCodeUpdate,
 }) => {
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
   const { surveyId } = useParams()
   const { survey } = useSurvey(surveyId)
   const showQNumCode = survey.showQNumCode
-
-  const handleLocalCodeUpdate = (value, index) => {
-    const validationMessage = validateCode(index, value)
-    if (validationMessage === '') {
-      handleCodeLUpdate(value, index)
-    } else {
-      showErrorMessage(validationMessage, 'top-center')
-    }
-  }
 
   return (
     <div>
@@ -88,7 +78,7 @@ export const ArrayColumnTitle = ({
             <SubquestionCodeInput
               isColumnTitle={true}
               isSurveyActive={isSurveyActive}
-              onChange={(e) => handleLocalCodeUpdate(e.target.value, index)}
+              onChange={(e) => handleChildCodeUpdate(e.target.value, index)}
               code={code}
             />
           )}

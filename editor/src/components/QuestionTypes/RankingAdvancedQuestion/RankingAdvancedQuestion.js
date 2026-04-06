@@ -24,7 +24,7 @@ export const RankingAdvancedQuestion = ({
   participantMode,
   language,
   onValueChange = () => {},
-  validateCode,
+  handleChildCodeUpdate,
 }) => {
   const [answersHeight, setAnswersHeight] = useState([])
   const [answersValue, setAnswersValue] = useState(cloneDeep(values))
@@ -96,29 +96,6 @@ export const RankingAdvancedQuestion = ({
     handleChildDelete(answer.aid, questionAnswers, Entities.answer)
   }
 
-  const handleLocalCodeUpdate = (value, index) => {
-    const validationMessage = validateCode(
-      { titleKey: 'answer', items: questionAnswers },
-      index,
-      value
-    )
-    if (validationMessage === '') {
-      handleCodeUpdate(value, index)
-    } else {
-      showErrorMessage(validationMessage, 'top-center')
-    }
-  }
-
-  const handleCodeUpdate = (entitiesInfo, value, index) => {
-    handleChildLUpdate(
-      value,
-      index,
-      entitiesInfo.items,
-      entitiesInfo.entity,
-      false
-    )
-  }
-
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <div
@@ -136,7 +113,7 @@ export const RankingAdvancedQuestion = ({
                 qid={qid}
                 setAnswersHeight={setAnswersHeight}
                 language={language}
-                handleLocalCodeUpdate={handleLocalCodeUpdate}
+                handleCodeUpdate={handleChildCodeUpdate}
               />
               {provided.placeholder}
             </div>

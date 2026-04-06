@@ -35,7 +35,7 @@ export const QuestionBody = ({
     handleChildDelete,
     handleOnChildDragEnd,
     handleChildLUpdate,
-    validateCode,
+    handleChildCodeUpdate,
     activeLanguage,
   } = useQuestionChildren({
     question,
@@ -69,7 +69,7 @@ export const QuestionBody = ({
           _children={children}
           isTitleFocused={isTitleFocused}
           valueInfo={{ value: [] }}
-          validateCode={validateCode}
+          handleChildCodeUpdate={handleChildCodeUpdate}
         />
       ) : (
         <QuestionViewComponent

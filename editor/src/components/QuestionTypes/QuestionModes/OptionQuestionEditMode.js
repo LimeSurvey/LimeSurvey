@@ -28,7 +28,7 @@ export const OptionQuestionEditMode = ({
   handleOnChildDragEnd,
   handleChildDelete,
   language,
-  validateCode,
+  handleChildCodeUpdate,
   _children = [],
   isTitleFocused,
 }) => {
@@ -58,28 +58,6 @@ export const OptionQuestionEditMode = ({
   const questionHasTempId = useMemo(() => {
     return hasTempId(qid)
   }, [])
-
-  const handleLocalCodeUpdate = (value, index, isL10nsUpdate = true) => {
-    const validationMessage = isL10nsUpdate
-      ? ''
-      : validateCode(
-          { items: _children, titleKey: childrenInfo.titleKey },
-          index,
-          value
-        )
-
-    if (validationMessage === '') {
-      handleChildLUpdate(
-        value,
-        index,
-        _children,
-        childrenInfo.entity,
-        isL10nsUpdate
-      )
-    } else {
-      showErrorMessage(validationMessage, 'top-center')
-    }
-  }
 
   return (
     <div>
@@ -137,7 +115,13 @@ export const OptionQuestionEditMode = ({
                       isSurveyActive={isSurveyActive}
                       code={isSingleChoiceTheme ? child.code : child.title}
                       onChange={(e) =>
-                        handleLocalCodeUpdate(e.target.value, index, false)
+                        handleChildCodeUpdate({
+                          newCode: e.target.value,
+                          childIndex: index,
+                          childArray: _children,
+                          entityType: childrenInfo.entity,
+                          entityTitleKey: childrenInfo.titleKey,
+                        })
                       }
                     />
                   )}
@@ -155,7 +139,14 @@ export const OptionQuestionEditMode = ({
                         language,
                         l10ns: child.l10ns,
                       })}
-                      update={(value) => handleLocalCodeUpdate(value, index)}
+                      update={(value) =>
+                        handleChildLUpdate(
+                          value,
+                          index,
+                          _children,
+                          childrenInfo.entity
+                        )
+                      }
                       key={`uicomponent-${qid}-${index}-questionmode`}
                       index={index}
                       isFocused={true}

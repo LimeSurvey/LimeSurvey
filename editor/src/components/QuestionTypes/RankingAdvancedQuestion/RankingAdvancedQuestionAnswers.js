@@ -3,7 +3,7 @@ import { Draggable } from 'react-beautiful-dnd'
 import classNames from 'classnames'
 import { SubquestionCodeInput } from '../subquestionCodeComponents'
 import { useSurvey, useAppState } from 'hooks'
-import { STATES } from 'helpers'
+import { Entities, STATES } from 'helpers'
 import { useParams } from 'react-router-dom'
 import { ContentEditor } from 'components/UIComponents'
 import { CloseCircleFillIcon, DragIcon } from 'components/icons'
@@ -17,7 +17,7 @@ export const RankingAdvancedQuestionAnswers = ({
   answers = [],
   qid,
   language,
-  handleLocalCodeUpdate,
+  handleCodeUpdate,
 }) => {
   const answersRef = useRef(null)
   const { surveyId } = useParams()
@@ -98,7 +98,13 @@ export const RankingAdvancedQuestionAnswers = ({
                           isSurveyActive={isSurveyActive}
                           code={answer.code}
                           onChange={(e) =>
-                            handleLocalCodeUpdate(e.target.value, index, false)
+                            handleCodeUpdate({
+                              newCode: e.target.value,
+                              childIndex: index,
+                              childArray: answers,
+                              entityType: Entities.answer,
+                              entityTitleKey: 'answer',
+                            })
                           }
                         />
                       )}
