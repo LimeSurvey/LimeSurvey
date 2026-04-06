@@ -649,7 +649,6 @@ class userstatistics_helper
         } //Q - Multiple short text
         elseif ($sQuestionType == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
             //Build an array of legitimate qid's for testing later
-            $key = substr($rt, strcspn($rt, '0123456789') - 1);
             $aQuestionInfo = $fieldmap[substr($rt, strcspn($rt, '0123456789') - 1)];
             $qqid = $aQuestionInfo['qid'];
             $qaid = $aQuestionInfo['aid'];
