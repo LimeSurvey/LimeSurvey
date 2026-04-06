@@ -36,7 +36,8 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
         $rows = $this->fetchStatisticsOverview();
         $rows['completionRate'] = round($rows['completionrate'] ?? 0, 2);
         $rows['totalResponses'] = $rows['totalresponses'];
-        $rows['incompleteResponses'] = (int)$rows['incompleteResponses'];
+        $rows['incompleteResponses'] = (int)$rows['incompleteresponses'];
+        $rows['avgCompletionTime'] = $rows['avgcompletiontime'];
         if ($rows['avgCompletionTime'] !== null) {
             $rows['avgCompletionTime'] = round($rows['avgCompletionTime'] ?? 0, 2);
         }
@@ -59,13 +60,13 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
         switch (\Yii::app()->db->getDriverName()) {
             case 'mysqli':
             case 'mysql':
-                return "AVG(CASE WHEN submitdate IS NOT NULL THEN TIMESTAMPDIFF(SECOND, startdate, submitdate) END) AS avgCompletionTime";
+                return "AVG(CASE WHEN submitdate IS NOT NULL THEN TIMESTAMPDIFF(SECOND, startdate, submitdate) END) AS avgcompletiontime";
             case 'mssql':
             case 'sqlsrv':
             case 'dblib':
-                return "AVG(CASE WHEN COALESCE(submitdate, 0) <> 0 THEN datediff(s, startdate, submitdate) END) AS avgCompletionTime";
+                return "AVG(CASE WHEN COALESCE(submitdate, 0) <> 0 THEN datediff(s, startdate, submitdate) END) AS avgcompletiontime";
             case 'pgsql':
-                return "AVG(CASE WHEN CAST(submitdate AS TIMESTAMP) > '1990-01-01 00:00:00' THEN CAST(submitdate AS TIMESTAMP) - CAST(startdate AS TIMESTAMP) END) AS avgCompletionTime";
+                return "AVG(CASE WHEN CAST(submitdate AS TIMESTAMP) > '1990-01-01 00:00:00' THEN CAST(submitdate AS TIMESTAMP) - CAST(startdate AS TIMESTAMP) END) AS avgcompletiontime";
             default:
                 return '';
         }
@@ -88,15 +89,15 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
         }
 
         $selectParams = [
-            'COUNT(id) AS totalResponses',
-            'SUM(CASE WHEN submitdate IS NULL THEN 1 ELSE 0 END) AS incompleteResponses',
+            'COUNT(id) AS totalresponses',
+            'SUM(CASE WHEN submitdate IS NULL THEN 1 ELSE 0 END) AS incompleteresponses',
             'ROUND(SUM(CASE WHEN submitdate IS NOT NULL THEN 1 ELSE 0 END) * 100.0 / NULLIF(COUNT(id), 0), 2) AS completionrate',
         ];
 
         // datestamps is not enabled, therefor we cannot calculate avg completion time
         $selectParams[] = isset($tableSchema->columns['startdate'])
             ? $this->getDateDiffClause()
-            : new CDbExpression('NULL AS avgCompletionTime');
+            : new CDbExpression('NULL AS avgcompletiontime');
 
         // Build and execute query with proper parameter binding
         $command = Yii::app()->db->createCommand()
