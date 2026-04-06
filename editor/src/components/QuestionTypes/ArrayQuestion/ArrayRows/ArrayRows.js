@@ -239,7 +239,7 @@ export const ArrayRows = ({
               handleChildCodeUpdate({
                 newCode: value,
                 childIndex: index,
-                childArray: entitiesInfo.items,
+                childArray: (isArrayByText || isArrayByNumbers) ? subquestions: entitiesInfo.items,
                 entityType: entitiesInfo.entity,
                 entityTitleKey: entitiesInfo.titleKey,
               })

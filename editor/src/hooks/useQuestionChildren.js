@@ -311,7 +311,7 @@ export const useQuestionChildren = ({
   }) => {
     const titleKey = entityTitleKey === 'answer' ? 'code' : 'title'
     const newCodeIndex = entityItems
-      ? entityItems.findIndex((item) => item[titleKey] === newCode)
+      ? entityItems.findIndex((item) => item[titleKey]?.toUpperCase() === newCode.toUpperCase())
       : -1
 
     const codeExist = newCodeIndex !== childIndex && newCodeIndex !== -1

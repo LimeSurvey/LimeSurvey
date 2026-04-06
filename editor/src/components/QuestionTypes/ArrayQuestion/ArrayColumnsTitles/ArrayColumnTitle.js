@@ -5,7 +5,7 @@ import { CloseCircleFillIcon, DragIcon } from 'components/icons'
 import { STATES } from 'helpers'
 import { useAppState, useSurvey } from 'hooks'
 import { SubquestionCodeInput } from '../../subquestionCodeComponents'
-import { showErrorMessage } from '../../../ConditionDesigner/utils/conditionAlertHelpers'
+
 export const ArrayColumnTitle = ({
   isFocused,
   removeItem,

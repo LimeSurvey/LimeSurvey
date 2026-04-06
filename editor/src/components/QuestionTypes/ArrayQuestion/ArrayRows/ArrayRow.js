@@ -11,7 +11,6 @@ import {
 } from 'components'
 import { RemoveHTMLTagsInString, STATES } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
-import { showErrorMessage } from '../../../ConditionDesigner/utils/conditionAlertHelpers'
 import { ArraySubQuestionRadioAnswers } from './ArraySubQuestionRadioAnswers'
 import { ArraySubQuestionTextAnswers } from './ArraySubQuestionTextAnswers'
 import { ArraySubQuestionNumberAnswers } from './ArraySubQuestionNumberAnswers'
