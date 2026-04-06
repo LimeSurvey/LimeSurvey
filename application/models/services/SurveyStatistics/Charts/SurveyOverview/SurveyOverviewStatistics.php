@@ -58,13 +58,13 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
         switch (\Yii::app()->db->getDriverName()) {
             case 'mysqli':
             case 'mysql':
-                return "AVG(CASE WHEN submitdate IS NOT NULL THEN TIMESTAMPDIFF(SECOND, startdate, submitdate) ELSE 0 END) AS avgCompletionTime";
+                return "AVG(CASE WHEN submitdate IS NOT NULL THEN TIMESTAMPDIFF(SECOND, startdate, submitdate) END) AS avgCompletionTime";
             case 'mssql':
             case 'sqlsrv':
             case 'dblib':
-                return "AVG(datediff(s, startdate, coalesce(submitdate, startdate))) AS avgCompletionTime";
+                return "AVG(CASE WHEN COALESCE(submitdate, 0) <> 0 THEN datediff(s, startdate, submitdate) END) AS avgCompletionTime";
             case 'pgsql':
-                return "AVG(CASE WHEN submitdate IS NOT NULL THEN TIMESTAMPDIFF(SECOND, startdate, submitdate) ELSE 0 END) AS avgCompletionTime";
+                return "AVG(CASE WHEN CAST(submitdate AS TIMESTAMP) > '1990-01-01 00:00:00' THEN CAST(submitdate AS TIMESTAMP) - CAST(startdate AS TIMESTAMP) END) AS avgCompletionTime";
             default:
                 return '';
         }
