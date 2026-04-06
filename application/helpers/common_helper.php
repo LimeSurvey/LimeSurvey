@@ -1493,7 +1493,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                     try {
                         $rankingSuffix = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
                         $iRankingSuffix = intval($rankingSuffix);
-                        if ((intval($iRankingSuffix) > 0) && isset($questions[0]->answers[($iRankingSuffix - 1)])) {
+                        if (($iRankingSuffix > 0) && isset($questions[0]->answers[($iRankingSuffix - 1)])) {
                             $aid = $cd ? $index : $questions[0]->answers[($iRankingSuffix - 1)]->aid;
                             $newFieldName = "Q{$qid}_{$prefix}" . $aid;
                         } else {
@@ -1515,16 +1515,14 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                             }
                             foreach ($answers as $answer) {
                                 if (($rankingSuffix == $answer->code) || ((intval($iRankingSuffix) > 0) && ($rankingSuffix + $diff == $answer->sortorder))) {
-                                    $newFieldName = "Q{$qid}_{$prefix}{$answer->aid}";
+                                    return "Q{$qid}_{$prefix}{$answer->aid}";
                                 }
-                            }
-                            if (!$newFieldName) {
-                                $newFieldName = $fieldName;
                             }
                         }
                     } catch (\Exception $ex) {
+                        // Ignore inconsistencies in archive rankings
                         if (strpos($tableName, 'old') === false) {
-                            throw $ex; //Ignore inconsistencies in archive rankings
+                            throw $ex;
                         }
                     }
                     break;
