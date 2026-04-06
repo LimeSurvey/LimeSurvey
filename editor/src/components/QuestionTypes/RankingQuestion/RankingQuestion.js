@@ -1,6 +1,5 @@
 import { Entities } from 'helpers'
 import { RankingQuestionAnswers } from './RankingQuestionAnswers'
-import { showErrorMessage } from 'components/ConditionDesigner/utils/conditionAlertHelpers'
 
 export const RankingQuestion = ({
   question: { answers = [] } = {},

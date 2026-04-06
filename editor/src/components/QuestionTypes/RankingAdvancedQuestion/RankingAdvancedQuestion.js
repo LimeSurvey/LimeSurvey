@@ -4,7 +4,6 @@ import { PlusLg } from 'react-bootstrap-icons'
 import { Button } from 'react-bootstrap'
 import { useState } from 'react'
 import { cloneDeep } from 'lodash'
-import { showErrorMessage } from 'components/ConditionDesigner/utils/conditionAlertHelpers'
 import { Entities, getInfoFromObjectByIndex, Toast } from 'helpers'
 
 import { RankingAdvancedQuestionAnswersPlaceholder } from './RankingAdvancedQuestionAnswersPlaceholder'
