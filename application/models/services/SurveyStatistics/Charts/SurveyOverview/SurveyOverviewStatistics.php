@@ -32,15 +32,13 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
     public function run(int $surveyId, string $language = 'en'): StatisticsChartDTO
     {
         $this->surveyId = $surveyId;
-
         $rows = $this->fetchStatisticsOverview();
-        $rows['completionRate'] = round($rows['completionrate'] ?? 0, 2);
-        $rows['totalResponses'] = $rows['totalresponses'];
-        $rows['incompleteResponses'] = (int)$rows['incompleteresponses'];
-        $rows['avgCompletionTime'] = $rows['avgcompletiontime'];
-        if ($rows['avgCompletionTime'] !== null) {
-            $rows['avgCompletionTime'] = round($rows['avgCompletionTime'] ?? 0, 2);
-        }
+        $data = [
+            'completionRate' => round($rows['completionrate'] ?? 0, 2),
+            'totalResponses' => (int)$rows['totalresponses'],
+            'incompleteResponses' => (int)$rows['incompleteresponses'],
+            'avgCompletionTime' => $rows['avgcompletiontime'] ? round($rows['avgcompletiontime'], 2) : null,
+        ];
 
         return new StatisticsChartDTO(
             'Survey Overview',
@@ -50,8 +48,8 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
                 'Completion Rate (%)',
                 'Avg. Completion Time (s)',
             ],
-            $rows,
-            (int)$rows['totalResponses']
+            $data,
+            $data['totalResponses']
         );
     }
 
@@ -66,7 +64,7 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
             case 'dblib':
                 return "AVG(CASE WHEN COALESCE(submitdate, 0) <> 0 THEN datediff(s, startdate, submitdate) END) AS avgcompletiontime";
             case 'pgsql':
-                return "AVG(CASE WHEN CAST(submitdate AS TIMESTAMP) > '1990-01-01 00:00:00' THEN CAST(submitdate AS TIMESTAMP) - CAST(startdate AS TIMESTAMP) END) AS avgcompletiontime";
+                return "AVG(CASE WHEN submitdate IS NOT NULL THEN EXTRACT(EPOCH FROM (submitdate - startdate)) END) AS avgcompletiontime";
             default:
                 return '';
         }
