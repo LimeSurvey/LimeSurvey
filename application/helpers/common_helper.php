@@ -1344,7 +1344,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                         }
                     }
                     $hashTags = explode("#", $fieldName);
-                    if (($rootQuestion->type === \Question::QT_M_MULTIPLE_CHOICE) && ($length < strlen($hashTags[0]))) {
+                    if ((!$currentQuestion) && ($rootQuestion->type === \Question::QT_M_MULTIPLE_CHOICE) && ($length < strlen($hashTags[0]))) {
                         $currentQuestion = \Question::model()->find("parent_qid = {$qid} and title = :title", [
                             ":title" => substr($hashTags[0], $length)
                         ]);
