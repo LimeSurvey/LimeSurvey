@@ -56,9 +56,7 @@ export const RankingQuestionAnswer = ({
               <SubquestionCodeInput
                 isSurveyActive={isSurveyActive}
                 code={code}
-                onChange={(e) =>
-                  handleCodeUpdate(e.target.value, index)
-                }
+                onChange={(e) => handleCodeUpdate(e.target.value, index)}
               />
             )}
             <ContentEditor

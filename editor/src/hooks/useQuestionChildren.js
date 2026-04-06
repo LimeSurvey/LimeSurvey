@@ -289,7 +289,7 @@ export const useQuestionChildren = ({
       ...updatedChildren[childIndex],
       [codeKey]: newCode,
     }
-    
+
     const operation =
       entityType === Entities.answer
         ? createBufferOperation(question.qid)
@@ -311,7 +311,9 @@ export const useQuestionChildren = ({
   }) => {
     const titleKey = entityTitleKey === 'answer' ? 'code' : 'title'
     const newCodeIndex = entityItems
-      ? entityItems.findIndex((item) => item[titleKey]?.toUpperCase() === newCode.toUpperCase())
+      ? entityItems.findIndex(
+          (item) => item[titleKey]?.toUpperCase() === newCode.toUpperCase()
+        )
       : -1
 
     const codeExist = newCodeIndex !== childIndex && newCodeIndex !== -1
