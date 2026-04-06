@@ -67,7 +67,6 @@ class TestBaseClass extends TestCase
         self::$screenshotsFolder = self::$tempFolder . '/screenshots';
         self::$testHelper->importAll();
 
-        \Yii::import('application.helpers.globalsettings_helper', true);
     }
 
     /**

@@ -92,8 +92,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                         <input type='hidden' name="filetype" value="<?php echo CHtml::encode('screen'); ?>"/>
                                         <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>"/>
                                         <input type='submit' class='btn btn-outline-secondary btn-xs' value='<?php eT("Reset"); ?>'
-                                               onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ",
-                                                   "js"); ?>')"/>
+                                               onclick="javascript:return confirm('<?php eT("Are you sure you want to reset this file?", "js"); ?>')"/>
                                         <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>'/>
                                         <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>'/>
                                         <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>'/>
@@ -130,8 +129,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                         <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>"/>
                                         <input type='submit' class='btn btn-outline-secondary btn-xs template-files-delete-button'
                                                value='<?php eT("Reset"); ?>'
-                                               onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ",
-                                                   "js"); ?>')"/>
+                                               onclick="javascript:return confirm('<?php eT("Are you sure you want to reset this file?", "js"); ?>')"/>
                                         <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>'/>
                                         <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>'/>
                                         <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>'/>
@@ -169,8 +167,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                         <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>"/>
                                         <input type='submit' class='btn btn-outline-secondary btn-xs template-files-delete-button'
                                                value='<?php eT("Reset"); ?>'
-                                               onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ",
-                                                   "js"); ?>')"/>
+                                               onclick="javascript:return confirm('<?php eT("Are you sure you want to reset this file?", "js"); ?>')"/>
                                         <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>'/>
                                         <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>'/>
                                         <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>'/>
@@ -206,8 +203,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                             <input type='submit'
                                                    class='btn btn-outline-secondary btn-xs template-files-delete-button other-files-delete-button'
                                                    value='<?php eT("Reset"); ?>'
-                                                   onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ",
-                                                       "js"); ?>')"/>
+                                                   onclick="javascript:return confirm('<?php eT("Are you sure you want to reset this file?", "js"); ?>')"/>
                                             <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>'/>
                                             <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>'/>
                                             <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>'/>

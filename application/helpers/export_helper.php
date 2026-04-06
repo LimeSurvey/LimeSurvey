@@ -281,7 +281,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
 */
 function SPSSGetValues($field, $qidattributes, $language)
 {
-    $language = sanitize_languagecode($language);
+    $language = \LSYii_Validators::languageCodeFilter($language);
 
     $length_vallabel = 120; // Constant ?
     if (!isset($field['LStype']) || empty($field['LStype'])) {
@@ -383,7 +383,7 @@ function SPSSGetValues($field, $qidattributes, $language)
             );
         } else {
             $answers[] = array('code' => 1, 'value' => gT('Yes'));
-            $answers[] = array('code' => 0, 'value' => gT('Not Selected'));
+            $answers[] = array('code' => 0, 'value' => gT('Not selected'));
         }
     }
     if ($field['LStype'] == "P") {
@@ -394,7 +394,7 @@ function SPSSGetValues($field, $qidattributes, $language)
             );
         } else {
             $answers[] = array('code' => 1, 'value' => gT('Yes'));
-            $answers[] = array('code' => 0, 'value' => gT('Not Selected'));
+            $answers[] = array('code' => 0, 'value' => gT('Not selected'));
         }
     }
     if ($field['LStype'] == "G") {
@@ -1029,7 +1029,7 @@ function surveyGetXMLData($iSurveyID, $exclude = array())
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
     $xml->writeElement('LimeSurveyDocType', 'Survey');
-    $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
+    $xml->writeElement('DBVersion', Yii::app()->getConfig("DBVersion"));
     $xml->startElement('languages');
     $surveylanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
     $surveylanguages[] = Survey::model()->findByPk($iSurveyID)->language;
@@ -1068,7 +1068,7 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
     $xml->writeElement('LimeSurveyDocType', $sDocType);
-    $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
+    $xml->writeElement('DBVersion', Yii::app()->getConfig("DBVersion"));
     $xml->startElement('languages');
     $aSurveyLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
     $aSurveyLanguages[] = Survey::model()->findByPk($iSurveyID)->language;
@@ -1315,7 +1315,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
     App()->setLanguage($quexmllang);
 
     $aCondition = array('parent_qid' => $qid);
-    $quexmllang = sanitize_languagecode($quexmllang);
+    $quexmllang = \LSYii_Validators::languageCodeFilter($quexmllang);
     $scale_id   = sanitize_paranoid_string($scale_id);
 
     if ($scale_id != false) {
@@ -1438,7 +1438,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
     global $quexmllang;
     global $iSurveyID;
 
-    $quexmllang = sanitize_languagecode($quexmllang);
+    $quexmllang = \LSYii_Validators::languageCodeFilter($quexmllang);
     $qid        = sanitize_paranoid_string($qid);
     if ($use_answers) {
         // $Query = "SELECT qid, answer as question, code as title, sortorder as aid FROM {{answers}} WHERE qid = $qid  AND language='$quexmllang' ORDER BY sortorder ASC";
@@ -1628,7 +1628,7 @@ function quexml_create_question($RowQ, $additional = false)
         $question->appendChild($directive);
     }
 
-    if (App()->getConfig('quexmlshowprintablehelp') == true) {
+    if (Yii::app()->getConfig('quexmlshowprintablehelp') == true) {
         $RowQ['printable_help'] = quexml_get_lengthth($RowQ['qid'], "printable_help", "", $quexmllang);
 
         if (!empty($RowQ['printable_help'])) {
@@ -2079,7 +2079,7 @@ function group_export($action, $iSurveyID, $gid)
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
     $xml->writeElement('LimeSurveyDocType', 'Group');
-    $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
+    $xml->writeElement('DBVersion', Yii::app()->getConfig("DBVersion"));
     $xml->startElement('languages');
 
     $lresult = QuestionGroupL10n::model()->findAllByAttributes(array('gid' => $gid), array('select' => 'language', 'group' => 'language'));
@@ -2217,7 +2217,7 @@ function questionExport($action, $iSurveyID, $gid, $qid)
         [":sid" => $iSurveyID, ":gid" => $gid, ":qid" => $qid]
     );
     if (empty($question)) {
-        throw new CHttpException(404, gT("Invalid question id"));
+        throw new CHttpException(404, gT("Invalid question ID"));
     }
     $fn = "limesurvey_question_$qid.lsq";
     $xml = getXMLWriter();
@@ -2234,7 +2234,7 @@ function questionExport($action, $iSurveyID, $gid, $qid)
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
     $xml->writeElement('LimeSurveyDocType', 'Question');
-    $xml->writeElement('DBVersion', getGlobalSetting('DBVersion'));
+    $xml->writeElement('DBVersion', Yii::app()->getConfig('DBVersion'));
     $xml->startElement('languages');
     $aLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
     $aLanguages[] = Survey::model()->findByPk($iSurveyID)->language;
@@ -2458,11 +2458,11 @@ function tokensExport($iSurveyID)
             if (Yii::app()->request->getPost('maskequations')) {
                 $brow = array_map('MaskFormula', $brow);
             }
-            if (trim($brow['validfrom'] != '')) {
+            if (trim((string) $brow['validfrom']) != '') {
                 $datetimeobj = new Date_Time_Converter($brow['validfrom'], "Y-m-d H:i:s");
                 $brow['validfrom'] = $datetimeobj->convert('Y-m-d H:i');
             }
-            if (trim($brow['validuntil'] != '')) {
+            if (trim((string) $brow['validuntil']) != '') {
                 $datetimeobj = new Date_Time_Converter($brow['validuntil'], "Y-m-d H:i:s");
                 $brow['validuntil'] = $datetimeobj->convert('Y-m-d H:i');
             }

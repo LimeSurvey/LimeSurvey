@@ -888,7 +888,7 @@ class SurveyRuntimeHelper
                 $this->LEMskipReprocessing = true;
                 $this->sMove                = "movenext"; // so will re-display the survey
                 $this->bInvalidLastPage     = true;
-                $this->backpopup           = gT("Please use the survey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."); // TODO: twig
+                $this->backpopup           = gT("Please use the survey navigation buttons or index. It appears you attempted to use the browser back button to re-submit a page."); // TODO: twig
             }
         }
     }
@@ -1569,7 +1569,7 @@ class SurveyRuntimeHelper
             }
 
             if (!empty(App()->getLanguage())) {
-                $restartparam['lang'] = sanitize_languagecode(App()->getLanguage());
+                $restartparam['lang'] = \LSYii_Validators::languageCodeFilter(App()->getLanguage());
             } else {
                 $s_lang = Yii::app()->session['responses_' . $this->iSurveyid]['s_lang'] ?? 'en';
                 $restartparam['lang'] = $s_lang;

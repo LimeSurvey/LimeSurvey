@@ -73,7 +73,6 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property integer $questionindex Show question index / allow jumping (0: diabled; 1: Incremental; 2: Full)
  * @property integer $navigationdelay Navigation delay (seconds) (It shows the number of seconds before the previous,
  * next, and submit buttons are enabled. If none is specified, the option will use the default value, which is "0" (seconds))
- * @property string $nokeyboard Show on-screen keyboard: (Y/N)
  * @property string $alloweditaftercompletion Allow multiple responses or update responses with one token: (Y/N)
  * @property string $googleanalyticsstyle Google Analytics style: (0: off; 1:Default; 2:Survey-SID/Group)
  * @property string $googleanalyticsapikey Google Analytics Tracking ID
@@ -139,7 +138,6 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isShowWelcome Show welcome screen
  * @property bool $isShowProgress how progress bar
  * @property bool $showsurveypolicynotice Show the security notice
- * @property bool $isNoKeyboard Show on-screen keyboard
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
  * @property string $access_mode Whether the access mode is open (O) or closed (C), if O token-based participation may be supported, if C, it's enforced
  * @property SurveyLanguageSetting $defaultlanguage
@@ -208,7 +206,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $this->tokenencryptionoptions = '';
 
         // Default setting is to use the global Google Analytics key If one exists
-        $globalKey = App()->getConfig('googleanalyticsapikey');
+        $globalKey = Yii::app()->getConfig('googleanalyticsapikey');
         if ($globalKey != "") {
             $this->googleanalyticsapikey = "9999useGlobal9999";
             $this->googleanalyticsapikeysetting = "G";
@@ -216,11 +214,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
         /* default template */
         $this->template = 'inherit';
         /* default language */
-        $this->language = \LSYii_Validators::languageCodeFilter(App()->getConfig('defaultlang'));
+        $this->language = \LSYii_Validators::languageCodeFilter(Yii::app()->getConfig('defaultlang'));
         /* default user */
         $this->owner_id = 1;
-        $this->admin = App()->getConfig('siteadminname');
-        $this->adminemail = App()->getConfig('siteadminemail');
+        $this->admin = Yii::app()->getConfig('siteadminname');
+        $this->adminemail = Yii::app()->getConfig('siteadminemail');
         if (!(Yii::app() instanceof CConsoleApplication)) {
             $iUserid = Permission::model()->getUserId();
             if ($iUserid) {
@@ -238,7 +236,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function attributeLabels()
     {
         return array(
-            'running' => gT('running')
+            'running' => gT('Running')
         );
     }
 
@@ -534,7 +532,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('showsurveypolicynotice', 'in', 'range' => array('0', '1', '2'), 'allowEmpty' => true),
             array('showprogress', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('questionindex', 'numerical', 'min' => -1, 'max' => 2, 'allowEmpty' => false),
-            array('nokeyboard', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('alloweditaftercompletion', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('bounceprocessing', 'in', 'range' => array('L', 'N', 'G'), 'allowEmpty' => true),
             array('usecaptcha', 'in', 'range' => array('A', 'B', 'C', 'D', 'X', 'R', 'S', 'N', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'O', 'P', 'T', 'U', '1', '2', '3', '4', '5', '6'), 'allowEmpty' => true),
@@ -605,7 +602,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 $oSurvey = self::model()->findByPk($this->sid);
                 if ($oSurvey->template != $sTemplateName) {
                     // No need to test !is_null($oSurvey)
-                    $sTemplateName = getGlobalSetting('defaulttheme');
+                    $sTemplateName = Yii::app()->getConfig('defaulttheme');
                 }
             } else {
                 $sTemplateName = 'inherit';
@@ -1166,7 +1163,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getRunning()
     {
-            $onclick = App()->getConfig('editorEnabled')
+            $onclick = Yii::app()->getConfig('editorEnabled')
                 ? ' onclick="return  false;" '
                 : '';
 
@@ -1393,13 +1390,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getIsShowProgress()
     {
         return ($this->oOptions->showprogress === 'Y');
-    }
-    /**
-     * @return bool
-     */
-    public function getIsNoKeyboard()
-    {
-        return ($this->oOptions->nokeyboard === 'Y');
     }
     /**
      * @return bool
@@ -1920,7 +1910,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $criteriaPerm->compare("surveysingrouppermissions{$userid}.read_p", '1', false, 'OR'); // This mean : update, export … didn't allow see in list
 
             /* Under condition : owner of group */
-            if (App()->getConfig('ownerManageAllSurveysInGroup')) {
+            if (Yii::app()->getConfig('ownerManageAllSurveysInGroup')) {
                 $criteriaPerm->mergeWith(
                     array(
                         'join' => "LEFT JOIN {{surveys_groups}} AS surveysgroupsowner{$userid} ON (surveysgroupsowner{$userid}.gsid = t.gsid) ",
@@ -1967,7 +1957,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * @return string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
      */
-    public static function saveTranscribeCaptchaOptions(Survey $oSurvey = null)
+    public static function saveTranscribeCaptchaOptions(?Survey $oSurvey = null)
     {
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess', null);
         $registration = App()->request->getPost('usecaptcha_registration', null);
@@ -1981,35 +1971,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         $surveyUseCaptcha = new \LimeSurvey\Models\Services\SurveyUseCaptcha(0, $oSurvey);
         return $surveyUseCaptcha->convertUseCaptchaForDB($surveyaccess, $registration, $saveandload);
-    }
-
-
-    /**
-     * Method to make an approximation on how long a survey will last
-     * Approx is 3 questions each minute.
-     *
-     * @deprecated Unused since 3.X
-     * @return double
-     */
-    public function calculateEstimatedTime()
-    {
-        //@TODO make the time_per_question variable user configureable
-        $time_per_question = 0.5;
-        $criteria = new CDbCriteria();
-        $criteria->addCondition('sid = ' . $this->sid);
-        $criteria->addCondition('parent_qid = 0');
-        $criteria->addCondition('language = \'' . $this->language . '\'');
-        $baseQuestions = Question::model()->count($criteria);
-        // Note: An array questions with one sub question is fetched as 1 base question + 1 sub question
-        $criteria = new CDbCriteria();
-        $criteria->addCondition('sid = ' . $this->sid);
-        $criteria->addCondition('parent_qid != 0');
-        $criteria->addCondition('language = \'' . $this->language . '\'');
-        $subQuestions = Question::model()->count($criteria);
-        // Subquestions are worth less "time" than base questions
-        $subQuestions = intval(($subQuestions - $baseQuestions) / 2);
-        $subQuestions = $subQuestions < 0 ? 0 : $subQuestions;
-        return ceil(($subQuestions + $baseQuestions) * $time_per_question);
     }
 
     /**

@@ -145,7 +145,7 @@ class ResponsesController extends LSBaseController
         // We just check it again here to be sure.
         $exist = SurveyDynamic::model($surveyId)->exist($id);
         if (!$exist) {
-            throw new CHttpException(404, gT("Invalid response id."));
+            throw new CHttpException(404, gT("Invalid response ID"));
         }
         $next = SurveyDynamic::model($surveyId)->next($id, true);
         $previous = SurveyDynamic::model($surveyId)->previous($id, true);
@@ -903,17 +903,17 @@ class ResponsesController extends LSBaseController
             }
 
             if ($fielddetails['type'] === 'page_time') {
-                $fnames[] = [$fielddetails['fieldname'], gT('Group') . ": " . $fielddetails['group_name']];
+                $fnames[] = [$fielddetails['fieldname'], sprintf(gT('Group: %s'), $fielddetails['group_name'])];
                 $aData['columns'][] = [
-                    'header' => gT('Group: ') . $fielddetails['group_name'],
+                    'header' => sprintf(gT('Group: %s'), $fielddetails['group_name']),
                     'name'   => $fielddetails['fieldname']
                 ];
             }
 
             if ($fielddetails['type'] === 'answer_time') {
-                $fnames[] = [$fielddetails['fieldname'], gT('Question') . ": " . $fielddetails['title']];
+                $fnames[] = [$fielddetails['fieldname'], sprintf(gT('Question: %s'), $fielddetails['title'])];
                 $aData['columns'][] = [
-                    'header' => gT('Question: ') . $fielddetails['title'],
+                    'header' => sprintf(gT('Question: %s'), $fielddetails['title']),
                     'name'   => $fielddetails['fieldname']
                 ];
             }
@@ -1047,7 +1047,7 @@ class ResponsesController extends LSBaseController
      * @param string|null $language
      * @return array
      */
-    private function getData(int $surveyId = null, int $responseId = null, string $language = null): array
+    private function getData(?int $surveyId = null, ?int $responseId = null, ?string $language = null): array
     {
         if (!isset($surveyId)) {
             App()->setFlashMessage(gT("Invalid survey ID"), 'warning');
@@ -1075,7 +1075,7 @@ class ResponsesController extends LSBaseController
         if (!empty($responseId)) {
             /* Check if exists  */
             if (empty(SurveyDynamic::model($surveyId)->findByPk($responseId))) {
-                throw new CHttpException(404, gT("Invalid response id."));
+                throw new CHttpException(404, gT("Invalid response ID"));
             }
             $aData['iId'] = $responseId;
         }

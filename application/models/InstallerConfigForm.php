@@ -40,7 +40,7 @@ class InstallerConfigForm extends CFormModel
     public const DB_TYPE_ODBC = 'odbc';
 
     public const MINIMUM_MEMORY_LIMIT = 128;
-    public const MINIMUM_PHP_VERSION = '7.4.0';
+    public const MINIMUM_PHP_VERSION = '8.1.29';
 
     // Database
     /** @var string $dbtype */
@@ -188,7 +188,7 @@ class InstallerConfigForm extends CFormModel
             'dbuser' => gT('Database user'),
             'dbpwd' => gT('Database password'),
             'dbprefix' => gT('Table prefix'),
-            'dbengine' => gT('MySQL database engine type'),
+            'dbengine' => gT('MariaDB/MySQL database engine type'),
         );
     }
 
@@ -292,7 +292,7 @@ class InstallerConfigForm extends CFormModel
             $this->isMysql
             && ($this->dbengine === null or !in_array($this->dbengine, array_keys($this->dbEngines)))
         ) {
-            $this->addError($attribute, gT('The database engine type must be set for MySQL'));
+            $this->addError($attribute, gT('The database engine type must be set to MariaDB/MySQL'));
         }
 
         if ($this->isMysql && $this->dbengine === self::ENGINE_TYPE_INNODB) {

@@ -264,9 +264,9 @@ class ExpressionManager
             'strpos' => array('exprmgr_strpos', 'LEMstrpos', gT('Find position of first occurrence of a string'), 'int strpos(haystack, needle [ offset=0])', 'http://php.net/strpos', 2, 3),
             'strrev' => array('strrev', 'strrev', gT('Reverse a string'), 'string strrev(string)', 'http://php.net/strrev', 1),
             'strstr' => array('exprmgr_strstr', 'strstr', gT('Find first occurrence of a string'), 'string strstr(haystack, needle [, before_needle=false])', 'http://php.net/strstr', 2, 3),
-            'strtolower' => array('exprmgr_strtolower', 'LEMstrtolower', gT('Make a string lowercase'), 'string strtolower(string)', 'http://php.net/strtolower', 1),
+            'strtolower' => array('exprmgr_strtolower', 'LEMstrtolower', gT('Convert a string to lowercase'), 'string strtolower(string)', 'http://php.net/strtolower', 1),
             'strtotime' => array('strtotime', 'strtotime', gT('Convert a date/time string to unix timestamp'), 'int strtotime(string)', 'http://php.net/manual/de/function.strtotime', 1),
-            'strtoupper' => array('exprmgr_strtoupper', 'LEMstrtoupper', gT('Make a string uppercase'), 'string strtoupper(string)', 'http://php.net/strtoupper', 1),
+            'strtoupper' => array('exprmgr_strtoupper', 'LEMstrtoupper', gT('Convert a string to uppercase'), 'string strtoupper(string)', 'http://php.net/strtoupper', 1),
             'substr' => array('exprmgr_substr', 'substr', gT('Return part of a string'), 'string substr(string, start [, length])', 'http://php.net/substr', 2, 3),
             'sum' => array('exprmgr_array_sum', 'LEMsum', gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
             'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', gT('Sum the values of answered questions in the list which pass the critiera (arg op value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
@@ -1746,7 +1746,7 @@ class ExpressionManager
 
     /**
      * Reset current warnings
-     * @see Related issue #15547: Invalid error count on Survey Logic file for subquestion relevance
+     * @see Related issue #15547: Invalid error count on Survey Logic overview for subquestion relevance
      * @link https://bugs.limesurvey.org/view.php?id=15547
      * ProcessBooleanExpression didn't reset RDP_errors anb RDP_warnings, need a way to reset for Survey logic checking
      * @return void
@@ -2762,10 +2762,11 @@ function exprmgr_countifop($args)
  */
 function exprmgr_stripos($haystack, $needle, $offset = 0)
 {
+    $haystack = ($haystack ?? '');
     if ($offset > mb_strlen($haystack)) {
-            return false;
+        return false;
     }
-    return mb_stripos($haystack, $needle, $offset, 'UTF-8');
+    return mb_stripos($haystack, ($needle ?? ''), $offset, 'UTF-8');
 }
 /**
  * Finds first occurrence of a unicode string within another, case-insensitive
@@ -2776,7 +2777,7 @@ function exprmgr_stripos($haystack, $needle, $offset = 0)
  */
 function exprmgr_stristr($haystack, $needle, $before_needle = false)
 {
-    return mb_stristr($haystack, $needle, $before_needle, 'UTF-8');
+    return mb_stristr((string) ($haystack ?? ''), (string) ($needle ?? ''), $before_needle, 'UTF-8');
 }
 /**
  * Get unicode string length
@@ -2785,7 +2786,7 @@ function exprmgr_stristr($haystack, $needle, $before_needle = false)
  */
 function exprmgr_strlen($string)
 {
-    return mb_strlen($string, 'UTF-8');
+    return mb_strlen(($string ?? ''), 'UTF-8');
 }
 /**
  * Find position of first occurrence of unicode string in a unicode string
@@ -2796,10 +2797,11 @@ function exprmgr_strlen($string)
  */
 function exprmgr_strpos($haystack, $needle, $offset = 0)
 {
+    $haystack = ($haystack ?? '');
     if ($offset > mb_strlen($haystack)) {
-            return false;
+        return false;
     }
-    return mb_strpos($haystack, $needle, $offset, 'UTF-8');
+    return mb_strpos($haystack, ($needle ?? ''), $offset, 'UTF-8');
 }
 /**
  * Finds first occurrence of a unicode string within another
@@ -2810,7 +2812,7 @@ function exprmgr_strpos($haystack, $needle, $offset = 0)
  */
 function exprmgr_strstr($haystack, $needle, $before_needle = false)
 {
-    return mb_strstr($haystack, $needle, $before_needle, 'UTF-8');
+    return mb_strstr(($haystack ?? ''), ($needle ?? ''), $before_needle, 'UTF-8');
 }
 /**
  * Make an unicode string lowercase
@@ -2819,7 +2821,7 @@ function exprmgr_strstr($haystack, $needle, $before_needle = false)
  */
 function exprmgr_strtolower($string)
 {
-    return mb_strtolower($string, 'UTF-8');
+    return mb_strtolower(($string ?? ''), 'UTF-8');
 }
 /**
  * Make an unicode string uppercase
@@ -2828,7 +2830,7 @@ function exprmgr_strtolower($string)
  */
 function exprmgr_strtoupper($string)
 {
-    return mb_strtoupper($string, 'UTF-8');
+    return mb_strtoupper(($string ?? ''), 'UTF-8');
 }
 /**
  * Get part of unicode string
@@ -2839,7 +2841,7 @@ function exprmgr_strtoupper($string)
  */
 function exprmgr_substr($string, $start, $end = null)
 {
-    return mb_substr($string, $start, $end, 'UTF-8');
+    return mb_substr(($string ?? ''), $start, $end, 'UTF-8');
 }
 /**
  * Sum of values of answered questions which meet the criteria (arg op value)

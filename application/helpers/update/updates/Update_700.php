@@ -44,7 +44,7 @@ class Update_700 extends DatabaseUpdateBase
     protected function createOldFieldMap($survey, $style = 'short', $force_refresh = false, $questionid = false, $sLanguage = '', &$aDuplicateQIDs = array())
     {
 
-        $sLanguage = sanitize_languagecode($sLanguage);
+        $sLanguage = \LSYii_Validators::languageCodeFilter($sLanguage);
         $surveyid = $survey->sid;
         //checks to see if fieldmap has already been built for this page.
         if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh && $questionid === false) {
@@ -1032,7 +1032,7 @@ class Update_700 extends DatabaseUpdateBase
                 'old_name' => $timingsTable['old_name'],
                 'handled' => false
             ];
-            $createTable = $this->adjustShowCreateTable($this->db->createCommand($this->showCreateTable($timingsTable['old_name']))->queryRow(), $responsesTable['old_name']);
+            $createTable = $this->adjustShowCreateTable($this->db->createCommand($this->showCreateTable($timingsTable['old_name']))->queryRow(), $timingsTable['old_name']);
             $scripts[$timingsTable['old_name']]['CREATE'] = $createTable["Create Table"];
             $scripts[$timingsTable['old_name']]['DROP'] = "DROP TABLE {$timingsTable['old_name']}";
             $scripts[$timingsTable['old_name']]['columns'] = $this->db->createCommand($this->getFieldsFromTableScript($timingsTable['old_name']))->queryAll();

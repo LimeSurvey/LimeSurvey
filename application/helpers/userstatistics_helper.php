@@ -573,7 +573,7 @@ class userstatistics_helper
      */
     protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage, $browse = true)
     {
-        $language = sanitize_languagecode($language);
+        $language = \LSYii_Validators::languageCodeFilter($language);
         $surveyid = (int) $surveyid;
 
         //Set up required variables
@@ -1881,7 +1881,7 @@ class userstatistics_helper
 
                 //output
                 if ((incompleteAnsFilterState() != "complete")) {
-                    $fname = gT("Not completed or Not displayed");
+                    $fname = gT("Not completed or not displayed");
                 } else {
                     $fname = gT("Not displayed");
                 }
@@ -1908,7 +1908,7 @@ class userstatistics_helper
 
                 //edit labels and put them into another array
                 if ((incompleteAnsFilterState() != "complete")) {
-                    $lbl[gT("Not completed or Not displayed")] = $TotalIncomplete;
+                    $lbl[gT("Not completed or not displayed")] = $TotalIncomplete;
                 } else {
                     $lbl[gT("Not displayed")] = $TotalIncomplete;
                 }
@@ -1946,7 +1946,7 @@ class userstatistics_helper
                 // Add a line with not displayed %
                 if ($multiNotDisplayed > 0) {
                     if ((incompleteAnsFilterState() != "complete")) {
-                        $fname = gT("Not completed or Not displayed");
+                        $fname = gT("Not completed or not displayed");
                     } else {
                         $fname = gT("Not displayed");
                     }

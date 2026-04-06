@@ -157,7 +157,7 @@ class UserManagementController extends LSBaseController
             if ($passwordTest !== $aUser['password']) {
                 return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                     'success' => false,
-                    'errors' => gT('Passwords do not match'),
+                    'errors' => gT('Passwords do not match!'),
                 ]]);
             }
             $user = new User();
@@ -1283,7 +1283,7 @@ class UserManagementController extends LSBaseController
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
             array(
                 'aResults'     => $aResults,
-                'successLabel' => gT('Usergroup updated'),
+                'successLabel' => gT('User group updated'),
                 'tableLabels' =>  $tableLabels
             )
         );
@@ -1360,7 +1360,7 @@ class UserManagementController extends LSBaseController
                 && $oUser->parent_id != App()->session['loginID']
             )
         ) {
-            App()->user->setFlash('error', gT("Access denied"));
+            App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(App()->createUrl("userManagement/index"));
         }
 
