@@ -66,7 +66,7 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
             case 'pgsql':
                 return "AVG(CASE WHEN submitdate IS NOT NULL THEN EXTRACT(EPOCH FROM (submitdate - startdate)) END) AS avgcompletiontime";
             default:
-                return '';
+                return new CDbExpression('NULL AS avgcompletiontime');
         }
     }
 
