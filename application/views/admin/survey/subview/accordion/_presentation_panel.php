@@ -167,24 +167,6 @@ if ($bShowInherited) {
                 </div>
             </div>
 
-            <!-- Show on-screen keyboard -->
-            <div class="mb-3">
-                <label class=" form-label" for='nokeyboard'><?php eT("... on-screen keyboard"); ?></label>
-                <div class="">
-                    <?php $this->widget(
-                        'ext.ButtonGroupWidget.ButtonGroupWidget',
-                        array(
-                            'name' => 'nokeyboard',
-                            'checkedOption' => $oSurvey->nokeyboard,
-                            'ariaLabel' => gT('on-screen keyboard'),
-                            'selectOptions' => ($bShowInherited) ?
-                                array_merge($optionsOnOff, array('I' => $oSurveyOptions->nokeyboard . " ᴵ")) : $optionsOnOff
-                        )
-                    );
-                    ?>
-                </div>
-            </div>
-
             <!-- Show progress bar -->
             <div class="mb-3">
                 <label class=" form-label" for='showprogress'><?php eT("... progress bar"); ?></label>

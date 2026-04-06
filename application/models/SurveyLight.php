@@ -76,7 +76,6 @@
  * @property integer $questionindex Show question index / allow jumping (0: diabled; 1: Incremental; 2: Full)
  * @property integer $navigationdelay Navigation delay (seconds) (It shows the number of seconds before the previous,
  * next, and submit buttons are enabled. If none is specified, the option will use the default value, which is "0" (seconds))
- * @property string $nokeyboard Show on-screen keyboard: (Y/N)
  * @property string $alloweditaftercompletion Allow multiple responses or update responses with one token: (Y/N)
  * @property string $googleanalyticsstyle Google Analytics style: (0: off; 1:Default; 2:Survey-SID/Group)
  * @property string $googleanalyticsapikey Google Analytics Tracking ID
@@ -142,7 +141,6 @@
  * @property bool $isShowWelcome Show welcome screen
  * @property bool $isShowProgress how progress bar
  * @property bool $showsurveypolicynotice Show the security notice
- * @property bool $isNoKeyboard Show on-screen keyboard
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
  * @property SurveyLanguageSetting $defaultlanguage
  * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status

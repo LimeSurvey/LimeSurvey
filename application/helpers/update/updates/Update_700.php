@@ -44,7 +44,7 @@ class Update_700 extends DatabaseUpdateBase
     protected function createOldFieldMap($survey, $style = 'short', $force_refresh = false, $questionid = false, $sLanguage = '', &$aDuplicateQIDs = array())
     {
 
-        $sLanguage = sanitize_languagecode($sLanguage);
+        $sLanguage = \LSYii_Validators::languageCodeFilter($sLanguage);
         $surveyid = $survey->sid;
         //checks to see if fieldmap has already been built for this page.
         if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh && $questionid === false) {

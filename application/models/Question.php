@@ -376,70 +376,24 @@ class Question extends LSActiveRecord
         return $aAttributes;
     }
 
-    /**
-     * Add custom attributes (if there are any custom attributes). It also removes all attributeNames where inputType is
-     * empty. Otherwise (not adding and removing anything)it returns the incoming parameter $aAttributeNames.
-     *
-     * @param array $aAttributeNames  the values from getQuestionAttributesSettings($sType)
-     * @param array $aAttributeValues  $attributeValues['question_template'] != 'core', only if this is true the function changes something
-     * @param Question $oQuestion      this is needed to check if a questionTemplate has custom attributes
-     * @return mixed  returns the incoming parameter $aAttributeNames or
-     *
-     * @deprecated use QuestionTheme::getAdditionalAttrFromExtendedTheme() to retrieve question theme attributes and
-     *             QuestionAttributeHelper->mergeQuestionAttributes() to merge with base attributes.
-     */
-    public static function getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion)
-    {
-        if (isset($aAttributeValues['question_template']) && ($aAttributeValues['question_template'] != 'core')) {
-            if (empty($oQuestion)) {
-                throw new Exception('oQuestion cannot be empty');
-            }
-            $oQuestionTemplate = QuestionTemplate::getInstance($oQuestion);
-            if ($oQuestionTemplate->bHasCustomAttributes) {
-                // Add the custom attributes to the list
-                foreach ($oQuestionTemplate->oConfig->attributes->attribute as $attribute) {
-                    $sAttributeName = (string)$attribute->name;
-                    $sInputType = (string)$attribute->inputtype;
-                    // remove attribute if inputtype is empty
-                    if (empty($sInputType)) {
-                        unset($aAttributeNames[$sAttributeName]);
-                    } else {
-                        $aCustomAttribute = json_decode(json_encode((array)$attribute), 1);
-                        $aCustomAttribute = array_merge(
-                            QuestionAttribute::getDefaultSettings(),
-                            array("category" => gT("Template")),
-                            $aCustomAttribute
-                        );
-                        $aAttributeNames[$sAttributeName] = $aCustomAttribute;
-                    }
-                }
-            }
-        }
-        return $aAttributeNames;
-    }
-
-    public function getTypeGroup()
-    {
-    }
-
-    /**
-     * TODO: replace this function call by $oSurvey->questions defining a relation in SurveyModel
-     * @param integer $sid
-     * @param integer $gid
-     * @return CDbDataReader
-     */
-    public function getQuestions($sid, $gid)
-    {
-        return Yii::app()->db->createCommand()
-            ->select()
-            ->from(self::tableName())
-            ->where(array('and', 'sid=:sid', 'gid=:gid', 'parent_qid=0'))
-            ->order('question_order asc')
-            ->bindParam(":sid", $sid, PDO::PARAM_INT)
-            ->bindParam(":gid", $gid, PDO::PARAM_INT)
-            //->bindParam(":language", $language, PDO::PARAM_STR)
-            ->query();
-    }
+//    /**
+//     * TODO: replace this function call by $oSurvey->questions defining a relation in SurveyModel
+//     * @param integer $sid
+//     * @param integer $gid
+//     * @return CDbDataReader
+//     */
+//    public function getQuestions($sid, $gid)
+//    {
+//        return Yii::app()->db->createCommand()
+//            ->select()
+//            ->from(self::tableName())
+//            ->where(array('and', 'sid=:sid', 'gid=:gid', 'parent_qid=0'))
+//            ->order('question_order asc')
+//            ->bindParam(":sid", $sid, PDO::PARAM_INT)
+//            ->bindParam(":gid", $gid, PDO::PARAM_INT)
+//            //->bindParam(":language", $language, PDO::PARAM_STR)
+//            ->query();
+//    }
 
     /**
      * Delete a bunch of questions in one go
@@ -583,61 +537,6 @@ class Question extends LSActiveRecord
                     'params'    => array(':sid' => $surveyid)
                 )
             );
-    }
-
-    /**
-     * @return string
-     * NOTE: Not used anymore. Based on a deprecated method. Should be deprecated.
-     */
-    public function getTypedesc()
-    {
-        $types = self::typeList();
-        $typeDesc = $types[$this->type]["description"];
-
-        if (YII_DEBUG) {
-            $typeDesc .= ' <em>' . $this->type . '</em>';
-        }
-
-        return $typeDesc;
-    }
-
-    /**
-     * This function contains the question type definitions.
-     * @param string $language Language for translation
-     * @return array The question type definitions
-     *
-     * Explanation of questiontype array:
-     *
-     * description : Question description
-     * subquestions : 0= Does not support subquestions x=Number of subquestion scales
-     * answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
-     * assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
-     * @deprecated use QuestionTheme::findQuestionMetaDataForAllTypes() instead
-     */
-    public static function typeList($language = null)
-    {
-        $QuestionTypes = QuestionType::modelsAttributes($language);
-
-        /**
-         * @todo Check if this actually does anything, since the values are arrays.
-         */
-        asort($QuestionTypes);
-
-        return $QuestionTypes;
-    }
-
-    /**
-     * This function return the name by question type
-     * @param string question type
-     * @return string Question type name
-     *
-     * Maybe move class in typeList ?
-     * @deprecated use $this->>questionType->description instead
-     */
-    public static function getQuestionTypeName($sType)
-    {
-        $typeList = self::typeList();
-        return $typeList[$sType]['description'];
     }
 
     /**
@@ -1428,22 +1327,6 @@ class Question extends LSActiveRecord
             $question->question_order = $question->question_order + 1;
             $question->save();
         }
-    }
-
-    /**
-     * @deprecated 5.3.x
-     * unknow usage
-     */
-    public function getHasSubquestions()
-    {
-    }
-
-    /**
-     * @deprecated 5.3.x
-     * unknow usage
-     */
-    public function getHasAnsweroptions()
-    {
     }
 
     /**

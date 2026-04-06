@@ -11,7 +11,7 @@
         <div class="row col-12">
             <h3 class="pagetitle"><?php eT('Survey activation error'); ?></h3>
             <?php if (App()->getConfig('debug')) : ?>
-                <p><?php eT('Database error'); ?></p>
+                <p><?php eT('Database error!'); ?></p>
                 <pre>
                     <?php echo $result['error']; ?>
                 </pre>

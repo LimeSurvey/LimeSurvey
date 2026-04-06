@@ -48,9 +48,9 @@
                <?= $question->title; ?>
                 <?php if ($question->type != "X") : ?>
                     <?php if ($question->mandatory == "Y") :?>
-                        : (<i><?php eT("Mandatory Question"); ?></i>)
+                        : (<i><?php eT("Mandatory question"); ?></i>)
                     <?php else : ?>
-                            : (<i><?php eT("Optional Question"); ?></i>)
+                            : (<i><?php eT("Optional question"); ?></i>)
                     <?php endif; ?>
                 <?php endif; ?>
             </div>

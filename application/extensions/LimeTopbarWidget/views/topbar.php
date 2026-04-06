@@ -2,7 +2,9 @@
 /** @var string $leftSide this could be a simple text or a breadcrumb */
 /** @var ButtonWidget[] $middle */
 /** @var ButtonWidget[] $rightSide */
-
+/** @var bool $isBreadCrumb */
+/** @var string $titleBackLink */
+/** @var bool $editorEnabled */
 ?>
 
 <div class="topbar sticky-top <?php if ($editorEnabled) echo 'editor'; ?>" id="pjax-content">

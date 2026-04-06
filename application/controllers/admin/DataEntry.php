@@ -225,7 +225,7 @@ class DataEntry extends SurveyCommonAction
         asort($aEncodings);
 
         // Get default character set from global settings
-        $thischaracterset = getGlobalSetting('characterset');
+        $thischaracterset = Yii::app()->getConfig('characterset');
 
         // If no encoding was set yet, use the old "utf8" default
         if ($thischaracterset == "") {
@@ -553,7 +553,7 @@ class DataEntry extends SurveyCommonAction
         }
         $idresult = Response::model($surveyid)->findByPk($id);
         if (empty($idresult)) {
-            throw new CHttpException(404, gT("Invalid response id."));
+            throw new CHttpException(404, gT("Invalid response ID"));
         }
         $sDataEntryLanguage = $oSurvey->language;
         $aData = [];
@@ -946,7 +946,7 @@ class DataEntry extends SurveyCommonAction
                         $questionInput .= "</div>";
                         $questionInput .= '</div>';
                         App()->getClientScript()->registerPackage('jquery-actual');
-                        App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts') . 'ranking.js');
+                        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
                         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
                         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery-ui-custom.css');
 
@@ -1974,7 +1974,7 @@ class DataEntry extends SurveyCommonAction
                         }
                         if ($saver['email']) {
                             //Send email
-                            if (validateEmailAddress($saver['email']) && !returnGlobal('redo')) {
+                            if (LimeMailer::validateAddress($saver['email']) && !returnGlobal('redo')) {
                                 $mailer = new \LimeMailer();
                                 $mailer->addAddress($saver['email']);
                                 $mailer->setSurvey($surveyid);
@@ -2093,7 +2093,7 @@ class DataEntry extends SurveyCommonAction
      */
     private function returnErrorMessageIfLastAnswerForTokenIsNotPrivacyProtected(string $lastAnswer, int $id, string $errorMessage): string
     {
-        $errorMessage .= "<br /><br />" . gT("Follow the following link to update it") . ":\n";
+        $errorMessage .= "<br /><br />" . gT("Use the following link to update it:") . "\n";
         $errorMessage .= CHtml::link(
             "[id:$lastAnswer]",
             $this->getController()->createUrl('/admin/dataentry/sa/editdata/subaction/edit/id/' . $lastAnswer . '/surveyid/' . $id),
@@ -2127,7 +2127,7 @@ class DataEntry extends SurveyCommonAction
         $survey = Survey::model()->findByPk($surveyid);
         $lang = $_GET['lang'] ?? null;
         if (isset($lang)) {
-            $lang = sanitize_languagecode($lang);
+            $lang = \LSYii_Validators::languageCodeFilter($lang);
         }
         $aViewUrls = array();
 
@@ -2347,7 +2347,7 @@ class DataEntry extends SurveyCommonAction
                             $cdata['anscount'] = $anscount;
                             $cdata['answers'] = $arAnswers;
                             App()->getClientScript()->registerPackage('jquery-actual');
-                            App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts') . 'ranking.js');
+                            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
                             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
                             break;
                         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox (Quite tricky really!)

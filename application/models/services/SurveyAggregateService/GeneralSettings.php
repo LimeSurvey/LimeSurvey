@@ -264,7 +264,6 @@ class GeneralSettings
             'showsurveypolicynotice' => ['default' => 0],
             'allowprev' => ['type' => static::FIELD_TYPE_YN],
             'questionindex' => [],
-            'nokeyboard' => ['type' => static::FIELD_TYPE_YN],
             'showprogress' => ['type' => static::FIELD_TYPE_YN],
             'listpublic' => ['type' => static::FIELD_TYPE_YN],
             'htmlemail' => ['type' => static::FIELD_TYPE_YN],

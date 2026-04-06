@@ -21,10 +21,9 @@ function getSurveyDefaultSettings()
     'active' => 'N',
     'questionindex'               => 0,
     'format'                   => 'G', //Group-by-group mode
-    'template'                 => getGlobalSetting('defaulttheme'),
+    'template'                 => Yii::app()->getConfig('defaulttheme'),
     'allowsave'                => 'Y',
     'allowprev'                => 'N',
-    'nokeyboard'               => 'N',
     'printanswers'             => 'N',
     'publicstatistics'         => 'N',
     'publicgraphs'             => 'N',

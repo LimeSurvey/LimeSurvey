@@ -68,7 +68,7 @@ class TFAUser extends User
                 'data-buttons'     => json_encode (['confirm_cancel' => gT("Cancel"), 'confirm_ok' => gT('Delete')]),
                 'data-href'        => App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallDeleteKey"),
                 'data-uid'         => $this->uid,
-                'data-errortext'   => gT('An error has happened, and the key could not be deleted.'),
+                'data-errortext'   => gT('An error has occurred, and the key could not be deleted.'),
             ]
         ];
 

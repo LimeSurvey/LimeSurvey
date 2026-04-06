@@ -32,7 +32,6 @@ class RenderLongFreeText extends QuestionBaseRenderer
     {
         $answer = '';
         $inputnames = [];
-        $kpclass = "";
         $extraclass = "";
         $maxlength = "";
         $withColumn = false;
@@ -43,12 +42,6 @@ class RenderLongFreeText extends QuestionBaseRenderer
             $this->getQuestionAttribute('display_rows'),
             ($this->oQuestion->type == Question::QT_T_LONG_FREE_TEXT  ? 4 : 30)
         );
-
-        if ($this->oQuestion->survey->nokeyboard == 'Y') {
-            $this->includeKeypad();
-            $kpclass     = "text-keypad";
-            $extraclass .= " inputkeypad";
-        }
 
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
         if (intval(trim((string) $this->getQuestionAttribute('maximum_chars'))) > 0) {
@@ -76,7 +69,7 @@ class RenderLongFreeText extends QuestionBaseRenderer
             'extraclass'             => $extraclass,
             'coreClass'              => "ls-answers answer-item text-item " . $sCoreClasses,
             'withColumn'             => $withColumn,
-            'kpclass'                => $kpclass,
+            'kpclass'                => '',
             'name'                   => $this->sSGQA,
             'basename'               => $this->sSGQA,
             'drows'                  => $drows,

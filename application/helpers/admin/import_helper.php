@@ -3179,7 +3179,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $oldid = $insertdata['id'];
             unset($insertdata['id']);
             // now translate any links
-            $result = Quota::model()->insertRecords($insertdata);
+            $newQuota = new Quota();
+            $newQuota->setAttributes($insertdata, false);
+            $result = $newQuota->save();
             if (!$result) {
                 throw new Exception(gT("Error") . ": Failed to insert data[12]<br />");
             }
