@@ -44,7 +44,7 @@ export const showErrorMessage = (message, position = 'bottom-right') => {
     message: message,
     position: position,
     className: 'generic-toast error-left-mark',
-    leftIcon: <ExclamationMark className="mb-1" />,
+    leftIcon: <ExclamationMark className="mb-1 error-fill" />,
   })
 }
 

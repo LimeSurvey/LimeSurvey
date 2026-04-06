@@ -436,8 +436,8 @@ export const ArrayParticipantMode = ({
 
                   // for array by numbers the value is an object {value: '1', label: '1'} so we need to get the value property.
                   value =
-                    isArrayByNumbers && !isTrue(inputBoxes[''])
-                      ? value.value
+                    isArrayByNumbers && !isTrue(inputBoxes?.[''])
+                      ? value?.value
                       : value
                   // for checkbox values, we are getting the codekey of the answer/subquestion instead of the value, so we need to find the value based on the codekey
                   value =
@@ -456,8 +456,8 @@ export const ArrayParticipantMode = ({
                         groupName={`${isArrayByColumn ? column[columns.idKey] : row[rows.idKey]}${column.scaleId}`}
                         type={type}
                         options={options}
-                        value={value ? value : ''}
-                        defaultValue={value ? value : ''}
+                        value={value ?? ''}
+                        defaultValue={value ?? ''}
                         id="component-input"
                         sendValueOnUpdate={true}
                         defaultChecked={

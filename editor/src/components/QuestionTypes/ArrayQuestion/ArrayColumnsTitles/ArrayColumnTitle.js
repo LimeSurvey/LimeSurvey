@@ -84,7 +84,7 @@ export const ArrayColumnTitle = ({
               isNoAnswer && isFocused && showQNumCode?.showNumber ? '40px' : 0,
           }}
         >
-          {isFocused && showQNumCode?.showNumber && (
+          {isFocused && showQNumCode?.showNumber && !isNoAnswer && (
             <SubquestionCodeInput
               isColumnTitle={true}
               isSurveyActive={isSurveyActive}

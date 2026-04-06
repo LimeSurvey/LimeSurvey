@@ -109,7 +109,7 @@ const ThemeOptionsIconSelect = ({
             <div
               key={option.value}
               className={classNames('icon-select-option', {
-                selected: option.value === effectiveValue(value),
+                selected: effectiveValue(option) === value,
               })}
               onClick={() => handleSelect(option.value)}
             >

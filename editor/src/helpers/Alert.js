@@ -86,7 +86,7 @@ export const errorToast = (title, position = 'bottom-right') => {
   return Toast({
     message: title,
     position: position,
-    leftIcon: <ExclamationMark />,
+    leftIcon: <ExclamationMark className="error-fill" />,
     rightIcon: <XIcon />,
     duration: 50000,
   })
