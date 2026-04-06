@@ -2690,6 +2690,7 @@
      foreach($iValues as $Key => $Value)
       {
        $C_GraphLo = $this->AllocateColor($this->Picture,$this->Palette[$Key]["R"],$this->Palette[$Key]["G"],$this->Palette[$Key]["B"],-20);
+       /** @psalm-suppress TooFewArguments */
        imagefilledpolygon($this->Picture,$BotPlots[$Key],$C_GraphLo);
 
        if ( $EnhanceColors ) { $En = -10; } else { $En = 0; }
@@ -2714,6 +2715,7 @@
            else
             $Plots[] = $Value2+$i;
           }
+         /** @psalm-suppress TooFewArguments */
          imagefilledpolygon($this->Picture,$Plots,$C_GraphLo);
 
          $Index       = count($Plots);
@@ -2729,6 +2731,7 @@
      for($Key=count($iValues)-1;$Key>=0;$Key--)
       { 
        $C_GraphLo = $this->AllocateColor($this->Picture,$this->Palette[$Key]["R"],$this->Palette[$Key]["G"],$this->Palette[$Key]["B"]);
+       /** @psalm-suppress TooFewArguments */
        imagefilledpolygon($this->Picture,$TopPlots[$Key],$C_GraphLo);
 
        if ( $EnhanceColors ) { $En = 10; } else { $En = 0; }
