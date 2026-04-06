@@ -1334,21 +1334,14 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
         $rootQuestions = [];
         $questionIndex = 0;
         while ($questionIndex < count($rawQuestions)) {
-            if (!$rawQuestions[$questionIndex]->parent_qid) {
-                if (($rawQuestions[$questionIndex]->gid == $gid) && (!$rawQuestions[$questionIndex]->parent_qid)) {
-                    $rootQuestions[] = $rawQuestions[$questionIndex];
-                }
+            if (($rawQuestions[$questionIndex]->gid == $gid) && (!$rawQuestions[$questionIndex]->parent_qid)) {
+                $rootQuestions[] = $rawQuestions[$questionIndex];
             }
             $questionIndex++;
         }
         usort($rootQuestions, function($a, $b) {
             return $b->qid - $a->qid;
         });
-        if ($fieldName === "597953X1X16") {
-            foreach ($rootQuestions as $rootQuestion) {
-                echo "\nqid is" . $rootQuestion->qid . "\n";
-            }
-        }
         foreach ($rootQuestions as $rootQuestion) {
             $questions = [$rootQuestion];
             foreach ($rawQuestions as $rawQuestion) {
