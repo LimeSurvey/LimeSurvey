@@ -20,6 +20,7 @@ echo viewHelper::getViewTestTag('roles');
                 'application.extensions.admin.grid.CLSGridView',
                 [
                     'id' => 'RoleControl--identity-gridPanel',
+                    'caption' => gT('User roles'),
                     'htmlOptions' => ['class' => 'table-responsive grid-view-ls'],
                     'dataProvider' => $model->search(),
                     'columns' => $model->columns,
@@ -31,23 +32,34 @@ echo viewHelper::getViewTestTag('roles');
                     'pager' => [
                         'class' => 'application.extensions.admin.grid.CLSYiiPager',
                     ],
-                    'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-                        . sprintf(
-                            gT('%s rows per page'),
+                    'summaryText' => html_entity_decode(
+                        gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
+                        sprintf(
+                            '%s %s',
                             CHtml::dropDownList(
                                 'pageSize',
                                 $pageSize,
                                 App()->params['pageSizeOptions'],
-                                array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
+                                [
+                                    'class' => 'changePageSize form-select',
+                                    'style' => 'display: inline; width: auto',
+                                    'aria-labelledby' => 'RoleControl--identity-gridPanel-rows-per-page-label',
+                                ]
+                            ),
+                            CHtml::tag(
+                                'span',
+                                ['id' => 'RoleControl--identity-gridPanel-rows-per-page-label'],
+                                CHtml::encode(gT('rows per page'))
                             )
-                        ),
+                        )
+                    ),
                 ]
             );
             ?>
         </div>
     </div>
-    <div id='RoleControl-action-modal' class="modal fade RoleControl--selector--modal" tabindex="-1" role="dialog">
-        <div id="userrole-modal-dialog" class="modal-dialog modal-lg" role="document">
+    <div id="RoleControl-action-modal" class="modal fade RoleControl--selector--modal" tabindex="-1" role="dialog" aria-modal="true">
+        <div id="userrole-modal-dialog" class="modal-dialog modal-lg">
             <div class="modal-content">
             </div>
         </div>
