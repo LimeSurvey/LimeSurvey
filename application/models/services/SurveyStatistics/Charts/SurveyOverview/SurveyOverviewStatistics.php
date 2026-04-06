@@ -34,7 +34,8 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
         $this->surveyId = $surveyId;
 
         $rows = $this->fetchStatisticsOverview();
-        $rows['completionRate'] = round($rows['completionRate'] ?? 0, 2);
+        $rows['completionRate'] = round($rows['completionrate'] ?? 0, 2);
+        $rows['totalResponses'] = $rows['totalresponses'];
         $rows['incompleteResponses'] = (int)$rows['incompleteResponses'];
         if ($rows['avgCompletionTime'] !== null) {
             $rows['avgCompletionTime'] = round($rows['avgCompletionTime'] ?? 0, 2);
@@ -89,7 +90,7 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
         $selectParams = [
             'COUNT(id) AS totalResponses',
             'SUM(CASE WHEN submitdate IS NULL THEN 1 ELSE 0 END) AS incompleteResponses',
-            'ROUND(SUM(CASE WHEN submitdate IS NOT NULL THEN 1 ELSE 0 END) * 100.0 / NULLIF(COUNT(id), 0), 2) AS completionRate',
+            'ROUND(SUM(CASE WHEN submitdate IS NOT NULL THEN 1 ELSE 0 END) * 100.0 / NULLIF(COUNT(id), 0), 2) AS completionrate',
         ];
 
         // datestamps is not enabled, therefor we cannot calculate avg completion time
