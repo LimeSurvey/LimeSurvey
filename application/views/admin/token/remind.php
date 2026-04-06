@@ -98,7 +98,7 @@
                 <div class="col-md-6">
                     <!-- Max reminders -->
                     <div class='mb-3'>
-                        <label class='form-label ' for='maxremindercount'><?php eT("Max reminders:"); ?></label>
+                        <label class='form-label ' for='maxremindercount'><?php eT("Maximum reminders:"); ?></label>
                         <div class=''>
                             <input type="text" id="maxremindercount" class="form-control" size="25" value=""
                                    name="maxremindercount" style="width: 50%;"/>
@@ -108,7 +108,7 @@
                     <!-- Min days between reminders -->
                     <div class='mb-3'>
                         <label class='form-label '
-                               for='minreminderdelay'><?php eT("Min days between reminders:"); ?></label>
+                               for='minreminderdelay'><?php eT("Minimum days between reminders:"); ?></label>
                         <div class=''>
                             <input type="text" id="minreminderdelay" class="form-control" size="25" value=""
                                    name="minreminderdelay" style="width: 50%;">
@@ -174,7 +174,7 @@
                                        for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
                                 <div class="input-group htmleditor ">
                                     <?php echo CHtml::textArea("message_{$language}", $textarea, array('cols' => 80, 'rows' => 20, 'class' => 'form-control')); ?>
-                                    <?php echo getEditor("email-reminder", "message_$language", "[" . gT("Reminder Email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
+                                    <?php echo getEditor("email-reminder", "message_$language", "[" . gT("Reminder email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
                                 </div>
                             </div>
                         </div>
@@ -184,7 +184,7 @@
                     <div class='mb-3'>
                         <div class=''></div>
                         <div class=''>
-                            <?php echo CHtml::submitButton(gT("Send Reminders", 'unescaped'), array('class' => 'btn btn-outline-secondary')); ?>
+                            <?php echo CHtml::submitButton(gT("Send reminders", 'unescaped'), array('class' => 'btn btn-outline-secondary')); ?>
                         </div>
 
                         <?php

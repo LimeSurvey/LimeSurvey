@@ -73,7 +73,7 @@ class FilterImportedResources
                         // Extension forbidden
                         $aErrorFilesInfo[] = [
                             "filename" => $direntry,
-                            "status"   => gT("Forbidden Extension")
+                            "status"   => gT("Forbidden extension")
                         ];
                     }
                     unlink($extractdir . "/" . $direntry);

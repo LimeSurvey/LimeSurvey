@@ -107,7 +107,7 @@ function quoteText($sText, $sEscapeMode = 'html')
 function getSurveyList($bReturnArray = false)
 {
     static $cached = null;
-    $timeadjust = getGlobalSetting('timeadjust');
+    $timeadjust = Yii::app()->getConfig('timeadjust');
     App()->setLanguage((Yii::app()->session['adminlang'] ?? 'en'));
     $surveynames = array();
 
@@ -670,7 +670,7 @@ function getUserList($outputformat = 'fullinfoarray')
     if (!empty(Yii::app()->session['loginID'])) {
         $myuid = sanitize_int(Yii::app()->session['loginID']);
     }
-    $usercontrolSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy');
+    $usercontrolSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
     if (
         !Permission::model()->hasGlobalPermission('superadmin', 'read') && isset($usercontrolSameGroupPolicy) &&
         $usercontrolSameGroupPolicy == true
@@ -749,7 +749,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
     }
 
     $surveyid = sanitize_int($surveyid);
-    $languagecode = sanitize_languagecode($languagecode);
+    $languagecode = \LSYii_Validators::languageCodeFilter($languagecode);
     $thissurvey = false;
     $oSurvey = Survey::model()->findByPk($surveyid);
     // Do job only if this survey exist
@@ -936,9 +936,9 @@ function returnGlobal($stringname, $bRestrictToString = false)
         }
     } elseif ($stringname == "lang" || $stringname == "adminlang") {
         if ($bUrlParamIsArray) {
-            return array_map("sanitize_languagecode", $urlParam);
+            return array_map(['\\LSYii_Validators', 'languageCodeFilter'], $urlParam);
         } else {
-            return sanitize_languagecode($urlParam);
+            return \LSYii_Validators::languageCodeFilter($urlParam);
         }
     } elseif (
         $stringname == "htmleditormode" ||
@@ -1174,31 +1174,6 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
     } else {
         return $sValue;
     }
-}
-
-/**
-* Validate an email address - also supports IDN email addresses
-* @deprecated : use LimeMailer::validateAddress($sEmailAddress);
-* @returns True/false for valid/invalid
-*
-* @param mixed $sEmailAddress  Email address to check
-*/
-function validateEmailAddress($sEmailAddress)
-{
-    return LimeMailer::validateAddress($sEmailAddress);
-}
-
-/**
-* Validate an list of email addresses - either as array or as semicolon-limited text
-* @deprecated : use LimeMailer::validateAddresses($aEmailAddressList);
-* @return string List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
-*
-* @param string $aEmailAddressList  Email address to check
-* @returns array
-*/
-function validateEmailAddresses($aEmailAddressList)
-{
-    return LimeMailer::validateAddresses($aEmailAddressList);
 }
 
 /**
@@ -1556,7 +1531,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 {
 
     static $aQIDReplacementMappings = [];
-    $sLanguage = sanitize_languagecode($sLanguage);
+    $sLanguage = \LSYii_Validators::languageCodeFilter($sLanguage);
     $surveyid = $survey->sid;
     if (!isset($aQIDReplacementMappings[$surveyid])) {
         $aQIDReplacementMappings[$surveyid] = $surveyReplacements;
@@ -2258,7 +2233,7 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
 {
     static $timingsFieldMap;
 
-    $sLanguage = sanitize_languagecode($sQuestionLanguage);
+    $sLanguage = \LSYii_Validators::languageCodeFilter($sQuestionLanguage);
     $surveyid = sanitize_int($surveyid);
     $survey = Survey::model()->findByPk($surveyid);
 
@@ -2271,7 +2246,7 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
     }
 
     //do something
-    $fields = createFieldMap($survey, $style, $force_refresh, $questionid, $sQuestionLanguage);
+    $fields = createFieldMap($survey, $style, $force_refresh, $questionid, $sLanguage);
     $fieldmap = [];
     $fieldmap['interviewtime'] = array('fieldname' => 'interviewtime', 'type' => 'interview_time', 'sid' => $surveyid, 'gid' => '', 'qid' => '', 'aid' => '', 'suffix' => '', 'question' => gT('Total time'), 'title' => 'interviewtime');
     foreach ($fields as $field) {
@@ -2426,78 +2401,6 @@ function jsonEscape(string $str, $strip_tags = false, $htmldecode = false)
     }
     return str_replace(array('"','\''), array("&apos;","&apos;"), $str);
 }
-
-/**
-* This function mails a text $body to the recipient $to.
-* You can use more than one recipient when using a semicolon separated string with recipients.
-* @deprecated : leave it in 4.0 for plugins ? Must remove in 5.0 at minima.
-*
-* @param string $body Body text of the email in plain text or HTML
-* @param mixed $subject Email subject
-* @param mixed $to Array with several email addresses or single string with one email address
-* @param string $from
-* @param mixed $sitename
-* @param boolean $ishtml
-* @param mixed $bouncemail
-* @param mixed $attachments
-* @return bool If successful returns true
-*/
-function SendEmailMessage($body, $subject, $to, string $from, $sitename, $ishtml = false, $bouncemail = null, $attachments = null, $customheaders = "")
-{
-    global $maildebug;
-
-    if (!is_array($to)) {
-        $to = array($to);
-    }
-
-    if (!is_array($customheaders) && $customheaders == '') {
-        $customheaders = array();
-    }
-
-    $mail =  new LimeMailer();
-    $mail->emailType = 'deprecated';
-
-    $fromname = '';
-    $fromemail = $from;
-    if (strpos($from, '<')) {
-        $fromemail = substr($from, strpos($from, '<') + 1, strpos($from, '>') - 1 - strpos($from, '<'));
-        $fromname = trim(substr($from, 0, strpos($from, '<') - 1));
-    }
-    if (is_null($bouncemail)) {
-        $senderemail = $fromemail;
-    } else {
-        $senderemail = $bouncemail;
-    }
-
-    $mail->SetFrom($fromemail, $fromname);
-    $mail->Sender = $senderemail; // Sets Return-Path for error notifications
-    foreach ($to as $singletoemail) {
-        $mail->addAddress($singletoemail);
-    }
-    if (is_array($customheaders)) {
-        foreach ($customheaders as $key => $val) {
-            $mail->AddCustomHeader($val);
-        }
-    }
-    $mail->Subject = $subject;
-    $mail->Body = $body;
-    $mail->IsHTML($ishtml);
-    // Add attachments if they are there.
-    if (is_array($attachments)) {
-        foreach ($attachments as $attachment) {
-            // Attachment is either an array with filename and attachment name.
-            if (is_array($attachment)) {
-                $mail->AddAttachment($attachment[0], $attachment[1]);
-            } else {
-                // Or a string with the filename.
-                $mail->AddAttachment($attachment);
-            }
-        }
-    }
-    $mail->Subject = $subject;
-    return $mail->Send();
-}
-
 
 /**
 *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
@@ -2988,7 +2891,7 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
     if ($sType == 'survey') {
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_:])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
         if ($isLocalPath) {
-            $sReplace = rtrim(App()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
+            $sReplace = rtrim(Yii::app()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
             return preg_replace('/' . $sPattern . '/u', $sReplace, $sString);
         } else {
             // Make the replacement conditionaly.
@@ -3000,9 +2903,9 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
                 $parsedUrl = parse_url($url);
                 $replacementUrl = "/upload/surveys/{$iNewSurveyID}/";
                 if (isset($parsedUrl['scheme']) && isset($parsedUrl['host'])) {
-                    return rtrim(App()->getPublicBaseUrl(true), "/") . $replacementUrl;
+                    return rtrim(Yii::app()->getPublicBaseUrl(true), "/") . $replacementUrl;
                 } else {
-                    return rtrim(App()->getConfig("publicurl"), '/') . $replacementUrl;
+                    return rtrim(Yii::app()->getConfig("publicurl"), '/') . $replacementUrl;
                 }
             }, $sString);
         }
@@ -3015,7 +2918,7 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
             if (isset($parsedUrl['scheme']) && isset($parsedUrl['host'])) {
                 return rtrim(App()->getPublicBaseUrl(true), "/") . $replacementUrl;
             } else {
-                return rtrim(App()->getConfig("publicurl"), '/') . $replacementUrl;
+                return rtrim(Yii::app()->getConfig("publicurl"), '/') . $replacementUrl;
             }
         }, $sString);
     } else // unknown type
@@ -3680,7 +3583,7 @@ function enforceSSLMode()
     (isset($_SERVER['HTTP_FORWARDED_PROTO']) && $_SERVER['HTTP_FORWARDED_PROTO'] == "https") ||
     (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == "https"));
     if (Yii::app()->getConfig('ssl_emergency_override') !== true) {
-        $bForceSSL = strtolower((string) getGlobalSetting('force_ssl'));
+        $bForceSSL = strtolower((string) Yii::app()->getConfig('force_ssl'));
     }
     if ($bForceSSL == 'on' && !$bSSLActive) {
         SSLRedirect('s');
@@ -3840,21 +3743,6 @@ function short_implode($sDelimeter, $sHyphen, $aArray)
         return $sResult;
     }
 }
-
-/**
-* Include Keypad headers
-*/
-function includeKeypad()
-{
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.plugin.min.js');
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad.min.js');
-    $localefile = Yii::app()->getConfig('rootdir') . '/vendor/jquery-keypad/jquery.keypad-' . App()->language . '.js';
-    if (App()->language != 'en' && file_exists($localefile)) {
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js');
-    }
-    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('vendor') . "jquery-keypad/jquery.keypad.alt.css");
-}
-
 
 /**
 * This function replaces the old insertans tags with new ones across a survey
@@ -4143,13 +4031,13 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = '')
 {
     Yii::app()->loadHelper('database');
     $iSurveyID = (int) $iSurveyID;
-    $baselang = sanitize_languagecode($baselang);
+    $baselang = \LSYii_Validators::languageCodeFilter($baselang);
     if (empty($baselang)) {
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
     }
     $aLanguages = [];
     if (!empty($availlangs) && $availlangs != " ") {
-        $availlangs = sanitize_languagecodeS($availlangs);
+        $availlangs = \LSYii_Validators::multiLanguageCodeFilter($availlangs);
         $aLanguages = explode(" ", (string) $availlangs);
         if ($aLanguages[count($aLanguages) - 1] == "") {
             array_pop($aLanguages);
@@ -4203,12 +4091,12 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = '')
 function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
 {
     $sid = (int) $sid;
-    $baselang = sanitize_languagecode($baselang);
+    $baselang = \LSYii_Validators::languageCodeFilter($baselang);
     if (empty($baselang)) {
         $baselang = Survey::model()->findByPk($sid)->language;
     }
     if (trim($availlangs) != '') {
-        $availlangs = sanitize_languagecodeS($availlangs);
+        $availlangs = \LSYii_Validators::multiLanguageCodeFilter($availlangs);
         $languagesToCheck = explode(" ", (string) $availlangs);
         if ($languagesToCheck[count($languagesToCheck) - 1] == "") {
             array_pop($languagesToCheck);
@@ -4690,7 +4578,7 @@ function checkMoveQuestionConstraintsForConditions($sid, $qid, $newgid = "all")
 */
 function shouldFilterUserGroupList()
 {
-    $bUserControlSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy', true);
+    $bUserControlSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy', true);
     $bUserHasSuperAdminReadPermissions = Permission::model()->hasGlobalPermission('superadmin', 'read');
     return $bUserControlSameGroupPolicy && !$bUserHasSuperAdminReadPermissions;
 }
@@ -4817,7 +4705,7 @@ function getLabelSets($languages = null)
 {
     $aLanguages = array();
     if (!empty($languages)) {
-        $languages = sanitize_languagecodeS($languages);
+        $languages = \LSYii_Validators::multiLanguageCodeFilter($languages);
         $aLanguages = explode(' ', trim((string) $languages));
     }
 
@@ -5241,7 +5129,7 @@ function decodeTokenAttributes(string $tokenAttributeData)
         return array();
     }
     if (substr($tokenAttributeData, 0, 1) != '{' && substr($tokenAttributeData, 0, 1) != '[') {
-        if (!App()->getConfig('allow_unserialize_attributedescriptions')) {
+        if (!Yii::app()->getConfig('allow_unserialize_attributedescriptions')) {
             return array();
         }
         // minimal broken securisation, mantis issue #20144

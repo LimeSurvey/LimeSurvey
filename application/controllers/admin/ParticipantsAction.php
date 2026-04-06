@@ -627,7 +627,7 @@ class ParticipantsAction extends SurveyCommonAction
                 [':can_edit' => '1']
             ))
         ) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
             return;
         }
@@ -1085,7 +1085,7 @@ class ParticipantsAction extends SurveyCommonAction
                     $aEmailAddresses = explode(';', $writearray['email']);
                     // Ignore additional email addresses
                     $sEmailaddress = $aEmailAddresses[0];
-                    if (!validateEmailAddress($sEmailaddress)) {
+                    if (!LimeMailer::validateAddress($sEmailaddress)) {
                         $invalidemail = true;
                         $invalidemaillist[] = CHtml::encode($line[0] . " " . $line[1] . " (" . $line[2] . ")");
                     }

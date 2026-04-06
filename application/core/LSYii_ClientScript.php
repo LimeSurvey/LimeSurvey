@@ -433,13 +433,8 @@ class LSYii_ClientScript extends CClientScript
         }
 
         //Propagate our debug settings into the javascript realm
-        if (function_exists('getGlobalSetting')) {
-            $debugFrontend = (int) getGlobalSetting('javascriptdebugfrntnd');
-            $debugBackend  = (int) getGlobalSetting('javascriptdebugbcknd');
-        } else {
-            $debugFrontend = 0;
-            $debugBackend  = 0;
-        }
+        $debugFrontend = (int) Yii::app()->getConfig('javascriptdebugfrntnd');
+        $debugBackend  = (int) Yii::app()->getConfig('javascriptdebugbcknd');
 
         $html .= "<script type='text/javascript'>window.debugState = {frontend : (" . $debugFrontend . " === 1), backend : (" . $debugBackend . " === 1)};</script>";
 
@@ -582,7 +577,7 @@ class LSYii_ClientScript extends CClientScript
                 $scripts[] = implode("\n", $this->scripts[self::POS_POSTSCRIPT]);
             }
         }
-        if (App()->getConfig('debug') > 0) {
+        if (Yii::app()->getConfig('debug') > 0) {
             $scripts[] = "jQuery(document).off('pjax:scriptsuccess.debugger').on('pjax:scriptsuccess.debugger',function(e) { console.ls.log('PJAX scriptsuccess', e); });";
             $scripts[] = "jQuery(document).off('pjax:scripterror.debugger').on('pjax:scripterror.debugger',function(e) { console.ls.log('PJAX scripterror', e); });";
             $scripts[] = "jQuery(document).off('pjax:scripttimeout.debugger').on('pjax:scripttimeout.debugger',function(e) { console.ls.log('PJAX scripttimeout', e); });";

@@ -25,19 +25,19 @@ $headerComplete = $isGroupImport ? gT("Question group import is complete.") : gT
                 <?php
                 $result = '<ul class="list-unstyled">';
                 if($isGroupImport) {
-                    $result .= '<li>' . gT("Question groups") . ': ' . $aImportResults['groups'] . '</li>';
+                    $result .= '<li>' . gT("Question groups:") . ' ' . $aImportResults['groups'] . '</li>';
                 }
-                $result .= '<li>' . gT("Questions") . ': ' . $aImportResults['questions'] . '</li>' .
-                    '<li>' . gT("Subquestions") . ': ' . $aImportResults['subquestions'] . '</li>' .
-                    '<li>' . gT("Answers") . ': ' . $aImportResults['answers'] . '</li>';
+                $result .= '<li>' . gT("Questions:") . ' ' . $aImportResults['questions'] . '</li>' .
+                    '<li>' . gT("Subquestions:") . ' ' . $aImportResults['subquestions'] . '</li>' .
+                    '<li>' . gT("Answers:") . ' ' . $aImportResults['answers'] . '</li>';
 
                 if($isGroupImport) {
-                    $result .= '<li>' . gT("Conditions") . ': ' . $aImportResults['conditions'] . '</li>';
+                    $result .= '<li>' . gT("Conditions:") . ' ' . $aImportResults['conditions'] . '</li>';
                 }
                 if (strtolower($sExtension) == 'csv') {
-                    $result .= '<li>' . gT("Label sets") . ': ' . $aImportResults['labelsets'] . ' (' . $aImportResults['labels'] . ')' . '</li>';
+                    $result .= '<li>' . gT("Label sets:") . ' ' . $aImportResults['labelsets'] . ' (' . $aImportResults['labels'] . ')' . '</li>';
                 }
-                $result .= '<li>' . gT("Question attributes:") . $aImportResults['question_attributes'] . '</li>' .
+                $result .= '<li>' . gT("Question attributes:") . ' ' . $aImportResults['question_attributes'] . '</li>' .
                     '</ul>';
 
                 $this->widget('ext.AlertWidget.AlertWidget', [
