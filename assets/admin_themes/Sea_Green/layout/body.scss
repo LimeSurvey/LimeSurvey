@@ -6,3 +6,10 @@ body {
     min-height       : 100vh;
     flex-direction   : column;
 }
+
+.ls-breadcrumb .topbar-back-link:focus {
+    outline: 2px solid currentColor !important
+}
+.sort-link:focus {
+    outline: 2px solid currentColor !important
+}
