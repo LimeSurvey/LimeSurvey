@@ -157,7 +157,7 @@ class Save
         if (empty($this->aSaveErrors)) {
             //INSERT BLANK RECORD INTO "survey_x" if one doesn't already exist
             if (!isset($_SESSION['survey_' . $surveyid]['srid'])) {
-                $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s");
+                $today = gmdate("Y-m-d H:i:s");
                 $sdata = array(
                     "datestamp"     => $today,
                     "ipaddr"        => getIPAddress(),
@@ -184,7 +184,7 @@ class Save
             $saved_control->ip             = ($thissurvey['ipaddr'] == 'Y') ? getIPAddress() : '';
             $saved_control->saved_thisstep = $thisstep;
             $saved_control->status         = 'S';
-            $saved_control->saved_date     = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s");
+            $saved_control->saved_date     = gmdate("Y-m-d H:i:s");
 
             if (isset($_SESSION['survey_' . $surveyid]['refurl'])) {
                 $saved_control->refurl = $_SESSION['survey_' . $surveyid]['refurl'];

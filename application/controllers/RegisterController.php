@@ -106,7 +106,7 @@ class RegisterController extends LSYii_Controller
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
         } elseif (!$oSurvey->getIsAllowRegister() || !tableExists("{{tokens_{$iSurveyId}}}")) {
             throw new CHttpException(404, "The survey in which you are trying to register don't accept registration. It may have been updated or the link you were given is outdated or incorrect.");
-        } elseif (!is_null($oSurvey->expires) && $oSurvey->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i")) {
+        } elseif (!is_null($oSurvey->expires) && $oSurvey->expires < gmdate("Y-m-d H:i")) {
             $this->redirect(array('survey/index', 'sid' => $iSurveyId, 'lang' => $sLanguage));
         }
         /* Fix language according to existing language in survey */
@@ -288,7 +288,7 @@ class RegisterController extends LSYii_Controller
 
         $oToken = Token::model($iSurveyId)->findByPk($iTokenId)->decrypt(); // Reload the token (needed if just created)
         // Make sure enough time has passed since the last email was sent
-        $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+        $now = gmdate("Y-m-d H:i");
         $delay = Yii::app()->getConfig('registrationEmailDelay');
         if (!empty($oToken->sent) && $oToken->sent != "N" && dateShift($oToken->sent, "Y-m-d H:i", $delay) > $now) {
             return false;
@@ -346,7 +346,7 @@ class RegisterController extends LSYii_Controller
                 $this->aRegisterErrors[] = gT("This email address is already registered but email to that adress could not be delivered.");
             } else {
                 $this->sMailMessage = gT("The address you have entered is already registered. An email has been sent to this address with a link that gives you access to the survey.");
-                $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+                $now = gmdate("Y-m-d H:i");
                 $delay = Yii::app()->getConfig('registrationEmailDelay');
                 if (!empty($oToken->sent) && $oToken->sent != "N" && dateShift($oToken->sent, "Y-m-d H:i", $delay) > $now) {
                     $this->sMailMessage = gT("The address you have entered is already registered. An email has already been sent previously. A new email will not be sent yet. Please try again later.");
@@ -427,7 +427,7 @@ class RegisterController extends LSYii_Controller
     public function getStartDate($iSurveyId)
     {
         $aSurveyInfo = getSurveyInfo($iSurveyId, Yii::app()->language);
-        if (empty($aSurveyInfo['startdate']) || dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s") >= $aSurveyInfo['startdate']) {
+        if (empty($aSurveyInfo['startdate']) || gmdate("Y-m-d H:i:s") >= $aSurveyInfo['startdate']) {
                     return;
         }
         Yii::app()->loadHelper("surveytranslator");

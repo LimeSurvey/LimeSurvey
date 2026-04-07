@@ -748,8 +748,8 @@ class SurveyCommonAction extends CAction
 
             $aData['canactivate'] = $sumcount3 > 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update');
             $aData['candeactivate'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update');
-            $aData['expired'] = $oSurvey->expires != '' && ($oSurvey->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i"));
-            $aData['notstarted'] = ($oSurvey->startdate != '') && ($oSurvey->startdate > dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i"));
+            $aData['expired'] = $oSurvey->expires != '' && ($oSurvey->expires < gmdate("Y-m-d H:i"));
+            $aData['notstarted'] = ($oSurvey->startdate != '') && ($oSurvey->startdate > gmdate("Y-m-d H:i"));
 
             // Start of suckerfish menu
             // TEST BUTTON

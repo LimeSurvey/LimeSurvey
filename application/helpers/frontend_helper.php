@@ -386,7 +386,7 @@ function submittokens($quotaexit = false)
     }
 
     // Shift the date due to global timezone setting
-    $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i");
+    $today = gmdate("Y-m-d H:i");
 
     // check how many uses the token has left
     $token = Token::model($surveyid)->findByAttributes(array('token' => $clienttoken ? $clienttoken : $tokenused));

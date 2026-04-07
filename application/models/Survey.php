@@ -401,7 +401,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function expire($surveyId = null)
     {
-        $dateTime = dateShift(gmdate("Y-m-d H:i:s"), "Y-m-d H:i:s");
+        $dateTime = gmdate("Y-m-d H:i:s");
         $dateTime = dateShift($dateTime, "Y-m-d H:i:s", '-1 minute');
 
         $model = $this;
@@ -479,13 +479,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return array(
             'active' => array('condition' => "active = 'Y'"),
             'open' => array('condition' => '(startdate <= :now1 OR startdate IS NULL) AND (expires >= :now2 OR expires IS NULL)', 'params' => array(
-                ':now1' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s"),
-                ':now2' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s")
+                ':now1' => gmdate("Y-m-d H:i:s"),
+                ':now2' => gmdate("Y-m-d H:i:s")
             )
             ),
             'registration' => array('condition' => "allowregister = 'Y' AND startdate > :now3 AND (expires < :now4 OR expires IS NULL)", 'params' => array(
-                ':now3' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s"),
-                ':now4' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s")
+                ':now3' => gmdate("Y-m-d H:i:s"),
+                ':now4' => gmdate("Y-m-d H:i:s")
             ))
         );
     }

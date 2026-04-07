@@ -367,7 +367,7 @@ class SurveyIndex extends CAction
         }
 
         //MAKE SURE SURVEY HASN'T EXPIRED
-        if ($thissurvey['expiry'] != '' and dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s") > $thissurvey['expiry'] && $thissurvey['active'] != 'N' && !$previewmode) {
+        if ($thissurvey['expiry'] != '' and gmdate("Y-m-d H:i:s") > $thissurvey['expiry'] && $thissurvey['active'] != 'N' && !$previewmode) {
             $aErrors = array(gT('Error'));
             $aMessage = array(
                 gT("We are sorry but the survey is expired and no longer available.")
@@ -388,7 +388,7 @@ class SurveyIndex extends CAction
         }
 
         //MAKE SURE SURVEY IS ALREADY VALID
-        if ($thissurvey['startdate'] != '' and dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s") < $thissurvey['startdate'] && $thissurvey['active'] != 'N' && !$previewmode) {
+        if ($thissurvey['startdate'] != '' and gmdate("Y-m-d H:i:s") < $thissurvey['startdate'] && $thissurvey['active'] != 'N' && !$previewmode) {
             $aErrors  = array(gT('Error'));
             $aMessage = array(
                 gT("This survey is not yet started.")
@@ -531,7 +531,7 @@ class SurveyIndex extends CAction
         // could be more interresting there (takes into accound captcha if used)
         if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_" . $surveyid . "}}") && !$previewmode) {
             if (empty($tokenInstance) && $oToken) {
-                $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s");
+                $now = gmdate("Y-m-d H:i:s");
 
                 // This can not happen (TokenInstance must fix this)
                 if ($oToken->completed != 'N' && !empty($oToken->completed)) {

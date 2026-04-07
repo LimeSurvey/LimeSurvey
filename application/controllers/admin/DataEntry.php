@@ -1666,7 +1666,7 @@ class DataEntry extends SurveyCommonAction
                     }
                     if (empty($thisvalue)) {
                         if (Survey::model()->findByPk($surveyid)->isDateStamp) {
-                            $oResponse->$fieldname = dateShift(gmdate("Y-m-d H:i"), "Y-m-d\TH:i");
+                            $oResponse->$fieldname = gmdate("Y-m-d\TH:i");
                         } else {
                             $oResponse->$fieldname = date("Y-m-d\TH:i", (int) mktime(0, 0, 0, 1, 1, 1980));
                         }
@@ -1677,17 +1677,20 @@ class DataEntry extends SurveyCommonAction
                 case 'startdate':
                 case 'datestamp':
                     if (empty($thisvalue)) {
-                        $oResponse->$fieldname = dateShift(gmdate("Y-m-d H:i"), "Y-m-d\TH:i");
+                        $oResponse->$fieldname = gmdate("Y-m-d\TH:i");
                         break;
                     }
                     $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-                    $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'] . " H:i", $thisvalue);
+                    $displayTz = Yii::app()->getConfig('displayTimezone');
+                    $parseTz = !empty($displayTz) ? new DateTimeZone($displayTz) : new DateTimeZone('UTC');
+                    $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'] . " H:i", $thisvalue, $parseTz);
                     if ($datetimeobj) {
+                        $datetimeobj->setTimezone(new DateTimeZone('UTC'));
                         $oResponse->$fieldname = $datetimeobj->format('Y-m-d H:i');
                     } else {
                         Yii::app()->setFlashMessage(sprintf(gT("Invalid datetime %s value for %s"), htmlentities((string) $thisvalue), $fieldname), 'warning');
                         /* We get here : we need a valid value : NOT NULL in db or completed != "N" */
-                        $oResponse->$fieldname = dateShift(gmdate("Y-m-d H:i"), "Y-m-d\TH:i");
+                        $oResponse->$fieldname = gmdate("Y-m-d\TH:i");
                     }
                     break;
                 default:
@@ -1820,11 +1823,20 @@ class DataEntry extends SurveyCommonAction
 
                 $_POST['startlanguage'] = $survey->language;
                 if ($survey->isDateStamp) {
+                    // Convert datestamp from display timezone to UTC for storage
+                    $displayTz = Yii::app()->getConfig('displayTimezone');
+                    if (!empty($displayTz) && !empty($_POST['datestamp'])) {
+                        $dtObj = DateTime::createFromFormat('Y-m-d H:i', $_POST['datestamp'], new DateTimeZone($displayTz));
+                        if ($dtObj) {
+                            $dtObj->setTimezone(new DateTimeZone('UTC'));
+                            $_POST['datestamp'] = $dtObj->format('Y-m-d H:i');
+                        }
+                    }
                     $_POST['startdate'] = $_POST['datestamp'];
                 }
                 if (isset($_POST['closerecord'])) {
                     if ($survey->isDateStamp) {
-                        $_POST['submitdate'] = dateShift((string) gmdate("Y-m-d H:i"), "Y-m-d H:i");
+                        $_POST['submitdate'] = gmdate("Y-m-d H:i");
                     } else {
                         $_POST['submitdate'] = date("Y-m-d H:i", (int) mktime(0, 0, 0, 1, 1, 1980));
                     }
@@ -1902,9 +1914,16 @@ class DataEntry extends SurveyCommonAction
                     // submittoken
                     // get submit date
                     if (isset($_POST['closedate'])) {
+                        // User-provided close date is in display timezone; convert to UTC
                         $submitdate = $_POST['closedate'];
+                        $displayTz = Yii::app()->getConfig('displayTimezone');
+                        if (!empty($displayTz)) {
+                            $dtObj = new DateTime($submitdate, new DateTimeZone($displayTz));
+                            $dtObj->setTimezone(new DateTimeZone('UTC'));
+                            $submitdate = $dtObj->format('Y-m-d H:i:s');
+                        }
                     } else {
-                        $submitdate = date("Y-m-d H:i:s");
+                        $submitdate = gmdate("Y-m-d H:i:s");
                     }
                     // query for updating tokens uses left
                     if ($lastanswfortoken == '' || $lastanswfortoken == 'AnonymousNotCompleted') {
@@ -1951,7 +1970,7 @@ class DataEntry extends SurveyCommonAction
                     $arSaveControl->refurl = (string) getenv("HTTP_REFERER");
                     $arSaveControl->saved_thisstep = '0';
                     $arSaveControl->status = 'S';
-                    $arSaveControl->saved_date = dateShift((string) gmdate("Y-m-d H:i:s"), "Y-m-d H:i");
+                    $arSaveControl->saved_date = gmdate("Y-m-d H:i");
                     $arSaveControl->save();
                     if ($arSaveControl->save()) {
                         $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation email. Please make sure to save your password, since we will not be able to retrieve it for you."));
@@ -1963,7 +1982,7 @@ class DataEntry extends SurveyCommonAction
                             "email" => $saver['email'],
                             "token" => $password,
                             "language" => $saver['language'],
-                            "sent" => date("Y-m-d H:i:s"),
+                            "sent" => gmdate("Y-m-d H:i"),
                             "completed" => "N");
 
                             $aToken = new TokenDynamic($surveyid);
