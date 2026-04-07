@@ -35,58 +35,66 @@
                 <div>
                     <?php echo CHtml::form(array("admin/tokens/sa/email/surveyid/{$oSurvey->sid}"), 'post', array('id'=>'sendinvitation', 'name'=>'sendinvitation', 'class'=>'')); ?>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <?php if (count($tokenids)>0): ?>
-                                <div class='mb-3'>
-                                    <label class='form-label '><?php eT("Send invitation email to participant ID(s):"); ?></label>
-                                    <div class=''>
-                                        <?php echo short_implode(", ", "-", (array) $tokenids); ?>
-                                    </div>
+                                <label class='form-label '><?php eT("Send invitation email to participant ID(s):"); ?></label>
+                                <div class=''>
+                                    <?php echo short_implode(", ", "-", (array) $tokenids); ?>
                                 </div>
 
                             <?php endif; ?>
                         </div>
 
-                        <div class="col-md-4">
-                            <div class='mb-3'>
-
-                                <label class='form-label ' for='bypassbademails'><?php eT("Bypass participants with failing email addresses:"); ?></label>
-                                <div>
-                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                        'name'          => "bypassbademails",
-                                        'ariaLabel'    => gT("Bypass participants with failing email addresses"),
-                                        'checkedOption' => '1',
-                                        'selectOptions' => [
-                                            '1' => gT('On'),
-                                            '0' => gT('Off'),
-                                        ],
-                                    ]); ?>
-                                </div>
+                        <div class="col-md-3">
+                            <label class='form-label ' for='bypassbademails'><?php eT("Bypass participants with failing email addresses:"); ?></label>
+                            <div>
+                                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                    'name'          => "bypassbademails",
+                                    'ariaLabel'    => gT("Bypass participants with failing email addresses"),
+                                    'checkedOption' => '1',
+                                    'selectOptions' => [
+                                        '1' => gT('On'),
+                                        '0' => gT('Off'),
+                                    ],
+                                ]); ?>
                             </div>
                         </div>
 
-                        <div class="col-md-4">
-                            <div class='mb-3'>
-                                <?php echo CHtml::label(
-                                    gT("Bypass date control before sending email:"),
-                                    'bypassdatecontrol', 
-                                    array(
-                                        'title'=>gT("If some participants have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
-                                        'unescaped' => 'unescaped', 
-                                        'class' => 'form-label ')
-                                    ); ?>
-                                <div>
-                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                        'name'          => "bypassdatecontrol",
-                                        'ariaLabel'    => gT("Bypass date control before sending email"),
-                                        'checkedOption' => '0',
-                                        'selectOptions' => [
-                                            '1' => gT('On'),
-                                            '0' => gT('Off'),
-                                        ],
-                                    ]); ?>
-                                </div>
+                        <div class="col-md-3">
+                            <?php echo CHtml::label(
+                                gT("Bypass date control before sending email:"),
+                                'bypassdatecontrol',
+                                array(
+                                    'title'=>gT("If some participants have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
+                                    'unescaped' => 'unescaped',
+                                    'class' => 'form-label ')
+                                ); ?>
+                            <div>
+                                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                    'name'          => "bypassdatecontrol",
+                                    'ariaLabel'    => gT("Bypass date control before sending email"),
+                                    'checkedOption' => '0',
+                                    'selectOptions' => [
+                                        '1' => gT('On'),
+                                        '0' => gT('Off'),
+                                    ],
+                                ]); ?>
                             </div>
+                        </div>
+                        <div class="col-md-3">
+                            <?php if ($countInvalidAttachments > 0): ?>
+                                <label class='form-label' for='bypassattachement'><?php eT("Bypass attachment control:"); ?></label>
+                                <div class=''>
+                                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                    'name'          => "bypassattachement",
+                                    'checkedOption' => '0',
+                                    'selectOptions' => [
+                                        '1' => gT('On'),
+                                        '0' => gT('Off'),
+                                    ],
+                                ]); ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <ul class="nav nav-tabs">

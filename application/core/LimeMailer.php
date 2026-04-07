@@ -94,6 +94,11 @@ class LimeMailer extends PHPMailer
     private $_bAttachementTypeDone = false;
 
     /**
+     * @var boolean $bypassattachement allow to send if attachement have issue.
+     **/
+    public $bypassattachement = false;
+
+    /**
      * The Raw Subject of the message. before any Expression Replacements and other update
      * @var string $rawSubject $rawBody
      */
@@ -611,7 +616,7 @@ class LimeMailer extends PHPMailer
             $this->Subject = mb_convert_encoding($this->Subject, $this->CharSet, $this->BodySubjectCharset);
             $this->Body = mb_convert_encoding($this->Body, $this->CharSet, $this->BodySubjectCharset);
         }
-        if (!$this->addAttachementsByType()) {
+        if (!$this->addAttachementsByType() && !$this->bypassattachement ) {
             $this->setError(gT('Email was not sent because attachment did not exist.'));
             return false;
         }
