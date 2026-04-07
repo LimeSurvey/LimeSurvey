@@ -27,6 +27,9 @@
 
 .question-code-container {
   min-width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .question-code-tag-error {

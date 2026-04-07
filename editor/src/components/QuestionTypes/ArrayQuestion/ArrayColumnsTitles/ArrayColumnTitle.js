@@ -61,11 +61,11 @@ export const ArrayColumnTitle = ({
           style={{
             minHeight: highestHeight,
             paddingLeft:
-              isFocused && showQNumCode?.showNumber ? 0 : dragIconSize,
+              isFocused && showQNumCode?.showNumber ? '40px' : dragIconSize,
             paddingRight:
-              isFocused && showQNumCode?.showNumber ? 0 : dragIconSize,
-            marginLeft:
-              isNoAnswer && isFocused && showQNumCode?.showNumber ? '40px' : 0,
+              isFocused && showQNumCode?.showNumber ? '40px' : dragIconSize,
+            marginTop:
+              isNoAnswer && isFocused && showQNumCode?.showNumber ? '28px' : 0,
           }}
         >
           {isFocused && showQNumCode?.showNumber && !isNoAnswer && (
