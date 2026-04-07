@@ -254,7 +254,7 @@ class RegisterController extends LSYii_Controller
         $aData['sEmail'] = $aFieldValue['sEmail'];
         $aData['aAttribute'] = $aFieldValue['aAttribute'];
         $aData['aExtraAttributes'] = $aRegisterAttributes;
-        $aData['bCaptcha'] = isCaptchaEnabled('registrationscreen', $oSurvey->usecaptcha);
+        $aData['bCaptcha'] = isCaptchaEnabled('registrationscreen', $oSurvey->oOptions->usecaptcha);
         $aData['sRegisterFormUrl'] = App()->createUrl('register/index', array('sid' => $iSurveyId));
 
         $aData['formAdditions'] = '';

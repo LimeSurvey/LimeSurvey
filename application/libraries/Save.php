@@ -77,7 +77,7 @@ class Save
         $this->launchSaveFormEvent($iSurveyId);
         /* Construction of the form */
         $aSaveForm['aCaptcha']['show'] = false;
-        if (isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($iSurveyId)->usecaptcha)) {
+        if (isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($iSurveyId)->oOptions->usecaptcha)) {
             $aSaveForm['aCaptcha']['show'] = true;
             $aSaveForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid' => $iSurveyId));
         }

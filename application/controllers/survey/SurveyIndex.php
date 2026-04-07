@@ -506,7 +506,7 @@ class SurveyIndex extends CAction
             $SurveyRuntimeHelper = new SurveyRuntimeHelper();
             $SurveyRuntimeHelper->saveAllIfNeeded();
 
-            if (isCaptchaEnabled('saveandloadscreen', $oSurvey->usecaptcha)) {
+            if (isCaptchaEnabled('saveandloadscreen', $oSurvey->oOptions->usecaptcha)) {
                 $aLoadForm['aCaptcha']['show'] = true;
                 $aLoadForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid' => $surveyid));
             }

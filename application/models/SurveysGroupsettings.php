@@ -361,6 +361,26 @@ class SurveysGroupsettings extends LSActiveRecord
         // set instance options only if option needs to be inherited
         if ($oSurvey !== null || ($oSurvey === null && $iStep > 1)) {
             foreach ($instance->optionAttributes as $key => $attribute) {
+                if ($attribute === 'usecaptcha') {
+                    // Mirror shouldInherit's oOptions-or-raw-attribute pattern:
+                    // if oOptions was seeded (bRealValues=true) use it; otherwise fall back
+                    // to the raw model value, exactly as shouldInherit() does for scalars.
+                    $currentUseCaptcha = property_exists($instance->oOptions, 'usecaptcha')
+                        ? $instance->oOptions->usecaptcha
+                        : $instance->usecaptcha;
+                    $captchaService = new \LimeSurvey\Models\Services\SurveyUseCaptcha();
+                    $mergedUseCaptcha = $captchaService->mergeUseCaptchaValues(
+                        (string) $currentUseCaptcha,
+                        (string) $model->usecaptcha
+                    );
+                    $instance->oOptions->usecaptcha = $mergedUseCaptcha;
+                    $instance->oOptionLabels->{$attribute} = self::translateOptionLabels(
+                        $instance,
+                        $attribute,
+                        $mergedUseCaptcha
+                    );
+                    continue;
+                }
                 if ($instance->shouldInherit($attribute)) {
                     $instance->oOptions->{$attribute} = $model->$attribute;
                     $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $model->$attribute);
@@ -411,22 +431,10 @@ class SurveysGroupsettings extends LSActiveRecord
         }
         // replace option labels on forms
         if ($attribute == 'usecaptcha') {
-            $usecap = $value;
-            if ($usecap === 'A' || $usecap === 'B' || $usecap === 'C' || $usecap === 'X' || $usecap === 'F' || $usecap === 'H' || $usecap === 'K' || $usecap === '0') {
-                $instance->oOptionLabels->useCaptchaSurveyAccess = gT("On");
-            } else {
-                $instance->oOptionLabels->useCaptchaSurveyAccess = gT("Off");
-            }
-            if ($usecap === 'A' || $usecap === 'B' || $usecap === 'D' || $usecap === 'R' || $usecap === 'F' || $usecap === 'G' || $usecap === 'I' || $usecap === 'M') {
-                $instance->oOptionLabels->useCaptchaRegistration = gT("On");
-            } else {
-                $instance->oOptionLabels->useCaptchaRegistration = gT("Off");
-            }
-            if ($usecap === 'A' || $usecap === 'C' || $usecap === 'D' || $usecap === 'S' || $usecap === 'G' || $usecap === 'H' || $usecap === 'J' || $usecap === 'L') {
-                $instance->oOptionLabels->useCaptchaSaveAndLoad = gT("On");
-            } else {
-                $instance->oOptionLabels->useCaptchaSaveAndLoad = gT("Off");
-            }
+            $parts = (new \LimeSurvey\Models\Services\SurveyUseCaptcha())->convertUseCaptchaFromDB((string) $value);
+            $instance->oOptionLabels->useCaptchaSurveyAccess = $parts['surveyAccess'] === 'Y' ? gT("On") : gT("Off");
+            $instance->oOptionLabels->useCaptchaRegistration = $parts['registration'] === 'Y' ? gT("On") : gT("Off");
+            $instance->oOptionLabels->useCaptchaSaveAndLoad = $parts['saveAndLoad'] === 'Y' ? gT("On") : gT("Off");
         } elseif ($attribute == 'owner_id' && $value != -1) {
             $instance->oOptions->owner = "";
             $instance->oOptions->ownerLabel = "";

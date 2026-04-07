@@ -244,6 +244,27 @@ class SurveyUseCaptcha
     }
 
     /**
+     * Resolves inherited components in $current by replacing any 'I' sub-value
+     * with the corresponding component decoded from $parent, then re-encodes to
+     * the packed one-character format.
+     *
+     * @param string $current Packed usecaptcha for the child level (may contain 'I' components)
+     * @param string $parent  Packed usecaptcha from the parent level to inherit from
+     * @return string Packed usecaptcha with no remaining 'I' sub-values
+     */
+    public function mergeUseCaptchaValues($current, $parent)
+    {
+        $c = $this->convertUseCaptchaFromDB((string) $current);
+        $p = $this->convertUseCaptchaFromDB((string) $parent);
+
+        return $this->convertUseCaptchaForDB(
+            $c['surveyAccess'] === 'I' ? $p['surveyAccess'] : $c['surveyAccess'],
+            $c['registration'] === 'I' ? $p['registration'] : $c['registration'],
+            $c['saveAndLoad'] === 'I' ? $p['saveAndLoad'] : $c['saveAndLoad']
+        );
+    }
+
+    /**
      * Transforms the three values for useCaptcha into one.
      *
      * @param array $data
