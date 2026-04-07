@@ -530,8 +530,16 @@ class SurveysGroupsettings extends LSActiveRecord
         // Since survey settings inheritance have been introduced, empty
         // attributes have always been inherited. But for some attributes,
         // an empty value is actually a valid attribute.
+
+        // this needs the zero check because empty considers int(0) true
+        // so int based attributes where zero is a valid value will be
+        // always forced to inherit here
         $attributesAllowedToBeEmpty = ['emailnotificationto', 'emailresponseto'];
-        if (empty($this->oOptions->{$attribute}) && !in_array($attribute, $attributesAllowedToBeEmpty)) {
+        if (
+            empty($this->oOptions->{$attribute}) &&
+            $this->oOptions->{$attribute} !== 0 &&
+            !in_array($attribute, $attributesAllowedToBeEmpty)
+        ) {
             return true;
         }
 
