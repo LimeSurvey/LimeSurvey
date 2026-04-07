@@ -458,6 +458,8 @@ class GlobalSettings extends SurveyCommonAction
         $timezone = App()->getRequest()->getPost('displayTimezone');
         if (in_array($timezone, DateTimeZone::listIdentifiers())) {
             SettingGlobal::setSetting('displayTimezone', $timezone);
+        } else {
+            Yii::app()->setFlashMessage(gT("The selected timezone is not valid and was not saved."), 'error');
         }
 
         SettingGlobal::setSetting('usercontrolSameGroupPolicy', strip_tags(Yii::app()->getRequest()->getPost('usercontrolSameGroupPolicy', '')));

@@ -777,7 +777,7 @@ class SurveyRuntimeHelper
             'startlanguage'               => (App()->language ?? $this->aSurveyInfo['language']),
             'target'                      => Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $this->aSurveyInfo['sid'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR,
             'tempdir'                     => Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR,
-            'timezone'                    => Yii::app()->getConfig('displayTimezone'),
+            'displayTimezone'             => Yii::app()->getConfig('displayTimezone'),
             // for backward compatibilty convert timezone string to +/- hours
             'timeadjust'                  => convertTimezoneDiffToHours(),
             'token'                       => $clienttoken,

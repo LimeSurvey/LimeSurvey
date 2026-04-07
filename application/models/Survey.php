@@ -401,7 +401,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function expire($surveyId = null)
     {
-        $dateTime = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s");
+        $dateTime = dateShift(gmdate("Y-m-d H:i:s"), "Y-m-d H:i:s");
         $dateTime = dateShift($dateTime, "Y-m-d H:i:s", '-1 minute');
 
         $model = $this;

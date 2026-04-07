@@ -4622,7 +4622,7 @@ class LimeExpressionManager
         $LEM->surveyOptions['tablename_timings'] = ($survey->isSaveTimings ? $survey->timingsTableName : '');
         $LEM->surveyOptions['target'] = (isset($aSurveyOptions['target']) ? $aSurveyOptions['target'] : '/temp/files/');
         $LEM->surveyOptions['timeadjust'] = (isset($aSurveyOptions['timeadjust']) ? $aSurveyOptions['timeadjust'] : 0);
-        $LEM->surveyOptions['displayTimezone'] = (isset($aSurveyOptions['displayTimezone']) ? $aSurveyOptions['displayTimezone'] : date_default_timezone_get());
+        $LEM->surveyOptions['displayTimezone'] = ($aSurveyOptions['displayTimezone'] ?? $aSurveyOptions['timezone'] ?? date_default_timezone_get());
         $LEM->surveyOptions['tempdir'] = (isset($aSurveyOptions['tempdir']) ? $aSurveyOptions['tempdir'] : '/temp/');
         $LEM->surveyOptions['token'] = (isset($aSurveyOptions['token']) ? $aSurveyOptions['token'] : null);
         $LEM->debugLevel = $debugLevel;

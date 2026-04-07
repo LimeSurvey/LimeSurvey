@@ -2700,9 +2700,10 @@ function dateShift($date, $toDateFormat, $toTimezone = null, $fromTimezone = 'UT
 function convertTimezoneDiffToHours(){
     $desiredTimezone = new DateTimeZone(Yii::app()->getConfig('displayTimezone'));
     // Get the current time in the desired timezone
-    $currentDateTime = new DateTime('now', date_default_timezone_get());
+    $currentDateTime = new DateTime('now', new DateTimeZone(date_default_timezone_get()));
     // Get the offset in hours from UTC
     $hoursOffset = $desiredTimezone->getOffset($currentDateTime) / 3600;
+    return $hoursOffset;
 }
 
 // getBounceEmail: returns email used to receive error notifications
