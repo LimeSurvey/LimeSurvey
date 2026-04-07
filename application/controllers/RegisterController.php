@@ -290,7 +290,7 @@ class RegisterController extends LSYii_Controller
         // Make sure enough time has passed since the last email was sent
         $now = gmdate("Y-m-d H:i");
         $delay = Yii::app()->getConfig('registrationEmailDelay');
-        if (!empty($oToken->sent) && $oToken->sent != "N" && dateShift($oToken->sent, "Y-m-d H:i", $delay) > $now) {
+        if (!empty($oToken->sent) && $oToken->sent != "N" && dateShiftRelative($oToken->sent, "Y-m-d H:i", $delay) > $now) {
             return false;
         }
 
@@ -348,7 +348,7 @@ class RegisterController extends LSYii_Controller
                 $this->sMailMessage = gT("The address you have entered is already registered. An email has been sent to this address with a link that gives you access to the survey.");
                 $now = gmdate("Y-m-d H:i");
                 $delay = Yii::app()->getConfig('registrationEmailDelay');
-                if (!empty($oToken->sent) && $oToken->sent != "N" && dateShift($oToken->sent, "Y-m-d H:i", $delay) > $now) {
+                if (!empty($oToken->sent) && $oToken->sent != "N" && dateShiftRelative($oToken->sent, "Y-m-d H:i", $delay) > $now) {
                     $this->sMailMessage = gT("The address you have entered is already registered. An email has already been sent previously. A new email will not be sent yet. Please try again later.");
                     $this->sendRegistrationEmail = false;
                 }

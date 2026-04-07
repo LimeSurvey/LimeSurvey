@@ -2663,16 +2663,14 @@ function isTokenCompletedDatestamped($thesurvey)
 }
 
 /**
-* Function to shift a date/time from one timezone to another,
-* or apply a relative time modifier.
+* Converts a date/time from one timezone to another.
 *
 * @param string $date The input date in a format accepted by DateTime
 * @param string $toDateFormat Output format (PHP date() format string)
-* @param string|null $toTimezone Target timezone identifier (e.g. 'Europe/Berlin'),
-*        or a relative modifier string (e.g. '-1 minute', '+2 hours') for
-*        backward compatibility. If null, uses the global 'displayTimezone' setting.
+* @param string|null $toTimezone Target timezone identifier (e.g. 'Europe/Berlin').
+*        If null, uses the global 'displayTimezone' setting.
 * @param string $fromTimezone Input timezone identifier, defaults to 'UTC'
-* @return string The shifted date in the target timezone/modifier and format
+* @return string The date converted to the target timezone and formatted
 */
 function dateShift($date, $toDateFormat, $toTimezone = null, $fromTimezone = 'UTC')
 {
@@ -2684,15 +2682,24 @@ function dateShift($date, $toDateFormat, $toTimezone = null, $fromTimezone = 'UT
         }
     }
     $datetime = new DateTime($date, new DateTimeZone($fromTimezone));
+    $datetime->setTimezone(new DateTimeZone($toTimezone));
+    return $datetime->format($toDateFormat);
+}
 
-    // Backward compatibility: if $toTimezone is a relative modifier
-    // (e.g. '-1 minute', '+2 hours'), apply it via modify() instead of
-    // treating it as a timezone identifier.
-    if (preg_match('/^[+-]/', $toTimezone) && !preg_match('#/#', $toTimezone)) {
-        $datetime->modify($toTimezone);
-    } else {
-        $datetime->setTimezone(new DateTimeZone($toTimezone));
-    }
+/**
+ * Applies a relative time modifier (e.g. '-1 minute', '+2 hours') to a date
+ * and returns the result in the given format.
+ *
+ * @param string $date         The input date string.
+ * @param string $toDateFormat The desired output date format.
+ * @param string $modifier     A relative date/time modifier accepted by DateTime::modify().
+ * @param string $fromTimezone The timezone of the input date (default: 'UTC').
+ * @return string The modified date formatted according to $toDateFormat.
+ */
+function dateShiftRelative($date, $toDateFormat, $modifier, $fromTimezone = 'UTC')
+{
+    $datetime = new DateTime($date, new DateTimeZone($fromTimezone));
+    $datetime->modify($modifier);
     return $datetime->format($toDateFormat);
 }
 
