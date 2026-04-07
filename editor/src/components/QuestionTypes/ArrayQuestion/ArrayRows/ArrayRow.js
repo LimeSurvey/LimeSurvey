@@ -128,7 +128,7 @@ export const ArrayRow = ({
             disabled={isNoAnswer}
           />
         </div>
-        <div className="d-flex" >
+        <div className="d-flex">
           {Array(numberOfHorizontalEntities)
             .fill(1)
             .map((_, _index) => (
