@@ -183,7 +183,7 @@ class CopySurvey
         );
         $cntCopiedLanguageSettings = 0;
         foreach ($sourceLanguageSettings as $sourceLanguageSetting) {
-            $destLangSet = new SurveyLanguageSetting();
+            $destLangSet = new SurveyLanguageSetting('copy');
             $destLangSet->attributes = $sourceLanguageSetting->attributes;
             $destLangSet->surveyls_attributecaptions = $sourceLanguageSetting->surveyls_attributecaptions;
             if ($this->options->isResourcesAndLinks()) {
@@ -253,12 +253,10 @@ class CopySurvey
                     $destinationSurvey->sid,
                     $destLangSet->email_admin_responses
                 );
-                $destLangSet->attachments = translateLinks(
-                    'survey',
+                $destLangSet->attachments = translateJsonLinks(
                     $this->sourceSurvey->sid,
                     $destinationSurvey->sid,
-                    $destLangSet->attachments,
-                    true
+                    $destLangSet->attachments
                 );
             }
             $destLangSet->surveyls_survey_id = $destinationSurvey->sid;

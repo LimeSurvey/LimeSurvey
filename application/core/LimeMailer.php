@@ -3,7 +3,6 @@
 use PHPMailer\PHPMailer\PHPMailer;
 
 /**
- * WIP
  * A SubClass of phpMailer adapted for LimeSurvey
  */
 class LimeMailer extends PHPMailer
@@ -939,13 +938,13 @@ class LimeMailer extends PHPMailer
         $attachementType = $this->_aAttachementByType[$this->emailType];
         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $this->surveyId, 'surveyls_language' => $this->mailLanguage));
         if (!empty($oSurveyLanguageSetting->attachments)) {
-            $aAttachments = unserialize($oSurveyLanguageSetting->attachments);
+            $aAttachments = $oSurveyLanguageSetting->getValidAttachments(true);
             if (!empty($aAttachments[$attachementType])) {
                 if ($this->oToken) {
                     LimeExpressionManager::singleton()->loadTokenInformation($this->surveyId, $this->oToken->token);
                 }
                 foreach ($aAttachments[$attachementType] as $aAttachment) {
-                    if ($this->attachementExists($aAttachment) && LimeExpressionManager::ProcessRelevance($aAttachment['relevance'])) {
+                    if (LimeExpressionManager::ProcessRelevance($aAttachment['relevance'])) {
                         $this->addAttachment($aAttachment['url']);
                     }
                 }
@@ -953,30 +952,23 @@ class LimeMailer extends PHPMailer
         }
     }
 
+    /**
+     * Check if an specific attatchemnt exist
+     * Not needed anymore, SurveyLanuageSetttings return existing file only, keep it for plugin ?
+     * @deprecated 6.16.17
+     * @param string[] attachment info
+     * @return boolean
+     **/
     private function attachementExists($aAttachment)
     {
         $throwError = (Yii::app()->getConfig('debug') && Permission::model()->hasSurveyPermission($this->surveyId, 'surveylocale', 'update'));
-
-        $isInSurvey = Yii::app()->is_file(
-            $aAttachment['url'],
-            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $this->surveyId,
-            false
-        );
-
-        $isInGlobal = Yii::app()->is_file(
-            $aAttachment['url'],
-            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "global",
-            false
-        );
-
-        if ($isInSurvey || $isInGlobal) {
+        $SurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(['surveyls_survey_id' => $this->surveyId, 'surveyls_language' => $this->mailLanguage]);
+        if ($SurveyLanguageSetting->getAttachmentFileExist($aAttachment['url'])) {
             return true;
         }
-
-        if ($throwError && !($isInSurvey || $isInGlobal)) {
+        if ($throwError) {
             throw new \CException(sprintf(gT("File not found: %s"), $aAttachment['url']));
         }
-
         return false;
     }
 
