@@ -39,14 +39,8 @@ export const ArrayColumnTitle = ({
             {
               'disabled opacity-0': !provided.dragHandleProps,
             },
-            'd-flex align-items-center'
+            'd-flex align-items-center action-item-button drag column'
           )}
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '10px',
-            transform: 'translate(-50%, -50%)',
-          }}
         >
           {isFocused && <DragIcon className="text-secondary fill-current" />}
         </div>

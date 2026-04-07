@@ -11,32 +11,36 @@
 
   .array-question-item {
     .action-item-button {
-      position: absolute !important;
-      transform: translate(-50%, -50%) !important;
-      &.drag {
-        &.column {
-          top: -10px !important;
-          left: 50% !important;
+      &.action-item-button {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        &.drag {
+          &.column {
+            top: 50%;
+            left: 10px;
+          }
+          &.row {
+            top: 50%;
+            left: 20px;
+          }
         }
-        &.row {
-          top: 50% !important;
-          left: -16px !important;
-        }
-      }
-      &.remove {
-        &.column {
-          top: -10px !important;
-          left: 50% !important;
-        }
-        &.row {
-          top: 50% !important;
-          left: 4px !important;
+        &.remove {
+          &.column {
+            top: -10px;
+            left: 50%;
+          }
+          &.row {
+            top: 50%;
+            left: -6px;
+          }
         }
       }
     }
     &:hover {
       .remove-item-button {
-        opacity: 1 !important;
+        &.remove-item-button {
+          opacity: 1;
+        }
       }
     }
   }
