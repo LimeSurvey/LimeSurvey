@@ -193,7 +193,7 @@ class LayoutHelper
         ];
         $menuItems[] = (new MenuItem($menuItemCopySurvey));
 
-        $menuItemNewSurvey = [
+        $menuItemImport = [
             'isDivider' => false,
             'isSmallText' => false,
             'label' => gT('Import'),
@@ -202,7 +202,7 @@ class LayoutHelper
             'iconClass' => 'ri-upload-line',
             'itemClass' => $itemClass
         ];
-        $menuItems[] = (new MenuItem($menuItemNewSurvey));
+        $menuItems[] = (new MenuItem($menuItemImport));
 
         $options = [
             'id' => 'createMenuButton',
