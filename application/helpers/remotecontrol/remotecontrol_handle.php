@@ -3216,7 +3216,7 @@ class remotecontrol_handle
 
             if (!is_null($iMinDaysBetween)) {
                 $iMinDaysBetween = (int) $iMinDaysBetween;
-                $compareddate = dateShift(date("Y-m-d H:i:s", time() - 86400 * $iMinDaysBetween), "Y-m-d H:i");
+                $compareddate = dateShift(gmdate("Y-m-d H:i:s", time() - 86400 * $iMinDaysBetween), "Y-m-d H:i");
                 $SQLreminderdelaycondition = " ((remindersent = 'N' AND sent < '" . $compareddate . "')  OR  (remindersent < '" . $compareddate . "'))";
             }
 

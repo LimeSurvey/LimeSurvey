@@ -2663,26 +2663,36 @@ function isTokenCompletedDatestamped($thesurvey)
 }
 
 /**
-* Function to shift a date/time from one timezone to another.
+* Function to shift a date/time from one timezone to another,
+* or apply a relative time modifier.
 *
-* @param string $date The input date 
-* @param string $toDateFormat Output format
-* @param string $toTimezone Ouput time zone, if null, uses the global setting for display timezone
-* @param string $fromTimezone Input time zone, if not given, uses UTC
-* @return string The shifted date in the target timezone and format
+* @param string $date The input date in a format accepted by DateTime
+* @param string $toDateFormat Output format (PHP date() format string)
+* @param string|null $toTimezone Target timezone identifier (e.g. 'Europe/Berlin'),
+*        or a relative modifier string (e.g. '-1 minute', '+2 hours') for
+*        backward compatibility. If null, uses the global 'displayTimezone' setting.
+* @param string $fromTimezone Input timezone identifier, defaults to 'UTC'
+* @return string The shifted date in the target timezone/modifier and format
 */
 function dateShift($date, $toDateFormat, $toTimezone = null, $fromTimezone = 'UTC')
 {
     if (!$toTimezone) {
-        $toTimezone = Yii::app()->getConfig('displayTimezone') ;
+        $toTimezone = Yii::app()->getConfig('displayTimezone');
         if (empty($toTimezone)) {
             // get default timezone
             return $date;
         }
     }
-    $datetime = new DateTime($date, $fromTimezone);
+    $datetime = new DateTime($date, new DateTimeZone($fromTimezone));
 
-    $datetime->setTimezone(new DateTimeZone($toTimezone));
+    // Backward compatibility: if $toTimezone is a relative modifier
+    // (e.g. '-1 minute', '+2 hours'), apply it via modify() instead of
+    // treating it as a timezone identifier.
+    if (preg_match('/^[+-]/', $toTimezone) && !preg_match('#/#', $toTimezone)) {
+        $datetime->modify($toTimezone);
+    } else {
+        $datetime->setTimezone(new DateTimeZone($toTimezone));
+    }
     return $datetime->format($toDateFormat);
 }
 

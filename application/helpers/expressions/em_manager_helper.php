@@ -5094,7 +5094,7 @@ class LimeExpressionManager
         }
 
         if (!isset($_SESSION[$this->sessid]['srid'])) {// Create the response line, and fill Session with primaryKey
-            $_SESSION[$this->sessid]['datestamp'] = dateShift((string)date("Y-m-d H:i:s"), "Y-m-d H:i:s");
+            $_SESSION[$this->sessid]['datestamp'] = dateShift((string)gmdate("Y-m-d H:i:s"), "Y-m-d H:i:s");
             // Create initial insert row for this record
             $sdata = [
                 "startlanguage" => $this->surveyOptions['startlanguage']
@@ -5180,7 +5180,7 @@ class LimeExpressionManager
             $aResponseAttributes['lastpage'] = $thisstep;
 
             if ($this->surveyOptions['datestamp'] && isset($_SESSION[$this->sessid]['datestamp'])) {
-                $_SESSION[$this->sessid]['datestamp'] = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s");
+                $_SESSION[$this->sessid]['datestamp'] = dateShift(gmdate("Y-m-d H:i:s"), "Y-m-d H:i:s");
                 $aResponseAttributes['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
             }
             if ($this->surveyOptions['ipaddr']) {
@@ -5292,7 +5292,7 @@ class LimeExpressionManager
                     if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion)) {
                         /* Less update : just do what you need to to */
                         if ($this->surveyOptions['datestamp']) {
-                            $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s");
+                            $submitdate = dateShift(gmdate("Y-m-d H:i:s"), "Y-m-d H:i:s");
                         } else {
                             $submitdate = date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
                         }
