@@ -970,6 +970,21 @@ class LimeExpressionManager
                     $row['cfieldname'] = (string)substr((string) $row['cfieldname'], 1);
                     if (isset($aDictionary[$row['cfieldname']])) {
                         $row['cfieldname'] = $aDictionary[$row['cfieldname']];
+                    } elseif ($oQuestion && preg_match('/^Q(\d+)(.+)$/', $row['cfieldname'], $matches)) {
+                        // Handle malformed cfieldname like Q{parentQid}{subqCode} from incomplete migration.
+                        // Try to resolve the subquestion code to its qid.
+                        $parentQid = (int)$matches[1];
+                        $subqCode = $matches[2];
+                        $subQuestion = Question::model()->find(
+                            "parent_qid = :parent_qid AND title = :title",
+                            [':parent_qid' => $parentQid, ':title' => $subqCode]
+                        );
+                        if ($subQuestion) {
+                            $row['cfieldname'] = "Q{$parentQid}_S{$subQuestion->qid}";
+                            if (isset($aDictionary[$row['cfieldname']])) {
+                                $row['cfieldname'] = $aDictionary[$row['cfieldname']];
+                            }
+                        }
                     }
                     $fieldname = $row['cfieldname'] . '.NAOK';
                     $subqid = $fieldname;
@@ -1054,8 +1069,11 @@ class LimeExpressionManager
                     }
                 }
             }
-            if (($row['cqid'] == 0 && preg_match('/^{TOKEN:([^}]*)}$/', $row['cfieldname']) && preg_match('/^{TOKEN:([^}]*)}$/', isset($previousCondition) ? $previousCondition['cfieldname'] : '')) || substr($row['cfieldname'], 0, 1) == '+') {
-                $_cqid = -1;    // forces this statement to be ANDed instead of being part of a cqid OR group (except for TOKEN fields that follow a a token field)
+            if (($row['cqid'] == 0
+                    && preg_match('/^{TOKEN:([^}]*)}$/', $row['cfieldname'])
+                    && preg_match('/^{TOKEN:([^}]*)}$/', isset($previousCondition) ? $previousCondition['cfieldname'] : '')
+                ) || substr($row['cfieldname'], 0, 1) == '+') {
+                $_cqid = -1;    // forces this statement to be ANDed instead of being part of a cqid OR group (except for TOKEN fields that follow a token field)
             }
             $previousCondition = $row;
         }
