@@ -2377,7 +2377,7 @@ class SurveyAdministrationController extends LSBaseController
         $optionsDataContainer->setResetResponseStartId(isset($option) && $option == "1");
 
         $newTitle = $request->getPost('copysurveytitle');
-        if ($newTitle !== null && trim($newTitle) !== '') {
+        if (is_string($newTitle) && trim($newTitle) !== '') {
             $optionsDataContainer->setNewTitle(trim($newTitle));
         }
 
