@@ -143,20 +143,11 @@ class RemoteControlImportQuestionTest extends BaseTest
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
         // Create a separate survey to get a group that doesn't belong to our test survey
-        $aSurveyData = array(
-            'title' => 'Test Survey for Group Mismatch',
-            'description' => 'Survey used to get a mismatched group ID',
-            'language' => 'en',
-        );
-        $mismatchedSurveyId = $this->handler->create_survey($sessionKey, $aSurveyData);
+        $mismatchedSurveyId = $this->handler->add_survey($sessionKey, 0, 'Test Survey for Group Mismatch', 'en');
         $this->assertIsInt($mismatchedSurveyId, 'Failed to create mismatched survey');
 
         // Create a group in the mismatched survey
-        $aGroupData = array(
-            'group_name' => 'Test Group',
-            'group_order' => 1,
-        );
-        $mismatchedGroupId = $this->handler->add_group($sessionKey, $mismatchedSurveyId, $aGroupData);
+        $mismatchedGroupId = $this->handler->add_group($sessionKey, $mismatchedSurveyId, 'Test Group');
         $this->assertIsInt($mismatchedGroupId, 'Failed to create group in mismatched survey');
 
         // Attempt to import a question from our test survey into the group from the mismatched survey
@@ -181,20 +172,11 @@ class RemoteControlImportQuestionTest extends BaseTest
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
         // Create a separate survey to get a group that doesn't belong to our test survey
-        $aSurveyData = array(
-            'title' => 'Test Survey for List Questions Mismatch',
-            'description' => 'Survey used to test list_questions with mismatched group ID',
-            'language' => 'en',
-        );
-        $mismatchedSurveyId = $this->handler->create_survey($sessionKey, $aSurveyData);
+        $mismatchedSurveyId = $this->handler->add_survey($sessionKey, 0, 'Test Survey for List Questions Mismatch', 'en');
         $this->assertIsInt($mismatchedSurveyId, 'Failed to create mismatched survey');
 
         // Create a group in the mismatched survey
-        $aGroupData = array(
-            'group_name' => 'Test Group for List',
-            'group_order' => 1,
-        );
-        $mismatchedGroupId = $this->handler->add_group($sessionKey, $mismatchedSurveyId, $aGroupData);
+        $mismatchedGroupId = $this->handler->add_group($sessionKey, $mismatchedSurveyId, 'Test Group for List');
         $this->assertIsInt($mismatchedGroupId, 'Failed to create group in mismatched survey');
 
         // Attempt to list questions from our test survey using the group from the mismatched survey
