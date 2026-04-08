@@ -14,6 +14,7 @@ export const RankingQuestionAnswers = ({
   handleAnswerUpdate,
   handleOnDragEnd,
   handleRemovingAnswers,
+  handleChildCodeUpdate,
 }) => {
   const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
 
@@ -61,6 +62,16 @@ export const RankingQuestionAnswers = ({
                   onChange={(value) => handleAnswerUpdate(value, index)}
                   provided={provided}
                   handleRemovingAnswers={handleRemovingAnswers}
+                  handleCodeUpdate={(value, index) =>
+                    handleChildCodeUpdate({
+                      newCode: value,
+                      childIndex: index,
+                      childArray: answers,
+                      entityType: Entities.answer,
+                      entityTitleKey: 'answer',
+                    })
+                  }
+                  code={answer.code}
                 />
               </div>
             )}

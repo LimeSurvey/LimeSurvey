@@ -216,7 +216,7 @@ export const ColumnFilter = ({ column, columnsFilters, setColumnsFilters }) => {
     <div onClick={(e) => e.stopPropagation()}>
       <Input
         type="text"
-        className="form-control form-control-sm"
+        className="form-control-sm"
         placeholder={t('Filter column')}
         onChange={(e) => setFilterValue(e.target.value, containfilter)}
       />
