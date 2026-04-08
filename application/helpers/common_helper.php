@@ -1401,26 +1401,22 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                     break;
                 case \Question::QT_SEMICOLON_ARRAY_TEXT:
                 case \Question::QT_COLON_ARRAY_NUMBERS:
-                    if (strpos($tableName, "timings") !== false) {
-                        $newFieldName = "Q{$qid}_Ctime";
-                    } else {
-                        $scales = [0 => [], 1 => []];
-                        foreach ($questions as $question) {
-                            if ($question->parent_qid != 0) {
-                                $scales[$question->scale_id][$question->title] = $question->qid;
-                            }
+                    $scales = [0 => [], 1 => []];
+                    foreach ($questions as $question) {
+                        if ($question->parent_qid != 0) {
+                            $scales[$question->scale_id][$question->title] = $question->qid;
                         }
-                        $partialFieldName = substr($fieldName, 0, strlen("{$sid}X{$gid}X{$qid}"));
-                        foreach ($scales[0] as $title1 => $qid1) {
-                            if (count($scales[1])) {
-                                foreach ($scales[1] as $title2 => $qid2) {
-                                    if ($fieldName === "{$partialFieldName}{$title1}_{$title2}") {
-                                        return "Q{$qid}_S{$qid1}_S{$qid2}";
-                                    }
+                    }
+                    $partialFieldName = substr($fieldName, 0, strlen("{$sid}X{$gid}X{$qid}"));
+                    foreach ($scales[0] as $title1 => $qid1) {
+                        if (count($scales[1])) {
+                            foreach ($scales[1] as $title2 => $qid2) {
+                                if ($fieldName === "{$partialFieldName}{$title1}_{$title2}") {
+                                    return "Q{$qid}_S{$qid1}_S{$qid2}";
                                 }
-                            } else if ($fieldName === "{$partialFieldName}{$title1}") {
-                                return "Q{$qid}_S{$qid1}";
                             }
+                        } else if ($fieldName === "{$partialFieldName}{$title1}") {
+                            return "Q{$qid}_S{$qid1}";
                         }
                     }
                     break;
@@ -1434,7 +1430,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                 case \Question::QT_Y_YES_NO_RADIO:
                 case \Question::QT_VERTICAL_FILE_UPLOAD:
                 case \Question::QT_ASTERISK_EQUATION:
-                    $isRoot = ((strpos($tableName, "timings") !== false) || (($rootQuestion->parent_qid ?? 0) == "0"));
+                    $isRoot = (($rootQuestion->parent_qid ?? 0) == "0");
                     $newFieldName = ($isRoot ? "Q{$qid}" : "Q{$rootQuestion->parent_qid}");
                     $suffix = "";
                     $isComment = false;
