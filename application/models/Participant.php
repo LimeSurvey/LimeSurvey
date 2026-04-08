@@ -1110,6 +1110,9 @@ class Participant extends LSActiveRecord
         //
         $i = 0;
         $start = $limit * $page - $limit;
+        /* @var string[] available column name */
+        $columnNames = Participant::model()->attributeNames();
+        /* @var CDbCriteria */
         $command = new CDbCriteria();
         $command->condition = '';
 
@@ -1165,9 +1168,12 @@ class Participant extends LSActiveRecord
                         break;
                     case 'lessthan':
                         $operator = "<";
+                        break;
+                    default:
+                        throw new CHttpException(400, 'Invalid operator in condition: ' . $condition[1]);
                 }
                 if ($condition[0] == "survey") {
-                    $lang = Yii::app()->session['adminlang'];
+                    $lang = App()->session['adminlang'];
                     $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND {{survey_links}}.survey_id ' . $operator . ' :param)');
                     $command->params = array(':lang' => $lang, ':param' => $condition[2]);
                 } elseif ($condition[0] == "surveys") {
@@ -1190,6 +1196,9 @@ class Participant extends LSActiveRecord
                     $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value ' . $operator . ' :condition_2)');
                     $command->params = array(':condition_0' => $condition[0], ':condition_2' => $condition[2]);
                 } else {
+                    if (!in_array($condition[0], $columnNames)) {
+                        throw new CHttpException(400, 'Invalid column name in condition: ' . $condition[0]);
+                    }
                     $command->addCondition($condition[0] . ' ' . $operator . ' :condition_2');
                     $command->params = array(':condition_2' => $condition[2]);
                 }
@@ -1202,6 +1211,12 @@ class Participant extends LSActiveRecord
                 }
                 //Force the type of numeric values to be numeric
                 $booloperator = strtoupper((string) $condition[$i]);
+                if ($booloperator === '') {
+                    $booloperator = 'AND';
+                }
+                if (!in_array($booloperator, ['AND', 'OR'])) {
+                    throw new CHttpException(400, 'Invalid boolean operator in condition: ' . $booloperator);
+                }
                 $condition1name = ":condition_" . ($i + 1);
                 $condition2name = ":condition_" . ($i + 3);
                 switch ($condition[$i + 2]) {
@@ -1228,6 +1243,9 @@ class Participant extends LSActiveRecord
                         break;
                     case 'lessthan':
                         $operator = "<";
+                        break;
+                    default:
+                        throw new CHttpException(400, 'Invalid operator in condition: ' . $condition[$i + 2]);
                 }
                 if ($condition[$i + 1] == "survey") {
                     $lang = Yii::app()->session['adminlang'];
@@ -1255,6 +1273,9 @@ class Participant extends LSActiveRecord
                     $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = ' . $condition1name . ' AND {{participant_attribute}}.value ' . $operator . ' ' . $condition2name . ')', $booloperator);
                     $command->params = array_merge($command->params, array($condition1name => $condition[$i + 1], $condition2name => $condition[$i + 3]));
                 } else {
+                    if (!in_array($condition[$i + 1], $columnNames)) {
+                        throw new CHttpException(400, 'Invalid column name in condition: ' . $condition[$i + 1]);
+                    }
                     $command->addCondition($condition[$i + 1] . ' ' . $operator . ' ' . $condition2name, $booloperator);
                     $command->params = array_merge($command->params, array($condition2name => $condition[$i + 3]));
                 }
@@ -1340,9 +1361,14 @@ class Participant extends LSActiveRecord
                     $operator = '<';
                     $aParams[$param] = $sValue;
                     break;
+                default:
+                    throw new CHttpException(400, 'Invalid operator in condition: ' . $sOperator);
             }
             if (isset($condition[(($i - 1) * 4) + 3])) {
                 $booloperator = strtoupper((string) $condition[(($i - 1) * 4) + 3]);
+                if (!in_array($booloperator, ['OR','AND'])) {
+                    throw new CHttpException(400, 'Invalid boolean operator in condition: ' . $booloperator);
+                }
             } else {
                 $booloperator = 'AND';
             }
@@ -1380,19 +1406,9 @@ class Participant extends LSActiveRecord
                 //Searching for an attribute
                 $command->addCondition('attribute' . $sFieldname . '.value ' . $operator . ' ' . $param, $booloperator);
             } else {
-                // Check if fieldname exists to prevent SQL injection
-                $aSafeFieldNames = array(
-                    'firstname',
-                    'lastname',
-                    'email',
-                    'blacklisted',
-                    'surveys',
-                    'survey',
-                    'language',
-                    'owner_uid',
-                    'owner_name'
-                );
-                if (!in_array($sFieldname, $aSafeFieldNames)) {
+                /* @var string[] available column name */
+                $columnNames = Participant::model()->attributeNames();
+                if (!in_array($sFieldname, $columnNames)) {
                     // Skip invalid fieldname
                     continue;
                 }
@@ -1422,7 +1438,7 @@ class Participant extends LSActiveRecord
             return true;
         }
 
-        $userid = Yii::app()->session['loginID'];
+        $userid = App()->session['loginID'];
 
         $isOwner = Yii::app()
             ->db
