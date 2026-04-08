@@ -1055,38 +1055,4 @@ class LimeMailer extends PHPMailer
 
         return (new \Html2Text\Html2Text($html))->getText();
     }
-
-    /**
-     * Checks that the specified attachment exists on one of the allowed paths.
-     * @param integer $surveyId
-     * @param array $attachment data
-     * @param boolean|null $throwError if null use debug and allow edoit survey content
-     * @return bool True if the file exists within the survey or global upload dirs.
-     */
-    public static function attachmentExist($surveyId, $attachment, $throwError = null)
-    {
-        if (is_null($throwError)) {
-            $throwError = (Yii::app()->getConfig('debug') > 1 && Permission::model()->hasSurveyPermission($surveyId, 'surveylocale', 'update'));
-        }
-        if (App()->is_file(
-            $attachment['url'],
-            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId,
-            false
-        )) {
-            // isInSurvey
-            return true;
-        }
-        if (App()->is_file(
-            $attachment['url'],
-            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "global",
-            false
-        )) {
-            // isInGlobal
-            return true;
-        }
-        if ($throwError) {
-            throw new \CException(sprintf(gT("File not found: %s"), $attachment['url']));
-        }
-        return false;
-    }
 }
