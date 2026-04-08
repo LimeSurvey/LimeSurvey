@@ -144,11 +144,11 @@ export const ArrayParticipantMode = ({
   const isSameIncreaseDecrease =
     questionThemeName ===
     getNotSupportedQuestionTypeInfo().ARRAY_INCREASE_SAME_DECREASE.theme
-
+  
   const type = useMemo(() => {
     if (isArrayByText) {
       return 'text'
-    } else if (isArrayByNumbers && isTrue(inputBoxes[''])) {
+    } else if (isArrayByNumbers && isTrue(inputBoxes?.[''])) {
       return 'select'
     } else if (isArrayByNumbers) {
       return 'number'
@@ -162,7 +162,7 @@ export const ArrayParticipantMode = ({
       [getQuestionTypeInfo().ARRAY.theme]: FormCheck,
       [getQuestionTypeInfo().ARRAY_COLUMN.theme]: FormCheck,
       [getQuestionTypeInfo().ARRAY_DUAL_SCALE.theme]: FormCheck,
-      [getQuestionTypeInfo().ARRAY_NUMBERS.theme]: isTrue(inputBoxes[''])
+      [getQuestionTypeInfo().ARRAY_NUMBERS.theme]: isTrue(inputBoxes?.[''])
         ? Input
         : Select,
       [getQuestionTypeInfo().ARRAY_TEXT.theme]: Input,
