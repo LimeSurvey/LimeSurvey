@@ -3359,7 +3359,9 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the Survey to update response
      * @param array $aResponseData The actual response
-     * @return array|boolean TRUE(bool) on success. Array with error status on failure.
+     * @return array|boolean TRUE(bool) on success. Array with error status on failure. Error arrays include:
+     *         - 'status': Human-readable error message
+     *         - 'error_code': Machine-readable error code (e.g., 'ERR_MULTIPLE_MATCHES') for reliable error identification
      */
     public function update_response($sSessionKey, $iSurveyID, $aResponseData)
     {
@@ -3404,7 +3406,10 @@ class remotecontrol_handle
                 return array('status' => 'No matching Response');
             }
             if (count($aResponses) > 1) {
-                return array('status' => 'More than one matching response, updating multiple responses at once is not supported');
+                return array(
+                    'status' => 'More than one matching response, updating multiple responses at once is not supported',
+                    'error_code' => 'ERR_MULTIPLE_MATCHES'
+                );
             }
 
             $aBasicDestinationFields = $oSurveyDynamic->tableSchema->columnNames;
