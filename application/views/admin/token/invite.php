@@ -83,10 +83,10 @@
                         </div>
                         <div class="col-md-3">
                             <?php if ($countInvalidAttachments > 0): ?>
-                                <label class='form-label' for='bypassattachement'><?php eT("Bypass attachment control:"); ?></label>
+                                <label class='form-label' for='ignoremissingattachement'><?php eT("Ignore missing attachments:"); ?></label>
                                 <div class=''>
                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                    'name'          => "bypassattachement",
+                                    'name'          => "ignoremissingattachement",
                                     'checkedOption' => '0',
                                     'selectOptions' => [
                                         '1' => gT('On'),

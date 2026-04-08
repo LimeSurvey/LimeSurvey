@@ -94,9 +94,9 @@ class LimeMailer extends PHPMailer
     private $_bAttachementTypeDone = false;
 
     /**
-     * @var boolean $bypassattachement allow to send if attachement have issue.
+     * @var boolean $ignoremissingattachement allow to send if attachement have issue.
      **/
-    public $bypassattachement = false;
+    public $ignoremissingattachement = false;
 
     /**
      * The Raw Subject of the message. before any Expression Replacements and other update
@@ -616,8 +616,8 @@ class LimeMailer extends PHPMailer
             $this->Subject = mb_convert_encoding($this->Subject, $this->CharSet, $this->BodySubjectCharset);
             $this->Body = mb_convert_encoding($this->Body, $this->CharSet, $this->BodySubjectCharset);
         }
-        if (!$this->addAttachementsByType() && !$this->bypassattachement ) {
-            $this->setError(gT('Email was not sent because attachment did not exist.'));
+        if (!$this->addAttachementsByType() && !$this->ignoremissingattachement ) {
+            $this->setError(gT('Email was not sent. One or more attachments did not exist.'));
             return false;
         }
         /* All core done, next are done for all survey */
@@ -936,9 +936,11 @@ class LimeMailer extends PHPMailer
             return true;
         }
         $this->_bAttachementTypeDone = true;
+        // No survey : no attachments
         if (empty($this->surveyId)) {
             return true;
         }
+        // No attachement template : no attachments
         if (!array_key_exists($this->emailType, $this->_aAttachementByType)) {
             return true;
         }
@@ -957,7 +959,7 @@ class LimeMailer extends PHPMailer
                 }
             }
         }
-        // If some attachment are not added, disable send
+        // If some attachments for this template did not exist : return false
         if (!$oSurveyLanguageSetting->hasAllAttachments($attachementType)) {
             return false;
         }

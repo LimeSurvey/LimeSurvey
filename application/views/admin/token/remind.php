@@ -104,6 +104,23 @@
                             ]); ?>
                         </div>
                     </div>
+
+                    <!-- Ignore missing attachments -->
+                    <?php if ($countInvalidAttachments > 0) : ?>
+                        <div class='mb-3'>
+                            <label class='form-label' for='ignoremissingattachement'><?php eT("Ignore missing attachments:"); ?></label>
+                            <div class=''>
+                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                'name'          => "ignoremissingattachement",
+                                'checkedOption' => '0',
+                                'selectOptions' => [
+                                    '1' => gT('On'),
+                                    '0' => gT('Off'),
+                                ],
+                            ]); ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 <div class="col-md-6">
                     <!-- Max reminders -->
