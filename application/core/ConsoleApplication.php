@@ -26,6 +26,13 @@ class ConsoleApplication extends CConsoleApplication
         return $this->getComponent('session');
     }
 
+    /**
+     * Initialize the console application, assemble and store the merged configuration, and prepare runtime helpers.
+     *
+     * Loads default, console-specific, email, version, updater, security, and optional user configuration files, merges them (and any available global settings from the database) into the application's config, ensures a runtimePath is set when absent, sets the `webroot` path alias, encrypts the `emailsmtppassword` config value, and loads the common helper.
+     *
+     * @param array|null $aApplicationConfig Application configuration overrides; if `runtimePath` is not provided it will be set to `<tempdir>/runtime` based on the loaded defaults.
+     */
     public function __construct($aApplicationConfig = null)
     {
 
