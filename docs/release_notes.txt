@@ -34,6 +34,47 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.16.14 (build 260323) to 6.16.15 (build 260330) March 30, 2026
+-Fixed issue #LE-663: Deletion of participants list should switch access mode from closed to open (#4814) (haythem chibani)
+-Fixed issue #LE-661: Visiting survey fails in closed access mode with inherited public registration enabled (#4813) (haythem chibani)
+-Fixed issue #AT-1976: Survey showing wrong checkbox icon (#4828) (Stefan K)
+-Fixed issue #20470: On group import the question codes in custom conditions are not updated (Carsten Schmitz)
+-Fixed issue #20464: Error message 'Unknown table field questions.qid' (Carsten Schmitz)
+-Fixed issue #20399: CSS class not applied to active menu items (#4805) (Stefan K)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by DenisChenu, fgervais, Rodrigue_Galani
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+
+
+Changes from 6.16.13 (build 260316) to 6.16.14 (build 260323) March 23, 2026
+-Fixed issue: Add aria-labels to button groups and heading semantic enhancements in survey menu panels (a11y) (#4447) (Anblik Audit Team)
+-Fixed issue LS-CLOUD-409: array_merge() error when executing quota (Carsten Schmitz)
+-Fixed issue #LE-656: CPDB attribute edit/add modal languages delete button not working (#4802) (haythem chibani)
+-Fixed issue #LE-655: Delete sharing action in CPDB sharing panel doesn't work (#4798) (haythem chibani)
+-Fixed issue #20467: Condition designer: "Copy conditions" crashes when no target is selected (Carsten Schmitz)
+-Fixed issue #20465: Allowed memory size exhausted when trying to send big number of invitations (#4792) (Carsten Schmitz)
+-Fixed issue #20462: Copy survey plugin settings (#4786) (Tõnis Ormisson)
+-Fixed issue #20448: On first survey import you get an error: Malformed JSON related to files_css field (Carsten Schmitz)
+-Fixed issue #20389: Deprecation warnings with PHP 8.4 (Carsten Schmitz)
+-Fixed issue #20348: Any txt file can create survey (#4762) (Denis Chenu)
+-Fixed issue #20462: Roll back survey on plugin setting copy failure (Tõnis Ormisson)
+-Fixed issue #20462: Remove invalid plugin setting error model (Tõnis Ormisson)
+-Fixed issue #20462: Make plugin setting copy atomic (Tõnis Ormisson)
+-Fixed issue #20462: Include plugin setting validation errors (Tõnis Ormisson)
+-Fixed issue #20462: Copy survey plugin settings (Tõnis Ormisson)
+#Updated translation: Welsh
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Icelandic 
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 6.16.12 (build 260309) to 6.16.13 (build 260316) March 16, 2026
 -Fixed issue: Adjusted panel cards, import survey and import user, toolbuttons for sidebar (a11y) (#4437) (Anblik Audit Team)
 -Fixed issue: Added and adjusted missing tags and roles on question summary page (a11y) (#4435) (Anblik Audit Team)

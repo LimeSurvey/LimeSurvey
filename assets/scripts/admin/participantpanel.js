@@ -473,6 +473,7 @@ LS.CPDB = (function() {
     deleteSingleParticipantShare = function(url) {
         $.ajax({
             url: url,
+            data: {},
             method: "POST",
             dataType: 'json',
             success: function(result){

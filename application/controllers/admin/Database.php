@@ -66,7 +66,7 @@ class Database extends SurveyCommonAction
         if ($sAction == "updatedefaultvalues" && Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveycontent', 'update')) {
             $this->actionUpdateDefaultValues($this->iSurveyID);
         }
-        if (($sAction == "updatesurveylocalesettings") && (Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveylocale', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))) {
+        if (($sAction == "updatesurveylocalesettings") && (Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveylocale', 'update') || Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveysettings', 'update'))) {
             $this->actionUpdateSurveyLocaleSettings($this->iSurveyID);
         }
         if (
@@ -78,6 +78,28 @@ class Database extends SurveyCommonAction
         }
 
         Yii::app()->setFlashMessage(gT("Unknown action or no permission."), 'error');
+
+        if (Yii::app()->request->getPost('responsejson', 0) == 1) {
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success' => false,
+                        'updated' => null,
+                        'DEBUG' => [
+                            'POST' => $_POST,
+                            'reloaded' => [],
+                            'aURLParams' => '',
+                            'initial' => '',
+                            'afterApply' => ''
+                        ]
+                    ],
+                ),
+                false,
+                false
+            );
+        }
+
         $this->getController()->redirect(Yii::app()->request->urlReferrer);
     }
 
