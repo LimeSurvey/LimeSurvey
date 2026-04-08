@@ -1040,6 +1040,7 @@ class Update_700 extends DatabaseUpdateBase
         $fields = $this->db->createCommand($this->scriptMapping['fields'])->queryAll();
         $fieldMap = [];
         foreach ($fields as $field) {
+            $questions = [];
             if (!isset($field['TABLE_NAME'])) {
                 if (isset($field['table_name'])) {
                     $field['TABLE_NAME'] = $field['table_name'];
