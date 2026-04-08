@@ -13,9 +13,6 @@ class SchemaFactorySurveyArchive
      */
     public function make(SchemaContract ...$properties): Schema
     {
-        $schemaSurveyLanguageSettings = (new SchemaFactorySurveyLanguageSettings())->make();
-        $schemaSurveyDefaultLanguage = Schema::object('defaultlanguage')
-            ->properties(...$schemaSurveyLanguageSettings->properties);
 
         return Schema::create()
             ->title('Survey')
@@ -24,10 +21,9 @@ class SchemaFactorySurveyArchive
             ->properties(
                 Schema::integer('timestamp'),
                 Schema::integer('count')->default(0),
-                Schema::integer('newformat'),
+                Schema::boolean('newformat'),
                 Schema::array('types'),
                 Schema::boolean('hastokens'),
-                $schemaSurveyDefaultLanguage,
                 ...$properties
             );
     }

@@ -1484,7 +1484,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     . " g.sid={$surveyid} AND"
     . " q.parent_qid=0";
     if ($questionid !== false) {
-        $aquery .= " and questions.qid={$questionid} ";
+        $aquery .= " and q.qid={$questionid} ";
     }
     $aquery .= " ORDER BY group_order, question_order";
     /** @var Question[] $questions */
@@ -1684,7 +1684,16 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
 
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => $abrow['title'], "scale_id" => 0);
+                $fieldmap[$fieldname] = array(
+                    "fieldname" => $fieldname,
+                    'type' => $arow['type'],
+                    'sid' => $surveyid,
+                    "gid" => $arow['gid'],
+                    "qid" => $arow['qid'],
+                    "sqid" => $abrow['qid'],
+                    "aid" => $abrow['title'],
+                    "scale_id" => 0,
+                );
                 if (isset($answerColumnDefinition)) {
                     $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                 }
@@ -1708,7 +1717,16 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => $abrow['title'], "scale_id" => 1);
+                $fieldmap[$fieldname] = array(
+                    "fieldname" => $fieldname,
+                    'type' => $arow['type'],
+                    'sid' => $surveyid,
+                    "gid" => $arow['gid'],
+                    "qid" => $arow['qid'],
+                    "sqid" => $abrow['qid'],
+                    "aid" => $abrow['title'],
+                    "scale_id" => 1,
+                );
                 if (isset($answerColumnDefinition)) {
                     $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                 }
@@ -1983,7 +2001,7 @@ function hasFileUploadQuestion($iSurveyID)
 * @param string $surveyid The Survey ID
 * @param string $style 'short' (default) or 'full' - full creates extra information like default values
 * @param boolean $force_refresh - Forces to really refresh the array, not just take the session copy
-* @param int $questionid Limit to a certain qid only (for question preview) - default is false
+* @param int|false $questionid Limit to a certain qid only (for question preview) - default is false
 * @param string $sQuestionLanguage The language to use
 * @return array
 */
@@ -2466,6 +2484,55 @@ function rmdirr($dirname)
 }
 
 /**
+ * Removes a directory recursively with adjustment to not throw error on empty directories.
+ * @param string $directory to be deleted recursively.
+ * @param array $options for the directory removal. Valid options are:
+ * <ul>
+ * <li>traverseSymlinks: boolean, whether symlinks to the directories should be traversed too.
+ * Defaults to `false`, meaning that the content of the symlinked directory would not be deleted.
+ * Only symlink would be removed in that default case.</li>
+ * </ul>
+ * @link CFileHelper::removeDirectory()
+ */
+function removeDirectoryCustom($directory, $options = [])
+{
+    if (!isset($options['traverseSymlinks'])) {
+        $options['traverseSymlinks'] = false;
+    }
+
+    $itemsWithoutDot = glob($directory . DIRECTORY_SEPARATOR . '*', GLOB_MARK);
+    $itemsWithoutDot = $itemsWithoutDot === false ? [] : $itemsWithoutDot;
+    $itemsWithDot = glob($directory . DIRECTORY_SEPARATOR . '.*', GLOB_MARK);
+    $itemsWithDot = $itemsWithDot === false ? [] : $itemsWithDot;
+    $items = array_merge(
+        $itemsWithoutDot,
+        $itemsWithDot
+    );
+    foreach ($items as $item) {
+        if (basename($item) === '.' || basename($item) === '..') {
+            continue;
+        }
+        if (substr($item, -1) == DIRECTORY_SEPARATOR) {
+            if (!$options['traverseSymlinks'] && is_link(rtrim($item, DIRECTORY_SEPARATOR))) {
+                unlink(rtrim($item, DIRECTORY_SEPARATOR));
+            } else {
+                removeDirectoryCustom($item, $options);
+            }
+        } else {
+            unlink($item);
+        }
+    }
+    if (is_dir($directory = rtrim($directory, '\\/'))) {
+        if (is_link($directory)) {
+            unlink($directory);
+        } else {
+            rmdir($directory);
+        }
+    }
+}
+
+
+/**
 * This function removes surrounding and masking quotes from the CSV field
 *
 * @param mixed $field
@@ -2708,6 +2775,36 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
     }
 }
 
+/**
+* Translate links which are in any email template set to their new counterpart
+* Used only for local file
+*
+* @param mixed $iOldSurveyID Source SurveyId to be replaced
+* @param mixed $iNewSurveyID New SurveyId to be used
+* @param string $sString Link (local path) to be translated
+* @return string
+*/
+function translateJsonLinks($iOldSurveyID, $iNewSurveyID, $sString)
+{
+    if ($sString == '') {
+        return $sString;
+    }
+    /* Avoid regexp injection */
+    $iOldSurveyID = (int) $iOldSurveyID;
+    $iNewSurveyID = (int) $iNewSurveyID;
+    $decodedString = json_decode($sString, true);
+    if (empty($decodedString) || !is_array($decodedString)) {
+        return $sString;
+    }
+    $sPattern = '(([a-z0-9\/\.\-\_:])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
+    $sReplace = rtrim(App()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
+    array_walk_recursive($decodedString, function (&$value) use ($sPattern, $sReplace) {
+        if (is_string($value)) {
+            $value = preg_replace('/' . $sPattern . '/u', $sReplace, $value);
+        }
+    });
+    return json_encode($decodedString);
+}
 /**
  * Returns true if there are old links in answer/question/survey/email template/label set texts.
  *
@@ -3129,16 +3226,14 @@ function cleanAssetCacheDirectory($minutes = 1)
     // Loop through all directories in the assets directory
     foreach (glob($assetsPath . '*') as $path) {
         // check if the directory is older than the threshold and the path is a symlink then delete it
-        if (is_link($path)
-            && filemtime($path) < $threshold) {
+        if (is_link($path) && filemtime($path) < $threshold) {
             unlink($path);
             continue;
         }
         // check if the directory is older than the threshold and the path is a directory then remove it
-        if (is_dir($path)
-            && filemtime($path) < $threshold) {
+        if (is_dir($path) && filemtime($path) < $threshold) {
             // Remove the directory and all its contents recursively
-            CFileHelper::removeDirectory($path);
+            removeDirectoryCustom($path);
         }
     }
 }
@@ -4629,17 +4724,21 @@ function ls_json_encode($content)
 }
 
 /**
- * Decode a json string, sometimes needs stripslashes
+ * Decodes a json string, sometimes needs stripslashes
  *
  * @param string $jsonString
  * @return mixed
  */
 function json_decode_ls($jsonString)
 {
+    if ($jsonString === null) {
+        return null;
+    }
+
     $decoded = json_decode($jsonString, true);
 
     if (is_null($decoded) && !empty($jsonString)) {
-        // probably we need stipslahes
+        // probably we need stripslashes
         $decoded = json_decode(stripslashes($jsonString), true);
     }
 
@@ -5200,9 +5299,16 @@ function recursive_preg_replace($pattern, $replacement, $subject, $limit = -1, &
  */
 function standardDeviation(array $numbers): float
 {
-    // Filter empty "" records
-    $numbers = array_filter($numbers);
+    // Filter empty ("" and null) records (keeping zeroes)
+    $numbers = array_filter($numbers, fn($value) => $value !== "" && $value !== null);
     $numberOfElements = count($numbers);
+
+    if ($numberOfElements === 0) {
+        /**
+         * @todo Should this be null? Function signature says float
+         */
+        return 0.0;
+    }
 
     $variance = 0.0;
     $average = array_sum($numbers) / $numberOfElements;

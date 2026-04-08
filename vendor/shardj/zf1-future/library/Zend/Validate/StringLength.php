@@ -140,7 +140,7 @@ class Zend_Validate_StringLength extends Zend_Validate_Abstract
             throw new Zend_Validate_Exception("The minimum must be less than or equal to the maximum length, but $min >"
                                             . " $this->_max");
         }
-        $this->_min = max(0, (integer) $min);
+        $this->_min = max(0, (int) $min);
         return $this;
     }
 
@@ -173,7 +173,7 @@ class Zend_Validate_StringLength extends Zend_Validate_Abstract
             throw new Zend_Validate_Exception("The maximum must be greater than or equal to the minimum length, but "
                                             . "$max < $this->_min");
         } else {
-            $this->_max = (integer) $max;
+            $this->_max = (int) $max;
         }
 
         return $this;

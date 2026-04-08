@@ -87,6 +87,8 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             } else {
                 $this->answerwidth = $this->answerwidth / 2;
             }
+            // Add a class so we can style the left side text differently when there is a right side text
+            $this->sCoreClass .= " semantic-differential-list";
         }
         if ($this->getQuestionCount() > 0 && $this->getAnswerCount() > 0) {
             $this->cellwidth = round(($this->columnswidth / $this->getAnswerCount()), 1);

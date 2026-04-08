@@ -151,7 +151,7 @@ class Zend_Ldap_Converter
      * DateTime Object, a string that is parseable by strtotime() or a Zend_Date
      * Object.
      *
-     * @param    integer|string|DateTimt|Zend_Date        $date    The date-entity
+     * @param    integer|string|DateTime|Zend_Date        $date    The date-entity
      * @param    boolean                                    $asUtc    Whether to return the LDAP-compatible date-string
      *                                                          as UTC or as local value
      * @return    string

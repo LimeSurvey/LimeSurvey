@@ -27,8 +27,8 @@ class PatcherSurvey extends Patcher
      * Constructor
      *
      * @param ContainerInterface $diContainer
-     * @param SurveyResponse $surveyResponse
-     * * @param SurveyDetailService $surveyDetailService
+     * @param SurveyResponse $surveyResponse,
+     * @param SurveyDetailService $surveyDetailService
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function __construct(

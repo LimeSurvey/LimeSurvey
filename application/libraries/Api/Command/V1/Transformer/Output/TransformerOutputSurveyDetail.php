@@ -8,6 +8,7 @@ use LimeSurvey\Models\Services\SurveyCondition;
 use LimeSurvey\Models\Services\SurveyThemeConfiguration;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 use SurveysGroups;
+use TemplateConfiguration;
 
 /**
  * TransformerOutputSurveyDetail
@@ -191,26 +192,12 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 
         //todo: later this should be done with an separate endpoint or service
         $survey['groupsList'] = SurveysGroups::getSurveyGroupsList();
-        if ($survey['active']) {
-            $survey['responsesTotal'] = (int)\SurveyDynamic::model(
-                $data->sid
-            )->count();
-            $survey['responsesCompleted'] = (int)\SurveyDynamic::model(
-                $data->sid
-            )->count('submitdate IS NOT NULL');
-            $survey['responsesIncomplete'] = $survey['responsesTotal']
-                - $survey['responsesCompleted'];
-        } else {
-            $survey['responsesTotal'] = 0;
-            $survey['responsesCompleted'] = 0;
-            $survey['responsesIncomplete'] = 0;
-        }
+
         $survey['attributeDescriptions'] = $data->getDecodedAttributedescriptions();
 
         $survey['themesettings'] = [];
-        $survey['themesettingattributes'] = [];
         $survey['templatePreview'] = '';
-        $this->tranformThemeSettings($survey['themesettings'], $survey['themesettingattributes'], $survey['templatePreview'], $data['template'], $data->sid);
+        $this->transformThemeSettings($survey['themesettings'], $survey['templatePreview'], $data);
 
         return $survey;
     }
@@ -395,24 +382,22 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     }
 
     /**
-     * Prepares theme settings necessary values,
+     * Prepares theme settings necessary values, including inheritance
      * @param-out array<array-key, mixed> $aThemeSettings
-     * @param-out array<mixed> $aThemesettingattributes
      * @param-out string $sTemplatePreview
-     * @param string $sTemplateName
-     * @param integer $iSurveyId
+     * @param Survey $survey
      * @return void
      */
-    private function tranformThemeSettings(array &$aThemeSettings, array &$aThemesettingattributes, string &$sTemplatePreview, $sTemplateName, $iSurveyId = 0)
+    private function transformThemeSettings(array &$aThemeSettings, string &$sTemplatePreview, $survey)
     {
-        $aThemeSettings = $this->surveyThemeConfiguration->getSurveyThemeOptions($iSurveyId, $sTemplateName);
-        $aThemeSettings = &$aThemeSettings;
-
-        $aThemesettingattributes = $this->surveyThemeConfiguration->getSurveyThemeOptionsAttributes($iSurveyId, $sTemplateName);
-        $aThemesettingattributes = &$aThemesettingattributes;
-
-        $templateConf = \TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
-        $sTemplatePreview = $templateConf->getPreview(true);
-        $sTemplatePreview = &$sTemplatePreview;
+        $themeConfiguration = TemplateConfiguration::getInstance(null, null, $survey->sid);
+        // loads all information available for the theme including inheritance
+        $themeData = $this->surveyThemeConfiguration->updateCommon($themeConfiguration, $survey->sid, $survey->gsid);
+        // parse themeOptions to object
+        if (is_string($themeData['aTemplateConfiguration']['options'])) {
+            $themeData['aTemplateConfiguration']['options'] = json_decode($themeData['aTemplateConfiguration']['options']);
+        }
+        $aThemeSettings = $this->surveyThemeConfiguration->getSurveyThemeOptionsAttributes($themeData);
+        $sTemplatePreview = $themeConfiguration->getPreview(true);
     }
 }

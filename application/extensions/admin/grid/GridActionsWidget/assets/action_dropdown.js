@@ -8,6 +8,7 @@ LS.actionDropdown = {
     create: function () {
         'use strict';
         this.removeOrphanedDropdowns();
+        this.calculateSubmenuPosition();
         let dropdownElementList = [].slice.call(
             document.querySelectorAll('.ls-dropdown-toggle')
         );
@@ -33,6 +34,8 @@ LS.actionDropdown = {
                 body.append(dropdownMenu);
             }
         });
+        //here we need the functionality implemented below to position the submenu to the right of the toggle element
+
     },
     /**
      * Removes dropdown menus that no longer have a toggle element (i.e. the toggle was in a table row
@@ -52,6 +55,112 @@ LS.actionDropdown = {
                 menu.remove();
             }
         });
+    },
+
+    /**
+     * Submenu positioning:
+     * Opens submenus on the right by default; if there is not enough space
+     * on the right, they are switched to open on the left (.dropdown-submenu-left).
+     */
+    calculateSubmenuPosition: function() {
+        function adjustSubmenuPosition(dropdownElement) {
+            if (!dropdownElement) {
+                return;
+            }
+
+            const submenuItems = dropdownElement.querySelectorAll('.has-submenu');
+            submenuItems.forEach(function(item) {
+                const submenu = item.querySelector('.dropdown-submenu');
+                const trigger = item.querySelector('[data-bs-toggle="dropdown-submenu"]');
+
+                if (!submenu || !trigger) {
+                    return;
+                }
+
+                // Remove any existing listener to avoid duplicates
+                trigger.removeEventListener('mouseenter', trigger._handleMouseEnter);
+
+                // Define and store the handler
+                trigger._handleMouseEnter = function() {
+
+                    //make the submenu invisible before we show it (avoid showing it on the wrong side)
+                    submenu.style.visibility = 'hidden';
+                    // Reset before measuring so we use the default (right) position first
+                    submenu.classList.remove('dropdown-submenu-left');
+
+                    // Force a reflow to ensure the submenu is positioned
+                    void submenu.offsetHeight;
+
+                    // Small delay to ensure submenu is in the layout and can be measured
+                    setTimeout(function() {
+                        const rect = submenu.getBoundingClientRect();
+                        const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+                        // If the submenu overflows the right edge, switch it to the left side
+                        if (rect.right > viewportWidth) {
+                            submenu.classList.add('dropdown-submenu-left');
+                        }
+
+                        // Now show it instantly without flicker
+                        submenu.style.visibility = '';
+                    }, 3);
+                };
+
+                trigger.addEventListener('mouseenter', trigger._handleMouseEnter);
+            });
+        }
+
+
+        function initSubmenuPositioningForAll() {
+            const actionDropdowns = document.querySelectorAll('.ls-action_dropdown');
+
+            actionDropdowns.forEach(function(wrapper) {
+                const toggle = wrapper.querySelector('[data-bs-toggle="dropdown"]');
+                if (!toggle) {
+                    return;
+                }
+
+                // Avoid duplicate listeners
+                if (wrapper.hasAttribute('data-submenu-positioning-initialized')) {
+                    return;
+                }
+                wrapper.setAttribute('data-submenu-positioning-initialized', 'true');
+
+                // When the main dropdown is shown, configure submenus
+                wrapper.addEventListener('shown.bs.dropdown', function() {
+                    // Get the toggle ID to find the corresponding menu
+                    const toggleId = toggle.getAttribute('data-ls-dropdown-toggle-id');
+                    if (!toggleId) {
+                        return;
+                    }
+
+                    // Find the dropdown menu that was moved to body
+                    const dropdownMenu = document.querySelector(`.dropdown-menu[data-for-ls-dropdown-toggle-id="${toggleId}"]`);
+
+                    if (dropdownMenu) {
+                        adjustSubmenuPosition(dropdownMenu);
+                    }
+                });
+
+                // On window resize, if the dropdown is open, recalculate submenu positions
+                window.addEventListener('resize', function() {
+                    const toggleId = toggle.getAttribute('data-ls-dropdown-toggle-id');
+                    if (!toggleId) {
+                        return;
+                    }
+
+                    const dropdownMenu = document.querySelector(`.dropdown-menu[data-for-ls-dropdown-toggle-id="${toggleId}"].show`);
+                    if (dropdownMenu) {
+                        adjustSubmenuPosition(dropdownMenu);
+                    }
+                });
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initSubmenuPositioningForAll);
+        } else {
+            initSubmenuPositioningForAll();
+        }
     },
 };
 

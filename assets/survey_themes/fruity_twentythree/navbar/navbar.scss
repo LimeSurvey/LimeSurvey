@@ -31,14 +31,13 @@ Responsive navbar-brand image CSS
     line-height: 20px;
 }
 
-.logo-container>img {
-    max-height: 90px;
-    padding: 15px;
-    width: auto;
-}
-
-.brand-logo  .top-container .top-content{
-    padding-top: 2em;
+.logo-container > img {
+  max-height: 90px;
+  padding: 15px;
+  width: auto;
+  @media(max-width: 768px) {
+    max-height: 60px;
+  }
 }
 
 /* text overflows, ellipsis and hyphens */
@@ -94,10 +93,6 @@ Responsive navbar-brand image CSS
         //.navbar-nav .nav-item:hover::after {
         //    width : 100%;
         //}
-    }
-    @media(max-width : 768px) {
-        padding-top    : 15px;
-        padding-bottom : 15px;
     }
 
 }

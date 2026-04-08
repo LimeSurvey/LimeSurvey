@@ -164,7 +164,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         }
         $aData = $this->setSurveyIdAndObject([], $surveyid);
         App()->session['FileManagerContext'] = "edit:group:{$surveyid}";
-        App()->loadHelper('admin/htmleditor');
+        App()->loadHelper('admin.htmleditor');
         App()->loadHelper('surveytranslator');
 
         //todo: this action should not be used for new groups, use actionAdd instead
@@ -225,7 +225,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $aData = $this->setSurveyIdAndObject([], $surveyid);
 
         App()->session['FileManagerContext'] = "create:group:{$surveyid}";
-        App()->loadHelper('admin/htmleditor');
+        App()->loadHelper('admin.htmleditor');
         App()->loadHelper('surveytranslator');
 
         $aSurveyLanguages = $aData['oSurvey']->additionalLanguages;

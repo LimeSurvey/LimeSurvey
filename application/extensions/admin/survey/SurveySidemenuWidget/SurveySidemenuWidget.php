@@ -87,7 +87,9 @@ class SurveySidemenuWidget extends WhSelect2
                 ],
                 [
                     'name' => 'responses',
-                    'disabled' => $oSurvey->active != 'Y'
+                    'disabled' => $oSurvey->active != 'Y',
+                    'route' => 'editorLink/index',
+                    'params' => array('route' => 'responses/' . $this->sid),
                 ],
                 [
                     'name' => 'statistics',

@@ -33,6 +33,7 @@ class SurveyDetail implements CommandInterface
      * @param TransformerOutputSurveyDetail $transformerOutputSurveyDetail
      * @param ResponseFactory $responseFactory
      * @param Permission $permission
+     * @param SurveyDetailService $surveyDetailService
      */
     public function __construct(
         Survey $survey,

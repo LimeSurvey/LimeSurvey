@@ -594,14 +594,17 @@ class Zend_Log
             E_USER_ERROR        => Zend_Log::ERR,
             E_CORE_ERROR        => Zend_Log::ERR,
             E_RECOVERABLE_ERROR => Zend_Log::ERR,
-            E_STRICT            => Zend_Log::DEBUG,
         ];
         // PHP 5.3.0+
         if (defined('E_DEPRECATED')) {
-            $this->_errorHandlerMap['E_DEPRECATED'] = Zend_Log::DEBUG;
+            $this->_errorHandlerMap[E_DEPRECATED] = Zend_Log::DEBUG;
         }
         if (defined('E_USER_DEPRECATED')) {
-            $this->_errorHandlerMap['E_USER_DEPRECATED'] = Zend_Log::DEBUG;
+            $this->_errorHandlerMap[E_USER_DEPRECATED] = Zend_Log::DEBUG;
+        }
+        // Deprecated in PHP 8.4
+        if (defined('E_STRICT') && version_compare(PHP_VERSION, '8.4.0', '<')) {
+            $this->_errorHandlerMap[E_STRICT] = Zend_Log::DEBUG;
         }
 
         $this->_registeredErrorHandler = true;

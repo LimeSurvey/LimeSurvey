@@ -454,7 +454,7 @@ class Statistics extends SurveyCommonAction
 
         // ----------------------------------- END FILTER FORM ---------------------------------------
 
-        Yii::app()->loadHelper('admin/statistics');
+        Yii::app()->loadHelper('admin.statistics');
         $helper = new statistics_helper();
         $showtextinline = (int) Yii::app()->request->getPost('showtextinline', 0);
         $aData['showtextinline'] = $showtextinline;
@@ -521,7 +521,7 @@ class Statistics extends SurveyCommonAction
         if ($sortmethod && !in_array($sortmethod, ['ASC', 'DESC'])) {
             throw new CHttpException(400, gT("Invalid request."));
         }
-        Yii::app()->loadHelper('admin/statistics');
+        Yii::app()->loadHelper('admin.statistics');
         $helper = new statistics_helper();
         $aData['data'] = $helper->_listcolumn($surveyid, $column, $sortby, $sortmethod, $sorttype);
         $aData['surveyid'] = $surveyid;
@@ -536,7 +536,7 @@ class Statistics extends SurveyCommonAction
 
     public function graph()
     {
-        Yii::app()->loadHelper('admin/statistics');
+        Yii::app()->loadHelper('admin.statistics');
         Yii::app()->loadHelper("surveytranslator");
 
         // Initialise PCHART
@@ -784,7 +784,7 @@ class Statistics extends SurveyCommonAction
 
         // ----------------------------------- END FILTER FORM ---------------------------------------
 
-        Yii::app()->loadHelper('admin/statistics');
+        Yii::app()->loadHelper('admin.statistics');
         $helper = new statistics_helper();
         $showtextinline = (int) Yii::app()->request->getPost('showtextinline', 0);
         $aData['showtextinline'] = $showtextinline;

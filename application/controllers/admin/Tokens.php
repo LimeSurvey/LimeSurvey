@@ -13,6 +13,8 @@
 *
 */
 
+use LimeSurvey\Models\Services\SurveyAccessModeService;
+
 /**
  * Tokens Controller
  *
@@ -69,7 +71,7 @@ class Tokens extends SurveyCommonAction
         );
 
         // this data is for table
-        if (($_POST['oldtable'] ?? null) && (($_POST['restoretable'] ?? null) === 'Y') && (!$survey->hasTokensTable)) {
+        if (($_POST['oldtable'] ?? null) && (($_POST['restoretable'] ?? null) === 'Y') && (!$survey->hasTokens())) {
             $this->newParticipantTable($iSurveyId);
         }
         Yii::import('application.libraries.Date_Time_Converter', true);
@@ -1528,7 +1530,7 @@ class Tokens extends SurveyCommonAction
         $bIsInvitation = $sSubAction == 'invite';
 
         Yii::app()->loadHelper('surveytranslator');
-        Yii::app()->loadHelper('/admin/htmleditor');
+        Yii::app()->loadHelper('admin.htmleditor');
         Yii::app()->session['FileManagerContext'] = "edit:emailsettings:{$iSurveyId}";
         initKcfinder();
         Yii::app()->loadHelper('replacements');
@@ -1697,14 +1699,13 @@ class Tokens extends SurveyCommonAction
                             }
                         }
                         $tokenoutput .= $stringInfo . "<br />\n";
-                        if (Yii::app()->getConfig("emailsmtpdebug") > 1) {
-                            $tokenoutput .= $mail->getDebug('html');
-                        }
                         $tokenoutput .= $tokenSaveError;
                     } else {
                         $tokenoutput .= $stringInfo . CHtml::tag("span", array('class' => "text-danger"), sprintf(gT("Error message: %s"), $mail->getError())) . "<br>\n";
+                        // If there is an error show the debug information right after the error message
                         if (Yii::app()->getConfig("emailsmtpdebug") > 0) {
                             $tokenoutput .= $mail->getDebug('html');
+                            $mail->debug = [];
                         }
                         $bSendError = true;
                     }
@@ -1713,6 +1714,9 @@ class Tokens extends SurveyCommonAction
                 }
                 // Closes a still active SMTP connection if it exists
                 $mail->smtpClose();
+                if (Yii::app()->getConfig("emailsmtpdebug") > 1 && ($mail->Mailer == 'smtp')) {
+                    $tokenoutput .= $mail->getDebug('html');
+                }
                 $aViewUrls = array();
                 $aData['tokenoutput'] = $tokenoutput;
 
@@ -1760,7 +1764,7 @@ class Tokens extends SurveyCommonAction
                                 . "<li>" . gT("not having already completed the survey") . "</li>"
                                 . "<li>" . gT("having an access code") . "</li>"
                                 . "<li>" . gT("having at least one use left") . "</li></ul>"
-                                . '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-cancel ">' . gT("Cancel") . '</a></p>'
+                                . '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-cancel " role="button">' . gT("Cancel") . '</a></p>'
                         )
                     ),
                     $aData
@@ -2637,6 +2641,14 @@ class Tokens extends SurveyCommonAction
         $archivedTokenSettings->attributes = json_encode($aData['thissurvey']['attributedescriptions']);
         $archivedTokenSettings->save();
 
+        // switch to open access mode after deleting participants list
+        $currentAccessMode = $survey->access_mode;
+        if ($currentAccessMode == SurveyAccessModeService::$ACCESS_TYPE_CLOSED) {
+            $survey->access_mode = SurveyAccessModeService::$ACCESS_TYPE_OPEN;
+            $survey->lastmodified = gmdate('Y-m-d H:i:s');
+            $survey->save();
+        }
+
         //Remove any survey_links to the CPDB
         SurveyLink::model()->deleteLinksBySurvey($iSurveyId);
 
@@ -2874,7 +2886,15 @@ class Tokens extends SurveyCommonAction
 
         //The survey participant list already exist ?
         if ($survey->hasTokensTable) {
-            Yii::app()->session['flashmessage'] = gT("Participant list already exist for this survey.");
+            if ((returnGlobal('restoretable') === "Y" && Yii::app()->request->getPost('oldtable'))) {
+                require_once "application/helpers/admin/import_helper.php";
+                $source = Yii::app()->db->tablePrefix . Yii::app()->request->getPost('oldtable');
+                $destination = Yii::app()->db->tablePrefix . "tokens_" . (int)$iSurveyId;
+                copyFromOneTableToTheOther($source, $destination, $preserveIDs = false);
+                Yii::app()->session['flashmessage'] = gT("Participant list was successfully imported.");
+            } else {
+                Yii::app()->session['flashmessage'] = gT("Participant list already exist for this survey.");
+            }
             $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
 
@@ -3154,10 +3174,7 @@ class Tokens extends SurveyCommonAction
             }
         }
         if (empty($aData['tokenids'])) {
-            $aTokens = TokenDynamic::model($iSurveyId)->findUninvitedIDs($aTokenIds, 0, $bEmail, $SQLemailstatuscondition);
-            foreach ($aTokens as $aToken) {
-                $aData['tokenids'][] = $aToken;
-            }
+            $aData['tokenids'] = TokenDynamic::model($iSurveyId)->findParticipantIDs($aTokenIds, 0, $bEmail, $SQLemailstatuscondition);
         }
 
         if (Yii::app()->request->getParam('action') == "remind") {

@@ -292,6 +292,7 @@ class Participant extends LSActiveRecord
         if ($this->userHasPermissionToEdit()) {
             $inputHtml = App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                 'name'          => 'blacklisted_' . $this->participant_id,
+                'ariaLabel'    => gT('Blocklisted'),
                 'checkedOption' => $this->blacklisted === "Y" ? "1" : "0",
                 'selectOptions' => [
                     '1' => gT('Yes'),
@@ -1556,7 +1557,7 @@ class Participant extends LSActiveRecord
             $fields[$newfieldname] = array('type' => 'string'); // TODO: Always string??
             $attname = Yii::app()->db
                 ->createCommand()
-                ->select('{{participant_attribute_names_lang}}.attribute_name, {{participant_attribute_names_lang}}.lang')
+                ->select('{{participant_attribute_names_lang}}.attribute_name, {{participant_attribute_names_lang}}.lang, {{participant_attribute_names}}.encrypted')
                 ->from('{{participant_attribute_names}}')
                 ->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')
                 ->where('{{participant_attribute_names}}.attribute_id = :attrid ')
@@ -1575,11 +1576,11 @@ class Participant extends LSActiveRecord
             } else {
                 $newname = $attributename[0]['attribute_name']; //Choose the first item in the list
             }
-
+            $encrypted = isset($attributename[0]['encrypted']) && $attributename[0]['encrypted'] === 'Y';
             $fieldcontents[$newfieldname] = array(
                 "description" => $newname,
                 "mandatory" => "N",
-                "encrypted" => "N",
+                "encrypted" => $encrypted ? 'Y' : 'N',
                 "show_register" => "N"
             );
             array_push($addedAttributeIds, 'attribute_' . $value);
@@ -1607,7 +1608,7 @@ class Participant extends LSActiveRecord
             ->update('{{surveys}}', array("attributedescriptions" => $aTokenAttributes), 'sid = ' . intval($surveyId)); // load description in the surveys table
 
         //Actually create the fields in the tokens table
-        Yii::app()->loadHelper('update/updatedb');
+        Yii::app()->loadHelper('update.updatedb');
         foreach ($fields as $key => $value) {
             addColumn("{{tokens_$surveyId}}", $key, $value['type']);
         }
@@ -2072,7 +2073,8 @@ class Participant extends LSActiveRecord
      * The purpose of this function is to check for duplicate in participants
      * @param string $fields
      * @param string $output
-     * @return string
+     * @return string|boolean
+     * @deprecated Use Participant::model()->findByAttributes() instead.
      */
     public function checkforDuplicate($fields, $output = "bool")
     {
