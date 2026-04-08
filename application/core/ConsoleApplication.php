@@ -100,7 +100,7 @@ class ConsoleApplication extends CConsoleApplication
         } catch (Exception $exception) {
             // Allow exception (install for example)
         }
-        // Load common helper
+        /* Always need common helper */
         $this->loadHelper("common");
     }
 

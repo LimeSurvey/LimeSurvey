@@ -3303,6 +3303,9 @@ class LimeExpressionManager
         } elseif ($forceRefresh === false && !empty($this->knownVars) && ((!$this->sPreviewMode) || ($this->sPreviewMode === 'database') || ($this->sPreviewMode === 'logic'))) {
             return false;   // means that those variables have been cached and no changes needed
         }
+        /* Import needed helpers */
+        Yii::import('application.helpers.replacements_helper', true); // templatereplace function
+
         $now = microtime(true);
         $this->em->SetSurveyMode($this->surveyMode);
         $survey = Survey::model()->findByPk($surveyid);
@@ -9094,6 +9097,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $aQuestionWarnings = [];
         $warnings = 0;
 
+        /* Import needed helpers */
+        Yii::import('application.helpers.replacements_helper', true);
         $surveyOptions = [
             'assessments'                 => $assessments === null ? ($aSurveyInfo['assessments'] == 'Y') : $assessments,
             'hyperlinkSyntaxHighlighting' => true,

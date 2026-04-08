@@ -69,6 +69,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
     Yii::app()->loadHelper('database');
     Yii::import('application.helpers.admin.import_helper', true);
+    /** Needed in update 470 */
+    Yii::import('application.helpers.expressions.em_manager_helper', true);
     $oDB                        = Yii::app()->getDb();
     $oDB->schemaCachingDuration = 0; // Deactivate schema caching
     Yii::app()->setConfig('Updating', true);
