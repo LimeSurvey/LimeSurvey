@@ -2,7 +2,7 @@ name: Label PR Conflicts
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, ready_for_review]
   push:
     branches:
       - master
@@ -15,6 +15,25 @@ permissions:
   contents: read
 
 jobs:
+  # ---------------------------------------------------------
+  # 0. Add default labels to new PRs
+  # ---------------------------------------------------------
+  label-new-pr:
+    if: >
+      github.event_name == 'pull_request'
+      && !github.event.pull_request.draft
+      && (github.event.action == 'opened' || github.event.action == 'ready_for_review')
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Add default labels
+        run: |
+          pr=${{ github.event.pull_request.number }}
+          repo=${{ github.repository }}
+          gh api "repos/${repo}/issues/${pr}/labels" -f "labels[]=Needs code review" -f "labels[]=Needs testing" --method POST
+
   # ---------------------------------------------------------
   # 1. Handle PR-triggered events (single PR)
   # ---------------------------------------------------------
