@@ -15,13 +15,18 @@
 
 /**
  * Class QuestionL10n
- * @property integer $id primary key
- * @property integer $qid question id
- * @property string $language Question language code. Note: There is a unique key on qid & language columns combined
- * @property string $question Question display text. The actual question.
- * @property string $help Question help-text for display
- * @property string $script Question script to be executed on runtime
  *
+ * Localization model for the {{question_l10ns}} table.
+ * Stores per-language translations of question text, help text, and scripts.
+ *
+ * @property int    $id       Primary key (auto-increment)
+ * @property int    $qid      Foreign key to the questions table
+ * @property string $language Language code (e.g. 'en'). Unique together with $qid
+ * @property string $question Question display text (the actual question shown to participants)
+ * @property string $help     Question help-text displayed to participants
+ * @property string $script   JavaScript to be executed at runtime for this question
+ *
+ * @see Question
  */
 class QuestionL10n extends LSActiveRecord
 {
@@ -68,7 +73,10 @@ class QuestionL10n extends LSActiveRecord
         return array('index' => 'language');
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     * @return array Validation rules for model attributes
+     */
     public function rules()
     {
         $rules = array(
