@@ -135,7 +135,7 @@ abstract class AbstractQuestionProcessor
         $criteria->addCondition("$col != ''");
 
         if ($value !== null) {
-            $criteria->compare($fieldName, $value);
+            $criteria->compare($col, $value);
         }
 
         $this->applyFilters($criteria);
