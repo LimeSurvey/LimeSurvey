@@ -25,11 +25,11 @@ class SurveyUrl
 
 
     /**
-     * Initialise class variables.
+     * Create a SurveyUrl configured with a target language, extra URL parameters, and a short-URL preference.
      *
-     * @param string $language
-     * @param array $params Optional parameters to include in the URL.
-     * @param bool $preferShortUrl If true, tries to return the short URL instead of the traditional one.
+     * @param string $language Language code used when generating URLs.
+     * @param array $params Optional additional query/path parameters to include in generated URLs.
+     * @param bool $preferShortUrl When true, prefer generating alias (short) URLs when an alias is available.
      */
     public function __construct(string $language, array $params = [], bool $preferShortUrl = true)
     {
@@ -39,15 +39,12 @@ class SurveyUrl
     }
 
     /**
-     * Returns the survey URL with the specified params.
-     * If $preferShortUrl is true (default) and an alias is available, it returns the short
-     * version of the URL.
+     * Generate a survey run URL for the configured language, using the survey alias when preferred and available.
      *
-     * @param int $surveyId the survey id
-     * @param \SurveyLanguageSetting[] $surveyLanguageSettings
-     * @param string|null $alias the survey alias for this specific language
-     *
-     * @return string
+     * @param int $surveyId The survey identifier.
+     * @param \SurveyLanguageSetting[] $surveyLanguageSettings Array of language-specific survey settings used to detect alias collisions.
+     * @param string|null $alias The survey alias for this language, or null if none.
+     * @return string The absolute URL to access the survey.
      */
     public function getUrl(int $surveyId, $surveyLanguageSettings, string $alias = null)
     {
@@ -61,13 +58,13 @@ class SurveyUrl
     }
 
     /**
-     * Check if there is another language with the same alias. If it does, we need to include
-     * the 'lang' parameter in the URL.
+     * Builds an absolute survey URL from a short alias and ensures the language parameter is included when another language uses the same alias.
      *
-     * @param string $alias
-     * @param \SurveyLanguageSetting[] $surveyLanguageSettings
-     * @return string
-     */
+     * Iterates provided language settings to detect alias collisions; if a different language shares the alias, the current language is added to URL parameters. Then constructs the final URL according to the application's URL format and returns it.
+     *
+     * @param string $alias The survey alias (short URL segment).
+     * @param \SurveyLanguageSetting[] $surveyLanguageSettings Array of language settings keyed by language code.
+     * @return string The assembled absolute URL for the survey. */
     private function createURLWithAlias(string $alias, $surveyLanguageSettings)
     {
         foreach ($surveyLanguageSettings as $otherLang => $settings) {

@@ -1834,8 +1834,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Fix invalid question in this survey
-     * Delete question that don't exist in primary language
+     * Removes questions and subquestions from this survey that are not present in the survey's primary language.
+     *
+     * Deletes base questions (parent_qid = 0) whose `qid` is not found in the primary-language question set, and deletes subquestions (parent_qid != 0) whose `title` is not found in the primary-language subquestion set. Changes are persisted to the database for this survey's `sid`.
      */
     public function fixInvalidQuestions()
     {
@@ -2250,9 +2251,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return Permission::model()->hasPermission($this->getPrimaryKey(), 'survey', $sPermission, $sCRUD, $iUserID);
     }
 
-    /*
-     * Find all public surveys
-     * @return Survey[]
+    /**
+     * Get surveys configured to be listed publicly.
+     *
+     * Filters surveys whose `listpublic` setting is `'Y'` (public) or `'I'` (inherit) and that evaluate as list-public.
+     *
+     * @return Survey[] Array of Survey models that are publicly listable.
      */
     public function findAllPublic()
     {
@@ -2269,10 +2273,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Returns the survey alias for the specified language.
-     * @param string|null $language
-     * @return string|null
-     */
+         * Get the survey alias for the given language, falling back to the survey's default language.
+         *
+         * @param string|null $language Language code to lookup; if null the survey's default language is used.
+         * @return string|null The alias for the language, or `null` if no alias is defined.
+         */
     public function getAliasForLanguage($language = null)
     {
         if (!empty($language) && !empty($this->languagesettings[$language]->surveyls_alias)) {
@@ -2285,8 +2290,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Validates the Expiration Date is not lower than the Start Date
-     */
+         * Ensure the survey expiration is not earlier than its start date.
+         *
+         * If either `startdate` or `expires` is empty, the check is skipped.
+         * Adds a validation error to the `expires` attribute when `expires < startdate`.
+         *
+         * @param mixed $attributes Attribute name or array of attribute names passed by the validator.
+         * @param array $params Additional validator parameters (unused).
+         */
     public function checkExpireAfterStart($attributes, $params)
     {
         if (empty($this->startdate) || empty($this->expires)) {
@@ -2298,15 +2309,19 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Returns the survey URL with the specified params.
-     * If $preferShortUrl is true (default), and an alias is available, it returns the short
-     * version of the URL.
-     * @param string|null $language
-     * @param array<string,mixed> $params   Optional parameters to include in the URL.
-     * @param bool $preferShortUrl  If true, tries to return the short URL instead of the traditional one.
-     * @return string
-     * @deprecated please use the new service class SurveyUrl
-     */
+         * Get the survey's public URL, optionally using a short alias when available.
+         *
+         * If `$language` is null the survey's default language is used. When `$preferShortUrl`
+         * is true and a language-specific alias exists, a short-form URL using that alias is
+         * returned; otherwise a traditional URL pointing to `survey/index` with `sid` and `lang`
+         * query parameters is returned.
+         *
+         * @param string|null $language Language code to use for the URL or null to use the survey default.
+         * @param array<string,mixed> $params Optional additional query parameters to include in the URL.
+         * @param bool $preferShortUrl If true, prefer a short alias URL when one exists.
+         * @return string The absolute URL to access the survey.
+         * @deprecated please use the new service class SurveyUrl
+         */
     public function getSurveyUrl($language = null, $params = [], $preferShortUrl = true)
     {
         if (empty($language)) {

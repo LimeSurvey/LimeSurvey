@@ -786,8 +786,13 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     }
 
     /**
-     * Get the replacements for token.
-     * @return string[]
+     * Build the token-specific replacement map used for expression processing.
+     *
+     * The returned associative array maps replacement keys (e.g. `OPTOUTURL`, `SURVEYURL`,
+     * token attribute names in uppercase when `replaceTokenAttributes` is enabled) to
+     * their corresponding replacement values (URLs or attribute values).
+     *
+     * @return string[] Associative array of replacement keys to replacement values.
      */
     public function getTokenReplacements()
     {
