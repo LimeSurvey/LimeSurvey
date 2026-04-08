@@ -8,7 +8,15 @@ use GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract;
 class SchemaFactoryQuestion
 {
     /**
-     * @param \GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract $properties
+     * Build an OpenAPI Schema describing a "Question" object.
+     *
+     * The returned object schema is titled "Question" and includes predefined fields such as
+     * qid, parentQid, sid, type, title, preg, other, mandatory, encrypted, sortOrder, scaleId,
+     * sameDefault, questionThemeName, moduleName, gid, relevance, sameScript, and an "l10ns"
+     * object that accepts arbitrary locale-keyed entries.
+     *
+     * @param \GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract ...$properties Additional schema properties to append to the Question schema.
+     * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Schema The constructed Question schema.
      */
     public function make(SchemaContract ...$properties): Schema
     {
