@@ -106,7 +106,7 @@ class RegisterController extends LSYii_Controller
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
         } elseif (!$oSurvey->getIsAllowRegister() || !tableExists("{{tokens_{$iSurveyId}}}")) {
             throw new CHttpException(404, "The survey in which you are trying to register don't accept registration. It may have been updated or the link you were given is outdated or incorrect.");
-        } elseif (!is_null($oSurvey->expires) && $oSurvey->expires < gmdate("Y-m-d H:i")) {
+        } elseif (!is_null($oSurvey->expires) && $oSurvey->expires < gmdate("Y-m-d H:i:s")) {
             $this->redirect(array('survey/index', 'sid' => $iSurveyId, 'lang' => $sLanguage));
         }
         /* Fix language according to existing language in survey */

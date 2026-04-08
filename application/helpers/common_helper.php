@@ -2690,15 +2690,15 @@ function dateShift($date, $toDateFormat, $toTimezone = null, $fromTimezone = 'UT
  * Applies a relative time modifier (e.g. '-1 minute', '+2 hours') to a date
  * and returns the result in the given format.
  *
- * @param string $date         The input date string.
+ * @param string $date         The input date in a format accepted by DateTime
  * @param string $toDateFormat The desired output date format.
  * @param string $modifier     A relative date/time modifier accepted by DateTime::modify().
- * @param string $fromTimezone The timezone of the input date (default: 'UTC').
+ * @param string $timeZone     The timezone of the input date (default: 'UTC').
  * @return string The modified date formatted according to $toDateFormat.
  */
-function dateShiftRelative($date, $toDateFormat, $modifier, $fromTimezone = 'UTC')
+function dateShiftRelative($date, $toDateFormat, $modifier, $timeZone = 'UTC')
 {
-    $datetime = new DateTime($date, new DateTimeZone($fromTimezone));
+    $datetime = new DateTime($date, new DateTimeZone($timeZone));
     $datetime->modify($modifier);
     return $datetime->format($toDateFormat);
 }
