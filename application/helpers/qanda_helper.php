@@ -3003,15 +3003,15 @@ function do_array_10point($ia)
 }
 
 
-/ **
+/**
  * Render a "Yes / No / Uncertain" array question and return its rendered HTML and input field names.
  *
  * Renders the question's header, columns and rows according to question attributes and session state.
  * Determines checked states from the survey session, respects mandatory and SHOW_NO_ANSWER settings,
  * and collects the SGQA input names for all subquestions.
  *
- * @param array $ia Question information array (standard LimeSurvey $ia structure: contains QID, field name, question attributes, mandatory flag, etc.).
- * @return array First element is the rendered HTML string for the question; second element is an array of input field names (SGQA) used by the question.
+ * `@param` array $ia Question information array (standard LimeSurvey $ia structure: contains QID, field name, question attributes, mandatory flag, etc.).
+ * `@return` array First element is the rendered HTML string for the question; second element is an array of input field names (SGQA) used by the question.
  */
 function do_array_yesnouncertain($ia)
 {
