@@ -144,7 +144,7 @@ export const ArrayParticipantMode = ({
   const isSameIncreaseDecrease =
     questionThemeName ===
     getNotSupportedQuestionTypeInfo().ARRAY_INCREASE_SAME_DECREASE.theme
-  
+
   const type = useMemo(() => {
     if (isArrayByText) {
       return 'text'
