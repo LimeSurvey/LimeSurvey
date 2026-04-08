@@ -1404,6 +1404,7 @@ class userstatistics_helper
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
 
+        $cn = (($rt[1] === 'Q') ? substr($rt, 1) : $rt);
         /* Set up required variables */
         $TotalCompleted = 0; //Count of actually completed answers
         $statisticsoutput = "";
@@ -1532,7 +1533,8 @@ class userstatistics_helper
                     //free text answers
                     if ($al[0] == "Answer") {
                         foreach ($oResponses as $oResponse) {
-                            $sResponseColumn = $al[2];
+                            $pos = strcspn($al[2], '123456789');
+                            $sResponseColumn = ($pos > 1) ? substr($al[2], $pos - 1) : $al[2];
                             if ($oResponse->$sResponseColumn != '') {
                                 $row += 1;
                             }
@@ -1541,7 +1543,8 @@ class userstatistics_helper
                     //"no answer" handling
                     elseif ($al[0] == "NoAnswer") {
                         foreach ($oResponses as $oResponse) {
-                            $sResponseColumn = $al[2];
+                            $pos = strcspn($al[2], '123456789');
+                            $sResponseColumn = ($pos > 1) ? substr($al[2], $pos - 1) : $al[2];
                             if ($oResponse->$sResponseColumn == '') {
                                 $row += 1;
                             }
@@ -1549,7 +1552,8 @@ class userstatistics_helper
                     }
                 } elseif ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
                     foreach ($oResponses as $oResponse) {
-                        $sResponseColumn = $al[2];
+                        $pos = strcspn($al[2], '123456789');
+                        $sResponseColumn = ($pos > 1) ? substr($al[2], $pos - 1) : $al[2];
                         if ($oResponse->$sResponseColumn != '') {
                             $row += 1;
                         }
@@ -2963,6 +2967,7 @@ class userstatistics_helper
             return $allRows[$row][$fieldname];
         } else {
             $diff = ($q1 - (int) $q1);
+            $row = (int)$row;
             return $allRows[$row][$fieldname] + $diff * ($allRows[$row + 1][$fieldname] - $allRows[$row][$fieldname]);
         }
     }
