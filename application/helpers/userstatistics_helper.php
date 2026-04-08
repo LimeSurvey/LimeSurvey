@@ -1404,7 +1404,6 @@ class userstatistics_helper
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
 
-        $cn = (($rt[1] === 'Q') ? substr($rt, 1) : $rt);
         /* Set up required variables */
         $TotalCompleted = 0; //Count of actually completed answers
         $statisticsoutput = "";
