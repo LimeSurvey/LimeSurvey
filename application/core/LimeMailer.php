@@ -966,26 +966,6 @@ class LimeMailer extends PHPMailer
         return true;
     }
 
-    /**
-     * Check if an specific attatchemnt exist
-     * Not needed anymore, SurveyLanuageSetttings return existing file only, keep it for plugin ?
-     * @deprecated 6.16.17
-     * @param string[] attachment info
-     * @return boolean
-     **/
-    private function attachementExists($aAttachment)
-    {
-        $throwError = (Yii::app()->getConfig('debug') && Permission::model()->hasSurveyPermission($this->surveyId, 'surveylocale', 'update'));
-        $SurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(['surveyls_survey_id' => $this->surveyId, 'surveyls_language' => $this->mailLanguage]);
-        if ($SurveyLanguageSetting->getAttachmentFileExist($aAttachment['url'])) {
-            return true;
-        }
-        if ($throwError) {
-            throw new \CException(sprintf(gT("File not found: %s"), $aAttachment['url']));
-        }
-        return false;
-    }
-
    /**
      * @inheritdoc
      * Reset the attachementType done to false
