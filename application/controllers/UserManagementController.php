@@ -1329,7 +1329,7 @@ class UserManagementController extends LSBaseController
                 $aResults[$sItem]['result'] = true;
             } else {
                 $aResults[$sItem]['result'] = false;
-                $aResults[$sItem]['error'] = gT('An error happen when set expired to the user.');
+                $aResults[$sItem]['error'] = gT('An error happened when setting the expiration date.');
             }
         }
 
