@@ -201,6 +201,31 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         }
     }
 
+    /**
+     * Parse and populate non-dropdown subquestions into the view data array.
+     *
+     * Processes scale-0 subquestions, splits dual-scale label text into left/center/right parts,
+     * computes repeat-heading flags, mandatory-violation markers, session-prefilled values,
+     * label-checked states, and "no answer" (notset) states. Appends generated input names
+     * to $this->inputnames and writes per-subquestion entries into $aData['aSubQuestions'].
+     *
+     * Populated keys for each $aData['aSubQuestions'][$i]:
+     * - title, myfname, myfname0, myfid0, myfname1, myfid1
+     * - answertext, answertextcenter, answertextright
+     * - odd
+     * - repeatheadings (bool)
+     * - showmandatoryviolation (bool)
+     * - sDisplayStyle (string)
+     * - sessionfname0, sessionfname1 (strings)
+     * - labelcode0_checked[...] and labelcode1_checked[...] (checked state strings)
+     * - myfname0_notset, myfname1_notset (checked state strings when shownoanswer is enabled)
+     *
+     * Side effects:
+     * - Modifies $aData by reference.
+     * - Appends input names to $this->inputnames.
+     *
+     * @param array &$aData View data array to populate with parsed subquestion information.
+     */
     public function parseSubquestionsNoDropdown(&$aData)
     {
         $repeatheadings     = Yii::app()->getConfig("repeatheadings");

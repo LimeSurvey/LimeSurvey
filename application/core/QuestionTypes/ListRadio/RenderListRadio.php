@@ -118,6 +118,13 @@ class RenderListRadio extends QuestionBaseRenderer
         return $sRows;
     }
 
+    / **
+     * Render the "No answer" option row for the question.
+     *
+     * Renders the template row for the "No answer" radio option including its checked state and placement flags.
+     *
+     * @return string The rendered HTML for the "No answer" row; the markup includes the checked attribute when the no-answer option is selected.
+     * /
     public function addNoAnswerRow()
     {
         return Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/answer_row_noanswer', array(

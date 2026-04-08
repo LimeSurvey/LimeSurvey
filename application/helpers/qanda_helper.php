@@ -2502,10 +2502,14 @@ function do_hugefreetext($ia)
 }
 
 /**
- * Renders Yes/No Question Type.
+ * Render the Yes/No answer control for a question using session state and question attributes.
  *
- * @param array $ia
- * @return array
+ * Determines checked states for Yes, No, and optional No-answer based on the current survey session
+ * and the question's mandatory/settings; selects a button or radio item template according to the
+ * `display_type` question attribute and returns the rendered HTML and related input names.
+ *
+ * @param array $ia Question information array (SGQA and metadata used by renderers; e.g. qid and fieldname at indices used by this function).
+ * @return array [string $answerHtml, array $inputNames] Rendered HTML for the answer control as the first element and a list of input field names as the second element.
  */
 function do_yesno($ia)
 {
@@ -2551,10 +2555,10 @@ function do_yesno($ia)
 }
 
 /**
- * Renders Gender Question Types.
+ * Render the gender (Female/Male) question input and return its HTML and input names.
  *
- * @param array $ia
- * @return array
+ * @param array $ia Question information array (SGQA and related metadata used to build the input).
+ * @return array Array where element 0 is the rendered answer HTML and element 1 is an array of related input field names.
  */
 function do_gender($ia)
 {
@@ -2594,10 +2598,16 @@ function do_gender($ia)
 
 // ---------------------------------------------------------------
 /**
-* Construct answer part array_5point
-* @param array $ia
-* @return array
-*/
+ * Render a 5-point Likert-style array question and return its answer HTML and form field names.
+ *
+ * Builds the HTML for a 5-point array question (optionally adding a "No answer" column and suffix
+ * column when configured), applies per-subquestion relevance/mandatory state and selected values,
+ * and collects the input field names used for submission.
+ *
+ * @param array $ia Question information array (survey-internal question descriptor, index-based).
+ * @return array [string $answerHtml, array $inputNames] $answerHtml is the rendered HTML for the question;
+ *               $inputNames is a list of SGQA field names for each subquestion (one entry per row).
+ */
 function do_array_5point($ia)
 {
     global $thissurvey;
@@ -2816,7 +2826,12 @@ function do_array_5point($ia)
 * @param array $ia
 * @return array
 */
-// TMSW TODO - Can remove DB query by passing in answer list from EM
+/**
+ * Render a 10-point array question and return its rendered HTML and related input names.
+ *
+ * @param array $ia Question information array containing question id, base name (SGQA), mandatory flag and other metadata required for rendering.
+ * @return array The first element is the rendered HTML string for the 10-point array question; the second element is an array of input field names (SGQA identifiers) produced for the question.
+ */
 function do_array_10point($ia)
 {
     global $thissurvey;
@@ -2988,6 +3003,16 @@ function do_array_10point($ia)
 }
 
 
+/ **
+ * Render a "Yes / No / Uncertain" array question and return its rendered HTML and input field names.
+ *
+ * Renders the question's header, columns and rows according to question attributes and session state.
+ * Determines checked states from the survey session, respects mandatory and SHOW_NO_ANSWER settings,
+ * and collects the SGQA input names for all subquestions.
+ *
+ * @param array $ia Question information array (standard LimeSurvey $ia structure: contains QID, field name, question attributes, mandatory flag, etc.).
+ * @return array First element is the rendered HTML string for the question; second element is an array of input field names (SGQA) used by the question.
+ */
 function do_array_yesnouncertain($ia)
 {
     $aLastMoveResult         = LimeExpressionManager::GetLastMoveResult();
@@ -3094,6 +3119,16 @@ function do_array_yesnouncertain($ia)
 }
 
 
+/**
+ * Renders an "Increase / Same / Decrease" array question and returns its HTML and related input names.
+ *
+ * Renders the question as a table of subquestions with three choice columns (Increase, Same, Decrease)
+ * and an optional "No answer" column when the question is not mandatory and SHOW_NO_ANSWER is enabled.
+ * Selected states are read from the current survey session and mandatory subquestion violations are marked.
+ *
+ * @param array $ia Question information array (survey/question context and identifiers).
+ * @return array First element is the rendered HTML string for the question; second element is an array of input field names for all subquestions.
+ */
 function do_array_increasesamedecrease($ia)
 {
     $aLastMoveResult         = LimeExpressionManager::GetLastMoveResult();
@@ -4286,9 +4321,14 @@ function do_array_multiflexi($ia)
 // ---------------------------------------------------------------
 // TMSW TODO - Can remove DB query by passing in answer list from EM
 /**
- * Renders array by column question type.
- * @param array $ia
- * @return array
+ * Render an "array by column" question and return its HTML and input names.
+ *
+ * Builds the data required to display a matrix where answers are laid out as columns,
+ * computes checked states (including consolidated "No answer" handling), marks
+ * subquestion mandatory violations, and renders the question template.
+ *
+ * @param array $ia Question information array (internal LimeSurvey $ia structure).
+ * @return array [string $answerHtml, array|string $inputNames] Rendered HTML for the answer area and a list of related input field names (or an empty string on error).
  * @throws CException
  */
 function do_arraycolumns($ia)
@@ -4883,16 +4923,15 @@ function getLabelInputWidth($labelAttributeWidth, $inputAttributeWidth)
 }
 
 /**
-* Take a date string and fill out missing parts, like day, hour, minutes
-* (not seconds).
-* If string is NOT in standard date format (Y-m-d H:i), this methods makes no
-* sense.
-* Used when fetching answer for do_date, where answer can come from a default
-* answer expression like date('Y').
-* Will also truncate date('c') to format Y-m-d H:i.
-* @param string $dateString
-* @return string
-*/
+ * Normalize a partial ISO-like date string to the 'Y-m-d H:i' format by filling missing components.
+ *
+ * Accepts year-only, year-month, year-month-day, and other common ISO-like datetime strings (including
+ * date('c')). Seconds and smaller fractions are discarded. If the input cannot be interpreted as a date,
+ * an empty string is returned.
+ *
+ * @param string $dateString Partial or complete date/time string (e.g. "2024", "2024-03", "2024-03-05 14", "2024-03-05 14:30", or an ISO 8601 timestamp).
+ * @return string The normalized date/time formatted as "Y-m-d H:i", or an empty string on failure.
+ */
 function fillDate($dateString)
 {
     switch (strlen($dateString)) {
@@ -4928,15 +4967,10 @@ function fillDate($dateString)
 }
 
 /**
- * Check whether the "No Answer" option is selected for a given survey question.
- *
- * This function looks up the current survey session data
- * and checks whether the given SGQA identifier code
- * has a empty string value, indicating that the "No Answer" option has been checked.
+ * Determines whether the "No Answer" option is selected for the given SGQA identifier.
  *
  * @param string $sSGQA The SGQA identifier of the question to check.
- *
- * @return bool True if the "No Answer" option is checked (empty string value found), false otherwise.
+ * @return bool `true` if the survey session contains the SGQA key and its value is an empty string, `false` otherwise.
  */
 function getIsNoAnswerChecked($sSGQA)
 {

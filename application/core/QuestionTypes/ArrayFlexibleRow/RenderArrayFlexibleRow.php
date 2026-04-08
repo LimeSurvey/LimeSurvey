@@ -246,6 +246,23 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         return $aRows;
     }
 
+    /**
+     * Builds rows for the non-dropdown (radio/table-like) array layout.
+     *
+     * Generates an ordered list of row descriptors for Twig rendering. Each entry is either a repeat-header row
+     * (template `/survey/questions/answer/arrays/array/no_dropdown/rows/repeat_header.twig`) or an answer row
+     * (template `survey/questions/answer/arrays/array/no_dropdown/rows/answer_row.twig`) whose `content` contains
+     * the prepared answer columns, optional "No answer" column, labels, current value, error flag, and layout metadata.
+     * Repeat-section header rows are inserted according to `repeatheadings`/`minrepeatheadings`.
+     *
+     * Side effects: appends each subquestion's input name (`myfname`) to `$this->inputnames`.
+     *
+     * @return array An array of row descriptors suitable for the Twig renderer. Each element has the form:
+     *               [
+     *                 'template' => string,
+     *                 'content'  => array
+     *               ]
+     */
     public function getNonDropdownRows()
     {
         $aRows = [];
