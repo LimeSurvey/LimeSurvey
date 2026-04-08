@@ -87,10 +87,13 @@ class UserManager
     }
 
     /**
-     * Deletes the user with the given id.
-     * @param User $user
-     * @return OperationResult
-     */
+         * Delete the given User and reassign their owned records to the site administrator.
+         *
+         * Transfers any UserGroup.owner_id and Participant.owner_uid owned by the user to the site admin (uid=1), removes the user's group memberships, and then deletes the user. The whole operation is performed inside a database transaction and will be rolled back if an error occurs. Note: user permissions are not removed by this method.
+         *
+         * @param User $user The User model to delete; the method uses $user->uid to identify related records.
+         * @return OperationResult An OperationResult whose success flag indicates whether the deletion committed, and whose messages describe actions taken or errors encountered.
+         */
     public function deleteUser($user)
     {
         $messages = [];
