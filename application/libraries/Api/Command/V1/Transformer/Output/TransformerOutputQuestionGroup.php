@@ -11,25 +11,25 @@ class TransformerOutputQuestionGroup extends TransformerOutputActiveRecord
         $this->setDataMap([
             'gid' => ['type' => 'int'],
             'sid' => ['type' => 'int'],
-            'group_order' => ['key' => 'groupOrder', 'type' => 'int'],
+            'group_order' => ['key' => 'sortOrder', 'type' => 'int'],
             'randomization_group' => 'randomizationGroup',
             'grelevance' => 'gRelevance',
         ]);
     }
 
-    public function transformAll($array)
+    public function transformAll($collection, $options = [])
     {
-        $array = parent::transformAll($array);
+        $collection = parent::transformAll($collection, $options);
 
         usort(
-            $array,
+            $collection,
             function ($a, $b) {
                 return (int)(
-                    (int)$a['groupOrder'] > (int)$b['groupOrder']
+                    (int)$a['sortOrder'] > (int)$b['sortOrder']
                 );
             }
         );
 
-        return $array;
+        return $collection;
     }
 }

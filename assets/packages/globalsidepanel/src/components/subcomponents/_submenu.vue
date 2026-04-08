@@ -73,7 +73,7 @@ export default {
                     <i class=" ri-external-link-fill" v-if="menuItem.link_external == true">&nbsp;</i>
                 </div>
                 <div class="col-md-2 text-center ls-space padding all-0 background white" v-show="$store.state.lastMenuItemOpen == menuItem.id">
-                    <i class="fa fa-chevron-right">&nbsp;</i>
+                    <i class="ri-arrow-right-s-line">&nbsp;</i>
                 </div>
                 
             </div>

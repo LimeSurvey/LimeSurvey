@@ -4,7 +4,7 @@
 ?>
 
 <div class="modal-header">
-    <h5 class="modal-title" id="modalTitle-addedit"><?= sprintf(gT('Permission role %s'), $oModel->name); ?></h5>
+    <h5 class="modal-title" id="modalTitle-addedit"><?= sprintf(gT('Permission role %s'), CHtml::encode($oModel->name)); ?></h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <div class="modal-body">
@@ -12,7 +12,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="col-12 card-body">
-                    <?= $oModel->description ?>
+                    <?= CHtml::encode($oModel->description) ?>
                 </div>
             </div>
         </div>

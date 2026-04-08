@@ -21,7 +21,6 @@
 
 namespace phpseclib3\File;
 
-use DateTime;
 use phpseclib3\Common\Functions\Strings;
 use phpseclib3\File\ASN1\Element;
 use phpseclib3\Math\BigInteger;
@@ -205,7 +204,7 @@ abstract class ASN1
             return null;
         }
 
-        return [self::decode_ber($encoded)];
+        return [$decoded];
     }
 
     /**
@@ -274,8 +273,7 @@ abstract class ASN1
             // tags of indefinte length don't really have a header length; this length includes the tag
             $current += ['headerlength' => $length + 2];
             $start += $length;
-            extract(unpack('Nlength', substr(str_pad($temp, 4, chr(0), STR_PAD_LEFT), -4)));
-            /** @var integer $length */
+            $length = unpack('Nlength', substr(str_pad($temp, 4, chr(0), STR_PAD_LEFT), -4))['length'];
         } else {
             $current += ['headerlength' => 2];
         }
@@ -791,10 +789,17 @@ abstract class ASN1
             case self::TYPE_ENUMERATED:
                 $temp = $decoded['content'];
                 if (isset($mapping['implicit'])) {
-                    $temp = new BigInteger($decoded['content'], -256);
+                    $temp = new BigInteger($temp, -256);
+                }
+                if (!$temp instanceof BigInteger) {
+                    return false;
                 }
                 if (isset($mapping['mapping'])) {
-                    $temp = (int) $temp->toString();
+                    $temp = $temp->toString();
+                    if (strlen($temp) > 1) {
+                        return false;
+                    }
+                    $temp = (int) $temp;
                     return isset($mapping['mapping'][$temp]) ?
                         $mapping['mapping'][$temp] :
                         false;
@@ -932,7 +937,19 @@ abstract class ASN1
                             an untagged "DummyReference" (see ITU-T Rec. X.683 | ISO/IEC 8824-4, 8.3)."
                          */
                         if (isset($child['explicit']) || $child['type'] == self::TYPE_CHOICE) {
-                            $subtag = chr((self::CLASS_CONTEXT_SPECIFIC << 6) | 0x20 | $child['constant']);
+                            if ($child['constant'] <= 30) {
+                                $subtag = chr((self::CLASS_CONTEXT_SPECIFIC << 6) | 0x20 | $child['constant']);
+                            } else {
+                                $constant = $child['constant'];
+                                $subtag = '';
+                                while ($constant > 0) {
+                                    $subtagvalue = $constant & 0x7F;
+                                    $subtag = (chr(0x80 | $subtagvalue)) . $subtag;
+                                    $constant = $constant >> 7;
+                                }
+                                $subtag[strlen($subtag) - 1] = $subtag[strlen($subtag) - 1] & chr(0x7F);
+                                $subtag = chr((self::CLASS_CONTEXT_SPECIFIC << 6) | 0x20 | 0x1f) . $subtag;
+                            }
                             $temp = $subtag . self::encodeLength(strlen($temp)) . $temp;
                         } else {
                             $subtag = chr((self::CLASS_CONTEXT_SPECIFIC << 6) | (ord($temp[0]) & 0x20) | $child['constant']);
@@ -1141,6 +1158,8 @@ abstract class ASN1
      */
     public static function decodeOID($content)
     {
+        // BigInteger's are used because of OIDs like 2.25.329800735698586629295641978511506172918
+        // https://healthcaresecprivacy.blogspot.com/2011/02/creating-and-using-unique-id-uuid-oid.html elaborates.
         static $eighty;
         if (!$eighty) {
             $eighty = new BigInteger(80);
@@ -1149,6 +1168,11 @@ abstract class ASN1
         $oid = [];
         $pos = 0;
         $len = strlen($content);
+        // see https://github.com/openjdk/jdk/blob/2deb318c9f047ec5a4b160d66a4b52f93688ec42/src/java.base/share/classes/sun/security/util/ObjectIdentifier.java#L55
+        if ($len > 4096) {
+            //throw new \RuntimeException("Object identifier size is limited to 4096 bytes ($len bytes present)");
+            return false;
+        }
 
         if (ord($content[$len - 1]) & 0x80) {
             return false;
@@ -1403,7 +1427,7 @@ abstract class ASN1
                         return false;
                     }
                     break;
-                case ($c & 0x80000000) != 0:
+                case ($c & (PHP_INT_SIZE == 8 ? 0x80000000 : (1 << 31))) != 0:
                     return false;
                 case $c >= 0x04000000:
                     $v .= chr(0x80 | ($c & 0x3F));

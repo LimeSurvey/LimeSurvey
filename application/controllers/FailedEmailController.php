@@ -48,7 +48,7 @@ class FailedEmailController extends LSBaseController
             App()->user->setState('pageSize', (int) $pageSize);
         }
 
-        App()->getClientScript()->registerScriptFile('/application/views/failedEmail/javascript/failedEmail.js', LSYii_ClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'failedEmail.js', LSYii_ClientScript::POS_BEGIN);
         $failedEmailModel = FailedEmail::model();
         $failedEmailModel->setAttributes(App()->getRequest()->getParam('FailedEmail'), false);
         $failedEmailModel->setAttribute('surveyid', $surveyId);

@@ -306,10 +306,10 @@ class QuickTranslation
      * Different types need different query.
      *
      * @param $type
-     * @param $baselang
+     * @param $language
      * @return array|\CActiveRecord|mixed|Question[]|SurveyLanguageSetting[]|void|null
      */
-    public function getTranslations($type, $baselang)
+    public function getTranslations($type, $language)
     {
         switch ($type) {
             case 'title':
@@ -332,21 +332,21 @@ class QuickTranslation
             case 'emaildetailedadminnotificationbody':
                 return SurveyLanguageSetting::model()->resetScope()->findAllByPk([
                     'surveyls_survey_id' => $this->survey->sid,
-                    'surveyls_language' => $baselang
+                    'surveyls_language' => $language
                 ]);
             case 'group':
             case 'group_desc':
                 return QuestionGroup::model()
                     ->with('questiongroupl10ns', ['condition' => 'language =:baselang ',
-                        'params' => [':baselang' => $baselang]])
+                        'params' => [':baselang' => $language]])
                     ->findAllByAttributes(['sid' => $this->survey->sid], ['order' => 't.gid']);
             case 'question':
             case 'question_help':
-                return $this->getQuestionTranslations($baselang);
+                return $this->getQuestionTranslations($language);
             case 'subquestion':
-                return $this->getSubquestionTranslations($baselang);
+                return $this->getSubquestionTranslations($language);
             case 'answer':
-                return $this->getAnswerTranslations($baselang);
+                return $this->getAnswerTranslations($language);
         }
     }
 
@@ -383,6 +383,7 @@ class QuickTranslation
     public function getAnswerTranslations($baselang)
     {
         return Answer::model()
+            ->resetScope()
             ->with('answerl10ns', [
                 'condition' => 'language =:baselang ',
                 'params' => [':baselang' => $baselang]])
@@ -391,7 +392,7 @@ class QuickTranslation
             ->findAllByAttributes(
                 [],
                 [
-                    'order' => 'group_order, question.question_order, t.scale_id, t.sortorder',
+                    'order' => 'group_order, question.question_order, t.scale_id, t.sortorder, t.code',
                     'condition' => 'question.sid=:sid',
                     'params' => array(':sid' => $this->survey->sid)
                 ]

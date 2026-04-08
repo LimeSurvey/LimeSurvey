@@ -15,7 +15,7 @@ class Update_157 extends DatabaseUpdateBase
         try {
             setTransactionBookmark();
             $this->db->createCommand()->dropIndex('questions_idx4', '{{questions}}');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         }
 
@@ -41,7 +41,7 @@ class Update_157 extends DatabaseUpdateBase
         try {
             setTransactionBookmark();
             \alterColumn('{{sessions}}', 'id', "string(32)", false);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         }
         \alterColumn('{{surveys}}', 'active', "string(1)", false, 'N');
@@ -85,13 +85,13 @@ class Update_157 extends DatabaseUpdateBase
         try {
             setTransactionBookmark();
             \alterColumn('{{survey_permissions}}', 'sid', "integer", false);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         }
         try {
             setTransactionBookmark();
             \alterColumn('{{survey_permissions}}', 'uid', "integer", false);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         }
         \alterColumn('{{survey_permissions}}', 'create_p', 'integer', false, '0');
@@ -120,7 +120,7 @@ class Update_157 extends DatabaseUpdateBase
         try {
             setTransactionBookmark();
             \alterColumn('{{surveys_languagesettings}}', 'surveyls_survey_id', "integer", false);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         }
         \alterColumn('{{user_groups}}', 'owner_id', "integer", false);
@@ -132,43 +132,43 @@ class Update_157 extends DatabaseUpdateBase
         try {
             setTransactionBookmark();
             $this->db->createCommand()->createIndex('questions_idx3', '{{questions}}', 'gid');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
             $this->db->createCommand()->createIndex('conditions_idx3', '{{conditions}}', 'cqid');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
             $this->db->createCommand()->createIndex('questions_idx4', '{{questions}}', 'type');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
             $this->db->createCommand()->dropIndex('user_in_groups_idx1', '{{user_in_groups}}');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
             $this->db->createCommand()->dropIndex('{{user_name_key}}', '{{users}}');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
             $this->db->createCommand()->createIndex('users_name', '{{users}}', 'users_name', true);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
             addPrimaryKey('user_in_groups', array('ugid', 'uid'));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         };
 
@@ -176,25 +176,25 @@ class Update_157 extends DatabaseUpdateBase
         try {
             setTransactionBookmark();
             \alterColumn('{{participant_attribute_names}}', 'attribute_type', "string(4)", false);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
             dropColumn('{{participant_attribute_names_lang}}', 'id');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
             addPrimaryKey('participant_attribute_names_lang', array('attribute_id', 'lang'));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
             $this->db->createCommand()->renameColumn('{{participant_shares}}', 'shared_uid', 'share_uid');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         };
         \alterColumn('{{participant_shares}}', 'date_added', "datetime", false);
@@ -206,13 +206,13 @@ class Update_157 extends DatabaseUpdateBase
         try {
             setTransactionBookmark();
             \alterColumn('{{survey_permissions}}', 'sid', 'integer', false);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
             \alterColumn('{{survey_permissions}}', 'uid', 'integer', false);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         };
         \alterColumn('{{users}}', 'htmleditormode', "string(7)", true, 'default');
@@ -241,32 +241,32 @@ class Update_157 extends DatabaseUpdateBase
         try {
             setTransactionBookmark();
             $this->db->createCommand()->dropIndex('assessments_idx', '{{assessments}}');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
             $this->db->createCommand()->createIndex('assessments_idx3', '{{assessments}}', 'gid');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         };
 
         try {
             setTransactionBookmark();
             $this->db->createCommand()->dropIndex('ixcode', '{{labels}}');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
             $this->db->createCommand()->dropIndex('{{labels_ixcode_idx}}', '{{labels}}');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
             $this->db->createCommand()->createIndex('labels_code_idx', '{{labels}}', 'code');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         };
 
@@ -274,13 +274,13 @@ class Update_157 extends DatabaseUpdateBase
             try {
                 setTransactionBookmark();
                 $this->db->createCommand("ALTER TABLE ONLY {{user_groups}} ADD PRIMARY KEY (ugid); ")->execute();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 rollBackToTransactionBookmark();
             };
             try {
                 setTransactionBookmark();
                 $this->db->createCommand("ALTER TABLE ONLY {{users}} ADD PRIMARY KEY (uid); ")->execute();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 rollBackToTransactionBookmark();
             };
         }

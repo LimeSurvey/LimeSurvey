@@ -19,6 +19,10 @@
         <lastUpdate>2017-27-11 17:00:00</lastUpdate>
     </metadata>
 
+    <compatibility>
+        <version>6.0</version>
+    </compatibility>
+
     <!--
         Here the list of the css/js files to load.
         Any file here will be loaded via the asset manager

@@ -1,0 +1,16 @@
+ {% extends "./subviews/printanswers/printanswers_question.twig" %}
+ {% block question_answer %}
+ <div class="col-lg-8">
+    {% for iterator, rankedvalue in question.answervalues %}
+        <div class="row">
+            <div class="col-lg-4 text-end">
+                <b>{{gT('Rank')}} #{{(iterator+1)}}:</b>
+            </div>
+            <div class="col-lg-8 text-start">
+                {{rankedvalue.value}}  - {{rankedvalue.option.answer}}
+            </div>
+        </div>
+    {% endfor %}
+
+</div>
+{% endblock %}

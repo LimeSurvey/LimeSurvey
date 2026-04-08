@@ -144,6 +144,7 @@ class ExtensionConfig
     }
 
     /**
+     * Reads xml from file and creates an instance of ExtensionConfig
      * @param string $file Full file path.
      * @return ExtensionConfig
      */

@@ -1,0 +1,14 @@
+.save-message {
+    margin-bottom: 40px;
+    .form-heading {
+        p {
+         margin-bottom: 0;
+        }
+    }
+}
+
+.load-form, .save-form {
+    .button-row {
+        @include submit-button;
+    }
+}

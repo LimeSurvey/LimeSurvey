@@ -13,7 +13,7 @@
                     id="<?= CHtml::getIdByName($inputBaseName . "[" . $lang ."]"); ?>"
                     aria-labelledby="label-<?= CHtml::getIdByName($inputBaseName); ?>"
                     <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>
-                    ><?= $this->setting[$lang]['value']; ?></textarea>
+                    ><?= CHtml::encode($this->setting[$lang]['value']); ?></textarea>
             </div>
         <?php endforeach; ?>
     <?php else: ?>
@@ -22,7 +22,7 @@
             name="<?= $inputBaseName ?>"
             id="<?= CHtml::getIdByName($inputBaseName); ?>"
             <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>
-            ><?= $this->setting['value']; ?></textarea>
+            ><?= CHtml::encode($this->setting['value']); ?></textarea>
         <?php endif; ?>
     <?php if (isset($this->setting['aFormElementOptions']['inputGroup']['suffix'])) : ?>
         <div class="input-group-text">

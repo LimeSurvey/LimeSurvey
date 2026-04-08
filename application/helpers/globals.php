@@ -22,7 +22,7 @@ function App()
 }
 
     /**
-     * If debug = 2 in application/config.php this will produce output in the console / firebug
+     * If debug = 2 in application/config.php this will produce output in the console
      * similar to var_dump. It will also include the filename and line that called this method.
      *
      * @param mixed $variable The variable to be dumped

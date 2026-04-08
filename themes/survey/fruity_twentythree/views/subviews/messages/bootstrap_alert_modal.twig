@@ -1,0 +1,73 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+
+
+    (¯`·._.·(¯`·._.·  Bootstrap Modal Alert ·._.·´¯)·._.·´¯)
+
+    This is the modal that shows most of the alert messages.
+    The conversion from pure JavaScript alert to Bootstrap modal is done in theme-core.js
+
+    About Bootstrap modal, see: http://getbootstrap.com/javascript/#modals
+#}
+
+
+
+{# Register script for modal #}
+{% if( empty(json_decode(aSurveyInfo.jPopup)) == false ) %}
+    {{ registerScript('startPopup',"LSvar.startPopups = " ~ aSurveyInfo.jPopup , "POS_HEAD") }}
+    {{ registerScript('showStartPopups',"window.templateCore.alertSurveyDialog(" ~ aSurveyInfo.jPopup ~ ");", "POS_END") }}
+    {{ registerScript('activateSoftMandatory',"activateSoftMandatory();", "POS_END") }}
+{% endif %}
+
+<!-- Bootstrap Modal Alert -->
+{% if(aSurveyInfo.id.alertmodal)%}
+<div id="{{ aSurveyInfo.id.alertmodal }}" class="{{ aSurveyInfo.class.alertmodal }}" {{ aSurveyInfo.attr.alertmodal }}>
+    <div class="{{ aSurveyInfo.class.modaldialog }}" {{ aSurveyInfo.attr.modaldialog }}>
+        <div class="{{ aSurveyInfo.class.modalcontent }}" {{ aSurveyInfo.attr.modalcontent }} >
+            <div class="{{ aSurveyInfo.class.modalheader }}" {{ aSurveyInfo.attr.modalheader }} >
+                <button  {{ aSurveyInfo.attr.modalclosebutton }} class="{{ aSurveyInfo.class.modalclosebutton }}"  ></button>
+                <div class="{{ aSurveyInfo.class.modaltitle }}" {{ aSurveyInfo.attr.modaltitle }}>&nbsp;</div>
+            </div>
+            <div class="{{ aSurveyInfo.class.modalbody }}" {{ aSurveyInfo.attr.modalbody }}>
+            </div>
+            {% if(aSurveyInfo.mandNonSoft == false and aSurveyInfo.mandSoft)%}
+            <div class="{{ aSurveyInfo.class.modalfooter }}" {{ aSurveyInfo.attr.modalfooter }}>
+                <a id="{{ aSurveyInfo.id.mandatorySoftModal }}" class="{{ aSurveyInfo.class.modalfooterlink }}" data-movenext="{{ aSurveyInfo.aNavigator.aMoveNext.value }}">{{ gT("Continue without answering") }}</a>
+                <a {{ aSurveyInfo.attr.modalfooterlink }}  class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Answer question") }}</a>
+            </div>
+            {% else %}
+            <div class="{{ aSurveyInfo.class.modalfooter }}" {{ aSurveyInfo.attr.modalfooter }}>
+                <a {{ aSurveyInfo.attr.modalfooterlink }}  class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Close") }}</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}
+<!-- Clear all modal -->
+<div id="clear-all-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{ gT("Exit and clear survey" ) }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>{{ gT("Please confirm you want to clear your response?") }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ gT("Cancel") }}</button>
+                <button id="clear-all-submit" type="submit" class="btn btn-primary">{{ gT("Clear") }}</button>
+            </div>
+        </div>
+    </div>
+</div>

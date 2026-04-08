@@ -97,6 +97,14 @@ const NotifcationSystem  = function (){
             const importance = $(that).data('importance');
             const status = $(that).data('status');
 
+            // Important 2 = nag only once (used e.g. for redirect).
+            if (importance == 2 && status == 'new') {
+                __showNotificationModal(that, url);
+                __notificationIsRead(that);
+                LOG.log('stoploop');
+                return false;  // Stop loop
+            }
+
             // Important notifications are shown as pop-up on load
             if (importance == 3 && status == 'new') {
                 __showNotificationModal(that, url);
@@ -145,9 +153,11 @@ const NotifcationSystem  = function (){
     },
 
     deleteAllNotifications = (url, updateUrl) => {
+        let data = document.querySelector('#notification-clear-all > a').getAttribute('data-params');
         return $.ajax({
             url: url,
-            method: 'GET',
+            data: data,
+            method: 'POST',
             success: (response) => {
                LOG.log('response', response);
             }

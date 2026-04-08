@@ -330,13 +330,6 @@ return array(
         )
     ),
 
-    'es6promise' => array(
-        'basePath' => 'vendor.es6promise',
-        'js' => array(
-            'es6-promise.auto.min.js'
-        )
-    ),
-
     'dom2image' => array(
         'basePath' => 'node_modules.dom-to-image',
         'js' => array(
@@ -347,24 +340,15 @@ return array(
         'basePath' => 'node_modules.jspdf.dist',
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
-            'jspdf.min.js'
+            'jspdf.umd.min.js',
+            'jspdf.es.min.js'
         ),
         'depends' => array(
             'dom2image',
-            'es6promise',
             'jquery',
             'jszip'
         )
     ),
-    /* Used by ranking question type */
-    'sortable' => array(
-        'devBaseUrl' => 'vendor/sortable',
-        'basePath' => 'vendor.sortable', /* for sorting ability */
-        'position' => CClientScript::POS_BEGIN,
-        'js' => array(
-            'jquery.fn.sortable' . $minVersion . '.js'
-            )
-        ),
     /* Used for samechoiceheight/samelistheight */
     'jquery-actual' => array(
         'position' => CClientScript::POS_BEGIN,
@@ -412,11 +396,20 @@ return array(
             'build/tempus-dominus.min.css',
         ),
         'js' => array(
-            'build/popper-tempus.min.js',
+            'build/popper-tempus.js',
             'datepickerInit.js'
         ),
         'depends' => array(
             'moment'
         )
+    ),
+    // Used for Statistics
+    'chart.js' => array(
+        'devBaseUrl' => 'node_modules/chart.js/dist',
+        'basePath' => 'node_modules.chartjs',
+        'position' => CClientScript::POS_BEGIN,
+        'js' => array(
+            'chart.umd.js'
+        ),
     ),
 );

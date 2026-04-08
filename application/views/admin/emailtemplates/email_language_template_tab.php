@@ -1,9 +1,35 @@
 
 <?php
-$script = array();
+    $script = [];
+    $hideAttacehemtTable = true;
+    $attachmentsHaveErrors = false;
+    if (isset($esrow->attachments[$tab])) {
+        foreach ($esrow->attachments[$tab] as $attachment) {
+            $script[] = sprintf(
+                "prepEmailTemplates.addAttachment($('#attachments-%s-%s'), %s, %s, %s, %s);",
+                $grouplang,
+                $tab,
+                json_encode($attachment['url']),
+                json_encode($attachment['relevance']),
+                json_encode($attachment['size']),
+                json_encode($attachment['error'] ?? '')
+            );
+            if (!empty($attachment['error'])) {
+                $attachmentsHaveErrors = true;
+            }
+        }
+        $hideAttacehemtTable = false;
+    }
 ?>
 
 <div id='<?php echo "tab-".CHtml::encode($grouplang)."-".CHtml::encode($tab); ?>' class="tab-pane fade in <?=CHtml::encode($active); ?>">
+    <?php if ($attachmentsHaveErrors): ?>
+        <div class="row">
+            <div class='col-sm-12'>
+                <div class="alert alert-danger"><?= gT("There are errors with this template's attachments. Please check them below.") ?></div>
+            </div>
+        </div>
+    <?php endif; ?>
     <div class="row">
         <div class='mb-3 col-md-12'>
             <label class=' form-label' for='email_<?php echo $tab; ?>_subj_<?php echo $grouplang; ?>'><?php echo $details['subject'] ?></label>
@@ -59,22 +85,12 @@ $script = array();
     <div class="row">
             <label class='form-label col-12' for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
             <div class="col-12">
-                <button class="add-attachment btn btn-outline-secondary" data-bs-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php eT("Add file"); ?></button> &nbsp;
+                <button class="add-attachment btn btn-outline-secondary" data-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php eT("Add file"); ?></button> &nbsp;
             </div>
     </div>
 
 
     <?php } ?>
-
-    <?php
-    $hideAttacehemtTable = true;
-    if (isset($esrow->attachments[$tab])) {
-        foreach ($esrow->attachments[$tab] as $attachment) {
-            $script[] = sprintf("prepEmailTemplates.addAttachment($('#attachments-%s-%s'), %s, %s, %s );", $grouplang, $tab, json_encode($attachment['url']), json_encode($attachment['relevance']), json_encode($attachment['size']));
-        }
-        $hideAttacehemtTable = false;
-    }
-    ?>
 
     <div class="row selector__table-container <?=($hideAttacehemtTable===true ? 'd-none' : '')?>">
         <div class='mb-3 col-12'>

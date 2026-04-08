@@ -17605,18 +17605,6 @@
 	};
 
 	/**
-	 * Methods to load when a the surveygrid is available
-	 *     if($('#survey-grid').length>0)
-	 */
-
-	const onExistBinding = () => {
-	  $(document).on('click', '.has-link', function () {
-	    const linkUrl = $(this).find('a').attr('href');
-	    window.location.href = linkUrl;
-	  });
-	};
-
-	/**
 	 * Check the browsers console capabilities and bundle them into general functions
 	 * If the build environment was "production" only put out error messages.
 	 */
@@ -17898,7 +17886,7 @@
 	  //Current options object
 	  const options = _parseOptions(e);
 	  //Set the message if available
-	  $(this).find('.modal-body-text').html(options.message);
+	  $(this).find('.modal-body-text').text(options.message);
 	  //first remove both classes
 	  $(this).find('.btn-ok').removeClass("btn-primary btn-danger");
 	  if (options.btnclass !== null) {
@@ -17925,24 +17913,14 @@
 	 * Also bootstrapping methods and window bound methods are set here
 	 */
 	const globalWindowMethods = {
+	  // TODO: It seems below two functions are not used and can be deleted. Please confirm.
 	  renderBootstrapSwitch: () => {
-	    try {
-	      if (!$('[data-is-bootstrap-switch]').parent().hasClass('bootstrap-switch-container')) {
-	        $('[data-is-bootstrap-switch]').bootstrapSwitch({
-	          onInit: () => adminCoreLSConsole.log("BootstrapSwitch Initialized")
-	        });
-	      }
-	    } catch (e) {
-	      adminCoreLSConsole.error(e);
-	    }
+	    adminCoreLSConsole.warn('LS.renderBootstrapSwitch is deprecated.');
 	  },
 	  unrenderBootstrapSwitch: () => {
-	    try {
-	      $('[data-is-bootstrap-switch]').bootstrapSwitch('destroy');
-	    } catch (e) {
-	      adminCoreLSConsole.error(e);
-	    }
+	    adminCoreLSConsole.warn('LS.unrenderBootstrapSwitch is deprecated.');
 	  },
+	  // ==================================================================================
 	  validatefilename: (form, strmessage) => {
 	    if (form.the_file.value == "") {
 	      $('#pleaseselectfile-popup').modal();
@@ -17980,7 +17958,7 @@
 	    return window.event ? window.event.keyCode : e ? e.which : null;
 	  },
 	  goodchars: (e, goods) => {
-	    const key = getkey(e);
+	    const key = globalWindowMethods.getkey(e);
 	    if (key == null) return true;
 
 	    // get character
@@ -19206,11 +19184,20 @@
 	      if ($(el).data('form-id') == 'addnewsurvey') {
 	        const loadingSpinner = '<i class="ri-settings-5-fill remix-spin lsLoadingStateIndicator"></i>';
 	        $(el).prop('disabled', true).append(loadingSpinner);
+	      } else if (el.id === 'save-button' || el.id === 'save-form-button' || el.id === 'save-and-close-button' || el.id === 'save-and-close-button-create-question') {
+	        $('#ls-loading').show();
 	      }
 	    },
 	    stopDisplayLoadingState = () => {
 	      LS.EventBus.$emit('loadingFinished');
 	      // $('.lsLoadingStateIndicator').each((i,item) => {$(item).remove();});
+	    },
+	    bindInvalidFormHandler = $form => {
+	      var $submittableElements = $form.find('button, input, select, textarea');
+	      $submittableElements.off('invalid.save').on('invalid.save', function () {
+	        stopDisplayLoadingState();
+	        $submittableElements.off('invalid.save');
+	      });
 	    },
 	    //###########PRIVATE
 	    checks = () => {
@@ -19245,11 +19232,21 @@
 	            } catch (e) {
 	              console.ls.log('Seems no CKEDITOR4 is loaded');
 	            }
+
+	            // If the form has the 'data-trigger-validation' attribute set, trigger the standard form
+	            // validation and quit if it fails.
+	            if ($form.attr('data-trigger-validation')) {
+	              if (!$form[0].reportValidity()) {
+	                return;
+	              }
+	            }
 	            if ($form.data('isvuecomponent') == true) {
 	              LS.EventBus.$emit('componentFormSubmit', button);
 	            } else {
-	              $form.find('[type="submit"]:not(.ck)').first().trigger('click');
+	              // Attach handler to detect validation errors on the form and re-enable the button
+	              bindInvalidFormHandler($form);
 	              displayLoadingState(this);
+	              $form.find('[type="submit"]:not(.ck)').first().trigger('click');
 	            }
 	          },
 	          on: 'click'
@@ -19314,8 +19311,8 @@
 	            if ($form.data('isvuecomponent') == true) {
 	              LS.EventBus.$emit('componentFormSubmit', button);
 	            } else {
-	              $form.find('[type="submit"]').first().trigger('click');
 	              displayLoadingState(this);
+	              $form.find('[type="submit"]').first().trigger('click');
 	            }
 	          },
 	          on: 'click'
@@ -20986,7 +20983,7 @@
 	        }
 	        formObject.append('<input name="' + key + '" value="' + value + '" type="' + type + '" ' + (htmlClass ? 'class="' + htmlClass + '"' : '') + ' />');
 	      }
-	      formObject.append('<input name="' + LS.data.csrfTokenName + '" value="' + LS.data.csrfToken + '" type="hidden" />');
+	      formObject.append($("<input type='hidden'>").attr("name", LS.data.csrfTokenName).attr("value", LS.data.csrfToken));
 	      modalObject.find('.modal-body').append(formObject);
 	      modalObject.find('.modal-body').append('<p>' + confirmText + '</p>');
 	      if (showTextArea !== '') {
@@ -21283,27 +21280,11 @@
 	}
 
 	/**
-	 * Welcome page card animations
+	 * Welcome page animations
 	 * NB: Bootstrap 5 replaced panels with cards
 	 */
 	function panelsAnimation() {
 	  setTimeout(() => {
-	    adminCoreLSConsole.log('Triggering card animation');
-	    /**
-	     * Card shown one by one
-	     */
-	    document.querySelectorAll(".card").forEach(function (e, i) {
-	      setTimeout(() => {
-	        e.animate({
-	          top: '0px',
-	          opacity: 1
-	        }, {
-	          duration: 200,
-	          fill: 'forwards'
-	        });
-	      }, i * 200);
-	    });
-
 	    /**
 	     * Rotate last survey/question
 	     */
@@ -21417,6 +21398,14 @@
 	        const importance = $(that).data('importance');
 	        const status = $(that).data('status');
 
+	        // Important 2 = nag only once (used e.g. for redirect).
+	        if (importance == 2 && status == 'new') {
+	          __showNotificationModal(that, url);
+	          __notificationIsRead(that);
+	          adminCoreLSConsole.log('stoploop');
+	          return false; // Stop loop
+	        }
+
 	        // Important notifications are shown as pop-up on load
 	        if (importance == 3 && status == 'new') {
 	          __showNotificationModal(that, url);
@@ -21460,9 +21449,11 @@
 	      $('#notification-inner-li').css('height', height - 60 + 'px');
 	    },
 	    deleteAllNotifications = (url, updateUrl) => {
+	      let data = document.querySelector('#notification-clear-all > a').getAttribute('data-params');
 	      return $.ajax({
 	        url: url,
-	        method: 'GET',
+	        data: data,
+	        method: 'POST',
 	        success: response => {
 	          adminCoreLSConsole.log('response', response);
 	        }
@@ -29053,7 +29044,6 @@
 	  };
 	  const onLoadRegister = () => {
 	      globalStartUpMethods.bootstrapping();
-	      onExistBinding();
 	      appendToLoad(function () {
 	        adminCoreLSConsole.log('TRIGGERWARNING', 'Document ready triggered');
 	      }, 'ready');
@@ -29114,7 +29104,6 @@
 	          }
 	        });
 	      });
-	      onExistBinding();
 	    },
 	    addToNamespace = function (object) {
 	      let name = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "globalAddition";

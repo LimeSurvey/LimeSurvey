@@ -1,0 +1,20 @@
+ {% extends "./subviews/printanswers/printanswers_question.twig" %}
+ {% block question_answer %}
+<div class="col-lg-8">
+    {% for file in question.fileinfo %}
+        <div class="row">
+                    <div class="col-lg-4 text-end">
+                        <b>{{file.title}}</b></a>
+                    </div>
+                    <div class="col-lg-8 text-start">
+                        {{file.comment == '' ? gT('No comment') : file.comment}}
+                    </div>
+                    <div class="col-lg-4 text-end">
+                        {{ gT("File type") }} "{{file.ext}}"
+                    </div>
+                    <div class="col-lg-8 text-start">
+                    </div>
+                </div>
+    {% endfor %}
+</div>
+{% endblock %}

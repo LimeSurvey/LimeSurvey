@@ -14,7 +14,7 @@ being able to control icons and their position, and most important the look of t
 
 - **icon**: *string*
 
-    name of the icon class. e.g.: fa fa-paint-brush
+    name of the icon class. e.g.: ri-eye-fill
 
     ***default***: empty string
 
@@ -38,7 +38,7 @@ being able to control icons and their position, and most important the look of t
 
     the icon displayed besides the divider
 
-    ***default***: 'fa fa-ellipsis-h' //@TODO switch to new icon when icons task is done
+    ***default***: 'ri-more-fill'
 
 - **link**: *string*
 
@@ -66,7 +66,7 @@ $this->widget('ext.ButtonWidget.ButtonWidget', [
         'name' => '',
         'id' => 'example1',
         'text' => 'This is the button text',
-        'icon' => 'fa fa-pencil',
+        'icon' => 'ri-pencil-fill',
         'iconPosition' => 'right'
         'link' => 'https://www.limesurvey.org',
         'htmlOptions' => [
@@ -80,9 +80,9 @@ $this->widget('ext.ButtonWidget.ButtonWidget', [
         'name' => 'dropdown-button-example',
         'id' => 'example2',
         'text' => 'Another dropdown button',
-        'icon' => 'fa fa-eye',
+        'icon' => 'ri-eye-fill',
         'isDropDown' => true,
-        'dropDownIcon' => 'fa fa-caret-down'
+        'dropDownIcon' => 'ri-arrow-down-s-fill'
         'dropDownContent' => '<ul class="dropdown-menu" aria-labelledby="example2">
             <li><a class="dropdown-item" href="#">Action</a></li>
             <li><a class="dropdown-item" href="#">Another action</a></li>

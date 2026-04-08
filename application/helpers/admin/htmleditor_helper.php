@@ -118,6 +118,8 @@ function sTranslateLangCode2CK($sLanguageCode)
 
     /**
      * @param CController $controller
+     *
+     * TODO: Allow to be called automatically (and only load once) from getEditor, or from a widget.
      */
 function PrepareEditorScript($load = false, $controller = null)
 {
@@ -134,8 +136,11 @@ function PrepareEditorScript($load = false, $controller = null)
     /**
      * Returns Editor.
      *
+     * PrepareEditorScript function must be called first.
+     * If getting a JS error about missing CKEditor files, please review if PrepareEditorScript was called.
+     *
      * @param string   $fieldtype Field Type
-     * @param string   $fieldname Field Name
+     * @param string   $fieldname Field Name, the id attribute of the textarea
      * @param int|null $surveyID  Survey ID
      * @param int|null $gID       Group ID
      * @param int|null $qID       Question ID
@@ -144,10 +149,6 @@ function PrepareEditorScript($load = false, $controller = null)
      */
 function getEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
-    if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
-        $surveyID = 'uniq';
-    }
-
     initKcfinder();
 
     $session = &Yii::app()->session;
@@ -190,12 +191,6 @@ function getEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = 
  */
 function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
-
-    if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
-        $surveyID = 'uniq';
-    }
-
-
     $htmlcode = '';
 
     if (
@@ -272,11 +267,6 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
  */
 function getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
-
-    if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
-        $surveyID = 'uniq';
-    }
-
     $htmlcode = "<a href='#' class='btn btn-sm btn-outline-secondary htmleditor--openmodal' data-target-field-id='$fieldname' data-modal-title='$fieldtext' data-bs-toggle='tooltip' data-bs-original-title='" . gT("Open editor") . "'>\n" .
                 "\t<i class='ri-pencil-fill' id='{$fieldname}_modal_icon'></i>\n" .
                 "</a>\n";
@@ -286,10 +276,6 @@ function getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
 
 function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
-    if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
-        $surveyID = 'uniq';
-    }
-
     $htmlcode = '';
     $toolbaroption = "";
     $sFileBrowserAvailable = '';

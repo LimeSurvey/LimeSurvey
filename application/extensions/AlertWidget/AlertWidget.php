@@ -15,7 +15,7 @@
 class AlertWidget extends CWidget
 {
     const DEFAULT_TIMEOUT = 3000;
-    const DEFAULT_ERROR_TIMEOUT = 6000;
+    const DEFAULT_LONGER_TIMEOUT = 6000;
 
     /** @var string the html element in which the alert should be displayed */
     public $tag = 'div';
@@ -79,6 +79,8 @@ class AlertWidget extends CWidget
                 'inErrorMode' => $inErrorMode,
                 'htmlOptions' => $this->htmlOptions,
                 'icon' => $this->icon,
+                'type' => $this->type,
+                'isFilled' => $this->isFilled
             ]);
         }
     }
@@ -197,8 +199,8 @@ class AlertWidget extends CWidget
      */
     private function setTimeout()
     {
-        if ($this->type == 'danger') {
-            $this->timeout = $this->timeout ?? self::DEFAULT_ERROR_TIMEOUT;
+        if ($this->type === 'danger' || $this->type === 'info') {
+            $this->timeout = $this->timeout ?? self::DEFAULT_LONGER_TIMEOUT;
         } else {
             $this->timeout = self::DEFAULT_TIMEOUT;
         }

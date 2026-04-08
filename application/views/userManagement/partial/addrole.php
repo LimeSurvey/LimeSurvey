@@ -15,6 +15,8 @@ Yii::app()->getController()->renderPartial(
 
 <div class="modal-body selector--edit-role-container">
     <div class="form">
+        <div class="row ls-space margin top-5 bottom-5 hidden" id="UserManagement--errors">
+        </div>
         <input type="hidden" name="userid" value="<?= $oUser->uid ?>"/>
         <?php
         $this->widget('ext.AlertWidget.AlertWidget', [

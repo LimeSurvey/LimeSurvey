@@ -7,8 +7,8 @@
  */
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h3><?php eT("Send email invitations"); ?></h3>
+<div class='side-body'>
+    <h1 class="h3"><?php eT("Send email invitations"); ?></h1>
     <div class="row">
         <div class="col-12 content-right">
             <?php echo PrepareEditorScript(true, $this); ?>
@@ -44,6 +44,7 @@
                                 <div>
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "bypassbademails",
+                                        'ariaLabel'    => gT("Bypass participants with failing email addresses"),
                                         'checkedOption' => '1',
                                         'selectOptions' => [
                                             '1' => gT('On'),
@@ -60,13 +61,14 @@
                                     gT("Bypass date control before sending email:"),
                                     'bypassdatecontrol', 
                                     array(
-                                        'title'=>gt("If some participants have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
+                                        'title'=>gT("If some participants have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
                                         'unescaped' => 'unescaped', 
                                         'class' => 'form-label ')
                                     ); ?>
                                 <div>
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => "bypassdatecontrol",
+                                        'ariaLabel'    => gT("Bypass date control before sending email"),
                                         'checkedOption' => '0',
                                         'selectOptions' => [
                                             '1' => gT('On'),
@@ -101,7 +103,7 @@
                                 $fieldsarray["{ADMINEMAIL}"] = $admin_email;
                                 $fieldsarray["{SURVEYNAME}"] = $oSurvey->languagesettings[$language]->surveyls_title;
                                 $fieldsarray["{SURVEYDESCRIPTION}"] = $oSurvey->languagesettings[$language]->surveyls_description;
-                                $fieldsarray["{EXPIRY}"] = $oSurvey->expires;
+                                $fieldsarray["{EXPIRY}"] = strval($oSurvey->expires);
 
                                 $subject = Replacefields($oSurvey->languagesettings[$language]->surveyls_email_invite_subj, $fieldsarray, false);
                                 $textarea = Replacefields($oSurvey->languagesettings[$language]->surveyls_email_invite, $fieldsarray, false);

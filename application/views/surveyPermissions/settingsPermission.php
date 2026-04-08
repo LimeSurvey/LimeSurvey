@@ -12,11 +12,11 @@
 
 ?>
 
-<div id='edit-permission' class='side-body  <?= getSideBodyClass(false) ?> "'>
+<div id='edit-permission' class='side-body'>
     <h3>
         <?php
         if ($isUserGroup) {
-            echo sprintf(gT("Edit survey permissions for usergroup %s"), "<em>" . \CHtml::encode($name) . "</em>");
+            echo sprintf(gT("Edit survey permissions for user group %s"), "<em>" . \CHtml::encode($name) . "</em>");
         } else {
             echo sprintf(gT("Edit survey permissions for user %s"), "<em>" . \CHtml::encode($name) . "</em>");
         }

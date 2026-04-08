@@ -1,5 +1,9 @@
 
 <?php
+/**
+ * @var $oSurveyTheme TemplateConfiguration
+ */
+
 $massiveAction = App()->getController()->renderPartial(
     '/themeOptions/_selector',
     [
@@ -20,14 +24,24 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
             'class' => 'application.extensions.admin.grid.CLSYiiPager',
         ],
         'massiveActionTemplate' => $massiveAction,
-        'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(gT('%s rows per page'),
+        'summaryText' => html_entity_decode(
+            gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
+            sprintf(
+                gT('%s rows per page'),
                 CHtml::dropDownList(
                     'pageSize',
                     $pageSize,
                     Yii::app()->params['pageSizeOptions'],
-                    array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
-                )
-            ),
+                    array(
+                        'class' => 'changePageSize form-select',
+                        'style' => 'display: inline; width: auto',
+                        'aria-labelledby' => 'rows-per-page-label',
+                    )
+                ) . '<span id="rows-per-page-label">'
+            ) .
+            '</span>'
+        ),
+
         'columns' => [
             [
                 'id' => 'id',
@@ -46,8 +60,9 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
             [
                 'header' => gT('Name'),
                 'name' => 'template_name',
-                'value' => '$data->template_name',
-                'htmlOptions' => ['class' => 'col-lg-2 text-center'],
+                'value' => '"<strong>".CHtml::encode($data->template->title)."</strong>" ."<br>" .CHtml::encode($data->template_name)',
+                'htmlOptions' => ['class' => 'col-lg-2'],
+                'type' => 'raw',
             ],
 
             [
@@ -86,7 +101,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
         ],
         'ajaxUpdate' => true,
         'ajaxType' => 'POST',
-        'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();bindListItemclick();}',
+        'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();bindListItemclick();LS.actionDropdown.create();}',
     ]
 );
 ?>

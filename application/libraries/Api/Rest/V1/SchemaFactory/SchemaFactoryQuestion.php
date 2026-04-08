@@ -3,10 +3,14 @@
 namespace LimeSurvey\Api\Rest\V1\SchemaFactory;
 
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
+use GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract;
 
 class SchemaFactoryQuestion
 {
-    public function make(): Schema
+    /**
+     * @param \GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract $properties
+     */
+    public function make(SchemaContract ...$properties): Schema
     {
         return Schema::create()
             ->title('Question')
@@ -35,7 +39,8 @@ class SchemaFactoryQuestion
                 Schema::create('l10ns')
                     ->additionalProperties(
                         (new SchemaFactoryQuestionL10ns())->make()
-                    )
+                    ),
+                ...$properties
             );
     }
 }

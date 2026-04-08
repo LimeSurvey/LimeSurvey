@@ -1,4 +1,4 @@
-/*!
+ /*!
  * Style for public survey
  * This file is part of LimeSurvey API for template
  *
@@ -35,29 +35,6 @@
   overflow:hidden;
   clip: rect(0, 0, 0, 0);
 }
-
-
-/** On smaller screens - handle input on demand label alignment **/
-@media (max-width: 768px) {
-  .form-horizontal .control-label.col-12 {
-    text-align: left;
-  }
-
-  .dir-rtl .form-horizontal .control-label.col-12 {
-    text-align: right;
-  }
-}
-/** On larger screens - handle input on demand label alignment **/
-@media (min-width: 769px) {
-  .form-horizontal .control-label.col-12 {
-    text-align: right;
-  }
-
-  .dir-rtl .form-horizontal .control-label.col-12 {
-    text-align: left;
-  }
-}
-
 
 /** ls-label-xs-visibility : set visually-hidden by default : template can reinit it with initial */
 .ls-label-xs-visibility{
@@ -112,7 +89,7 @@
     white-space: nowrap;
     vertical-align: middle;
     display: table-cell;
-    padding: 0.6rem 1.2rem;
+    padding: 0.5rem 1.2rem;
     line-height: 1;
   }
   .ls-input-sized .ls-input-group-extra{width:initial}
@@ -176,4 +153,29 @@ box-shadow: 0 0 0 #fff;
 .form-inline .radio-item,.form-inline .checkbox-item {
     display: inline-block;
     vertical-align: middle;
+}
+
+/* Max width for some answer part */
+@media (min-width: 768px) {
+  /* See https://caniuse.com/?search=attr
+   * attr() is supported for effectively all browsers for the content property
+   */
+  [data-column-count]{column-count:attr(data-column-count)}
+  /* Add until 16 */
+  .ls-column-count-1{column-count:1}
+  .ls-column-count-2{column-count:2}
+  .ls-column-count-3{column-count:3}
+  .ls-column-count-4{column-count:4}
+  .ls-column-count-5{column-count:5}
+  .ls-column-count-6{column-count:6}
+  .ls-column-count-7{column-count:7}
+  .ls-column-count-8{column-count:8}
+  .ls-column-count-9{column-count:9}
+  .ls-column-count-10{column-count:10}
+  .ls-column-count-11{column-count:11}
+  .ls-column-count-12{column-count:12}
+  .ls-column-count-13{column-count:13}
+  .ls-column-count-14{column-count:14}
+  .ls-column-count-15{column-count:15}
+  .ls-column-count-16{column-count:16}
 }

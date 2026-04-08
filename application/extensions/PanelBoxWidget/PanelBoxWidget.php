@@ -96,22 +96,20 @@ class PanelBoxWidget extends CWidget
         $boxes = self::getBoxes();
         $boxcount = 0;
         $bIsRowOpened = false;
-                $this->render('row_header', array(
-                    'orientation' => $this->getOrientationClass(),
-                    'containerclass' => ($this->boxesincontainer ? 'container' : '')
-                ));
+        $this->render('row_header', [
+            'orientation'    => $this->getOrientationClass(),
+            'containerclass' => ($this->boxesincontainer ? 'container' : '')
+        ]);
         foreach ($boxes as $box) {
-
-             $this->controller->widget('ext.PanelBoxWidget.PanelBoxWidget', array(
-                 'display' => 'singlebox',
-                 'fromDb' => true,
-                 'dbPosition' => $box->position,
-                 'offset' => '',
-                 'boxesbyrow' => $this->boxesbyrow
-             ));
-
+            $this->controller->widget('ext.PanelBoxWidget.PanelBoxWidget', [
+                'display'    => 'singlebox',
+                'fromDb'     => true,
+                'dbPosition' => $box->position,
+                'offset'     => '',
+                'boxesbyrow' => $this->boxesbyrow
+            ]);
         }
-            $this->render('row_footer');
+        $this->render('row_footer');
     }
 
     protected function canSeeBox($box = '')
@@ -119,14 +117,14 @@ class PanelBoxWidget extends CWidget
         $box = ($box == '') ? $this : $box;
         if ($box->usergroup == '-1') {
             return true;
-        } // If the usergroup is not set, or set to -2, only admin can see the box
+        } // If the user group is not set, or set to -2, only admin can see the box
         elseif (empty($box->usergroup) || $box->usergroup == '-2') {
             if (Permission::model()->hasGlobalPermission('superadmin', 'read') ? 1 : 0) {
                 return true;
             } else {
                 return false;
             }
-        } // If usergroup is set to -3, nobody can see the box
+        } // If user group is set to -3, nobody can see the box
         elseif ($box->usergroup == '-3') {
             return false;
         } // If usegroup is set and exist, if the user belong to it, he can see the box

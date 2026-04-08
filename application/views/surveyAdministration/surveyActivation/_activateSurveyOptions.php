@@ -3,15 +3,14 @@
 /** @var  $oSurvey Survey */
 /** @var bool $closeAccessMode */
 
-$optionsOnOff = ['Y' => gt('On'), 'N' => gt('Off')];
+$optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
 ?>
 <div class="row">
     <div class='col-md-12'>
         <h2><?php eT("Please keep in mind:"); ?></h2>
         <h2><?php eT("Once a survey has been activated you can no longer add or delete questions, question groups or subquestions.") ?> </h2>
         <p>
-            <?php eT("Editing questions, question groups or subquestions is still possible. The following settings cannot
-    be changed once a survey has been activated", 'unescaped'); ?>
+            <?php eT("Editing questions, question groups or subquestions is still possible. The following settings cannot be changed once a survey has been activated.", 'unescaped'); ?>
         </p>
     </div>
 </div>
@@ -21,8 +20,7 @@ $optionsOnOff = ['Y' => gt('On'), 'N' => gt('Off')];
         <div class='col-md-12'>
             <?php
             $this->widget('ext.AlertWidget.AlertWidget', [
-                'text' => gT('Note: This survey has a past expiration date configured and is currently not available to participants. Please remember to update/remove the
-                expiration date in the survey settings after activation.'),
+                'text' => gT('Note: This survey has a past expiration date configured and is currently not available to participants. Please remember to update/remove the expiration date in the survey settings after activation.'),
                 'type' => 'info',
                 'htmlOptions' => ['class' => 'controls']
             ]);
@@ -50,6 +48,7 @@ $optionsOnOff = ['Y' => gt('On'), 'N' => gt('Off')];
                 <?php
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'anonymized',
+                    'id' => 'activate_anonymized',
                     'checkedOption' => $aSurveysettings['anonymized'],
                     'selectOptions' => $optionsOnOff
                 ]);
@@ -157,25 +156,25 @@ $optionsOnOff = ['Y' => gt('On'), 'N' => gt('Off')];
     </div>
 </div>
 
-<?php
-if (!$closeAccessMode) {
-    ?>
     <div class="row sub_footer">
         <div class="col-12 mt-5 mb-3">
             <div class="sub_footer_border"></div>
         </div>
-        <h3><?php eT("Do you want your survey to be public for everyone (open-access mode) or invite only (closed-access mode)"); ?></h3>
-        <div class='col-md-10'>
-            <div class="mb-5">
+        <h3><?php eT("Do you want your survey to be public for everyone (open-access mode) or invite only (closed-access mode)?"); ?></h3>
+        <div class='col-md-10' style="width: 100%;">
+            <div class="mb-5" style="width: 100%;">
                 <?php
 
                 //only allow here to switch to close-access-mode (and to open-access-mode)
                 //close-access-mode means that 'N' should be selected
-                $optionsOnOff = ['Y' => gt('Open-access mode'), 'N' => gt('Closed-access mode')];
+                $optionsOnOff = ['Y' => gT('Open-access mode'), 'N' => gT('Closed-access mode')];
+                $icons = ['Y' => 'ri-global-line', 'N' => 'ri-lock-2-line'];
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'openAccessMode',
                     'checkedOption' => $closeAccessMode ? 'N' : 'Y',
-                    'selectOptions' => $optionsOnOff
+                    'selectOptions' => $optionsOnOff,
+                    'htmlOptions' => ['icon' => $icons,
+                    'style' => 'width: 100%']
                 ]);
 
                 ?>
@@ -183,9 +182,6 @@ if (!$closeAccessMode) {
         </div>
     </div>
     <?php
-} else {  //transmit input value for "openAccessMode", it's needed to take further steps in action ?>
-    <input type="hidden" name="openAccessMode" value="N">
-<?php }
 ?>
 
 <input type="hidden" name="surveyId" value="<?php echo $aSurveysettings['sid']; ?>">

@@ -46,7 +46,7 @@
                         data-bs-target='#confirmation-modal'
                         data-bs-toggle='modal'
                         data-btntext="Delete"
-                        data-title="<?php echo gt('Delete user survey permissions') ?>"
+                        data-title="<?php echo gT('Delete user survey permissions') ?>"
                         data-btnclass='btn-danger'
                         data-message="<?php echo $deleteConfirmMessage; ?>"
                         data-post-url="<?php echo $deleteUrl; ?>"

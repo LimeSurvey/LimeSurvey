@@ -21,10 +21,11 @@
         "php": "^7.3|^8.0"
     },
     "require-dev": {
-        "nesbot/carbon": "^2.61",
+        "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+        "nesbot/carbon": "^2.61|^3.0",
         "pestphp/pest": "^1.21.3",
         "phpstan/phpstan": "^1.8.2",
-        "symfony/var-dumper": "^5.4.11"
+        "symfony/var-dumper": "^5.4.11|^6.2.0|^7.0.0"
     },
     "autoload": {
         "psr-4": {

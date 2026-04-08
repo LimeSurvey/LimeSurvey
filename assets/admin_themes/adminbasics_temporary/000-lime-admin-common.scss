@@ -17,12 +17,6 @@
     text-decoration: underline;
 }
 
-.list-group {
-    border-radius: 0px !important;
-}
-.list-group-item {
-    border: none !important;
-}
 .hidden {
     display: none !important;
 }
@@ -77,32 +71,6 @@
     padding-left: 33px !important;
 }
 
-.list-group-item.disabled {
-    color: #777;
-    cursor: not-allowed;
-    background-color: $white !important;
-    pointer-events: auto !important;
-}
-
-#ls-loading {
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    position: fixed;
-    display: block;
-    opacity: 0.7;
-    background-color: #fff;
-    z-index: 3501;
-    text-align: center;
-    display: none;
-}
-
-/* The font-awesome spinner */
-#ls-loading-spinner {
-    position: absolute;
-    top: 30%;
-}
 
 .bg-white {
     background: #fff;
@@ -300,10 +268,8 @@
     border-left-width: 1px;
 }
 
-.side-body,
-.full-page-wrapper {
+.side-body {
     position: relative;
-    /*margin-bottom: 65px;*/
 }
 
 .side-body h3,
@@ -380,11 +346,6 @@ html {
 
 .alert-security-update {
     margin: 0;
-}
-
-#update-container {
-    margin-top: 10px;
-    z-index: 999;
 }
 
 #update-container .alert {
@@ -510,23 +471,6 @@ html {
     cursor: pointer;
     cursor: hand;
     border-radius: 0;
-}
-
-.welcome {
-    #lime-logo {
-        animation: fadein 1s;
-    }
-
-    .recent-activity {
-        margin-top: 1.72rem;
-        font-size: 0.95rem;
-        padding-right: 3rem;
-        opacity: 0.7;
-    }
-}
-
-#welcomeModal {
-    z-index: 20000;
 }
 
 @media screen and (min-width: 1280px) and (max-width: 1366px) {
@@ -1669,7 +1613,7 @@ $color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $
 }
 
 
-/** Search criteria pop-up for survey participants table */
+/** Search criteria pop-up for survey participant list */
 #search {
     display: none;
     overflow-y: auto;
@@ -1711,7 +1655,7 @@ iframe#dialog {
 /** Arrow between mapped attributes in CPDB */
 .tokenatt-arrow {
     position: absolute;
-    right: -0.5em;
+    right: -1.5em;
 }
 
 /** Arrow between mapped attributes in CPDB when doing CSV import */
@@ -1847,25 +1791,6 @@ a.explorer-group:focus {
 
 .statisticstable {
     word-wrap: break-word;
-}
-
-.summary-container,
-.summary,
-#massive-action-container,
-#surveyListActions,
-.listActions {
-    margin : 0 0 20px;
-}
-
-.summary-container {
-    text-align: right;
-}
-
-#massive-action-container,
-#surveyListActions,
-.listActions {
-    padding-left: 0px;
-    text-align: left;
 }
 
 .push-grid-pager {
@@ -3452,18 +3377,6 @@ html[dir="rtl"] th {
     text-align: initial;
 }
 
-.list-group-item.disabled {
-    color: #777;
-    cursor: not-allowed;
-    background-color: #eee;
-}
-
-.list-group-item.disabled {
-    color: #777;
-    cursor: not-allowed;
-    background-color: #eee;
-}
-
 #survey-nav {
     .nav-link {
         border: none;
@@ -3485,5 +3398,80 @@ html[dir="rtl"] th {
 .subquestions-table.hide-relevance {
     #rel-eq-th, td.relevance-equation {
         display: none;
+    }
+}
+
+/** Styles for Data Entry screen */
+#responsedetail {
+    .checkbox {
+        input[type="checkbox"] {
+            margin-left: 0;
+        }
+        label {
+            padding-left: 0px;
+        }
+    }
+
+    .answer-item {
+        display:flex;
+        gap:1em;
+        margin-bottom: 1em;
+    }
+
+    .checkbox.unseen-checkbox {
+        margin-top: 0;
+        min-width: 6em;
+    }
+
+    .checkbox:not(.unseen-checkbox) {
+        margin-top: 0;
+    }
+
+    tr.multiple-opt-comments {
+        input[type="text"] {
+            width: 100%;
+        }
+        .checkbox {
+            margin-bottom: 0;
+        }
+        .answer-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5em;
+        }
+    }
+
+    tr.array-5-pt,
+    tr.array-10-pt,
+    tr.array-yes-uncertain-no,
+    tr.array-increase-same-decrease,
+    tr.array-flexible-row,
+    tr.array-flexible-column,
+    tr.array-flexible-dual-scale {
+        .answer-wrapper {
+            display: flex;
+            gap: 1em;
+        }
+        .answer-wrapper > span {
+            flex: 1;
+        }
+        .answer-wrapper > span:first-of-type {
+            text-align: end;
+        }
+    }
+
+    tr.array-multi-flexi,
+    tr.array-multi-flexi-text {
+        .answer-wrapper {
+            display: flex;
+            gap: 1em;
+        }
+        .answer-wrapper > span {
+            flex: 1;
+        }
+    }
+
+    .answer-wrapper {
+        flex-grow: 1;
     }
 }

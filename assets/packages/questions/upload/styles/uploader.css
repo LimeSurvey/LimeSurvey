@@ -92,6 +92,10 @@ img.uploaded {
     text-align: left;
 }
 
+.dir-rtl .uploadedfiles tbody tr td {
+    text-align: right;
+}
+
 .uploadedfiles thead tr th {
     font-weight: bold;
 }

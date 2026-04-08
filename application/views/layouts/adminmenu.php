@@ -5,9 +5,12 @@
  * @var $sitename
  * @var $activesurveyscount
  * @var $dataForConfigMenu
+ * @var array $extraMenus   //menu items fetched from plugins
  */
 ?>
-
+<?php /* Register needed script used at different point even if not needed in loaded page see #20391 */
+	App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
+?>
 <!-- admin menu bar -->
 <nav class="navbar navbar-expand-md">
     <div class="container-fluid">
@@ -15,7 +18,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
-            <img src="/assets/images/logo-icon-white.png" height="34" class="d-inline-block align-bottom" alt="">
+            <img src="<?= Yii::app()->baseUrl ?>/assets/images/logo-icon-white.png" height="34" class="d-inline-block align-bottom" alt="">
             <?= $sitename ?>
         </a>
         <!-- Only on xs screens -->
@@ -44,7 +47,7 @@
             </ul>
         </div>
 
-        <div class="collapse navbar-collapse justify-content-center">
+        <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <!-- Maintenance mode -->
                 <?php $sMaintenanceMode = getGlobalSetting('maintenancemode');
@@ -60,16 +63,11 @@
                 <!-- Prepended extra menus from plugins -->
                 <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => true, 'prependedMenu' => true]); ?>
 
-                <!-- create survey -->
-                <li class="nav-item">
-                    <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" class="nav-link">
-                        <button type="button" class="btn btn-info btn-create" data-bs-toggle="tooltip"
-                                data-bs-placement="bottom" title="<?= gT('Create survey') ?>">
-                            <i class="ri-add-line"></i>
-                        </button>
-                    </a>
-                </li>
-                <!-- Surveys menus -->
+                <!-- Render the modal for importing a survey -->
+                <?php App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'importSurveyFileUpload.js', LSYii_ClientScript::POS_BEGIN); ?>
+                <?php $this->renderPartial("/surveyAdministration/partial/_modalImportSurvey", []);?>
+
+                <?php App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'copySurvey.js', LSYii_ClientScript::POS_BEGIN); ?>
 
                 <li
                     class="nav-item d-flex"><a
@@ -111,7 +109,7 @@
                         <?= Yii::app()->session['user']; ?>
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu dropdown-menu-end" role="menu">
-                        <li>
+                        <li id="admin-menu-item-account">
                             <a class="dropdown-item" href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>">
                                 <?php eT("Account"); ?>
                             </a>

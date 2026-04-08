@@ -8,14 +8,11 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\AllOf;
 class SchemaFactorySurveyDetail
 {
     /**
-     *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function make(): Schema
     {
-        $questionAttributeSchema = (new SchemaFactoryQuestionAttribute())->make();
-        $questionAttributesSchema = Schema::object('attributes')->additionalProperties(
-            $questionAttributeSchema
-        );
+        $questionAttributeSchemas = (new SchemaFactoryQuestionAttributes())->make();
 
         $answerSchema = (new SchemaFactoryAnswer())->make();
         $answersSchema = Schema::array('answers')->items(
@@ -24,48 +21,39 @@ class SchemaFactorySurveyDetail
             )
         );
 
-        $questionSchema = (new SchemaFactoryQuestion())->make();
-        $questionSchema = $questionSchema->properties(
-            ...array_merge(
-                $questionSchema->properties ?? [],
-                [$questionAttributesSchema, $answersSchema]
+        $questionSchema = (new SchemaFactoryQuestion())->make(
+            $answersSchema,
+            Schema::object('attributes')->properties(
+                $questionAttributeSchemas
             )
         );
         $questionsSchema = Schema::array('questions')->items(
-            AllOf::create()->schemas(
-                $questionSchema
-            )
+            $questionSchema
         );
 
-        $questionGroupSchema = (new SchemaFactoryQuestionGroup())->make();
-        $questionGroupSchema = $questionGroupSchema->properties(
-            ...array_merge(
-                $questionGroupSchema->properties ?? [],
-                [$questionsSchema]
-            )
+        $questionGroupSchema = (new SchemaFactoryQuestionGroup())->make(
+            $questionsSchema
         );
 
-        $props = [
-            AllOf::create()->schemas(
-                (new SchemaFactorySurvey())->make(),
+        $surveySchema = AllOf::create('survey')->schemas(
+            (new SchemaFactorySurvey())->make(
                 Schema::array('languages')->items(
                     AllOf::create()->schemas(
                         Schema::string()
                     )
                 ),
                 Schema::array('questionGroups')->items(
-                    AllOf::create()->schemas(
-                        $questionGroupSchema
-                    )
+                    $questionGroupSchema
                 ),
-                Schema::string('created_at')->format(Schema::FORMAT_DATE_TIME)
+                Schema::string('created_at')
+                    ->format(Schema::FORMAT_DATE_TIME)
             )
-        ];
+        );
 
         return Schema::create()
             ->title('Survey Detail')
             ->description('Survey Detail')
             ->type(Schema::TYPE_OBJECT)
-            ->properties(...$props);
+            ->properties($surveySchema);
     }
 }

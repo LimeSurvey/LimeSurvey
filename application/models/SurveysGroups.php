@@ -66,9 +66,11 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
             array('title', 'length', 'max' => 100),
             array('alwaysavailable', 'boolean'),
             array('description, created, modified', 'safe'),
+            array('parent_id', 'in', 'range' => array_keys(self::getSurveyGroupsList()), 'allowEmpty' => true, 'message' => gT("You are not allowed to set this group as parent")),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('gsid, name, title, description, owner_id, parent_id, created, modified, created_by', 'safe', 'on' => 'search'),
+            array('name', 'unsafe' , 'on' => ['update']),
         );
     }
 
@@ -122,9 +124,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                 array(
                     'header' => gT('Survey group ID'),
                     'name' => 'gsid',
-                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->gsid, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->gsid',
-                    'type' => 'raw',
-                    'headerHtmlOptions' => array('class' => ''),
+                    'value' => '$data->gsid',
                     'htmlOptions' => ['class' => 'has-link'],
                 ),
 
@@ -132,61 +132,49 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                 array(
                     'header' => gT('Code'),
                     'name' => 'name',
-                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->name, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->name',
-                    'type' => 'raw',
+                    'value' => '$data->name',
                     'htmlOptions' => ['class' => 'has-link'],
                 ),
 
                 array(
                     'header' => gT('Title'),
                     'name' => 'title',
-                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->title, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->title',
-                    'type'              => 'raw',
+                    'value' => '$data->title',
                     'htmlOptions' => ['class' => 'has-link'],
                 ),
 
                 array(
                     'header' => gT('Description'),
                     'name' => 'description',
-                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->description, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->description',
-                    'type'              => 'raw',
-                    'headerHtmlOptions' => array('class' => ''),
+                    'value' => '$data->description',
                     'htmlOptions' => ['class' => 'has-link'],
                 ),
 
                 array(
                     'header' => gT('Parent group'),
                     'name' => 'parent',
-                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->parentTitle, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->parentTitle',
-                    'type'              => 'raw',
-                    'headerHtmlOptions' => array('class' => ''),
+                    'value' => '$data->parentTitle',
                     'htmlOptions' => ['class' => 'has-link'],
                 ),
 
                 array(
                     'header' => gT('Available'),
                     'name' => 'alwaysavailable',
-                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->alwaysavailable, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->alwaysavailable',
-                    'type'              => 'raw',
-                    'headerHtmlOptions' => array('class' => ''),
+                    'value' => '$data->alwaysavailable',
                     'htmlOptions' => ['class' => 'has-link'],
                 ),
 
                 array(
                     'header' => gT('Owner'),
                     'name' => 'owner',
-                    'value' => '$data->hasViewSurveyGroupRight && !empty($data->owner) ? CHtml::link($data->owner->users_name, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : ""',
-                    'type'              => 'raw',
-                    'headerHtmlOptions' => array('class' => ''),
+                    'value' => '$data->owner->users_name',
                     'htmlOptions' => ['class' => 'has-link'],
                 ),
 
                 array(
                     'header' => gT('Order'),
                     'name' => 'sortorder',
-                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->sortorder, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->sortorder',
-                    'type'              => 'raw',
-                    'headerHtmlOptions' => array('class' => ''),
+                    'value' => '$data->sortorder',
                     'htmlOptions' => ['class' => 'has-link'],
                 ),
                 array(
@@ -226,7 +214,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
 
         $criteria->select = array('DISTINCT t.*');
 
@@ -432,19 +420,20 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     {
         $criteriaPerm = new CDbCriteria();
         if (!Permission::model()->hasGlobalPermission("surveys", 'read') || !Permission::model()->hasGlobalPermission("surveysgroups", 'read')) {
+            $userid = App()->getCurrentUserId();
             /* owner of surveygroup */
-            $criteriaPerm->compare('t.owner_id', Yii::app()->user->id, false);
+            $criteriaPerm->compare('t.owner_id', $userid, false);
             /* Simple permission on SurveysGroup inside a group */
             $criteriaPerm->mergeWith(array(
-                'join' => "LEFT JOIN {{permissions}} AS permissions ON (permissions.entity_id = t.gsid AND permissions.permission='group' AND permissions.entity='surveysgroups' AND permissions.uid='" . Yii::app()->user->id . "') ",
+                'join' => "LEFT JOIN {{permissions}} AS permissions ON (permissions.entity_id = t.gsid AND permissions.permission='group' AND permissions.entity='surveysgroups' AND permissions.uid='" . $userid . "') ",
             ));
             $criteriaPerm->compare('permissions.read_p', '1', false, 'OR');
             /* Permission on Survey inside a group */
             $criteriaPerm->mergeWith(array(
                 'join' => "LEFT JOIN {{surveys}} AS surveys ON (surveys.gsid = t.gsid)
-                        LEFT JOIN {{permissions}} AS surveypermissions ON (surveypermissions.entity_id = surveys.sid AND surveypermissions.permission='survey' AND surveypermissions.entity='survey' AND surveypermissions.uid='" . Yii::app()->user->id . "') ",
+                        LEFT JOIN {{permissions}} AS surveypermissions ON (surveypermissions.entity_id = surveys.sid AND surveypermissions.permission='survey' AND surveypermissions.entity='survey' AND surveypermissions.uid='" . $userid . "') ",
             ));
-            $criteriaPerm->compare('surveys.owner_id', Yii::app()->user->id, false, 'OR');
+            $criteriaPerm->compare('surveys.owner_id', $userid, false, 'OR');
             $criteriaPerm->compare('surveypermissions.read_p', '1', false, 'OR');
             /* default survey group is always avaliable */
             $criteriaPerm->compare('t.gsid', '1', false, 'OR');

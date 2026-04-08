@@ -7,6 +7,8 @@ Yii::app()->getController()->renderPartial(
 
 <?= TbHtml::formTb(null, App()->createUrl('userManagement/saveUserPermissions'), 'post', ["id" => "UserManagement--modalform"]) ?>
 <div class="modal-body overflow-scroll selector--edit-permissions-container">
+    <div class="row ls-space margin top-5 bottom-5 hidden" id="UserManagement--errors">
+    </div>
     <input type='hidden' name='userid' value='<?php echo (isset($oUser) ? $oUser->uid : ''); ?>' />
     <table id='UserManagement--userpermissions-table' class='activecell table table-striped'>
         <thead>
@@ -28,8 +30,12 @@ Yii::app()->getController()->renderPartial(
             <tr>
                 <!-- Icon -->
                 <td>
-                    <i class="<?php echo $aCRUDPermissions['img']; ?> text-success"></i>
-                    <?php echo $aCRUDPermissions['description']; ?>
+                    <div><i class="<?php echo $aCRUDPermissions['img']; ?> text-success"></i>
+                    <?php echo $aCRUDPermissions['description']; ?></div>
+                    <?php if (!empty($aCRUDPermissions['warning'])) : ?>
+                        <div class="text-danger"><i class="ri-error-warning-fill" aria-hidden="true"></i>
+                        <?php echo $aCRUDPermissions['warning']; ?></div>
+                    <?php endif; ?>
                 </td>
 
                 <!-- Warning super admin -->

@@ -9,16 +9,16 @@ class Update_148 extends DatabaseUpdateBase
 {
     public function up()
     {
-        addColumn('{{users}}', 'participant_panel', "integer NOT NULL default 0");
+        addColumn('{{users}}', 'participant_panel', "integer NOT NULL DEFAULT 0");
 
         $this->db->createCommand()->createTable(
             '{{participants}}',
             array(
                 'participant_id' => 'string(50) NOT NULL',
-                'firstname' => 'string(40) default NULL',
-                'lastname' => 'string(40) default NULL',
-                'email' => 'string(80) default NULL',
-                'language' => 'string(40) default NULL',
+                'firstname' => 'string(40) DEFAULT NULL',
+                'lastname' => 'string(40) DEFAULT NULL',
+                'email' => 'string(80) DEFAULT NULL',
+                'language' => 'string(40) DEFAULT NULL',
                 'blacklisted' => 'string(1) NOT NULL',
                 'owner_uid' => "integer NOT NULL"
             )
@@ -88,6 +88,43 @@ class Update_148 extends DatabaseUpdateBase
         // Add language field to question_attributes table
         addColumn('{{question_attributes}}', 'language', "string(20)");
         upgradeQuestionAttributes148();
-        fixSubquestions();
+        $this->fixSubquestions148();
+    }
+
+    private function fixSubquestions148()
+    {
+        $surveyidresult = $this->db->createCommand()
+        ->select('sq.qid, q.gid , q.type ')
+        ->from('{{questions}} sq')
+        ->join('{{questions}} q', 'sq.parent_qid=q.qid')
+        ->where('sq.parent_qid>0 AND (sq.gid!=q.gid or sq.type!=q.type)')
+        ->limit(10000)
+        ->query();
+        $aRecords = $surveyidresult->readAll();
+        $aQuestionTypes = \QuestionType::modelsAttributes();
+        while (count($aRecords) > 0) {
+            foreach ($aRecords as $sv) {
+                $hasSubquestions = $aQuestionTypes[$sv['type']]['subquestions'];
+                if ($hasSubquestions) {
+                    // If the question type allows subquestions, set the type in each subquestion
+                    $this->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->execute();
+                } else {
+                    // If the question type doesn't allow subquestions, delete each subquestion
+                    // Model is used because more tables are involved.
+                    $oSubquestion = \Question::model()->find("qid=:qid", array("qid" => $sv['qid']));
+                    if (!empty($oSubquestion)) {
+                        $oSubquestion->delete();
+                    }
+                }
+            }
+            $surveyidresult = $this->db->createCommand()
+            ->select('sq.qid, q.gid , q.type ')
+            ->from('{{questions}} sq')
+            ->join('{{questions}} q', 'sq.parent_qid=q.qid')
+            ->where('sq.parent_qid>0 AND (sq.gid!=q.gid or sq.type!=q.type)')
+            ->limit(10000)
+            ->query();
+            $aRecords = $surveyidresult->readAll();
+        }
     }
 }

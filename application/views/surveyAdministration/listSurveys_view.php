@@ -35,6 +35,7 @@ echo viewHelper::getViewTestTag('listSurveys');
                         'dataProvider'     => $groupModel->search(),
                         'lsAfterAjaxUpdate'          => [],
                         'columns'          => $groupModel->columns,
+                        'rowLink' => 'App()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))',
                         'summaryText'      => gT('Displaying {start}-{end} of {count} result(s).') . ' '
                             . sprintf(
                                 gT('%s rows per page'),

@@ -3,23 +3,22 @@
 /**
  * @inheritdoc
  */
-class CustomFormatter extends CFormatter {
-
+class CustomFormatter extends CFormatter
+{
     /* @var integer longTextMaxLength */
     public $longTextMaxLength = 125;
 
     /**
      * Build the expanded list of languages
      * @param string
-     * @return $string
+     * @return string
      */
     public function formatLanguageList($value)
     {
-
         $langArr = explode(' ', trim($value));
         $expandedArr = array();
 
-        foreach($langArr as $lang) {
+        foreach ($langArr as $lang) {
             array_push($expandedArr, getLanguageNameFromCode($lang, false));
         }
 
@@ -29,9 +28,9 @@ class CustomFormatter extends CFormatter {
     }
 
     /**
-     * return a string limited by $this->maxLength
+     * Returns a string limited by $this->maxLength
      * @param string|null $value
-     * @return $string
+     * @return string
      */
     public function formatLongText($value)
     {

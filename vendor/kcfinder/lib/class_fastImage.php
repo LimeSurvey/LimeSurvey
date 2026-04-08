@@ -118,7 +118,7 @@ class fastImage
   {
     $chars = $this->getChars(25);
 
-    return unpack("N*", substr($chars, 16, 8));
+    return unpack("N*", substr((string) $chars, 16, 8));
   }
 
 
@@ -126,14 +126,14 @@ class fastImage
   {
     $chars = $this->getChars(11);
 
-    return unpack("S*", substr($chars, 6, 4));
+    return unpack("S*", substr((string) $chars, 6, 4));
   }
 
 
   private function parseSizeForBMP()
   {
     $chars = $this->getChars(29);
-    $chars = substr($chars, 14, 14);
+    $chars = substr((string) $chars, 14, 14);
     $type = unpack('C', $chars);
 
     return (reset($type) == 40) ? unpack('L*', substr($chars, 4)) : unpack('L*', substr($chars, 4, 8));
@@ -193,7 +193,7 @@ class fastImage
       case 'readsize':
         $c = $this->getChars(7);
 
-        return array($this->readInt(substr($c, 5, 2)), $this->readInt(substr($c, 3, 2)));
+        return array($this->readInt(substr((string) $c, 5, 2)), $this->readInt(substr((string) $c, 3, 2)));
       }
     }
   }
@@ -204,11 +204,11 @@ class fastImage
     $response = null;
 
     // do we need more data?
-    if ($this->strpos + $n -1 >= strlen($this->str))
+    if ($this->strpos + $n -1 >= strlen((string) $this->str))
     {
       $end = ($this->strpos + $n);
 
-      while (strlen($this->str) < $end && $response !== false)
+      while (strlen((string) $this->str) < $end && $response !== false)
       {
         // read more from the file handle
         $need = $end - ftell($this->handle);
@@ -224,7 +224,7 @@ class fastImage
       }
     }
 
-    $result = substr($this->str, $this->strpos, $n);
+    $result = substr((string) $this->str, $this->strpos, $n);
     $this->strpos += $n;
 
     return $result;

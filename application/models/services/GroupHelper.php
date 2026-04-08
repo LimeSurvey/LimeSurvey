@@ -8,6 +8,7 @@ class GroupHelper
      * Reorder groups and questions
      *
      * REFACTORED in SurveyAdministration
+     * @TODO Reordering should be handled by existing function in new QuestionGroupService class
      *
      * @param int $iSurveyID Given Survey ID
      * @param array $orgdata Data to change
@@ -30,7 +31,7 @@ class GroupHelper
                 $qid = (int) substr($ID, 1);
                 $gid = (int) substr((string) $parent, 1);
                 if (!isset($aQuestionOrder[$gid])) {
-                    $aQuestionOrder[$gid] = 0;
+                    $aQuestionOrder[$gid] = 1;
                 }
 
                 $oQuestion = \Question::model()->findByPk($qid);

@@ -399,7 +399,7 @@ steps: [
         path: '',
         backdrop: false,
         placement: 'bottom',
-        title:'Activate survey participants table',
+        title:'Activate survey participant list',
         content: `<p>Here you can select to start your survey in closed access mode.</p>
         <p>For our simple survey it is better to start in open access mode.</p>
         <p>The closed access mode needs a participant list, which you may create by clicking on the menu entry 'Participant tokens'.

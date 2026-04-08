@@ -1,11 +1,12 @@
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
 <?php if (isset($step1)) {
 
     $this->renderPartial('stopSurvey_view', [
         'surveyid' => $surveyid,
         'dbprefix' => $dbprefix,
-        'date'     => $date
+        'date'     => $date,
+        'sNewSurveyTableName' => $sNewSurveyTableName ?? null
     ]);
 } elseif (isset($nostep)) { //todo: why no step? at least a message would be nice...?>
 

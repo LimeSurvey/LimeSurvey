@@ -18,6 +18,9 @@ if (!defined('BASEPATH')) {
 
 /**
 * This function replaces keywords in a text and is mainly intended for templates
+* Replacement done on this function can not be used in Expression for condition or equation
+* If you want keywords available on both replacement and condition, use LimeExpressionManager::setValueToKnowVar
+* Or add it in LimeExpressionManager->setVariableAndTokenMappingsForExpressionManager
 * If you use this functions put your replacement strings into the $replacements variable
 * instead of using global variables
 * NOTE - Don't do any embedded replacements in this function.  Create the array of replacement values and
@@ -29,7 +32,7 @@ if (!defined('BASEPATH')) {
 * @param null $debugSrc unused
 * @param null $anonymized unused (all done in EM now)
 * @param integer|null $questionNum - needed to support dynamic JavaScript-based tailoring within questions
-* @param void $registerdata - deprecated
+* @param null|void $registerdata - deprecated
 * @param boolean bStaticReplacement - Default off, forces non-dynamic replacements without <SPAN> tags (e.g. for the Completed page)
 * @param object|string - the template object to be used
 * @return string Text with replaced strings
@@ -68,7 +71,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         'totalquestions',
         'flashmessage'
     );
-
     $varsPassed = array();
 
     foreach ($allowedvars as $var) {
@@ -294,7 +296,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['GID'] = Yii::app()->getConfig('gid', ''); // Use the gid of the question, except if we are not in question (Randomization group name)
     $coreReplacements['GROUPDESCRIPTION'] = $_groupdescription;
     $coreReplacements['GROUPNAME'] = $_groupname;
-    $coreReplacements['LANG'] = App()->language;
     $coreReplacements['NAVIGATOR'] = $navigator ?? ''; // global
     $coreReplacements['MOVEPREVBUTTON'] = $moveprevbutton ?? ''; // global
     $coreReplacements['MOVENEXTBUTTON'] = $movenextbutton ?? ''; // global
@@ -337,6 +338,10 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 }
 
 /**
+ * This function replaces keywords in a text
+ * Replacement done on this function can not be used in Expression for condition or equation
+ * If you want keywords available on both replacement and condition, use LimeExpressionManager::setValueToKnowVar
+ * Or add it in LimeExpressionManager->setVariableAndTokenMappingsForExpressionManager
  * @psalm-suppress UndefinedVariable TODO
  */
 function getStandardsReplacementFields($thissurvey)
@@ -417,8 +422,6 @@ function getStandardsReplacementFields($thissurvey)
     $coreReplacements['ADMINNAME'] = $thissurvey['admin'] ?? '';
     $coreReplacements['ADMINEMAIL'] = $thissurvey['adminemail'] ?? '';
     $coreReplacements['GID'] = Yii::app()->getConfig('gid', ''); // Use the gid of the question, except if we are not in question (Randomization group name)
-
-    $coreReplacements['LANG'] = App()->language;
     $coreReplacements['NAVIGATOR'] = $navigator ?? ''; // global
     $coreReplacements['MOVEPREVBUTTON'] = $moveprevbutton ?? ''; // global
     $coreReplacements['MOVENEXTBUTTON'] = $movenextbutton ?? ''; // global

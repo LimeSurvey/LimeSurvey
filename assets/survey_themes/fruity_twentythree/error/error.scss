@@ -1,0 +1,34 @@
+body.error-page {
+  margin: 0;
+  padding: 0;
+  background: $white;
+  height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  .container {
+    display: flex;
+    height: 90%;
+  }
+  .error-title {
+    font-weight: $font-weight-600;
+    font-size: $font-size-2xl;
+    line-height: $line-height-52;
+    letter-spacing: -0.017em;
+    p {
+      color: $g-900 !important;
+    }
+  }
+
+  .error-content {
+    font-style: normal;
+    font-weight: $font-weight-normal;
+    font-size: $font-size-md;
+    line-height: $line-height-24;
+    letter-spacing: -0.017em;
+    color: $g-900;
+  }
+  .error-link {
+    font-weight: $font-weight-normal;
+    font-size: $font-size-md;
+    line-height: $line-height-24;
+  }
+}

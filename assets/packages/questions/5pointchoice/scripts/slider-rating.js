@@ -20,7 +20,7 @@ function getRatingSlider(qID){
       sliderLine              : $("<div id='slider_line_item_"+qID+"' class='slider-line'></div>"),                        //The colored baseline
       sliderHandle            : $("<div id='slider_handle_item_"+qID+"' class='slider-handle'></div>"),                    //the handle
       sliderLabelEmoji        : $("<div class='slider-label'><i class='emoji emoji-enormous'></i></div>"),
-      sliderLabelNoAnswer     : $("<div class='slider-label slider-label-6' data-position='6'><i class='fa fa-ban' style='font-size:28px;'></i></div>"),
+      sliderLabelNoAnswer     : $("<div class='slider-label slider-label-6' data-position='6'><i class='fa fa-ban ri-forbid-2-line' style='font-size:28px;'></i></div>"),
       sliderDummyEmoji        : $("<div class='dummy-emoji'><i class='emoji emoji-enormous emoji-color'></i></div>"),
     },
     mapEmojiToValue = function(position){

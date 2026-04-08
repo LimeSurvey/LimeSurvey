@@ -125,7 +125,7 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
             $savebutton = $web->findElement(WebDriverBy::id('save-and-close-button-create-question'));
             $savebutton->click();
 
-            $alert = $this->waitForElementShim($web, '#notif-container .alert');
+            $alert = $this->waitForElementShim($web, '#notif-container .alert', 20);
             $web->wait(10)->until(WebDriverExpectedCondition::visibilityOf($alert));
 
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__ . '_afterSave');

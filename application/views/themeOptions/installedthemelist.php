@@ -92,9 +92,11 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
                                     for (let togglequestiontheme of togglequestionthemes) {
                                         togglequestiontheme.addEventListener("change", () => {
                                             let $url = togglequestiontheme.getAttribute("data-url");
+                                            let data = new FormData();
                                             let xhttp = new XMLHttpRequest();
-                                            xhttp.open("GET", $url, true);
-                                            xhttp.send();
+                                            data.append(LS.data.csrfTokenName, LS.data.csrfToken);
+                                            xhttp.open("POST", $url, true);
+                                            xhttp.send(data);
                                         });
                                     }
                                 }',
@@ -115,9 +117,11 @@ $script = '
                 for (let togglequestiontheme of togglequestionthemes) {
                     togglequestiontheme.addEventListener("change", () => {
                         let $url = togglequestiontheme.getAttribute("data-url");
+                        let data = new FormData();
                         let xhttp = new XMLHttpRequest();
-                        xhttp.open("GET", $url, true);
-                        xhttp.send();
+                        data.append(LS.data.csrfTokenName, LS.data.csrfToken);
+                        xhttp.open("POST", $url, true);
+                        xhttp.send(data);
                     });
                 }
                 ';

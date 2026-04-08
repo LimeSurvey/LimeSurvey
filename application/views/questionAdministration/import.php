@@ -13,7 +13,7 @@ $headerSummary = $isGroupImport ? gT("Import question group summary") : gT("Impo
 $headerComplete = $isGroupImport ? gT("Question group import is complete.") : gT("Question import is complete.");
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <div class="row">
         <div class="col-12 content-right">
             <div class="jumbotron message-box">
