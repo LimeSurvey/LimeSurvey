@@ -22,10 +22,10 @@
 class UpdateDBCommand extends CConsoleCommand
 {
     /**
-     * Update database
-     * @param array $args
-     * @return void
-     * @throws CException
+     * Performs a database schema upgrade when the configured target version is greater than the current installed version.
+     *
+     * @param array|null $args Optional command-line arguments (not used by this command).
+     * @throws CException If the current database version is not found (application appears uninstalled) or if the upgrade process fails and requires manual intervention.
      */
     public function run($args = null)
     {
