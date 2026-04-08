@@ -1518,7 +1518,10 @@ class remotecontrol_handle
      * @param string $sNewQuestionTitle  (optional) new title for the question
      * @param string $sNewqQuestion (optional) new question text
      * @param string $sNewQuestionHelp (optional) new question help text
-     * @return array|integer The id of the new question in case of success. Array if errors
+     * @return array|integer The id of the new question in case of success. Array with error status on failure.
+     *         Error arrays include:
+     *         - 'status': Human-readable error message
+     *         - 'error_code': Machine-readable error code (e.g., 'ERR_MISMATCH_SURVEY_GROUP') for reliable error identification
      */
     public function import_question($sSessionKey, $iSurveyID, $iGroupID, $sImportData, $sImportDataType, $sMandatory = 'N', $sNewQuestionTitle = null, $sNewqQuestion = null, $sNewQuestionHelp = null)
     {
@@ -2399,7 +2402,10 @@ class remotecontrol_handle
      * @param int $iSurveyID ID of the Survey to list questions
      * @param int $iGroupID Optional id of the group to list questions
      * @param string $sLanguage Optional parameter language for multilingual questions
-     * @return array The list of questions
+     * @return array The list of questions on success. Array with error status on failure.
+     *         Error arrays include:
+     *         - 'status': Human-readable error message
+     *         - 'error_code': Machine-readable error code (e.g., 'ERR_MISMATCH_SURVEY_GROUP') for reliable error identification
      */
     public function list_questions($sSessionKey, $iSurveyID, $iGroupID = null, $sLanguage = null)
     {
