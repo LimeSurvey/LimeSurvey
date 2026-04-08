@@ -1311,10 +1311,10 @@ class UserManagementController extends LSBaseController
         $expires = App()->request->getPost('batchExpires');
         $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
         Yii::import('application.libraries.Date_Time_Converter', true);
-        if (trim((string) $expires) == "") {
+        if (trim((string) $expires) === "") {
             $expires = null;
         } else {
-            $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'] . " H:i", $expires);
+            $datetimeobj = DateTime::createFromFormat('!' . $formatdata['phpdate'] . ' H:i', $expires);
             if (!is_object($datetimeobj)) {
                 throw new CHttpException(400, sprintf(gT('Invalid date, please use "%s" format.', 'unescaped'), $formatdata['phpdate'] . " H:i"));
             }
@@ -1330,7 +1330,11 @@ class UserManagementController extends LSBaseController
                 $aResults[$sItem]['error'] = gT("You are not allowed to update this user expiration date.");
                 continue;
             }
-            /* Allow to set own expired date : you can set your own date if you still able to connect */
+            if ($model->uid == Yii::app()->user->id) {
+                 $aResults[$sItem]['result'] = false;
+                 $aResults[$sItem]['error'] = gT("You are not allowed to update your own expiration date.");
+                 continue;
+            }
             $model->expires = $expires;
             if ($model->save(true, ['expires'])) {
                 $aResults[$sItem]['result'] = true;
@@ -1503,7 +1507,7 @@ class UserManagementController extends LSBaseController
      *
      * @param int $id the ID of the model to be loaded
      *
-     * @return User|null  object
+     * @return User object
      * @throws CHttpException
      */
     public function loadModel(int $id): User
