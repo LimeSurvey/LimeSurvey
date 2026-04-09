@@ -3602,6 +3602,26 @@ class LimeExpressionManager
                 case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text                 // note does not have javatbd equivalent - so array filters don't work on it
+                    $csuffix = $fielddata['csuffix'] ?? $fielddata['aid'];
+                    $varName = $fielddata['title'] . '_' . $fielddata['aid'];
+                    $question = $fielddata['subquestion'];
+                    // In M and P , we use $question (sub question) for shown. With other : we show to the user 'other_replace_text' if it's set. see #13505
+                    if ($other == "Y") {
+                        if (isset($qattr[$questionNum]['other_replace_text']) && trim((string) $qattr[$questionNum]['other_replace_text']) != '') {
+                            $question = trim((string) $qattr[$questionNum]['other_replace_text']);
+                        } else {
+                            $question = $this->gT('Other:');
+                        }
+                    }
+                    //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
+                    if ($type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS && preg_match("/comment$/", (string) $sgqa)) {
+                        //                            $rowdivid = substr($sgqa,0,-7);
+                    } else {
+                        $sqsuffix = '_' . $fielddata['aid'];
+                        $rowdivid = $sgqa;
+                    }
+
+                    break;
                 case Question::QT_R_RANKING: // Ranking STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
                     $csuffix = $fielddata['csuffix'] ?? $fielddata['qid'];
                     $varName = $fielddata['title'] . '_' . $fielddata['qid'];
