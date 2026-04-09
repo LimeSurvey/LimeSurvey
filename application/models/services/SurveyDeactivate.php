@@ -118,7 +118,7 @@ class SurveyDeactivate
             $aData['surveyid'] = $iSurveyID;
             $aData['date'] = $date;
             $aData['dbprefix'] = $this->app->db->tablePrefix;
-            $aData['sNewSurveyTableName'] = $this->app->session->get('sNewSurveyTableName');
+            $aData['sNewSurveyTableName'] = $this->app->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}";
             $aData['step1'] = true;
         } else {
             require_once "application/helpers/admin/import_helper.php";
@@ -134,7 +134,6 @@ class SurveyDeactivate
             //after deactivation redirect to survey overview and show message...
             $siddate = $this->getSiddate($iSurveyID);
             createTableFromPattern($this->app->db->tablePrefix . "old_questions_{$siddate}", $this->app->db->tablePrefix . "questions", ['sid', 'gid', 'qid', 'parent_qid', 'type'], ['sid' => $iSurveyID]);
-            $this->app->session->remove('sNewSurveyTableName');
         }
         $result['aData'] = $aData;
         return $result;

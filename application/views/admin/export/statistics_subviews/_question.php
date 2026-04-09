@@ -284,6 +284,7 @@
                         'format' => $dateformatdetails['jsdate'],
                         'allowInputToggle' => true,
                         'showClear' => true,
+                        'theme' => 'light',
                         'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                     )
                 ));                
@@ -301,6 +302,7 @@
                       'format' => $dateformatdetails['jsdate'] . " HH:mm",
                       'allowInputToggle' => true,
                       'showClear' => true,
+                      'theme' => 'light',
                       'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                   )
               ));                
@@ -318,6 +320,7 @@
                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
                     'allowInputToggle' => true,
                     'showClear' => true,
+                    'theme' => 'light',
                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                 )
             ));                
