@@ -69,6 +69,7 @@ class RenderRanking extends QuestionBaseRenderer
                 'code' => (string)$oSubQuestion->title,
                 //The renderer still believes it is an answer
                 'answer' => $oSubQuestion->questionl10ns[$this->sLanguage]->question,
+                'sqid' => $oSubQuestion->qid
             );
         }
         
@@ -108,7 +109,7 @@ class RenderRanking extends QuestionBaseRenderer
                     }
 
                     $aItemData[] = array(
-                        'value' => $rank,
+                        'value' => $oSubQuestion->title,
                         'selected' => $selected,
                         'classes' => '',
                         'optiontext' => sprintf(gT('Rank %s'), $oSubQuestion->questionl10ns[$this->sLanguage]->question)
