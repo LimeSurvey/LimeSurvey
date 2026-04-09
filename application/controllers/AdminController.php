@@ -162,7 +162,7 @@ class AdminController extends LSYii_Controller
         }
         if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate') {
             // Try a silent update first
-            Yii::app()->loadHelper('update/updatedb');
+            Yii::app()->loadHelper('update.updatedb');
             if (!db_upgrade_all(intval($sDBVersion), true)) {
                 $this->redirect(array('/admin/databaseupdate/sa/db'));
             }
@@ -197,8 +197,10 @@ class AdminController extends LSYii_Controller
         }
 
         $this->runModuleController($action);
-
-
+        // this will redirect the default action to the new controller previously "admin/index" or "admin" to "dashboard/view"
+        if (empty($action) || $action === 'index') {
+            $this->redirect($this->createUrl('dashboard/view'));
+        }
         return parent::run($action);
     }
 
@@ -351,7 +353,6 @@ class AdminController extends LSYii_Controller
             'htmleditorpop'    => 'HtmlEditorPop',
             'surveysgroups'    => 'SurveysGroupsController',
             'limereplacementfields' => 'limereplacementfields',
-            'index'            => 'index',
             'labels'           => 'Labels',
             'participants'     => 'ParticipantsAction',
             'pluginmanager'    => 'PluginManagerController',
@@ -443,7 +444,6 @@ class AdminController extends LSYii_Controller
         $aData['datepickerlang'] = "";
 
         $aData['sitename'] = Yii::app()->getConfig("sitename");
-        $aData['firebug'] = useFirebug();
 
         if (!empty(Yii::app()->session['dateformat'])) {
                     $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);

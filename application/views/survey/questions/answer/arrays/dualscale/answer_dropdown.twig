@@ -37,7 +37,7 @@
             <!-- Sub questions -->
             {% for ansrow in aSubQuestions %}
                 <!-- <tr> -->
-                <tr id="javatbd{{ ansrow.myfname }}" role="group" class="answers-list radio-list {% if ansrow.odd %}ls-odd{% else %}ls-even{% endif %}{% if ansrow.mandatoryviolation %} ls-error-mandatory {% endif %}">
+                <tr id="javatbd{{ ansrow.myfname }}" class="answers-list radio-list {% if ansrow.odd %}ls-odd{% else %}ls-even{% endif %}{% if ansrow.mandatoryviolation %} ls-error-mandatory {% endif %}">
                     <!-- Answer text (actual question) -->
                     <th id="answertext{{ ansrow.myfname }}" class="answertext control-label{% if ansrow.mandatoryviolation %} text-danger{% endif %}">
                         {{ processString(ansrow.question) }}

@@ -78,6 +78,10 @@
                     <value>alphabetical</value>
                     <text>Alphabetical</text>
                 </option>
+                <option>
+                    <value>random_alphabetical</value>
+                    <text>Random A-Z/Z-A</text>
+                </option>
             </options>
             <default>normal</default>
             <help>Present answer options in normal, random or alphabetical order</help>
@@ -111,7 +115,7 @@
                 </option>
                 <option>
                     <value>default</value>
-                    <text>Before No Answer</text>
+                    <text>Before &#039;No Answer&#039;</text>
                 </option>
                 <option>
                     <value>end</value>
@@ -219,12 +223,13 @@
             <sortorder>100</sortorder>
             <inputtype>columns</inputtype>
             <default></default>
-            <help>The answer options will be distributed across the number of columns set here</help>
+            <help>The answer options will be distributed across the number of columns set here. Any number up to 1 can be entered, but we only support systems up to 16.</help>
             <caption>Display columns</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
             <expression></expression>
+            <min>1</min>
         </attribute>
         <!-- Display Attributes END -->
         <!-- Logic Attributes START -->

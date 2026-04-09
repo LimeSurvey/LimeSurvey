@@ -98,7 +98,7 @@ class expressionFixedDbVar extends PluginBase
 
     /**
      * Add the fixed know var to valid variables
-     * @link https://manual.limesurvey.org/ExpressionManagerStart
+     * @link https://www.limesurvey.org/manual/ExpressionManagerStart
      */
     public function addFixedDbVar()
     {

@@ -35,7 +35,7 @@ class TestHelper extends TestCase
         Yii::import('application.helpers.update.updatedb_helper', true);
         Yii::import('application.helpers.update.update_helper', true);
         Yii::import('application.helpers.SurveyRuntimeHelper', true);
-        Yii::app()->loadHelper('admin/activate');
+        Yii::app()->loadHelper('admin.activate');
     }
 
     /**
@@ -135,7 +135,7 @@ class TestHelper extends TestCase
             throw new Exception('Found no survey with id ' . $surveyId);
         }
         $survey->anonymized = '';
-        $survey->datestamp = '';
+        $survey->datestamp = 'Y';
         $survey->ipaddr = '';
         $survey->refurl = '';
         $survey->savetimings = '';
@@ -332,6 +332,13 @@ class TestHelper extends TestCase
         if (is_null($connection)) {
             $connection = Yii::app()->getDb();
         }
+
+        $conStr = Yii::app()->db->connectionString;
+        $isMysql = substr($conStr, 0, 5) === 'mysql';
+        if (!$isMysql) {
+            return;
+        }
+
         try {
             $connection->createCommand('DROP DATABASE ' . $databaseName)->execute();
             $this->assertTrue(true);
@@ -518,5 +525,18 @@ class TestHelper extends TestCase
             }
         }
         return $aMessages;
+    }
+
+    /**
+     * Reset the host info property of the request.
+     */
+    public function resetHostInfo()
+    {
+        // Use reflection to set the private "_hostInfo" property to null, as the public
+        // setter does not allow setting it to null.
+        $reflection = new \ReflectionClass("CHttpRequest");
+        $property = $reflection->getProperty('_hostInfo');
+        $property->setAccessible(true);
+        $property->setValue(Yii::app()->getRequest(), null);
     }
 }

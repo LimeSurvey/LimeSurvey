@@ -1,3 +1,14 @@
+# 3.11.3 (2024-11-07)
+
+ * Fix an infinite recursion in the sandbox code
+
+# 3.11.2 (2024-11-06)
+
+ * [BC BREAK] Fix a security issue in the sandbox mode allowing an attacker to call attributes on Array-like objects
+   They are now checked via the property policy
+ * Fix a security issue in the sandbox mode allowing an attacker to be able to call `toString()`
+   under some circumstances on an object even if the `__toString()` method is not allowed by the security policy
+
 # 3.11.1 (2024-09-10)
 
  * Fix a security issue when an included sandboxed template has been loaded before without the sandbox context

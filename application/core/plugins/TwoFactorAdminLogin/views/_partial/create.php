@@ -12,7 +12,7 @@
 </div>
 <div class="modal-body">
     <div class="row">
-        <div class="errorContainer"></div>
+        <div class="errorContainer alert alert-danger" style="display: none"></div>
     </div>
     <?php echo TbHtml::activeHiddenField($model, 'uid'); ?>
     <div class="mb-3">
@@ -22,17 +22,25 @@
             'class'    => 'form-select'
         ]); ?>
     </div>
-    <div class="mb-3">
-        <?php echo TbHtml::activeLabel($model, 'secretKey', ['class' => 'form-label']); ?>
-        <?php echo TbHtml::activeTextField($model, 'secretKey', ['readonly' => true]); ?>
+    <div id="totpSection">
+        <div class="mb-3">
+            <?php echo TbHtml::activeLabel($model, 'secretKey', ['class' => 'form-label']); ?>
+            <?php echo TbHtml::activeTextField($model, 'secretKey', ['readonly' => true]); ?>
+        </div>
+        <div class="mb-3">
+            <label class="form-label"><?php eT('QR code'); ?></label>
+            <div class="col-md-6 offset-md-3"><?= $sQRCodeContent ?></div>
+        </div>
+        <div class="mb-3">
+            <?php echo TbHtml::label(gT('Confirmation key'), 'confirmationKey', ['class' => 'form-label']); ?>
+            <?php echo TbHtml::textField('confirmationKey', null); ?>
+        </div>
     </div>
-    <div class="mb-3">
-        <label class="form-label"><?php eT('QR code'); ?></label>
-        <div class="col-md-6 offset-md-3"><?= $sQRCodeContent ?></div>
-    </div>
-    <div class="mb-3">
-        <?php echo TbHtml::label(gt('Confirmation key'), 'confirmationKey', ['class' => 'form-label']); ?>
-        <?php echo TbHtml::textField('confirmationKey', null, ['required' => true]); ?>
+    <div id="yubiSection">
+        <div class="mb-3">
+            <?php echo TbHtml::label(gT('YubiKey OTP'), 'yubikeyOtp', ['class' => 'form-label']); ?>
+            <?php echo TbHtml::textField('yubikeyOtp', null); ?>
+        </div>
     </div>
 </div>
 <div class="modal-footer">

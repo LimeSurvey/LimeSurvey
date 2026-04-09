@@ -441,6 +441,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['hil']['rtl'] = false;
     $supportedLanguages['hil']['dateformat'] = 1;
     $supportedLanguages['hil']['radixpoint'] = 1;
+    $supportedLanguages['hil']['momentjs'] = 'tl';
+    $supportedLanguages['hil']['cldr'] = 'fil';
 
     // Hungarian
     $supportedLanguages['hu']['description'] = gT('Hungarian');
@@ -449,6 +451,15 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['hu']['dateformat'] = 6;
     $supportedLanguages['hu']['radixpoint'] = 1;
     $supportedLanguages['hu']['momentjs'] = 'hu';
+
+    // Hungarian informal
+    $supportedLanguages['hu-informal']['description'] = gT('Hungarian (informal)');
+    $supportedLanguages['hu-informal']['nativedescription'] = 'Magyar (tegez&#337;d&#337;)';
+    $supportedLanguages['hu-informal']['rtl'] = false;
+    $supportedLanguages['hu-informal']['dateformat'] = 6;
+    $supportedLanguages['hu-informal']['radixpoint'] = 1;
+    $supportedLanguages['hu-informal']['cldr'] = 'hu';
+    $supportedLanguages['hu-informal']['momentjs'] = 'hu';
 
     // Icelandic
     $supportedLanguages['is']['description'] = gT('Icelandic');
@@ -562,6 +573,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['run']['rtl'] = false;
     $supportedLanguages['run']['dateformat'] = 1;
     $supportedLanguages['run']['radixpoint'] = 1;
+    $supportedLanguages['run']['cldr'] = 'rn';
     $supportedLanguages['run']['momentjs'] = null;
 
     // Kurdish (Sorani)

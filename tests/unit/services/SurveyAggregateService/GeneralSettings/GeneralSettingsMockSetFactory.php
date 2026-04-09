@@ -10,6 +10,7 @@ use Mockery;
 use LimeSurvey\PluginManager\PluginManager;
 use LimeSurvey\Models\Services\SurveyAggregateService\LanguageConsistency;
 use User;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 /**
  * General Settings Mock Factory
@@ -60,6 +61,10 @@ class GeneralSettingsMockSetFactory
         $mockSet->modelUser = ($init && isset($init->modelUser))
             ? $init->modelUser
             : $this->getMockModelUser($mockSet->user);
+
+        $mockSet->surveyAccessModeService = ($init && isset($init->surveyAccessModeService))
+        ? $init->surveyAccessModeService
+        : $this->getMockSurveyAccessModeService();
 
         return $mockSet;
     }
@@ -149,5 +154,12 @@ class GeneralSettingsMockSetFactory
         $mockModelUser->shouldReceive('findByPk')
             ->andReturn($user);
         return $mockModelUser;
+    }
+
+    private function getMockSurveyAccessModeService(): SurveyAccessModeService
+    {
+        $mockSurveyAccessModeService = Mockery::mock(SurveyAccessModeService::class)
+            ->makePartial();
+        return $mockSurveyAccessModeService;
     }
 }

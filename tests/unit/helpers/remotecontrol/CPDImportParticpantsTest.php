@@ -111,7 +111,7 @@ class CPDImportParticpantsTest extends BaseTest
     {
         \Yii::app()->session['adminlang'] = 'de';
         $this->assertTrue(empty(\ParticipantAttributeName::model()->findAll()));
-        $result = \ParticipantAttributeName::model()->storeAttribute(array(
+        $attributeId = \ParticipantAttributeName::model()->storeAttribute(array(
             'attribute_type' => 'TB',
             'defaultname' => 'website',
             'visible' => 'TRUE',
@@ -119,7 +119,7 @@ class CPDImportParticpantsTest extends BaseTest
             'encrypted'      => 'N',
             'core_attribute' => 'N'
         ));
-        $this->assertTrue(intval($result) > 0);
+        $this->assertTrue(intval($attributeId) > 0);
 
         $participants = array(
             array(
@@ -141,7 +141,7 @@ class CPDImportParticpantsTest extends BaseTest
         $max = \Participant::model()->findByPk('max');
         $this->assertInstanceOf(\Participant::class, $max);
 
-        $attribute = $max->getParticipantAttribute('ea_1');
+        $attribute = $max->getParticipantAttribute('ea_' . $attributeId);
         $this->assertEquals('http://www.example.com', $attribute);
     }
 
@@ -149,7 +149,7 @@ class CPDImportParticpantsTest extends BaseTest
     {
         \Yii::app()->session['adminlang'] = 'de';
         $this->assertTrue(empty(\ParticipantAttributeName::model()->findAll()));
-        $result = \ParticipantAttributeName::model()->storeAttribute(array(
+        $attributeId = \ParticipantAttributeName::model()->storeAttribute(array(
             'attribute_type' => 'TB',
             'defaultname' => 'website',
             'visible' => 'TRUE',
@@ -157,7 +157,7 @@ class CPDImportParticpantsTest extends BaseTest
             'encrypted'      => 'N',
             'core_attribute' => 'N'
         ));
-        $this->assertTrue(intval($result) > 0);
+        $this->assertTrue(intval($attributeId) > 0);
 
         $participants = array(
             array(
@@ -190,7 +190,7 @@ class CPDImportParticpantsTest extends BaseTest
         $max = \Participant::model()->findByPk('max');
         $this->assertInstanceOf(\Participant::class, $max);
 
-        $attribute = $max->getParticipantAttribute('ea_1');
+        $attribute = $max->getParticipantAttribute('ea_' . $attributeId);
         $this->assertEquals('http://www.example.org', $attribute);
     }
 
@@ -249,7 +249,7 @@ class CPDImportParticpantsTest extends BaseTest
     {
         \Yii::app()->session['adminlang'] = 'de';
         $this->assertTrue(empty(\ParticipantAttributeName::model()->findAll()));
-        $result = \ParticipantAttributeName::model()->storeAttribute(array(
+        $attributeId = \ParticipantAttributeName::model()->storeAttribute(array(
             'attribute_type' => 'TB',
             'defaultname' => 'passport',
             'visible' => 'TRUE',
@@ -257,7 +257,7 @@ class CPDImportParticpantsTest extends BaseTest
             'encrypted'      => 'Y',
             'core_attribute' => 'N'
         ));
-        $this->assertTrue(intval($result) > 0);
+        $this->assertTrue(intval($attributeId) > 0);
 
         $participants = array(
             array(
@@ -279,7 +279,7 @@ class CPDImportParticpantsTest extends BaseTest
         $max = \Participant::model()->findByPk('max');
         $this->assertInstanceOf(\Participant::class, $max);
 
-        $attribute = $max->getParticipantAttribute('ea_1');
+        $attribute = $max->getParticipantAttribute('ea_' . $attributeId);
         $this->assertEquals('123456789', $attribute);
     }
 }

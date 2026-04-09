@@ -100,7 +100,7 @@ class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
         $this->attributesService->saveAdvanced(
             $this->questionService->getQuestionBySidAndQid(
                 $surveyId,
-                $questionId
+                (int)$questionId
             ),
             $preparedData
         );

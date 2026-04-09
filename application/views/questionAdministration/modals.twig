@@ -37,7 +37,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{ gT('Manage label sets') }}</h5>
+                <h2 role="heading" class="modal-title h5">{{ gT('Manage label sets') }}</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
@@ -138,6 +138,23 @@
             <div class="modal-footer">
                 <button class='btn btn-outline-secondary' id='btnlconfirmreplace' type='button' data-bs-dismiss="modal">{{ gT('OK') }}</button>
                 <button class='btn btn-cancel'           id='btnlacancel'        type='button' data-bs-dismiss="modal">{{ gT('Cancel') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script editor modal -->
+<div class="modal fade" id="question-script-modal" tabindex="-1" aria-labelledby="question-script-modal-title" aria-hidden="true" data-default-title="{{ gT('Script editor') }}">
+    <div class="modal-dialog modal-fullscreen" role="document">
+        <div class="modal-content h-100">
+            <div class="modal-header">
+                <h5 class="modal-title" id="question-script-modal-title">{{ gT('Script editor') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0 d-flex flex-column">
+                <div id="question-script-modal-editor-container" class="position-relative flex-grow-1 w-100" style="min-height: 0;">
+                    <div id="question-script-modal-editor" class="w-100 h-100"></div>
+                </div>
             </div>
         </div>
     </div>

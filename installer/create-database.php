@@ -631,7 +631,7 @@ function populateDatabase($oDB)
             'template' => "string(100) DEFAULT 'default'",
             'language' => "string(50) NULL",
             'additional_languages' => "text NULL",
-            'datestamp' => "string(1) NOT NULL DEFAULT 'N'",
+            'datestamp' => "string(1) NOT NULL DEFAULT 'Y'",
             'usecookie' => "string(1) NOT NULL DEFAULT 'N'",
             'allowregister' => "string(1) NOT NULL DEFAULT 'N'",
             'allowsave' => "string(1) NOT NULL DEFAULT 'Y'",
@@ -678,6 +678,8 @@ function populateDatabase($oDB)
             'googleanalyticsstyle' => "string(1) NULL",
             'googleanalyticsapikey' => "string(25) NULL",
             'tokenencryptionoptions' => "text NULL",
+            'access_mode' => "string(1) DEFAULT 'O'",
+            'lastmodified' => 'datetime NOT NULL',
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_pk}}', '{{surveys}}', 'sid');
@@ -720,7 +722,7 @@ function populateDatabase($oDB)
             'format' => "string(1) NULL DEFAULT NULL",
             'savetimings' => "string(1) NOT NULL DEFAULT 'N'",
             'template' => "string(100) NULL DEFAULT 'default'",
-            'datestamp' => "string(1) NOT NULL DEFAULT 'N'",
+            'datestamp' => "string(1) NOT NULL DEFAULT 'Y'",
             'usecookie' => "string(1) NOT NULL DEFAULT 'N'",
             'allowregister' => "string(1) NOT NULL DEFAULT 'N'",
             'allowsave' => "string(1) NOT NULL DEFAULT 'Y'",
@@ -769,7 +771,7 @@ function populateDatabase($oDB)
             'format' => 'G',
             'savetimings' => 'N',
             'template' => 'fruity_twentythree',
-            'datestamp' => 'N',
+            'datestamp' => 'Y',
             'usecookie' => 'N',
             'allowregister' => 'N',
             'allowsave' => 'Y',
