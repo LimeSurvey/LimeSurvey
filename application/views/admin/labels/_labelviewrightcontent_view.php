@@ -4,7 +4,7 @@
       <div class="card card-primary" id="up_resmgmt">
 
         <!-- Uploaded resources management -->
-        <div class="card-header" role="tab" id="headingOne">
+        <div class="card-header" id="headingOne">
           <div class="">
             <a role="button" data-bs-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
               <?php eT("Uploaded resources management"); ?>
