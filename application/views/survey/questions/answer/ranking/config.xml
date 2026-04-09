@@ -17,7 +17,7 @@
         <description>Ranking question type configuration</description>
         <questionType>R</questionType>
         <group>Mask questions</group>
-        <subquestions>0</subquestions>
+        <subquestions>1</subquestions>
         <answerscales>1</answerscales>
         <hasdefaultvalues>0</hasdefaultvalues>
         <assessable>1</assessable>

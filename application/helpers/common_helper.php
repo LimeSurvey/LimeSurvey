@@ -1902,22 +1902,51 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 }
             }
         } elseif ($arow['type'] == Question::QT_R_RANKING) {
-            // Sub question by answer number OR attribute
-            $answers = Answer::model()->findAll('qid = :qid', [':qid' => $arow['qid']]);
-            $answersCount = count($answers);
-            $maxDbAnswer = QuestionAttribute::model()->find("qid = :qid AND attribute = 'max_subquestions'", array(':qid' => $arow['qid']));
-            $columnsCount = (!$maxDbAnswer || intval($maxDbAnswer->value) < 1) ? $answersCount : intval($maxDbAnswer->value);
-            $columnsCount = min($columnsCount, $answersCount); // Can not be upper than current answers #14899
-
-            if($includeAllAnswerOptions)
-                $columnsCount = $answersCount;
-
-            for ($i = 1; $i <= $columnsCount; $i++) {
-                $fieldname = "Q{$arow['qid']}_R" . $answers[$i - 1]->aid;
+            // Ranking questions now use subquestions instead of answer options
+            $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
+            if (!count($abrows)) {
+                $abrows = [];
+                $answers = Answer::model()->with('answerl10ns')->findAll("qid = :qid", ["qid" => $arow['qid']]);
+                foreach ($answers as $answer) {
+                    $question = new Question();
+                    $question->parent_qid = $answer->qid;
+                    $question->title = $answer->code;
+                    $question->question_order = $answer->sortorder;
+                    $question->scale_id = $answer->scale_id;
+                    $question->type = 'R';
+                    $question->relevance = 1;
+                    $question->sid = $arow['sid'];
+                    $question->gid = $arow['gid'];
+                    $question->save();
+                    $abrows[] = [
+                        'qid' => $question->qid,
+                        'relevance' => $question->relevance
+                    ];
+                    foreach ($answer->answerl10ns as $language => $al10n) {
+                        $questionl10n = new QuestionL10n();
+                        $questionl10n->qid = $question->qid;
+                        $questionl10n->question = $al10n->answer;
+                        $questionl10n->language = $language;
+                        $questionl10n->save();
+                    }
+                }
+            }
+            $i = 0;
+            foreach ($abrows as $abrow) {
+                $i++;
+                $fieldname = "Q{$arow['qid']}_S{$abrow['qid']}";
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => $answers[$i - 1]->aid, "suffix" => "_R" . $answers[$i - 1]->aid, 'csuffix' => $i);
+                $fieldmap[$fieldname] = array(
+                    "fieldname" => $fieldname,
+                    'type' => $arow['type'],
+                    'sid' => $surveyid,
+                    "gid" => $arow['gid'],
+                    "qid" => $arow['qid'],
+                    "sqid" => $abrow['qid'],
+                    "suffix" => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']),
+                );
                 if (isset($answerColumnDefinition)) {
                     $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                 }
@@ -1933,6 +1962,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                     $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
                     $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
+                    $fieldmap[$fieldname]['sqid'] = $abrow['qid'];
+                    $fieldmap[$fieldname]['SQrelevance'] = $abrow['relevance'];
                 }
             }
         } elseif ($arow['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {

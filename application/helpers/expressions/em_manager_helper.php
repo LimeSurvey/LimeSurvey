@@ -2069,12 +2069,12 @@ class LimeExpressionManager
             } else {
                 $max_answers = '';
             }
-            /* Specific for ranking : fix only the alert : test if needed (max_subquestions < count(answers) )*/
+            /* Specific for ranking : fix only the alert : test if needed (max_subquestions < count(subquestions) )*/
             if ($type == Question::QT_R_RANKING && (isset($qattr['max_subquestions']) && intval($qattr['max_subquestions']) > 0)) {
                 $max_subquestions = intval($qattr['max_subquestions']);
-                // We don't have another answer count in EM ?
-                $answerCount = Answer::model()->count("qid=:qid", [":qid" => $questionNum]);
-                $max_subquestions = min($max_subquestions, $answerCount); // Can not be upper than current answers #14899
+                // Ranking items are now stored as subquestions
+                $subQuestionCount = Question::model()->count("parent_qid=:parent_qid", [":parent_qid" => $questionNum]);
+                $max_subquestions = min($max_subquestions, $subQuestionCount); // Can not be upper than current subquestions
                 if ($max_answers != '') {
                     $max_answers = 'min(' . $max_answers . ',' . $max_subquestions . ')';
                 } else {
@@ -3603,8 +3603,8 @@ class LimeExpressionManager
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text                 // note does not have javatbd equivalent - so array filters don't work on it
                 case Question::QT_R_RANKING: // Ranking STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
-                    $csuffix = $fielddata['csuffix'] ?? $fielddata['aid'];
-                    $varName = $fielddata['title'] . '_' . $fielddata['aid'];
+                    $csuffix = $fielddata['csuffix'] ?? $fielddata['qid'];
+                    $varName = $fielddata['title'] . '_' . $fielddata['qid'];
                     $question = $fielddata['subquestion'];
                     // In M and P , we use $question (sub question) for shown. With other : we show to the user 'other_replace_text' if it's set. see #13505
                     if ($other == "Y") {
@@ -3618,7 +3618,7 @@ class LimeExpressionManager
                     if ($type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS && preg_match("/comment$/", (string) $sgqa)) {
                         //                            $rowdivid = substr($sgqa,0,-7);
                     } else {
-                        $sqsuffix = '_' . $fielddata['aid'];
+                        $sqsuffix = '_' . $fielddata['qid'];
                         $rowdivid = $sgqa;
                     }
 

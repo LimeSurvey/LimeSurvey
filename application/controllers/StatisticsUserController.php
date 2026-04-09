@@ -297,16 +297,17 @@ class StatisticsUserController extends SurveyController
                     }
                     break;
                 case Question::QT_R_RANKING: // Ranking
-                    $results = Answer::model()->with('answerl10ns')->findAll([
-                        'condition' => 'language=:language AND qid=:qid',
-                        'params'    => [':language' => $this->sLanguage, ':qid' => $flt->qid],
-                        'order'     => 'sortorder'
+                    // Ranking questions now use subquestions for ranking items
+                    $results = Question::model()->with('questionl10ns')->findAll([
+                        'condition' => 'language=:language AND parent_qid=:parent_qid',
+                        'params'    => [':language' => $this->sLanguage, ':parent_qid' => $flt->qid],
+                        'order'     => 'question_order'
                     ]);
-                    // Format: "R" + fieldmap key "Q{qid}_R{aid}"
+                    // Format: "R" + fieldmap key "Q{qid}_S{sqid}"
                     // The "R" prefix triggers the ranking in buildOutputList.
-                    // "Q{qid}_R{aid}" matches the actual responses table column name.
-                    foreach ($results as $answer) {
-                        $allfields[] = 'R' . $SGQidentifier . '_R' . $answer->aid;
+                    // "Q{qid}_S{sqid}" matches the actual responses table column name.
+                    foreach ($results as $subQuestion) {
+                        $allfields[] = 'R' . $SGQidentifier . '_S' . $subQuestion->qid;
                     }
                     break;
                 //Boilerplate questions are only used to put some text between other questions -> no analysis needed

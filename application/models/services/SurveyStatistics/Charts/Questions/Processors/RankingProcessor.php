@@ -15,27 +15,26 @@ class RankingProcessor extends AbstractQuestionProcessor
     {
         $this->rt();
         $charts = [];
-        $i = 0;
 
+        // Ranking questions now use subquestions for items to rank
         foreach ($this->question['subQuestions'] as $subQuestion) {
             $title = flattenText($this->question['question']) . " [{$subQuestion['question']}]";
             $dataItems = [];
             $legend = [];
 
-            foreach ($this->answers as $answer) {
-                $rt = $this->rt . "_R" . $answer['aid'];
-
-                if ((int)$answer->scale_id === 0) {
-                    $value = $this->getResponseCount($rt, $answer['code']);
-                    $dataItems[] = ['key' => $answer['code'], 'title' => $answer['answer'], 'value' => $value];
-                }
-            }
-            $legend[] = 'NoAnswer';
-            $dataItems[] = ['key' => 'NoAnswer', 'value' => 0, 'title' => 'No answer'];
-
-            $charts[] = new StatisticsChartDTO($title, $legend, $dataItems, $this->calculateTotal($dataItems), ['question' => $this->question]);
-            $i++;
+            $rt = $this->rt . "_S" . $subQuestion['qid'];
+            $value = $this->getResponseCount($rt, $subQuestion['title']);
+            $dataItems[] = [
+                'key' => $subQuestion['title'],
+                'title' => sprintf(gT('Rank %s'), $subQuestion['title']),
+                'value' => $value
+            ];
+            
         }
+        $legend[] = 'NoAnswer';
+        $dataItems[] = ['key' => 'NoAnswer', 'value' => 0, 'title' => 'No answer'];
+
+        $charts[] = new StatisticsChartDTO($title, $legend, $dataItems, $this->calculateTotal($dataItems), ['question' => $this->question]);
 
         return $charts;
     }
