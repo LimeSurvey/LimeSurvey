@@ -341,6 +341,9 @@ class SurveysGroupsettings extends LSActiveRecord
             // set instance options from survey model, used for frontend rendering
             if (($oSurvey !== null && $bRealValues)) {
                 foreach ($instance->optionAttributes as $key => $attribute) {
+                    if (!$oSurvey->hasAttribute($attribute)) {
+                        continue;
+                    }
                     $instance->oOptions->{$attribute} = $oSurvey->$attribute;
                     $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $oSurvey->$attribute);
                 }
