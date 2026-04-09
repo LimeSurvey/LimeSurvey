@@ -18,10 +18,16 @@
     <div class="col-12 content-right text-center">
 
         <!-- tabs -->
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs" role="tablist" aria-label="<?= CHtml::encode(gT('Languages')) ?>">
             <?php foreach ($lslanguages as $i => $language) : ?>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link <?= $i === 0 ? 'active' : '' ?>" href='#neweditlblset<?= $i ?>' data-bs-toggle="tab">
+                    <a class="nav-link <?= $i === 0 ? 'active' : '' ?>"
+                       id="labelview-lang-tab-<?= (int) $i ?>"
+                       href="#neweditlblset<?= (int) $i ?>"
+                       role="tab"
+                       data-bs-toggle="tab"
+                       aria-controls="neweditlblset<?= (int) $i ?>"
+                       aria-selected="<?= $i === 0 ? 'true' : 'false' ?>">
                         <?php echo getLanguageNameFromCode($language, false); ?>
                     </a>
                 </li>
