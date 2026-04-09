@@ -664,6 +664,8 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
     }
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
+    $questionTypeMap = array();
+    $convertedAnswersToSubquestionsMap = array();
 
     // This array will collect all records that need INSERTANS conversion
     $pendingInsertansUpdates = [];
@@ -800,6 +802,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
             unset($oQuestionL10n);
         }
+        $questionTypeMap[$oQuestion->qid] = $oQuestion->type;
     }
 
     // Import subquestions -------------------------------------------------------
@@ -930,6 +933,8 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 unset($sNewTitle);
                 unset($sOldTitle);
             }
+
+            $questionTypeMap[$oQuestion->qid] = $oQuestion->type;
         }
     }
 
@@ -972,15 +977,40 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             foreach ($row as $key => $value) {
                 $insertdata[(string) $key] = (string) $value;
             }
-            if (isset($xml->answer_l10ns->rows->row)) {
-                $iOldAID = $insertdata['aid'];
-                unset($insertdata['aid']);
-            }
-            if (!isset($aQIDReplacements[(int) $insertdata['qid']])) {
+
+            $oldQid = (int) $insertdata['qid'];
+            if (!isset($aQIDReplacements[$oldQid])) {
                 continue;
             }
 
-            $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
+            $newParentQid = $aQIDReplacements[$oldQid];
+
+            if (isset($questionTypeMap[$newParentQid]) && $questionTypeMap[$newParentQid] == 'R') {
+                $subQuestionData = [
+                    'sid' => $iNewSID,
+                    'gid' => $iNewGID,
+                    'parent_qid' => $newParentQid,
+                    'type' => 'R',
+                    'title' => $insertdata['code'],
+                    'relevance' => '1',
+                    'scale_id' => $insertdata['scale_id'] ?? 0,
+                    'question_order' => $insertdata['sortorder'] ?? 0,
+                ];
+
+                $oSubQuestion = new Question();
+                $oSubQuestion->setAttributes($subQuestionData, false);
+
+                if ($oSubQuestion->save()) {
+                    $importedSubQuestions[$oSubQuestion->qid] = $oSubQuestion;
+                    $allImportedQuestions[$oSubQuestion->qid] = $oSubQuestion;
+                    $results['subquestions']++;
+                    $convertedAnswersToSubquestionsMap[$insertdata['aid']] = $oSubQuestion->qid;
+                }
+                continue;
+            }
+
+            // Standard Answer Processing for non-R types
+            $insertdata['qid'] = $newParentQid;
 
             if (!isset($xml->answer_l10ns->rows->row)) {
                 // now translate any links
@@ -1035,6 +1065,17 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 $insertdata[(string) $key] = (string) $value;
             }
             unset($insertdata['id']);
+
+            if (isset($convertedAnswersToSubquestionsMap[$insertdata['aid']])) {
+                $questionl10n = new QuestionL10n();
+                $questionl10n->qid = $convertedAnswersToSubquestionsMap[$insertdata['aid']];
+                $questionl10n->question = $insertdata['answer'];
+                $questionl10n->language = $insertdata['language'];;
+                $questionl10n->save();
+
+                continue;
+            }
+
             // now translate any links
             if ($options['translinkfields']) {
                 $insertdata['answer'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['answer']);
