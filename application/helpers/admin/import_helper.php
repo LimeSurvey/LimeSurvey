@@ -665,7 +665,6 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
     $questionTypeMap = array();
-    $convertedAnswersToSubquestionsMap = array();
 
     // This array will collect all records that need INSERTANS conversion
     $pendingInsertansUpdates = [];
@@ -787,6 +786,8 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             if ($signature = getInsertansSignature('Question', $oQuestion)) {
                 $pendingInsertansUpdates[] = $signature;
             }
+
+            $questionTypeMap[$oQuestion->qid] = $oQuestion->type;
         }
 
         $results['questions'] = isset($results['questions']) ? $results['questions'] + 1 : 1;
@@ -802,7 +803,6 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
             unset($oQuestionL10n);
         }
-        $questionTypeMap[$oQuestion->qid] = $oQuestion->type;
     }
 
     // Import subquestions -------------------------------------------------------
@@ -933,13 +933,28 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 unset($sNewTitle);
                 unset($sOldTitle);
             }
-
-            $questionTypeMap[$oQuestion->qid] = $oQuestion->type;
         }
     }
 
     $newOldQidMapping = array_flip($aQIDReplacements);
     $allImportedQuestions = $importedQuestions + $importedSubQuestions;
+
+    $raids = []; // ['aid'] = 'qid' (only ranking questions)
+    handleLegacyRankingAnswers(
+        $xml,
+        $questionTypeMap,
+        $options,
+        $iOldSID,
+        $iNewSID,
+        $iNewGID,
+        $aQIDReplacements,
+        $oldNewFieldRoots,
+        $newOldQidMapping,
+        $allImportedQuestions,
+        $importedSubQuestions,
+        $raids,
+        $results
+    );
 
     //  Import question_l10ns
     if (isset($xml->question_l10ns->rows->row)) {
@@ -977,40 +992,18 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             foreach ($row as $key => $value) {
                 $insertdata[(string) $key] = (string) $value;
             }
-
-            $oldQid = (int) $insertdata['qid'];
-            if (!isset($aQIDReplacements[$oldQid])) {
+            if (isset($xml->answer_l10ns->rows->row)) {
+                $iOldAID = $insertdata['aid'];
+                unset($insertdata['aid']);
+            }
+            if (!isset($aQIDReplacements[(int) $insertdata['qid']])) {
                 continue;
             }
 
-            $newParentQid = $aQIDReplacements[$oldQid];
+            $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
 
-            if (isset($questionTypeMap[$newParentQid]) && $questionTypeMap[$newParentQid] == 'R') {
-                $subQuestionData = [
-                    'sid' => $iNewSID,
-                    'gid' => $iNewGID,
-                    'parent_qid' => $newParentQid,
-                    'type' => 'R',
-                    'title' => $insertdata['code'],
-                    'relevance' => '1',
-                    'scale_id' => $insertdata['scale_id'] ?? 0,
-                    'question_order' => $insertdata['sortorder'] ?? 0,
-                ];
-
-                $oSubQuestion = new Question();
-                $oSubQuestion->setAttributes($subQuestionData, false);
-
-                if ($oSubQuestion->save()) {
-                    $importedSubQuestions[$oSubQuestion->qid] = $oSubQuestion;
-                    $allImportedQuestions[$oSubQuestion->qid] = $oSubQuestion;
-                    $results['subquestions']++;
-                    $convertedAnswersToSubquestionsMap[$insertdata['aid']] = $oSubQuestion->qid;
-                }
+            if(isset($questionTypeMap[$insertdata['qid']]) && $questionTypeMap[$insertdata['qid']] == Question::QT_R_RANKING)
                 continue;
-            }
-
-            // Standard Answer Processing for non-R types
-            $insertdata['qid'] = $newParentQid;
 
             if (!isset($xml->answer_l10ns->rows->row)) {
                 // now translate any links
@@ -1065,17 +1058,6 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 $insertdata[(string) $key] = (string) $value;
             }
             unset($insertdata['id']);
-
-            if (isset($convertedAnswersToSubquestionsMap[$insertdata['aid']])) {
-                $questionl10n = new QuestionL10n();
-                $questionl10n->qid = $convertedAnswersToSubquestionsMap[$insertdata['aid']];
-                $questionl10n->question = $insertdata['answer'];
-                $questionl10n->language = $insertdata['language'];;
-                $questionl10n->save();
-
-                continue;
-            }
-
             // now translate any links
             if ($options['translinkfields']) {
                 $insertdata['answer'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['answer']);
@@ -1085,6 +1067,9 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             } else {
                 continue; //Skip invalid answer ID
             }
+
+            if(isset($raids[$insertdata['aid']]))
+                continue;
 
             $insertdata['answer'] = fixText(convertLegacyInsertans($insertdata['answer'] ?? "", $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
 
@@ -4913,4 +4898,99 @@ function savePendingInsertansUpdates($pendingInsertansUpdates)
         $model->save(false);
     }
     unset($pendingInsertansUpdates);
+}
+
+function handleLegacyRankingAnswers(
+    $xml,
+    $questionTypeMap,
+    $options,
+    $iOldSID,
+    $iNewSID,
+    $iNewGID,
+    $aQIDReplacements,
+    $oldNewFieldRoots,
+    $newOldQidMapping,
+    $allImportedQuestions,
+    &$importedSubQuestions,
+    &$raids,
+    &$results
+)
+{
+    if (isset($xml->answers)) {
+        foreach ($xml->answers->rows->row as $row) {
+            $insertdata = array();
+
+            foreach ($row as $key => $value) {
+                $insertdata[(string) $key] = (string) $value;
+            }
+
+            if (!isset($aQIDReplacements[(int) $insertdata['qid']]))
+                continue;
+
+            $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']];
+
+            if(isset($questionTypeMap[$insertdata['qid']]) && $questionTypeMap[$insertdata['qid']] == Question::QT_R_RANKING) {
+                $subQuestionData = [
+                    'sid' => $iNewSID,
+                    'gid' => $iNewGID,
+                    'parent_qid' => $insertdata['qid'],
+                    'type' => Question::QT_R_RANKING,
+                    'title' => $insertdata['code'],
+                    'relevance' => '1',
+                    'scale_id' => $insertdata['scale_id'] ?? 0,
+                    'question_order' => $insertdata['sortorder'] ?? 0,
+                ];
+
+                $oSubQuestion = new Question();
+                $oSubQuestion->setAttributes($subQuestionData, false);
+
+                if ($oSubQuestion->save()) {
+                    $importedSubQuestions[$oSubQuestion->qid] = $oSubQuestion;
+                    $allImportedQuestions[$oSubQuestion->qid] = $oSubQuestion;
+                    $results['subquestions']++;
+                    $raids[$insertdata['aid']] = $oSubQuestion->qid;
+                }
+            }
+        }
+    }
+
+    if(isset($xml->answer_l10ns->rows->row)) {
+        foreach ($xml->answer_l10ns->rows->row as $row) {
+            $insertdata = array();
+            foreach ($row as $key => $value) {
+                $insertdata[(string) $key] = (string) $value;
+            }
+            unset($insertdata['id']);
+            if ($options['translinkfields']) {
+                $insertdata['answer'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['answer']);
+            }
+            if (isset($aAIDReplacements[$insertdata['aid']])) {
+                $insertdata['aid'] = $aAIDReplacements[$insertdata['aid']];
+            } else {
+                continue; //Skip invalid answer ID
+            }
+
+            if (!isset($raids[$insertdata['aid']])) {
+                continue;
+            }
+
+            $insertdata['answer'] = fixText(convertLegacyInsertans($insertdata['answer'] ?? "", $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
+
+            $questionl10n = new QuestionL10n();
+            $questionl10n->qid = $raids[$insertdata['aid']];
+            $questionl10n->question = $insertdata['answer'];
+            $questionl10n->language = $insertdata['language'];;
+            $questionl10n->save();
+
+            // If translate links is disabled, check for old links.
+            if (!$options['translinkfields']) {
+                if (checkOldLinks('survey', $iOldSID, $questionl10n->question)) {
+                    $oQuestion = Question::model()->findByPk($questionl10n->qid);
+                    $parentQuestion = Question::model()->findByPk($oQuestion->parent_qid);
+
+                    $results['importwarnings'][] = sprintf(gT("Subquestion %s of question %s has outdated links."), $oQuestion->title, $parentQuestion->title);
+                }
+            }
+        }
+    }
 }
