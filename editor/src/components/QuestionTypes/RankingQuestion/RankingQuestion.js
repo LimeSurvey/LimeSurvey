@@ -10,6 +10,7 @@ export const RankingQuestion = ({
   handleChildAdd,
   handleChildDelete,
   handleOnChildDragEnd,
+  handleChildCodeUpdate,
 }) => {
   const handleAnswerUpdate = (value, index) => {
     handleChildLUpdate(value, index, answers, Entities.answer)
@@ -33,6 +34,7 @@ export const RankingQuestion = ({
         question={question}
         handleRemovingAnswers={handleRemovingAnswers}
         handleOnDragEnd={handleOnDragEnd}
+        handleChildCodeUpdate={handleChildCodeUpdate}
       />
     </div>
   )
