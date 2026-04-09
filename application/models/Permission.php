@@ -683,8 +683,8 @@ class Permission extends LSActiveRecord
                 'data-bs-target'  => '#confirmation-modal',
                 'data-btnclass'   => 'btn-danger',
                 'type'            => 'submit',
-                'data-btntext'    => gt("Delete"),
-                'data-title'      => gt('Delete user survey permissions'),
+                'data-btntext'    => gT("Delete"),
+                'data-title'      => gT('Delete user survey permissions'),
                 'data-message'    => gT("Are you sure you want to delete this entry?"),
                 'data-post-url'   => App()->createUrl("surveyPermissions/deleteUserPermissions/"),
                 'data-post-datas' => json_encode(['surveyid' => $this->entity_id, 'userid' => $this->uid]),
@@ -700,6 +700,7 @@ class Permission extends LSActiveRecord
 
     /**
      * Checks if a user has a certain permission in the given survey
+     * Note: This function automatically also takes global permissions into account
      *
      * @param $iSurveyID integer The survey ID
      * @param $sPermission string Name of the permission
@@ -793,11 +794,14 @@ class Permission extends LSActiveRecord
     /**
      * get the connected user role
      * @param integer $iUserID user id
-     * @return int roleId
-     * @throws Exception
+     * @return array of UserInPermissionrole records
      */
     public static function getUserRole($iUserID)
     {
+        if (App()->getConfig("DBVersion") < 419) {
+            /* No UserInPermissionrole column before 419 */
+            return [];
+        }
         return UserInPermissionrole::model()->getRoleForUser($iUserID);
     }
 

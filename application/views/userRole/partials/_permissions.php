@@ -25,7 +25,7 @@ Yii::app()->getController()->renderPartial(
                 <th><?php
                     eT("Permission"); ?></th>
                 <th><?php
-                    eT("General"); ?></th>
+                    eT("All"); ?></th>
                 <th><?php
                     eT("Create"); ?></th>
                 <th><?php

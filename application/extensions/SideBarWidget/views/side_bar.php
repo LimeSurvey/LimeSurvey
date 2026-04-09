@@ -10,10 +10,10 @@
         <?php foreach ($icons as $icon) : ?>
             <div class="sidebar-icon">
                 <div data-bs-toggle="tooltip"
-                     title="<?= $icon['title'] ?>"
+                     title="<?= CHtml::encode($icon['title']) ?>"
                      data-bs-offset="0, 20"
                      data-bs-placement="right">
-                    <a href="<?= $icon['url'] ?>"
+                    <a href="<?= CHtml::encode($icon['url']) ?>"
                        target="<?= $icon['external'] ? '_blank' : '' ?>"
                        class="btn btn-g-800 btn-icon"
                         <?= $icon['selected'] ? 'selected' : '' ?>

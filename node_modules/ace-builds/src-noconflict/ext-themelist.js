@@ -13,7 +13,8 @@ var themeData = [
     ["Dawn"],
     ["Dreamweaver"],
     ["Eclipse"],
-    ["GitHub"],
+    ["GitHub Light Default"],
+    ["GitHub (Legacy)", "github", "light"],
     ["IPlastic"],
     ["Solarized Light"],
     ["TextMate"],
@@ -22,6 +23,7 @@ var themeData = [
     ["Kuroir"],
     ["KatzenMilch"],
     ["SQL Server", "sqlserver", "light"],
+    ["CloudEditor", "cloud_editor", "light"],
     ["Ambiance", "ambiance", "dark"],
     ["Chaos", "chaos", "dark"],
     ["Clouds Midnight", "clouds_midnight", "dark"],
@@ -45,7 +47,9 @@ var themeData = [
     ["Tomorrow Night Bright", "tomorrow_night_bright", "dark"],
     ["Tomorrow Night 80s", "tomorrow_night_eighties", "dark"],
     ["Twilight", "twilight", "dark"],
-    ["Vibrant Ink", "vibrant_ink", "dark"]
+    ["Vibrant Ink", "vibrant_ink", "dark"],
+    ["GitHub Dark", "github_dark", "dark"],
+    ["CloudEditor Dark", "cloud_editor_dark", "dark"]
 ];
 exports.themesByName = {};
 exports.themes = themeData.map(function (data) {

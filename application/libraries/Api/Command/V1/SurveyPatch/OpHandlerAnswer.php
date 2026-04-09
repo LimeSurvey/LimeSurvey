@@ -169,7 +169,7 @@ class OpHandlerAnswer implements OpHandlerInterface
         $this->questionAggregateService->checkUpdatePermission($surveyId);
         $question = $this->questionService->getQuestionBySidAndQid(
             $surveyId,
-            $op->getEntityId()
+            (int)$op->getEntityId()
         );
 
         $data = $this->transformer->transformAll(

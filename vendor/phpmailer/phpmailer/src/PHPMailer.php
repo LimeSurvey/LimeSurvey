@@ -253,7 +253,7 @@ class PHPMailer
      * You can set your own, but it must be in the format "<id@domain>",
      * as defined in RFC5322 section 3.6.4 or it will be ignored.
      *
-     * @see https://tools.ietf.org/html/rfc5322#section-3.6.4
+     * @see https://www.rfc-editor.org/rfc/rfc5322#section-3.6.4
      *
      * @var string
      */
@@ -387,7 +387,7 @@ class PHPMailer
      * 'DELAY'   will notify you if there is an unusual delay in delivery, but the actual
      *           delivery's outcome (success or failure) is not yet decided.
      *
-     * @see https://tools.ietf.org/html/rfc3461 See section 4.1 for more information about NOTIFY
+     * @see https://www.rfc-editor.org/rfc/rfc3461.html#section-4.1 for more information about NOTIFY
      */
     public $dsn = '';
 
@@ -580,6 +580,10 @@ class PHPMailer
      * May be a callable to inject your own validator, but there are several built-in validators.
      * The default validator uses PHP's FILTER_VALIDATE_EMAIL filter_var option.
      *
+     * If CharSet is UTF8, the validator is left at the default value,
+     * and you send to addresses that use non-ASCII local parts, then
+     * PHPMailer automatically changes to the 'eai' validator.
+     *
      * @see PHPMailer::validateAddress()
      *
      * @var string|callable
@@ -658,6 +662,14 @@ class PHPMailer
      * @var array
      */
     protected $ReplyToQueue = [];
+
+    /**
+     * Whether the need for SMTPUTF8 has been detected. Set by
+     * preSend() if necessary.
+     *
+     * @var bool
+     */
+    public $UseSMTPUTF8 = false;
 
     /**
      * The array of attachments.
@@ -756,7 +768,7 @@ class PHPMailer
      *
      * @var string
      */
-    const VERSION = '6.9.2';
+    const VERSION = '6.12.0';
 
     /**
      * Error severity: message only, continue processing.
@@ -1110,19 +1122,22 @@ class PHPMailer
         $params = [$kind, $address, $name];
         //Enqueue addresses with IDN until we know the PHPMailer::$CharSet.
         //Domain is assumed to be whatever is after the last @ symbol in the address
-        if (static::idnSupported() && $this->has8bitChars(substr($address, ++$pos))) {
-            if ('Reply-To' !== $kind) {
-                if (!array_key_exists($address, $this->RecipientsQueue)) {
-                    $this->RecipientsQueue[$address] = $params;
+        if ($this->has8bitChars(substr($address, ++$pos))) {
+            if (static::idnSupported()) {
+                if ('Reply-To' !== $kind) {
+                    if (!array_key_exists($address, $this->RecipientsQueue)) {
+                        $this->RecipientsQueue[$address] = $params;
+
+                        return true;
+                    }
+                } elseif (!array_key_exists($address, $this->ReplyToQueue)) {
+                    $this->ReplyToQueue[$address] = $params;
 
                     return true;
                 }
-            } elseif (!array_key_exists($address, $this->ReplyToQueue)) {
-                $this->ReplyToQueue[$address] = $params;
-
-                return true;
             }
-
+            //We have an 8-bit domain, but we are missing the necessary extensions to support it
+            //Or we are already sending to this address
             return false;
         }
 
@@ -1160,6 +1175,15 @@ class PHPMailer
      */
     protected function addAnAddress($kind, $address, $name = '')
     {
+        if (
+            self::$validator === 'php' &&
+            ((bool) preg_match('/[\x80-\xFF]/', $address))
+        ) {
+            //The caller has not altered the validator and is sending to an address
+            //with UTF-8, so assume that they want UTF-8 support instead of failing
+            $this->CharSet = self::CHARSET_UTF8;
+            self::$validator = 'eai';
+        }
         if (!in_array($kind, ['to', 'cc', 'bcc', 'Reply-To'])) {
             $error_message = sprintf(
                 '%s: %s',
@@ -1362,6 +1386,7 @@ class PHPMailer
      * * `pcre` Use old PCRE implementation;
      * * `php` Use PHP built-in FILTER_VALIDATE_EMAIL;
      * * `html5` Use the pattern given by the HTML5 spec for 'email' type form input elements.
+     * * `eai` Use a pattern similar to the HTML5 spec for 'email' and to firefox, extended to support EAI (RFC6530).
      * * `noregex` Don't use a regex: super fast, really dumb.
      * Alternatively you may pass in a callable to inject your own validator, for example:
      *
@@ -1430,6 +1455,24 @@ class PHPMailer
                 return (bool) preg_match(
                     '/^[a-zA-Z0-9.!#$%&\'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}' .
                     '[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/sD',
+                    $address
+                );
+            case 'eai':
+                /*
+                 * This is the pattern used in the HTML5 spec for validation of 'email' type
+                 * form input elements (as above), modified to accept Unicode email addresses.
+                 * This is also more lenient than Firefox' html5 spec, in order to make the regex faster.
+                 * 'eai' is an acronym for Email Address Internationalization.
+                 * This validator is selected automatically if you attempt to use recipient addresses
+                 * that contain Unicode characters in the local part.
+                 *
+                 * @see https://html.spec.whatwg.org/#e-mail-state-(type=email)
+                 * @see https://en.wikipedia.org/wiki/International_email
+                 */
+                return (bool) preg_match(
+                    '/^[-\p{L}\p{N}\p{M}.!#$%&\'*+\/=?^_`{|}~]+@[\p{L}\p{N}\p{M}](?:[\p{L}\p{N}\p{M}-]{0,61}' .
+                    '[\p{L}\p{N}\p{M}])?(?:\.[\p{L}\p{N}\p{M}]' .
+                    '(?:[-\p{L}\p{N}\p{M}]{0,61}[\p{L}\p{N}\p{M}])?)*$/usD',
                     $address
                 );
             case 'php':
@@ -1565,9 +1608,26 @@ class PHPMailer
             $this->error_count = 0; //Reset errors
             $this->mailHeader = '';
 
+            //The code below tries to support full use of Unicode,
+            //while remaining compatible with legacy SMTP servers to
+            //the greatest degree possible: If the message uses
+            //Unicode in the local parts of any addresses, it is sent
+            //using SMTPUTF8. If not, it it sent using
+            //punycode-encoded domains and plain SMTP.
+            if (
+                static::CHARSET_UTF8 === strtolower($this->CharSet) &&
+                ($this->anyAddressHasUnicodeLocalPart($this->RecipientsQueue) ||
+                 $this->anyAddressHasUnicodeLocalPart(array_keys($this->all_recipients)) ||
+                 $this->anyAddressHasUnicodeLocalPart($this->ReplyToQueue) ||
+                 $this->addressHasUnicodeLocalPart($this->From))
+            ) {
+                $this->UseSMTPUTF8 = true;
+            }
             //Dequeue recipient and Reply-To addresses with IDN
             foreach (array_merge($this->RecipientsQueue, $this->ReplyToQueue) as $params) {
-                $params[1] = $this->punyencodeAddress($params[1]);
+                if (!$this->UseSMTPUTF8) {
+                    $params[1] = $this->punyencodeAddress($params[1]);
+                }
                 call_user_func_array([$this, 'addAnAddress'], $params);
             }
             if (count($this->to) + count($this->cc) + count($this->bcc) < 1) {
@@ -1871,7 +1931,7 @@ class PHPMailer
      */
     protected static function isPermittedPath($path)
     {
-        //Matches scheme definition from https://tools.ietf.org/html/rfc3986#section-3.1
+        //Matches scheme definition from https://www.rfc-editor.org/rfc/rfc3986#section-3.1
         return !preg_match('#^[a-z][a-z\d+.-]*://#i', $path);
     }
 
@@ -2058,6 +2118,11 @@ class PHPMailer
         if (!$this->smtpConnect($this->SMTPOptions)) {
             throw new Exception($this->lang('smtp_connect_failed'), self::STOP_CRITICAL);
         }
+        //If we have recipient addresses that need Unicode support,
+        //but the server doesn't support it, stop here
+        if ($this->UseSMTPUTF8 && !$this->smtp->getServerExt('SMTPUTF8')) {
+            throw new Exception($this->lang('no_smtputf8'), self::STOP_CRITICAL);
+        }
         //Sender already validated in preSend()
         if ('' === $this->Sender) {
             $smtp_from = $this->From;
@@ -2159,6 +2224,7 @@ class PHPMailer
         $this->smtp->setDebugLevel($this->SMTPDebug);
         $this->smtp->setDebugOutput($this->Debugoutput);
         $this->smtp->setVerp($this->do_verp);
+        $this->smtp->setSMTPUTF8($this->UseSMTPUTF8);
         if ($this->Host === null) {
             $this->Host = 'localhost';
         }
@@ -2356,6 +2422,7 @@ class PHPMailer
             'smtp_detail' => 'Detail: ',
             'smtp_error' => 'SMTP server error: ',
             'variable_set' => 'Cannot set or reset variable: ',
+            'no_smtputf8' => 'Server does not support SMTPUTF8 needed to send to Unicode addresses',
         ];
         if (empty($lang_path)) {
             //Calculate an absolute path so it can work if CWD is not here
@@ -2705,7 +2772,7 @@ class PHPMailer
         }
 
         //Only allow a custom message ID if it conforms to RFC 5322 section 3.6.4
-        //https://tools.ietf.org/html/rfc5322#section-3.6.4
+        //https://www.rfc-editor.org/rfc/rfc5322#section-3.6.4
         if (
             '' !== $this->MessageID &&
             preg_match(
@@ -2870,7 +2937,9 @@ class PHPMailer
         $bodyEncoding = $this->Encoding;
         $bodyCharSet = $this->CharSet;
         //Can we do a 7-bit downgrade?
-        if (static::ENCODING_8BIT === $bodyEncoding && !$this->has8bitChars($this->Body)) {
+        if ($this->UseSMTPUTF8) {
+            $bodyEncoding = static::ENCODING_8BIT;
+        } elseif (static::ENCODING_8BIT === $bodyEncoding && !$this->has8bitChars($this->Body)) {
             $bodyEncoding = static::ENCODING_7BIT;
             //All ISO 8859, Windows codepage and UTF-8 charsets are ascii compatible up to 7-bit
             $bodyCharSet = static::CHARSET_ASCII;
@@ -3507,7 +3576,8 @@ class PHPMailer
     /**
      * Encode a header value (not including its label) optimally.
      * Picks shortest of Q, B, or none. Result includes folding if needed.
-     * See RFC822 definitions for phrase, comment and text positions.
+     * See RFC822 definitions for phrase, comment and text positions,
+     * and RFC2047 for inline encodings.
      *
      * @param string $str      The header value to encode
      * @param string $position What context the string will be used in
@@ -3516,6 +3586,11 @@ class PHPMailer
      */
     public function encodeHeader($str, $position = 'text')
     {
+        $position = strtolower($position);
+        if ($this->UseSMTPUTF8 && !("comment" === $position)) {
+            return trim(static::normalizeBreaks($str));
+        }
+
         $matchcount = 0;
         switch (strtolower($position)) {
             case 'phrase':
@@ -4180,7 +4255,7 @@ class PHPMailer
         if ('smtp' === $this->Mailer && null !== $this->smtp) {
             $lasterror = $this->smtp->getError();
             if (!empty($lasterror['error'])) {
-                $msg .= $this->lang('smtp_error') . $lasterror['error'];
+                $msg .= ' ' . $this->lang('smtp_error') . $lasterror['error'];
                 if (!empty($lasterror['detail'])) {
                     $msg .= ' ' . $this->lang('smtp_detail') . $lasterror['detail'];
                 }
@@ -4266,6 +4341,45 @@ class PHPMailer
         //Is it a syntactically valid hostname (when embedded in a URL)?
         return filter_var('https://' . $host, FILTER_VALIDATE_URL) !== false;
     }
+
+    /**
+     * Check whether the supplied address uses Unicode in the local part.
+     *
+     * @return bool
+     */
+    protected function addressHasUnicodeLocalPart($address)
+    {
+        return (bool) preg_match('/[\x80-\xFF].*@/', $address);
+    }
+
+    /**
+     * Check whether any of the supplied addresses use Unicode in the local part.
+     *
+     * @return bool
+     */
+    protected function anyAddressHasUnicodeLocalPart($addresses)
+    {
+        foreach ($addresses as $address) {
+            if (is_array($address)) {
+                $address = $address[0];
+            }
+            if ($this->addressHasUnicodeLocalPart($address)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check whether the message requires SMTPUTF8 based on what's known so far.
+     *
+     * @return bool
+     */
+    public function needsSMTPUTF8()
+    {
+        return $this->UseSMTPUTF8;
+    }
+
 
     /**
      * Get an error message in the current language.
@@ -4910,7 +5024,7 @@ class PHPMailer
      * Uses the 'relaxed' algorithm from RFC6376 section 3.4.2.
      * Canonicalized headers should *always* use CRLF, regardless of mailer setting.
      *
-     * @see https://tools.ietf.org/html/rfc6376#section-3.4.2
+     * @see https://www.rfc-editor.org/rfc/rfc6376#section-3.4.2
      *
      * @param string $signHeader Header
      *
@@ -4922,7 +5036,7 @@ class PHPMailer
         $signHeader = static::normalizeBreaks($signHeader, self::CRLF);
         //Unfold header lines
         //Note PCRE \s is too broad a definition of whitespace; RFC5322 defines it as `[ \t]`
-        //@see https://tools.ietf.org/html/rfc5322#section-2.2
+        //@see https://www.rfc-editor.org/rfc/rfc5322#section-2.2
         //That means this may break if you do something daft like put vertical tabs in your headers.
         $signHeader = preg_replace('/\r\n[ \t]+/', ' ', $signHeader);
         //Break headers out into an array
@@ -4954,7 +5068,7 @@ class PHPMailer
      * Uses the 'simple' algorithm from RFC6376 section 3.4.3.
      * Canonicalized bodies should *always* use CRLF, regardless of mailer setting.
      *
-     * @see https://tools.ietf.org/html/rfc6376#section-3.4.3
+     * @see https://www.rfc-editor.org/rfc/rfc6376#section-3.4.3
      *
      * @param string $body Message Body
      *
@@ -4990,7 +5104,7 @@ class PHPMailer
         $DKIMquery = 'dns/txt'; //Query method
         $DKIMtime = time();
         //Always sign these headers without being asked
-        //Recommended list from https://tools.ietf.org/html/rfc6376#section-5.4.1
+        //Recommended list from https://www.rfc-editor.org/rfc/rfc6376#section-5.4.1
         $autoSignHeaders = [
             'from',
             'to',
@@ -5096,7 +5210,7 @@ class PHPMailer
         }
         //The DKIM-Signature header is included in the signature *except for* the value of the `b` tag
         //which is appended after calculating the signature
-        //https://tools.ietf.org/html/rfc6376#section-3.5
+        //https://www.rfc-editor.org/rfc/rfc6376#section-3.5
         $dkimSignatureHeader = 'DKIM-Signature: v=1;' .
             ' d=' . $this->DKIM_domain . ';' .
             ' s=' . $this->DKIM_selector . ';' . static::$LE .

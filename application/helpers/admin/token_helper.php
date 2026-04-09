@@ -32,9 +32,10 @@ function emailTokens($iSurveyID, $aResultTokens, $sType, $continueOnError = fals
     $mail->setSurvey($iSurveyID);
     $mail->emailType = $sType;
     $mail->replaceTokenAttributes = true;
-    foreach ($aResultTokens as $aTokenRow) {
+    foreach ($aResultTokens as $index => $aTokenRow) {
         $mail = \LimeMailer::getInstance();
         $mail->setToken($aTokenRow['token']);
+        $mail->index = $index;
         $mail->setTypeWithRaw($sType, $aTokenRow['language']);
 
         if (isset($aTokenRow['validfrom']) && trim((string) $aTokenRow['validfrom']) != '' && convertDateTimeFormat($aTokenRow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1) {

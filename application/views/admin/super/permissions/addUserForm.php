@@ -20,7 +20,7 @@
         ); ?>
     </div>
     <div class='col-md-4 '>
-        <?php echo CHtml::button(gT("Add user"),array('class'=>'btn btn-outline-secondary', 'type'=>'submit')); ?>
+        <?php echo CHtml::button(gT("Add user", 'unescaped'),array('class'=>'btn btn-outline-secondary', 'type'=>'submit')); ?>
     </div>
 </div>
 </form>

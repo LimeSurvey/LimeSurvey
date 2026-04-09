@@ -13,6 +13,9 @@
 *
 */
 
+use LimeSurvey\Menu\Menu;
+use LimeSurvey\Menu\MenuItem;
+
 /**
 * Survey Common Action
 *
@@ -305,43 +308,6 @@ class SurveyCommonAction extends CAction
     }
 
     /**
-     * Load menu bar of user group controller.
-     *
-     * REFACTORED (it's in UserGroupController and uses function from Layouthelper->renderMenuBar())
-     *
-     * @param array $aData
-     * @return void
-     */
-    /*
-    public function userGroupBar(array $aData)
-    {
-        $ugid = $aData['ugid'] ?? 0;
-        if (!empty($aData['display']['menu_bars']['user_group'])) {
-            $data = $aData;
-            Yii::app()->loadHelper('database');
-
-            if (!empty($ugid)) {
-                $userGroup = UserGroup::model()->findByPk($ugid);
-                $uid = Yii::app()->session['loginID'];
-                if (($userGroup && ($userGroup->hasUser($uid)) || $userGroup->owner_id == $uid) || Permission::model()->hasGlobalPermission('superadmin')) {
-                    $data['userGroup'] = $userGroup;
-                } else {
-                    $data['userGroup'] = null;
-                }
-            }
-
-            $data['imageurl'] = Yii::app()->getConfig("adminimageurl");
-
-            if (isset($aData['usergroupbar']['closebutton']['url'])) {
-                $sAlternativeUrl = $aData['usergroupbar']['closebutton']['url'];
-                $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
-            }
-
-            $this->getController()->renderPartial('/admin/usergroup/usergroupbar_view', $data);
-        }
-    } */
-
-    /**
      * Renders template(s) wrapped in header and footer
      *
      * Addition of parameters should be avoided if they can be added to $aData
@@ -404,6 +370,10 @@ class SurveyCommonAction extends CAction
      *
      *
      * REFACTORED (in LayoutHelper.php)
+     *
+     * Passes security_update_available and stability_labels to the notification view.
+     *
+     * @return string|void Rendered notification HTML, or void if no update
      * @throws CException
      */
     protected function updatenotification()
@@ -422,7 +392,10 @@ class SurveyCommonAction extends CAction
             if ($updateNotification->result) {
                 $scriptToRegister = App()->getConfig('packages') . DIRECTORY_SEPARATOR . 'comfort_update' . DIRECTORY_SEPARATOR. 'comfort_update.js';
                 App()->getClientScript()->registerScriptFile($scriptToRegister);
-                return $this->getController()->renderPartial("/admin/update/_update_notification", array('security_update_available' => $updateNotification->security_update));
+                return $this->getController()->renderPartial("/admin/update/_update_notification", array(
+                    'security_update_available' => $updateNotification->security_update,
+                    'stability_labels' => Yii::app()->session['update_stability_labels'] ?? [],
+                ));
             }
         }
     }
@@ -517,7 +490,7 @@ class SurveyCommonAction extends CAction
             $aData['dataForConfigMenu']['userscount'] = User::model()->count();
 
             //Check if have a comfortUpdate key
-            if (getGlobalSetting('emailsmtpdebug') != '') {
+            if (getGlobalSetting('update_key') != '') {
                 $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('Activated');
             } else {
                 $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('None');
@@ -527,6 +500,8 @@ class SurveyCommonAction extends CAction
 
             // Fetch extra menus from plugins, e.g. last visited surveys
             $aData['extraMenus'] = $this->fetchExtraMenus($aData);
+            //new create process (including survey, survey group, import survey)
+            $aData['extraMenus'][] = $this->getCreateMenu();
 
             // Get notification menu
             $surveyId = $aData['surveyid'] ?? null;
@@ -536,6 +511,71 @@ class SurveyCommonAction extends CAction
             $this->getController()->renderPartial("/layouts/adminmenu", $aData);
         }
         return null;
+    }
+
+    /**
+     * REFACTORED in LayoutHelper (necessary to have it here,
+     * until all controllers have been refactored...)
+     *
+     * @return Menu
+     */
+    public function getCreateMenu() {
+        $itemClass = 'create-menu-item';
+        $menuItemHeader = [
+            'isDivider' => false,
+            'isSmallText' => true,
+            'label' => gT('Create new...'),
+            'href' => '#',
+            'iconClass' => 'ri-add-line',
+        ];
+        $menuItems[] = (new MenuItem($menuItemHeader));
+
+        $menuItemNewSurvey = [
+            'isDivider' => false,
+            'isSmallText' => false,
+            'label' => gT('Survey'),
+            'href' => \Yii::app()->createUrl('surveyAdministration/newSurvey'),
+            'iconClass' => 'ri-add-line',
+            'id' => 'create-survey-link',
+            'itemClass' => $itemClass
+        ];
+        $menuItems[] = (new MenuItem($menuItemNewSurvey));
+
+        $menuItemNewSurvey = [
+            'isDivider' => false,
+            'isSmallText' => false,
+            'label' => gT('Survey group'),
+            'href' => \Yii::app()->createUrl('admin/surveysgroups/sa/create'),
+            'iconClass' => 'ri-add-circle-line',
+            'itemClass' => $itemClass
+        ];
+        $menuItems[] = (new MenuItem($menuItemNewSurvey));
+
+        $menuItemNewSurvey = [
+            'isDivider' => false,
+            'isSmallText' => false,
+            'label' => gT('Import survey'),
+            'isModal' => true,
+            'modalId' => 'importSurvey_modal',
+            'iconClass' => 'ri-upload-line',
+            'itemClass' => $itemClass
+        ];
+        $menuItems[] = (new MenuItem($menuItemNewSurvey));
+
+        $options = [
+            'id' => 'createMenuButton',
+            'label' => '+',
+            'iconClass' => 'ri-add-line',
+            'isDropDown' => true,
+            'isDropDownButton' => true,
+            'dropDownButtonClass' => 'btn btn-info btn-create dropdown-toggle-no-caret',
+            'menuItems' => $menuItems,
+            'isPrepended' => true,
+        ];
+
+        $createMenu = new Menu($options);
+
+        return $createMenu;
     }
 
     /**

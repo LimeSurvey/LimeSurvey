@@ -96,7 +96,7 @@ class ResponsesController extends LSBaseController
             $quexmlpdf->setLanguage($sBrowseLanguage);
             set_time_limit(120);
             App()->loadHelper('export');
-            $quexml = quexml_export($surveyId, $sBrowseLanguage, $id);
+            $quexml = quexml_export($surveyId, $sBrowseLanguage, $id, false);
             $quexmlpdf->create($quexmlpdf->createqueXML($quexml));
             $quexmlpdf->write_out("$surveyId-$id-queXML.pdf");
         } else {
@@ -669,7 +669,7 @@ class ResponsesController extends LSBaseController
 
         $resultErrors = $this->deleteResponse($surveyId, $responseId);
         if ($resultErrors['numberOfErrors'] > 0 || $resultErrors['numberOfTimingErrors']) {
-            $message = gt('Response could not be deleted');
+            $message = gT('Response could not be deleted');
             App()->user->setFlash('error', $message);
             $this->redirect(["responses/browse", "surveyId" => $surveyId]);
         }
@@ -1047,7 +1047,7 @@ class ResponsesController extends LSBaseController
      * @param string|null $language
      * @return array
      */
-    private function getData(int $surveyId = null, int $responseId = null, string $language = null): array
+    private function getData(?int $surveyId = null, ?int $responseId = null, ?string $language = null): array
     {
         if (!isset($surveyId)) {
             App()->setFlashMessage(gT("Invalid survey ID"), 'warning');

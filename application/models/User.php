@@ -133,21 +133,6 @@ class User extends LSActiveRecord
     /** @inheritdoc */
     public function scopes()
     {
-        $userStatusType = \Yii::app()->db->schema->getTable('{{users}}')->columns['user_status']->dbType;
-        $activeScope = array(
-            'condition' => 'user_status = :active',
-            'params' => array(
-                'active' => $userStatusType == 'boolean' ? 'TRUE' :  '1',
-            )
-        );
-
-        $notExpiredScope = array(
-            'condition' => "expires > :now OR expires IS NULL",
-            'params' => array(
-                'now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
-            )
-        );
-
         if (App()->getConfig("DBVersion") < 495) {
             /* No expires column before 495 */
             return array(
@@ -155,7 +140,12 @@ class User extends LSActiveRecord
                 'notexpired' => [],
             );
         }
-
+        $notExpiredScope = array(
+            'condition' => "expires > :now OR expires IS NULL",
+            'params' => array(
+                'now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
+            )
+        );
         if (App()->getConfig("DBVersion") < 619) {
             /* No user_status column before 619 */
             return array(
@@ -163,7 +153,13 @@ class User extends LSActiveRecord
                 'notexpired' => $notExpiredScope
             );
         }
-
+        $userStatusType = \Yii::app()->db->schema->getTable('{{users}}')->columns['user_status']->dbType;
+        $activeScope = array(
+            'condition' => 'user_status = :active',
+            'params' => array(
+                'active' => $userStatusType == 'boolean' ? 'TRUE' :  '1',
+            )
+        );
         return array(
             'active' => $activeScope,
             'notexpired' => $notExpiredScope
@@ -665,7 +661,7 @@ class User extends LSActiveRecord
                                 && $this->uid != App()->user->getId() // To update self : must use personal settings
         ];
         $dropdownItems[] = [
-            'title'            => gT('Template permissions'),
+            'title'            => gT('Theme permissions'),
             'iconClass'        => "ri-brush-fill",
             'linkClass'        => "UserManagement--action--openmodal UserManagement--action--templatepermissions",
             'linkAttributes'   => [
@@ -1044,7 +1040,7 @@ class User extends LSActiveRecord
         if (empty($this->full_name)) {
             return $this->users_name;
         }
-        return sprintf(gt("%s (%s)"), $this->users_name, $this->full_name);
+        return sprintf(gT("%s (%s)"), $this->users_name, $this->full_name);
     }
 
     /**
@@ -1093,7 +1089,7 @@ class User extends LSActiveRecord
             'linkAttributes'   => [
                 'data-bs-toggle' => "modal",
                 'data-btnclass'  => 'btn-danger',
-                'data-btntext'   => gt('Delete'),
+                'data-btntext'   => gT('Delete'),
                 'data-post-url'  => App()->createUrl("userGroup/deleteUserFromGroup"),
                 'data-post-datas' => json_encode(['ugid' => $userGroupId, 'uid' => $currentUserId]),
                 'data-message'   => sprintf(

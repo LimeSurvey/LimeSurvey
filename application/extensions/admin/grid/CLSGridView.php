@@ -34,6 +34,13 @@ class CLSGridView extends TbGridView
     public string $rowLink;
 
     /**
+     * Optional table caption. When set, a <caption> element is rendered inside the grid table.
+     * @var string|null
+     */
+    public $caption;
+
+    /**
+     *
      * Initializes the widget.
      * @throws CException
      */
@@ -56,6 +63,29 @@ class CLSGridView extends TbGridView
             }
         }
         $this->registerGridviewScripts();
+    }
+
+    /**
+     * Renders the data items for the grid view.
+     * Overrides parent to output an optional table caption after the opening <table> tag.
+     */
+    public function renderItems()
+    {
+        if ($this->dataProvider->getItemCount() > 0 || $this->showTableOnEmpty) {
+            echo "<table class=\"{$this->itemsCssClass}\">\n";
+            if (!empty($this->caption)) {
+                echo CHtml::tag('caption', ['class' => 'visually-hidden'], CHtml::encode($this->caption)) . "\n";
+            }
+            $this->renderTableHeader();
+            ob_start();
+            $this->renderTableBody();
+            $body = ob_get_clean();
+            $this->renderTableFooter();
+            echo $body; // TFOOT must appear before TBODY according to the standard.
+            echo "</table>";
+        } else {
+            $this->renderEmptyText();
+        }
     }
 
     /**
@@ -87,7 +117,7 @@ class CLSGridView extends TbGridView
             }
             $this->afterAjaxUpdate .= 'LS.actionDropdown.create();';
             $this->afterAjaxUpdate .= 'LS.rowlink.create();';
-            if ($this->lsAdditionalColumns) {
+            if (!empty($this->lsAdditionalColumns)) {
                 $this->afterAjaxUpdate .= 'initColumnFilter()';
             }
             $this->afterAjaxUpdate .= '}';
@@ -130,6 +160,15 @@ class CLSGridView extends TbGridView
 			});
 		';
         App()->getClientScript()->registerScript('pageChanger#' . $this->id, $script, LSYii_ClientScript::POS_POSTSCRIPT);
+
+        // Accessibility: announce "Select all" for header checkboxes (id ending with _all)
+        $selectAllLabel = gT('Select all');
+        $scriptAria = 'jQuery(document).ready(function(){ jQuery("#' . $this->id . ' input[type=checkbox][id$=\'_all\']").attr("aria-label", ' . json_encode($selectAllLabel) . '); });';
+        App()->getClientScript()->registerScript('CLSGridView-ariaSelectAll#' . $this->id, $scriptAria, LSYii_ClientScript::POS_POSTSCRIPT);
+        if (!App()->getClientScript()->isScriptRegistered('CLSGridView-ariaSelectAll-ajax')) {
+            $scriptAriaAjax = 'jQuery(document).ajaxComplete(function(){ jQuery(".grid-view-ls input[type=checkbox][id$=\'_all\']").attr("aria-label", ' . json_encode($selectAllLabel) . '); });';
+            App()->getClientScript()->registerScript('CLSGridView-ariaSelectAll-ajax', $scriptAriaAjax, LSYii_ClientScript::POS_POSTSCRIPT);
+        }
     }
 
     /**
@@ -208,7 +247,6 @@ class CLSGridView extends TbGridView
         if (empty($this->lsAdditionalColumns)) {
             return;
         }
-        $columnsSelected = (array) App()->request->getQuery('columnsSelected');
         $ajaxUpdate = (string) App()->request->getQuery('ajax');
         if (!$this->dataProvider instanceof CActiveDataProvider) {
             return;
@@ -224,29 +262,17 @@ class CLSGridView extends TbGridView
             'headerHtmlOptions' => ['class' => 'text-center ls-sticky-column', 'style' => 'font-size: 1.5em; font-weight: 400;'],
             'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
         ];
-        // If there are no columns selected, we delete the user setting.
-        if (
-            empty($columnsSelected)
-            && $this->ajaxUpdate === $ajaxUpdate
-            // Preserve selected column parameters during sorting
-            // The current sorting AJAX request resets the selected grid view columns
-            && App()->request->getQuery('sort') == null
-        ) {
-            SettingsUser::deleteUserSetting('gridview_columns_' . $this->ajaxUpdate);
-            return;
+        /* Updating the columns to be added */
+        if (App()->request->getParam('selectColumns') && $this->ajaxUpdate === $ajaxUpdate) {
+            $columnsSelected = (array) App()->request->getQuery('columnsSelected');
+            // If there are no columns selected, we delete the user setting.
+            if (empty($columnsSelected)) {
+                SettingsUser::deleteUserSetting('gridview_columns_' . $this->ajaxUpdate);
+            } else {
+                SettingsUser::setUserSetting('gridview_columns_' . $this->ajaxUpdate, json_encode($columnsSelected));
+            }
         }
-
-        // If there are columns selected, we save them in the user setting.
-        if (
-            !empty($columnsSelected)
-            && $this->ajaxUpdate === $ajaxUpdate
-        ) {
-            SettingsUser::setUserSetting('gridview_columns_' . $this->ajaxUpdate, json_encode($columnsSelected));
-            $this->addColumns($columnsSelected);
-            return;
-        }
-
-        // If there are no columns defined in the request, we check if a user setting exists.
+        /* get the columns to be added */
         $userColumns = SettingsUser::getUserSettingValue('gridview_columns_' . $this->ajaxUpdate);
         if (!empty($userColumns)) {
             $columnsSelected = json_decode($userColumns, false);

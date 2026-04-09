@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -45,6 +47,7 @@ $internalConfig = array(
         'node_modules_datatables_bs5' => realpath(__DIR__ . '/../../node_modules/datatables.net-bs5'),
         'node_modules_decimal' => realpath(__DIR__ . '/../../node_modules/decimal.js'),
         'node_modules_jquery_actual' => realpath(__DIR__ . '/../../node_modules/jquery.actual'),
+        'node_modules.chartjs' => realpath(__DIR__ . '/../../node_modules/chart.js/dist'),
         'core' => realpath(__DIR__ . '/../../assets/packages'),
         'fonts' => realpath(__DIR__ . '/../../assets/fonts'),
 
@@ -185,7 +188,7 @@ $internalConfig = array(
                     'levels' => 'trace, info, error, warning',
                     'logFile' => 'plugin.log',
                     'categories' => 'plugin.*'  // The category will be the name of the plugin
-                )
+                ),
             )
         ),
         'cache' => array(
@@ -359,6 +362,8 @@ $internalConfig = array(
                     'Survey'                            =>  array("getAllLanguages", "localizedtitle"),
                     'LSHttpRequest'                     =>  array("getParam"),
                     'LSCaptcha'                          =>  array("renderOut"),
+                    'TemplateConfiguration'             =>  array("__toString"),
+                    'SimpleXMLElement'                  =>  array("__toString"),
                 ),
                 'properties' =>  array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),

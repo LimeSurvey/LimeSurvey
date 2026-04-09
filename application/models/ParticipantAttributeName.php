@@ -123,8 +123,8 @@ class ParticipantAttributeName extends LSActiveRecord
                 'data-bs-target' => "#confirmation-modal",
                 'data-title'     => gT("Delete this attribute"),
                 'data-btnclass'  => "btn-danger",
-                'data-btntext'   => gt("Delete"),
-                'data-message'   => gt('Do you really want to delete this attribute') . "?",
+                'data-btntext'   => gT("Delete"),
+                'data-message'   => gT('Do you really want to delete this attribute') . "?",
                 'data-onclick'   => 'deleteAttributeAjax(' . $this->attribute_id . ")",
             ]
         ];

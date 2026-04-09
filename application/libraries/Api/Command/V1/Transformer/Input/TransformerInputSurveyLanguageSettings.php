@@ -28,10 +28,7 @@ class TransformerInputSurveyLanguageSettings extends Transformer
             'description' => 'surveyls_description',
             'welcomeText' => 'surveyls_welcometext',
             'endText' => 'surveyls_endtext',
-            'policyNotice' => [
-                'key' => 'surveyls_policy_notice',
-                'length' => ['min' => 0, 'max' => 200]
-            ],
+            'policyNotice' => 'surveyls_policy_notice',
             'alias' => [
                 'key' => 'surveyls_alias',
                 'length' => ['min' => 0, 'max' => 100],

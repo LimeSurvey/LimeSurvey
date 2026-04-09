@@ -147,7 +147,7 @@ class DataEntry extends SurveyCommonAction
     {
         $filePath = $this->moveUploadedFile($aData);
 
-        Yii::app()->loadHelper('admin/import');
+        Yii::app()->loadHelper('admin.import');
         // Fill option
         $aOptions = array();
         $aOptions['bDeleteFistLine'] = !(bool) Yii::app()->request->getPost('dontdeletefirstline');
@@ -356,9 +356,12 @@ class DataEntry extends SurveyCommonAction
                 }
             }
             $imported = 0;
+            $aWarnings = [];
+            $aSuccess = [];
+            $responseErrors = [];
             $sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
             /* @var boolean preserveIDs */
-            $preserveIDs = boolval(App()->getRequest()->getPost('preserveIDs'));
+            $preserveIDs = (bool)App()->getRequest()->getPost('preserveIDs');
             foreach ($sourceResponses as $sourceResponse) {
                 $iOldID = $sourceResponse->id;
                 // Using plugindynamic model because I dont trust surveydynamic.
@@ -385,27 +388,40 @@ class DataEntry extends SurveyCommonAction
                     $targetResponse['datestamp'] = date("Y-m-d H:i", (int) mktime(0, 0, 0, 1, 1, 1980));
                 }
 
-                $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
-                $beforeDataEntryImport->set('iSurveyID', $iSurveyId);
-                $beforeDataEntryImport->set('oModel', $targetResponse);
-                App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
-
-                $imported++;
-                if ($preserveIDs) {
-                    switchMSSQLIdentityInsert("survey_$iSurveyId", true);
+                $oTransaction = Yii::app()->db->beginTransaction();
+                try {
+                    if ($preserveIDs) {
+                        switchMSSQLIdentityInsert("survey_$iSurveyId", true);
+                    }
+                    if ($targetResponse->save()) {
+                        $imported++;
+                        $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
+                        $beforeDataEntryImport->set('iSurveyID', $iSurveyId);
+                        $beforeDataEntryImport->set('oModel', $targetResponse);
+                        App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
+                        $oTransaction->commit();
+                    } else {
+                        $oTransaction->rollBack();
+                        $responseErrors[$iOldID] = $targetResponse['id'];
+                        $aWarnings[$iOldID] = CHtml::errorSummary($targetResponse, '');
+                    }
+                    $aSRIDConversions[$iOldID] = $targetResponse->id;
+                    if ($preserveIDs) {
+                        switchMSSQLIdentityInsert("survey_$iSurveyId", false);
+                    }
+                } catch (Exception $oException) {
+                    $oTransaction->rollBack();
+                    $responseErrors[] = $targetResponse['id'];
+                    $aWarnings[$iOldID] = $oException->getMessage(); // Show it in view
                 }
-                $targetResponse->save();
-                if ($preserveIDs) {
-                    switchMSSQLIdentityInsert("survey_$iSurveyId", false);
-                }
-                $aSRIDConversions[$iOldID] = $targetResponse->id;
                 unset($targetResponse);
             }
-
-            Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
+            if (empty($responseErrors)) {
+                Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
+            }
             $sOldTimingsTable = (string) substr(substr((string) $sourceTable->tableName(), 0, (string) strrpos((string) $sourceTable->tableName(), '_')) . '_timings' . (string) substr((string) $sourceTable->tableName(), (string) strrpos((string) $sourceTable->tableName(), '_')), strlen((string) Yii::app()->db->tablePrefix));
             $sNewTimingsTable = "survey_{$surveyid}_timings";
-
+            $iRecordCountT = null;
             if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable)) {
                 // Import timings
                 $aFieldsOldTimingTable = array_values(Yii::app()->db->schema->getTable('{{' . $sOldTimingsTable . '}}')->columnNames);
@@ -425,9 +441,20 @@ class DataEntry extends SurveyCommonAction
                     Yii::app()->db->createCommand()->insert("{{{$sNewTimingsTable}}}", $sRecord);
                     $iRecordCountT++;
                 }
-                Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) and according timings were successfully imported."), $imported, $iRecordCountT);
+                if (empty($responseErrors)) {
+                    Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) and according %s timings were successfully imported."), $imported, $iRecordCountT);
+                }
             }
-            $this->getController()->redirect(["/responses/browse/", 'surveyId' => $surveyid]);
+            if (empty($responseErrors)) {
+                $this->getController()->redirect(["/responses/browse/", 'surveyId' => $surveyid]);
+            }
+            $aData = [
+                'imported' => $imported,
+                'responseErrors' => $responseErrors,
+                'aWarnings' => $aWarnings,
+                'iRecordCountT' => $iRecordCountT
+            ];
+            $this->renderWrappedTemplate('dataentry', 'import_result', $aData);
         }
     }
 

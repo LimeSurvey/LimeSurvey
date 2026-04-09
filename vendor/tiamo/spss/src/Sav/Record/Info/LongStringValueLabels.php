@@ -46,14 +46,14 @@ class LongStringValueLabels extends Info
             }
             $width = (int) $data['width'];
             $localBuffer->writeInt(mb_strlen($varName));
-            $localBuffer->writeString($varName);
+            $localBuffer->writeString($varName, mb_strlen($varName));
             $localBuffer->writeInt($width);
             $localBuffer->writeInt(Utils::is_countable($data['values']) ? \count($data['values']) : 0);
             foreach ($data['values'] as $value => $label) {
                 $localBuffer->writeInt($width);
                 $localBuffer->writeString($value, $width);
                 $localBuffer->writeInt(mb_strlen($label));
-                $localBuffer->writeString($label);
+                $localBuffer->writeString($label, mb_strlen($label));
             }
         }
 

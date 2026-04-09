@@ -21,7 +21,7 @@ function initColumnFilter()
             filterData = [];
         }
 
-        $.fn.yiiGridView.update('survey-grid', {data: {model: model, columnsSelected: filterData}});
+        $.fn.yiiGridView.update('survey-grid', {data: {model: model, selectColumns : 'select', columnsSelected: filterData}});
         form.modal('hide');
     });
 

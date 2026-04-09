@@ -411,13 +411,13 @@ class PluginManagerController extends SurveyCommonAction
             $plugin->load_error_message = '';
             $result = $plugin->update();
             if ($result) {
-                Yii::app()->user->setFlash('success', sprintf(gt('Reset load error for plugin %s (%s)'), $plugin->name, $plugin->plugin_type));
+                Yii::app()->user->setFlash('success', sprintf(gT('Reset load error for plugin %s (%s)'), $plugin->name, $plugin->plugin_type));
             } else {
-                Yii::app()->user->setFlash('error', sprintf(gt('Could not update plugin %s (%s)'), $plugin->name, $plugin->plugin_type));
+                Yii::app()->user->setFlash('error', sprintf(gT('Could not update plugin %s (%s)'), $plugin->name, $plugin->plugin_type));
             }
             $this->getController()->redirect($url);
         } else {
-            Yii::app()->user->setFlash('error', sprintf(gt('Found no plugin with id %d'), $pluginId));
+            Yii::app()->user->setFlash('error', sprintf(gT('Found no plugin with id %d'), $pluginId));
             $this->getController()->redirect($url);
         }
     }
@@ -779,21 +779,20 @@ class PluginManagerController extends SurveyCommonAction
 }
 
 /**
- * PCLZip callback for plugin ZIP install.
- * @param mixed $p_event
- * @param mixed $p_header
+ * Callback for plugin ZIP install. Filters files by extension.
+ * @param mixed $file
  * @return int Return 1 for yes (file can be extracted), 0 for no
  */
-function pluginExtractFilter($p_event, &$p_header)
+function pluginExtractFilter($file)
 {
     $aAllowExtensions = explode(
         ',',
         Yii::app()->getConfig('allowedpluginuploads', '')
     );
-    $info = pathinfo((string) $p_header['filename']);
+    $info = pathinfo((string) $file['name']);
 
     if (
-        $p_header['folder']
+        $file['is_folder']
         || !isset($info['extension'])
         || in_array($info['extension'], $aAllowExtensions)
     ) {

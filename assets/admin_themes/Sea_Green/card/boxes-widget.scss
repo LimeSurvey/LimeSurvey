@@ -148,6 +148,12 @@
             color  : $g-700;
         }
     }
+    .box-widget-card.card-placeholder {
+        cursor           : default;
+        background-color : $white;
+        box-shadow       : none;
+        border           : none;
+    }
     .box-widget-loadmore  {
         width      : 100%;
         text-align : center;
@@ -157,7 +163,7 @@
             margin-top : 25px;
         }
     }
-  .survey-state {
-    color: $g-700;
-  }
+    .survey-state {
+        color : $g-700;
+    }
 }

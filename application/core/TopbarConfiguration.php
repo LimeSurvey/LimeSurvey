@@ -204,12 +204,8 @@ class TopbarConfiguration
             || $hasSurveyContentPermission
             || !is_null($extraToolsMenuItems);
 
-        $editorEnabled = Yii::app()->getConfig('editorEnabled') ?? false;
-        
-        $enableEditorButton = true;
-        if ($oSurvey->getTemplateEffectiveName() !== 'fruity_twentythree') {
-            $enableEditorButton = false;
-        }
+        $editorEnabled = $oSurvey->hasNewEditor;
+        $enableEditorButton = $oSurvey->hasNewEditor;
 
         $editorUrl = Yii::app()->request->getUrlReferrer(
             Yii::app()->createUrl(
@@ -352,6 +348,7 @@ class TopbarConfiguration
             'hasTokensUpdatePermission' => $hasTokensUpdatePermission,
             'hasTokensDeletePermission' => $hasTokensDeletePermission,
             'hasSurveySettingsUpdatePermission' => $hasSurveySettingsUpdatePermission,
+            'tokenexists' => $survey->hasTokensTable
         );
     }
 

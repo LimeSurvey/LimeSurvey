@@ -60,6 +60,9 @@
 .topbar.scroll-shadow {
     box-shadow: 58px 1px 2px -2px gray;
 }
+.topbar.editor {
+    margin-left: 365px;
+}
 
 .btn-icon:before {
     font-size: 24px;
@@ -99,6 +102,9 @@
     margin-top: 10px;
     cursor: pointer;
     width: 36px;
+}
+.sidebar-icons-item .sidebar-icon div {
+    z-index: 5000;
 }
 .sidebar-icons-item:first-child {
     margin-top: 0;
@@ -162,10 +168,12 @@
     }
 }
 
-
+.side-menu-logo {
+    min-width: 365px;
+}
 .side-menu-logo a{
     color: black;
     font-size: 15px;
     font-weight: 800;
-    line-height: 24px
+    line-height: 24px;
 }

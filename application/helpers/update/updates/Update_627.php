@@ -164,9 +164,11 @@ class Update_627 extends DatabaseUpdateBase
         $boxes = $this->db->createCommand()->select('*')->from('{{boxes}}')->queryAll();
         $this->db->createCommand()->truncateTable('{{boxes}}');
 
+        switchMSSQLIdentityInsert('boxes', true);
         foreach ($this->boxes as $box) {
             $this->db->createCommand()->insert('{{boxes}}', $box);
         }
+        switchMSSQLIdentityInsert('boxes', false);
 
         $existingUrls = array_keys($this->urlIconMappings);
         $startPos = count($existingUrls);

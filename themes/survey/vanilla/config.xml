@@ -73,7 +73,7 @@
         <brandlogofile type="dropdown" category="Images" width="6" title="Logo file" parent="brandlogo">./files/logo.png</brandlogofile>
         <!-- fonts -->
         <!--  When adding new items, please keep fonts ordered alphabetically -->
-        <font type="dropdown" category="Fonts" width="12" title="Fonts" parent="font">noto
+        <font type="dropdown" category="Fonts" width="12" title="Fonts">noto
             <dropdownoptions>
             <optgroup  label="User browser">
                 <option class="font-arial           " value="arial"           data-font-package="websafe" >Arial</option>
@@ -337,7 +337,7 @@
                 <name type="data" twig="on"><![CDATA[ {{ gT("Template Sample") }} ]]></name>
                 <description type="data" twig="on"><![CDATA[<p>{{ gT('This is a sample survey description. It could be quite long.') }}</p><p>{{ gT("But this one isn't.") }}<p>]]></description>
                 <welcome  type="data" twig="on"><![CDATA[<p>{{ gT('Welcome to this sample survey')}} <p> <p> {{ gT('You should have a great time doing this') }} <p> ]]></welcome>
-                <therearexquestions  type="data" twig="on"><![CDATA[gT('There is 2 question in this survey'])]]></therearexquestions>
+                <therearexquestions  type="data" twig="on"><![CDATA[gT('There are 2 questions in this survey.'])]]></therearexquestions>
                 <surveyls_url type="data" twig="on">"https://www.limesurvey.org/"</surveyls_url>
                 <surveyls_urldescription type="data" twig="on"><![CDATA[ gT("Some URL description") ]]></surveyls_urldescription>
                 <showsurveypolicynotice>2</showsurveypolicynotice>

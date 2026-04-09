@@ -269,7 +269,7 @@ class QuestionGroupService
             $importResults['fatalerror'] = $fatalerror;
         } else {
             try {
-                $this->yiiApp->loadHelper('admin/import');
+                $this->yiiApp->loadHelper('admin.import');
                 $importResults = XMLImportGroup(
                     $sFullFilepath,
                     $surveyId,

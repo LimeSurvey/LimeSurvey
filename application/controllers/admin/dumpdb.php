@@ -40,7 +40,8 @@ class Dumpdb extends SurveyCommonAction
         }
 
         if (!in_array(Yii::app()->db->getDriverName(), array('mysql', 'mysqli'))) {
-            die(sprintf(gT('This feature is only available for MySQL databases. Your database type is %s.'), Yii::app()->db->getDriverName()));
+            Yii::app()->setFlashMessage(sprintf(gT('The integrated DB backup feature is only available for MySQL databases. Your database type is "%s".'), Yii::app()->db->getDriverName()), 'error');
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin"));
         }
         if (Yii::app()->getConfig('demoMode')) {
             Yii::app()->setFlashMessage(gT('This function cannot be executed because demo mode is active.'), 'error');
@@ -60,7 +61,13 @@ class Dumpdb extends SurveyCommonAction
     {
         $this->data['topbar']['title'] = gT('Backup entire database');
         $this->data['topbar']['backLink'] = App()->createUrl('admin/index');
-        $this->renderWrappedTemplate('dumpdb', 'dumpdb_view', $this->data);
+
+        $event = new PluginEvent('beforeRenderDbDumpView');
+        App()->getPluginManager()->dispatchEvent($event);
+        $htmlContent = $event->get('html');
+
+        // Use the existing renderWrappedTemplate method
+        $this->renderWrappedTemplate('dumpdb', 'dumpdb_view', array_merge($this->data, ['htmlContent' => $htmlContent]));
     }
 
     /**
@@ -77,7 +84,7 @@ class Dumpdb extends SurveyCommonAction
     private function getData()
     {
         if ($this->data === []) {
-            Yii::app()->loadHelper("admin/backupdb");
+            Yii::app()->loadHelper("admin.backupdb");
             $dbSize = getDatabaseSize();
             $downloadable = true;
             if ($dbSize > Yii::app()->getConfig('maxDatabaseSizeForDump')) {
@@ -107,7 +114,7 @@ class Dumpdb extends SurveyCommonAction
             throw new CHttpException(403, gT("The database is too large to be downloaded. Please consider exporting it manually using your database client."));
         }
 
-        Yii::app()->loadHelper("admin/backupdb");
+        Yii::app()->loadHelper("admin.backupdb");
         $sDbName = _getDbName();
         $sFileName = 'LimeSurvey_' . $sDbName . '_dump_' . dateShift(date('Y-m-d H:i:s'), 'Y-m-d', Yii::app()->getConfig('timeadjust')) . '.sql';
         $this->outputHeaders($sFileName);

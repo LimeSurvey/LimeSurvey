@@ -1,5 +1,7 @@
 <?php
 
+include 'SideMenuActiveItemMapper.php';
+
 class SurveySidemenuWidget extends WhSelect2
 {
     public $sid;
@@ -58,13 +60,11 @@ class SurveySidemenuWidget extends WhSelect2
     public function highlightActiveMenuItem()
     {
         $currentUrl = App()->request->requestUri;
-        foreach ($this->sideMenu as $k => $menu) {
+
+        foreach ($this->sideMenu as $menutype => $menu) {
             foreach ($menu as $i => $menuItem) {
-                if (
-                    $menuItem['url'] == $currentUrl
-                    || str_replace("/index.php", "", $menuItem['url']) == $currentUrl
-                ) {
-                    $this->sideMenu[$k][$i]['selected'] = true;
+                if ((new SideMenuActiveItemMapper)->match($menuItem['url'], $menuItem['name'], $this->sid)) {
+                    $this->sideMenu[$menutype][$i]['selected'] = true;
                 }
             }
         }
@@ -87,7 +87,9 @@ class SurveySidemenuWidget extends WhSelect2
                 ],
                 [
                     'name' => 'responses',
-                    'disabled' => $oSurvey->active != 'Y'
+                    'disabled' => $oSurvey->active != 'Y',
+                    'route' => 'editorLink/index',
+                    'params' => array('route' => 'responses/' . $this->sid),
                 ],
                 [
                     'name' => 'statistics',
@@ -133,11 +135,15 @@ class SurveySidemenuWidget extends WhSelect2
             ),
             'presentation' => array(
                 [
+                    'name' => 'theme_options',
+                    'route' => 'editorLink/index',
+                    'params' =>  array('route' => 'survey/' . $this->sid . '/presentation/theme_options'),
+                ],
+                [
                     'name' => 'presentation',
                     'route' => 'editorLink/index',
                     'params' =>  array('route' => 'survey/' . $this->sid . '/presentation/presentation'),
                 ],
-                [ 'name' => 'theme_options' ],
             )
         );
 
