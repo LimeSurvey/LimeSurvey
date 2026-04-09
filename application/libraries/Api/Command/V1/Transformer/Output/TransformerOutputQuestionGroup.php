@@ -31,10 +31,10 @@ class TransformerOutputQuestionGroup extends TransformerOutputActiveRecord
      * Transform a collection of question-group records and return them sorted by `sortOrder`.
      *
      * @param array $collection Input collection of records to transform.
-     * @param array $options Optional transformation options.
+     * @param ?array $options Optional transformation options.
      * @return array The transformed collection sorted in ascending order by the `sortOrder` field.
      */
-    public function transformAll($collection, $options = [])
+    public function transformAll($collection, $options = null)
     {
         $collection = parent::transformAll($collection, $options);
 
