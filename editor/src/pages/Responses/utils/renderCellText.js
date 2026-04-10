@@ -48,10 +48,9 @@ export const renderCellText = ({
       )}
       {isRankingQuestion(questionThemeName) && `${index + 1}. `}
       {!isSingleChoiceQuestion(questionThemeName) &&
-        !isRankingQuestion(questionThemeName) &&
+        isRankingQuestion(questionThemeName) &&
         `${subquestionTitle}`}
-      {(isSingleChoiceQuestion(questionThemeName) ||
-        isRankingQuestion(questionThemeName)) &&
+      {isSingleChoiceQuestion(questionThemeName) &&
         answerTitle}
       {comment?.value && (
         <span>
