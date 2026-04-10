@@ -118,7 +118,7 @@ export const RankingAdvancedQuestionAnswers = ({
                         update={(value) => handleAnswerUpdate(value, index)}
                         placeholder={t('Answer option')}
                         className={classNames(
-                          'choice ranking-advanced-answer-content-editor w-100',
+                          'choice ranking-advanced-answer-content-editor',
                           {
                             'focus-element': snapshot.isDragging,
                           }
