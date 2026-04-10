@@ -250,7 +250,7 @@ class User extends LSActiveRecord
             return $date->format($this->getDateFormat());
         } catch (Exception $e) {
             return null;
-        }    
+        }
     }
 
     /**
