@@ -970,21 +970,6 @@ class LimeExpressionManager
                     $row['cfieldname'] = (string)substr((string) $row['cfieldname'], 1);
                     if (isset($aDictionary[$row['cfieldname']])) {
                         $row['cfieldname'] = $aDictionary[$row['cfieldname']];
-                    } elseif ($oQuestion && preg_match('/^Q(\d+)(.+)$/', $row['cfieldname'], $matches)) {
-                        // Handle malformed cfieldname like Q{parentQid}{subqCode} from incomplete migration.
-                        // Try to resolve the subquestion code to its qid.
-                        $parentQid = (int)$matches[1];
-                        $subqCode = $matches[2];
-                        $subQuestion = Question::model()->find(
-                            "parent_qid = :parent_qid AND title = :title",
-                            [':parent_qid' => $parentQid, ':title' => $subqCode]
-                        );
-                        if ($subQuestion) {
-                            $row['cfieldname'] = "Q{$parentQid}_S{$subQuestion->qid}";
-                            if (isset($aDictionary[$row['cfieldname']])) {
-                                $row['cfieldname'] = $aDictionary[$row['cfieldname']];
-                            }
-                        }
                     }
                     $fieldname = $row['cfieldname'] . '.NAOK';
                     $subqid = $fieldname;
@@ -998,7 +983,9 @@ class LimeExpressionManager
                         $row['cfieldname'] = $aDictionary[$row['cfieldname']];
                     }
                     // else create name by concatenating two parts together
-                    $fieldname = $row['cfieldname'] . $row['value'] . '.NAOK';
+                    $qcode = $oQuestion['title'] . '_' . $row['value'];
+                    $sgqa = array_search($qcode, $aDictionary, true);
+                    $fieldname = $sgqa . '.NAOK';
                     $subqid = $row['cfieldname'];
                     $value = 'Y';
                 }
