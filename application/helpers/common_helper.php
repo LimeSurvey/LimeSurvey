@@ -1633,7 +1633,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     . " g.sid={$surveyid} AND"
     . " q.parent_qid=0";
     if ($questionid !== false) {
-        $aquery .= " and questions.qid={$questionid} ";
+        $aquery .= " and q.qid={$questionid} ";
     }
     $aquery .= " ORDER BY group_order, question_order";
     /** @var Question[] $questions */
@@ -2867,6 +2867,36 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
 }
 
 /**
+* Translate links which are in any email template set to their new counterpart
+* Used only for local file
+*
+* @param mixed $iOldSurveyID Source SurveyId to be replaced
+* @param mixed $iNewSurveyID New SurveyId to be used
+* @param string $sString Link (local path) to be translated
+* @return string
+*/
+function translateJsonLinks($iOldSurveyID, $iNewSurveyID, $sString)
+{
+    if ($sString == '') {
+        return $sString;
+    }
+    /* Avoid regexp injection */
+    $iOldSurveyID = (int) $iOldSurveyID;
+    $iNewSurveyID = (int) $iNewSurveyID;
+    $decodedString = json_decode($sString, true);
+    if (empty($decodedString) || !is_array($decodedString)) {
+        return $sString;
+    }
+    $sPattern = '(([a-z0-9\/\.\-\_:])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
+    $sReplace = rtrim(App()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
+    array_walk_recursive($decodedString, function (&$value) use ($sPattern, $sReplace) {
+        if (is_string($value)) {
+            $value = preg_replace('/' . $sPattern . '/u', $sReplace, $value);
+        }
+    });
+    return json_encode($decodedString);
+}
+/**
  * Returns true if there are old links in answer/question/survey/email template/label set texts.
  *
  * @param string $type 'survey' or 'label'
@@ -3682,21 +3712,6 @@ function short_implode($sDelimeter, $sHyphen, $aArray)
         return $sResult;
     }
 }
-
-/**
-* Include Keypad headers
-*/
-function includeKeypad()
-{
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.plugin.min.js');
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad.min.js');
-    $localefile = Yii::app()->getConfig('rootdir') . '/vendor/jquery-keypad/jquery.keypad-' . App()->language . '.js';
-    if (App()->language != 'en' && file_exists($localefile)) {
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js');
-    }
-    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('vendor') . "jquery-keypad/jquery.keypad.alt.css");
-}
-
 
 /**
 * This function replaces the old insertans tags with new ones across a survey

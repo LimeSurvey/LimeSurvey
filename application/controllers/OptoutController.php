@@ -173,7 +173,7 @@ class OptoutController extends LSYii_Controller
         $tokenAttributes = [];
         $participantAttributes = [];
         if (!isset($token)) {
-            $message = gT('You are not a participant in this survey.');
+            $message = gT('You are not a participant of this survey.');
         } else {
             if (substr((string) $token->emailstatus, 0, strlen('OptOut')) !== 'OptOut') {
                 $token->emailstatus = 'OptOut';

@@ -60,7 +60,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'createsample',
-                    'ariaLabel' => gT('Create example question group and question'),
+                    'ariaLabel' => gT('Create example question group and question:'),
                     'checkedOption' => Yii::app()->getConfig('createsample'),
                     'selectOptions' => [
                         '1' => gT('On'),
@@ -236,7 +236,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
                         'checkedOption' => $thisdefaulthtmleditormode,
                         'selectOptions' => [
                             "inline" => gT("Inline", 'unescaped'),
-                            "popup"  => gT("Popup", 'unescaped'),
+                            "popup"  => gT("Pop-up", 'unescaped'),
                             "none"   => gT("HTML source", 'unescaped')
                         ]
                     ]

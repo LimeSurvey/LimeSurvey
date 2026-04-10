@@ -95,7 +95,7 @@
                 <div class="survey-structure">
                     <div class="survey-settings">
                         <div class="d-flex sidebar-header align-items-center justify-content-between right-side-bar-header primary">
-                            <?php echo gT('Survey Settings'); ?>
+                            <?php echo gT('Survey settings'); ?>
                             <button type="button" id="btn-close-survey-settings-panel" class="p-0 btn-close-lime btn btn-link">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-black fill-current">
                                     <g clip-path="url(#clip0_1_4259)">

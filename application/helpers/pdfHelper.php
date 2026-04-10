@@ -58,7 +58,7 @@ class pdfHelper
             $lg['a_meta_dir'] = 'ltr';
         }
         $lg['a_meta_language'] = $language;
-        $lg['w_page'] = gT("page");
+        $lg['w_page'] = gT("Page");
 
         return array('pdffont' => $pdffont, 'pdffontsize' => $pdffontsize, 'lg' => $lg);
     }

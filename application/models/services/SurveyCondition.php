@@ -932,8 +932,8 @@ class SurveyCondition
                     $shortanswer .= "[" . gT("Single checkbox") . "]";
                     $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], "+" . $fieldNameWithTitle);
-                    $canswers[] = array("+" . $fieldNameWithTitle, 'Y', gT("checked"));
-                    $canswers[] = array("+" . $fieldNameWithTitle, '', gT("not checked"));
+                    $canswers[] = array("+" . $fieldNameWithTitle, 'Y', gT("Checked"));
+                    $canswers[] = array("+" . $fieldNameWithTitle, '', gT("Not checked"));
                 }
                 if ($rows['other'] == "Y") {
                     $fieldNameWithTitle = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], 'other');

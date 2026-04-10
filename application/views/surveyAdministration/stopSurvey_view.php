@@ -10,8 +10,7 @@
     <div class="row">
         <div class="col-6 content-right">
             <h2>
-                <?php eT("You want to stop your survey");
-                echo " <em>($surveyid)</em> ?"; ?>
+                <?php printf(gT("You want to stop your survey %s?"), "<em>$surveyid</em>"); ?>
             </h2>
             <p>
                 <?php eT("There are two ways to stop a survey. Please decide below:"); ?>
@@ -76,7 +75,7 @@
                         <p class="mt-4">
                             <?php et('Important: Export your responses before deactivating your survey.') ?>
                             <a href='<?php echo $this->createUrl('admin/export/sa/exportresults/surveyid/' . $surveyid) ?>'>
-                                <?php eT("See details.") ?>
+                                <?php eT("See details") ?>
                             </a>
                         </p>
                     </ul>

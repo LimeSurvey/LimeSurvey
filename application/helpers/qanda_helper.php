@@ -364,7 +364,6 @@ function file_validation_popup($ia, $filenotvalidated = null)
         unset($filenotvalidated);
     }
     if (isset($filenotvalidated) && is_array($filenotvalidated)) {
-
         if (!isset($filevalidationpopup)) {
             $fpopup = gT("One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed");
             $filevalidationpopup = "Y";
@@ -385,7 +384,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     global $thissurvey;
     global $gid;
     $time_limit = intval($aQuestionAttributes['time_limit']);
-    if($time_limit <= 0) {
+    if ($time_limit <= 0) {
         return;
     }
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'coookies.js', CClientScript::POS_BEGIN);
@@ -395,7 +394,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     $surveyId = Yii::app()->getConfig('surveyID');
     $langTimer = array(
         'hours' => gT("hours"),
-        'mins' => gT("mins"),
+        'mins' => gT("minutes"),
         'seconds' => gT("seconds"),
     );
     /* Registering script : don't go to EM : no need usage of ls_json_encode */
@@ -597,23 +596,6 @@ function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $an
     return array($htmltbody2, "");
 }
 
-/**
- * @param string $sUseKeyPad
- * @return string
- */
-function testKeypad($sUseKeyPad)
-{
-    if ($sUseKeyPad == 'Y') {
-        includeKeypad();
-        $kpclass = "text-keypad";
-    } else {
-        $kpclass = "";
-    }
-    return $kpclass;
-}
-
-
-
 // ==================================================================
 // QUESTION METHODS =================================================
 
@@ -758,12 +740,6 @@ function do_numerical($ia)
     }
     $fValue = str_replace('.', $sSeparator, (string) $fValue);
 
-    if ($thissurvey['nokeyboard'] == 'Y') {
-        includeKeypad();
-        $extraclass      .= " inputkeypad";
-        $answertypeclass .= " num-keypad";
-    }
-
     $answer = doRender('/survey/questions/answer/numerical/answer', array(
         'extraclass'             => $extraclass,
         'coreClass'              => $coreClass,
@@ -844,13 +820,6 @@ function do_shortfreetext($ia)
     } else {
         $placeholder = '';
     }
-    if ($thissurvey['nokeyboard'] == 'Y') {
-        includeKeypad();
-        $kpclass     = "text-keypad";
-        $extraclass .= " inputkeypad";
-    } else {
-        $kpclass = "";
-    }
     $answer = "";
     $sQuestionHelpText = '';
 
@@ -878,7 +847,7 @@ function do_shortfreetext($ia)
             'drows'                  => $drows,
             'dispVal'                => $dispVal,
             'maxlength'              => $maxlength,
-            'kpclass'                => $kpclass,
+            'kpclass'                => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
             'prefix'                 => $prefix,
             'suffix'                 => $suffix,
             'inputsize'              => $inputsize,
@@ -952,7 +921,7 @@ function do_shortfreetext($ia)
             'qid'                    => $ia[0],
             'basename'               => $ia[1],
             'value'                  => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]],
-            'kpclass'                => $kpclass,
+            'kpclass'                => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
             'currentLocation'        => $currentLocation,
             'strBuild'               => $strBuild,
             'location_mapservice'    => $aQuestionAttributes['location_mapservice'],
@@ -1044,7 +1013,7 @@ function do_shortfreetext($ia)
             'basename'               => $ia[1],
             'prefix' => $prefix,
             'suffix' => $suffix,
-            'kpclass' => $kpclass,
+            'kpclass' => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
             'dispVal' => $dispVal,
             'maxlength' => $maxlength,
             'numberonly' => $numberonly,
@@ -1774,14 +1743,6 @@ function do_array_texts($ia)
     $coreClass                  = "ls-answers subquestion-list questions-list text-array";
     $extraclass                 = "";
     $coreRowClass               = "subquestion-list questions-list";
-    $caption                    = gT("A table of subquestions on each cell. The subquestion texts are in the column header and relate the particular row header.");
-
-    if ($thissurvey['nokeyboard'] == 'Y') {
-        includeKeypad();
-        $kpclass = "text-keypad";
-    } else {
-        $kpclass = "";
-    }
 
     $checkconditionFunction = "checkconditions";
     $sSeparator             = getRadixPointData($thissurvey['surveyls_numberformat']);
@@ -1833,7 +1794,6 @@ function do_array_texts($ia)
 
         $coreClass .= " number-array";
         $coreRowClass .= " number-list";
-        $caption    .= gT("Each answer may only be a number.");
         $col_head    = '';
         switch ($aQuestionAttributes['show_totals']) {
             case 'R':
@@ -1866,7 +1826,6 @@ function do_array_texts($ia)
                         true
                     );
                 };
-                $caption .= gT("The last row shows the total for the column.");
                 break;
 
             case 'C':
@@ -1899,7 +1858,6 @@ function do_array_texts($ia)
                         true
                     );
                 };
-                $caption .= gT("The last column shows the total for the row.");
                 break;
 
             case 'B':
@@ -1938,7 +1896,6 @@ function do_array_texts($ia)
                         true
                     );
                 };
-                $caption .= gT("The last row shows the total for the column and the last column shows the total for the row.");
                 break;
         };
 
@@ -2066,7 +2023,7 @@ function do_array_texts($ia)
                     'basename'   => $ia[1],
                     'myfname2'   => $myfname2,
                     'labelText'  => $label,
-                    'kpclass'    => $kpclass,
+                    'kpclass'    => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
                     'maxlength'  => $maxlength,
                     'inputsize'  => $inputsize,
                     'value'      => $myfname2value,
@@ -2180,7 +2137,6 @@ function do_array_multiflexi($ia)
     $coreRowClass = "subquestion-list questions-list";
     $extraclass                 = "";
     $answertypeclass            = "";
-    $caption                    = gT("A table of subquestions on each cell. The subquestion texts are in the colum header and concern the row header.");
     $checkconditionFunction     = "fixnum_checkconditions";
 
     /*
@@ -2230,7 +2186,6 @@ function do_array_multiflexi($ia)
         $answertypeclass     = " checkbox-item";
         $coreClass          .= " checkbox-array";
         $coreRowClass .= " checkbox-list";
-        $caption            .= gT("Please check the matching combinations.");
         $textAlignment       = 'center';
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . "array-number-checkbox.js", CClientScript::POS_BEGIN);
         App()->getClientScript()->registerScript("doArrayNumberCheckbox", "doArrayNumberCheckbox();\n", LSYii_ClientScript::POS_POSTSCRIPT);
@@ -2241,14 +2196,12 @@ function do_array_multiflexi($ia)
         $coreClass          .= " text-array number-array";
         $coreRowClass .= " text-list number-list";
         $extraclass         .= " numberonly";
-        $caption            .= gT("Please enter only numbers.");
     } else {
         $layout = "dropdown";
         $answertypeclass     = " ls-dropdown-item";
 
         $coreClass          .= " dropdown-array";
         $coreRowClass .= " dropdown-list";
-        $caption            .= gT("Please select an answer for each combination.");
     }
 
     if (ctype_digit(trim((string) $aQuestionAttributes['repeat_headings'])) && trim((string) $aQuestionAttributes['repeat_headings']) != "") {
@@ -2268,14 +2221,6 @@ function do_array_multiflexi($ia)
         $extraclass .= " ls-input-sized";
     } else {
         $inputsize = null;
-    }
-
-    if ($thissurvey['nokeyboard'] == 'Y') {
-        includeKeypad();
-        $kpclass     = " num-keypad";
-        $extraclass .= " inputkeypad";
-    } else {
-        $kpclass = "";
     }
 
     if (ctype_digit(trim((string) $aQuestionAttributes['answer_width']))) {
@@ -2437,7 +2382,7 @@ function do_array_multiflexi($ia)
                         'reverse'                   => $reverse,
                         'value'                     => $value,
                         'sSeparator'                => $sSeparator,
-                        'kpclass'                   => $kpclass,
+                        'kpclass'                   => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
                         'maxlength'                 => $maxlength,
                         'inputsize'                 => $inputsize,
                         'error'                     => ($error && $value === '')
@@ -2625,7 +2570,6 @@ function do_arraycolumns($ia)
 
             // TODO: What is this? What is happening here?
             foreach ($labels as $labelIdx => $ansrow) {
-
                 // create the html ids for the table rows, which are
                 // the answer options for this question type
                 $aData['labels'][$labelIdx]['myfname'] = $ia[1];

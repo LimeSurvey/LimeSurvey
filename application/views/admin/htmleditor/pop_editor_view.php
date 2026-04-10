@@ -82,7 +82,7 @@
                     var editor = evt.editor;
                     editor.setData(window.opener.document.getElementById("<?php echo $sFieldName; ?>").value);
                     editor.execCommand('maximize');
-                    window.status='LimeSurvey <?php eT('Editing', 'js') . ' ' . 'javascriptEscape(' . $sFieldText . ', true)'; ?>';
+                    window.status='<?php echo sprintf(gT('Editing %s', 'js'), javascriptEscape($sFieldText, true)); ?>';
                 }
 
                 function html_transfert()

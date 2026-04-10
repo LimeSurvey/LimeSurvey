@@ -50,8 +50,8 @@
                                         'checkedOption'=> $settings['bounceaccounttype'] ,
                                         'ariaLabel'=> gT('Server type'),
                                         'selectOptions' => array(
-                                            "IMAP" => gT("IMAP", 'unescaped'),
-                                            "POP" => gT("POP", 'unescaped')
+                                            "IMAP" => "IMAP",
+                                            "POP" => "POP3",
                                         )
                                     ));?>
                                 </div>
@@ -102,7 +102,7 @@
                                         'ariaLabel'=> gT('Encryption type'),
                                         'checkedOption'=> strtolower((string) $settings['bounceaccountencryption']),
                                         'selectOptions' => array(
-                                            "off" => gT("Off (unsafe)", 'unescaped'),
+                                            "off" => gT("Off", 'unescaped'),
                                             "ssl" => gT("SSL/TLS", 'unescaped'),
                                             "tls" => gT("StartTLS", 'unescaped')
                                         )

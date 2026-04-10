@@ -151,7 +151,7 @@ class SurveyCommonAction extends CAction
         if (!empty($params['iQuestionId'])) {
             if ((string) (int) $params['iQuestionId'] !== (string) $params['iQuestionId']) {
                 // pgsql need filtering before find
-                throw new CHttpException(403, gT("Invalid question id"));
+                throw new CHttpException(403, gT("Invalid question ID"));
             }
             $oQuestion = Question::model()->find("qid=:qid", array(":qid" => $params['iQuestionId'])); //Move this in model to use cache
             if (!$oQuestion) {
@@ -370,6 +370,10 @@ class SurveyCommonAction extends CAction
      *
      *
      * REFACTORED (in LayoutHelper.php)
+     *
+     * Passes security_update_available and stability_labels to the notification view.
+     *
+     * @return string|void Rendered notification HTML, or void if no update
      * @throws CException
      */
     protected function updatenotification()
@@ -388,7 +392,10 @@ class SurveyCommonAction extends CAction
             if ($updateNotification->result) {
                 $scriptToRegister = Yii::app()->getConfig('packages') . DIRECTORY_SEPARATOR . 'comfort_update' . DIRECTORY_SEPARATOR. 'comfort_update.js';
                 App()->getClientScript()->registerScriptFile($scriptToRegister);
-                return $this->getController()->renderPartial("/admin/update/_update_notification", array('security_update_available' => $updateNotification->security_update));
+                return $this->getController()->renderPartial("/admin/update/_update_notification", array(
+                    'security_update_available' => $updateNotification->security_update,
+                    'stability_labels' => Yii::app()->session['update_stability_labels'] ?? [],
+                ));
             }
         }
     }

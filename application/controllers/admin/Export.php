@@ -77,7 +77,7 @@ class Export extends SurveyCommonAction
         $qid = sanitize_int(Yii::app()->request->getParam('qid'));
         $question = Question::model()->findByPk($qid);
         if (empty($question)) {
-            throw new CHttpException(404, gT("Invalid question id"));
+            throw new CHttpException(404, gT("Invalid question ID"));
         }
         if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'export')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));

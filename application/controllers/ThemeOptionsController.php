@@ -580,9 +580,9 @@ class ThemeOptionsController extends LSBaseController
                 //skip convertion LS3ToLS4 (this should have been happen BEFORE theme was moved to the uninstalled themes
                 $themeName = $questionTheme->importManifest($fullTemplateFolder, true);
                 if (isset($themeName)) {
-                    App()->setFlashMessage(sprintf(gT('The Question theme "%s" has been successfully installed'), "$themeName"), 'success');
+                    App()->setFlashMessage(sprintf(gT('The question theme "%s" has been successfully installed'), "$themeName"), 'success');
                 } else {
-                    App()->setFlashMessage(sprintf(gT('The Question theme "%s" could not be installed'), $themeName), 'error');
+                    App()->setFlashMessage(sprintf(gT('The question theme "%s" could not be installed'), $themeName), 'error');
                 }
                 $this->redirect(array("themeOptions/index#questionthemes"));
             } else {
@@ -747,15 +747,13 @@ class ThemeOptionsController extends LSBaseController
         } else {
             // Title concatenation
             $templateName = $model->template_name;
-            $basePageTitle = sprintf('Survey options for theme %s', $templateName);
+            $pageTitle = sprintf(gT('Survey options for theme %s (global level)'), $templateName);
+            // @todo Condition is not reachable
             if (!is_null($sid)) {
-                $addictionalSubtitle = gT(" for survey ID: $sid");
+                $pageTitle = sprintf(gT("Survey options for theme %s and survey ID %s"), $templateName, $sid);
             } elseif (!is_null($gsid)) {
-                $addictionalSubtitle = gT(" for survey group id: $gsid");
-            } else {
-                $addictionalSubtitle = gT(" global level");
+                $pageTitle = sprintf(gT("Survey options for theme %s and survey group ID %s"), $templateName, $gsid);
             }
-            $pageTitle = $basePageTitle . " (" . $addictionalSubtitle . " )";
             $data['topbar']['title'] = $pageTitle;
             $isCloseBtn = true;
         }

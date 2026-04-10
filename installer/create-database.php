@@ -673,7 +673,6 @@ function populateDatabase($oDB)
             'showprogress' => "string(1) DEFAULT 'Y'",
             'questionindex' => "integer DEFAULT '0' NOT NULL",
             'navigationdelay' => "integer NOT NULL DEFAULT '0'",
-            'nokeyboard' => "string(1) DEFAULT 'N'",
             'alloweditaftercompletion' => "string(1) DEFAULT 'N'",
             'googleanalyticsstyle' => "string(1) NULL",
             'googleanalyticsapikey' => "string(25) NULL",
@@ -755,7 +754,6 @@ function populateDatabase($oDB)
             'showprogress' => "string(1) NULL DEFAULT 'Y'",
             'questionindex' => "integer NULL DEFAULT '0'",
             'navigationdelay' => "integer NULL DEFAULT '0'",
-            'nokeyboard' => "string(1) NULL DEFAULT 'N'",
             'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'"
         ), $options);
 
@@ -800,7 +798,6 @@ function populateDatabase($oDB)
             'showprogress' => 'Y',
             'questionindex' => '0',
             'navigationdelay' => '0',
-            'nokeyboard' => 'N',
             'alloweditaftercompletion' => 'N'
         );
         $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes1);
@@ -848,7 +845,6 @@ function populateDatabase($oDB)
                 "showprogress" => "I",
                 "questionindex" => -1,
                 "navigationdelay" => -1,
-                "nokeyboard" => "I",
                 "alloweditaftercompletion" => "I",
         );
         $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes2);

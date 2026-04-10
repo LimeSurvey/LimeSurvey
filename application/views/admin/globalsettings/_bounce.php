@@ -24,8 +24,8 @@
             'checkedOption' => Yii::app()->getConfig('bounceaccounttype'),
             'selectOptions' => [
                 "off"  => gT("Off", 'unescaped'),
-                "IMAP" => gT("IMAP", 'unescaped'),
-                "POP"  => gT("POP", 'unescaped')
+                "IMAP" => "IMAP",
+                "POP"  => "POP3",
             ]
         ]); ?>
     </div>
@@ -64,7 +64,7 @@
             'ariaLabel'=> gT('Encryption type'),
             'checkedOption' => strtolower((string) Yii::app()->getConfig('bounceencryption')),
             'selectOptions' => [
-                "off" => gT("Off (unsafe)", 'unescaped'),
+                "off" => gT("Off", 'unescaped'),
                 "ssl" => "SSL/TLS",
                 "tls" => "StartTLS"
             ]

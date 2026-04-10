@@ -112,7 +112,7 @@ class UploaderController extends SurveyController
             if (@unlink($sFileDir . $sFileNameFiltered)) {
                 echo sprintf(gT('File %s deleted'), CHtml::encode($sOriginalFileName));
             } else {
-                echo gT('Oops, There was an error deleting the file');
+                echo gT('There was an error deleting the file.');
             }
             Yii::app()->end();
         }
@@ -370,7 +370,7 @@ class UploaderController extends SurveyController
             );
             /* Add information for for user forcedSuperAdmin right */
             if (Permission::isForcedSuperAdmin(Permission::model()->getUserId())) {
-                $return['msg'] = sprintf(gT("An unknown error happened when moving file %s to %s."), $uploadfile_tmp_name, $randfileloc);
+                $return['msg'] = sprintf(gT("An unknown error occurred when moving file %s to %s."), $uploadfile_tmp_name, $randfileloc);
             }
             //header('Content-Type: application/json');
             echo ls_json_encode($return);

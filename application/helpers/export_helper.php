@@ -383,7 +383,7 @@ function SPSSGetValues($field, $qidattributes, $language)
             );
         } else {
             $answers[] = array('code' => 1, 'value' => gT('Yes'));
-            $answers[] = array('code' => 0, 'value' => gT('Not Selected'));
+            $answers[] = array('code' => 0, 'value' => gT('Not selected'));
         }
     }
     if ($field['LStype'] == "P") {
@@ -394,7 +394,7 @@ function SPSSGetValues($field, $qidattributes, $language)
             );
         } else {
             $answers[] = array('code' => 1, 'value' => gT('Yes'));
-            $answers[] = array('code' => 0, 'value' => gT('Not Selected'));
+            $answers[] = array('code' => 0, 'value' => gT('Not selected'));
         }
     }
     if ($field['LStype'] == "G") {
@@ -2217,7 +2217,7 @@ function questionExport($action, $iSurveyID, $gid, $qid)
         [":sid" => $iSurveyID, ":gid" => $gid, ":qid" => $qid]
     );
     if (empty($question)) {
-        throw new CHttpException(404, gT("Invalid question id"));
+        throw new CHttpException(404, gT("Invalid question ID"));
     }
     $fn = "limesurvey_question_$qid.lsq";
     $xml = getXMLWriter();

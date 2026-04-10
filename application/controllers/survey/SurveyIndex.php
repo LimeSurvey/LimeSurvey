@@ -267,8 +267,7 @@ class SurveyIndex extends CAction
             }
 
             $aErrors  = array(gT('Previous session is set to be finished.'));
-            $aMessage = array(gT('Your browser reports that it was used previously to answer this survey.
-            We are resetting the session so that you can start from the beginning.'),);
+            $aMessage = array(gT('Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.'),);
             App()->getController()->renderExitMessage(
                 $surveyid,
                 'restart-survey',

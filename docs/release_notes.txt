@@ -34,6 +34,74 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.16.15 (build 260330) to 6.16.16 (build 260408) April 8, 2026
++New feature #TB-78: New setting in global settings and config-defaults.php to set the minimum stability for ComfortUpdate notifications (Carsten Schmitz)
+-Fixed issue: Survey copy defaults for custom copy were not set (Carsten Schmitz)
+-Fixed issue #AT-1972: Theme options page empty (#4835) (Stefan K)
+-Fixed issue #AT-1917: Copy encrypted setting of attribute from CPDB to token attribute (#4712) (Tim Willig)
+-Fixed issue #20476: Audio upload from iPhone (.m4a) fails (Carsten Schmitz)
+-Fixed issue #20474: In Copy Survey modal window the button text overflows (Richard A.)
+-Fixed issue #20471: Bootstrap dropdown size setting has no effect (#4816) (Matthew)
+-Fixed issue #20458: [security] Unsafe php unserialize calls on attachments attribute (reported by podalirius ) (#4838) (Denis Chenu)
+-Fixed issue #20393: Unclear user cannot edit survey text (#4789) (Gabriel Jenik)
+-Fixed issue #20388: [security] User with "update surveys" can delete surveys (#4627) (Denis Chenu)
+-Fixed issue #20371: Users cannot have read-only permissions on surveys (#4706) (Gabriel Jenik)
+-Fixed issue #20356: Statistics filter screen is missing the question code (#4571) (Denis Chenu)
+-Fixed issue #20334: Link to bootswatch page in themes list opens in same tab (#4569) (Denis Chenu)
+-Fixed issue #20289: Missing data when exporting users (#4807) (Denis Chenu)
+-Fixed issue #19999: Cannot set empty URL for a quota URL if autoload URL is activated (#4785) (Carsten Schmitz)
+-Fixed issue #19558: Import CSV created duplicates (#4748) (Gabriel Jenik)
+#Updated translation: Thai by tomzt
+#Updated translation: Slovak by jelen1
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.16.14 (build 260323) to 6.16.15 (build 260330) March 30, 2026
+-Fixed issue #LE-663: Deletion of participants list should switch access mode from closed to open (#4814) (haythem chibani)
+-Fixed issue #LE-661: Visiting survey fails in closed access mode with inherited public registration enabled (#4813) (haythem chibani)
+-Fixed issue #AT-1976: Survey showing wrong checkbox icon (#4828) (Stefan K)
+-Fixed issue #20470: On group import the question codes in custom conditions are not updated (Carsten Schmitz)
+-Fixed issue #20464: Error message 'Unknown table field questions.qid' (Carsten Schmitz)
+-Fixed issue #20399: CSS class not applied to active menu items (#4805) (Stefan K)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by DenisChenu, fgervais, Rodrigue_Galani
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+
+
+Changes from 6.16.13 (build 260316) to 6.16.14 (build 260323) March 23, 2026
+-Fixed issue: Add aria-labels to button groups and heading semantic enhancements in survey menu panels (a11y) (#4447) (Anblik Audit Team)
+-Fixed issue LS-CLOUD-409: array_merge() error when executing quota (Carsten Schmitz)
+-Fixed issue #LE-656: CPDB attribute edit/add modal languages delete button not working (#4802) (haythem chibani)
+-Fixed issue #LE-655: Delete sharing action in CPDB sharing panel doesn't work (#4798) (haythem chibani)
+-Fixed issue #20467: Condition designer: "Copy conditions" crashes when no target is selected (Carsten Schmitz)
+-Fixed issue #20465: Allowed memory size exhausted when trying to send big number of invitations (#4792) (Carsten Schmitz)
+-Fixed issue #20462: Copy survey plugin settings (#4786) (Tõnis Ormisson)
+-Fixed issue #20448: On first survey import you get an error: Malformed JSON related to files_css field (Carsten Schmitz)
+-Fixed issue #20389: Deprecation warnings with PHP 8.4 (Carsten Schmitz)
+-Fixed issue #20348: Any txt file can create survey (#4762) (Denis Chenu)
+-Fixed issue #20462: Roll back survey on plugin setting copy failure (Tõnis Ormisson)
+-Fixed issue #20462: Remove invalid plugin setting error model (Tõnis Ormisson)
+-Fixed issue #20462: Make plugin setting copy atomic (Tõnis Ormisson)
+-Fixed issue #20462: Include plugin setting validation errors (Tõnis Ormisson)
+-Fixed issue #20462: Copy survey plugin settings (Tõnis Ormisson)
+#Updated translation: Welsh
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Icelandic 
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 6.16.12 (build 260309) to 6.16.13 (build 260316) March 16, 2026
 -Fixed issue: Adjusted panel cards, import survey and import user, toolbuttons for sidebar (a11y) (#4437) (Anblik Audit Team)
 -Fixed issue: Added and adjusted missing tags and roles on question summary page (a11y) (#4435) (Anblik Audit Team)
@@ -2005,7 +2073,7 @@ Changes from 6.2.9 (build 230925) to 6.2.10 (build 231004) October 4, 2023
 -Fixed issue #CR-1305: Structure tab question menu should always show "Edit default answers" option (#3367) (Mohab E)
 -Fixed issue #19136: Undefined variable in admin global settings general subview (#3499) (Matthew)
 -Fixed issue #19115: Menu toggler appears when not needed (#3494) (Denis Chenu)
--Fixed issue #19112: [security] Store XSS at Label sets list (#3503) (Denis Chenu)
+-Fixed issue #19112: [security] Store XSS at Label set list (#3503) (Denis Chenu)
 -Fixed issue #19098: Add XSD files to allowed files for plugin uploads (Marko Bischof)
 -Fixed issue #18995: [security] Confidentiality issue about username (#3447) (Gabriel Jenik)
 -Fixed issue #18294: User can not see group created and user in group created (#3504) (Denis Chenu)
@@ -6560,7 +6628,7 @@ Changes from 3.17.13 (build 190824) to 3.17.14 (build 190902) September 2, 2019
 -Fixed issue #15197: Submitting empty menu entry crashes application ( Application Denial of Service) (lacrioque)
 -Fixed issue #15194: Unable to remove page title from PDF generated at "print answers" screen (LouisGac)
 -Fixed issue #15192: entering html code inside the answeroptions for List type questions will break/alter the html for editing answers (Patrick Teichmann)
--Fixed issue #15188: Access Label sets list (lacrioque)
+-Fixed issue #15188: Access Label set list (lacrioque)
 -Fixed issue #14863: Extending core theme using the same core theme name (Eddy Lackmann)
 -Fixed issue #10168: Commit test! Ignore (Carsten Schmitz)
 -New translation: Filipino (Carsten Schmitz)

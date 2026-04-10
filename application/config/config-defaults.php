@@ -783,6 +783,13 @@ $config['sideMenuBehaviour'] = 'adaptive';
 // Hide update key
 $config['hide_update_key'] = false;
 
+/**
+ * Minimum stability level for update notifications.
+ * Valid values: 'alpha', 'beta', 'rc', 'stable'
+ * 'alpha' shows all updates, 'stable' shows only stable releases.
+ */
+$config['minimum_update_stability'] = 'rc';
+
 // Dev part
 // 1 : looking for errors, 2 : PHP STRICT error messages
 $config['debug'] = 0;
@@ -856,6 +863,12 @@ $config['reverseProxyIpHeader'] = 'HTTP_X_FORWARDED_FOR';
 // Warning: Unserialization can result in code being loaded and executed due to object instantiation and autoloading, and a malicious user may be able to exploit this.
 // @see https://www.php.net/unserialize
 $config['allow_unserialize_attributedescriptions'] = false;
+
+// Allow unserializing (with PHP unserialize function) attachments attributes when importing survey
+// In limesurvey 6.16.17: attachments attribute move from serialize to json_encode. If you need to keep attachment when upload, you have to allow it
+// Warning: Unserialization can result in code being loaded and executed due to object instantiation and autoloading, and a malicious user may be able to exploit this.
+// @see https://www.php.net/unserialize
+$config['allow_unserialize_attachments'] = false;
 
 return $config;
 //settings deleted

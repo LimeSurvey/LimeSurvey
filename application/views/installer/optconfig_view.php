@@ -26,12 +26,12 @@
     <?php
         $rows = array();
         $rows[] = array(
-            'label' => CHtml::activeLabelEx($model, 'adminLoginName', array('class' => 'form-label ', 'label' => gT("Admin login name"), 'autofocus' => 'autofocus')),
+            'label' => CHtml::activeLabelEx($model, 'adminLoginName', array('class' => 'form-label ', 'label' => gT("Admin username"), 'autofocus' => 'autofocus')),
             'description' => gT("This will be the userid by which admin of board will login."),
             'control' => CHtml::activeTextField($model, 'adminLoginName', array('class' => 'form-control', 'required' => true))
         );
         $rows[] = array(
-            'label' => CHtml::activeLabelEx($model, 'adminLoginPwd', array('class' => 'form-label ', 'label' => gT("Admin login password"))),
+            'label' => CHtml::activeLabelEx($model, 'adminLoginPwd', array('class' => 'form-label ', 'label' => gT("Admin password"))),
             'description' => gT("This will be the password of admin user."),
             'control' => CHtml::activePasswordField($model, 'adminLoginPwd', array('class' => 'form-control', 'required' => true))
         );
@@ -45,7 +45,7 @@
             'control' => CHtml::activeTextField($model, 'adminName', array('class' => 'form-control'))
         );
         $rows[] = array(
-            'label' => CHtml::activeLabelEx($model, 'adminEmail', array('class' => 'form-label ', 'label' => gT("Administrator email"))),
+            'label' => CHtml::activeLabelEx($model, 'adminEmail', array('class' => 'form-label ', 'label' => gT("Administrator email address"))),
             'description' => gT("This is the default email address of the site administrator and used for system messages, contact options and default bounce email."),
             'control' => CHtml::activeEmailField($model, 'adminEmail', array('class' => 'form-control', 'required' => true, 'placeholder' => 'admin@example.org'))
         );

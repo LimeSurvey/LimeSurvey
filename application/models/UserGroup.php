@@ -539,7 +539,7 @@ class UserGroup extends LSActiveRecord
             $cnt++;
         }
 
-        $msgToUser = gT('Sending emails to users(sucess/errors):') . "<br>";
+        $msgToUser = gT('Sending emails to users:') . "<br>";
         foreach ($sendEmailSuccessErrors as $emaiLResult) {
             $msgToUser .= $emaiLResult['username'] . ': ';
             if ($emaiLResult['success']) {

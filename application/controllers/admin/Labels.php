@@ -287,7 +287,7 @@ class Labels extends SurveyCommonAction
         }
 
         if ($lid == 0) {
-            $aData['topbar']['title'] = gT('Label sets list');
+            $aData['topbar']['title'] = gT('Label set list');
             $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
                 '/admin/labels/partials/topbarBtns/leftSideButtons',
                 [
@@ -304,7 +304,7 @@ class Labels extends SurveyCommonAction
                 true
             );
         } else {
-            $aData['topbar']['title'] = gT('Label sets list');
+            $aData['topbar']['title'] = gT('Label set list');
             $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
                 '/admin/labels/partials/topbarBtns_singlelabelset/leftSideButtons',
                 [
@@ -504,7 +504,7 @@ class Labels extends SurveyCommonAction
             throw new CHttpException(500, $exception->getMessage());
         }
 
-        eT('Label set successfully saved');
+        eT('Label set successfully saved.');
     }
 
     /**

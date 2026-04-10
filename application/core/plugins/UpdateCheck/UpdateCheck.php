@@ -180,7 +180,7 @@ JS
     protected function composeNotification(array $messages, array $errors, bool $foundSecurityVersion)
     {
         $superadmins = User::model()->getSuperAdmins();
-        $title        = $foundSecurityVersion ? gT('Security updates available') : gT('Updates available');
+        $title        = $foundSecurityVersion ? gT('Security update available') : gT('Update available');
         $displayClass = $foundSecurityVersion ? 'danger' : '';
         $importance   = $foundSecurityVersion ? Notification::HIGH_IMPORTANCE : Notification::NORMAL_IMPORTANCE;
         $message = implode($messages);

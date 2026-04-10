@@ -145,7 +145,6 @@ class SurveysGroupCreatorTest extends TestCase
             'showprogress',
             'questionindex',
             'navigationdelay',
-            'nokeyboard',
             'alloweditaftercompletion',
             'ipanonymize'
         ]);

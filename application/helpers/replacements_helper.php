@@ -203,9 +203,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         ($showxquestions == 'choose' && $thissurvey['showxquestions'] == 'Y')
     ) {
         if ($_totalquestionsAsked < 1) {
-            $_therearexquestions = gT("There are no questions in this survey"); // Singular
+            $_therearexquestions = gT("There are no questions in this survey."); // Singular
         } elseif ($_totalquestionsAsked == 1) {
-            $_therearexquestions = gT("There is 1 question in this survey"); //Singular
+            $_therearexquestions = gT("There is 1 question in this survey."); //Singular
         } else {
             $_therearexquestions = gT("There are {NUMBEROFQUESTIONS} questions in this survey."); //Note this line MUST be before {NUMBEROFQUESTIONS}
         };
