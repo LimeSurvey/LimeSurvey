@@ -1019,7 +1019,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
         }
 
         // If it is a comment field there is nothing to convert here
-        if ($fields['aid'] == 'comment') {
+        if (($fields['aid'] ?? '') == 'comment') {
             return $sValue;
         }
 
@@ -1051,7 +1051,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
             case Question::QT_O_LIST_WITH_COMMENT:
             case Question::QT_I_LANGUAGE:
             case Question::QT_R_RANKING:
-                $this_answer = Answer::model()->getAnswerFromCode($fields['qid'], $sValue, $sLanguage);
+                $this_answer = Question::model()->getQuestionFromTitle($fields['qid'], $sValue, $sLanguage);
                 if ($sValue == "-oth-") {
                     $this_answer = gT("Other", null, $sLanguage);
                 }
@@ -1243,7 +1243,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                 break;
             case Question::QT_R_RANKING: // Ranking
                 //get some answers
-                $result = Answer::model()->getQuestionsForStatistics('code, answer', "qid=$flt[qid] AND language = '{$sLanguage}'", 'sortorder, answer');
+                $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
                 //get number of answers
                 //loop through all answers. if there are 3 items to rate there will be 3 statistics
                 $i = 0;

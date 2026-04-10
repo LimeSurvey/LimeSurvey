@@ -1156,15 +1156,15 @@ class LimeExpressionManager
                     $subqs = $qinfo['subqs'];
                     if ($type == Question::QT_R_RANKING) {
                         $subqs = [];
-                        $rawAnswers = \Answer::model()->findAll("qid = :qid", [":qid" => $qinfo['qid']]);
-                        $answers = [];
-                        foreach ($rawAnswers as $rawAnswer) {
-                            $answers[$rawAnswer->code] = $rawAnswer;
+                        $rawQuestions = \Question::model()->findAll("parent_qid = :qid", [":qid" => $qinfo['qid']]);
+                        $questions = [];
+                        foreach ($rawQuestions as $rawQuestion) {
+                            $questions[$rawQuestion->title] = $rawQuestion;
                         }
-                        foreach ($this->qans[$qinfo['qid']] as $k => $v) {
+                        foreach ($this->qans[$qinfo['parent_qid']] as $k => $v) {
                             $_code = explode('~', (string) $k);
                             $subqs[] = [
-                                'rowdivid' => $qinfo['sgqa'] . "_R" . $answers[$_code[1]]->aid,
+                                'rowdivid' => $qinfo['sgqa'] . "_S" . $questions[$_code[1]]->aid,
                                 'sqsuffix' => '_' . $_code[1],
                                 'code' => $_code[1]
                             ];
@@ -10048,7 +10048,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 }
                 break;
             case 'R':  // Ranking
-                if (is_null(Answer::model()->getAnswerFromCode($qid, $value, $language))) {
+                if (is_null(Question::model()->getQuestionFromTitle($qid, $value, $language))) {
                     $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
                     return false;
                 }

@@ -735,11 +735,11 @@ class Statistics extends SurveyCommonAction
 
                 case Question::QT_R_RANKING: // Ranking
                     $qid = $row['qid'];
-                    $results = Answer::model()->getQuestionsForStatistics('code', "qid='$qid' ", 'sortorder');
+                    $results = Question::model()->getQuestionsForStatistics('title', "parent_qid='$qid' ", 'question_order, title');
                     $count = count($results);
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
                     for ($i = 1; $i <= $count; $i++) {
-                        $summary[] = $type . 'Q' . $row['qid'] . '_R' . $results[$i - 1]['aid'];
+                        $summary[] = $type . 'Q' . $row['qid'] . '_S' . $results[$i - 1]['qid'];
                     }
                     break;
 
