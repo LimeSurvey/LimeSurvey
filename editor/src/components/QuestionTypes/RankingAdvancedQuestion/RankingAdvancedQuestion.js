@@ -6,14 +6,14 @@ import { useState } from 'react'
 import { cloneDeep } from 'lodash'
 import { Entities, getInfoFromObjectByIndex, Toast } from 'helpers'
 
-import { RankingAdvancedQuestionAnswersPlaceholder } from './RankingAdvancedQuestionAnswersPlaceholder'
-import { RankingAdvancedQuestionAnswers } from './RankingAdvancedQuestionAnswers'
+import { RankingAdvancedQuestionSubquestionsPlaceholder } from './RankingAdvancedQuestionSubquestionsPlaceholder'
+import { RankingAdvancedQuestionSubquestions } from './RankingAdvancedQuestionSubquestions'
 
-const ANSWERS_DROPPALE_ID = 'ranking-advanced-answers'
+const SUBQUESTIONS_DROPPALE_ID = 'ranking-advanced-subquestions'
 const PLACEHOLDERS_DROPPALE_ID = 'ranking-advanced-placeholders'
 
 export const RankingAdvancedQuestion = ({
-  question: { answers: questionAnswers = [], qid } = {},
+  question: { subquestions: rankingSubquestions = [], qid } = {},
   isFocused,
   handleChildLUpdate,
   handleChildAdd,
@@ -25,8 +25,8 @@ export const RankingAdvancedQuestion = ({
   onValueChange = () => {},
   handleChildCodeUpdate,
 }) => {
-  const [answersHeight, setAnswersHeight] = useState([])
-  const [answersValue, setAnswersValue] = useState(cloneDeep(values))
+  const [subquestionsHeight, setSubquestionsHeight] = useState([])
+  const [subquestionsValue, setSubquestionsValue] = useState(cloneDeep(values))
 
   const handleOnDragEnd = (dropResult) => {
     if (participantMode) {
@@ -34,24 +34,24 @@ export const RankingAdvancedQuestion = ({
       return
     }
 
-    handleOnChildDragEnd(dropResult, questionAnswers, Entities.answer)
+    handleOnChildDragEnd(dropResult, rankingSubquestions, Entities.subquestion)
   }
 
   const handleResponseAnswer = (dropResult) => {
     const sourceIndex = +dropResult.source.index
     const destinationIndex = +dropResult.destination.droppableId
-    const newAnswerValue = { ...questionAnswers[sourceIndex] }
+    const newSubquestionValue = { ...rankingSubquestions[sourceIndex] }
 
-    let answerAlreadyExists = false
-    answersValue.forEach((answer) => {
-      if (answer.aid === newAnswerValue.aid) {
-        answerAlreadyExists = true
+    let subquestionAlreadyExists = false
+    subquestionsValue.forEach((subquestion) => {
+      if (subquestion.qid === newSubquestionValue.qid) {
+        subquestionAlreadyExists = true
       }
     })
 
-    if (answerAlreadyExists) {
+    if (subquestionAlreadyExists) {
       Toast({
-        message: t('Answer already exists'),
+        message: t('Subquestion already exists'),
         position: 'bottom-center',
         duration: 3000,
       })
@@ -59,40 +59,47 @@ export const RankingAdvancedQuestion = ({
       return
     }
 
-    answersValue[destinationIndex] = {
-      ...answersValue[destinationIndex],
-      aid: newAnswerValue.aid,
-      value: newAnswerValue.code,
-      answerTitle: newAnswerValue.l10ns[language].answer,
-      subquestionTitle: newAnswerValue.code,
+    subquestionsValue[destinationIndex] = {
+      ...subquestionsValue[destinationIndex],
+      qid: newSubquestionValue.qid,
+      value: newSubquestionValue.title,
+      answerTitle: newSubquestionValue.title,
+      subquestionTitle: newSubquestionValue.l10ns[language].question,
     }
 
-    setAnswersValue([...answersValue])
-    onValueChange(newAnswerValue.code, answersValue[destinationIndex].key)
+    setSubquestionsValue([...subquestionsValue])
+    onValueChange(
+      newSubquestionValue.title,
+      subquestionsValue[destinationIndex].key
+    )
   }
 
-  const clearAnswer = (index) => {
-    const answerInfo = getInfoFromObjectByIndex(answersValue[index])
-    answersValue[index][answerInfo.key] = ''
+  const clearSubquestion = (index) => {
+    const subquestionInfo = getInfoFromObjectByIndex(subquestionsValue[index])
+    subquestionsValue[index][subquestionInfo.key] = ''
 
-    answersValue[index] = {
-      ...answersValue[index],
-      aid: '',
+    subquestionsValue[index] = {
+      ...subquestionsValue[index],
+      qid: '',
       value: '',
       answerTitle: '',
       subquestionTitle: '',
     }
 
-    setAnswersValue([...answersValue])
-    onValueChange('', answersValue[index].key)
+    setSubquestionsValue([...subquestionsValue])
+    onValueChange('', subquestionsValue[index].key)
   }
 
-  const handleAnswerUpdate = (value, index) => {
-    handleChildLUpdate(value, index, questionAnswers, Entities.answer)
+  const handleSubquestionUpdate = (value, index) => {
+    handleChildLUpdate(value, index, rankingSubquestions, Entities.subquestion)
   }
 
-  const handleRemoveAnswer = (answer) => {
-    handleChildDelete(answer.aid, questionAnswers, Entities.answer)
+  const handleRemoveSubquestion = (subquestion) => {
+    handleChildDelete(
+      subquestion.qid,
+      rankingSubquestions,
+      Entities.subquestion
+    )
   }
 
   return (
@@ -101,16 +108,19 @@ export const RankingAdvancedQuestion = ({
         data-testid="ranking-advanced-question"
         className={'ranking-advanced-question d-flex flex-row'}
       >
-        <Droppable key={ANSWERS_DROPPALE_ID} droppableId={ANSWERS_DROPPALE_ID}>
+        <Droppable
+          key={SUBQUESTIONS_DROPPALE_ID}
+          droppableId={SUBQUESTIONS_DROPPALE_ID}
+        >
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              <RankingAdvancedQuestionAnswers
+              <RankingAdvancedQuestionSubquestions
                 isFocused={isFocused}
-                handleAnswerUpdate={handleAnswerUpdate}
-                handleRemoveAnswer={handleRemoveAnswer}
-                answers={questionAnswers}
+                handleSubquestionUpdate={handleSubquestionUpdate}
+                handleRemoveSubquestion={handleRemoveSubquestion}
+                subquestions={rankingSubquestions}
                 qid={qid}
-                setAnswersHeight={setAnswersHeight}
+                setSubQuestionsHeight={setSubquestionsHeight}
                 language={language}
                 handleCodeUpdate={handleChildCodeUpdate}
               />
@@ -122,12 +132,12 @@ export const RankingAdvancedQuestion = ({
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
               {!isFocused && (
-                <RankingAdvancedQuestionAnswersPlaceholder
+                <RankingAdvancedQuestionSubquestionsPlaceholder
                   isFocused={isFocused}
-                  answers={questionAnswers}
-                  answersHeight={answersHeight}
-                  answersValue={answersValue}
-                  clearAnswer={clearAnswer}
+                  subquestions={rankingSubquestions}
+                  subquestionsHeight={subquestionsHeight}
+                  subquestionsValue={subquestionsValue}
+                  clearSubquestion={clearSubquestion}
                 />
               )}
               {provided.placeholder}
@@ -137,14 +147,16 @@ export const RankingAdvancedQuestion = ({
       </div>
       <div>
         <Button
-          onClick={() => handleChildAdd(questionAnswers, Entities.answer)}
+          onClick={() =>
+            handleChildAdd(rankingSubquestions, Entities.subquestion)
+          }
           variant={'outline'}
           className={classNames('text-primary add-choice-button px-0 mt-2', {
             'd-none disabled': !isFocused,
           })}
-          data-testid="single-choice-add-answer-button"
+          data-testid="single-choice-add-subquestion-button"
         >
-          <PlusLg /> {t('Add answer')}
+          <PlusLg /> {t('Add subquestion')}
         </Button>
       </div>
     </DragDropContext>
