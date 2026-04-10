@@ -372,31 +372,13 @@ $config['pdfdefaultfont'] = 'auto'; //Default font for the pdf Export
 *  Some language are not tested : need translation for Yes,No and Gender : ckb, swh
 */
 $config['alternatepdffontfile'] = array(
-    'ar' => 'dejavusans', // 'dejavusans' work but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
-    'be' => 'dejavusans',
-    'bg' => 'dejavusans',
     'zh-Hans' => 'cid0cs',
     'zh-Hant-HK' => 'cid0ct',
     'zh-Hant-TW' => 'cid0ct',
-    'cs' => 'dejavusans',
-    'cs-informal' => 'dejavusans', // This one not really tested: no translation for Yes/No or Gender
-    'el' => 'dejavusans',
     'he' => 'freesans',
-    'hi' => 'dejavusans',
-    'hr' => 'dejavusans',
-    'hu' => 'dejavusans',
     'ja' => 'cid0jp',
     'ko' => 'cid0kr',
-    'lv' => 'dejavusans',
-    'lt' => 'dejavusans',
-    'mk' => 'dejavusans',
-    'mt' => 'dejavusans',
-    'fa' => 'dejavusans',
-    'pl' => 'dejavusans',
     'pa' => 'freesans',
-    'ro' => 'dejavusans',
-    'ru' => 'dejavusans',
-    'sr' => 'dejavusans'
 );
 /**
 *  $notsupportlanguages - array of language where no font was found for PDF
