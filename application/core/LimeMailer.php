@@ -1022,6 +1022,9 @@ class LimeMailer extends PHPMailer
         if (is_array($aEmailAddressList)) {
             $aOutList = [];
             foreach ($aEmailAddressList as $sEmailAddress) {
+                if (!is_string($sEmailAddress)) {
+                     continue;
+                }
                 $sEmailAddress = trim($sEmailAddress);
                 if (self::validateAddress($sEmailAddress, $patternselect)) {
                     $aOutList[] = $sEmailAddress;
