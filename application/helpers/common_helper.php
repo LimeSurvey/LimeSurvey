@@ -1464,29 +1464,25 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                     try {
                         $rankingSuffix = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
                         $iRankingSuffix = intval($rankingSuffix);
-                        if (($iRankingSuffix > 0) && isset($questions[0]->subquestions[($iRankingSuffix - 1)])) {
-                            $qid = $cd ? $index : $questions[0]->subquestions[($iRankingSuffix - 1)]->qid;
-                            $newFieldName = "Q{$qid}_{$prefix}" . $qid;
+                        $subQuestions = \Question::model()->findAll([
+                            'condition' => "parent_qid = :qid",
+                            'params' => [":qid" => $qid],
+                            'order' => 'question_order'
+                        ]);
+                        if (($iRankingSuffix > 0) && isset($subQuestions[($iRankingSuffix - 1)])) {
+                            $qid = $cd ? $index : $subQuestions[($iRankingSuffix - 1)]->qid;
+                            $newFieldName = "Q{$rootQuestion->qid}_{$prefix}" . $qid;
                         } else {
-                            $questions = \Question::model()->findAll("parent_qid = :qid", [
-                                ':qid' => $qid
-                            ]);
-                            $minSortOrder = 999;
-                            foreach ($questions as $question) {
-                                $so = (int)$question->question_order;
-                                if ($so < $minSortOrder) {
-                                    $minSortOrder = $so;
-                                }
-                            }
+                            $minSortOrder = $subQuestions[0]->question_order;
                             $diff = 0;
                             if ($minSortOrder === 0) {
                                 $diff = -1;
                             } else if ($minSortOrder > 1) {
                                 $diff = $minSortOrder;
                             }
-                            foreach ($questions as $question) {
+                            foreach ($subQuestions as $question) {
                                 if (($rankingSuffix == $question->title) || ((intval($iRankingSuffix) > 0) && ($rankingSuffix + $diff == $question->question_order))) {
-                                    return "Q{$qid}_{$prefix}{$question->qid}";
+                                    return "Q{$rootQuestion->qid}_{$prefix}{$question->qid}";
                                 }
                             }
                         }
