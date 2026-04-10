@@ -1020,7 +1020,6 @@ class LimeMailer extends PHPMailer
             $aEmailAddressList = preg_split("/(,|;)/", (string) $aEmailAddressList);
         }
         if (is_array($aEmailAddressList)) {
-            $aOutList = [];
             foreach ($aEmailAddressList as $sEmailAddress) {
                 if (!is_string($sEmailAddress)) {
                      continue;
