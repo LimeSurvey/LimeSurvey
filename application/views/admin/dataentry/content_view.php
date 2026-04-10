@@ -223,7 +223,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
         <div class="col-md-10">
         <div id="question<?php echo $thisqid ?>" class="ranking-answers">
             <ul class="answers-list list-unstyled">
-                <?php for ($i=1; $i<=$anscount; $i++)
+                <?php for ($i=1; $i<=$qcount; $i++)
             {
             ?>
             <li class="select-item">
@@ -234,12 +234,12 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     eT('Next choice','html',$sDataEntryLanguage);
                 }
             ?>
-            <select name="<?php echo $fieldname.$i ?>"  class='form-select' id="answer<?php echo $fieldname.$i ?>">";
+            <select name="<?php echo $fieldname . "_S" . $questions[$i - 1]->qid ?>"  class='form-select' id="answer<?php echo $fieldname . "_S" . $questions[$i - 1]->qid ?>">";
                 <option value=""><?php eT('None','html',$sDataEntryLanguage) ?></option>
                 <?php
-                    foreach ($answers as $ansrow)
+                    foreach ($questions as $qrow)
                     {
-                        echo "\t<option value=\"".$ansrow['code']."\">".flattenText($ansrow->answerl10ns[$sDataEntryLanguage]->answer)."</option>\n";
+                        echo "\t<option value=\"".$qrow['title']."\">".flattenText($qrow->questionl10ns[$sDataEntryLanguage]->question)."</option>\n";
                     }
                 ?>
             </select>
@@ -248,13 +248,13 @@ echo viewHelper::getViewTestTag('dataEntryView');
             }
             ?>
         </ul>
-        <div style="display:none" id="ranking-<?php echo $thisqid ?>-maxans"><?php echo $anscount ?></div>
+        <div style="display:none" id="ranking-<?php echo $thisqid ?>-maxans"><?php echo $qcount ?></div>
         <div style="display:none" id="ranking-<?php echo $thisqid ?>-minans">0</div>
         <div style="display:none" id="ranking-<?php echo $thisqid ?>-name">javatbd<?php echo $fieldname ?></div>
         <div style="display:none">
-        <?php foreach ($answers as $ansrow)
+        <?php foreach ($questions as $qrow)
         {
-            echo "<div id=\"htmlblock-{$thisqid}-{$ansrow['code']}\">{$ansrow->answerl10ns[$sDataEntryLanguage]->answer}</div>";
+            echo "<div id=\"htmlblock-{$thisqid}-{$qrow['title']}\">{$qrow->questionl10ns[$sDataEntryLanguage]->question}</div>";
         }
         ?>
         </div>

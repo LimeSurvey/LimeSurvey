@@ -396,7 +396,7 @@ class Statistics extends SurveyCommonAction
 
                 case Question::QT_R_RANKING: // Ranking
                     //get some answers
-                    $result = Answer::model()->getAnswersForStatistics('code, answer', "qid=$flt[0] AND language = '{$language}'", 'sortorder, code');
+                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
                     $aData['result'][$key1] = $result;
                     break;
 

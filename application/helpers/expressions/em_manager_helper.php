@@ -1164,7 +1164,7 @@ class LimeExpressionManager
                         foreach ($this->qans[$qinfo['parent_qid']] as $k => $v) {
                             $_code = explode('~', (string) $k);
                             $subqs[] = [
-                                'rowdivid' => $qinfo['sgqa'] . "_S" . $questions[$_code[1]]->aid,
+                                'rowdivid' => $qinfo['sgqa'] . "_S" . $questions[$_code[1]]->qid,
                                 'sqsuffix' => '_' . $_code[1],
                                 'code' => $_code[1]
                             ];
@@ -3634,13 +3634,8 @@ class LimeExpressionManager
                             $question = $this->gT('Other:');
                         }
                     }
-                    //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
-                    if ($type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS && preg_match("/comment$/", (string) $sgqa)) {
-                        //                            $rowdivid = substr($sgqa,0,-7);
-                    } else {
-                        $sqsuffix = '_' . $fielddata['qid'];
-                        $rowdivid = $sgqa;
-                    }
+                    $sqsuffix = '_' . $fielddata['qid'];
+                    $rowdivid = $sgqa;
 
                     break;
                 case Question::QT_H_ARRAY_COLUMN:
@@ -7333,9 +7328,9 @@ class LimeExpressionManager
                             $relParts[] = "    }\n";
                             break;
                         case Question::QT_R_RANKING:
-                            $aid = substr((string) $sq['rowdivid'], 2 + strlen((string) $sq['sgqa']));
-                            $answer = \Answer::model()->find("aid = :aid", [":aid" => $aid]);
-                            $listItem = $answer->code;
+                            $qid = substr((string) $sq['rowdivid'], 2 + strlen((string) $sq['sgqa']));
+                            $question = \Question::model()->find("qid = :qid", [":qid" => $qid]);
+                            $listItem = $question->title;
                             $relParts[] = " $('#questionQ{$arg['qid']} .select-list select').each(function(){ \n";
                             $relParts[] = "   if($(this).val()=='{$listItem}'){ \n";
                             $relParts[] = "     $(this).val('').trigger('change'); \n";

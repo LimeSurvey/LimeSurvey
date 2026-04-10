@@ -82,11 +82,11 @@ class Question extends LSActiveRecord
 
     const ORDER_TYPES_SUBQUESTION = [
         self::QT_M_MULTIPLE_CHOICE,
-        self::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS
+        self::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
+        self::QT_R_RANKING,
     ];
     const ORDER_TYPES_ANSWER = [
         self::QT_L_LIST,
-        self::QT_R_RANKING,
         self::QT_EXCLAMATION_LIST_DROPDOWN,
         self::QT_O_LIST_WITH_COMMENT
     ];

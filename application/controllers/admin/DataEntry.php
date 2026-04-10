@@ -893,7 +893,6 @@ class DataEntry extends SurveyCommonAction
                     case Question::QT_R_RANKING: // Ranking TYPE QUESTION
                         $thisqid = $fname['qid'];
                         $currentvalues = array();
-                        $rawvalues = [];
                         $myfname = 'Q' . $fname['qid'];
                         $questionInput = '<div id="question' . $thisqid . '" class="ranking-answers"><ul class="answers-list select-list">';
                         $unseen = true;
@@ -906,10 +905,9 @@ class DataEntry extends SurveyCommonAction
                             if (isset($idrow[$fname['fieldname']])) {
                                 $unseen = false;
                             }
-                            $rawvalues[] = $idrow[$fname['fieldname']];
                             $fname = next($fnames);
                         }
-                        $qresult = Question::model()->with('questionl10ns')->findAll(array('condition' => 'parent_qid =:qid AND language = :language', 'params' => array('qid' => $thisqid, 'language' => $sDataEntryLanguage)));
+                        $qresult = Question::model()->with('questionl10ns')->findAll(array('condition' => 'parent_qid =:qid AND language = :language', 'params' => array('qid' => $thisqid, 'language' => $sDataEntryLanguage), 'order' => 'question_order'));
                         $qcount = count($qresult);
                         $questions = array();
                         foreach ($qresult as $qrow) {
@@ -2340,12 +2338,16 @@ class DataEntry extends SurveyCommonAction
                             break;
                         case Question::QT_R_RANKING: // Ranking TYPE QUESTION
                             $thisqid = $arQuestion['qid'];
-                            $arAnswers = $arQuestion->answers;
-                            $anscount = count($arAnswers);
+                            $arQuestions = $arQuestion->subquestions;
+                            $meacount = count($arQuestions);
 
                             $cdata['thisqid'] = $thisqid;
-                            $cdata['anscount'] = $anscount;
-                            $cdata['answers'] = $arAnswers;
+                            $cdata['qcount'] = $meacount;
+                            $cdata['questions'] = Question::model()->with('questionl10ns')->findAll([
+                                'condition' => ":qid = parent_qid",
+                                'params' => [":qid" => $thisqid],
+                                'order' => 'question_order'
+                            ]);
                             App()->getClientScript()->registerPackage('jquery-actual');
                             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
                             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');

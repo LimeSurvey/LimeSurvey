@@ -303,9 +303,6 @@ class StatisticsUserController extends SurveyController
                         'params'    => [':language' => $this->sLanguage, ':parent_qid' => $flt->qid],
                         'order'     => 'question_order'
                     ]);
-                    // Format: "R" + fieldmap key "Q{qid}_S{sqid}"
-                    // The "R" prefix triggers the ranking in buildOutputList.
-                    // "Q{qid}_S{sqid}" matches the actual responses table column name.
                     foreach ($results as $subQuestion) {
                         $allfields[] = 'R' . $SGQidentifier . '_S' . $subQuestion->qid;
                     }
