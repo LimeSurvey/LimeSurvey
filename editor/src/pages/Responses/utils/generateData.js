@@ -95,8 +95,12 @@ export const generateData = (responses, language, generatedColumns) => {
         ? 'aid'
         : 'sqid'
 
-      if(isRankingQuestion(question.questionThemeName)) {
-        questionSubquestion = getSubquestionByProperty(answer.value, 'title', question).subquestion
+      if (isRankingQuestion(question.questionThemeName)) {
+        questionSubquestion = getSubquestionByProperty(
+          answer.value,
+          'title',
+          question
+        ).subquestion
       }
 
       if (

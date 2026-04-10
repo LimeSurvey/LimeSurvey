@@ -50,8 +50,7 @@ export const renderCellText = ({
       {!isSingleChoiceQuestion(questionThemeName) &&
         isRankingQuestion(questionThemeName) &&
         `${subquestionTitle}`}
-      {isSingleChoiceQuestion(questionThemeName) &&
-        answerTitle}
+      {isSingleChoiceQuestion(questionThemeName) && answerTitle}
       {comment?.value && (
         <span>
           {answerTitle && ':'} {comment.value}

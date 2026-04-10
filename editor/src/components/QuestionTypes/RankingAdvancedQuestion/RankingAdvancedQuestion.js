@@ -25,8 +25,6 @@ export const RankingAdvancedQuestion = ({
   onValueChange = () => {},
   handleChildCodeUpdate,
 }) => {
-  console.log(values);
-  
   const [subquestionsHeight, setSubquestionsHeight] = useState([])
   const [subquestionsValue, setSubquestionsValue] = useState(cloneDeep(values))
 
@@ -60,8 +58,7 @@ export const RankingAdvancedQuestion = ({
 
       return
     }
-    console.log(newSubquestionValue);
-    
+
     subquestionsValue[destinationIndex] = {
       ...subquestionsValue[destinationIndex],
       qid: newSubquestionValue.qid,
@@ -71,7 +68,10 @@ export const RankingAdvancedQuestion = ({
     }
 
     setSubquestionsValue([...subquestionsValue])
-    onValueChange(newSubquestionValue.title, subquestionsValue[destinationIndex].key)
+    onValueChange(
+      newSubquestionValue.title,
+      subquestionsValue[destinationIndex].key
+    )
   }
 
   const clearSubquestion = (index) => {
@@ -95,7 +95,11 @@ export const RankingAdvancedQuestion = ({
   }
 
   const handleRemoveSubquestion = (subquestion) => {
-    handleChildDelete(subquestion.qid, rankingSubquestions, Entities.subquestion)
+    handleChildDelete(
+      subquestion.qid,
+      rankingSubquestions,
+      Entities.subquestion
+    )
   }
 
   return (
@@ -104,7 +108,10 @@ export const RankingAdvancedQuestion = ({
         data-testid="ranking-advanced-question"
         className={'ranking-advanced-question d-flex flex-row'}
       >
-        <Droppable key={SUBQUESTIONS_DROPPALE_ID} droppableId={SUBQUESTIONS_DROPPALE_ID}>
+        <Droppable
+          key={SUBQUESTIONS_DROPPALE_ID}
+          droppableId={SUBQUESTIONS_DROPPALE_ID}
+        >
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
               <RankingAdvancedQuestionSubquestions
@@ -140,7 +147,9 @@ export const RankingAdvancedQuestion = ({
       </div>
       <div>
         <Button
-          onClick={() => handleChildAdd(rankingSubquestions, Entities.subquestion)}
+          onClick={() =>
+            handleChildAdd(rankingSubquestions, Entities.subquestion)
+          }
           variant={'outline'}
           className={classNames('text-primary add-choice-button px-0 mt-2', {
             'd-none disabled': !isFocused,

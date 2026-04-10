@@ -115,7 +115,9 @@ export const RankingAdvancedQuestionSubquestions = ({
                           language,
                           prop: 'question',
                         })}
-                        update={(value) => handleSubquestionUpdate(value, index)}
+                        update={(value) =>
+                          handleSubquestionUpdate(value, index)
+                        }
                         placeholder={t('Subquestion option')}
                         className={classNames(
                           'choice ranking-advanced-subquestion-content-editor',
