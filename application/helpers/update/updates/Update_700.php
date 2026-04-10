@@ -926,6 +926,58 @@ class Update_700 extends DatabaseUpdateBase
     }
 
     /**
+     * Creating subquestions for ranking instead of its answers
+     * @return string
+     */
+    public function insertRankingSubquestions()
+    {
+        return "
+            INSERT INTO {{questions}}(parent_qid, sid, gid, type, title, question_order, relevance)
+            SELECT q.qid, q.sid, q.gid, '" . Question::QT_T_LONG_FREE_TEXT . "', a.code, a.sortorder, '1'
+            FROM {{answers}} a
+            JOIN {{questions}} q
+            ON a.qid = q.qid and q.type = '" . Question::QT_R_RANKING . "'
+        ";
+    }
+
+    /**
+     * Creating subquestions for ranking instead of its answers
+     * @return string
+     */
+    public function insertRankingSubquestionsL10ns()
+    {
+        return "
+            INSERT INTO {{question_l10ns}}(qid, question, language)
+            SELECT target.qid, al.answer, al.language
+            FROM {{answer_l10ns}} al
+            JOIN {{answers}} a
+            ON al.aid = a.aid
+            JOIN {{questions}} q
+            ON a.qid = q.qid and q.type = '" . Question::QT_R_RANKING . "'
+            JOIN {{questions}} target
+            ON target.parent_qid = q.qid and target.title = a.code
+        ";
+    }
+
+    /**
+     * Cleanup for ranking answers
+     * @return string
+     */
+    public function deleteRankingAnswers()
+    {
+        return "DELETE FROM {{answers}} WHERE EXISTS (SELECT qid FROM {{questions}} WHERE type ='" . Question::QT_R_RANKING . "' AND {{questions}}.qid = {{answers}}.qid)";
+    }
+
+    /**
+     * Cleanup for ranking answers
+     * @return string
+     */
+    public function deleteTranslatedRankingAnswers()
+    {
+        return "DELETE FROM {{answer_l10ns}} WHERE NOT EXISTS (SELECT aid FROM {{answers}} WHERE {{answer_l10ns}}.aid = {{answers}}.aid)";
+    }
+
+    /**
      * Fixes textual data, replacing old fieldname representation with new fieldname representation. We don't save the record even if changed here, because
      * outside of the method we may want to do additional things
      * @param LSActiveRecord $record the record whose fields are to be fixed
@@ -995,6 +1047,8 @@ class Update_700 extends DatabaseUpdateBase
     /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
     public function up()
     {
+        $this->db->createCommand($this->insertRankingSubquestions())->execute();
+        $this->db->createCommand($this->insertRankingSubquestionsL10ns())->execute();
         $leftSeparator = $rightSeparator = "`";
         if (Yii::app()->db->getDriverName() === 'pgsql') {
             $leftSeparator = $rightSeparator = '"';
@@ -1346,5 +1400,7 @@ class Update_700 extends DatabaseUpdateBase
                 $archivedSetting->save();
             }
         }
+        $this->db->createCommand($this->deleteRankingAnswers())->execute();
+        $this->db->createCommand($this->deleteTranslatedRankingAnswers())->execute();
     }
 }
