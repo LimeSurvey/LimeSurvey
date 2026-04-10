@@ -268,9 +268,7 @@ function convertGETtoPOST($url)
     if (!empty($query)) {
         $aqueryitems = explode('&', $query);
         foreach ($aqueryitems as $queryitem) {
-            $stack = explode('=', $queryitem);
-            $paramname = array_shift($stack);
-            $value = array_shift($stack);
+            [$paramname, $value] = array_pad(explode('=', $queryitem, 2), 2, '');
             if (in_array($paramname, array(Yii::app()->getComponent('urlManager')->routeVar))) {
                 $getArray[$paramname] = $value;
             } else {
