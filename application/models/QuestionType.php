@@ -331,11 +331,11 @@ class QuestionType extends StaticModel
                 'code' => self::QT_R_RANKING,
                 'description' => gT("Ranking", "html", $language),
                 'group' => gT("Mask questions"),
-                'subquestions' => 0,
+                'subquestions' => 1,
                 'other' => false,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
-                'answerscales' => 1,
+                'answerscales' => 0,
                 'class' => 'ranking'
             ],
             self::QT_S_SHORT_FREE_TEXT => [
