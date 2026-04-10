@@ -1040,6 +1040,7 @@ class Update_700 extends DatabaseUpdateBase
         $fields = $this->db->createCommand($this->scriptMapping['fields'])->queryAll();
         $fieldMap = [];
         foreach ($fields as $field) {
+            $questions = [];
             if (!isset($field['TABLE_NAME'])) {
                 if (isset($field['table_name'])) {
                     $field['TABLE_NAME'] = $field['table_name'];
@@ -1067,11 +1068,12 @@ class Update_700 extends DatabaseUpdateBase
                 }
                 $commaSeparatedQIDs = implode(",", $qids);
                 $questions = Question::model()->with('answers')->findAll([
-                    'condition' => "sid = {$sid} and gid = {$gid} and (t.qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
+                    'condition' => "sid = {$sid} and ((t.qid in ({$commaSeparatedQIDs}) and gid = {$gid}) or parent_qid in ({$commaSeparatedQIDs}))"
                 ]);
             }
-            if (count($questions) || ((strpos($tableName, "timings") !== false) && ($split > 1))) {
-                $fieldMap[$tableName][$fieldName] = getFieldName($tableName, $fieldName, $questions, (int)$sid, (int)$gid);
+            $questionsToPass = $questions ?? [];
+            if (count($questionsToPass) || ((strpos($tableName, "timings") !== false) && (count($split) > 1))) {
+                $fieldMap[$tableName][$fieldName] = getFieldName($tableName, $fieldName, $questionsToPass, (int)$sid, (int)$gid);
             }
         }
         $preinsert = "";
@@ -1204,7 +1206,9 @@ class Update_700 extends DatabaseUpdateBase
                             $this->fixText($entity, $ef['fields'], $additionalNames)
                         ];
                         if ($save[0] || $save[1] || $save[2]) {
-                            $entity->save();
+                            if (!(in_array('relevance', $ef['fields']) && $entity->qid && (!$entity->survey))) {
+                                $entity->save();
+                            }
                         }
                     }
                 }
@@ -1253,7 +1257,7 @@ class Update_700 extends DatabaseUpdateBase
                         }
                         $commaSeparatedQIDs = implode(",", $tempqids);
                         $questionsTemp = Question::model()->with('answers')->findAll([
-                            'condition' => "sid = {$sid} and gid = {$gid} and (t.qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
+                            'condition' => "sid = {$sid} and ((t.qid in ({$commaSeparatedQIDs}) and gid = {$gid}) or parent_qid in ({$commaSeparatedQIDs}))"
                         ]);
                         $prefix = Yii::app()->db->tablePrefix ?? "";
                         if (count($questionsTemp)) {
