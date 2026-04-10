@@ -10,6 +10,9 @@ $codeids = '';
         <div id='neweditlblset<?php echo $i ?>' class="table-responsive tab-pane lang-<?= $lslanguage ?> <?= $i === 0 ? "active show first" : "not_first" ?>">
             <input type='hidden' class='lslanguage' value='<?= $lslanguage ?>' <?= $i === 0 ? 'id="lslanguagemain"' : '' ?>/>
             <table class='answertable table table-hover'>
+                <caption class="sr-only">
+                    <?php eT("Labels for language: ") . getLanguageNameFromCode($lslanguage, false); ?>
+                </caption>
                 <thead>
                 <tr>
                     <?php if ($first): ?>
