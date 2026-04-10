@@ -1156,15 +1156,15 @@ class LimeExpressionManager
                     $subqs = $qinfo['subqs'];
                     if ($type == Question::QT_R_RANKING) {
                         $subqs = [];
-                        $rawAnswers = \Answer::model()->findAll("qid = :qid", [":qid" => $qinfo['qid']]);
-                        $answers = [];
-                        foreach ($rawAnswers as $rawAnswer) {
-                            $answers[$rawAnswer->code] = $rawAnswer;
+                        $rawQuestions = \Question::model()->findAll("parent_qid = :qid", [":qid" => $qinfo['qid']]);
+                        $questions = [];
+                        foreach ($rawQuestions as $rawQuestion) {
+                            $questions[$rawQuestion->title] = $rawQuestion;
                         }
-                        foreach ($this->qans[$qinfo['qid']] as $k => $v) {
+                        foreach ($this->qans[$qinfo['parent_qid']] as $k => $v) {
                             $_code = explode('~', (string) $k);
                             $subqs[] = [
-                                'rowdivid' => $qinfo['sgqa'] . "_R" . $answers[$_code[1]]->aid,
+                                'rowdivid' => $qinfo['sgqa'] . "_S" . $questions[$_code[1]]->qid,
                                 'sqsuffix' => '_' . $_code[1],
                                 'code' => $_code[1]
                             ];
@@ -3602,9 +3602,8 @@ class LimeExpressionManager
                 case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text                 // note does not have javatbd equivalent - so array filters don't work on it
-                case Question::QT_R_RANKING: // Ranking STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
-                    $csuffix = $fielddata['csuffix'] ?? $fielddata['qid'];
-                    $varName = $fielddata['title'] . '_' . $fielddata['qid'];
+                    $csuffix = $fielddata['csuffix'] ?? $fielddata['aid'];
+                    $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['subquestion'];
                     // In M and P , we use $question (sub question) for shown. With other : we show to the user 'other_replace_text' if it's set. see #13505
                     if ($other == "Y") {
@@ -3618,9 +3617,25 @@ class LimeExpressionManager
                     if ($type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS && preg_match("/comment$/", (string) $sgqa)) {
                         //                            $rowdivid = substr($sgqa,0,-7);
                     } else {
-                        $sqsuffix = '_' . $fielddata['qid'];
+                        $sqsuffix = '_' . $fielddata['aid'];
                         $rowdivid = $sgqa;
                     }
+
+                    break;
+                case Question::QT_R_RANKING: // Ranking STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
+                    $csuffix = $fielddata['csuffix'] ?? $fielddata['qid'];
+                    $varName = $fielddata['title'] . '_' . $fielddata['sqid'];
+                    $question = $fielddata['subquestion'];
+                    // In M and P , we use $question (sub question) for shown. With other : we show to the user 'other_replace_text' if it's set. see #13505
+                    if ($other == "Y") {
+                        if (isset($qattr[$questionNum]['other_replace_text']) && trim((string) $qattr[$questionNum]['other_replace_text']) != '') {
+                            $question = trim((string) $qattr[$questionNum]['other_replace_text']);
+                        } else {
+                            $question = $this->gT('Other:');
+                        }
+                    }
+                    $sqsuffix = '_' . $fielddata['qid'];
+                    $rowdivid = $sgqa;
 
                     break;
                 case Question::QT_H_ARRAY_COLUMN:
@@ -6765,7 +6780,6 @@ class LimeExpressionManager
         //////////////////////////////////////////////////////////////////////////
         // STORE METADATA NEEDED FOR SUBSEQUENT PROCESSING AND DISPLAY PURPOSES //
         //////////////////////////////////////////////////////////////////////////
-
         $qStatus = [
             'info'            => $qInfo,   // collect all questions within the group - includes mandatory and always-hiddden status
             'relevant'        => $qrel,
@@ -7313,9 +7327,9 @@ class LimeExpressionManager
                             $relParts[] = "    }\n";
                             break;
                         case Question::QT_R_RANKING:
-                            $aid = substr((string) $sq['rowdivid'], 2 + strlen((string) $sq['sgqa']));
-                            $answer = \Answer::model()->find("aid = :aid", [":aid" => $aid]);
-                            $listItem = $answer->code;
+                            $qid = substr((string) $sq['rowdivid'], 2 + strlen((string) $sq['sgqa']));
+                            $question = \Question::model()->find("qid = :qid", [":qid" => $qid]);
+                            $listItem = $question->title;
                             $relParts[] = " $('#questionQ{$arg['qid']} .select-list select').each(function(){ \n";
                             $relParts[] = "   if($(this).val()=='{$listItem}'){ \n";
                             $relParts[] = "     $(this).val('').trigger('change'); \n";
@@ -10028,7 +10042,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 }
                 break;
             case 'R':  // Ranking
-                if (is_null(Answer::model()->getAnswerFromCode($qid, $value, $language))) {
+                if (is_null(Question::model()->getQuestionFromTitle($qid, $value, $language))) {
                     $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
                     return false;
                 }

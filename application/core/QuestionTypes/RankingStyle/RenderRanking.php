@@ -60,13 +60,17 @@ class RenderRanking extends QuestionBaseRenderer
                 : $this->iMaxSubquestions
         );
 
-        $subQuestions = $this->aSubQuestions[0];
+        $subQuestions = \Question::model()->with('questionl10ns')->findAll([
+            'condition' => 'parent_qid = :qid',
+            'params' => [':qid' => $this->oQuestion->qid],
+            'order' => 'question_order'
+        ]);
         
         // Prepare display subquestions for ranking interface
         $this->aDisplayAnswers = [];
         foreach ($subQuestions as $oSubQuestion) {
             $this->aDisplayAnswers[$oSubQuestion->qid] = array(
-                'code' => (string)$oSubQuestion->title,
+                'title' => (string)$oSubQuestion->title,
                 //The renderer still believes it is an answer
                 'answer' => $oSubQuestion->questionl10ns[$this->sLanguage]->question,
                 'sqid' => $oSubQuestion->qid
@@ -81,54 +85,53 @@ class RenderRanking extends QuestionBaseRenderer
         $sSelects = '';
         $inputnames = [];
 
+        // Iterate through subquestions instead of answer options
         for ($i = 1; $i <= $iMaxLine; $i++) {
-            // Iterate through subquestions instead of answer options
-            foreach ($subQuestions as $oSubQuestion) {
-                $myfname = $this->sSGQA . '_S' . $oSubQuestion->qid;
-                $this->sLabeltext = $oSubQuestion->questionl10ns[$this->sLanguage]->question;
-                $aItemData = [];
+            $oSubQuestion = $subQuestions[$i - 1];
+            $myfname = $this->sSGQA . '_S' . $oSubQuestion->qid;
+            $this->sLabeltext = $oSubQuestion->questionl10ns[$this->sLanguage]->question;
+            $aItemData = [];
 
-                $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], false);
-                
-                if (!$mSessionValue) {
-                    $aItemData[] = array(
-                        'value'      => '',
-                        'selected'   => 'SELECTED',
-                        'classes'    => '',
-                        'id'         => '',
-                        'optiontext' => gT('Please choose...'),
-                    );
-                }
+            $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], false);
 
-                // Show ranking positions (1, 2, 3, ...)
-                foreach ($subQuestions as $oSubQuestion) {
-                    if ($mSessionValue == $oSubQuestion->title) {
-                        $selected = SELECTED;
-                    } else {
-                        $selected = '';
-                    }
-
-                    $aItemData[] = array(
-                        'value' => $oSubQuestion->title,
-                        'selected' => $selected,
-                        'classes' => '',
-                        'optiontext' => sprintf(gT('Rank %s'), $oSubQuestion->questionl10ns[$this->sLanguage]->question)
-                    );
-                }
-
-                $sSelects .= Yii::app()->twigRenderer->renderQuestion(
-                    $this->getMainView() . '/rows/answer_row',
-                    array(
-                        'myfname' => $myfname,
-                        'labeltext' => $this->sLabeltext,
-                        'options' => $aItemData,
-                        'thisvalue' => $mSessionValue ?? '',
-                    ),
-                    true
+            if (!$mSessionValue) {
+                $aItemData[] = array(
+                    'value'      => '',
+                    'selected'   => 'SELECTED',
+                    'classes'    => '',
+                    'id'         => '',
+                    'optiontext' => gT('Please choose...'),
                 );
-
-                $inputnames[] = $myfname;
             }
+
+            // Show ranking positions (1, 2, 3, ...)
+            foreach ($subQuestions as $oSubQuestion) {
+                if ($mSessionValue == $oSubQuestion->title) {
+                    $selected = SELECTED;
+                } else {
+                    $selected = '';
+                }
+
+                $aItemData[] = array(
+                    'value' => $oSubQuestion->title,
+                    'selected' => $selected,
+                    'classes' => '',
+                    'optiontext' => sprintf(gT('Rank %s'), $oSubQuestion->questionl10ns[$this->sLanguage]->question)
+                );
+            }
+
+            $sSelects .= Yii::app()->twigRenderer->renderQuestion(
+                $this->getMainView() . '/rows/answer_row',
+                array(
+                    'myfname' => $myfname,
+                    'labeltext' => $this->sLabeltext,
+                    'options' => $aItemData,
+                    'thisvalue' => $mSessionValue ?? '',
+                ),
+                true
+            );
+
+            $inputnames[] = $myfname;
         }
 
         return $sSelects;
@@ -159,7 +162,6 @@ class RenderRanking extends QuestionBaseRenderer
         } else {
             $rank_title = gT("Your ranking", 'html');
         }
-
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(
             'coreClass'         => $sCoreClasses,
             'sSelects'          => $this->getRows(),

@@ -997,7 +997,7 @@ class SurveyDynamic extends LSActiveRecord
                 
                 // Get the answer text for the selected rank value
                 $answerText = '';
-                if (isset($oQuestion->answers)) {
+                if (isset($oQuestion->subquestions)) {
                     $oSelectedAnswer = array_reduce($subQuestions, function ($carry, $oAns) use ($currentResponse) {
                         return $currentResponse == $oAns->title ? $oAns : $carry;
                     });

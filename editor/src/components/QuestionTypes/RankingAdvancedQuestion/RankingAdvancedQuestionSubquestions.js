@@ -9,48 +9,48 @@ import { ContentEditor } from 'components/UIComponents'
 import { CloseCircleFillIcon, DragIcon } from 'components/icons'
 import { L10ns } from 'helpers'
 
-export const RankingAdvancedQuestionAnswers = ({
-  handleAnswerUpdate = () => {},
-  handleRemoveAnswer = () => {},
+export const RankingAdvancedQuestionSubquestions = ({
+  handleSubquestionUpdate = () => {},
+  handleRemoveSubquestion = () => {},
   isFocused,
-  setAnswersHeight,
-  answers = [],
+  setSubQuestionsHeight,
+  subquestions = [],
   qid,
   language,
   handleCodeUpdate,
 }) => {
-  const answersRef = useRef(null)
+  const subquestionsRef = useRef(null)
   const { surveyId } = useParams()
   const { survey } = useSurvey(surveyId)
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
 
   useEffect(() => {
-    if (!setAnswersHeight) {
+    if (!setSubQuestionsHeight) {
       return
     }
 
-    const answersHeight = []
+    const subquestionsHeight = []
     const observer = new ResizeObserver(() => {
-      if (!answersRef.current) {
+      if (!subquestionsRef.current) {
         return
       }
 
-      answersRef.current
-        .querySelectorAll('.ranking-advanced-answer-content-editor')
+      subquestionsRef.current
+        .querySelectorAll('.ranking-advanced-subquestion-content-editor')
         .forEach((item, index) => {
-          answersHeight[index] = item.offsetHeight
+          subquestionsHeight[index] = item.offsetHeight
         })
 
-      setAnswersHeight([...answersHeight])
+      setSubQuestionsHeight([...subquestionsHeight])
     })
 
-    if (answersRef.current) {
-      answersRef.current
-        .querySelectorAll('.ranking-advanced-answer-content-editor')
+    if (subquestionsRef.current) {
+      subquestionsRef.current
+        .querySelectorAll('.ranking-advanced-subquestion-content-editor')
         .forEach((item) => {
           observer.observe(item)
         })
-      observer.observe(answersRef.current)
+      observer.observe(subquestionsRef.current)
     }
 
     return () => {
@@ -60,11 +60,11 @@ export const RankingAdvancedQuestionAnswers = ({
 
   return (
     <div>
-      {answers.map((answer, index) => {
+      {subquestions.map((subquestion, index) => {
         return (
           <Draggable
-            key={`advanced-answer${answer.qid}-${index}`}
-            draggableId={`advanced-answer${answer.qid}-${index}`}
+            key={`advanced-subquestion${subquestion.qid}-${index}`}
+            draggableId={`advanced-subquestion${subquestion.qid}-${index}`}
             index={index}
           >
             {(provided, snapshot) => {
@@ -72,7 +72,7 @@ export const RankingAdvancedQuestionAnswers = ({
                 <div {...provided.draggableProps} ref={provided.innerRef}>
                   <div
                     className={classNames(
-                      'position-relative ranking-advanced-answer w-100 ps-0 p-1 d-flex align-items-center question-body-content remove-option-button-parent'
+                      'position-relative ranking-advanced-subquestion w-100 ps-0 p-1 d-flex align-items-center question-body-content remove-option-button-parent'
                     )}
                   >
                     <div
@@ -82,7 +82,7 @@ export const RankingAdvancedQuestionAnswers = ({
                           'd-none disabled': !isFocused,
                         }
                       )}
-                      onClick={() => handleRemoveAnswer(answer)}
+                      onClick={() => handleRemoveSubquestion(subquestion)}
                       style={{ left: -24 }}
                     >
                       <CloseCircleFillIcon
@@ -96,34 +96,36 @@ export const RankingAdvancedQuestionAnswers = ({
                       {isFocused && survey.showQNumCode?.showNumber && (
                         <SubquestionCodeInput
                           isSurveyActive={isSurveyActive}
-                          code={answer.code}
+                          code={subquestion.title}
                           onChange={(e) =>
                             handleCodeUpdate({
                               newCode: e.target.value,
                               childIndex: index,
-                              childArray: answers,
-                              entityType: Entities.answer,
-                              entityTitleKey: 'answer',
+                              childArray: subquestions,
+                              entityType: Entities.subquestion,
+                              entityTitleKey: 'question',
                             })
                           }
                         />
                       )}
                       <ContentEditor
-                        key={`Ranking-Advanced-Answer-${qid}`}
+                        key={`Ranking-Advanced-Subquestion-${qid}`}
                         value={L10ns({
-                          l10ns: answer.l10ns,
+                          l10ns: subquestion.l10ns,
                           language,
-                          prop: 'answer',
+                          prop: 'question',
                         })}
-                        update={(value) => handleAnswerUpdate(value, index)}
-                        placeholder={t('Answer option')}
+                        update={(value) =>
+                          handleSubquestionUpdate(value, index)
+                        }
+                        placeholder={t('Subquestion option')}
                         className={classNames(
-                          'choice ranking-advanced-answer-content-editor w-100',
+                          'choice ranking-advanced-subquestion-content-editor',
                           {
                             'focus-element': snapshot.isDragging,
                           }
                         )}
-                        testId="ranking-advanced-answer-content-editor"
+                        testId="ranking-advanced-subquestion-content-editor"
                       />
                     </div>
                     <div
