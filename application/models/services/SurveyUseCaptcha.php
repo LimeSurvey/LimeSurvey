@@ -59,6 +59,8 @@ class SurveyUseCaptcha
      *
      * @return string
      * @throws \Exception
+     *
+     * @todo Is this used? To be deprecated?
      */
     public function convertSurveyAccessToUseCaptcha(bool $value, string $mode)
     {
