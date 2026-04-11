@@ -314,7 +314,7 @@ class SurveysGroupsettings extends LSActiveRecord
             if ($iSurveyGroupId > 0) {
                 self::$aSurveysGroupSettings[$iSurveyGroupId] = SurveysGroupsettings::model()->with('SurveysGroups')->findByPk($iSurveyGroupId);
             } else {
-                //this is the default group setting with gsid=0 !!!
+                // SurveysGroupsettings with gsid=0 is how "Global survey settings" are stored.
                 self::$aSurveysGroupSettings[$iSurveyGroupId] = SurveysGroupsettings::model()->findByPk(0);
             }
         }
@@ -362,23 +362,7 @@ class SurveysGroupsettings extends LSActiveRecord
         if ($oSurvey !== null || ($oSurvey === null && $iStep > 1)) {
             foreach ($instance->optionAttributes as $key => $attribute) {
                 if ($attribute === 'usecaptcha') {
-                    // Mirror shouldInherit's oOptions-or-raw-attribute pattern:
-                    // if oOptions was seeded (bRealValues=true) use it; otherwise fall back
-                    // to the raw model value, exactly as shouldInherit() does for scalars.
-                    $currentUseCaptcha = property_exists($instance->oOptions, 'usecaptcha')
-                        ? $instance->oOptions->usecaptcha
-                        : $instance->usecaptcha;
-                    $captchaService = new \LimeSurvey\Models\Services\SurveyUseCaptcha();
-                    $mergedUseCaptcha = $captchaService->mergeUseCaptchaValues(
-                        (string) $currentUseCaptcha,
-                        (string) $model->usecaptcha
-                    );
-                    $instance->oOptions->usecaptcha = $mergedUseCaptcha;
-                    $instance->oOptionLabels->{$attribute} = self::translateOptionLabels(
-                        $instance,
-                        $attribute,
-                        $mergedUseCaptcha
-                    );
+                    $instance->setCaptchaOptions($model);
                     continue;
                 }
                 if ($instance->shouldInherit($attribute)) {
@@ -544,5 +528,33 @@ class SurveysGroupsettings extends LSActiveRecord
         }
 
         return false;
+    }
+
+    /**
+     * Resolve and set usecaptcha options and labels on this instance, merging any inherited
+     * components from $model (the parent group/global settings).
+     *
+     * @param self $model The parent settings model whose usecaptcha value supplies inherited components.
+     * @return void
+     */
+    private function setCaptchaOptions($model)
+    {
+        // Mirror shouldInherit's oOptions-or-raw-attribute pattern:
+        // if oOptions was seeded (bRealValues=true) use it; otherwise fall back
+        // to the raw model value, exactly as shouldInherit() does for scalars.
+        $currentUseCaptcha = property_exists($this->oOptions, 'usecaptcha')
+            ? $this->oOptions->usecaptcha
+            : $this->usecaptcha;
+        $captchaService = new \LimeSurvey\Models\Services\SurveyUseCaptcha();
+        $mergedUseCaptcha = $captchaService->mergeUseCaptchaValues(
+            (string) $currentUseCaptcha,
+            (string) $model->usecaptcha
+        );
+        $this->oOptions->usecaptcha = $mergedUseCaptcha;
+        $this->oOptionLabels->usecaptcha = self::translateOptionLabels(
+            $this,
+            'usecaptcha',
+            $mergedUseCaptcha
+        );
     }
 }
