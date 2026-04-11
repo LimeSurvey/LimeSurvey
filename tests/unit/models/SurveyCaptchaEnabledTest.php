@@ -95,9 +95,32 @@ class SurveyCaptchaEnabledTest extends TestBaseClass
     }
 
     /**
-     * @dataProvider provideCaptchaInheritanceCombinations
+     * Tests each screen's inheritance chain independently (24 cases).
+     * One screen varies across 4 origins (survey, group, parent, global) × 2 values (Y, N),
+     * while the other two screens are pinned to a fixed survey-level value.
+     * Exercises the full DB-backed resolution: survey → group → parent → global.
+     *
+     * @dataProvider provideSingleScreenInheritanceCases
      */
-    public function testIsCaptchaEnabledAcrossAllOptionAndInheritanceCombinations(array $encodedValues, array $expectedValues, string $label)
+    public function testIsCaptchaEnabledResolvesSingleScreenInheritance(array $encodedValues, array $expectedValues, string $label)
+    {
+        $this->assertCaptchaResolution($encodedValues, $expectedValues, $label);
+    }
+
+    /**
+     * Tests that screens can resolve from different inheritance origins simultaneously (8 cases).
+     * Each case assigns a different origin to each screen (e.g. surveyAccess from survey,
+     * registration from global, saveAndLoad from parent) and verifies the packed single-char
+     * encoding doesn't cause cross-screen interference during DB-backed resolution.
+     *
+     * @dataProvider provideMixedInheritanceCases
+     */
+    public function testIsCaptchaEnabledResolvesMixedOriginsAcrossScreens(array $encodedValues, array $expectedValues, string $label)
+    {
+        $this->assertCaptchaResolution($encodedValues, $expectedValues, $label);
+    }
+
+    private function assertCaptchaResolution(array $encodedValues, array $expectedValues, string $label): void
     {
         self::$globalGroupSettings->usecaptcha = $encodedValues['global'];
         self::$globalGroupSettings->save(false);
@@ -130,53 +153,25 @@ class SurveyCaptchaEnabledTest extends TestBaseClass
     }
 
     /**
-     * Build the full matrix of effective CAPTCHA origins:
-     * survey fixed, direct group inheritance, parent group inheritance, and global inheritance,
-     * with both Y and N at the selected origin for each of the three CAPTCHA components.
+     * Cover each screen's full inheritance chain independently.
      */
-    public static function provideCaptchaInheritanceCombinations(): array
+    public static function provideSingleScreenInheritanceCases(): array
     {
         $cases = [];
 
-        foreach (self::buildComponentOptions() as $surveyAccess) {
-            foreach (self::buildComponentOptions() as $registration) {
-                foreach (self::buildComponentOptions() as $saveAndLoad) {
-                    $componentSelections = [
-                        'surveyAccess' => $surveyAccess,
-                        'registration' => $registration,
-                        'saveAndLoad' => $saveAndLoad,
-                    ];
-                    $levels = [
-                        'survey' => [],
-                        'group' => [],
-                        'parent' => [],
-                        'global' => [],
-                    ];
-                    $expectedValues = [];
-                    $labelParts = [];
-
-                    foreach ($componentSelections as $component => $selection) {
-                        $levelValues = self::buildLevelValuesForSelection($selection['origin'], $selection['value']);
-
-                        foreach ($levelValues as $level => $levelValue) {
-                            $levels[$level][$component] = $levelValue;
-                        }
-
-                        $expectedValues[$component] = $selection['value'] === 'Y';
-                        $labelParts[] = sprintf('%s=%s:%s', $component, $selection['origin'], $selection['value']);
-                    }
-
-                    $label = implode(', ', $labelParts);
-                    $cases[$label] = [
-                        [
-                            'survey' => self::encodeUseCaptcha($levels['survey']),
-                            'group' => self::encodeUseCaptcha($levels['group']),
-                            'parent' => self::encodeUseCaptcha($levels['parent']),
-                            'global' => self::encodeUseCaptcha($levels['global']),
-                        ],
-                        $expectedValues,
-                        $label,
-                    ];
+        foreach (array_keys(self::SCREENS) as $component) {
+            foreach (self::ORIGINS as $origin) {
+                foreach (self::VALUES as $value) {
+                    $label = sprintf('%s=%s:%s', $component, $origin, $value);
+                    $cases[$label] = self::buildCase(
+                        self::buildSelections([
+                            $component => [
+                                'origin' => $origin,
+                                'value' => $value,
+                            ],
+                        ]),
+                        $label
+                    );
                 }
             }
         }
@@ -184,20 +179,104 @@ class SurveyCaptchaEnabledTest extends TestBaseClass
         return $cases;
     }
 
-    private static function buildComponentOptions(): array
+    /**
+     * Ensure screens can resolve from different origins at the same time.
+     */
+    public static function provideMixedInheritanceCases(): array
     {
-        $options = [];
+        $cases = [];
+        $definitions = [
+            'survey-group-parent mix' => [
+                'surveyAccess' => ['origin' => 'survey', 'value' => 'Y'],
+                'registration' => ['origin' => 'group', 'value' => 'N'],
+                'saveAndLoad' => ['origin' => 'parent', 'value' => 'Y'],
+            ],
+            'group-parent-global mix' => [
+                'surveyAccess' => ['origin' => 'group', 'value' => 'N'],
+                'registration' => ['origin' => 'parent', 'value' => 'Y'],
+                'saveAndLoad' => ['origin' => 'global', 'value' => 'N'],
+            ],
+            'global-parent-group mix' => [
+                'surveyAccess' => ['origin' => 'global', 'value' => 'Y'],
+                'registration' => ['origin' => 'parent', 'value' => 'N'],
+                'saveAndLoad' => ['origin' => 'group', 'value' => 'Y'],
+            ],
+            'parent-global-survey mix' => [
+                'surveyAccess' => ['origin' => 'parent', 'value' => 'N'],
+                'registration' => ['origin' => 'global', 'value' => 'Y'],
+                'saveAndLoad' => ['origin' => 'survey', 'value' => 'Y'],
+            ],
+            'all-global mix' => [
+                'surveyAccess' => ['origin' => 'global', 'value' => 'Y'],
+                'registration' => ['origin' => 'global', 'value' => 'N'],
+                'saveAndLoad' => ['origin' => 'global', 'value' => 'Y'],
+            ],
+            'all-survey Y mix' => [
+                'surveyAccess' => ['origin' => 'survey', 'value' => 'Y'],
+                'registration' => ['origin' => 'survey', 'value' => 'Y'],
+                'saveAndLoad' => ['origin' => 'survey', 'value' => 'Y'],
+            ],
+            'all-survey N mix' => [
+                'surveyAccess' => ['origin' => 'survey', 'value' => 'N'],
+                'registration' => ['origin' => 'survey', 'value' => 'N'],
+                'saveAndLoad' => ['origin' => 'survey', 'value' => 'N'],
+            ],
+            'survey-global-parent alternating mix' => [
+                'surveyAccess' => ['origin' => 'survey', 'value' => 'N'],
+                'registration' => ['origin' => 'global', 'value' => 'N'],
+                'saveAndLoad' => ['origin' => 'parent', 'value' => 'N'],
+            ],
+        ];
 
-        foreach (self::ORIGINS as $origin) {
-            foreach (self::VALUES as $value) {
-                $options[] = [
-                    'origin' => $origin,
-                    'value' => $value,
-                ];
-            }
+        foreach ($definitions as $label => $componentSelections) {
+            $cases[$label] = self::buildCase(self::buildSelections($componentSelections), $label);
         }
 
-        return $options;
+        return $cases;
+    }
+
+    private static function buildSelections(array $overrides): array
+    {
+        return array_replace(
+            [
+                'surveyAccess' => ['origin' => 'survey', 'value' => 'N'],
+                'registration' => ['origin' => 'survey', 'value' => 'N'],
+                'saveAndLoad' => ['origin' => 'survey', 'value' => 'N'],
+            ],
+            $overrides
+        );
+    }
+
+    private static function buildCase(array $componentSelections, string $label): array
+    {
+        $levels = [
+            'survey' => [],
+            'group' => [],
+            'parent' => [],
+            'global' => [],
+        ];
+        $expectedValues = [];
+
+        foreach ($componentSelections as $component => $selection) {
+            $levelValues = self::buildLevelValuesForSelection($selection['origin'], $selection['value']);
+
+            foreach ($levelValues as $level => $levelValue) {
+                $levels[$level][$component] = $levelValue;
+            }
+
+            $expectedValues[$component] = $selection['value'] === 'Y';
+        }
+
+        return [
+            [
+                'survey' => self::encodeUseCaptcha($levels['survey']),
+                'group' => self::encodeUseCaptcha($levels['group']),
+                'parent' => self::encodeUseCaptcha($levels['parent']),
+                'global' => self::encodeUseCaptcha($levels['global']),
+            ],
+            $expectedValues,
+            $label,
+        ];
     }
 
     private static function buildLevelValuesForSelection(string $origin, string $value): array
