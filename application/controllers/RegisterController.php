@@ -161,10 +161,10 @@ class RegisterController extends LSYii_Controller
      */
     public function getRegisterErrors($iSurveyId)
     {
-        $aSurveyInfo = getSurveyInfo($iSurveyId, App()->language);
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
 
         // Check the security question's answer
-        if (isCaptchaEnabled('registrationscreen', $aSurveyInfo['usecaptcha'])) {
+        if ($oSurvey->isCaptchaEnabled('registrationscreen')) {
             $sLoadSecurity = App()->request->getPost('loadsecurity', '');
             $captcha = App()->getController()->createAction("captcha");
             $captchaCorrect = $captcha->validate($sLoadSecurity, false);
@@ -254,7 +254,7 @@ class RegisterController extends LSYii_Controller
         $aData['sEmail'] = $aFieldValue['sEmail'];
         $aData['aAttribute'] = $aFieldValue['aAttribute'];
         $aData['aExtraAttributes'] = $aRegisterAttributes;
-        $aData['bCaptcha'] = isCaptchaEnabled('registrationscreen', $oSurvey->oOptions->usecaptcha);
+        $aData['bCaptcha'] = $oSurvey->isCaptchaEnabled('registrationscreen');
         $aData['sRegisterFormUrl'] = App()->createUrl('register/index', array('sid' => $iSurveyId));
 
         $aData['formAdditions'] = '';

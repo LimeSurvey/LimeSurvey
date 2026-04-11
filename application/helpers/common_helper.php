@@ -2577,9 +2577,13 @@ function incompleteAnsFilterState()
 
 /**
 * isCaptchaEnabled($screen, $usecaptchamode)
+* @deprecated Use Survey::isCaptchaEnabled($screen) with a loaded survey model.
+*             This helper only receives the packed usecaptcha value, so it
+*             cannot guarantee inheritance has already been resolved.
 * @param string $screen - the screen name for which to test captcha activation
+* @param string $captchamode - packed usecaptcha value
 *
-* @return boolean|null - returns true if captcha must be enabled
+* @return bool - returns true if captcha must be enabled
 **/
 function isCaptchaEnabled($screen, $captchamode = '')
 {

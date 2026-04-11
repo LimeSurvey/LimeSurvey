@@ -72,12 +72,13 @@ class Save
         //~ global $errormsg, $thissurvey, $surveyid, $clienttoken, $thisstep;
         $thisstep    = $_SESSION['survey_' . $iSurveyId]['step'] ?? 0;
         $clienttoken = $_SESSION['survey_' . $iSurveyId]['token'] ?? '';
+        $survey = Survey::model()->findByPk($iSurveyId);
 
         $aSaveForm['aErrors'] = $this->aSaveErrors;
         $this->launchSaveFormEvent($iSurveyId);
         /* Construction of the form */
         $aSaveForm['aCaptcha']['show'] = false;
-        if (isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($iSurveyId)->oOptions->usecaptcha)) {
+        if ($survey->isCaptchaEnabled('saveandloadscreen')) {
             $aSaveForm['aCaptcha']['show'] = true;
             $aSaveForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid' => $iSurveyId));
         }
@@ -145,7 +146,7 @@ class Save
         }
 
         // Check captcha
-        if (isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha'])) {
+        if ($survey->isCaptchaEnabled('saveandloadscreen')) {
             if (
                 !Yii::app()->request->getPost('loadsecurity')
                 || !isset($_SESSION['survey_' . $surveyid]['secanswer'])
