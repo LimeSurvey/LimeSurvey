@@ -32,9 +32,6 @@ class SurveyCaptchaEnabledTest extends TestBaseClass
     /** @var string */
     private static $originalGlobalUseCaptcha;
 
-    /** @var SurveyUseCaptcha */
-    private static $encoder;
-
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
@@ -76,8 +73,6 @@ class SurveyCaptchaEnabledTest extends TestBaseClass
         self::$childGroupSettings = $childGroupSettings;
         self::$globalGroupSettings = \SurveysGroupsettings::model()->findByPk(0);
         self::$originalGlobalUseCaptcha = self::$globalGroupSettings->usecaptcha;
-
-        self::$encoder = new SurveyUseCaptcha();
     }
 
     public static function tearDownAfterClass(): void
@@ -89,7 +84,6 @@ class SurveyCaptchaEnabledTest extends TestBaseClass
         self::$parentGroupSettings->delete();
         self::$childGroup->delete();
         self::$parentGroup->delete();
-        self::$encoder = null;
 
         parent::tearDownAfterClass();
     }
@@ -319,19 +313,10 @@ class SurveyCaptchaEnabledTest extends TestBaseClass
 
     private static function encodeUseCaptcha(array $componentValues): string
     {
-        return self::getEncoder()->convertUseCaptchaForDB(
+        return (new SurveyUseCaptcha())->convertUseCaptchaForDB(
             $componentValues['surveyAccess'],
             $componentValues['registration'],
             $componentValues['saveAndLoad']
         );
-    }
-
-    private static function getEncoder(): SurveyUseCaptcha
-    {
-        if (self::$encoder === null) {
-            self::$encoder = new SurveyUseCaptcha(0, new \Survey());
-        }
-
-        return self::$encoder;
     }
 }
