@@ -2656,6 +2656,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
     $oldNewFieldRoots = sortByKeyLengthDescending($oldNewFieldRoots);
 
+    $raids = [];
     foreach ($aGIDReplacements as $oldGid => $newGid) {
         handleLegacyRankingAnswers(
             $xml,
