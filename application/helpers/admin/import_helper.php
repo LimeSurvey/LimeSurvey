@@ -43,6 +43,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
     // This array will collect all records that need INSERTANS conversion
     $pendingInsertansUpdates = [];
     $oldNewFieldRoots = [];
+    $questionTypeMap = [];
 
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
@@ -231,6 +232,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 $results['questions']++;
                 $importedQuestions[$oQuestion->qid] = $oQuestion;
+                $questionTypeMap[$oQuestion->qid] = $oQuestion->type;
 
                 // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
                 if ($signature = getInsertansSignature('Question', $oQuestion)) {
@@ -271,6 +273,16 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
     }
 
     $oldNewFieldRoots = sortByKeyLengthDescending($oldNewFieldRoots);
+
+    $raids = [];
+    handleLegacyRankingAnswers(
+        $xml,
+        $raids,
+        $questionTypeMap,
+        $iNewSID,
+        $oldgid,
+        $aQIDReplacements
+    );
 
     // Import subquestions -------------------------------------------------------
     /** @var Question[] */
@@ -442,6 +454,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
 
+            if(isset($questionTypeMap[$insertdata['qid']]) && $questionTypeMap[$insertdata['qid']] == Question::QT_R_RANKING)
+                continue;
+
             if (!isset($xml->answer_l10ns->rows->row)) {
                 $oAnswerL10n = new AnswerL10n();
                 $oAnswerL10n->answer = fixText(convertLegacyInsertans($insertdata['answer'], $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
@@ -479,6 +494,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
             } else {
                 continue; //Skip invalid answer ID
             }
+
+            if(isset($raids[$insertdata['aid']]))
+                continue;
 
             $insertdata['answer'] = fixText(convertLegacyInsertans($insertdata['answer'], $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
 
@@ -664,7 +682,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
     }
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
-    $questionTypeMap = array();
+    $questionTypeMap = [];
 
     // This array will collect all records that need INSERTANS conversion
     $pendingInsertansUpdates = [];
@@ -804,7 +822,6 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             unset($oQuestionL10n);
         }
     }
-
 
     $raids = [];
     handleLegacyRankingAnswers(
@@ -2124,6 +2141,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     // This array will collect all records that need INSERTANS conversion
     $pendingInsertansUpdates = [];
     $oldNewFieldRoots = [];
+    $questionTypeMap = [];
 
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
@@ -2593,6 +2611,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 $results['questions']++;
                 $importedQuestions[$oQuestion->qid] = $oQuestion;
+                $questionTypeMap[$oQuestion->qid] = $oQuestion->type;
 
                 // Queue for deferred INSERTANS tag conversion (after all QIDs are mapped)
                 if ($signature = getInsertansSignature('Question', $oQuestion)) {
@@ -2636,6 +2655,17 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     }
 
     $oldNewFieldRoots = sortByKeyLengthDescending($oldNewFieldRoots);
+
+    foreach ($aGIDReplacements as $oldGid => $newGid) {
+        handleLegacyRankingAnswers(
+            $xml,
+            $raids,
+            $questionTypeMap,
+            $iNewSID,
+            $oldGid,
+            $aQIDReplacements
+        );
+    }
 
     // Import subquestions -------------------------------------------------------
     /** @var Question[] */
@@ -2862,6 +2892,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
 
+            if(isset($questionTypeMap[$insertdata['qid']]) && $questionTypeMap[$insertdata['qid']] == Question::QT_R_RANKING)
+                continue;
+
             if (!isset($xml->answer_l10ns->rows->row)) {
                 // now translate any links
                 if (!in_array($insertdata['language'], $aLanguagesSupported)) {
@@ -2921,6 +2954,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             } else {
                 continue; //Skip invalid answer ID
             }
+
+            if(isset($raids[$insertdata['aid']]))
+                continue;
 
             $insertdata['answer'] = fixText(convertLegacyInsertans($insertdata['answer'] ?? "", $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
 
@@ -4911,16 +4947,17 @@ function savePendingInsertansUpdates($pendingInsertansUpdates)
  * @param array            &$raids           Reference to store mapping of old answer IDs to ['old_parent_qid' => int, 'code' => string], used by the caller to skip ranking answers in the regular answer_l10ns import loop
  * @param array            $questionTypeMap  Mapping of new question IDs to their types
  * @param int              $iNewSID          The new survey ID
- * @param int              $iNewGID          The new group ID
+ * @param int $iGID The group ID to inject into subquestion rows. Pass the old gid when
+ * *                                           the caller's subquestions loop remaps via $aGIDReplacements (XMLImportGroup),
+ * *                                           or the new gid when the caller sets it directly (XMLImportQuestion).
  * @param array            $aQIDReplacements Mapping of old question IDs to new question IDs
- * @param array            $oldNewFieldRoots Mapping of old fieldname roots to new ones, used for fixing legacy field references in text content
  */
 function handleLegacyRankingAnswers(
     &$xml,
     &$raids,
     $questionTypeMap,
     $iNewSID,
-    $iNewGID,
+    $iGID,
     $aQIDReplacements
 ) {
     if (!isset($xml->answers)) {
@@ -4967,7 +5004,7 @@ function handleLegacyRankingAnswers(
         // import loop can track it in $aQIDReplacements and assign a real qid.
         $subQuestionData = [
             'sid'            => $iNewSID,
-            'gid'            => $iNewGID,
+            'gid'            => $iGID,
             'parent_qid'     => $iOldParentQID, // old qid — subquestions loop remaps this
             'type'           => Question::QT_R_RANKING,
             'title'          => $insertdata['code'],
