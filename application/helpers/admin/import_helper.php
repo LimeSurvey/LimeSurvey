@@ -805,6 +805,17 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
         }
     }
 
+
+    $raids = [];
+    handleLegacyRankingAnswers(
+        $xml,
+        $raids,
+        $questionTypeMap,
+        $iNewSID,
+        $iNewGID,
+        $aQIDReplacements
+    );
+
     // Import subquestions -------------------------------------------------------
     $importedSubQuestions = array();
 
@@ -938,23 +949,6 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
     $newOldQidMapping = array_flip($aQIDReplacements);
     $allImportedQuestions = $importedQuestions + $importedSubQuestions;
-
-    $raids = []; // ['aid'] = 'qid' (only ranking questions)
-    handleLegacyRankingAnswers(
-        $xml,
-        $questionTypeMap,
-        $options,
-        $iOldSID,
-        $iNewSID,
-        $iNewGID,
-        $aQIDReplacements,
-        $oldNewFieldRoots,
-        $newOldQidMapping,
-        $allImportedQuestions,
-        $importedSubQuestions,
-        $raids,
-        $results
-    );
 
     //  Import question_l10ns
     if (isset($xml->question_l10ns->rows->row)) {
@@ -4900,96 +4894,128 @@ function savePendingInsertansUpdates($pendingInsertansUpdates)
     unset($pendingInsertansUpdates);
 }
 
+/**
+ * Handles the import of legacy ranking question answers as subquestions.
+ *
+ * Processes the 'answers' and 'answer_l10ns' sections of the XML for ranking questions,
+ * injecting new rows into the 'subquestions' and 'question_l10ns' XML sections so they
+ * are handled naturally by the existing import loops downstream.
+ *
+ * For each ranking answer found:
+ * - A new subquestions XML row is injected using the old answer ID (aid) as a qid placeholder,
+ *   which allows the subquestions import loop to assign a real qid and register it in $aQIDReplacements.
+ * - Corresponding question_l10ns XML rows are injected using the same aid placeholder as qid,
+ *   which allows the question_l10ns import loop to remap them correctly via $aQIDReplacements.
+ *
+ * @param SimpleXMLElement &$xml             The XML data containing answers and localizations (passed by reference so injected rows are visible to callers)
+ * @param array            &$raids           Reference to store mapping of old answer IDs to ['old_parent_qid' => int, 'code' => string], used by the caller to skip ranking answers in the regular answer_l10ns import loop
+ * @param array            $questionTypeMap  Mapping of new question IDs to their types
+ * @param int              $iNewSID          The new survey ID
+ * @param int              $iNewGID          The new group ID
+ * @param array            $aQIDReplacements Mapping of old question IDs to new question IDs
+ * @param array            $oldNewFieldRoots Mapping of old fieldname roots to new ones, used for fixing legacy field references in text content
+ */
 function handleLegacyRankingAnswers(
-    $xml,
+    &$xml,
+    &$raids,
     $questionTypeMap,
-    $options,
-    $iOldSID,
     $iNewSID,
     $iNewGID,
-    $aQIDReplacements,
-    $oldNewFieldRoots,
-    $newOldQidMapping,
-    $allImportedQuestions,
-    &$importedSubQuestions,
-    &$raids,
-    &$results
-)
-{
-    if (isset($xml->answers)) {
-        foreach ($xml->answers->rows->row as $row) {
-            $insertdata = array();
+    $aQIDReplacements
+) {
+    if (!isset($xml->answers)) {
+        return;
+    }
 
+    // Collect ranking answer l10n data keyed by old answer ID for later use
+    $rankingAnswerL10ns = [];
+    if (isset($xml->answer_l10ns->rows->row)) {
+        foreach ($xml->answer_l10ns->rows->row as $row) {
+            $l10ndata = [];
             foreach ($row as $key => $value) {
-                $insertdata[(string) $key] = (string) $value;
+                $l10ndata[(string) $key] = (string) $value;
             }
-
-            if (!isset($aQIDReplacements[(int) $insertdata['qid']]))
-                continue;
-
-            $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']];
-
-            if(isset($questionTypeMap[$insertdata['qid']]) && $questionTypeMap[$insertdata['qid']] == Question::QT_R_RANKING) {
-                $subQuestionData = [
-                    'sid' => $iNewSID,
-                    'gid' => $iNewGID,
-                    'parent_qid' => $insertdata['qid'],
-                    'type' => Question::QT_R_RANKING,
-                    'title' => $insertdata['code'],
-                    'relevance' => '1',
-                    'scale_id' => $insertdata['scale_id'] ?? 0,
-                    'question_order' => $insertdata['sortorder'] ?? 0,
-                ];
-
-                $oSubQuestion = new Question();
-                $oSubQuestion->setAttributes($subQuestionData, false);
-
-                if ($oSubQuestion->save()) {
-                    $importedSubQuestions[$oSubQuestion->qid] = $oSubQuestion;
-                    $allImportedQuestions[$oSubQuestion->qid] = $oSubQuestion;
-                    $results['subquestions']++;
-                    $raids[$insertdata['aid']] = $oSubQuestion->qid;
-                }
+            $aid = $l10ndata['aid'] ?? null;
+            if ($aid !== null) {
+                $rankingAnswerL10ns[$aid][] = $l10ndata;
             }
         }
     }
 
-    if(isset($xml->answer_l10ns->rows->row)) {
-        foreach ($xml->answer_l10ns->rows->row as $row) {
-            $insertdata = array();
-            foreach ($row as $key => $value) {
-                $insertdata[(string) $key] = (string) $value;
+    foreach ($xml->answers->rows->row as $row) {
+        $insertdata = [];
+        foreach ($row as $key => $value) {
+            $insertdata[(string) $key] = (string) $value;
+        }
+
+        if (!isset($aQIDReplacements[(int) $insertdata['qid']])) {
+            continue;
+        }
+
+        $iOldAID      = $insertdata['aid'] ?? null;
+        $iOldParentQID = (int) $insertdata['qid'];
+        $insertdata['qid'] = $aQIDReplacements[$iOldParentQID];
+
+        if (
+            !isset($questionTypeMap[$insertdata['qid']]) ||
+            $questionTypeMap[$insertdata['qid']] !== Question::QT_R_RANKING
+        ) {
+            continue;
+        }
+
+        // Use the old answer ID as the placeholder qid so the subquestions
+        // import loop can track it in $aQIDReplacements and assign a real qid.
+        $subQuestionData = [
+            'sid'            => $iNewSID,
+            'gid'            => $iNewGID,
+            'parent_qid'     => $iOldParentQID, // old qid — subquestions loop remaps this
+            'type'           => Question::QT_R_RANKING,
+            'title'          => $insertdata['code'],
+            'qid'            => $iOldAID,        // used as old qid placeholder
+            'relevance'      => '1',
+            'scale_id'       => $insertdata['scale_id'] ?? 0,
+            'question_order' => $insertdata['sortorder'] ?? 0,
+            'mandatory'      => 'N',
+        ];
+
+        if (!isset($xml->subquestions)) {
+            $xml->addChild('subquestions')->addChild('rows');
+        }
+        if (!isset($xml->subquestions->rows)) {
+            $xml->subquestions->addChild('rows');
+        }
+        $newRow = $xml->subquestions->rows->addChild('row');
+        foreach ($subQuestionData as $key => $value) {
+            $newRow->addChild($key, htmlspecialchars((string) $value, ENT_XML1));
+        }
+
+        // Store old AID -> ['parent_qid' => old, 'code' => title] for l10n resolution
+        if ($iOldAID !== null) {
+            $raids[$iOldAID] = [
+                'old_parent_qid' => $iOldParentQID,
+                'code'           => $insertdata['code'],
+            ];
+        }
+
+        // Inject l10n rows into question_l10ns XML.
+        // The subquestion qid is not yet known here (it gets assigned by the
+        // subquestions import loop), so we use the placeholder qid ($iOldAID)
+        // as the qid value. The question_l10ns import loop remaps it via
+        // $aQIDReplacements just like any other subquestion l10n row.
+        if (!empty($rankingAnswerL10ns[$iOldAID])) {
+            if (!isset($xml->question_l10ns)) {
+                $xml->addChild('question_l10ns')->addChild('rows');
             }
-            unset($insertdata['id']);
-            if ($options['translinkfields']) {
-                $insertdata['answer'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['answer']);
+            if (!isset($xml->question_l10ns->rows)) {
+                $xml->question_l10ns->addChild('rows');
             }
-            if (isset($aAIDReplacements[$insertdata['aid']])) {
-                $insertdata['aid'] = $aAIDReplacements[$insertdata['aid']];
-            } else {
-                continue; //Skip invalid answer ID
-            }
-
-            if (!isset($raids[$insertdata['aid']])) {
-                continue;
-            }
-
-            $insertdata['answer'] = fixText(convertLegacyInsertans($insertdata['answer'] ?? "", $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
-
-            $questionl10n = new QuestionL10n();
-            $questionl10n->qid = $raids[$insertdata['aid']];
-            $questionl10n->question = $insertdata['answer'];
-            $questionl10n->language = $insertdata['language'];;
-            $questionl10n->save();
-
-            // If translate links is disabled, check for old links.
-            if (!$options['translinkfields']) {
-                if (checkOldLinks('survey', $iOldSID, $questionl10n->question)) {
-                    $oQuestion = Question::model()->findByPk($questionl10n->qid);
-                    $parentQuestion = Question::model()->findByPk($oQuestion->parent_qid);
-
-                    $results['importwarnings'][] = sprintf(gT("Subquestion %s of question %s has outdated links."), $oQuestion->title, $parentQuestion->title);
-                }
+            foreach ($rankingAnswerL10ns[$iOldAID] as $l10n) {
+                $newL10nRow = $xml->question_l10ns->rows->addChild('row');
+                $newL10nRow->addChild('qid', htmlspecialchars((string) $iOldAID, ENT_XML1));
+                $newL10nRow->addChild('question', htmlspecialchars($l10n['answer'] ?? '', ENT_XML1));
+                $newL10nRow->addChild('language', htmlspecialchars($l10n['language'] ?? '', ENT_XML1));
+                $newL10nRow->addChild('help', '');
+                $newL10nRow->addChild('script', '');
             }
         }
     }
