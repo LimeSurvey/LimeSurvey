@@ -2227,7 +2227,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                         $insertdata['gsid'] = $surveyGroup->gsid;
                         $results['importwarnings'][] = sprintf(gT("The survey was assigned to the '%s' group."), $surveyGroup->title);
                     } else {
-                        $results['importwarnings'][] = gT("The original survey group couldn't be found. The survey was assigned to the default group.");
+                        $results['importwarnings'][] = gT("You don't have permission to import surveys into the original survey group. The survey was assigned to the default group.");
                     }
                 } else {
                     $results['importwarnings'][] = gT("The original survey group couldn't be found. The survey was assigned to the default group.");
