@@ -9079,6 +9079,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
      * @return array An associative array with:
      *               - 'errors' => array mapping "gid~qid" to an integer count of syntax errors for that question (or an integer 1 when a top-level failure occurs),
      *               - 'html'   => string HTML fragment containing the generated logic-file view and any alert banners.
+     */
     public static function ShowSurveyLogicFile($sid, $gid = null, $qid = null, $LEMdebugLevel = 0, $assessments = null)
     {
         // Title
