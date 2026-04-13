@@ -1156,18 +1156,35 @@ class LimeExpressionManager
                     $subqs = $qinfo['subqs'];
                     if ($type == Question::QT_R_RANKING) {
                         $subqs = [];
-                        $rawQuestions = \Question::model()->findAll("parent_qid = :qid", [":qid" => $qinfo['qid']]);
+                        $rawQuestions = \Question::model()->findAll(
+                            "parent_qid = :qid",
+                            [":qid" => $qinfo['qid']]
+                        );
                         $questions = [];
                         foreach ($rawQuestions as $rawQuestion) {
                             $questions[$rawQuestion->title] = $rawQuestion;
                         }
-                        foreach ($this->qans[$qinfo['parent_qid']] as $k => $v) {
-                            $_code = explode('~', (string) $k);
-                            $subqs[] = [
-                                'rowdivid' => $qinfo['sgqa'] . "_S" . $questions[$_code[1]]->qid,
-                                'sqsuffix' => '_' . $_code[1],
-                                'code' => $_code[1]
-                            ];
+                        if (!empty($this->qans[$qinfo['qid']])) {
+                            // Legacy path: ranking answers stored in {{answers}} table.
+                            foreach ($this->qans[$qinfo['qid']] as $k => $v) {
+                                $_code = explode('~', (string) $k);
+                                $subqs[] = [
+                                    'rowdivid' => $qinfo['sgqa'] . "_S" . $questions[$_code[1]]->qid,
+                                    'sqsuffix' => '_' . $_code[1],
+                                    'code'     => $_code[1],
+                                ];
+                            }
+                        } else {
+                            // New path: ranking answers imported as subquestions.
+                            // $rawQuestions already holds all subquestion rows ordered
+                            // by question_order, so build $subqs directly from them.
+                            foreach ($rawQuestions as $rawQuestion) {
+                                $subqs[] = [
+                                    'rowdivid' => $qinfo['sgqa'] . "_S" . $rawQuestion->qid,
+                                    'sqsuffix' => '_' . $rawQuestion->title,
+                                    'code'     => $rawQuestion->title,
+                                ];
+                            }
                         }
                     }
                     $last_rowdivid = '--';
