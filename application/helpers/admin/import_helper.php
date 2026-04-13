@@ -3533,6 +3533,7 @@ function XMLImportTokens($sFullFilePath, $iSurveyID, $sCreateMissingAttributeFie
  */
 function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 {
+    $qidMetadata = null;
     Yii::app()->loadHelper('database');
     $survey = Survey::model()->findByPk($iSurveyID);
 
@@ -3578,6 +3579,54 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                                 if (in_array($sFieldname, $DestinationFields)) {
                                     // some old response tables contain invalid column names due to old bugs
                                     $aInsertData[$sFieldname] = $oXMLReader->value;
+                                } else {
+                                    if (strpos($sFieldname, 'Q') !== 0) {
+                                        if (!$qidMetadata) {
+                                            $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $iSurveyID]);
+                                            foreach ($rawQuestions as $rawQuestion) {
+                                                if (!isset($qidMetadata[$rawQuestion->gid])) {
+                                                    $qidMetadata[$rawQuestion->gid] = [];
+                                                }
+                                                $qid = ($rawQuestion->parent_qid ? $rawQuestion->parent_qid : $rawQuestion->qid);
+                                                if (!isset($qidMetadata[$rawQuestion->gid][$qid])) {
+                                                    $qidMetadata[$rawQuestion->gid][$qid] = [];
+                                                }
+                                                $qidMetadata[$rawQuestion->gid][$qid][] = $rawQuestion;
+                                            }
+                                        }
+                                        $fieldnameParts = explode("X", $sFieldname);
+                                        $oldSid = $fieldnameParts[0];
+                                        $oldGid = $fieldnameParts[1];
+                                        $newSid = $iSurveyID;
+                                        $newGid = substr($aFieldReMap["G" . $oldGid], 1);
+                                        array_shift($fieldnameParts);
+                                        array_shift($fieldnameParts);
+                                        $fieldnameEnd = implode("X", $fieldnameParts);
+                                        $endIndex = 0;
+                                        while (($endIndex < strlen($fieldnameEnd)) && (is_numeric($fieldnameEnd[$endIndex]))) {
+                                            if (!isset($aFieldReMap["Q" . substr($fieldnameEnd, 0, $endIndex + 1)])) {
+                                                $endIndex++;
+                                                continue;
+                                            }
+                                            $qidCandidate = substr($aFieldReMap["Q" . substr($fieldnameEnd, 0, $endIndex + 1)], 1);
+                                            $oldFieldName =
+                                                $newSid .
+                                                "X" .
+                                                $newGid .
+                                                "X" .
+                                                $qidCandidate
+                                            ;
+                                            if (strlen($fieldnameEnd) > $endIndex + 1) {
+                                                $oldFieldName .= substr($fieldnameEnd, $endIndex + 1);
+                                            }
+                                            if (!isset($qidMetadata[$newGid][$qidCandidate])) {
+                                                $endIndex++;
+                                                continue;
+                                            }
+                                            $aInsertData[getFieldName("{{responses_" . $newSid . "}}", $oldFieldName, $qidMetadata[$newGid][$qidCandidate], $newSid, $newGid, false)] = $oXMLReader->value;
+                                            $endIndex++;
+                                        }
+                                    }
                                 }
                                 $oXMLReader->read();
                             } else {
