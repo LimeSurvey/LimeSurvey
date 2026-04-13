@@ -983,7 +983,9 @@ class LimeExpressionManager
                         $row['cfieldname'] = $aDictionary[$row['cfieldname']];
                     }
                     // else create name by concatenating two parts together
-                    $fieldname = $row['cfieldname'] . $row['value'] . '.NAOK';
+                    $qcode = $oQuestion['title'] . '_' . $row['value'];
+                    $sgqa = array_search($qcode, $aDictionary, true);
+                    $fieldname = $sgqa . '.NAOK';
                     $subqid = $row['cfieldname'];
                     $value = 'Y';
                 }
@@ -1054,8 +1056,11 @@ class LimeExpressionManager
                     }
                 }
             }
-            if (($row['cqid'] == 0 && preg_match('/^{TOKEN:([^}]*)}$/', $row['cfieldname']) && preg_match('/^{TOKEN:([^}]*)}$/', isset($previousCondition) ? $previousCondition['cfieldname'] : '')) || substr($row['cfieldname'], 0, 1) == '+') {
-                $_cqid = -1;    // forces this statement to be ANDed instead of being part of a cqid OR group (except for TOKEN fields that follow a a token field)
+            if (($row['cqid'] == 0
+                    && preg_match('/^{TOKEN:([^}]*)}$/', $row['cfieldname'])
+                    && preg_match('/^{TOKEN:([^}]*)}$/', isset($previousCondition) ? $previousCondition['cfieldname'] : '')
+                ) || substr($row['cfieldname'], 0, 1) == '+') {
+                $_cqid = -1;    // forces this statement to be ANDed instead of being part of a cqid OR group (except for TOKEN fields that follow a token field)
             }
             $previousCondition = $row;
         }
