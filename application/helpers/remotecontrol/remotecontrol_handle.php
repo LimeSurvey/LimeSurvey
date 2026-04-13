@@ -3471,12 +3471,12 @@ class remotecontrol_handle
                     if ($Response->delete()) {
                         return array($iResponseID => 'deleted');
                     }
-                    return array('status' => 'Response not deleted for unknown reason');
+                    return array('status' => 'Response not deleted for unknown reason', 'error_code' => 'RESPONSE_DELETE_UNKNOWN');
                 } else {
-                    return array('status' => 'Response Id not found');
+                    return array('status' => 'Response Id not found', 'error_code' => 'RESPONSE_NOT_FOUND');
                 }
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => 'NO_PERMISSION');
             }
         } else {
             return array('status' => self::INVALID_SESSION_KEY);
