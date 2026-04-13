@@ -3479,7 +3479,7 @@ class remotecontrol_handle
                 return array('status' => 'No permission', 'error_code' => 'NO_PERMISSION');
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => 'INVALID_SESSION');
         }
     }
 
