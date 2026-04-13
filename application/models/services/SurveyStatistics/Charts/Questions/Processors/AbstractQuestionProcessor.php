@@ -143,6 +143,16 @@ abstract class AbstractQuestionProcessor
         return (int)$model->count($criteria);
     }
 
+    public function getAggregateResponses($fieldNames, $fields) {
+        $model = SurveyDynamic::model($this->surveyId);
+        $db = $model->getDbConnection();
+        $command = $db->createCommand()
+            ->select(implode(",", $fields))
+            ->from("{{responses_" . $this->surveyId . "}}")
+        ;
+        return $command->query($fieldNames)->read();
+    }
+
 
     protected function getResponseNotAnsweredCount(string $fieldName): int
     {
