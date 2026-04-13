@@ -5002,6 +5002,52 @@ function handleLegacyRankingAnswers(
     // Negative values are used to avoid collisions with real question IDs.
     static $surrogateCounter = -1;
 
+    // Determine whether any ranking answers with l10n text will be injected.
+    // If so, we will need to create/use $xml->question_l10ns. That would cause
+    // the subquestions import loop to skip its inline l10n creation block for
+    // ALL subquestion rows (including existing ones like M-type subquestions).
+    // To prevent those rows from losing their text, pre-migrate any existing
+    // subquestion rows that still carry inline question/language fields into
+    // question_l10ns before the downstream loop runs.
+    $needsL10nSection = false;
+    foreach ($xml->answers->rows->row as $row) {
+        $d = [];
+        foreach ($row as $k => $v) {
+            $d[(string) $k] = (string) $v;
+        }
+        $oldPQID = (int) $d['qid'];
+        if (!isset($aQIDReplacements[$oldPQID])) {
+            continue;
+        }
+        $newPQID = $aQIDReplacements[$oldPQID];
+        if (isset($questionTypeMap[$newPQID]) && $questionTypeMap[$newPQID] === Question::QT_R_RANKING) {
+            $needsL10nSection = true;
+            break;
+        }
+    }
+
+    if ($needsL10nSection && !isset($xml->question_l10ns)) {
+        $xml->addChild('question_l10ns')->addChild('rows');
+        if (isset($xml->subquestions->rows->row)) {
+            foreach ($xml->subquestions->rows->row as $sqRow) {
+                $sqData = [];
+                foreach ($sqRow as $k => $v) {
+                    $sqData[(string) $k] = (string) $v;
+                }
+
+                if (!isset($sqData['question']) || !isset($sqData['language'])) {
+                    continue;
+                }
+                $migratedRow = $xml->question_l10ns->rows->addChild('row');
+                $migratedRow->addChild('qid', htmlspecialchars($sqData['qid'], ENT_XML1));
+                $migratedRow->addChild('question', htmlspecialchars($sqData['question'], ENT_XML1));
+                $migratedRow->addChild('language', htmlspecialchars($sqData['language'], ENT_XML1));
+                $migratedRow->addChild('help', htmlspecialchars($sqData['help'] ?? '', ENT_XML1));
+                $migratedRow->addChild('script', '');
+            }
+        }
+    }
+
     foreach ($xml->answers->rows->row as $row) {
         $insertdata = [];
         foreach ($row as $key => $value) {
@@ -5086,10 +5132,9 @@ function handleLegacyRankingAnswers(
         // and 'language' fields that are stored directly in the answers table.
         $l10nRows = $rankingAnswerL10ns[$iOldAID] ?? null;
         if (empty($l10nRows) && isset($insertdata['answer'])) {
-            // Build a synthetic l10n record from the inline answer text.
             $l10nRows = [[
                 'answer'   => $insertdata['answer'],
-                'language' => $insertdata['language'] ?? 'en',
+                'language' => $insertdata['language'] ?? 'en'
             ]];
         }
 
