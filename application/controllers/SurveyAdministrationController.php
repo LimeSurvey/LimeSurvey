@@ -2073,7 +2073,18 @@ class SurveyAdministrationController extends LSBaseController
         if ($subaction === 'resources' || $subaction === 'panelintegration') {
             $aData['topBar']['showSaveButton'] = false;
         } else {
-            $aData['topBar']['showSaveButton'] = true;
+            // Since the save action for survey texts checks two permissions and survey menu entries only support one permission,
+            // we need to check the permissions here and decide whether to show the save button or not for that screen.
+            /** @todo: Generalize for other subactions */
+            if (
+                $subaction === 'surveytexts'
+                && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update')
+                && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')
+            ) {
+                $aData['topBar']['showSaveButton'] = false;
+            } else {
+                $aData['topBar']['showSaveButton'] = true;
+            }
         }
         $topbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyID);
         $topbarData = array_merge($topbarData, $aData['topBar']);
@@ -2285,9 +2296,9 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
 
-        if ((App()->getConfig("editorEnabled")) && ($copiedSurvey !== null)) {
+        if ($copiedSurvey !== null) {
             $copiedSurvey->setOptions();
-            if ($copiedSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
+            if ($copiedSurvey->hasNewEditor) {
                 $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $copiedSurvey->sid]);
             }
         }
@@ -2381,7 +2392,7 @@ class SurveyAdministrationController extends LSBaseController
         if ($copiedSurvey !== null) {
             $redirectUrl = App()->createUrl("surveyAdministration/view/", ["iSurveyID" => $copiedSurvey->sid]);
             $copiedSurvey->setOptions();
-            if ((App()->getConfig("editorEnabled")) && $copiedSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
+            if ($copiedSurvey->hasNewEditor) {
                 $redirectUrl = App()->createUrl("editorLink/index", ["route" => "survey/" . $copiedSurvey->sid]);
             }
         }
@@ -2478,11 +2489,11 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
 
-        if ((App()->getConfig("editorEnabled")) && isset($aImportResults['newsid'])) {
+        if (isset($aImportResults['newsid'])) {
             if (!isset($oSurvey)) {
                 $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
             }
-            if ($oSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
+            if ($oSurvey->hasNewEditor) {
                 $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $aImportResults['newsid']]);
             }
         }

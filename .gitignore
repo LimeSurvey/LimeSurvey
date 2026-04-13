@@ -21,7 +21,7 @@
 !.eslintrc
 !.env-cmdrc
 !.eslintignore
-!.github
+!/.github
 
 # upload directory : whole except the index.html and readme.txt
 /upload/*.*

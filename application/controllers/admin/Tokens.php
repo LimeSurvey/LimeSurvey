@@ -13,6 +13,8 @@
 *
 */
 
+use LimeSurvey\Models\Services\SurveyAccessModeService;
+
 /**
  * Tokens Controller
  *
@@ -2638,6 +2640,14 @@ class Tokens extends SurveyCommonAction
         $archivedTokenSettings->properties = $aData['thissurvey']['tokenencryptionoptions'];
         $archivedTokenSettings->attributes = json_encode($aData['thissurvey']['attributedescriptions']);
         $archivedTokenSettings->save();
+
+        // switch to open access mode after deleting participants list
+        $currentAccessMode = $survey->access_mode;
+        if ($currentAccessMode == SurveyAccessModeService::$ACCESS_TYPE_CLOSED) {
+            $survey->access_mode = SurveyAccessModeService::$ACCESS_TYPE_OPEN;
+            $survey->lastmodified = gmdate('Y-m-d H:i:s');
+            $survey->save();
+        }
 
         //Remove any survey_links to the CPDB
         SurveyLink::model()->deleteLinksBySurvey($iSurveyId);

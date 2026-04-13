@@ -44,7 +44,7 @@
                 'switchStatusOfListActions();',
             ],
             'rowLink'               =>
-                'App()->getConfig("editorEnabled") && Yii::app()->getConfig("debug")'
+                '$data->hasNewEditor'
                 . ' ? App()->createUrl("editorLink/index", ["route" => "survey/" . $data->sid]) '
                 . ' : Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid))',
             // 'template'  => $this->template,
