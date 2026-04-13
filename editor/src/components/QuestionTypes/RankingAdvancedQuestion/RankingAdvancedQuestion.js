@@ -5,7 +5,13 @@ import { Button } from 'react-bootstrap'
 import { useState } from 'react'
 import { cloneDeep } from 'lodash'
 
-import { Entities, getInfoFromObjectByIndex, getTooltipMessages, STATES, Toast } from 'helpers'
+import {
+  Entities,
+  getInfoFromObjectByIndex,
+  getTooltipMessages,
+  STATES,
+  Toast,
+} from 'helpers'
 import { useAppState } from 'hooks'
 import { TooltipContainer } from 'components'
 
@@ -150,7 +156,7 @@ export const RankingAdvancedQuestion = ({
           )}
         </Droppable>
       </div>
-      <div className='add-child-button-container'>
+      <div className="add-child-button-container">
         <TooltipContainer
           tip={getTooltipMessages().ACTIVE_DISABLED}
           showTip={isSurveyActive}
@@ -160,9 +166,12 @@ export const RankingAdvancedQuestion = ({
               handleChildAdd(rankingSubquestions, Entities.subquestion)
             }
             variant={'outline'}
-            className={classNames('text-primary add-choice-button gap-2 p-0 mt-4 border-none', {
-              'd-none disabled': !isFocused,
-            })}
+            className={classNames(
+              'text-primary add-choice-button gap-2 p-0 mt-4 border-none',
+              {
+                'd-none disabled': !isFocused,
+              }
+            )}
             data-testid="single-choice-add-subquestion-button"
             disabled={isSurveyActive}
           >
