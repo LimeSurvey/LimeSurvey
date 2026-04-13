@@ -29,7 +29,6 @@ class RankingProcessor extends AbstractQuestionProcessor
                 'title' => sprintf(gT('Rank %s'), $subQuestion['title']),
                 'value' => $value
             ];
-            
         }
         $legend[] = 'NoAnswer';
         $dataItems[] = ['key' => 'NoAnswer', 'value' => 0, 'title' => 'No answer'];

@@ -795,7 +795,7 @@
 
 
 
-                case Question::QT_R_RANKING: // Ranking
+            case Question::QT_R_RANKING: // Ranking
 
                 //get ranking subquestions (items to rank)
                 //get number of columns
@@ -806,7 +806,8 @@
                 //lets put the subquestion data into the subquestions array
                 foreach($result[$key1] as $row)
                 {
-                    $subquestions[]=array($row->title, $row->questionl10ns[$language]->question, $row->sqid);
+                    $subquestions[]=array($row['title'], $row['question'], $row['qid']);
+                    //$subquestions[]=array($row->code, $row->answerl10ns[$language]->answer, $row->sqid);
                 }
 
                 //loop through all subquestions. if there are 3 items to rank there will be 3 statistics

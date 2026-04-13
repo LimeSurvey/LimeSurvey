@@ -33,11 +33,11 @@ class RenderRanking extends QuestionBaseRenderer
         
         $this->iMaxSubquestions = ((int) $this->getQuestionAttribute('max_subquestions')) > 0
             ? ((int) $this->getQuestionAttribute('max_subquestions'))
-            : $this->getSubQuestionCount();
+            : $this->getQuestionCount();
 
         $this->mMaxAnswers = trim((string) $this->getQuestionAttribute('max_answers')) != ''
             ? (
-                ($this->iMaxSubquestions < $this->getSubQuestionCount())
+                ($this->iMaxSubquestions < $this->getQuestionCount())
                 ? "min(" . trim((string) $this->getQuestionAttribute('max_answers')) . "," . $this->iMaxSubquestions . ")"
                 : trim((string) $this->getQuestionAttribute('max_answers'))
               )
