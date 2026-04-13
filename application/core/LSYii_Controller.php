@@ -133,7 +133,7 @@ abstract class LSYii_Controller extends CController
 
     /**
      * Returns an absolute URL based on the given controller and action information.
-     * The functionalty was moved to
+     * The functionality was moved to
      * \LSYii_Application::createPublicUrl, to be safe the function remains here.
      * @param string $route the URL route. This should be in the format of 'ControllerID/ActionID'.
      * @param array $params additional GET parameters (name=>value). Both the name and value will be URL-encoded.

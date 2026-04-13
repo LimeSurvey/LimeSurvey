@@ -236,7 +236,7 @@ class SurveysGroupsController extends SurveyCommonAction
     }
 
     /**
-     * Show the survey settings menue for a particular group
+     * Show the survey settings menu for a particular group
      * @param integer $id group id, used for permission control
      * @return void
      */
@@ -245,7 +245,7 @@ class SurveysGroupsController extends SurveyCommonAction
         if (!$this->loadModel($id)->hasPermission('surveysettings', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
-        /* Can not call gloalsettings contoller fuinction sice _construct check access … */
+        /* Can not call globalsettings controller fuinction sice _construct check access … */
         $menues = Surveymenu::model()->getMenuesForGlobalSettings();
         Yii::app()->getController()->renderPartial('super/_renderJson', ['data' => $menues[0]]);
     }

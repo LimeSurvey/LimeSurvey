@@ -4987,7 +4987,7 @@ EOD;
     }
 
     /**
-     * Nearly identical to {@link switchOffsetCol()} except it forces teh class to be returned as its column
+     * Nearly identical to {@link switchOffsetCol()} except it forces the class to be returned as its column
      * (e.g. "span") width counterpart. It is also safe to pass in a class that is already the column width and it will
      * re-return it. For example, passing in col-md-offset-2 will return col-md-2. Passing in col-md-4 will still
      * return col-md-4.
