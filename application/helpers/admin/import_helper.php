@@ -844,7 +844,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             }
 
             if (!isset($xml->question_l10ns->rows->row)) {
-                if (!in_array($insertdata['language'], $aLanguagesSupported)) {
+                if (!in_array($insertdata['language'] ?? null, $aLanguagesSupported)) {
                     continue;
                 }
             }
@@ -1018,7 +1018,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
             if (!isset($xml->answer_l10ns->rows->row)) {
                 // now translate any links
-                if (!in_array($insertdata['language'], $aLanguagesSupported)) {
+                if (!in_array($insertdata['language'] ?? null, $aLanguagesSupported)) {
                     continue;
                 }
                 if ($options['translinkfields']) {
@@ -2433,7 +2433,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             unset($insertdata['gid']); // save the old qid
             $aDataL10n = array();
             if (!isset($xml->group_l10ns->rows->row)) {
-                if (!in_array($insertdata['language'], $aLanguagesSupported)) {
+                if (!in_array($insertdata['language'] ?? null, $aLanguagesSupported)) {
                     continue;
                 }
                 // now translate any links
@@ -2535,7 +2535,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
 
             if (!isset($xml->question_l10ns->rows->row)) {
-                if (!in_array($insertdata['language'], $aLanguagesSupported)) {
+                if (!in_array($insertdata['language'] ?? null, $aLanguagesSupported)) {
                     continue;
                 }
             }
@@ -2679,7 +2679,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
 
             if (!isset($xml->question_l10ns->rows->row)) {
-                if (!in_array($insertdata['language'], $aLanguagesSupported)) {
+                if (!in_array($insertdata['language'] ?? null, $aLanguagesSupported)) {
                     continue;
                 }
             }
@@ -2898,7 +2898,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             if (!isset($xml->answer_l10ns->rows->row)) {
                 // now translate any links
-                if (!in_array($insertdata['language'], $aLanguagesSupported)) {
+                if (!in_array($insertdata['language'] ?? null, $aLanguagesSupported)) {
                     continue;
                 }
                 if ($bTranslateInsertansTags) {
