@@ -26,7 +26,6 @@ class UpdateDBCommand extends CConsoleCommand
      *
      * @param array|null $args Optional command-line arguments (not used by this command).
      * @throws CException If the current database version is not found (application appears uninstalled) or if the upgrade process fails and requires manual intervention.
-     * @return void
      */
     public function run($args = null)
     {
@@ -47,11 +46,13 @@ class UpdateDBCommand extends CConsoleCommand
             $result = db_upgrade_all($currentDbVersion);
             if ($result) {
                 echo "Database has been successfully upgraded to version $newDbVersion \n";
+                return 0;
             } else {
                 throw new CException("Please fix this error in your database and try again");
             }
         } else {
             echo "no need update : DB is uptodate\n";
+            return 0;
         }
     }
 }
