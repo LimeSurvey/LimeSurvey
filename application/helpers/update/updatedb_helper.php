@@ -72,7 +72,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     // Enable maintenance mode during critical updates so survey participants
     // see a maintenance page. Preserve the previous value to restore it afterwards.
     $bIsCriticalUpdate = count(array_intersect($aCriticalDBVersions, $aAllUpdates)) > 0;
-    $sPreviousMaintenanceMode = getGlobalSetting('maintenancemode');
+    $sPreviousMaintenanceMode = App()->getConfig('maintenancemode');
     $bMaintenanceModeRestored = true;
     if ($bIsCriticalUpdate && $sPreviousMaintenanceMode !== 'hard') {
         SettingGlobal::setSetting('maintenancemode', 'hard');
@@ -174,9 +174,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     if (method_exists(Yii::app()->cache, 'gc')) {
         Yii::app()->cache->gc();
     }
-    // It seems that clearing the asset cache  also clears the schema cache
-    // So increase the asset version number to force this
-    SettingGlobal::increaseCustomAssetsversionnumber();
 
     // Inform superadmin about update
     $superadmins = User::model()->getSuperAdmins();
@@ -215,6 +212,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 function getDatabaseUpdateLock()
 {
     static $pLock = null;
+    if ($pLock !== null) {
+        return false;
+    }
     $pLock = @fopen(Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'dbupdate.lock', 'w+');
     if (!$pLock) {
         return false;
