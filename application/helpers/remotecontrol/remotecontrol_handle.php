@@ -1521,7 +1521,7 @@ class remotecontrol_handle
      * @return array|integer The id of the new question in case of success. Array with error status on failure.
      *         Error arrays include:
      *         - 'status': Human-readable error message
-     *         - 'error_code': Machine-readable error code (e.g., 'ERR_MISMATCH_SURVEY_GROUP') for reliable error identification
+     *         - 'error_code': Machine-readable error code (optional, e.g., 'ERR_MISMATCH_SURVEY_GROUP') for reliable error identification where available
      */
     public function import_question($sSessionKey, $iSurveyID, $iGroupID, $sImportData, $sImportDataType, $sMandatory = 'N', $sNewQuestionTitle = null, $sNewqQuestion = null, $sNewQuestionHelp = null)
     {
@@ -2405,7 +2405,7 @@ class remotecontrol_handle
      * @return array The list of questions on success. Array with error status on failure.
      *         Error arrays include:
      *         - 'status': Human-readable error message
-     *         - 'error_code': Machine-readable error code (e.g., 'ERR_MISMATCH_SURVEY_GROUP') for reliable error identification
+     *         - 'error_code': Machine-readable error code (optional, e.g., 'ERR_MISMATCH_SURVEY_GROUP') for reliable error identification where available
      */
     public function list_questions($sSessionKey, $iSurveyID, $iGroupID = null, $sLanguage = null)
     {
@@ -3367,7 +3367,7 @@ class remotecontrol_handle
      * @param array $aResponseData The actual response
      * @return array|boolean TRUE(bool) on success. Array with error status on failure. Error arrays include:
      *         - 'status': Human-readable error message
-     *         - 'error_code': Machine-readable error code (e.g., 'ERR_MULTIPLE_MATCHES') for reliable error identification
+     *         - 'error_code': Machine-readable error code (optional, e.g., 'ERR_MULTIPLE_MATCHES') for reliable error identification where available
      */
     public function update_response($sSessionKey, $iSurveyID, $aResponseData)
     {
@@ -3460,7 +3460,7 @@ class remotecontrol_handle
         if ($this->_checkSessionKey($sSessionKey)) {
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID', 'error_code' => 'ERR_INVALID_SURVEY_ID');
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete')) {
@@ -3471,15 +3471,15 @@ class remotecontrol_handle
                     if ($Response->delete()) {
                         return array($iResponseID => 'deleted');
                     }
-                    return array('status' => 'Response not deleted for unknown reason', 'error_code' => 'RESPONSE_DELETE_UNKNOWN');
+                    return array('status' => 'Response not deleted for unknown reason', 'error_code' => 'ERR_RESPONSE_DELETE_UNKNOWN');
                 } else {
-                    return array('status' => 'Response Id not found', 'error_code' => 'RESPONSE_NOT_FOUND');
+                    return array('status' => 'Response Id not found', 'error_code' => 'ERR_RESPONSE_NOT_FOUND');
                 }
             } else {
-                return array('status' => 'No permission', 'error_code' => 'NO_PERMISSION');
+                return array('status' => 'No permission', 'error_code' => 'ERR_NO_PERMISSION');
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => 'INVALID_SESSION');
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => 'ERR_INVALID_SESSION');
         }
     }
 
