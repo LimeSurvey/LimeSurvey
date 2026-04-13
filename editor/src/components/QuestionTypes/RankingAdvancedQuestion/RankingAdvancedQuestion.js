@@ -4,7 +4,10 @@ import { PlusLg } from 'react-bootstrap-icons'
 import { Button } from 'react-bootstrap'
 import { useState } from 'react'
 import { cloneDeep } from 'lodash'
-import { Entities, getInfoFromObjectByIndex, Toast } from 'helpers'
+
+import { Entities, getInfoFromObjectByIndex, getTooltipMessages, STATES, Toast } from 'helpers'
+import { useAppState } from 'hooks'
+import { TooltipContainer } from 'components'
 
 import { RankingAdvancedQuestionSubquestionsPlaceholder } from './RankingAdvancedQuestionSubquestionsPlaceholder'
 import { RankingAdvancedQuestionSubquestions } from './RankingAdvancedQuestionSubquestions'
@@ -25,6 +28,8 @@ export const RankingAdvancedQuestion = ({
   onValueChange = () => {},
   handleChildCodeUpdate,
 }) => {
+  const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
+
   const [subquestionsHeight, setSubquestionsHeight] = useState([])
   const [subquestionsValue, setSubquestionsValue] = useState(cloneDeep(values))
 
@@ -145,19 +150,25 @@ export const RankingAdvancedQuestion = ({
           )}
         </Droppable>
       </div>
-      <div>
-        <Button
-          onClick={() =>
-            handleChildAdd(rankingSubquestions, Entities.subquestion)
-          }
-          variant={'outline'}
-          className={classNames('text-primary add-choice-button px-0 mt-2', {
-            'd-none disabled': !isFocused,
-          })}
-          data-testid="single-choice-add-subquestion-button"
+      <div className='add-child-button-container'>
+        <TooltipContainer
+          tip={getTooltipMessages().ACTIVE_DISABLED}
+          showTip={isSurveyActive}
         >
-          <PlusLg /> {t('Add subquestion')}
-        </Button>
+          <Button
+            onClick={() =>
+              handleChildAdd(rankingSubquestions, Entities.subquestion)
+            }
+            variant={'outline'}
+            className={classNames('text-primary add-choice-button gap-2 p-0 mt-4 border-none', {
+              'd-none disabled': !isFocused,
+            })}
+            data-testid="single-choice-add-subquestion-button"
+            disabled={isSurveyActive}
+          >
+            <PlusLg /> {t('Add subquestion')}
+          </Button>
+        </TooltipContainer>
       </div>
     </DragDropContext>
   )
