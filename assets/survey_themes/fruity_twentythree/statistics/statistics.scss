@@ -9,4 +9,7 @@
     line-height: $line-height-24;
     margin: 0 0 10px;
   }
+  .card {
+    min-width: max-content;
+  }
 }

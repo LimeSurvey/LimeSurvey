@@ -324,7 +324,7 @@ class SurveysGroupsettings extends LSActiveRecord
                 $instance->optionAttributes = new stdClass();
             } else {
                 $instance = $model;
-                $instance->optionAttributes = array_keys($model->attributes);
+                $instance->optionAttributes = $model->attributeNames();
                 // unset gsid
                 unset($instance->optionAttributes[array_search('gsid', $instance->optionAttributes)]);
             }
