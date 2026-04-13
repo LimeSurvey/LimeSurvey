@@ -25,8 +25,9 @@ class EndUrlRedirectTest extends TestBaseClassWeb
         // Activate survey.
         self::$testHelper->activateSurvey(self::$surveyId);
 
-        // Don't use "inherit all" so we can switch ajaxmod on/off without
-        // affecting global state.
+        // Ensure templateConfiguration options mirror global defaults for test isolation.
+        // By copying the options from the global parent instead of using inheritance,
+        // test-specific configuration changes won't affect the global template state.
         $templateConfiguration = self::$testSurvey->templateConfiguration;
         $globalConfiguration   = $templateConfiguration->getGlobalParent();
         $templateConfiguration->options = $globalConfiguration->options;
