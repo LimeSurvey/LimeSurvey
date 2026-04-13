@@ -5007,7 +5007,7 @@ function handleLegacyRankingAnswers(
             'sid'            => $iNewSID,
             'gid'            => $iGID,
             'parent_qid'     => $iOldParentQID, // old qid — subquestions loop remaps this
-            'type'           => Question::QT_R_RANKING,
+            'type'           => Question::QT_T_LONG_FREE_TEXT,
             'title'          => $insertdata['code'],
             'qid'            => $iOldAID,        // used as old qid placeholder
             'relevance'      => '1',
